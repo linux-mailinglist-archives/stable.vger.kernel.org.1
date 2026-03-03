@@ -1,178 +1,336 @@
-Return-Path: <stable+bounces-222826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKTrJYOcpmlqRwAAu9opvQ
-	(envelope-from <stable+bounces-222826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:32:03 +0100
+	id yHvAGdmcpmlqRwAAu9opvQ
+	(envelope-from <stable+bounces-222827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1178E1EAD1A
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FFA1EAD5F
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B25693054BA6
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:31:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B6D03024454
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24A9386548;
-	Tue,  3 Mar 2026 08:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BE538552F;
+	Tue,  3 Mar 2026 08:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="K51jjfbA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VZm429iv"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="QSpth2Ew"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4103845C6;
-	Tue,  3 Mar 2026 08:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D123631716B;
+	Tue,  3 Mar 2026 08:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772526693; cv=none; b=AMjIalxxJUvgIwIsgGT4Fe5PLr9LVhX+TJmx0PyP2qL6BCb+2Xb/RR818b4+M5Gh3BaNLwUX8tPmRot+YF4HA45fP/WgK6TGWVsaxzeBmJ7UaVDG6tEDGizNnWN+H3fOrYInDPJcRB2m61gH3geoIUEtJ5cpmmKaHC3MMDJ/xGQ=
+	t=1772526804; cv=none; b=gCQ0efDM4XOgr8CBIxeNXK/NkovJRrro11A7GUPtxK9FiQc5Jnx1ayBbqQuGtF43i9xqHT1HQyVAAIFlKZtz9zn/6P7n61aFfhIxMhvAmhlJCcKzBoYi8lN07a52FsCVJ0q0miq/TscLpbH63Hd8SRjOhpE0bykXHkNo4ccrLgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772526693; c=relaxed/simple;
-	bh=Ki/OJPffb844O+vTtB6WCYGxVXcZKdwWDSXsiOrfVZY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=upYDCfHUd0QyKvYp83uk4Q+VuA/XkjHCX7u/ZVF6MI91YQzMBUv7pQiFoZU9Ab/D66IvWCoZtX1mP8WqQ16X2whrXRPXDqFjWAq4Cj+yBSelrPu9ZtX2OQXxzTAJb10zok5Bj5t50LGUt+/KZcPGYiC6GeU5z0c017Zi6bcac7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=K51jjfbA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VZm429iv; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0ABA01400051;
-	Tue,  3 Mar 2026 03:31:31 -0500 (EST)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-11.internal (MEProxy); Tue, 03 Mar 2026 03:31:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772526691;
-	 x=1772613091; bh=jF8P8AkCF4V++kE9eDOyXQahSASYk5G5v2HjlhpRmIw=; b=
-	K51jjfbAPP4gui2zrzzXz3QsdhuSe5LE0Xx2mfB0TWOE1L9wy7zRGCs3dVsBph5K
-	Ekis6GR7j9SYF9z8AD/9ZYAxC7VTOqTL6GKrXk1RpNqsNxM8lWawaTgV2ymEZ52K
-	7s2Lsei7+a8deX9KVUPG4uR8E7SMFYNhZiZZSW/pmbt0sR01Dd2In2Q/xNoJ1CET
-	b9DqmFFAwJqezh12fUSgqp7boZxvHkoYm3Hq7YL69QaJuUJLMLmCQ/P83rAkkXQG
-	TuxMeY4Ktrj01/EM78oknDJkwiqyKyEEQbyg3PXdN3cOKaxILW4Qu7IUzvCO8wcn
-	+zTjHBTvY37XXEaRxL1/XA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772526691; x=
-	1772613091; bh=jF8P8AkCF4V++kE9eDOyXQahSASYk5G5v2HjlhpRmIw=; b=V
-	Zm429ivd/qi1RYr1c7rXILg8ib/VF5hsavFhQIzLRFO3evWStyPIugKbyL2E7u1p
-	MyAvNZUwEAnpHkSvNi/9qIgmhJG1kgwAdfLDWJ4Cfag5nhSFaDjXJgW0yRoK/DXt
-	S4oZji6DojxyCGOcOTB0tipCmRVt4s7IopqHXp4sQF/y1eK5zjasVrWgV/OzKjYX
-	sWHESF49okFejMcFCPA+TMs8IzEMrocvUwzPzt14XCP82tGSHwW9WTKFiNjrrC0d
-	lrI/bNtanyV/RoowOyD2JdYbEsd1ONLl8M3dqU9GBhWXQ7l6rILLcLg7CGnBXmfm
-	riRADwuR+1pDGCP40MzAw==
-X-ME-Sender: <xms:YpymaWDX_yiAY3tgqFi03VbfSqXTGQpaQGunEwbf0lXNqeg5ag-K5Q>
-    <xme:YpymaQ6o_eazreXr25jXJt7lDkZd6AyCB6RymiGS0cAAYiba3V5ZqciLo4mAoM-ax
-    MKV7BmcL-d3q5uhgfr6PvwH4f4o6Cgwf046tbj4WKUq3YdI7azmpC4>
-X-ME-Received: <xmr:Ypymaasvn841D3LnqV1oRUpm65ojxzdgLDXkJqjVUx14zcdzFR_loUySg4NLjmIffvq1D-cD5skzmZceTsNeFBoYJ2FgAw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedtudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
-    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
-    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
-    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:YpymaQyfENhbsUQ574Nkj41I22Czbp7Xtn9Yk0i2WpI81-jJ2xryxg>
-    <xmx:YpymaaaEN5ArrjkwX7RRnDakHhfPKZiYuk8EiGEj9wy3bNqJ5offpg>
-    <xmx:YpymaX5GlDDCmysZzKrYbHBQ4VNLmZgkPMOsT9pBmkOuA1HZPeuAPg>
-    <xmx:YpymaR7VxGwypJkJY6MuiylMG7WvvUenk9WwpNvoA0mpo_9GvbnjVA>
-    <xmx:Y5ymaRuhbHDBYPnTmjuzfhJtB5nboU6dzsyydxJ4FB6c4qUO7CfCpfEr>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 03:31:28 -0500 (EST)
-Message-ID: <1ccbd22d-2323-4f20-998a-3ab04526434f@pobox.com>
-Date: Tue, 3 Mar 2026 00:31:27 -0800
+	s=arc-20240116; t=1772526804; c=relaxed/simple;
+	bh=K7uRyUn/m0s5FMTXG48hrxNnmaoHPRiIuADnDuTZbsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZZzfMy/LdiuTKhqdgQqjwW1U/+sC/uyia0jAnxX3jXsPs4PVafjg74M+2U3ofjhx9rrBlEAlYaXllHGCaG3gNUqSZ0g5qjhSoXs19p2r4qdODtNBI99E+YRbAMFTauD8NyfILHj7GPaauZ0ZeHF25FTAt8a310IL+YNzfKxb7m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=QSpth2Ew; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1772526793;
+	bh=xF97roPctHZnLD2rCQPN6qIo2wFyTHqYmxzPCTCKw/I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QSpth2Ew/XnhRu2EbSMVM2MifrEIrwSrD8LDHBGxves6tegesNY5k68yIJm7G2QGO
+	 cS3Ff02jrQZ9My8Gd4PQcS/pcnYruBzJ8F/fmTu1Y32ttCMtRWUsvdmJXfvbFz5CBt
+	 eqGWj6qZ6QAVV/s3BTvTp5d5fNGu80ysBOvxUP60=
+Received: from stargazer (unknown [IPv6:2409:8a4c:e11:4510:818c:b334:624:49f8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 28277674A2;
+	Tue,  3 Mar 2026 03:33:03 -0500 (EST)
+From: Xi Ruoyao <xry111@xry111.site>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Jinyang He <hejinyang@loongson.cn>
+Cc: WANG Rui <wangrui@loongson.cn>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Zixing Liu <liushuyu@aosc.io>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	stable@vger.kernel.org,
+	Peter Zijlstra <peterz@infradead.org>,
+	Menglong Dong <menglong8.dong@gmail.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Hanlu Li <lihanlu@loongson.cn>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH v3] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+Date: Tue,  3 Mar 2026 16:32:47 +0800
+Message-ID: <20260303083248.567185-1-xry111@xry111.site>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/757] 6.18.16-rc2 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260302160853.2519610-1-sashal@kernel.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260302160853.2519610-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1178E1EAD1A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C4FFA1EAD5F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-222826-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev,xry111.site];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-222827-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[xry111.site:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pobox.com:dkim,pobox.com:email,pobox.com:mid]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gnu.org:url]
 X-Rspamd-Action: no action
 
-On 3/2/26 08:08, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 757 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed Mar  4 04:08:47 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.18.y&id2=v6.18.15
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+empty.  This is not valid, as the current DWARF specification mandates
+the first byte of the EH frame to be the version number 1.  It causes
+some unwinders to complain, for example the ClickHouse query profiler
+spams the log with messages:
 
-Tested on 2 systems (1 amd64, 1 arm64). Working well, no regressions
-observed.
+    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
+    version: 127 at 7ffffffb0000
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+Here "127" is just the byte located at the p_vaddr (0, i.e. the
+beginning of the vDSO) of the empty GNU_EH_FRAME segment.
+Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
+the start of vDSO in the process VM image.
 
+In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
+"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
+limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
+we can simply flip it over to -fasynchronous-unwind-tables and pass
+--eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
+stack for statistics even if the sample point is taken when the PC is in
+the vDSO.
+
+However simply adjusting the options above would exploit an issue: when
+the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+falled back to a machine-specific routine to match the code pattern of
+rt_sigreturn and extract the registers saved in the sigframe if the code
+pattern is matched.  As unwinding from signal handlers is vital for
+libgcc to support pthread cancellation etc., the fall-back routine had
+been silently keeping the LoongArch Linux systems functioning since
+Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
+format, fall-back routine will no longer be used and libgcc will fail
+to unwind the sigframe, and unwinding from signal handlers will no
+longer work, causing dozens of glibc test failures.  To make it possible
+to unwind from signal handlers again, it's necessary to code the unwind
+info in __vdso_rt_sigreturn via .cfi_* directives.
+
+The offsets in the .cfi_* directives depend on the layout of struct
+sigframe, notably the offset of sigcontect in the sigframe.  To use the
+offset in the assembly file, factor out struct sigframe into a header to
+allow asm-offsets.c to output the offset for assembly.
+
+To work around a long-term issue in the libgcc unwinder (the pc is
+unconditionally substracted by 1: doing so is technically incorrect for
+a signal frame), a nop instruction is included with the two real
+instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
+hack has been used on x86 for a long time.
+
+Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+---
+
+Changes from [v2]:
+- Wrap .cfi_* for signal trampoline in SYM_SIGFUNC_START.
+- Remove comment lines in sigframe.h not so meaningful.
+
+Changes from [v1] to v2:
+- Use DWARF column 0 instead of the libgcc-specific column 72.
+- Style change to sigframe.h.
+
+[v1]: https://lore.kernel.org/20260225104607.3803060-1-xry111@xry111.site
+
+ arch/loongarch/include/asm/linkage.h  | 34 +++++++++++++++++++++++++++
+ arch/loongarch/include/asm/sigframe.h |  9 +++++++
+ arch/loongarch/kernel/asm-offsets.c   |  2 ++
+ arch/loongarch/kernel/signal.c        |  6 +----
+ arch/loongarch/vdso/Makefile          |  4 ++--
+ arch/loongarch/vdso/sigreturn.S       | 10 +++-----
+ 6 files changed, 51 insertions(+), 14 deletions(-)
+ create mode 100644 arch/loongarch/include/asm/sigframe.h
+
+diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
+index e2eca1a25b4e..db465036385f 100644
+--- a/arch/loongarch/include/asm/linkage.h
++++ b/arch/loongarch/include/asm/linkage.h
+@@ -42,3 +42,37 @@
+ 	SYM_END(name, SYM_T_NONE)
+ 
+ #endif
++
++/*
++ * This is for the signal handler trampoline, which is used as the return
++ * address of the signal handlers in userspace instead of called normally.
++ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
++ * nop between .cfi_startproc and the actual address of the trampoline, so
++ * we cannot simply use SYM_FUNC_START.
++ *
++ * This wrapper also contains all the .cfi_* directives for recovering
++ * the content of the GPRs and the "return address" (where the rt_sigreturn
++ * syscall will jump to), assuming there is a struct rt_sigframe (where
++ * a struct sigcontext containing those information we need to recover) at
++ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
++ * column 0 is for $zero, but it does not make too much sense to
++ * save/restore the hardware zero register.  Repurpose this column here
++ * for the return address (here it's not the content of $ra we cannot use
++ * the default column 3).
++ */
++#define SYM_SIGFUNC_START(name)				\
++	.cfi_startproc;					\
++	.cfi_signal_frame;				\
++	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
++	.cfi_return_column 0;				\
++	.cfi_offset 0, SC_PC;				\
++	.irp	num, 1, 2, 3, 4, 5, 6, 7, 8, 		\
++		     9, 10, 11, 12, 13, 14, 15, 16,	\
++		     17, 18, 19, 20, 21, 22, 23, 24,	\
++		     25, 26, 27, 28, 29, 30, 31;	\
++	.cfi_offset \num, SC_REGS + \num * SZREG;	\
++	.endr;						\
++	nop;						\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
++
++#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
+diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
+new file mode 100644
+index 000000000000..109298b8d7e0
+--- /dev/null
++++ b/arch/loongarch/include/asm/sigframe.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++
++#include <asm/siginfo.h>
++#include <asm/ucontext.h>
++
++struct rt_sigframe {
++	struct siginfo rs_info;
++	struct ucontext rs_uctx;
++};
+diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+index 3017c7157600..2cc953f113ac 100644
+--- a/arch/loongarch/kernel/asm-offsets.c
++++ b/arch/loongarch/kernel/asm-offsets.c
+@@ -16,6 +16,7 @@
+ #include <asm/ptrace.h>
+ #include <asm/processor.h>
+ #include <asm/ftrace.h>
++#include <asm/sigframe.h>
+ #include <vdso/datapage.h>
+ 
+ static void __used output_ptreg_defines(void)
+@@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
+ 	COMMENT("Linux sigcontext offsets.");
+ 	OFFSET(SC_REGS, sigcontext, sc_regs);
+ 	OFFSET(SC_PC, sigcontext, sc_pc);
++	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
+ 	BLANK();
+ }
+ 
+diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
+index c9f7ca778364..e297d54ea638 100644
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -37,6 +37,7 @@
+ #include <asm/lbt.h>
+ #include <asm/ucontext.h>
+ #include <asm/vdso.h>
++#include <asm/sigframe.h>
+ 
+ #ifdef DEBUG_SIG
+ #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
+@@ -51,11 +52,6 @@
+ #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
+ #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
+ 
+-struct rt_sigframe {
+-	struct siginfo rs_info;
+-	struct ucontext rs_uctx;
+-};
+-
+ struct _ctx_layout {
+ 	struct sctx_info *addr;
+ 	unsigned int size;
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index 520f1513f07d..294c16b9517f 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -26,7 +26,7 @@ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+ 	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+-	$(call cc-option, -fno-asynchronous-unwind-tables) \
++	$(call cc-option, -fasynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+ aflags-vdso := $(ccflags-vdso) \
+ 	-D__ASSEMBLY__ -Wa,-gdwarf-2
+@@ -41,7 +41,7 @@ endif
+ 
+ # VDSO linker flags.
+ ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
+-	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
++	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
+ 
+ #
+ # Shared build commands.
+diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
+index 9cb3c58fad03..e40bf4186f29 100644
+--- a/arch/loongarch/vdso/sigreturn.S
++++ b/arch/loongarch/vdso/sigreturn.S
+@@ -12,13 +12,9 @@
+ 
+ #include <asm/regdef.h>
+ #include <asm/asm.h>
++#include <asm/asm-offsets.h>
+ 
+-	.section	.text
+-	.cfi_sections	.debug_frame
+-
+-SYM_FUNC_START(__vdso_rt_sigreturn)
+-
++SYM_SIGFUNC_START(__vdso_rt_sigreturn)
+ 	li.w	a7, __NR_rt_sigreturn
+ 	syscall	0
+-
+-SYM_FUNC_END(__vdso_rt_sigreturn)
++SYM_SIGFUNC_END(__vdso_rt_sigreturn)
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.53.0
+
 
