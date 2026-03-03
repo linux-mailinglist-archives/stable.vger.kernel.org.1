@@ -1,234 +1,178 @@
-Return-Path: <stable+bounces-222825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJqGO9WcpmlqRwAAu9opvQ
-	(envelope-from <stable+bounces-222825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:26 +0100
+	id QKTrJYOcpmlqRwAAu9opvQ
+	(envelope-from <stable+bounces-222826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:32:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573EA1EAD57
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:33:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1178E1EAD1A
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2202C3112131
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:28:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B25693054BA6
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D1E375ADF;
-	Tue,  3 Mar 2026 08:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24A9386548;
+	Tue,  3 Mar 2026 08:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="auuNx0TI"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="K51jjfbA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VZm429iv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5045E33EAF8
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 08:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4103845C6;
+	Tue,  3 Mar 2026 08:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772526512; cv=none; b=VRZwy2xeD22BzAe+XMTvZM2Dy1Qcpv+gpkj8zjVTRSIsDQabqpnkbu5sIosNTEaZxap4SPsxouOZI0cF1gHPOjeALT7K4/S8S1ZwC6MgGVjGeVFNSpGupkzzCLRic/P42rLbJLAbrH4mCvmaBP5Jf5B4RkmOvDzSqMsjukOo12Q=
+	t=1772526693; cv=none; b=AMjIalxxJUvgIwIsgGT4Fe5PLr9LVhX+TJmx0PyP2qL6BCb+2Xb/RR818b4+M5Gh3BaNLwUX8tPmRot+YF4HA45fP/WgK6TGWVsaxzeBmJ7UaVDG6tEDGizNnWN+H3fOrYInDPJcRB2m61gH3geoIUEtJ5cpmmKaHC3MMDJ/xGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772526512; c=relaxed/simple;
-	bh=Aj5EdWjVF2jxAv9z+0TobEuciQMJWsagsW0+QMnh1Sw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XU83CwAXusB5/UHrEXTTY1HXzPvq0/mrloQ/Q5mDBP+oUZdaXQYU41k7i7BL+cYE/tCna4oJs6EVO1NUc7pUrQUjuydRC+xs90bxHOgXf3ooMyDv5iIvrCLL5qs1cCrdUQeBft9EvARj90+EfUe/A19zhabXFTrk85QsPNKxozI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=auuNx0TI; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8fa449e618so772549766b.0
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 00:28:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772526510; x=1773131310; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tvQ9ogjqY7GpWZR0jhfLALG/vdl5wh/KcgbqbjmLgoM=;
-        b=auuNx0TITUBFiDejhfcWAgaKfZGi66w9epcPluFifmQQVMHeAbWmAbxxpkd00+voNs
-         VaLtWNSYtcrnH1IfNzIocbnswtPjEnfpYwfmd1gqQ9s8eMB7uuISwzOjt9fotju89BYB
-         /h0GTQR6udvguK8EEgTsIZtJPn35KqpS+Vfm0Hhh7gsKpTcggxfebbDMl/EnL9M+m+xA
-         4G0eAdK05eb0D/9BZdnub7EdoCnrSVgfuVVe7xGi9/z2mxcjz+2stb0un8I4hcUoVGxw
-         bLf/Br2IUi7heuQHX3Pfk3TBLK3EsG5LzoS4pki/7ia0j0qT52QWIdTYGgaJ1bqX/+0+
-         HETg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772526510; x=1773131310;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tvQ9ogjqY7GpWZR0jhfLALG/vdl5wh/KcgbqbjmLgoM=;
-        b=ajQcD1hGz3l7PVs5jSDWXKwNjyxTdJuM4auHqbuUJ7GjFVSUfBZDtIRFaMj5B2tq1h
-         ZoKbGcYnolHaLfJiHXDzu3uX7Od9NbdyMOFCJwsSeaoG7FN5TAbzMEFeny4uGW535GH1
-         lOTn2/ZCdMgmFH+xFF22DCiDU6DTbUXLbSKbMHs2CoB5GdbtWS6GVS37QNOO7KXva2fM
-         5MXalVRuF7l0VIbCSXT0oHsVhBbSNMk34wR/PNsO9aK7CCsDOZCyTMmm4aMpt6CXUFf5
-         6yy2j0IDqRJvuiREQUvlSYjrBrHxTLlIzPyPsPbsxQu39u3BV43EBfFJnFPJpYld19uG
-         A10w==
-X-Forwarded-Encrypted: i=1; AJvYcCWZouZHJK2yTP9HsNPEk4lACa42DMXK5G7fUiC8sZm+7xeX7uqfY0f/UFAi/LhGVeoXgniFiOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGEnXRtLc3uQpFycBrVp9usRD/aEr9YwdseYoWleJhk1fCIv3o
-	WJOSFkhFAUF3hKHsr6m0/Y9oqUoVLNq5VT6YsaoJuuvYyKVeaeaxfeY2
-X-Gm-Gg: ATEYQzzUTkLYem8V6jXKNQOUC4V0t2sAyI8/+AjbB3UX0bT7xU+On+Mucv4GgfhtU8F
-	kIttg2JqXzan5YATod4qi0oI7DicdIYUZiNw1st+FTOTF5XPtAke1QKSTYWaFCKRQ0a3hzJdv94
-	KDoxrgWfw9ZQK7lOSiPwzqgmlNrDSr8cNgWPN/ZLVRA0VL3J+/gS/0YGZGMv7VRfXhwX7NrYjRj
-	OocRouSPG42c7w1Fpiy3hriLCHifkWRZUCsz3zaCrQ3T5LagVWU0XNtvYciYLB/ctpufbfXjdr7
-	FRYpsDw7rndtWvz7Nzalz8GwRLzJ9XNwSc1bVr4L8+AEJ8IB3ayHja/LlYuDV3Irq3wtpeokkm/
-	TpbzyDr9W9zjWIq06tTXEsl3ITh/cVh5ZO4BOEpJaiMyxEQ0CJG7dIXupahDX4KERm/cb5jFcdZ
-	SMf7u4lBYeSHB0aei7Cdlj7w==
-X-Received: by 2002:a17:907:9492:b0:b93:94b9:26fe with SMTP id a640c23a62f3a-b9394b98ceamr771288166b.52.1772526509327;
-        Tue, 03 Mar 2026 00:28:29 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac70b01sm559271466b.23.2026.03.03.00.28.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 03 Mar 2026 00:28:28 -0800 (PST)
-Date: Tue, 3 Mar 2026 08:28:28 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
-	Andrew Battat <andrew.battat@dfinity.org>,
-	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
- with folio_try_get()
-Message-ID: <20260303082828.x2gypytceqn6pb6x@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260302203159.3208341-1-ziy@nvidia.com>
+	s=arc-20240116; t=1772526693; c=relaxed/simple;
+	bh=Ki/OJPffb844O+vTtB6WCYGxVXcZKdwWDSXsiOrfVZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=upYDCfHUd0QyKvYp83uk4Q+VuA/XkjHCX7u/ZVF6MI91YQzMBUv7pQiFoZU9Ab/D66IvWCoZtX1mP8WqQ16X2whrXRPXDqFjWAq4Cj+yBSelrPu9ZtX2OQXxzTAJb10zok5Bj5t50LGUt+/KZcPGYiC6GeU5z0c017Zi6bcac7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=K51jjfbA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VZm429iv; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 0ABA01400051;
+	Tue,  3 Mar 2026 03:31:31 -0500 (EST)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-11.internal (MEProxy); Tue, 03 Mar 2026 03:31:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772526691;
+	 x=1772613091; bh=jF8P8AkCF4V++kE9eDOyXQahSASYk5G5v2HjlhpRmIw=; b=
+	K51jjfbAPP4gui2zrzzXz3QsdhuSe5LE0Xx2mfB0TWOE1L9wy7zRGCs3dVsBph5K
+	Ekis6GR7j9SYF9z8AD/9ZYAxC7VTOqTL6GKrXk1RpNqsNxM8lWawaTgV2ymEZ52K
+	7s2Lsei7+a8deX9KVUPG4uR8E7SMFYNhZiZZSW/pmbt0sR01Dd2In2Q/xNoJ1CET
+	b9DqmFFAwJqezh12fUSgqp7boZxvHkoYm3Hq7YL69QaJuUJLMLmCQ/P83rAkkXQG
+	TuxMeY4Ktrj01/EM78oknDJkwiqyKyEEQbyg3PXdN3cOKaxILW4Qu7IUzvCO8wcn
+	+zTjHBTvY37XXEaRxL1/XA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772526691; x=
+	1772613091; bh=jF8P8AkCF4V++kE9eDOyXQahSASYk5G5v2HjlhpRmIw=; b=V
+	Zm429ivd/qi1RYr1c7rXILg8ib/VF5hsavFhQIzLRFO3evWStyPIugKbyL2E7u1p
+	MyAvNZUwEAnpHkSvNi/9qIgmhJG1kgwAdfLDWJ4Cfag5nhSFaDjXJgW0yRoK/DXt
+	S4oZji6DojxyCGOcOTB0tipCmRVt4s7IopqHXp4sQF/y1eK5zjasVrWgV/OzKjYX
+	sWHESF49okFejMcFCPA+TMs8IzEMrocvUwzPzt14XCP82tGSHwW9WTKFiNjrrC0d
+	lrI/bNtanyV/RoowOyD2JdYbEsd1ONLl8M3dqU9GBhWXQ7l6rILLcLg7CGnBXmfm
+	riRADwuR+1pDGCP40MzAw==
+X-ME-Sender: <xms:YpymaWDX_yiAY3tgqFi03VbfSqXTGQpaQGunEwbf0lXNqeg5ag-K5Q>
+    <xme:YpymaQ6o_eazreXr25jXJt7lDkZd6AyCB6RymiGS0cAAYiba3V5ZqciLo4mAoM-ax
+    MKV7BmcL-d3q5uhgfr6PvwH4f4o6Cgwf046tbj4WKUq3YdI7azmpC4>
+X-ME-Received: <xmr:Ypymaasvn841D3LnqV1oRUpm65ojxzdgLDXkJqjVUx14zcdzFR_loUySg4NLjmIffvq1D-cD5skzmZceTsNeFBoYJ2FgAw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedtudduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
+    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
+    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
+    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:YpymaQyfENhbsUQ574Nkj41I22Czbp7Xtn9Yk0i2WpI81-jJ2xryxg>
+    <xmx:YpymaaaEN5ArrjkwX7RRnDakHhfPKZiYuk8EiGEj9wy3bNqJ5offpg>
+    <xmx:YpymaX5GlDDCmysZzKrYbHBQ4VNLmZgkPMOsT9pBmkOuA1HZPeuAPg>
+    <xmx:YpymaR7VxGwypJkJY6MuiylMG7WvvUenk9WwpNvoA0mpo_9GvbnjVA>
+    <xmx:Y5ymaRuhbHDBYPnTmjuzfhJtB5nboU6dzsyydxJ4FB6c4qUO7CfCpfEr>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Mar 2026 03:31:28 -0500 (EST)
+Message-ID: <1ccbd22d-2323-4f20-998a-3ab04526434f@pobox.com>
+Date: Tue, 3 Mar 2026 00:31:27 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 573EA1EAD57
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/757] 6.18.16-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260302160853.2519610-1-sashal@kernel.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260302160853.2519610-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1178E1EAD1A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,dfinity.org:email,linux.dev:email];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-222825-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[richard.weiyang@gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-222826-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	REPLYTO_EQ_FROM(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pobox.com:dkim,pobox.com:email,pobox.com:mid]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 03:31:59PM -0500, Zi Yan wrote:
->During a pagecache folio split, the values in the related xarray should not
->be changed from the original folio at xarray split time until all
->after-split folios are well formed and stored in the xarray. Current use
->of xas_try_split() in __split_unmapped_folio() lets some after-split folios
->show up at wrong indices in the xarray. When these misplaced after-split
->folios are unfrozen, before correct folios are stored via __xa_store(), and
->grabbed by folio_try_get(), they are returned to userspace at wrong file
->indices, causing data corruption. More detailed explanation is at the
->bottom.
->
->The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
->It
->1. creates a memfd,
->2. forks,
->3. in the child process, maps the file with large folios (via shmem code
->   path) and reads the mapped file continuously with 16 threads,
->4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
->   large folio.
->
->Data corruption can be observed without the fix. Basically, data from a
->wrong page->index is returned.
->
->Fix it by using the original folio in xas_try_split() calls, so that
->folio_try_get() can get the right after-split folios after the original
->folio is unfrozen.
->
->Uniform split, split_huge_page*(), is not affected, since it uses
->xas_split_alloc() and xas_split() only once and stores the original folio
->in the xarray. Change xas_split() used in uniform split branch to use
->the original folio to avoid confusion.
->
->Fixes below points to the commit introduces the code, but folio_split() is
->used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
->truncate operation").
->
->More details:
->
->For example, a folio f is split non-uniformly into f, f2, f3, f4 like
->below:
->+----------------+---------+----+----+
->|       f        |    f2   | f3 | f4 |
->+----------------+---------+----+----+
->but the xarray would look like below after __split_unmapped_folio() is
->done:
->+----------------+---------+----+----+
->|       f        |    f2   | f3 | f3 |
->+----------------+---------+----+----+
->
+On 3/2/26 08:08, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.18.16 release.
+> There are 757 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed Mar  4 04:08:47 PM UTC 2026.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.18.y&id2=v6.18.15
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-Thanks for the detailed explanation, I finally realized it behaves like this.
+Tested on 2 systems (1 amd64, 1 arm64). Working well, no regressions
+observed.
 
->After __split_unmapped_folio(), the code changes the xarray and unfreezes
->after-split folios:
->
->1. unfreezes f2, __xa_store(f2)
->2. unfreezes f3, __xa_store(f3)
->3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
->4. unfreezes f.
->
->Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
->xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
->f3 is wrongly returned to user.
->
->After the fix, the xarray looks like below after __split_unmapped_folio():
->+----------------+---------+----+----+
->|       f        |    f    | f  | f  |
->+----------------+---------+----+----+
->so that the race window no longer exists.
-
-Since we unfreeze f at last.
-
->
->Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
->Signed-off-by: Zi Yan <ziy@nvidia.com>
->Reported-by: Bas van Dijk <bas@dfinity.org>
->Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
->Tested-by: Lance Yang <lance.yang@linux.dev>
->Cc: <stable@vger.kernel.org>
-
-So thanks for the fix.
-
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
 -- 
-Wei Yang
-Help you, Help me
+-Barry K. Nathan  <barryn@pobox.com>
 
