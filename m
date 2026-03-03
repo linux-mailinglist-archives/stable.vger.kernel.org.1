@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-222789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEGoOTlypmnLPwAAu9opvQ
-	(envelope-from <stable+bounces-222789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:31:37 +0100
+	id EJ1pBx9ypmnLPwAAu9opvQ
+	(envelope-from <stable+bounces-222786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:31:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877691E9421
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:31:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4331E9403
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 06:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 161F43055F81
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:31:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE7173043AC8
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 05:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A25C374E57;
-	Tue,  3 Mar 2026 05:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF522308F3B;
+	Tue,  3 Mar 2026 05:31:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488F440855;
-	Tue,  3 Mar 2026 05:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7042DF68;
+	Tue,  3 Mar 2026 05:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772515866; cv=none; b=lbJV88I61Jf7jeuxYfFLSqRZWfFiiNK5HLiliqINpl+4NfBPRK/KMmTAIKCWuRwiooo4vSnA4QeYwpDBMujUbU2HuTWDMrb1cWECI4Vb5N/uZSGqfLWBUZwHkcxRdWgKHmUSThC/15QLKND+UaPtAdR1z5GY9idyw45yCjbuHQg=
+	t=1772515864; cv=none; b=otkNeDLTXkRn0i78D4Zyjhh3oE6fjEwKaon9IJUvUJXnNKXcYtyrmZWHp1tcRqts59DoiWPKnjyN4CdiaoOgnYSrTWW/Vjerw9wR8Y9s/Gv12LwEkkX6oVYrSw0rCdo3EiG21LB+7a4zNVuQEDFwCvvAg0SnFhLeMiaG56kH6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772515866; c=relaxed/simple;
-	bh=971QZuBPX8vDJm+DbuLvrLOPHCLVRgRHvCt+mGqBS+I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DMavfJp77cjWPsYAKWMVjTED4xxPl8Q9OjpO+Q7/FXr5Er6RX8qBUwKkEI9uiRT0Em+p5n6zQBW1SHmhwzWMiVYDwdnVOiwz25FQj9gv6ExpSUYUzCHp8dLygPmIKk2Hgm/rVhHOL6ptC0i0FR66eT12FWda3zFLJwh5XQ7rmlU=
+	s=arc-20240116; t=1772515864; c=relaxed/simple;
+	bh=NcIglrztMSHwQAAXfM9b06Hkn9FIw5v3QWTX6fPF7pg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LIrNmOxr3GbYhn5Y/7SJi9KWtJIMeeHZkig6wLJtMT40KcEbL6SUwlama82vq+70DBV6zgqHJY1UmjlOPdraMIxpraoaTVF/1j9LVSZ1cZLbIIoUsi62rUBTDSlxT6ac9XJrLe6FCv96aiZma0NgKMCt8XpmMQBBFU226VG76rk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [127.0.0.2] (unknown [210.73.43.101])
-	by APP-03 (Coremail) with SMTP id rQCowAAHHdT9caZpAmO+CQ--.19798S2;
-	Tue, 03 Mar 2026 13:30:38 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAHHdT9caZpAmO+CQ--.19798S3;
+	Tue, 03 Mar 2026 13:30:39 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Subject: [PATCH v2 0/5] riscv: kfence: Handle the spurious fault after
- kfence_unprotect(), and related fixes
-Date: Tue, 03 Mar 2026 13:29:44 +0800
-Message-Id: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
+Date: Tue, 03 Mar 2026 13:29:45 +0800
+Subject: [PATCH v2 1/5] riscv: mm: Extract helper mark_new_valid_map()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,52 +46,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMhxpmkC/42OXW6DQAyEr4L8XKPF+QHy1HtUqbQxprGasHS9o
- FaIu2dDLtDHbzSa+RYwiSoGp2KBKLOahiEDvRXAVz98CWqXGcjR0RE1mMPuJvjdy8CCYwxJOKG
- NU9QwGfZ+uiU8UuWc7y9tvdtDnhqj9Pq73XycXxzlZ8pv6RXCxZsgh/td06mY69Jh5OpzWeFZv
- 6qlEP82ybna+pvPztH/fOYKHdKBG+KmbruW39XYW+m55AHO67o+ACFd/4UJAQAA
-X-Change-ID: 20260228-handle-kfence-protect-spurious-fault-62100afb9734
+Message-Id: <20260303-handle-kfence-protect-spurious-fault-v2-1-f80d8354d79d@iscas.ac.cn>
+References: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
+In-Reply-To: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
  Alexandre Ghiti <alex@ghiti.fr>, Alexander Potapenko <glider@google.com>, 
  Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
  Yunhui Cui <cuiyunhui@bytedance.com>
 Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
  kasan-dev@googlegroups.com, Palmer Dabbelt <palmer@rivosinc.com>, 
- stable@vger.kernel.org, Vivian Wang <wangruikang@iscas.ac.cn>, 
- Yanko Kaneti <yaneti@declera.com>
+ stable@vger.kernel.org, Vivian Wang <wangruikang@iscas.ac.cn>
 X-Mailer: b4 0.14.3
-X-CM-TRANSID:rQCowAAHHdT9caZpAmO+CQ--.19798S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF13tr4kAryUCr15XF4kXrb_yoWrJw4xpF
-	s3Jr93Gr4DJryxXw13Z3WjqFn5Jw1Iqr1rK3Z3Gw1Fyw13Zr4jyrn7Kws5XF98ur97Ar1j
-	yw1F9F4UCrn0kwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUqeHgUUUUU=
+X-CM-TRANSID:rQCowAAHHdT9caZpAmO+CQ--.19798S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1kKF18CF47GFW8WFW8Crg_yoW8Ar1fpF
+	ZIkwn5trWfCr1fX39Ivw429r43X34DWa48t3ZIv34rZwn8JrWUWr95Kay8Xr13JFWxXF47
+	ua1Skr98uFWUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmj14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
+	ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
+	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
+	vE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
+	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
+	v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
+	2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
+	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kfnx
+	nUUI43ZEXa7VUU66zUUUUUU==
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Rspamd-Queue-Id: 877691E9421
+X-Rspamd-Queue-Id: 8C4331E9403
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.880];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.902];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -100,98 +97,66 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:mid];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222789-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222786-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-kfence_unprotect() on RISC-V doesn't flush TLBs, because we can't send
-IPIs in some contexts where kfence objects are allocated. This leads to
-spurious faults and kfence false positives.
+In preparation of a future patch using the same mechanism for
+non-vmalloc addresses, extract the mark_new_valid_map() helper from
+flush_cache_vmap().
 
-Avoid these spurious faults using the same "new_vmalloc" mechanism,
-which I have renamed new_valid_map_cpus to avoid confusion, since the
-kfence pool comes from the linear mapping, not vmalloc.
+No functional change intended.
 
-Commit b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
-only seemed to consider false negatives, which are indeed tolerable.
-False positives on the other hand are not okay since they waste
-developer time (or just my time somehow?) and spam kmsg making
-diagnosing other problems difficult.
-
-Patch 2 is the implementation to poke (what was called) new_vmalloc upon
-kfence_unprotect(). Patch 1 is some refactoring that patch 2 depends on.
-Patch 3 through 5 are some additional refactoring and minor fixes.
-
-How this was found
-------------------
-
-This came up after a user reported some nonsensical kfence
-use-after-free reports relating to k1_emac on SpacemiT K1, like this:
-
-    [   64.160199] ==================================================================
-    [   64.164773] BUG: KFENCE: use-after-free read in sk_skb_reason_drop+0x22/0x1e8
-    [   64.164773]
-    [   64.173365] Use-after-free read at 0xffffffd77fecc0cc (in kfence-#101):
-    [   64.179962]  sk_skb_reason_drop+0x22/0x1e8
-    [   64.179972]  dev_kfree_skb_any_reason+0x32/0x3c
-
-    [...]
-
-    [   64.181440] kfence-#101: 0xffffffd77fecc000-0xffffffd77fecc0cf, size=208, cache=skbuff_head_cache
-    [   64.181440]
-    [   64.181450] allocated by task 142 on cpu 1 at 63.665866s (0.515583s ago):
-    [   64.181476]  __alloc_skb+0x66/0x244
-    [   64.181484]  alloc_skb_with_frags+0x3a/0x1ac
-
-    [...]
-
-    [   64.182917] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.0.0-rc1-dirty #34 PREEMPTLAZY
-    [   64.182926] Hardware name: Banana Pi BPI-F3 (DT)
-    [   64.183111] ==================================================================
-
-In particular, these supposed use-after-free accesses:
-
-- Were never reported by KASAN despite being rather easy to reproduce
-- Never contain a "freed by task" section
-- Never happen on the same CPU as the "allocated by task" info
-- And, most importantly, were not found to have been caused by the
-  object being freed by anyone at that point
-
-An interesting corollary of this observation is that the SpacemiT X60
-CPU *does* cache invalid PTEs, and for a significant amount of time, or
-at least long enough to be observable in practice. Or maybe only in an
-wfi, given how most of these reports I've seen had the faulting CPU in
-an IRQ?
-
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
-Changes in v2:
-- Reordered patches 1 through 3 to minimize what needs to be backported
-- (New patch 4) Change the bitmap to use DECLARE_BITMAP (Alexander)
-- (New patch 5) Additional fix
-- Link to v1: https://lore.kernel.org/r/20260302-handle-kfence-protect-spurious-fault-v1-0-25c82c879d9c@iscas.ac.cn
+ arch/riscv/include/asm/cacheflush.h | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
----
-Vivian Wang (5):
-      riscv: mm: Extract helper mark_new_valid_map()
-      riscv: kfence: Call mark_new_valid_map() for kfence_unprotect()
-      riscv: mm: Rename new_vmalloc into new_valid_map_cpus
-      riscv: mm: Use the bitmap API for new_valid_map_cpus
-      riscv: mm: Unconditionally sfence.vma for spurious fault
+diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+index 0092513c3376..b1a2ac665792 100644
+--- a/arch/riscv/include/asm/cacheflush.h
++++ b/arch/riscv/include/asm/cacheflush.h
+@@ -43,20 +43,23 @@ do {							\
+ #ifdef CONFIG_64BIT
+ extern u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
+ extern char _end[];
++static inline void mark_new_valid_map(void)
++{
++	int i;
++
++	/*
++	 * We don't care if concurrently a cpu resets this value since
++	 * the only place this can happen is in handle_exception() where
++	 * an sfence.vma is emitted.
++	 */
++	for (i = 0; i < ARRAY_SIZE(new_vmalloc); ++i)
++		new_vmalloc[i] = -1ULL;
++}
+ #define flush_cache_vmap flush_cache_vmap
+ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+ {
+-	if (is_vmalloc_or_module_addr((void *)start)) {
+-		int i;
+-
+-		/*
+-		 * We don't care if concurrently a cpu resets this value since
+-		 * the only place this can happen is in handle_exception() where
+-		 * an sfence.vma is emitted.
+-		 */
+-		for (i = 0; i < ARRAY_SIZE(new_vmalloc); ++i)
+-			new_vmalloc[i] = -1ULL;
+-	}
++	if (is_vmalloc_or_module_addr((void *)start))
++		mark_new_valid_map();
+ }
+ #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
+ #endif
 
- arch/riscv/include/asm/cacheflush.h | 25 +++++++++---------
- arch/riscv/include/asm/kfence.h     |  7 +++--
- arch/riscv/kernel/entry.S           | 51 ++++++++++++++++++++-----------------
- arch/riscv/mm/init.c                |  2 +-
- 4 files changed, 47 insertions(+), 38 deletions(-)
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260228-handle-kfence-protect-spurious-fault-62100afb9734
-
-Best regards,
 -- 
-Vivian "dramforever" Wang
+2.53.0
 
 
