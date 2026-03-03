@@ -1,273 +1,362 @@
-Return-Path: <stable+bounces-222830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDW+LJehpmlqRwAAu9opvQ
-	(envelope-from <stable+bounces-222830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:53:43 +0100
+	id 2KR/CLuhpmlqRwAAu9opvQ
+	(envelope-from <stable+bounces-222831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:54:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182301EB248
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:53:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFE11EB350
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 09:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C49E631055BA
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:48:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71395303D66F
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 08:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C06388E6F;
-	Tue,  3 Mar 2026 08:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C823D45948;
+	Tue,  3 Mar 2026 08:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQFhgWr1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/Jj3iMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B0F277017;
-	Tue,  3 Mar 2026 08:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F67388E71
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 08:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772527707; cv=none; b=TZ0gwTk5A0ifYTE1Hh5K3VbMT+Z/DOg7cPHUO1udvB6TzMr7rKXkYj54gHaNLEweCRPczIcUk1J+Qlflz7dQIFkM80KVuGGmArwm9FhwCU1154O6KGH/uZFJyXv66kTe8G24fibYK1heOm9+uPHqnTh8v+zShUFz6zJ9RgDFYv8=
+	t=1772528056; cv=none; b=S9uycw+VSQ9Bqe43Y98ilZs7ohBA8P8k3HNwxhJ5R0OgHZGTQkC9NHadSlgugiDi/0EfYl8GCSCNoR8jDC2EFSmjaNxvnumA6czY54dg+Gnc5zzinjHoi8qYahqrpDjyNVssWzWDTIx1J8qLEuhFapD342ddqUFpQst/Mw8ADK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772527707; c=relaxed/simple;
-	bh=epD00FefbJXRoRgkmbGok8xKZSTpyougdaUkz5Nbp/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S5HRx4d2rodn00/13equAThKbLFjWd6EqFN8cG+Xj0+P2VZvGu1aKRNXM2zNC/1oaGmOkKdnOOKmNy8A8tZccgI0hiwyutZQjlRYHdLjMA5Y5p5DktCpyRqJNi46Z7rnWeUKZZ6GcSa4ZBL+/tMcQWLHEwylX3cj/kNs1E5kSGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQFhgWr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F9C116C6;
-	Tue,  3 Mar 2026 08:48:21 +0000 (UTC)
+	s=arc-20240116; t=1772528056; c=relaxed/simple;
+	bh=KkBvZN2UrRbMKIJxIwzV7ERk5ExBbZF42dvqj208KhA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P48ANKgqdrFx0Kbz0YuQ0XgSO9GXNwDGSkHLfo11wcr1ksCDHoZHUDuGItwqXCV+vmqK1qU3XJzWW18Zv3Sy3HXzORGwK6PHR4IeVYxFKfDSEV+dHpwYBe0EJoqtMcLvKrL5eEkJ1/sTVfFQm5043vQacOUJAZSo2QSr2eAHCjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/Jj3iMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6F6C2BCB7
+	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 08:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772527706;
-	bh=epD00FefbJXRoRgkmbGok8xKZSTpyougdaUkz5Nbp/Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sQFhgWr1bBwgDvH5hRq8G47VTi6WQCJ47jZwoimCj2jKA7Enu2hks2eyJoG2hcuu9
-	 +T9aQKru/QcnhjqptMENpxixzOMs7BYgp1Ca4+8tHTygnwlYHehpvkmwb2pQrx7Id0
-	 1rpjAeAG2ZA5qwxzkzlpxPNxwKhlXEux0+4Y056pdU6ojid6y/I7WySaGK1iYBObpw
-	 9rzO6kLeeuQSv3dClKh6EI6i+efYyyiX2Pt3cOhHVAOOI0AfY3Qh1kpiBJloV1+FLF
-	 9g+dbil+xnT1DQ4OIKE3h5qWQSP4bHu8NbGxtESdCq0SCAJUCTIyEMpNnRyR992wNP
-	 foYgUBA1GAOYg==
-Message-ID: <56a23a23-cbed-4ace-acef-3ada41bc182d@kernel.org>
-Date: Tue, 3 Mar 2026 09:48:19 +0100
+	s=k20201202; t=1772528056;
+	bh=KkBvZN2UrRbMKIJxIwzV7ERk5ExBbZF42dvqj208KhA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=V/Jj3iMZ3dGQ/UjjyhddtlriHgSThZaZKboUfQrw9X0lzyq6ahOb8ktvj0ROvKX9b
+	 ag4wKyPM06mjPp+s7m+WMt9Im2HOEFR1KKm70+N1P/pUYmmJt1kNoT4R0AbCiR738O
+	 eVR9il9KI0tzZyIpvjr/OnjotXOPsjhLyeYxa3osNDPcCr56DA+ayAhyEC6fQV89fR
+	 Hy+Z24EOQ1FpeY3jGFGApACdQdqENMp5gKhECnd6JNoKoQgnzXbZxV6o68cRWbqcJ7
+	 /1ASADTkC+ZYd2LeWbJjar10Izvn1aOwYqqb0Fsr9thS/uwJ3eAKsLJkrycOZM0N3s
+	 TPFlZQ2/gDH6A==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-660a7aa6e44so351672a12.3
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 00:54:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUq/sNNRqKe1u0QH/nKHYKY43hVD3zeM1OT1X5fn4Trj9UerbGGjg/unKKrLFAwcb4VsW4hC94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXHmQ7nYHr6ovwk+YewNlxO5wg9FK0EQ7aLNOBB+3WlWv0ix+B
+	0j9BeveCVOSmxEdDAO8GFFZGBHZu2N0tW7QSlkxRCQHF/R9o3Cj83f+bFDIp+Xdjcg6FEe7ct8R
+	UNUXO7bm/PBwQmNG+muwxrmb/ooM4W/w=
+X-Received: by 2002:a05:6402:270a:b0:65b:ef58:4ce5 with SMTP id
+ 4fb4d7f45d1cf-65fde4cd49emr9719023a12.28.1772528054520; Tue, 03 Mar 2026
+ 00:54:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
- with folio_try_get()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260302203159.3208341-1-ziy@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 182301EB248
+References: <20260303083248.567185-1-xry111@xry111.site>
+In-Reply-To: <20260303083248.567185-1-xry111@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 3 Mar 2026 16:54:18 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4mk5f4RMspuwFtWpT775zwJMhiOy2W83jav5XZfg_L-A@mail.gmail.com>
+X-Gm-Features: AaiRm53bH_Q9hYJG6f6kdB46zhIF4WWpyF9stIs_oxydYBY29KY6n66KBgbwMwE
+Message-ID: <CAAhV-H4mk5f4RMspuwFtWpT775zwJMhiOy2W83jav5XZfg_L-A@mail.gmail.com>
+Subject: Re: [PATCH v3] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: WANG Xuerui <kernel@xen0n.name>, Jinyang He <hejinyang@loongson.cn>, 
+	WANG Rui <wangrui@loongson.cn>, Mingcong Bai <jeffbai@aosc.io>, Zixing Liu <liushuyu@aosc.io>, 
+	"H . Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org, 
+	Peter Zijlstra <peterz@infradead.org>, Menglong Dong <menglong8.dong@gmail.com>, 
+	Bibo Mao <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Hanlu Li <lihanlu@loongson.cn>, Nathan Chancellor <nathan@kernel.org>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Wentao Guan <guanwentao@uniontech.com>, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8BFE11EB350
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222830-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222831-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[xen0n.name,loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,nvidia.com:email,dfinity.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gnu.org:url,xry111.site:email]
 X-Rspamd-Action: no action
 
-On 3/2/26 21:31, Zi Yan wrote:
-> During a pagecache folio split, the values in the related xarray should not
-> be changed from the original folio at xarray split time until all
-> after-split folios are well formed and stored in the xarray. Current use
-> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
-> show up at wrong indices in the xarray. When these misplaced after-split
-> folios are unfrozen, before correct folios are stored via __xa_store(), and
-> grabbed by folio_try_get(), they are returned to userspace at wrong file
-> indices, causing data corruption. More detailed explanation is at the
-> bottom.
-> 
-> The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
-> It
-> 1. creates a memfd,
-> 2. forks,
-> 3. in the child process, maps the file with large folios (via shmem code
->    path) and reads the mapped file continuously with 16 threads,
-> 4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
->    large folio.
-> 
-> Data corruption can be observed without the fix. Basically, data from a
-> wrong page->index is returned.
-> 
-> Fix it by using the original folio in xas_try_split() calls, so that
-> folio_try_get() can get the right after-split folios after the original
-> folio is unfrozen.
-> 
-> Uniform split, split_huge_page*(), is not affected, since it uses
-> xas_split_alloc() and xas_split() only once and stores the original folio
-> in the xarray. Change xas_split() used in uniform split branch to use
-> the original folio to avoid confusion.
-> 
-> Fixes below points to the commit introduces the code, but folio_split() is
-> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-> truncate operation").
-> 
-> More details:
-> 
-> For example, a folio f is split non-uniformly into f, f2, f3, f4 like
-> below:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f4 |
-> +----------------+---------+----+----+
-> but the xarray would look like below after __split_unmapped_folio() is
-> done:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f3 |
-> +----------------+---------+----+----+
-> 
-> After __split_unmapped_folio(), the code changes the xarray and unfreezes
-> after-split folios:
-> 
-> 1. unfreezes f2, __xa_store(f2)
-> 2. unfreezes f3, __xa_store(f3)
-> 3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
-> 4. unfreezes f.
-> 
-> Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
-> xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
-> f3 is wrongly returned to user.
-> 
-> After the fix, the xarray looks like below after __split_unmapped_folio():
-> +----------------+---------+----+----+
-> |       f        |    f    | f  | f  |
-> +----------------+---------+----+----+
-> so that the race window no longer exists.
-> 
-> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reported-by: Bas van Dijk <bas@dfinity.org>
-> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
+Hi, Ruoyao,
+
+On Tue, Mar 3, 2026 at 4:33=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrote=
+:
+>
+> With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
+> of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
+> empty.  This is not valid, as the current DWARF specification mandates
+> the first byte of the EH frame to be the version number 1.  It causes
+> some unwinders to complain, for example the ClickHouse query profiler
+> spams the log with messages:
+>
+>     clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
+>     version: 127 at 7ffffffb0000
+>
+> Here "127" is just the byte located at the p_vaddr (0, i.e. the
+> beginning of the vDSO) of the empty GNU_EH_FRAME segment.
+> Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
+> the start of vDSO in the process VM image.
+>
+> In LoongArch the -fno-asynchronous-unwind-tables option seems just a
+> MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
+> "genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
+> use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
+> limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
+> we can simply flip it over to -fasynchronous-unwind-tables and pass
+> --eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
+> stack for statistics even if the sample point is taken when the PC is in
+> the vDSO.
+>
+> However simply adjusting the options above would exploit an issue: when
+> the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
+> falled back to a machine-specific routine to match the code pattern of
+> rt_sigreturn and extract the registers saved in the sigframe if the code
+> pattern is matched.  As unwinding from signal handlers is vital for
+> libgcc to support pthread cancellation etc., the fall-back routine had
+> been silently keeping the LoongArch Linux systems functioning since
+> Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
+> format, fall-back routine will no longer be used and libgcc will fail
+> to unwind the sigframe, and unwinding from signal handlers will no
+> longer work, causing dozens of glibc test failures.  To make it possible
+> to unwind from signal handlers again, it's necessary to code the unwind
+> info in __vdso_rt_sigreturn via .cfi_* directives.
+>
+> The offsets in the .cfi_* directives depend on the layout of struct
+> sigframe, notably the offset of sigcontect in the sigframe.  To use the
+> offset in the assembly file, factor out struct sigframe into a header to
+> allow asm-offsets.c to output the offset for assembly.
+>
+> To work around a long-term issue in the libgcc unwinder (the pc is
+> unconditionally substracted by 1: doing so is technically incorrect for
+> a signal frame), a nop instruction is included with the two real
+> instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
+> hack has been used on x86 for a long time.
+>
+> Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
 > ---
->  mm/huge_memory.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 56db54fa48181..f0bdac3f270b5 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  	const bool is_anon = folio_test_anon(folio);
->  	int old_order = folio_order(folio);
->  	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
-> +	struct folio *old_folio = folio;
->  	int split_order;
->  
->  	/*
-> @@ -3668,11 +3669,17 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  			 * irq is disabled to allocate enough memory, whereas
->  			 * non-uniform split can handle ENOMEM.
->  			 */
-> -			if (split_type == SPLIT_TYPE_UNIFORM)
-> -				xas_split(xas, folio, old_order);
-> -			else {
+>
+> Changes from [v2]:
+> - Wrap .cfi_* for signal trampoline in SYM_SIGFUNC_START.
+> - Remove comment lines in sigframe.h not so meaningful.
+>
+> Changes from [v1] to v2:
+> - Use DWARF column 0 instead of the libgcc-specific column 72.
+> - Style change to sigframe.h.
+>
+> [v1]: https://lore.kernel.org/20260225104607.3803060-1-xry111@xry111.site
+>
+>  arch/loongarch/include/asm/linkage.h  | 34 +++++++++++++++++++++++++++
+>  arch/loongarch/include/asm/sigframe.h |  9 +++++++
+>  arch/loongarch/kernel/asm-offsets.c   |  2 ++
+>  arch/loongarch/kernel/signal.c        |  6 +----
+>  arch/loongarch/vdso/Makefile          |  4 ++--
+>  arch/loongarch/vdso/sigreturn.S       | 10 +++-----
+>  6 files changed, 51 insertions(+), 14 deletions(-)
+>  create mode 100644 arch/loongarch/include/asm/sigframe.h
+>
+> diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/includ=
+e/asm/linkage.h
+> index e2eca1a25b4e..db465036385f 100644
+> --- a/arch/loongarch/include/asm/linkage.h
+> +++ b/arch/loongarch/include/asm/linkage.h
+> @@ -42,3 +42,37 @@
+>         SYM_END(name, SYM_T_NONE)
+>
+>  #endif
+> +
+> +/*
+> + * This is for the signal handler trampoline, which is used as the retur=
+n
+> + * address of the signal handlers in userspace instead of called normall=
+y.
+> + * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
+> + * nop between .cfi_startproc and the actual address of the trampoline, =
+so
+> + * we cannot simply use SYM_FUNC_START.
+> + *
+> + * This wrapper also contains all the .cfi_* directives for recovering
+> + * the content of the GPRs and the "return address" (where the rt_sigret=
+urn
+> + * syscall will jump to), assuming there is a struct rt_sigframe (where
+> + * a struct sigcontext containing those information we need to recover) =
+at
+> + * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
+> + * column 0 is for $zero, but it does not make too much sense to
+> + * save/restore the hardware zero register.  Repurpose this column here
+> + * for the return address (here it's not the content of $ra we cannot us=
+e
+> + * the default column 3).
+> + */
+> +#define SYM_SIGFUNC_START(name)                                \
+> +       .cfi_startproc;                                 \
+> +       .cfi_signal_frame;                              \
+> +       .cfi_def_cfa 3, RT_SIGFRAME_SC;                 \
+> +       .cfi_return_column 0;                           \
+> +       .cfi_offset 0, SC_PC;                           \
+> +       .irp    num, 1, 2, 3, 4, 5, 6, 7, 8,            \
+> +                    9, 10, 11, 12, 13, 14, 15, 16,     \
+> +                    17, 18, 19, 20, 21, 22, 23, 24,    \
+> +                    25, 26, 27, 28, 29, 30, 31;        \
+> +       .cfi_offset \num, SC_REGS + \num * SZREG;       \
+> +       .endr;                                          \
+> +       nop;                                            \
+> +       SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
+> +
+> +#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
+Why this block is out of #endif ?
 
-Just wondering whether we should no move the comment over here now, so
-it just covers both cases.
+> diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/inclu=
+de/asm/sigframe.h
+> new file mode 100644
+> index 000000000000..109298b8d7e0
+> --- /dev/null
+> +++ b/arch/loongarch/include/asm/sigframe.h
+> @@ -0,0 +1,9 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +
+> +#include <asm/siginfo.h>
+> +#include <asm/ucontext.h>
+> +
+> +struct rt_sigframe {
+> +       struct siginfo rs_info;
+> +       struct ucontext rs_uctx;
+> +};
+> diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/=
+asm-offsets.c
+> index 3017c7157600..2cc953f113ac 100644
+> --- a/arch/loongarch/kernel/asm-offsets.c
+> +++ b/arch/loongarch/kernel/asm-offsets.c
+> @@ -16,6 +16,7 @@
+>  #include <asm/ptrace.h>
+>  #include <asm/processor.h>
+>  #include <asm/ftrace.h>
+> +#include <asm/sigframe.h>
+>  #include <vdso/datapage.h>
+>
+>  static void __used output_ptreg_defines(void)
+> @@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
+>         COMMENT("Linux sigcontext offsets.");
+>         OFFSET(SC_REGS, sigcontext, sc_regs);
+>         OFFSET(SC_PC, sigcontext, sc_pc);
+> +       OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
+>         BLANK();
+>  }
+>
+> diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signa=
+l.c
+> index c9f7ca778364..e297d54ea638 100644
+> --- a/arch/loongarch/kernel/signal.c
+> +++ b/arch/loongarch/kernel/signal.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/lbt.h>
+>  #include <asm/ucontext.h>
+>  #include <asm/vdso.h>
+> +#include <asm/sigframe.h>
+>
+>  #ifdef DEBUG_SIG
+>  #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
+> @@ -51,11 +52,6 @@
+>  #define lock_lbt_owner()       ({ preempt_disable(); pagefault_disable()=
+; })
+>  #define unlock_lbt_owner()     ({ pagefault_enable(); preempt_enable(); =
+})
+>
+> -struct rt_sigframe {
+> -       struct siginfo rs_info;
+> -       struct ucontext rs_uctx;
+> -};
+> -
+>  struct _ctx_layout {
+>         struct sctx_info *addr;
+>         unsigned int size;
+> diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+> index 520f1513f07d..294c16b9517f 100644
+> --- a/arch/loongarch/vdso/Makefile
+> +++ b/arch/loongarch/vdso/Makefile
+> @@ -26,7 +26,7 @@ cflags-vdso :=3D $(ccflags-vdso) \
+>         $(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+>         -std=3Dgnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-com=
+mon -fno-builtin \
+>         -fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING =
+\
+> -       $(call cc-option, -fno-asynchronous-unwind-tables) \
+> +       $(call cc-option, -fasynchronous-unwind-tables) \
+>         $(call cc-option, -fno-stack-protector)
+>  aflags-vdso :=3D $(ccflags-vdso) \
+>         -D__ASSEMBLY__ -Wa,-gdwarf-2
+> @@ -41,7 +41,7 @@ endif
+>
+>  # VDSO linker flags.
+>  ldflags-y :=3D -Bsymbolic --no-undefined -soname=3Dlinux-vdso.so.1 \
+> -       $(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
+> +       $(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr =
+-T
+>
+>  #
+>  # Shared build commands.
+> diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigret=
+urn.S
+> index 9cb3c58fad03..e40bf4186f29 100644
+> --- a/arch/loongarch/vdso/sigreturn.S
+> +++ b/arch/loongarch/vdso/sigreturn.S
+> @@ -12,13 +12,9 @@
+>
+>  #include <asm/regdef.h>
+>  #include <asm/asm.h>
+> +#include <asm/asm-offsets.h>
+>
+> -       .section        .text
+Can we keep this line?
 
-> +			if (split_type == SPLIT_TYPE_UNIFORM) {
-> +				xas_split(xas, old_folio, old_order);
-> +			} else {
->  				xas_set_order(xas, folio->index, split_order);
-> -				xas_try_split(xas, folio, old_order);
-> +				/*
-> +				 * use the to-be-split folio, so that a parallel
-> +				 * folio_try_get() waits on it until xarray is
-> +				 * updated with after-split folios and
-> +				 * the original one is unfrozen.
-> +				 */
-> +				xas_try_split(xas, old_folio, old_order);
->  				if (xas_error(xas))
->  					return xas_error(xas);
->  			}
+Huacai
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+> -       .cfi_sections   .debug_frame
+> -
+> -SYM_FUNC_START(__vdso_rt_sigreturn)
+> -
+> +SYM_SIGFUNC_START(__vdso_rt_sigreturn)
+>         li.w    a7, __NR_rt_sigreturn
+>         syscall 0
+> -
+> -SYM_FUNC_END(__vdso_rt_sigreturn)
+> +SYM_SIGFUNC_END(__vdso_rt_sigreturn)
+> --
+> 2.53.0
+>
 
