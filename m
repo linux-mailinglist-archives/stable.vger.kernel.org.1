@@ -1,160 +1,114 @@
-Return-Path: <stable+bounces-222745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iADbHrgkpmlrLAAAu9opvQ
-	(envelope-from <stable+bounces-222745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:00:56 +0100
+	id gPGPOiclpmlrLAAAu9opvQ
+	(envelope-from <stable+bounces-222746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:02:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FAD1E6E4E
-	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:00:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830C21E6F1A
+	for <lists+stable@lfdr.de>; Tue, 03 Mar 2026 01:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9757030300FE
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:00:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB3D43058EF2
+	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 00:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B7435BDC9;
-	Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nttgjt/7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76E41632E7;
+	Tue,  3 Mar 2026 00:01:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5562F339863
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932C1990A7;
+	Tue,  3 Mar 2026 00:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772496051; cv=none; b=U9y/cfuLaPx6scFlaK41DJ/O0AVxWdu9Tv5Np9gsr0atd+jLnpeWridw/ezLY35PiIyAdqWD/vktMiXuToS9kjv6cYmsTmqOk/2giRUhXtOV7edwMZ8U8rIBfMuuoAuVLWAB2/ZWwB6fT+FAf1UGdd3ld8cAx6jDuvwcPXcFd8w=
+	t=1772496076; cv=none; b=TWLS+X3hLQk/gAhpvxxX+uqN7IzPpg7c2LvkbTox67CJc4twYFQ8onU+rnL14QzA+h/SI2BZ3fEilD7429hVYv+4umkBNCm2uQFf1lp1AXxtv6z7JoS4VJu0yLu6GYFRoq7tQTM3j/Q6gklo87ku4ikoGcRr8+mxl3AVnCqxLC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772496051; c=relaxed/simple;
-	bh=8gutTDMbmAenwHt802DdfYXUh9ZUon2s2k6aFeOwWUA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OGrMcYinbrHQjCPWJpLsHrcH8kEsOlPz07ZjZ2ckpvA5QXBbFwy9GCvr4XI2pvtc8kwbz+MuZPDSFTV/vvINaqLpdViq9tUAa32nldVkiwmiLOI+rDl0VwlGc6iRVczlGPJBqnI9amsoVS5jA6XCmJHaueNNeiPqt8AGfBnqftk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nttgjt/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211FAC2BC86
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 00:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772496051;
-	bh=8gutTDMbmAenwHt802DdfYXUh9ZUon2s2k6aFeOwWUA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nttgjt/74EdUVYMBmuvX8HNXKDMKW5Urp4Nqgvcpx/4vokgbl5jvtGTGUIOL4/p0a
-	 zrR4LAiG8d+0GF1kwpMvDBdKnkDJEdgLUIje/8jgGOIezj7a2m5LOB5VUf+18VsUsw
-	 xIHV+kqIctiJanzdsYOISqRPWLnMCvCzlt3ttwWecIqO84PQl55MYUhTEwKY/lbWHF
-	 KGWnwAZP4yBr84GvKzEYT1EV5yNuOXGFiSpm+y+XzD4PXMWMjrKjkyX9z5YicXn9um
-	 ijIRHFfhridCpT6pSybdcUBZkrsrgTYm7cc+d12qWcK1RnxZyQ1b8/yBUFQROFNH5g
-	 meKdxWrAdObWw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b93695f7cdcso586896766b.3
-        for <stable@vger.kernel.org>; Mon, 02 Mar 2026 16:00:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUugtPSOMFcafExkOEFFQqfS9Z8Mfv9rOlFrZTJg8+0lI7CpRHfGMgdbazetf/KB4YlyMJ9zcA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVHjAm70EH+cmGL4Sjiuli+Hh1Wbae1OAlVxeIQRB7g7xXB9U+
-	CvgbxOexGgdgtFL1J4hUCG9iri85LvcDhcFCnTB4Hdki9CpAdE8wVo58+JhpQq8hLa/dJtBBxG7
-	zTBKB8qiFbtw1ym81Qj+8QcwAVopJynQ=
-X-Received: by 2002:a17:907:60d6:b0:b8f:e46f:8079 with SMTP id
- a640c23a62f3a-b93763ab9bcmr911776166b.22.1772496049922; Mon, 02 Mar 2026
- 16:00:49 -0800 (PST)
+	s=arc-20240116; t=1772496076; c=relaxed/simple;
+	bh=E0gUIopwmjIcVlVXfwbzb5eafZc6arvmdsswbAk/5m0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Hkp3M16ObVN732PxCXol9izaqUr0AidDWPEyWyGk7Yr9KHvcYOtjKTiG0KfN9CD/538loyD+OH+GzlugVyCe2VdJOLp8HPmzfCMfoiJ4kuJSBtKgWd/4SxnCDV6A/hRc08lat+0EW620XCk92ec0mDhnYAmwZ6mm3EKrrKDsLv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487BDC2BC86;
+	Tue,  3 Mar 2026 00:01:16 +0000 (UTC)
+Received: by venus (Postfix, from userid 1000)
+	id 5C60A180D08; Tue, 03 Mar 2026 01:01:14 +0100 (CET)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Sebastian Reichel <sre@kernel.org>, Hans de Goede <hansg@kernel.org>, 
+ Chen-Yu Tsai <wens@kernel.org>, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH 1/4] power: supply: axp288_charger: Do not cancel work
+ before initializing it
+Message-Id: <177249607436.615407.12534696673275075213.b4-ty@collabora.com>
+Date: Tue, 03 Mar 2026 01:01:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260224223405.3270433-1-yosry@kernel.org> <20260224223405.3270433-21-yosry@kernel.org>
-In-Reply-To: <20260224223405.3270433-21-yosry@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 2 Mar 2026 16:00:38 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zP1udHX3kNQX+VP2kHXtBhxUrJRrD+mOYG-OsBHWj-xyQ@mail.gmail.com>
-X-Gm-Features: AaiRm52gxKMf8IrxCa4fvtCp9j1xhO24gObIeU54LAS2psAUkSqNABFhU0O_LwM
-Message-ID: <CAO9r8zP1udHX3kNQX+VP2kHXtBhxUrJRrD+mOYG-OsBHWj-xyQ@mail.gmail.com>
-Subject: Re: [PATCH v6 20/31] KVM: nSVM: Add missing consistency check for
- hCR0.PG and NP_ENABLE
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D8FAD1E6E4E
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 830C21E6F1A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[collabora.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222745-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222746-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sebastian.reichel@collabora.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.929];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:mid,collabora.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 752dd9eb98a84..6fffb6ae6b88b 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -342,7 +342,8 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
->  }
->
->  static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
-> -                                      struct vmcb_ctrl_area_cached *control)
-> +                                      struct vmcb_ctrl_area_cached *control,
-> +                                      unsigned long l1_cr0)
->  {
->         if (CC(!vmcb12_is_intercept(control, INTERCEPT_VMRUN)))
->                 return false;
-> @@ -353,6 +354,8 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
->         if (control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) {
->                 if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
->                         return false;
-> +               if (CC(!(l1_cr0 & X86_CR0_PG)))
-> +                       return false;
 
-This is already checked by nested_svm_check_permissions() -> is_paging().
+On Fri, 20 Feb 2026 18:49:39 +0100, Krzysztof Kozlowski wrote:
+> Driver registered devm handler to cancel_work_sync() before even the
+> work was initialized, thus leading to possible warning from
+> kernel/workqueue.c on (!work->func) check, if the error path was hit
+> before the initialization happened.
+> 
+> Use devm_work_autocancel() on each work item independently, which
+> handles the initialization and handler to cancel work.
+> 
+> [...]
 
->         }
->
->         if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
-> @@ -952,7 +955,8 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
->         enter_guest_mode(vcpu);
->
->         if (!nested_vmcb_check_save(vcpu, &svm->nested.save) ||
-> -           !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
-> +           !nested_vmcb_check_controls(vcpu, &svm->nested.ctl,
-> +                                       svm->vmcb01.ptr->save.cr0))
->                 return -EINVAL;
->
->         if (nested_npt_enabled(svm))
-> @@ -1888,7 +1892,8 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
->
->         ret = -EINVAL;
->         __nested_copy_vmcb_control_to_cache(vcpu, &ctl_cached, ctl);
-> -       if (!nested_vmcb_check_controls(vcpu, &ctl_cached))
-> +       /* 'save' contains L1 state saved from before VMRUN */
-> +       if (!nested_vmcb_check_controls(vcpu, &ctl_cached, save->cr0))
+Applied, thanks!
 
-..and this is checked slightly below.
+[1/4] power: supply: axp288_charger: Do not cancel work before initializing it
+      commit: 3e2143c88b5c1e50439239693ba9994cc82d86c3
+[2/4] power: supply: axp288_charger: Simplify returns of dev_err_probe()
+      commit: c53266766ba5fb52f32f1766a71e0f96c5e51892
+[3/4] power: supply: bq24190: Avoid rescheduling after cancelling work
+      commit: ba4300a96fb2be99dd29939fd2ca84d67260deaa
+[4/4] power: supply: twl4030_madc: Drop unused header includes
+      commit: f14f741f9059a8d5492969e480453640cb5dbc85
 
-I will drop this patch.
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
->                 goto out_free;
->
->         /*
-> --
-> 2.53.0.414.gf7e9f6c205-goog
->
->
 
