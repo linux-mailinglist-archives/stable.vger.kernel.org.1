@@ -1,155 +1,149 @@
-Return-Path: <stable+bounces-223139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OfcH4OkqGnywAAAu9opvQ
-	(envelope-from <stable+bounces-223139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 22:30:43 +0100
+	id mLsiFkGvqGmfwQAAu9opvQ
+	(envelope-from <stable+bounces-223141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 23:16:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5AA207FF7
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 22:30:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0C320866A
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 23:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A62C3044A63
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 21:30:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38B02311FFAC
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 22:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AF5388E4F;
-	Wed,  4 Mar 2026 21:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3B33D7D64;
+	Wed,  4 Mar 2026 22:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="TF2yb9Pd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecZCVQQ5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC6838735D
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 21:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA333D6CB6;
+	Wed,  4 Mar 2026 22:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772659811; cv=none; b=Q3FzkJ8NpfUNe8m0U+Ltk2j+KWLs6GC3I3PatpFxrsj6KMSRGT2uzn+zqfDyaQt+CyoE5IleXYzp/4zo5pw5UY2CaGRz2feF9jRQdhcKWgK473afdkd6Hx6qkQE3KRFz6yBF+0SjtjsI9VH/yEG+787kGSqjCZEndSr8jpUe0iY=
+	t=1772661780; cv=none; b=b7Vfu5TsJZx5A21WJ9faVpBXbA815GsYcNjhQdopXMEdEyC+Ke7KQvVEL3fifEkp/7HQihWWLQdslWmCTX69z959P0mZpuWaXiMJoaHKpVF2xwhH+JtZTgzYkjKfFMgmzY12LPy4pW4LgQ/2vpD7l8aNJwl8MyfSn2IoK2CySSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772659811; c=relaxed/simple;
-	bh=JLpBgbhEpXHUcy8m3RgiUcVw7GvaSTz+bmeVql0cDPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o7pw5j2CCqHLmnzfkDtd8BFG+l4UQFa89XJqbv/ic6ulPLOTDMFqfBXLWF9bSeoEcvchF33PA06GRndcptRy5b7eN4GeMGmn9gvXQElPKrjfTDkeVNyu9Mb6KikrDq73h7poL4GJBSeOWdp+C4FIW9K1rkJJuwVTrTa5gYNxfm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=TF2yb9Pd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 53BE56034E;
-	Wed,  4 Mar 2026 22:30:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1772659808;
-	bh=WPDgNJcwl7Ca0jYKyCMbdcTrP5sluCDrBPggfklFv4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TF2yb9PdM3WJzzzLKi7BWqFZcX3DAKNnYsyxz38/daxLk/17qy17dJSAWWF3Sh5vW
-	 7vPcct8pLxHTGPmke3K3sXEPyjk7Shx6bS7AB99XOQiZ3XlqvL0Jvz1MgJb0MDV/lH
-	 /sAYka0xYpvLYrQejZART1cCzmeTm/yddDBgO5EEcucPCzkod+gIg711tVUr2hDrz6
-	 4uju/QWbiiQsuWnjJ8iIZfZikeDa5MZBfrlSwb6CVWAfcU0/TVAfcsp0iQbPG8az2s
-	 1YNTebFN7ceQBi+MXzPEm+OtywoqaA+fH/TusDcgxUAXFZ95CoMrkn9UyTeKNRkLc3
-	 aOggQMEbPSJrg==
-Date: Wed, 4 Mar 2026 22:30:05 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Natarajan KV <natarajankv91@gmail.com>
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org,
-	kadlec@netfilter.org, fw@strlen.de
-Subject: Re: [PATCH v3 6.6.y 0/8] netfilter: nft_set_pipapo: move clone
- allocation to insert/removal path
-Message-ID: <aaikXUL4AyJuPcrs@chamomile>
-References: <69a84adc.050a0220.1cea47.3011@mx.google.com>
- <2026030421-grunt-raft-15f0@gregkh>
- <1772643278.pipapo-v3.0@gmail.com>
+	s=arc-20240116; t=1772661780; c=relaxed/simple;
+	bh=9ndavW1imuK8pKglSZjcoS6XER79HDMTjVejRGF0FhE=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=ij5xceAssp+PJ9fHQWYXAaQ7AAhPe1Y1ePEE2hLA/Lnv0tQodZWcppKQHdDRqCjxeqYUFnf7ZhaqzCCsXweqWi6p7M0p/oLkBLXdvghaPFybt1VqDOv41ASy01eAl/hocMqyK+DwaVzO69SGKJpLbVuay2im4fosM/Y2wkui5cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ecZCVQQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7181CC4CEF7;
+	Wed,  4 Mar 2026 22:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772661780;
+	bh=9ndavW1imuK8pKglSZjcoS6XER79HDMTjVejRGF0FhE=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=ecZCVQQ5dB9AzMXOw3pei4CuO7/cUPYIY49TdBJD1Ubiv5tiPD9GXacYJH/Dc746j
+	 nbX8i4/PgoxShYycVVg8dFiQx58UPGcPuWENE+amojWYC7WzEGep1we784ypz4ZtX4
+	 qntEtxsYalm4ZfVLFIwi54J73QX++c9Zo6UqHENzb1GCvmw0HFlpB1dXcfV6rZ0n5X
+	 xKUo2H6xaomvlgaIv75bKmdAnJzY3PoUeuBeec2hxU0s1C1rhHHbgtklYBOLtP2vHz
+	 t7yL8hC2kKd5u2GCt9rXKca9rJH+LocwizH4c4MaWxgB5QrJZMKWuc3SEQfKR87w3+
+	 qIy2i5DO6iYcA==
+Received: from rostedt by gandalf with local (Exim 4.99.1)
+	(envelope-from <rostedt@kernel.org>)
+	id 1vxuJd-00000003CQm-29W1;
+	Wed, 04 Mar 2026 17:03:37 -0500
+Message-ID: <20260304220337.372201163@kernel.org>
+User-Agent: quilt/0.69
+Date: Wed, 04 Mar 2026 17:03:20 -0500
+From: Steven Rostedt <rostedt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Shengming Hu <hu.shengming@zte.com.cn>
+Subject: [for-linus][PATCH 1/6] fgraph: Fix thresh_return clear per-task notrace
+References: <20260304220319.218314827@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1772643278.pipapo-v3.0@gmail.com>
-X-Rspamd-Queue-Id: CC5AA207FF7
+Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: AF0C320866A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[netfilter.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[netfilter.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-223139-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223141-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,zte.com.cn:email,goodmis.org:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-Hi,
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-Thanks for your series.
+When tracing_thresh is enabled, function graph tracing uses
+trace_graph_thresh_return() as the return handler. Unlike
+trace_graph_return(), it did not clear the per-task TRACE_GRAPH_NOTRACE
+flag set by the entry handler for set_graph_notrace addresses. This could
+leave the task permanently in "notrace" state and effectively disable
+function graph tracing for that task.
 
-Please, hold on on this series until someone authoritative on
-Netfilter can review this.
+Mirror trace_graph_return()'s per-task notrace handling by clearing
+TRACE_GRAPH_NOTRACE and returning early when set.
 
-On Wed, Mar 04, 2026 at 08:54:38PM +0400, Natarajan KV wrote:
-> This is a backport of the following mainline series to 6.6.122:
-> 
->   a590f4760922 ("netfilter: nft_set_pipapo: move prove_locking helper around")
->   80efd2997fb9 ("netfilter: nft_set_pipapo: make pipapo_clone helper return NULL")
->   8b8a2417558c ("netfilter: nft_set_pipapo: prepare destroy function for on-demand clone")
->   6c108d9bee44 ("netfilter: nft_set_pipapo: prepare walk function for on-demand clone")
->   c5444786d0ea ("netfilter: nft_set_pipapo: merge deactivate helper into caller")
->   a238106703ab ("netfilter: nft_set_pipapo: prepare pipapo_get helper for on-demand clone")
->   3f1d886cc7c3 ("netfilter: nft_set_pipapo: move cloning of match info to insert/removal path")
->   532aec7e878b ("netfilter: nft_set_pipapo: remove dirty flag")
-> 
-> The pipapo set backend currently calls pipapo_clone() from the commit
-> and abort callbacks. These callbacks must not fail, but pipapo_clone()
-> can fail with ENOMEM. When this happens, the working copy ends up in a
-> corrupt state: freed elements remain accessible, and the dirty flag stays
-> set, causing the next commit to promote a stale clone.
-> 
-> This series moves pipapo_clone() to the insert and removal paths via a
-> new pipapo_maybe_clone() helper that creates the working copy on demand
-> and can propagate -ENOMEM to the caller.
-> 
-> Patches 1-4 cherry-pick cleanly from mainline.
-> Patches 5-8 are adapted for 6.6.122's different API:
->  - nft_pipapo_flush() still uses the pipapo_deactivate() helper
->    (mainline removed it via the elem_priv refactor)
->  - pipapo_get() has no GFP parameter (always GFP_ATOMIC)
->  - nft_pipapo_commit() is non-const in 6.6.x
-> 
-> Build-tested with both nft_set_pipapo.o and nft_set_pipapo_avx2.o.
-> 
-> Florian Westphal (8):
->   netfilter: nft_set_pipapo: move prove_locking helper around
->   netfilter: nft_set_pipapo: make pipapo_clone helper return NULL
->   netfilter: nft_set_pipapo: prepare destroy function for on-demand clone
->   netfilter: nft_set_pipapo: prepare walk function for on-demand clone
->   netfilter: nft_set_pipapo: merge deactivate helper into caller
->   netfilter: nft_set_pipapo: prepare pipapo_get helper for on-demand clone
->   netfilter: nft_set_pipapo: move cloning of match info to insert/removal path
->   netfilter: nft_set_pipapo: remove dirty flag
-> 
->  net/netfilter/nft_set_pipapo.c | 196 +++++++++++++++++---------------
->  net/netfilter/nft_set_pipapo.h |   6 --
->  2 files changed, 107 insertions(+), 95 deletions(-)
-> 
-> -- 
-> 2.39.5
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260221113007819YgrZsMGABff4Rc-O_fZxL@zte.com.cn
+Fixes: b84214890a9bc ("function_graph: Move graph notrace bit to shadow stack global var")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_functions_graph.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
+index 3d8239fee004..817d0f1696b6 100644
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -400,14 +400,15 @@ static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
+ 				      struct fgraph_ops *gops,
+ 				      struct ftrace_regs *fregs)
+ {
++	unsigned long *task_var = fgraph_get_task_var(gops);
+ 	struct fgraph_times *ftimes;
+ 	struct trace_array *tr;
+ 	int size;
+ 
+ 	ftrace_graph_addr_finish(gops, trace);
+ 
+-	if (trace_recursion_test(TRACE_GRAPH_NOTRACE_BIT)) {
+-		trace_recursion_clear(TRACE_GRAPH_NOTRACE_BIT);
++	if (*task_var & TRACE_GRAPH_NOTRACE) {
++		*task_var &= ~TRACE_GRAPH_NOTRACE;
+ 		return;
+ 	}
+ 
+-- 
+2.51.0
+
+
 
