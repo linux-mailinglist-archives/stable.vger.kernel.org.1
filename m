@@ -1,127 +1,177 @@
-Return-Path: <stable+bounces-222963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OO2IC5WMp2nliAAAu9opvQ
-	(envelope-from <stable+bounces-222963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:36:21 +0100
+	id +ArJEN6Mp2nliAAAu9opvQ
+	(envelope-from <stable+bounces-222964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:37:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7721F9854
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:36:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA051F98BD
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E879331F7F54
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 01:30:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05240304DE80
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 01:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E924930E0E5;
-	Wed,  4 Mar 2026 01:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BE12FAC0E;
+	Wed,  4 Mar 2026 01:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nalHdQ48"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="bXG9XhHK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NFfd1LNJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9623277C88;
-	Wed,  4 Mar 2026 01:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E22F5468;
+	Wed,  4 Mar 2026 01:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772587811; cv=none; b=H7FKpq2oiw3KjQTC8a7ewo4lV/N5/lFyeDBgdca18QYlVsnVwVrHYUc6uXRhin/C6b5cBITYnuL8oE7y9J/TXgh23s0L1qy7+VBQ2JXCATV04F2URAPYt8KNSb9gk1WuGShlvetuTmFxEGnwWYb435uDxizO/CKeeQZz6b34DAk=
+	t=1772588026; cv=none; b=roz4Ne0StUQ1I0neW0cmE1XMDcOJRvwip4NiRr36xQSTbsYkwbekT+Vj+Sg1t0lJiwxP3SJgtoDX2Mdj/WHVBZqWhrEGC39D7r4IEzwzsdUxfwaKyl0r8bkKYVNDdKzoRfMFj9CNHqkNsC5+MsLXySVGqbCjpk/ME0ZXYYRRB0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772587811; c=relaxed/simple;
-	bh=rKREH/ZWWHdXybPmLcgvicI3opDq0i74m3QvZscbWzw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eo0FJR2FT/yJLXhevfztq9T6s3fTTs/cyV55EIeoCRED5n/dItcsYnWfoqUL09aQgbhZuv6h3JlgR8bqYT6gmGzgnT2L853GZNfpypaNWql5yIn5aeKWs9RLWDNEg4LutGZhjniNU63RJsMsBN5a85RKTO8mHyhjulxlLKqszFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nalHdQ48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C51C116C6;
-	Wed,  4 Mar 2026 01:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772587811;
-	bh=rKREH/ZWWHdXybPmLcgvicI3opDq0i74m3QvZscbWzw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nalHdQ48MvqFOzKKb+3nUzVl3W/NGZOYyzoa3iguvpZ3bqWQ6d2zObDTLlOFhlJJr
-	 JbDp7tHH/vTn9P09XTT9XUUNZvk/4yQOU0CWzidJqlVdnQ9XoFJrMyM9avvWQvT6gv
-	 +HUXnjvT148aQ2/xFsYqFrlnzKkw7AJtV5D8f5F9Nkvmk+kGg9C/gteuvloYW1P3qK
-	 gSnxg9UJ6o70u0S16ExW3EjWf6wNCAW4BghJwrf68G1IhAoV9m6eZAgdQoMj4r+Mzo
-	 KbnFnOYksaVhjKauTDt+/7ZyW8edK0G+NbKtQLLs0gTkeSI8QO5bSbafqSXzlzBzlj
-	 0ZVUyTPJ6R3yg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE8D3808200;
-	Wed,  4 Mar 2026 01:30:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1772588026; c=relaxed/simple;
+	bh=94An5Pc4MmV6LID9PS2G4FVjaczcMi1NiosVkEuRqTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c7fcDpzNNbHcUQ09l9wmqv8fyrmeG7lFHzAhGs8QzBuR3PkTGdAwGmbq6nws5phbtXaKJ36kMYeQpik26Q3xnGpS+YD9/E13ozGB0WoQBRLOp27NComhvzxtTtmO4Q61Yq4+WPS8za3XfH/4XWBzeM7MOJikxShDvbXafTadu3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=bXG9XhHK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NFfd1LNJ; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ABDF81400176;
+	Tue,  3 Mar 2026 20:33:43 -0500 (EST)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 20:33:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772588023;
+	 x=1772674423; bh=2n4bEZxk5O9U3TjfegCzVAWPxxni/Gg9gpkJIeUKL34=; b=
+	bXG9XhHKlLfM6FmdYCbj7g6NKw5du9N3FF2MDmAecLiDR1/CM2itiP+VvXBOJlXf
+	pA5dvOt2BLlhscqA6S2lhxHDpISE815d4V8QkUltrxybejqc9RVHjH+wiNNUlQNK
+	36Pk34uOVwv0wsf96uxeXfq/cNP+bACxzDm1bqjQp39hvkRifZojgC5zWrdq7qFe
+	jc0NbPS8n7uBw2E/+TAR3hD4fPvzwtFpDOykhOf7k/c7FhqCemcrNmjrx8CIZSvz
+	VQvFR+/7Hj8dRnYQd9yjG5Drb4zjOjIp+DKYD5hr8sYeGr2021zwvuxXB2oV/f2R
+	IkQ5+E7Y3eRnTJaM6mIdvA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772588023; x=
+	1772674423; bh=2n4bEZxk5O9U3TjfegCzVAWPxxni/Gg9gpkJIeUKL34=; b=N
+	Ffd1LNJACbvOWVsTSHCtZYez4diSu5DowLZo5YI3mgtf42c8pxg6+Gx8LQZKLpRJ
+	FOlNMDUxa2JlxVlkwVPztrglJENnkzhCJnfeqWfRGTgt905GFjxIN2bfVrZQbeMY
+	5KpHEiaXCbeoohKp2/HzndzTc4R8ZbdGqoOgNseLecfrF25Hn2IZ1TNLsavBBv4f
+	cmBpB693Cr1yX2ehpdFCRFMw0CNqfsVFSIMiwE3sxHOjR7q+AECCImZnN0c8pysE
+	RLRgFOco0X+2HFh8OLZ5GHLGW6ApOPk2ZTs/lqSM4duPVSuPt8T88xfPhRMMvumh
+	6ItquDY4faCD+Xm8MC5kw==
+X-ME-Sender: <xms:9ounafacdNbbfgIPXSqhhm1agM6EB4hwuE34avlQAV-49HOibWx6eA>
+    <xme:9ounaeyMguV5Hb7AmLAefzl4gcx5Lu6Bsp7jBHeqaPSHQmCf715C8uX2ImdnqfvKD
+    U26duf0GcylW7ThG1t3Gg8XnNs7eZSMZG4jFxZ76DD2Kz8Kw7NbEjE>
+X-ME-Received: <xmr:9ounaTEWfBN5ANueUnhemCWczJjqM3f3MGS4avAOSs6pXwplXP26unKuQBk22_KEx3q-RjI16YVigmW2zgR_FJW8sOVX5g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedvudeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
+    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
+    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
+    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:9ounaRoqw1h-acUw1IBj_0tsKqHWlC3P2JyTsE_CssRtLI76Sq5r2w>
+    <xmx:9ounaZxNExrAVSiALzSfD5o9lNxQtfFLKj-rXuhNfi5UH_ylKkuU_g>
+    <xmx:9ounaTzbffDwxdZGp-R3iCEwfoxaY3FWVCph-TZzWidnOYongg8fAg>
+    <xmx:9ounaQTeA-IePSYNYRlZUaH2wfyReztITIiZV4LNP5r44wQF0WxeaA>
+    <xmx:94unadSSM1mr_h8XL60GmygasXcL2NcduR3iHZGqHcsA4VGZvkxfUDS1>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Mar 2026 20:33:40 -0500 (EST)
+Message-ID: <4a9cf3f9-2853-48bf-9614-71262c4e5678@pobox.com>
+Date: Tue, 3 Mar 2026 17:33:39 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/tcp-ao: Fix MAC comparison to be constant-time
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177258781230.1546050.13760298129957795669.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Mar 2026 01:30:12 +0000
-References: <20260302203600.13561-1-ebiggers@kernel.org>
-In-Reply-To: <20260302203600.13561-1-ebiggers@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 0x7f454c46@gmail.com
-X-Rspamd-Queue-Id: BA7721F9854
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/334] 5.10.252-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260302161007.2523181-1-sashal@kernel.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260302161007.2523181-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EDA051F98BD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,kernel.org,google.com,redhat.com,gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-222963-lists,stable=lfdr.de,netdevbpf];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-222964-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  2 Mar 2026 12:36:00 -0800 you wrote:
-> To prevent timing attacks, MACs need to be compared in constant
-> time.  Use the appropriate helper function for this.
+On 3/2/26 08:10, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 5.10.252 release.
+> There are 334 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
-> Cc: stable@vger.kernel.org
-> Cc: Dmitry Safonov <0x7f454c46@gmail.com>
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> Responses should be made by Wed Mar  4 04:10:05 PM UTC 2026.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.251
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-Here is the summary with links:
-  - [net] net/tcp-ao: Fix MAC comparison to be constant-time
-    https://git.kernel.org/netdev/net/c/67edfec516d3
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well,
+no regressions observed.
 
-You are awesome, thank you!
+Tested-by: Barry K. Nathan <barryn@pobox.com>
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+-Barry K. Nathan  <barryn@pobox.com>
 
