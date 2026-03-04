@@ -1,177 +1,175 @@
-Return-Path: <stable+bounces-222964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ArJEN6Mp2nliAAAu9opvQ
-	(envelope-from <stable+bounces-222964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:37:34 +0100
+	id uFGTKxmOp2nliAAAu9opvQ
+	(envelope-from <stable+bounces-222965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:42:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA051F98BD
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:37:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280931F994C
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05240304DE80
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 01:33:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 614DD3069E75
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 01:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BE12FAC0E;
-	Wed,  4 Mar 2026 01:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7717930E82E;
+	Wed,  4 Mar 2026 01:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="bXG9XhHK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NFfd1LNJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jWo3HOOp"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6E22F5468;
-	Wed,  4 Mar 2026 01:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F1030BB91;
+	Wed,  4 Mar 2026 01:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772588026; cv=none; b=roz4Ne0StUQ1I0neW0cmE1XMDcOJRvwip4NiRr36xQSTbsYkwbekT+Vj+Sg1t0lJiwxP3SJgtoDX2Mdj/WHVBZqWhrEGC39D7r4IEzwzsdUxfwaKyl0r8bkKYVNDdKzoRfMFj9CNHqkNsC5+MsLXySVGqbCjpk/ME0ZXYYRRB0I=
+	t=1772588561; cv=none; b=HuSdZL8qz1kst3vzqR+/ciYwxBw5iBb9DT8Rj0wBOiB3rco0JfPTeOQn0fCH5NmQDsP3PFlqqLQqUB9Xd7coz0fTsDUvEY2cxmm32fvS1D7B3gamT+iVJSyjPWSvKnQVqgXgB13Q2wenGb2lL73GvsO2kYX/Qy3d15HQozWTo4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772588026; c=relaxed/simple;
-	bh=94An5Pc4MmV6LID9PS2G4FVjaczcMi1NiosVkEuRqTQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c7fcDpzNNbHcUQ09l9wmqv8fyrmeG7lFHzAhGs8QzBuR3PkTGdAwGmbq6nws5phbtXaKJ36kMYeQpik26Q3xnGpS+YD9/E13ozGB0WoQBRLOp27NComhvzxtTtmO4Q61Yq4+WPS8za3XfH/4XWBzeM7MOJikxShDvbXafTadu3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=bXG9XhHK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NFfd1LNJ; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ABDF81400176;
-	Tue,  3 Mar 2026 20:33:43 -0500 (EST)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 20:33:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772588023;
-	 x=1772674423; bh=2n4bEZxk5O9U3TjfegCzVAWPxxni/Gg9gpkJIeUKL34=; b=
-	bXG9XhHKlLfM6FmdYCbj7g6NKw5du9N3FF2MDmAecLiDR1/CM2itiP+VvXBOJlXf
-	pA5dvOt2BLlhscqA6S2lhxHDpISE815d4V8QkUltrxybejqc9RVHjH+wiNNUlQNK
-	36Pk34uOVwv0wsf96uxeXfq/cNP+bACxzDm1bqjQp39hvkRifZojgC5zWrdq7qFe
-	jc0NbPS8n7uBw2E/+TAR3hD4fPvzwtFpDOykhOf7k/c7FhqCemcrNmjrx8CIZSvz
-	VQvFR+/7Hj8dRnYQd9yjG5Drb4zjOjIp+DKYD5hr8sYeGr2021zwvuxXB2oV/f2R
-	IkQ5+E7Y3eRnTJaM6mIdvA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772588023; x=
-	1772674423; bh=2n4bEZxk5O9U3TjfegCzVAWPxxni/Gg9gpkJIeUKL34=; b=N
-	Ffd1LNJACbvOWVsTSHCtZYez4diSu5DowLZo5YI3mgtf42c8pxg6+Gx8LQZKLpRJ
-	FOlNMDUxa2JlxVlkwVPztrglJENnkzhCJnfeqWfRGTgt905GFjxIN2bfVrZQbeMY
-	5KpHEiaXCbeoohKp2/HzndzTc4R8ZbdGqoOgNseLecfrF25Hn2IZ1TNLsavBBv4f
-	cmBpB693Cr1yX2ehpdFCRFMw0CNqfsVFSIMiwE3sxHOjR7q+AECCImZnN0c8pysE
-	RLRgFOco0X+2HFh8OLZ5GHLGW6ApOPk2ZTs/lqSM4duPVSuPt8T88xfPhRMMvumh
-	6ItquDY4faCD+Xm8MC5kw==
-X-ME-Sender: <xms:9ounafacdNbbfgIPXSqhhm1agM6EB4hwuE34avlQAV-49HOibWx6eA>
-    <xme:9ounaeyMguV5Hb7AmLAefzl4gcx5Lu6Bsp7jBHeqaPSHQmCf715C8uX2ImdnqfvKD
-    U26duf0GcylW7ThG1t3Gg8XnNs7eZSMZG4jFxZ76DD2Kz8Kw7NbEjE>
-X-ME-Received: <xmr:9ounaTEWfBN5ANueUnhemCWczJjqM3f3MGS4avAOSs6pXwplXP26unKuQBk22_KEx3q-RjI16YVigmW2zgR_FJW8sOVX5g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedvudeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
-    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
-    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
-    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
-    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
-    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:9ounaRoqw1h-acUw1IBj_0tsKqHWlC3P2JyTsE_CssRtLI76Sq5r2w>
-    <xmx:9ounaZxNExrAVSiALzSfD5o9lNxQtfFLKj-rXuhNfi5UH_ylKkuU_g>
-    <xmx:9ounaTzbffDwxdZGp-R3iCEwfoxaY3FWVCph-TZzWidnOYongg8fAg>
-    <xmx:9ounaQTeA-IePSYNYRlZUaH2wfyReztITIiZV4LNP5r44wQF0WxeaA>
-    <xmx:94unadSSM1mr_h8XL60GmygasXcL2NcduR3iHZGqHcsA4VGZvkxfUDS1>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 20:33:40 -0500 (EST)
-Message-ID: <4a9cf3f9-2853-48bf-9614-71262c4e5678@pobox.com>
-Date: Tue, 3 Mar 2026 17:33:39 -0800
+	s=arc-20240116; t=1772588561; c=relaxed/simple;
+	bh=BSq8rkjqLX6pc064HPSrz6SRDRmOkPt8UjnspdSlOHo=;
+	h=Date:To:From:Subject:Message-Id; b=XfdLdt6072XULIuWrT4V0oXROH0SHtNrBDR8Yyn41SlifJ2rT6HNXZ4MyYBlJcuU9uLGDAfe4iKpQxS5aNYbq9MiccAdgXRGX1wlRyCZ6EVVYtUQTf7HQFS7BnkLYhS6o68GdKs/h6JfOy5OcSRbkDSQgFU9lCPDIoXq+69l1hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jWo3HOOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE038C116C6;
+	Wed,  4 Mar 2026 01:42:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772588560;
+	bh=BSq8rkjqLX6pc064HPSrz6SRDRmOkPt8UjnspdSlOHo=;
+	h=Date:To:From:Subject:From;
+	b=jWo3HOOptExkMsJP8WlIOdMDzNf1AApqqrFLt85mLdyaGvhXjDMjxxcWey8X18QTQ
+	 YD8Ahw0v2j3FDEMmTw9mIVIvtsg9SNaJSTbyQRsG4A7WRVt32Umo9q6+eEl36cKTFG
+	 tFKOsTcpVMPJcF632JFswkHgdEBZBgkgQ4V3uXAs=
+Date: Tue, 03 Mar 2026 17:42:40 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,npache@redhat.com,liam.howlett@oracle.com,lance.yang@linux.dev,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch removed from -mm tree
+Message-Id: <20260304014240.CE038C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/334] 5.10.252-rc2 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260302161007.2523181-1-sashal@kernel.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260302161007.2523181-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EDA051F98BD
+X-Rspamd-Queue-Id: 280931F994C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-222964-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222965-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On 3/2/26 08:10, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 5.10.252 release.
-> There are 334 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed Mar  4 04:10:05 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.251
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
 
-Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well,
-no regressions observed.
+The quilt patch titled
+     Subject: mm/huge_memory: fix memory corruption on huge zero page move
+has been removed from the -mm tree.  Its filename was
+     mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move.patch
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+This patch was dropped because an alternative patch was or shall be merged
 
--- 
--Barry K. Nathan  <barryn@pobox.com>
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/huge_memory: fix memory corruption on huge zero page move
+Date: Mon, 2 Mar 2026 17:06:19 +0000
+
+In commit eb1521dad8f3 ("userfaultfd: handle zeropage moves by
+UFFDIO_MOVE"), handling was added to enable the moving of huge zero pages
+in move_pages_huge_pmd().
+
+This achieves this by setting src_folio to NULL, and adding subsequent
+checks for src_folio being NULL to determine whether to perform the usual
+move operations or to simply establish the huge zero page in the
+destination.
+
+As part of this change, when installing the destination huge zero page it
+invoked mk_huge_pmd() on src_page, correctly.
+
+However, commit e3981db444a0 ("mm: add folio_mk_pmd()") updated the code
+in the huge zero page branch from mk_huge_pmd(src_page, ...) to
+folio_mk_pmd(src_folio, ...), where src_folio is guaranteed to be NULL at
+this point.
+
+This resulted in an invocation of folio_mk_pmd(NULL, ...) in effect, which
+causes an invocation of page_to_pfn(0) and results in the installation of
+a corrupted PMD entry and undefined behaviour.
+
+This patch fixes the issue by obtaining the zero folio via
+page_folio(src_page) and feeding this into folio_mk_pmd().  This retains
+the use of folio_mk_pmd() whilst avoiding the memory corruption.
+
+Additionally, this code path was not updated to reflect the changes
+introduced by commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of
+the huge zero folio special"), meaning a zero huge folio was installed but
+not marked special in this case.
+
+This patch additionally fixes that issue by invoking pmd_mkspecial().
+
+With thanks to Chris Down who exposed this bug by adding an explicit test
+for UFFDIO_MOVE in commit f07254dce67d ("selftests/mm: add UFFDIO_MOVE
+huge zeropage PMD regression test").
+
+Link: https://lkml.kernel.org/r/20260302170619.867056-1-lorenzo.stoakes@oracle.com
+Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--- a/mm/huge_memory.c~mm-huge_memory-fix-memory-corruption-on-huge-zero-page-move
++++ a/mm/huge_memory.c
+@@ -2796,8 +2796,12 @@ int move_pages_huge_pmd(struct mm_struct
+ 		/* Follow mremap() behavior and treat the entry dirty after the move */
+ 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+ 	} else {
++		struct folio *zero_folio = page_folio(src_page);
++
++		VM_WARN_ON_ONCE_FOLIO(!is_huge_zero_folio(zero_folio), zero_folio);
+ 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+-		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
++		_dst_pmd = folio_mk_pmd(zero_folio, dst_vma->vm_page_prot);
++		_dst_pmd = pmd_mkspecial(_dst_pmd);
+ 	}
+ 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
+ 
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+
 
