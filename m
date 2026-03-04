@@ -1,155 +1,165 @@
-Return-Path: <stable+bounces-223108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCrMBJRuqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:36 +0100
+	id 2NhTAKhvqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:45:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D86205497
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 537262055CA
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF82E301E3FF
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B591030F57F8
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3B436D4FB;
-	Wed,  4 Mar 2026 17:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76755241139;
+	Wed,  4 Mar 2026 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="m83VMf8U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoNCiHvj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7591237D13E
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DBB3793D2
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772646028; cv=none; b=OQ58FAUvMllTOqFZKW3k+ebf4IksE530HO2+SnODihyR7fmgQft5mACufmWCdwD0504qmkZ8ZkIIhZorylk/3nHBV4IXJMfeEnEP67DAau3DglZdk+a76GhnEoubwRUIuN39UK6oG/d2JiSGwUUWjUWw0akN4iZZRG16NftQxsM=
+	t=1772646099; cv=none; b=ZAnMWaASBfWVpLhbOrrR9tX+OHipLI9PYR5o36AoQ1MJSggTtzMMf1Hzy7K+QWmYsAJnCzDlFV/ApED7ElpneKdlKgy3aTqcw6+xsbeokzN75R7bZT0BOl2Sb3MOhZ/oUPJ+cfHmPvnxxl+N3Dw98HtmlruEE9uM0UDJgJTfmqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772646028; c=relaxed/simple;
-	bh=6u/b5Hl4P4F7KcDCqfOGbAd0OkLTF9XpNnpPJHP/ooo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MRDzNyVUG+LFEg1mtqzkuCkSp4HImA0DyKdHFJCouz69u1uY7WVpZ/yroxWnO+gWfW1dhzG9WPMRugcCdB7Y4tJwn9s7/VLJBQuJ25M2fPRXMYrejVaC+LxUEprv3FYK8zEpzMRIeZNJ1HN4JtpW4RSlWtgXK6RxualJ5yp9JPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=m83VMf8U; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cb420f7500so677298685a.2
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:40:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1772646025; x=1773250825; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
-        b=m83VMf8Ujf90rIzWBraxVZVWaQetcU/VHPEgswLk0hPwk6LmKgloeaRkV7Atmyj6vP
-         8861uvwbqACAEZjmIJO6MkZ0Kf/cACl8m2MUIydVPgtNhKnH4M3/neBt4h/dj6wI5chl
-         /yXFZHlyBbSPjdGAh5SuFgYVdmxfhIchVOJc8awifkVjCvZNPdOFolaOJ7eegYi5Y2nG
-         DcUYbCJwTk9wFkvvC73G9ak+mEYl3JL3bQDSk8gG1JcDZgstPBep4MeBeKRdunQ1fTI/
-         u6SwEcgE2WjprN393puHO2vE1b9l3r/PPN9vyWwbZPfAH1k+BoFahoQcne7p/dZQH0fg
-         9RAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772646025; x=1773250825;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
-        b=Tk/kkSAKCWMepdVQgAYTGmNTcBX/oB4126toSxxHfITdepyWbovWMJ0DxhwR6SV+m5
-         tZgbuOrXJ05igoVw4RVl9rIHRdDHesUgl4pd6k6Pex0ttRhX+yJNrkKIwRz9NdnBlTTx
-         rwZIcp2x01mEe7exxw5Kw/uQjBi9n41w9ujkE9vcFGCy0bmsCqpiEv4pGgM1gA01RMvr
-         oaZasrSz79O+HD93iGtkAXqTbRSh7Qo856qABgsXcF/7p1aYpAmIYOkKvhm4WGe0/R+k
-         lPkdCw62+ATEA/rOeGP+HT86eQdMq27/HO0uCsaFBPSESQgkaLLFcg0cBXRtkS+P7/js
-         obMw==
-X-Gm-Message-State: AOJu0Yw2dtrJpjWq+r1dyAzuV71Nk8N0hnp9EiOJw6kstp1QUm3Fk1Zm
-	Trn9NsKZKqHvy0Gj8wmrZ4Oya3AfoNnsIauP5og+9TTnD0gnZ36h4vp3Ft1W7Kq0FfA=
-X-Gm-Gg: ATEYQzx8Ch0/VbANyBLKaeuoj7VkSHLXPsvw8NspBoFKnlnO9jiEbf/HEOUvKNZj9xX
-	EET+3dRzjbnmG5QbuTG92xL0MfeXL1yc6b6nHtK+Doh7fd8K6jLTNhCpnyaoxwjz0ZrBaEYPzuo
-	2TvJ3Qmv0fn7wb0beweAyKTuvU5BFeutSg3J+f9KFfutdE2VDhmWMJhQ72krWEdCijg7nde7b3K
-	q6S7j8Ke6XIQgKjNFh2HvJRurKnvikoS6hx0dbtDNzPS7VbC1RXqX/8g9uJpTscw9IHJ0/bhEdP
-	m7nnpfvF62AlvpF9M28tqtx4DN6nMRssz8U2MFdph45J7eUzW7xYHfKL9BZYJsnoTWiQBdHNDrV
-	2G+tOjcFhk1X7W/tNqghS2bEchw0QaN5h0Jy4/TykuVVrOcp6Qm5yBHTy9ExkqHTLM4bJ59UmJV
-	aFu0OQHXVRq/jT4U601H848G0qfvBUMBwtmcBF23mKdREH6Izbutr2HB0+xK6xlwfr3UJFJw7lq
-	mb1HKruvA==
-X-Received: by 2002:a05:620a:19a1:b0:8cb:2830:175b with SMTP id af79cd13be357-8cd5afaa850mr354601985a.65.1772646025360;
-        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f948dsm1668520385a.30.2026.03.04.09.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
-Date: Wed, 4 Mar 2026 12:40:23 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: stable@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-	Li Ying <liying3@sungrowpower.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Lameter <cl@linux.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH 6.6.y] mm/mempolicy: fix wrong mmap_read_unlock() in
- migrate_to_node()
-Message-ID: <aahuh6N6zfll5EPB@gourry-fedora-PF4VCD3F>
-References: <20260303101245.22290-1-david@kernel.org>
+	s=arc-20240116; t=1772646099; c=relaxed/simple;
+	bh=HsdWH3IQCug86yG4M8vreAU8pD+0O2+b9JS4N0ycLVQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ic4wGTsyyDi5J1LFze5Q/b4Bmf+IWvWjwnt2aReIAcG6xLRKkaApeJh7qEARpEX8zw4GHed9q8vvX9ZhNkD4FJGplJ5i2ztGIKWwbaSBdy/inU3ICPoLY+SCpluXQjyvTOg9nEM5TscQ6XmTGHFF13abxrsoCJ3hANntxQq+1ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoNCiHvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF60C4AF0B
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772646099;
+	bh=HsdWH3IQCug86yG4M8vreAU8pD+0O2+b9JS4N0ycLVQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eoNCiHvjvdV5vWXRMOebPu9kvxRqSD7uu+3pMrNBK/clJiS9Qp8q/AMpLa9EXqIer
+	 YdKasubK73eVSRPDvJzdb7nR7Ox3tYPLHbVso6TbmmabPw3PdnTCirNFOEV2dI/XK3
+	 ml+ecCKYLYNWQOps+q7qGH0Au/orkLHufJEF2PZkoGO7KP4bLaidIbwKe7NkzSQ7oo
+	 EkT4D7jvOBVgtUp2+f4vJdmcoljYTJnpJuIaxmrGi2UwJb57O+7i2d5LgubR2myGnT
+	 rQDF2odHI50fGEzEwYHuaLBZulLC1kLuNpn7POxXCfiWli9FWwvIfN3QU81SwwL3oc
+	 NaA4++mjg4d7A==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b93698bb57aso556054266b.0
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:41:39 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVpXUoc6oUfyEmUIGrpa+b9PX7lRwTKuFMpJaGbH/eBM9pC978ma1Mv/OVVWAuUmqQBh0PUxh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWsLreIFuhesfS+ajC72y8hPvfYxwqdfdaii09J+phJonUuy/R
+	/mv3CNlihH+1ICbYMBXclp/dRZSQ2StzUzMkgUcZfb5o5Mz/rOuaPSbVcrgaxk44ASoT+UegwX3
+	6u0r/M/zbqmcPyf9M/5STpykBppUVM5k=
+X-Received: by 2002:a17:907:961e:b0:b8f:d2a0:c283 with SMTP id
+ a640c23a62f3a-b93ef732f07mr182609666b.1.1772646097880; Wed, 04 Mar 2026
+ 09:41:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303101245.22290-1-david@kernel.org>
-X-Rspamd-Queue-Id: 65D86205497
+References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-6-yosry@kernel.org>
+ <CAO9r8zN21twRarvzvq8euUOHRtVrO+q8jMaiip7NPtGgZ2dWGw@mail.gmail.com> <aahuZ4bg4aQKTZYj@google.com>
+In-Reply-To: <aahuZ4bg4aQKTZYj@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 4 Mar 2026 09:41:26 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zPf3wTBN+-SuvjojJuU1uO1xrpy9vMCA=PX9B5r=hJ9bQ@mail.gmail.com>
+X-Gm-Features: AaiRm51a3nrzQvCHnyWSZ4AAx4pLxY4TELWbQCXVeLBTFZJS2_7c4lRrib3NE2s
+Message-ID: <CAO9r8zPf3wTBN+-SuvjojJuU1uO1xrpy9vMCA=PX9B5r=hJ9bQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/8] KVM: nSVM: Always use NextRIP as vmcb02's NextRIP
+ after first L2 VMRUN
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 537262055CA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	TAGGED_FROM(0.00)[bounces-223108-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223109-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,gourry.net:email,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linux.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Mar 03, 2026 at 11:12:45AM +0100, David Hildenbrand (Arm) wrote:
-> The backport of commit 091c1dd2d4df ("mm/mempolicy: fix migrate_to_node()
-> assuming there is at least one VMA in a MM") contains an error:
-> migrate_to_node() does not lock the mmap_lock itself, that is handled by
-> the caller instead.
-> 
-> So let's drop the wrong mmap_read_unlock(). Fortunately, this path is
-> very hard to hit in practice.
-> 
-> Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
-> Reported-by: Li Ying <liying3@sungrowpower.com>
-> Closes: https://lore.kernel.org/r/aaZgUNxAyKC2IwuG@casper.infradead.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Christoph Lameter <cl@linux.com>
-> Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+[..]
+> > > @@ -845,17 +845,24 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+> > >         vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
+> > >
+> > >         /*
+> > > -        * next_rip is consumed on VMRUN as the return address pushed on the
+> > > +        * NextRIP is consumed on VMRUN as the return address pushed on the
+> > >          * stack for injected soft exceptions/interrupts.  If nrips is exposed
+> > > -        * to L1, take it verbatim from vmcb12.  If nrips is supported in
+> > > -        * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
+> > > -        * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
+> > > -        * prior to injecting the event).
+> > > +        * to L1, take it verbatim from vmcb12.
+> > > +        *
+> > > +        * If nrips is supported in hardware but not exposed to L1, stuff the
+> > > +        * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
+> > > +        * responsible for advancing RIP prior to injecting the event). This is
+> > > +        * only the case for the first L2 run after VMRUN. After that (e.g.
+> > > +        * during save/restore), NextRIP is updated by the CPU and/or KVM, and
+> > > +        * the value of the L2 RIP from vmcb12 should not be used.
+> > >          */
+> > > -       if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> > > -               vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+> > > -       else if (boot_cpu_has(X86_FEATURE_NRIPS))
+> > > -               vmcb02->control.next_rip    = vmcb12_rip;
+> > > +       if (boot_cpu_has(X86_FEATURE_NRIPS)) {
+> > > +               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+> > > +                   !svm->nested.nested_run_pending)
+> > > +                       vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+> > > +               else
+> > > +                       vmcb02->control.next_rip    = vmcb12_rip;
+> > > +       }
+> >
+> > This should probably also apply to soft_int_next_rip below the context
+> > lines. Otherwise after  patch 7 we keep it uninitialized if the guest
+> > doesn't have NRIPs and !nested_run_pending.
+>
+> That's fine though, isn't it?  Because in that case, doesn't the soft int have to
+> comein through svm_update_soft_interrupt_rip()?  Ugh, no because nSVM migrates
+> control.event_inj.
+>
+> IIUC, we want to end up with this?
 
-straight forward, thanks for the quick fix
+Yes.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 03b201fe9613..d12647080051 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -925,7 +925,8 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+>          */
+>         if (is_evtinj_soft(vmcb02->control.event_inj)) {
+>                 svm->soft_int_injected = true;
+> -               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> +               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+> +                   !svm->nested.nested_run_pending)
+>                         svm->soft_int_next_rip = vmcb12_ctrl->next_rip;
+>         }
 
