@@ -1,199 +1,270 @@
-Return-Path: <stable+bounces-222958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PlOJmlwp2kEhgAAu9opvQ
-	(envelope-from <stable+bounces-222958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 00:36:09 +0100
+	id iJbtAmuAp2lJiAAAu9opvQ
+	(envelope-from <stable+bounces-222959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:44:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1268D1F8699
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 00:36:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B871F8F9D
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3856030E9DB9
-	for <lists+stable@lfdr.de>; Tue,  3 Mar 2026 23:35:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 749C13063A1D
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 00:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E64B3537FA;
-	Tue,  3 Mar 2026 23:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7522FA0C6;
+	Wed,  4 Mar 2026 00:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YX7c+Onv"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8cOi5ey"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8243537E5
-	for <stable@vger.kernel.org>; Tue,  3 Mar 2026 23:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DC255F2C
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 00:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772580941; cv=none; b=VhkNriU4Cfi+YsjVQ4Bc1sXNhnnIZ6/qa+TCH51dA+hq3n7MBC7HLCa7qvCHlVQsHxUp38vDKaj58QtPRjLtFD5kGGtCXDTLLEwbT3WHf7osT6/ZUAjRQQ9dYU6DG5S7hm540Uh5MD7r18oxzciQZRvU5KVZQbufgT/GxaVgGK4=
+	t=1772585062; cv=none; b=MpBL1wp16ddJyAwar0M9YN3jYzzyLE//m4Sws5qujK9vE03gDxFkPv8ClMTHlxUCakbzlYmYWoRmZHW76gsUDoL6OiBeQOlsqaoRIXcJwCJXvvZYyi+vNXUIZCtd1+hyBd/km2ld8lhi8DboTIrWcfJMj5y7LCGDGfivGZ8xdpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772580941; c=relaxed/simple;
-	bh=jkrHDNgM25d59kJT571jsnGyvqtlao7ohHl2wkdYRY8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skVoShff21/F9AUa/u+c+ixBf9yFYH8scRHc4HmLwe+GkwYNw1jMDkbXbZDSiBYuXxa8sXDl1DHaoz6yYFBwOuOECUezoBQKDye4i01Hg6Me6Qh/M/Rt0j+JVlE7e2E/YqP44ZPgjUdaRRypTadBiuvUw+HeoiaW56dT2w0uE3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YX7c+Onv; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ae43042ea7so35907015ad.0
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 15:35:40 -0800 (PST)
+	s=arc-20240116; t=1772585062; c=relaxed/simple;
+	bh=8EUfImJqXCjwEv07osmggtN7dOfogWe0w9ZDpEIMa58=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HWMsS0AcMzHiD/E69twighU36ZXh0ItOXFIs/MfTyMeT4qhRdoKZ4jLtOIlvCxAwa3VLuTMcD8EJjApSllBkbypXn196oZm5oKhB8eJRqlKMvcxZEsxvoJsJkoFEweP06raLB0FdfzR3iZ3e7Sqz5RARkxqYIEh1yfv+6weWw5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8cOi5ey; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35641c14663so6440666a91.2
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 16:44:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772580940; x=1773185740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=obiQ76qiUJNFcjhp64R+cgHHcte5lFLkqq9i5N4t7sU=;
-        b=YX7c+OnvhyNMzk8gdQRX/X1slGQ1cyv/Rs+IolRFbjcAToi+gpnWuZ5i/ajfHXT435
-         Wm4kEtDHoMjgWnIGuYM5fZFnl2VrUKiJULhXQJKAw6xAuhJl5MEooXyG4OQ9IckFxSGL
-         MUlsM7zjcJ+Sadifs7DkMFk4kwu1pPuNycPmVW5oa1Y+mpKW1La3IjHMp6S4U4Kp4U/Q
-         kPEGxHLoEv0/VDOs5OsScofad0plVYoDsUJhwZ17WYJPKuX8Jy+MzMRJTupeevoq0P0Z
-         wNwzC6TPJDe03jsS1P+vnFcCsaZWke4i2yI3QGx9xmEWGElZKC9h78l2X2E/bDbcbcq5
-         JXEQ==
+        d=google.com; s=20230601; t=1772585060; x=1773189860; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
+        b=t8cOi5eyGUfddZApwlSXf16xFCFV2yhoeqxi73ZzjREe9QCD3FlSIgsMG8UgIbdjpC
+         884Pbwmt7J8eW1+b69A/MfJsRxaJ6hLURkTXZFRa+hxYaZCSo+CqoU06jamEiyUFrl0i
+         ufgbTuCL1BVbLj/Wivfk2oochP3rt0gHXc9vDcZYIwCh+jYB3yz9a8DRS6Rsx0ZObCm4
+         4nNuF29IKv7jYOg6snvJeBTkbfscwxId0RB6ndVAYFQbhe9deL5Sf8lRWK84Nc4O437e
+         7fEfqJVBCoYffgQKg6u2kZBRGWVjd+XceqwCY4A6UYXOczMV2Dr3nicv0S6zUgF0DFTY
+         dX9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772580940; x=1773185740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=obiQ76qiUJNFcjhp64R+cgHHcte5lFLkqq9i5N4t7sU=;
-        b=GNm+S0IHLsZLRlLa3WYa3qWp8iYj8+9XZdWXl29xEXBRZV3NX3eguiO3ey3Mp60R9M
-         9ho/fD9ea2gBVmh8ZY+4heGcTFRse5x0wi30nmE88kIVvXw2J+PD8HbKp2Ti7jmpTSFt
-         WY0D7uEdiebW7TOr5YEadbAp412UDDhxdoIbVKkKS+pjDfceZsqRA0F1/9efoGSAdiua
-         lPzZ2oHOuMA4xpvErW80bMPBK4rCbyMQiGOXeDFxAS6/6xOeEMC6wUMO5gtBYsW8k2MQ
-         TqsypGGrUIPOGDvXBdgnPisUR7ldv/bP5leX+UNOBIWekK+tPJL5WZZXrUIaaZ/v2ceO
-         mS6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWAPzo73O9JLdGD0WJ+f2ZdLI238QUNqu39UuNxameN5k676FEtSNIjXTtigeyKxO/0jzcyEXY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkTr/ZlavKY0wCSRFYXAqaNzM+vTpMgLbf0VjO4A7WBsRcxcfI
-	6AnSHT68YnmIlfdHchEv+mIONsBi9kSRqKWnYuE2RL2fAIVtWfnuGoqP
-X-Gm-Gg: ATEYQzwl2ivJoYEyN3Edq7UDusYhq35Mw/gu8GBHGGoBe9GBkdRH2cCnRMDHrM82Cl2
-	dRDbfo2Q7bscom5FbkvBW5AFkJkWqydWJtVB7lzIJZWMDuQX9Xlllc/+v/JASxkw1Nl+XzBE28w
-	qA5MBInHTqin3Pd6LvOoq+n4XSwKTvyDis9+a70W47uLOMmegcuiQ6rA5HBa6e9xSYlKZnA2xt6
-	jyxQaldHfG0BTsN2o1GDAbgXfwQe7Fsa/aH97XkqTnl6sT9vJcAJnG51L1u98KGfBFYVfW8XOWf
-	sm3RJQc7wzq/kI9LAeh0ZnjENC0EaYhUE2iNOLVjfjTqreJL1a2jJMHoU/RmWs6OXIbrRiiqR/V
-	6I8KTuMQ8Kg+/e2IuOpKQrkGCIbJgirrEPUHgAMPj0anJkudoZ+vPZoMaeb8K1wglfVdsjEdo6E
-	u1LubpzWv6ZBIcgY40ag==
-X-Received: by 2002:a17:902:ccd0:b0:2ae:3f72:fdc5 with SMTP id d9443c01a7336-2ae6aaae6camr1189365ad.26.1772580939922;
-        Tue, 03 Mar 2026 15:35:39 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:4d::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae45e07626sm107308075ad.39.2026.03.03.15.35.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 15:35:39 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: brauner@kernel.org
-Cc: djwong@kernel.org,
-	hch@infradead.org,
-	willy@infradead.org,
-	wegao@suse.com,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 1/1] iomap: don't mark folio uptodate if read IO has bytes pending
-Date: Tue,  3 Mar 2026 15:34:20 -0800
-Message-ID: <20260303233420.874231-2-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260303233420.874231-1-joannelkoong@gmail.com>
-References: <20260303233420.874231-1-joannelkoong@gmail.com>
+        d=1e100.net; s=20230601; t=1772585060; x=1773189860;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
+        b=Rkc4+9GQOQ1fty3IvbrpAMnic/cuN7W+IAYWi3rqV5Ywi+DqUhunfh8CEXqZH/w7T+
+         2Mfsvhn5BeNmk5H8XBsUTzV6buRJ5pkaU0rP1Oje/41UZ+80Yr1Hg9E11eHnku5bFl0b
+         ruXf2gcvTtk9CQNtfWYq7eJuQiVivlnw7A8HyRYDv51PL7NAmCNRJxB8CGZ578g3vhsP
+         /BUSrN6bmkJNXjk3oCruzW+N7rvEpydzVvAa4VlDDDBe6RQNNLsR/6CLr8O0YaElCI48
+         Cd6Sk/imfCtgdGXHXaTX2Jq5PgpWd7OR27osQa94FD4ZeLZ0NMrCaX/BoFbaMtAc/ATs
+         SyGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXLQyNJvePlBrAdyejJHWhYsJnvqPXAkr5zHoYEQJlqklDRqQgIquMn8/taqGHcQHMV1iJHnJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0G4hwTCMerbBq8ClZPUR1UzI3d5MBhcYT4RqlQmeRjHQKfYW+
+	NFAFfukZPm9yQqpVLalZFP1jPLlb2GZ22xklbINRttT1hlT2Fpg0WzXkrTW++TuFc/lnnge69BN
+	2jIZE/g==
+X-Received: from pgbfq7.prod.google.com ([2002:a05:6a02:2987:b0:c6e:18ac:7af8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d794:b0:393:e25b:7d77
+ with SMTP id adf61e73a8af0-3982dd55feemr145106637.13.1772585060135; Tue, 03
+ Mar 2026 16:44:20 -0800 (PST)
+Date: Tue, 3 Mar 2026 16:44:18 -0800
+In-Reply-To: <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1268D1F8699
+Mime-Version: 1.0
+References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-4-yosry@kernel.org>
+ <aacOPmIS7HUtzJA6@google.com> <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
+Message-ID: <aaeAYv2i7wjGahY4@google.com>
+Subject: Re: [PATCH v7 03/26] KVM: SVM: Add missing save/restore handling of
+ LBR MSRs
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 65B871F8F9D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-222959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222958-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-If a folio has ifs metadata attached to it and the folio is partially
-read in through an async IO helper with the rest of it then being read
-in through post-EOF zeroing or as inline data, and the helper
-successfully finishes the read first, then post-EOF zeroing / reading
-inline will mark the folio as uptodate in iomap_set_range_uptodate().
+On Tue, Mar 03, 2026, Yosry Ahmed wrote:
+> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > So all in all (not yet tested), this?  If this is the only issue in the series,
+> > or at least in the stable@ part of the series, no need for a v8 (I've obviously
+> > already done the fixup).
+> 
+> Looks good with a minor nit below (could be a followup).
+> 
+> > @@ -3075,6 +3075,38 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+> >                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> >                 svm_update_lbrv(vcpu);
+> >                 break;
+> > +       case MSR_IA32_LASTBRANCHFROMIP:
+> > +               if (!lbrv)
+> > +                       return KVM_MSR_RET_UNSUPPORTED;
+> > +               if (!msr->host_initiated)
+> > +                       return 1;
+> > +               svm->vmcb->save.br_from = data;
+> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> > +               break;
+> > +       case MSR_IA32_LASTBRANCHTOIP:
+> > +               if (!lbrv)
+> > +                       return KVM_MSR_RET_UNSUPPORTED;
+> > +               if (!msr->host_initiated)
+> > +                       return 1;
+> > +               svm->vmcb->save.br_to = data;
+> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> > +               break;
+> > +       case MSR_IA32_LASTINTFROMIP:
+> > +               if (!lbrv)
+> > +                       return KVM_MSR_RET_UNSUPPORTED;
+> > +               if (!msr->host_initiated)
+> > +                       return 1;
+> > +               svm->vmcb->save.last_excp_from = data;
+> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> > +               break;
+> > +       case MSR_IA32_LASTINTTOIP:
+> > +               if (!lbrv)
+> > +                       return KVM_MSR_RET_UNSUPPORTED;
+> > +               if (!msr->host_initiated)
+> > +                       return 1;
+> > +               svm->vmcb->save.last_excp_to = data;
+> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> > +               break;
+> 
+> There's so much repeated code here. 
 
-This is a problem because when the read completion path later calls
-iomap_read_end(), it will call folio_end_read(), which sets the uptodate
-bit using XOR semantics. Calling folio_end_read() on a folio that was
-already marked uptodate clears the uptodate bit.
+Ya :-(
 
-Fix this by not marking the folio as uptodate if the read IO has bytes
-pending. The folio uptodate state will be set in the read completion
-path through iomap_end_read() -> folio_end_read().
+> We can use gotos to share code, but I am not sure if that's a strict
+> improvement. We can also use a helper, perhaps?
 
-Reported-by: Wei Gao <wegao@suse.com>
-Suggested-by: Sasha Levin <sashal@kernel.org>
-Tested-by: Wei Gao <wegao@suse.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.19
-Link: https://lore.kernel.org/linux-fsdevel/aYbmy8JdgXwsGaPP@autotest-wegao.qe.prg2.suse.org/
-Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and readahead")
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- fs/iomap/buffered-io.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index bc82083e420a..00f0efaf12b2 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -80,18 +80,27 @@ static void iomap_set_range_uptodate(struct folio *folio, size_t off,
- {
- 	struct iomap_folio_state *ifs = folio->private;
- 	unsigned long flags;
--	bool uptodate = true;
-+	bool mark_uptodate = true;
- 
- 	if (folio_test_uptodate(folio))
- 		return;
- 
- 	if (ifs) {
- 		spin_lock_irqsave(&ifs->state_lock, flags);
--		uptodate = ifs_set_range_uptodate(folio, ifs, off, len);
-+		/*
-+		 * If a read with bytes pending is in progress, we must not call
-+		 * folio_mark_uptodate(). The read completion path
-+		 * (iomap_read_end()) will call folio_end_read(), which uses XOR
-+		 * semantics to set the uptodate bit. If we set it here, the XOR
-+		 * in folio_end_read() will clear it, leaving the folio not
-+		 * uptodate.
-+		 */
-+		mark_uptodate = ifs_set_range_uptodate(folio, ifs, off, len) &&
-+				!ifs->read_bytes_pending;
- 		spin_unlock_irqrestore(&ifs->state_lock, flags);
- 	}
- 
--	if (uptodate)
-+	if (mark_uptodate)
- 		folio_mark_uptodate(folio);
+Where's your sense of adventure?
+
+	case MSR_IA32_LASTBRANCHFROMIP:
+	case MSR_IA32_LASTBRANCHTOIP:
+	case MSR_IA32_LASTINTFROMIP:
+	case MSR_IA32_LASTINTTOIP:
+		if (!lbrv)
+			return KVM_MSR_RET_UNSUPPORTED;
+		if (!msr->host_initiated)
+			return 1;
+		*(&svm->vmcb->save.br_from + (ecx - MSR_IA32_LASTBRANCHFROMIP)) = data;
+		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+		break;
+
+Jokes aside, maybe this, to dedup get() at the same time?
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 68b747a94294..f1811105e89f 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2720,6 +2720,23 @@ static int svm_get_feature_msr(u32 msr, u64 *data)
+        return 0;
  }
  
--- 
-2.47.3
-
++static __always_inline u64 *svm_vmcb_lbr(struct vcpu_svm *svm, u32 msr)
++{
++       switch (msr) {
++       case MSR_IA32_LASTBRANCHFROMIP:
++               return &svm->vmcb->save.br_from;
++       case MSR_IA32_LASTBRANCHTOIP:
++               return &svm->vmcb->save.br_to;
++       case MSR_IA32_LASTINTFROMIP:
++               return &svm->vmcb->save.last_excp_from;
++       case MSR_IA32_LASTINTTOIP:
++               return &svm->vmcb->save.last_excp_to;
++       default:
++               break;
++       }
++       BUILD_BUG();
++}
++
+ static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
+                                      struct msr_data *msr_info)
+ {
+@@ -2838,16 +2855,10 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+                msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
+                break;
+        case MSR_IA32_LASTBRANCHFROMIP:
+-               msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
+-               break;
+        case MSR_IA32_LASTBRANCHTOIP:
+-               msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
+-               break;
+        case MSR_IA32_LASTINTFROMIP:
+-               msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
+-               break;
+        case MSR_IA32_LASTINTTOIP:
+-               msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
++               msr_info->data = lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
+                break;
+        case MSR_VM_HSAVE_PA:
+                msr_info->data = svm->nested.hsave_msr;
+@@ -3122,35 +3133,14 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+                svm_update_lbrv(vcpu);
+                break;
+        case MSR_IA32_LASTBRANCHFROMIP:
+-               if (!lbrv)
+-                       return KVM_MSR_RET_UNSUPPORTED;
+-               if (!msr->host_initiated)
+-                       return 1;
+-               svm->vmcb->save.br_from = data;
+-               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+-               break;
+        case MSR_IA32_LASTBRANCHTOIP:
+-               if (!lbrv)
+-                       return KVM_MSR_RET_UNSUPPORTED;
+-               if (!msr->host_initiated)
+-                       return 1;
+-               svm->vmcb->save.br_to = data;
+-               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+-               break;
+        case MSR_IA32_LASTINTFROMIP:
+-               if (!lbrv)
+-                       return KVM_MSR_RET_UNSUPPORTED;
+-               if (!msr->host_initiated)
+-                       return 1;
+-               svm->vmcb->save.last_excp_from = data;
+-               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+-               break;
+        case MSR_IA32_LASTINTTOIP:
+                if (!lbrv)
+                        return KVM_MSR_RET_UNSUPPORTED;
+                if (!msr->host_initiated)
+                        return 1;
+-               svm->vmcb->save.last_excp_to = data;
++               *svm_vmcb_lbr(svm, ecx) = data;
+                vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+                break;
+        case MSR_VM_HSAVE_PA:
 
