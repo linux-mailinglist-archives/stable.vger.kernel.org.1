@@ -1,68 +1,99 @@
-Return-Path: <stable+bounces-222997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0A5mFXTdp2lnkgAAu9opvQ
-	(envelope-from <stable+bounces-222997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:21:24 +0100
+	id MGYnLkbdp2lnkgAAu9opvQ
+	(envelope-from <stable+bounces-222995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85271FB88A
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:21:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3E61FB875
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D02F13015A41
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D77C3017783
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2D734D385;
-	Wed,  4 Mar 2026 07:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39F342CA2;
+	Wed,  4 Mar 2026 07:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4YmKS1M"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VwyR3XUP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fwjHdyjY";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VwyR3XUP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fwjHdyjY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9412E308F1D
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA463090F5
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608847; cv=none; b=eyU1vmyKF0TD/+ZE5tg7IuwoIFGWC4W/A+IgQ3G5D7GSvnTBmLaoEdkqdcygoypUVsKJHVqTiMmevJpjBMVNHy5guQQPQecd65VcCxbRXpVMxd0o7C4Kv6rTUKPT4L/Z8LF7CEDH6Ko7kCxZDHr338I633K/mkdjgITtBgqB648=
+	t=1772608835; cv=none; b=oaOqPfRXIRNhtJZQOS3hich04rnElp9FC/yIkwtjbOP2ROM5zHiKhQf/5R9Q8P22+gc+vtsPx3BhsUJp7n/C3ZZZ3Po7gqazbz/z0sT0AmP8gjoGevxH8JhlsuavvqIywcXH9cV8tg1+SfSN6rLF8KYmNYy3DqFqu1RHj8rWvcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608847; c=relaxed/simple;
-	bh=gs/g+FFrHcAMrvZFa5tAqEwg8s88EPVlvR7P02Xxxlo=;
+	s=arc-20240116; t=1772608835; c=relaxed/simple;
+	bh=DpK40hQs/hsvOlNoUwEXi8QAgOm5EbCfmfV6WGMgEMw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nFvSW/q4raRSQDF3KuHY0YrJaCGaLQW7CdwfzUMEZI5s/7CEX1ju4cBufKmSVM6bxT4gk4fYjYYsd5fh6J4SSKGO5liSfX4iApZTuwji0XQfiN5D1dTQrchlT4FE0yz/vSYcjh3CBlVBezjPR1I8OqjrWg4E++5Txz6ofMhsAy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4YmKS1M; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772608846; x=1804144846;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gs/g+FFrHcAMrvZFa5tAqEwg8s88EPVlvR7P02Xxxlo=;
-  b=Y4YmKS1MXpFQoPRIJVbYC6MZMR+YT3M37r+sz1ZAb3ONU733ZwLpsz4/
-   uzhi2pnKTAOwe9EbqnycqGe9xaf+4OXp/Rb3FJUPp7yoipMIHaDi3GSmA
-   +0JVjlh2qaeQ4mOQYCH6X+7szc3cMEoDif1YwHKDo+9eo5MBOIXc8cLp/
-   xxJ2EpAhGGLX5dGth6H1WOgx1YFTXuteNiNyIWLHP1bS4tF6/Ox1SG2Yx
-   IbwZbFSK6qySk0yWk4bbzgvbAoo7jzPRb0Igs1i6ygYbCzkfTIYZoRLwp
-   QQSLz7xR+o4BvEPoa8jaA8Gos1Ah0qeqWqEwdpMOgem+PQzmsWbmR5LSD
-   w==;
-X-CSE-ConnectionGUID: a5HFcQgNQ+GYVkRCr96LnQ==
-X-CSE-MsgGUID: bgT0ShF7QhO3K6ilukuziA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77268481"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="77268481"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:46 -0800
-X-CSE-ConnectionGUID: A5+kVgiXSn+sq0RUQkrTbA==
-X-CSE-MsgGUID: Ni1cf27lSROwdTV1k7mGgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="248733775"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:44 -0800
-Message-ID: <bf7ba077-ecc0-4ff5-918d-c724b96bb0f6@linux.intel.com>
-Date: Wed, 4 Mar 2026 15:20:05 +0800
+	 In-Reply-To:Content-Type; b=azEVOyEfbVnGDFU2GVTH96zfCQa4GIDpPhiabeGgS3hvz+qZqFiMyMiV9rWW8sLAFSlYLwue3UB2ma9VZp5cdyUUh8Hlsbr7Peu6/pWF7ZN1//QS5wVjlSTxUtndjiOljCx7NO9l4T4vKKoqVKPXuqex9zgXcTcyIs/mokiO4jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VwyR3XUP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fwjHdyjY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VwyR3XUP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fwjHdyjY; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 801B45BD4B;
+	Wed,  4 Mar 2026 07:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772608832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeYalW8jhq1NZYwVgh60QQY623yLOr+NtDNXomRTfr0=;
+	b=VwyR3XUPMwHkz3g9V3/3klEBMEFZsPVFJ3gn+Wz7S+P2SQHdVt0dc2Y7Xsln7Gq76T544d
+	ofRKe0qg37JXyo815kRBt8wFD0yuDrxgG6Pzft62LbGOUKo9XXb0yk1Rg8WgJjINwC3VnE
+	avR3tf7I2nm4oUdSD1UIpjAznvFtMCk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772608832;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeYalW8jhq1NZYwVgh60QQY623yLOr+NtDNXomRTfr0=;
+	b=fwjHdyjYh4wwrVT9AMyMUc/9X8aZ7Cgmloh79ptZrxyifKynzXI264XBVzGQL1GAB++Wv3
+	Nm52KZo0nNM+lxDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VwyR3XUP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fwjHdyjY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772608832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeYalW8jhq1NZYwVgh60QQY623yLOr+NtDNXomRTfr0=;
+	b=VwyR3XUPMwHkz3g9V3/3klEBMEFZsPVFJ3gn+Wz7S+P2SQHdVt0dc2Y7Xsln7Gq76T544d
+	ofRKe0qg37JXyo815kRBt8wFD0yuDrxgG6Pzft62LbGOUKo9XXb0yk1Rg8WgJjINwC3VnE
+	avR3tf7I2nm4oUdSD1UIpjAznvFtMCk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772608832;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeYalW8jhq1NZYwVgh60QQY623yLOr+NtDNXomRTfr0=;
+	b=fwjHdyjYh4wwrVT9AMyMUc/9X8aZ7Cgmloh79ptZrxyifKynzXI264XBVzGQL1GAB++Wv3
+	Nm52KZo0nNM+lxDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 35D8B3EA69;
+	Wed,  4 Mar 2026 07:20:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 1OeFC0Ddp2kZRQAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 04 Mar 2026 07:20:32 +0000
+Message-ID: <786d1145-3ba8-4332-8d03-c0ff2da616d7@suse.de>
+Date: Wed, 4 Mar 2026 08:20:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,70 +101,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc 2/2] iommupt: Fix short gather if the unmap goes into a
- large mapping
-To: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Will Deacon <will@kernel.org>
-Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Kevin Tian <kevin.tian@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
- Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
-References: <2-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
+Subject: Re: [PATCH 3/3] nvmet-auth: Don't log DHCHAP shared secret in
+ nvmet_auth_ctrl_sesskey()
+To: Thorsten Blum <thorsten.blum@linux.dev>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260303190350.78705-2-thorsten.blum@linux.dev>
+ <20260303190350.78705-6-thorsten.blum@linux.dev>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <2-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260303190350.78705-6-thorsten.blum@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B85271FB88A
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 1B3E61FB875
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-222997-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222995-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.intel.com:mid,nvidia.com:email]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Action: no action
 
-On 3/3/26 06:22, Jason Gunthorpe wrote:
-> unmap has the odd behavior that it can unmap more than requested if the
-> ending point lands within the middle of a large or contiguous IOPTE.
+On 3/3/26 20:03, Thorsten Blum wrote:
+> When debug logging is enabled, nvmet_auth_ctrl_sesskey() logs the DHCHAP
+> shared secret. Remove the log to avoid exposing key material.
 > 
-> In this case the gather should flush everything unmapped which can be
-> larger than what was requested to be unmapped. The gather was only
-> flushing the range requested to be unmapped, not extending to the extra
-> range, resulting in a short invalidation if the caller hits this special
-> condition.
+> Fixes: 7a277c37d352 ("nvmet-auth: Diffie-Hellman key exchange support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>   drivers/nvme/target/auth.c | 4 ----
+>   1 file changed, 4 deletions(-)
 > 
-> This was found by the new invalidation/gather test I am adding in
-> preparation for ARMv8. Claude deduced the root cause.
-> 
-> As far as I remember nothing relies on unmapping a large entry, so this is
-> likely not a triggerable bug.
-> 
-> Cc:stable@vger.kernel.org
-> Fixes: 7c53f4238aa8 ("iommupt: Add unmap_pages op")
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
+> diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
+> index f24add0bb86f..f62fed6bd897 100644
+> --- a/drivers/nvme/target/auth.c
+> +++ b/drivers/nvme/target/auth.c
+> @@ -544,10 +544,6 @@ int nvmet_auth_ctrl_sesskey(struct nvmet_req *req,
+>   					  req->sq->dhchap_skey_len);
+>   	if (ret)
+>   		pr_debug("failed to compute shared secret, err %d\n", ret);
+> -	else
+> -		pr_debug("%s: shared secret %*ph\n", __func__,
+> -			 (int)req->sq->dhchap_skey_len,
+> -			 req->sq->dhchap_skey);
+>   
+>   	return ret;
+>   }
+As indicated in the previous patch, we should use a compile time option
+to disable the messages.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
