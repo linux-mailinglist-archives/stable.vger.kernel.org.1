@@ -1,68 +1,98 @@
-Return-Path: <stable+bounces-222996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NSZB1bdp2lnkgAAu9opvQ
-	(envelope-from <stable+bounces-222996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:54 +0100
+	id GOONKzXdp2lnkgAAu9opvQ
+	(envelope-from <stable+bounces-222994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4AC1FB87C
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEA41FB863
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B48E301B73C
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 694E1300A7E6
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9DF34D937;
-	Wed,  4 Mar 2026 07:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B570344D8E;
+	Wed,  4 Mar 2026 07:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jNWDJEWT"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hN0k24ip";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P9HA76O0";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SojPgUT8";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LoPTDziY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49C308F1D
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4F308F1D
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608842; cv=none; b=OybSwcMl/IYH+2O0eRFI0gJNH4wpukx/gyyBSsfxELOCSxMMblxLd+WJbLQ68lEFjgRMf8KUov2Jj6oQ9rvUHSiBuiPdKOduRbPfCt45I76+xdsqTqhzp5rUHqbMFI14/8OV9tWcB+qqkAlZv4cs7rlob0ySFTmtk3Dp51hbQDM=
+	t=1772608803; cv=none; b=u1HZPspWSjskiogwrX93RXWSYJ/quw0o8jaMSlwpoB0fklKkF2V0w++yjGxMJAuXBcj+/mhwgFNtK0RU4UpfEJ4iP7yW5ZZqS3Ar/8lCq+W5OOUx2HmAf69+freJ/kFl2R/LMZ3/6gEkDKCDiG77+4j8R8Ain7itIVvcb4/n1Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608842; c=relaxed/simple;
-	bh=D6GYEd3d6gvnRsSCgzPjSlNov5PrrHCdZ5y8IBebYA8=;
+	s=arc-20240116; t=1772608803; c=relaxed/simple;
+	bh=5oOIfoX0FPPNQwdyJyv6FEPUF4M+YrHbfkzzIu+MU0M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D/5FkAdmZdWBcLHtiRGOTV44Ct7Vny/uIUPAW3CQurwbU+FdfAYVwnj1VOKN1PKlu8rAxXYx5ysKP4OFVpO7OMeOFKsBS2TYGmIMVwIwr83ZIAHlv3baDliWj77IBTesZ90RG/kbZUGLCRnSXE8G1ddsuWwmOzCB5L6QcP6+rsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jNWDJEWT; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772608840; x=1804144840;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=D6GYEd3d6gvnRsSCgzPjSlNov5PrrHCdZ5y8IBebYA8=;
-  b=jNWDJEWTUiHLS4JQeMBoSh3iklnL6nY7R39nnbCTUMj1bjrPZVssUaog
-   SV2jpk1UqKvWEj4Jbfzc6xqDxtk2etkIo57zNsNs1BQACh3JkXG0Fp16G
-   ijsGUfKe4yN5aPLM8g/33LSmEuDSp9YAo/HNRvG+CzmoEOmAlKwiJY+KP
-   zyoqce7a1jhc/hhVxX5XFt9WfhvzeXW/AsL/PCFq5mkKlSkNqvBK1JW5/
-   tcmA+defJ1n4C50R80qmWfeHj5s1RcEWK5Vdj62H5zOOvNAVrNAB8mVTc
-   jD2WV6eomDGeBMtXpdc45Re840CHIHThrZLIA7n0Je9Kvd0E9y96R2uQ5
-   A==;
-X-CSE-ConnectionGUID: Kpt8/4GGTIe6rY08Qj6rNg==
-X-CSE-MsgGUID: tZ0DtjHOSKyQzzc725Upig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77268457"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="77268457"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:29 -0800
-X-CSE-ConnectionGUID: Rg4hloOgT4eSbbO7WSHaNA==
-X-CSE-MsgGUID: 8gdJvCT/Tuy8Xmcr03vmSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="248733762"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:27 -0800
-Message-ID: <3b745716-b24a-46be-95a3-fe1e34e005fb@linux.intel.com>
-Date: Wed, 4 Mar 2026 15:19:48 +0800
+	 In-Reply-To:Content-Type; b=ZPb0iJJ3sxfXkm9wpIhg7CXh7U7TbLLMKseGnxk7BdyKkNRyr7ifuPAC1cy+3tY++XBJxf+LI/FFt+dbBTEuRzHekluXxOm5ESyG6uryOceI1/Gmrxxzus0LcAqFPdXiDodTyw1y8sV7/bIWqWaO5/NLblKv7bRRHKxbYHTyQhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hN0k24ip; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P9HA76O0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SojPgUT8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LoPTDziY; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 07A033F279;
+	Wed,  4 Mar 2026 07:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772608801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
+	b=hN0k24ipHUTDTgZH23H5wzTOxWfhswghlpacDRjzh8NMBxgj/3e/sjxZTHw8SQ3u+zsYvI
+	g8xl5plTeEGNuf5LS1uLt09QZb2/kiEmWXpDiyQVUlOpZE0QCXKHLCHVdh0aooUwYk4eLX
+	Qi0PgHbGv84+RtVP4qmQHDeTryxOOcA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772608801;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
+	b=P9HA76O0gsknC4RHhVmxZgsGXoO/RoxkbjMWxGqer9bRjAy68RYW0NvjYandLyTYK2NcQl
+	VcLDIhziw9qGrDAA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772608800; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
+	b=SojPgUT8nmw2gRXR7xho2zNPizqR8JwLtG6cJ4Gf49Mv28ANeWuIXmALrbfFlx6m8LVjcr
+	ajn1L5zNSR5dDEDuVoCbhSNtKYKAbjzFC0pZEJuqWY97tpWWEb3qioKubPIPzd0ERt6cPs
+	y0DBCO5ooZNkm57l7U9YcsX2Z/yVagI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772608800;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
+	b=LoPTDziYgj6ZhvILSPpDQKEuzflbXh5CJue59KZEFz/nsRNNLAIaZKXhL5iNCUMJNQiCRE
+	4/ieXEq7Pnq9X0CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AFEB43EA69;
+	Wed,  4 Mar 2026 07:19:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9AaEKB/dp2naRAAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 04 Mar 2026 07:19:59 +0000
+Message-ID: <2b40f93f-f987-423d-8263-ba9b10a1bcaf@suse.de>
+Date: Wed, 4 Mar 2026 08:19:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,75 +100,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc 1/2] iommu: Do not call drivers for empty gathers
-To: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Will Deacon <will@kernel.org>
-Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Joerg Roedel <joerg.roedel@amd.com>, Kevin Tian <kevin.tian@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
- Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
-References: <1-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
+Subject: Re: [PATCH 2/3] nvmet-auth: Don't log DHCHAP keys in
+ nvmet_setup_auth()
+To: Thorsten Blum <thorsten.blum@linux.dev>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260303190350.78705-2-thorsten.blum@linux.dev>
+ <20260303190350.78705-4-thorsten.blum@linux.dev>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <1-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260303190350.78705-4-thorsten.blum@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5E4AC1FB87C
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 5AEA41FB863
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-222996-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222994-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,linux.intel.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Action: no action
 
-On 3/3/26 06:22, Jason Gunthorpe wrote:
-> An empty gather is coded with start=U64_MAX, end=0 and several drivers go
-> on to convert that to a size with:
+On 3/3/26 20:03, Thorsten Blum wrote:
+> When debug logging is enabled, nvmet_setup_auth() logs the host and
+> controller DHCHAP key bytes. Remove the keys from debug logs to avoid
+> exposing key material.
 > 
->   end - start + 1
+> Fixes: db1312dd9548 ("nvmet: implement basic In-Band Authentication")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>   drivers/nvme/target/auth.c | 10 ++++------
+>   1 file changed, 4 insertions(+), 6 deletions(-)
 > 
-> Which gives 2 for an empty gather. This then causes Weird Stuff to
-> happen (for example an UBSAN splat in VT-d) that is hopefully harmless,
-> but maybe not.
-> 
-> Prevent drivers from being called right in iommu_iotlb_sync().
-> 
-> Auditing shows that AMD, Intel, Mediatek and RSIC-V drivers all do things
-> on these empty gathers.
-> 
-> Further, there are several callers that can trigger empty gathers,
-> especially in unusual conditions. For example iommu_map_nosync() will call
-> a 0 size unmap on some error paths. Also in VFIO, iommupt and other
-> places.
-> 
-> Cc:stable@vger.kernel.org
-> Reported-by: Janusz Krzysztofik<janusz.krzysztofik@linux.intel.com>
-> Closes:https://lore.kernel.org/r/11145826.aFP6jjVeTY@jkrzyszt- 
-> mobl2.ger.corp.intel.com
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
+> diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
+> index 2eadeb7e06f2..f24add0bb86f 100644
+> --- a/drivers/nvme/target/auth.c
+> +++ b/drivers/nvme/target/auth.c
+> @@ -199,10 +199,9 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
+>   		ctrl->host_key = NULL;
+>   		goto out_free_hash;
+>   	}
+> -	pr_debug("%s: using hash %s key %*ph\n", __func__,
+> +	pr_debug("%s: using hash %s\n", __func__,
+>   		 ctrl->host_key->hash > 0 ?
+> -		 nvme_auth_hmac_name(ctrl->host_key->hash) : "none",
+> -		 (int)ctrl->host_key->len, ctrl->host_key->key);
+> +		 nvme_auth_hmac_name(ctrl->host_key->hash) : "none");
+>   
+>   	nvme_auth_free_key(ctrl->ctrl_key);
+>   	if (!host->dhchap_ctrl_secret) {
+> @@ -217,10 +216,9 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
+>   		ctrl->ctrl_key = NULL;
+>   		goto out_free_hash;
+>   	}
+> -	pr_debug("%s: using ctrl hash %s key %*ph\n", __func__,
+> +	pr_debug("%s: using ctrl hash %s\n", __func__,
+>   		 ctrl->ctrl_key->hash > 0 ?
+> -		 nvme_auth_hmac_name(ctrl->ctrl_key->hash) : "none",
+> -		 (int)ctrl->ctrl_key->len, ctrl->ctrl_key->key);
+> +		 nvme_auth_hmac_name(ctrl->ctrl_key->hash) : "none");
+>   
+>   out_free_hash:
+>   	if (ret) {
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Without the key the pr_debug calls are pretty much pointless anyway,
+so you might want to remove them, too.
+
+However, these debug prints really help when trying to figure out
+authentication failures.
+I think it would be better to add a compile-time option to disable
+these outputs entirely.
+
+I'll send a patch.
+
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
