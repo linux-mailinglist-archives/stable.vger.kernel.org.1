@@ -1,213 +1,175 @@
-Return-Path: <stable+bounces-222970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dPZQH5aWp2nUiQAAu9opvQ
-	(envelope-from <stable+bounces-222970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:19:02 +0100
+	id MCwsE+Cdp2n0igAAu9opvQ
+	(envelope-from <stable+bounces-222971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:50:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17691F9D1E
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:19:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3729C1FA0C0
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 585E830488CD
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 02:19:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C2FB302CBD1
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 02:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4CA244661;
-	Wed,  4 Mar 2026 02:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D199351C32;
+	Wed,  4 Mar 2026 02:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="2fy+s7zw"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="KPFEeInt"
 X-Original-To: stable@vger.kernel.org
-Received: from sg-1-36.ptr.blmpb.com (sg-1-36.ptr.blmpb.com [118.26.132.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-76.sinamail.sina.com.cn (mail115-76.sinamail.sina.com.cn [218.30.115.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542DE23ABBD
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 02:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F983502A0
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 02:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772590739; cv=none; b=D9WxfVcaZY7J/Uy02gJeNYW1BLtedwh2h+aYiCN54sEDFmXi52fsrgPGXtS3aT5HQ8MYxxUeLG6jTmtuooHMfX2lC2i6gPmYPDcAkcMl8sqNJPmCOTD0AlmAHEZct2hKs4QlPRSPWRgfmfRSD8zMHSlmTzJVmFMOeQMGWwMhrYY=
+	t=1772592592; cv=none; b=Urv2cSzV8+w6mfzWVh1LQvVgE5kCBsTlCiUpyXuDWK43urDLJ0mEPe5ulq6syqEyNz+VV42ZSJX+rC2XBhlGU/zG8cTxLGfNK4ceeOxA3iQlNFGjVPc7oS3kXhfofD7wqKmkDHz1HxY8OpAjxEQ1gDwk+TxnSL0jy1PgvAv9cfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772590739; c=relaxed/simple;
-	bh=AxjOMASTfdq+3mnv8B9AggdHsIJp6qfP3Mp+h3e0IE0=;
-	h=In-Reply-To:From:Message-Id:Mime-Version:Content-Type:References:
-	 Cc:Date:To:Subject; b=g4oYM+BQr+qCv7R+VRKg3YNLy/N8HYvgHM0Kmqt4iAC5XfNZASff3VdkjfFf/wrXY3XfABdzunovHxgKtzqpAd+re0Btoglz42vVsx+qsPv0KudA9jwhGRWgCulf6G6QBFkgZjuVeTQNjXJW1KidBIl1HJQ/ugViwd+8V5isqlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=2fy+s7zw; arc=none smtp.client-ip=118.26.132.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fnnas.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1772590725;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=s2idoR7obNOLPGXXRWo+TTj4IXagnotgcd2SBp5sm04=;
- b=2fy+s7zwooTCWjb9x1TZFnsB73GH6XhEVVFpnWIryczS3RfcjopH+8TFhJhyeFiQQuBX4k
- Xq/ETxJHgTpJd9raQnu1bSRiWpIIdzL4CN2mLn9ARZrLhChwxc/wK7LxuyOzlA9pxncD3l
- j+Ii1XOcoVUMcKlm0fsqpJwOG3N7qvGAoGgtjaryIdBo6R48G7epEqDQrqS4dZftaGmDQY
- eYhcQ2R6FBwYEgvv5xl6dQ68UGKpWJKkJC/6N3d5lLJPD8um4Qe7BD0zZisjWPjnDbynvP
- Rs/lfLDZ1IKMhIk1EBvmHenAQDPLBd8B8Yd8iTBERQuqErEUiOzfNnW7sMjlLA==
-In-Reply-To: <20260303005619.1352958-1-johunt@akamai.com>
-Content-Transfer-Encoding: quoted-printable
-From: "Yu Kuai" <yukuai@fnnas.com>
-Message-Id: <54af459e-2671-417b-bc9f-2b13f111f749@fnnas.com>
+	s=arc-20240116; t=1772592592; c=relaxed/simple;
+	bh=H70FKmd6xMQBDIFHkrijaB1YoLEtsVUcNOqcqI/LXPg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MDC2SQo48nwaORpLvtXXdf0NVKq2L4S27+lYat1JaMmOnN1PPfm5taRmiZEJ1hG11vXDZetY+NNWKfjr0g1qWkIIkDeHjadNUBg4QYqqlhdG6hgpUIF6nsXkUkyEzw8O7nYBBxe8H62Fg2EdOkgajnTWIc5vSB1hki3FaKelPts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=KPFEeInt; arc=none smtp.client-ip=218.30.115.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1772592588;
+	bh=pz66RA33n115wePk+1z6PHB25yLmCnUhJIHAE3UThro=;
+	h=From:Subject:Date:Message-Id;
+	b=KPFEeIntlSoa8W20mNzr0p9PGn+f7vZbUgr3AME1SRs5xJw9+z/NHDU3FXpF1QwOs
+	 flAuKWpYPQTrQw76p5AuhYpzpGtnSN1xwBK8mWxWybAwL7ymgztcF2/k6ewjXJ1vBi
+	 pCNSJvqM73t93a28ntbdxo+C438NKUVjF6MUzVJU=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 69A79DBE00005C83; Wed, 4 Mar 2026 10:49:37 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 790547602323
+X-SMAIL-UIID: E1E0329692F345BC87094A53C08E7C58-20260304-104937-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	qiang.zhang1211@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	quic_neeraju@quicinc.com,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	joel@joelfernandes.org,
+	rcu@vger.kernel.org,
+	neeraj.upadhyay@kernel.org
+Subject: [PATCH 6.1.y] rcu/nocb: Fix possible invalid rdp's->nocb_cb_kthread pointer access
+Date: Wed,  4 Mar 2026 10:49:34 +0800
+Message-Id: <20260304024934.2364383-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-User-Agent: Mozilla Thunderbird
-References: <20260303005619.1352958-1-johunt@akamai.com>
-Received: from [192.168.1.104] ([39.182.0.182]) by smtp.feishu.cn with ESMTPS; Wed, 04 Mar 2026 10:18:42 +0800
-Reply-To: yukuai@fnnas.com
-Cc: <ncroxon@redhat.com>, <stable@vger.kernel.org>
-Date: Wed, 4 Mar 2026 10:18:40 +0800
-Content-Language: en-US
-To: "Josh Hunt" <johunt@akamai.com>, <song@kernel.org>, 
-	<linan122@huawei.com>, <linux-raid@vger.kernel.org>, <yukuai@fnnas.com>
-X-Original-From: Yu Kuai <yukuai@fnnas.com>
-X-Lms-Return-Path: <lba+269a79683+058066+vger.kernel.org+yukuai@fnnas.com>
-Subject: Re: [PATCH v3] md/raid10: fix deadlock with check operation and nowait requests
-X-Rspamd-Queue-Id: D17691F9D1E
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3729C1FA0C0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222970-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222971-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[fnnas.com];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yukuai@fnnas.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,quicinc.com,joshtriplett.org,goodmis.org,efficios.com,gmail.com,joelfernandes.org];
+	DKIM_TRACE(0.00)[sina.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	HAS_REPLYTO(0.00)[yukuai@fnnas.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-=E5=9C=A8 2026/3/3 8:56, Josh Hunt =E5=86=99=E9=81=93:
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-> When an array check is running it will raise the barrier at which point
-> normal requests will become blocked and increment the nr_pending value to
-> signal there is work pending inside of wait_barrier(). NOWAIT requests
-> do not block and so will return immediately with an error, and additional=
-ly
-> do not increment nr_pending in wait_barrier(). Upstream change
-> 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
-> call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
-> this condition. raid_end_bio_io() eventually calls allow_barrier() and
-> it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
-> though the corresponding increment on nr_pending didn't happen in the
-> NOWAIT case.
->
-> This can be easily seen by starting a check operation while an applicatio=
-n is
-> doing nowait IO on the same array. This results in a deadlocked state due=
- to
-> nr_pending value underflowing and so the md resync thread gets stuck wait=
-ing
-> for nr_pending to =3D=3D 0.
->
-> Output of r10conf state of the array when we hit this condition:
->
-> crash> struct r10conf.barrier,nr_pending,nr_waiting,nr_queued <addr of r1=
-0conf>
-> 	barrier =3D 1,
->          nr_pending =3D {
->            counter =3D -41
->          },
->          nr_waiting =3D 15,
->          nr_queued =3D 0,
->
-> Example of md_sync thread stuck waiting on raise_barrier() and other requ=
-ests
-> stuck in wait_barrier():
->
-> md1_resync
-> [<0>] raise_barrier+0xce/0x1c0
-> [<0>] raid10_sync_request+0x1ca/0x1ed0
-> [<0>] md_do_sync+0x779/0x1110
-> [<0>] md_thread+0x90/0x160
-> [<0>] kthread+0xbe/0xf0
-> [<0>] ret_from_fork+0x34/0x50
-> [<0>] ret_from_fork_asm+0x1a/0x30
->
-> kworker/u1040:2+flush-253:4
-> [<0>] wait_barrier+0x1de/0x220
-> [<0>] regular_request_wait+0x30/0x180
-> [<0>] raid10_make_request+0x261/0x1000
-> [<0>] md_handle_request+0x13b/0x230
-> [<0>] __submit_bio+0x107/0x1f0
-> [<0>] submit_bio_noacct_nocheck+0x16f/0x390
-> [<0>] ext4_io_submit+0x24/0x40
-> [<0>] ext4_do_writepages+0x254/0xc80
-> [<0>] ext4_writepages+0x84/0x120
-> [<0>] do_writepages+0x7a/0x260
-> [<0>] __writeback_single_inode+0x3d/0x300
-> [<0>] writeback_sb_inodes+0x1dd/0x470
-> [<0>] __writeback_inodes_wb+0x4c/0xe0
-> [<0>] wb_writeback+0x18b/0x2d0
-> [<0>] wb_workfn+0x2a1/0x400
-> [<0>] process_one_work+0x149/0x330
-> [<0>] worker_thread+0x2d2/0x410
-> [<0>] kthread+0xbe/0xf0
-> [<0>] ret_from_fork+0x34/0x50
-> [<0>] ret_from_fork_asm+0x1a/0x30
->
-> Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Josh Hunt <johunt@akamai.com>
-> ---
-> v3:
->    * Call free_r10bio() as per Yu Kuai's suggestion
-> ---
->   drivers/md/raid10.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+[ Upstream commit 1bba3900ca18bdae28d1b9fa10f16a8f8cb2ada1 ]
 
-There are some checkpatch errors and warnings, applied to md-7.0 with some
-changes to commit message.
+In the preparation stage of CPU online, if the corresponding
+the rdp's->nocb_cb_kthread does not exist, will be created,
+there is a situation where the rdp's rcuop kthreads creation fails,
+and then de-offload this CPU's rdp, does not assign this CPU's
+rdp->nocb_cb_kthread pointer, but this rdp's->nocb_gp_rdp and
+rdp's->rdp_gp->nocb_gp_kthread is still valid.
 
-> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-> index 9debb20cf129..b4892c5d571c 100644
-> --- a/drivers/md/raid10.c
-> +++ b/drivers/md/raid10.c
-> @@ -1184,7 +1184,7 @@ static void raid10_read_request(struct mddev *mddev=
-, struct bio *bio,
->   	}
->  =20
->   	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
-> -		raid_end_bio_io(r10_bio);
-> +		free_r10bio(r10_bio);
->   		return;
->   	}
->  =20
-> @@ -1372,7 +1372,7 @@ static void raid10_write_request(struct mddev *mdde=
-v, struct bio *bio,
->  =20
->   	sectors =3D r10_bio->sectors;
->   	if (!regular_request_wait(mddev, conf, bio, sectors)) {
-> -		raid_end_bio_io(r10_bio);
-> +		free_r10bio(r10_bio);
->   		return;
->   	}
->  =20
+This will cause the subsequent re-offload operation of this offline
+CPU, which will pass the conditional check and the kthread_unpark()
+will access invalid rdp's->nocb_cb_kthread pointer.
 
---=20
-Thansk,
-Kuai
+This commit therefore use rdp's->nocb_gp_kthread instead of
+rdp_gp's->nocb_gp_kthread for safety check.
+
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ kernel/rcu/tree_nocb.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 7c28d154b094..2f501de7bec9 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -1112,7 +1112,6 @@ static long rcu_nocb_rdp_offload(void *arg)
+ 	struct rcu_segcblist *cblist = &rdp->cblist;
+ 	unsigned long flags;
+ 	int wake_gp;
+-	struct rcu_data *rdp_gp = rdp->nocb_gp_rdp;
+ 
+ 	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
+ 	/*
+@@ -1122,7 +1121,7 @@ static long rcu_nocb_rdp_offload(void *arg)
+ 	if (!rdp->nocb_gp_rdp)
+ 		return -EINVAL;
+ 
+-	if (WARN_ON_ONCE(!rdp_gp->nocb_gp_kthread))
++	if (WARN_ON_ONCE(!rdp->nocb_gp_kthread))
+ 		return -EINVAL;
+ 
+ 	pr_info("Offloading %d\n", rdp->cpu);
+@@ -1151,7 +1150,7 @@ static long rcu_nocb_rdp_offload(void *arg)
+ 	 */
+ 	wake_gp = rdp_offload_toggle(rdp, true, flags);
+ 	if (wake_gp)
+-		wake_up_process(rdp_gp->nocb_gp_kthread);
++		wake_up_process(rdp->nocb_gp_kthread);
+ 	swait_event_exclusive(rdp->nocb_state_wq,
+ 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB) &&
+ 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_GP));
+-- 
+2.34.1
+
 
