@@ -1,176 +1,155 @@
-Return-Path: <stable+bounces-223030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iF2BINkUqGkonwAAu9opvQ
-	(envelope-from <stable+bounces-223030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 12:17:45 +0100
+	id oJEqJioVqGnUngAAu9opvQ
+	(envelope-from <stable+bounces-223031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 12:19:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E4B1FED84
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 12:17:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1831FEDC9
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 12:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B8C83051AAC
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 11:17:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C87A3025F5B
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 11:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192803A960E;
-	Wed,  4 Mar 2026 11:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6F737186E;
+	Wed,  4 Mar 2026 11:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sbchpt1p"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A42D3A872B
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 11:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772623034; cv=none; b=alb+KQv9HMcgA/YyUd8ETkOofiRWAoHr1xQzdhpJEKv1vtNR9PbBMtlOt+AXJk12l//NdtzXj4suMM5uFmzUrA2m1QQ+knLsRjv+gRjnk+QKoRZ7+TnoSa/d5wGAgnFsFH4u/OCIZMK8vFR7A5pwK3/5dBuWt3NniqJaL6uvWts=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772623034; c=relaxed/simple;
-	bh=lpe8sK3Q0K5JvrAeURp5jkJ2IjH8tbizxjGa24n/SIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dACW5X21kS1eSdow+OSGJD7J/JcXq60mfWOkdhuAPuryXcWAjCvyvYBDoafdqrlrcWPEnwLIwVo1/RJN9Ve9nQh78nIAdl+TsK0D2Wspa+jz8vLEwPEWQms3knJlmU3ihl5/v26cez93Qcd396DRP0pM5UMrteYzCmrF+Oqu6pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6921B339;
-	Wed,  4 Mar 2026 03:17:06 -0800 (PST)
-Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E71843F694;
-	Wed,  4 Mar 2026 03:17:10 -0800 (PST)
-Date: Wed, 4 Mar 2026 11:17:08 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aagUtDTca5d0le2Y@arm.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92951375F96
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 11:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772623137; cv=pass; b=Wsy774b34eW09v3Pk1qLNYxoe6ACfDWCuL7QXHv+C898lyfjR1FiLEDlqiojboKCIguvKVvSyMKbZ5GzXmy7DUi/5ZZ8TFc6J28qS/Pq0d8/HSm77I+9H7I0uAavK1vd9p6gjEEmACRSRmc0m/SjtPJGtcKPAxMC2Y3+C36IJMU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772623137; c=relaxed/simple;
+	bh=k8xntpSn4kLN9LGpsUOGFCVWlyTenObtEwlAbjkHhNc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CT5b9uNoaa3Ug2vhRaAmfbkx4hWC/WqpaA2RAFsgGGbgUR0TjnEZMZrfg3P9R9Fl35zfip6YXLhdaEcealDEGTZdmbWYPQkHCKE7cP3eq4gqMLVp2t7Iyiv6bVzvhembIF6mMQuWggFNel8AKYqvZ+BIFpGhrDf/9ac/2jczFHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sbchpt1p; arc=pass smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3870dec27f4so55487351fa.1
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 03:18:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772623135; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M8HFOQpk/ca2vGU7w24CQ3yezt6DlaHbHN60d2Oqv22/xutQ/f6exR4KBWFl3tTVWU
+         ZZgEanAQ4SCtLnP1iAs31BLWN/4yYachrbDD1kFjS0GjnbBhnqBS+vrO63lh20nWcX7e
+         8cueHl2xfOrrbxVmxbcWvYanUhU+mS4l69x5JajsGiH32prl5Eskkkyj8PTaDnykRwU8
+         zbNqTzarljHXeF2S+24zJUXn2LoupnOjZ0nqmLGe/cCjf6JP5fuAQK9wo7UCb4+60HhB
+         MxTk5osckC+aNlIVUUmEi6oc+/IGtUBB9rysyJWkQXo7aIHvLB63HTn4QwMhKviegWNo
+         eOXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k8xntpSn4kLN9LGpsUOGFCVWlyTenObtEwlAbjkHhNc=;
+        fh=vkVJElrC6y+YgdguXclGemK0WUwENM1g7csap6g6wc4=;
+        b=lqHYR1ynlqJa6vINNO+pusxCQLY5jDlOhPYNv2i/B77eBazlVVCzNeu+9sD8ReLc6V
+         I5rKUiKc10SQDxEQ9rRHwIrvlyBdncgLIfwPnvXwqajl053rCh76nqvuZ1oB3ITYP3C6
+         eOuOo6R5BtHJe3LLVWvrVIElL4Kb29SrFvRgQN/zVcQaBASnTVvVnvUxbvxB3X1h7Y1p
+         bACtIPwd3uphFx+0CIMnaYuYIKhTTqgXf4K2yA7IT7DeyMYfzmsh0MphtlKAPZGulWhY
+         z2j7Wp2rBAd3b5L6xUEGfaAYI/EnhG91rsQ/qmo8BtAf1vFe9BKDJTIzFpsghLgsUfml
+         xkfg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772623135; x=1773227935; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k8xntpSn4kLN9LGpsUOGFCVWlyTenObtEwlAbjkHhNc=;
+        b=Sbchpt1pl4qwgHDInOHJzXeSlpxrS+H1Msbr2Upjx03lnRyN2gfVDl6JDFJNMEiUOS
+         ywskKclMsagXf2IhHKuVUS9tIvHOn69Y0EFiM87tnnLFXDp2ke5NEqfZHtkzGJBl5P7Q
+         yihGEJoij/q4uQiQsTBSq+fvLsxcEPbAg9Hru0GkNHA7QArcWWfxg+PA0eacQLOrNG0R
+         RxttAB8xbWLauffMTW4giS9beEOvWUVAzFSWHtDf8qe68Zi5q2Zpt/HRGJge2unt9Dde
+         itjmd1+k8vBdt7ceAvjgTDvhco57vZaU5jsVKTopMwHG5YVW2Qpzi2asc2gtLD5b4eG7
+         qJBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772623135; x=1773227935;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k8xntpSn4kLN9LGpsUOGFCVWlyTenObtEwlAbjkHhNc=;
+        b=d5lGAKLup59a9sZr1Lbfk7lOpKCPdhFrxcl7hSx3+lEv9S3ePxPsqxGew2ft1W2zn8
+         R51hLyB7kcS2MnaOkRXC2WjZhq4ccf/JboqLDfD++Ktq4KdbpL3cj3vzHgLNGFAQgwol
+         /kE1t0iZsai6oH2ljA6jK9YfkI3jGkxMoU6IiI9VG6GSLftUJRzzf7KUbSTZJAPVspao
+         tlvFHLvo2IBp0lOsUZpYfcoyK2Wmxy4NuGyhcEJUXBEI17Y6DITkMd+/QdvbcqEJMSDa
+         BvfNfPLlr4WPdE9wvcloPmpyhVgwvMYEp4kcCCgZoh/q40QQhDoK7cHyXrFUDtDnT9ys
+         HPIw==
+X-Gm-Message-State: AOJu0Yx9PcPnFSQO08/GJ4u29nG0pM60nDfDHRmFAJWAnjCWeYTmC6Jk
+	XW5gbSDtGrn0N8dRl8yieL/+IuVdmddH6XL5eez1tWshyzZXVIyTa8htKUFOJWdjep3wCdbjs83
+	MFSaErjCD+jbTA/MGcqlXDCPwE4VaZIU=
+X-Gm-Gg: ATEYQzxOBv6/blFYr23ZP72IemptxVDdZEhzLBM8HWCAsVbBSJaA3VWkUXrjIBHu40U
+	VTQ51VNVrkFa60gW9i/tA4jiOzxT54saOkQfkhn0HO/sLHAUcuByWFseqBX+agUISCh+iAUrGiK
+	q4UNRRlCT+kIdHRlHGlMqUSOt1a1g9oDiNcr6Ff80wuQI7Eqd1laM6WkQ9Yvye/Nkr0FJecqEI8
+	Vb8mSEJ101xsbp3noItZIjKtY6WCT8TzwvtNKLImxdzcbl4aLP0ajkeOfOlkokleAa2buGTnrS4
+	GOC0z1Oz0RclC4pvSLt2FkL+FcxeLpH/YYQ5RhzE5qEAR4E3xki/jtjiYa9dgun3ynvQ9A+X
+X-Received: by 2002:a2e:9699:0:b0:389:e2e8:4f4c with SMTP id
+ 38308e7fff4ca-38a1c42fd11mr29290901fa.21.1772623134489; Wed, 04 Mar 2026
+ 03:18:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
-X-Rspamd-Queue-Id: 24E4B1FED84
+References: <20260303132143.766078-1-festevam@gmail.com> <20260303132143.766078-2-festevam@gmail.com>
+ <2026030422-snore-parsley-2501@gregkh>
+In-Reply-To: <2026030422-snore-parsley-2501@gregkh>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 4 Mar 2026 08:18:42 -0300
+X-Gm-Features: AaiRm52Zvt2iFWuVjmnPrIN4MBFnJMLdY5blf3E7Xmb8ZskefAx76djlwC0TdMA
+Message-ID: <CAOMZO5DioXemJEmX2Zu+vrwpOii_hQCoz-Z8XQYvPkcuzQXx9w@mail.gmail.com>
+Subject: Re: [PATCH stable] ASoC: fsl_xcvr: provide regmap names
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, broonie@kernel.org, 
+	alexander.stein@ew.tq-group.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0F1831FEDC9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223030-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-223031-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.934];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arm.com:mid]
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[festevam@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 10:37:51PM -0800, Piotr Jaroszynski wrote:
-> contpte_ptep_set_access_flags() compared the gathered ptep_get() value
-> against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
-> from all sub-PTEs in the CONT block, so a dirty sibling can make the
-> target appear already-dirty. When the gathered value matches entry, the
-> function returns 0 even though the target sub-PTE still has PTE_RDONLY
-> set in hardware.
-> 
-> For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
-> may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
-> result as authoritative for the entire range. But an SMMU without HTTU
-> (or with HA/HD disabled in CD.TCR) evaluates each descriptor
-> individually and will keep raising F_PERMISSION on the unchanged target
-> sub-PTE, causing an infinite fault loop.
+Hi Greg,
 
-This can also happen if not all CPUs support the hardware updates of the
-AF/dirty bits.
+On Wed, Mar 4, 2026 at 6:08=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
 
-> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-> index bcac4f55f9c1..9868bfe4607c 100644
-> --- a/arch/arm64/mm/contpte.c
-> +++ b/arch/arm64/mm/contpte.c
-> @@ -390,6 +390,23 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
->  }
->  EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
->  
-> +static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
-> +{
-> +	pte_t *cont_ptep = contpte_align_down(ptep);
-> +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
-> +	pteval_t entry_access = pte_val(entry) & access_mask;
-> +	int i;
-> +
-> +	for (i = 0; i < CONT_PTES; i++) {
-> +		pteval_t pte_access = pte_val(__ptep_get(cont_ptep + i)) & access_mask;
-> +
-> +		if (pte_access != entry_access)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->  					unsigned long addr, pte_t *ptep,
->  					pte_t entry, int dirty)
-> @@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->  	int i;
->  
->  	/*
-> -	 * Gather the access/dirty bits for the contiguous range. If nothing has
-> -	 * changed, its a noop.
-> +	 * Check whether all sub-PTEs in the CONT block already have the
-> +	 * requested access flags, using raw per-PTE values rather than the
-> +	 * gathered ptep_get() view.
-> +	 *
-> +	 * ptep_get() gathers AF/dirty state across the whole CONT block,
-> +	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
-> +	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
-> +	 * the gathered result as authoritative for the entire range. But an
-> +	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
-> +	 * each descriptor individually and will keep faulting on the target
-> +	 * sub-PTE if its flags haven't actually been updated. Gathering can
-> +	 * therefore cause false no-ops when only a sibling has been updated:
-> +	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
-> +	 *  - read faults:  target still lacks PTE_AF
-> +	 *
-> +	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
-> +	 * become the effective cached translation, so all entries must have
-> +	 * consistent attributes. Check the full CONT block before returning
-> +	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
-> +	 * range.
->  	 */
-> -	orig_pte = pte_mknoncont(ptep_get(ptep));
-> -	if (pte_val(orig_pte) == pte_val(entry))
-> +	if (contpte_all_subptes_match_access_flags(ptep, entry))
->  		return 0;
+> What kernel tree(s) is this for?
 
-Actually, do we need to loop over all the ptes? I think it sufficient to
-only check the one at ptep since it is the one that triggered the fault.
-Instead of ptep_get(ptep), use __ptep_get(ptep). The rest of the
-function sets the flags correctly for all the ptes in the contig range.
+6.18 stable, please.
 
--- 
-Catalin
+Thanks
 
