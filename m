@@ -1,214 +1,314 @@
-Return-Path: <stable+bounces-222968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNnaLEmQp2lKiQAAu9opvQ
-	(envelope-from <stable+bounces-222968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:52:09 +0100
+	id kJUCKLyTp2meiQAAu9opvQ
+	(envelope-from <stable+bounces-222969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:06:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D49E1F9B25
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 02:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2EE1F9C69
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 023543040ABE
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 01:52:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BBE430432F4
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 02:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD6031F993;
-	Wed,  4 Mar 2026 01:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2675246778;
+	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bmMYle0/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2CN+HeIN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF1330FC26
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 01:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772589122; cv=pass; b=c1ATlbuClaJLDHb7iciN82wctBFUn6s6Bxe5KNpMhLC28dbprhMeREaTE72LDOLG+f/uD7g8LQCY4ENuE4SRcbOOddfAu66UDfXrs4o04fVpIAdc+t7atBXjsd95qLZ4+xNMRDiDnuXG81qTu3rTte1s/0Egby/wRnXKzk2BajQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772589122; c=relaxed/simple;
-	bh=QTscViB8grxAPCOC78xs5ygdoQOVpxF68NTIhCjZGd8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qrk/gO0rOHUH/fi7HCyGyw66uSs36r5aKVWEVwwRE55JsSQdgzAYhKY/lWhc0vLisQh5aKODXcu9UOAfsaJ902dGB41xqnUZ0i1CdgGJjnd6qnAjHVXQAtGVGspzu8GvMiBW4fkpfLbLn63P5Mor25AlQ8Am5mTKm/VHvlIgjoA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bmMYle0/; arc=pass smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4c68f0e47so4246580a34.1
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 17:52:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772589120; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KvmHSJYIg0AEjva8O16kAOtwY2jWFinKarn0VKsOhF6IfufkDkXeR/aWy75b6Uj2ZA
-         iawfqNupqALgJY355NQybjQeLctJQtj5bkTMavBVZ+8sr5uEoY1dtre4A75+QXkzqlrC
-         Z59fIa43HmjDtM/S8dIf6lAXYQLyYVSdK+ByPtGIL9OJWXJl44RMbUduWY+5baAnj+KN
-         14dGZquqbIkEa+gfOEwOnhQMprD/PDBmXIWtUxuogkIb7SSTXucSPuIn2cYoAaE1kqO2
-         BIxcghW7jZFHSN2ERYeZ9KSlYUxPhoGtzRdoPOwYVNnny9wgM+G8WDl/0Gh2aCmA+fp2
-         tPIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M6DDwwLbvNw2aNPI0sJJsmh0LIhfNj8P7L/0HpfFzVA=;
-        fh=QpcS+TM39JRph/TpNJ7jjFD54c8Y5Gv00YmwkixVakk=;
-        b=R2kV10Lg1uYoitbThyYzNvt8MHKzf+3o4TmTUYOvK5CmH/UF590pceEM9/3oYqUpl5
-         F37PzY1NKNjWEYYcI813pen9udSQ6Dm1QADakWwphWJ6OIoabkFF7eA4GCj+xvZ69mA4
-         Gpi8NIWnwQoHKRhE01tKpeJUzRNJftoDtg93oB9JxMipvbmC451L6hmX8CN7hfNk4oNc
-         CQ8njIEaRrSas6pwiM4EvIshDAZZou8Zhl33P19/ZN8pWCtZMMEzV0fv89BvW9QnD6my
-         EpYg6Z/1OiUpbaPZOdkVsQhRxcIklqlTCBNEOU2tmtxBY41mUkykP35hcBP/y26g6fbw
-         X5rw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772589120; x=1773193920; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M6DDwwLbvNw2aNPI0sJJsmh0LIhfNj8P7L/0HpfFzVA=;
-        b=bmMYle0/IHWlDUnHnDZZuuGRBBgdaH7No47+rVSbx8RxH+htECLHCuEnoqenVUOCLT
-         cC1eGTP6EBz195pxJbin/CPALxLxO4feJ+Fw4djgHNRn6y4h1hKXC0rZuhViFR2CXsYh
-         t7iF9RKKDxHyk1qJcAhj8u1vrDUlkwgirE0bVt9theGI1Hr8VkBJI/A1ewsIt8ck1FD4
-         cwHRE6odQcKcv+0yCX27RTe+yLtSmkhrvVYqi/UB5rGhFgQSzBChAcGS8BIShTrFClzn
-         yn58r03OdaDZHu+n4FRVC1eChWDrI9PxjSLMwVmnCjwKM50TAKHVtp1kd+iOtnjK6xmL
-         WZlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772589120; x=1773193920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M6DDwwLbvNw2aNPI0sJJsmh0LIhfNj8P7L/0HpfFzVA=;
-        b=IjdQlz3POZZv8HsqzMgRZNhSi+5EasQXr+OPJfhDr0/K29e31O9Yh1bDWfiTAXEjqt
-         AnysJhuDp6vt71MaaHukyXgocEcMk25hCOaD85uZwQ4YE86pN6S17ZzuO0BqgZ+oMLr1
-         cHFcmUR0WxSRzV7BUjBW8zb/GeRGj38uewVYs/ca9kO0KK2gkcLV4ONAlyTHwE1rPd6y
-         C1aCf8lKk6PsvamOyme22oedLhQThhU5HtikvpwstVEYPTB4xeFLsIG8OVioB9PRAeVX
-         ZeFIu/Oz27E91cbnwUj9ySvl7Vt64plGvFeyXneFJAR+pSpgAscUj6zYK7wR6/+XzU2p
-         z9bw==
-X-Gm-Message-State: AOJu0YzZCiJtTE3oUROcka3gIJWq6UNa4zkdYnGbRLEw5xmqDabyXclt
-	4R4nTCQvY15zuZSdWvZK5IyAg9tRQJljlyBWehILDbY7mq1hs4hzqwGDE4yVb9WxtKGW+kCRDIc
-	KOPIVNni2wbiphbEPWzHJsW4M1klXKaM=
-X-Gm-Gg: ATEYQzzqH1oDwhTRLX6TRBQg/Z0iyOwx1SRcCeCqsGjTE7Fbq6a68C1woKjyPad7tki
-	T0OxR88G6Xe5S4uGAwQNrW26p2N4oLjiiqZXlp+kPK4r37hDu26rCFvGvJ1/DtF4hhArXJMf0SB
-	XMEIn8m9k/bVBBzVq4M9f4kzQsLex9I6lsBRL16MygE29hPv677DRDj1M2dhL/YwVVuUjc3X5Cc
-	owgJg7aIvz0DFSwDn3E1KIuWI5utoGs8VnIywwmF5S5IJYBANUR7l85mZuDOmqXpGdTyWasv7cv
-	cI7p+zBpQw==
-X-Received: by 2002:a05:6820:2103:b0:663:40d:48a3 with SMTP id
- 006d021491bc7-67b176e6077mr466708eaf.8.1772589120344; Tue, 03 Mar 2026
- 17:52:00 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E86F513;
+	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772589991; cv=none; b=KY2UbABf6YU/SrbFGoShtZxP20V+eUgQMKq6cfuRPC/Pa2f95uW0l6CFInVwVPgUH9KsnkofC5yeekAtEryZ8R43i7TP++EvASjWFLBUN5x6xnT7oFCg/5cFxHz8LUmeCETXb90sTJ/OcUL7dA+DtiuWGTAiEDM1NpUVvE195VU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772589991; c=relaxed/simple;
+	bh=l6n1/MVirCT1t8Uff3oa+jguL3arHGTyLd4riEuej3M=;
+	h=Date:To:From:Subject:Message-Id; b=EwQPn/8Nfaznfc/n0dLydLecmY2CqjQcACAYsA/L+kAGU9ABOXFbsJPv4EY0xDvG9vfpOIKknV+s0X28i3M1to7cJYsNpoluv4Zk8JyclpLrwAnxvczimj1DoFA8YRGr1L6eTkrdK7T+TyZbwu/mh/XpvSY0HK9rSHEiPIicm7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2CN+HeIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B29C19422;
+	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772589991;
+	bh=l6n1/MVirCT1t8Uff3oa+jguL3arHGTyLd4riEuej3M=;
+	h=Date:To:From:Subject:From;
+	b=2CN+HeINQNpoatHNRESyg/dgPcy66z9ItwSHSHCg+Tb3dBxrPiD8iRwLZ4BVGzmSC
+	 SK4vbQk1+20LxnMNdETMRCM4NjKieLgGEQEhRC+hnrxRhdYFYqx45NuT6DgGEEydZI
+	 qui6tkRq3+DosZDd8zf6b7uwWFfw2RkClK83ZqGc=
+Date: Tue, 03 Mar 2026 18:06:30 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,ryan.roberts@arm.com,riel@surriel.com,richard.weiyang@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,harry.yoo@oracle.com,david@kernel.org,baohua@kernel.org,anshuman.khandual@arm.com,dev.jain@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260304020631.33B29C19422@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260303143750.57741-1-zcgao@amazon.com>
-In-Reply-To: <20260303143750.57741-1-zcgao@amazon.com>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Wed, 4 Mar 2026 10:51:49 +0900
-X-Gm-Features: AaiRm508utMxlCnXWm0XMHauHt_ar85nHp82rxSyqeJ69Eb5S7fy7_qQQswNDEo
-Message-ID: <CAMArcTWhzfPCAz1XNv1YTTbRKahiar-W1jG6sHW2RP=74LXKWg@mail.gmail.com>
-Subject: Re: [PATCH 6.1.y] Revert "selftests: net: amt: wait longer for
- connection before sending packets"
-To: Nathan Gao <zcgao@amazon.com>
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, sashal@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0D49E1F9B25
+X-Rspamd-Queue-Id: EF2EE1F9C69
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222968-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222969-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,suse.cz,arm.com,surriel.com,gmail.com,oracle.com,google.com,kernel.org,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ap420073@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Tue, Mar 3, 2026 at 11:38=E2=80=AFPM Nathan Gao <zcgao@amazon.com> wrote=
-:
->
 
-Hi Nathan,
-Thank you so much for taking care of it.
+The patch titled
+     Subject: mm/rmap: fix incorrect pte restoration for lazyfree folios
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
 
-> This reverts commit 7724036d4804222007689cd69f248347eb154793 which is
-> commit 04708606fd7bdc34b69089a4ff848ff36d7088f9 upstream.
->
-> The reverted patch introduced dependency on lib.sh under net selftests.
-> The file was introduced in v6.8-rc1 via commit 25ae948b4478
-> ("selftests/net: add lib.sh").
->
-> Without lib.sh, the amt test fails with:
-> ./amt.sh: line 76: source: lib.sh: file not found
->
-> The whole history of lib.sh includes about 50 commits and considering
-> the file never landed on 6.1 it may be better to not introduce it.
->
-> Signed-off-by: Nathan Gao <zcgao@amazon.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
 
-Acked-by: Taehee Yoo <ap420073@gmail.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> ---
->  tools/testing/selftests/net/amt.sh | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests=
-/net/amt.sh
-> index ea40b469a8c1..7e7ed6c558da 100755
-> --- a/tools/testing/selftests/net/amt.sh
-> +++ b/tools/testing/selftests/net/amt.sh
-> @@ -73,8 +73,6 @@
->  #       +------------------------+
->  #=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
->
-> -source lib.sh
-> -
->  readonly LISTENER=3D$(mktemp -u listener-XXXXXXXX)
->  readonly GATEWAY=3D$(mktemp -u gateway-XXXXXXXX)
->  readonly RELAY=3D$(mktemp -u relay-XXXXXXXX)
-> @@ -242,15 +240,14 @@ test_ipv6_forward()
->
->  send_mcast4()
->  {
-> -       sleep 5
-> -       wait_local_port_listen ${LISTENER} 4000 udp
-> +       sleep 2
->         ip netns exec "${SOURCE}" bash -c \
->                 'printf "%s %128s" 172.17.0.2 | nc -w 1 -u 239.0.0.1 4000=
-' &
->  }
->
->  send_mcast6()
->  {
-> -       wait_local_port_listen ${LISTENER} 6000 udp
-> +       sleep 2
->         ip netns exec "${SOURCE}" bash -c \
->                 'printf "%s %128s" 2001:db8:3::2 | nc -w 1 -u ff0e::5:6 6=
-000' &
->  }
-> --
-> 2.47.3
->
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Dev Jain <dev.jain@arm.com>
+Subject: mm/rmap: fix incorrect pte restoration for lazyfree folios
+Date: Tue, 3 Mar 2026 11:45:28 +0530
+
+We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.  If the
+batch has a mix of writable and non-writable bits, we may end up setting
+the entire batch writable.  Fix this by respecting writable bit during
+batching.
+
+Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+lost, preserve it on pte restoration by respecting the bit during
+batching, to make the fix consistent w.r.t both writable bit and
+soft-dirty bit.
+
+I was able to write the below reproducer and crash the kernel. 
+Explanation of reproducer (set 64K mTHP to always):
+
+Fault in a 64K large folio.  Split the VMA at mid-point with
+MADV_DONTFORK.  fork() - parent points to the folio with 8 writable ptes
+and 8 non-writable ptes.  Merge the VMAs with MADV_DOFORK so that
+folio_unmap_pte_batch() can determine all the 16 ptes as a batch.  Do
+MADV_FREE on the range to mark the folio as lazyfree.  Write to the memory
+to dirty the pte, eventually rmap will dirty the folio.  Then trigger
+reclaim, we will hit the pte restoration path, and the kernel will crash
+with the trace given below.
+
+The BUG happens at:
+
+	BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
+
+The code path is asking for anonymous page to be mapped writable into the
+pagetable.  The BUG_ON() firing implies that such a writable page has been
+mapped into the pagetables of more than one process, which breaks
+anonymous memory/CoW semantics.
+
+[   21.134473] kernel BUG at mm/page_table_check.c:118!
+[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   21.135917] Modules linked in:
+[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+[   21.136858] Hardware name: linux,dummy-virt (DT)
+[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   21.137308] pc : page_table_check_set+0x28c/0x2a8
+[   21.137607] lr : page_table_check_set+0x134/0x2a8
+[   21.137885] sp : ffff80008a3b3340
+[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+[   21.141991] Call trace:
+[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+[   21.142766]  contpte_set_ptes+0xe8/0x140
+[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+[   21.143177]  rmap_walk_anon+0x100/0x250
+[   21.143315]  try_to_unmap+0xa0/0xc8
+[   21.143441]  shrink_folio_list+0x59c/0x18a8
+[   21.143759]  shrink_lruvec+0x664/0xbf0
+[   21.144043]  shrink_node+0x218/0x878
+[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+[   21.144763]  user_proactive_reclaim+0x2a4/0x340
+[   21.145056]  reclaim_store+0x3c/0x60
+[   21.145216]  dev_attr_store+0x20/0x40
+[   21.145585]  sysfs_kf_write+0x84/0xa8
+[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+[   21.145994]  vfs_write+0x2b8/0x368
+[   21.146119]  ksys_write+0x70/0x110
+[   21.146240]  __arm64_sys_write+0x24/0x38
+[   21.146380]  invoke_syscall+0x50/0x120
+[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+[   21.146679]  do_el0_svc+0x28/0x40
+[   21.146798]  el0_svc+0x34/0x110
+[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+[   21.147074]  el0t_64_sync+0x198/0x1a0
+[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+[   21.147440] ---[ end trace 0000000000000000 ]---
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sched.h>
+#include <fcntl.h>
+
+void write_to_reclaim() {
+    const char *path = "/sys/devices/system/node/node0/reclaim";
+    const char *value = "409600000000";
+    int fd = open(path, O_WRONLY);
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+
+    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+        perror("write");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Successfully wrote %s to %s\n", value, path);
+    close(fd);
+}
+
+int main()
+{
+	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if ((unsigned long)ptr != (1UL << 30)) {
+		perror("mmap");
+		return 1;
+	}
+
+	/* a 64K folio gets faulted in */
+	memset(ptr, 0, 1UL << 16);
+
+	/* 32K half will not be shared into child */
+	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+		perror("madvise madv dontfork");
+		return 1;
+	}
+
+	pid_t pid = fork();
+
+	if (pid < 0) {
+		perror("fork");
+		return 1;
+	} else if (pid == 0) {
+		sleep(15);
+	} else {
+		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+			perror("madvise madv fork");
+			return 1;
+		}
+		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+			perror("madvise madv free");
+			return 1;
+		}
+
+		/* dirty the large folio */
+		(*ptr) += 10;
+
+		write_to_reclaim();
+		// sleep(10);
+		waitpid(pid, NULL, 0);
+
+	}
+}
+
+Link: https://lkml.kernel.org/r/20260303061528.2429162-1-dev.jain@arm.com
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/rmap.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+--- a/mm/rmap.c~mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios
++++ a/mm/rmap.c
+@@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_p
+ 	if (userfaultfd_wp(vma))
+ 		return 1;
+ 
+-	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
++	/*
++	 * If unmap fails, we need to restore the ptes. To avoid accidentally
++	 * upgrading write permissions for ptes that were not originally
++	 * writable, and to avoid losing the soft-dirty bit, use the
++	 * appropriate FPB flags.
++	 */
++	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
++				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+ }
+ 
+ /*
+_
+
+Patches currently in -mm which might be from dev.jain@arm.com are
+
+mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
+khugepaged-remove-redundant-index-check-for-pmd-folios.patch
+
 
