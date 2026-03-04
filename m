@@ -1,146 +1,228 @@
-Return-Path: <stable+bounces-223115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDnzAGVwqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:21 +0100
+	id uJ0JMmtwqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CB6205691
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423482056A7
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3A0130AE372
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:45:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B131B30B4797
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628BF3CB2E8;
-	Wed,  4 Mar 2026 17:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824CE3CB2E5;
+	Wed,  4 Mar 2026 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ctaQX3UB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BV1Xw8WR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2680C3CA48F;
-	Wed,  4 Mar 2026 17:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459023B7B8C;
+	Wed,  4 Mar 2026 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772646312; cv=none; b=FljrJTHe791wbNzqSR1sFbFFIry3amvpO7cQbjGlreJqteNvio9PjtU15fAqDgFJ58RTO12WtxWpUuXQVLn56RKOWcL/f8HAsLFgLGum5ztKWLmeFvBcDfgk4oy5s5lUQuBapy1I9kD6tQNpVDk64jlESI0SxTLqImobWof+tcU=
+	t=1772646316; cv=none; b=JYN2abpSZ7lH45UnpR/kv99Pc5UIBzuagZcVn8aovBa9EeTZosrzEaa3dt5rIrHYhYxvWdevXQveHb8ajuooO3bn/tFaHnZokCSkWKmOXs3PmVBLr+18WY/Q4vUkKMJ8bJWcM1Vb1dYBEQmz4AogRCNWf/wD8E7aip+3/lxIYPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772646312; c=relaxed/simple;
-	bh=SY4SK3XgsQkUnLcRj5uCelZ4icGKJP9DqamZrTudYuU=;
-	h=Date:To:From:Subject:Message-Id; b=VWqmNnmg84ldC/6bAkczfPBqexa5QfmOPHaEkr/qjGyqwsO35nqv/fCq8t8X3Q1mKCaAOGZ49qAKCJF2/IrB31IMiUR0UodBhNWz6FXcymsxbb3LvUorss6MJsZ8/YAbUbnRRwdH6frIiXwvpNvpSt1JyUmuP+v3G1kjQWxxp1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ctaQX3UB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2239C19425;
-	Wed,  4 Mar 2026 17:45:11 +0000 (UTC)
+	s=arc-20240116; t=1772646316; c=relaxed/simple;
+	bh=aHGrYKmyTI7mfNtq3NtPvMpGaSo0V6qBZ02Ef80RnL0=;
+	h=Date:To:From:Subject:Message-Id; b=BMqrHP8VpchbYq9Xe+EefjTxL/rcOlYF0qDOlOXD5pCBGHmmBB2xdwNG9tVrvoAWgLR+EOOzJt0dCbGTGTn1SUfoNCSsO1JdWx3v2m9Vt315s/cF5lcZse07WwM3PQ2KSp2qSY+YZK/gq2hnLC7nDDpqXiEcaUES0TtKMzoXiTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BV1Xw8WR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31CCC19425;
+	Wed,  4 Mar 2026 17:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772646312;
-	bh=SY4SK3XgsQkUnLcRj5uCelZ4icGKJP9DqamZrTudYuU=;
+	s=korg; t=1772646315;
+	bh=aHGrYKmyTI7mfNtq3NtPvMpGaSo0V6qBZ02Ef80RnL0=;
 	h=Date:To:From:Subject:From;
-	b=ctaQX3UBoNLUW2zxMG5/XO3CQJOxw1/kjeDw7E/8ticLhtG3E1hgVI3o8mA23s2si
-	 IjNwzPMHZvUo4SW8maot0t/HdmtnFjt4yjStcQi/bfYtIghWJtbeerxBGuIv0E5eMB
-	 tdx9O7XTj5vG5Ic6XaS8yCYMYfYhswIZg/2eeenk=
-Date: Wed, 04 Mar 2026 09:45:11 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.com,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,hao.li@linux.dev,akpm@linux-foundation.org
+	b=BV1Xw8WRI94FSPbwZLUZoivyOfg8cbo3NVS+yuoqkmml7aDghLLiTeF0Z0AtwAocQ
+	 j6M7tK8bIAcQMU1QIZJv7KVYRfWoGoBMGvE2HjlZBLHavyilY73VlSNU/hsYAz3Ior
+	 Bp75KqLUOx31vzsJgkXfchQpAMqATP/UgYwbYTnA=
+Date: Wed, 04 Mar 2026 09:45:15 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,richard.weiyang@gmail.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,hughd@google.com,dev.jain@arm.com,david@kernel.org,bas@dfinity.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] memcg-fix-slab-accounting-in-refill_obj_stock-trylock-path.patch removed from -mm tree
-Message-Id: <20260304174511.F2239C19425@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch removed from -mm tree
+Message-Id: <20260304174515.D31CCC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 57CB6205691
+X-Rspamd-Queue-Id: 423482056A7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-223115-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223116-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,infradead.org,arm.com,gmail.com,redhat.com,oracle.com,linux.dev,google.com,kernel.org,dfinity.org,linux.alibaba.com,nvidia.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email,suse.com:email,linux.dev:email,cmpxchg.org:email]
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 
 The quilt patch titled
-     Subject: memcg: fix slab accounting in refill_obj_stock() trylock path
+     Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
 has been removed from the -mm tree.  Its filename was
-     memcg-fix-slab-accounting-in-refill_obj_stock-trylock-path.patch
+     mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Hao Li <hao.li@linux.dev>
-Subject: memcg: fix slab accounting in refill_obj_stock() trylock path
-Date: Thu, 26 Feb 2026 19:51:37 +0800
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+Date: Mon, 2 Mar 2026 15:31:59 -0500
 
-In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should use
-the real alloc/free bytes (i.e., nr_acct) for accounting, rather than
-nr_bytes.
+During a pagecache folio split, the values in the related xarray should
+not be changed from the original folio at xarray split time until all
+after-split folios are well formed and stored in the xarray.  Current use
+of xas_try_split() in __split_unmapped_folio() lets some after-split
+folios show up at wrong indices in the xarray.  When these misplaced
+after-split folios are unfrozen, before correct folios are stored via
+__xa_store(), and grabbed by folio_try_get(), they are returned to
+userspace at wrong file indices, causing data corruption.  More detailed
+explanation is at the bottom.
 
-The user-visible impact is that the NR_SLAB_RECLAIMABLE_B and
-NR_SLAB_UNRECLAIMABLE_B stats can end up being incorrect.
+The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+It
+1. creates a memfd,
+2. forks,
+3. in the child process, maps the file with large folios (via shmem code
+   path) and reads the mapped file continuously with 16 threads,
+4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+   large folio.
 
-For example, if a user allocates a 6144-byte object, then before this
-fix efill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=2048), even
-though it should account for 6144 bytes (i.e., nr_acct).
+Data corruption can be observed without the fix.  Basically, data from a
+wrong page->index is returned.
 
-When the user later frees the same object with kfree(),
-refill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=6144).  This
-ends up adding 6144 to the stats, but it should be applying -6144
-(i.e., nr_acct) since the object is being freed.
+Fix it by using the original folio in xas_try_split() calls, so that
+folio_try_get() can get the right after-split folios after the original
+folio is unfrozen.
 
-Link: https://lkml.kernel.org/r/20260226115145.62903-1-hao.li@linux.dev
-Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
-Signed-off-by: Hao Li <hao.li@linux.dev>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.com>
+Uniform split, split_huge_page*(), is not affected, since it uses
+xas_split_alloc() and xas_split() only once and stores the original folio
+in the xarray.  Change xas_split() used in uniform split branch to use the
+original folio to avoid confusion.
+
+Fixes below points to the commit introduces the code, but folio_split() is
+used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+truncate operation").
+
+More details:
+
+For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+below:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f4 |
++----------------+---------+----+----+
+but the xarray would look like below after __split_unmapped_folio() is
+done:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f3 |
++----------------+---------+----+----+
+
+After __split_unmapped_folio(), the code changes the xarray and unfreezes
+after-split folios:
+
+1. unfreezes f2, __xa_store(f2)
+2. unfreezes f3, __xa_store(f3)
+3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+4. unfreezes f.
+
+Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+f3 is wrongly returned to user.
+
+After the fix, the xarray looks like below after __split_unmapped_folio():
++----------------+---------+----+----+
+|       f        |    f    | f  | f  |
++----------------+---------+----+----+
+so that the race window no longer exists.
+
+[ziy@nvidia.com: move comment, per David]
+  Link: https://lkml.kernel.org/r/5C9FA053-A4C6-4615-BE05-74E47A6462B3@nvidia.com
+Link: https://lkml.kernel.org/r/20260302203159.3208341-1-ziy@nvidia.com
+Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Bas van Dijk <bas@dfinity.org>
+Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memcontrol.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/mm/memcontrol.c~memcg-fix-slab-accounting-in-refill_obj_stock-trylock-path
-+++ a/mm/memcontrol.c
-@@ -3086,7 +3086,7 @@ static void refill_obj_stock(struct obj_
+--- a/mm/huge_memory.c~mm-huge_memory-fix-a-folio_split-race-condition-with-folio_try_get
++++ a/mm/huge_memory.c
+@@ -3631,6 +3631,7 @@ static int __split_unmapped_folio(struct
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+ 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
++	struct folio *old_folio = folio;
+ 	int split_order;
  
- 	if (!local_trylock(&obj_stock.lock)) {
- 		if (pgdat)
--			mod_objcg_mlstate(objcg, pgdat, idx, nr_bytes);
-+			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
- 		nr_pages = nr_bytes >> PAGE_SHIFT;
- 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
- 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
+ 	/*
+@@ -3651,12 +3652,16 @@ static int __split_unmapped_folio(struct
+ 			 * uniform split has xas_split_alloc() called before
+ 			 * irq is disabled to allocate enough memory, whereas
+ 			 * non-uniform split can handle ENOMEM.
++			 * Use the to-be-split folio, so that a parallel
++			 * folio_try_get() waits on it until xarray is updated
++			 * with after-split folios and the original one is
++			 * unfrozen.
+ 			 */
+-			if (split_type == SPLIT_TYPE_UNIFORM)
+-				xas_split(xas, folio, old_order);
+-			else {
++			if (split_type == SPLIT_TYPE_UNIFORM) {
++				xas_split(xas, old_folio, old_order);
++			} else {
+ 				xas_set_order(xas, folio->index, split_order);
+-				xas_try_split(xas, folio, old_order);
++				xas_try_split(xas, old_folio, old_order);
+ 				if (xas_error(xas))
+ 					return xas_error(xas);
+ 			}
 _
 
-Patches currently in -mm which might be from hao.li@linux.dev are
+Patches currently in -mm which might be from ziy@nvidia.com are
 
 
 
