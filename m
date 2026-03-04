@@ -1,98 +1,68 @@
-Return-Path: <stable+bounces-222994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOONKzXdp2lnkgAAu9opvQ
-	(envelope-from <stable+bounces-222994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:21 +0100
+	id 0A5mFXTdp2lnkgAAu9opvQ
+	(envelope-from <stable+bounces-222997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:21:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEA41FB863
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85271FB88A
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 694E1300A7E6
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D02F13015A41
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B570344D8E;
-	Wed,  4 Mar 2026 07:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2D734D385;
+	Wed,  4 Mar 2026 07:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hN0k24ip";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P9HA76O0";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SojPgUT8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LoPTDziY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4YmKS1M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4F308F1D
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9412E308F1D
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608803; cv=none; b=u1HZPspWSjskiogwrX93RXWSYJ/quw0o8jaMSlwpoB0fklKkF2V0w++yjGxMJAuXBcj+/mhwgFNtK0RU4UpfEJ4iP7yW5ZZqS3Ar/8lCq+W5OOUx2HmAf69+freJ/kFl2R/LMZ3/6gEkDKCDiG77+4j8R8Ain7itIVvcb4/n1Ew=
+	t=1772608847; cv=none; b=eyU1vmyKF0TD/+ZE5tg7IuwoIFGWC4W/A+IgQ3G5D7GSvnTBmLaoEdkqdcygoypUVsKJHVqTiMmevJpjBMVNHy5guQQPQecd65VcCxbRXpVMxd0o7C4Kv6rTUKPT4L/Z8LF7CEDH6Ko7kCxZDHr338I633K/mkdjgITtBgqB648=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608803; c=relaxed/simple;
-	bh=5oOIfoX0FPPNQwdyJyv6FEPUF4M+YrHbfkzzIu+MU0M=;
+	s=arc-20240116; t=1772608847; c=relaxed/simple;
+	bh=gs/g+FFrHcAMrvZFa5tAqEwg8s88EPVlvR7P02Xxxlo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZPb0iJJ3sxfXkm9wpIhg7CXh7U7TbLLMKseGnxk7BdyKkNRyr7ifuPAC1cy+3tY++XBJxf+LI/FFt+dbBTEuRzHekluXxOm5ESyG6uryOceI1/Gmrxxzus0LcAqFPdXiDodTyw1y8sV7/bIWqWaO5/NLblKv7bRRHKxbYHTyQhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hN0k24ip; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P9HA76O0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SojPgUT8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LoPTDziY; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 07A033F279;
-	Wed,  4 Mar 2026 07:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772608801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
-	b=hN0k24ipHUTDTgZH23H5wzTOxWfhswghlpacDRjzh8NMBxgj/3e/sjxZTHw8SQ3u+zsYvI
-	g8xl5plTeEGNuf5LS1uLt09QZb2/kiEmWXpDiyQVUlOpZE0QCXKHLCHVdh0aooUwYk4eLX
-	Qi0PgHbGv84+RtVP4qmQHDeTryxOOcA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772608801;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
-	b=P9HA76O0gsknC4RHhVmxZgsGXoO/RoxkbjMWxGqer9bRjAy68RYW0NvjYandLyTYK2NcQl
-	VcLDIhziw9qGrDAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772608800; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
-	b=SojPgUT8nmw2gRXR7xho2zNPizqR8JwLtG6cJ4Gf49Mv28ANeWuIXmALrbfFlx6m8LVjcr
-	ajn1L5zNSR5dDEDuVoCbhSNtKYKAbjzFC0pZEJuqWY97tpWWEb3qioKubPIPzd0ERt6cPs
-	y0DBCO5ooZNkm57l7U9YcsX2Z/yVagI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772608800;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c2KW9e3b5m/hO+gKjgmse68Y8IAqEKUxVDionruVq64=;
-	b=LoPTDziYgj6ZhvILSPpDQKEuzflbXh5CJue59KZEFz/nsRNNLAIaZKXhL5iNCUMJNQiCRE
-	4/ieXEq7Pnq9X0CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AFEB43EA69;
-	Wed,  4 Mar 2026 07:19:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9AaEKB/dp2naRAAAD6G6ig
-	(envelope-from <hare@suse.de>); Wed, 04 Mar 2026 07:19:59 +0000
-Message-ID: <2b40f93f-f987-423d-8263-ba9b10a1bcaf@suse.de>
-Date: Wed, 4 Mar 2026 08:19:59 +0100
+	 In-Reply-To:Content-Type; b=nFvSW/q4raRSQDF3KuHY0YrJaCGaLQW7CdwfzUMEZI5s/7CEX1ju4cBufKmSVM6bxT4gk4fYjYYsd5fh6J4SSKGO5liSfX4iApZTuwji0XQfiN5D1dTQrchlT4FE0yz/vSYcjh3CBlVBezjPR1I8OqjrWg4E++5Txz6ofMhsAy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4YmKS1M; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772608846; x=1804144846;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gs/g+FFrHcAMrvZFa5tAqEwg8s88EPVlvR7P02Xxxlo=;
+  b=Y4YmKS1MXpFQoPRIJVbYC6MZMR+YT3M37r+sz1ZAb3ONU733ZwLpsz4/
+   uzhi2pnKTAOwe9EbqnycqGe9xaf+4OXp/Rb3FJUPp7yoipMIHaDi3GSmA
+   +0JVjlh2qaeQ4mOQYCH6X+7szc3cMEoDif1YwHKDo+9eo5MBOIXc8cLp/
+   xxJ2EpAhGGLX5dGth6H1WOgx1YFTXuteNiNyIWLHP1bS4tF6/Ox1SG2Yx
+   IbwZbFSK6qySk0yWk4bbzgvbAoo7jzPRb0Igs1i6ygYbCzkfTIYZoRLwp
+   QQSLz7xR+o4BvEPoa8jaA8Gos1Ah0qeqWqEwdpMOgem+PQzmsWbmR5LSD
+   w==;
+X-CSE-ConnectionGUID: a5HFcQgNQ+GYVkRCr96LnQ==
+X-CSE-MsgGUID: bgT0ShF7QhO3K6ilukuziA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77268481"
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="77268481"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:46 -0800
+X-CSE-ConnectionGUID: A5+kVgiXSn+sq0RUQkrTbA==
+X-CSE-MsgGUID: Ni1cf27lSROwdTV1k7mGgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="248733775"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:20:44 -0800
+Message-ID: <bf7ba077-ecc0-4ff5-918d-c724b96bb0f6@linux.intel.com>
+Date: Wed, 4 Mar 2026 15:20:05 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,112 +70,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] nvmet-auth: Don't log DHCHAP keys in
- nvmet_setup_auth()
-To: Thorsten Blum <thorsten.blum@linux.dev>, Christoph Hellwig <hch@lst.de>,
- Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
- Jens Axboe <axboe@kernel.dk>
-Cc: stable@vger.kernel.org, linux-nvme@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260303190350.78705-2-thorsten.blum@linux.dev>
- <20260303190350.78705-4-thorsten.blum@linux.dev>
+Subject: Re: [PATCH rc 2/2] iommupt: Fix short gather if the unmap goes into a
+ large mapping
+To: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
+ Will Deacon <will@kernel.org>
+Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Joerg Roedel <joerg.roedel@amd.com>, Kevin Tian <kevin.tian@intel.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
+ Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
+References: <2-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
 Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260303190350.78705-4-thorsten.blum@linux.dev>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <2-v1-13a02eb0e031+a5-iommu_gather_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 5AEA41FB863
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B85271FB88A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222994-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-222997-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.intel.com:mid,nvidia.com:email]
 X-Rspamd-Action: no action
 
-On 3/3/26 20:03, Thorsten Blum wrote:
-> When debug logging is enabled, nvmet_setup_auth() logs the host and
-> controller DHCHAP key bytes. Remove the keys from debug logs to avoid
-> exposing key material.
+On 3/3/26 06:22, Jason Gunthorpe wrote:
+> unmap has the odd behavior that it can unmap more than requested if the
+> ending point lands within the middle of a large or contiguous IOPTE.
 > 
-> Fixes: db1312dd9548 ("nvmet: implement basic In-Band Authentication")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->   drivers/nvme/target/auth.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
+> In this case the gather should flush everything unmapped which can be
+> larger than what was requested to be unmapped. The gather was only
+> flushing the range requested to be unmapped, not extending to the extra
+> range, resulting in a short invalidation if the caller hits this special
+> condition.
 > 
-> diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-> index 2eadeb7e06f2..f24add0bb86f 100644
-> --- a/drivers/nvme/target/auth.c
-> +++ b/drivers/nvme/target/auth.c
-> @@ -199,10 +199,9 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
->   		ctrl->host_key = NULL;
->   		goto out_free_hash;
->   	}
-> -	pr_debug("%s: using hash %s key %*ph\n", __func__,
-> +	pr_debug("%s: using hash %s\n", __func__,
->   		 ctrl->host_key->hash > 0 ?
-> -		 nvme_auth_hmac_name(ctrl->host_key->hash) : "none",
-> -		 (int)ctrl->host_key->len, ctrl->host_key->key);
-> +		 nvme_auth_hmac_name(ctrl->host_key->hash) : "none");
->   
->   	nvme_auth_free_key(ctrl->ctrl_key);
->   	if (!host->dhchap_ctrl_secret) {
-> @@ -217,10 +216,9 @@ u8 nvmet_setup_auth(struct nvmet_ctrl *ctrl, struct nvmet_sq *sq)
->   		ctrl->ctrl_key = NULL;
->   		goto out_free_hash;
->   	}
-> -	pr_debug("%s: using ctrl hash %s key %*ph\n", __func__,
-> +	pr_debug("%s: using ctrl hash %s\n", __func__,
->   		 ctrl->ctrl_key->hash > 0 ?
-> -		 nvme_auth_hmac_name(ctrl->ctrl_key->hash) : "none",
-> -		 (int)ctrl->ctrl_key->len, ctrl->ctrl_key->key);
-> +		 nvme_auth_hmac_name(ctrl->ctrl_key->hash) : "none");
->   
->   out_free_hash:
->   	if (ret) {
+> This was found by the new invalidation/gather test I am adding in
+> preparation for ARMv8. Claude deduced the root cause.
+> 
+> As far as I remember nothing relies on unmapping a large entry, so this is
+> likely not a triggerable bug.
+> 
+> Cc:stable@vger.kernel.org
+> Fixes: 7c53f4238aa8 ("iommupt: Add unmap_pages op")
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 
-Without the key the pr_debug calls are pretty much pointless anyway,
-so you might want to remove them, too.
-
-However, these debug prints really help when trying to figure out
-authentication failures.
-I think it would be better to add a compile-time option to disable
-these outputs entirely.
-
-I'll send a patch.
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
