@@ -1,80 +1,83 @@
-Return-Path: <stable+bounces-223134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I9hL1yVqGkLvwAAu9opvQ
-	(envelope-from <stable+bounces-223134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 21:26:04 +0100
+	id cAoPK2GVqGkLvwAAu9opvQ
+	(envelope-from <stable+bounces-223135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 21:26:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5429A207962
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 21:26:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1600D207969
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 21:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CB9B3021428
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 20:26:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3830300BDBF
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 20:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ABF37B020;
-	Wed,  4 Mar 2026 20:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555AE371873;
+	Wed,  4 Mar 2026 20:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AdUgBjwd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mbwyTci/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB06F2D8DA8
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 20:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C032D8DA8
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 20:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772655962; cv=none; b=ubVNyCfYyt5BICUKmD56wcqH8jGL9BbpNhr0TcXuXdm/+CKxU9S65HkJ/jLMAwejx89zWOk3eqHBjzcqcsNfrPQkZNkk3EryKyX/SHildMcYupskjJ/nsEfpOvn92OVdcuCQANqzAfIu5l3hq6N1OgV7SglbkYTsUHtuvDcXZfA=
+	t=1772655965; cv=none; b=YcaBT6hM9t1kUHd9O6leBtO0VzGJ+NHjZYdH0utBquTxSZxfgbGvDC9FcdVt+xuclDIzcRjJCOotjAxc3FymmFT3fTptIqr11L75K40VvS8N1d4r9W79La9TJHBzo23ul9rz/FMT5dYqmIPj4i4iaGV1sHd2rj8hMQ9AyVR50ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772655962; c=relaxed/simple;
-	bh=GvXVPVXfNIe+CvOHIGzMcEueP9gCjUo1o44+J4HtVY8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SE6KyvMXpnrUx6KNpntBHSRfN+qtR+EDo8t05WDkXouiot1GBiM2YeTQBeMsMGD2JuEVcWiZGdZbHSyL6dzkG/RW/95jADDLhfS5wtdUBsaaudX3PruY9dTC9KhEPljX5CxXmXyXxMHaJFBaCvsW2dX8/G9rLTJLeKBt0WoyC3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wusamuel.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AdUgBjwd; arc=none smtp.client-ip=74.125.82.73
+	s=arc-20240116; t=1772655965; c=relaxed/simple;
+	bh=+ItbB7NDyrIV2taj54G4JuoELcuuQS3QkcHXJgRLNnY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tkiTHuJQz4QYF7lRZvFoBIUZ8bbem92SGTjZM82MDhf3w4SfgPGqD9oF4ZHSjVW7Q4ueCjpnUOKnfNi//tO9jEfIhefuCYSjC6eQbjBn0T0fdYM2eJXzyh7J6RgPP7mLmyyNlPL/ObMi7mKmNNHjlBdLLMKy1swRpzY3ZaIe4bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wusamuel.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mbwyTci/; arc=none smtp.client-ip=74.125.82.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wusamuel.bounces.google.com
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-124a95b6f61so84343693c88.0
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 12:26:00 -0800 (PST)
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2be07cafe1cso52553498eec.0
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 12:26:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772655959; x=1773260759; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ru2fi8pBmtRYgWThXjBxb7JS0ywhBDnYnk/WMB56o0I=;
-        b=AdUgBjwdQ+P9uy+QaN3dY45FAhU82Ti7JfRZTru5DpuS7EmmGFmUGRCOzec/mPErs3
-         /1NxAuPZt1VNSibwV7CCFVw2/F+8Ed/5vC99a6n1T67YysuRMWstr1+lwbTQJockjFmt
-         VdQhkMOM4D8FpNV/qsHqIm50UwT25aQ6tcP0y7Xmaq0gVO2jxZcP7IO0p23gXrupLCti
-         ie8GCCEShYZFdwLn9QXFMClCVQsmphWz2vApWmQjbn9gWT97+XniRDoEmtUY/oBdNu1V
-         JvaYN0chRAVbMiZpSjbHbAXae6Q7RepzaUZzPptmjn49iTecv1Q0AVQsLUa4NbutQQro
-         My1Q==
+        d=google.com; s=20230601; t=1772655963; x=1773260763; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FVKrtXTgYHIR6AJbdUS5WD5LzV68UFDB3oM3B6ETWfQ=;
+        b=mbwyTci/qVmNJFPH+T8rBn7D+IYmJe0k6z8k6rITQ3ACHQ9KJaZB4hWr5XKChSU9Rc
+         4J8ELgH2+v46Um4vpS1pk7kNOIXD+s0iVG4kjN78UHxSAVeip3B96AJj4qTOd8LayjRq
+         P8oZocT8auvDUAyQkoNJs/EiTHT3v7AURELAXFAfJjxeDYV/PD7vHSmqJGGRFcKK6yVy
+         CGufd0PTAJNVIbB6iCQpqgJsFeu5jKpASZh0RnDIR98SS6na+4sikZIt056dhsiVEA62
+         2JfTwrlRxmodmRlvgb6whNE6oOAbI+fHFGhg7uMln4Luk/c5ebK71231UMw/5opFig+a
+         Vpkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772655959; x=1773260759;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ru2fi8pBmtRYgWThXjBxb7JS0ywhBDnYnk/WMB56o0I=;
-        b=VemvQpuEeH9qyaBixKhNdidOoXuAlOe9euA4lf3JUfMGn1Ltxd98DhsVFzodjkQofK
-         ErD9aWYKuWKoPsy06177Ox+FCrJqhhFKDTJSpCattCN4ZGh6DUHLwU8ijprn+fy2o4Z/
-         ePBODEF6THVQPdnBjnVnei3IT4/IOuHB8Y9376b+6VxrUQ4wqSBWsgPGBy0BRjiyLtgT
-         +Au5NKjkyvgSEBCSfOLsdPp5sthQh9LEEQT6csaYWOxWWFOYyOuTUYPydKf3j6pxeI9B
-         jMmF1CybuGyLxtu/t7qHLoe3NeaOEn+brSP/QLOTRvoNEXjuusqWmWSHxEL2M8euypEZ
-         evFQ==
-X-Gm-Message-State: AOJu0YzWAWN5n4RSSyv2phrQXm4k5oTnkkvEwXNlrzlPRMFtVQJyM7OX
-	ZMju2NC7xh5S4PChU8qwRIvM7NznTCwl7jXNOg+rZdrHnIJqPX0agqJWJ9ltG4pUwMRZgh2CIz7
-	xvi5Q4+u7ZPPbQjtx84UtoRC0CtxxLRLZZ2tkSPzUfFU7tXMwA/equmor1p3jgGu12rnljlEDaS
-	jmtDzZW5SFZQNJxiy7jAv7XGnAiEkkjIXK8Gcys6//3ujMMKs=
-X-Received: from dlbeg17.prod.google.com ([2002:a05:7022:f91:b0:127:7897:14d])
+        d=1e100.net; s=20230601; t=1772655963; x=1773260763;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FVKrtXTgYHIR6AJbdUS5WD5LzV68UFDB3oM3B6ETWfQ=;
+        b=gS0TqIA8ALjS40Vo5SbJjSXb9dNgs9l5xAn027sEDSSfywbuHY9J0demdsDXmYDDJu
+         c6oPiXQWphN+XccIfyjdlO4oRfO1o3Nu0gN621QYja60gr55VGl0d6o4PjCICeUGE5AQ
+         f5aPmctudxa1zgkbUQfaEqfeqvDrQHUqI2mpI06+hNMjEop8RYX/YHTU52CzX2/69HY0
+         M1EE/+m9KZZ+N7/P2NAmtfo+PBUViJCytr5j1rmsUwdaKjrG6feZAorN+Ml6rLxAOv5J
+         x/P2RXwj3eeGhtRujDc6DicaEFot07zlziXa6KQD/btiIdolSceIiOe69pKsy8V5boav
+         rl3A==
+X-Gm-Message-State: AOJu0Yyuj1amqmKdCB2gKk5IJ/vV1pWLnBfHyrCjjhhT7VrcRJFLLQtv
+	N4SNmFEtxrJiSb+9h4vX51mWPj6pOHrvpSHsU7Ofg0Ww3wWpnHSsscyYsa8BD1cGtlm/XI+wM3r
+	rv8LxcidTqi9KY6EP2D2w1130xYjlXS3g7aMQsrJWqKSgEXGJ2iypFkKlYFR9+02guQJ+q3Mqbh
+	F1hFc1pRu/y1MObJelKEGRjnwbN21JM0Y2SWh98oHuYCOZDr4=
+X-Received: from dybsl12.prod.google.com ([2002:a05:7301:730c:b0:2bd:fcea:a76f])
  (user=wusamuel job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:403:b0:119:e56b:c75b with SMTP id a92af1059eb24-128b70d5becmr1467757c88.32.1772655958946;
- Wed, 04 Mar 2026 12:25:58 -0800 (PST)
-Date: Wed,  4 Mar 2026 12:25:52 -0800
+ 2002:a05:7301:2f88:b0:2bd:c8d3:a084 with SMTP id 5a478bee46e88-2be30fd21cemr1345457eec.12.1772655962619;
+ Wed, 04 Mar 2026 12:26:02 -0800 (PST)
+Date: Wed,  4 Mar 2026 12:25:53 -0800
+In-Reply-To: <20260304202553.422006-1-wusamuel@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260304202553.422006-1-wusamuel@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260304202553.422006-1-wusamuel@google.com>
-Subject: [PATCH 6.6.y] sched/fair: Fix pelt clock sync when entering idle
+Message-ID: <20260304202553.422006-2-wusamuel@google.com>
+Subject: [PATCH 6.1.y] sched/fair: Fix pelt clock sync when entering idle
 From: Samuel Wu <wusamuel@google.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jstultz@google.com, 
@@ -82,7 +85,7 @@ Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jstultz@google.com,
 	Vincent Guittot <vincent.guittot@linaro.org>, Samuel Wu <wusamuel@google.com>, 
 	Alex Hoh <Alex.Hoh@mediatek.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5429A207962
+X-Rspamd-Queue-Id: 1600D207969
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -90,17 +93,17 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223134-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223135-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[wusamuel@google.com,stable@vger.kernel.org];
@@ -109,7 +112,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,infradead.org:email,msgid.link:url,mediatek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mediatek.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
 From: Vincent Guittot <vincent.guittot@linaro.org>
@@ -137,7 +140,7 @@ Tested-by: Alex Hoh <Alex.Hoh@mediatek.com>
 Link: https://patch.msgid.link/20260121163317.505635-1-vincent.guittot@linaro.org
 (cherry picked from commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc)
 [ wusamuel: Did not include line 'exec_start = rq_clock_task()', which
-is not present in 6.6.y but found in mainline ]
+is not present in 6.1.y but found in mainline ]
 Signed-off-by: Samuel Wu <wusamuel@google.com>
 ---
  kernel/sched/fair.c | 6 ------
@@ -145,10 +148,10 @@ Signed-off-by: Samuel Wu <wusamuel@google.com>
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index de205ecc1474..cdf49a04fd58 100644
+index 9f7c9083e9bf..376d835ca7b4 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -8557,12 +8557,6 @@ done: __maybe_unused;
+@@ -7924,12 +7924,6 @@ done: __maybe_unused;
  			goto again;
  	}
  
@@ -162,10 +165,10 @@ index de205ecc1474..cdf49a04fd58 100644
  }
  
 diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 565f8374ddbb..038fbad93655 100644
+index 200a0fac03b8..6e76dc83a345 100644
 --- a/kernel/sched/idle.c
 +++ b/kernel/sched/idle.c
-@@ -414,6 +414,12 @@ static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool fir
+@@ -435,6 +435,12 @@ static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool fir
  {
  	update_idle_core(rq);
  	schedstat_inc(rq->sched_goidle);
