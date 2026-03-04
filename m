@@ -1,155 +1,163 @@
-Return-Path: <stable+bounces-223007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAgXMSPhp2mrlAAAu9opvQ
-	(envelope-from <stable+bounces-223007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:37:07 +0100
+	id gH5NIj3jp2mrlAAAu9opvQ
+	(envelope-from <stable+bounces-223009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:46:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3961FBAC9
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:37:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1BB1FBCDE
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02A903040031
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:36:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4798B300C02F
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109E936D9FA;
-	Wed,  4 Mar 2026 07:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s1nqVhDh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA543379EE3;
+	Wed,  4 Mar 2026 07:41:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F0C36D9EB
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC19374721;
+	Wed,  4 Mar 2026 07:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772609775; cv=none; b=aMOx6EBmS7LORxT8QFEvldqc8X9cXRhTyRs4MzOrBWjygotuSHhLPgPheYe0WlE14988PunhAqNzTiyjHsEpqDy5Wh76BNcz564/6Fg4TGeTDiTf05CwuU/M4aI1wqNuiMi7O0ok31B2ecCm63xzJHUnOz2MVjwsysgStZmAY1E=
+	t=1772610090; cv=none; b=anytZ1cOnmuTRUwk4mkUWl/ls2rih+jibX1NBHp/piaX3wtzh7gawGFXrUdahP9/erMeUiJVSErzSlGIJvuP6Gan1r6DClBaPGTLyaXBnByc4Ot+y5sxHmwb8gGXbLdVDbyxPIpbhlJSQHVQ7IGyElwQSb0GGMLePhRmmXSTb38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772609775; c=relaxed/simple;
-	bh=GUi9iRwTf4ZFEs3U2Iil4IHwEQGUGzOmPWn7Txv8Qyk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ivxTb7c9VsL+cbr+y8Ld2CZH5kIsH2an8I/a/qwltgFdc8PU3tzOSWMoVRQuXxFMF7WW2iMOAoPerebQBVlevYYbcaxygOQ83Xp9/wFvJaztMRrStwrG8pt1XCpHTw8xdcLQd4BgQ+h/s3qcTWv/AF8GnLXirWoeZEYXDOwuPec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s1nqVhDh; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3568090851aso37136695a91.1
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 23:36:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772609774; x=1773214574; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yrFMT0TXW/spEw/ZubXnVYULM8dGErCPWbCJGWKhVQg=;
-        b=s1nqVhDhEZGHYE9uxo3L4+YY1BQ7WvadfBKyEQSoqLnNt3hG1CU4g0Rw5VsEfiVrRz
-         lhvRfoalyz6jmvPzZr2XiyIaYG6Xk0qTiI1NV6HTeBhRlQkZAyL7VNciutb+EgsqxO0f
-         A0d0Yq4BViSzynqyUxg/dMYNuqRcXjelTBUUT3foP9HUP/OvrrDjH7z8RzTwKeBlZAgt
-         NLNvekD1ezxj/kCC6KfKK16rSntZxbFzeeXVnh8sTL63by74jIRVCKzzm3kIY7Yvrs4d
-         6CCRtjDyqMRTn//AWMUCng6X9Gh7/HwUxcgcTZBaY11oWvEBVX4kghJWKhsy5mjwsBRI
-         APnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772609774; x=1773214574;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yrFMT0TXW/spEw/ZubXnVYULM8dGErCPWbCJGWKhVQg=;
-        b=cGu0ubVeOt1nLBIxAxaAuHR+0yferPe5Kt0egJPV66bYASgaEY01mMRsa1vcBcrRk5
-         8M7p+OO5fhi/8JoobNydd36x8zoJF3Sm6aoVL4TXRphu4qonkd544WUZAXvalgwqAMSt
-         6qp/pdf9rz+sBCyggXW3yrih02FZ8bRDgtpbIntVDKYveHMYc1gwwXegqzwsqUgeib3Q
-         F5RKiE/MtzmTkIOp20Gsx1ubRBvCBdraEoOKujz7S8MvT6rxdzDMlNJx7Kfzl1Nqup9H
-         6leeVa8/pT8n4frB81TYXgTkSS72EhZDTeAJvCvDZDf5f+/Je4JNluI63YXZRv4A1cky
-         p5ag==
-X-Gm-Message-State: AOJu0Ywgy31gQ71iabhCMwAqh0wJxUPZyrK4BJWSDfg/ZYMMKII/lwa3
-	iUwjETBajJ2r0e/sdc64Zrd2ft6Kkmt1edcl4pTvYSH3alZ0WW4Z1fXT85F4rNYziKM+iPiRNRy
-	Hc1KsSoaJUEPZdMYREN/eh+jcKots3YmtT8Rr++SxUGrVWGx1yye70sU45AxzicN9wkJ9yewwM+
-	+pNNZkMCA7bGjHxDs2WTfGgEOeKZWo8gdJ+Di85rjTR5pF4MiqcvKeK8jGphdWg04=
-X-Received: from pga18.prod.google.com ([2002:a05:6a02:4f92:b0:bd9:a349:94c0])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:4c13:b0:366:14ac:e1df with SMTP id adf61e73a8af0-3982e21120emr1272175637.69.1772609773929;
- Tue, 03 Mar 2026 23:36:13 -0800 (PST)
-Date: Wed,  4 Mar 2026 07:36:09 +0000
+	s=arc-20240116; t=1772610090; c=relaxed/simple;
+	bh=Fdgy/j1VabWhR3rIgpeFiIDGHBA/qdA80McEmq7stdA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XV+Ni6Q7LUNZAJfbYZev2neCF7J+Dq6Igmm4HauX64Z1cGs1uE2WjHEjizgwGmeB2nIdnNBjRU9ARNGuekV3bnJZqtc9rRCx4h2tEcJl33U2O8gkiGlIBc4ar4/hjwnMA99U/O5cA1dr9TISM4LflfcNnXtdXhsO1UE3ZvfeMUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Wed, 4 Mar 2026 07:41:11 +0000
+From: Brett A C Sheffield <bacs@librecast.net>
+To: sashal@kernel.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.6 000/684] 6.6.128-rc2 review
+Message-ID: <aafiF3Mtc17i7Y72@auntie>
+References: <20260302160934.2521545-1-sashal@kernel.org>
+ <20260302193559.3432-1-bacs@librecast.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260304073609.3228532-1-joonwonkang@google.com>
-Subject: [PATCH 5.10] mailbox: Prevent out-of-bounds access in of_mbox_index_xlate()
-From: Joonwon Kang <joonwonkang@google.com>
-To: stable@vger.kernel.org, jassisinghbrar@gmail.com
-Cc: linux-kernel@vger.kernel.org, sashal@kernel.org, 
-	Joonwon Kang <joonwonkang@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3E3961FBAC9
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302193559.3432-1-bacs@librecast.net>
+X-Rspamd-Queue-Id: 9E1BB1FBCDE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223009-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[librecast.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223007-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.963];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
 X-Rspamd-Action: no action
 
-[ Upstream commit fcd7f96c783626c07ee3ed75fa3739a8a2052310 ]
+On 2026-03-02 19:35, Brett A C Sheffield wrote:
+> # Librecast Test Results (FAIL)
+> 
+> 020/020 [ OK ] liblcrq
+> 010/010 [ OK ] libmld
+> 120/120 [ OK ] liblibrecast
+> 
+> CPU/kernel: Linux auntie 6.6.128-rc2-ge6906aa7f5ea #1 SMP PREEMPT_DYNAMIC Mon Mar  2 17:31:27 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+> 
+> Builds, boots and passes network tests.  Fails to poweroff.
+> 
+> Bisects to commit 3ba77c48498f0fa29456e2435d7d49eafc0a279c (upstream 4589712e0111352973131bad975023b25569287c) and affects 6.6.y and 6.12.y. Other kernels are unaffected, including mainline.
 
-Although it is guided that `#mbox-cells` must be at least 1, there are
-many instances of `#mbox-cells = <0>;` in the device tree. If that is
-the case and the corresponding mailbox controller does not provide
-`fw_xlate` and of_xlate` function pointers, `of_mbox_index_xlate()` will
-be used by default and out-of-bounds accesses could occur due to lack of
-bounds check in that function.
+Are we dropping the offending commit from 6.6.y and 6.12.y and retesting?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-[ changed sp->nargs to sp->args_count in the code and
-fw_mbox_index_xlate() to of_mbox_index_xlate() in the commit message. ]
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
----
- drivers/mailbox/mailbox.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+It is 100% reliably hung on every shutdown with (both) RC2s.
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index d3d26a2c9895..66cdadbd3d75 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -498,12 +498,10 @@ static struct mbox_chan *
- of_mbox_index_xlate(struct mbox_controller *mbox,
- 		    const struct of_phandle_args *sp)
- {
--	int ind = sp->args[0];
--
--	if (ind >= mbox->num_chans)
-+	if (sp->args_count < 1 || sp->args[0] >= mbox->num_chans)
- 		return ERR_PTR(-EINVAL);
- 
--	return &mbox->chans[ind];
-+	return &mbox->chans[sp->args[0]];
- }
- 
- /**
--- 
-2.53.0.473.g4a7958ca14-goog
-
+> $ git bisect log
+> git bisect start
+> # status: waiting for both good and bad commits
+> # bad: [e6906aa7f5ea74831bc56d675e1173abf4d1d5a8] Linux 6.6.128-rc2
+> git bisect bad e6906aa7f5ea74831bc56d675e1173abf4d1d5a8
+> # status: waiting for good commit(s), bad commit known
+> # good: [7a137e9bfa0e1919555d60f9dc0c05a7a5ba75d0] Linux 6.6.127
+> git bisect good 7a137e9bfa0e1919555d60f9dc0c05a7a5ba75d0
+> # good: [4f052e01c0df1f3dc9d89125466b3fa8ee4373d6] hfsplus: fix volume corruption issue for generic/498
+> git bisect good 4f052e01c0df1f3dc9d89125466b3fa8ee4373d6
+> # bad: [2f93eb27e8efeb0002eba89a82778d569a336279] thermal: int340x: Fix sysfs group leak on DLVR registration failure
+> git bisect bad 2f93eb27e8efeb0002eba89a82778d569a336279
+> # bad: [8a4170ff96cdf6899b63a78bc588e96ecf0d6063] wifi: rtw88: 8822b: Avoid WARNING in rtw8822b_config_trx_mode()
+> git bisect bad 8a4170ff96cdf6899b63a78bc588e96ecf0d6063
+> # good: [51de6101987dace2f4a6235f5b6bd57dc4487a46] media: dvb-core: dmxdevfilter must always flush bufs
+> git bisect good 51de6101987dace2f4a6235f5b6bd57dc4487a46
+> # good: [21129c98b9191dcb1590084871266ab228a8daf1] hyper-v: Mark inner union in hv_kvp_exchg_msg_value as packed
+> git bisect good 21129c98b9191dcb1590084871266ab228a8daf1
+> # bad: [73c2788b3f488c6d559abb2a4acce54fc6108530] ASoC: sunxi: sun50i-dmic: Add missing check for devm_regmap_init_mmio
+> git bisect bad 73c2788b3f488c6d559abb2a4acce54fc6108530
+> # bad: [059f60a78995ad5f3dea512a1b8d31067f3cce42] drm/atmel-hlcdc: fix use-after-free of drm_crtc_commit after release
+> git bisect bad 059f60a78995ad5f3dea512a1b8d31067f3cce42
+> # bad: [3ba77c48498f0fa29456e2435d7d49eafc0a279c] drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
+> git bisect bad 3ba77c48498f0fa29456e2435d7d49eafc0a279c
+> # good: [a7953ccb0261ccb358d15f9d51cd85eb6e7fdbda] virt: vbox: uapi: Mark inner unions in packed structs as packed
+> git bisect good a7953ccb0261ccb358d15f9d51cd85eb6e7fdbda
+> # first bad commit: [3ba77c48498f0fa29456e2435d7d49eafc0a279c] drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
+> 
+> commit 3ba77c48498f0fa29456e2435d7d49eafc0a279c
+> Author: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> Date:   Tue Jan 6 11:11:19 2026 -0500
+> 
+>     drm/amd/display: Ensure link output is disabled in backend reset for PLL_ON
+> 
+>     [ Upstream commit 4589712e0111352973131bad975023b25569287c ]
+> 
+>     [Why]
+>     We're missing the code to actually disable the link output when we have
+>     to leave the SYMCLK_ON but the TX remains OFF.
+> 
+>     [How]
+>     Port the code from DCN401 that detects SYMCLK_ON_TX_OFF and disable
+>     the link output when the backend is reset.
+> 
+>     Reviewed-by: Ovidiu (Ovi) Bunea <ovidiu.bunea@amd.com>
+>     Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+>     Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
+>     Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+>     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+>  drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hwseq.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> 
 
