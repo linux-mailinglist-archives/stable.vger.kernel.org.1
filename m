@@ -1,166 +1,197 @@
-Return-Path: <stable+bounces-223110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMc4F+JwqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:50:26 +0100
+	id wJE8OnFwqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564E120571D
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:50:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C35E2056B0
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5ABC63006204
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:43:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E38B2300C9B3
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B924837D119;
-	Wed,  4 Mar 2026 17:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAC837D125;
+	Wed,  4 Mar 2026 17:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RGI7sIkW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZRjwrdkl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583AEBA3D;
-	Wed,  4 Mar 2026 17:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C354C92;
+	Wed,  4 Mar 2026 17:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772646235; cv=none; b=ZZeaDmtSzUvsS/00GfkmilpBgq+iLwpczyQB9L4XgfPiZMR4L+eqLA3cG++ZFR4q++xVkPrAAp971D920PmbCiKzKCYKZrVz/IrFK58gjEKVxKPMxaWF4p79FK7gagpFwNqp7ANp0cn4P0SyzzzZIdbG1iNQhzKL9UPtgSId12Y=
+	t=1772646297; cv=none; b=s37l/x9qVduSItKO2/x2OY8cZUCWNBXP/f/UFxOc2lCjdYNoFTEz/8UMXcPnVfyycxGN87Q1ZVyqjDwo7rK9n5xp7D4r+YZS4VEVYPbhpNYLgcMkMctMTmygKp5QctHdXY/ftEG0w59euE6wUacVj+rNKAQoe/8QPSQ8B0N56HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772646235; c=relaxed/simple;
-	bh=GiZedPVK3eGxD5MvYK40/L36l5RRYfJLioHzBFqtY9c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZpewPvhFHOfnNfsxBHnOLhR253xufyAtrJ7KUTNlUMbHJlVJ7D9VsHzVGkTBUtpQyFka+oqvgtg3DJXX2A9hddGWcvjO+fK5M3iLabtiawzIpjQr8Jjmcho91T4o+B2mFm4Zze1TUJiFxL6A5bnTaWdysUp9OuEopgOeGiVg7vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RGI7sIkW; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772646234; x=1804182234;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GiZedPVK3eGxD5MvYK40/L36l5RRYfJLioHzBFqtY9c=;
-  b=RGI7sIkWVWC/fOrn5xo0fO/cswN2l+dHPYFUYgzHvXnT5T3jYLR23otH
-   E3SPO8Uzr1spvvl5TGJaxwtnFAVrP4yCkOuSo11+ejT6Njmf0aKzFfEp8
-   lDLogHnZOex+Aw7vAEbChwyn5eWCx58Xfk4vd07TjKj7zrCQ5LUX3PVhV
-   f/Uc53GxBnGbusqNuH+uu/8BZ2v4H1brqxic7no9feP+Ofw7bCsWGfQO+
-   u1WJ9nZOsS6FYIMKAHikFG1+VsUgXVtEf/FDKPY0bq9v2qsrSx3hugXxy
-   ZlAyz1zIkKaxzl8OYXFkp4I014k/kH0KZHUbkRfv8m3GFUBE3gUNPegXR
-   g==;
-X-CSE-ConnectionGUID: QmoKyjWCSWufs5ozZL8RzA==
-X-CSE-MsgGUID: QP1rem4bRXOZo531223APg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="72742185"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="72742185"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:43:53 -0800
-X-CSE-ConnectionGUID: PbUYxrJgRkCDDGQntkmT0w==
-X-CSE-MsgGUID: zE2so6YXSyKOe4BfcJFUtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="248882799"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:43:53 -0800
-Message-ID: <e3585441-f225-4a60-9c48-aac2753eef36@intel.com>
-Date: Wed, 4 Mar 2026 09:44:00 -0800
+	s=arc-20240116; t=1772646297; c=relaxed/simple;
+	bh=FD3LxfIFQIFg+xDndyA9rWjBA4t0P9x/m2dTRBkD8pY=;
+	h=Date:To:From:Subject:Message-Id; b=onE4u9E4eN7Oy5CQ2XRKrzCzVeSogZeFWKLmwHdv/9Q1DvsYUiyZ9QyomeC0MGpqo4gx3oJLEjTKyNsdQCIp2JTSUieUy9K/oX0WXqRiEs0pluIKXyPMxirmp99TrVixlzOuwQosaNhzlrTZsCvUeyXbI44wySHVyM2ht9AC9HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZRjwrdkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06657C4CEF7;
+	Wed,  4 Mar 2026 17:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772646297;
+	bh=FD3LxfIFQIFg+xDndyA9rWjBA4t0P9x/m2dTRBkD8pY=;
+	h=Date:To:From:Subject:From;
+	b=ZRjwrdkl5HBNvfBzrYf4yPQkIWWDRT8Z+9s2oMZnQ3UTHssR+qr41u8Em5+oUhK4d
+	 BEgcIGqa20nKtm+ab3gEUM6xKtewZaBXAsKZFJhzOy0Lj+YXATdnmA9JMhqbloWLNi
+	 qxye3/2I04uhNYQJS68NAtGgfu55M8w4JHHszd74=
+Date: Wed, 04 Mar 2026 09:44:56 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pasha.tatashin@soleen.com,pratyush@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-memfd_luo-always-make-all-folios-uptodate.patch removed from -mm tree
+Message-Id: <20260304174457.06657C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
-To: Mike Rapoport <rppt@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
- linux-efi@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-References: <20260225065555.2471844-1-rppt@kernel.org>
- <aafqhcG67FoNrF41@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aafqhcG67FoNrF41@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 564E120571D
+X-Rspamd-Queue-Id: 6C35E2056B0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-223110-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223111-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/4/26 00:17, Mike Rapoport wrote:
-> Gentle ping?
 
-Ard, I _think_ this is one of the efi things in arch/x86 that you
-normally wrangle. Are you planning to grab this?
+The quilt patch titled
+     Subject: mm: memfd_luo: always make all folios uptodate
+has been removed from the -mm tree.  Its filename was
+     mm-memfd_luo-always-make-all-folios-uptodate.patch
+
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+Subject: mm: memfd_luo: always make all folios uptodate
+Date: Mon, 23 Feb 2026 18:39:28 +0100
+
+Patch series "mm: memfd_luo: fixes for folio flag preservation".
+
+This series contains a couple fixes for flag preservation for memfd live
+update.
+
+The first patch fixes memfd preservation when fallocate() was used to
+pre-allocate some pages.  For these memfds, all the writes to fallocated
+pages touched after preserve were lost.
+
+The second patch fixes dirty flag tracking.  If the dirty flag is not
+tracked correctly, the next kernel might incorrectly reclaim some folios
+under memory pressure, losing user data.  This is a theoretical bug that I
+observed when reading the code, and haven't been able to reproduce it.
+
+
+This patch (of 2):
+
+When a folio is added to a shmem file via fallocate, it is not zeroed on
+allocation.  This is done as a performance optimization since it is
+possible the folio will never end up being used at all.  When the folio is
+used, shmem checks for the uptodate flag, and if absent, zeroes the folio
+(and sets the flag) before returning to user.
+
+With LUO, the flags of each folio are saved at preserve time.  It is
+possible to have a memfd with some folios fallocated but not uptodate. 
+For those, the uptodate flag doesn't get saved.  The folios might later
+end up being used and become uptodate.  They would get passed to the next
+kernel via KHO correctly since they did get preserved.  But they won't
+have the MEMFD_LUO_FOLIO_UPTODATE flag.
+
+This means that when the memfd is retrieved, the folios will be added to
+the shmem file without the uptodate flag.  They will be zeroed before
+first use, losing the data in those folios.
+
+Since we take a big performance hit in allocating, zeroing, and pinning
+all folios at prepare time anyway, take some more and zero all
+non-uptodate ones too.
+
+Later when there is a stronger need to make prepare faster, this can be
+optimized.
+
+To avoid racing with another uptodate operation, take the folio lock.
+
+Link: https://lkml.kernel.org/r/20260223173931.2221759-2-pratyush@kernel.org
+Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memfd_luo.c |   25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+--- a/mm/memfd_luo.c~mm-memfd_luo-always-make-all-folios-uptodate
++++ a/mm/memfd_luo.c
+@@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(str
+ 		if (err)
+ 			goto err_unpreserve;
+ 
++		folio_lock(folio);
++
+ 		if (folio_test_dirty(folio))
+ 			flags |= MEMFD_LUO_FOLIO_DIRTY;
+-		if (folio_test_uptodate(folio))
+-			flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		/*
++		 * If the folio is not uptodate, it was fallocated but never
++		 * used. Saving this flag at prepare() doesn't work since it
++		 * might change later when someone uses the folio.
++		 *
++		 * Since we have taken the performance penalty of allocating,
++		 * zeroing, and pinning all the folios in the holes, take a bit
++		 * more and zero all non-uptodate folios too.
++		 *
++		 * NOTE: For someone looking to improve preserve performance,
++		 * this is a good place to look.
++		 */
++		if (!folio_test_uptodate(folio)) {
++			folio_zero_range(folio, 0, folio_size(folio));
++			flush_dcache_folio(folio);
++			folio_mark_uptodate(folio);
++		}
++		flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		folio_unlock(folio);
+ 
+ 		pfolio->pfn = folio_pfn(folio);
+ 		pfolio->flags = flags;
+_
+
+Patches currently in -mm which might be from pratyush@kernel.org are
+
+memfd-export-memfd_addget_seals.patch
+mm-memfd_luo-preserve-file-seals.patch
+kho-move-alloc-tag-init-to-kho_init_foliopages.patch
+
 
