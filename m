@@ -1,323 +1,303 @@
-Return-Path: <stable+bounces-223010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF60GQ3jp2mrlAAAu9opvQ
-	(envelope-from <stable+bounces-223010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:45:17 +0100
+	id 8JxoBarqp2nelgAAu9opvQ
+	(envelope-from <stable+bounces-223011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 09:17:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285981FBCC6
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:45:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1641FC63F
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 09:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EC25E3046D37
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:45:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B02F30330F3
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 08:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF3438239E;
-	Wed,  4 Mar 2026 07:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE41238239E;
+	Wed,  4 Mar 2026 08:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a9EJ+Ge7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkNWm/Jl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07A337F8C7
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772610307; cv=fail; b=kKrA9XnTqh+/IwgT6j3C3/+RrvB4QS04ayyC5vMQ7nz0X+IpKEqO28zdFd57VTPmmTL7kFeuLnLUfocty/+QTBHxlfDksyqv77+UzbKIQk7GUH1cqkdjNgVDnIht/J2MjA0CBCSMgSxRtrgvWfY91zQIM0K2+ZKVY/+wp9PQFVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772610307; c=relaxed/simple;
-	bh=AgzdTnLQCDKPUkkOzEN2EcCh8DlZHiJTp0ADI22NW6U=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TlzejfUf2NdOmyvCPZjbgZ7XdMdIImq+deN1OeKh8uRERuTgEWUYZdlJ7Yw0m42tgP36GZBlLycwS5iF82B5fqZHP2HpCXos0fUbQapxCV0ID8d1NBrGJabIlenF9+iAPsBUyP9UJEwQ9zqasEIBcSaZnM6didclFrImN7Bbmjc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a9EJ+Ge7; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772610306; x=1804146306;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=AgzdTnLQCDKPUkkOzEN2EcCh8DlZHiJTp0ADI22NW6U=;
-  b=a9EJ+Ge7STF9U9CTBj6RUbu5O/yxudW3id1qf1QhqEQB5r5oIBpq9rM2
-   tHkUukWceuWM5s5iX6UWh7JhkC+MqFrotdhxPL0BmO0MixRgfsT8QzR6S
-   QK9c7h7GC4aFDpdewzRougAJRDh/ZA8at7PoZpvmQx5juxcxdRvcsUoEa
-   /OxTI/spZjhtYgWsGqRhPC+28DMAKddrrUupt0QCAiYKBGQdmMhp2kZYr
-   XV+ZbHqMkDtKRCkMUBplO+AzCGFS5D1eai60JyVQYzCjXFOIQp6IF8JqM
-   eYXk87nJAbEawHpx9zpyMUAVh0Vy0Y+YgfHNP4sHjxyJx7zzRw6FWuEcH
-   g==;
-X-CSE-ConnectionGUID: QLlA8V8cR/iffzfryVNIpw==
-X-CSE-MsgGUID: jDmVb7voQ6GKBYheSS7O9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77533159"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="77533159"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:45:05 -0800
-X-CSE-ConnectionGUID: ZoZ1k/T0QEWuRpoB8lRTpA==
-X-CSE-MsgGUID: qUkrlI7NSiil1lda0AmJCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="218227256"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 23:45:05 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 23:45:04 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 3 Mar 2026 23:45:04 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.59) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 23:45:04 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ouA3yYhW0W5ot4/aPmEtrEzdgGW+ttiqj91Vv20wkuBPJGtkYJ8GfHUxM/vvKKe5yWiH4A9VORElYSWf+CQvfuA1aCJtljFAe6gjAHwU2j6hjjFCM5SqV4HQu+70bkvQXe1EZmkEJmfKGJfQlylknMtjFEVY6wHSse377XMA/QLJvY2ECpEwCmkzjLHm8OIBbL3lf56YDvBmDYPgqadvVLaAs9LOrrBgRn/U9ED0dxyNo+1QfGR+GnLy8sxMhNZmc+F6rrF1IXb0h50sBw+rCjJQ0EVXonKp5RRNLAOoppoq85dg132IZGLJoJBbcz+2ACH4OICF6jhoFxpbjCNxow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aJO8EZNzofDca9kM3KxyPCU6/ndGtal03GtO15rQF3Y=;
- b=QK94qXPxLKTxedeVC7KlXDTZST58dNgsQGqJKrs//IWo1Bxo5umg5y6eeAQCRy53U2ZNimvg5DOHKnYNCRecYGJfQksMYYTPpi3Bx7u9Sl/1kc6Pjz+eLg2AQbvQdU8hXGZ7C0M6OfXcTiTGKBQQre/Xxl1aPsZ435Om3vxjYExXHYMhYUANHo2C2PKa3TXQy9OQWdB/lvWiSUaPA4IbQC5IvuVZaPgl9kqwgqKPKJRAgiU6JKu060Bq0+IcWhoAN1/g0WBGluV1m0WfqjtD1dM3z9MP3Btt38a6iFwmUeMS3qSr5QJu2cUGTxYQia3SG71fRGawpQWZf2yBeB+NOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by CH8PR11MB9484.namprd11.prod.outlook.com (2603:10b6:610:2c1::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
- 2026 07:45:03 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4%4]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 07:45:03 +0000
-Message-ID: <8eaea8de-23cd-48ca-81e0-896815adfbb6@intel.com>
-Date: Wed, 4 Mar 2026 13:14:56 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] drm/i915/psr: Repeat Selective Update area
- alignment
-To: =?UTF-8?Q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>
-References: <20260303125409.503148-1-jouni.hogander@intel.com>
- <20260303125409.503148-2-jouni.hogander@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20260303125409.503148-2-jouni.hogander@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a8::12) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7EA3264E5;
+	Wed,  4 Mar 2026 08:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772612237; cv=none; b=J8l7swVGqMjHC6TuZT4Hyu5b3RwV/BV5qtKZfTEl41udb7oix74rZ0/Hj87hE0kV7+5v38xAlWJArjKv17g2ydzBDz+FviIGzr0zX1Zl/jLr1BOqdECDLMLCxrhPyBHRNoLXRXetUaYDC+MSgC3Lvt/kdSkf3xjhIHBJkv2nEhA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772612237; c=relaxed/simple;
+	bh=hHEQX82pLAavXA3KfQ27txuW9+UXTV4nQHbLANQ3ags=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tF0Jyo6HpfGl0oqby8hgF+XBsLgbD9IPQkFx9bTQLUsdrjx+GSufui91eedUrVYqQHPQ9/ZWoLScnOVyEj4uz9zTJCmwlC7zspVVIBNd0VLb+34ffDwp1BJ7hDdrPS45JppDOGUTBr6gsRN+MRZpd1bJ4SgLWlugALE//+FtmVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkNWm/Jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911FFC19423;
+	Wed,  4 Mar 2026 08:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772612237;
+	bh=hHEQX82pLAavXA3KfQ27txuW9+UXTV4nQHbLANQ3ags=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XkNWm/JlfdmOsdc9lJ5EIVyC4M7Aau4FuAmmJkHvgV+ZsArAV3bl0t6jMz69wDh6W
+	 KFSzPRZoahLHVJ7nMV7MBA5d9nndSu2+vTfysbUql6hIfxbFaJ6bYr1/UyBm3Jwq8v
+	 Kw4BORufVOSJ1S43xzJ1LUDkgkyjhiNCcr1Rb6wvAhSrkKq2EBqwtKZzQIhFhgAxBr
+	 XpaRf5Phk7D/h0TSB/JE02nYmVn2Ta/XzjN9QMRSuBpIcAqmnkM5YqSPckt6NuZPy8
+	 3WUNG8YrQLZyJA+5sp85ZsC1EHmtErmW34AvkffpMnzQHKiN97jOIbb8EY/Br6+azL
+	 IfAM52jbI7cpg==
+Date: Wed, 4 Mar 2026 10:17:09 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Message-ID: <aafqhcG67FoNrF41@kernel.org>
+References: <20260225065555.2471844-1-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|CH8PR11MB9484:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfc20c9d-7d1c-4f20-4323-08de79c1f1be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: pvuvmqWdKrLmQ6ZUR+5/kPvlQDBK2I0cT421+QtbsJxQm9vN0ehK4+txfhCyc4PWk1xnNoGK83RW7IWS9q5+CsnKRlsq+Be7ZuDBVWWJXxpASr0RBOfyHk872R1w5YvGvBcFIZKriX8c1Th9uU7zi95CKgNKiC2b+Dr4PXp3RZ4LITtx6e8EayR1AiDnYqS3gSZ0RLFl2Jn7nfu1RkV6hyLFocGC4HSZttQzqtzfLPGwk793Tr1qUbXK0GrpPWnZW82ECBwZMu69L0ZSb6ubk/r1OCgchu85oeyWvf/sZrnxcQbK+XuIHcBpTtg+40IdRn/GSC1a7WsUNbdXkaXMfhMrXsP2yGpTr+DJXpyw9ODp4q/1PzGoavsbh0D2qsxMT8JfnWxQWRBpiJFvuPz9R9m+3W+xTHcEGDjTUs5xhNEwq7nJ+2caVC5BG4Tcn4z+gWfnJPNxCOa+XJ/lKH6Jeg/spD6NCdKL+IAvFfSRKErKJC2Xgk7/L1mvrB7+g0UYra9Lj5dR1zKxwL+hgeeJhYYYtBrU02DWzx35cEicYPuQkCr8MvRH41ew+K+3y1y3AQb7rH2xObDpUbR2MLRVG5qHv6TKlNoi+rL8CKizh3K22LCT2jD6sdNmECTrdRF8k2jywiMWsG3466x6/WlBXnCb7CgBD7ximjrNNdahL0yDJBJImWLj6SQ8ofRp7hOlQ7uLNnNRHkYkVGdqK+PuESQYQ4sNJRtIuzmOYHNnF2Y=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b1lUV3NJZWJES1RERU56NmJGVlFaZE4rSjd2cE9JNWM5OTRMbEI5VUptRFVa?=
- =?utf-8?B?KytzS1NueTk2cVJwUmlxZVNOdW1CNm9BbnlZNFI4Ti9oWVdrRjJoTUoyWVJo?=
- =?utf-8?B?U1JHbTJKbEF6d2JRYzBiRDl5bGo4dTJnVld5NHhwbFp0cFFER2U0RE9iODlQ?=
- =?utf-8?B?VGlNNzdkQWhRMG8xNnNuY1g3N0Z2MGM3SHFMTFdMMnBQbXFMbFVJQUEvRkRx?=
- =?utf-8?B?ejlIMU8zTGNvdkFwdnRGVlN6Mk5IbHRqNGtYWWFjelhQcXJtQTFLRVp1OFEx?=
- =?utf-8?B?eEVyN3pxYUdEdjEzUDlpam9ESVFFeDl6eUxSbDYwYUVHR1pkSDFlN2pDV1hT?=
- =?utf-8?B?azNvTEpOMC8xQTRMcmJQL2NSTmNTT2twNEVJUWFoOTlBQlZ5RFdIVmhMM0Y2?=
- =?utf-8?B?bmQvQXZNK3k2YlBlaGpTN2xBRWZER3MzRXBwYmJLcmFLNktiS25icDNWNkxK?=
- =?utf-8?B?K2FrNy8zTU1oTTdRcFlKTzM0cGkxQ1NXeGhvZlBEYWlBOS95UzRFQm9kTm13?=
- =?utf-8?B?N1JteXBHaXZtVXBlYUxqRGdBNVdMQzNUMHoyeTVkVkhGcmthUGNHbDgxS2w0?=
- =?utf-8?B?SElwblZNaEttMWV0WmlmblZwS2hBRmJMWC9tWUZkQmduRVRkQ1FzMDZJSFpa?=
- =?utf-8?B?Y3hIUTZIZ0ZMZlh3Qk8wTE1TUllQV0NOSC9ZTW1LT3VpOEVpNE9PUkY2c0Rs?=
- =?utf-8?B?V3ZubTB1RHZ5NmFUdnlsc3luTnVYK3I3M2JOd3JWeDdmYlBsdzhqK2g3Tzk3?=
- =?utf-8?B?VzBmcHQ5NXhyWGZWUFk1WGhzTzg3ejBXMWdRb3VvNnFTK2xPRGdOdERIcHBy?=
- =?utf-8?B?eDN3cWVFRG9GUXhiVDhPVHdQVVFZeE5oa3FQUHZRZElGWHRxckJmSzZVVjNG?=
- =?utf-8?B?eE9jVnBqVWF2TGFlQmpJL1dOY0hjSHJxZ1NneXBxckVBcjI0K2tzcjRUTExK?=
- =?utf-8?B?RFdkZVlpdE5tNnZPMkF4Y0htdE5MSWFzUzZKVEF3VmtJVFRUQkcrS0NWbTdD?=
- =?utf-8?B?OXJWWEQ2SUNHTS9sOTFrRnhaUnJnN1h6S04zdnF2Vmt6Vmh4KzJlVlI3VkRT?=
- =?utf-8?B?eXFnVk5sRVgxZ1VNNTdmQnYvQjNiT1E3aG5LWHBySFhkekI3Q2xjNkVwOXor?=
- =?utf-8?B?VEhnK1BVZFVFbHdGRi9NclQyOWJ2N1hYK0FBOWRDR0tDeUJRY0QxQ2tKNno5?=
- =?utf-8?B?WCs5SjMrTXlnN2dPU0I3OFBUUlBQclF2VVg1eUVLaHdyZk9LVkFEQ3cvdVc1?=
- =?utf-8?B?dzJYM1pqZldQVXFEYk5pd1VRWkxrOHFhVFRtaXVXNjBKMnJhOXc5c0ZSeXFD?=
- =?utf-8?B?dFJJWWEvVllwbnY4VVdHZnZESHY3dGJSZXRVM1h0d2V0L1hGMHNWTjg0eTV2?=
- =?utf-8?B?STdQUjk2VEo2Q0swaURNVUhvYVIvRkY4bjRmWGFnMExmQUdaczRGN245NlNJ?=
- =?utf-8?B?TVl2RUZ3eGdDK0Y4eGNueWR6U0lwblU3OEhGL1MveEFhL3R4cjlxcXVYajNa?=
- =?utf-8?B?cXNCUlBQNVhJeEMrVTdZVFVOWWFUNFB4Wlg4bWdndm1NaEVOYjdicU9mY3py?=
- =?utf-8?B?MHVMQnZhSmJFdy9IUTFNMDA4VkpsaHdKU3FyQUdCQ1VRbzlta0lxd29JMHhy?=
- =?utf-8?B?bnR3bVpCWnk1ZERNNDgvNnlvRmxLMW9uNnZCcDkzc0dVbVVUUlpZd3pzV08r?=
- =?utf-8?B?emluQ3pCd2pKcnhkN0pZN2RjOCtiMlNudzl2MGdtMVdRS3Z3RjZwNHRtc08x?=
- =?utf-8?B?REFQSHBvSWtDUVAzelhNWEtNQnF1clZzYUxiVkxzVUVZSHVUM1ZXclBYUjdZ?=
- =?utf-8?B?THZpY2ZlNFBUUTUvQ2NQVjd3TGo0RmY5SVlGbVNNWDRNNGpEZGd1aDRNajRr?=
- =?utf-8?B?MGk0cjI3U1Q1REFxaktXNEI4bDMvREVBb0hnY2Q3aFl0SUNCRkNEVzlRNGN2?=
- =?utf-8?B?bUpzOEVMZUQ5azhqVVppVVJUOHhFYU05Vnk1R2p6VFZ4eWxzL091RXlHYi9B?=
- =?utf-8?B?bnhXRW9hNTVrM250RTI1STRtUm5rSDJ3UThvOTZua3BCeHo3NG1LNTZBUi9x?=
- =?utf-8?B?Rzd4MDhIT2VOWXlGRUpPWWFCZ1lhRFh6L0tQL1pxNXVEbHdVZWpDaXpyeHNQ?=
- =?utf-8?B?YnZJZGNhUy94T21qRXFpSWJIZUc3OUk5V2poUGRHekJTUlczNUpkamxVT0x5?=
- =?utf-8?B?SGM2SW8rSkRDVGkzSnRiMU9tV1JrUHRLdC8zSjF4TCt6a0VzTU52QklWMDJp?=
- =?utf-8?B?K2h4NkdwL3ZEMmpyK2lIQld0QVFpRkwvbnQxWXRIQnRDYXlVNDlVOTBBU3dY?=
- =?utf-8?B?OG9jamEydU5vb1hyVitTcFRlZCtUR0pPSWxya2lJVWEvcS82NHp6aVFKYjdp?=
- =?utf-8?Q?Y6/Bc8Al1K6t8rGU=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfc20c9d-7d1c-4f20-4323-08de79c1f1be
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 07:45:02.9728
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jt0hZJG4kVgVi7G0+t8exBrNgY+bbsIMDicFtO3pocWlVB6/isO1uHSTuNORetxJA5TdFWnU7oy1WDWULKOOKYNiRO46YTujJF1QavZ4bW4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR11MB9484
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 285981FBCC6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225065555.2471844-1-rppt@kernel.org>
+X-Rspamd-Queue-Id: AE1641FC63F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223010-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
-	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223011-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ankit.k.nautiyal@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+Gentle ping?
 
-On 3/3/2026 6:24 PM, Jouni Högander wrote:
-> Currently we are aligning Selective Update area to cover cursor fully if
-> needed only once. It may happen that cursor is in Selective Update area
-> after pipe alignment and after that covering cursor plane only
-> partially. Fix this by looping alignment as long as alignment isn't needed
-> anymore.
->
-> v2:
->    - do not unecessarily loop if cursor was already fully covered
->    - rename aligned as su_area_changed
->
-> Fixes: 1bff93b8bc27 ("drm/i915/psr: Extend SU area to cover cursor fully if needed")
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-
+On Wed, Feb 25, 2026 at 08:55:55AM +0200, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+> 
+> There are two issue with that: memblock_free_late() should be used for
+> memory allocated with memblock_alloc() while the memory reserved with
+> memblock_reserve() should be freed with free_reserved_area().
+> 
+> More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> efi_free_boot_services() is called before deferred initialization of the
+> memory map is complete.
+> 
+> Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> 
+> If the freed memory resides in the areas that memory map for them is
+> still uninitialized, they won't be actually freed because
+> memblock_free_late() calls memblock_free_pages() and the latter skips
+> uninitialized pages.
+> 
+> Using free_reserved_area() at this point is also problematic because
+> __free_page() accesses the buddy of the freed page and that again might
+> end up in uninitialized part of the memory map.
+> 
+> Delaying the entire efi_free_boot_services() could be problematic
+> because in addition to freeing boot services memory it updates
+> efi.memmap without any synchronization and that's undesirable late in
+> boot when there is concurrency.
+> 
+> More robust approach is to only defer freeing of the EFI boot services
+> memory.
+> 
+> Split efi_free_boot_services() in two. First efi_unmap_boot_services()
+> collects ranges that should be freed into an array then
+> efi_free_boot_services() later frees them after deferred init is complete.
+> 
+> Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+> Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 > ---
->   drivers/gpu/drm/i915/display/intel_psr.c | 50 ++++++++++++++++++------
->   1 file changed, 38 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-> index 5bea2eda744b..7b197e84e77d 100644
-> --- a/drivers/gpu/drm/i915/display/intel_psr.c
-> +++ b/drivers/gpu/drm/i915/display/intel_psr.c
-> @@ -2688,11 +2688,12 @@ static void clip_area_update(struct drm_rect *overlap_damage_area,
->   		overlap_damage_area->y2 = damage_area->y2;
->   }
->   
-> -static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
-> +static bool intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
->   {
->   	struct intel_display *display = to_intel_display(crtc_state);
->   	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
->   	u16 y_alignment;
-> +	bool su_area_changed = false;
->   
->   	/* ADLP aligns the SU region to vdsc slice height in case dsc is enabled */
->   	if (crtc_state->dsc.compression_enable &&
-> @@ -2701,10 +2702,18 @@ static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_st
->   	else
->   		y_alignment = crtc_state->su_y_granularity;
->   
-> -	crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
-> -	if (crtc_state->psr2_su_area.y2 % y_alignment)
-> +	if (crtc_state->psr2_su_area.y1 % y_alignment) {
-> +		crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
-> +		su_area_changed = true;
+> 
+> v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
+> * update the commit message with correct function names (Ben)
+> 
+>  arch/x86/include/asm/efi.h          |  2 +-
+>  arch/x86/platform/efi/efi.c         |  2 +-
+>  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+>  drivers/firmware/efi/mokvar-table.c |  2 +-
+>  4 files changed, 55 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index f227a70ac91f..51b4cdbea061 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+>  extern int __init efi_reuse_config(u64 tables, int nr_tables);
+>  extern void efi_delete_dummy_variable(void);
+>  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+> -extern void efi_free_boot_services(void);
+> +extern void efi_unmap_boot_services(void);
+>  
+>  void arch_efi_call_virt_setup(void);
+>  void arch_efi_call_virt_teardown(void);
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index d00c6de7f3b7..d84c6020dda1 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+>  	}
+>  
+>  	efi_check_for_embedded_firmwares();
+> -	efi_free_boot_services();
+> +	efi_unmap_boot_services();
+>  
+>  	if (!efi_is_mixed())
+>  		efi_native_runtime_setup();
+> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> index 553f330198f2..35caa5746115 100644
+> --- a/arch/x86/platform/efi/quirks.c
+> +++ b/arch/x86/platform/efi/quirks.c
+> @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+>  
+>  		/*
+>  		 * Because the following memblock_reserve() is paired
+> -		 * with memblock_free_late() for this region in
+> +		 * with free_reserved_area() for this region in
+>  		 * efi_free_boot_services(), we must be extremely
+>  		 * careful not to reserve, and subsequently free,
+>  		 * critical regions of memory (like the kernel image) or
+> @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+>  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+>  }
+>  
+> -void __init efi_free_boot_services(void)
+> +struct efi_freeable_range {
+> +	u64 start;
+> +	u64 end;
+> +};
+> +
+> +static struct efi_freeable_range *ranges_to_free;
+> +
+> +void __init efi_unmap_boot_services(void)
+>  {
+>  	struct efi_memory_map_data data = { 0 };
+>  	efi_memory_desc_t *md;
+>  	int num_entries = 0;
+> +	int idx = 0;
+> +	size_t sz;
+>  	void *new, *new_md;
+>  
+>  	/* Keep all regions for /sys/kernel/debug/efi */
+>  	if (efi_enabled(EFI_DBG))
+>  		return;
+>  
+> +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
+> +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+> +	if (!ranges_to_free) {
+> +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> +		return;
 > +	}
 > +
-> +	if (crtc_state->psr2_su_area.y2 % y_alignment) {
->   		crtc_state->psr2_su_area.y2 = ((crtc_state->psr2_su_area.y2 /
->   						y_alignment) + 1) * y_alignment;
-> +		su_area_changed = true;
+>  	for_each_efi_memory_desc(md) {
+>  		unsigned long long start = md->phys_addr;
+>  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+> @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+>  			start = SZ_1M;
+>  		}
+>  
+> -		memblock_free_late(start, size);
+> +		/*
+> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> +		 * map are still not initialized and we can't reliably free
+> +		 * memory here.
+> +		 * Queue the ranges to free at a later point.
+> +		 */
+> +		ranges_to_free[idx].start = start;
+> +		ranges_to_free[idx].end = start + size;
+> +		idx++;
+>  	}
+>  
+>  	if (!num_entries)
+> @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+>  	}
+>  }
+>  
+> +static int __init efi_free_boot_services(void)
+> +{
+> +	struct efi_freeable_range *range = ranges_to_free;
+> +	unsigned long freed = 0;
+> +
+> +	if (!ranges_to_free)
+> +		return 0;
+> +
+> +	while (range->start) {
+> +		void *start = phys_to_virt(range->start);
+> +		void *end = phys_to_virt(range->end);
+> +
+> +		free_reserved_area(start, end, -1, NULL);
+> +		freed += (end - start);
+> +		range++;
 > +	}
+> +	kfree(ranges_to_free);
 > +
-> +	return su_area_changed;
->   }
->   
->   /*
-> @@ -2838,7 +2847,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
->   	struct intel_crtc_state *crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
->   	struct intel_plane_state *new_plane_state, *old_plane_state;
->   	struct intel_plane *plane;
-> -	bool full_update = false, cursor_in_su_area = false;
-> +	bool full_update = false, su_area_changed;
->   	int i, ret;
->   
->   	if (!crtc_state->enable_psr2_sel_fetch)
-> @@ -2945,15 +2954,32 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
->   	if (ret)
->   		return ret;
->   
-> -	/*
-> -	 * Adjust su area to cover cursor fully as necessary (early
-> -	 * transport). This needs to be done after
-> -	 * drm_atomic_add_affected_planes to ensure visible cursor is added into
-> -	 * affected planes even when cursor is not updated by itself.
-> -	 */
-> -	intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
-> +	do {
-> +		bool cursor_in_su_area;
->   
-> -	intel_psr2_sel_fetch_pipe_alignment(crtc_state);
-> +		/*
-> +		 * Adjust su area to cover cursor fully as necessary
-> +		 * (early transport). This needs to be done after
-> +		 * drm_atomic_add_affected_planes to ensure visible
-> +		 * cursor is added into affected planes even when
-> +		 * cursor is not updated by itself.
-> +		 */
-> +		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
+> +	if (freed)
+> +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
 > +
-> +		su_area_changed = intel_psr2_sel_fetch_pipe_alignment(crtc_state);
+> +	return 0;
+> +}
+> +arch_initcall(efi_free_boot_services);
 > +
-> +		/*
-> +		 * If the cursor was outside the SU area before
-> +		 * alignment, the alignment step (which only expands
-> +		 * SU) may pull the cursor partially inside, so we
-> +		 * must run ET alignment again to fully cover it. But
-> +		 * if the cursor was already fully inside before
-> +		 * alignment, expanding the SU area won't change that,
-> +		 * so no further work is needed.
-> +		 */
-> +		if (cursor_in_su_area)
-> +			break;
-> +	} while (su_area_changed);
->   
->   	/*
->   	 * Now that we have the pipe damaged area check if it intersect with
+>  /*
+>   * A number of config table entries get remapped to virtual addresses
+>   * after entering EFI virtual mode. However, the kexec kernel requires
+> diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+> index 4ff0c2926097..6842aa96d704 100644
+> --- a/drivers/firmware/efi/mokvar-table.c
+> +++ b/drivers/firmware/efi/mokvar-table.c
+> @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+>   * as an alternative to ordinary EFI variables, due to platform-dependent
+>   * limitations. The memory occupied by this table is marked as reserved.
+>   *
+> - * This routine must be called before efi_free_boot_services() in order
+> + * This routine must be called before efi_unmap_boot_services() in order
+>   * to guarantee that it can mark the table as reserved.
+>   *
+>   * Implicit inputs:
+> 
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> -- 
+> 2.51.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
