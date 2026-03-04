@@ -1,137 +1,155 @@
-Return-Path: <stable+bounces-223004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NZcH7ngp2lnkgAAu9opvQ
-	(envelope-from <stable+bounces-223004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:35:21 +0100
+	id MIdOMdvgp2mrlAAAu9opvQ
+	(envelope-from <stable+bounces-223005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:35:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FBE1FBA80
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:35:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CCD1FBA9D
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38E373029645
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:35:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3428130312E1
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217EF36DA09;
-	Wed,  4 Mar 2026 07:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A65C36E466;
+	Wed,  4 Mar 2026 07:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxDqn5/s"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cS0mr+kU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D034B1BE;
-	Wed,  4 Mar 2026 07:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF8236D501
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772609711; cv=none; b=ZgruDFK5SZ5manwdAuIFeGlGXOetiYaLIR1byHfDlCgesKFyUUu/dTaDNtBYIDvJFknev3OVxOHHhc/Ig/QmMv45GIC8OVpxsPDSGJO9jiaZABFMhFbA/I1Bpi3PgiHx+h2MJNXfpN2SA2m0oEsoLUmChPjxJvS/RJ6jJXtDwW4=
+	t=1772609725; cv=none; b=jy6JUAH9KW/mHyT8/oCXxuAVuqhGL5hxr+x7FS57rJ3b78GC6uJkAVweSqnmjucaiuqOH2rRUV99so6ZurJs+UaZWwiAptC/v2Eu0C4Zg7+fafnU8/p9EbFeCmGmF3F+72cxhJlhfcWZkvWX8fZKP27mYBbe7H1zFzSwlqm+X2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772609711; c=relaxed/simple;
-	bh=ck8j5e5cRPglodxtFZ61BbVXb4ziI3Wl4Gdb1FBkwXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tdsE3hxU/UIwdFeQwRvShXImB/xGky8S83aaBDIt6+mIdOgZZ/SLUp03Ibtz9PXY1rRVjIkX4f58bkM6JGPPnW4Z57ARsrCVn9yooZ2UyeQZ/9WjX1r93xddapudiyll2Osjb4t6uRRG8T/RzdhmAPqzhNx0tuXfFUm7WfbZEOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxDqn5/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2DAC19423;
-	Wed,  4 Mar 2026 07:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772609711;
-	bh=ck8j5e5cRPglodxtFZ61BbVXb4ziI3Wl4Gdb1FBkwXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nxDqn5/sBd8jixNlkmxbXt6dqY5FFRhEsECF6I09Re0CRP4U6JgeR4cGXiwaRGofb
-	 QHQqEaLFJwpqABKvvBr4PPYJQEm5EUeYEi44u3YsZTlDE8R6sDyLiIEtkfDGstqrzg
-	 qQjvexW0PAli3wbXTDDOKFdRj9TkdAJiAywiVQvKPt1BQ1Ep2y9cJt94LmOXINm970
-	 cSmGTcouKNrtqnM4ZMdiwUzGQIRO5t0qQ7V1FhKY/iztLFWJZHr0qHc76doy09Li2M
-	 5HQ4BsDzyPxa8FPH3E7GL9BU6ePU3pKRbxXEgzc5XuOJk3MgbFS8B+cVTQPOc6K3De
-	 W/4I+nN8vUVZg==
-Date: Wed, 4 Mar 2026 08:35:09 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kuogee Hsieh <quic_khsieh@quicinc.com>, Abel Vesa <abelvesa@kernel.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	freedreno@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] dt-bindings: display: msm: Fix reg ranges and clocks
- on Glymur
-Message-ID: <20260304-aloof-aboriginal-panda-00dbdb@quoll>
-References: <20260303-glymur-fix-dp-bindings-reg-clocks-v4-1-1ebd9c7c2cee@oss.qualcomm.com>
+	s=arc-20240116; t=1772609725; c=relaxed/simple;
+	bh=GUi9iRwTf4ZFEs3U2Iil4IHwEQGUGzOmPWn7Txv8Qyk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=V7D4TaYyKuSDCFAEXy6TMZEx0GUGoimwjropLtnLlTyPrajHJnODRfsNSuzT0ADV0GnOsn6CutEr4E/XZEpDnMyPQBWP7oHm6r6sJEtfweOPgt7Qc1u8zdrl6/NgFTl4iRGw4xwxJLyxVWHM46hnuYNWoREJRtfY+F6I2tEg/c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cS0mr+kU; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c503d6be76fso27264146a12.0
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 23:35:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772609724; x=1773214524; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yrFMT0TXW/spEw/ZubXnVYULM8dGErCPWbCJGWKhVQg=;
+        b=cS0mr+kUlAG79XsD5cXoNgl1wf8WjyE/x6+NurPI+Sky1rkZe1fEFebfo1X4d/apHZ
+         k+SPCDd/2W3yhKiLVys8saGA/azOt9W7BbBKUR4SmTZboVLyX9wDtkgq8TLuBsyuSfv3
+         aA5wLOUWnXm7aIdX6GfHwT93NJchXjBjcBIymZmVI5I4y92rCgpq/yNVJplw7lweMn+E
+         YkEkmn/AVqLvV9OAT9HhbFYdPdBcYYpYsh8pyJrJAWosdX8wLYUGkn6ZZqexahpujvhq
+         e/oWhySubA/J+2GFzrqpW0zeck7TyE5D32l+Ccuv+42d/67oLtwaTnFO+cBkHNOERTUv
+         GzOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772609724; x=1773214524;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yrFMT0TXW/spEw/ZubXnVYULM8dGErCPWbCJGWKhVQg=;
+        b=WaAKgSqG/QXHOufgsxRYJ/5J8GFVxZe3A1pMa5JWX8q7/5upcXYQfgO3Z3erO1q/kF
+         oHv0Xpl+igMVc8bbd77AuIWReBKQe8rShtwJ/OS9syW3L7EL4WvnMIclSr4VGNde4wa5
+         LIUnL+LbebO35NUd6p4sPIivige0tPxoHsoOIhUUrCWmmQVu8vy3jAUe6wgn9yvaNky8
+         Wi8snOT+6vJOnO/H5I0l6A0KOFl7hlqX1Y5R1GAmlOP7qW8PtYsTHb8EKmwcTek6McJH
+         1v55X7wkPF7y4XJDlcYQyqHMpcUGYamg+a7L3GtUQSS/Or7L4Es06Eo3fJNSuHbJ5Rs3
+         FG7Q==
+X-Gm-Message-State: AOJu0YxL+s1LcsxZ8q3/Clvuiry3cOUzo2mEvWdYo5ZspuKYzJReCpim
+	bhG13ceR3WvVqFigC0Bhd/2DGgj0ZzAZixk7x9+0Nk0Kqyg2Cv4LElqcHVWk/WwTALkgMfw6gRj
+	a17hlfY6cF7W2FmiEHMpa/wju06UOWEZBsGzTsYpdicYrGPsMAL2jfRCUvhB3jTK26FXaZ0tmeS
+	aUz8zHLy+nSTMvpdjKeRntniVbg6cKGAqZFhKEdpR2yApl7ZrmzV7ZG8nCrHPA0Ag=
+X-Received: from pgkk127.prod.google.com ([2002:a63:2485:0:b0:c65:e24e:cef1])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:608a:b0:392:e5ab:3125 with SMTP id adf61e73a8af0-3982e20233amr1243999637.66.1772609723317;
+ Tue, 03 Mar 2026 23:35:23 -0800 (PST)
+Date: Wed,  4 Mar 2026 07:35:15 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260303-glymur-fix-dp-bindings-reg-clocks-v4-1-1ebd9c7c2cee@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 87FBE1FBA80
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260304073515.3227465-1-joonwonkang@google.com>
+Subject: [PATCH 6.1] mailbox: Prevent out-of-bounds access in of_mbox_index_xlate()
+From: Joonwon Kang <joonwonkang@google.com>
+To: stable@vger.kernel.org, jassisinghbrar@gmail.com
+Cc: linux-kernel@vger.kernel.org, sashal@kernel.org, 
+	Joonwon Kang <joonwonkang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 57CCD1FBA9D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223004-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,linux.intel.com,suse.de,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-223005-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
+	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Mar 03, 2026 at 11:03:11AM +0200, Abel Vesa wrote:
-> The Glymur platform has four DisplayPort controllers. The hardware
-> supports four streams (MST) per controller. However, on Glymur the first
-> three controllers only have two streams wired to the display subsystem,
-> while the fourth controller operates in single-stream mode.
-> 
-> Add a dedicated clause for the Glymur compatible to require the register
-> ranges for all four stream blocks, while allowing either one pixel clock
-> (for the single-stream controller) or two pixel clocks (for the remaining
-> controllers).
-> 
-> Update the Glymur MDSS schema example by adding the missing p2, p3,
-> mst2link and mst3link register blocks. Without these, the bindings
-> validation fails. Also replace the made-up register addresses with the
-> actual addresses from the first controller to match the SoC devicetree
-> description.
-> 
-> Cc: stable@vger.kernel.org # v6.19
-> Fixes: 8f63bf908213 ("dt-bindings: display: msm: Document the Glymur DiplayPort controller")
-> Fixes: 1aee577bbc60 ("dt-bindings: display: msm: Document the Glymur Mobile Display SubSystem")
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> ---
-> Did not pick up Dmitry's R-b tag as patches have been squashed
-> and commit message re-worded.
+[ Upstream commit fcd7f96c783626c07ee3ed75fa3739a8a2052310 ]
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Although it is guided that `#mbox-cells` must be at least 1, there are
+many instances of `#mbox-cells = <0>;` in the device tree. If that is
+the case and the corresponding mailbox controller does not provide
+`fw_xlate` and of_xlate` function pointers, `of_mbox_index_xlate()` will
+be used by default and out-of-bounds accesses could occur due to lack of
+bounds check in that function.
 
-Best regards,
-Krzysztof
+Cc: stable@vger.kernel.org
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+[ changed sp->nargs to sp->args_count in the code and
+fw_mbox_index_xlate() to of_mbox_index_xlate() in the commit message. ]
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+---
+ drivers/mailbox/mailbox.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index d3d26a2c9895..66cdadbd3d75 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -498,12 +498,10 @@ static struct mbox_chan *
+ of_mbox_index_xlate(struct mbox_controller *mbox,
+ 		    const struct of_phandle_args *sp)
+ {
+-	int ind = sp->args[0];
+-
+-	if (ind >= mbox->num_chans)
++	if (sp->args_count < 1 || sp->args[0] >= mbox->num_chans)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	return &mbox->chans[ind];
++	return &mbox->chans[sp->args[0]];
+ }
+ 
+ /**
+-- 
+2.53.0.473.g4a7958ca14-goog
 
 
