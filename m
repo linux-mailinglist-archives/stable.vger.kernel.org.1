@@ -1,167 +1,178 @@
-Return-Path: <stable+bounces-223113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOBmMkxwqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:47:56 +0100
+	id sP9EOO9wqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:50:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27435205687
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:47:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA45C205725
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 758C13095202
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:45:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 663893011694
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7D73C3C17;
-	Wed,  4 Mar 2026 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085E03CA493;
+	Wed,  4 Mar 2026 17:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="viGycx1S"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WDyTq8dz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE6B37D13C;
-	Wed,  4 Mar 2026 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06033C6A25;
+	Wed,  4 Mar 2026 17:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772646299; cv=none; b=KWNYasWXA0m0VjdkH0RD9BArrRd0SXcSXdm52QDsWng0IKjNOl3cCtDhRs5OUwn+vyTUDCYEaKTqjHoW6xLWGepz1eC0Ap066t3ggANKdP6IId0NJ3R6kNLw6RqLbvVpPXfWpTvDg9fBK60ZuYyCxtZSXZgNbmYrw39C2o8fWGw=
+	t=1772646304; cv=none; b=nUR+oGsH4lebZLwSDNUQUZ0zzq39ZFxqg8t6VwmJY3eKAockPNbKtcg6pflLYjUjQyRUSMn1E4dvDeFgyEIN/YLIdYmnd7WnOeHXGscLUcNLlbEhiDFaEbhJT3FMb3aQA6r6OQ02tOCp86YPb2jmv63B75ptjAFnpl1IGLwwLf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772646299; c=relaxed/simple;
-	bh=buQ+gzgOa4Ep5hhRZzKl1M1l3gt0d0dm3Gkz/sM9Ccw=;
-	h=Date:To:From:Subject:Message-Id; b=RdNu55bly2pyC7/lAebLQfN8Xf6TowSHQuShibpnvd3EIEufAqC12XeWjT/QRwll4cCcE8Kc/hc3IeOhjU/DNlVthWviSGCyRolN2OZ16A8+EHd/BAWYVQDYKNxvqdxneD/xJA8LdUbnp0Ump6ndSA6tiTv5xAbciBTUmmqe2Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=viGycx1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A758AC2BC86;
-	Wed,  4 Mar 2026 17:44:59 +0000 (UTC)
+	s=arc-20240116; t=1772646304; c=relaxed/simple;
+	bh=dSmyk/Nox9RRYZXFpXt2GCY6hJy3SZ7O645wQUlrL0g=;
+	h=Date:To:From:Subject:Message-Id; b=UUWJ5Pf3Y9Fe7/Um7TMcMOcL1/2IqzPHP7sj5i1XhzMClkFeGLdTF28u1ULw2AgZMBge4pg3cXgrqiXkUyRUNyB4sMPt7E7lnFbofKaerLreqC1w5UXFEEZZR0guJfu5w7nwLKFmwd2EFzirQxYC9yeCbG0IbkD3z7OrBKjQ4aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WDyTq8dz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97703C4CEF7;
+	Wed,  4 Mar 2026 17:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772646299;
-	bh=buQ+gzgOa4Ep5hhRZzKl1M1l3gt0d0dm3Gkz/sM9Ccw=;
+	s=korg; t=1772646304;
+	bh=dSmyk/Nox9RRYZXFpXt2GCY6hJy3SZ7O645wQUlrL0g=;
 	h=Date:To:From:Subject:From;
-	b=viGycx1SLqg6myzdF88LY8N4RkTWt12zYZN79INcdZvO0AknMq8SjSzP5hT1VWzW7
-	 7aQp0MAnoum/zxEk0p/blYMrz5u+h/5DI4oHZWjUE37r3IjPSdOhiRZXRY69SHLXPM
-	 ycFranE82y19YpHAAEYrmfptucw55xsg99IBl9pI=
-Date: Wed, 04 Mar 2026 09:44:59 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,raul_pazemecxas@hotmail.com,akpm@linux-foundation.org
+	b=WDyTq8dz4rsIC3UQCog+vEIXTzyO/PDe/8hGaM7OIdBAm4e0imC4fEecTaL7AQwde
+	 XsJNmXtRhIig8RYXDgrElDHVDdc/mRXLQyNWI+6ZnPQOlvVNCLB/rOqA6YXpu3gBHV
+	 1zSjFtTT0+8NgS3S9w6vbmH8QddXiE8B9AAjukKM=
+Date: Wed, 04 Mar 2026 09:45:04 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,vishal.moola@gmail.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,hannes@cmpxchg.org,david@kernel.org,axelrasmussen@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch removed from -mm tree
-Message-Id: <20260304174459.A758AC2BC86@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] revert-ptdesc-remove-references-to-folios-from-__pagetable_ctor-and-pagetable_dtor.patch removed from -mm tree
+Message-Id: <20260304174504.97703C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 27435205687
+X-Rspamd-Queue-Id: DA45C205725
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223114-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-223113-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[vger.kernel.org,infradead.org,gmail.com,suse.cz,google.com,linux.dev,kernel.org,suse.com,oracle.com,cmpxchg.org,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,hotmail.com,linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,smtp.kernel.org:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
 
 The quilt patch titled
-     Subject: mm/damon/core: clear walk_control on inactive context in damos_walk()
+     Subject: Revert "ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()"
 has been removed from the -mm tree.  Its filename was
-     mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch
+     revert-ptdesc-remove-references-to-folios-from-__pagetable_ctor-and-pagetable_dtor.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
-Subject: mm/damon/core: clear walk_control on inactive context in damos_walk()
-Date: Mon, 23 Feb 2026 17:10:59 -0800
+From: Axel Rasmussen <axelrasmussen@google.com>
+Subject: Revert "ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()"
+Date: Tue, 24 Feb 2026 16:24:34 -0800
 
-damos_walk() sets ctx->walk_control to the caller-provided control
-structure before checking whether the context is running.  If the context
-is inactive (damon_is_running() returns false), the function returns
--EINVAL without clearing ctx->walk_control.  This leaves a dangling
-pointer to a stack-allocated structure that will be freed when the caller
-returns.
+This change swapped out mod_node_page_state for lruvec_stat_add_folio. 
+But, these two APIs are not interchangeable: the lruvec version also
+increments memcg stats, in addition to "global" pgdat stats.
 
-This is structurally identical to the bug fixed in commit f9132fbc2e83
-("mm/damon/core: remove call_control in inactive contexts") for
-damon_call(), which had the same pattern of linking a control object and
-returning an error without unlinking it.
+So after this change, the "pagetables" memcg stat in memory.stat always
+yields "0", which is a userspace visible regression.
 
-The dangling walk_control pointer can cause:
-1. Use-after-free if the context is later started and kdamond
-   dereferences ctx->walk_control (e.g., in damos_walk_cancel()
-   which writes to control->canceled and calls complete())
-2. Permanent -EBUSY from subsequent damos_walk() calls, since the
-   stale pointer is non-NULL
+I tried to look for a refactor where we add a variant of
+lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a folio,
+to try to adhere to the spirit of the original patch.  But at the end of
+the day this just means we have to call folio_memcg(ptdesc_folio(ptdesc))
+anyway, which doesn't really accomplish much.
 
-Nonetheless, the real user impact is quite restrictive.  The
-use-after-free is impossible because there is no damos_walk() callers who
-starts the context later.  The permanent -EBUSY can actually confuse
-users, as DAMON is not running.  But the symptom is kept only while the
-context is turned off.  Turning it on again will make DAMON internally
-uses a newly generated damon_ctx object that doesn't have the invalid
-damos_walk_control pointer, so everything will work fine again.
+This regression is visible in master as well as 6.18 stable, so CC stable
+too.
 
-Fix this by clearing ctx->walk_control under walk_control_lock before
-returning -EINVAL, mirroring the fix pattern from f9132fbc2e83.
-
-Link: https://lkml.kernel.org/r/20260224011102.56033-1-sj@kernel.org
-Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Reported-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
-Closes: https://lore.kernel.org/CPUPR80MB8171025468965E583EF2490F956CA@CPUPR80MB8171.lamprd80.prod.outlook.com
-Signed-off-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.14+]
+Link: https://lkml.kernel.org/r/20260225002434.2953895-1-axelrasmussen@google.com
+Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
+Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/mm.h |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
---- a/mm/damon/core.c~mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk
-+++ a/mm/damon/core.c
-@@ -1562,8 +1562,13 @@ int damos_walk(struct damon_ctx *ctx, st
- 	}
- 	ctx->walk_control = control;
- 	mutex_unlock(&ctx->walk_control_lock);
--	if (!damon_is_running(ctx))
-+	if (!damon_is_running(ctx)) {
-+		mutex_lock(&ctx->walk_control_lock);
-+		if (ctx->walk_control == control)
-+			ctx->walk_control = NULL;
-+		mutex_unlock(&ctx->walk_control_lock);
- 		return -EINVAL;
-+	}
- 	wait_for_completion(&control->completion);
- 	if (control->canceled)
- 		return -ECANCELED;
+--- a/include/linux/mm.h~revert-ptdesc-remove-references-to-folios-from-__pagetable_ctor-and-pagetable_dtor
++++ a/include/linux/mm.h
+@@ -3514,26 +3514,21 @@ static inline bool ptlock_init(struct pt
+ static inline void ptlock_free(struct ptdesc *ptdesc) {}
+ #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+ 
+-static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+-{
+-	return compound_nr(ptdesc_page(ptdesc));
+-}
+-
+ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ {
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct folio *folio = ptdesc_folio(ptdesc);
+ 
+-	__SetPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
++	__folio_set_pgtable(folio);
++	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+ }
+ 
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+ {
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct folio *folio = ptdesc_folio(ptdesc);
+ 
+ 	ptlock_free(ptdesc);
+-	__ClearPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
++	__folio_clear_pgtable(folio);
++	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+ }
+ 
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
 _
 
-Patches currently in -mm which might be from raul_pazemecxas@hotmail.com are
+Patches currently in -mm which might be from axelrasmussen@google.com are
 
 
 
