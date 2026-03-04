@@ -1,222 +1,155 @@
-Return-Path: <stable+bounces-223107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOOdNoJuqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:18 +0100
+	id KCrMBJRuqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E90D205482
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D86205497
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2F38303C62C
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:39:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF82E301E3FF
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B103C6A59;
-	Wed,  4 Mar 2026 17:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3B436D4FB;
+	Wed,  4 Mar 2026 17:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WFcDNOY1"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="m83VMf8U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FB637D119
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7591237D13E
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772645996; cv=none; b=HeBqFD0QhSJA/wIgV5J1YyJPcyLe8F5/zIjymGrwKfn99xefddm5HGnHNbeIrRhAD47JII6ZTOS3hwgnrWYYNZ0WNJ43pdifMSKhtNz/VzKvrrqi2dcciNIpno2RXQcvmJSlFLrRK0yhaAPDs2fV+ffmSsX0TVhuuQUzLxi/3ZE=
+	t=1772646028; cv=none; b=OQ58FAUvMllTOqFZKW3k+ebf4IksE530HO2+SnODihyR7fmgQft5mACufmWCdwD0504qmkZ8ZkIIhZorylk/3nHBV4IXJMfeEnEP67DAau3DglZdk+a76GhnEoubwRUIuN39UK6oG/d2JiSGwUUWjUWw0akN4iZZRG16NftQxsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772645996; c=relaxed/simple;
-	bh=HicJF9SU8FYF4bszknF2PfGmVRZgsJHkAtpALLSPT0E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Rd+/fFWzKdkutMwA1TiVCZcv0wTxZ4fHW7E9MYLS63xvxqFqv837rWth9xC+FC70qypTgczhlYEUO0ST63welKEvopF2rmUqBkOKG6i3gojYvSBfO86vxiitxMw3J17TF4KhLphc6tlOWOV2thLra1tgB3viT41zXHqcN7r7KG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WFcDNOY1; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae49120e74so35615565ad.3
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:39:54 -0800 (PST)
+	s=arc-20240116; t=1772646028; c=relaxed/simple;
+	bh=6u/b5Hl4P4F7KcDCqfOGbAd0OkLTF9XpNnpPJHP/ooo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MRDzNyVUG+LFEg1mtqzkuCkSp4HImA0DyKdHFJCouz69u1uY7WVpZ/yroxWnO+gWfW1dhzG9WPMRugcCdB7Y4tJwn9s7/VLJBQuJ25M2fPRXMYrejVaC+LxUEprv3FYK8zEpzMRIeZNJ1HN4JtpW4RSlWtgXK6RxualJ5yp9JPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=m83VMf8U; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cb420f7500so677298685a.2
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772645994; x=1773250794; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YCxR0sncGqt5cTtxeCDvL5ukAbWj6/g0krozrw9t2zU=;
-        b=WFcDNOY13QIco85fEIQ3W8+9mCUaxU7IAr04i891qhYXvySuyeRkLH7mWUT183m0pt
-         x79j0ddD/eMTleWfoTpxB2C72PlxypBSrHEz58Y2P5IAxcrB0fzHlaz4pyJOLFz+ELY7
-         wwEKtXWoZfozKBuolPpFHktDcjowQFprIGLvtb8PYDc3PHTWbrAztBXsk/Vf1oAX9ywV
-         HtJFJrenqXQ7sQ09Ub+z3X8CcsNDacHoSnwARPeMIXOU+lUnxZH4OuDtsRLA/2OzAgm3
-         8ID8N7UGtURG1MgPYzNE16EJ5MvhxIotwzSLD9y6wt9/Ou8fSsCt866+eQqL97iFWPcz
-         nN4A==
+        d=gourry.net; s=google; t=1772646025; x=1773250825; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
+        b=m83VMf8Ujf90rIzWBraxVZVWaQetcU/VHPEgswLk0hPwk6LmKgloeaRkV7Atmyj6vP
+         8861uvwbqACAEZjmIJO6MkZ0Kf/cACl8m2MUIydVPgtNhKnH4M3/neBt4h/dj6wI5chl
+         /yXFZHlyBbSPjdGAh5SuFgYVdmxfhIchVOJc8awifkVjCvZNPdOFolaOJ7eegYi5Y2nG
+         DcUYbCJwTk9wFkvvC73G9ak+mEYl3JL3bQDSk8gG1JcDZgstPBep4MeBeKRdunQ1fTI/
+         u6SwEcgE2WjprN393puHO2vE1b9l3r/PPN9vyWwbZPfAH1k+BoFahoQcne7p/dZQH0fg
+         9RAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772645994; x=1773250794;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YCxR0sncGqt5cTtxeCDvL5ukAbWj6/g0krozrw9t2zU=;
-        b=iVbUZod+Jt1SgKHMm1xqPsNqgT1+suDeFr2kpU5wCJkCEOTS7pKKQNyQr4oTeVNygO
-         B26DZfPBDImqqg1id7pmPITFLGeINNHvcPXyAqnHIS++IkssKUZUrnmcGEpYQFM9FHc0
-         2DZ2pmsugNV1hTqvK6sX9E+ZM0tiWRvH3DbGSDi/UtdEevW7y1mkGuhV4TdHI5k3aB+s
-         YCHJDPYA5kCzHU+9Usl79UmmNqxQfrPvyMQJ1Aw4zOXHuD2XJeK86a07L7/0fQEkxQCH
-         cqkj8bEVSxeDnoGDqF6zyuoDEKK12PmMSkWZvwSCwbkx/UQYBCURyC1Y+XCs6ZkkApmF
-         0VYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSgaxzbelzbE/b9Ou4HPdyFIxuGZDoYGu/TmkCdO2qsvRzX8HZK85W4+PRBlPjaKF3X3xgThI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Z4uDd19L/a5JIhxpL3olZUaPj2a0AQaXG1AUjhnL7nKVtNOv
-	7ufkXQXPxP/GfP9u6RtMQtdqV1yQtccBjgQTOvLdDAHZNUV5d95t7O2RiMY8lJprqj46raavcMG
-	131CuGg==
-X-Received: from plbkh3.prod.google.com ([2002:a17:903:643:b0:2ae:4d78:4c8d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e886:b0:2ae:698d:94a6
- with SMTP id d9443c01a7336-2ae6aa054b2mr30306185ad.2.1772645993537; Wed, 04
- Mar 2026 09:39:53 -0800 (PST)
-Date: Wed, 4 Mar 2026 09:39:51 -0800
-In-Reply-To: <CAO9r8zN21twRarvzvq8euUOHRtVrO+q8jMaiip7NPtGgZ2dWGw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1772646025; x=1773250825;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
+        b=Tk/kkSAKCWMepdVQgAYTGmNTcBX/oB4126toSxxHfITdepyWbovWMJ0DxhwR6SV+m5
+         tZgbuOrXJ05igoVw4RVl9rIHRdDHesUgl4pd6k6Pex0ttRhX+yJNrkKIwRz9NdnBlTTx
+         rwZIcp2x01mEe7exxw5Kw/uQjBi9n41w9ujkE9vcFGCy0bmsCqpiEv4pGgM1gA01RMvr
+         oaZasrSz79O+HD93iGtkAXqTbRSh7Qo856qABgsXcF/7p1aYpAmIYOkKvhm4WGe0/R+k
+         lPkdCw62+ATEA/rOeGP+HT86eQdMq27/HO0uCsaFBPSESQgkaLLFcg0cBXRtkS+P7/js
+         obMw==
+X-Gm-Message-State: AOJu0Yw2dtrJpjWq+r1dyAzuV71Nk8N0hnp9EiOJw6kstp1QUm3Fk1Zm
+	Trn9NsKZKqHvy0Gj8wmrZ4Oya3AfoNnsIauP5og+9TTnD0gnZ36h4vp3Ft1W7Kq0FfA=
+X-Gm-Gg: ATEYQzx8Ch0/VbANyBLKaeuoj7VkSHLXPsvw8NspBoFKnlnO9jiEbf/HEOUvKNZj9xX
+	EET+3dRzjbnmG5QbuTG92xL0MfeXL1yc6b6nHtK+Doh7fd8K6jLTNhCpnyaoxwjz0ZrBaEYPzuo
+	2TvJ3Qmv0fn7wb0beweAyKTuvU5BFeutSg3J+f9KFfutdE2VDhmWMJhQ72krWEdCijg7nde7b3K
+	q6S7j8Ke6XIQgKjNFh2HvJRurKnvikoS6hx0dbtDNzPS7VbC1RXqX/8g9uJpTscw9IHJ0/bhEdP
+	m7nnpfvF62AlvpF9M28tqtx4DN6nMRssz8U2MFdph45J7eUzW7xYHfKL9BZYJsnoTWiQBdHNDrV
+	2G+tOjcFhk1X7W/tNqghS2bEchw0QaN5h0Jy4/TykuVVrOcp6Qm5yBHTy9ExkqHTLM4bJ59UmJV
+	aFu0OQHXVRq/jT4U601H848G0qfvBUMBwtmcBF23mKdREH6Izbutr2HB0+xK6xlwfr3UJFJw7lq
+	mb1HKruvA==
+X-Received: by 2002:a05:620a:19a1:b0:8cb:2830:175b with SMTP id af79cd13be357-8cd5afaa850mr354601985a.65.1772646025360;
+        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f948dsm1668520385a.30.2026.03.04.09.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
+Date: Wed, 4 Mar 2026 12:40:23 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: stable@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	Li Ying <liying3@sungrowpower.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Lameter <cl@linux.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH 6.6.y] mm/mempolicy: fix wrong mmap_read_unlock() in
+ migrate_to_node()
+Message-ID: <aahuh6N6zfll5EPB@gourry-fedora-PF4VCD3F>
+References: <20260303101245.22290-1-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-6-yosry@kernel.org>
- <CAO9r8zN21twRarvzvq8euUOHRtVrO+q8jMaiip7NPtGgZ2dWGw@mail.gmail.com>
-Message-ID: <aahuZ4bg4aQKTZYj@google.com>
-Subject: Re: [PATCH v3 5/8] KVM: nSVM: Always use NextRIP as vmcb02's NextRIP
- after first L2 VMRUN
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7E90D205482
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303101245.22290-1-david@kernel.org>
+X-Rspamd-Queue-Id: 65D86205497
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223107-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gourry.net:+];
+	TAGGED_FROM(0.00)[bounces-223108-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[gourry.net];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,gourry.net:email,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linux.com:email]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026, Yosry Ahmed wrote:
-> On Tue, Feb 24, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > For guests with NRIPS disabled, L1 does not provide NextRIP when runnin=
-g
-> > an L2 with an injected soft interrupt, instead it advances the current =
-RIP
-> > before running it. KVM uses the current RIP as the NextRIP in vmcb02 to
-> > emulate a CPU without NRIPS.
-> >
-> > However, after L2 runs the first time, NextRIP will be updated by the
-> > CPU and/or KVM, and the current RIP is no longer the correct value to
-> > use in vmcb02.  Hence, after save/restore, use the current RIP if and
-> > only if a nested run is pending, otherwise use NextRIP.
-> >
-> > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM=
-_SET_NESTED_STATE")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > ---
-> >  arch/x86/kvm/svm/nested.c | 25 ++++++++++++++++---------
-> >  1 file changed, 16 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index 9909ff237e5ca..f3ed1bdbe76c9 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -845,17 +845,24 @@ static void nested_vmcb02_prepare_control(struct =
-vcpu_svm *svm,
-> >         vmcb02->control.event_inj_err       =3D svm->nested.ctl.event_i=
-nj_err;
-> >
-> >         /*
-> > -        * next_rip is consumed on VMRUN as the return address pushed o=
-n the
-> > +        * NextRIP is consumed on VMRUN as the return address pushed on=
- the
-> >          * stack for injected soft exceptions/interrupts.  If nrips is =
-exposed
-> > -        * to L1, take it verbatim from vmcb12.  If nrips is supported =
-in
-> > -        * hardware but not exposed to L1, stuff the actual L2 RIP to e=
-mulate
-> > -        * what a nrips=3D0 CPU would do (L1 is responsible for advanci=
-ng RIP
-> > -        * prior to injecting the event).
-> > +        * to L1, take it verbatim from vmcb12.
-> > +        *
-> > +        * If nrips is supported in hardware but not exposed to L1, stu=
-ff the
-> > +        * actual L2 RIP to emulate what a nrips=3D0 CPU would do (L1 i=
-s
-> > +        * responsible for advancing RIP prior to injecting the event).=
- This is
-> > +        * only the case for the first L2 run after VMRUN. After that (=
-e.g.
-> > +        * during save/restore), NextRIP is updated by the CPU and/or K=
-VM, and
-> > +        * the value of the L2 RIP from vmcb12 should not be used.
-> >          */
-> > -       if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> > -               vmcb02->control.next_rip    =3D svm->nested.ctl.next_ri=
-p;
-> > -       else if (boot_cpu_has(X86_FEATURE_NRIPS))
-> > -               vmcb02->control.next_rip    =3D vmcb12_rip;
-> > +       if (boot_cpu_has(X86_FEATURE_NRIPS)) {
-> > +               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
-> > +                   !svm->nested.nested_run_pending)
-> > +                       vmcb02->control.next_rip    =3D svm->nested.ctl=
-.next_rip;
-> > +               else
-> > +                       vmcb02->control.next_rip    =3D vmcb12_rip;
-> > +       }
->=20
-> This should probably also apply to soft_int_next_rip below the context
-> lines. Otherwise after  patch 7 we keep it uninitialized if the guest
-> doesn't have NRIPs and !nested_run_pending.
+On Tue, Mar 03, 2026 at 11:12:45AM +0100, David Hildenbrand (Arm) wrote:
+> The backport of commit 091c1dd2d4df ("mm/mempolicy: fix migrate_to_node()
+> assuming there is at least one VMA in a MM") contains an error:
+> migrate_to_node() does not lock the mmap_lock itself, that is handled by
+> the caller instead.
+> 
+> So let's drop the wrong mmap_read_unlock(). Fortunately, this path is
+> very hard to hit in practice.
+> 
+> Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
+> Reported-by: Li Ying <liying3@sungrowpower.com>
+> Closes: https://lore.kernel.org/r/aaZgUNxAyKC2IwuG@casper.infradead.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Christoph Lameter <cl@linux.com>
+> Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-That's fine though, isn't it?  Because in that case, doesn't the soft int h=
-ave to
-comein through svm_update_soft_interrupt_rip()?  Ugh, no because nSVM migra=
-tes
-control.event_inj.
+straight forward, thanks for the quick fix
 
-IIUC, we want to end up with this?
-
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 03b201fe9613..d12647080051 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -925,7 +925,8 @@ static void nested_vmcb02_prepare_control(struct vcpu_s=
-vm *svm)
-         */
-        if (is_evtinj_soft(vmcb02->control.event_inj)) {
-                svm->soft_int_injected =3D true;
--               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-+               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
-+                   !svm->nested.nested_run_pending)
-                        svm->soft_int_next_rip =3D vmcb12_ctrl->next_rip;
-        }
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
