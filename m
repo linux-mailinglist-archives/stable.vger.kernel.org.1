@@ -1,314 +1,213 @@
-Return-Path: <stable+bounces-222969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJUCKLyTp2meiQAAu9opvQ
-	(envelope-from <stable+bounces-222969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:06:52 +0100
+	id dPZQH5aWp2nUiQAAu9opvQ
+	(envelope-from <stable+bounces-222970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:19:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2EE1F9C69
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:06:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17691F9D1E
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 03:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BBE430432F4
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 02:06:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 585E830488CD
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 02:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2675246778;
-	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4CA244661;
+	Wed,  4 Mar 2026 02:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2CN+HeIN"
+	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="2fy+s7zw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-36.ptr.blmpb.com (sg-1-36.ptr.blmpb.com [118.26.132.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E86F513;
-	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542DE23ABBD
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 02:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772589991; cv=none; b=KY2UbABf6YU/SrbFGoShtZxP20V+eUgQMKq6cfuRPC/Pa2f95uW0l6CFInVwVPgUH9KsnkofC5yeekAtEryZ8R43i7TP++EvASjWFLBUN5x6xnT7oFCg/5cFxHz8LUmeCETXb90sTJ/OcUL7dA+DtiuWGTAiEDM1NpUVvE195VU=
+	t=1772590739; cv=none; b=D9WxfVcaZY7J/Uy02gJeNYW1BLtedwh2h+aYiCN54sEDFmXi52fsrgPGXtS3aT5HQ8MYxxUeLG6jTmtuooHMfX2lC2i6gPmYPDcAkcMl8sqNJPmCOTD0AlmAHEZct2hKs4QlPRSPWRgfmfRSD8zMHSlmTzJVmFMOeQMGWwMhrYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772589991; c=relaxed/simple;
-	bh=l6n1/MVirCT1t8Uff3oa+jguL3arHGTyLd4riEuej3M=;
-	h=Date:To:From:Subject:Message-Id; b=EwQPn/8Nfaznfc/n0dLydLecmY2CqjQcACAYsA/L+kAGU9ABOXFbsJPv4EY0xDvG9vfpOIKknV+s0X28i3M1to7cJYsNpoluv4Zk8JyclpLrwAnxvczimj1DoFA8YRGr1L6eTkrdK7T+TyZbwu/mh/XpvSY0HK9rSHEiPIicm7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2CN+HeIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B29C19422;
-	Wed,  4 Mar 2026 02:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772589991;
-	bh=l6n1/MVirCT1t8Uff3oa+jguL3arHGTyLd4riEuej3M=;
-	h=Date:To:From:Subject:From;
-	b=2CN+HeINQNpoatHNRESyg/dgPcy66z9ItwSHSHCg+Tb3dBxrPiD8iRwLZ4BVGzmSC
-	 SK4vbQk1+20LxnMNdETMRCM4NjKieLgGEQEhRC+hnrxRhdYFYqx45NuT6DgGEEydZI
-	 qui6tkRq3+DosZDd8zf6b7uwWFfw2RkClK83ZqGc=
-Date: Tue, 03 Mar 2026 18:06:30 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,ryan.roberts@arm.com,riel@surriel.com,richard.weiyang@gmail.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,harry.yoo@oracle.com,david@kernel.org,baohua@kernel.org,anshuman.khandual@arm.com,dev.jain@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260304020631.33B29C19422@smtp.kernel.org>
+	s=arc-20240116; t=1772590739; c=relaxed/simple;
+	bh=AxjOMASTfdq+3mnv8B9AggdHsIJp6qfP3Mp+h3e0IE0=;
+	h=In-Reply-To:From:Message-Id:Mime-Version:Content-Type:References:
+	 Cc:Date:To:Subject; b=g4oYM+BQr+qCv7R+VRKg3YNLy/N8HYvgHM0Kmqt4iAC5XfNZASff3VdkjfFf/wrXY3XfABdzunovHxgKtzqpAd+re0Btoglz42vVsx+qsPv0KudA9jwhGRWgCulf6G6QBFkgZjuVeTQNjXJW1KidBIl1HJQ/ugViwd+8V5isqlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=2fy+s7zw; arc=none smtp.client-ip=118.26.132.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fnnas.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1772590725;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=s2idoR7obNOLPGXXRWo+TTj4IXagnotgcd2SBp5sm04=;
+ b=2fy+s7zwooTCWjb9x1TZFnsB73GH6XhEVVFpnWIryczS3RfcjopH+8TFhJhyeFiQQuBX4k
+ Xq/ETxJHgTpJd9raQnu1bSRiWpIIdzL4CN2mLn9ARZrLhChwxc/wK7LxuyOzlA9pxncD3l
+ j+Ii1XOcoVUMcKlm0fsqpJwOG3N7qvGAoGgtjaryIdBo6R48G7epEqDQrqS4dZftaGmDQY
+ eYhcQ2R6FBwYEgvv5xl6dQ68UGKpWJKkJC/6N3d5lLJPD8um4Qe7BD0zZisjWPjnDbynvP
+ Rs/lfLDZ1IKMhIk1EBvmHenAQDPLBd8B8Yd8iTBERQuqErEUiOzfNnW7sMjlLA==
+In-Reply-To: <20260303005619.1352958-1-johunt@akamai.com>
+Content-Transfer-Encoding: quoted-printable
+From: "Yu Kuai" <yukuai@fnnas.com>
+Message-Id: <54af459e-2671-417b-bc9f-2b13f111f749@fnnas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: EF2EE1F9C69
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+References: <20260303005619.1352958-1-johunt@akamai.com>
+Received: from [192.168.1.104] ([39.182.0.182]) by smtp.feishu.cn with ESMTPS; Wed, 04 Mar 2026 10:18:42 +0800
+Reply-To: yukuai@fnnas.com
+Cc: <ncroxon@redhat.com>, <stable@vger.kernel.org>
+Date: Wed, 4 Mar 2026 10:18:40 +0800
+Content-Language: en-US
+To: "Josh Hunt" <johunt@akamai.com>, <song@kernel.org>, 
+	<linan122@huawei.com>, <linux-raid@vger.kernel.org>, <yukuai@fnnas.com>
+X-Original-From: Yu Kuai <yukuai@fnnas.com>
+X-Lms-Return-Path: <lba+269a79683+058066+vger.kernel.org+yukuai@fnnas.com>
+Subject: Re: [PATCH v3] md/raid10: fix deadlock with check operation and nowait requests
+X-Rspamd-Queue-Id: D17691F9D1E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-222970-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-222969-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_TO(0.00)[vger.kernel.org,suse.cz,arm.com,surriel.com,gmail.com,oracle.com,google.com,kernel.org,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[fnnas.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yukuai@fnnas.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	HAS_REPLYTO(0.00)[yukuai@fnnas.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+=E5=9C=A8 2026/3/3 8:56, Josh Hunt =E5=86=99=E9=81=93:
 
-The patch titled
-     Subject: mm/rmap: fix incorrect pte restoration for lazyfree folios
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
+> When an array check is running it will raise the barrier at which point
+> normal requests will become blocked and increment the nr_pending value to
+> signal there is work pending inside of wait_barrier(). NOWAIT requests
+> do not block and so will return immediately with an error, and additional=
+ly
+> do not increment nr_pending in wait_barrier(). Upstream change
+> 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
+> call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
+> this condition. raid_end_bio_io() eventually calls allow_barrier() and
+> it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
+> though the corresponding increment on nr_pending didn't happen in the
+> NOWAIT case.
+>
+> This can be easily seen by starting a check operation while an applicatio=
+n is
+> doing nowait IO on the same array. This results in a deadlocked state due=
+ to
+> nr_pending value underflowing and so the md resync thread gets stuck wait=
+ing
+> for nr_pending to =3D=3D 0.
+>
+> Output of r10conf state of the array when we hit this condition:
+>
+> crash> struct r10conf.barrier,nr_pending,nr_waiting,nr_queued <addr of r1=
+0conf>
+> 	barrier =3D 1,
+>          nr_pending =3D {
+>            counter =3D -41
+>          },
+>          nr_waiting =3D 15,
+>          nr_queued =3D 0,
+>
+> Example of md_sync thread stuck waiting on raise_barrier() and other requ=
+ests
+> stuck in wait_barrier():
+>
+> md1_resync
+> [<0>] raise_barrier+0xce/0x1c0
+> [<0>] raid10_sync_request+0x1ca/0x1ed0
+> [<0>] md_do_sync+0x779/0x1110
+> [<0>] md_thread+0x90/0x160
+> [<0>] kthread+0xbe/0xf0
+> [<0>] ret_from_fork+0x34/0x50
+> [<0>] ret_from_fork_asm+0x1a/0x30
+>
+> kworker/u1040:2+flush-253:4
+> [<0>] wait_barrier+0x1de/0x220
+> [<0>] regular_request_wait+0x30/0x180
+> [<0>] raid10_make_request+0x261/0x1000
+> [<0>] md_handle_request+0x13b/0x230
+> [<0>] __submit_bio+0x107/0x1f0
+> [<0>] submit_bio_noacct_nocheck+0x16f/0x390
+> [<0>] ext4_io_submit+0x24/0x40
+> [<0>] ext4_do_writepages+0x254/0xc80
+> [<0>] ext4_writepages+0x84/0x120
+> [<0>] do_writepages+0x7a/0x260
+> [<0>] __writeback_single_inode+0x3d/0x300
+> [<0>] writeback_sb_inodes+0x1dd/0x470
+> [<0>] __writeback_inodes_wb+0x4c/0xe0
+> [<0>] wb_writeback+0x18b/0x2d0
+> [<0>] wb_workfn+0x2a1/0x400
+> [<0>] process_one_work+0x149/0x330
+> [<0>] worker_thread+0x2d2/0x410
+> [<0>] kthread+0xbe/0xf0
+> [<0>] ret_from_fork+0x34/0x50
+> [<0>] ret_from_fork_asm+0x1a/0x30
+>
+> Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josh Hunt <johunt@akamai.com>
+> ---
+> v3:
+>    * Call free_r10bio() as per Yu Kuai's suggestion
+> ---
+>   drivers/md/raid10.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
+There are some checkpatch errors and warnings, applied to md-7.0 with some
+changes to commit message.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+> index 9debb20cf129..b4892c5d571c 100644
+> --- a/drivers/md/raid10.c
+> +++ b/drivers/md/raid10.c
+> @@ -1184,7 +1184,7 @@ static void raid10_read_request(struct mddev *mddev=
+, struct bio *bio,
+>   	}
+>  =20
+>   	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
+> -		raid_end_bio_io(r10_bio);
+> +		free_r10bio(r10_bio);
+>   		return;
+>   	}
+>  =20
+> @@ -1372,7 +1372,7 @@ static void raid10_write_request(struct mddev *mdde=
+v, struct bio *bio,
+>  =20
+>   	sectors =3D r10_bio->sectors;
+>   	if (!regular_request_wait(mddev, conf, bio, sectors)) {
+> -		raid_end_bio_io(r10_bio);
+> +		free_r10bio(r10_bio);
+>   		return;
+>   	}
+>  =20
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Dev Jain <dev.jain@arm.com>
-Subject: mm/rmap: fix incorrect pte restoration for lazyfree folios
-Date: Tue, 3 Mar 2026 11:45:28 +0530
-
-We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.  If the
-batch has a mix of writable and non-writable bits, we may end up setting
-the entire batch writable.  Fix this by respecting writable bit during
-batching.
-
-Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
-lost, preserve it on pte restoration by respecting the bit during
-batching, to make the fix consistent w.r.t both writable bit and
-soft-dirty bit.
-
-I was able to write the below reproducer and crash the kernel. 
-Explanation of reproducer (set 64K mTHP to always):
-
-Fault in a 64K large folio.  Split the VMA at mid-point with
-MADV_DONTFORK.  fork() - parent points to the folio with 8 writable ptes
-and 8 non-writable ptes.  Merge the VMAs with MADV_DOFORK so that
-folio_unmap_pte_batch() can determine all the 16 ptes as a batch.  Do
-MADV_FREE on the range to mark the folio as lazyfree.  Write to the memory
-to dirty the pte, eventually rmap will dirty the folio.  Then trigger
-reclaim, we will hit the pte restoration path, and the kernel will crash
-with the trace given below.
-
-The BUG happens at:
-
-	BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
-
-The code path is asking for anonymous page to be mapped writable into the
-pagetable.  The BUG_ON() firing implies that such a writable page has been
-mapped into the pagetables of more than one process, which breaks
-anonymous memory/CoW semantics.
-
-[   21.134473] kernel BUG at mm/page_table_check.c:118!
-[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   21.135917] Modules linked in:
-[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
-[   21.136858] Hardware name: linux,dummy-virt (DT)
-[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   21.137308] pc : page_table_check_set+0x28c/0x2a8
-[   21.137607] lr : page_table_check_set+0x134/0x2a8
-[   21.137885] sp : ffff80008a3b3340
-[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
-[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
-[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
-[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
-[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
-[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
-[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
-[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
-[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
-[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
-[   21.141991] Call trace:
-[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
-[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
-[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
-[   21.142766]  contpte_set_ptes+0xe8/0x140
-[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
-[   21.143177]  rmap_walk_anon+0x100/0x250
-[   21.143315]  try_to_unmap+0xa0/0xc8
-[   21.143441]  shrink_folio_list+0x59c/0x18a8
-[   21.143759]  shrink_lruvec+0x664/0xbf0
-[   21.144043]  shrink_node+0x218/0x878
-[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
-[   21.144763]  user_proactive_reclaim+0x2a4/0x340
-[   21.145056]  reclaim_store+0x3c/0x60
-[   21.145216]  dev_attr_store+0x20/0x40
-[   21.145585]  sysfs_kf_write+0x84/0xa8
-[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
-[   21.145994]  vfs_write+0x2b8/0x368
-[   21.146119]  ksys_write+0x70/0x110
-[   21.146240]  __arm64_sys_write+0x24/0x38
-[   21.146380]  invoke_syscall+0x50/0x120
-[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
-[   21.146679]  do_el0_svc+0x28/0x40
-[   21.146798]  el0_svc+0x34/0x110
-[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
-[   21.147074]  el0t_64_sync+0x198/0x1a0
-[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
-[   21.147440] ---[ end trace 0000000000000000 ]---
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sched.h>
-#include <fcntl.h>
-
-void write_to_reclaim() {
-    const char *path = "/sys/devices/system/node/node0/reclaim";
-    const char *value = "409600000000";
-    int fd = open(path, O_WRONLY);
-    if (fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
-
-    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
-        perror("write");
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Successfully wrote %s to %s\n", value, path);
-    close(fd);
-}
-
-int main()
-{
-	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
-			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if ((unsigned long)ptr != (1UL << 30)) {
-		perror("mmap");
-		return 1;
-	}
-
-	/* a 64K folio gets faulted in */
-	memset(ptr, 0, 1UL << 16);
-
-	/* 32K half will not be shared into child */
-	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
-		perror("madvise madv dontfork");
-		return 1;
-	}
-
-	pid_t pid = fork();
-
-	if (pid < 0) {
-		perror("fork");
-		return 1;
-	} else if (pid == 0) {
-		sleep(15);
-	} else {
-		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
-		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
-			perror("madvise madv fork");
-			return 1;
-		}
-		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
-			perror("madvise madv free");
-			return 1;
-		}
-
-		/* dirty the large folio */
-		(*ptr) += 10;
-
-		write_to_reclaim();
-		// sleep(10);
-		waitpid(pid, NULL, 0);
-
-	}
-}
-
-Link: https://lkml.kernel.org/r/20260303061528.2429162-1-dev.jain@arm.com
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/rmap.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
---- a/mm/rmap.c~mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios
-+++ a/mm/rmap.c
-@@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_p
- 	if (userfaultfd_wp(vma))
- 		return 1;
- 
--	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-+	/*
-+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
-+	 * upgrading write permissions for ptes that were not originally
-+	 * writable, and to avoid losing the soft-dirty bit, use the
-+	 * appropriate FPB flags.
-+	 */
-+	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
-+				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
- }
- 
- /*
-_
-
-Patches currently in -mm which might be from dev.jain@arm.com are
-
-mm-rmap-fix-incorrect-pte-restoration-for-lazyfree-folios.patch
-khugepaged-remove-redundant-index-check-for-pmd-folios.patch
-
+--=20
+Thansk,
+Kuai
 
