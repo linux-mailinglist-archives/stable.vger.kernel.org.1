@@ -1,92 +1,116 @@
-Return-Path: <stable+bounces-223046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOSBCwgqqGkdpAAAu9opvQ
-	(envelope-from <stable+bounces-223046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:48:08 +0100
+	id kCDpJD8vqGlPpQAAu9opvQ
+	(envelope-from <stable+bounces-223047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:10:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EFA1FFCF2
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:48:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BB920019E
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 595CB3029AE9
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 12:46:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C32A30C0247
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061191DE8AF;
-	Wed,  4 Mar 2026 12:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FF82FE591;
+	Wed,  4 Mar 2026 13:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFYDrWoQ"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bJgHZ2YN";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ufi9ipDk"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFA91E0E14
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 12:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E642BD587
+	for <Stable@vger.kernel.org>; Wed,  4 Mar 2026 13:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772628402; cv=none; b=nffes8P89HJ5wXgGD8stjfHSF5EUfHMMxrRIXY5SiPvfT+WkaBA6dhJBUtqQHXk7lNjX8HIGeOIYLAciFPo205ZNOuvfjSVG7qR3BjqGUxDve3Wpb0sRIvJ4l8BouYB/NtELl4P+NNAKjxxYutYRyaKsbVsiu+XYN7M00l7NM0I=
+	t=1772629645; cv=none; b=uMUO7gH+Xz82nB3/wvx3QbjVpD3ZR5iTsunhHCAPSUWh83jKHDyG8KjoRk2pZ8C9LeXS3hbwy5dev6zE2bF/EIhZsq05FVbqwyhdNA5Q99NmPK9eoV1tVwG6YSlUS0RtyuayrWgeX6k/HpQbfWtfqiAYnyFlidffws2oSno0ILI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772628402; c=relaxed/simple;
-	bh=X+cEgUYdBhzqmXNgOKBSdS0OGCTtnGXepLLe79iZaaw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xv+TaP5OSPp2Rf6DnHT3N/oUGeS3s/JSTygmLVWWfKU68EmUa4jgmNw5gFJqOW5zwvWvPLX6wt+oNh58W088MGVIQLYnsGtcfO/NquVYWOjD2DMMOZNV5b4rghprw43vewCio1FkF8Ji6B/aU4VxoYIc+oNlRSj3WLUNOg48u/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFYDrWoQ; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82748095892so3283289b3a.0
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 04:46:41 -0800 (PST)
+	s=arc-20240116; t=1772629645; c=relaxed/simple;
+	bh=KvhN5EIM3XXPaotrLaYPSuOdgBSYq4SNpSPqi8ZqfN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Av8KHznJGP3sE6/DwcWCOFDgHhH3tSzQycJbRu1SBtB3zsd1MYxYZ5LqQCPoJ/yogM49zrKPh0VghotdlGcbSXnGObYqsSv4xAYwIGjwvqaThB4uiA9rtEbyGlasds8odcnsPaROQoKEeu3+SZpFs9g0/TQnK57prWZam29yfE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bJgHZ2YN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ufi9ipDk; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 624BuLGO2306023
+	for <Stable@vger.kernel.org>; Wed, 4 Mar 2026 13:07:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=K4gYoo9JoJP
+	OJ5mTuliJj+hphclVDgk4+5Zp53bnrEg=; b=bJgHZ2YNtRjhg6ZNGKNu2y4jQWV
+	6RTo0IzyHTPTEUIcoQ9lI2wzYZhBEKeT1CiKLTf24CQbEdW+TpHTblxcvhgKFUp1
+	VkItVJfjhAo3P0HANGFx1kyXtKcBVBjaoJwhxLEoMr24mgndGSNgN69+8q6PJwaR
+	epa8+tscQWZVAXUVObi0Omb/sTwMfep293ADC7493PtmvAd5tghTBLnkMGcYvSvR
+	qMH6EIqTpo/XLJl0iy7Cx+qqVXCKe1uUQQaKjG+0vNM7gwPc4nhD2kJAwLvDEEve
+	gSu1mtEKGhNHheSO06u9bBLQsg9u7c0FPcRNSqVpw9YjkXVZmIDEWE1ilQQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cpau8t73a-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Wed, 04 Mar 2026 13:07:23 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c70ed6c849so1009813685a.1
+        for <Stable@vger.kernel.org>; Wed, 04 Mar 2026 05:07:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772628401; x=1773233201; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PRHZvjbEn20Mjv6PiYHb8lOHhFpRFIdSlhpdu6s0ORg=;
-        b=SFYDrWoQx1xs6xU+za7BEh8unzwo9BFEWcqiUMMvX4J2mcu0h4hR2M3SLR6QPTt6Cw
-         xqmXDPHLt3emOwkdhD81zTZFMuDZqOVZLYO3T6JoA6rbzSiZialtDq/jarkiJLvmC4fY
-         yW03ppKeuV0QFB0CYgUWChuij7xYQ/xcdhJXkx1MejI2kaNXeF704hLJ7tKG6pk5MquB
-         S4UtI90IBJ0nFKURaHCnbMWjrL9DtNChgzDcrbqKXhAzTHkYPTi41n3UvXdGzBA63st5
-         4lfEVWhNsthfmzsx2BO5KRJs0hopq5RD9Q2rv0x71CjPLeno4DWNxT9L6rg9/2+FQCxj
-         +ueg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772628401; x=1773233201;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1772629642; x=1773234442; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PRHZvjbEn20Mjv6PiYHb8lOHhFpRFIdSlhpdu6s0ORg=;
-        b=Erv05XKAzDn3+AaxkiHs8E1EoiZp23dLgGty4f68kRAuf+lnAMiOcbbjvtDQPW+35o
-         RvLTN7p/1Ux76079ZVvaXe6gGWXbttmk2tKqpSIvCgahEABymYhc5GZDZjaJsgQyMryv
-         1SEHHW4sYJ+nY6NmkuCSYcTVOehu2nhlSXBKT9e88MeRpJ0stUMuhw3VLAnx5w6hM+Eu
-         3KMmrvId3q56suU/T361QdZEfUqjquXx5n8Dt8IMzXO0+qIE3Cc56dSnt9TvVUxQ+/GS
-         v8drTYKDqIbrxinK70YIqICfLsTumbO491MFGNYiAZEpBhWXTRDxIfPF0whRew2DE8pz
-         jEZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW/sMsxXUtdwW4a/GBhaqQh9m2epKCxrzYTb6APO5FOnoE9yMuCqJxwmCobbZ7HMAj7f1SeM5U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5LWgNRSCaAqaaZ8Utgg9rifkYgdz5XWd78byT5rSjXzpJ0oNZ
-	MkDSH5OyPyQg7omyY76DUPV3UHIKlBAOazUg6gQfl63rYdav3ENAfkac
-X-Gm-Gg: ATEYQzwzQSFCQx0RswELgP42/LnuWnhIxpuudYMlaG1i2jeg8Z9VRTswnHGvipclfT5
-	mLZrJQBGajpYZbepX+z+1xqCtLjadZPhiQ2bQDBnYp5wxnxXd7KmNljD++dDkIPkNlVUN92hsBb
-	ka6GpwVMbKcOz+zZEvjiiUkcLiNjUAmojYIrr5ZPcvfn3x1hZNBMMI+fODSUh8XsReomOcyh4+W
-	QTjHtpDG7OxyecnmTV1Fg/fRNmkvJBxEJojbcx7CtS2hhVGive7J6kvB7Uy6fH5qAHfnDrKEQkS
-	jch1CP3PZgWyJexgY5S4nire0psokrcp7K66GiuQS3r6bydTMBgXlrVAwjC9EyR7eXS4MjeH7iy
-	pVl7WSOhjfL35ztAIAZCFZetcCymJebPy28JQFaEp0hCWtyZI2pMxAI+YnNB9ydJFRoNV6ziWZF
-	puUjRVDUxFofJt5FJbkXrvoFAJ62Ra+3qrIV+MhqTN85zj6lPkw1g=
-X-Received: by 2002:a05:6a20:7f96:b0:38d:ec8c:7e55 with SMTP id adf61e73a8af0-3982df0e577mr1836844637.32.1772628400796;
-        Wed, 04 Mar 2026 04:46:40 -0800 (PST)
-Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.88])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7377062904sm1836317a12.30.2026.03.04.04.46.40
+        bh=K4gYoo9JoJPOJ5mTuliJj+hphclVDgk4+5Zp53bnrEg=;
+        b=Ufi9ipDklVsKQO7cF/i5cac1ETpF+1RuMeO5J3mbO9Y/10vLXsd6dhHoXLD+Gmt3dJ
+         h9IOCYqAOOiNQw+HDngw5EVz2+nnw3X7BkY7yJEmT9mD+2A5jXsajnuJlL3oPbSxuJzY
+         zRQ3BiNj5UjwIOTU+Hjbij2vZXLToNIeURrBOeV7E6WKZqZSSB0paQLv2bDtQD6t7iFd
+         QP9J8qsthWdGK2MVO0Aq7FyrM3XrKKjkh73I/7W2IwpkV5ZBfWFI2rlrovh001xqLc9Y
+         1S7+NsABzCUreTQZEb2l8HArsF9iYHV02/O6OqpVdY87KQVPt8uzvcfCdSOeKZQIgGro
+         qj2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772629642; x=1773234442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K4gYoo9JoJPOJ5mTuliJj+hphclVDgk4+5Zp53bnrEg=;
+        b=g183V6hBZyq3Lrhq6QZ78rm8FqLXJGxfRySgpq7npw/nVbDdSvVMpOdkS0YVqzXqVi
+         Fh717hY8faG1pSCpve7YDzSi8M90hCAd36dOpGFdsJh1HF71SNk7Wenj8kyBjl7n3u9B
+         h7BwSkpu/J27QmaRtdFMJkJCIvC6i6SREDojc00f1jP/GKv0M3aXtRjFTIsoP6TLigqX
+         zPeRuXPkPqzO9Fi1e4X9mgXJFv7DZOPwrc5t8q0fiXBH/lN4SsmtSD+Xe1b20A6IgFvG
+         oXP991h98k1ZgNc45D0OEtAjuivxfC4yN6vijRrJGpSK/FBvWBwwbZLWbhpRnhvqFAIS
+         N71g==
+X-Forwarded-Encrypted: i=1; AJvYcCUqccSV2hCudV6K3z2h1P3/05e4LATIVya43TSNW93r01Fcs8ArHhJ9nwzuZXC1sIvdli3KKis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQH2MbpI95CcA3Za+7xMeDCVvs103qIh23y3txeffTpZFNLYVY
+	ud2vB2p5ZdGIKwTjP0HkLQxQUnxEDgWXX/DwPX97znJB7KzJImvvD6YzVt2cw+7JYfLfJ9rsoqS
+	xD8zjaQhy5/kAbKN9+oYkAdEb4p3KaVpUXrojO0A/1whLJyom46i6yn17tng=
+X-Gm-Gg: ATEYQzxCt+BtZVLBR6OLenKlcd/HQPKNPLklr4tnoU1d4EYH0QzsbWqOvI6TJcFjd79
+	QYFqJT4dXeTBvYLsXXrNUsteQ80JBgRlR2MqYA/trtsJvNNl4wBMFeg84J7MtQ/EASB4XP331pA
+	2FzHMwDPzLIt0YRaxk0zevCx8sNAJzAo8zfad9cyVaDxz3+hINGgclY76DCo1PwGEfYNkPrIXwW
+	my42ZqNo3rnrkMtErsjxwn+LGStDnt5pyYACrxJQMX8CRLuIgd8BWN8RoYBaMm0/l0TtNNF6C9R
+	7xLMF2a5XROLVZCJuDkeUYfMzJ5KiaU4jIWbV9gX0h7xd10kLyg1eukApaOWwqsTZHxwa5JzVz+
+	GDiZ69hEHHY5OAuiAyKNqO329B7ChhjJpIeMnq3ip7IAiK2ZOicO93n8=
+X-Received: by 2002:a05:620a:4727:b0:8c7:1a0d:7d9d with SMTP id af79cd13be357-8cd5afd2111mr209563785a.81.1772629642223;
+        Wed, 04 Mar 2026 05:07:22 -0800 (PST)
+X-Received: by 2002:a05:620a:4727:b0:8c7:1a0d:7d9d with SMTP id af79cd13be357-8cd5afd2111mr209558085a.81.1772629641720;
+        Wed, 04 Mar 2026 05:07:21 -0800 (PST)
+Received: from localhost.localdomain ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485188122a6sm49969745e9.12.2026.03.04.05.07.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 04:46:40 -0800 (PST)
-From: nspmangalore@gmail.com
-X-Google-Original-From: sprasad@microsoft.com
-To: linux-cifs@vger.kernel.org,
-	smfrench@gmail.com,
-	pc@manguebit.com,
-	bharathsm@microsoft.com,
-	dhowells@redhat.com
-Cc: Shyam Prasad N <sprasad@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] cifs: open files should not hold ref on superblock
-Date: Wed,  4 Mar 2026 18:15:53 +0530
-Message-ID: <20260304124629.1616108-1-sprasad@microsoft.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 04 Mar 2026 05:07:21 -0800 (PST)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org
+Cc: mohammad.rafi.shaik@oss.qualcomm.com, linux-sound@vger.kernel.org,
+        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, johan@kernel.org,
+        dmitry.baryshkov@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, srini@kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Stable@vger.kernel.org
+Subject: [PATCH v3 04/14] ASoC: qcom: q6apm-lpass-dai: Fix multiple graph opens
+Date: Wed,  4 Mar 2026 13:07:02 +0000
+Message-ID: <20260304130712.222246-5-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260304130712.222246-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20260304130712.222246-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,252 +118,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3EFA1FFCF2
+X-Authority-Analysis: v=2.4 cv=AJS1/0o2 c=1 sm=1 tr=0 ts=69a82e8b cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=M_mAHeyD2EURj3i0m2kA:9 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-ORIG-GUID: js6d2gaOXdkC45Da_s_DA615__9n9iQo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDEwNSBTYWx0ZWRfX9ml1brR0OoSu
+ XyL7QM3ob+8kl2tkanwcnL4GvaieZYjp6l91/VB2XOwlHYHYvueJAf+9bHNrhSOyBXmPLYOq82e
+ 7FAdJA++4t9KdzX0SJXIWDEZJFZ8WHjyBClwDPNjUyIs54XYIZzzZS7+6F618MhqhLWjJvkP492
+ 0Tbr2OkP1XLcdSgTcnvHfIkgK4T/iO1a66sRiTQFmTBpSLPQEkaeHPcWsd+S4sCRJUmL5QsK0Bo
+ pr/lfJjNgiMuEamKuXyYWhyCze2e/b7qoFKecQqR+3ea7UaVrzs+ceX3+7Dt2z/8dNU/Tt2dX8r
+ GgRYMF7iGtjLo+kqz2jMpG/6gKltcXWiG8I5PurDJoVNGlczh0PplENwTfrvPz46yXI27s5M22i
+ SN3PaPs4+3RMzOCB30FoRkWx1b2Unky3B/Jr0bJG1+S9IGoUvWD0PkX1F2ZbQtKRbBQ2xjp8Uv8
+ rHIZ1o9p754sk2qEV9Q==
+X-Proofpoint-GUID: js6d2gaOXdkC45Da_s_DA615__9n9iQo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-04_06,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603040105
+X-Rspamd-Queue-Id: 09BB920019E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223046-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.com,microsoft.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,vger.kernel.org,gmail.com,perex.cz,suse.com,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223047-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[srinivas.kandagatla@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	TAGGED_RCPT(0.00)[stable,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+As prepare can be called mulitple times, this can result in multiple
+graph opens for playback path.
 
-Today whenever we deal with a file, in addition to holding
-a reference on the dentry, we also get a reference on the
-superblock. This happens in two cases:
-1. when a new cinode is allocated
-2. when an oplock break is being processed
+This will result in a memory leaks, fix this by adding a check before
+opening.
 
-The reasoning for holding the superblock ref was to make sure
-that when umount happens, if there are users of inodes and
-dentries, it does not try to clean them up and wait for the
-last ref to superblock to be dropped by last of such users.
-
-But the side effect of doing that is that umount silently drops
-a ref on the superblock and we could have deferred closes and
-lease breaks still holding these refs.
-
-Ideally, we should ensure that all of these users of inodes and
-dentries are cleaned up at the time of umount, which is what this
-code is doing.
-
-This code change allows these code paths to use a ref on the
-dentry (and hence the inode). That way, umount is
-ensured to clean up SMB client resources when it's the last
-ref on the superblock (For ex: when same objects are shared).
-
-The code change also moves the call to close all the files in
-deferred close list to the umount code path. It also waits for
-oplock_break workers to be flushed before calling
-kill_anon_super (which eventually frees up those objects).
-
-Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
-Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Fixes: be1fae62cf25 ("ASoC: q6apm-lpass-dai: close graph on prepare errors")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 ---
- fs/smb/client/cifsfs.c    |  7 +++++--
- fs/smb/client/cifsproto.h |  1 +
- fs/smb/client/file.c      | 11 ----------
- fs/smb/client/misc.c      | 42 +++++++++++++++++++++++++++++++++++++++
- fs/smb/client/trace.h     |  2 ++
- 5 files changed, 50 insertions(+), 13 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 99b04234a08e6..fcc56481d6cf2 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -330,10 +330,14 @@ static void cifs_kill_sb(struct super_block *sb)
- 
- 	/*
- 	 * We need to release all dentries for the cached directories
--	 * before we kill the sb.
-+	 * and close all deferred file handles before we kill the sb.
+diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+index 528756f1332b..f68d4b4974f3 100644
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -181,7 +181,7 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
+ 	 * It is recommend to load DSP with source graph first and then sink
+ 	 * graph, so sequence for playback and capture will be different
  	 */
- 	if (cifs_sb->root) {
- 		close_all_cached_dirs(cifs_sb);
-+		cifs_close_all_deferred_files_sb(cifs_sb);
-+
-+		/* Wait for all pending oplock breaks to complete */
-+		flush_workqueue(cifsoplockd_wq);
- 
- 		/* finally release root dentry */
- 		dput(cifs_sb->root);
-@@ -864,7 +868,6 @@ static void cifs_umount_begin(struct super_block *sb)
- 	spin_unlock(&tcon->tc_lock);
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
--	cifs_close_all_deferred_files(tcon);
- 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
- 	/* cancel_notify_requests(tcon); */
- 	if (tcon->ses && tcon->ses->server) {
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 96d6b5325aa33..800a7e418c326 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -261,6 +261,7 @@ void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
- 
- void cifs_close_all_deferred_files(struct cifs_tcon *tcon);
- 
-+void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
- void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
- 					   struct dentry *dentry);
- 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 18f31d4eb98de..fb4f9aafe1386 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -711,8 +711,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
- 	mutex_init(&cfile->fh_mutex);
- 	spin_lock_init(&cfile->file_info_lock);
- 
--	cifs_sb_active(inode->i_sb);
--
- 	/*
- 	 * If the server returned a read oplock and we have mandatory brlocks,
- 	 * set oplock level to None.
-@@ -767,7 +765,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
- 	struct inode *inode = d_inode(cifs_file->dentry);
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifsLockInfo *li, *tmp;
--	struct super_block *sb = inode->i_sb;
- 
- 	/*
- 	 * Delete any outstanding lock records. We'll lose them when the file
-@@ -785,7 +782,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
- 
- 	cifs_put_tlink(cifs_file->tlink);
- 	dput(cifs_file->dentry);
--	cifs_sb_deactive(sb);
- 	kfree(cifs_file->symlink_target);
- 	kfree(cifs_file);
- }
-@@ -3165,12 +3161,6 @@ void cifs_oplock_break(struct work_struct *work)
- 	__u64 persistent_fid, volatile_fid;
- 	__u16 net_fid;
- 
--	/*
--	 * Hold a reference to the superblock to prevent it and its inodes from
--	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
--	 * may release the last reference to the sb and trigger inode eviction.
--	 */
--	cifs_sb_active(sb);
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
- 
-@@ -3255,7 +3245,6 @@ void cifs_oplock_break(struct work_struct *work)
- 	cifs_put_tlink(tlink);
- out:
- 	cifs_done_oplock_break(cinode);
--	cifs_sb_deactive(sb);
- }
- 
- static int cifs_swap_activate(struct swap_info_struct *sis,
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 22cde46309fe0..318533210648d 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -28,6 +28,11 @@
- #include "fs_context.h"
- #include "cached_dir.h"
- 
-+struct tcon_list {
-+	struct list_head entry;
-+	struct cifs_tcon *tcon;
-+};
-+
- /* The xid serves as a useful identifier for each incoming vfs request,
-    in a similar way to the mid which is useful to track each sent smb,
-    and CurrentXid can also provide a running counter (although it
-@@ -550,6 +555,43 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
- 	}
- }
- 
-+void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
-+{
-+	struct rb_root *root = &cifs_sb->tlink_tree;
-+	struct rb_node *node;
-+	struct cifs_tcon *tcon;
-+	struct tcon_link *tlink;
-+	struct tcon_list *tmp_list, *q;
-+	LIST_HEAD(tcon_head);
-+
-+	spin_lock(&cifs_sb->tlink_tree_lock);
-+	for (node = rb_first(root); node; node = rb_next(node)) {
-+		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
-+		tcon = tlink_tcon(tlink);
-+		if (IS_ERR(tcon))
-+			continue;
-+		tmp_list = kmalloc_obj(struct tcon_list, GFP_ATOMIC);
-+		if (tmp_list == NULL)
-+			break;
-+		tmp_list->tcon = tcon;
-+		/* Take a reference on tcon to prevent it from being freed */
-+		spin_lock(&tcon->tc_lock);
-+		++tcon->tc_count;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_get_close_defer_files);
-+		spin_unlock(&tcon->tc_lock);
-+		list_add_tail(&tmp_list->entry, &tcon_head);
-+	}
-+	spin_unlock(&cifs_sb->tlink_tree_lock);
-+
-+	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
-+		cifs_close_all_deferred_files(tmp_list->tcon);
-+		list_del(&tmp_list->entry);
-+		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
-+		kfree(tmp_list);
-+	}
-+}
-+
- void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
- 					   struct dentry *dentry)
- {
-diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
-index 9228f95cae2bd..acfbb63086ea2 100644
---- a/fs/smb/client/trace.h
-+++ b/fs/smb/client/trace.h
-@@ -176,6 +176,7 @@
- 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
- 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
- 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
-+	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
- 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
- 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
- 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
-@@ -187,6 +188,7 @@
- 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
- 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
- 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
-+	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
- 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
- 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
- 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
+-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK && dai_data->graph[dai->id] == NULL) {
+ 		graph = q6apm_graph_open(dai->dev, NULL, dai->dev, graph_id);
+ 		if (IS_ERR(graph)) {
+ 			dev_err(dai->dev, "Failed to open graph (%d)\n", graph_id);
 -- 
-2.43.0
+2.47.3
 
 
