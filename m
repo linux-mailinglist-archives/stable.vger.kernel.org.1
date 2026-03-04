@@ -1,191 +1,139 @@
-Return-Path: <stable+bounces-223066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMvnDhY2qGm+pQAAu9opvQ
-	(envelope-from <stable+bounces-223066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:39:34 +0100
+	id oN3cIm83qGkTqgAAu9opvQ
+	(envelope-from <stable+bounces-223067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:45:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EE220089B
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:39:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E444A200A7C
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 260F9302FE8A
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:39:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0A2F315D532
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99D390208;
-	Wed,  4 Mar 2026 13:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B20E372B28;
+	Wed,  4 Mar 2026 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XVCJ0+qX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vg8zyYfG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C73976B4
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 13:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91AF26AF4;
+	Wed,  4 Mar 2026 13:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772631558; cv=none; b=q5LV0VED2p9AeMc2xcS3LhRIGmoSN50/jPUjcYY5qFkbEaFQrq7jTgRC8/IGHrpfIz+qNxTU5tRqeQONNquPmRLF2kd++KpjIL9t3LDFmVwQS7Q3Vt8V3U0BzDwZp+1eYAP9uXKxiaDrpMv7Xr4dy08djHdWh6ZRG6PZ1AedB94=
+	t=1772631612; cv=none; b=TFZa/bBtor3s/D3cYjmVypxE6QJDwxSVtGL4t/6X4K8JzJniiww7IusoQw5aYFDbYfOq9AY3wxbcshOcIe6YznNXQ0cvGsJGBc2BG2o+2LpyIWgBnJHCghZ7ytpJPmWVJRZBEuXpruv2PgZKmCeywMH3eJ1Gz8Dge0gO4s2s/wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772631558; c=relaxed/simple;
-	bh=01P29BtZmzNpQ2Nkv11D8b8c/nkBZN5xBfxPwD4BjUo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZtCXV8ChhBS9NCucPLN2wT5NocTTkjlj8eN17X9c1af5MqosC6iyLXgoeDqNLuVFGEsVo0rHI/8rHq6ceFriy5fHE2PZEplqDq9EnYuhuxrJvzBxkvmsWXYPRgBYkAmbH2PvNGplYmuXt3WBaaxDU0MZw4xV26NBqS87rXiK8TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XVCJ0+qX; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-482f454be5bso72085075e9.0
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 05:39:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772631555; x=1773236355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r8/l0DqRmwmsXc8k8WS7B5LdZ6TVBg1kuXNAWb3/QlY=;
-        b=XVCJ0+qXQu4SXBFxCWyI6KlswdMMG4n9xCXBs0Aab4mdxt6+skOHZd1nUz7rqC/qK7
-         Gg2GnvpxAQ6PIUsVrPjd235xIeMNV8283Bn3VPfTMGaF6vouxwtv6tyhs1GuowcOdbZ7
-         6VnjzRNNVR0jiLKtYtxLRZOLGzaQSPK6TFif2rp2bwnvTG0Isl/19yn4siEnaX0T9Wjr
-         EG7BFrj+CO4L3CuQweQcOy8ZYlfIPnAj1JnheMWaXt7OCf7BY6M1r+NO/RCOkLVJfHR5
-         VL+gID7dzD7Suz4x9DnqnO6T4pwJkbVEJAJb/q4cEQ/Q/Rm9xj6Pg3nlUZEN4oVjOSMR
-         ZJDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772631555; x=1773236355;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r8/l0DqRmwmsXc8k8WS7B5LdZ6TVBg1kuXNAWb3/QlY=;
-        b=BjTK7zM+XBz8RBol+3cYnQBoQztNR/BMuY0gyW9k9t+eSFFjXI5l1KaR30DSGQq2PI
-         zHtUaGnhNXuDPmMGiBTLE6T01EeHeTIEgxUaSfXlIAX8QZ1XCHBLB5c1ySYNXY/DWVs5
-         cZYJxEhoZ8NqWc5Uf1IWNjI8y/+IFvY6+b/S22wQUZZ5LFdMNJJpgXyW2xb6xzGSSCpm
-         orrKFe/hRoOFH0V/B3KIgZS8z+qlYqEitnd9DRAq3AcbHkwtTrLIQG+zqjBPFSjvMPfr
-         FtOpoyL69YXQg832AA0KN0xaXLKWhxZ9aGucggDxa68MPUEMt2r0FU7rKeUGo/pDfyy+
-         HwYQ==
-X-Gm-Message-State: AOJu0YyRIuZBo5XnEiB9GcmMc2Z3jNtwMLpQezeNF5bbOUjXEmaLxZkZ
-	Iyur/h+e4xK7UnJgxh18pBZxeqhZ5f1x2bPdFY4YmsgZCjUMQFeX2IncO/XqMF0v
-X-Gm-Gg: ATEYQzwvHH1c7oJemiw6LGwnWpDwkBEV/rQmYq5H0jFmN0vEqhJNBBqGDYwfcb5uV3D
-	rQgrDlKjdugMZbAd2Ty/gVHBoVBAz1g15Rg+06ZdQiDw2Rgps5WHWKyFr1vSzAloLWRUlcoPw6q
-	cPiI0IeKGAtHnBbZp6HoyKbXbi88KUegSYL4CzGRjbWi6lVMuBrq0MyASDixc5uHQNq4GtXT1uZ
-	enyovcAISmfW8ck/t3SVM64fUSAQhfhiGT/msOwnk4t8wwT/vaBD2gqQQ/eZSgvB1usNljxMD5V
-	VlAgpiyuqGblRfZpdiXBK/hpY9K/GVhGDyw20JwdTlTq0+uZGdsIBAkg6DrdVI3jkHApzRxvCJz
-	TphorOyG1WxmukiLz6ZwkM7MRngN04QUP1RP46xO9VnW25lZsh+Xtq1DU0YmdCivj5A4+k7itFi
-	zn8ZvpuDE13kMdjXjrLUQfnZPmrA3xPh/FS/I2yi5hBu1gOXZiQoveAOOyyPrT5XohWCzFnm41u
-	ey5vIufNnwYUIgNOHZqwtaaFkz2xSBKWXO/7KgUTpk0f/sM318=
-X-Received: by 2002:a05:600c:6386:b0:477:9890:9ab8 with SMTP id 5b1f17b1804b1-4851984ba56mr28481765e9.3.1772631554619;
-        Wed, 04 Mar 2026 05:39:14 -0800 (PST)
-Received: from DESKTOP-8H31LON.localdomain (bba-86-97-188-15.alshamil.net.ae. [86.97.188.15])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851880724esm101091675e9.9.2026.03.04.05.39.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 05:39:14 -0800 (PST)
-From: Natarajan KV <natarajankv91@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	fw@strlen.de
-Subject: [PATCH] netfilter: nft_set_pipapo: clear dirty flag on abort/commit clone failure
-Date: Wed,  4 Mar 2026 17:38:59 +0400
-Message-Id: <20260304133859.28372-1-natarajankv91@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1772631612; c=relaxed/simple;
+	bh=bsf7B5BIfmLnSGKb0te7TGmSKf659fCCwB8op44vRBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SlbnSH+wLNEZpcUj/VLiNYNqT31dr9IhBWX1X7ymOlDOaXD5KAOCqZJXwQod3SUHfhs/S+iplfK8GvpxuNgX6epm4ias6YG1VC49ipobQvsN+zu8BntGW8dKa5Vfmc9WI1Qx03qEkQlK00DBasg3u5k4aRV5jCrm6ueARL/Rqrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vg8zyYfG; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772631611; x=1804167611;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bsf7B5BIfmLnSGKb0te7TGmSKf659fCCwB8op44vRBc=;
+  b=Vg8zyYfGHBRbImsWnFhNtjqvxnalzTrUjW6oo7Op95qCJZJubQg/5dF5
+   WFOYVBGAJo+Dh4bMVR6YOJTZj9J/8CYC5mNHTYb+40sIvHNCMTAO11RZ9
+   kbysrXxnK+iDA1t03DsHu096AusmS4pjiuH3Ye2Rs/LlFNNXI1ZRsFukO
+   OWbhLjj0puHE61Orz/Ba2fwp4TlMC/coxEieIoZMDqaiJkmRw1wWDI1nn
+   G5p7yDK2q9nVMlL/a7cFAy2Yt9eoOuMSFIMkwZOHCXJuwLw4AoyZc5Euu
+   3PxK+33vdHKatz91qDb5VDQd1J7u/IOH7Mc7YDCIIuw1brn7unrxzgaXm
+   Q==;
+X-CSE-ConnectionGUID: Q5cuCX23SiW8OoEwO3pFBg==
+X-CSE-MsgGUID: Go06XY54TV6QZObIxpnB4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73388959"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="73388959"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 05:40:11 -0800
+X-CSE-ConnectionGUID: G3suj1SrQaS914RpDC0FCw==
+X-CSE-MsgGUID: 0pq5Dn1tS4W65Mys0QLAQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="218305788"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.127])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 05:40:07 -0800
+Date: Wed, 4 Mar 2026 15:40:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+Cc: jic23@kernel.org, lars@metafoo.de, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, michal.simek@amd.com,
+	victor.jonsson@guidelinegeo.com, linux-iio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: xilinx-xadc: Fix sequencer mode in
+ postdisable for dual mux
+Message-ID: <aag2NQTBysQYMU--@ashevche-desk.local>
+References: <20260304090727.1800289-1-christofer.jonason@guidelinegeo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B2EE220089B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304090727.1800289-1-christofer.jonason@guidelinegeo.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: E444A200A7C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223066-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223067-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[natarajankv91@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-nft_pipapo_abort() and nft_pipapo_commit() call pipapo_clone() which
-can fail under memory pressure. When this happens, the functions return
-early without clearing priv->dirty. Since the set_ops->abort callback
-returns void, the nf_tables framework cannot detect this failure.
+On Wed, Mar 04, 2026 at 10:07:27AM +0100, Christofer Jonason wrote:
+> xadc_postdisable() unconditionally sets the sequencer to continuous
+> mode. For dual external multiplexer configurations this is incorrect:
+> simultaneous sampling mode is required so that ADC-A samples through
+> the mux on VAUX[0-7] while ADC-B simultaneously samples through the
+> mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
+> VAUX[8-15] channels return incorrect data.
+> 
+> Since postdisable is also called from xadc_probe() to set the initial
+> idle state, the wrong sequencer mode is active from the moment the
+> driver loads.
+> 
+> The preenable path already uses xadc_get_seq_mode() which returns
+> SIMULTANEOUS for dual mux. Fix postdisable to do the same.
 
-The stale clone, which still contains modifications from the failed
-transaction, persists with dirty == true. On a subsequent commit,
-nft_pipapo_commit() sees dirty == true and promotes the stale clone
-to the active match via rcu_assign_pointer(), causing the lookup data
-to reflect operations that should have been rolled back.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-This can lead to incorrect packet matching (firewall rule bypass),
-memory leaks from unreachable elements, and potential use-after-free
-if elements freed by the framework are still referenced through
-stale clone mapping tables.
-
-In mainline, this was resolved by commit 212ed75dc5fb ("netfilter:
-nf_tables: integrate pipapo into commit protocol") which refactored
-pipapo to use dedicated set commit/abort ops, eliminating
-pipapo_clone() from the abort path entirely. That refactor touches
-3 files and modifies the nf_tables framework, making it too invasive
-to backport to stable branches.
-
-Fix this minimally by clearing priv->dirty when pipapo_clone() fails
-in both nft_pipapo_commit() and nft_pipapo_abort(), preventing stale
-clone promotion on subsequent commits.
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Cc: stable@vger.kernel.org
-Signed-off-by: Natarajan KV <natarajankv91@gmail.com>
----
- net/netfilter/nft_set_pipapo.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 4274831b6e67..34a108399fd3 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1708,8 +1708,10 @@ static void nft_pipapo_commit(struct nft_set *set)
- 		return;
- 
- 	new_clone = pipapo_clone(priv->clone);
--	if (IS_ERR(new_clone))
-+	if (IS_ERR(new_clone)) {
-+		priv->dirty = false;
- 		return;
-+	}
- 
- 	priv->dirty = false;
- 
-@@ -1743,8 +1745,10 @@ static void nft_pipapo_abort(const struct nft_set *set)
- 	m = rcu_dereference_protected(priv->match, nft_pipapo_transaction_mutex_held(set));
- 
- 	new_clone = pipapo_clone(m);
--	if (IS_ERR(new_clone))
-+	if (IS_ERR(new_clone)) {
-+		priv->dirty = false;
- 		return;
-+	}
- 
- 	priv->dirty = false;
- 
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 
