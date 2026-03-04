@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-223078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHMYAxNAqGl6rQAAu9opvQ
-	(envelope-from <stable+bounces-223078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:22:11 +0100
+	id WJHSNBFQqGmztAAAu9opvQ
+	(envelope-from <stable+bounces-223079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 16:30:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD3020141F
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF09202B31
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 16:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF25F303432A
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 14:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2AB8330D31B1
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 15:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509C75478D;
-	Wed,  4 Mar 2026 14:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVxUdcqN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738DB332ED3;
+	Wed,  4 Mar 2026 15:01:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134E11427A;
-	Wed,  4 Mar 2026 14:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420B0333439
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 15:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772634125; cv=none; b=qe6aEAsL/uFdNAgQcJsNr2ONLHZfADOOxhHG8dTLeOajqOBO26Z9Fg6W0mkWq8xyFKNWjFtccqftEYW4bfIbhCqZF1dCg9FgUVV7CfOU6y4cBhQKdK9J6f15pqKhNTcS7/olCb7ky0ltVw46FR0WZc3OyEbzBpwXowoUC8sRzkQ=
+	t=1772636519; cv=none; b=cj/13m2S3hm4xbyL0pv4WVAL8AvbKACK6WjwyGbYFbucbnRl56mxylHdg2BxNxQ2dHJLc20EEwA4hT4NNKSinnjkEktwNE6YuF+OYOsYJ7+f27JI/KHOkuEkyIlNYligCsX/fWKAmbi7HjUFO3TAmkCQsivT2Tmc8JS9lbvNEv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772634125; c=relaxed/simple;
-	bh=gi3+FbsRPI9ghJPSxXbDFsBbtR2ztSR/cQb0ghDSIMI=;
+	s=arc-20240116; t=1772636519; c=relaxed/simple;
+	bh=EWH1i6SWOemPf7qJ7JY1ziADWqrTOUp3/y5W3Ur0MTM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HebCGtuNNXYfxmBmy03jRqIHpbXRcdhNkFHeWoHx34sIsgrgIoq0C+eM+OQBghIyzPIRunt36wQrdg5wC2mdiq/O5Zay7DsJ2QtisIbkvzH7VhRAyYrgAG71wQ2HscU1N7ebxonQv2DfY8asYAU028ga+FdgFb1Ij3cBR4Q/Yn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVxUdcqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ABEC4CEF7;
-	Wed,  4 Mar 2026 14:22:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772634124;
-	bh=gi3+FbsRPI9ghJPSxXbDFsBbtR2ztSR/cQb0ghDSIMI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AVxUdcqNNCT2O64/enNyBiKR+x8GCi7/EPWld5n56MR3P2g/5FiSRC8dqvoYDZy6i
-	 njp43tsNBgmhLjETvb3D7OgYXYLNSCDQ4NZ8b+8/+a9KlIM9i1Ka4OHCxuqGBGKLlF
-	 UuA6divOHuFe4tFmhpD9JhfDgOYOvEV4e4XcD058=
-Date: Wed, 4 Mar 2026 15:21:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Bharath SM <bharathsm.hsk@gmail.com>
-Cc: linux-cifs@vger.kernel.org, smfrench@gmail.com, dhowells@redhat.com,
-	sprasad@microsoft.com, pc@manguebit.com, ematsumiya@suse.de,
-	henrique.carvalho@suse.com, bharathsm@microsoft.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] smb: client: fix page cache corruption from
- in-place encryption in SMB2_write
-Message-ID: <2026030442-cleft-appealing-93ec@gregkh>
-References: <20260304140452.1606662-1-bharathsm@microsoft.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GUIjuEGroKbH8PvxeAUcdICLTVlbcAyNuHHTZLtoIbqUfVspnXHHAzUIVO3qYu2B7fCrgXgbMk2dstXUX9URHDdiPMcXC6NFD18Ep44nUCow1vsdcBDrlD4qcetQsjwgJZ8gAbS00sTLIKvu8u/F45H/b2s2JJYRegQpKozQffY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25B47339;
+	Wed,  4 Mar 2026 07:01:50 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9EB233F836;
+	Wed,  4 Mar 2026 07:01:54 -0800 (PST)
+Date: Wed, 4 Mar 2026 15:01:51 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Message-ID: <aahJX0NwtYHy1ILe@arm.com>
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+ <aagUtDTca5d0le2Y@arm.com>
+ <20260304134313.GM972761@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,105 +59,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304140452.1606662-1-bharathsm@microsoft.com>
-X-Rspamd-Queue-Id: 7AD3020141F
+In-Reply-To: <20260304134313.GM972761@nvidia.com>
+X-Rspamd-Queue-Id: 4EF09202B31
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223078-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,microsoft.com,manguebit.com,suse.de,suse.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223079-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.915];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:mid]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 07:34:52PM +0530, Bharath SM wrote:
-> SMB2_write() passes data kvecs inline in rq_iov by setting
-> rqst.rq_nvec = n_vec + 1. When SMB3 encryption is negotiated,
-> smb3_init_transform_rq() -> crypt_message() encrypts data in the
-> kvec buffers in-place.
+On Wed, Mar 04, 2026 at 09:43:13AM -0400, Jason Gunthorpe wrote:
+> On Wed, Mar 04, 2026 at 11:17:08AM +0000, Catalin Marinas wrote:
+> > > @@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+> > >  	int i;
+> > >  
+> > >  	/*
+> > > -	 * Gather the access/dirty bits for the contiguous range. If nothing has
+> > > -	 * changed, its a noop.
+> > > +	 * Check whether all sub-PTEs in the CONT block already have the
+> > > +	 * requested access flags, using raw per-PTE values rather than the
+> > > +	 * gathered ptep_get() view.
+> > > +	 *
+> > > +	 * ptep_get() gathers AF/dirty state across the whole CONT block,
+> > > +	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
+> > > +	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
+> > > +	 * the gathered result as authoritative for the entire range. But an
+> > > +	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
+> > > +	 * each descriptor individually and will keep faulting on the target
+> > > +	 * sub-PTE if its flags haven't actually been updated. Gathering can
+> > > +	 * therefore cause false no-ops when only a sibling has been updated:
+> > > +	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+> > > +	 *  - read faults:  target still lacks PTE_AF
+> > > +	 *
+> > > +	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
+> > > +	 * become the effective cached translation, so all entries must have
+> > > +	 * consistent attributes. Check the full CONT block before returning
+> > > +	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
+> > > +	 * range.
+> > >  	 */
+> > > -	orig_pte = pte_mknoncont(ptep_get(ptep));
+> > > -	if (pte_val(orig_pte) == pte_val(entry))
+> > > +	if (contpte_all_subptes_match_access_flags(ptep, entry))
+> > >  		return 0;
+> > 
+> > Actually, do we need to loop over all the ptes? I think it sufficient to
+> > only check the one at ptep since it is the one that triggered the
+> > fault.
 > 
-> For synchronous writes through cifs_write(), the kvec buffers point
-> directly into the page cache via kmap(). In-place encryption overwrites
-> the page cache with ciphertext. If the send fails with a replayable
-> error such as -EAGAIN (e.g., from a connection reset), SMB2_write()
-> retries the write using the same iov[1] buffer. Since iov[1] now
-> contains ciphertext from the first attempt, the retry encrypts and
-> sends ciphertext-as-data to the server, resulting in data corruption.
+> With CONT we should not be thinking "the one that triggered the
+> fault".
 > 
-> The corruption is most likely to be observed when connections are
-> unstable, as reconnects trigger write retries that re-send the
-> already-encrypted page cache data.
-> 
-> The sync path can be reached during partial-page O_WRONLY writes when
-> the page is not in cache (common for append workloads with repeated
-> open/write/close patterns).
-> 
-> The async write path (smb2_async_writev) is not affected because it
-> passes data via rqst.rq_iter, which the encryption layer handles
-> without modifying the source buffers.
-> 
-> Fix by setting rq_nvec = 1 (header only) and moving data kvecs into
-> rq_iter via iov_iter_kvec().
-> 
-> Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-> Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-> Cc: stable@vger.kernel.org
-> ---
->  fs/smb/client/smb2pdu.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-> index a8890ae21714..a88a19dec494 100644
-> --- a/fs/smb/client/smb2pdu.c
-> +++ b/fs/smb/client/smb2pdu.c
-> @@ -5072,7 +5072,11 @@ SMB2_write(const unsigned int xid, struct cifs_io_parms *io_parms,
->  
->  	memset(&rqst, 0, sizeof(struct smb_rqst));
->  	rqst.rq_iov = iov;
-> -	rqst.rq_nvec = n_vec + 1;
-> +	rqst.rq_nvec = 1;
-> +	iov_iter_kvec(&rqst.rq_iter, ITER_SOURCE, &iov[1], n_vec,
-> +		      io_parms->length);
-> +	rqst.rq_iter_size = io_parms->length;
-> +
->  
->  	if (retries)
->  		smb2_set_replay(server, &rqst);
-> -- 
-> 2.45.4
-> 
+> The PTE that triggered the fault is the PTE that the HW happened to
+> load into the TLB, we cannot assume it is the sub PTE we are faulting
+> at. For instance it could be a sub PTE for a completely unrelated
+> access at a different VA that got cached.
 
-<formletter>
+Good point. For the AF bit, the hardware is not allowed to cache it in
+the TLB, so we can't get an AF fault for an unrelated VA nearby. We can,
+however, for the dirty bit since PTE_RDONLY is allowed to be cached in
+the TLB.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+> Again, the requirement here is that a fault on a CONT PTE must fix all
+> the access flags to be consistent or fail. It cannot resume the fault
+> and leave the sub PTEs inconsistent as the HW is always allowed to
+> load the RDONLY one for any access to the CONT.
 
-</formletter>
+It should fix all of them to be consistent if it got a fault. I was
+wondering whether we can simplify this with a single pte read (but still
+setting all in the range). It only works for the AF bit, not dirty. We
+could add a check if it makes things slightly faster on this path.
+
+Now I also wonder if the `pte_write(orig_pte) == pte_write(entry)` check
+to elide BBM is still valid if we have hardware that does not support
+DBM. I need to dig some more into the Arm ARM.
+
+-- 
+Catalin
 
