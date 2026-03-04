@@ -1,145 +1,222 @@
-Return-Path: <stable+bounces-223106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFykB/BtqGkuugAAu9opvQ
-	(envelope-from <stable+bounces-223106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:37:52 +0100
+	id SOOdNoJuqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B712053E9
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:37:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E90D205482
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C64E3002314
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:37:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2F38303C62C
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05DE3C6A5C;
-	Wed,  4 Mar 2026 17:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B103C6A59;
+	Wed,  4 Mar 2026 17:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="caze7pYF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WFcDNOY1"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE87C3C6A52
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FB637D119
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772645866; cv=none; b=aKfbL8yt81j54LEM97tH+rw2Aa1cfOQpoafZkamGbMJUOE5y6GSdb/GtW4asYQCVxHcuhX6Ilogf0I7V8TmYpzAgVxtg9RDTPyEadg4Vqwks3wwPz+72Eo7tw2D4oRtFg8QZT1LvrKm30O7Xfl5U5KUf5ckITYc/fPxnnI3uvBI=
+	t=1772645996; cv=none; b=HeBqFD0QhSJA/wIgV5J1YyJPcyLe8F5/zIjymGrwKfn99xefddm5HGnHNbeIrRhAD47JII6ZTOS3hwgnrWYYNZ0WNJ43pdifMSKhtNz/VzKvrrqi2dcciNIpno2RXQcvmJSlFLrRK0yhaAPDs2fV+ffmSsX0TVhuuQUzLxi/3ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772645866; c=relaxed/simple;
-	bh=4+T5OqdTxq8diftvlnFqCYYi7M7F6QcKejkiNQzF0qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q3auSQIg0XcwQSPWJLRrEq9x6IKx/ZiVRPiYjGXZ5QuLeho7FO00/wQSfS34L4o2m/eBsZmLHo1cTk8Hv2RbELkr94kXN16xp8T0hklTmT/cJinPk90FCpdSuhzOP6nqUiOHrLxdVThCaGOf7qb3hA4rDUoyyX6EuhcAJoPD7YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=caze7pYF; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uuyCsr5o+JidLSWRw/91AGUcrNTLFhdmWYvBwfnlct0=; b=caze7pYFvcyVMiEYXzYpXuTAXQ
-	tdP41ORKTes8QS0ud/mQoCbt/xBsvN79xXVvRHWv7XyfbPUVrV9zRVSNIZCJzkbnKdWbsgC/oyxK7
-	RSZ73r181y7XF1WFFjBfNnWtVli1OZ0Rkg8Lh6HH8IG3spYaENh+j2UCmHzm5iXRddOKKXLAR7bY2
-	0lDo3psav2Ty0zNVYaDnfjSgZdeQWxLjWDClJobF0JueVolpH48n2l1f460wqCYYK+riGdDVqlK2y
-	Axv2+7D3yHkzAMQ31ly7/393EV5Bnsh1tR4GolA0TsX6PFuWptCebIbnLuvG/3/PQKhR6OaWzPRLj
-	Cp7X3V2Q==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vxqA6-00G7Tn-Ka; Wed, 04 Mar 2026 17:37:30 +0000
-Date: Wed, 4 Mar 2026 09:37:25 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
-	Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aahtwTffVysT9IXP@gmail.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+	s=arc-20240116; t=1772645996; c=relaxed/simple;
+	bh=HicJF9SU8FYF4bszknF2PfGmVRZgsJHkAtpALLSPT0E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Rd+/fFWzKdkutMwA1TiVCZcv0wTxZ4fHW7E9MYLS63xvxqFqv837rWth9xC+FC70qypTgczhlYEUO0ST63welKEvopF2rmUqBkOKG6i3gojYvSBfO86vxiitxMw3J17TF4KhLphc6tlOWOV2thLra1tgB3viT41zXHqcN7r7KG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WFcDNOY1; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae49120e74so35615565ad.3
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:39:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772645994; x=1773250794; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YCxR0sncGqt5cTtxeCDvL5ukAbWj6/g0krozrw9t2zU=;
+        b=WFcDNOY13QIco85fEIQ3W8+9mCUaxU7IAr04i891qhYXvySuyeRkLH7mWUT183m0pt
+         x79j0ddD/eMTleWfoTpxB2C72PlxypBSrHEz58Y2P5IAxcrB0fzHlaz4pyJOLFz+ELY7
+         wwEKtXWoZfozKBuolPpFHktDcjowQFprIGLvtb8PYDc3PHTWbrAztBXsk/Vf1oAX9ywV
+         HtJFJrenqXQ7sQ09Ub+z3X8CcsNDacHoSnwARPeMIXOU+lUnxZH4OuDtsRLA/2OzAgm3
+         8ID8N7UGtURG1MgPYzNE16EJ5MvhxIotwzSLD9y6wt9/Ou8fSsCt866+eQqL97iFWPcz
+         nN4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772645994; x=1773250794;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YCxR0sncGqt5cTtxeCDvL5ukAbWj6/g0krozrw9t2zU=;
+        b=iVbUZod+Jt1SgKHMm1xqPsNqgT1+suDeFr2kpU5wCJkCEOTS7pKKQNyQr4oTeVNygO
+         B26DZfPBDImqqg1id7pmPITFLGeINNHvcPXyAqnHIS++IkssKUZUrnmcGEpYQFM9FHc0
+         2DZ2pmsugNV1hTqvK6sX9E+ZM0tiWRvH3DbGSDi/UtdEevW7y1mkGuhV4TdHI5k3aB+s
+         YCHJDPYA5kCzHU+9Usl79UmmNqxQfrPvyMQJ1Aw4zOXHuD2XJeK86a07L7/0fQEkxQCH
+         cqkj8bEVSxeDnoGDqF6zyuoDEKK12PmMSkWZvwSCwbkx/UQYBCURyC1Y+XCs6ZkkApmF
+         0VYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWSgaxzbelzbE/b9Ou4HPdyFIxuGZDoYGu/TmkCdO2qsvRzX8HZK85W4+PRBlPjaKF3X3xgThI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9Z4uDd19L/a5JIhxpL3olZUaPj2a0AQaXG1AUjhnL7nKVtNOv
+	7ufkXQXPxP/GfP9u6RtMQtdqV1yQtccBjgQTOvLdDAHZNUV5d95t7O2RiMY8lJprqj46raavcMG
+	131CuGg==
+X-Received: from plbkh3.prod.google.com ([2002:a17:903:643:b0:2ae:4d78:4c8d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e886:b0:2ae:698d:94a6
+ with SMTP id d9443c01a7336-2ae6aa054b2mr30306185ad.2.1772645993537; Wed, 04
+ Mar 2026 09:39:53 -0800 (PST)
+Date: Wed, 4 Mar 2026 09:39:51 -0800
+In-Reply-To: <CAO9r8zN21twRarvzvq8euUOHRtVrO+q8jMaiip7NPtGgZ2dWGw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: B3B712053E9
+Mime-Version: 1.0
+References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-6-yosry@kernel.org>
+ <CAO9r8zN21twRarvzvq8euUOHRtVrO+q8jMaiip7NPtGgZ2dWGw@mail.gmail.com>
+Message-ID: <aahuZ4bg4aQKTZYj@google.com>
+Subject: Re: [PATCH v3 5/8] KVM: nSVM: Always use NextRIP as vmcb02's NextRIP
+ after first L2 VMRUN
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7E90D205482
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-223107-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	TAGGED_FROM(0.00)[bounces-223106-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 10:37:51PM -0800, Piotr Jaroszynski wrote:
-> contpte_ptep_set_access_flags() compared the gathered ptep_get() value
-> against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
-> from all sub-PTEs in the CONT block, so a dirty sibling can make the
-> target appear already-dirty. When the gathered value matches entry, the
-> function returns 0 even though the target sub-PTE still has PTE_RDONLY
-> set in hardware.
-> 
-> For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
-> may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
-> result as authoritative for the entire range. But an SMMU without HTTU
-> (or with HA/HD disabled in CD.TCR) evaluates each descriptor
-> individually and will keep raising F_PERMISSION on the unchanged target
-> sub-PTE, causing an infinite fault loop.
-> 
-> Gathering can therefore cause false no-ops when only a sibling has been
-> updated:
->  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
->  - read faults:  target still lacks PTE_AF
-> 
-> Fix by checking all sub-PTEs' access flags individually (not via the
-> gathered view) before returning no-op, and use the raw target PTE for
-> the write-bit unfold decision. The access-flag mask matches the one
-> used by __ptep_set_access_flags().
-> 
-> Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CONT
-> range may become the effective cached translation and software must
-> maintain consistent attributes across the range.
-> 
-> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
-> 
-> Reviewed-by: Alistair Popple <apopple@nvidia.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+On Wed, Mar 04, 2026, Yosry Ahmed wrote:
+> On Tue, Feb 24, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > For guests with NRIPS disabled, L1 does not provide NextRIP when runnin=
+g
+> > an L2 with an injected soft interrupt, instead it advances the current =
+RIP
+> > before running it. KVM uses the current RIP as the NextRIP in vmcb02 to
+> > emulate a CPU without NRIPS.
+> >
+> > However, after L2 runs the first time, NextRIP will be updated by the
+> > CPU and/or KVM, and the current RIP is no longer the correct value to
+> > use in vmcb02.  Hence, after save/restore, use the current RIP if and
+> > only if a nested run is pending, otherwise use NextRIP.
+> >
+> > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM=
+_SET_NESTED_STATE")
+> > CC: stable@vger.kernel.org
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > ---
+> >  arch/x86/kvm/svm/nested.c | 25 ++++++++++++++++---------
+> >  1 file changed, 16 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > index 9909ff237e5ca..f3ed1bdbe76c9 100644
+> > --- a/arch/x86/kvm/svm/nested.c
+> > +++ b/arch/x86/kvm/svm/nested.c
+> > @@ -845,17 +845,24 @@ static void nested_vmcb02_prepare_control(struct =
+vcpu_svm *svm,
+> >         vmcb02->control.event_inj_err       =3D svm->nested.ctl.event_i=
+nj_err;
+> >
+> >         /*
+> > -        * next_rip is consumed on VMRUN as the return address pushed o=
+n the
+> > +        * NextRIP is consumed on VMRUN as the return address pushed on=
+ the
+> >          * stack for injected soft exceptions/interrupts.  If nrips is =
+exposed
+> > -        * to L1, take it verbatim from vmcb12.  If nrips is supported =
+in
+> > -        * hardware but not exposed to L1, stuff the actual L2 RIP to e=
+mulate
+> > -        * what a nrips=3D0 CPU would do (L1 is responsible for advanci=
+ng RIP
+> > -        * prior to injecting the event).
+> > +        * to L1, take it verbatim from vmcb12.
+> > +        *
+> > +        * If nrips is supported in hardware but not exposed to L1, stu=
+ff the
+> > +        * actual L2 RIP to emulate what a nrips=3D0 CPU would do (L1 i=
+s
+> > +        * responsible for advancing RIP prior to injecting the event).=
+ This is
+> > +        * only the case for the first L2 run after VMRUN. After that (=
+e.g.
+> > +        * during save/restore), NextRIP is updated by the CPU and/or K=
+VM, and
+> > +        * the value of the L2 RIP from vmcb12 should not be used.
+> >          */
+> > -       if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> > -               vmcb02->control.next_rip    =3D svm->nested.ctl.next_ri=
+p;
+> > -       else if (boot_cpu_has(X86_FEATURE_NRIPS))
+> > -               vmcb02->control.next_rip    =3D vmcb12_rip;
+> > +       if (boot_cpu_has(X86_FEATURE_NRIPS)) {
+> > +               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+> > +                   !svm->nested.nested_run_pending)
+> > +                       vmcb02->control.next_rip    =3D svm->nested.ctl=
+.next_rip;
+> > +               else
+> > +                       vmcb02->control.next_rip    =3D vmcb12_rip;
+> > +       }
+>=20
+> This should probably also apply to soft_int_next_rip below the context
+> lines. Otherwise after  patch 7 we keep it uninitialized if the guest
+> doesn't have NRIPs and !nested_run_pending.
 
-Tested-by: Breno Leitao <leitao@debian.org>
+That's fine though, isn't it?  Because in that case, doesn't the soft int h=
+ave to
+comein through svm_update_soft_interrupt_rip()?  Ugh, no because nSVM migra=
+tes
+control.event_inj.
+
+IIUC, we want to end up with this?
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 03b201fe9613..d12647080051 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -925,7 +925,8 @@ static void nested_vmcb02_prepare_control(struct vcpu_s=
+vm *svm)
+         */
+        if (is_evtinj_soft(vmcb02->control.event_inj)) {
+                svm->soft_int_injected =3D true;
+-               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
++               if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
++                   !svm->nested.nested_run_pending)
+                        svm->soft_int_next_rip =3D vmcb12_ctrl->next_rip;
+        }
 
