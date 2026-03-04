@@ -1,154 +1,192 @@
-Return-Path: <stable+bounces-222989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222990-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eO/XEEPSp2l7kAAAu9opvQ
-	(envelope-from <stable+bounces-222989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:33:39 +0100
+	id OFOWBr3Yp2kRkQAAu9opvQ
+	(envelope-from <stable+bounces-222990-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:01:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8CD1FB2FC
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:33:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819271FB582
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 08:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C9BC305A2EB
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 06:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 026F530241B6
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 07:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D10D377ED4;
-	Wed,  4 Mar 2026 06:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E70931D362;
+	Wed,  4 Mar 2026 07:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EogdiAnS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mVclPWSF"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32B4C2FF;
-	Wed,  4 Mar 2026 06:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772606012; cv=none; b=e6GeLZc5r3+PWMZ7hhD2SBPwyZxeJZbTvlbWKuIohMWaKSpKIlGpGhOnZwZIKv4amwaT7O3Vi1p+JpcGjqKo0UoXQeB70BfQ2HDoXEJQzsZcuLVr/Nl/syZ8j7N44XPq/4Cj1i0JjMsqL/kuz/eMv9NEZlOlihQq+5WJkHuxVjg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772606012; c=relaxed/simple;
-	bh=r/lCoU8Iss1hAP0Z6sWVPAsnnOt/RTO2qmXspgRPpI8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RL9EGIUojXWFd9b+oOKExT66rlhqs6zi7VSE9RO8A8ojnpyey8Z6KuOVrpRfQseG/oOb2QRCH4HsFu8S1x0hS+rzwvOyOn+/SHETKsv78GRxyBVICtuAXpCWUmWK7wAOjbKhFWeld/kk2KSgjT9QpwZu+GPNevQszRczPqpJ7d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 06b2e4dc179411f1a21c59e7364eecb8-20260304
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED
-	SA_UNFAMILIAR, SN_UNTRUSTED, SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, UD_TRUSTED, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_C_CI, GTI_FG_IT, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:9621bf26-03db-4474-9830-a55302ba342c,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-20
-X-CID-INFO: VERSION:1.3.11,REQID:9621bf26-03db-4474-9830-a55302ba342c,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-20
-X-CID-META: VersionHash:89c9d04,CLOUDID:c4bdf47b60ff1b9f636e0e7a94a0be6f,BulkI
-	D:260304143317P2X2MNYD,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
-	|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 06b2e4dc179411f1a21c59e7364eecb8-20260304
-X-User: zhangheng@kylinos.cn
-Received: from localhost.localdomain [(112.64.161.44)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 239084249; Wed, 04 Mar 2026 14:33:16 +0800
-From: Zhang Heng <zhangheng@kylinos.cn>
-To: Vijendar.Mukunda@amd.com,
-	venkataprasad.potturu@amd.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com
-Cc: talhah.peerbhai@gmail.com,
-	guspatagonico@gmail.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK PM1503CDA
-Date: Wed,  4 Mar 2026 14:32:55 +0800
-Message-Id: <20260304063255.139331-1-zhangheng@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAA641C71
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 07:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772607670; cv=pass; b=Te220Sa1haVg0OBn0bZfUrH2FcGS3SA1+3Mb2tbBYl9bHGcJ+ckSdlFRG8GYNRpcNkrdYzCj+oms0/vgHD7v3PZ/uqH979ZpODfDXT7qQAgc+1qmyR2+l01UzBjwtAaH5EalwZtPhHwDZpl09HQgMMD9VyzBc1zSgIs/uYj6CqE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772607670; c=relaxed/simple;
+	bh=KWWIB7t7C3pJOd/0xpSdaV+2Zw0SpFMTOmm+zMTeHAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dkttKrfK8HmocbN2hICAkdcCaKaIzciAQkOlW8hlLiolmkK6Z4paP7CTVRSmjhMbH9YjvpAMsK5B4jnM4DaeV9VcbEYNEt0hUH6sNr4TCpCpuv+V0VCKwkIy9jTr6s7lAPk0Cc8P3oglE5jbgRYBNSL+GaQi6OiSC0PxsxsNj8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EogdiAnS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mVclPWSF; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772607668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FwBE4akms1F/Y859toP4EhYH9BAxcWIZ0TA5l5/GfsM=;
+	b=EogdiAnSTWLNH7lxh5azeUoIlkl0ui73NNiDUT4+X0iBmhj1zvFZT2m1kfP0vMgWXsZBt1
+	vXoTQ/Yf83J5UxhLcZOu2937XKkqM1CMLiGHhKyxFvvT2Jlf8XOw1BKGGK7RVYFkfXe/ws
+	v2ohTlqtSKxnxCCa+kuyiUeYkSy2WJs=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-5GzEU4tDOriCqStBFrh9jw-1; Wed, 04 Mar 2026 02:01:06 -0500
+X-MC-Unique: 5GzEU4tDOriCqStBFrh9jw-1
+X-Mimecast-MFC-AGG-ID: 5GzEU4tDOriCqStBFrh9jw_1772607666
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35449510446so6211314a91.0
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 23:01:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772607666; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gI2aCRUG5rraJ3plR/C8XDRndhTVxW53VAVXq6LUstwIIXh6UhQu7Ar81zqlSqNc86
+         7guoregPY46oJJ3xFXNm9lJn3Gq8y6s4ZMXamC51rCoV/qpHUdv8XEsoWcxsSxUiBYkm
+         N9xxSMn0L95i3zPH4dfa+WKcoG5aEU6mttuqfasL5xGB9onZ2k6Wzq6AKSG6jxfdC633
+         6MlMeL71t8NdGMvjR1K2i4mrVnggixjG8pyCCsT90x7zu1+UnRsoWbG47EySqLHJteqN
+         +QGqTD3iN8KtCaXyc8LD5Rao4vU67iz8WspxC0FAmXAr81c+EJ8kHe8V1OjUI1+6hq0C
+         A5hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FwBE4akms1F/Y859toP4EhYH9BAxcWIZ0TA5l5/GfsM=;
+        fh=yD0T7wpRQz0cBCXDkTH0t098wxFsZqJAm378LepXBjI=;
+        b=ISGgyouW+akSCkmcYIoXqgFu93PEwI22dtmubQbs5lL5DKXDIhieHdBKL12QdynznE
+         yvtS5rR8UqtVyWHhPLWpKaBxMbm+Z7GvZi3FeRobKdsQOt67t6nGowlhbGQyhrXsEa0W
+         i0BVnN/yVGnIi9zEoOeE68bONIjC7Zgy0rKQrW6iZdfHrm1zsFicTs6jiJdKf3IgZro5
+         30kuL2/PW6BMLAvhWvQP0PwQoZj01IGWdf1XB2cgxaMwt8hoaDZrBiCw9XfnWdwNirgO
+         S/cVBbv1ud8jUDnpL+DnBpkDOtu9QmoWzYUwbu1Rcm3jTFgBn2MTjxxx9+ZvO0Z3RXxw
+         crHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772607666; x=1773212466; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FwBE4akms1F/Y859toP4EhYH9BAxcWIZ0TA5l5/GfsM=;
+        b=mVclPWSF8jaZHDc1q3UvrAqjWGpqz8r5id0RpWH8GAXV2y1WS8CIL6YZKVURWQ8kfr
+         zwLLuupcODzVdQak00F9FCow4Zl/g14cnEluOOZMb+YhhIxNPIoTThqFIf3HXmE4AHEW
+         PCruwBbozFlal+J2ZuYlsd0QqR8/tLCiOBEw+tzORFCCbYW3hr3cbSHPsB5HQStlXy/k
+         94Ap6FL5HRWhiLd/jMudiqePS9Jceq5W6vQBbuQGRH/A+g9fNh3LrmKx9uPYEJ87nomc
+         q+EORiN40CVY8kufnzSoTQyd15xd0MbH+Nv3lQ5eJYLRFy2HszKw4nB4Tw6GrTOGU9sz
+         TIOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772607666; x=1773212466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FwBE4akms1F/Y859toP4EhYH9BAxcWIZ0TA5l5/GfsM=;
+        b=Xbi74aNw5BA1dfJYyK5Mow+UeN76RxZ+k8y3rhzMwV1MtddBDCb81sx9SETLeSQzmZ
+         woDZ6yz9i2MQ6Dq0F33/9OzbQRTzBNP3llZVxzPpLmGSck5Va1CwKoC4Jgs5osQEK2mY
+         /7zYQErkqMb5rSckt4V3U5o0cLqeN3afEkDICmF6XdNN3CARZJrGuRNfyYzAfp7FdYpO
+         aQmsclJR6ykw8KHKdUdes6ve98O+H7fItTRqz352nHeVo25fX0P+w3o3UBOf8bUsfwHo
+         vo+242bKcq84qidgtzC+564MYpX8AYl7Sqs0ouVfecjomaBgPvgoZ/spyDMYtQID1y7S
+         mO8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW36OCKM5o0DmjtfAgJMtntTo9lB4TmYRhZ5hWZxfpQF+jb/TsMubE1WDXvcrzOCOl8W11+s5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywoj3Sx2J20gaklo7bYLK3Utj2wZsHNocPywcpj5xy7jX6s9Lhb
+	fLb+wCOYGbJF2y2pjnxYvYwxv47I5cyVq6LFBtgX1RyBd6PcQj6qdLkkQn4iThUh6C8uN4LsKl/
+	Qfen0aL6/j9VcmsntIqG6BHbO/Cvl7/CStS2gke/JWV7w06X5D7PoqdSEpY5mHB8w/z5Blgzkn+
+	YehFc7751THP9tMVh6LiAysjHzWYB8oXj3
+X-Gm-Gg: ATEYQzzsrPTY5xHzaimxhgQ8qQJMSZQh8qDmmazPTSSuJeQx4LbD4kcpSFSQoWmjG7i
+	XAUhSHnD5G0FitsmQq1NC7vIdCSPGgcUKGBS/4c1g3ZDjnkGuPNVXLcBmU6awkPAOtr+5FupGnj
+	EwJxGsbhHNgJRz4LvSV4X1oDMyKoESaJhVNtdchV7Dy4xD5BGY4zx3QthdilSZD6nSd5ksD7eem
+	mhv2nU=
+X-Received: by 2002:a17:90b:350e:b0:359:95c1:6b6 with SMTP id 98e67ed59e1d1-359a6a65fd1mr1207241a91.25.1772607665704;
+        Tue, 03 Mar 2026 23:01:05 -0800 (PST)
+X-Received: by 2002:a17:90b:350e:b0:359:95c1:6b6 with SMTP id
+ 98e67ed59e1d1-359a6a65fd1mr1207183a91.25.1772607664851; Tue, 03 Mar 2026
+ 23:01:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7E8CD1FB2FC
+References: <20260226115550.1814-1-zhangtianci.1997@bytedance.com> <20260226115550.1814-3-zhangtianci.1997@bytedance.com>
+In-Reply-To: <20260226115550.1814-3-zhangtianci.1997@bytedance.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 4 Mar 2026 15:00:53 +0800
+X-Gm-Features: AaiRm51O97aS5NJ96agoaKegTRxNIomgtn4-ZRlUTVYj1ctl5GYjn5O3tIxLPFQ
+Message-ID: <CACGkMEtduDsnZjGhOYwdRpOBVxX=+2z4C4sJ47KwROF7NWNzcw@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] vduse: Fix race in vduse_dev_msg_sync and vduse_dev_read_iter
+To: Zhang Tianci <zhangtianci.1997@bytedance.com>
+Cc: mst@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
+	marco.crivellari@suse.com, anders.roxell@linaro.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Xie Yongji <xieyongji@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 819271FB582
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-222989-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[amd.com,gmail.com,kernel.org,perex.cz,suse.com];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222990-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kylinos.cn];
-	NEURAL_HAM(-0.00)[-0.782];
+	FROM_NEQ_ENVFROM(0.00)[jasowang@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Add a DMI quirk for the ASUS EXPERTBOOK PM1503CDA fixing the
-issue where the internal microphone was not detected.
+On Thu, Feb 26, 2026 at 7:56=E2=80=AFPM Zhang Tianci
+<zhangtianci.1997@bytedance.com> wrote:
+>
+> There is one race case in vduse_dev_msg_sync and vduse_dev_read_iter:
+>
+> vduse_dev_read_iter():
+>     lock(msg_lock);
+>     dequeue_msg(send_list);
+>     unlock(msg_lock);
+> vduse_dev_msg_sync():
+>     wait_timeout() finish
+>     lock(msg_lock);
+>     check msg->complete is false
+>         list_del(msg);   <- double list_del() crash!
+>
+> To fix this case, we shall ensure vduse_msg is on send_list or recv_list
+> outside the msg_lock critical section.
+>
+> Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhang Tianci <zhangtianci.1997@bytedance.com>
+> Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+> ---
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221070
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
----
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 77a96854a45c..1c73d2123b5a 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -717,6 +717,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK BM1503CDA"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "PM1503CDA"),
-+		}
-+	},
- 	{}
- };
- 
--- 
-2.25.1
+Thanks
 
 
