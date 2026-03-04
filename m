@@ -1,83 +1,48 @@
-Return-Path: <stable+bounces-223073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFo9Cr04qGkTqgAAu9opvQ
-	(envelope-from <stable+bounces-223073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:50:53 +0100
+	id IOMGKAw6qGkTqgAAu9opvQ
+	(envelope-from <stable+bounces-223072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:56:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38180200B83
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:50:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4E0200CF5
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B703C302606B
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:50:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A21EA30ADBB1
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD143A257F;
-	Wed,  4 Mar 2026 13:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTQetd8D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FB030E0E5;
+	Wed,  4 Mar 2026 13:50:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099792848A0;
-	Wed,  4 Mar 2026 13:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9B3269D18
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 13:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772632237; cv=none; b=Q4I5GR5AkJVz5mDl1eNdJOsX0cQoWsGjmdT419PkdCFlCLvSmyDzOxIpA/hA+2Bxt15VxfmeMmPhzCAb/1x/wc+YJcZiUxmX3WgEQ45nyv1j6Gm5aYn+m264wGlNN6R/sCO1K2ktAuF2x2AN4bk1BnqOCNsrXs+hnBFPzM++3pc=
+	t=1772632217; cv=none; b=tiVpr1IhdbjzuPUWcJ3q/mOCI54sSfTIRalwVZHF+tG+ok5Q9Y6rokkGE03Vf7nj7A+G9oJ4GhUcj10V4uCUx9iQJizeIu4X6cd1vV7EZxWaLlJlNkbspcuFvJS7gsAxc+xMe+0Md030SYB/TvpazeZQJJfCw6K6EHcgUtWYgLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772632237; c=relaxed/simple;
-	bh=VPIbwl7qvJoAZJvI2vTr8h/by7c54vjlTr/7L55yv/k=;
+	s=arc-20240116; t=1772632217; c=relaxed/simple;
+	bh=oUCBHwoYpdLB/hcFTz8xMw46AcE2qwmnTC+aNLoCrbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dHBJkhwoV5VXnzEftrOR426oVwz2v4D2teuG3OiiFqNQ6uxODSsX4UvJi3G9ISGk4rU9gNoOSgyHmqQ909K3EYESHRj+AVXK28y2ZKfmhFCTETi9pRUvrOOfHD6LbXI0uMlqmakMEh8kHFpRjujwQl5BTUwai0piJH/HI7F2po8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTQetd8D; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772632236; x=1804168236;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VPIbwl7qvJoAZJvI2vTr8h/by7c54vjlTr/7L55yv/k=;
-  b=cTQetd8Dy6rnOxQFpvWa3aoTrOD2TeFmZOWreSDXvf31MbdFrzQ0Udaz
-   Cs00Zz/9qADwpa6BT6x4DBe6VKe9gbbMHPbf1uQctf03NeHCaLPDgOgK0
-   fnGdF4+HbqnUyq4La6xI0tRzU39lZS21YnxJrv5NB8/gBwDyMpnqWTyQ6
-   ciFutJc2Dts2KXYjaEa/bXqUaIaYaNNdROV6Z4O6ekB7HKFxwQP9TsbFG
-   0CCbZQV1SpyMCoh0jWQFxcY/o9qOZRl6c93mAI8VcSuZyBsfk9SU2v545
-   pE/jnUxDBkUDxeCfkJsU+7hmBmaZlvIvtlfNW8x/hdFH7sCCyBsje4+S/
-   g==;
-X-CSE-ConnectionGUID: ZfVBw0aTQteKHEoli5CmXA==
-X-CSE-MsgGUID: jEnteu+wS3usO9RYm4jysA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="72716445"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="72716445"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 05:50:33 -0800
-X-CSE-ConnectionGUID: IQyLqEp1QnC3Gzcds3GumQ==
-X-CSE-MsgGUID: 6O0J0BxeQHqLkHzS6cSrEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="217502196"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by orviesa006.jf.intel.com with ESMTP; 04 Mar 2026 05:50:31 -0800
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxmcN-000000001iP-2nrn;
-	Wed, 04 Mar 2026 13:50:27 +0000
-Date: Wed, 4 Mar 2026 14:50:08 +0100
-From: kernel test robot <lkp@intel.com>
-To: Chengwen Feng <fengchengwen@huawei.com>, linux-pci@vger.kernel.org,
-	bhelgaas@google.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	rafael@kernel.org, lenb@kernel.org, wei.huang2@amd.com,
-	Eric.VanTassell@amd.com, jonathan.cameron@huawei.com,
-	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com,
-	liuyonglong@huawei.com, Chengwen Feng <fengchengwen@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-Message-ID: <202603041459.Mw33vD7S-lkp@intel.com>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bKn1tDMdL0gTDdRMzWh9T4kcXyM6ipoTJ3x4oriChnOlkDBqiG/sgu8prGvkuBpBwi/4EzZ2nclYWTQzpLnD/pRfCGZvI9/hCaPNlB7oYEEJdMLsy1FwUSFQdsW5sZ8+whydFoxPVosnSNDRjSgT903es/3OxQCD2j6pR1vvLwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 43A42602AB; Wed, 04 Mar 2026 14:50:14 +0100 (CET)
+Date: Wed, 4 Mar 2026 14:50:14 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Natarajan KV <natarajankv91@gmail.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, pablo@netfilter.org,
+	kadlec@netfilter.org
+Subject: Re: [PATCH] netfilter: nft_set_pipapo: clear dirty flag on
+ abort/commit clone failure
+Message-ID: <aag4luW2YDNSqghr@strlen.de>
+References: <20260304133859.28372-1-natarajankv91@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,86 +51,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303003625.39035-1-fengchengwen@huawei.com>
-X-Rspamd-Queue-Id: 38180200B83
+In-Reply-To: <20260304133859.28372-1-natarajankv91@gmail.com>
+X-Rspamd-Queue-Id: 4B4E0200CF5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223073-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[strlen.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223072-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fw@strlen.de,stable@vger.kernel.org];
+	NEURAL_SPAM(0.00)[0.021];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid,01.org:url,git-scm.com:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hi Chengwen,
+Natarajan KV <natarajankv91@gmail.com> wrote:
+> nft_pipapo_abort() and nft_pipapo_commit() call pipapo_clone() which
+> can fail under memory pressure. When this happens, the functions return
 
-kernel test robot noticed the following build errors:
+> diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+> index 4274831b6e67..34a108399fd3 100644
+> --- a/net/netfilter/nft_set_pipapo.c
+> +++ b/net/netfilter/nft_set_pipapo.c
+> @@ -1708,8 +1708,10 @@ static void nft_pipapo_commit(struct nft_set *set)
+>  		return;
+>  
+>  	new_clone = pipapo_clone(priv->clone);
+> -	if (IS_ERR(new_clone))
+> +	if (IS_ERR(new_clone)) {
+> +		priv->dirty = false;
+>  		return;
+> +	}
+>  
+>  	priv->dirty = false;
+>  
+> @@ -1743,8 +1745,10 @@ static void nft_pipapo_abort(const struct nft_set *set)
+>  	m = rcu_dereference_protected(priv->match, nft_pipapo_transaction_mutex_held(set));
+>  
+>  	new_clone = pipapo_clone(m);
+> -	if (IS_ERR(new_clone))
+> +	if (IS_ERR(new_clone)) {
+> +		priv->dirty = false;
+>  		return;
+> +	}
 
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v7.0-rc2 next-20260303]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-get-cpu-steer-tag-fail-on-ARM64-platform/20260303-084305
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20260303003625.39035-1-fengchengwen%40huawei.com
-patch subject: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-config: i386-randconfig-2006-20250804 (https://download.01.org/0day-ci/archive/20260304/202603041459.Mw33vD7S-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260304/202603041459.Mw33vD7S-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603041459.Mw33vD7S-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/acpi/processor_core.c: In function 'acpi_get_cpu_acpi_id':
->> drivers/acpi/processor_core.c:344:16: error: implicit declaration of function 'cpu_acpi_id' [-Wimplicit-function-declaration]
-     344 |         return cpu_acpi_id(cpu);
-         |                ^~~~~~~~~~~
-
-
-vim +/cpu_acpi_id +344 drivers/acpi/processor_core.c
-
-   337	
-   338	#ifdef CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API
-   339	unsigned int acpi_get_cpu_acpi_id(unsigned int cpu)
-   340	{
-   341		if (cpu >= nr_cpu_ids)
-   342			return 0;
-   343	#ifdef CONFIG_X86
- > 344		return cpu_acpi_id(cpu);
-   345	#elif CONFIG_ARM64
-   346		return get_acpi_id_for_cpu(cpu);
-   347	#endif
-   348	}
-   349	#endif /* CONFIG_ARCH_HAS_GET_CPU_ACPI_ID_API */
-   350	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+As I said, I don't think this really helps.  Cloning must only happen
+in locations where we can still reject the transaction, e.g. during
+insert or delete operations.
 
