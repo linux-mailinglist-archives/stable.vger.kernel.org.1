@@ -1,354 +1,345 @@
-Return-Path: <stable+bounces-223045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFBgDr8jqGl3ogAAu9opvQ
-	(envelope-from <stable+bounces-223045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:21:19 +0100
+	id cOSBCwgqqGkdpAAAu9opvQ
+	(envelope-from <stable+bounces-223046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:48:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00ED1FFA13
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:21:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EFA1FFCF2
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 13:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C94AF303A913
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 12:20:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 595CB3029AE9
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 12:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466413A8728;
-	Wed,  4 Mar 2026 12:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061191DE8AF;
+	Wed,  4 Mar 2026 12:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFYDrWoQ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71280371D0C
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 12:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFA91E0E14
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 12:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772626837; cv=none; b=lcZS05IEr8OvSNV7mnoL6HFhPBDYh0gCTIW6jeVGi5vIk7Gx6wImhTLFS2lGVZpkXE5y4KlfHVGQ8HYz1nTju5ecryjwi1eo8u2YDvlH6GZ0EwzaYImY8KopbLF6fci3lQl5ikbKZ3iBkiIEXn+OQUCYAlY09ANFTVoQreOR20g=
+	t=1772628402; cv=none; b=nffes8P89HJ5wXgGD8stjfHSF5EUfHMMxrRIXY5SiPvfT+WkaBA6dhJBUtqQHXk7lNjX8HIGeOIYLAciFPo205ZNOuvfjSVG7qR3BjqGUxDve3Wpb0sRIvJ4l8BouYB/NtELl4P+NNAKjxxYutYRyaKsbVsiu+XYN7M00l7NM0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772626837; c=relaxed/simple;
-	bh=y6It3wozt+z8yCdP2d70R60B6tv7oe3JA3Nql+cq6Ug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FRVeG1lWmuvCrtpXbaAZs2wHltbIwvcJl/F5Vjun6JjF0X1BPK7ENqqfmfpxePEutr3GX/7JX4qQ6ViS3/0VF5fG6v92ko8mGWwlKDYM2euZHpHWW6P7ADPrByisvY6Ca4Ml1U/nUNbbaAdoYD6iuGQl11UL27wZlEAepbJZOg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 917B0339;
-	Wed,  4 Mar 2026 04:20:28 -0800 (PST)
-Received: from [10.57.82.233] (unknown [10.57.82.233])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60F913F836;
-	Wed,  4 Mar 2026 04:20:33 -0800 (PST)
-Message-ID: <1080db49-2f83-4fec-ba73-94c6b3a8f7fa@arm.com>
-Date: Wed, 4 Mar 2026 12:20:31 +0000
+	s=arc-20240116; t=1772628402; c=relaxed/simple;
+	bh=X+cEgUYdBhzqmXNgOKBSdS0OGCTtnGXepLLe79iZaaw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xv+TaP5OSPp2Rf6DnHT3N/oUGeS3s/JSTygmLVWWfKU68EmUa4jgmNw5gFJqOW5zwvWvPLX6wt+oNh58W088MGVIQLYnsGtcfO/NquVYWOjD2DMMOZNV5b4rghprw43vewCio1FkF8Ji6B/aU4VxoYIc+oNlRSj3WLUNOg48u/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFYDrWoQ; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82748095892so3283289b3a.0
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 04:46:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772628401; x=1773233201; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PRHZvjbEn20Mjv6PiYHb8lOHhFpRFIdSlhpdu6s0ORg=;
+        b=SFYDrWoQx1xs6xU+za7BEh8unzwo9BFEWcqiUMMvX4J2mcu0h4hR2M3SLR6QPTt6Cw
+         xqmXDPHLt3emOwkdhD81zTZFMuDZqOVZLYO3T6JoA6rbzSiZialtDq/jarkiJLvmC4fY
+         yW03ppKeuV0QFB0CYgUWChuij7xYQ/xcdhJXkx1MejI2kaNXeF704hLJ7tKG6pk5MquB
+         S4UtI90IBJ0nFKURaHCnbMWjrL9DtNChgzDcrbqKXhAzTHkYPTi41n3UvXdGzBA63st5
+         4lfEVWhNsthfmzsx2BO5KRJs0hopq5RD9Q2rv0x71CjPLeno4DWNxT9L6rg9/2+FQCxj
+         +ueg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772628401; x=1773233201;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PRHZvjbEn20Mjv6PiYHb8lOHhFpRFIdSlhpdu6s0ORg=;
+        b=Erv05XKAzDn3+AaxkiHs8E1EoiZp23dLgGty4f68kRAuf+lnAMiOcbbjvtDQPW+35o
+         RvLTN7p/1Ux76079ZVvaXe6gGWXbttmk2tKqpSIvCgahEABymYhc5GZDZjaJsgQyMryv
+         1SEHHW4sYJ+nY6NmkuCSYcTVOehu2nhlSXBKT9e88MeRpJ0stUMuhw3VLAnx5w6hM+Eu
+         3KMmrvId3q56suU/T361QdZEfUqjquXx5n8Dt8IMzXO0+qIE3Cc56dSnt9TvVUxQ+/GS
+         v8drTYKDqIbrxinK70YIqICfLsTumbO491MFGNYiAZEpBhWXTRDxIfPF0whRew2DE8pz
+         jEZA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/sMsxXUtdwW4a/GBhaqQh9m2epKCxrzYTb6APO5FOnoE9yMuCqJxwmCobbZ7HMAj7f1SeM5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5LWgNRSCaAqaaZ8Utgg9rifkYgdz5XWd78byT5rSjXzpJ0oNZ
+	MkDSH5OyPyQg7omyY76DUPV3UHIKlBAOazUg6gQfl63rYdav3ENAfkac
+X-Gm-Gg: ATEYQzwzQSFCQx0RswELgP42/LnuWnhIxpuudYMlaG1i2jeg8Z9VRTswnHGvipclfT5
+	mLZrJQBGajpYZbepX+z+1xqCtLjadZPhiQ2bQDBnYp5wxnxXd7KmNljD++dDkIPkNlVUN92hsBb
+	ka6GpwVMbKcOz+zZEvjiiUkcLiNjUAmojYIrr5ZPcvfn3x1hZNBMMI+fODSUh8XsReomOcyh4+W
+	QTjHtpDG7OxyecnmTV1Fg/fRNmkvJBxEJojbcx7CtS2hhVGive7J6kvB7Uy6fH5qAHfnDrKEQkS
+	jch1CP3PZgWyJexgY5S4nire0psokrcp7K66GiuQS3r6bydTMBgXlrVAwjC9EyR7eXS4MjeH7iy
+	pVl7WSOhjfL35ztAIAZCFZetcCymJebPy28JQFaEp0hCWtyZI2pMxAI+YnNB9ydJFRoNV6ziWZF
+	puUjRVDUxFofJt5FJbkXrvoFAJ62Ra+3qrIV+MhqTN85zj6lPkw1g=
+X-Received: by 2002:a05:6a20:7f96:b0:38d:ec8c:7e55 with SMTP id adf61e73a8af0-3982df0e577mr1836844637.32.1772628400796;
+        Wed, 04 Mar 2026 04:46:40 -0800 (PST)
+Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7377062904sm1836317a12.30.2026.03.04.04.46.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 04:46:40 -0800 (PST)
+From: nspmangalore@gmail.com
+X-Google-Original-From: sprasad@microsoft.com
+To: linux-cifs@vger.kernel.org,
+	smfrench@gmail.com,
+	pc@manguebit.com,
+	bharathsm@microsoft.com,
+	dhowells@redhat.com
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] cifs: open files should not hold ref on superblock
+Date: Wed,  4 Mar 2026 18:15:53 +0530
+Message-ID: <20260304124629.1616108-1-sprasad@microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Content-Language: en-GB
-To: Jason Gunthorpe <jgg@nvidia.com>,
- Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- Alistair Popple <apopple@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, Breno Leitao <leitao@debian.org>,
- stable@vger.kernel.org
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <0a10ea33-937a-4294-b9a1-9323c706434d@arm.com> <aacohVRfAK46lOjo@box>
- <20260303191217.GD972761@nvidia.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260303191217.GD972761@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B00ED1FFA13
+X-Rspamd-Queue-Id: A3EFA1FFCF2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223045-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223046-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.com,microsoft.com,redhat.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 03/03/2026 19:12, Jason Gunthorpe wrote:
-> On Tue, Mar 03, 2026 at 10:40:00AM -0800, Piotr Jaroszynski wrote:
-> 
->>> If my reasoning is correct, then I think arm64 hugetlb has a similar bug; See
->>> __cont_access_flags_changed(), which just checks for any form of dirty. So I
->>> guess hugetlb is buggy in the same way and should be fixed to use this more
->>> stringent approach?
->>
->> Given sw-dirty is managed by sw, is it correct for sw to ever create a
->> PTE that's sw-dirty but not hw-dirty? 
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-It's possible to have a dirty pte that you subsequently make read-only by
-calling pte_wrprotect().
+Today whenever we deal with a file, in addition to holding
+a reference on the dentry, we also get a reference on the
+superblock. This happens in two cases:
+1. when a new cinode is allocated
+2. when an oplock break is being processed
 
-These are the valid states for the bits:
+The reasoning for holding the superblock ref was to make sure
+that when umount happens, if there are users of inodes and
+dentries, it does not try to clean them up and wait for the
+last ref to superblock to be dropped by last of such users.
 
- * Dirty  Writable | PTE_RDONLY  PTE_WRITE  PTE_DIRTY (sw)
- *   0      0      |   1           0          0
- *   0      1      |   1           1          0
- *   1      0      |   1           0          1
- *   1      1      |   0           1          x
+But the side effect of doing that is that umount silently drops
+a ref on the superblock and we could have deferred closes and
+lease breaks still holding these refs.
 
-But I guess only PTE_RDONLY|PTE_WRITE|PTE_DIRTY causes a problem, which can't
-happen.
+Ideally, we should ensure that all of these users of inodes and
+dentries are cleaned up at the time of umount, which is what this
+code is doing.
 
+This code change allows these code paths to use a ref on the
+dentry (and hence the inode). That way, umount is
+ensured to clean up SMB client resources when it's the last
+ref on the superblock (For ex: when same objects are shared).
 
->> If not, then I think it will still
->> work fine for the SMMU case as sw-dirty implies hw-dirty, and if it's
->> missing then we will set both. But for thoroughness it could make sense
->> to be stricter and add some comments there as it does feel a little
->> fragile. I'm very new to this area though so probably best for others to
->> comment and tackle this.
-> 
-> I also am not so familiar with SW dirty, but the big thing to be
-> sensitive to here is that the CPU can get by with setting something as
-> RDONLY | DBM and the CPU will flip off RDONLY without issue, so you
-> might not notice it.
-> 
-> But if handle_mm_fault() is called on something RDONLY|DBM it *MUST*
-> clear the RDONLY for all CONT entries, or fail the fault. Otherwise
-> the SMMU SVA explodes.
+The code change also moves the call to close all the files in
+deferred close list to the umount code path. It also waits for
+oplock_break workers to be flushed before calling
+kill_anon_super (which eventually frees up those objects).
 
-Got it.
+Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+---
+ fs/smb/client/cifsfs.c    |  7 +++++--
+ fs/smb/client/cifsproto.h |  1 +
+ fs/smb/client/file.c      | 11 ----------
+ fs/smb/client/misc.c      | 42 +++++++++++++++++++++++++++++++++++++++
+ fs/smb/client/trace.h     |  2 ++
+ 5 files changed, 50 insertions(+), 13 deletions(-)
 
-> 
-> However, I agree the __cont_access_flags_changed() looks concerning.
-> 
-> I spent a few AI $$ to cross check this and it echo's Ryan's concern
-> but did not find a specific counter-example where PTE_WRITE |
-> PTE_DIRTY | PTE_RDONLY can happen for hugetlb. 
-
-The table I shared above (from pgtable.h) agrees that
-PTE_WRITE|PTE_DIRTY|PTE_RDONLY can never happen.
-
-> I don't really trust
-> this negative result, so I'm inclined to agree it should be made more
-> robust. I like the look of the patch (below) it proposed too.
-> 
-> AI ramblings:
-> PROMPT:
-> Review 20260303063751.2531716-1-pjaroszynski@nvidia.com.mbx and focus
-> on __cont_access_flags_changed(), huge_ptep_set_access_flags(),
-> hugetlb_fault(). Does it have the same issue as this patch is fixing,
-> considering the following additional note:
-> 
-> A big thing to be sensitive to here is that the CPU can get by with
-> setting something as RDONLY | DBM and the CPU will flip off RDONLY
-> without issue, so you might not notice it.
-> 
-> But if handle_mm_fault() is called on something RDONLY|DBM it *MUST*
-> clear the RDONLY for all CONT entries, or fail the fault.
-> ====
-> 
-> Analysis: Does hugetlb __cont_access_flags_changed() have the same bug as the contpte patch?
-> 
-> The contpte bug (what the patch fixes)
-> 
-> The old contpte_ptep_set_access_flags() (contpte.c:614) used ptep_get()
-> which gathers AF/dirty from ALL sub-PTEs via OR, then compared the
-> gathered result against entry:
-> 
->     // OLD (buggy):
->     orig_pte = pte_mknoncont(ptep_get(ptep));   // gathers across all sub-PTEs!
->     if (pte_val(orig_pte) == pte_val(entry))
->         return 0;
-> 
-> A dirty sibling makes the gathered PTE look already-dirty, even though
-> the target sub-PTE still has PTE_RDONLY in hardware. False no-op → SMMU
-> infinite fault loop.
-> 
-> The fix replaces this with contpte_all_subptes_match_access_flags()
-> which checks each sub-PTE’s raw bit values
-> (PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY).
-> 
-> The hugetlb code
-> 
-> __cont_access_flags_changed() (hugetlbpage.c:400-418) does NOT use
-> gathering for the no-op check – it reads each sub-PTE individually via
-> __ptep_get():
-> 
->     for (i = 0; i < ncontig; i++) {
->         pte_t orig_pte = __ptep_get(ptep + i);
->         if (pte_dirty(pte) != pte_dirty(orig_pte))
->             return 1;
->         if (pte_young(pte) != pte_young(orig_pte))
->             return 1;
->     }
-> 
-> So it does NOT have the exact same gathering-based false no-op bug.
-> 
-> But it does have a weaker form of the same conceptual problem
-> 
-> The check uses pte_dirty() which is:
-> 
->     #define pte_hw_dirty(pte)  (pte_write(pte) && !pte_rdonly(pte))
->     #define pte_sw_dirty(pte)  (!!(pte_val(pte) & PTE_DIRTY))
->     #define pte_dirty(pte)     (pte_sw_dirty(pte) || pte_hw_dirty(pte))
-> 
-> It abstracts over HW-dirty and SW-dirty. It does NOT check PTE_RDONLY
-> directly.
-> 
-> If a sub-PTE were in the state PTE_WRITE | PTE_DIRTY | PTE_RDONLY
-> (SW-dirty but HW-readonly), then pte_dirty() returns true (via
-> sw_dirty), and the check would say “no change needed” – but PTE_RDONLY
-> is still set in hardware, which the SMMU would fault on.
-> 
-> The contpte fix’s contpte_all_subptes_match_access_flags() would catch
-> this because it compares the raw PTE_RDONLY bit directly.
-> 
-> Does PTE_WRITE | PTE_DIRTY | PTE_RDONLY actually occur?
-> =======================================================
-> 
-> Looking at all the arm64 PTE manipulation functions:
-> 
-> -   pte_mkdirty(): sets PTE_DIRTY AND clears PTE_RDONLY (if writable)
-> -   pte_mkwrite_novma(): sets PTE_WRITE, clears PTE_RDONLY if PTE_DIRTY
-> -   pte_wrprotect(): saves HW dirty to SW dirty, sets PTE_RDONLY, clears
->     PTE_WRITE
-> -   pte_mkclean(): clears PTE_DIRTY, sets PTE_RDONLY
-> -   HAFDBS: can only CLEAR PTE_RDONLY, never set it
-> 
-> None of these create PTE_DIRTY | PTE_WRITE | PTE_RDONLY. The invariant
-> holds: for writable pages, PTE_DIRTY => !PTE_RDONLY.
-> 
-> Tracing the RDONLY|DBM scenario through hugetlb_fault()
-> 
-> For the specific scenario: all sub-PTEs are PTE_WRITE | PTE_RDONLY
-> (RDONLY|DBM, clean writable), and handle_mm_fault() is called:
-> 
-> 1.  huge_ptep_get() gathers – no dirty siblings, so vmf.orig_pte =
->     PTE_WRITE | PTE_RDONLY | PTE_AF
-> 2.  huge_pte_mkdirty() sets PTE_DIRTY, clears PTE_RDONLY
-> 3.  entry = PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-> 4.  __cont_access_flags_changed():
->     -   All sub-PTEs: PTE_WRITE | PTE_RDONLY | PTE_AF
->     -   pte_dirty(entry) = true, pte_dirty(sub) = false (RDONLY set, no
->         PTE_DIRTY)
->     -   Mismatch detected -> returns 1 -> BBM proceeds
-> 5.  BBM rewrites ALL PTEs with
->     PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-> 6.  RDONLY cleared for all entries. Correct.
-> 
-> With some siblings HW-dirtied by CPU (e.g., PTE #3 has !PTE_RDONLY):
-> 
-> 1.  huge_ptep_get() gathers: sees HW-dirty sibling, calls pte_mkdirty()
->     on gathered
-> 2.  entry = PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-> 3.  __cont_access_flags_changed():
->     -   PTE #3 (!PTE_RDONLY): pte_dirty() = true -> match
->     -   PTE #0 (PTE_RDONLY): pte_dirty() = false -> mismatch -> returns
->         1
-> 4.  BBM proceeds. All PTEs rewritten. Correct.
-> 
-> With ALL siblings HW-dirtied by CPU:
-> 
-> 1.  All sub-PTEs: PTE_WRITE | !PTE_RDONLY | PTE_AF (all HW dirty)
-> 2.  entry: PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-> 3.  __cont_access_flags_changed(): all pte_dirty() match -> returns 0
->     (no-op)
-> 4.  But RDONLY is already clear on all PTEs, so SMMU won’t fault.
->     Correct.
-> 
-> Conclusion
-> ==========
-> 
-> The hugetlb code does NOT have the same bug in the sense that it doesn’t
-> produce false no-ops with current code. The key difference is
-> __cont_access_flags_changed() checks each sub-PTE individually, not a
-> gathered view.
-> 
-> However, Ryan Roberts’ observation is valid:
-> __cont_access_flags_changed() has a latent weakness. It relies on the
-> invariant PTE_DIRTY => !PTE_RDONLY (for writable pages) rather than
-> checking PTE_RDONLY directly. If this invariant were ever violated
-> (e.g., by a future code change), the no-op check could falsely pass,
-> leaving RDONLY set in hardware and causing SMMU fault loops. The contpte
-> fix’s approach of checking raw bit values is more robust and should be
-> adopted by the hugetlb code as a defense-in-depth measure.
-> 
-> The recommended fix for hugetlb: replace the pte_dirty()/pte_young()
-> checks in __cont_access_flags_changed() with a raw-bitmask comparison
-> similar to contpte_all_subptes_match_access_flags(), using the mask
-> PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY.
-> 
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index a42c05cf564082..34e091b398123e 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -389,28 +389,24 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
->  }
->  
->  /*
-> - * huge_ptep_set_access_flags will update access flags (dirty, accesssed)
-> + * huge_ptep_set_access_flags will update access flags (dirty, accessed)
->   * and write permission.
->   *
-> - * For a contiguous huge pte range we need to check whether or not write
-> - * permission has to change only on the first pte in the set. Then for
-> - * all the contiguous ptes we need to check whether or not there is a
-> - * discrepancy between dirty or young.
-> + * Check all sub-PTEs' raw access flag bits rather than using the abstracted
-> + * pte_dirty()/pte_young() helpers which conflate HW-dirty and SW-dirty.
-> + * This ensures PTE_RDONLY is checked directly: a sub-PTE that is SW-dirty
-> + * (PTE_DIRTY set) but still has PTE_RDONLY would be missed by pte_dirty()
-> + * but will cause an SMMU without HTTU to keep faulting.  The access flag
-> + * mask matches the one used by __ptep_set_access_flags().
->   */
->  static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
->  {
-> +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
-> +	pteval_t pte_access = pte_val(pte) & access_mask;
->  	int i;
->  
-> -	if (pte_write(pte) != pte_write(__ptep_get(ptep)))
-> -		return 1;
-> -
->  	for (i = 0; i < ncontig; i++) {
-> -		pte_t orig_pte = __ptep_get(ptep + i);
-> -
-> -		if (pte_dirty(pte) != pte_dirty(orig_pte))
-> -			return 1;
-> -
-> -		if (pte_young(pte) != pte_young(orig_pte))
-> +		if ((pte_val(__ptep_get(ptep + i)) & access_mask) != pte_access)
->  			return 1;
->  	}
-
-I think, based on all the above, the current version is actually not buggy. But
-I'm only willing to go to 95% confidence :)
-
-The change looks reasonable though, if you want to be safe.
-
-Thanks,
-Ryan
-
-
->  
-> 
-> Jason
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 99b04234a08e6..fcc56481d6cf2 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -330,10 +330,14 @@ static void cifs_kill_sb(struct super_block *sb)
+ 
+ 	/*
+ 	 * We need to release all dentries for the cached directories
+-	 * before we kill the sb.
++	 * and close all deferred file handles before we kill the sb.
+ 	 */
+ 	if (cifs_sb->root) {
+ 		close_all_cached_dirs(cifs_sb);
++		cifs_close_all_deferred_files_sb(cifs_sb);
++
++		/* Wait for all pending oplock breaks to complete */
++		flush_workqueue(cifsoplockd_wq);
+ 
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
+@@ -864,7 +868,6 @@ static void cifs_umount_begin(struct super_block *sb)
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+-	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 96d6b5325aa33..800a7e418c326 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -261,6 +261,7 @@ void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
+ 
+ void cifs_close_all_deferred_files(struct cifs_tcon *tcon);
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry);
+ 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 18f31d4eb98de..fb4f9aafe1386 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -711,8 +711,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
+ 	mutex_init(&cfile->fh_mutex);
+ 	spin_lock_init(&cfile->file_info_lock);
+ 
+-	cifs_sb_active(inode->i_sb);
+-
+ 	/*
+ 	 * If the server returned a read oplock and we have mandatory brlocks,
+ 	 * set oplock level to None.
+@@ -767,7 +765,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 	struct inode *inode = d_inode(cifs_file->dentry);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsLockInfo *li, *tmp;
+-	struct super_block *sb = inode->i_sb;
+ 
+ 	/*
+ 	 * Delete any outstanding lock records. We'll lose them when the file
+@@ -785,7 +782,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 
+ 	cifs_put_tlink(cifs_file->tlink);
+ 	dput(cifs_file->dentry);
+-	cifs_sb_deactive(sb);
+ 	kfree(cifs_file->symlink_target);
+ 	kfree(cifs_file);
+ }
+@@ -3165,12 +3161,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
+-	/*
+-	 * Hold a reference to the superblock to prevent it and its inodes from
+-	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
+-	 * may release the last reference to the sb and trigger inode eviction.
+-	 */
+-	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3255,7 +3245,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
+-	cifs_sb_deactive(sb);
+ }
+ 
+ static int cifs_swap_activate(struct swap_info_struct *sis,
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 22cde46309fe0..318533210648d 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -28,6 +28,11 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
+ 
++struct tcon_list {
++	struct list_head entry;
++	struct cifs_tcon *tcon;
++};
++
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+@@ -550,6 +555,43 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
+ 	}
+ }
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
++{
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct rb_node *node;
++	struct cifs_tcon *tcon;
++	struct tcon_link *tlink;
++	struct tcon_list *tmp_list, *q;
++	LIST_HEAD(tcon_head);
++
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR(tcon))
++			continue;
++		tmp_list = kmalloc_obj(struct tcon_list, GFP_ATOMIC);
++		if (tmp_list == NULL)
++			break;
++		tmp_list->tcon = tcon;
++		/* Take a reference on tcon to prevent it from being freed */
++		spin_lock(&tcon->tc_lock);
++		++tcon->tc_count;
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_get_close_defer_files);
++		spin_unlock(&tcon->tc_lock);
++		list_add_tail(&tmp_list->entry, &tcon_head);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
++
++	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
++		cifs_close_all_deferred_files(tmp_list->tcon);
++		list_del(&tmp_list->entry);
++		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
++		kfree(tmp_list);
++	}
++}
++
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry)
+ {
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index 9228f95cae2bd..acfbb63086ea2 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -176,6 +176,7 @@
+ 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
+ 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
+ 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
++	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
+ 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
+ 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
+@@ -187,6 +188,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
++	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
+ 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
+-- 
+2.43.0
 
 
