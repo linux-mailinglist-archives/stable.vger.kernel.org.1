@@ -1,136 +1,134 @@
-Return-Path: <stable+bounces-223075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHsBBCs7qGkTqgAAu9opvQ
-	(envelope-from <stable+bounces-223075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:01:15 +0100
+	id EBLJKO09qGl6rQAAu9opvQ
+	(envelope-from <stable+bounces-223076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:13:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7716A200E2A
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:01:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E66420118A
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 15:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F092F302D0B7
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 14:00:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45AC431BC319
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 14:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FAB15E5DC;
-	Wed,  4 Mar 2026 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922EC3B7B7D;
+	Wed,  4 Mar 2026 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="H9xgPrAE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0JMGk+4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88A4374E65
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 14:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536F33B7B6F;
+	Wed,  4 Mar 2026 14:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772632850; cv=none; b=Fr5rVv4N+h13aqs0alKoXu2Dki+1BXIYMz7PStp4f9n1DC1xoW52hFtA72AktOawEzF9Xdo+NLv7oTFiStohcVJNxxU2pf76iG7k0+Exi17ounSr2sMzvFhHOCzdY8fzFHRqf4PTYVPM90B1/89Qenjb0yu3EcMA3xrBoH1Cikw=
+	t=1772633079; cv=none; b=snmOBEEQZ0KgAbKYttJFtfiRrB8eO/M0xoOshQv32OtwQ2vt1xluYrtFMvg0u+kkFPXx+Y8v+tlZGCRzVQO+OL0hBEhnSNW25v1BCCGx5dF3//Qe9Yj1iLt2xUG2dVjKNDVeNAbhxClQFYwqASV0uzP710XeIQS1cEO5G8PUHS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772632850; c=relaxed/simple;
-	bh=xyguKu7z//BY77YKs22nfEGGVpXcuyaqKE5Yw58xiZw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SgaWq3HCGvRYYzilk55h3s6q9i01+2ZFnGzduCYukI85NsN4Efa4ENgVRY4I8n8AfOXElaZbq6evVjj8TgrMYzQVboopQiL/kFodxkKwx+77ox+LRg0peBmoar3jiLkcNUO2fCl57SAcv8KbOiF+6m9XSG2vzFGeR9q4xgzYFiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=H9xgPrAE; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4138136f02eso1601500fac.2
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 06:00:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772632848; x=1773237648; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H//S5xtNAR1QEi+Xm0qsXdAi1/1nJ7dHJA1UBRTwpc0=;
-        b=H9xgPrAEBQcKqXKOd2XubrU5V3vJ65VdEOPHrnieeLhcwtResMMZVEyv406g243LVM
-         I5OfyjJ/j1dPpMvyT2NRlJEb8Po+a4/OGwxl3ZZXxoTlE+DkELYrp8Ckii9UbgXat7vf
-         iWklxSTX5niipcwbYwa9ZQbpDVUt54uj3X5Iy/WWZ985gtinD83fRapS6BIPTZnBEDBi
-         f8bUXO8AFc+Qg1NM2H8P0lW3hhErbjpBgAc5yfbC5B38QAOULuF57+kL2l07zFbPjj4R
-         VvnTbWm9JuYhO++e25uwhrXNw+eN0XbEDQbiqZGyf5Q0O/pl6tAdAGe5Fp4PjHUjDkjL
-         IEuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772632848; x=1773237648;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H//S5xtNAR1QEi+Xm0qsXdAi1/1nJ7dHJA1UBRTwpc0=;
-        b=Fr6/8KvEBUhQQpbP6e3NF4ckGbECBFsOhVpKEGZlhNzHnE2yGWEs1OSjAlhjaD3SUy
-         WPmCElgl7HdfWhqYIs4cwMeyFgNkNrQQ+UYhFrUfCsz+NbHrEzZvnaN9F0U3R0feEq4f
-         6GWKf48/qttRkPmPlD+yYb1O553te9Gb8IKtmnUNyPuK/5GKQ0xxA3U2jNsrKbR4PS3m
-         7sAFImSK7/VkeeWLqBSeAKmvKJ7qFDTeQ8mC8ZoNiqzb+OoVc+JgUc8D0Mru6d7QB60P
-         kuq2YFLlI0Nt7Eev6IwTEA/knyWvfKsScRS1Ia3C27mIc7wRoIuUgCt/VeP8hC1FU6uA
-         otEQ==
-X-Gm-Message-State: AOJu0YyuR+D4Tjc1gqjXW9JMggXr+OptJpAXmiYDWkbNcgwxJouFDFLY
-	BtJLSkO+mHg5Vr0uK3Yi4wb8twHKLeaRiY4AOUYyiiBdzvxLFEJkMupSB2mKuSq322s=
-X-Gm-Gg: ATEYQzw/aKxw84rPhCEqCiK/B+Wwe0jSyco9GOGqGuyIFWwpeBE0HLqjlW9Uvzi2Nk8
-	uGHNAQIg5B4IZZSO3oJLWRpj+CoathhM4vgGKcvPaO2pfa6eQw8mSjL8eitMKDrRuDy+W7AcstE
-	cZpD0gIlmjgfXFW5EVdgXN3arwk9FRPVgjfvq/gbCLJbPjudQHDO0srEVri2eGbcuBu+FVZoP9x
-	9mpJt2j44QnPvUa6BrewMYoFnpkyyFGxcMttJmOw5DiOTPrtSqeo8WnxzA0lr4wJWNpmTTassK/
-	SkzVZKTnx0rh+MgAtyAuLOhlr4RI30oP2ME1gLdvk9WoaCKkDzPiKVM7wwcPuyZ3tkrkkTV5LQE
-	hRYe06+HvEYR0dl7mszNAYe3VumEVJC8ZHPiJd9AKjZF+SMiw90hMgh4kerWEuIkT3NgDUHhryn
-	TwjAT8gAkFlYRzgj0oVI3ccR+C36+KrO4nr1LYKIK7K3uOup+t4enNCCm+ueVRlW8E/WD2Wlejo
-	uJ/EQZ33z2i/97/Kyf6
-X-Received: by 2002:a05:6870:16f5:b0:3ec:52d4:bd49 with SMTP id 586e51a60fabf-416abb9ade9mr1060083fac.48.1772632847670;
-        Wed, 04 Mar 2026 06:00:47 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160d277316sm17536922fac.17.2026.03.04.06.00.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 06:00:47 -0800 (PST)
-Message-ID: <ff161a14-85e3-46c8-93ac-091f84e23807@kernel.dk>
-Date: Wed, 4 Mar 2026 07:00:46 -0700
+	s=arc-20240116; t=1772633079; c=relaxed/simple;
+	bh=8hKpZqobONRAFI8JbyXl4XVl7XkoJta4OpzfLBMKntk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=gqX2zUf8JEGqjXBYL8RNp+hLDfUjTL/68FvMGyMIEHjQT0XIgmLxPbIUu7PV02XGGcUG0+1XbUlOtDc3uuxMOLw0ISI8LZ9lki2lwZ/V6G8i8dWcWEnl3/tmotbHEzcbdSOomwG6/deYStuKakM6IKcOe1y8iYrky6EtgrTR9/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0JMGk+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76D4C2BCB7;
+	Wed,  4 Mar 2026 14:04:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772633079;
+	bh=8hKpZqobONRAFI8JbyXl4XVl7XkoJta4OpzfLBMKntk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=p0JMGk+4owySwHekczhJSMQkDp/fuhBSto6xM6+0YZZqDAcX6rA7Wzw2Qhp4IjBbh
+	 rqr8zu9GrgpktD0P+9nU2n4cSwh1LUxserAID1nsSYFwf79zpQYE4fUwpYMlFl26c9
+	 +A/Ez9DE0MQZt06s1ZmJQLjbMtxafxpCwWKX/IuQzwl/mktFJJx7j1qIzN1+gSs6Ea
+	 /AIs1HYBdLSSiIhgM9m3nho0cpNocYoUnC901gfM2szvz5qdqzr4Rcj+7NZ5o2aGih
+	 ZfliyegvNx6K/3ShpnAlg2e0N4yXbkX6KxdLSfLCx+wOpJ2lA8sCRX+VDtbKT3yi+S
+	 EpWyTXaSIRGzQ==
+From: Mark Brown <broonie@kernel.org>
+To: Vijendar.Mukunda@amd.com, venkataprasad.potturu@amd.com, 
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ Zhang Heng <zhangheng@kylinos.cn>
+Cc: talhah.peerbhai@gmail.com, guspatagonico@gmail.com, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260304063255.139331-1-zhangheng@kylinos.cn>
+References: <20260304063255.139331-1-zhangheng@kylinos.cn>
+Subject: Re: [PATCH] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK
+ PM1503CDA
+Message-Id: <177263307663.96340.2806963943399895082.b4-ty@kernel.org>
+Date: Wed, 04 Mar 2026 14:04:36 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Reporting a Linux Kernel Vulnerability and Requesting a CVE ID
-To: =?UTF-8?B?5YiY5Lyv56a5?= <liuboyu2024@iscas.ac.cn>, security@kernel.org
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev
-References: <7002e9a4.4e95f.19cb7fe6fb7.Coremail.liuboyu2024@iscas.ac.cn>
-From: Jens Axboe <axboe@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <7002e9a4.4e95f.19cb7fe6fb7.Coremail.liuboyu2024@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7716A200E2A
+X-Mailer: b4 0.15-dev-6ac23
+X-Rspamd-Queue-Id: 0E66420118A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-223075-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223076-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[amd.com,gmail.com,perex.cz,suse.com,kylinos.cn];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel.dk:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hi,
+On Wed, 04 Mar 2026 14:32:55 +0800, Zhang Heng wrote:
+> Add a DMI quirk for the ASUS EXPERTBOOK PM1503CDA fixing the
+> issue where the internal microphone was not detected.
 
-Does this still reproduce in current -git? 6.12 is quite old. If it
-does, send the report to linux-block@vger.kernel.org. You need to be
-root to hit any of this, there's no security vulnerability here.
+Applied to
 
--- 
-Jens Axboe
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK PM1503CDA
+      commit: 325291b20f8a6f14b9c82edbf5d12e4e71f6adaa
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
