@@ -1,302 +1,122 @@
-Return-Path: <stable+bounces-222983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMTqC+/Lp2lyjwAAu9opvQ
-	(envelope-from <stable+bounces-222983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:06:39 +0100
+	id 0HNlAU7Np2m6jwAAu9opvQ
+	(envelope-from <stable+bounces-222984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:12:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8505B1FB050
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:06:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5B41FB065
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 07:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02B2B3039EC1
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 06:06:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C0E43044BC6
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 06:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5DC375F80;
-	Wed,  4 Mar 2026 06:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D6D366041;
+	Wed,  4 Mar 2026 06:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5wIc3rl"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lNETZ7r9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD0434D4F5
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 06:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772604391; cv=fail; b=EhjpvBNyXATXls7S2cDH1aBg4tO6wF8LzPtU76A8fnLMyW7i275b2eDvWz0EldTOkgo9HuUCaqlfupldtalDXQ7xRdYYfy09wpYGAMNSbv9DeUY3w5wquFHiLe1Q+3CuNwEFOxD9lcMiTrPdq0Nd5Poh/+SmXoCp9YHC98ai3VI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772604391; c=relaxed/simple;
-	bh=A+ad6pWk3k+9J0eckEJWpq7MxU/0sh/Pzl7x0WdS4tw=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VMFFUO2vsL+Vfqe0XnKyz+tqKzEOFD6hsr5D5riwmxaK9m81I5UVrB/qB4fwOqU3JgDhaNQMthuRf/t++U8QltP269WLrBVGLdfpWoVdBbJO45t4QrN/uECUu/E9TkvvouMw3AwCrRD4PEWKC+rYBEM/7AFLkYRN8bDh83X9HmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5wIc3rl; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772604389; x=1804140389;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=A+ad6pWk3k+9J0eckEJWpq7MxU/0sh/Pzl7x0WdS4tw=;
-  b=d5wIc3rl5tRcYCt7qhC2k0GVsZyRuXXGIT9voGwmIL2obvt6iUjZYlv5
-   JSv0KpPmk1dkjIJR+pL8G/cy977ANfqY2R/dLdraLHKaKtAfWY+GSlhiv
-   gvL/vI7+J6itHU1U6ppBHQ3Z+ycdhCafgqzXSzXrPmlr595Bvpu1NdZLn
-   HrUv9fL3c9sIYwKW5UoVrNlgP0cO54u42iFnyEsW4gfQgN9U79FYzCrZJ
-   CFBqZel4TNP2+q3aWpw6EEEBPsfcHJPsT0+uE8A30bbxOnrxCZ2mr8yk5
-   Y9pmsQQgJocfn+uw3jyuJpfKE8edkZ9awcmYNILj9Wsk3f5UshRg+ATTy
-   Q==;
-X-CSE-ConnectionGUID: Up6N40mWRHiG3B+ZmnJYhg==
-X-CSE-MsgGUID: lss2zpNrSm2usK+vfPKeqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73707770"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="73707770"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 22:06:28 -0800
-X-CSE-ConnectionGUID: HzD5nre3RbeMbh48AdZDDg==
-X-CSE-MsgGUID: Gdbq61LYSF2nmACHHbTGHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="222905485"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 22:06:27 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 22:06:27 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 3 Mar 2026 22:06:27 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.63) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 22:06:26 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jyh1aoK8qu2w8JdhrNoqMNhlKzu4aAl5NDt4fDyQiMY7B+nP2bdSS/LYqndX3IMm460xfrwkPoMQrb0HMPNjUBw6Roj6vUfe6G4SD3znrV4Ft74BDSa1OIbiqLb7vARQgSkmEW9XTf4IA2exXL4VdkOOhsPhN2jFnfcKHEJLvd6QFWJD4lsdLS959n9AX6IZbcCnxDo2FUAttpsz1y1fKO9Ys5FsRviwpf6mUWURmBbtXJyR71BM8EHZ19HfHmYWzh1yGhaOOUk1sDzl1H7choEitJQK4Nw4KZ5R8QD4gW3spQa86NLC4lAl+9A4puiyYAH1qBT3VAKpDnczTKdDUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/uOMCxbLtuMQrgRJ7GkhG5c43NOSx3CZOeLP5xc6Vo8=;
- b=JIayKc0O+Sa06M8bHJtb+SqOiGR4v2HKheN3W6tZbVvdnbPsWKyQ5+cemt0pZD0Eb11+2IlObSIwRuBaDQL6hMqLub0+Oa+L72EE3R/BP5WbAJXYeQaKx9RFULfSqJee4NegJM0/U6I2niWcNWXvKR7Fnobwh9U2KlPdnJxKebLFzuueBMllmmuF7fPgGNT8gkQ2ccEXKqq9lsRC6gHp0u8Ks3gWbBrN+hsZTZZW8ggqIM0BX1XENepEBm3ycu8mOp04dnnoT+8olGi7GIaS+bQykeGgC/dv/wWvUi02dzG0mndIDsOlAFS6V9CWrxYJcDavUDfVRHBKsf0IS4JQUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by BL1PR11MB6051.namprd11.prod.outlook.com (2603:10b6:208:393::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
- 2026 06:06:20 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4%4]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 06:06:20 +0000
-Message-ID: <53aa591f-7245-4b4b-b13a-dfa050134000@intel.com>
-Date: Wed, 4 Mar 2026 11:36:12 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915/vrr: Configure VRR timings after enabling
- TRANS_DDI_FUNC_CTL
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
-	<intel-gfx@lists.freedesktop.org>
-CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>, "Benjamin
- Tissoires" <bentiss@kernel.org>
-References: <20260303095414.4331-1-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20260303095414.4331-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0239.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b1::15) To BL1PR11MB5333.namprd11.prod.outlook.com
- (2603:10b6:208:309::23)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EA537F8DA;
+	Wed,  4 Mar 2026 06:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772604741; cv=none; b=tJf7hA94jeuNH8TtOEINZx4mLx3zJMbQ1yJsEpWT36Bge0lJFHX3ZD/bSUdXAGbitLft26DL371Vrmp/mKwpEBkUx8HEJ897zDdlERAtboHEBeHL2kjcm4Jo60YKRbdwrkgRCL1Mxf53wJXNc7E2DRQZhK2m2p9kzO8XAuGOffA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772604741; c=relaxed/simple;
+	bh=pO9Ib0ItAfFUn8RtO59Mf4wqvzSIBMH6HSmli4NBDis=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DYwKaFISA0Ax3480HaWwePefeam7OZPhogKs5sq1V6v1OCDg5GZQNZf2A7zIpgRKvftjtmX4wftRoy8sdqevTbNkNsv5KpyX0EFbU3sACJBxDkaL8qsUSOKSaB+PRTbcJyGzsYqjZtT/v12HFh+LcsZHXKTZ/fptpdeo5fAuCF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lNETZ7r9; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 5834120B6F02; Tue,  3 Mar 2026 22:12:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5834120B6F02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1772604739;
+	bh=pO9Ib0ItAfFUn8RtO59Mf4wqvzSIBMH6HSmli4NBDis=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lNETZ7r9ByGKkL8gtnQnKrs3yPUqa7rOeixZcfCyEme3ka0BQ9CohHIJUBrokyzKM
+	 QJOQq2KmQJMAifykF9/nvzQFx/1fBZmEVHgSiExUpWwHhJNfPldLdHC8sdOp9/ELRE
+	 CZg14HscXLUFMa7PWfgynPTT/TT9YeerHN3QZb5E=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: sashal@kernel.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	gregkh@linuxfoundation.org,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Hardik Garg <hargar@linux.microsoft.com>
+Subject: Re: [PATCH 5.15 000/410] 5.15.202-rc2 review
+Date: Tue,  3 Mar 2026 22:12:18 -0800
+Message-ID: <20260304061218.350205-1-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260302160955.2522727-1-sashal@kernel.org>
+References: <20260302160955.2522727-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|BL1PR11MB6051:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e9619b6-90d5-48bf-536c-08de79b426df
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: zL6dbKeEzUGFEJwXfaGxqgtgkhUaz3ilYQ1h+gcwegezR6JHwIEfyinoUkjd0+NZQPp/TPkprCAbbm0RFEuCrSXReNwf0IP7IcdaWyT7JBnshcFXex48YEOs9RJoj9V0MLPKZWeVE7cGg1aL30goTf9zNtELiiTiVTc1ID8gYxVHYZ5A55Cm2LkEyhtrrDVRiZ50GdYvw8dq6Q01zDY/mfFeK7mbEIOi7rb0LT9AESVBzV1HTwzpQqfcsfx875HFN1UKr8IJSMcvHEAEenrGm+CqYfLzw1te/GaRRTe+L/Bi8RQstOe0V4VgnYRmEgOusltojR95CpMyP1c3jGUhVKgsgzYxHbpG0Prj1YCyXUViGeQ7RXqAK1QEAUeunKHpJ25JEFj+3MtVULBrgxVOonBNGf0lAlOupuW5ApQvzo0OD04qXo7WkpYURbnMbcirA2Wb9/ucytXPURKJnsRMPWxV82QJERFUEb2MrEE8bj3SufECktzg2JaD4QY5/0u+FIpYI8ClvlwJJk0qmGF4HTl5OsPuLtTIAfbxNG0onm6pPdH50nuqGn74DB7p9cTkk/GPsZT5eCST9ERJdMjYFHwAHMqTwPISs+ja+I271JNfIfcc328hR2Lu1EcAjhuMgiy2vOFYfC0ggntiOgK+SB5ig7rHPYLnEAclyhyMEUKpC/keZM5NDCy35c4QVHDO
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WkM0RFdPc2pVQ3J4VlhKeXN2SHYwdDh4R201dGZKSzdodU9lWjN5djliNERC?=
- =?utf-8?B?bW53WVNyWTBINDdQcEZrWlhQTElBOE5XeXYzSm4wbHJCcmdzdkFYOHpJUXNs?=
- =?utf-8?B?amxOL3IvR1JjOVorMm1qVVZGU3dTdytJaW5tckNKSEdkNWJ2bllQM1dUNzZn?=
- =?utf-8?B?NzlxNFltdVlyRDBERUtZc0kwZTlRYzVvZmllOGtxMXZuaWJNNVdyWkZsUGNu?=
- =?utf-8?B?QXJiSG5TRjhhT2xTMmphNitLQ1duM0lVZjdUS05aUklsdFFLUkUxWk93alJj?=
- =?utf-8?B?M2JkNk9CNmIxODJDYjdyZFFnYThZZ3duRU9tVlpKRFdYTnNVZFBmN2ZLSDUw?=
- =?utf-8?B?bzlBVy93SWRQREtnbG82VGViUno3dmR1bE9zYm1VeklUTitsY2NnOXIybEVC?=
- =?utf-8?B?VWJHRStmeDBLN2QzdXNIcFg5eHdZUUI5SnRMV3JlWDdRVnp5VGk4bGFDanUy?=
- =?utf-8?B?bWE0WXRtWHFrSkQ0bUg5bzUvY2o1bEkvUmJ1M0l6bGVVakVXcG44TENpZ1dZ?=
- =?utf-8?B?dW53T3F0YzJFeHdTVGdKRm1BbkVzVHVQMDBwODRtamIxWlgyUE44cTR5cjlI?=
- =?utf-8?B?QmthNGk5RlVWZHFXY2xDamFQcTh6YlBqVittL2xiWWxiMk12anNtMUpQNmp6?=
- =?utf-8?B?dTJ2L01zdVlEUW4vR3JZTjU3aFpjMWo2YTF6UWNKU1NSWjBjQlozR3pPUloy?=
- =?utf-8?B?S3dUakRLQU5BUDVSSHhqZ3k4VHdTQnFYemhVRVZTSkliTURyUE1hdzVJOEVp?=
- =?utf-8?B?cXN6TEdURDJpZmYwWHBkOVZ4M0Y4LzlESmpKR3o0K1g4Ymc2RHlxdWNJem5Q?=
- =?utf-8?B?ZzFVbFFQZkJXUEF0STRwUm41c0RTUXh5MUUyM05zTStTOGorUFRNaFJvRGF2?=
- =?utf-8?B?QlU4dEQxTXVGaXZZUWF2ek4xQXRlL0RNOFBwUGNXVk9KaUtOem1rNHhOUHgv?=
- =?utf-8?B?MzRqeDVROEE3d3BGVlRJSDhJbkdtQ2JHN2Y5NnJQeTdwa1RXdk1janNDc1Nk?=
- =?utf-8?B?WmpIS2VaaURmWTRvUFJiOGJ1QnRQYWRyT091S0Jtb3MrZmVGZ0lzM3RaZkQv?=
- =?utf-8?B?YlFzaldLRzlXaklBRlY2R1FRajE0dDVqa0pXYVh6TjRzVVg1L014Tnc4UVg4?=
- =?utf-8?B?SEVoR2FuZ3R0cklRUG1JRUYyVDNpV1hxMVplOHJrenFBcjBVWkVBUzRSSUhL?=
- =?utf-8?B?VUw1cGgxKzM3Mm1vTW1RaHpYWG5QSDIzcnNSRzNHS295ZDBSQll0K3o3MjdO?=
- =?utf-8?B?aldkYm1IcERSVlUrcm5XSGN3aWhwTFMyb2RtYjYxNW8ycitYMGFXZ3R5TFpO?=
- =?utf-8?B?UmRYckhlUTFBKzBPemR0VFZEVWtycE1hUlZkeEtlNERvMTdnNzQ3RkQwWG45?=
- =?utf-8?B?OGRqaXN2SXBNRlcvUXZ0cFA2WG9ZUzJuR09KSlZRS0QxRUd2bEl4ckJYQmd5?=
- =?utf-8?B?dm5udzZweWI4dU8zZkxZQjRHeW1hZmdFMHFqT1ZnamdpZEJXc1M5bkpTSWw3?=
- =?utf-8?B?cjl0WW9oSUF0bzFjb0JTK1JNZGxlQUprYWZEWFQ1YTM4aG44NWJMZzN2Q2hD?=
- =?utf-8?B?OTZ6L2tQeXJnQ3R4SUZvR1FzY2ZLait3WUU3U0tKUUlHbGhwalJZOGNDTUYw?=
- =?utf-8?B?WWIxK0ZoU3BvVDJSTDJBdlpJRmJwanRsbUgwSnpSWW5MbDJFNTFLQkM1SFdV?=
- =?utf-8?B?ZXMwSVdRRUlnb3NQSUpGS2t4QTBaaTZhaTZSNW5nZ1FwN0VVWitOaWxEWWdx?=
- =?utf-8?B?WGJTV1I5VXJXTm9xbXdYSHRhSXZiWTJ2eWNaTjNEVC9EUnJzcnRsSCtxYlVZ?=
- =?utf-8?B?LzEybW4zQTNwcUg1L2lTWklXLzVNektpWUhGeDI1dXZtZ21zOUt5NEU3WDNq?=
- =?utf-8?B?eXlKbG5NSk1ncmptdVFvVElZcmIvU01IOUJNRTB0b25hanBiSWt4RUkyb0VS?=
- =?utf-8?B?ZWVVMUtCY3RRSXR2ZnFlMnBPa2ZOdnA0d2dZaDk0NUx0SURZRzV3dTdoVS9m?=
- =?utf-8?B?TzVSTlhrOXBXaVk1UmgvR09HUDd0ZzlxMWthRE90OHdWYkdDdC9NZzZvYUY0?=
- =?utf-8?B?a1d5N25CajNZaW41ekZrTWlyY3ZWSHg5dGEyN2lUZ0JoQ1AyWDhuUllRMmxi?=
- =?utf-8?B?eXE4aVBEQklaVGozZ3J1VnozRUFlYTk0R0JiZ1lUODlzWnJsZlUvRUhhMVVQ?=
- =?utf-8?B?MnhwRUErMUx0VDlYQW1zQkdrZnZ5a1YxdzExTld0SzIzZUNHYUZOcjFMMVB3?=
- =?utf-8?B?YytrVHVjdHR2a1JoRFNKN0NIWnZOM1JOdE95TTM0c1FESXJBQjJvRkhyWFRX?=
- =?utf-8?B?OGdXc2o5c2NHUXZqd214VkdnNFJkR1ZhZzZScm8rTFlhNmFKYVFvM1dHb01M?=
- =?utf-8?Q?XBz2NgV+bk8ZBUGQ=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e9619b6-90d5-48bf-536c-08de79b426df
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5333.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 06:06:20.8022
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6sQ3zUl0Uo1Aa81zESO3kIey6AOtgSXIiTywSU3MX0uSiFQhiwZAPE6F7x18fkBj+7RC6WhjTzE0BgbnC4ScNhbgPxyZBvD8F89yGd7gRx0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6051
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 8505B1FB050
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8E5B41FB065
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222983-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ankit.k.nautiyal@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-222984-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,linuxfoundation.org,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,linux.microsoft.com];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hargar@linux.microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.microsoft.com:dkim,linux.microsoft.com:mid]
 X-Rspamd-Action: no action
 
-
-On 3/3/2026 3:24 PM, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
->
-> Apparently ICL may hang with an MCE if we write TRANS_VRR_VMAX/FLIPLINE
-> before enabling TRANS_DDI_FUNC_CTL.
->
-> Personally I was only able to reproduce a hang (on an Dell XPS 7390
-> 2-in-1) with an external display connected via a dock using a dodgy
-> type-C cable that made the link training fail. After the failed
-> link training the machine would hang. TGL seemed immune to the
-> problem for whatever reason.
->
-> BSpec does tell us to configure VRR after enabling TRANS_DDI_FUNC_CTL
-> as well. The DMC firmware also does the VRR restore in two stages:
-> - first stage seems to be unconditional and includes TRANS_VRR_CTL
->    and a few other VRR registers, among other things
-> - second stage is conditional on the DDI being enabled,
->    and includes TRANS_DDI_FUNC_CTL and TRANS_VRR_VMAX/VMIN/FLIPLINE,
->    among other things
->
-> So let's reorder the steps to match to avoid the hang, and
-> toss in an extra WARN to make sure we don't screw this up later.
->
-> BSpec: 22243
-> Cc: stable@vger.kernel.org
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Reported-by: Benjamin Tissoires <bentiss@kernel.org>
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15777
-> Tested-by: Benjamin Tissoires <bentiss@kernel.org>
-> Fixes: dda7dcd9da73 ("drm/i915/vrr: Use fixed timings for platforms that support VRR")
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
-You are right. VRR timing registers are indeed supposed to be programmed 
-after TRANS_DDI_FUNC_CTL.
-
-Thanks for catching this, Ville, and thanks Benjamin for the bisection.
-
-Change looks good to me.
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+The kernel, bpf tool, perf tool, and kselftest builds fine for
+v5.15.202-rc2 on x86 and arm64 Azure VM.
 
 
-> ---
->   drivers/gpu/drm/i915/display/intel_display.c |  1 -
->   drivers/gpu/drm/i915/display/intel_vrr.c     | 14 ++++++++++++++
->   2 files changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-> index 27354585ba92..138ee7dd1977 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display.c
-> +++ b/drivers/gpu/drm/i915/display/intel_display.c
-> @@ -1637,7 +1637,6 @@ static void hsw_configure_cpu_transcoder(const struct intel_crtc_state *crtc_sta
->   	}
->   
->   	intel_set_transcoder_timings(crtc_state);
-> -	intel_vrr_set_transcoder_timings(crtc_state);
->   
->   	if (cpu_transcoder != TRANSCODER_EDP)
->   		intel_de_write(display, TRANS_MULT(display, cpu_transcoder),
-> diff --git a/drivers/gpu/drm/i915/display/intel_vrr.c b/drivers/gpu/drm/i915/display/intel_vrr.c
-> index 00ca76dbdd6c..8a957804cb97 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vrr.c
-> +++ b/drivers/gpu/drm/i915/display/intel_vrr.c
-> @@ -599,6 +599,18 @@ void intel_vrr_set_transcoder_timings(const struct intel_crtc_state *crtc_state)
->   	if (!HAS_VRR(display))
->   		return;
->   
-> +	/*
-> +	 * Bspec says:
-> +	 * "(note: VRR needs to be programmed after
-> +	 *  TRANS_DDI_FUNC_CTL and before TRANS_CONF)."
-> +	 *
-> +	 * In practice it turns out that ICL can hang if
-> +	 * TRANS_VRR_VMAX/FLIPLINE are written before
-> +	 * enabling TRANS_DDI_FUNC_CTL.
-> +	 */
-> +	drm_WARN_ON(display->drm,
-> +		    !(intel_de_read(display, TRANS_DDI_FUNC_CTL(display, cpu_transcoder)) & TRANS_DDI_FUNC_ENABLE));
-> +
->   	/*
->   	 * This bit seems to have two meanings depending on the platform:
->   	 * TGL: generate VRR "safe window" for DSB vblank waits
-> @@ -961,6 +973,8 @@ void intel_vrr_transcoder_enable(const struct intel_crtc_state *crtc_state)
->   {
->   	struct intel_display *display = to_intel_display(crtc_state);
->   
-> +	intel_vrr_set_transcoder_timings(crtc_state);
-> +
->   	if (!intel_vrr_possible(crtc_state))
->   		return;
->   
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+
+
+Thanks,
+Hardik
 
