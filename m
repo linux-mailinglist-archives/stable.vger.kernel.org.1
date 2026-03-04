@@ -1,163 +1,230 @@
-Return-Path: <stable+bounces-223119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IChSJAlxqGkkugAAu9opvQ
-	(envelope-from <stable+bounces-223119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:51:05 +0100
+	id YF6gBUFxqGkkugAAu9opvQ
+	(envelope-from <stable+bounces-223120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:52:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1202A20573A
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:51:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9948620576F
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 18:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A38583074BDF
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:48:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CEFAD301A43A
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 17:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35793CCA06;
-	Wed,  4 Mar 2026 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406703CC9EE;
+	Wed,  4 Mar 2026 17:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+N+9udA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onpBoruE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82108374E73
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749103CD8A3
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772646477; cv=none; b=Pq1dMO5SoSdukUCtt9yO0Jca3LnpNyTbJ3ImEEZdCYPqgx2MgKeWdnPxafCB5qNLzBpfBE+4Ijt0T1CK5uAY7WlHYHoKkWV8mIV8aSNyJLWOQ3CACistPZZAzrlSmmz7F9h8iltrzAUfxquO9JmZQnB6pjtijoXnRMAudMfIcqY=
+	t=1772646631; cv=none; b=A7NLu29PMMAWfRXKeS3zH9aaafHqjb5GHFBCgT5/VVc1LhZo3L+sLxyQKUXlTMBjV3Iatl+EdvpfdBXRgYiJJrr0XdwEmL3Ri0nBo9t9P+HrX6+UQ0rb7qQtO2vgTa8b8xWqrmfPp3nmivWDYeZNaNYPScrT7vwWEPmcqDkewLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772646477; c=relaxed/simple;
-	bh=gHkdNKVcIMCx3JF8WFK4Tom5aTnEdnHXdcfVtYRn5lw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujcXSiLA7EVd0Y24UFd3h+J3TVOOsRVF5a9BBAFo9kLSZJKGMv+6RFv2MgAh5xr7AGzgYHdG0W7U4PH4cs2VskfmL/i5nYgRHgMEaLCdShRRtnLU0eDfRakI4VFmGdrNt/feUmBAZCl2fXBfDGn01R0jv29uGvDPf11m/Ez5LnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+N+9udA; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6759a5576f5so5047239eaf.2
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:47:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1772646475; x=1773251275; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rFS329oI199iyk0yECHEQFTEx3H950AE0WIADkJXPNo=;
-        b=H+N+9udAtilR3Ub72/54mwiI1f3HACbfkdvOZ+nONz7gIXijVXbUKmHhmYEJQLIk3T
-         jk7p78kIbfvOuFT+pwmJTP3BKVSWgod1HRy6PTBwTnJtM6KXX8qvJdJrTT8d/CvWUdHU
-         9ybBMm3fv1D+4xOGSMDA0cvX03FFS6WF+hD1M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772646475; x=1773251275;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rFS329oI199iyk0yECHEQFTEx3H950AE0WIADkJXPNo=;
-        b=J7N9qBVwtENq2d5lPVy4BN30UG50mPtKw9uOqJdAfWCzmegAdgEwzQnSgCmXipa9HI
-         SeeQxw8r1xkJc42ZvRqgHudBkH2zlXwGKOap2MvDmIT2+EalldPOsxdItmlNBdrH51Zz
-         lkloywWh7WNDRkKbk4U7uyTDksKq+DEvD4g1DO7rjjCqQG6BHeArbrYIdcNq1S2MEBXi
-         DgP7Bia0Ny4dvFe2KIuk5V5ulkebAI5ARq5g4qfmuZ3kc+NwuivTEd9ACJKGBAYGNJoI
-         xpnkmiyPGKgFZZMNsn9HmL9M48j9IiaBG5n/WCD8Rrpiv40BXNe9VMwORG0fKBCRMNc+
-         2EpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVj0IwG6pBy1bMkSJ0LeEzyO8d+pxeOSDnpswnFPJ3Gn29suqneZv0rAcv6pHGe/0v97z98YjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO7G2wQ9y1DWrIuMp61MRLYJlSSBkg4PmFmXHGKHaJ3lpkvkbk
-	IhwC0CXhXNEoxWk/Ll339+h70U7iuHuiJh4usxGeyhpNNbJf4zrDrlpvejem9ugG9po=
-X-Gm-Gg: ATEYQzwFitBvuoT1n94x0lhM4QLhEUMdalyG4/BtSvSWkZZ+jFGW1Mc9gROdHZXxDUT
-	3s+s/6D+SpzRtV337670dsHL1khcMBkQr/uxaDPDxVSarVPhll7c7VqF3P/Hvd8a4c1BKiDy9Cn
-	gLpY1mL76xrBhDiGA2ny467702qmlo/oE6+H/6BJRrjFPWJgfsTkaGQ1EsbS8/chFxmthL3HjPz
-	XZ9MHL5Ne7gx8yrKl0TFGMWgTkAZO85pVRXjYu53eEBWiaRelZ4nXy+V2LOYeIPsXaL0+YuP6gz
-	sjs8MO6JDy8L754poq4EDypzPCpl0t5t8Iqy0qAtCwhaR9jjA+sRFe6aqRm9M5kbOvNn+L4xbq/
-	i1ZL87zuh40Bc2ybfndC+zJNxWwAyKxvNau15757XtjoDRTqVIsOT+qMJYkOaB0eExf7tE/NYsx
-	/V5G3SWVsEEmvzB2s1hDmg5Ltr4SCmlGBNXhk=
-X-Received: by 2002:a05:6820:1888:b0:679:f226:30f2 with SMTP id 006d021491bc7-67b177454e5mr1558379eaf.44.1772646475491;
-        Wed, 04 Mar 2026 09:47:55 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41640b99b39sm13607804fac.10.2026.03.04.09.47.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 09:47:54 -0800 (PST)
-Message-ID: <7fb4b6e8-9d43-4a5c-abac-157d9b631cac@linuxfoundation.org>
-Date: Wed, 4 Mar 2026 10:47:53 -0700
+	s=arc-20240116; t=1772646631; c=relaxed/simple;
+	bh=4LDC2nu5NniIP4Si21rDsQfH11m42tcUxvqO4yBcSN4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q7RlSl4tzkr4QaxUNWI9Ts6V8A0O/W6zVM2hgNhFvs15vcnlrfrqko4gPL/ugj6xQ1PYyIwEuETgZ/aMUgiB5hf9dwCVQl+3+vRKYN9hpLvl99W11GF01qm0koQ9ExZwEV9chXUjIDQDqSCRJ80IbAkcnmsAlXvOS5yFrPq+Dsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onpBoruE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164DDC19425
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 17:50:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772646631;
+	bh=4LDC2nu5NniIP4Si21rDsQfH11m42tcUxvqO4yBcSN4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=onpBoruEvqv3fFobGaRa2iFycL6yUNqXT+RBylOXGA0XG3S734lziY2wbV/gWhbxv
+	 lLiSfFnCjbti5qTaKUp/Eb0I2SgF/jgYP/2YqqDduDh9H3XwaZuKy62+Irln6FF8Y3
+	 ltrR15LMMVLlU6/dwIbSKqfx6ZEI561sdZd1/Gr5HB4pBnjc9bKQu6Y2WPFlp/Nmkt
+	 lehJiPAVIZZHYoXY33qMpwjMeMEEu5YFqRhtWUZIPPcE54VNiJdUl4cZ45oMjtnFjg
+	 QbIuMXHny1ZENTKjZghZU88wM0WsJcd2tI2MnFbyk6To3oDBUaiBfPXseqk0orwpdL
+	 q7xCn5LsNLFmg==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b936331786dso767551166b.3
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 09:50:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVvtaA23Ke+o31ajvetwgJUlH/vjwHuoOvHEKsHImeqpFaQ9ekDuSUvuLLzOdGZF42YZZmaSkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0WK3kOjCDRajvBRqoGu3iqxjFRDKXOqDnA1HLqnh5Ol21LkMl
+	w/nS+aRi9d9Y14LIbhPl/AlKw7ImC5cs+9EWnFI4eyqbxkTigPj4DAm8BmhImkotb7LnD58KURk
+	n9bZYPQ6Y4nRrAKA9oOhP4eYaiPBToUQ=
+X-Received: by 2002:a17:906:c110:b0:b93:46a8:3f37 with SMTP id
+ a640c23a62f3a-b93f144de7amr195302066b.42.1772646629803; Wed, 04 Mar 2026
+ 09:50:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/533] 6.1.165-rc2 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260302160943.2522184-1-sashal@kernel.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260302160943.2522184-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1202A20573A
+References: <20260225005950.3739782-1-yosry@kernel.org> <20260225005950.3739782-8-yosry@kernel.org>
+In-Reply-To: <20260225005950.3739782-8-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 4 Mar 2026 09:50:17 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zOvhJgA2v3CXomddmyfrR2KX23fv=HQ6xH2C+m0niswyQ@mail.gmail.com>
+X-Gm-Features: AaiRm53u13u1VS-ZH6aFMy3tQSyXpnWmM0HMa0jZgCQDg_nDpachZD-4Ou2AGus
+Message-ID: <CAO9r8zOvhJgA2v3CXomddmyfrR2KX23fv=HQ6xH2C+m0niswyQ@mail.gmail.com>
+Subject: Re: [PATCH v3 7/8] KVM: nSVM: Delay setting soft IRQ RIP tracking
+ fields until vCPU run
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9948620576F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-223119-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223120-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On 3/2/26 09:09, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 6.1.165 release.
-> There are 533 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed Mar  4 04:09:42 PM UTC 2026.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.164
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
-> 
+On Tue, Feb 24, 2026 at 5:00=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> In the save+restore path, when restoring nested state, the values of RIP
+> and CS base passed into nested_vmcb02_prepare_control() are mostly
+> incorrect.  They are both pulled from the vmcb02. For CS base, the value
+> is only correct if system regs are restored before nested state. The
+> value of RIP is whatever the vCPU had in vmcb02 before restoring nested
+> state (zero on a freshly created vCPU).
+>
+> Instead, take a similar approach to NextRIP, and delay initializing the
+> RIP tracking fields until shortly before the vCPU is run, to make sure
+> the most up-to-date values of RIP and CS base are used regardless of
+> KVM_SET_SREGS, KVM_SET_REGS, and KVM_SET_NESTED_STATE's relative
+> ordering.
+>
+> Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_S=
+ET_NESTED_STATE")
+> CC: stable@vger.kernel.org
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  arch/x86/kvm/svm/nested.c | 17 ++++++++---------
+>  arch/x86/kvm/svm/svm.c    | 10 ++++++++++
+>  2 files changed, 18 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index dcd4a8eb156f2..4499241b4e401 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -742,9 +742,7 @@ static bool is_evtinj_nmi(u32 evtinj)
+>         return type =3D=3D SVM_EVTINJ_TYPE_NMI;
+>  }
+>
+> -static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+> -                                         unsigned long vmcb12_rip,
+> -                                         unsigned long vmcb12_csbase)
+> +static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+>  {
+>         u32 int_ctl_vmcb01_bits =3D V_INTR_MASKING_MASK;
+>         u32 int_ctl_vmcb12_bits =3D V_TPR_MASK | V_IRQ_INJECTION_BITS_MAS=
+K;
+> @@ -856,14 +854,15 @@ static void nested_vmcb02_prepare_control(struct vc=
+pu_svm *svm,
+>                 vmcb02->control.next_rip =3D svm->nested.ctl.next_rip;
+>
+>         svm->nmi_l1_to_l2 =3D is_evtinj_nmi(vmcb02->control.event_inj);
+> +
+> +       /*
+> +        * soft_int_csbase, soft_int_old_rip, and soft_int_next_rip (if L=
+1
+> +        * doesn't have NRIPS)  are initialized later, before the vCPU is=
+ run.
+> +        */
+>         if (is_evtinj_soft(vmcb02->control.event_inj)) {
+>                 svm->soft_int_injected =3D true;
+> -               svm->soft_int_csbase =3D vmcb12_csbase;
+> -               svm->soft_int_old_rip =3D vmcb12_rip;
+>                 if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                         svm->soft_int_next_rip =3D svm->nested.ctl.next_r=
+ip;
+> -               else
+> -                       svm->soft_int_next_rip =3D vmcb12_rip;
+>         }
+>
+>         /* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
+> @@ -961,7 +960,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 v=
+mcb12_gpa,
+>         nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.=
+ptr);
+>
+>         svm_switch_vmcb(svm, &svm->nested.vmcb02);
+> -       nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save=
+.cs.base);
+> +       nested_vmcb02_prepare_control(svm);
+>         nested_vmcb02_prepare_save(svm, vmcb12);
+>
+>         ret =3D nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
+> @@ -1906,7 +1905,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vc=
+pu,
+>         nested_copy_vmcb_control_to_cache(svm, ctl);
+>
+>         svm_switch_vmcb(svm, &svm->nested.vmcb02);
+> -       nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb=
+->save.cs.base);
+> +       nested_vmcb02_prepare_control(svm);
+>
+>         /*
+>          * While the nested guest CR3 is already checked and set by
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ded4372f2d499..7948e601ea784 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -3670,11 +3670,21 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
+>          * This is done here (as opposed to when preparing vmcb02) to use=
+ the
+>          * most up-to-date value of RIP regardless of the order of restor=
+ing
+>          * registers and nested state in the vCPU save+restore path.
+> +        *
+> +        * Simiarly, initialize svm->soft_int_* fields here to use the mo=
+st
+> +        * up-to-date values of RIP and CS base, regardless of restore or=
+der.
+>          */
+>         if (is_guest_mode(vcpu) && svm->nested.nested_run_pending) {
+>                 if (boot_cpu_has(X86_FEATURE_NRIPS) &&
+>                     !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                         svm->vmcb->control.next_rip =3D kvm_rip_read(vcpu=
+);
+> +
+> +               if (svm->soft_int_injected) {
+> +                       svm->soft_int_csbase =3D svm->vmcb->save.cs.base;
+> +                       svm->soft_int_old_rip =3D kvm_rip_read(vcpu);
+> +                       if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> +                               svm->soft_int_next_rip =3D kvm_rip_read(v=
+cpu);
+> +               }
 
-A bit late - but here it is:
-
-Compiled and booted on my test system. No dmesg regressions.
-
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+AI found a bug here. These fields will be left uninitialized if we
+cancel injection before pre_svm_run() (e.g. due to
+kvm_vcpu_exit_request()). I was going to suggest moving this to
+pre-run, but this leaves a larger gap where RIP can be updated from
+under us. Sean has a better fixup in progress.
 
