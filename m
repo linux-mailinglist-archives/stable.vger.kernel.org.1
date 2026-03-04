@@ -1,155 +1,182 @@
-Return-Path: <stable+bounces-222980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMz+B7DGp2nTjgAAu9opvQ
-	(envelope-from <stable+bounces-222980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:44:16 +0100
+	id eDq3CVjIp2kZjwAAu9opvQ
+	(envelope-from <stable+bounces-222981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:51:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F81FAF07
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:44:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BA11FAFB3
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2449B30329A6
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 05:44:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CDE730A1E0E
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 05:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0E237F721;
-	Wed,  4 Mar 2026 05:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954B337F8B9;
+	Wed,  4 Mar 2026 05:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Jn5/86da"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="KmvOufNH"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F73368BD;
-	Wed,  4 Mar 2026 05:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12684964F;
+	Wed,  4 Mar 2026 05:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772603049; cv=none; b=qW4wziqHdqCiKVjneTqM1HkZilxflloNjOMGQORyRTgOp+TW+ka7ri+PMUqdB5v1/3+cVoY7Beaj2KJL1JikWCyjySj/df0Csq4wxDdQorZSq+Q9GIFP6BgYF1QSJH/Wpf5QmchwkSDc5kPJyOA2qBA8vDNpU2ClbZjl853t2bg=
+	t=1772603446; cv=none; b=liW5CWtPnxt9yVkzTuqXxmzhpITByUXtWBkU3UrpvirmlIAHI7H9M593sB2XCF0ZUDyBx1uFX+gZZ266c51Xza8+pxe87sdl7hs8darzBzCOnOa/GG5z3zMUIbhAfLi5pCUEN3rrnwrMJOnwwd5Tb29yJnyPDA9ClufxvgxobO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772603049; c=relaxed/simple;
-	bh=qWDcLgNDlBnz5XPRQaaaLh2pa9fbgCPt4cgaRwaYh7E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HEMIIx3xCsU9oGkg/hM0fpRzTUEXdrfR8UuuJQ7Ul7b3/Nz4Ij5Lb5COOUh4Jy5kDPAOLaHxEItswP9N89zq7jdDTLNg6KcbeqAqQmcuKjcaanMXz0czsVtsr813RSx9RI6CIQ9MRMMtXNA7qjQXMqv+9UUuIPAe5AKAThfya40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Jn5/86da; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pP
-	N74FWzl5rs99LxJXNVQ8txtlabNPkvj+TmaCnurlU=; b=Jn5/86dalwHPtUpAF8
-	RaPAnqmmPKZUCsldPD8lOSVZjNkPUkM/qx4W5Mfq9pi9C/opveVxHSf5/CTLr4b5
-	ZFxK6ZXHSgAgsePvLzd86H8cyxZvDyeMHC+78VLDD/DY8yUKzPezp9Zpksw7rm79
-	SX1Ug33p0uxTLJLp4JDWwDPHY=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wCn2vtvxqdp8eEYOA--.5674S2;
-	Wed, 04 Mar 2026 13:43:12 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Robert Garcia <rob_garcia@163.com>,
-	Jan Kara <jack@suse.cz>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Helge Deller <deller@gmx.de>,
-	Lior Ribak <liorribak@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.12.y] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Wed,  4 Mar 2026 13:43:11 +0800
-Message-Id: <20260304054311.108543-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1772603446; c=relaxed/simple;
+	bh=OxJf+Q6FbPGEAU2/QNsCB7gqvWE6MzKS94JujX5qwck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mJvjMFIjkL7EeLL60ikW+mLClepBHVzv1mq/2e7p9fHe987UTRszAiUxqlLOsw0zI6ndRH42hwD0yXkZ6KR9TWfv4Ah6xCnYpArqteGUw/rGamE9l4TfVLtC1NzqGNIjhIkl0i6rTMIUfscvlmbmDBDM2U2D/1OJV/UkXV98kjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=KmvOufNH; arc=none smtp.client-ip=185.244.194.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbc1YjRz9CZy;
+	Wed,  4 Mar 2026 06:50:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1772603436;
+	bh=OxJf+Q6FbPGEAU2/QNsCB7gqvWE6MzKS94JujX5qwck=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KmvOufNHVOsMecD2uoDkjoeSrmy3Mk7scIfNap8BkK2MFl8giciQAw0Csb7KxuDm+
+	 hxuC0WevBAaajyjM1CC4Kj8GiZkwDg5ZZ98Acn4Q5Sl7AvD5Wui6Y4Qs1d7i4S7z7f
+	 Vuw6OZ/zCjAkUxkVZ+2GarKgbTICb6jI1zWr7HOqOgInR2qE6qVMh9a3ghtlWv7g8z
+	 cjGcJt5va4Uin+/s+j7Z55uUEcoXHdjlPuZgicGweE2oM2N40/m8vbmLIvZlfTMyf1
+	 vg3dn0uI9ELM0moDEasETzcDaVtAfSYZraC4h8CfETdS2DLra7cz7yBS5OjdRtsqQK
+	 EdqcOi+SNGT0Q==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbc0sgCz7vS1;
+	Wed,  4 Mar 2026 06:50:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.901
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbZ2g63z8t4F;
+	Wed,  4 Mar 2026 06:50:34 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 99A34617A9;
+	Wed,  4 Mar 2026 06:50:33 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <75a4115f-e7f3-4316-b046-525fcd87cdef@leemhuis.info>
+Date: Wed, 4 Mar 2026 06:50:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCn2vtvxqdp8eEYOA--.5674S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4fGF48tw1UurW8AF1DWrg_yoW8WF4Dpr
-	W5K34UtrZ0qryj9aykAas8WF15G3Z7GrsFvr4kWw1fXF1rXrs0gFZ2g3yj93W8A397ArWF
-	qF4rC3sYyryUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4MKZUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5RISfWmnxnLEuAAA3e
-X-Rspamd-Queue-Id: 7B4F81FAF07
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jindrich Makovicka <makovick@gmail.com>
+Cc: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, coreteam@netfilter.org,
+ netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
+ regressions@lists.linux.dev,
+ "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
+References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
+ <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
+ <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
+ <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
+ <2026022755-quail-graveyard-93e8@gregkh>
+ <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
+ <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
+ <aaday5NR-yfCkFVb@chamomile>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <aaday5NR-yfCkFVb@chamomile>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <177260343399.2903715.3365136825409012734@mxe9fb.netcup.net>
+X-NC-CID: butrOV/u4p7Y4qNywgpMYu5RTL/Bo1fbb9jMufI/2aWhxcz+1y4=
+X-Rspamd-Queue-Id: A1BA11FAFB3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222980-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,leemhuis.info:dkim,leemhuis.info:mid];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	TAGGED_FROM(0.00)[bounces-222981-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[leemhuis.info];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[kernel.org,zeniv.linux.org.uk,163.com,suse.cz,xmission.com,linux-foundation.org,gmx.de,gmail.com,vger.kernel.org,kvack.org];
-	DKIM_TRACE(0.00)[163.com:+];
+	FREEMAIL_TO(0.00)[netfilter.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-From: Zilin Guan <zilin@seu.edu.cn>
-
-[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
-
-bm_register_write() opens an executable file using open_exec(), which
-internally calls do_open_execat() and denies write access on the file to
-avoid modification while it is being executed.
-
-However, when an error occurs, bm_register_write() closes the file using
-filp_close() directly. This does not restore the write permission, which
-may cause subsequent write operations on the same file to fail.
-
-Fix this by calling exe_file_allow_write_access() before filp_close() to
-restore the write permission properly.
-
-Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Use allow_write_access() instead of exe_file_allow_write_access()
-according to commit 0357ef03c94ef
-("fs: don't block write during exec on pre-content watched files"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- fs/binfmt_misc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 6a3a16f91051..9fbff75e3faa 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -875,8 +875,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
- 	inode_unlock(d_inode(root));
+On 3/3/26 23:03, Pablo Neira Ayuso wrote:
  
- 	if (err) {
--		if (f)
-+		if (f) {
-+			allow_write_access(f);
- 			filp_close(f, NULL);
-+		}
- 		kfree(e);
- 		return err;
- 	}
--- 
-2.34.1
+> A new userspace release with this fix is required.
 
+But a new user space should never be required for a new kernel. Find a
+few quotes from Linus on this below. And I noticed other people ran
+into this, too, so it's not a corner case:
+https://lore.kernel.org/all/aaeIDJigEVkDfrRg@chamomile/
+
+So should this be reverted everywhere where this was applied? Or is
+there some way to do what the commit wanted to do without breaking
+userspace?
+
+"""
+* From `2018-08-03 <https://lore.kernel.org/all/CA+55aFwWZX=CXmWDTkDGb36kf12XmTehmQjbiMPCqCRG2hi9kw@mail.gmail.com/>`_::
+
+    And dammit, we upgrade the kernel ALL THE TIME without upgrading any
+    other programs at all. It is absolutely required, because flag-days
+    and dependencies are horribly bad.
+
+    And it is also required simply because I as a kernel developer do not
+    upgrade random other tools that I don't even care about as I develop the
+    kernel, and I want any of my users to feel safe doing the same time.
+
+* From `2017-10-26(3) <https://lore.kernel.org/lkml/CA+55aFxW7NMAMvYhkvz1UPbUTUJewRt6Yb51QAx5RtrWOwjebg@mail.gmail.com/>`_::
+
+    But if something actually breaks, then the change must get fixed or
+    reverted. And it gets fixed in the *kernel*. Not by saying "well, fix your
+    user space then". It was a kernel change that exposed the problem, it needs
+    to be the kernel that corrects for it, because we have a "upgrade in place"
+    model. We don't have a "upgrade with new user space".
+
+    And I seriously will refuse to take code from people who do not understand
+    and honor this very simple rule.
+
+    This rule is also not going to change.
+
+    And yes, I realize that the kernel is "special" in this respect. I'm proud
+    of it.
+
+* From `2017-10-26(4) <https://lore.kernel.org/all/CA+55aFwiiQYJ+YoLKCXjN_beDVfu38mg=Ggg5LFOcqHE8Qi7Zw@mail.gmail.com/>`_::
+
+    If you break existing user space setups THAT IS A REGRESSION.
+
+    It's not ok to say "but we'll fix the user space setup".
+
+    Really. NOT OK.
+"""
+ 
+Ciao, THorsten
 
