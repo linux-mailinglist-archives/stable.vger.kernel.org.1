@@ -1,182 +1,173 @@
-Return-Path: <stable+bounces-222981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDq3CVjIp2kZjwAAu9opvQ
-	(envelope-from <stable+bounces-222981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:51:20 +0100
+	id 2FaXG4bJp2k0jwAAu9opvQ
+	(envelope-from <stable+bounces-222982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:56:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BA11FAFB3
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE24C1FAFEA
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 06:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CDE730A1E0E
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 05:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E69D6303E48E
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 05:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954B337F8B9;
-	Wed,  4 Mar 2026 05:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6619137F8B1;
+	Wed,  4 Mar 2026 05:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="KmvOufNH"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="e7UCsD2M"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12684964F;
-	Wed,  4 Mar 2026 05:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28AC37F733;
+	Wed,  4 Mar 2026 05:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772603446; cv=none; b=liW5CWtPnxt9yVkzTuqXxmzhpITByUXtWBkU3UrpvirmlIAHI7H9M593sB2XCF0ZUDyBx1uFX+gZZ266c51Xza8+pxe87sdl7hs8darzBzCOnOa/GG5z3zMUIbhAfLi5pCUEN3rrnwrMJOnwwd5Tb29yJnyPDA9ClufxvgxobO0=
+	t=1772603776; cv=none; b=toBO8VWTfMzCgbyzOKOpR32FHyiYTFB5yklsCBJlvbfE5NAV+f66jA1dTlLu6Srcg15NgfqhlemT5tiAzrOw1ttRx9Sj+NLW6xt9eMw6HrkD0cJIfzzAsl+0flndvn3ad90BLV5v4Zmg+JVnXl0l5K3k/JvW8as0bFlHa0Y4SUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772603446; c=relaxed/simple;
-	bh=OxJf+Q6FbPGEAU2/QNsCB7gqvWE6MzKS94JujX5qwck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mJvjMFIjkL7EeLL60ikW+mLClepBHVzv1mq/2e7p9fHe987UTRszAiUxqlLOsw0zI6ndRH42hwD0yXkZ6KR9TWfv4Ah6xCnYpArqteGUw/rGamE9l4TfVLtC1NzqGNIjhIkl0i6rTMIUfscvlmbmDBDM2U2D/1OJV/UkXV98kjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=KmvOufNH; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbc1YjRz9CZy;
-	Wed,  4 Mar 2026 06:50:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1772603436;
-	bh=OxJf+Q6FbPGEAU2/QNsCB7gqvWE6MzKS94JujX5qwck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KmvOufNHVOsMecD2uoDkjoeSrmy3Mk7scIfNap8BkK2MFl8giciQAw0Csb7KxuDm+
-	 hxuC0WevBAaajyjM1CC4Kj8GiZkwDg5ZZ98Acn4Q5Sl7AvD5Wui6Y4Qs1d7i4S7z7f
-	 Vuw6OZ/zCjAkUxkVZ+2GarKgbTICb6jI1zWr7HOqOgInR2qE6qVMh9a3ghtlWv7g8z
-	 cjGcJt5va4Uin+/s+j7Z55uUEcoXHdjlPuZgicGweE2oM2N40/m8vbmLIvZlfTMyf1
-	 vg3dn0uI9ELM0moDEasETzcDaVtAfSYZraC4h8CfETdS2DLra7cz7yBS5OjdRtsqQK
-	 EdqcOi+SNGT0Q==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbc0sgCz7vS1;
-	Wed,  4 Mar 2026 06:50:36 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.901
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4fQhbZ2g63z8t4F;
-	Wed,  4 Mar 2026 06:50:34 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 99A34617A9;
-	Wed,  4 Mar 2026 06:50:33 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <75a4115f-e7f3-4316-b046-525fcd87cdef@leemhuis.info>
-Date: Wed, 4 Mar 2026 06:50:32 +0100
+	s=arc-20240116; t=1772603776; c=relaxed/simple;
+	bh=RERDU0kupy1mzuigYZrGNTxQEUs2twFXLeDd5M2jrAg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fc+whhwEjEZ2bybDwgKHDsGSE/ODFKZOCWRSptvx169XqEgwXZp9LuHAHI7fIwgx8fqNfN9pXJNMLGnrTbGHByH3iFN0s5HKre42VvM/vSVEdg+AEhWs36v5zsyt5EOHbNALvn047ciuhp4gKwLHMFVdEP4tMVFh3cWWBdnwMc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=e7UCsD2M; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=e7UCsD2MOD4MMoPDrRgpNNek75SzEkuS7iI4o+kPYHSbp8bYm9ClPK9x2WHHYIml0jskhPTdazl46
+	 3rspptUfDpLxPtmx5JIoPHcwIBMKmpBtbcEvFHxR8y2uEFs9LQWlZ81Hu68DX0Buyp+UMw0+cxTgCg
+	 YFskyGjzNXlc5glg=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-06-12084 (RichMail) with SMTP id 2f3469a7c96a766-00770;
+	Wed, 04 Mar 2026 13:55:58 +0800 (CST)
+X-RM-TRANSID:2f3469a7c96a766-00770
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	chao@kernel.org
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	jaegeuk@kernel.org,
+	daehojeong@google.com,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH 6.6.y] f2fs: zone: fix to avoid inconsistence in between SIT and SSA
+Date: Wed,  4 Mar 2026 13:55:56 +0800
+Message-Id: <20260304055556.2595295-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] 6.19.4 stable netfilter / nftables [resolved]
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
- Jindrich Makovicka <makovick@gmail.com>
-Cc: Genes Lists <lists@sapience.com>, Greg KH <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, coreteam@netfilter.org,
- netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
- regressions@lists.linux.dev,
- "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
-References: <a529a6a9a2755d45765f20b58c5c11e2f790eacb.camel@sapience.com>
- <45f03b0b-fe8f-4942-bad1-3fbde03d4be1@leemhuis.info>
- <143e1a402ad78dd7076516a6ceb637f378310b16.camel@sapience.com>
- <10537f2b74da2b8a5cb8dc939f723291db39ff84.camel@sapience.com>
- <2026022755-quail-graveyard-93e8@gregkh>
- <b231fcdb6c66a7b24dcef3ee5c35c5f612d5c1a7.camel@sapience.com>
- <9d110d860c0c7e110d018ea53a7666eba275da20.camel@gmail.com>
- <aaday5NR-yfCkFVb@chamomile>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <aaday5NR-yfCkFVb@chamomile>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177260343399.2903715.3365136825409012734@mxe9fb.netcup.net>
-X-NC-CID: butrOV/u4p7Y4qNywgpMYu5RTL/Bo1fbb9jMufI/2aWhxcz+1y4=
-X-Rspamd-Queue-Id: A1BA11FAFB3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CE24C1FAFEA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,leemhuis.info:dkim,leemhuis.info:mid];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-222981-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
+	TAGGED_FROM(0.00)[bounces-222982-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[netfilter.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.380];
+	DKIM_TRACE(0.00)[139.com:-];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[139.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/3/26 23:03, Pablo Neira Ayuso wrote:
+From: Chao Yu <chao@kernel.org>
+
+[ Upstream commit 773704c1ef96a8b70d0d186ab725f50548de82c4 ]
+
+w/ below testcase, it will cause inconsistence in between SIT and SSA.
+
+create_null_blk 512 2 1024 1024
+mkfs.f2fs -m /dev/nullb0
+mount /dev/nullb0 /mnt/f2fs/
+touch /mnt/f2fs/file
+f2fs_io pinfile set /mnt/f2fs/file
+fallocate -l 4GiB /mnt/f2fs/file
+
+F2FS-fs (nullb0): Inconsistent segment (0) type [1, 0] in SSA and SIT
+CPU: 5 UID: 0 PID: 2398 Comm: fallocate Tainted: G           O       6.13.0-rc1 #84
+Tainted: [O]=OOT_MODULE
+Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xb3/0xd0
+ dump_stack+0x14/0x20
+ f2fs_handle_critical_error+0x18c/0x220 [f2fs]
+ f2fs_stop_checkpoint+0x38/0x50 [f2fs]
+ do_garbage_collect+0x674/0x6e0 [f2fs]
+ f2fs_gc_range+0x12b/0x230 [f2fs]
+ f2fs_allocate_pinning_section+0x5c/0x150 [f2fs]
+ f2fs_expand_inode_data+0x1cc/0x3c0 [f2fs]
+ f2fs_fallocate+0x3c3/0x410 [f2fs]
+ vfs_fallocate+0x15f/0x4b0
+ __x64_sys_fallocate+0x4a/0x80
+ x64_sys_call+0x15e8/0x1b80
+ do_syscall_64+0x68/0x130
+ entry_SYSCALL_64_after_hwframe+0x67/0x6f
+RIP: 0033:0x7f9dba5197ca
+F2FS-fs (nullb0): Stopped filesystem due to reason: 4
+
+The reason is f2fs_gc_range() may try to migrate block in curseg, however,
+its SSA block is not uptodate due to the last summary block data is still
+in cache of curseg.
+
+In this patch, we add a condition in f2fs_gc_range() to check whether
+section is opened or not, and skip block migration for opened section.
+
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ fs/f2fs/gc.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 8122135bb1ff..791b29ed6e47 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -2005,6 +2005,9 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
+ 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
+ 		};
  
-> A new userspace release with this fix is required.
++		if (IS_CURSEC(sbi, GET_SEC_FROM_SEG(sbi, segno)))
++			continue;
++
+ 		do_garbage_collect(sbi, segno, &gc_list, FG_GC,
+ 						dry_run_sections == 0);
+ 		put_gc_inode(&gc_list);
+-- 
+2.34.1
 
-But a new user space should never be required for a new kernel. Find a
-few quotes from Linus on this below. And I noticed other people ran
-into this, too, so it's not a corner case:
-https://lore.kernel.org/all/aaeIDJigEVkDfrRg@chamomile/
 
-So should this be reverted everywhere where this was applied? Or is
-there some way to do what the commit wanted to do without breaking
-userspace?
-
-"""
-* From `2018-08-03 <https://lore.kernel.org/all/CA+55aFwWZX=CXmWDTkDGb36kf12XmTehmQjbiMPCqCRG2hi9kw@mail.gmail.com/>`_::
-
-    And dammit, we upgrade the kernel ALL THE TIME without upgrading any
-    other programs at all. It is absolutely required, because flag-days
-    and dependencies are horribly bad.
-
-    And it is also required simply because I as a kernel developer do not
-    upgrade random other tools that I don't even care about as I develop the
-    kernel, and I want any of my users to feel safe doing the same time.
-
-* From `2017-10-26(3) <https://lore.kernel.org/lkml/CA+55aFxW7NMAMvYhkvz1UPbUTUJewRt6Yb51QAx5RtrWOwjebg@mail.gmail.com/>`_::
-
-    But if something actually breaks, then the change must get fixed or
-    reverted. And it gets fixed in the *kernel*. Not by saying "well, fix your
-    user space then". It was a kernel change that exposed the problem, it needs
-    to be the kernel that corrects for it, because we have a "upgrade in place"
-    model. We don't have a "upgrade with new user space".
-
-    And I seriously will refuse to take code from people who do not understand
-    and honor this very simple rule.
-
-    This rule is also not going to change.
-
-    And yes, I realize that the kernel is "special" in this respect. I'm proud
-    of it.
-
-* From `2017-10-26(4) <https://lore.kernel.org/all/CA+55aFwiiQYJ+YoLKCXjN_beDVfu38mg=Ggg5LFOcqHE8Qi7Zw@mail.gmail.com/>`_::
-
-    If you break existing user space setups THAT IS A REGRESSION.
-
-    It's not ok to say "but we'll fix the user space setup".
-
-    Really. NOT OK.
-"""
- 
-Ciao, THorsten
 
