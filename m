@@ -1,381 +1,265 @@
-Return-Path: <stable+bounces-223151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC25Bju3qGm0wgAAu9opvQ
-	(envelope-from <stable+bounces-223151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 23:50:35 +0100
+	id mKePNVW6qGkdwwAAu9opvQ
+	(envelope-from <stable+bounces-223152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 00:03:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779C5208C2D
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 23:50:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC99208D85
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 00:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E197302D19C
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 22:50:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DBA7304DC94
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 23:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A2C38228A;
-	Wed,  4 Mar 2026 22:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E170837269A;
+	Wed,  4 Mar 2026 23:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwRdndyP"
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="LdPFlQGP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FTS77x5H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15573659F1
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 22:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772664632; cv=pass; b=ZTiJbTHY4BCgvrJUMX8C9tJuajekPLzH54R0fUe6KDuADPHwHyrwaoHYP3l/6uGcphS/ea7A8uuNWz7r5+0fN1hKxnQDKx09kZb6Wrz38/FKfxWcZB05qKvBYzAQXKURE6c2+dSYYKP6/DSaXeTQrj3PG7WURxRijYu4vfBK45E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772664632; c=relaxed/simple;
-	bh=v+jTkoOuM2NPCetAIJg46/eO2RR8iZVRxxEScOdpXlI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=teLNNvihyVr/omXsKWct8ddxkWAqHvZyPhlWnogYbwmDtxB+YgXmrAnaaJytFmRqT8uHKvQ08yAgecsegqau98meoHqkE0rbPIza2sXhyM4Om5B/D29IUbH5p48flt6ruuapfWemJfufQhrrDFcxgm7AzqlbdrOLNtlZ446GYpE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwRdndyP; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso10974303a12.1
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 14:50:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772664629; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fhnHN9Kin7SnxEhSdJyKKjnC5rqqmLW4uGVvkWBbKyW1x+wj86jDy/uR13vm9RRl/g
-         f5+qlIdG1TLhUSxxtb6FNwuNSG8ts3Kj8D2rSXx05CUg2MLKlrWbUHDg5okJxrUNw9J2
-         /zq3VwvcJ8wmYm3Pluo01lQ7gBY4kv/R9ZOuDcaPvx8YYp+lEjYz7ecybc4myGHK2JiF
-         mhrg4Y0bw5tvK4G//cauDtmcxPYbNFjrz5KqkKqPwgK24ogt9QYf0ra0Y1W8PZzc6hPm
-         pO1K6yXwdOqH6aQWO1G5Nt66IN7JlF1C2G0OKIaG8g5DjqRHii4EFYvob3s2IEke9OZU
-         sIXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=u+ct/ar6co3pGOjuj6b/KCIbM7ZuozKMfkuIjZQ0p24=;
-        fh=cMK86hcIoTkTUj3MsfUZWNdJ8frbLqG489A2oB6PUpc=;
-        b=RdrnZVziItieGdCns0XKcRG45zLUmra5GZiPzCE9RuCHsLcvSlzWHn5R/1l7oZLH1A
-         L4RM0SE7emXpXOQXWrzNiwOMngQ/7zzADhOa3bYtDNWmFxGwVvVKi35oCqbZdhSJfjkR
-         de7pkVPAZWh7otbheZR6+0w1BGNvZN4uRDdgwkvex4tTHW1Xm4hVJ+uC6RpUaSbDAlHU
-         acXobxVMnima9q/csYw/iZJskcyZhiiJ2arHrcCiUpmnUauV9z6bvq4whlQoSQsIClBF
-         rAFB+oTWS0yvFZTIzURf7AZ2ZITgKfUix1wLLZDVpvxLBEw2k6qhESc3MadKOjFWBYRL
-         eL3Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772664629; x=1773269429; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=u+ct/ar6co3pGOjuj6b/KCIbM7ZuozKMfkuIjZQ0p24=;
-        b=UwRdndyPaH8oO/owV+pMvihOZYFdZPdxfZAFUf2ei+OT/8knhPLq9bMEvFcOHqAikj
-         X8kYySlbrtUgDxse6D5XCOViPseFfYn1E8eGm/jiOYKI0/V4s9KGmsBKu5CZmjzeIj1q
-         gqRCtcU5985xznjE95E4cHiOAMAWqO4NaISJ7DAKG/nrNr6gyHxaq3PIZHNXiqU8L8IL
-         5AKxh/nHzppgqwjGSe3VZhoH89bCdhYrBtBBPSbH4Cdjbe3H3JWDZi6fqzsu08Ka3eXs
-         tm+lEojdPklxRM9OmMq6paQhZ2ByLxRTDEV3eHl4whWzFZ7Z5aVl5iE3+Bap6QcAp2Sw
-         sVAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772664629; x=1773269429;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u+ct/ar6co3pGOjuj6b/KCIbM7ZuozKMfkuIjZQ0p24=;
-        b=Den04UOPnGhgliFWZEk6Zp7sMQIQMd3G+TvhxN82z8vXfS7Pq3E+W4lN3ngaZ4mEm3
-         RP0XpQLgQ7pQ9WbRWpHNfkvjlTtFGknBqXUV7JYKhEF3sysCdVet9X8Bn3TZ0eUlFE5J
-         rAddb+YBhRlPQFR7tFoVmLPTSxpuQA4Y0bELWhZ5o23MiultEXpOr6GyjCrldBjD2S96
-         C7iRcZZa1VUrCAXO2SkntxJh2ZWQHBBoyoynpqDzFauBg39w3vB94dtPeY3MbuPK+RRr
-         qh7VWYBREP0eFDo4Zf6LIB1VUNX2QSV3gbLg6EVLp/c/diVZM1DIISKAof1qaJKb+9R+
-         rnTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmrCyO4p4bm1mfMgluX6VZM8IpI3s7xngSqeOwL4LgYjzQICmx7GVejejkUOX+tNdXDnktn9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5zJ39YfgEGSPPuagoHTuQKfeMt6cDV8PHTsu9m1jENxiaL1Ux
-	xIvadiTu10cf0XcaqIw9c92PVp/Rayhs30y+5cWRaYrfizAKP3oMfG3o4YC8ywf00U+cU20Dt0x
-	7V3/Yggw3tQRbAucxQelMVXYC908bI43MMv0MNFM=
-X-Gm-Gg: ATEYQzwLA9UIXVTQcErva74aOP1OtQwXaV7WjKe5+hjbM6CVMHkqZhjzn8MbsprUbSa
-	D66/37C5vbiDRVVaz1GV5PvBbmj8yy+UPXYfmAVpkvYAbE91/hSdZsqXFlsHvu+4ZEapjRwaDKP
-	IEActGXeGs0aWQu19RYoTIH/fX52fjBsDuVBiq3vmmS9Svs5Wrd1cDbndsINMTUxdaIWu2oo2ve
-	q1HW3i7+GHKA7m/biehzwEn60C8jIzU0+YArTeq5b/g5IbryEEg9vFttXiGKW8/iFWQHZmP13tq
-	jN89zEInqdliCVOpZB7v9Q3YREs9fKosjBadsI8qQKp/0uoMDJPhGWYbzXzMqwl0M0PN40g2FQ=
-	=
-X-Received: by 2002:a05:6402:234c:b0:65f:81be:e78d with SMTP id
- 4fb4d7f45d1cf-660efec42e0mr2442400a12.17.1772664628867; Wed, 04 Mar 2026
- 14:50:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03803793A0;
+	Wed,  4 Mar 2026 23:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772665410; cv=none; b=ESKR7N2J+foxieOudyCnBaTekwsebWNnFfabzbXqQd9AuEWvfK5q+1RUgJPg3JAkoHvqUBoJ3A+3hJ6BeYBoEc983gBFvOA4y6pXryQMqqiLts7cIiG0R0y4yn9Goa70NL3yooDPmo8RLRsMgMX/ocYRjw+S5QftJSmTHhGZAYo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772665410; c=relaxed/simple;
+	bh=O8kBrtBtOPAI6uj0gytOhu3Is4E8hr94H8g3GkofaCc=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=oQfbgmbZEd5j0VIOU8cpnT8iLU8xPdpBx+DFaL9h2Ax10HHvZXgl0ZpGFObGyJnZvhoaxXZx6az0y4pFvTkRc8Benp7Ywvi2fg2tEjNo2blymRqmJKs6ZyFdzHfrRjW7cOKD/Jtjh9CnUtHC7ZIidqIAlI41mBpnnG0JTA44nno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=LdPFlQGP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FTS77x5H; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id CB6B37A01D1;
+	Wed,  4 Mar 2026 18:03:27 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 04 Mar 2026 18:03:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1772665407; x=1772751807; bh=zCexf+MdQmjBh727ay4vZda/kQnXXO5zStK
+	27sGWvs4=; b=LdPFlQGP1pbMpi9Wo0a6+PNvDBqkpJyc3cwL5vRn2Zb8UwczOUR
+	ntpRuW0ooUr09iJkVnEd73DWPLAapvMg7Osn1UpcMTgxzxfPd3lH9RM6+Yc4Bk58
+	mhWNinTuxYHf6BURRkSzudmXJzivQgSR9j1sMYybOnLCyfWax1AXAbdvz1Kb/4gU
+	bn5SFZLQYscLj1+qUoljCc8HhDxaQHCOMWefHLDZTvoxAsxUND3yh9/vQ/sM/BGU
+	DvOnaEw+gLw+Oyb1SW7LLQpIijPLtJ6Q4HJOA78xoyvIYbyWTgWZljXDVGfN6CmH
+	0W/5REwJskNE9SrvniQCXeQN7MWUHEeTzUw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772665407; x=
+	1772751807; bh=zCexf+MdQmjBh727ay4vZda/kQnXXO5zStK27sGWvs4=; b=F
+	TS77x5HGr2/9nHDRt7F8L7zMudcZ4UXA26whikbwmUAI6AwX3RJPMJSlzzfWbC++
+	viQzt4G/RYDOe3FPzk9QJm2Flj3GH76uvNekknIO+VQun5c1p2nZpqKojvbB46UM
+	PpOI6FHNOaL4Cgznq4HJmRailkK5n/OH+ZgIa1TA1+rdckZ9lcS0NJkEt6+Bt07e
+	qZyk2NMNOFlPb/OM1HVcC8Axg+83UBrfvCOX+OTs7/KtA9kDk7NdAw5GVXyl/Y/c
+	0vVafrZNal2u3Xnw6W/nWs5DKyJrpAGUWM8/+qYTYTqzmKrytEJ+cMeHfOS/Cd9i
+	PxDAIQ7XJiKE3oVlXmWGg==
+X-ME-Sender: <xms:P7qoaTCNZWEsPIigDi0seH4vCXXzB1JNpijrU_8oL-xYeqkBC47BKw>
+    <xme:P7qoaUdchgwBudHJ4xmbjH4NDoNaGNvkB0jpcblpZhjhlWOf0q27Ca0l4qQb_Fetr
+    mLZozhG6Zr9TJ54m7bxcREk0e-qR8sUnpQLjPNCSQKRbM5Zmg>
+X-ME-Received: <xmr:P7qoadmKmb1q1oV4G0o2HOhyUFfo6FPLkDY4vPAJ6nh9_Q3Q78dv19L5JUCpC7p_20hZYNIR-GBZrproYTzQfzMyxnotTXcjDIiPohVKB2DW>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieegjeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtkeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epvdfhgfehkeekiedtleefhefhkeevvdegfffhgfduffeiveelffehlefhfeehveetnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehokhhorhhnihgvvhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepthhjrdhirg
+    hmrdhtjhesphhrohhtohhnrdhmvgdprhgtphhtthhopehjlhgrhihtohhnsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopeduuddvkeekiedusegsuhhgshdruggvsghirghnrdhorh
+    hg
+X-ME-Proxy: <xmx:P7qoabEY-dn-LsJC6Jg4XzVY3KMYhEQfblUp7DGSnkbte3yaIFGMeA>
+    <xmx:P7qoaV5lrse3bjM8R_DeRsp3W4IF8E7JwIGrnpvfMsjx-Y6kYPHJOA>
+    <xmx:P7qoaTkLqzkhd8dU7iy29JAi67JCH6TTfSS74yL9Ttj71Xg5wiFKKQ>
+    <xmx:P7qoaarRKUjl58EXIPf6GVnlXvd-Bx_Tenf4qxC3PtUxVkf7WmGePw>
+    <xmx:P7qoaebEU5iOOOP-v0jBlaxRq5OKlWpubefUAJQ2n9mRGoJijMCeIj6Q>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Mar 2026 18:03:25 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Kai Zen <kai.aizen.dev@gmail.com>
-Date: Thu, 5 Mar 2026 00:50:17 +0200
-X-Gm-Features: AaiRm51dPWTiK7tvpsxWJaLOOYYndhqkdJC86YqBJtVs9MvlXc3KRn5Kf5R_r9Y
-Message-ID: <CALynFi4pamOn3CrB+3b0PxhE2+Br_Ftep=VKceyeYSV65N7Y6g@mail.gmail.com>
-Subject: [PATCH v2] Bluetooth: hci_conn: Fix UAF in create_big_sync and create_big_complete
-To: linux-bluetooth@vger.kernel.org
-Cc: luiz.von.dentz@intel.com, stable@vger.kernel.org, marcel@holtmann.org
-Content-Type: multipart/mixed; boundary="00000000000082ab54064c3aa529"
-X-Rspamd-Queue-Id: 779C5208C2D
+From: NeilBrown <neilb@ownmail.net>
+To: "Tj" <tj.iam.tj@proton.me>, Jeff Layton <jlayton@kernel.org>
+Cc: 1128861@bugs.debian.org, linux-nfs@vger.kernel.org,
+ "Olga Kornievskaia" <okorniev@redhat.com>, stable@vger.kernel.org
+Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No
+ locks available
+In-reply-to: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+Date: Thu, 05 Mar 2026 10:03:21 +1100
+Message-id: <177266540127.7472.3460090956713656639@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Rspamd-Queue-Id: 3DC99208D85
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ownmail.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ownmail.net:s=fm1,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_UNKNOWN(0.10)[text/x-diff];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223152-lists,stable=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223151-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:replyto,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,messagingengine.com:dkim,noble.neil.brown.name:mid,ownmail.net:dkim];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[ownmail.net];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ownmail.net:+,messagingengine.com:+];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kaiaizendev@gmail.com,stable@vger.kernel.org];
-	HAS_ATTACHMENT(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[neilb@ownmail.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[neil@brown.name]
 X-Rspamd-Action: no action
 
---00000000000082ab54064c3aa529
-Content-Type: multipart/alternative; boundary="00000000000082ab52064c3aa527"
+On Tue, 24 Feb 2026, Tj wrote:
+> Upstream commit 4cc9b9f2bf4dfe13fe573 "nfsd: refine and rename 
+> NFSD_MAY_LOCK" and
+>   stable v6.12.54 commit 18744bc56b0ec  (re)moves checks from 
+> fs/nfsd/vfs.c::nfsd_permission().
+> 
+>   This causes NFS clients to see
+> 
+> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
+> 
+> Keeping the check in nfsd_permission() whilst also copying it to 
+> fs/nfsd/nfsfh.c::__fh_verify() resolves the issue.
+> 
+> This was discovered on the Debian openQA infrastructure server when 
+> upgrading kernel from v6.12.48 to later v6.12.y where worker hosts (with 
+> any earlier or later kernel version) pass NFSv3 mounted ISO images to 
+> qemu-system-x86_64 and it reports:
+> 
+> !!! : qemu-system-x86_64: -device 
+> scsi-cd,id=cd0-device,drive=cd0-overlay0,serial=cd0: Failed to get 
+> "consistent read" lock: No locks available
+> QEMU: Is another process using the image 
+> [/var/lib/openqa/pool/2/20260223-1-debian-testing-amd64-netinst.iso]?
+> 
+> A simple reproducer with the server using:
+> 
+> # cat /etc/exports.d/test.exports
+> /srv/NAS/test 
+> fdff::/64(fsid=0,rw,no_root_squash,sync,no_subtree_check,auth_nlm)
+> 
+> and clients using:
+> 
+> # mount -t nfs [fdff::2]:/srv/NAS/test /srv/NAS/test -o 
+> proto=tcp6,ro,fsc,soft
 
---00000000000082ab52064c3aa527
-Content-Type: text/plain; charset="UTF-8"
+Linux has two quite different sorts of locks - flock and fcntl.
+flocks lock the whole file, shared or exclusive.
+fcntl can lock any byte-range (including the whole file), shared or
+exclusive.  flock and fcntl locks don't conflict.
 
-From kai.aizen.dev@gmail.com Mon Sep 17 00:00:00 2001
-From: Kai Aizen <kai.aizen.dev@gmail.com>
-Date: Wed, 4 Mar 2026 20:00:00 +0200
-Subject: [PATCH v2] Bluetooth: hci_conn: Fix UAF in create_big_sync and
- create_big_complete
+exclusive flock locks only require read access to the file
+exclusive fcntl locks require write access to the file.
 
-create_big_sync() and create_big_complete() are queued via
-hci_cmd_sync_queue() with a raw hci_conn pointer as 'data', but unlike
-all other hci_cmd_sync_queue() callbacks that receive an hci_conn pointer
-they lack an hci_conn_valid() guard.
+The NLM protocol only supports one type of byte-range lock.  It is
+natural to map fcntl locks onto NLM locks.  The early Linux NFS
+implementation handled flock locks entirely locally so different clients
+didn't conflict.  This could be confusing but was widely documented and
+understood.
+Some years ago Linux NFS was enhanced to handle flock locks like
+whole-file fcntl locks.  This means that clients with flock locks would
+conflict (maybe good) but that flock locks and fcntl locks would now
+conflict (maybe bad).
+You can still get the old behaviour with "-o local_lock=flock".
 
-If the connection is torn down after the work is queued but before (or
-during) execution, the work dereferences a freed hci_conn object.
+So if you open a file on NFS read-only and attempt an exclusive flock,
+that will be sent to the server as a full-range fcntl lock which should
+require write access.  If the server finds you don't have write access -
+you lose.
 
-Race path:
- 1. hci_connect_bis() queues create_big_sync(conn) on hdev->req_workqueue
- 2. ISO socket close() triggers hci_conn_drop(); for BIS_LINK timeo=0,
-    disc_work fires immediately on hdev->workqueue
- 3. disc_work -> hci_abort_conn -> hci_conn_del() frees conn
- 4. create_big_sync() dequeued and runs on req_workqueue; conn is
-    already freed -> slab-use-after-free
+It would seems to make sense to tell qemu that the device is read-only. 
+Then it will hopefully only request a shared lock.  Can you try that?
 
-The two workqueues are distinct (req_workqueue vs workqueue). The only
-lock held by create_big_sync is hci_req_sync_lock; the deletion path
-in HCI event handlers holds only hci_dev_lock. No shared lock prevents
-concurrent execution.
+Note that even before my patch, if the filesystem was exported read-only
+or mounted read-only on the server, then exclusive flock locks would
+fail.
 
-This is the same bug class fixed for hci_enhanced_setup_sync in commit
-98ccd44002d8 ("Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync"),
-and for hci_le_create_conn_sync, hci_le_pa_create_sync,
-hci_le_big_create_sync, hci_acl_create_conn_sync. create_big_sync and
-create_big_complete in hci_conn.c were not included in those sweeps.
+I think that the current behaviour is correct, however I do understand
+that it is a regression and maybe that justifies incorrect behaviour.
+Maybe Jeff, as locking maintainer, would be willing to do something like
 
-Fix: add hci_conn_valid() guard at the start of both functions. In
-create_big_sync the 'qos' pointer assignment is moved past the guard
-to avoid dereferencing conn before validation.
-
-Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS
-connections")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
----
- net/bluetooth/hci_conn.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index a47f5daffdbf..e7fe9cc7a4a3 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2119,10 +2119,15 @@
- static int create_big_sync(struct hci_dev *hdev, void *data)
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index dd0214dcb695..6c674fc51bab 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -73,6 +73,14 @@ static inline unsigned int file_hash(struct nfs_fh *f)
+ 
+ int lock_to_openmode(struct file_lock *lock)
  {
-        struct hci_conn *conn = data;
--       struct bt_iso_qos *qos = &conn->iso_qos;
-        u16 interval, sync_interval = 0;
-        u32 flags = 0;
-        int err;
-+       struct bt_iso_qos *qos;
-+
-+       if (!hci_conn_valid(hdev, conn))
-+               return -ECANCELED;
-+
-+       qos = &conn->iso_qos;
++	/*
++	 * flock only requires READ access and to support
++	 * clients which send flock locks via NLM we
++	 * report O_RDONLY for full-file locks.
++	 */
++	if (lock->fl_start == 0 &&
++	    lock->fl_end == NLM4_OFFSET_MAX)
++		return O_RDONLY;
+ 	return lock_is_write(lock) ? O_WRONLY : O_RDONLY;
+ }
+ 
 
-        if (qos->bcast.out.phys == BIT(1))
-                flags |= MGMT_ADV_FLAG_SEC_2M;
-@@ -2196,6 +2201,9 @@
- {
-        struct hci_conn *conn = data;
+But I wouldn't encourage him to.
 
-+       if (!hci_conn_valid(hdev, conn))
-+               return;
-+
-        bt_dev_dbg(hdev, "conn %p", conn);
+NeilBrown
 
-        if (err) {
 
---00000000000082ab52064c3aa527
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> 
+> will trigger the error as shown above:
+> 
+> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
+> 
+> A simple test program calling fcntl() with the same arguments QEMU uses 
+> also fails in the same way.
+> 
+> $ ./nfs3_range_lock_test 
+> /srv/NAS/test/debian-13.3.0-amd64-netinst.{iso,overlay}
+> Opened base file: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+> Opened overlay file: /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+> Attempting lock at 4 on /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+> fcntl(fd, F_GETLK, &fl) failed on base: No locks available
+> Attempting lock at 8 on /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+> fcntl(fd, F_GETLK, &fl) failed on overlay: No locks available
+> 
+> 
+> 
+> 
 
-<div dir=3D"auto">From <a href=3D"mailto:kai.aizen.dev@gmail.com" target=3D=
-"_blank" rel=3D"noreferrer">kai.aizen.dev@gmail.com</a> Mon Sep 17 00:00:00=
- 2001<br>
-From: Kai Aizen &lt;<a href=3D"mailto:kai.aizen.dev@gmail.com" target=3D"_b=
-lank" rel=3D"noreferrer">kai.aizen.dev@gmail.com</a>&gt;<br>
-Date: Wed, 4 Mar 2026 20:00:00 +0200<br>
-Subject: [PATCH v2] Bluetooth: hci_conn: Fix UAF in create_big_sync and<br>
-=C2=A0create_big_complete<br>
-<br>
-create_big_sync() and create_big_complete() are queued via<br>
-hci_cmd_sync_queue() with a raw hci_conn pointer as &#39;data&#39;, but unl=
-ike<br>
-all other hci_cmd_sync_queue() callbacks that receive an hci_conn pointer<b=
-r>
-they lack an hci_conn_valid() guard.<br>
-<br>
-If the connection is torn down after the work is queued but before (or<br>
-during) execution, the work dereferences a freed hci_conn object.<br>
-<br>
-Race path:<br>
-=C2=A01. hci_connect_bis() queues create_big_sync(conn) on hdev-&gt;req_wor=
-kqueue<br>
-=C2=A02. ISO socket close() triggers hci_conn_drop(); for BIS_LINK timeo=3D=
-0,<br>
-=C2=A0 =C2=A0 disc_work fires immediately on hdev-&gt;workqueue<br>
-=C2=A03. disc_work -&gt; hci_abort_conn -&gt; hci_conn_del() frees conn<br>
-=C2=A04. create_big_sync() dequeued and runs on req_workqueue; conn is<br>
-=C2=A0 =C2=A0 already freed -&gt; slab-use-after-free<br>
-<br>
-The two workqueues are distinct (req_workqueue vs workqueue). The only<br>
-lock held by create_big_sync is hci_req_sync_lock; the deletion path<br>
-in HCI event handlers holds only hci_dev_lock. No shared lock prevents<br>
-concurrent execution.<br>
-<br>
-This is the same bug class fixed for hci_enhanced_setup_sync in commit<br>
-98ccd44002d8 (&quot;Bluetooth: hci_conn: Fix UAF in hci_enhanced_setup_sync=
-&quot;),<br>
-and for hci_le_create_conn_sync, hci_le_pa_create_sync,<br>
-hci_le_big_create_sync, hci_acl_create_conn_sync. create_big_sync and<br>
-create_big_complete in hci_conn.c were not included in those sweeps.<br>
-<br>
-Fix: add hci_conn_valid() guard at the start of both functions. In<br>
-create_big_sync the &#39;qos&#39; pointer assignment is moved past the guar=
-d<br>
-to avoid dereferencing conn before validation.<br>
-<br>
-Fixes: eca0ae4aea66 (&quot;Bluetooth: Add initial implementation of BIS con=
-nections&quot;)<br>
-Cc: <a href=3D"mailto:stable@vger.kernel.org" target=3D"_blank" rel=3D"nore=
-ferrer">stable@vger.kernel.org</a><br>
-Signed-off-by: Kai Aizen &lt;<a href=3D"mailto:kai.aizen.dev@gmail.com" tar=
-get=3D"_blank" rel=3D"noreferrer">kai.aizen.dev@gmail.com</a>&gt;<br>
----<br>
-=C2=A0net/bluetooth/hci_conn.c | 12 ++++++++++--<br>
-=C2=A01 file changed, 10 insertions(+), 2 deletions(-)<br>
-<br>
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c<br>
-index a47f5daffdbf..e7fe9cc7a4a3 100644<br>
---- a/net/bluetooth/hci_conn.c<br>
-+++ b/net/bluetooth/hci_conn.c<br>
-@@ -2119,10 +2119,15 @@<br>
-=C2=A0static int create_big_sync(struct hci_dev *hdev, void *data)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct hci_conn *conn =3D data;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0struct bt_iso_qos *qos =3D &amp;conn-&gt;iso_qo=
-s;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u16 interval, sync_interval =3D 0;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 flags =3D 0;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 int err;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0struct bt_iso_qos *qos;<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!hci_conn_valid(hdev, conn))<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -ECANCELED;<=
-br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0qos =3D &amp;conn-&gt;iso_qos;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (qos-&gt;bcast.out.phys =3D=3D BIT(1))<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 flags |=3D MGMT_ADV=
-_FLAG_SEC_2M;<br>
-@@ -2196,6 +2201,9 @@<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct hci_conn *conn =3D data;<br>
-<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!hci_conn_valid(hdev, conn))<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 bt_dev_dbg(hdev, &quot;conn %p&quot;, conn);<br=
->
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (err) {</div>
-
---00000000000082ab52064c3aa527--
---00000000000082ab54064c3aa529
-Content-Type: text/x-diff; charset="ISO-8859-1"; 
-	name="0001-v2-Bluetooth-hci_conn-Fix-UAF-in-create_big_sync.patch"
-Content-Disposition: attachment; 
-	filename="0001-v2-Bluetooth-hci_conn-Fix-UAF-in-create_big_sync.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <19cbb0b668c18bc94a61>
-X-Attachment-Id: 19cbb0b668c18bc94a61
-
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAA==
---00000000000082ab54064c3aa529--
 
