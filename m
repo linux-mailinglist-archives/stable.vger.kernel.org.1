@@ -1,141 +1,119 @@
-Return-Path: <stable+bounces-223064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LR+CuQyqGm+pQAAu9opvQ
-	(envelope-from <stable+bounces-223064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:25:56 +0100
+	id 8JqpFjE1qGm+pQAAu9opvQ
+	(envelope-from <stable+bounces-223065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:35:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A453C2005CC
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C75200817
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 14:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B39C3187AA5
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:19:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD0D43130FF5
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 13:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD1C223DD6;
-	Wed,  4 Mar 2026 13:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMnjl+Xx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494C3373C1E;
+	Wed,  4 Mar 2026 13:30:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2E1AF4D5;
-	Wed,  4 Mar 2026 13:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4EE372673;
+	Wed,  4 Mar 2026 13:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772630386; cv=none; b=UkpIHf+Rs5W5JTHYHMgZMTgMzvgH+CUyQlcwWNWR4+YrL2ZvhHiuHMYeVTBvTUeML6ZF3Uum8th+kpqDqMdPTEiY0BMSpibMibZomdQe41jC8tEZATHK/mX1CczivH3UAOC6gWUubwsuTH3IHzY9LhJgPNuORpLLcdTjPsLD93s=
+	t=1772631014; cv=none; b=e7LjQaw51Acts+muNQIaRIlNGmfz8jopthuA73lIDS0+rkKUC7Y1oBSw9QvNWryjZoDn+fTaTmv+fsCaPoBJb/WrvGquTgkxBYK9aH7ctgbkW3uOCMj1482GdvZywFf8FVpZRZ2raXXxQ1VZmrifZMmhy1G8ED2YDon+o0rNwHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772630386; c=relaxed/simple;
-	bh=iMvm0f//FWJU5C6mRge/z/RIgnWYB5qR6a2WvDyeC80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=axH96La+/Ec4Mu44QmmQ5Xt4bRElKMp8PLT4bpUfvH/Rq95t5fgkSgUC4jWaajUgLThE2sSrXjsGlVrMK7/GUyx0ag5jKB36fTqDnJafrLOd8fXfBk5rdQGMhzvINzepkKVs1Zd0Py+hcrzAAvr0+HzqM04HJz3guPkVmROVPfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMnjl+Xx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DA7C19423;
-	Wed,  4 Mar 2026 13:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772630386;
-	bh=iMvm0f//FWJU5C6mRge/z/RIgnWYB5qR6a2WvDyeC80=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMnjl+XxUAi6xq3MCrUI+I4sc3Is1cfwRF/roQYjzK7R753JRS4569pcDq7GdBfKK
-	 CQc5lqlG68+6ivDBEmBNPt9HppAl8Uh5Zj8XYiuOzZyN1LLAOE2JJJ4y7hEKDP1Y3o
-	 OM4EBzgkPQynU/j6DDUB0VDutqFnUKxJESq/M1pKKGWJGZWEwYjZp57PLxdQaNo2yM
-	 PnT4jRDT1/ysGHAvA+3+d390Lpwrzx+rYtWvQUNSmHPdkuy+sj57lbhz965QX47OfY
-	 KfosAZ9Dri0jkzoSbao8jqI2druie66nlIbNeBotkYv1j59GVNUqDjzuTEtqdgWiea
-	 cN5gcxKvABsSA==
-From: Christian Brauner <brauner@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	djwong@kernel.org,
-	hch@infradead.org,
-	willy@infradead.org,
-	wegao@suse.com,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 0/1] iomap: don't mark folio uptodate if read IO has bytes pending
-Date: Wed,  4 Mar 2026 14:19:40 +0100
-Message-ID: <20260304-appell-aufbrach-79e916696eb7@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260303233420.874231-1-joannelkoong@gmail.com>
-References: <20260303233420.874231-1-joannelkoong@gmail.com>
+	s=arc-20240116; t=1772631014; c=relaxed/simple;
+	bh=OA7sY5Gukki1t+dkD73vfKDLROh7QEw2JN22fFOoXto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EvmdBvRlgoy1YDELQLKiQvxGkmPn/kaf0r54DaBJbnGVQQWNK6ggt+FSdP9wZo0S0K+m0ASiYLLQTMpD41XaoG8ngQi/rN/LlyDSEv5NFjd1X3mxNu23QPLs7HI78H+moASeGpUxoOwAeSvOUjUZBTG/k8hEaHY0gm4gHFFPTHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Wed, 4 Mar 2026 14:29:56 +0100
+From: Brett A C Sheffield <bacs@librecast.net>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.6 000/684] 6.6.128-rc2 review
+Message-ID: <aagz1A1WCj2qBb4x@karahi.librecast.net>
+References: <20260302160934.2521545-1-sashal@kernel.org>
+ <20260302193559.3432-1-bacs@librecast.net>
+ <aafiF3Mtc17i7Y72@auntie>
+ <aagiQjT1eBGEHV--@laps>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1638; i=brauner@kernel.org; h=from:subject:message-id; bh=iMvm0f//FWJU5C6mRge/z/RIgnWYB5qR6a2WvDyeC80=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSuMMwVrTNQWrXYNeKN8XZWhuSlc/wOtZdY39tkV8JwN TQ++/LsjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIls72X4X+DyaNuK7P6GJasW z23N3v/pStG9XwIH7zX8FFZ7pxlSspbhv2vZlr1xtZF95uu4p4sJOPCYNq3/6//swRz7Az85LZc 78AMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A453C2005CC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aagiQjT1eBGEHV--@laps>
+X-Rspamd-Queue-Id: A7C75200817
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-223064-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223065-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[librecast.net];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.971];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:url]
 X-Rspamd-Action: no action
 
-On Tue, 03 Mar 2026 15:34:19 -0800, Joanne Koong wrote:
-> This is a fix for this scenario:
+On 2026-03-04 07:14, Sasha Levin wrote:
+> On Wed, Mar 04, 2026 at 07:41:11AM +0000, Brett A C Sheffield wrote:
+> >On 2026-03-02 19:35, Brett A C Sheffield wrote:
+> >> # Librecast Test Results (FAIL)
+> >>
+> >> 020/020 [ OK ] liblcrq
+> >> 010/010 [ OK ] libmld
+> >> 120/120 [ OK ] liblibrecast
+> >>
+> >> CPU/kernel: Linux auntie 6.6.128-rc2-ge6906aa7f5ea #1 SMP PREEMPT_DYNAMIC Mon Mar  2 17:31:27 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+> >>
+> >> Builds, boots and passes network tests.  Fails to poweroff.
+> >>
+> >> Bisects to commit 3ba77c48498f0fa29456e2435d7d49eafc0a279c (upstream 4589712e0111352973131bad975023b25569287c) and affects 6.6.y and 6.12.y. Other kernels are unaffected, including mainline.
+> >
+> >Are we dropping the offending commit from 6.6.y and 6.12.y and retesting?
 > 
-> ->read_folio() gets called on a folio size that is 16k while the file is 4k:
->   a) ifs->read_bytes_pending gets initialized to 16k
->   b) ->read_folio_range() is called for the 4k read
->   c) the 4k read succeeds, ifs->read_bytes_pending is now 12k and the
-> 0 to 4k range is marked uptodate
->   d) the post-eof blocks are zeroed and marked uptodate in the call to
-> iomap_set_range_uptodate()
->   e) iomap_set_range_uptodate() sees all the ranges are marked
-> uptodate and it marks the folio uptodate
->   f) iomap_read_end() gets called to subtract the 12k from
-> ifs->read_bytes_pending. it too sees all the ranges are marked
-> uptodate and marks the folio uptodate using XOR
->   g) the XOR call clears the uptodate flag on the folio
-> 
-> [...]
+> Yup, I'm going to drop it from both trees.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Thanks.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] iomap: don't mark folio uptodate if read IO has bytes pending
-      https://git.kernel.org/vfs/vfs/c/debc1a492b26
+-- 
+Brett Sheffield (he/him)
+Librecast - Decentralising the Internet with Multicast
+https://librecast.net/
+https://blog.brettsheffield.com/
 
