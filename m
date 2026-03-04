@@ -1,270 +1,132 @@
-Return-Path: <stable+bounces-222959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-222960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJbtAmuAp2lJiAAAu9opvQ
-	(envelope-from <stable+bounces-222959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:44:27 +0100
+	id CPxSOnqBp2liiAAAu9opvQ
+	(envelope-from <stable+bounces-222960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:48:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B871F8F9D
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:44:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A501F8FFD
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 01:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 749C13063A1D
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 00:44:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E52A3306D8C1
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 00:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7522FA0C6;
-	Wed,  4 Mar 2026 00:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300C6146D5A;
+	Wed,  4 Mar 2026 00:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8cOi5ey"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXaNmIVD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225DC255F2C
-	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 00:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D23125A0
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 00:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772585062; cv=none; b=MpBL1wp16ddJyAwar0M9YN3jYzzyLE//m4Sws5qujK9vE03gDxFkPv8ClMTHlxUCakbzlYmYWoRmZHW76gsUDoL6OiBeQOlsqaoRIXcJwCJXvvZYyi+vNXUIZCtd1+hyBd/km2ld8lhi8DboTIrWcfJMj5y7LCGDGfivGZ8xdpc=
+	t=1772585331; cv=none; b=o1pUg3r0YbZ7XICVfOc+knPtBTvIlgNL4orxjr9SxdvDBBYI5oeRNhd+/MIgAJ8ozgamdzLc27IYhcpinH83XcawK2e9sPINWhb3nOJgsT4wzcb13faESeE00qNhCGBkRVT2h6qqfsbkkTZ4GQ6QIyjep73km6/H/UOglKDGk9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772585062; c=relaxed/simple;
-	bh=8EUfImJqXCjwEv07osmggtN7dOfogWe0w9ZDpEIMa58=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HWMsS0AcMzHiD/E69twighU36ZXh0ItOXFIs/MfTyMeT4qhRdoKZ4jLtOIlvCxAwa3VLuTMcD8EJjApSllBkbypXn196oZm5oKhB8eJRqlKMvcxZEsxvoJsJkoFEweP06raLB0FdfzR3iZ3e7Sqz5RARkxqYIEh1yfv+6weWw5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8cOi5ey; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35641c14663so6440666a91.2
-        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 16:44:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772585060; x=1773189860; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
-        b=t8cOi5eyGUfddZApwlSXf16xFCFV2yhoeqxi73ZzjREe9QCD3FlSIgsMG8UgIbdjpC
-         884Pbwmt7J8eW1+b69A/MfJsRxaJ6hLURkTXZFRa+hxYaZCSo+CqoU06jamEiyUFrl0i
-         ufgbTuCL1BVbLj/Wivfk2oochP3rt0gHXc9vDcZYIwCh+jYB3yz9a8DRS6Rsx0ZObCm4
-         4nNuF29IKv7jYOg6snvJeBTkbfscwxId0RB6ndVAYFQbhe9deL5Sf8lRWK84Nc4O437e
-         7fEfqJVBCoYffgQKg6u2kZBRGWVjd+XceqwCY4A6UYXOczMV2Dr3nicv0S6zUgF0DFTY
-         dX9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772585060; x=1773189860;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TShG9/ZQ57MX/DikZ+o/2CGuAlBGVqbkJk365Mxb28=;
-        b=Rkc4+9GQOQ1fty3IvbrpAMnic/cuN7W+IAYWi3rqV5Ywi+DqUhunfh8CEXqZH/w7T+
-         2Mfsvhn5BeNmk5H8XBsUTzV6buRJ5pkaU0rP1Oje/41UZ+80Yr1Hg9E11eHnku5bFl0b
-         ruXf2gcvTtk9CQNtfWYq7eJuQiVivlnw7A8HyRYDv51PL7NAmCNRJxB8CGZ578g3vhsP
-         /BUSrN6bmkJNXjk3oCruzW+N7rvEpydzVvAa4VlDDDBe6RQNNLsR/6CLr8O0YaElCI48
-         Cd6Sk/imfCtgdGXHXaTX2Jq5PgpWd7OR27osQa94FD4ZeLZ0NMrCaX/BoFbaMtAc/ATs
-         SyGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLQyNJvePlBrAdyejJHWhYsJnvqPXAkr5zHoYEQJlqklDRqQgIquMn8/taqGHcQHMV1iJHnJM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0G4hwTCMerbBq8ClZPUR1UzI3d5MBhcYT4RqlQmeRjHQKfYW+
-	NFAFfukZPm9yQqpVLalZFP1jPLlb2GZ22xklbINRttT1hlT2Fpg0WzXkrTW++TuFc/lnnge69BN
-	2jIZE/g==
-X-Received: from pgbfq7.prod.google.com ([2002:a05:6a02:2987:b0:c6e:18ac:7af8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d794:b0:393:e25b:7d77
- with SMTP id adf61e73a8af0-3982dd55feemr145106637.13.1772585060135; Tue, 03
- Mar 2026 16:44:20 -0800 (PST)
-Date: Tue, 3 Mar 2026 16:44:18 -0800
-In-Reply-To: <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
+	s=arc-20240116; t=1772585331; c=relaxed/simple;
+	bh=srNCTgIzwqrp/TQebCwJ10Pl9GUqhQRWYVtu5EDbofc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BAKFeM5l0zEdsyJfHzRRH81p8b9qB4hhdzhBKJkxp4hLpexWPX8jM4HgyJ9xPEDi2QvBwrWq+LFiFPuoitiXHhdzAJc04ir3ADlwzYY0ZOy2JV4HMd32mrz5aksp4GJlxKI6o2bazFucZs7GoFtCHAe57smC8lUzso9PVFllVsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXaNmIVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE8BC2BCB1
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 00:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772585330;
+	bh=srNCTgIzwqrp/TQebCwJ10Pl9GUqhQRWYVtu5EDbofc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZXaNmIVD3E7aiOiGOqNFKUSOuE0skRVD9JgqpDduL5bwZDx88zHGugr471I+GrfBs
+	 6k1SGBjPAthLeJeOhR07WuyA1/gH54Wdtqnm4o8XQUHSkBHaqwBOak76L8PAdBMDkE
+	 h+zv5cgLmR4JoP9hhu7XsI9VpW7+8Fi3mh8IIx6ztFVnX3+XJ+pjcu2XZvmhCWFMcr
+	 Kjq69+j/v0YTtz+Vrs+1vQFFJfWWHQ+PYqs1Q3V+moptGFRWDSOBFMj47YNjGe9cjG
+	 kSmt5SX72hO2dbV1sDhK99SSE3kUNg8IeI+gLL7qPh65KuXcgPliahY6zcoboJTvNv
+	 ZlmCLVGv1cSpA==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b9358dd7f79so985673766b.1
+        for <stable@vger.kernel.org>; Tue, 03 Mar 2026 16:48:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXE55XJly41Q0oAssGf133/8fnAY/+P7xmjqOJdJEvyWpKrFef0prkS/ZqOLE3Rgmsne3zct70=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytgG4uEl9vt6ocnlcAC3gQ+JuAqOIVNnZ8PqvIl+Hc+sRwLrzj
+	4X46+hvwf9rkpMn1Sb8OhRHmMZKrvkAi5rDIXRys9arPJxmlaVQjZmjHjkWm5/bhxsbrkF5SJ2J
+	bAjd7u6mj8zRYC1RPkaaFhSkm4w2I8Ro=
+X-Received: by 2002:a17:906:ee86:b0:b83:e7e:3732 with SMTP id
+ a640c23a62f3a-b93f13f100cmr4213966b.30.1772585329458; Tue, 03 Mar 2026
+ 16:48:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260303003421.2185681-1-yosry@kernel.org> <20260303003421.2185681-4-yosry@kernel.org>
  <aacOPmIS7HUtzJA6@google.com> <CAO9r8zMDQkHAMKVewDgvH6_WAHo5eL4=Xwf7h=87JPOJPYQAFQ@mail.gmail.com>
-Message-ID: <aaeAYv2i7wjGahY4@google.com>
+ <aaeAYv2i7wjGahY4@google.com>
+In-Reply-To: <aaeAYv2i7wjGahY4@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 3 Mar 2026 16:48:37 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zN8f1o7nRv7DKMt2d4p6ztR6jETGeX1XbMze=fUcYpZrQ@mail.gmail.com>
+X-Gm-Features: AaiRm510OOg5AYMSGYnGxcomlla2uxiUYaXv3s-lTkb0zvsn67wqnt6OxrmhX20
+Message-ID: <CAO9r8zN8f1o7nRv7DKMt2d4p6ztR6jETGeX1XbMze=fUcYpZrQ@mail.gmail.com>
 Subject: Re: [PATCH v7 03/26] KVM: SVM: Add missing save/restore handling of
  LBR MSRs
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org, Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 65B871F8F9D
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 50A501F8FFD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-222959-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-222960-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On Tue, Mar 03, 2026, Yosry Ahmed wrote:
-> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > So all in all (not yet tested), this?  If this is the only issue in the series,
-> > or at least in the stable@ part of the series, no need for a v8 (I've obviously
-> > already done the fixup).
-> 
-> Looks good with a minor nit below (could be a followup).
-> 
-> > @@ -3075,6 +3075,38 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-> >                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> >                 svm_update_lbrv(vcpu);
-> >                 break;
-> > +       case MSR_IA32_LASTBRANCHFROMIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.br_from = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTBRANCHTOIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.br_to = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTINTFROMIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.last_excp_from = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> > +       case MSR_IA32_LASTINTTOIP:
-> > +               if (!lbrv)
-> > +                       return KVM_MSR_RET_UNSUPPORTED;
-> > +               if (!msr->host_initiated)
-> > +                       return 1;
-> > +               svm->vmcb->save.last_excp_to = data;
-> > +               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-> > +               break;
-> 
-> There's so much repeated code here. 
+> > There's so much repeated code here.
+>
+> Ya :-(
+>
+> > We can use gotos to share code, but I am not sure if that's a strict
+> > improvement. We can also use a helper, perhaps?
+>
+>
+> Where's your sense of adventure?
+>
+>         case MSR_IA32_LASTBRANCHFROMIP:
+>         case MSR_IA32_LASTBRANCHTOIP:
+>         case MSR_IA32_LASTINTFROMIP:
+>         case MSR_IA32_LASTINTTOIP:
+>                 if (!lbrv)
+>                         return KVM_MSR_RET_UNSUPPORTED;
+>                 if (!msr->host_initiated)
+>                         return 1;
+>                 *(&svm->vmcb->save.br_from + (ecx - MSR_IA32_LASTBRANCHFROMIP)) = data;
+>                 vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+>                 break;
+>
+> Jokes aside, maybe this, to dedup get() at the same time?
 
-Ya :-(
-
-> We can use gotos to share code, but I am not sure if that's a strict
-> improvement. We can also use a helper, perhaps?
-
-
-Where's your sense of adventure?
-
-	case MSR_IA32_LASTBRANCHFROMIP:
-	case MSR_IA32_LASTBRANCHTOIP:
-	case MSR_IA32_LASTINTFROMIP:
-	case MSR_IA32_LASTINTTOIP:
-		if (!lbrv)
-			return KVM_MSR_RET_UNSUPPORTED;
-		if (!msr->host_initiated)
-			return 1;
-		*(&svm->vmcb->save.br_from + (ecx - MSR_IA32_LASTBRANCHFROMIP)) = data;
-		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-		break;
-
-Jokes aside, maybe this, to dedup get() at the same time?
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 68b747a94294..f1811105e89f 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2720,6 +2720,23 @@ static int svm_get_feature_msr(u32 msr, u64 *data)
-        return 0;
- }
- 
-+static __always_inline u64 *svm_vmcb_lbr(struct vcpu_svm *svm, u32 msr)
-+{
-+       switch (msr) {
-+       case MSR_IA32_LASTBRANCHFROMIP:
-+               return &svm->vmcb->save.br_from;
-+       case MSR_IA32_LASTBRANCHTOIP:
-+               return &svm->vmcb->save.br_to;
-+       case MSR_IA32_LASTINTFROMIP:
-+               return &svm->vmcb->save.last_excp_from;
-+       case MSR_IA32_LASTINTTOIP:
-+               return &svm->vmcb->save.last_excp_to;
-+       default:
-+               break;
-+       }
-+       BUILD_BUG();
-+}
-+
- static bool sev_es_prevent_msr_access(struct kvm_vcpu *vcpu,
-                                      struct msr_data *msr_info)
- {
-@@ -2838,16 +2855,10 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-                msr_info->data = lbrv ? svm->vmcb->save.dbgctl : 0;
-                break;
-        case MSR_IA32_LASTBRANCHFROMIP:
--               msr_info->data = lbrv ? svm->vmcb->save.br_from : 0;
--               break;
-        case MSR_IA32_LASTBRANCHTOIP:
--               msr_info->data = lbrv ? svm->vmcb->save.br_to : 0;
--               break;
-        case MSR_IA32_LASTINTFROMIP:
--               msr_info->data = lbrv ? svm->vmcb->save.last_excp_from : 0;
--               break;
-        case MSR_IA32_LASTINTTOIP:
--               msr_info->data = lbrv ? svm->vmcb->save.last_excp_to : 0;
-+               msr_info->data = lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
-                break;
-        case MSR_VM_HSAVE_PA:
-                msr_info->data = svm->nested.hsave_msr;
-@@ -3122,35 +3133,14 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-                svm_update_lbrv(vcpu);
-                break;
-        case MSR_IA32_LASTBRANCHFROMIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.br_from = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTBRANCHTOIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.br_to = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTINTFROMIP:
--               if (!lbrv)
--                       return KVM_MSR_RET_UNSUPPORTED;
--               if (!msr->host_initiated)
--                       return 1;
--               svm->vmcb->save.last_excp_from = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
--               break;
-        case MSR_IA32_LASTINTTOIP:
-                if (!lbrv)
-                        return KVM_MSR_RET_UNSUPPORTED;
-                if (!msr->host_initiated)
-                        return 1;
--               svm->vmcb->save.last_excp_to = data;
-+               *svm_vmcb_lbr(svm, ecx) = data;
-                vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-                break;
-        case MSR_VM_HSAVE_PA:
+Looks good to me!
 
