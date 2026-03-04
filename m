@@ -1,250 +1,217 @@
-Return-Path: <stable+bounces-223085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA+fNzJWqGlutQAAu9opvQ
-	(envelope-from <stable+bounces-223085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 16:56:34 +0100
+	id KICxFCZbqGm0tgAAu9opvQ
+	(envelope-from <stable+bounces-223086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 17:17:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4AD2036F4
-	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 16:56:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8E02040AD
+	for <lists+stable@lfdr.de>; Wed, 04 Mar 2026 17:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D668325F91B
-	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 15:46:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDC8B319A9C3
+	for <lists+stable@lfdr.de>; Wed,  4 Mar 2026 15:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE5C34889A;
-	Wed,  4 Mar 2026 15:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B803735C1AC;
+	Wed,  4 Mar 2026 15:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2eKO2EX"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lYbNF7JB";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kOeqw7mt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EA833986F;
-	Wed,  4 Mar 2026 15:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D635C19B
+	for <stable@vger.kernel.org>; Wed,  4 Mar 2026 15:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639076; cv=none; b=b3Z884nQrJKQL2Ri37J//oGZxFvVRFZpdkw2RRkXdZDSIhUDrN2F/zcL0fl7fL7CZdmLgNItob2+oT/17iDvgZgtSgmdJZnbb0GRGlBhDy/L38goZoaR91WZ2sf4Rd2a+Qg9PEvI5wXHDSnLa4j8fNipB0YwmwejMFs/wRXb3KQ=
+	t=1772639955; cv=none; b=Qo2UnFcka6cSeOoumzM7xgqIlbVqxpmlyMU+3Uv+7hF8fyjkqwXr+FfcRaxW1IV72FXHSTdQlpJY8qZAbvX21Y6cNktoPUOxrLZIhUPKZ6egKdAdS0cJIyqQRr/F2EOqS1X791tobfbJvguwTFXTXVBI1lUdZLhBsDcORnbrwZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639076; c=relaxed/simple;
-	bh=dZwirCIyW2p8OcjaEFKmNp3sEpiEgyQvrSbUghh+aNY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KOnIE+b3feopvu6EKqdgVZV4HA0QBN7hgXSUsvbAGWfjBW4nVxtgEFsUYnL85GNCI8DFgnMUoqwXR6BuhFUp5sxKJ6oOVwZzlvsBS9uVw3KtKqedjSntd7DtTfUm5sZOkFb92pZofyIR9yuIdoaX8DuzevI1nhos5UFnVNXJNCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2eKO2EX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7815DC4CEF7;
-	Wed,  4 Mar 2026 15:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772639075;
-	bh=dZwirCIyW2p8OcjaEFKmNp3sEpiEgyQvrSbUghh+aNY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2eKO2EXN0Yndk4JZLFaO6HTOloUQLOoi3bMrVverVYCxo5Gpc6zZpOV1nyWSyqqe
-	 boJYOtyoSMo4fKtY4lQWAuV9kqRANiYTEm5FpSTMDkdiRe279zWRuFgxupg/X3iCSI
-	 rJAQeoZ1SMmt1NxtmzkER9KY1WFuj1a5SJ5rotKMehNVAcPhMH0qngNV1jjBwzxx/t
-	 8dXx7M5PtAHCsYv9cB1rtyZA0DXPgmV/A6mXvfP1MeO0c8CixNz3u+8AyXlr4uA0rH
-	 8jnKJvJRU5LuHd74eaBPfxDkcf4AlMqt3TQXdDf12tSceu0pRWIOmY/gB6O/iDvJCy
-	 5I3ETWuw5pTqA==
-From: Sasha Levin <sashal@kernel.org>
-To: Tj <tj.iam.tj@proton.me>,
-	1128861@bugs.debian.org,
-	Neil Brown <neilb@suse.de>
-Cc: Sasha Levin <sashal@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	stable@vger.kernel.org,
-	chuck.lever@oracle.com,
-	jlayton@kernel.org,
-	neil@brown.name,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com
-Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No locks available
-Date: Wed,  4 Mar 2026 10:44:23 -0500
-Message-ID: <20260304154427.443501-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+	s=arc-20240116; t=1772639955; c=relaxed/simple;
+	bh=vnBaznsUtdRXwsaoDcfLLsmORSTmwPR5u27ihsD0I0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Apg4N7CcoWZj3JjJ4OUcB5bryqpMQASaVHLySsPhI4DMlJ0YrDr20aYtDgKX/GUmu6hTF9bMjWMPr0uoAJCp2MoASm3rECP/R8izD0Ion6yBVhrCLvOmtuoUHNmHuFkq2O7vPrtwfe+77mEjV+aHQDf/WAO8LSSbCN1Dqk6rqSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lYbNF7JB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kOeqw7mt; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 624BuLcT2306023
+	for <stable@vger.kernel.org>; Wed, 4 Mar 2026 15:59:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qlC+44Mz33ya2afMC1yUGlrnDLRTuhy1rxEDEUPmn5w=; b=lYbNF7JBXFqEla3s
+	H2Lu/VCqq56niEBFb6N1OaX5Frpn/Fsc9Q4A3csaHmKlwXlLdUH6m+2fG5IWQVf5
+	ClUTDMakAt56hk7VXQ3o74iYQN3O+KdsTRuBclO1+nQk7Q6iCWKCnREXrjgdDHZf
+	3rXXB5rNCi8B1suDvc14rnEGqUmard9PsXsUp15Bw4vDsSBiiaVs3enhoYGiBP1C
+	C4ZVdJ0R3ky4rXZyFmd0gkLJlsAh3g/cLRuofGh6XSFEMY8Dxn1Cck1K8k7522lO
+	rAxu62ggIrNjsWo+FSFxZ539evsKHCw3Tm+MJQYvo/AI/k1iYJAEYGd6bWDg1fjd
+	Ym4FGQ==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cpau8tsbm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 04 Mar 2026 15:59:13 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ae405e95f5so44450215ad.2
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 07:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772639953; x=1773244753; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qlC+44Mz33ya2afMC1yUGlrnDLRTuhy1rxEDEUPmn5w=;
+        b=kOeqw7mt6lfznZ3IBsLrvxHer57B2w66LQfeJDtVbO6L0loxx7laXofwDsl51hMO04
+         itCyHuo3r49T2wMRU3Grobr/4aM/KT8zmXIGg6ba0ETXFu3Nf3jCM7ppQZ+mNRWpLTFI
+         Lqehe+S9vLBhdJ1ESE/zV2ciOORMry52w33ZJsjE4Ukge2Xz4QESVlgVweFJui4p80G4
+         mTOeNgyZLIhYD65rHNDHptM9N26vMwCmWaoL0DsIsgH2JZ13xaQ/s2cByesf/PjQPPc5
+         p17neEFVlAt+FLLNTJMoCL5tN3xyx/QzSPv4RyuBWxyJElC1qaLdemIKR7pwCXnniwUb
+         ECxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772639953; x=1773244753;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qlC+44Mz33ya2afMC1yUGlrnDLRTuhy1rxEDEUPmn5w=;
+        b=dAiKQXuVJpGsYk7w4YCOMj598ko/f3f3U2fOFH2QbHEtsc0YaIOCFL1rjcVaGF+4i3
+         CA+A79W4ONdhv89oGp+cUs8dgruOnkwmm5GxLufvits4WjFWp4LqgB4a6/LoZU/mlmA2
+         8sIHmlSWp5sBpd6fpeGU0MoQXzEESAWEoTOhyx1bWpCeYXRava6CgiIM7KyMyj82vB8f
+         mj5tGf3dfIBPAm7jxsfxbuHNMtTA3/Su7psqo30oyJe6KisgcuAbGzlMlf4ZXCyzec+j
+         TnHgjK9+HcryZwOEBBLzWyfvSoBV3Pg3IlccSCRQyNTjZ1k35LPt+/FhN0YC+tWj9PMW
+         GJ2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXW81e3we881mYMexXWV2GwxIz9wXfXmCpev+mjnec6snYQXOh+kJ57fSp2vuePZwpbB1VvARg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo2xo0RKhwNztydB7jeq26gA+p4PH1GCh+sQi6IXAodTHJKMyP
+	SDxkKa0Plksyw0SaKcoll1RV0v9gQdokIyTjfit5NkH8XxajbC2Q0ivO2GBQ4jTaKiwSxO8CANl
+	FdIETEC9VcxOrj0LoQ7XUfufbT2HRa7EH6GvuyTHLPSCKzJEEkK+gFNEOuEA=
+X-Gm-Gg: ATEYQzzbAnSTpOm5cefQtEKkbYnVxNotzsfOufsBtrGgQrwFv9L0RZP49LNRnuX2dIa
+	KKLob+jjYqD5fXQ0FmXyO/JYb+CH3NlW0DdXtxmBpEIkpJumIKzmmh/23Uueq/Nk2IYtrIZKRW9
+	HwfuVZI5gJIpus5FaHc4zIjWms2O/c6fy6vUdxvKpB0HMlXknt/NqPswbSbkJ+S6PaAPvppwS6n
+	zBwuwP9x/pSFlM4TR+CBD9ivKrroxWV958GnGKevUdEAJtJqoI5LUmPj2+ebFb0/HN/+mBkpLWX
+	W7anlRJxSRz5kXViDMFsqgAN0soaHER6YpADC0Jrxe8TmcQcSYdf311uK5W2AeejJXO/D7/YtZm
+	D61l0S3hM0Z0gqzQE75jA0c+l5FrVWynzxWUMEnHjioTmpqQchOAlTg==
+X-Received: by 2002:a17:903:19c7:b0:2ae:670e:309f with SMTP id d9443c01a7336-2ae6aaf6261mr23162315ad.34.1772639953003;
+        Wed, 04 Mar 2026 07:59:13 -0800 (PST)
+X-Received: by 2002:a17:903:19c7:b0:2ae:670e:309f with SMTP id d9443c01a7336-2ae6aaf6261mr23162065ad.34.1772639952489;
+        Wed, 04 Mar 2026 07:59:12 -0800 (PST)
+Received: from [10.204.101.56] ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae45e07626sm131016495ad.39.2026.03.04.07.59.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Mar 2026 07:59:12 -0800 (PST)
+Message-ID: <9ba09cc5-daaa-4406-bf83-017f500a530d@oss.qualcomm.com>
+Date: Wed, 4 Mar 2026 21:29:07 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5A4AD2036F4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] media: iris: fix use-after-free of fmt_src during MBPF
+ check
+To: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org
+References: <20260304-fix-use-after-free-of-fmt_src-during-mbpf-v2-1-b4c78d1bf764@oss.qualcomm.com>
+Content-Language: en-US
+From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+In-Reply-To: <20260304-fix-use-after-free-of-fmt_src-during-mbpf-v2-1-b4c78d1bf764@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=AJS1/0o2 c=1 sm=1 tr=0 ts=69a856d1 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=84YHRGVAtpGMlvhcKo4A:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: ooUnArXGRtZ6Uxl857o09NZZnC-XcMQL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDEyOSBTYWx0ZWRfXy2ZMwHcpri/y
+ ggOH3e/YJYkLiSLuwNYzinDq+WwyTpZSz4GOfU7NUQ5F31cYRK5h0Z32kH7E1465PMHmJmG2lPW
+ JtBarK56ciw5zu8tXrnWqGMeKc6SLjCYJmpu7HM4+Wi9wY8CxuaBIbzUc+Gmu+wMU+0KEZ7gWg6
+ A3UFkLTdp7T4wmrkzj7gb0kuDMeiLrH+gDA4/tUGJL+qTBCtQXpK3e3/sDFOG6/tWxrzvzF+OJ5
+ QCq0skmaR8vKtnV4XddvI3jLs/i/c/dgghX0If5BIz2Ho8xJXpgzBfDGPj3iHXSOYVHumZtYI+y
+ Y5E6dkXVyMUGJSy0Dh1AJBtUq/vGktJbsoDnyIvvlfXYtwPXQHIlYbagxdxbcZpjYufyin1jiFY
+ O6wXJmyB7WyC5R/057b+KWYzl8TeDJFNfeX7B8rtsRywGN6y1Fuml6XFIJ5sv5cyVyEHoAhKoBp
+ XHNrZG+lWaXYho87opw==
+X-Proofpoint-GUID: ooUnArXGRtZ6Uxl857o09NZZnC-XcMQL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-04_07,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603040129
+X-Rspamd-Queue-Id: AA8E02040AD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223085-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223086-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[vikash.garodia@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-This response was AI-generated by bug-bot. The analysis may contain errors — please verify independently.
 
----
+On 3/4/2026 2:28 PM, Vishnu Reddy wrote:
+> During concurrency testing, multiple instances can run in parallel, and
+> each instance uses its own inst->lock while the global core->lock
 
-Bug Summary
+drop global
 
-Commit 4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK"),
-backported to v6.12.54 as 18744bc56b0ec, removed a critical
-permission downgrade from nfsd_permission() that affects NLM lock
-requests. This is a severity: functional regression -- exclusive
-(and shared) file locking via NLM fails with ENOLCK on files where
-the requesting user lacks write permission on the inode, such as
-read-only ISO images served over NFSv3.
+> protects the list of active instances. The race happens because these
+> locks cover different scopes, inst->lock protects only the internals of
+> a single instance, while the MBPF checker walks the core list under
 
-Stack Trace Analysis
+MBPF ?
 
-No stack trace was included in the report; the failure is a
-user-visible ENOLCK error, not a kernel crash or warning.
+> core->lock and reads fields like fmt_src->width and fmt_src->height.
+> At the same time, iris_close() may free fmt_src and fmt_dst under
+> inst->lock while the instance is still present in the core list. This
+> allows a situation where the MBPF checker, still iterating through the
+> core list, reaches an instance whose fmt_src was already freed by another
+> thread and ends up dereferencing a dangling pointer, resulting in a
+> use-after-free. This happens because the MBPF checker assumes that any
+> instance in the core list is fully valid, but the freeing of fmt_src and
+> fmt_dst without removing the instance from the core list is not correct.
+> 
+> The correct ordering is to defer freeing fmt_src and fmt_dst until after
+> the instance has been removed from the core list and all teardown under
+> the core lock has completed, ensuring that no dangling pointers are ever
+> exposed during MBPF checks.
+> 
+> Fixes: 5ad964ad5656 ("media: iris: Initialize and deinitialize encoder instance structure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+> ---
 
-Root Cause Analysis
+Once updated,
 
-The bug is in the interaction between nlm_fopen() in
-fs/nfsd/lockd.c and nfsd_permission() in fs/nfsd/vfs.c.
-
-Before 4cc9b9f2bf4d, nfsd_permission() contained this block:
-
-    if (acc & NFSD_MAY_LOCK) {
-        if (exp->ex_flags & NFSEXP_NOAUTHNLM)
-            return 0;
-        else
-            acc = NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE;
-    }
-
-This downgraded the permission check for lock requests from
-MAY_WRITE to MAY_READ, because file locks do not require write
-access to the file data -- only read access is needed.
-
-Commit 4cc9b9f2bf4d correctly moved the NFSEXP_NOAUTHNLM bypass
-into __fh_verify() (fs/nfsd/nfsfh.c, line 377) and added explicit
-NFSD_MAY_OWNER_OVERRIDE and NFSD_MAY_BYPASS_GSS flags in
-nlm_fopen(). However, it dropped the permission downgrade (the
-"else" branch) entirely.
-
-The call chain for an exclusive NLM lock is:
-
-  nlm_fopen() [fs/nfsd/lockd.c:50]
-    access = NFSD_MAY_WRITE | NFSD_MAY_NLM | NFSD_MAY_OWNER_OVERRIDE
-             | NFSD_MAY_BYPASS_GSS
-  -> nfsd_open()
-    -> __fh_verify() -> nfsd_permission()
-      -> inode_permission(inode, MAY_WRITE)   <-- FAILS with -EACCES
-  -> nfsd_open() returns nfserr
-  -> nlm_fopen() default case returns nlm_failed
-  -> client sees ENOLCK
-
-For files like ISO images (typically mode 0444 or 0644 owned by
-root), the requesting NFS user does not have write permission, so
-inode_permission(MAY_WRITE) fails. Previously, the downgrade to
-MAY_READ would have allowed this to succeed.
-
-The NFSD_MAY_OWNER_OVERRIDE added in nlm_fopen() only helps when
-the NFS credential matches the file owner (checked at
-fs/nfsd/vfs.c:2858), which is not the case for files owned by
-root when accessed by non-root NFS users.
-
-Affected Versions
-
-This is a regression introduced by:
-  4cc9b9f2bf4d ("nfsd: refine and rename NFSD_MAY_LOCK")
-
-Mainline: affected since v6.13-rc1
-Stable:   v6.12.54+ (backport 18744bc56b0ec)
-
-Any kernel version >= v6.13 or v6.12.54 is affected. Versions
-prior to v6.12.54 in the 6.12.y series are not affected.
-
-Relevant Commits and Fixes
-
-Introducing commit (mainline):
-  4cc9b9f2bf4d nfsd: refine and rename NFSD_MAY_LOCK
-
-Stable backport:
-  18744bc56b0ec nfsd: refine and rename NFSD_MAY_LOCK (v6.12.54)
-
-Predecessor commit that removed NFSD_MAY_LOCK from NFSv4:
-  6640556b0c80 NFSD: Replace use of NFSD_MAY_LOCK in nfsd4_lock()
-
-Existing partial fix for a different aspect of the same regression:
-  0813c5f01249 nfsd: fix access checking for NLM under XPRTSEC policies
-  (Fixes: 4cc9b9f2bf4d, by Olga Kornievskaia -- addresses only the
-  XPRTSEC policy bypass, NOT the permission downgrade issue)
-
-No existing mainline fix for the permission downgrade regression
-was found.
-
-Prior Discussions
-
-No prior reports of this specific NLM permission downgrade
-regression were found on lore.kernel.org. The only related
-discussion is the XPRTSEC fix by Olga Kornievskaia (commit
-0813c5f01249), which addresses a different facet of the same
-4cc9b9f2bf4d refactoring.
-
-The original bug was also reported via Debian bug #1128861.
-
-Adding Neil Brown who authored the original commit 4cc9b9f2bf4d.
-Adding Chuck Lever and Jeff Layton as NFSD maintainers.
-Adding Olga Kornievskaia who authored the related XPRTSEC fix
-(0813c5f01249) and is an NFSD reviewer.
-Adding Dai Ngo and Tom Talpey as NFSD reviewers.
-CC'ing stable@vger.kernel.org as the regression affects v6.12.y.
-
-Suggested Actions
-
-The fix is to restore the permission downgrade for NFSD_MAY_NLM
-in nfsd_permission() (fs/nfsd/vfs.c). The following patch should
-resolve the issue:
-
-  --- a/fs/nfsd/vfs.c
-  +++ b/fs/nfsd/vfs.c
-  @@ nfsd_permission(...)
-       if ((acc & NFSD_MAY_TRUNC) && IS_APPEND(inode))
-           return nfserr_perm;
-
-  +    if (acc & NFSD_MAY_NLM)
-  +        acc = NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE;
-  +
-       /*
-        * The file owner always gets access permission for accesses that
-
-This restores the "else" branch behavior that was lost in
-4cc9b9f2bf4d: for NLM lock requests, the inode permission check
-is downgraded from MAY_WRITE to MAY_READ, since file locks do not
-require write access to the file data.
-
-The reporter's workaround of keeping the check in nfsd_permission()
-while also having the copy in __fh_verify() confirms this analysis.
-
-For immediate relief, the reporter can either:
-1. Apply the above one-line fix and rebuild the kernel
-2. Downgrade to v6.12.48 or earlier in the 6.12.y series
-
-Neil, could you review whether restoring just the permission
-downgrade (without the NFSEXP_NOAUTHNLM check, which is now
-correctly handled in __fh_verify) is the right approach?
-
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 
