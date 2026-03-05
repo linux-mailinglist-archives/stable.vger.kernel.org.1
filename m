@@ -1,139 +1,312 @@
-Return-Path: <stable+bounces-223250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFuGMp6oqWlSBwEAu9opvQ
-	(envelope-from <stable+bounces-223250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:00:30 +0100
+	id KF6SKDmrqWlSBwEAu9opvQ
+	(envelope-from <stable+bounces-223249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:11:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9792150D9
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:00:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B2C215311
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28B74309E297
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:59:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BAD123027585
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1063CB2D3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9973CA4B4;
 	Thu,  5 Mar 2026 15:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="d5HyHeOO"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k726zjVG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ceTl3w7l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E51F262BD
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 15:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267DC30DECC
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 15:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772726359; cv=none; b=pEalFNct7nt0qcsHwuaDbZkYxUHvSIQjpkOIK0BmkIhnSRGOLFcywA6FlSdI0Y5j22dJNf7NL7QlfIRM0DciIqGG/4bcX0hd94eunkj+/Sh3hkbo5chi8UXnPhSVtcRl/YrURQsqoVtXlQDhHsomdBxnI4jz5sk5mlSqjXIPDsM=
+	t=1772726359; cv=none; b=nNdDTmCFF2MoLPK+vNp+bCccVZ8YskMJTPAswA6ARlBhR6c+VQQy0Rie0vMYMxkryCeFFFd/lgODwnugItn8GMP9fdOcTqSyx8szXzmVt00AvvK95Y+N1QDEzdLjtg6njF6/ZvvOJsmDhXrDqDM/fTuEATPuNHC4FZuimQpeUGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772726359; c=relaxed/simple;
-	bh=I1meZNh+BiNepSvnJPVUQy8FDRlcccIhL0PBmHAFLGc=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=UbbfvISYfPla/CK91G3YutwOKSDgBcYS5hsEjwua46ULCIZRayDjogpST+JpPVyjfot0EETPNtOgl6ng7U5u1XjYIi15wr3rl1f5wIUouiDJ2yQYjgqByQt5GFIBcUTut2W3pxR0PYEqqgLBEW0LoK6d7QGOGag0kaNOHkIZ73Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=d5HyHeOO; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1772726286;
-	bh=I1meZNh+BiNepSvnJPVUQy8FDRlcccIhL0PBmHAFLGc=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=d5HyHeOO/RQz6ZtAR2tZcsokPXIWE5Qck0u48iFgTLxnvwfZhRa75ChTDQGicuL8R
-	 V6I41ECEV0j3IZ8/IqEHCe5YD9O+p64mpibB8rRCHd0ZuFlUO08k9FujnQhbMxdt4/
-	 oxjNkqLpL2SWMdSAnD6aUjMPTCNWG6q6w7AhE/h4=
-EX-QQ-RecipientCnt: 5
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqSHNwC2Dqd2M/t+aQldaspwowpDBZ8q7ts=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: BwGsXqMA5ZG3nHuPfj/KtL6UnHVnNSKTWKRz1P2EUAU=
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz7b-6t1772726284t6d3630ea
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?VGhvcnN0ZW4gTGVlbWh1aXM=?=" <regressions@leemhuis.info>, "=?utf-8?B?cmVncmVzc2lvbnM=?=" <regressions@lists.linux.dev>
-Cc: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
-Subject: Re: [ REGRESSION v6.6.128 ] build failure on x86 because commit 22e460b6333a
+	bh=nsz4kgvAEf+0wvPBtAtgWX1ce/NBoJxyIvXI/GBZp/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q/ZM1e7WW6yZVuDHxgklR6OWCbHbuxwVlXQ1yG/b8JjHMx/7dzUauoJj6cBDjx+Q8KFzvSKAxuDWaB92iTQJ/R0+900Gd9Q5zwurnRzo/u8717zRIUO21XQBBPJvtD8M6BCOV/VBS/pFmyGv8uFQd3/TqbNULpktFvqcbemFHso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k726zjVG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ceTl3w7l; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 625AFpMu1517930
+	for <stable@vger.kernel.org>; Thu, 5 Mar 2026 15:59:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	gJfVH6ArqBR8VxIevRdjDVBkwzQbm4lnsd8aP92U7Tg=; b=k726zjVGqsDbltY6
+	l3mDbNIktlyZSUcmAHUEUQ9uj9BxbnOjPARzrXKAuCz2a5Z3/sK1HRm8X/2ZGHwP
+	f9qFwRA8hR0SLE7YPYEvDXd4vvaAM75wEB6SkgEhe8zvBjiUw/Y9MMJ0VmTf3fGK
+	SPRQs4Bcyr6LD0EcG48CUlW1dYweV+9uOvcYLAq3bK24abFvULob5ylriq+tdbqT
+	JrEoHHjZVU455RWI58rLBltSuH2/CAeM7Eo6VnKih1baStv01C/tk6XvYcCwcmXy
+	3zDCnF6kEOzm92tDwusjV06gjC520oc9YM6apvuvKdhnpT2KOusd/vFNv2PVDsgr
+	pt2NkQ==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cpuptkd7q-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 05 Mar 2026 15:59:17 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-506549eb4b7so620407341cf.3
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 07:59:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772726356; x=1773331156; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gJfVH6ArqBR8VxIevRdjDVBkwzQbm4lnsd8aP92U7Tg=;
+        b=ceTl3w7lvUe5U5b3Kh6zob/PjuYpym6th8ctFsktrwwphl6MK9XtY7P56+gLYv8Og/
+         CZPITVhWGxTEOp5XJuIA5T+1gOxn0n7q6wsaNLhNoIszo/l562nkTPFVCUa0D8SGATGT
+         opsdegMzEtXzXjqtL3+9ebnGKjy865pfbAWJuQlavlKa0XDxbuwSmWVNHXF1WN4d41PS
+         izLcGwgqpOMT7tDto2aUZ3ve54ya3dOLEFlariGYWSfp2NGqMNhBWZSPc09S/hWjoTu3
+         7u5ELgotgmlbmwjm4VD1VOeljTbUCwg9yZfHE5wC70ytNNHkUib4uS2qLy2SrWFEfgzD
+         iJUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772726356; x=1773331156;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gJfVH6ArqBR8VxIevRdjDVBkwzQbm4lnsd8aP92U7Tg=;
+        b=JEY62DGvFgZDqO8Vg6owSBnHRY35FLNC6GXAcbqRBXVVOy2BEVqeMY1Gq/vOXmg2NW
+         cKSlP1Ww5Q0JpdBFMynWouy6AWQG2gu2T5RG+aM+7LyKUbe7vFph5TK1Gi01ruWKOw7S
+         eIQTei7CW/535TLP5eSZoG6bjadxNe8JXIpCiO3ttr06FgtQ9J3/TyhXyvmZO1X/IOW5
+         UQz/r/rJTGYIMp+0j3GDO56vy2LG4AQuC8XOIPQ4wzS2G2HH1DELxaNB5KIqCo7G9hdC
+         AUdJcSaEdUb9osgs5epQeAg+iTRQVnLlXLgzLZxMoJRNONJHegNeYN85fO8e8I1DxxUM
+         0DoQ==
+X-Gm-Message-State: AOJu0YwyHv1wbQrLyFhkkWVkvA07Ns5ZTAxrvZ4xWL3wm/mTPl0SIXbV
+	husS9XQqPOY0TVEkU5VdaKotcLe7Mk0nhUBoeaWEAR7iLG/DSrdXnDKIDYU0uYGS/MajLRlpBga
+	G/sd5uixqlX76zAkK2UmqzynZQSJoIPS6xuh96ACgGqpeutzTpTTmNcNrYBs=
+X-Gm-Gg: ATEYQzyclYawUcLwOrw7UmXdg8WRUMEbF0ddL9Rugo/kyk9KGs3sI7LyXvnxiIPydtq
+	f8JqIDKF5sqN41f46TTNWr6SS0rMTvt4/QlhAri/XlakAtQNdsV/34j2yplQdwj1xAzh0v25ynN
+	F92l7w2eybvtvg+C/VswTqPniis4gbpHmwhrvQW/Mfzceg+kI/X0geS2ayEjRJmWLSN8qtuQ/Eh
+	ktpNpQmEpp2522auYqU4kvxzIULASsjLbpW32JTPrH0ywcQJfQABU0JffyOPjFvAAR++GuNICrV
+	sP1iywMu+aTPvurtFdAkpiEmUj5QfoVv5rkNGqKzntCf0yxRxwuusMj+pMnt3blmkK5TIUE/K+8
+	2Sv7g68HMvfB8p4holC+hrPOdaYTkI6qBhKisWw7wJx88joFT
+X-Received: by 2002:a05:620a:4096:b0:8b2:74e5:b36 with SMTP id af79cd13be357-8cd5afa5ad6mr741186385a.68.1772726355973;
+        Thu, 05 Mar 2026 07:59:15 -0800 (PST)
+X-Received: by 2002:a05:620a:4096:b0:8b2:74e5:b36 with SMTP id af79cd13be357-8cd5afa5ad6mr741182085a.68.1772726355454;
+        Thu, 05 Mar 2026 07:59:15 -0800 (PST)
+Received: from [192.168.1.29] ([178.197.219.94])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851fae00absm46179485e9.4.2026.03.05.07.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 07:59:14 -0800 (PST)
+Message-ID: <c768706e-f063-44bd-92cd-f3984ad3bfbc@oss.qualcomm.com>
+Date: Thu, 5 Mar 2026 16:59:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Thu, 5 Mar 2026 23:58:03 +0800
-X-Priority: 3
-Message-ID: <tencent_160637F6605A44E80C18F34B@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_1EDDBDC63EFAE9C27849E987@qq.com>
-	<2d32f010-787c-4541-9217-9b08df32b1b9@leemhuis.info>
-In-Reply-To: <2d32f010-787c-4541-9217-9b08df32b1b9@leemhuis.info>
-X-QQ-ReplyHash: 1334635717
-X-BIZMAIL-ID: 3163466203530119632
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Thu, 05 Mar 2026 23:58:05 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MMnP0fEUKo/h/L8WjTyRZK8rhStyKcaJC54Tumc5nSAakt6Ds2xtD+PH
-	yLXALkmktUpmHLHZe5oGzDNqukLAIF7jJ/iyFh4HXCipRKyHEf5ntnjFAD4yXKKTo6XWWVk
-	JZAagCWxyeKK+01M9J0rRbYkKHunZCACzVux9Gem0RvA0Cij6XU3gXTNzQHCoV977CT2wDR
-	/s5uyJoUh9AXUJRX+QJgJ40p6e4mUFeq2OUe40YwLIXdVOSvSlfJ5lVVpjhdtBkSlF9XK9f
-	qqE8LpRgt7U6dX5M/X8p2q4nod4Zu1GcH2D6zZvH9c8bfQ2ttGSOQtX98hFpKA25v1Hy7ET
-	pvUu38281PKfwXHsKPs9NGSc8VfzQxkF6WhQu7oEluK8JbLIx8XS6ntW0jR3ZRNSA4GlX3B
-	wUrjPfPYcC7dBYF1jjLAY6m18aw9GmB0AkBJ0fBA3yky544iJXlQepaoX8JpYrHG9l4Es0t
-	j+7lCfdDgjnHbEG9uE3iZbDkaK2ZRomhnsh1GvEhDleFj0szVKEwi+oph7jajUaFA77lTaj
-	bbQboDCoRc6ZRZ1rgUA0VTUYcc4zVhaGSSp7aYv1kDjLcdjrJpudaW8nXXQt/SjHGmw94HW
-	s5YHwd7CQsJbpXd6x8dTxOF81WmS/CYYaO6zUk+NpqQnwWCKbhS0pvDyNmAbuddsIgQdCok
-	m9siL0W0s+BwteABt5Dy1lRicm0gZaAauV+j4OfAI7VOdShxGzEjIQ/k8dzPUYjGWiI38TB
-	40/zeyZOmj9awGayZ36jedv4bZZhOLqP53FcRIfTGP2ejIxd1p41lrmXYYys0bIj3syGymB
-	+OuW02z+M6T9rF4ZyVOpixo7NkwUnen7HKQs7LN3rF0v42+yKEjkwokRNoVV2cOgPNFwmMk
-	yMqJk+IrdCA96JUzc3VguUsAIS1avNmnezWDMz4Zd/13QlZRJyzL0AITzrG/RTT2KzRtNfN
-	SrToMOt5xhaA72tK0FaJpeLv+8szVxGpXw1Q7Ronm34pHI19i3sbMURsP7+xqYxgWl3m5qJ
-	adgC7maxA8lXAiV4alaxokoxAfaBk=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 3A9792150D9
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ti: sci: Drop fake 'const' on handle pointer
+To: Andrew Davis <afd@ti.com>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Dave Gerlach <d-gerlach@ti.com>, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260223202426.566958-2-krzysztof.kozlowski@oss.qualcomm.com>
+ <195cc8dc-8642-481c-8bdd-f5409ab8f5b5@ti.com>
+ <5b6a4284-4766-424c-9171-feaa08c52ad1@oss.qualcomm.com>
+ <2d852f07-0bd9-4076-b0dd-93425ed237f4@ti.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@oss.qualcomm.com; keydata=
+ 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
+ cwzYbmi/Et7T2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <2d852f07-0bd9-4076-b0dd-93425ed237f4@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEyOCBTYWx0ZWRfX8BJLMGSl2gml
+ gLdag5O0OVaFEXROV68Y/i+2eRp4Bdum7PpfEnfEEBF8GyIdrMTDrIMzuUxJSzYtJgtjyvb4MpG
+ 5rBHF616/aJ7v+tPSLOM/iblwXMOByoSPuC0Hc+xFQE2BylYeTHe/EinXMVLCnXnpFTt3o03jtq
+ ILEQlfLFvkP6+3uTTpY7UsO0aBvcqrS1+SCdVLtyRzW2AkbYCk15MYKxmCBMe9C54YYh6uuR/sU
+ P7Gt8GM+ku4VVFmL8a6hU2x28c5ZWSxkEBf2qCIw4rRI7TxArhheYuvAwBXa7FNtgu/kyWLf9f/
+ /x3m11GnszjLlX3iVOfVPEBJI25n9APsxoUaq3wFPrURKpE8vQ1re9lm0qVkXyavlQxIlt5JXcI
+ wh46ixKZdQPWdI33dKWOOWqYg2AjlILh8wh/DIvGVl9PJ5AgujVpuX6+1PvoteI2Xn7QBcLDV3h
+ p3NRJFIXK0lKuA3TaPQ==
+X-Proofpoint-ORIG-GUID: k2GxdN3WzC6SLOFsxfepKKp7DSzb8W4S
+X-Authority-Analysis: v=2.4 cv=Ddsaa/tW c=1 sm=1 tr=0 ts=69a9a855 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=gOEeR9iKwsj33Yj5oN/cWg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=bHzazS_3SF2oTeVDu9QA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-GUID: k2GxdN3WzC6SLOFsxfepKKp7DSzb8W4S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050128
+X-Rspamd-Queue-Id: 90B2C215311
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.44 / 15.00];
-	CC_EXCESS_BASE64(1.50)[];
-	TO_EXCESS_BASE64(1.50)[];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223249-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	FREEMAIL_TO(0.00)[ti.com,kernel.org,baylibre.com,gmail.com,linaro.org,pengutronix.de,lists.infradead.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223250-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	HAS_X_PRIO_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_EXCESS_BASE64(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qq.com:mid,uniontech.com:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-VGhhbmtzIGZvciB5b3VyIG5vdGljZSwNCkkgdGVzdGVkIHRoZSB2Ni42LjEyOSBhbmQgdjYu
-MTIuNzYgd2l0aCBvdXIgY29uZmlnLA0KdGhlIGJ1aWxkIHByb2JsZW0gaGFzIGJlZW4gc29s
-dmVkLg0KDQpCUnMNCldlbnRhbyBHdWFu
+On 05/03/2026 16:52, Andrew Davis wrote:
+>>>> The code is not correct logically, either, because functions like
+>>>> ti_sci_get_handle() and ti_sci_put_handle() are meant to modify the
+>>>> handle reference counting, thus they must modify the handle.
+>>>
+>>> The reference counting is handled outside of the ti_sci_handle struct,
+>>> the contents of the handle are never modified after it is created.
+>>>
+>>> The const is only added by functions return a handle to consumers.
+>>> We cannot return non-const to consumer drivers or then they would
+>>> be able to modify the content without a compiler warning, which would
+>>> be a real problem.
+>>
+>> This is the same argument as making pointer to const the pointer freed
+>> via kfree() (or free() in userspace). kfree() does not modify the
+>> contents of the pointer, right? The same as getting putting handle does
+>> not modify the handle...
+>>
+> 
+> In that argument, if we wanted the consumer of the pointer to not free()
+> it we would return a const pointer, free()'ing that would result in the
+> warning we want (discards const qualifier).
+> 
+> If you could somehow malloc() from a const area in memory then free()
+> doesn't modify the pointed to values, only the non-const record keeping
+> which would be stored outside of the const memory. So even in this analogy
+> there isn't a problem.
 
+I am not saying about malloc. I am saying about free() which does not
+modify the freed memory.
+
+> 
+>> The point is that storing the reference counter outside of handle does
+>> not make the argument correct. Logically when you get a reference, you
+>> increase the counter, so it is not a pointer to const. And the code
+>> agrees, because you must drop the const.
+>>
+> 
+> The record keeping memory is not const and can be modified.
+> 
+> And where do we drop the const? The outer "struct ti_sci_info" was never
+> const to begin with, so no dropped const.
+
+We discuss about different points. I did not say the outer memory is
+const. I said that you drop the const - EXPLICITLY - from the pointer to
+handle.
+
+And that API which gets a handle (increases reference count) via pointer
+to const is completely illogical, because increasing refcnt is already
+modifying it. Just because you store the refcnt outside, does not change
+the fact that API is simply confusing.
+
+> 
+> If the issue is that the handle is not const inside that outer struct
+> we could fix that,
+> 
+> struct ti_sci_info {
+> ...
+> -	struct ti_sci_handle handle;
+> +	const struct ti_sci_handle handle;
+> ...
+> };
+> 
+> And with that change even your original commit message example issue
+> goes away,
+> 
+> struct ti_sci_info *info = handle_to_ti_sci_info(handle);
+> info->handle.version.abi_major = 0;
+> 
+> would now fail to work to compile.
+
+But you cannot do that for other reasons in your code because you DO
+modify the handle in all the APIs which you call "pointer to const".
+
+
+Best regards,
+Krzysztof
 
