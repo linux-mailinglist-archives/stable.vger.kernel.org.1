@@ -1,205 +1,171 @@
-Return-Path: <stable+bounces-223204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A1EADqPqWni/gAAu9opvQ
-	(envelope-from <stable+bounces-223204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:12:10 +0100
+	id KG6WGWyRqWmoAAEAu9opvQ
+	(envelope-from <stable+bounces-223205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:21:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9593A2130E5
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:12:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD19213328
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5B1E1303902F
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:12:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B11231402B9
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCDC3624B5;
-	Thu,  5 Mar 2026 14:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BACF21E091;
+	Thu,  5 Mar 2026 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTp7og/v"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4oo/Da1b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BFA388E55
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1DA246BD5
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772719925; cv=none; b=ZAMEgj3GEYBgjMkfVAnsO2RFZIEUl9gMK9PZi0p/d+vcV30DsUeO6P1dKXItoG5JRV6xyaPhlh68jUeN+IM/hDCF66ULAZT88UgTozmfuDuk+7zc8QTZZdK01AYCbSb4fsHOoosvhiLzljig8+EYumfON1aDMxmh3cuhFt6YZVs=
+	t=1772720419; cv=none; b=CpUz+DY9FjI+7qrZNnwLYQiJYmIpeyoTIBRwfNBjxv8n+ChKCfVtpwBFOJW6Z+yjHB0R+fgVkxVm5BIeoEgXtJgBaWA+maIpo1COhUPrRfarSuzshTwXZyPZtseL1cXr8GVlIzn9aRefjaJJvWWj8Vub4Hq3z0/YAyZV9/8TcyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772719925; c=relaxed/simple;
-	bh=p6cda8gwAdAAGyR02N1Oyd8t27rj5MT9uqJH5Ytv4DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FIqE7wmRkUgJbdBL2hG75wKCqQluFzV389XooYRu5NLkMuMTCsyCS17675Ch104JJ055HqZzchn8wSX9PZLviChbulTGpTjuRlOJhqV+DQlGvkVkGvQejylWNXlvXXQpvKAemnR6GFByntl7k3IXLRqtVz0nKT/XVMFJ0nY1dbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTp7og/v; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4837907f535so73745595e9.3
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 06:12:02 -0800 (PST)
+	s=arc-20240116; t=1772720419; c=relaxed/simple;
+	bh=PwCYRuwsKmQUe+2zlK2nZChMpzwmoFOf29G9MiF8OBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pv5K8aOW9+UB/l2ifmxSXBNGY6R9RWyToZbUiNBdO+QoYH9IYYSag9b3rVST+Wsj0M+g4wNQEY6MUKbqUyWroMhwSBP4FkNCF7Z9YE2OR9hpB67ISUCmHwrhHVwH6gan6aqI7kC1peeX7Qi9L+HLrKM2o8HjK+H95znlFkAecc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4oo/Da1b; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a12f88d839so1094315e87.0
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 06:20:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772719921; x=1773324721; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/UkoccNiiVN6XYrJgBoUTBAcjdNHogB3l/e5XXL5DvA=;
-        b=aTp7og/vQopC2QzktMmy1IvQbEGwzMcqL96X026+7ZgD7pOq1NnMGTvFwwnrem1Orv
-         fijNfv570wcy+Z1nLWDm+Ao5/VwfAMOe9SXnxilXT7U0Qi/+mDTu3pqjy7i6LXYhGqw1
-         Pku3klVLnJpSxFf8DLbvfWexfkWGuvX6jDYsOgCx537TUYpFzJuvKXvI7nONgOw/US5Z
-         ro8WM2cH/F7g26szfweo9PqN1OBjp7S5aHY0ixPSaul0rQBxx6iMeQ2EFtuGqQ8k37vH
-         fKQY4gpKH9FALFm2olAyLTI2mE/uPVWVbifBJzKyae/2RWIM6ByHaZUlGOEy9KZ4L7Ub
-         zHVA==
+        d=google.com; s=20230601; t=1772720416; x=1773325216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KAuFRx7gtOPZDHLYd8gki/p+Ss0pYYeA/wECrBUdLlE=;
+        b=4oo/Da1bpCa8KUfLicmCnGvLnWv6M6wxRkpEeW/utRG9zJGwakrfQDYrG5oPU7INl3
+         MHGIkjvaIrkKTbhM5T9Ie4XQ8MCFzz/lO/wyFRWTBiGwLjxx7VfVfFYRT1fFiLfkKIRk
+         JrgRCxfTW2QP3yGjPHAbqAPi5TfFDscTyGbc7hgo17eAbNXFzdU0553sNa31kEuAH3Sv
+         yH1HX2v/4etlU68+6ktd8RxKJ2hVClCHZHQfCsXuAthM2FHcxUG9gHhyfeJcP4XtaJek
+         aApRMoP1iUSD5rL9ZComaAc2ZMojbdO4vdWc2+o8sWIE3SHWTr7pF3S3O1t65laoTqm1
+         Ih2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772719921; x=1773324721;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/UkoccNiiVN6XYrJgBoUTBAcjdNHogB3l/e5XXL5DvA=;
-        b=w9DQT2CJR1KOap7oLk0paijCgtec2zJt8TQYOHKdL53RFJGAl5Cz1ErZjs0m89GpF0
-         HGIWs1oqNDajlcZcCbaU15HHYvZGDXf0iYuq3ncnvzkoPRt5gVt7bs2O+q+bj3AuvTqf
-         NIG7X8mLL/iT1KIRVaA2EFSLAfH+v4J9xzWregi/gCtqGBo5sXhKHPXgCeSQLWcISvtE
-         IELab1RZWE0wmLS1sFyAXAtG7wUDmxUXXj18IFG+xO+b6FcBZbVVTgKA8Vci/kj2RVOP
-         7fCur/IZj08hxCuHrCuYjhKA1U4eMw4g7uiGqUm5/lupLgHjczzPNd5iwnzKHLLm5O1m
-         Zgtg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5rziCUtNTd1fM46WIxSZcaaxaqmtgUJlz51Z/uPMBNXC1Qd0N3tvxo2WiV8Nkf2u6FnFinIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyH6H4Q3CijMweXnAvT1rQhKHaTxlAF3wEjRt9IADsssN9jjNG
-	gpuIfCSsxmkTwz1Mukx0QOPsvy17KhuXV8rtxmCrlh6lgF6YvfELqMfL
-X-Gm-Gg: ATEYQzybN4z54qsMK/yyXmJnWVzoZMKDfDCf3hnu7kDXpxdXp7aXbE4BVWODj3GeQ5q
-	i7sGo1phd06Jt4sXdOIMof8H+chCigNzJMjvROHACG8YXxYUbP+LhMmgQw0s3MCTWbT3kyha7lr
-	t9UcrbDFtPZ3wXz6L3U8qrhKCTN7FcFh3TkrvsPBcFYfTgIVcI7No7SViVsDzSBjHbbrE1wPNSY
-	f4EW49uyHYiMxygEoJMw++PcehGGwvuWTt7MH9HMjGRmVgCLvMwff81TuThG3vPiFYOfxyO6lsS
-	/6xGPP6mhAQlUO+GMln3NOYVKEpDdRpRiImT/StQ7iuq6Hntu+lEpuhIN6m69o6AIFZU5zvL5zV
-	AGiFaodw5h759dwYDdvXZNqx/mZ3NREAuObJhevPxuuOx8ASTX9g+yKMbI8i55Xs1wg0FwSy56v
-	ONhH1+6qwjZ04SQoKqoK5EFK85m8wJevfFlX25UH5Iiz9nGmMU4/PCT5Hnn5RtQxHS
-X-Received: by 2002:a05:600c:1c18:b0:480:69ae:f0e9 with SMTP id 5b1f17b1804b1-48519871aa4mr120621275e9.16.1772719920989;
-        Thu, 05 Mar 2026 06:12:00 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851ad02ffcsm32648235e9.20.2026.03.05.06.12.00
+        d=1e100.net; s=20230601; t=1772720416; x=1773325216;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KAuFRx7gtOPZDHLYd8gki/p+Ss0pYYeA/wECrBUdLlE=;
+        b=Y2mJ5fz2SSTqoOy2JnawW5GSs0FBjO3tVsmTGh36G1No4iMyy5TipQBb3Zlqu7YSmd
+         SgRgh04akuV87n4F3jW8Xqo5xHWaM8sFh/qPJUSbtmZrQsAjIwePwuXYQ33R+G3XsJ3y
+         P/LEOFMeL+OFd7ndZTOynOQ2UcLCU75uDvH6RL89S41SHVsNjoYJmwAYpMmynmpBW8c3
+         2SG8pvEkyHdRKS5Q1sRDAZVQbIIej9BH8Hqi6lYSEWdTB83Rz+JZbhC4GptxKF9Gb0gf
+         oqqckoEx1/f0arya8UelHVxQYP7JMw4Ki7GcfQCHxIPwkNP5kRRwhys5xHXfguxRWgL5
+         AZZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZh1kHOqeamhpkBZRsTTPP7qTqVEEIl5n7GYPJLraASASkjBVy/4UhaG/QIr/eRLyWtaKdUP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIKLCpm14100HJrq7tQOp67FgPZN5TyX2r648djrTf0B+KS15q
+	Cgaug1GbMGHXQNmAdJQQX++WV5Li0OEzg2p4mH2HfNK7CmHEsadclBSpl6Hp22KGIA==
+X-Gm-Gg: ATEYQzygvHItpWPpok70jS/Fw17sF93bc4hd9JMhNEVscojoSqJAi6DFakgfdC6yGpJ
+	zJ6t0XJEflBBGHQG575T7Tnmg/Ckt5418fed+KOMavqshzPF2nEQ6LV82B4PuLKl8oyCDbYLQfH
+	qyN4oHbH7memeWvTeMrpC2O/RcnXSFAipE1hjz4ybppkKy3kf186AQr5GqGDdWNNOr/BuvPxPSk
+	Z6+KeQClrtVkVMEGA04Q6F90Utm4c3mJ9XoNHVdXsl5y2OJPVC2xpdkoh3tuQDFlayddgPQw+xs
+	OahQiB/r9ah16Df8mF2sbP3V0CkTEvyAvSkrRV0nAUPgwRloDA0H9/7rAKCZp5zhPvVSwIHNKJZ
+	z7LtlmCirQmu3DRaMBlN7Y0JlBDKoiTLZ0xuciykTmadOD8EaYzHowxCpuKfzGX3Tc3zN+xXkN3
+	JAMHjcV9uqnRfzcsgbf1qlqu3Gk7DB7vAEwzuQ7mKnM1Tc6pNil34pEV0=
+X-Received: by 2002:a05:6512:145a:20b0:5a1:378c:11e8 with SMTP id 2adb3069b0e04-5a1378c1480mr17473e87.14.1772720415482;
+        Thu, 05 Mar 2026 06:20:15 -0800 (PST)
+Received: from google.com (27.69.88.34.bc.googleusercontent.com. [34.88.69.27])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13555df8csm249863e87.25.2026.03.05.06.20.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 06:12:00 -0800 (PST)
-Date: Thu, 5 Mar 2026 14:11:58 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-Cc: <me@ziyao.cc>, <andrew.cooper3@citrix.com>, <bp@alien8.de>,
- <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
- <linux-kernel@vger.kernel.org>, <mingo@redhat.com>,
- <stable@vger.kernel.org>, <tglx@kernel.org>, <x86@kernel.org>, David Wang
- <davidwang@zhaoxin.com>, <lukelin@viacpu.com>,
- <brucechang@via-alliance.com>, "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>,
- <cooperyan@zhaoxin.com>, <benjaminpan@viatech.com>,
- <TimGuo-oc@zhaoxin.com>, <QiyuanWang@zhaoxin.com>, <HerryYang@zhaoxin.com>,
- "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on
- Zhaoxin C4600
-Message-ID: <20260305141158.294ee1e9@pumpkin>
-In-Reply-To: <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
-References: <20260228173704.62460-1-me@ziyao.cc>
-	<70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 05 Mar 2026 06:20:14 -0800 (PST)
+Date: Thu, 5 Mar 2026 14:20:13 +0000
+From: Quentin Perret <qperret@google.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
+	Fuad Tabba <tabba@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: pkvm: Fallback to level-3 mapping on host
+ stage-2 fault
+Message-ID: <frvqntoya3r5by3vx75eicvggmjnkrhqkxn62ealjjiuuuiwyw@rkngsfqxkxbn>
+References: <20260305132751.2928138-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9593A2130E5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305132751.2928138-1-maz@kernel.org>
+X-Rspamd-Queue-Id: BFD19213328
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223204-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223205-lists,stable=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qperret@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, 5 Mar 2026 17:03:07 +0800
-Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
-
-> Thank you for submitting the patch to fix the Zhaoxin CPU issue.
+On Thursday 05 Mar 2026 at 13:27:51 (+0000), Marc Zyngier wrote:
+> If, for any odd reason, we cannot converge to mapping size that is
+> completely contained in a memblock region, we fail to install a S2
+> mapping and go back to the faulting instruction. Rince, repeat.
 > 
-> After internal clarification, we have confirmed that this is an
-> issue with the ZX-C CPU ucode:
-> When modifying CR4.FSGSBASE bit 16, the ucode propagates its
-> value to another MSR register. During execution of FSGSBASE-related
-> instructions, the hardware actually checks whether this MSR
-> register's bit is set to determine whether to generate a #UD
-> exception.
-> When the CPU enters SMM mode and then returns via RSM, the CR4
-> register is restored but the value of CR4.FSGSBASE is not
-> re-propagated to the MSR register.
-> As a result, after enabling CR4.FSGSBASE, once the CPU goes
-> through SMM mode, executing FSGSBASE-related instructions will
-> trigger a #UD exception.
+> This happens when faulting in regions that are smaller than a page
+> or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
+> an O6 board that refuses to boot in protected mode).
 > 
-> This issue exists only on ZX-C CPUs, which have two different
-> CPU vendor IDs and distinct FMS values. The following patch can
-> be used to identify ZX-C CPUs and properly handle this issue:
+> In this situation, fallback to using a PAGE_SIZE mapping anyway --
+> it isn't like we can go any lower.
 > 
-> --- a/arch/x86/kernel/cpu/centaur.c
-> +++ b/arch/x86/kernel/cpu/centaur.c
-> @@ -201,6 +201,11 @@ static void init_centaur(struct cpuinfo_x86 *c)
->          set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
->   #endif
+> Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
+> Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org
+> Cc: Quentin Perret <qperret@google.com>
+> ---
+>  arch/arm64/kvm/hyp/nvhe/mem_protect.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> +       if (c->x86 == 6 && c->x86_model == 15 && c->x86_stepping >= 14) {
-
-The '>= 14' looks odd to me.
-It implies it all worked, got broken, and will never be fixed.
-I'd also add a 1-line comment, something like:
-		/* CR4.FSGSBASE not copied to MSR on return from SMM mode. */
-
-	David
-
-> +               pr_warn_once("CPU has broken FSGSBASE support; clear 
-> FSGSBASE feature\n");
-> +               setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> +       }
-> +
->          init_ia32_feat_ctl(c);
->   }
-> 
-> diff --git a/arch/x86/kernel/cpu/zhaoxin.c b/arch/x86/kernel/cpu/zhaoxin.c
-> index 031379b7d4fa..6a2d6df307ee 100644
-> --- a/arch/x86/kernel/cpu/zhaoxin.c
-> +++ b/arch/x86/kernel/cpu/zhaoxin.c
-> @@ -89,6 +89,11 @@ static void init_zhaoxin(struct cpuinfo_x86 *c)
->          set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
->   #endif
-> 
-> +       if (c->x86 == 6 && c->x86_model == 25 && c->x86_stepping <= 3) {
-> +               pr_warn_once("CPU has broken FSGSBASE support; clear 
-> FSGSBASE feature\n");
-> +               setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> +       }
-> +
->          init_ia32_feat_ctl(c);
->   }
-> 
-> Sincerely
-> TonyWWang-oc
+> diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+> index 38f66a56a7665..d815265bd374f 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+> @@ -518,7 +518,7 @@ static int host_stage2_adjust_range(u64 addr, struct kvm_mem_range *range)
+>  		granule = kvm_granule_size(level);
+>  		cur.start = ALIGN_DOWN(addr, granule);
+>  		cur.end = cur.start + granule;
+> -		if (!range_included(&cur, range))
+> +		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
+>  			continue;
+>  		*range = cur;
+>  		return 0;
+> -- 
+> 2.47.3
 > 
 
+
+Reviewed-by: Quentin Perret <qperret@google.com>
+
+Thanks,
+Quentin
 
