@@ -1,130 +1,145 @@
-Return-Path: <stable+bounces-223197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIczIA9+qWnA9AAAu9opvQ
-	(envelope-from <stable+bounces-223197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 13:58:55 +0100
+	id IKg9HeaEqWkd9gAAu9opvQ
+	(envelope-from <stable+bounces-223198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E04D2123ED
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 13:58:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C00B212961
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C0FF300B457
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 12:58:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA853040D99
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 13:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2D73A0B35;
-	Thu,  5 Mar 2026 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C6D3A255E;
+	Thu,  5 Mar 2026 13:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dV+iriVY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LetMebQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4027D3A0B06
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB0D3A4520;
+	Thu,  5 Mar 2026 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772715523; cv=none; b=uYq4dHFL1vdb5+E3iYyDjFM1nHlCROoIwepiLXfDyVUko/H3zo6UpcM0o6mcVS0XHXOqJCKc9b+mZf7PMMjlBeCfNpYjvBglg6/CmxcgDUgiKD3SqPVI2mf4ZCZ29iQSaO6rtB8W5m1r5TudZtR7wvNIAS7E/LvrG7ZultA8+ds=
+	t=1772717281; cv=none; b=IY5usXfTaQeGc0oxDs3JBVmL2Vhr8HJz5DTSaGvDsmLLjS4SgtTBJwS1Uz4m/2Si8n1iFGNfG3IBm0ojC1gUf0XB46b5iPiebqeN0UfZ/fvnxBeMbIL91797PEeEuF91wVE5H76wMJJPeHkMGnOJiG7Jrolifn2PRPJswc9e7B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772715523; c=relaxed/simple;
-	bh=5are5agdAPBNhp9zXXwfI62i9NhVAzVx4EzODqm4TGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YL4BwnxKMvsXmmJW3qRoXiVK4JrI0Cqfkm0R7UqU8+RD87nJq7/3+KROwW4zLvp6vWHoD/Ybm0g1e30mgQ3ZPp0V76A/7+OgUlpZwHxI3iggBqrQ2MNkfm6d8BWbNjIosEV/GGZH9RBm2dcWFgrZmDyEVNebZx3ELS5mD28ESUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dV+iriVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8D5C2BCC6
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 12:58:42 +0000 (UTC)
+	s=arc-20240116; t=1772717281; c=relaxed/simple;
+	bh=lnBSHxmNphnGNCi22PlaGFKdvnE9IXS9939YI+0IHf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gSKXPVlmR4ETq+P45jVWtSZ1Pisw7jyfu4wNvw1SbYINmGkcTycII2FBRAkTuP6uH0TEeflSQnw+rkvW36eMhOm8In0FeXnHdjijpk3cN5Os0V1mk8cFgkRcaOTdCalEUMMMUMR0X0WvEJx0PGBXxFEPzPMkz2IRxgFVL80bXV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LetMebQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A6CC116C6;
+	Thu,  5 Mar 2026 13:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772715522;
-	bh=5are5agdAPBNhp9zXXwfI62i9NhVAzVx4EzODqm4TGU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dV+iriVYRSVkaLwZWL3RYxUVzrSC8aD09FYxF5jNKwSm5Q1YyPTJsFvSzgCigsGzx
-	 HTMHgHkuc6N4hI6dLH2FrL4N6624GGkh2DzGuYN82jY6oeYT+0ZZnShusqFd4BG/Kg
-	 B1JkTJG72xoKJ5V5FpMaG3Mde4MvfUWAe6CEvDOvdpIy1wzvO2zDb4SjHoqi08W4+n
-	 btTVRpbcLf83Ku7WUyELXiwkcystoAPidj7LlhvuXaGCjIxxaUHfn6lHoq+76cQZRJ
-	 8fJ63KdmGO1rwKGTsIhQpXPFjeeJEKbzRjR4F1fnBj4tMXrZ/dSOKAtgx8OzbOSDqF
-	 t6okvHWVh3vLQ==
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64c9cabfe5dso9827242d50.0
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 04:58:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVtVnxuTNUtbDz3W4l38QN8LL9z0rx/3iQZKzrRr+svMsn1DTyHyidE1Bnnl0YYJqj+4UI1yxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTYJkVEl4TBP65xIqDNVBydprkdMX8Hx+XeLVy59SRAtWJiJTq
-	shO46PLDN5eSrsOWXmVIMBVqywgbH1PUVmVwpwNuaVuI076QrhEzsdj++CGlG/DnD0ObaQ7/YYz
-	NImvwcnwO8RYxPelPsnZ7O8+K7FZuEL0=
-X-Received: by 2002:a53:e19e:0:b0:64a:e56f:49fc with SMTP id
- 956f58d0204a3-64d07111ed8mr1184395d50.20.1772715522083; Thu, 05 Mar 2026
- 04:58:42 -0800 (PST)
+	s=k20201202; t=1772717281;
+	bh=lnBSHxmNphnGNCi22PlaGFKdvnE9IXS9939YI+0IHf0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LetMebQDnbnkvkpZ77o4DJegqdAtRxcSwn2e975//5D15F2wztxAf6ue0O1wcByQz
+	 uJ+bbLHmbT0GAE6/l3QQlflrP9/sgfSRgoQbPZmTZTynD/FwJHR5RGSygFhtIn2SkM
+	 a5n1U5V0UGJmuLYe6m4KE+u6MEetsu3ELvKiz3axzLeagbC+DOMKoqDS6J5DaPKAOT
+	 QT8o0BGvLvl13qZYSPoDt4uq47vSpvg8qYu3VWDi39nrPlMYkPn7dwHqVbOLpMlWc7
+	 9yps8TnTd2J0Xk82h14cyL9endiFGiz4W/MCnMWx7ELXvcVQMe1tDRgYGTzDi9zchQ
+	 ydHvonROTXS7w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vy8kA-0000000GST7-3TSz;
+	Thu, 05 Mar 2026 13:27:58 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	Quentin Perret <qperret@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: pkvm: Fallback to level-3 mapping on host stage-2 fault
+Date: Thu,  5 Mar 2026 13:27:51 +0000
+Message-ID: <20260305132751.2928138-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260305-gpio-hog-fwnode-v1-0-97d7df6bbd17@oss.qualcomm.com> <20260305-gpio-hog-fwnode-v1-1-97d7df6bbd17@oss.qualcomm.com>
-In-Reply-To: <20260305-gpio-hog-fwnode-v1-1-97d7df6bbd17@oss.qualcomm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 5 Mar 2026 13:58:30 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=Zog5wPPiDDBp=mv1nhCgjOZkuG8NtZjvzfhc0KK5Z7Q@mail.gmail.com>
-X-Gm-Features: AaiRm52DhevPDbjjg-MMnWaC2zgG9VailzGdf5hJANa7pRgxzk-RHGIdAAju58g
-Message-ID: <CAD++jL=Zog5wPPiDDBp=mv1nhCgjOZkuG8NtZjvzfhc0KK5Z7Q@mail.gmail.com>
-Subject: Re: [PATCH 1/6] gpio: of: clear OF_POPULATED on hog nodes in remove path
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Frank Rowand <frowand.list@gmail.com>, Mika Westerberg <westeri@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
-	Russell King <linux@armlinux.org.uk>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-doc@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7E04D2123ED
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, tabba@google.com, qperret@google.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Rspamd-Queue-Id: 1C00B212961
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223197-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,glider.be,gmail.com,linux.intel.com,iki.fi,atomide.com,armlinux.org.uk,lwn.net,linuxfoundation.org,vger.kernel.org,lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223198-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Thu, Mar 5, 2026 at 10:51=E2=80=AFAM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
+If, for any odd reason, we cannot converge to mapping size that is
+completely contained in a memblock region, we fail to install a S2
+mapping and go back to the faulting instruction. Rince, repeat.
 
-> The previously set OF_POPULATED flag should be cleared on the hog nodes
-> when removing the chip.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 63636d956c455 ("gpio: of: Add DT overlay support for GPIO hogs")
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+This happens when faulting in regions that are smaller than a page
+or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
+an O6 board that refuses to boot in protected mode).
 
-I have no idea how OF_POPULATED is supposed to be used
-so I just trust you on this one:
-Acked-by: Linus Walleij <linusw@kernel.org>
+In this situation, fallback to using a PAGE_SIZE mapping anyway --
+it isn't like we can go any lower.
 
-Yours,
-Linus Walleij
+Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
+Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Quentin Perret <qperret@google.com>
+---
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+index 38f66a56a7665..d815265bd374f 100644
+--- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
++++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+@@ -518,7 +518,7 @@ static int host_stage2_adjust_range(u64 addr, struct kvm_mem_range *range)
+ 		granule = kvm_granule_size(level);
+ 		cur.start = ALIGN_DOWN(addr, granule);
+ 		cur.end = cur.start + granule;
+-		if (!range_included(&cur, range))
++		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
+ 			continue;
+ 		*range = cur;
+ 		return 0;
+-- 
+2.47.3
+
 
