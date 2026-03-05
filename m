@@ -1,196 +1,161 @@
-Return-Path: <stable+bounces-223163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEvXJ8vlqGk3ygAAu9opvQ
-	(envelope-from <stable+bounces-223163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:09:15 +0100
+	id SGJ2JxznqGl+ygAAu9opvQ
+	(envelope-from <stable+bounces-223164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:14:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4185220A195
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:09:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E010220A1F6
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57183302315C
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 02:09:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9D1E305E9A9
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 02:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211CA2566F7;
-	Thu,  5 Mar 2026 02:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276E524DCE2;
+	Thu,  5 Mar 2026 02:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="kXVHvZJZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="dXA9rwae";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eidFt8VX";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HvV2juby"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="b+N4O5jQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0523C4E9
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 02:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57016218EB1;
+	Thu,  5 Mar 2026 02:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772676550; cv=none; b=DkNEFc4e5DJS4c2Z36qDQVg72sTpcZRN9uK1pqeAbcbuGAefU9f60wezjpFS+2iITMJEFTqbfYpIPxe43rDRzlTVF1OmLd4Czc8O7IkrSxOyJ23KD39SDgLl5UODPtDB4qGr2NJ4ECgo+nSejsKHllgIa1Hp9d4sJ1prtAc/egU=
+	t=1772676886; cv=none; b=R289jYQuLdpY3MUpRZpd+VevMVDQKT94b3/GCbuZ5d0j2cnU3JkI7h8zsV861uXdIIwN+mLZ0bxEj3jW1JoADwoHNuM6lsVTmRhhmH6FuikXFa/5zJxq50DRrs0nbvgh0nendzm2Y1v19/2GcMgaqYn7H3wPtrOqAFr1HCe9QIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772676550; c=relaxed/simple;
-	bh=eh/NDTNde3nrGm9moehKrub2drCBeOYgKCwyLWhlTxA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cgWVCBhc6wydGFDkPUjh55txxTtb3voBkFG5VIUGcvsuxmFqcDBFDONj4L8kjaiJVDjn1Q75smVjbNMI6akGQubBGmUbIYYu8VgPalJijXVo3ZApCF/cwihIBFW4sB6RZpM/CPqZNaN4qS3N4KkRL3mz4ihW1MtC7k4ic/JwIS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=kXVHvZJZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=dXA9rwae; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eidFt8VX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HvV2juby; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id ED1C13F97D;
-	Thu,  5 Mar 2026 02:09:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772676548;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
-	b=kXVHvZJZzynnK5ZvJFgJp4gSC8TmG3h5RHXfZUPmfkLt+SXIfRlAFmdHCGQUCtJioUBRrV
-	3am20uGv3CUC8NWPpjJtzgb/iblRsEgyTXbNjLjEoUk7dLZzDGyt1KFhK8SoB6yW/AMhbp
-	k4QtosADtJOXuw7TqIgdE6nRqA5+5Z8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772676548;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
-	b=dXA9rwaeiTZ+y/o5prSRIlO/3Zl/qw1DerSS5FuB9w5B/2bMlsbK2ZbF6qPwUE55ICkAgM
-	g00dNZyH5FuZb+Ag==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772676547;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
-	b=eidFt8VX4EFIrzz8IyxJXfZgZX7bhMkCNFciRDby2Ibg56GnbyIc9ecK8koWxxuFiqpqd2
-	2uKodbU5AeQzrxfqOi+r09fetE6D4zQNZV8p/VQUY07K+DL2Q8EbgDchw/ECeguIVYQ/TJ
-	9w4JlVqkZ4ihqdJSBeWUCnmN6XTn4Ng=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772676547;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
-	b=HvV2juby8FXJYypqqzeYyTWIMNY8LrtwgB8AqYJUkHBJxCvZ8pjISwfonaZeHX+ejJOAmI
-	Bv94lHyNiwUsJ7Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C9AFA3EA68;
-	Thu,  5 Mar 2026 02:09:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id a5QMMcPlqGnaZwAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Thu, 05 Mar 2026 02:09:07 +0000
-Date: Thu, 5 Mar 2026 03:09:02 +0100
-From: David Sterba <dsterba@suse.cz>
-To: ZhengYuan Huang <gality369@gmail.com>
-Cc: linux-btrfs@vger.kernel.org, clm@fb.com, dsterba@suse.com,
-	josef@toxicpanda.com, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, r33s3n6@gmail.com, zzzccc427@gmail.com,
+	s=arc-20240116; t=1772676886; c=relaxed/simple;
+	bh=s1ocLErcAjuwF4nelrw6ep/ytdRjDP+3h0fLK/z0sK4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=csBDpnnCWSBJNppAHGoCsEDR6vW6Siux8gpvmh/26FNkuhB/Ra7C678KTNNJ/+cSxzoKeXU6v9vnm8tnJ3UAH6qYys+E6IBK4Wt5G+XRGc9iyNojirP5lLM/NZ8XQ+f5tOlvP4J5GWdyyHtWHZ6zOyQeOk/D7yXuR29ybiZvdi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=b+N4O5jQ; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=bv
+	FMvfmFv/PpBCw8PUJrWR0vV7noWZJWs5tu0GeSyo4=; b=b+N4O5jQpww41uCtpZ
+	LvZ1hvffy9PXFzt5SU7qsAY7ndxmnf9Ovelep/izpOUIA2KilhlRmtqAicTyK6KM
+	l3fha32Wf84YAdOfKUgfz2YFyPOVPlN3Dj8YzoM2k8vCogNxZ8nMVZ1hpXDizeuz
+	Kx28VGtohcSu7QE5TVmpduzhw=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3d6X65qhpi1O9QQ--.39033S2;
+	Thu, 05 Mar 2026 10:14:19 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: reject global extent/csum roots without offset 0
- when extent_tree_v2 is off
-Message-ID: <20260305020902.GA5735@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20260302110202.790279-1-gality369@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1.y] ntfs: set dummy blocksize to read boot_block when mounting
+Date: Thu,  5 Mar 2026 10:14:17 +0800
+Message-Id: <20260305021417.3956903-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302110202.790279-1-gality369@gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 4185220A195
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3d6X65qhpi1O9QQ--.39033S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJF1UKr1UAr18tw1UtFyUGFg_yoW8Kr4Upa
+	4rAF1fCrWvgryUZasFgrWrXwn5W3yvka4DtrW7Xr17ZryxK3WftFn7tryfXrWqvrW3XrZa
+	qFn8ZFWxtryUuaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zuXdYAUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3Rt8Fmmo5vt+YwAA3t
+X-Rspamd-Queue-Id: E010220A1F6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223163-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,fb.com,suse.com,toxicpanda.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[suse.cz];
-	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com,paragon-software.com,163.com];
+	TAGGED_FROM(0.00)[bounces-223164-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	HAS_REPLYTO(0.00)[dsterba@suse.cz];
-	RCVD_COUNT_FIVE(0.00)[6];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dsterba@suse.cz,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.cz:dkim,suse.cz:replyto]
+	TAGGED_RCPT(0.00)[stable,f4f84b57a01d6b8364ad];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,paragon-software.com:email]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 07:02:02PM +0800, ZhengYuan Huang wrote:
-> Without EXTENT_TREE_V2, btrfs_extent_root() and btrfs_csum_root() always
-> look up the global roots at offset 0. A crafted image can provide only
-> non-zero offsets for the extent/csum global roots, so the offset 0 lookup
-> returns NULL and later leads to a NULL dereference
-> (e.g. in backup_super_roots()).
-> 
-> Fix this by detecting this at mount time: when loading extent/csum
-> global roots without EXTENT_TREE_V2, require that an offset 0 root item
-> exists, otherwise fail the mount with -EUCLEAN.
-> 
-> Tested with a crafted image that has only non-zero offset global roots,
-> which triggers the KASAN null-ptr-deref in backup_super_roots() before
-> the fix, and fails the mount with -EUCLEAN after the fix.
-> 
-> Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
-> Cc: stable@vger.kernel.org # v5.18+
-> Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
 
-You've cut the changelog here but the rest of the information should be
-also there, perhaps in a more condensed form. You can add other things
-under the "---" line in case it's relevant for the patch submission but
-not for the long term git history.
+[ Upstream commit d1693a7d5a38acf6424235a6070bcf5b186a360d ]
 
-> ---
-[...]
+When mounting, sb->s_blocksize is used to read the boot_block without
+being defined or validated. Set a dummy blocksize before attempting to
+read the boot_block.
 
-> CPU: 0 UID: 0 PID: 34 Comm: kworker/u8:1 Tainted: G           OE       6.18.0 #1 PREEMPT(voluntary)
+The issue can be triggered with the following syz reproducer:
 
-> Reproduction (v6.18, x86_64, KASAN)
-> ===================================
-> 1. Download the crafted image (tested with Linux v6.18 + KASAN):
+  mkdirat(0xffffffffffffff9c, &(0x7f0000000080)='./file1\x00', 0x0)
+  r4 = openat$nullb(0xffffffffffffff9c, &(0x7f0000000040), 0x121403, 0x0)
+  ioctl$FS_IOC_SETFLAGS(r4, 0x40081271, &(0x7f0000000980)=0x4000)
+  mount(&(0x7f0000000140)=@nullb, &(0x7f0000000040)='./cgroup\x00',
+        &(0x7f0000000000)='ntfs3\x00', 0x2208004, 0x0)
+  syz_clone(0x88200200, 0x0, 0x0, 0x0, 0x0, 0x0)
 
-This seems to be testing 6.18 and probably the exact release, not the
-updated stable branch which is 6.18.16 right now. It's OK to test on
-older versions but please use the latest available one as the fixes get
-backported.
+Here, the ioctl sets the bdev block size to 16384. During mount,
+get_tree_bdev_flags() calls sb_set_blocksize(sb, block_size(bdev)),
+but since block_size(bdev) > PAGE_SIZE, sb_set_blocksize() leaves
+sb->s_blocksize at zero.
 
-As Filipe said this has been fixed and the patch is in for-next, not yet
-in master or any stable tree. For fuzzing or crafted images it makes
-more sense to test on recent development branches. If you don't track
-each subsystem individually you should use linux-next, where the btrfs
-for-next branch gets merged and the updates happen every other day.
+Later, ntfs_init_from_boot() attempts to read the boot_block while
+sb->s_blocksize is still zero, which triggers the bug.
 
-I'll queue the fixes for some of the upcoming -rc. Thanks.
+Reported-by: syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f4f84b57a01d6b8364ad
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+[almaz.alexandrovich@paragon-software.com: changed comment style, added
+return value handling]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+[ The context change is due to the commit c39de951282d
+("fs/ntfs3: Improve alternative boot processing")
+in v6.8 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ fs/ntfs3/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 674a16c0c66b..7cf52b70987b 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -693,6 +693,11 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 
+ 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
+ 
++	/* Set dummy blocksize to read boot_block. */
++	if (!sb_min_blocksize(sb, PAGE_SIZE)) {
++		return -EINVAL;
++	}
++
+ 	bh = ntfs_bread(sb, 0);
+ 	if (!bh)
+ 		return -EIO;
+-- 
+2.34.1
+
 
