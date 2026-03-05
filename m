@@ -1,166 +1,177 @@
-Return-Path: <stable+bounces-223213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Jd6LQ+ZqWm7AgEAu9opvQ
-	(envelope-from <stable+bounces-223213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:54:07 +0100
+	id yAl0FEmaqWlJAwEAu9opvQ
+	(envelope-from <stable+bounces-223214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:59:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D67D213E91
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:54:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E9A214071
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4A9C308F6FD
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:47:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2EF2304DEBA
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818AE3B3C00;
-	Thu,  5 Mar 2026 14:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A25C3B4E96;
+	Thu,  5 Mar 2026 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LZkeeuZe"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MbGCgF9v";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OGclW1QH";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aZuodIs+";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="whfSqAFv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB43A961B
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADB033CEA2
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772721913; cv=none; b=eXWRSYtDM8R7Yx3nArA50rt6BNSK/ehhU5vD6ixhde0nrkH7uRmQydxMVEEamt2cLnUnkil6qCidK9aWEgV/7aepwEwmjBdisrP/1R+SiKV9ljYuz7mKpsB4XvaO3NpzDMKr945CWjQR3V6HGaAp8fwaATPeoV3YCop1GJ1H0r8=
+	t=1772722402; cv=none; b=A70BlLsABDIs/l/N8b8npDhajKGm9MPnz9om0Vz9WPQwfDejdgOrrVmMTm7f/1oVfAVW48uSwJmjAVMIkMnRQ8i8JMmxdrMTBuGAa7CM+KCNVvyb3k9BMCew65Vm+8Fs2bCy/CbO8TBd31OjTvc5dqyYTZL6LlFDNJusYTS0XgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772721913; c=relaxed/simple;
-	bh=JxAXDy8Qg0kPE0csEH3JZwQ2zDkqgb1p9YwasOy2dlc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QEbSDi4WdaUQrjTk8Kkc2Sdvn8556GwzqKfxELEVjuM/2TXuKCbh2PUQKwZZDIWTv+Xi62BYM8OGS2kJmatIEwzBYLm+PrN0TMxOxezd2jiieyIUrOg68sABpp8XsyIeWYmkn+WT4jD1Owzv9QKRlDbXgPiDcRmXOrhyRZ1K6U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LZkeeuZe; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2be1c918173so6660826eec.1
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 06:45:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772721910; x=1773326710; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l1/ypJ6rTR5qngL/oS2fXdtqhXdpRH9GGWDsGzbr/Gg=;
-        b=LZkeeuZeRsVYLpGK4f5QTR8n83Lg1QJnAfYz9usZi6ZJ35erXz9hehWRrRRSvO0s3M
-         OoAwKT0UkuVzRdfBEIOQcCjg/tpmjpksfOvqz0id2xYYtPvUWr7pBFSi7Up/mM6tj/8m
-         PmuPDoNvQ3ky9glAl45LTbNyIp3A+b10YPgbU4mVtacm45C+1ibqyViVjW8FtI72YVv7
-         Ub1HMvyMg+w6N0SauOT3LCdYzPGHCb/ub/7dF6PIryB24eh/AJ16fCmWay0yu3z42t6U
-         UZjDfjHbAFUS7d89pJNz8+9TM4Ccy5Hcy2jGNrwlGIngzroDKSiVdsfkaCBbCr9fng5T
-         dsBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772721910; x=1773326710;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=l1/ypJ6rTR5qngL/oS2fXdtqhXdpRH9GGWDsGzbr/Gg=;
-        b=cQkatx7fsU+ozLqoSvkr+GNDS9mEc8hUM5oYjfFlhyTR1IG2P5Qk382H1dSd7O3ETf
-         c8YHXFQ3OIPbJYGv0sWi0JDwx2QqvZDFaeH2vrOkKx9I7NwcR1kh2TQp0X8yMozr+Uor
-         chYedWGQn4PiBaXtaoqArXLrBpN3rP6pzECiOQW6U+ivvi3L/ujBav8wVqbHGmLg45z9
-         kraoj2TL+rbF8KTIwKT118nvkaTQeGkCi+THJXYslZVgPLqkdVqiX2LIZ2e0yaTqlmtJ
-         E5zvF/rewUlIJKMWXIA3WT30HSgoJXrXtiXn09+xGkNv8dKiWfsl+JLFfKp5wNBrgez6
-         bwfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaRofv5kxEkfah829r+pzpCiZfIBiwy6KiKTNsxfThxXrrDz1NTIYbTDIwXiGu/lNJVGuxEQE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGCfccBmudg+FNokszFbu5764EXXGPlzwV1qPWCKDW7vKylJwe
-	dNpzMRs8MMer3LqUTWMucFAkgWv87NpaxZWz0ODFw76U8Ks1nK3UP8oy
-X-Gm-Gg: ATEYQzxuKjDUbrcgqnknQZIKY3ZcfN+PKxNGAGty3NIK3f5b7419bSMOGQR+wcuv+PG
-	mJ45+g67AZFWDeoBAAKzXnMn/3ps2YTIRPtm5v0VPCSzb74Vpgt937jOVz2IapK63sJlQlD6ouW
-	NNbuEQ7NOmvFoiGgMq2W4smnGSfEM2GJ9Oj7vGPmiFuL8SYwCv1MbcvWJ1/9rUUmOjn9A3PXw9Z
-	uMew6N6eBzUFU+BCH5VH+nBni26Aorh38EUwMOfpVPerroXDyzCIyRWRL2m72a14gKr+Umnwy8i
-	huKLAxs9l9JK/za8s+zinxJTRlNauDRlE55HR9Z36ffB7AqlrRLiLFXiNzgfP97VttFHvNCqB35
-	Bqmz1sHnpvXZHqGvngzfZ/+pAAvnK5Zoqpb3kREILtjl1hJVS3NipvDqC/S7qcEv+38buf60iXV
-	ua1USJI9LET8VELSgcPw5qdMMI/3GmMXOdZapi
-X-Received: by 2002:a05:7300:d717:b0:2ba:7b0b:e20a with SMTP id 5a478bee46e88-2be311df80bmr2191076eec.37.1772721910085;
-        Thu, 05 Mar 2026 06:45:10 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be381d5ae9sm2343977eec.26.2026.03.05.06.45.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 06:45:09 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 5 Mar 2026 06:45:08 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Sanman Pradhan <sanman.p211993@gmail.com>
-Cc: psanman@juniper.net, andriy.shevchenko@intel.com,
-	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1772722402; c=relaxed/simple;
+	bh=7uDZsBmLWxU4wubBz2YbfMLyFqIgfbwOOL5u6mJIyk4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ThOjRa2VEJWc3bwrE8oOj1MRkqcNf3F2r57feOUpb80cNLvedywVp2R7JMb41WaqCkd9sCckqB6y7O/QNw5t9iK1FV0A9kg00WLkQnymILS03mWWd0aoPdQcADdY702F/AAOigVMvCUcDqeACA4liCWewoSnlT+YqdsYp8Hi6ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MbGCgF9v; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OGclW1QH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aZuodIs+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=whfSqAFv; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AB2955BD1F;
+	Thu,  5 Mar 2026 14:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772722397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=25Lay2I2vLoxz8F7Wzp5i3ZVvlLpDLHgk2kFQp4EJ0E=;
+	b=MbGCgF9v9zuojeu7yZIBcbjYs9PV8+6oeeg/+AV6ViAx7Q9trgAYIlhi1mUkWI0Z1lEy8a
+	wv7P40wWa/P5HJhA4J8ZGoIB3f9kdhCPuEjScLVv3FRJdylMw4suoBLtnmbWHqE5PCUQL2
+	tG7bMQ8U6NMtmtVxzrsK4EvDJsjlatA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772722397;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=25Lay2I2vLoxz8F7Wzp5i3ZVvlLpDLHgk2kFQp4EJ0E=;
+	b=OGclW1QHotjG1RdQ33yqEqlshmA6G1OlA3lkB1bQcUTkUNZw4nqc4Vpg75+TyIF1f+YitP
+	68YT7SkMQrioD6BQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772722396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=25Lay2I2vLoxz8F7Wzp5i3ZVvlLpDLHgk2kFQp4EJ0E=;
+	b=aZuodIs+n+nPFEqpysPxFlqCvjXCel6GR6RIYLRnTstKclEu/dFv9bcr/JcSy4JWA41x7d
+	uIPqAwYvfnDAdUnugog+kk06uyf8wxfnITAvgVhYdsq3qseREndQmuUWTrNRBg8CS6qtGu
+	r5uBb3pvI3Sw66mx1yH4ZLEZ6iIe93Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772722396;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=25Lay2I2vLoxz8F7Wzp5i3ZVvlLpDLHgk2kFQp4EJ0E=;
+	b=whfSqAFvgOk+cDgWWexu57gJsZWYklLBnCk6Mqw+hDFTVYwBelW0ZPItNbxxSthYL6+HE+
+	+lGz3DADXj4KbkDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 317303EA68;
+	Thu,  5 Mar 2026 14:53:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SPanCNyYqWlrEAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 05 Mar 2026 14:53:16 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Cc: linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pedro Falcato <pfalcato@suse.de>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] hwmon: (pmbus/q54sj108a2) fix stack overflow in
- debugfs read
-Message-ID: <c64ac068-d657-4d68-8721-dde09978e4dd@roeck-us.net>
-References: <e7191c1c-ecd4-40f8-9e47-9357bd82984f@roeck-us.net>
- <20260304235116.1045-1-sanman.p211993@gmail.com>
+Subject: [PATCH v2] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
+Date: Thu,  5 Mar 2026 14:53:12 +0000
+Message-ID: <20260305145312.1081112-1-pfalcato@suse.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304235116.1045-1-sanman.p211993@gmail.com>
-X-Rspamd-Queue-Id: 5D67D213E91
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 06E9A214071
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223213-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-223214-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.de:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,roeck-us.net:mid]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:dkim,suse.de:email,suse.de:mid]
 X-Rspamd-Action: no action
 
-Hi,
+Currently, whenever you boot with a QEMU drive over an AHCI interface,
+you get:
+[    1.632121] ata1.00: applying bridge limits
 
-On Wed, Mar 04, 2026 at 03:51:17PM -0800, Sanman Pradhan wrote:
-> From: Sanman Pradhan <psanman@juniper.net>
-> 
-> The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
-> due to incorrect arguments passed to bin2hex(). The function currently
-> passes 'data' as the destination and 'data_char' as the source.
-> 
-> Because bin2hex() converts each input byte into two hex characters, a
-> 32-byte block read results in 64 bytes of output. Since 'data' is only
-> 34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
-> of the buffer onto the stack.
-> 
-> Additionally, the arguments were swapped: it was reading from the
-> zero-initialized 'data_char' and writing to 'data', resulting in
-> all-zero output regardless of the actual I2C read.
-> 
-> Fix this by:
-> 1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
-> 2. Correcting the bin2hex() argument order and using the actual read count.
-> 3. Using a pointer to select the correct output buffer for the final
->    simple_read_from_buffer call.
-> 
-> Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+This happens due to the kernel not believing the given drive is SATA,
+since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
+a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
 
-For future patches, please do _not_send new versions of a patch as reply to old
-versions. The reason is explained in Documentation/process/submitting-patches.rst.
+QEMU has set word 93 erroneously for SATA drives but does not, in any
+way, emulate any of these real hardware details. There is no PATA
+drive and no SATA cable.
 
-Thanks,
-Guenter
+As such, add a BRIDGE_OK quirk for QEMU HARDDISK. Special care is taken
+to limit this quirk to "2.5+", to allow for fixed future versions.
+
+This results in the max_hw_sectors being limited solely by the
+controller interface's limits. Which, for AHCI controllers, takes it
+from 128KB to 32767KB.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+ drivers/ata/libata-core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index d61846f03edc..c57e35ccc092 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4231,6 +4231,7 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
+ 	/* Devices that do not need bridging limits applied */
+ 	{ "MTRON MSP-SATA*",		NULL,	ATA_QUIRK_BRIDGE_OK },
+ 	{ "BUFFALO HD-QSU2/R5",		NULL,	ATA_QUIRK_BRIDGE_OK },
++	{ "QEMU HARDDISK",		"2.5+",	ATA_QUIRK_BRIDGE_OK },
+ 
+ 	/* Devices which aren't very happy with higher link speeds */
+ 	{ "WD My Book",			NULL,	ATA_QUIRK_1_5_GBPS },
+-- 
+2.53.0
+
 
