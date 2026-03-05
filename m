@@ -1,117 +1,139 @@
-Return-Path: <stable+bounces-223248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MElTJKeqqWlSBwEAu9opvQ
-	(envelope-from <stable+bounces-223248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:09:11 +0100
+	id UFuGMp6oqWlSBwEAu9opvQ
+	(envelope-from <stable+bounces-223250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:00:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C7F215267
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:09:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9792150D9
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE25E301AFDA
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:54:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28B74309E297
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F361E39F197;
-	Thu,  5 Mar 2026 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1063CB2D3;
+	Thu,  5 Mar 2026 15:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZJCCAVU"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="d5HyHeOO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70EC37C0FE;
-	Thu,  5 Mar 2026 15:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E51F262BD
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 15:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772726045; cv=none; b=GTrYIntTZD4qnDAjsS0VvJPp2xQoQXwsu/muvbCJDaXXcuNpEqmLdR450r/AdoXO5stEw4/POKcu9y8BspqmbWsFLnt49YzGyWFpdYDViillSBefWBB+NSwKUo3dK3MsVeTg+xdh9l41STDU21Vrw/eXSTx+Vh7f3ru/DOznf6o=
+	t=1772726359; cv=none; b=pEalFNct7nt0qcsHwuaDbZkYxUHvSIQjpkOIK0BmkIhnSRGOLFcywA6FlSdI0Y5j22dJNf7NL7QlfIRM0DciIqGG/4bcX0hd94eunkj+/Sh3hkbo5chi8UXnPhSVtcRl/YrURQsqoVtXlQDhHsomdBxnI4jz5sk5mlSqjXIPDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772726045; c=relaxed/simple;
-	bh=bidVYVICOdGRtsflGC4A0uveaK1vUY8eMwnQDgINvJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lv1F0mvUCQQRzx8MO8D3daQhX36jjmJ0pQFsAHkWh093eTT0C0K+ooyAdA+1d5P5Oi6y5CGdmbTm7Q1aoxEZDL07r+96FkmM7XOGFPbribIio+pGwkQbWKvAAEFM/SatJkFKe8CByeGl5fzEjMKKoEs5Ltcdo8k2i5DUPAd4RNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZJCCAVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7B2C116C6;
-	Thu,  5 Mar 2026 15:54:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772726045;
-	bh=bidVYVICOdGRtsflGC4A0uveaK1vUY8eMwnQDgINvJk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eZJCCAVUWWYORhHM/hXKwyUzjRceofEDLc5kRET0rTP7R6iy+D0Ajm0btkk8m+WFO
-	 h+fc0jfhIfLyBBpTL4+7W8xqSfn5KE1Kg2nlDIblOoWOQkrz3Pq2NJwjk4OVl/e7oO
-	 gHa1vXaMgWbQJe4aqwrwoJ/LhdDAo7wYy4FY9/Rlyj29bqqcOdrtZBgW/1C7XThz76
-	 lIcJJ0o+bHEEAoTJgI39/deFtUjy3KRx4kZ56b16lAY+rskU9QIXDtqoEugclap2JJ
-	 IbtSMxdcIsm88dwZNkSNqjQlGc0g/U/1QflrQKmqRYFvCWTd7Qqi/ZZtTqT6jytX1D
-	 zkul7kfsLNx9A==
-Date: Thu, 5 Mar 2026 16:54:00 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
-Message-ID: <aamnGNm_IHHfSVgL@ryzen>
-References: <20260305145312.1081112-1-pfalcato@suse.de>
+	s=arc-20240116; t=1772726359; c=relaxed/simple;
+	bh=I1meZNh+BiNepSvnJPVUQy8FDRlcccIhL0PBmHAFLGc=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=UbbfvISYfPla/CK91G3YutwOKSDgBcYS5hsEjwua46ULCIZRayDjogpST+JpPVyjfot0EETPNtOgl6ng7U5u1XjYIi15wr3rl1f5wIUouiDJ2yQYjgqByQt5GFIBcUTut2W3pxR0PYEqqgLBEW0LoK6d7QGOGag0kaNOHkIZ73Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=d5HyHeOO; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1772726286;
+	bh=I1meZNh+BiNepSvnJPVUQy8FDRlcccIhL0PBmHAFLGc=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=d5HyHeOO/RQz6ZtAR2tZcsokPXIWE5Qck0u48iFgTLxnvwfZhRa75ChTDQGicuL8R
+	 V6I41ECEV0j3IZ8/IqEHCe5YD9O+p64mpibB8rRCHd0ZuFlUO08k9FujnQhbMxdt4/
+	 oxjNkqLpL2SWMdSAnD6aUjMPTCNWG6q6w7AhE/h4=
+EX-QQ-RecipientCnt: 5
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqSHNwC2Dqd2M/t+aQldaspwowpDBZ8q7ts=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: BwGsXqMA5ZG3nHuPfj/KtL6UnHVnNSKTWKRz1P2EUAU=
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1772726284t6d3630ea
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?VGhvcnN0ZW4gTGVlbWh1aXM=?=" <regressions@leemhuis.info>, "=?utf-8?B?cmVncmVzc2lvbnM=?=" <regressions@lists.linux.dev>
+Cc: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
+Subject: Re: [ REGRESSION v6.6.128 ] build failure on x86 because commit 22e460b6333a
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305145312.1081112-1-pfalcato@suse.de>
-X-Rspamd-Queue-Id: E7C7F215267
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Thu, 5 Mar 2026 23:58:03 +0800
+X-Priority: 3
+Message-ID: <tencent_160637F6605A44E80C18F34B@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <tencent_1EDDBDC63EFAE9C27849E987@qq.com>
+	<2d32f010-787c-4541-9217-9b08df32b1b9@leemhuis.info>
+In-Reply-To: <2d32f010-787c-4541-9217-9b08df32b1b9@leemhuis.info>
+X-QQ-ReplyHash: 1334635717
+X-BIZMAIL-ID: 3163466203530119632
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Thu, 05 Mar 2026 23:58:05 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: MMnP0fEUKo/h/L8WjTyRZK8rhStyKcaJC54Tumc5nSAakt6Ds2xtD+PH
+	yLXALkmktUpmHLHZe5oGzDNqukLAIF7jJ/iyFh4HXCipRKyHEf5ntnjFAD4yXKKTo6XWWVk
+	JZAagCWxyeKK+01M9J0rRbYkKHunZCACzVux9Gem0RvA0Cij6XU3gXTNzQHCoV977CT2wDR
+	/s5uyJoUh9AXUJRX+QJgJ40p6e4mUFeq2OUe40YwLIXdVOSvSlfJ5lVVpjhdtBkSlF9XK9f
+	qqE8LpRgt7U6dX5M/X8p2q4nod4Zu1GcH2D6zZvH9c8bfQ2ttGSOQtX98hFpKA25v1Hy7ET
+	pvUu38281PKfwXHsKPs9NGSc8VfzQxkF6WhQu7oEluK8JbLIx8XS6ntW0jR3ZRNSA4GlX3B
+	wUrjPfPYcC7dBYF1jjLAY6m18aw9GmB0AkBJ0fBA3yky544iJXlQepaoX8JpYrHG9l4Es0t
+	j+7lCfdDgjnHbEG9uE3iZbDkaK2ZRomhnsh1GvEhDleFj0szVKEwi+oph7jajUaFA77lTaj
+	bbQboDCoRc6ZRZ1rgUA0VTUYcc4zVhaGSSp7aYv1kDjLcdjrJpudaW8nXXQt/SjHGmw94HW
+	s5YHwd7CQsJbpXd6x8dTxOF81WmS/CYYaO6zUk+NpqQnwWCKbhS0pvDyNmAbuddsIgQdCok
+	m9siL0W0s+BwteABt5Dy1lRicm0gZaAauV+j4OfAI7VOdShxGzEjIQ/k8dzPUYjGWiI38TB
+	40/zeyZOmj9awGayZ36jedv4bZZhOLqP53FcRIfTGP2ejIxd1p41lrmXYYys0bIj3syGymB
+	+OuW02z+M6T9rF4ZyVOpixo7NkwUnen7HKQs7LN3rF0v42+yKEjkwokRNoVV2cOgPNFwmMk
+	yMqJk+IrdCA96JUzc3VguUsAIS1avNmnezWDMz4Zd/13QlZRJyzL0AITzrG/RTT2KzRtNfN
+	SrToMOt5xhaA72tK0FaJpeLv+8szVxGpXw1Q7Ronm34pHI19i3sbMURsP7+xqYxgWl3m5qJ
+	adgC7maxA8lXAiV4alaxokoxAfaBk=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 3A9792150D9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.44 / 15.00];
+	CC_EXCESS_BASE64(1.50)[];
+	TO_EXCESS_BASE64(1.50)[];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223248-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223250-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_EXCESS_BASE64(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qq.com:mid,uniontech.com:dkim]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 02:53:12PM +0000, Pedro Falcato wrote:
-> Currently, whenever you boot with a QEMU drive over an AHCI interface,
-> you get:
-> [    1.632121] ata1.00: applying bridge limits
-> 
-> This happens due to the kernel not believing the given drive is SATA,
-> since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
-> a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
-> 
-> [...]
+VGhhbmtzIGZvciB5b3VyIG5vdGljZSwNCkkgdGVzdGVkIHRoZSB2Ni42LjEyOSBhbmQgdjYu
+MTIuNzYgd2l0aCBvdXIgY29uZmlnLA0KdGhlIGJ1aWxkIHByb2JsZW0gaGFzIGJlZW4gc29s
+dmVkLg0KDQpCUnMNCldlbnRhbyBHdWFu
 
-
-Added Damien's R-b tag, since the patch is essentially the same as V1.
-
-
-Applied to libata/linux.git (libata-for-7.0-fixes), thanks!
-
-[1/1] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
-      https://git.kernel.org/libata/linux/c/b92b0075
-
-Kind regards,
-Niklas
 
