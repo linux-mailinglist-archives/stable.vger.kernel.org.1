@@ -1,233 +1,248 @@
-Return-Path: <stable+bounces-223278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNG/Kuj8qWnNJAEAu9opvQ
-	(envelope-from <stable+bounces-223278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 23:00:08 +0100
+	id GKW2GFb+qWk1JQEAu9opvQ
+	(envelope-from <stable+bounces-223279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 23:06:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1567A218BC0
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 23:00:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDE4218C53
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 23:06:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1606302E402
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 22:00:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 441AC305B09E
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 22:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3933612E7;
-	Thu,  5 Mar 2026 22:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51CA35E55D;
+	Thu,  5 Mar 2026 22:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="afqk5ljm"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="dIa1xx63"
 X-Original-To: stable@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010003.outbound.protection.outlook.com [52.101.228.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521C227EFEE;
-	Thu,  5 Mar 2026 21:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772748000; cv=fail; b=twK2FlUlqjgAg3d3/q5fuqeWH9raQjvzuQlnkNZT+EiI7ek07nnT5qUDNrsOryVvqjKXrrNVHcbNkakV8gCtVInmhslmm5WTQ36ZEdG7E+OvKAE1uHFqycMBKpOmvWOkF1l4JImx3fY6qcoSWzj9AoblrbCzIJZW8wW6AeNc1jg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772748000; c=relaxed/simple;
-	bh=F7KtqzgyKfQfoWBiP0DKUF1S/SFHw1Vpjfkc3bfAew8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jbXHmZpkpTJ0gkR+yXpINrqBzIpwGR24VdzhQ604MBgommUKQYovf9tLkaa0slqPkB/wmeoge9sZ7ignPlTA+3sxa+LAkrRf4UdiPULBiFM2sPBUSK0f7vgXgZiFNWtoAyQsYiBtx67fgLZK4CAOF55Ghl23xp3HNRkAnfhAmv4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=afqk5ljm; arc=fail smtp.client-ip=52.101.228.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JfGfq2domxrwJ/0tnJhMgg7t8LUbs9zAuAuVh/X+n6/TnUdHaIlXYTtpJoQGlvyWImj3azBzC/xB74g3Z+/pAPaDOkjA+ZWKrFRGtdeNX28fCVKYTqcA0ZxTQytANwbT7mMbNkH0ISiPrD1VpTBMv5HFjZQgVINSbPw1DLj/0nfvwmLNPKtBc5YxCFhxfO60WITjIIBAM9AxVTEyqEgfrsJZ3fKAEj3qpSCBNaJP0j3vvoswPpkCF0xZof5a3nUcnBVfzFECsgb+esJi/6/HYAL1QCim0LZ9GM1AzKpRsYqDJub2Jz93nnCtSbzjy0yJzCeKM+5P+owQ4GzIicTFTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BtVgIBMJIe3RzcMShg/oJtUewo8+j29vq0NiGQRNfQU=;
- b=w4g+o26toGb0ZicneKbMlI+ecXR3It6VNU5OCBMbWKdQGOEviiyjat3Rw14rOonBNjJ0uMevO3UPAM6WNJ495VS/cD7C9igw/tuSXJmi2RjDq1u+ESknAPo7CC/5AfzfYrlToqvM+cBEGFvTHI7mPLug0/2ryobvJi8d4phQjc48mSjbeZTiJMmLM4lsQkEXtyvhXK7SxX+ZxomT52ueLr7u8gjK498tkGX+2jU/TveuagxCN4PoJ0M8ZOzRL5Z5kp2mDIrKeX9o1pt1IbFeABk3bZvYwSZSlbVDerKWSjHVvJDpt79UYezM73k5toB8Fenx4/+HviOCIcConBBIww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BtVgIBMJIe3RzcMShg/oJtUewo8+j29vq0NiGQRNfQU=;
- b=afqk5ljmwjMeMntqw9CdMrE0vSmGlKePZEi4lX+BwfJDDfb5gK7oGuq2/7N81orZ+w97FAoJin9+Dgig7sy05/an4NnW2s1HKmrVwjZ3XSIjkq1sB9Uw8w0E5o1H1jQ0fhIW2w8VygeLjTasPa0BRh/3PKKA7aPaItWINXgEgaU=
-Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
- (2603:1096:405:29b::10) by TY7PR01MB16219.jpnprd01.prod.outlook.com
- (2603:1096:405:2a7::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
- 2026 21:59:55 +0000
-Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
- ([fe80::a68f:5c9:9de8:4fa4]) by TYRPR01MB15619.jpnprd01.prod.outlook.com
- ([fe80::a68f:5c9:9de8:4fa4%5]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
- 21:59:54 +0000
-From: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-To: =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <ukleinek@kernel.org>
-CC: Biju Das <biju.das.jz@bp.renesas.com>, William Breathitt Gray
-	<wbg@kernel.org>, Lee Jones <lee@kernel.org>, Thierry Reding
-	<thierry.reding@gmail.com>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-pwm@vger.kernel.org"
-	<linux-pwm@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-Thread-Topic: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-Thread-Index: AQHckeNxm+l5nvVDhECE0kd9r0GiYLWf2EkAgADVIsA=
-Date: Thu, 5 Mar 2026 21:59:54 +0000
-Message-ID:
- <TYRPR01MB15619661CAEFBB9A94F8C1CD0857DA@TYRPR01MB15619.jpnprd01.prod.outlook.com>
-References: <20260130122353.2263273-1-cosmin-gabriel.tanislav.xa@renesas.com>
- <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
- <aalEXwdvHtToZmRQ@monoceros>
-In-Reply-To: <aalEXwdvHtToZmRQ@monoceros>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYRPR01MB15619:EE_|TY7PR01MB16219:EE_
-x-ms-office365-filtering-correlation-id: 8ccc76b0-ba2c-430a-5b58-08de7b0288c0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- hEeTqUKOesEYrbm1yl50uBXkCRxLnNxQko+30v/R/TH8muUNuhMHSUQ3D0t5Ta7p/k1cOJ+jw0jhM5txoSBKDoiQWXm7u1gN3wOixRQEHLOD5PkFOdP1hyJ0fhlUPI+voIPSDC8PTdtYoafk0fcBScGCnvcdVYYU5fxU8k9POhBnhhsLYW4AV8nC5synuLkANWyM3X1mOeivXe3zDl+X4QGDEMDPS2MJLdelGXiGSnNN06Lj2JuJAJ8PJc16VdD2WkIhKGqOodh3q1/DOIuCGuYC4qXxCYGsNAUt9SaSCuwanWwgWjoY2K0mfw6kq/6vrY1Pb6sRpzCGMlmntBqMtT9e6g1+AtzfkC2KFutwF+bvqFO0wBGjZPN/FyIN27N9RtAEF8ARpPpGG4+ApJjxHHK5pJRSwhG9TOHFHSPe6252awJ8C306r/zkhD3LKJ8xjiDtaPs5fCZB+mBo3H5gFr/2ZNyy1ya9cNXGpfBkqFGY6vpSb4BpWzyt667FdX3q1ysFvw99QdeUVkZ0mJ14k57u1O1RoT4cOIL66HtU+jQoQelh5yCk8SbPJfSP3p8wycuAS6EmNzmpRr4/xhPuT/Mj/I2TDXuIiKcNoUzdJXJhdk1dWn6Dr/50mxkRGGdwhYWB0eQn1i/q5G6n0pC/x6AVwLYNfsj+nNEJud4tJg8zB3k321shCDl/V/iuW8zaPVtkvZXJ9WzpG46BTNTK7HBTCoI9JqQBYoF3jmGx1YCAsg8mk2CI/zNFZXUulujxDfm9zgLPUSXoOhbnQIhUwQ79JB/17bvDcG0kQ+N1tVs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYRPR01MB15619.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?sPYTwzS182JMkYFd4/x9CWEYm1Ff4XUvx5gHNCANCPm+fGiEPXD7m1s7AQ?=
- =?iso-8859-1?Q?OH0umCcNUZ+1wilCwcMR5xL+e8L3Zq8RmoUFypiQZskqDBztASg7YHOEOM?=
- =?iso-8859-1?Q?j4YyQauPb7+0DkeOJquc0LOd2hWlmOGtxGR9GD8BPdDIovKN93OAvLIrGN?=
- =?iso-8859-1?Q?2C2DihjmqpJAx3nitpl8tvA3zgrR6Gn/hPDvUtyET9RfBLV803AkgLRuyO?=
- =?iso-8859-1?Q?guHhSHx0xp0QcIcIAn8hI/FKGgtEJaHUqIN9BUi3efes89RKGQB0co+I+T?=
- =?iso-8859-1?Q?CnQbIH/MmvshKOkGHAi2ExQmILs7FmJO/MFVDJlq8m3HCwBW355Ll5VyiO?=
- =?iso-8859-1?Q?uRu+6OTanthoYGwBg8WdDLiEH3LtKyU2ZwvNyl2T67kLchI1ZgDkenggfc?=
- =?iso-8859-1?Q?67iPXz/TfNI/umDGyz/JuLNJUTDqqUkedOc+wPQ6oJptUC0jAdVAfbsoEw?=
- =?iso-8859-1?Q?zZYNA0j5PO5w6gxeOSvut5L7rxxVn/ypbRy1s3yt0MdnjqdIjcC1gV3/1K?=
- =?iso-8859-1?Q?IAxSSWxOkHdwUeJF5BlVvn73J3kXINETyOeA9fnO5xAdf8WMrwiDmYwPqh?=
- =?iso-8859-1?Q?lPi6aR9wXsHAz3ZWBJjnL1p1QC6m+hR0HJZLvAWA6l0gzuM0hFUqLdCrim?=
- =?iso-8859-1?Q?Z0FLIY4ramJwpAOgEfjGL13GSViaodtD/nBCbQQ6fkOWcC7Xrg3mX3VoAY?=
- =?iso-8859-1?Q?OUhsJq+qpx+uaiAFSUbrBG6/oZqzZClmX1fGcH+K/DqVO3wi/re2pRYlPW?=
- =?iso-8859-1?Q?5j/1scXuKJ5gezZHXEBT1gfly2dRNpSyGMTbBLK74Yw6uTjse3nv6QAUa1?=
- =?iso-8859-1?Q?XnFFYXr3+MlMdBrDIDN6i/tJ7aYWkbW1YzuasQ6D9ZXyIA7ydK3Ur8xSIW?=
- =?iso-8859-1?Q?tIimbY36qg5qmX5a15zelwqFBLDEr1lVE21UuBjLs/SmTVY9CV7KSmaKo9?=
- =?iso-8859-1?Q?ciT+UVcv/9tAjrPvS12QxtIghKaGfTXykFHIMbVE3cPnJF4J67zL29WV4j?=
- =?iso-8859-1?Q?T3ALcp1ro7NQU5XSzBqoy5y+Ll/wk9rkIEmwMOxQvMdJ/mzKW+XZh+HJIR?=
- =?iso-8859-1?Q?0TS3Z5ryfohrEGnaofwpc4/QQiowRd8HNARPdwUaqYocqSJ8/EX9AdtX3S?=
- =?iso-8859-1?Q?bHcEILsZHyQE5CpUm0i1GLiYR+SYe4mkU9UPwk69QoJ7pl/5JZ4wcwD//0?=
- =?iso-8859-1?Q?ChxwvfJLTjsRefVmXVwc6UkY2ksQ9T9CgSutyVe43m3NAzvvXIq4FPdzLR?=
- =?iso-8859-1?Q?dAGvBbWZeFVY1bn8VIiQDXqdyJIpRLiFvfEHGAhoa8b9Jn1mhBf++M+LDe?=
- =?iso-8859-1?Q?/Ty3//TlvzHE/irawGiuf5xl0muEmwNUc4yJSHyNDaTBLLFCaqxAQl6K+v?=
- =?iso-8859-1?Q?TT/QPGLhdvLTy/bdlZJl+62AtUvCAyjsZWq5r5wQ3L5Gva4I+drYAbIroi?=
- =?iso-8859-1?Q?ZRQ0kbRnxRj4v/zPOiSphZD6fc5mmSVFVnSY6+QGYRefE9m3xNpL9hg1JB?=
- =?iso-8859-1?Q?X2AVVqp8YFKKmOKeozGDUctyG+1jYn7osGt9froD+Vhtx5qfBq/5kSKq/t?=
- =?iso-8859-1?Q?NJNODAOOt+UrgCcio3QicYNu0dJUgoOr7hcqwDyJXB8qnL8oqt2FYiY5MG?=
- =?iso-8859-1?Q?Ss3w5XwDEWuTLMdHTQGQrWPHygG6JiwNJWuOHQxjZtQUwPD4ssfKVafHSI?=
- =?iso-8859-1?Q?CANKFoMyO26t/oFDVWOgBxH2iCvxI3abC9/Dd2s9T4LDnd99KEV5s9+5Ym?=
- =?iso-8859-1?Q?9UbOj9+MdKaGRdBU1cV5r+UO0fsrxWrZJkW0xT4EdEGiiuLYk1IuYFxYEy?=
- =?iso-8859-1?Q?Q4TBDO/pIoZSp5WzWH9qrm/1WGWZQe1BgUmnKPW3CAgcfhRNAfj3?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0411030EF92
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 22:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772748371; cv=none; b=GrVjXoPYqkhWK4A+Nvc1KvYC6nnTwQp043fU6IRVZ6aK9A5GgsECtlcpPwEkV9p/KZuk9u5ulGw8VlyXHk8FqzeeVN7ixFJRj7AsbCRm00wPgEWb0PDeAWJghFVxjcqvbMWuf6FxTcIQvgddOdgS0sZdUkcyPwFCQqnC1bSrOfw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772748371; c=relaxed/simple;
+	bh=dvzcZGIfty4q4/ZRB3y+hS1qq4sdIATmxzQ3MxaVutE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pLqI79+J4gFZupxljQRI3t4OW4QBfuHjva9EV9rngTWxX784hARbkM3vYBa49OpX4kZbtdMSQpqlAPV7peL1SttU4eYM6LBrkmo5nqv3Pf+SJVPgOq6hoZrc1YVSmyeyZuaj2eQAuCWrEodlGaBriMBrMX8x+OqkWh2yiP0+e/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=dIa1xx63; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-483abed83b6so71722465e9.0
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 14:06:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1772748368; x=1773353168; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FBbdZfbSAyChtUJZbvsnHxDKBFDo1gjXMVQl5K2iv0E=;
+        b=dIa1xx63v/DVMnl0EvGOzpgBPYeb0L4OLaEO/d7okb9zq0Rggk1unj/tf70udOtCdS
+         xEXpe17+JWMqGmK17O9xBB5DtPPqHZquhPQu+ZgIG6vf2KSZTbe6lV5nxwJWazCrR2ip
+         kAa82i62Ii+x9HmnVVxCxkOzaciutQNsR077zJP+qfMmvkMhMd8L+EOEgB19upIsPw1B
+         mkuZD+9lLDAm/xHE/+jHaQGdF5L6QN2G3Jv9frq/9VmiCWHWbm2j8S/J6M1S5Qj1n2zk
+         GWOP5Y3KqRIPFCG4Djc/S9GQTCPr8SNvMNkVEXL9b+o/5AeLbOPBBAhz6X3KoRZMlwFW
+         xCPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772748368; x=1773353168;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FBbdZfbSAyChtUJZbvsnHxDKBFDo1gjXMVQl5K2iv0E=;
+        b=Xt2Oe5uvu3NhgBBMTcj9lBGjEL/z55mWiq3QbdpJP12fZretCNo9iwihPqPwHvJwro
+         9U9fvs+59XFZIMqAuWS6qwPy9i2gOiwwuorlxEkRIoK1vUEtm53BN7NLdrgmByu/BpuK
+         XXqwu/za9HJmZLNOerO+qsGyboQZr10QtfZbLst4cAOcTIzoXqeP4Em0vI+v/DwHYtzW
+         pZgLn4WRXBra+EVnfH8wUp0u/rx0vy3kGdjXckXSRRzY/fYxHXywMr2IX1wvt8zVTcBS
+         JUgjkeP0HdE3Wkjx/164fc4pKFffvqSsP2BHZbRrN+JKs9EET/Zo/p0ulVlEqXrJR1Ox
+         CzeA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8O6llZXuC1BkVbnkRH1ue1Y0ZXge8N2aIpw9XkGW3HtiLktrMSKWjX6kUAP2xTO+x1Pg3iSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6jhtW6LJP5XHQp34dOlk7iI4lvG97OYV6LJru4NlFhQimpy3T
+	SG2Hmiw2qv7PSpih10Wede3m2dZj0OhyhLX0YKyMZIBdnedP5VWTslc=
+X-Gm-Gg: ATEYQzwNOzU0/jEngj00d/tgUyvo0uDEkH3waT/4G5dRgLD7NRDi5bEoD8MKTlMU6be
+	f4bPjLHnMI6voV41+DW7LoJv6cuoeh4MazqaDpZ8rnHlh+iIn/koAdiykhZflmuh0U0qb/rZoFW
+	kcp2nYhujH16vQEcjiYTfx7ckE8YR40FRKS4/bgUpDcMu+zX+6FjSVCKjb0l1ItMtAKPueeD/BQ
+	ug/X6/hmWzA5jhZudB/aXEoP2aM/L83f0yVN/hvobbaUb5L48Ekzk8DgyYlUtVuPa1lrZg4A3nk
+	5HruYaTHWRuA6rXrWvDClVExlRt5qNB8+MJY1tsmjVaLxtJAI7IO+s+Vfrk5Ss7ueqWwejDIoaq
+	grtgp34r6/QH0GKsrSONiZBUCKlL81iUIyeVitkDtpokADVdl6tiH1Z5Yp+9OmbJSGLyp7TTvUO
+	9dAE1egKGAtNyPdKx3QJI56orOLzeQNczKG4tnoi2GiCMP8s2sodCEHdJYeMe3H33DXNrOXxUNw
+	w==
+X-Received: by 2002:a05:600c:1d0c:b0:482:df17:bbbc with SMTP id 5b1f17b1804b1-48519874e2amr119001495e9.20.1772748367987;
+        Thu, 05 Mar 2026 14:06:07 -0800 (PST)
+Received: from [192.168.1.3] (p5b05772c.dip0.t-ipconnect.de. [91.5.119.44])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851fafe4c9sm83973825e9.15.2026.03.05.14.06.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 14:06:07 -0800 (PST)
+Message-ID: <6f42cb43-c281-4565-b968-afc34502b9fb@googlemail.com>
+Date: Thu, 5 Mar 2026 23:06:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYRPR01MB15619.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ccc76b0-ba2c-430a-5b58-08de7b0288c0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2026 21:59:54.7427
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: huXiOUbjljrcBieBdiVEGHvgOBLgLbhu3M8g+FTiePJNPTSFM/WUM9IRE2RsrIAz1gR2c+XAhzdiXf2Vdcb3iD9TEh62TgXAZa1/UA4Sx5k6XZrDBbKJ8fp7sS3xW8gt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY7PR01MB16219
-X-Rspamd-Queue-Id: 1567A218BC0
+User-Agent: Betterbird (Windows)
+Subject: Re: [REGRESSION] Linux kernel 6.12.75 fails to compile with
+ -Werror=implicit-function-declaration
+To: Sasha Levin <sashal@kernel.org>, Brett A C Sheffield <bacs@librecast.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Aditya Garg <gargaditya08@live.com>,
+ "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ "ardb@kernel.org" <ardb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "graf@amazon.com" <graf@amazon.com>,
+ "guoweikang.kernel@gmail.com" <guoweikang.kernel@gmail.com>,
+ "henry.willard@oracle.com" <henry.willard@oracle.com>,
+ "hpa@zytor.com" <hpa@zytor.com>, "jbohac@suse.cz" <jbohac@suse.cz>,
+ "joel.granados@kernel.org" <joel.granados@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "noodles@fb.com" <noodles@fb.com>,
+ "paul.x.webb@oracle.com" <paul.x.webb@oracle.com>,
+ "rppt@kernel.org" <rppt@kernel.org>,
+ "sohil.mehta@intel.com" <sohil.mehta@intel.com>,
+ "sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org"
+ <x86@kernel.org>, "yifei.l.liu@oracle.com" <yifei.l.liu@oracle.com>
+References: <DD397543-DDDE-4215-A116-318AEAFFC359@live.com>
+ <0be301c0-f9be-4d70-9fdb-7a260ccf83ac@googlemail.com>
+ <aam_-Y7q-c3gmfGY@auntie> <aanlzq-RqDF9xkdI@laps>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <aanlzq-RqDF9xkdI@laps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AEDE4218C53
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[renesas.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[renesas.com:s=selector1];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[bp.renesas.com,kernel.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-223278-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	XM_UA_NO_VERSION(0.01)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	TAGGED_FROM(0.00)[bounces-223279-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[renesas.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cosmin-gabriel.tanislav.xa@renesas.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,live.com,linux.ibm.com,linux-foundation.org,oracle.com,kernel.org,alien8.de,linux.intel.com,amazon.com,gmail.com,zytor.com,suse.cz,vger.kernel.org,redhat.com,fb.com,intel.com,linutronix.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,googlemail.com:dkim,googlemail.com:mid,peters-netzplatz.de:url]
 X-Rspamd-Action: no action
 
-> From: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
-> Sent: Thursday, March 5, 2026 10:57 AM
->=20
-> Hello Cosmin,
->=20
-> On Fri, Jan 30, 2026 at 02:23:49PM +0200, Cosmin Tanislav wrote:
-> > enable_count is only incremented after rz_mtu3_pwm_config() is called
-> > for the current PWM channel, causing prescale to not be checked if one
-> > PWM channel is enabled and we're enabling the second PWM channel of the
-> > same HW channel.
->=20
-> I don't understand the issue. If the second PWM channel is enabled
-> while the first is only requested, changing the period is fine?!
->=20
-> Can you please show a sequence of events that result in bad behaviour?
->=20
+Am 05.03.2026 um 21:21 schrieb Sasha Levin:
+> On Thu, Mar 05, 2026 at 05:40:09PM +0000, Brett A C Sheffield wrote:
+>> On 2026-03-04 20:00, Peter Schneider wrote:
+>>> I already found and reported this in the RC cycle [1], and Sasha dropped it in -rc2 [2], and now in the release, it
+>>> obviously has, somewhat mysteriously, reappeared [3], affecting all of today's 6.x stable branch releases.
+>>
+>> Greg, Sasha et al.
+>>
+>> Can we make a small adjustment to the stable kernel testing process please,
+>> whereby we release a kernel that we have actually tested, instead of adding and
+>> dropping patches at the last moment and releasing a kernel that no one has
+>> tested?
+>>
+>> We are only a small pool of testers. If we find a bug, can we fix it, release a
+>> new RC and test again please?  We can have an RC3. Even an RC4.  Perhaps if we
+>> bogoselect fewer patches in the first place we might have less work to do. It's
+>> better to miss a backport for a bug no one has reported than to pull stuff in
+>> without proper review.
+> 
+> Could you suggest which fixes from v6.19..v6.19.6 could have been left outside
+> the tree?
+> 
+>> The current stable process is introducing bugs. Bugs that never existed in
+>> mainline.
+> 
+> Releasing yesterday's tree was (my) human error: I don't have as much
+> automation and scripting as Greg does, so many of the steps I've taken were
+> manual and prone to errors. I'm working on improving this workflow on my end.
+> 
+> This, however, wasn't an issue with our process, which is why I'm curious which
+> bugs you're referring to?
+> 
+>> The 3 kernels released today were tested by no one before release.
+> 
+> Right - the 3 kernels released today simply dropped a commit that caused a
+> built failure. We sometimes do that to address simple build or functionality
+> breakages (this happened with v6.19.2 and v6.19.5 too).
 
-Hello Uwe. The issue happens when a PWM channel is already enabled,
-and we're trying to enable a second PWM channel backed by the same
-HW channel, but with a different prescale. Although, because of
-other HW limitations we cannot really have differing periods, but
-that's handled in the following patch, 2/5.
+I agree with that, and in this case I don't see a risk here. It's probably fine.
 
-Here's a sequence of commands that results in bad behavior.
+But I have a major headache regarding this one, because Brett is right here:
 
-I've added a print for the enable count and period before the
-enable_count check, and prints for the actual period / duty cycle
-register writes, just to show that it gets thar far.
+>> The seven kernels yesterday were similarly tested by no one before release.
+>> We weren't given the opportunity.
+> 
+> Could you explain this point please? There were quite a few folks who provided
+> their Tested-by...
 
-root@rzt2h-evk:~# echo 0 > /sys/class/pwm/pwmchip0/export
-root@rzt2h-evk:~# echo 1 > /sys/class/pwm/pwmchip0/export
+The people who tacked their Tested-by on yesterday's 6.1.165, 6.6.128 and 6.12.75 RC2 did so after testing without the 
+patch "x86/kexec: add a sanity check on previous kernel's ima kexec buffer", because after my initial report you dropped 
+it, but in the final releases it was present again (essentially invalidating the Tested-By), causing the same build 
+failure, but only on X86, and only with CONFIG_WERROR=Y.
 
-root@rzt2h-evk:~# echo 0xffff0 > /sys/class/pwm/pwmchip0/pwm0/period
-root@rzt2h-evk:~# echo 0x7fff0 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
-root@rzt2h-evk:~# echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable
-[   71.916095] pwm pwmchip0: enable_count: 0, period: ffff0, prescale: 1
-[   71.924085] pwm pwmchip0: TGRA: ffff, TGRB: 7fff
+Now in todays three releases which fix this, you wrote in the release announcements "Only upgrade if you've observed a 
+build failure with 6.1.165." / 6.6.128 / 6.12.75.
 
-root@rzt2h-evk:~# echo 0xffff00 > /sys/class/pwm/pwmchip0/pwm1/period
-root@rzt2h-evk:~# echo 0x7fff00 > /sys/class/pwm/pwmchip0/pwm1/duty_cycle
-root@rzt2h-evk:~# echo 1 > /sys/class/pwm/pwmchip0/pwm1/enable
-[   80.063208] pwm pwmchip0: enable_count: 1, period: ffff00, prescale: 3
-[   80.071028] pwm pwmchip0: TGRC: ffff, TGRD: 7fff
+But this wording is, IMHO, inaccurate and inadquate, because people who built yesterdays releases with CONFIG_WERROR=N 
+will not have seen a build failure, and if they now, because of your release announcement, DO NOT upgrade to one of 
+todays releases, they now have a kernel with an incomplete patchset, i.e. with only the patch ""x86/kexec: add a sanity 
+check on previous kernel's ima kexec buffer" and not the three missing prerequisite patches from Harshit's patch series 
+which he said he will properly backport later, and this could be built only by lucky coincedence, and THIS is the 
+combination of code nobody actually tested which Brett talked about.
 
-As you can notice, at the time of the enable_count check for the second
-PWM channel, enable_count is equal to 1, so it does not pass the > 1
-condition, the prescale value is not validated, and it ends up overriding
-the previous prescale, messing up the already set period and duty cycle
-of the previously enabled PWM channel.
+What does it do? Does is cause harm? I don't know. Do you know? Maybe Harshit could tell us if it's a serious omission 
+or if it's not critical. This, IMHO, should have been avoided. The better wording in the release announcements of today 
+would have been: "All users on X86 must upgrade", so that nobody stays, unaware, on a kernel with that incomplete patch set.
 
-> Best regards
-> Uwe
+This gives me some vibes of "It compiles, so let's ship it", which is a questionable level of QA you might expect from 
+some (shady) commercial companies, but I think the Linux community should (and can!) do better. But I feel the process 
+was kinda broken this time, not because of your fault, but because lack of consistency in tooling, as you said yourself. 
+And also the unlucky timing of finding that bash/dash behaviour differnence in your tooling vs Greg's, that caused RC2 
+in the first place.
+
+Sorry if that sounds too harsh. I don't mean it in a harsh way, but only as constructive criticism. I know Greg and you 
+have an extremely complex job with maintaining the stable branches, and normally all works very well and smooth, because 
+both of you are doing a hell of an excellent job! But on occasion when a release was bumpy like this one, we should look 
+back and ask why, and what could have done better, and how we can improve in the future.
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
