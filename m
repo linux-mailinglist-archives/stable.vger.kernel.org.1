@@ -1,171 +1,201 @@
-Return-Path: <stable+bounces-223205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG6WGWyRqWmoAAEAu9opvQ
-	(envelope-from <stable+bounces-223205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:21:32 +0100
+	id +OzwH9GVqWnYAQEAu9opvQ
+	(envelope-from <stable+bounces-223206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:40:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD19213328
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:21:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB977213A11
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B11231402B9
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:20:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 241B530C12A3
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BACF21E091;
-	Thu,  5 Mar 2026 14:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1FD39F19D;
+	Thu,  5 Mar 2026 14:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4oo/Da1b"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="hnASDGjt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1DA246BD5
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B64395261
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772720419; cv=none; b=CpUz+DY9FjI+7qrZNnwLYQiJYmIpeyoTIBRwfNBjxv8n+ChKCfVtpwBFOJW6Z+yjHB0R+fgVkxVm5BIeoEgXtJgBaWA+maIpo1COhUPrRfarSuzshTwXZyPZtseL1cXr8GVlIzn9aRefjaJJvWWj8Vub4Hq3z0/YAyZV9/8TcyA=
+	t=1772721170; cv=none; b=JcI1qrU7avVqej4IwiikeBbh/wbgHKgNhdfTIVcDEy6AURK/VvqhD8ijQ9JFVnIOC8+Xr0SUU/8ykz3CILOlVY13+Dx5bnkctD2UK7VljGAOPZcxAO36u9M22ZAXi4hC5EYxjCiDU/7exgru4oqcWuWrd0ka296hkpUiFITz4CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772720419; c=relaxed/simple;
-	bh=PwCYRuwsKmQUe+2zlK2nZChMpzwmoFOf29G9MiF8OBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pv5K8aOW9+UB/l2ifmxSXBNGY6R9RWyToZbUiNBdO+QoYH9IYYSag9b3rVST+Wsj0M+g4wNQEY6MUKbqUyWroMhwSBP4FkNCF7Z9YE2OR9hpB67ISUCmHwrhHVwH6gan6aqI7kC1peeX7Qi9L+HLrKM2o8HjK+H95znlFkAecc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4oo/Da1b; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a12f88d839so1094315e87.0
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 06:20:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772720416; x=1773325216; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KAuFRx7gtOPZDHLYd8gki/p+Ss0pYYeA/wECrBUdLlE=;
-        b=4oo/Da1bpCa8KUfLicmCnGvLnWv6M6wxRkpEeW/utRG9zJGwakrfQDYrG5oPU7INl3
-         MHGIkjvaIrkKTbhM5T9Ie4XQ8MCFzz/lO/wyFRWTBiGwLjxx7VfVfFYRT1fFiLfkKIRk
-         JrgRCxfTW2QP3yGjPHAbqAPi5TfFDscTyGbc7hgo17eAbNXFzdU0553sNa31kEuAH3Sv
-         yH1HX2v/4etlU68+6ktd8RxKJ2hVClCHZHQfCsXuAthM2FHcxUG9gHhyfeJcP4XtaJek
-         aApRMoP1iUSD5rL9ZComaAc2ZMojbdO4vdWc2+o8sWIE3SHWTr7pF3S3O1t65laoTqm1
-         Ih2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772720416; x=1773325216;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KAuFRx7gtOPZDHLYd8gki/p+Ss0pYYeA/wECrBUdLlE=;
-        b=Y2mJ5fz2SSTqoOy2JnawW5GSs0FBjO3tVsmTGh36G1No4iMyy5TipQBb3Zlqu7YSmd
-         SgRgh04akuV87n4F3jW8Xqo5xHWaM8sFh/qPJUSbtmZrQsAjIwePwuXYQ33R+G3XsJ3y
-         P/LEOFMeL+OFd7ndZTOynOQ2UcLCU75uDvH6RL89S41SHVsNjoYJmwAYpMmynmpBW8c3
-         2SG8pvEkyHdRKS5Q1sRDAZVQbIIej9BH8Hqi6lYSEWdTB83Rz+JZbhC4GptxKF9Gb0gf
-         oqqckoEx1/f0arya8UelHVxQYP7JMw4Ki7GcfQCHxIPwkNP5kRRwhys5xHXfguxRWgL5
-         AZZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZh1kHOqeamhpkBZRsTTPP7qTqVEEIl5n7GYPJLraASASkjBVy/4UhaG/QIr/eRLyWtaKdUP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIKLCpm14100HJrq7tQOp67FgPZN5TyX2r648djrTf0B+KS15q
-	Cgaug1GbMGHXQNmAdJQQX++WV5Li0OEzg2p4mH2HfNK7CmHEsadclBSpl6Hp22KGIA==
-X-Gm-Gg: ATEYQzygvHItpWPpok70jS/Fw17sF93bc4hd9JMhNEVscojoSqJAi6DFakgfdC6yGpJ
-	zJ6t0XJEflBBGHQG575T7Tnmg/Ckt5418fed+KOMavqshzPF2nEQ6LV82B4PuLKl8oyCDbYLQfH
-	qyN4oHbH7memeWvTeMrpC2O/RcnXSFAipE1hjz4ybppkKy3kf186AQr5GqGDdWNNOr/BuvPxPSk
-	Z6+KeQClrtVkVMEGA04Q6F90Utm4c3mJ9XoNHVdXsl5y2OJPVC2xpdkoh3tuQDFlayddgPQw+xs
-	OahQiB/r9ah16Df8mF2sbP3V0CkTEvyAvSkrRV0nAUPgwRloDA0H9/7rAKCZp5zhPvVSwIHNKJZ
-	z7LtlmCirQmu3DRaMBlN7Y0JlBDKoiTLZ0xuciykTmadOD8EaYzHowxCpuKfzGX3Tc3zN+xXkN3
-	JAMHjcV9uqnRfzcsgbf1qlqu3Gk7DB7vAEwzuQ7mKnM1Tc6pNil34pEV0=
-X-Received: by 2002:a05:6512:145a:20b0:5a1:378c:11e8 with SMTP id 2adb3069b0e04-5a1378c1480mr17473e87.14.1772720415482;
-        Thu, 05 Mar 2026 06:20:15 -0800 (PST)
-Received: from google.com (27.69.88.34.bc.googleusercontent.com. [34.88.69.27])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13555df8csm249863e87.25.2026.03.05.06.20.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 06:20:14 -0800 (PST)
-Date: Thu, 5 Mar 2026 14:20:13 +0000
-From: Quentin Perret <qperret@google.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
-	Fuad Tabba <tabba@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: pkvm: Fallback to level-3 mapping on host
- stage-2 fault
-Message-ID: <frvqntoya3r5by3vx75eicvggmjnkrhqkxn62ealjjiuuuiwyw@rkngsfqxkxbn>
-References: <20260305132751.2928138-1-maz@kernel.org>
+	s=arc-20240116; t=1772721170; c=relaxed/simple;
+	bh=dC6dpbB7XpU0IZqROywiojueD3vmaUhPObeIBtk7zHY=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=EO/T6VbUc5Y2n1Pyo7mBRBLbal24UAeTnUDCGrB3UBmaLaW0sS5/tQ1qYqeCTlV516Vr1Mckp/VJZYrGC2q7XzL8mWFKJOWqnkJ4epmy1SrAegI5bvjUjfmMXveoL/CRwhuXoy30b8SPGmFiVUhQ5+y7kdWFwF5q51b3X4//0Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=hnASDGjt; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1772721127;
+	bh=dC6dpbB7XpU0IZqROywiojueD3vmaUhPObeIBtk7zHY=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=hnASDGjtHZWo7jFjj3Sw8mX8A9NEAdajWVLjFiBZY0WSvx/AkjGCGUcH6/Tla/ywW
+	 L6Khuy+EB7rQAHaEtQ4w3WCRS7lWP4zapU4yltXQ4/H1vpftDJFB1Ns8NxgAGmgrQK
+	 2vIufWxyyN+Edgar67MUfVT3NdQ+POQwbQ2cONqg=
+EX-QQ-RecipientCnt: 4
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqSHNwC2Dqd2M/t+aQldaspwowpDBZ8q7ts=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: Ty+m35/u6ct/+Uf8bb3QB3Gh6tfU4I+WeYNmENZ2gxpusnTJIN2gZLKsrohvhMCk
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1772721122t4496ca49
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?cmVncmVzc2lvbnM=?=" <regressions@lists.linux.dev>
+Cc: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
+Subject: [REGRESSION v6.12.75] build failure on x86 because commit f8f73bf0f8a57
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305132751.2928138-1-maz@kernel.org>
-X-Rspamd-Queue-Id: BFD19213328
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Thu, 5 Mar 2026 22:32:01 +0800
+X-Priority: 3
+Message-ID: <tencent_29235CCE219D3C772285C5F8@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <tencent_1EDDBDC63EFAE9C27849E987@qq.com>
+In-Reply-To: <tencent_1EDDBDC63EFAE9C27849E987@qq.com>
+X-QQ-ReplyHash: 208553334
+X-BIZMAIL-ID: 11680072738535138145
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Thu, 05 Mar 2026 22:32:03 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NchHDkd43sBtL6NMKFWc20rdZi6l4Jiioock3SHqcEbwkgr80lIIYbVj
+	CbcV7oc1X6/j5kQtfAsuGDCnZhOFYz1dUe8+ckEMSqaw7CL1U6PLvQANNvNWwDIObr3tY+u
+	m3SoAX9KNag4UVWr/jsMDCODbsxl/yL//7wbKCY0X2tdcPnpmDblsDgG0opmdwlePZ9nRjz
+	v6WrvWHaqBEBxDo1vqNYM1SauiFF6ktwmnwEYPw8Y0PCKJraR39IaGsxIIWHugWhzkkjXOq
+	XL4Z36HFliileQdRHHfF8gd2PkKTo1VlvP7iQXnQda5eDiIxdKVZTH1rwuLsuIq/SFOLyli
+	I+xaadVWPge+VPTfj1V19Ps998+L8/sUm1YEcawjFh+B/ONQJRBLriZYAS5xweQWLI89aRn
+	yUgb+ubCCCToHpV0UKz1YM7WqfXnjsfT6fONlHihlRkP4GDrCT7lGVSMgp4Mh0UzjA6G5ZH
+	sm8NSQMAf5uj2Lbs3QY4gdSthUcqxRJwUiGjR+pzeVuE7Hw/fCraR0N7JopvzFymZDGsjHH
+	D/JaJfsOhbSpsn+2AqRuwpFAluq4FqG2aPajhfq2dg+jDsslLeXuAVhhP9EsJMzIsX/LNMW
+	pTdCyp2nJnyxn8brk3Mjmg+t64Z4s6BtjRHgyTySu0THSd4S5P90ozd+M5sVsFXYcjTUeb5
+	LcBGUQlA72nMRIOHZWCnum/UjtOZMFV2tk7HPjSfA4xHLwnO/LMu7/XKwm8sdGBoU8aLULJ
+	Jh5gKe3zSs3/Ah/E1MGJ4YxWL+ujezn4JFyh4SGLlZ5HwWvu8+0YHb/Ez4eOQrziXT4Y8wp
+	ZO7Iha/GMN6xrgNVqwPIJ3GjKdAvu/6vON69FDmqu2NntfFw/rprw1GKshU4y+DzcUXwRqF
+	hk8143sEN93VtaF/Ye/sK8h0I5tZWGpJFpMqi4CIawlyiEoQnpWYB6sCjZmKpKw7qPMYU6q
+	t5kJ2F2aLRkI4MjJ0qTDdF+RwDSLsjIjMREHHEDid1jcRaXYu1tJ0HVJF/EKNwJOuU8DSJz
+	fFx0+TELqMdx7cEkqIjqQy3fDE8XQopBOAVeszjwFTJvXi7xzQFao2a43KMyGRkQt4BuTCP
+	Q==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: CB977213A11
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.44 / 15.00];
+	CC_EXCESS_BASE64(1.50)[];
+	TO_EXCESS_BASE64(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223205-lists,stable=lfdr.de];
-	MISSING_XM_UA(0.00)[];
+	HAS_X_PRIO_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-223206-lists,stable=lfdr.de];
+	TO_DN_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qperret@google.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	FROM_EXCESS_BASE64(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Action: no action
 
-On Thursday 05 Mar 2026 at 13:27:51 (+0000), Marc Zyngier wrote:
-> If, for any odd reason, we cannot converge to mapping size that is
-> completely contained in a memblock region, we fail to install a S2
-> mapping and go back to the faulting instruction. Rince, repeat.
-> 
-> This happens when faulting in regions that are smaller than a page
-> or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
-> an O6 board that refuses to boot in protected mode).
-> 
-> In this situation, fallback to using a PAGE_SIZE mapping anyway --
-> it isn't like we can go any lower.
-> 
-> Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
-> Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> Cc: Quentin Perret <qperret@google.com>
-> ---
->  arch/arm64/kvm/hyp/nvhe/mem_protect.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-> index 38f66a56a7665..d815265bd374f 100644
-> --- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-> +++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-> @@ -518,7 +518,7 @@ static int host_stage2_adjust_range(u64 addr, struct kvm_mem_range *range)
->  		granule = kvm_granule_size(level);
->  		cur.start = ALIGN_DOWN(addr, granule);
->  		cur.end = cur.start + granule;
-> -		if (!range_included(&cur, range))
-> +		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
->  			continue;
->  		*range = cur;
->  		return 0;
-> -- 
-> 2.47.3
-> 
+RGVhciBBbGwsDQoNCkkgZm91bmQgdjYuMTIuNzUgaGF2ZSBzYW1lIGlzc3VlIHRvbywgaXQg
+Y2FuIGJlIHJlcHJvZHVjZWQgb24geDg2LA0Kd2l0aCBDT05GSUdfT0ZfRkxBVFRSRUUgbm90
+IHNldChkaXNiYWxlIENPTkZJR19PRikuDQoNClRoZSByZWFzb24gaXMgbWlzcyB0aGUgbWFp
+bmxpbmUgY29tbWl0IDEwZDFjNzVlZDQzOCANCigiaW1hOiB2ZXJpZnkgdGhlIHByZXZpb3Vz
+IGtlcm5lbCdzIElNQSBidWZmZXIgbGllcyBpbiBhZGRyZXNzYWJsZSBSQU0iKQ0KDQpCUnMN
+CldlbnRhbyBHdWFuDQoNCkxvZzoNCmFyY2gveDg2L2tlcm5lbC9zZXR1cC5jOiBJbiBmdW5j
+dGlvbiDigJhpbWFfZ2V0X2tleGVjX2J1ZmZlcuKAmToNCmFyY2gveDg2L2tlcm5lbC9zZXR1
+cC5jOjM4MDoxNTogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIOKA
+mGltYV92YWxpZGF0ZV9yYW5nZeKAmSBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNs
+YXJhdGlvbl0NCiAgMzgwIHwgICAgICAgICByZXQgPSBpbWFfdmFsaWRhdGVfcmFuZ2UoaW1h
+X2tleGVjX2J1ZmZlcl9waHlzLCBpbWFfa2V4ZWNfYnVmZmVyX3NpemUpOw0KICAgICAgfCAg
+ICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+fg0KDQpjb25maWc6DQpodHRwczovL2dp
+c3QuZ2l0aHViLmNvbS9vcHNpZmYvYTEzOTEwM2Q5MmIwNTUwNGMwNWU0MjYwMDk1ODI0MmQN
+Cg0KY29tbWl0Og0KZ2l0IHNob3cgZjhmNzNiZjBmOGE1Nw0KY29tbWl0IGY4ZjczYmYwZjhh
+NTdlZTliODY3OTI0NTZiZDQyMDc5YmM5OGM2YjcNCkF1dGhvcjogSGFyc2hpdCBNb2dhbGFw
+YWxsaSA8aGFyc2hpdC5tLm1vZ2FsYXBhbGxpQG9yYWNsZS5jb20+DQpEYXRlOiAgIFR1ZSBE
+ZWMgMzAgMjI6MTY6MDkgMjAyNSAtMDgwMA0KDQogICAgeDg2L2tleGVjOiBhZGQgYSBzYW5p
+dHkgY2hlY2sgb24gcHJldmlvdXMga2VybmVsJ3MgaW1hIGtleGVjIGJ1ZmZlcg0KICAgIA0K
+ICAgIFsgVXBzdHJlYW0gY29tbWl0IGM1NDg5ZDA0MzM3YjQ3ZTkzYzA2MjNlODE0NWZjYmEz
+ZjU3MzllZmQgXQ0KICAgIA0KICAgIFdoZW4gdGhlIHNlY29uZC1zdGFnZSBrZXJuZWwgaXMg
+Ym9vdGVkIHZpYSBrZXhlYyB3aXRoIGEgbGltaXRpbmcgY29tbWFuZA0KICAgIGxpbmUgc3Vj
+aCBhcyAibWVtPTxzaXplPiIsIHRoZSBwaHlzaWNhbCByYW5nZSB0aGF0IGNvbnRhaW5zIHRo
+ZSBjYXJyaWVkDQogICAgb3ZlciBJTUEgbWVhc3VyZW1lbnQgbGlzdCBtYXkgZmFsbCBvdXRz
+aWRlIHRoZSB0cnVuY2F0ZWQgUkFNIGxlYWRpbmcgdG8gYQ0KICAgIGtlcm5lbCBwYW5pYy4N
+CiAgICANCiAgICAgICAgQlVHOiB1bmFibGUgdG8gaGFuZGxlIHBhZ2UgZmF1bHQgZm9yIGFk
+ZHJlc3M6IGZmZmY5Nzc5M2ZmNDcwMDANCiAgICAgICAgUklQOiBpbWFfcmVzdG9yZV9tZWFz
+dXJlbWVudF9saXN0KzB4ZGMvMHg0NWENCiAgICAgICAgI1BGOiBlcnJvcl9jb2RlKDB4MDAw
+MCkg4oCTIG5vdC1wcmVzZW50IHBhZ2UNCiAgICANCiAgICBPdGhlciBhcmNoaXRlY3R1cmVz
+IGFscmVhZHkgdmFsaWRhdGUgdGhlIHJhbmdlIHdpdGggcGFnZV9pc19yYW0oKSwgYXMgZG9u
+ZQ0KICAgIGluIGNvbW1pdCBjYmY5YzRiOTYxN2IgKCJvZjogY2hlY2sgcHJldmlvdXMga2Vy
+bmVsJ3MgaW1hLWtleGVjLWJ1ZmZlcg0KICAgIGFnYWluc3QgbWVtb3J5IGJvdW5kcyIpIGRv
+IGEgc2ltaWxhciBjaGVjayBvbiB4ODYuDQogICAgDQogICAgV2l0aG91dCBjYXJyeWluZyB0
+aGUgbWVhc3VyZW1lbnQgbGlzdCBhY3Jvc3Mga2V4ZWMsIHRoZSBhdHRlc3RhdGlvbg0KICAg
+IHdvdWxkIGZhaWwuDQogICAgDQogICAgTGluazogaHR0cHM6Ly9sa21sLmtlcm5lbC5vcmcv
+ci8yMDI1MTIzMTA2MTYwOS45MDcxNzAtNC1oYXJzaGl0Lm0ubW9nYWxhcGFsbGlAb3JhY2xl
+LmNvbQ0KICAgIFNpZ25lZC1vZmYtYnk6IEhhcnNoaXQgTW9nYWxhcGFsbGkgPGhhcnNoaXQu
+bS5tb2dhbGFwYWxsaUBvcmFjbGUuY29tPg0KICAgIEZpeGVzOiBiNjlhMmFmZDVhZmMgKCJ4
+ODYva2V4ZWM6IENhcnJ5IGZvcndhcmQgSU1BIG1lYXN1cmVtZW50IGxvZyBvbiBrZXhlYyIp
+DQogICAgUmVwb3J0ZWQtYnk6IFBhdWwgV2ViYiA8cGF1bC54LndlYmJAb3JhY2xlLmNvbT4N
+CiAgICBSZXZpZXdlZC1ieTogTWltaSBab2hhciA8em9oYXJAbGludXguaWJtLmNvbT4NCiAg
+ICBDYzogQWxleGFuZGVyIEdyYWYgPGdyYWZAYW1hem9uLmNvbT4NCiAgICBDYzogQXJkIEJp
+ZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZz4NCiAgICBDYzogQmFvcXVhbiBIZSA8YmhlQHJl
+ZGhhdC5jb20+DQogICAgQ2M6IEJvcmlzbGF2IEJldGtvdiA8YnBAYWxpZW44LmRlPg0KICAg
+IENjOiBndW93ZWlrYW5nIDxndW93ZWlrYW5nLmtlcm5lbEBnbWFpbC5jb20+DQogICAgQ2M6
+IEhlbnJ5IFdpbGxhcmQgPGhlbnJ5LndpbGxhcmRAb3JhY2xlLmNvbT4NCiAgICBDYzogIkgu
+IFBldGVyIEFudmluIiA8aHBhQHp5dG9yLmNvbT4NCiAgICBDYzogSW5nbyBNb2xuYXIgPG1p
+bmdvQHJlZGhhdC5jb20+DQogICAgQ2M6IEppcmkgQm9oYWMgPGpib2hhY0BzdXNlLmN6Pg0K
+ICAgIENjOiBKb2VsIEdyYW5hZG9zIDxqb2VsLmdyYW5hZG9zQGtlcm5lbC5vcmc+DQogICAg
+Q2M6IEpvbmF0aGFuIE1jRG93ZWxsIDxub29kbGVzQGZiLmNvbT4NCiAgICBDYzogTWlrZSBS
+YXBvcG9ydCA8cnBwdEBrZXJuZWwub3JnPg0KICAgIENjOiBTb2hpbCBNZWh0YSA8c29oaWwu
+bWVodGFAaW50ZWwuY29tPg0KICAgIENjOiBTb3VyYWJoIEphaW4gPHNvdXJhYmhqYWluQGxp
+bnV4LmlibS5jb20+DQogICAgQ2M6IFRob21hcyBHbGVpbnhlciA8dGdseEBsaW51dHJvbml4
+LmRlPg0KICAgIENjOiBZaWZlaSBMaXUgPHlpZmVpLmwubGl1QG9yYWNsZS5jb20+DQogICAg
+Q2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPg0KICAgIFNpZ25lZC1vZmYtYnk6IEFuZHJl
+dyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQogICAgU2lnbmVkLW9mZi1i
+eTogU2FzaGEgTGV2aW4gPHNhc2hhbEBrZXJuZWwub3JnPg0KDQpkaWZmIC0tZ2l0IGEvYXJj
+aC94ODYva2VybmVsL3NldHVwLmMgYi9hcmNoL3g4Ni9rZXJuZWwvc2V0dXAuYw0KaW5kZXgg
+ZjFmZWE1MDZlMjBmNC4uMjM0YzRkOWU1MGI4ZiAxMDA2NDQNCi0tLSBhL2FyY2gveDg2L2tl
+cm5lbC9zZXR1cC5jDQorKysgYi9hcmNoL3g4Ni9rZXJuZWwvc2V0dXAuYw0KQEAgLTM3Miw5
+ICszNzIsMTUgQEAgaW50IF9faW5pdCBpbWFfZnJlZV9rZXhlY19idWZmZXIodm9pZCkNCiAN
+CiBpbnQgX19pbml0IGltYV9nZXRfa2V4ZWNfYnVmZmVyKHZvaWQgKiphZGRyLCBzaXplX3Qg
+KnNpemUpDQogew0KKyAgICAgICBpbnQgcmV0Ow0KKw0KICAgICAgICBpZiAoIWltYV9rZXhl
+Y19idWZmZXJfc2l6ZSkNCiAgICAgICAgICAgICAgICByZXR1cm4gLUVOT0VOVDsNCiANCisg
+ICAgICAgcmV0ID0gaW1hX3ZhbGlkYXRlX3JhbmdlKGltYV9rZXhlY19idWZmZXJfcGh5cywg
+aW1hX2tleGVjX2J1ZmZlcl9zaXplKTsNCisgICAgICAgaWYgKHJldCkNCisgICAgICAgICAg
+ICAgICByZXR1cm4gcmV0Ow0KKw0KICAgICAgICAqYWRkciA9IF9fdmEoaW1hX2tleGVjX2J1
+ZmZlcl9waHlzKTsNCiAgICAgICAgKnNpemUgPSBpbWFfa2V4ZWNfYnVmZmVyX3NpemU7
 
-
-Reviewed-by: Quentin Perret <qperret@google.com>
-
-Thanks,
-Quentin
 
