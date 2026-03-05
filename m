@@ -1,229 +1,188 @@
-Return-Path: <stable+bounces-223171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBaHCWAVqWnR1QAAu9opvQ
-	(envelope-from <stable+bounces-223171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 06:32:16 +0100
+	id CKqXFbEdqWlM2QAAu9opvQ
+	(envelope-from <stable+bounces-223172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 07:07:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEE420B01C
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 06:32:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A756620B1F9
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 07:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13AC2304A55C
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 05:32:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFA10303DACF
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 06:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E53286D5E;
-	Thu,  5 Mar 2026 05:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AFE26738C;
+	Thu,  5 Mar 2026 06:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="NXZgrmKw"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE341C2324;
-	Thu,  5 Mar 2026 05:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from sg-1-100.ptr.blmpb.com (sg-1-100.ptr.blmpb.com [118.26.132.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2726E702
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 06:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772688720; cv=none; b=eswmuh08wuQz763DAohhpIC7X5pZNrhAM6S/LGS6IMRoz0WYm1ddxdbBxcskelazfMhocDyDjVEIYHToetJdsJ+m3FzMYXWfft9AA82wOx57MTqV5r7P7XwOm7J6XIBK4O1cf/w0ZtHOkzOtuBW1foh58nWcN7Z6rFlfvyhjAME=
+	t=1772690846; cv=none; b=bBvgljR60rVGW8NMOUyi22VSFYNIbz1Ac4rx+9o101+qgNMEZNuD42+ZV0w3/yMIpVM33hHJW6tQ0UsS7jGiXWPSKYn6qOC1auo/TVEhvuqeriTdLlLsBGqM5Nm/WDtkqk3sghC09D6JZZBJjCi7r57ui1K7BYl/GsBm7w5hPrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772688720; c=relaxed/simple;
-	bh=I5GagJ4JJrwaP1VFcc3/YKczD7L+HER36RxUyplKAQk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FIr2D2ID4Jimfbam+zooAPeD6/tPhfT2H7zd0rFzAo5KVzcrc+mQOiNMEn6XfKZ0EQsi2P6ecTUoVJ91IqizJFqEZAnE8ALgKajGQdgn/N9yHlYG7iRn6HNAf34T3RuLBbeoUfzhtn/SaBrOOFfiDWVzLWhKVVuVlaH8bDf2mIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 442C2497;
-	Wed,  4 Mar 2026 21:31:52 -0800 (PST)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C44F33F694;
-	Wed,  4 Mar 2026 21:31:56 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH V4 1/2] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
-Date: Thu,  5 Mar 2026 05:31:46 +0000
-Message-Id: <20260305053148.3765710-2-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260305053148.3765710-1-anshuman.khandual@arm.com>
-References: <20260305053148.3765710-1-anshuman.khandual@arm.com>
+	s=arc-20240116; t=1772690846; c=relaxed/simple;
+	bh=VdK0MxFWy5AfGNYLihOKrAnjVOE1LOhw9JAhmBD1dcU=;
+	h=Message-Id:Mime-Version:Content-Type:Date:Cc:Subject:From:To; b=XjWadKcTwaNi6BMLa/wQMpirTgjRzU9/T5Ywds+WqVk8J2HvHV02ms6PUJYxRxkTV8OrkRu9KNOE/Dh7IVMCaK0tLTW1GedmLk6TGZFfNq92uIrVTBokdE1Rk4+utWTPys/QSdbURlyWXqpQ+H7xnTUJZQK1tuWoiVtp8yYv8C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=NXZgrmKw; arc=none smtp.client-ip=118.26.132.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1772690835; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=+xwQncdlXd0oSQ9jRHnvWwWoA100zQbea6T6LlMtF0Q=;
+ b=NXZgrmKwQN9wuizvHU05yAhhsRoyb2M9tQdh0iH3XCmJ28gNYRdXrPuFr/jS1NnIn/hpu6
+ a4FV9Em1vTV5S5Ekku+BE2pGEgF9aoNMtLifqtMaCwlQBq2lfYQdh1aEO3h3hkhPvOohLj
+ uKaibpeyem92w9OMlGEgRRZuRJlw7WXmf27xgmH5KE9fq+62PXLG6wuxVXr48PlNqc5yHy
+ wSTxFmbI+9yjKowz0IZFb29FAzOTuZb2A6OaLKTsys2aUmIIg/27PsNNOwKf5h2P2SZilG
+ sQmjcMmpdMCTAIWDGN4XqddOFR/ylTr631idPE3o+vyCbNFJjGnvXUwW4aBn6g==
+Message-Id: <20260305060656.3357250-1-zhangjian.3032@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8FEE420B01C
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Thu,  5 Mar 2026 14:06:55 +0800
+X-Mailer: git-send-email 2.20.1
+Cc: <stable@vger.kernel.org>
+Subject: [PATCH net v2] net: ncsi: fix skb leak in error paths
+Content-Transfer-Encoding: 7bit
+From: "Jian Zhang" <zhangjian.3032@bytedance.com>
+X-Lms-Return-Path: <lba+269a91d91+b45aba+vger.kernel.org+zhangjian.3032@bytedance.com>
+X-Original-From: Jian Zhang <zhangjian.3032@bytedance.com>
+To: "Samuel Mendoza-Jonas" <sam@mendozajonas.com>, 
+	"Paul Fertser" <fercerpav@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, 
+	"Joel Stanley" <joel@jms.id.au>, 
+	"Gavin Shan" <gwshan@linux.vnet.ibm.com>, <netdev@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>
+X-Rspamd-Queue-Id: A756620B1F9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223171-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[mendozajonas.com,gmail.com,davemloft.net,google.com,kernel.org,redhat.com,jms.id.au,linux.vnet.ibm.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-223172-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[bytedance.com:+];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhangjian.3032@bytedance.com,stable@vger.kernel.org];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,bytedance.com:server fail];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bytedance.com:dkim,bytedance.com:email,bytedance.com:mid]
 X-Rspamd-Action: no action
 
-During a memory hot remove operation, both linear and vmemmap mappings for
-the memory range being removed, get unmapped via unmap_hotplug_range() but
-mapped pages get freed only for vmemmap mapping. This is just a sequential
-operation where each table entry gets cleared, followed by a leaf specific
-TLB flush, and then followed by memory free operation when applicable.
+Early return paths in NCSI RX and AEN handlers fail to release
+the received skb, resulting in a memory leak.
 
-This approach was simple and uniform both for vmemmap and linear mappings.
-But linear mapping might contain CONT marked block memory where it becomes
-necessary to first clear out all entire in the range before a TLB flush.
-This is as per the architecture requirement. Hence batch all TLB flushes
-during the table tear down walk and finally do it in unmap_hotplug_range().
+Specifically, ncsi_aen_handler() returns on invalid AEN packets
+without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
+when failing to resolve the NCSI device, response handler, or
+request, leaving the skb unfreed.
 
-Prior to this fix, it was hypothetically possible for a speculative access
-to a higher address in the contiguous block to fill the TLB with shattered
-entries for the entire contiguous range after a lower address had already
-been cleared and invalidated. Due to the table entries being shattered, the
-subsequent TLB invalidation for the higher address would not then clear the
-TLB entries for the lower address, meaning stale TLB entries could persist.
-
-Besides it also helps in improving the performance via TLBI range operation
-along with reduced synchronization instructions. The time spent executing
-unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
-in KVM guest.
-
-This scheme is not applicable during vmemmap mapping tear down where memory
-needs to be freed and hence a TLB flush is required after clearing out page
-table entry.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+CC: stable@vger.kernel.org
+Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
 ---
- arch/arm64/mm/mmu.c | 46 +++++++++++++++++++++++++++++----------------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+Changes in v2:
+- use meaningful label
+- use kfree_skb to free skb in error paths
+- add Fixes label
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index a6a00accf4f9..f7ccda22d39e 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1458,10 +1458,18 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
+v1: https://lore.kernel.org/all/20260302054629.1347119-1-zhangjian.3032@bytedance.com/
+---
+ net/ncsi/ncsi-aen.c |  3 ++-
+ net/ncsi/ncsi-rsp.c | 16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
+index 62fb1031763d..040a31557201 100644
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_priv *ndp, struct sk_buff *skb)
+ 	if (!nah) {
+ 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
+ 			    h->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
  
- 		WARN_ON(!pte_present(pte));
- 		__pte_clear(&init_mm, addr, ptep);
--		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--		if (free_mapped)
-+		if (free_mapped) {
-+			/*
-+			 * CONT blocks are not supported in the vmemmap
-+			 */
-+			WARN_ON(pte_cont(pte));
-+			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
- 			free_hotplug_page_range(pte_page(pte),
- 						PAGE_SIZE, altmap);
-+		}
-+		/*
-+		 * unmap_hotplug_range() flushes TLB for !free_mapped
-+		 */
- 	} while (addr += PAGE_SIZE, addr < end);
- }
+ 	ret = ncsi_validate_aen_pkt(h, nah->payload);
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 271ec6c3929e..fbd84bc8026a 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
+ 	/* Find the NCSI device */
+ 	nd = ncsi_find_dev(orig_dev);
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+-	if (!ndp)
+-		return -ENODEV;
++	if (!ndp) {
++		ret = -ENODEV;
++		goto err_free_skb;
++	}
  
-@@ -1482,15 +1490,18 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
- 		WARN_ON(!pmd_present(pmd));
- 		if (pmd_sect(pmd)) {
- 			pmd_clear(pmdp);
--
--			/*
--			 * One TLBI should be sufficient here as the PMD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				/*
-+				 * CONT blocks are not supported in the vmemmap
-+				 */
-+				WARN_ON(pmd_cont(pmd));
-+				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
- 				free_hotplug_page_range(pmd_page(pmd),
- 							PMD_SIZE, altmap);
-+			}
-+			/*
-+			 * unmap_hotplug_range() flushes TLB for !free_mapped
-+			 */
- 			continue;
- 		}
- 		WARN_ON(!pmd_table(pmd));
-@@ -1515,15 +1526,14 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
- 		WARN_ON(!pud_present(pud));
- 		if (pud_sect(pud)) {
- 			pud_clear(pudp);
--
--			/*
--			 * One TLBI should be sufficient here as the PUD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
- 				free_hotplug_page_range(pud_page(pud),
- 							PUD_SIZE, altmap);
-+			}
-+			/*
-+			 * unmap_hotplug_range() flushes TLB for !free_mapped
-+			 */
- 			continue;
- 		}
- 		WARN_ON(!pud_table(pud));
-@@ -1553,6 +1563,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
- static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 				bool free_mapped, struct vmem_altmap *altmap)
- {
-+	unsigned long start = addr;
- 	unsigned long next;
- 	pgd_t *pgdp, pgd;
+ 	/* Check if it is AEN packet */
+ 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
+@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
+ 	if (!nrh) {
+ 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
+ 			   hdr->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto err_free_skb;
+ 	}
  
-@@ -1574,6 +1585,9 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 		WARN_ON(!pgd_present(pgd));
- 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
- 	} while (addr = next, addr < end);
+ 	/* Associate with the request */
+@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
+ 	nr = &ndp->requests[hdr->id];
+ 	if (!nr->used) {
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_free_skb;
+ 	}
+ 
+ 	nr->rsp = skb;
+@@ -1261,4 +1265,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
+ out:
+ 	ncsi_free_request(nr);
+ 	return ret;
 +
-+	if (!free_mapped)
-+		flush_tlb_kernel_range(start, end);
++err_free_skb:
++	kfree_skb(skb);
++	return ret;
  }
- 
- static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 -- 
-2.30.2
-
+2.20.1
 
