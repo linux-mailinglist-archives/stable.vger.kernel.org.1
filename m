@@ -1,169 +1,139 @@
-Return-Path: <stable+bounces-223217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIG+BU2dqWnGAwEAu9opvQ
-	(envelope-from <stable+bounces-223217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:12:13 +0100
+	id 2NQiK6GdqWnGAwEAu9opvQ
+	(envelope-from <stable+bounces-223218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:13:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D4B2143EC
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:12:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57554214420
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CF5E3032DD2
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:06:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A9B63010B5E
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4403BA238;
-	Thu,  5 Mar 2026 15:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCFF3BE159;
+	Thu,  5 Mar 2026 15:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HHF6rwun";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nEx1cRz8";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HHF6rwun";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nEx1cRz8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AanIvcxG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041E039E6C0
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 15:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAC939A056;
+	Thu,  5 Mar 2026 15:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772723188; cv=none; b=Pu/DiiNAZ7ATc9Tuyr7EbCYLvrPmJjFPdjnq9TqdV0xwIjp18GClWEvOlG89fhSl4S+jPGAYzdC/2qksK66hkRHaR9/H5kt0pk5VWNl/m7OcrHI8U8IWN13OK93rHrmRq7sMZtvpUAtLQGQomsRxelaS2o7k6/YQ0IYl9ZJQXNk=
+	t=1772723431; cv=none; b=lg6rea2kVvaniY84JKZsPkn/0e0RNyaFzDQiEBTOXXHzTem43v9KZaDCEQLkUxU+RsLxTtY9vplx6Jv7pff+sOQJ224iXFnvy/fZb9hVH6oghp4Id1blD1muSXO2orT3UES3jsUy+BIVaTy5v//BMCvJ4j9XTAX68DnLYwtFGDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772723188; c=relaxed/simple;
-	bh=z4AHrGvw81ANUPukkGX+dgl7hXSQilMVx+iXO8GsSB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W+CRb5nh6nvqzNHoAYzCiPT1HeUCJlZ1m8ivGFv5FQTqzUDyxEuLJXMGU4QZRdvhGbHE/6MTuwYAkNEoi0RpVBChQFW4igd4SW/BcPt7mMLfgrd7d7Q7RRTyfTaWbs1b168ASCBobATML2lRa0uT1vd8cYisRSpXVwy68Lbr1Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HHF6rwun; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nEx1cRz8; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HHF6rwun; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nEx1cRz8; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4FB883F26F;
-	Thu,  5 Mar 2026 15:06:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772723185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKOkmoCvv3CEkHY2UPn5Y8n+3bq113EX2+oHYyLm0wU=;
-	b=HHF6rwunxvP9PQu2O3IDzVyt/xD5B7K6WToJZO0BrOXn5gWHXu3m0np/77rZ+BXKqt0yKT
-	IEEvfRdGTTbLn/13utde7kNc3Unq8UWlpHEK/u65g4h+IRfqacDU1dwfGjY19CF+JMK6hQ
-	GNmGtwqxgjPnS5icKG4emtd7Pwm564s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772723185;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKOkmoCvv3CEkHY2UPn5Y8n+3bq113EX2+oHYyLm0wU=;
-	b=nEx1cRz8l0ArCARScynOQ5PZLtur9dIQIt2UNxkv/tnJu0MC6elEx/mOeaA6PiT/772hT6
-	1/zisBg7b1lIjuBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772723185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKOkmoCvv3CEkHY2UPn5Y8n+3bq113EX2+oHYyLm0wU=;
-	b=HHF6rwunxvP9PQu2O3IDzVyt/xD5B7K6WToJZO0BrOXn5gWHXu3m0np/77rZ+BXKqt0yKT
-	IEEvfRdGTTbLn/13utde7kNc3Unq8UWlpHEK/u65g4h+IRfqacDU1dwfGjY19CF+JMK6hQ
-	GNmGtwqxgjPnS5icKG4emtd7Pwm564s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772723185;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eKOkmoCvv3CEkHY2UPn5Y8n+3bq113EX2+oHYyLm0wU=;
-	b=nEx1cRz8l0ArCARScynOQ5PZLtur9dIQIt2UNxkv/tnJu0MC6elEx/mOeaA6PiT/772hT6
-	1/zisBg7b1lIjuBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E068A3EA68;
-	Thu,  5 Mar 2026 15:06:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id h/uAM/CbqWnQHQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 05 Mar 2026 15:06:24 +0000
-Date: Thu, 5 Mar 2026 15:06:23 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
-Message-ID: <ltqoseouwid7bfbntwr2e7tfquw7ypojit74hem6ccuzttgqh2@n2agw3lgdnh6>
-References: <20260305145312.1081112-1-pfalcato@suse.de>
+	s=arc-20240116; t=1772723431; c=relaxed/simple;
+	bh=AkIKthFC3seyjQHFCISfUgPvjeZra1+Ur0x0UR4LTCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=grO9/L0oc+SKbT2D5Gf1HrdOXwjM4WxYZbBPSwVepEi/qF2hXmtLqsmK/ZfLphnpAJxdVcgLK8DI9y8uNSIFvfFD+vPtj5NfaWK9l1YRZfqsFayWE3ewsaYta5oVQ601nS6eI1azOaFjgcM72eOCu5Tdn8x/z5aMvZwChGkrALo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AanIvcxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21241C116C6;
+	Thu,  5 Mar 2026 15:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772723430;
+	bh=AkIKthFC3seyjQHFCISfUgPvjeZra1+Ur0x0UR4LTCw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AanIvcxGJ91mJRGbgHWgw/I/Q46d83BImSDH+NcCzv/d61FPOAs8zIxXO8bXCdDbS
+	 wHqvwu3WHMXxfHInzlkgpQ/czHoN3a0mNEFx3Db1eyRLd8r4pdgL/dmFUrCsFLDW//
+	 jy6Fehm6eLRYpw3zoZ2sqskc16lblQK7cRIQKeUty38j4Sc/AdNDwWEbYueLnkA5f8
+	 EmnEIvzLvKmkpijS5ZbpZRY2WXr7VifKKVh2zW1Z3TCfwPAZe2E3deif/DJdne5Y/r
+	 t/IXxjTC8xb+bXtS8iU5owmpYLZrmXDybnlID76fGsSYNxJg0e9O5GFtAV8UhFPTdk
+	 uC8pNkGsfzd1w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	gregkh@linuxfoundation.org
+Subject: Linux 6.12.76
+Date: Thu,  5 Mar 2026 10:10:27 -0500
+Message-ID: <20260305151028.671440-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305145312.1081112-1-pfalcato@suse.de>
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 84D4B2143EC
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 57554214420
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223217-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pfalcato@suse.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-223218-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 02:53:12PM +0000, Pedro Falcato wrote:
-> Currently, whenever you boot with a QEMU drive over an AHCI interface,
-> you get:
-> [    1.632121] ata1.00: applying bridge limits
-> 
-> This happens due to the kernel not believing the given drive is SATA,
-> since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
-> a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
-> 
-> QEMU has set word 93 erroneously for SATA drives but does not, in any
-> way, emulate any of these real hardware details. There is no PATA
-> drive and no SATA cable.
-> 
-> As such, add a BRIDGE_OK quirk for QEMU HARDDISK. Special care is taken
-> to limit this quirk to "2.5+", to allow for fixed future versions.
-> 
-> This results in the max_hw_sectors being limited solely by the
-> controller interface's limits. Which, for AHCI controllers, takes it
-> from 128KB to 32767KB.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
 
-Ugh, just noticed I forgot to pick up Damien's Rb, please add it when
-applying, thanks!
+I'm announcing the release of the 6.12.76 kernel.
 
--- 
-Pedro
+Only upgrade if you've observed a build failure with 6.12.75.
+
+The updated 6.12.y git tree can be found at:
+        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+        https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+
+Thanks,
+Sasha
+
+- ------------
+
+
+ Makefile                | 2 +-
+ arch/x86/kernel/setup.c | 6 ------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
+
+Sasha Levin (2):
+      Revert "x86/kexec: add a sanity check on previous kernel's ima kexec buffer"
+      Linux 6.12.76
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4n5dijQDou9mhzu83qZv95d3LNwFAmmpnLsACgkQ3qZv95d3
+LNwXXhAAhqrmS010AOI+mAJc/zlNozEJKL9EObff0hXE8QyWLXgDsaz+bHOgqajI
+NNvad5SOgou6y9pGJQjrBVORqSHDHb3VFySP+sBQSOoHht0bRkc8oz61HNQMxszx
+4c1tprm94eSawQc2SjbB+cMNVporcu5DA9nrotrMtzNmGjyA3L7oZ6Oe4abFQTJm
+av/gMDmkuLVWbEcf3tCZuAHXBX2EYD6536RfimXz+MTl5YIF6lEFnSStaMFgySJm
+aLepvE6mccn31V5DzKQrjjC17AKOi2AFDY9skTTsgIbS7gZK8fkuOJQGS5SOVPPG
+z9EmNYSsuwhSS7BVVyouam5AEbwkWXiPvYkNf2CvHdVATvQcuUIqDtfkxFhOsCEL
+5i6bp9d+Dye3qdyJMXdT+8/5GEo8UJDc6m0uz3+uZ904taD6ZzYB7g6/JgmqKWPz
+dKBLg4uSam0rMn3TJbqVMe5zvRmBf0EzhP8qNve2YGeBhZYPRZgXj9iXNQoLq52P
+ID8tXO/I47gzXOGD1xItNaXrWuHze0bNsuEDQc1gJxRoy7Ef9TJ8/unr+b3+ra/B
+kzwN+e4MVxXxa0O5lLximHWGCQOisPc9js+Y8quasNX0LqcUSNGc5eigIFAOacMx
+SskQ9uOlv+D/oxk3pn+JoF+TvsqwkgBM+ypUfyiBzJRXouzqWao=
+=6dxV
+-----END PGP SIGNATURE-----
 
