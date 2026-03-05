@@ -1,202 +1,201 @@
-Return-Path: <stable+bounces-223209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKM4NAGYqWlKAgEAu9opvQ
-	(envelope-from <stable+bounces-223209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:49:37 +0100
+	id gNywAQSVqWmKAQEAu9opvQ
+	(envelope-from <stable+bounces-223212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:36:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA06213D4E
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:49:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750D4213990
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 15:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D003D30980E8
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:35:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC400303C83C
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 14:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C329460;
-	Thu,  5 Mar 2026 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248B3A2559;
+	Thu,  5 Mar 2026 14:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PRAe/0Eq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bFR/H0x8"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44FA3A1A59
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E32338595
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 14:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772721281; cv=none; b=QUgbpemlHJ6rTOOyiDyKPf6YXlCX2u5L/jgjj5rnc9hLZTQ71fxRLvPTIzWP3WIHW+J88KvSkHN/rBb6bU8El3Kp0QaAM48678le8nzgXV2z5UI9RKO/tGXmxuMCfyRd+3Va/FncQeGb274d9XucumsegXkVKyT7CZGEPq7Ft+g=
+	t=1772721407; cv=none; b=IpOnVQsh5Fiv+u6tzrwXDQURRkPNSlMbnGINgtXQSRbGFr3Wha1mGkYVul2Im0uik0gGYbl7TsuvCB3znWL3Tq8WYJViIKEO+UrAQo0s79MJLf+jgpqm769uqMlEnzmv7+rB6NTcfT76X7xILTDVNhu9GfBTVWwaKoYliFeQvHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772721281; c=relaxed/simple;
-	bh=1fnU0MUKwFDu+HuPm2g0JEOYCoHt7uKd2I73uTFW9+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQJb+NcvgtpOIkTaG8GIZhKMaJ9RJh8u/cpWE0MgKuo4jYNX+r2RTagVEa7q8kzUj3RveJj3sCZi9yk7drd+ZrTP2e6zqxlg/b1W9FOYzHJ6BigDHFskeXT+oaDUyVVRE5+QBNA8gFHewCIK5ATfTxhpzRouq9OWuq8+dosbw3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mZ-000464-Pm; Thu, 05 Mar 2026 15:34:31 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mX-003two-2B;
-	Thu, 05 Mar 2026 15:34:31 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mY-00000002E8c-3zeM;
-	Thu, 05 Mar 2026 15:34:30 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com
-Subject: [PATCH net v1 4/4] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
-Date: Thu,  5 Mar 2026 15:34:29 +0100
-Message-ID: <20260305143429.530909-5-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260305143429.530909-1-o.rempel@pengutronix.de>
-References: <20260305143429.530909-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1772721407; c=relaxed/simple;
+	bh=W7LcSJDO+SmcI9iBgRwPWOz/I3O0rsjVjXKttw3Rl4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jat+b1Jcy4+NV6Mrr3+AyLUA+NE41qvimP8nuIwk0aJO5R0z6YH8/tajwL5EzNSxMAcrOLVGUmpAJJXeqVlx8Qn2PJnw4jHJXJE1jRhBYizD+XRmqtdaescErGqdO4e6hQv3WtfA5jl2uNWW5eOfFvFmeDFgJ6+DwY+GYzT5fUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PRAe/0Eq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bFR/H0x8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 625AFo1Z456100
+	for <stable@vger.kernel.org>; Thu, 5 Mar 2026 14:36:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=M9kOZ2oA46DkDMvPSWIl1WyV
+	VW6X0vR4sjQ/X/1ot3U=; b=PRAe/0EqEiMjUGnh75oi1rvpcTT0bLSMo3s9Mvxc
+	zmQo3yUTTpMYkV+Qnv3XTcQsEV3nq/TqKC2oJCwnbWvi996MpDVwUpc2p+VGUX8d
+	bPZikNWVwBCyiT6dpp9QvGWuKlBTRq36joBp/7+CAlOZ7xU6y+n3ERgQ7S/zrHkJ
+	574GukIy8tl90hWjHr47GEEw4USQGd4A3Trh9LIbmvgXWQc5hPK+fsZDo+hrqy27
+	fOv+tmtvWyYT+qT5BC24UpTdG9vJXz2YqEMWvex2MVwkRPN2OEcr1vKnUDioRQdp
+	cGnmlVXHFBmw6zL7YTTNr5cCx1sUb+fUgoju7D9Hb7MVHQ==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cps0wkjus-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 05 Mar 2026 14:36:45 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-89a174bd442so135111906d6.2
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 06:36:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772721405; x=1773326205; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9kOZ2oA46DkDMvPSWIl1WyVVW6X0vR4sjQ/X/1ot3U=;
+        b=bFR/H0x8hoMoJ5A2WqrfD/3OrdIP8ZOGC1U5BPnysmfmpj9mnpHLyrvihi8qvvJFy5
+         eXUUGAQM71WWSSoFpqoY0KW/fMhveL1dj9I3NTBAo+/WYIyA17lf55BUZ+CouR7Jq1jE
+         JMABFM6H/zvdWBZaxdVcRT93VC4h2GzafqxrXuHsXblI42OUB43RmMaXf8mNjIorLr10
+         U1RQhpV+hzhaOiwJMh0bXdISDSoQVcJu2zuXd+b3kzOvpfutvuf5MV0sKsLraRYcbH9E
+         7aBaNr1OqCJc+VNRdVqbpcOt+Zy7ZC161fa1X+Hl4KRCgwaG/4hEunYz6GHGaRauRTZ0
+         XdkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772721405; x=1773326205;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M9kOZ2oA46DkDMvPSWIl1WyVVW6X0vR4sjQ/X/1ot3U=;
+        b=wZsbdfYcQZwiZrX3QgdjPipLX22VNXLb0qmxHZq34szEmd1tA57nTFspwgOAcBrfrR
+         qKaRjg+d84hVntMUY+3Qo9x31zMPSQrn5oFCmSM3e7Kv72sPfiZAlKK6B8uuxgEUULJr
+         RBlWSBZSrWwZgwTAniyp8UBaTg9mCnQdLR3v8FARbspByLD8ojqJ/7eI3NuBFDAZhm3M
+         gsz8njeTMkocDWekpylvyr963V05G/nR6hcT62pRmGFiCoBCzlbJxttQaRoHiHcLFUVe
+         pWhBZJjFo1DCzqzmiD7497S5LHDW8j8nRKDywRRsdaClFMENWdofo41Fy1a6yhpHl+E6
+         948Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVVEOsbpV3ilHeM1lH8lm+jQo4zDSA9zxEE6sFwoMF+wdqy2h86skN7j1fcyVX/b62gEG5tNqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSs3ipdeDA0BbjSSZrx+SvwKDySFRvRh6fZtA0897Z5rdZwG2i
+	GyR1dfk8Aq+jwrRTpaIM55vB5ACLPkMy5BPUbirL8zVs32IQcDRFTrD6gTDHm/PsiJpDeLykQxn
+	nXTKDKbVXTQgMRvIejI27+f6HS8K8iY6Kc8hPzRrjk1nkQb/9yzlUkJYDTvQ=
+X-Gm-Gg: ATEYQzzE2IHhX4I0zbRIfYVMM5ZRgnBIO5bD4vGguia/MkR93ZpDFzZEmWhOk7QdlTy
+	63N5K6Q1ZO74gqoho2ngQzItAgsQKdAGnMFNT15rFbfu7TYCCAAsPpGB+Wamd6A8WIRAiqaV8Vo
+	/2a/VfGyh0wdvezyMZxa5DQcLhGKvPsH+UKZ1T8F4U9vvJEeaRYEIyHbqIlI6HYlzqVu9/9RRje
+	vCg/L9dHv5ZGF+uY2tLk4vOvfU1Jg13etIxK6/x+ebq2qHvnwWSDCrB7adXlXHtNI7f/3SuEMf4
+	vVN8uEVZNtfk7+Q70fwFVezzxWYwXuZB/ARWtXDgABXaX95eBhxQjpn/+ZPfgd1gYXmogHjObyj
+	dNMiRLwDAAg3hlzck/dX4nyPHRwmCB8tiJHLvoTwiWinKCIwjhsgCe8tAOZlOtUcsSC6HdCUmck
+	ABupPEZkyu8VyRtlqprN/FZQHRfeDel+lKvWg=
+X-Received: by 2002:a05:620a:3949:b0:8cb:678b:4877 with SMTP id af79cd13be357-8cd5afb739dmr742169785a.57.1772721404780;
+        Thu, 05 Mar 2026 06:36:44 -0800 (PST)
+X-Received: by 2002:a05:620a:3949:b0:8cb:678b:4877 with SMTP id af79cd13be357-8cd5afb739dmr742163685a.57.1772721404214;
+        Thu, 05 Mar 2026 06:36:44 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389f2ffe02bsm41758591fa.27.2026.03.05.06.36.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 06:36:43 -0800 (PST)
+Date: Thu, 5 Mar 2026 16:36:41 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Mahadevan <quic_mahap@quicinc.com>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] drm/msm/dpu: Correct the SA8775P
+ intr_underrun/intr_underrun index
+Message-ID: <ulrmxcsncz5j7hbi446q33ngk63pfuja4pjvbg6zcg7c6kmn5c@ltguvvq6nsda>
+References: <20260305-mdss_catalog-v5-0-06678ac39ac7@oss.qualcomm.com>
+ <20260305-mdss_catalog-v5-2-06678ac39ac7@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Rspamd-Queue-Id: 0BA06213D4E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305-mdss_catalog-v5-2-06678ac39ac7@oss.qualcomm.com>
+X-Proofpoint-GUID: mZQJwLDYnz8Q1cXqj-eb1WB_ekamImNP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDExNiBTYWx0ZWRfX3hxCn7bHv1QV
+ ghqZ+0uHZN85UmaAgfvd65sux3ne0aJZYqUeBtXVBVaetgetbwmxVFpNFrjbaZ75DVBB7eFh60H
+ XNYfocVNUtqqBKvYQ4buBh7jYA51fZc/mS9Qdez5BbIcm4B32eKk7/5th06YwEU2LPTZ4YNw/FD
+ OrOLQCGo23TCR9yhLyrIEWpmvGwamI5t0vMor3Ijuees/v5+4Sag6HcSlX10VKlsaWY0OEk4XFT
+ FcDtR6Lrc0zJimRPPSWlvAH3HoBYoUoDhl9VKbBrpgX9krS//red1fxb3Y6lCR2Wt9qAF/GUubl
+ 46tyd0m29nRuu7R6YEdaLz1fRUhIOVfn2GjEu1Z7e/6roMjEBUI7X4Ro6aiNa3fjl56kAmb1koq
+ IYOXy322HAtELVwee/GpdvSUdY+q2+pR4vqgOvCXAtNB5FdPpKqC69Zj08nAc4HOQV1w25rP84U
+ yia6zPvbXgoFVQGHAwA==
+X-Authority-Analysis: v=2.4 cv=OYWVzxTY c=1 sm=1 tr=0 ts=69a994fd cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=COk6AnOGAAAA:8
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=s80QRqCtEMuw_QvzVh8A:9 a=CjuIK1q_8ugA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: mZQJwLDYnz8Q1cXqj-eb1WB_ekamImNP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 adultscore=0 clxscore=1015 priorityscore=1501
+ spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050116
+X-Rspamd-Queue-Id: 750D4213990
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-223212-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223209-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,pengutronix.de:mid,pengutronix.de:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Remove redundant netif_napi_del() call from disconnect path.
+On Thu, Mar 05, 2026 at 06:17:07PM +0800, Yongxing Mou wrote:
+> From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> 
+> The intr_underrun and intr_vsync indices have been swapped, just simply
+> corrects them.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b139c80d181c ("drm/msm/dpu: Add SA8775P support")
+> Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+> ---
+>  drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_4_sa8775p.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-A WARN may be triggered in __netif_napi_del_locked() during USB device
-disconnect:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-  WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
 
-This happens because netif_napi_del() is called in the disconnect path while
-NAPI is still enabled. However, it is not necessary to call netif_napi_del()
-explicitly, since unregister_netdev() will handle NAPI teardown automatically
-and safely. Removing the redundant call avoids triggering the warning.
-
-Full trace:
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x000000c4. ret = -ENODEV
- lan78xx 1-1:1.0 enu1: Failed to set MAC down with error -ENODEV
- lan78xx 1-1:1.0 enu1: Link is Down
- lan78xx 1-1:1.0 enu1: Failed to read register index 0x00000120. ret = -ENODEV
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
- Modules linked in: flexcan can_dev fuse
- CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 6.16.0-rc2-00624-ge926949dab03 #9 PREEMPT
- Hardware name: SKOV IMX8MP CPU revC - bd500 (DT)
- Workqueue: usb_hub_wq hub_event
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __netif_napi_del_locked+0x2b4/0x350
- lr : __netif_napi_del_locked+0x7c/0x350
- sp : ffffffc085b673c0
- x29: ffffffc085b673c0 x28: ffffff800b7f2000 x27: ffffff800b7f20d8
- x26: ffffff80110bcf58 x25: ffffff80110bd978 x24: 1ffffff0022179eb
- x23: ffffff80110bc000 x22: ffffff800b7f5000 x21: ffffff80110bc000
- x20: ffffff80110bcf38 x19: ffffff80110bcf28 x18: dfffffc000000000
- x17: ffffffc081578940 x16: ffffffc08284cee0 x15: 0000000000000028
- x14: 0000000000000006 x13: 0000000000040000 x12: ffffffb0022179e8
- x11: 1ffffff0022179e7 x10: ffffffb0022179e7 x9 : dfffffc000000000
- x8 : 0000004ffdde8619 x7 : ffffff80110bcf3f x6 : 0000000000000001
- x5 : ffffff80110bcf38 x4 : ffffff80110bcf38 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 1ffffff0022179e7 x0 : 0000000000000000
- Call trace:
-  __netif_napi_del_locked+0x2b4/0x350 (P)
-  lan78xx_disconnect+0xf4/0x360
-  usb_unbind_interface+0x158/0x718
-  device_remove+0x100/0x150
-  device_release_driver_internal+0x308/0x478
-  device_release_driver+0x1c/0x30
-  bus_remove_device+0x1a8/0x368
-  device_del+0x2e0/0x7b0
-  usb_disable_device+0x244/0x540
-  usb_disconnect+0x220/0x758
-  hub_event+0x105c/0x35e0
-  process_one_work+0x760/0x17b0
-  worker_thread+0x768/0xce8
-  kthread+0x3bc/0x690
-  ret_from_fork+0x10/0x20
- irq event stamp: 211604
- hardirqs last  enabled at (211603): [<ffffffc0828cc9ec>] _raw_spin_unlock_irqrestore+0x84/0x98
- hardirqs last disabled at (211604): [<ffffffc0828a9a84>] el1_dbg+0x24/0x80
- softirqs last  enabled at (211296): [<ffffffc080095f10>] handle_softirqs+0x820/0xbc8
- softirqs last disabled at (210993): [<ffffffc080010288>] __do_softirq+0x18/0x20
- ---[ end trace 0000000000000000 ]---
- lan78xx 1-1:1.0 enu1: failed to kill vid 0081/0
-
-Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v2:
-- Do not move NAPI enable/disable to link up/down callbacks.
-- Remove redundant netif_napi_del() call from disconnect path.
-- Update commit message to accurately describe the root cause and solution,
-  following feedback from maintainer.
----
- drivers/net/usb/lan78xx.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index f8558b87eaec..19cdf69fa589 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4552,8 +4552,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 	phylink_disconnect_phy(dev->phylink);
- 	rtnl_unlock();
- 
--	netif_napi_del(&dev->napi);
--
- 	unregister_netdev(net);
- 
- 	timer_shutdown_sync(&dev->stat_monitor);
 -- 
-2.47.3
-
+With best wishes
+Dmitry
 
