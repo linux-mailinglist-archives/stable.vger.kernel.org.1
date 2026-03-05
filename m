@@ -1,107 +1,108 @@
-Return-Path: <stable+bounces-223256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCyEBEq7qWnNDQEAu9opvQ
-	(envelope-from <stable+bounces-223256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:20:10 +0100
+	id WIvaHqe6qWnNDQEAu9opvQ
+	(envelope-from <stable+bounces-223257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:17:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E0F2160EE
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:20:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6796F21605D
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BF4A31FDFB2
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:13:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB448308E8D0
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1F73E5589;
-	Thu,  5 Mar 2026 17:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04583E716A;
+	Thu,  5 Mar 2026 17:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JNgjk0IE"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q4ioHUhl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11363E5EFA
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 17:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E873E5ECD
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 17:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730733; cv=none; b=fsw82FFZQ5BkPDj/yoyrH7qzrHhdgOEsqG6mMIlM+2Sr0qn32+Aq+l53PcfJg3vz2FVZ7nBqWnjBMXP0sJrxXlqL9io6vxWH1dn4RY1x+iNknV7ECo3R2Zz6RdbAwfwyM198xH8dHD5SnrIApX9jY53wiWWKlKLvTSw+YjzyJzQ=
+	t=1772730756; cv=none; b=GXI2ggjJ+qYsNKYo8AJ5xEhIEnHsiUr0TumR2BLihEJlhBlUWXgU273R8n44AKUUFUxLW4Qi5URNHETOKjfU0e2zF1jn4A7d/SwpwYeve1U1Wrf9IkOlRCugXp7+Xr3WX+L6Qx+cqMWlJmRwiEP8ze45ydV+SM8trRraaceepPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730733; c=relaxed/simple;
-	bh=ACFr2OhPuCGST6Z9o4HPkpYoodrDKequHtND0/F2Qis=;
+	s=arc-20240116; t=1772730756; c=relaxed/simple;
+	bh=dns5h0qR2KZ4FdzLbrUrUvVJWrBlR2/7jhXyY3CqByM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pMR3uhhXIPRCvh+42xpdNH7gL12g3YYBIWFkxygrQhyb45lT3jwT2Jobihn8/yNJbjkGasF5C1Sq1zwRyk5tnqoA3/v0JJiOqYnMjT8x/W20NDPfJBILPuIM+aniUsd5Fp5UsgtiFmvEmsUNzsp77M084k+VkYvhIEmm6O/Lxdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JNgjk0IE; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=n3Kehvt/lZGUmr4uccnwcjIQx8rj7qTxWxpJZ80UQMfQuS40LGM0KBjEbZvHu1lzJ/XlvO/z5JnPIWPzxrIrtYeHoM1I/vkiAe5BnjA3G6WAghCKx8HRq7cirY/Z1kwP6ZEjRddJhCArI2SEct2I0bvdBTI1yK+oQb95JwyDPXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q4ioHUhl; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae47b3adacso47000345ad.3
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 09:12:12 -0800 (PST)
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358df8fbd1cso7660859a91.0
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 09:12:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730732; x=1773335532; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772730754; x=1773335554; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PlM9Daikr6BhoLrUMNCE8WDUjOiic394LLOjxhE0Phk=;
-        b=JNgjk0IE4utwnyNBmsmAJS/ewfMV/EFC0hsgbiogOwcEsNVanNUNtw5WuBiePcNz1E
-         1bvuLjwVQJB9Lj0xeZedhVwn1U4cr6G2xHdh+Yw2MzV1qXQ1jqlzhl1yJl2/IgT5JN2k
-         EAvzvqJh/HhT0T+l9fF0OqU54Juxfx1DI2NrxSSN1jsv4/gJHlttrZf9Sq5eED8LJmNq
-         8oGwK3UGgLyTaPLha/r4Px0NGOjde/20KikB3LPRVzNauYiZ42YKtx55ZdQTpeuxkvjo
-         2+n02XiSj789N5cG+Bblr7VNgxr5KXdIovCwyW67Ks8vmGtgHRZYm3CE7wXLpMEBjnj8
-         2Eyw==
+        bh=V8qFCWJ5evls0w2NVX0f3a/m73/uGRK6Z8I0hTOz8KU=;
+        b=q4ioHUhlWhY1kW65PuKNBZ6MFuCifKJS4tMrkcDicOre6qh/PkOHbgETjC+xKTaSfq
+         CVFF/gTd9eukWGd0t/NbcO4VW7dcidd8jd8rTuaas97BkgAuevs1C8SOsedbs1hCQnb4
+         0ts/vqfYG7fsfeW8/JQmAZnEz1PLI03nQLK6ja8vcckiH7F0mCcSuq9zf++yiywfKDAk
+         SPuuXtlNfWR8zXOkb9kYyEVekWZTiHT7lEFI+j/dazLJJhvAHtKaeLnOWPWZajCK9w1U
+         0JNfBXbw2AhCFZ1UvlBH8m5RD4KxbVtkACA5e02a4pjJsX+Q19Z0er3Z/w+ovXe3fb0m
+         P3PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730732; x=1773335532;
+        d=1e100.net; s=20230601; t=1772730754; x=1773335554;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PlM9Daikr6BhoLrUMNCE8WDUjOiic394LLOjxhE0Phk=;
-        b=NhBlK3hMSun9FM48bYHH3bRhY9aCp6sPBeJu2vvAArRZd70o526dTXBqMEbx5w6qJH
-         geFzby4Ot5j1WgU3Y8yKri9MLUhxzgu52YRHWMfExlH0NDaZcw/dXyCUgl+cVJE9DFdm
-         oEIxp0+odIU2Iml73t5QnsDVp4K+rCCF42zsP1jf7LjB3Thzuu3Q4Cn/pLeXMxlLOTYQ
-         /Do04ZgG6x2Zvyon3zWDcqXTvKngGNmuSKqG8kn7kW7BRn7fLS2ExoL5dR8lj0cwzYWN
-         z8vx4xaMUziu8Nw2vi8HK0Anu5uZrIn+iexowaRXtOvTqTYWVt+ehiEW0zt9TonnQ4QZ
-         qWvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRaSPJerFF7uOlZoLhtrtkPJ47hnGs2LKiLrRm8w56jeLAtX6nEw82I5Gjpq0L3QRlGqzzjiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuE1JMw/q7Kf55Vc/tWQqSiH9vTicTLotM+pCqQnqXGBW9PVEM
-	ZpJ/7IHlODuIZQp9ez/cFgVgN6KC/4dq+A4AN5q6ovE4vPvkiIDea37PUPH0ICTHFPHkpi3+T8V
-	fx7E+Tg==
-X-Received: from plha5.prod.google.com ([2002:a17:902:ecc5:b0:2ae:4ac1:4017])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:90f:b0:2ae:5848:baf0
- with SMTP id d9443c01a7336-2ae80130936mr4176035ad.2.1772730731970; Thu, 05
- Mar 2026 09:12:11 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:08:13 -0800
-In-Reply-To: <20260210010806.3204289-1-yosry.ahmed@linux.dev>
+        bh=V8qFCWJ5evls0w2NVX0f3a/m73/uGRK6Z8I0hTOz8KU=;
+        b=BYs5yG7a9IKZpuXkKLssucYnoyxkWGBiAdqWH1aUHEsREdkLdiArCqJdmWQ+cGncMu
+         9ZUW9xIndBfYG8Bn9L4yFuCnh434bSveQlV0BR2BFCviSQKihPKc3oCrZf1K59sehuLW
+         CfBlt4Zsd0hmUdTN7aZt/5AMDFFftKhx+YaD6F3VlgXAetFkuY/PBde8Xuc8Z6IusnKZ
+         qag/KHwnW8CprnNrsCAA2qoUES5x+gRy16EUeKcdBXasTWdXekwJpQAuBX7YAo8Tjg2j
+         9OuWVh3f0FPib4TglbOCUNzZDQ16gSIusIW8N2rW1Sqrmx4S2KkD1x/eS0bN8HAAd4Gk
+         PZUA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1VparbBFNeoTAzs7pnnT2FGaMdGqkUPPpQdFd+SHMNo/fncY+Hfdzr3fFKlmUbdSuCfC3NOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxALA+rDCZd7zf2tMeNYfV3+AzQJX42OCr3iO/1M2UDR4eJJ2rI
+	Ck6Zy0J5+yOk7CV76IA7ZHCiHCCQKB2/wBxGTXNm6Lsmh6jtBtxQlS866uqj+3/P1JBjOlvhxYc
+	NQnC/xw==
+X-Received: from pjsv10.prod.google.com ([2002:a17:90a:634a:b0:359:803b:2e2b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c4f:b0:359:9b45:7754
+ with SMTP id 98e67ed59e1d1-359bb40455cmr225426a91.32.1772730753957; Thu, 05
+ Mar 2026 09:12:33 -0800 (PST)
+Date: Thu,  5 Mar 2026 09:08:19 -0800
+In-Reply-To: <20260203201010.1871056-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260210010806.3204289-1-yosry.ahmed@linux.dev>
+References: <20260203201010.1871056-1-yosry.ahmed@linux.dev>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177272928930.1563279.2472653538935168755.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: nSVM: Mark all of vmcb02 dirty when restoring nested state
+Message-ID: <177273034728.1571417.14215404445053164555.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on
+ nested #VMEXIT
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 63E0F2160EE
+X-Rspamd-Queue-Id: 6796F21605D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223256-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223257-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
@@ -110,24 +111,28 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, 10 Feb 2026 01:08:06 +0000, Yosry Ahmed wrote:
-> When restoring a vCPU in guest mode, any state restored before
-> KVM_SET_NESTED_STATE (e.g. KVM_SET_SREGS) will mark the corresponding
-> dirty bits in vmcb01, as it is the active VMCB before switching to
-> vmcb02 in svm_set_nested_state().
+On Tue, 03 Feb 2026 20:10:10 +0000, Yosry Ahmed wrote:
+> KVM currently uses the value of CR2 from vmcb02 to update vmcb12 on
+> nested #VMEXIT. This value is incorrect in some cases, causing L1 to run
+> L2 with a corrupted CR2. This could lead to segfaults or data corruption
+> if L2 is in the middle of handling a #PF and reads a corrupted CR2. Use
+> the correct value in vcpu->arch.cr2 instead.
 > 
-> Hence, mark all fields in vmcb02 dirty in svm_set_nested_state() to
-> capture any previously restored fields.
+> The value in vcpu->arch.cr2 is sync'd to vmcb02 shortly before a VMRUN
+> of L2, and sync'd back to vcpu->arch.cr2 shortly after. The value are
+> only out-of-sync in two cases: after save+restore, and after a #PF is
+> injected into L2. In either case, if a #VMEXIT to L1 is synthesized
+> before L2 runs, using the value in vmcb02 would be incorrect.
 > 
 > [...]
 
 Applied to kvm-x86 nested, thanks!
 
-[1/1] KVM: nSVM: Mark all of vmcb02 dirty when restoring nested state
-      https://github.com/kvm-x86/linux/commit/e63fb1379f4b
+[1/1] KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested #VMEXIT
+      https://github.com/kvm-x86/linux/commit/5c247d08bc81
 
 --
 https://github.com/kvm-x86/linux/tree/next
