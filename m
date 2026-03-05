@@ -1,203 +1,237 @@
-Return-Path: <stable+bounces-223252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGpoHLmtqWn+CAEAu9opvQ
-	(envelope-from <stable+bounces-223252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:22:17 +0100
+	id +BjSHFqvqWn/CQEAu9opvQ
+	(envelope-from <stable+bounces-223253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:29:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E351F2155FA
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:22:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B532156C2
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 17:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 42C96304299F
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 16:20:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CA5F3039085
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 16:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CF53CE4B9;
-	Thu,  5 Mar 2026 16:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6633D3484;
+	Thu,  5 Mar 2026 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nqPxVFXR"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ZFtWMKES"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f65.google.com (mail-oo1-f65.google.com [209.85.161.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59713CF66E;
-	Thu,  5 Mar 2026 16:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D143D3CFD
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 16:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772727639; cv=none; b=q3nykXdxGTM7jXiUli7CZVVDVBXBxBqQERsQwshLhqC1f0/Kxi35Mm2Kdmthv7avJL48J+h59menvMJvf9hA2WbMam5g2sKEJ9KhZXrqjFZ+rQzoAhcEtKoYrDDEQhBVKhtS8nz/0BNGLo6dKNhLKJOnYNr9nNSa3hmCL35rtcs=
+	t=1772728134; cv=none; b=RgITYUGSXnABCOLNZHOcS0fGyKBT9sHH4Wdv2+8epqk6+k79pXdEQST17eCLEHdMbSWFWavzGm6ZGTmEasKJMfGRvE+mE4UUzDnNRhxt/d2MQBvkUqQvA9T0uHFYLRR7UfWQUYFeex77NP9dYZi1mOVU1a0OqzKY/vOfG6uzofU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772727639; c=relaxed/simple;
-	bh=jYGExDEj/m8PC2VqaSWwSvykJTMN2EaBY6qo6vRD46k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LR2Jlepn02IIebWH5JC5vHcunc4ym/VWFpHCCNHeQCZnpADusGvkaD566g+KS/CMEuQ5U6Yf7464GtPe4DAYB8A8lTjC1rKz00NYHyQBS7ui2KrQK6FmjCXCeOydSujlO9+kEbcv6i20QxaYNU9iaOGuMMSvi2R1SxHaRPbUevE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nqPxVFXR; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772727636; x=1804263636;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jYGExDEj/m8PC2VqaSWwSvykJTMN2EaBY6qo6vRD46k=;
-  b=nqPxVFXRuKhApn7I2D4xNeFZvouszvADRJOk1M6oy3L2ILs4NawjRX9T
-   a/vsbKfJToMKLq0TB9Sj3ycdf+AU+CTxKnxKM52tsMePOTq5c0dG8xOQe
-   cjHTP1jWRiJaZ5r6JTuk914KCDKLiTSL9A0kT1kgH/pDXsflsdEUA4CAx
-   l+HFwhnVcBhC2tWuHJJBAsZ4z2+8GADN3ML2/dE+0jCjW+PkzxBW6byNm
-   uYqLyzfccPMKoyxnVZrQaL0b0KyWvdsz37NrSYH3vRrEWjXkIahSNQJ9S
-   lOWFaVUvPcVerFKqh++bChFcdHvMi2gj74rPNN+CsOPxrcW8BqymPPK5W
-   g==;
-X-CSE-ConnectionGUID: 2RHIMn4STWCwU+MJ2J9lkg==
-X-CSE-MsgGUID: EsbJc32NSh+O6K0PPhNnfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77665521"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="77665521"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 08:20:35 -0800
-X-CSE-ConnectionGUID: vvFUnAmEQhqHr7+mSAu92g==
-X-CSE-MsgGUID: PuFsX3xER9m3MMVFQvw0FQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="218719952"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.20]) ([10.125.109.20])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 08:20:36 -0800
-Message-ID: <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
-Date: Thu, 5 Mar 2026 08:20:43 -0800
+	s=arc-20240116; t=1772728134; c=relaxed/simple;
+	bh=UJMMueYGnDPFysL0784GHRpRLCeFirY/pdilXRWklJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ue+JmTwdpJrPCLM0FPI+l2/3w6HZXgq/u5/KRXiqf6fQ660eTSLSyDQEm5ytP/stKKVD0kczsU9SUUnbzlHsL7eIfZFLnBMoAwHCoCmyFXZdT3DipzpeNUxOzzo7fCiaTTrP+1Akzm0xT0S+iGV9nuVyiBtTbP5FkMuWTBbiqSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ZFtWMKES; arc=none smtp.client-ip=209.85.161.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-oo1-f65.google.com with SMTP id 006d021491bc7-66ee7b9af94so3498272eaf.0
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 08:28:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1772728132; x=1773332932; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tlPMcv6N3Y/+mWnEMF2Wqs2gvjIQxxbuY5gzr6wMqo0=;
+        b=ZFtWMKES8WGY9JO0S57zavAwnKZuQcZV8iQNyA+6conQmNulNB37T8OM8Y0WKGJogf
+         0gSd6grmkXdad2HhmNbW+oO3CVpsEi3EnDMfzf60pawyzzpbXz76sMmcSoZ6ixw+Nxrb
+         irg27qWGbryHE88tNgstWC2SDBn//lcwP+CaEUbMiRhuoflwOouG3e3ku5gGJ8b7mybK
+         aySWe1fGDcV/XwbSkM08TEOOwRYo7MDHmq0rObC2TSoHu45I/r8fsivLdZOeMclewBT1
+         X1lqAKbjv7wYO9bIn39PbPlvD4sNBnMns6KWyClPsJf5XCC46Tu4bjY27QarVLSv5S6R
+         RMtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772728132; x=1773332932;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tlPMcv6N3Y/+mWnEMF2Wqs2gvjIQxxbuY5gzr6wMqo0=;
+        b=KflgVZ0tzxwte2ysL3g+lUPXGbxDZqTuZYnOznNkafLX/kPHjvHq0TnHOM5iQOOzVs
+         IFYDY0yCuKPbTWvcsnz7l0kBw7laUvAHqsLUS2qi5I8IXyg3cty3p4oM3VVgl92ujlHo
+         2Pvydm5NGxAHZAnk/GXU9yecyDybDx/1bwAXXOaDyBrzXMrtPL2GbEgPK2Qo1lfL/rOW
+         FBYytH+KJfnbVjy5hOgmrHpNwleNLuQZfwcUQnA3s52OyEx4PyJZi2ebCDBupROLGppG
+         6hMuGLJR4s4NZw68DhDc3UPeSXxswY+IKth52XYIKCkykeeRbm0j6U71kchybSxxIQ8X
+         U0DA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkJJwIZw4qE1z//7Yc3MB0NeR6+JEVMufApKUci8E7XpNrVpP60RWwIPN5m2xxhYloWBr4U6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyN0aen+nbwOH1HtUCFdG0c+uuVAUZwIFyRzvQq8vnRXe/np/AH
+	P0WDOgKHE+adlz+4A3YCKyZgXSrjoh8oh4TbH/qNy1wtjbe5d2zkrzTLcrFsrSmx22A=
+X-Gm-Gg: ATEYQzze8e8TwHzJlSlvueN0tShFP3HAvEWlTvsD7pt0EkaJRdv/tFfkP1koXLUYB+d
+	zI+WlzuZUraIet61Ffq22CkhKpqt1n9FJMkLqDBjXK4rpKRc64NeUUi2tlTqkyi+rnPKWywgC5f
+	scnMkXDkL069N2rvB0WlUyNFn+SNwCR1KWBH87jfoWIIhO+hjXSZhEd7D5N1F9wN7sZ8d0fY2yL
+	Y8OHMUtuIXua6ThbhSlxAqPejSb4/p+hmxSMHB3wCCYqbUNXbqqSUydGfIS6VUCzOBmQvt2VD8o
+	mOjzR5f/4QbgQjul5Bw8KIrFLtPke9sHlm7fhL93W4sVDILjYKP9wsbW54UWyxILWtxIeLIo2o9
+	wx/arjuxVgS+hHPzetO7xCmNcZ2hiKIDufeXiMJUw9QKgypMSmHzy6fGaRvYdDJaO25uPBhfDPg
+	kTaPfHuw==
+X-Received: by 2002:a05:6820:4cc7:b0:678:1970:b69e with SMTP id 006d021491bc7-67b1e9252d7mr3400958eaf.69.1772728132078;
+        Thu, 05 Mar 2026 08:28:52 -0800 (PST)
+Received: from 20HS2G4 ([2a09:bac1:76c0:540::3ce:23])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67a201e1fa4sm5438444eaf.4.2026.03.05.08.28.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 08:28:51 -0800 (PST)
+Date: Thu, 5 Mar 2026 10:28:49 -0600
+From: Chris Arges <carges@cloudflare.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, lwn@lwn.net,
+	jslaby@suse.cz, kernel-team@cloudflare.com,
+	netfilter-devel@vger.kernel.org
+Subject: Re: [REGRESSION] 6.18.14 netfilter/nftables consumes way more memory
+Message-ID: <aamvQTTZu4-chpsS@20HS2G4>
+References: <aahw_h5DdmYZeeqw@20HS2G4>
+ <aaijcrM5Ke5-Zabx@chamomile>
+ <aaij0XAgYRN40QdD@chamomile>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-To: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>, me@ziyao.cc
-Cc: andrew.cooper3@citrix.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
- stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org,
- David Wang <davidwang@zhaoxin.com>, lukelin@viacpu.com,
- brucechang@via-alliance.com, "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>,
- cooperyan@zhaoxin.com, benjaminpan@viatech.com, TimGuo-oc@zhaoxin.com,
- QiyuanWang@zhaoxin.com, HerryYang@zhaoxin.com,
- "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-References: <20260228173704.62460-1-me@ziyao.cc>
- <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E351F2155FA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaij0XAgYRN40QdD@chamomile>
+X-Rspamd-Queue-Id: 17B532156C2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-8.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[cloudflare.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[cloudflare.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[cloudflare.com:s=google09082023];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-223252-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[cloudflare.com:+];
+	TAGGED_FROM(0.00)[bounces-223253-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[carges@cloudflare.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:dkim,intel.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,cloudflare.com:dkim]
 X-Rspamd-Action: no action
 
-On 3/5/26 01:03, Tony W Wang-oc wrote:
-> --- a/arch/x86/kernel/cpu/zhaoxin.c
-> +++ b/arch/x86/kernel/cpu/zhaoxin.c
-> @@ -89,6 +89,11 @@ static void init_zhaoxin(struct cpuinfo_x86 *c)
->         set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
->  #endif
+On 2026-03-04 22:27:45, Pablo Neira Ayuso wrote:
+> Resending, your Reply-To: is botched.
 > 
-> +       if (c->x86 == 6 && c->x86_model == 25 && c->x86_stepping <= 3) {
-> +               pr_warn_once("CPU has broken FSGSBASE support; clear
-> FSGSBASE feature\n");
-> +               setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> +       }
-> +
+> -o-
+> 
 
-Folks, we have vendor-generic infrastructure to handle these today. You
-don't need to hack copied and pasted code across vendor-specific files.
-You just need some "VFM" defines for the models:
+I noticed after I sent, thanks for fixing.
+> Hi,
+> 
+> On Wed, Mar 04, 2026 at 11:50:54AM -0600, Chris Arges wrote:
+> > Hello,
+> > 
+> > We've noticed significant slab unreclaimable memory increase after upgrading
+> > from 6.18.12 to 6.18.15. Other memory values look fairly close, but in my
+> > testing slab unreclaimable goes from 1.7 GB to 4.9 GB on machines.
+> 
+> From where are you collecting these memory consumption numbers?
+> 
 
-#define Z_MODEL_HERE	VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 26)
-#define C_MODEL_HERE	VFM_MAKE(X86_VENDOR_ZHAOXIN, ...)
+These numbers come from the cgroup's memory.stat:
+```
+$ cat /sys/fs/cgroup/path/to/service/memory.stat | grep slab
+slab_reclaimable 35874232
+slab_unreclaimable 5343553056
+slab 5379427288
+```
 
-a table:
+> > Our use case is having nft rules like below, but adding them to 1000s of
+> > network namespaces. This is essentially running `nft -f` for all these
+> > namespaces every minute.
+> 
+> Those numbers for only 1000? That is too little number of entries for
+> such increase in memory usage that you report.
+> 
 
-static const struct x86_cpu_id bum_fsgsbase[] __initconst = {
-	X86_MATCH_VFM_STEPS(Z_MODEL_HERE, X86_STEP_MIN, 0x3, 1),
-	X86_MATCH_VFM_STEPS(C_MODEL_HERE, ..., 1),
-};
+For this workload that I suspect (since its in the cgroup) it has the following
+characteristics:
+- 1000s of namespaces
+- 1000s of CIDRs in ip list per namespace
+- Updating everything frequently (<1m)
 
-and this code:
+> > ```
+> > table inet service_1234567 {
+> > }
+> > delete table inet service_1234567
+> > table inet service_1234567 {
+> > 	chain input {
+> > 		type filter hook prerouting priority filter; policy accept;
+> > 		ip saddr @account.ip_list drop
+> > 	}
+> > 	set account.ip_list {
+> > 		type ipv4_addr
+> > 		flags interval
+> > 		auto-merge
+> > 	}
+> > }
+> > add element inet service_1234567 account.ip_list { /* add 1000s of CIDRs here */ }
+> > ```
+> > 
+> > I suspect this is related to:
+> > - 36ed9b6e3961 (upstream 7e43e0a1141deec651a60109dab3690854107298)
+> > - netfilter: nft_set_rbtree: translate rbtree to array for binary search
+> 
+> More memory consumption is expected indeed, but not so much as you are
+> reporting.
+> 
+> > I'm still digging into this, and plan on reverting commits and seeing if memory
+> > usage goes back to nominal in production. I don't have a trivial
+> > reproducer unfortunately.
+> 
+> The extra memory comes from the array allocation, the relevant code
+> is here:
+> 
+> #define NFT_ARRAY_EXTRA_SIZE    10240 
+>  
+> /* Similar to nft_rbtree_{u,k}size to hide details to userspace, but consider
+>  * packed representation coming from userspace for anonymous sets too.
+>  */     
+> static u32 nft_array_elems(const struct nft_set *set)
+> 
+> > Happy to run some additional tests, and I can easily apply patches on top of
+> > linux-6.18.y to run in a test environment.
+> 
+> I would need need more info to propose a patch, I don't know where you
+> are pulling such numbers. You also mention you have no reproducer.
+> 
+To clarify this issue _is_ happening in our production environments, so I can
+reproduce this issue there. It only happened when going from 6.18.12 to
+6.18.15, and with a service inside a cgroup that is mostly applying large sets
+of IPs via nft. I do not have a simple reproducer script or something I can
+easily share yet, but am working on that.
 
-	if (x86_match_cpu(bum_fsgsbase))
-		setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
+I'm going to try and revert rbtree patch series locally and see if it still
+happens. I can also play with NFT_ARRAY_EXTRA_SIZE and see if that is a factor
+here as well.
 
-That code happens _once_. You can even call it from vendor-independent code.
+> > We are using userspace nftables 1.1.3, but had to apply the patch mentioned
+> > in this thread: https://lore.kernel.org/all/e6b43861cda6953cc7f8c259e663b890e53d7785.camel@sapience.com/
+> > In order to solve the other regression we encountered.
+> 
+> Yes, there are plans to revert a kernel patch that went in -stable to
+> address this.
 
-If you get fixed microcode that can also be extended to store a fixed
-microcode version (although we're moving away from doing this on Intel).
-
-Just please give the models some semi-sane model name.
+Thanks.
+--chris
 
