@@ -1,146 +1,181 @@
-Return-Path: <stable+bounces-223259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGqoGvO6qWkoDgEAu9opvQ
-	(envelope-from <stable+bounces-223259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:18:43 +0100
+	id wF0pDg6/qWnNDQEAu9opvQ
+	(envelope-from <stable+bounces-223260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:36:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F712160B9
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:18:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9792216559
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:36:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F0775309A80B
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:14:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF1293025E6B
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7849D3E9F7A;
-	Thu,  5 Mar 2026 17:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZGiIbA9t"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26E3793DB;
+	Thu,  5 Mar 2026 17:33:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4903E3D8A
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 17:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22053A1A44
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 17:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730785; cv=none; b=ZjlU0mxUrEeLfSTt2oXqZl51+V6JALkAhhcX2qClnV350nBr1JjkSHf3Mj+JesMAIiTx7fg3pYXEki6lJZPRYHQrQpKiU0xvhGzgqi2e7H+woVa5u6396PirXzV73brEAL1eYQ9/VjKvXuV7ovYp04+8/rXZvj7T8v5OzyGLVJ8=
+	t=1772732016; cv=none; b=IN5jzF+6WbJki/4nWXJlwH04leXbcG+Ax3y3jgr/PXrrs3N60MbvNATNgNWYutRzPAmgwIZf8CPt7tKrVx5/MU3UDNH4UyJUNWW1Vy4X98Rz0Ga0PbZiggXbXVE/jJ2Vc4XsbSkzKCZqPGNDjQNLH25ihvfUTN2YA56LoHl/RM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730785; c=relaxed/simple;
-	bh=ixNnjRisEKC2+6IAmQnjI9ab+lvosDmX4lcTWF/0UkA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LboUKVw6DsWKzoX9rOsxGziGc7knpSrU+F1pJf4HV7aB65ByHe5HSa+6gLulB9hyheBAVksXP8qYweciRazLHbq485mBcOlDvuShv0iSmM8kfOJv75fWDd7wR3+prjBKcXgei/xfUJcti0OBHmkDhjmpcFd6pGo6v3/EQu8Zc40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZGiIbA9t; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c73939e0314so367760a12.1
-        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 09:13:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730784; x=1773335584; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tnolfb6uQBsYaAshkkXBLdzTSf21J1HsPObGa5E2rzU=;
-        b=ZGiIbA9tZD1LkwuijnPqvA6nmvxLl6WuSxt81BKxinbPGtntWDXPhqkr1/uiJFjaH5
-         PefThkHP/tmY8+gyh+zeeHkEAKs4iECirniuCHi0njpjiKMu7+1U5uonKmuk3Wcfw83d
-         hlSUoWqfpOIP/h7dDHIxbdlyRQdUjeu2CDQb2yemlsOytCO0kSd7yguw1M9t8kqZHcQ/
-         VHZxwyns/ugG8eUAViJAYiVSFTsKP8jkhEa7reutatBpcoe7tVwrd+Y5INBsrkH1kuRO
-         SssdRs5mb+BPnmp7nClWGZDFwb9Sw6mFWWQ/QGqZLBxDO6LWKYdrL6xrpKqQyXRaUabG
-         Dm5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730784; x=1773335584;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tnolfb6uQBsYaAshkkXBLdzTSf21J1HsPObGa5E2rzU=;
-        b=CW3wAvX3L2IWv0GBb8Y/70CG3DDYKBbXFq0sglSm4p7h9ajyPjjuNHHTtHulOE4mYm
-         j9B4MaQDR2AHG4R6K6RT88qsax7QvhgmBqggmKVgqHNaaDyOvoOEkG3QZqrdSpMQxaso
-         e3eYshUUVmmIuUKU5tSJXy8XUHM8IxRWrofmIbRB017CL5EULulsLvei9UoEZAMeQQjj
-         BvuLVz3ukAAI/wDfPJxnnrhjbqZrJ5zHq7ipp2HHiWmCWnsK4Sf0u8x4EBM21c6tRryt
-         svIxx8B3yEZTxKn3G3lNFbLKcId2chDg7092iNmVTjCXEuR1fob8b6x4bMq+BQLupGh8
-         kxsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTBMCtz+eEpOouK8it17GrA3Ug9bYGAWHSo6Pai4yvg4I4nab8tiqXcjxz36mW2/3rPZ2iAWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyglnKqzggzSnzR75pJYzt2QY4r7NC481nhnmxaLBUeAF/B2VPw
-	eeMM0/zE6YFZ8LYkh1DV2XWdhz8cOqpV6i17P8QPJdy4PsUp3QVb1Ku5ywGrHQJmBN2KEWPAIjM
-	/3ClOmg==
-X-Received: from pgix2.prod.google.com ([2002:a63:db42:0:b0:c6d:cc16:8cee])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e8a:b0:38d:f2a1:a43f
- with SMTP id adf61e73a8af0-39854a814d6mr239546637.42.1772730783352; Thu, 05
- Mar 2026 09:13:03 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:08:27 -0800
-In-Reply-To: <cover.1771630983.git.ackerleytng@google.com>
+	s=arc-20240116; t=1772732016; c=relaxed/simple;
+	bh=IRf5gsGaGwSK2QcHXeuqzWVzP3IavQq/n8LPR99CFgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ru3RNBwC5vapMjXOSOhipv2x8f+rwSIk8dNa3e7XZ8HhihTHytQC4W4NOIuCacTgyuRLJit6juOp4+MooW7siKKia0ZMLSVMf8n8vJt/4RH/DIb9FA6nARmFU5PqBhVVq1Ptv752+AUfnNznHGQwvWwJmK2tlgLjgT188b1iPTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C36DD339;
+	Thu,  5 Mar 2026 09:33:27 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C9F63F694;
+	Thu,  5 Mar 2026 09:33:32 -0800 (PST)
+Date: Thu, 5 Mar 2026 17:33:25 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Message-ID: <aam-ZSHWrkYX8spV@arm.com>
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <cover.1771630983.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177272511649.1531226.15957182226632150956.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/2] Test MADV_COLLAPSE on guest_memfd
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kartikey406@gmail.com, pbonzini@redhat.com, 
-	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>
-Cc: vannapurve@google.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, 
-	dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com, 
-	stable@vger.kernel.org, syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 56F712160B9
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+X-Rspamd-Queue-Id: A9792216559
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223259-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[google.com,gmail.com,redhat.com,kernel.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223260-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,kernel.org,linux.alibaba.com,arm.com,maskray.me,linux.dev,vger.kernel.org,kvack.org,redhat.com,gmail.com,syzkaller.appspotmail.com,nvidia.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-0.933];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:mid,arm.com:email]
 X-Rspamd-Action: no action
 
-On Fri, 20 Feb 2026 23:54:34 +0000, Ackerley Tng wrote:
-> syzkaller identified that khugepaged, operating on guest_memfd memory,
-> could cause guest_memfd folios to get collapsed, leading to a WARNing
-> during fault [1].
-> 
-> Add selftest to guard against similar regressions.
-> 
-> Changes in v2:
-> 
-> [...]
+Looking at the patch again, some more comments.
 
-Applied to kvm-x86 selftests, thanks!
+On Mon, Mar 02, 2026 at 10:37:51PM -0800, Piotr Jaroszynski wrote:
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index bcac4f55f9c1..9868bfe4607c 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -390,6 +390,23 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+>  }
+>  EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+>  
+> +static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
 
-[1/2] KVM: selftests: Wrap madvise() to assert success
-      https://github.com/kvm-x86/linux/commit/58f5d8eebd5c
-[2/2] KVM: selftests: Test MADV_COLLAPSE on guest_memfd
-      https://github.com/kvm-x86/linux/commit/9830209b4ae8
+More of a nitpick: since this checks both the flags and write
+permission, I'd rename to something else. Maybe contpte_ptep_same() to
+somewhat resemble pte_same() used by __ptep_set_access_flags().
 
---
-https://github.com/kvm-x86/linux/tree/next
+> +{
+> +	pte_t *cont_ptep = contpte_align_down(ptep);
+> +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
+
+We can drop the PTE_DIRTY from the mask as it's not relevant to the
+hardware permission. It probably doesn't matter in practice.
+
+> +	pteval_t entry_access = pte_val(entry) & access_mask;
+> +	int i;
+> +
+> +	for (i = 0; i < CONT_PTES; i++) {
+> +		pteval_t pte_access = pte_val(__ptep_get(cont_ptep + i)) & access_mask;
+> +
+> +		if (pte_access != entry_access)
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>  					unsigned long addr, pte_t *ptep,
+>  					pte_t entry, int dirty)
+> @@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>  	int i;
+>  
+>  	/*
+> -	 * Gather the access/dirty bits for the contiguous range. If nothing has
+> -	 * changed, its a noop.
+> +	 * Check whether all sub-PTEs in the CONT block already have the
+> +	 * requested access flags, using raw per-PTE values rather than the
+> +	 * gathered ptep_get() view.
+
+It's not just about the access flag but AF, dirty and write permission,
+all can be changed by this function (and only to a more permissive
+setting).
+
+> +	 *
+> +	 * ptep_get() gathers AF/dirty state across the whole CONT block,
+> +	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
+> +	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
+> +	 * the gathered result as authoritative for the entire range. But an
+> +	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
+
+Or CPU equally, we don't force all CPUs in a system to support DBM.
+
+> +	 * each descriptor individually and will keep faulting on the target
+> +	 * sub-PTE if its flags haven't actually been updated. Gathering can
+> +	 * therefore cause false no-ops when only a sibling has been updated:
+> +	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+> +	 *  - read faults:  target still lacks PTE_AF
+> +	 *
+> +	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
+> +	 * become the effective cached translation, so all entries must have
+> +	 * consistent attributes. Check the full CONT block before returning
+> +	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
+> +	 * range.
+>  	 */
+> -	orig_pte = pte_mknoncont(ptep_get(ptep));
+> -	if (pte_val(orig_pte) == pte_val(entry))
+> +	if (contpte_all_subptes_match_access_flags(ptep, entry))
+>  		return 0;
+>  
+> +	/*
+> +	 * Use raw target pte (not gathered) for write-bit unfold decision.
+> +	 */
+> +	orig_pte = pte_mknoncont(__ptep_get(ptep));
+
+This is fine since all should have the same PTE_WRITE bit.
+
+Anyway, nothing major, so:
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
