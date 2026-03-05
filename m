@@ -1,146 +1,154 @@
-Return-Path: <stable+bounces-223165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHCmNBjpqGmfygAAu9opvQ
-	(envelope-from <stable+bounces-223165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:23:20 +0100
+	id eJrbKgLsqGnnygAAu9opvQ
+	(envelope-from <stable+bounces-223166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:35:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FDA20A2A6
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:23:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4851520A399
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40A283061E12
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 02:23:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50A5B30387F7
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 02:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFD82571B0;
-	Thu,  5 Mar 2026 02:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4E1263F5E;
+	Thu,  5 Mar 2026 02:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ip73y1/M"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gSmQ8gEQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC05221FD4;
-	Thu,  5 Mar 2026 02:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B274258EF3;
+	Thu,  5 Mar 2026 02:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772677395; cv=none; b=MgK1v5QETIftAULckK9kMizxqNtPkYO8OFTmkWcunxlcsV3VhSp4vO+rr+JqFArQnSLQ/IZ6cGic4EllJ2qPiBQW80wdUR9RsX2VEMBKWJl1LkERmIE+K8g643aenp/JNj02rOxJQ7aZ/hSg5ahzUapV9KwpdQ1DqLAfV2fFiaM=
+	t=1772678142; cv=none; b=Nw9IGnVZoVXgJRwUHQvg1Qbb9Ua1I/v/dXdrT781ewMPotPW4+3Aq5oBtwpJ9ETzndXxRvvnWo3GkywRXvOHKKcwXggfbCocvzN6Klj/brJ9JePHvgnM+y/PnJmsgwQHtcedeCo4Vlj2zdbLzeQIRvM2eHegqi0FheX5QNEtvnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772677395; c=relaxed/simple;
-	bh=VX+eCtM+j4ulLaEbWvFmeQFhD1V7oDErGE+R9/sXrx8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdupnigUsJVqvvnb3OjMk3Bm1b4dHQnaxb0UByrpbgsZriRNpnggBh56QZV7oRkxF0HQcEN4uA6udHRRwL9buc0zG2HpnUwJmV90kAwB0NtdVeZI3+pI4ikSDqYVDx+Ohia+gGLhSln0J9WMeVdNxDF4SI/qWdAvVtRvFW+cH0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ip73y1/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8083EC4CEF7;
-	Thu,  5 Mar 2026 02:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772677394;
-	bh=VX+eCtM+j4ulLaEbWvFmeQFhD1V7oDErGE+R9/sXrx8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ip73y1/MRTv2mghlmN8r9NZVL6IYQVqF385YXC7syuB3LHOeWqg0hE11UOKILI8Tn
-	 PECQ0w4Ds8EZymKwVOgiC2xrmm+RDTJOs1ZmC1m173U5zr+apUBwURWNdr55AfPljp
-	 jwJvl3n9yKsrVvR/TeTZEQHsauMv7PxGLH932ziEEymRhs8N9x8A7sNxQ/+iBLskfd
-	 LgOfdQ1SHiZBj7xGmHKhnVn4LHoOnCIradR7Dccnta8NVRPvzhud6yAmoZ7RG1iWRk
-	 97z9oiuwgt5XURcpHtta2+h7KuMzI+YdHJ0EjTpsBVbfsa9ZZzdmHmtqHF7HR4BXmu
-	 hm2DlDoSmhmjg==
-Date: Wed, 4 Mar 2026 21:23:13 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Peter Schneider <pschneider1968@googlemail.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	akpm@linux-foundation.org, torvalds@linux-foundation.org,
-	lwn@lwn.net, jslaby@suse.cz, gregkh@linuxfoundation.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: Re: Linux 6.1.165
-Message-ID: <aajpEdVsMnl61S_O@laps>
-References: <20260304131525.84627-1-sashal@kernel.org>
- <c435a3c6-5952-453f-9e50-31e0c6cdd09f@googlemail.com>
+	s=arc-20240116; t=1772678142; c=relaxed/simple;
+	bh=Rn0gwkny07s0QHBZNhTS6KaPP6qFbOmRVtRtmMF48vY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=twYD73E4GBzxEmSKTeH5zKDkVisBtLydnmy0Jp2yJZEGQjFuqKnwT8QCZosCMo0QWMQTgpbe3W6QnaSmwOV5sY1ZJnyBxGtaSjDvnmBK367f+jPyOJJr5zgW0xoa65A+Fs9CD77aby6B/pF4BakcoFxRfgaWEXQCJndY4rpynDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gSmQ8gEQ; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9R
+	lnR5jm9PhBAUJXCN4QxuMr47fR0FrOXWZf5lEzkxk=; b=gSmQ8gEQ9WbdBwE8fA
+	yTjww1L29EOpFp06fbZel4LBArgsy2LE2GP5xVtIIhG4o8Vms+0T8ELDE8oOGJ1G
+	Wb7slHvsxDINA0KLN4R/KHgYutlR/8sjWyC6qifUXVtYYRFZVoQ81bG0LOdg7sjO
+	5cgks1ZWtI1ET8h/jFN6DTxz8=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBn393V66hpNnfqUA--.606S2;
+	Thu, 05 Mar 2026 10:35:02 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Robert Garcia <rob_garcia@163.com>,
+	Jan Kara <jack@suse.cz>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Lior Ribak <liorribak@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6.y] binfmt_misc: restore write access before closing files opened by open_exec()
+Date: Thu,  5 Mar 2026 10:35:01 +0800
+Message-Id: <20260305023501.4003943-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c435a3c6-5952-453f-9e50-31e0c6cdd09f@googlemail.com>
-X-Rspamd-Queue-Id: 36FDA20A2A6
+X-CM-TRANSID:PSgvCgBn393V66hpNnfqUA--.606S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4fGF48tw1UurW8AF1DWrg_yoW8WF4Dpr
+	W5K34UKFZIqryj9a1kCas8XF15G3Z7Gr12vr4DWw1fXrn5Xrs0gFZ2g3yj93W0y397ArWF
+	vF4Fk3sYyryUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UoCJQUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARa0IGmo69acswAA3Q
+X-Rspamd-Queue-Id: 4851520A399
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223165-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	TAGGED_FROM(0.00)[bounces-223166-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[163.com:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,zeniv.linux.org.uk,163.com,suse.cz,xmission.com,linux-foundation.org,gmx.de,gmail.com,vger.kernel.org,kvack.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 06:27:00PM +0100, Peter Schneider wrote:
->Hi Sasha,
->
->
->Am 04.03.2026 um 14:15 schrieb Sasha Levin:
->>I'm announcing the release of the 6.1.165 kernel.
->>
->>All users of the 6.1 kernel series must upgrade.
->>
->>The updated 6.1.y git tree can be found at:
->>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
->>and can be browsed at the normal kernel.org git web browser:
->>         https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
->>
->>
->>Thanks,
->>Sasha
->
->
->In the now released 6.1.165, I get the same build error as I have reported in the 1st incarnation of 6.1.165-rc2 (see [1])
->
->  CC      arch/x86/kernel/setup.o
->arch/x86/kernel/setup.c: In function ‘ima_get_kexec_buffer’:
->arch/x86/kernel/setup.c:385:15: error: implicit declaration of 
->function ‘ima_validate_range’ [-Wimplicit-function-declaration]
->  385 |         ret = ima_validate_range(ima_kexec_buffer_phys, ima_kexec_buffer_size);
->      |               ^~~~~~~~~~~~~~~~~~
->make[3]: *** [scripts/Makefile.build:250: arch/x86/kernel/setup.o] Fehler 1
->make[2]: *** [scripts/Makefile.build:503: arch/x86/kernel] Fehler 2
->make[1]: *** [scripts/Makefile.build:503: arch/x86] Fehler 2
->make: *** [Makefile:2025: .] Fehler 2
->root@linus:/usr/src/linux-stable# git status
->HEAD losgelöst bei v6.1.165
->
->
->So the offending patch seems to be still in, although in the 2nd 
->incarnation of -rc2 which you force pushed over the 1st one of -rc2, 
->it was then reverted after my report [2]. When i git blame 
->arch/x86/kernel/setup.c and look at the offending line I see:
+From: Zilin Guan <zilin@seu.edu.cn>
 
-Yup, sorry. I don't have as much automation as Greg does, so many of the steps
-were manual...
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
 
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
+
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
+
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
+
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ fs/binfmt_misc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index cf5ed5cd4102..a45b5ba12a9c 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -815,8 +815,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
 -- 
-Thanks,
-Sasha
+2.34.1
+
 
