@@ -1,145 +1,322 @@
-Return-Path: <stable+bounces-223198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKg9HeaEqWkd9gAAu9opvQ
-	(envelope-from <stable+bounces-223198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:06 +0100
+	id WLmYBRmFqWkd9gAAu9opvQ
+	(envelope-from <stable+bounces-223199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C00B212961
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8468021297F
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 14:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA853040D99
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 13:28:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36447301B164
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 13:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C6D3A255E;
-	Thu,  5 Mar 2026 13:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C8F3A453F;
+	Thu,  5 Mar 2026 13:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LetMebQD"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Nen8fdgN";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BpGvxyPh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB0D3A4520;
-	Thu,  5 Mar 2026 13:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1B3A4F31
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 13:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772717281; cv=none; b=IY5usXfTaQeGc0oxDs3JBVmL2Vhr8HJz5DTSaGvDsmLLjS4SgtTBJwS1Uz4m/2Si8n1iFGNfG3IBm0ojC1gUf0XB46b5iPiebqeN0UfZ/fvnxBeMbIL91797PEeEuF91wVE5H76wMJJPeHkMGnOJiG7Jrolifn2PRPJswc9e7B0=
+	t=1772717333; cv=none; b=POPNF9E1KwPcvPGV1MOJEGS79ZGXLKTqFvgHqdXmQnZ6JE3mUFnwvn1vFIlb+YbRtcO0UZgi1DADM4n9ta/+eRc84t6gCEHcREUT5mdEUw9Hn/alPa6EBI3v3zPRSA5/0VWzV3XcsE0q0KHEiXaHqRYR+fqR8SGRSWhUW7KUys4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772717281; c=relaxed/simple;
-	bh=lnBSHxmNphnGNCi22PlaGFKdvnE9IXS9939YI+0IHf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gSKXPVlmR4ETq+P45jVWtSZ1Pisw7jyfu4wNvw1SbYINmGkcTycII2FBRAkTuP6uH0TEeflSQnw+rkvW36eMhOm8In0FeXnHdjijpk3cN5Os0V1mk8cFgkRcaOTdCalEUMMMUMR0X0WvEJx0PGBXxFEPzPMkz2IRxgFVL80bXV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LetMebQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A6CC116C6;
-	Thu,  5 Mar 2026 13:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772717281;
-	bh=lnBSHxmNphnGNCi22PlaGFKdvnE9IXS9939YI+0IHf0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LetMebQDnbnkvkpZ77o4DJegqdAtRxcSwn2e975//5D15F2wztxAf6ue0O1wcByQz
-	 uJ+bbLHmbT0GAE6/l3QQlflrP9/sgfSRgoQbPZmTZTynD/FwJHR5RGSygFhtIn2SkM
-	 a5n1U5V0UGJmuLYe6m4KE+u6MEetsu3ELvKiz3axzLeagbC+DOMKoqDS6J5DaPKAOT
-	 QT8o0BGvLvl13qZYSPoDt4uq47vSpvg8qYu3VWDi39nrPlMYkPn7dwHqVbOLpMlWc7
-	 9yps8TnTd2J0Xk82h14cyL9endiFGiz4W/MCnMWx7ELXvcVQMe1tDRgYGTzDi9zchQ
-	 ydHvonROTXS7w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vy8kA-0000000GST7-3TSz;
-	Thu, 05 Mar 2026 13:27:58 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	Quentin Perret <qperret@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: pkvm: Fallback to level-3 mapping on host stage-2 fault
-Date: Thu,  5 Mar 2026 13:27:51 +0000
-Message-ID: <20260305132751.2928138-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1772717333; c=relaxed/simple;
+	bh=l15mSyjuck4U9FDRKOGPmVbWICnvQJSekqWWPer8y/8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=J6MEnYKVOnBHoQjtagTRSyaQfp9euaz0hwQhAdvfG/0SVPvrvT1Uv/rTYmFngOm0Euss1LeMUOZ7ixJMA1nCN5vPfN7lhec8I0FZWzXSUh+bR5u2UVAVO3htLpX4xaWwJI+lXqsLJEYPEqWSHUwx5rby9LRtG418ydb9XVTEsqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Nen8fdgN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BpGvxyPh; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 625AFae52922167
+	for <stable@vger.kernel.org>; Thu, 5 Mar 2026 13:28:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=BQeIcd/nOZ7ZX1VNZs/yyO
+	p0K92hK4/8vWea26Lu1JM=; b=Nen8fdgNESsiOUQyVLcz3OVIbih3z75sEgReVI
+	lD5Vbuy0tzGFgHPLXvB6BgmN6e7bQ+63+vrPAyFQtOAqyh0k7zr3UpNliIL2CJ69
+	cJ7U8fj22Xqagyv4wXLQGSsULSuXLKSvYNujcgTwNUaWJOFe1+RwRO5fcIbe4kho
+	0Mz3m+gU4KxiaU7d+yuFWysfV2yMHjGPn2o1GUPiu9MvcRMCkJQ/XpQL9lEHjlP3
+	aoUYCMgzgNQovm5RxKbFaXpmz8pvGmIwfbUtv3kxg4oL5jAkvbwWr44tj8L9pvUN
+	70W2SJcZ5AbeQVIKigS4K4J+JkKkpOlu7l6+1CbqIVtKHh7Q==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cq2q81q6t-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 05 Mar 2026 13:28:49 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ae6961bff0so93190415ad.2
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 05:28:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772717329; x=1773322129; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BQeIcd/nOZ7ZX1VNZs/yyOp0K92hK4/8vWea26Lu1JM=;
+        b=BpGvxyPhDKqWQGXBWFHdeehqtYX76tfk3X8xKarLhk0VyJidbzxV3iUL/JsEcocT6n
+         pA78pDM8HZZJUhlCHaCbojEK9gIjjPh2fPbUb6LrQjsfRLZRMmwS6PqReM5izWK64KOF
+         8lWT0mjGDT5Cm27G6Kg6QDmPRRNK2AuY5UKvWZpkcmsGqjpGu449bALAWySZ3qnQnGjK
+         LsMap34JnrN8hgCMUKTlBjWFDg4ZkFukPDb/d+Q20LIqgRhFvts/yR7tijkCdaRwhIHI
+         LesBKEtT0UYetZj0RWR4/MrwR010p8CcD1yDeWLxqtADL8skbUIWSrSmebyX2ckJN6g8
+         vHhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772717329; x=1773322129;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BQeIcd/nOZ7ZX1VNZs/yyOp0K92hK4/8vWea26Lu1JM=;
+        b=GjRfzXlPmi7He8s025vZ43U95zdmmpvyyDkR1lEuqKfrtMSutJsK0BeG8IApr3ZJq9
+         l+vk/i+IxjbTuByjOzHhvtaO5AhwtYvpdfJzP6yuSFoqaVLYkQfHwWdE0IbndoyMq8Rr
+         1rRsmWRjcaCGNSCc2UrJ5MRoxByoWYGXMDTAl8JlTBflGbnQVc2+a8EQnVQPYqEJSbiO
+         +9w4l828Pqj7eHOozRRuB9lncb6pxo0CwWAPTiDBnDTARUPkfE79P3xFxT6LUe5hsa+r
+         Il3hbpIbGEWlIF2yWYdj/zHdlq7sZFzhTmlkTQFJvk5qUJ96z6NzHWiVJVyjNzQtDcQn
+         e5/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUs3QZcAWjIysWoGF7mqFyU+pZGgRMOJ7oraEaUu2C12tm4vcG2ctRbV2aJ11tkx5e5iYhj3TA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMQRZKxgTEyKj8LGg/BUqnsibrfRMjkxAT2rDVqxDm2qH4bdP1
+	sTFuGLQJQVWLQm+oOA7LbDbakvJ15a2trS7fb2fixyO07zHSk9MR/pg8SI9U2PvYEUH9fC4kTUJ
+	sC/2mcCaRcgYrMbtMPGnYRMqnSK6feOm1e7+p83mjaHqvOFkauL1ds6Q+QOo=
+X-Gm-Gg: ATEYQzzO43/YI57XEO0ZQSk3Ixatv5Ts7Gfjsfs1s4kzGdKeNAkrXR9MwIR86o0BDXE
+	I1Bt5RGO1XEOTkDprz+7mgatYa8bgLtPHXAbpczjoRIjFpyPWwFrczamRENNbZY5Ns6w0BGc1lv
+	PzkYBMYm9aqqZ0NN+Ojm9cXzc+L3ghvkWixL0Yf9JEF4LA5KxnsqIx4TMe3OFXWKnoptixaEjtH
+	Bf7k3Gw4t8/rv9HTntLBuwqNo444IrjcaGvk3Yk8HYW2zsw3ZGcC0InfqRXCciZ1yIaRnAfwm4s
+	wnb7og+ipgT9r4NfAi6dQ++q3wjU+5vDDCqWI7B0R8100az0wz/rLi+J6pVOUtZZrl7atnIIdre
+	zduFKgLM5XL32d1A9/PPXAlTDUCIOSXE1quNbcL0SSjN1TL2IcDi8/xE=
+X-Received: by 2002:a17:903:15c3:b0:2ae:5a21:f7ee with SMTP id d9443c01a7336-2ae6a8bfe34mr59082115ad.0.1772717328565;
+        Thu, 05 Mar 2026 05:28:48 -0800 (PST)
+X-Received: by 2002:a17:903:15c3:b0:2ae:5a21:f7ee with SMTP id d9443c01a7336-2ae6a8bfe34mr59081865ad.0.1772717327994;
+        Thu, 05 Mar 2026 05:28:47 -0800 (PST)
+Received: from hu-bvisredd-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c0f2fsm330533105ad.20.2026.03.05.05.28.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 05:28:47 -0800 (PST)
+From: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Date: Thu, 05 Mar 2026 18:58:31 +0530
+Subject: [PATCH v3] media: iris: fix use-after-free of fmt_src during MBPF
+ check
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, tabba@google.com, qperret@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Rspamd-Queue-Id: 1C00B212961
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260305-fix-use-after-free-of-fmt_src-during-mbpf-v3-1-20cd61ca488b@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAP6EqWkC/5WPy2rDMBBFf8Vo3Qny2LLcrPIfpQQ9ZhJBbSWSb
+ VKC/72KU+imm2wG7sCcc+cuMqVAWeyru0i0hBziWELzVgl3NuOJIPiSBUrsJGIHHG4wZwLDEyX
+ gRASRgYfpmJMDP6cwnmCwFwZjHWpWummlFIV3SVSON9fH5zMnus5FOT2XwpoCdnEYwrSvOk/Yc
+ F8bRbK31LNlRb3X9M5knUajrOIiEA/WOeQppu/tjaXeYL+N9QuNlxpqaKR23jCzQXOIOe+us/l
+ 6lNqVsckW/BM0sn1FgEVgW6d7X1vWXfuPYF3XH7fDxMeWAQAA
+X-Change-ID: 20260226-fix-use-after-free-of-fmt_src-during-mbpf-abc27f573400
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org,
+        Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772717323; l=5820;
+ i=busanna.reddy@oss.qualcomm.com; s=20260216; h=from:subject:message-id;
+ bh=l15mSyjuck4U9FDRKOGPmVbWICnvQJSekqWWPer8y/8=;
+ b=bX+vvijA0pCBxWAyG7KXMzC2RGq1j5Vi587NVFVDveniogeJm+LZJh0mQ7u6+QC/JIYms4Soe
+ jDzBNXJing6BxM7CrijmrObvtj7DUmFg7GHuoDRNHpWVPvUqyl6auLY
+X-Developer-Key: i=busanna.reddy@oss.qualcomm.com; a=ed25519;
+ pk=9vmy9HahBKVAa+GBFj1yHVbz0ey/ucIs1hrlfx+qtok=
+X-Proofpoint-GUID: RtAryZL9uU5kl8yuug4kzvCK_LwzfQPN
+X-Proofpoint-ORIG-GUID: RtAryZL9uU5kl8yuug4kzvCK_LwzfQPN
+X-Authority-Analysis: v=2.4 cv=GecaXAXL c=1 sm=1 tr=0 ts=69a98511 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vOiXTFtDm48uhe5vJ3sA:9 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEwNiBTYWx0ZWRfX09PxZncw/LAD
+ pXcpPL5TGbGJpuxSc5e+89qUgc4nwfbNeCt070AS54+sfeino8dxdjXHp9h2Ij4eRLoWQiYoGuL
+ pKxDShM+fNcJz+BjCyl1qoDLcjbdg2tXAr7Iu3jif7H6dSPKBkYwAcOXdqL34VTBDi6j31egPeo
+ 2KhcdqJw6E3fWq6W7KERK5XWo0l5wQqFOFs45Yn+TLS1MlK0XF2EIHg5CvpnWLoVQbkdlZtLmsK
+ HTCY4MnlCcTY9Sm/Xcn3qvoGV8Y14vVX32lFXowm+8vuEaMrdiaToxMaWBK5fyOE/DhQ+PcAZqw
+ mGLYHkvbValy6rP7+LEtlL5oo7RZdALXsCQJB+DtsNaSfSW75DtOCr2dE7XJ8ORVDe70JThClYo
+ n/v7TeFnbdyzIhvypupHooxpcl7SHWwbdORGj3MrrajyqNTvPTzSs012uxI/eJP168j5wWfvn9K
+ SOHk2Q6dxEMBM1fMm5Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0 suspectscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050106
+X-Rspamd-Queue-Id: 8468021297F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223198-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223199-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[busanna.reddy@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-If, for any odd reason, we cannot converge to mapping size that is
-completely contained in a memblock region, we fail to install a S2
-mapping and go back to the faulting instruction. Rince, repeat.
+During concurrency testing, multiple instances can run in parallel, and
+each instance uses its own inst->lock while the core->lock protects the
+list of active instances. The race happens because these locks cover
+different scopes, inst->lock protects only the internals of a single
+instance, while the Macro Blocks Per Frame (MBPF) checker walks the
+core list under core->lock and reads fields like fmt_src->width and
+fmt_src->height. At the same time, iris_close() may free fmt_src and
+fmt_dst under inst->lock while the instance is still present in the core
+list. This allows a situation where the MBPF checker, still iterating
+through the core list, reaches an instance whose fmt_src was already
+freed by another thread and ends up dereferencing a dangling pointer,
+resulting in a use-after-free. This happens because the MBPF checker
+assumes that any instance in the core list is fully valid, but the
+freeing of fmt_src and fmt_dst without removing the instance from the
+core list is not correct.
 
-This happens when faulting in regions that are smaller than a page
-or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
-an O6 board that refuses to boot in protected mode).
+The correct ordering is to defer freeing fmt_src and fmt_dst until after
+the instance has been removed from the core list and all teardown under
+the core lock has completed, ensuring that no dangling pointers are ever
+exposed during MBPF checks.
 
-In this situation, fallback to using a PAGE_SIZE mapping anyway --
-it isn't like we can go any lower.
-
-Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
-Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: 5ad964ad5656 ("media: iris: Initialize and deinitialize encoder instance structure")
 Cc: stable@vger.kernel.org
-Cc: Quentin Perret <qperret@google.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 ---
- arch/arm64/kvm/hyp/nvhe/mem_protect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+- Removed global word from the commit description
+- Added MBPF full form in the commit description
+- Link to v2: https://lore.kernel.org/r/20260304-fix-use-after-free-of-fmt_src-during-mbpf-v2-1-b4c78d1bf764@oss.qualcomm.com
 
-diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-index 38f66a56a7665..d815265bd374f 100644
---- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-+++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-@@ -518,7 +518,7 @@ static int host_stage2_adjust_range(u64 addr, struct kvm_mem_range *range)
- 		granule = kvm_granule_size(level);
- 		cur.start = ALIGN_DOWN(addr, granule);
- 		cur.end = cur.start + granule;
--		if (!range_included(&cur, range))
-+		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
- 			continue;
- 		*range = cur;
- 		return 0;
+Changes in v2:
+- Updated the commit description
+- Added Fixes tag and Cc stable
+- Link to v1: https://lore.kernel.org/r/20260227-fix-use-after-free-of-fmt_src-during-mbpf-v1-1-307cdafffa2a@oss.qualcomm.com
+---
+ drivers/media/platform/qcom/iris/iris_vdec.c | 6 ------
+ drivers/media/platform/qcom/iris/iris_vdec.h | 1 -
+ drivers/media/platform/qcom/iris/iris_venc.c | 6 ------
+ drivers/media/platform/qcom/iris/iris_venc.h | 1 -
+ drivers/media/platform/qcom/iris/iris_vidc.c | 6 ++----
+ 5 files changed, 2 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
+index 719217399a30..99d544e2af4f 100644
+--- a/drivers/media/platform/qcom/iris/iris_vdec.c
++++ b/drivers/media/platform/qcom/iris/iris_vdec.c
+@@ -61,12 +61,6 @@ int iris_vdec_inst_init(struct iris_inst *inst)
+ 	return iris_ctrls_init(inst);
+ }
+ 
+-void iris_vdec_inst_deinit(struct iris_inst *inst)
+-{
+-	kfree(inst->fmt_dst);
+-	kfree(inst->fmt_src);
+-}
+-
+ static const struct iris_fmt iris_vdec_formats_cap[] = {
+ 	[IRIS_FMT_NV12] = {
+ 		.pixfmt = V4L2_PIX_FMT_NV12,
+diff --git a/drivers/media/platform/qcom/iris/iris_vdec.h b/drivers/media/platform/qcom/iris/iris_vdec.h
+index ec1ce55d1375..5123d2a340e1 100644
+--- a/drivers/media/platform/qcom/iris/iris_vdec.h
++++ b/drivers/media/platform/qcom/iris/iris_vdec.h
+@@ -9,7 +9,6 @@
+ struct iris_inst;
+ 
+ int iris_vdec_inst_init(struct iris_inst *inst);
+-void iris_vdec_inst_deinit(struct iris_inst *inst);
+ int iris_vdec_enum_fmt(struct iris_inst *inst, struct v4l2_fmtdesc *f);
+ int iris_vdec_try_fmt(struct iris_inst *inst, struct v4l2_format *f);
+ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f);
+diff --git a/drivers/media/platform/qcom/iris/iris_venc.c b/drivers/media/platform/qcom/iris/iris_venc.c
+index aa27b22704eb..4d886769d958 100644
+--- a/drivers/media/platform/qcom/iris/iris_venc.c
++++ b/drivers/media/platform/qcom/iris/iris_venc.c
+@@ -79,12 +79,6 @@ int iris_venc_inst_init(struct iris_inst *inst)
+ 	return iris_ctrls_init(inst);
+ }
+ 
+-void iris_venc_inst_deinit(struct iris_inst *inst)
+-{
+-	kfree(inst->fmt_dst);
+-	kfree(inst->fmt_src);
+-}
+-
+ static const struct iris_fmt iris_venc_formats_cap[] = {
+ 	[IRIS_FMT_H264] = {
+ 		.pixfmt = V4L2_PIX_FMT_H264,
+diff --git a/drivers/media/platform/qcom/iris/iris_venc.h b/drivers/media/platform/qcom/iris/iris_venc.h
+index c4db7433da53..00c1716b2747 100644
+--- a/drivers/media/platform/qcom/iris/iris_venc.h
++++ b/drivers/media/platform/qcom/iris/iris_venc.h
+@@ -9,7 +9,6 @@
+ struct iris_inst;
+ 
+ int iris_venc_inst_init(struct iris_inst *inst);
+-void iris_venc_inst_deinit(struct iris_inst *inst);
+ int iris_venc_enum_fmt(struct iris_inst *inst, struct v4l2_fmtdesc *f);
+ int iris_venc_try_fmt(struct iris_inst *inst, struct v4l2_format *f);
+ int iris_venc_s_fmt(struct iris_inst *inst, struct v4l2_format *f);
+diff --git a/drivers/media/platform/qcom/iris/iris_vidc.c b/drivers/media/platform/qcom/iris/iris_vidc.c
+index bd38d84c9cc7..5eb1786b0737 100644
+--- a/drivers/media/platform/qcom/iris/iris_vidc.c
++++ b/drivers/media/platform/qcom/iris/iris_vidc.c
+@@ -289,10 +289,6 @@ int iris_close(struct file *filp)
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	mutex_lock(&inst->lock);
+-	if (inst->domain == DECODER)
+-		iris_vdec_inst_deinit(inst);
+-	else if (inst->domain == ENCODER)
+-		iris_venc_inst_deinit(inst);
+ 	iris_session_close(inst);
+ 	iris_inst_change_state(inst, IRIS_INST_DEINIT);
+ 	iris_v4l2_fh_deinit(inst, filp);
+@@ -304,6 +300,8 @@ int iris_close(struct file *filp)
+ 	mutex_unlock(&inst->lock);
+ 	mutex_destroy(&inst->ctx_q_lock);
+ 	mutex_destroy(&inst->lock);
++	kfree(inst->fmt_src);
++	kfree(inst->fmt_dst);
+ 	kfree(inst);
+ 
+ 	return 0;
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260226-fix-use-after-free-of-fmt_src-during-mbpf-abc27f573400
+
+Best regards,
 -- 
-2.47.3
+Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
 
 
