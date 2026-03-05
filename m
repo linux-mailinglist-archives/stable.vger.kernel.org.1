@@ -1,255 +1,196 @@
-Return-Path: <stable+bounces-223162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AoBEVfhqGnzyAAAu9opvQ
-	(envelope-from <stable+bounces-223162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:50:15 +0100
+	id iEvXJ8vlqGk3ygAAu9opvQ
+	(envelope-from <stable+bounces-223163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:09:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7001520A00B
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:50:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4185220A195
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 03:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CDE4301AF58
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 01:50:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57183302315C
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 02:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B981C84CB;
-	Thu,  5 Mar 2026 01:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211CA2566F7;
+	Thu,  5 Mar 2026 02:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lwdlvx24"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="kXVHvZJZ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="dXA9rwae";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eidFt8VX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HvV2juby"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93AB33688A
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 01:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0523C4E9
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 02:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772675412; cv=none; b=LCHPfxjT9MwQYkfaZoBYkYN+AtcLwGx7m7dNUHoxMDzjies+orzD6HkhETI1C+4Wyw91f8M2mnw8Kk1U9s1jyhIi41JlYFhUZucCMU9AhFaDmwxAmMMy5f/0m8HtqZ4AvZNcy+jimspIAZVTCi/WmGDCAwZvpz6KWT9SgDjTWfA=
+	t=1772676550; cv=none; b=DkNEFc4e5DJS4c2Z36qDQVg72sTpcZRN9uK1pqeAbcbuGAefU9f60wezjpFS+2iITMJEFTqbfYpIPxe43rDRzlTVF1OmLd4Czc8O7IkrSxOyJ23KD39SDgLl5UODPtDB4qGr2NJ4ECgo+nSejsKHllgIa1Hp9d4sJ1prtAc/egU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772675412; c=relaxed/simple;
-	bh=wQ/u9rQKUsL3bd6QgFMGoC5t57NYQRymsZ55pKSghoU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Ze0xoyJrAwktaA6FCXWIjev3DWczPO9/MJhSa5pHzqW20le4ZVJ/i3xxfLk5Z//kjmA6lj2LwTs6qdmG8GZlweI5C1zDdmQuTL0Yo3TlNkjadVMxV9Te6cRToZnu/wnguCV53cG3hR6B+To1MeESHL7XD3YfToCj/MLtpDoLF10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lwdlvx24; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65bfc858561so4153293a12.2
-        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 17:50:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772675409; x=1773280209; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dD52BcDVoMQrtMpMvwdJ0XwlitnIFQsRkhRbjewdIjU=;
-        b=Lwdlvx24aN8ihrWBwA0ahku70e5Z4T9+8/9G3OuKgu9xTC07HtG5HVc9OBcQoDiWDU
-         YQhW9JelMEB28KuNxW8HVdzhNXChQcSLsNE1osr+qFxWrpRR5vRUXlzUDAAbEmE9Bx30
-         voiGbturQenA8mcH5RmCkVBwVoiONC6iSxwKblQkpK1n4WmcSomSvohrcVmVS1p+d8FZ
-         WE2CuOIq4f8cqBMbkz/2LxuxAP1tH2m+qVrCvY+MNoKgRdSWbQ4FZ6cfS73N4hVBNPHl
-         LySX3+0HwivOXD6EbkFrLYgy27585txZ2KT5lI0COSS0cS3G5dunEHpUyJg+AJABJKWC
-         WWAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772675409; x=1773280209;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dD52BcDVoMQrtMpMvwdJ0XwlitnIFQsRkhRbjewdIjU=;
-        b=NkQeu0qLSOmfpubr9GyjTkjM0ft+A80rIskIEnWF4KmaUNUFG6WMp3z23NcwLS2Tok
-         waB6Y7YiAuSsTyaLsPGdRAUS//YJKydv315qgAeawjLiEmqE5hTpf5vvtiFWe0/KGQtl
-         Hufh+uVkPXnjfhWbRr/0BsPe328kRTCZhQ0J4Vvt+VCdx1QlMqhYyiuXVCTq30KYPIn8
-         8yFw4rzDFcacxYtTZqaVNhrNyThuoQyOub5A1sVsrmn2ndhgwlAc1K5MHa26a3ucoZdz
-         FixXS2h9lC5v/7FB8qsW1rak9FYS9OJ9qhH2fOdfQkYbP90VKUc2+fctCSFBZJVkqUfp
-         38vA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjca48sxC0wBKqsCQP1a5s48Wsxf+hZtMKbcgAmZU/nE2Z1nFZ1IUN3ScOuY1wpAPkmp7KhtU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxap+lBxgNlGiKJ58qi3/V0LiUT/MLlaefFC61pnGj/4pTZDQYO
-	vgchEmgdEmO3Stq+XkZCaniwaLxN0P0G85nxhPqFpeTJoxHYW5L3R1o+
-X-Gm-Gg: ATEYQzyHR3lLpFGo5NU7X99S/dUtCEnHuZRJqDV+4yfNL6QNuKX2zxdoDzqNO02mI6v
-	zoa2PT+oVRSiCs2yTZi6ezVJuQEN1bKSBrcsP3Oun+jOe/hPicQGfaOF7jqeE7Bc5HfrwFbHLxm
-	9NuxjRu6KNdgJtiJv1AMp9fXfs0IcSU0DHNQeYV9/2u17GKFyc8mGrWoMCeIdVZoox97xNMqMxC
-	T9BhnacG6s3EGM4PdrouuvVY9xHjeC5evrq7PuI3Hi9yciVI5voPVwB73LZjBZ/MuLZRg4C8ddt
-	7LfIhvU1acuKwYkkSNd1amq58N33fLAlUptj8YZgdaesoXaKklgyC3UzlsMH0mRP+/93qabMr1y
-	GiFOgFlSbSy9lSV8O6EqtbUsSSCzFy+skyuwsh9B++x9LXZQ+TY3t8pt+QbdQNEUdP0o1F+jHf+
-	WkahAL9nr+QpLOY4xwrhyATg==
-X-Received: by 2002:a17:907:97c4:b0:b7d:1cbb:5deb with SMTP id a640c23a62f3a-b93f11d67e3mr303322066b.27.1772675408979;
-        Wed, 04 Mar 2026 17:50:08 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935aee3ab4sm821988566b.61.2026.03.04.17.50.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 04 Mar 2026 17:50:08 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	gavinguo@igalia.com,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Lance Yang <lance.yang@linux.dev>,
+	s=arc-20240116; t=1772676550; c=relaxed/simple;
+	bh=eh/NDTNde3nrGm9moehKrub2drCBeOYgKCwyLWhlTxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cgWVCBhc6wydGFDkPUjh55txxTtb3voBkFG5VIUGcvsuxmFqcDBFDONj4L8kjaiJVDjn1Q75smVjbNMI6akGQubBGmUbIYYu8VgPalJijXVo3ZApCF/cwihIBFW4sB6RZpM/CPqZNaN4qS3N4KkRL3mz4ihW1MtC7k4ic/JwIS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=kXVHvZJZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=dXA9rwae; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eidFt8VX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HvV2juby; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ED1C13F97D;
+	Thu,  5 Mar 2026 02:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772676548;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
+	b=kXVHvZJZzynnK5ZvJFgJp4gSC8TmG3h5RHXfZUPmfkLt+SXIfRlAFmdHCGQUCtJioUBRrV
+	3am20uGv3CUC8NWPpjJtzgb/iblRsEgyTXbNjLjEoUk7dLZzDGyt1KFhK8SoB6yW/AMhbp
+	k4QtosADtJOXuw7TqIgdE6nRqA5+5Z8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772676548;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
+	b=dXA9rwaeiTZ+y/o5prSRIlO/3Zl/qw1DerSS5FuB9w5B/2bMlsbK2ZbF6qPwUE55ICkAgM
+	g00dNZyH5FuZb+Ag==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772676547;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
+	b=eidFt8VX4EFIrzz8IyxJXfZgZX7bhMkCNFciRDby2Ibg56GnbyIc9ecK8koWxxuFiqpqd2
+	2uKodbU5AeQzrxfqOi+r09fetE6D4zQNZV8p/VQUY07K+DL2Q8EbgDchw/ECeguIVYQ/TJ
+	9w4JlVqkZ4ihqdJSBeWUCnmN6XTn4Ng=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772676547;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rqAvnANs/kFfbXgsB2p/cZnJ4km6ppCDPnPRiYDkEi8=;
+	b=HvV2juby8FXJYypqqzeYyTWIMNY8LrtwgB8AqYJUkHBJxCvZ8pjISwfonaZeHX+ejJOAmI
+	Bv94lHyNiwUsJ7Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C9AFA3EA68;
+	Thu,  5 Mar 2026 02:09:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id a5QMMcPlqGnaZwAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Thu, 05 Mar 2026 02:09:07 +0000
+Date: Thu, 5 Mar 2026 03:09:02 +0100
+From: David Sterba <dsterba@suse.cz>
+To: ZhengYuan Huang <gality369@gmail.com>
+Cc: linux-btrfs@vger.kernel.org, clm@fb.com, dsterba@suse.com,
+	josef@toxicpanda.com, linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com, r33s3n6@gmail.com, zzzccc427@gmail.com,
 	stable@vger.kernel.org
-Subject: [Patch v4] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared THP
-Date: Thu,  5 Mar 2026 01:50:06 +0000
-Message-Id: <20260305015006.27343-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+Subject: Re: [PATCH] btrfs: reject global extent/csum roots without offset 0
+ when extent_tree_v2 is off
+Message-ID: <20260305020902.GA5735@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20260302110202.790279-1-gality369@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 7001520A00B
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302110202.790279-1-gality369@gmail.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 4185220A195
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223162-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-223163-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,fb.com,suse.com,toxicpanda.com,gmail.com];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kvack.org,gmail.com,linux.dev,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	HAS_REPLYTO(0.00)[dsterba@suse.cz];
+	RCVD_COUNT_FIVE(0.00)[6];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dsterba@suse.cz,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,nvidia.com:email,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.cz:dkim,suse.cz:replyto]
 X-Rspamd-Action: no action
 
-Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-split_huge_pmd_locked()") return false unconditionally after
-split_huge_pmd_locked(). This may fail try_to_migrate() early when
-TTU_SPLIT_HUGE_PMD is specified.
+On Mon, Mar 02, 2026 at 07:02:02PM +0800, ZhengYuan Huang wrote:
+> Without EXTENT_TREE_V2, btrfs_extent_root() and btrfs_csum_root() always
+> look up the global roots at offset 0. A crafted image can provide only
+> non-zero offsets for the extent/csum global roots, so the offset 0 lookup
+> returns NULL and later leads to a NULL dereference
+> (e.g. in backup_super_roots()).
+> 
+> Fix this by detecting this at mount time: when loading extent/csum
+> global roots without EXTENT_TREE_V2, require that an offset 0 root item
+> exists, otherwise fail the mount with -EUCLEAN.
+> 
+> Tested with a crafted image that has only non-zero offset global roots,
+> which triggers the KASAN null-ptr-deref in backup_super_roots() before
+> the fix, and fails the mount with -EUCLEAN after the fix.
+> 
+> Fixes: f7238e509404 ("btrfs: add support for multiple global roots")
+> Cc: stable@vger.kernel.org # v5.18+
+> Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
 
-The reason is the above commit adjusted try_to_migrate_one() to, when a
-PMD-mapped THP entry is found, and TTU_SPLIT_HUGE_PMD is specified (for
-example, via unmap_folio()), return false unconditionally. This breaks the
-rmap walk and fail try_to_migrate() early, if this PMD-mapped THP is mapped
-in multiple processes.
+You've cut the changelog here but the rest of the information should be
+also there, perhaps in a more condensed form. You can add other things
+under the "---" line in case it's relevant for the patch submission but
+not for the long term git history.
 
-The user sensible impact of this bug could be:
+> ---
+[...]
 
-  * On memory pressure, shrink_folio_list() may split partially mapped
-    folio with split_folio_to_list(). Then free unmapped pages without IO.
-    If failed, it may not be reclaimed.
-  * On memory failure, memory_failure() would call try_to_split_thp_page()
-    to split folio contains the bad page. If succeed, the PG_has_hwpoisoned
-    bit is only set in the after-split folio contains @split_at. By doing
-    so, we limit bad memory. If failed to split, the whole folios is not
-    usable.
+> CPU: 0 UID: 0 PID: 34 Comm: kworker/u8:1 Tainted: G           OE       6.18.0 #1 PREEMPT(voluntary)
 
-One way to reproduce:
+> Reproduction (v6.18, x86_64, KASAN)
+> ===================================
+> 1. Download the crafted image (tested with Linux v6.18 + KASAN):
 
-    Create an anonymous THP range and fork 512 children, so we have a
-    THP shared mapped in 513 processes. Then trigger folio split with
-    /sys/kernel/debug/split_huge_pages debugfs to split the THP folio to
-    order 0.
+This seems to be testing 6.18 and probably the exact release, not the
+updated stable branch which is 6.18.16 right now. It's OK to test on
+older versions but please use the latest available one as the fixes get
+backported.
 
-Without the above commit, we can successfully split to order 0.
-With the above commit, the folio is still a large folio.
+As Filipe said this has been fixed and the patch is in for-next, not yet
+in master or any stable tree. For fuzzing or crafted images it makes
+more sense to test on recent development branches. If you don't track
+each subsystem individually you should use linux-next, where the btrfs
+for-next branch gets merged and the updates happen every other day.
 
-And currently there are two core users of TTU_SPLIT_HUGE_PMD:
-
-  * try_to_unmap_one()
-  * try_to_migrate_one()
-
-try_to_unmap_one() would restart the rmap walk, so only
-try_to_migrate_one() is affected.
-
-We can't simply revert commit 60fbb14396d5 ("mm/huge_memory: adjust
-try_to_migrate_one() and split_huge_pmd_locked()"), since it removed some
-duplicated check covered by page_vma_mapped_walk().
-
-This patch fixes this by restart page_vma_mapped_walk() after
-split_huge_pmd_locked(). Since we cannot simply return "true" to fix the
-problem, as that would affect another case:
-
-    When invoking folio_try_share_anon_rmap_pmd() from
-    split_huge_pmd_locked(), the latter can fail and leave a large folio
-    mapped through PTEs, in which case we ought to return true from
-    try_to_migrate_one(). This might result in unnecessary walking of the
-    rmap but is relatively harmless.
-
-Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Gavin Guo <gavinguo@igalia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: <stable@vger.kernel.org>
-
----
-v4:
-  * only commit msg adjustment
-    - rephrase the reason analysis
-    - move reproduce method afterward
-    - more explanation on user sensible effect of the bug, especially expand
-      what "Limit bad page" means
-    - remove the explanation on whey it need to fork 512 child for reproduce
-    - explain why simply revert commit 60fbb14396d5 is not taken
-    - mention TTU_SPLIT_HUGE_PMD users and confirm not affect others
-    - rephrase the reason why can't simply return true
-v3:
-  * gather RB
-  * adjust the commit log and comment per David
-  * add userspace-visible runtime effect in change log
-v2:
-  * restart page_vma_mapped_walk() after split_huge_pmd_locked()
----
- mm/rmap.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index beb423f3e8ec..e609dd5b382f 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2444,11 +2444,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			__maybe_unused pmd_t pmdval;
- 
- 			if (flags & TTU_SPLIT_HUGE_PMD) {
-+				/*
-+				 * split_huge_pmd_locked() might leave the
-+				 * folio mapped through PTEs. Retry the walk
-+				 * so we can detect this scenario and properly
-+				 * abort the walk.
-+				 */
- 				split_huge_pmd_locked(vma, pvmw.address,
- 						      pvmw.pmd, true);
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
-+				flags &= ~TTU_SPLIT_HUGE_PMD;
-+				page_vma_mapped_walk_restart(&pvmw);
-+				continue;
- 			}
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 			pmdval = pmdp_get(pvmw.pmd);
--- 
-2.34.1
-
+I'll queue the fixes for some of the upcoming -rc. Thanks.
 
