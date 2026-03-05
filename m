@@ -1,196 +1,278 @@
-Return-Path: <stable+bounces-223227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLeoONeiqWl5BQEAu9opvQ
-	(envelope-from <stable+bounces-223227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:35:51 +0100
+	id hFzBDAOnqWlSBwEAu9opvQ
+	(envelope-from <stable+bounces-223228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:53:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DCD2149F7
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:35:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4398B214E5F
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 16:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C882A30C692F
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:35:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2361E3004C9F
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA943C1996;
-	Thu,  5 Mar 2026 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99CB3C6A27;
+	Thu,  5 Mar 2026 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="x5HxRSh+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sVb14N8i";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="x5HxRSh+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sVb14N8i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHrCsgai"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E67A3C277B
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 15:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE1039A7F7;
+	Thu,  5 Mar 2026 15:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772724906; cv=none; b=i+7bdV4fnESIIOvZnOMlYZOysEF5kDV5CFaD8POTBV4GOTgr1muUb6OFka00Fef2NqDWJUC7TdtKpjZm4C8OgX+QQkrzezSwD+geseku0+f2ZdygN2Zz+FhYBARo3I4hWfaa2O2fJLCiXrrmloYng99olHmYGrUewLYdq5ULjxg=
+	t=1772725027; cv=none; b=lv5Bx9G10yswLCMtFEbipSVtlLrF70+umk+23zh53k+Y4DpHQs0P05yDUlyGeWg9BEE7h0OuPp1FEgqWHToyYLnwWPNiw9ZRX1ogG/jJ+j6dz4tSGX0aYcrEVqo4NETHb0zO/pC4OgTeO3YCN4chanEvx8zGliMdIAiVp0LJetw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772724906; c=relaxed/simple;
-	bh=iPMsiVLWbKvFZDcIjAnjNJDRTfm5+W1JxTz7elaDtdg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oM/8EF/a48E7XW1EWgEyn8w7TItwu0+aNLMxUWFaDQiFDNXAeVIWn29IX184qdjzyeFLmd7MyKGqJdHO0KcuqhgdXS7cyFrNkpyFqaB4K4RGG0Gxbajbp5GSo6YWped0xH7D7Soe83diM2crrTq5PbWZC6RX5V4Hnk9DCyqWK3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=x5HxRSh+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sVb14N8i; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=x5HxRSh+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sVb14N8i; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A19ED5BCF7;
-	Thu,  5 Mar 2026 15:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772724901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NTaBFZvMdyBZN0Q1KNvkXqRaPXfXE5I6oYxLEYEJ/qA=;
-	b=x5HxRSh+LfUNmGRcT7/jACy8M26QIbS/dks7yNWiYcuPfgMXHSDubr1Vj7jtQZmOH88d9j
-	kYMAwjXl7iRKGGmrFmUcDsZtnuxIGHQxxiUP83PjU8dieXkTisWAUGo2ZYDCvwxtzayXWu
-	z5RvVMPg0NJEJ1n3D/W3AeUBCxfAxP0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772724901;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NTaBFZvMdyBZN0Q1KNvkXqRaPXfXE5I6oYxLEYEJ/qA=;
-	b=sVb14N8ix5T6/3MwAtgpstG52+GwmIGo3ihBxf0pOopUYdZKtIb+BEeHjnSevp2C5Z/NZI
-	rhQcdF3IC9doU+DA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772724901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NTaBFZvMdyBZN0Q1KNvkXqRaPXfXE5I6oYxLEYEJ/qA=;
-	b=x5HxRSh+LfUNmGRcT7/jACy8M26QIbS/dks7yNWiYcuPfgMXHSDubr1Vj7jtQZmOH88d9j
-	kYMAwjXl7iRKGGmrFmUcDsZtnuxIGHQxxiUP83PjU8dieXkTisWAUGo2ZYDCvwxtzayXWu
-	z5RvVMPg0NJEJ1n3D/W3AeUBCxfAxP0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772724901;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NTaBFZvMdyBZN0Q1KNvkXqRaPXfXE5I6oYxLEYEJ/qA=;
-	b=sVb14N8ix5T6/3MwAtgpstG52+GwmIGo3ihBxf0pOopUYdZKtIb+BEeHjnSevp2C5Z/NZI
-	rhQcdF3IC9doU+DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B16A3EA68;
-	Thu,  5 Mar 2026 15:35:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 17c2IaWiqWn5OwAAD6G6ig
-	(envelope-from <hare@suse.de>); Thu, 05 Mar 2026 15:35:01 +0000
-Message-ID: <300ae0df-304b-45cc-9553-5a0735134a32@suse.de>
-Date: Thu, 5 Mar 2026 16:35:01 +0100
+	s=arc-20240116; t=1772725027; c=relaxed/simple;
+	bh=+nzeOiKNaQXmRUtyeHkCzpRH4sloOKMj+grbCcB6miI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=THqKpTZixfwOdmY3p6illqqVdvZYSwP9p3GX1dksR+w87kcW8eR7cJexK2Q6xT5nl9weJzdZCXx06JltDX5WdWbqJCn1QXCo4YO45XvXrsqkbWlajIzmRZ6BdICU0l4O1ls7v8FGOTvuBXPWrbdKscpqYp51D48zMtO+TLMsuZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHrCsgai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A01AC116C6;
+	Thu,  5 Mar 2026 15:37:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772725027;
+	bh=+nzeOiKNaQXmRUtyeHkCzpRH4sloOKMj+grbCcB6miI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UHrCsgai809zYr+wGuS6MK4xYgKCiSvDtAleIDK9Zrpo9H06Is5yrIGQ02BoZlna3
+	 53JA/fUZYXHFcggmm8SFRBQGSNx4JV90WlA1QIPQawxG+0pZ4Gcw4zeGiGuXBz7d1x
+	 v8khR65TiuWOtMewrFzx+r2NpL8IFf84I7owMrX7T30jTB2fTpDpkcDCIVuruNFvt0
+	 0VP4nF89/Ko6cLYWCFDh60rloTQ+EZt33QXpimPHUWvCaeRs3AAGWh5YBHoShI+nOs
+	 drCSSBYXyfCZwsqrXLvEaATk3YnEeynR+DhM7Jlw0lxCIJqRWrx04vhU7VGocsrxj8
+	 FXDJg0gP3ORyg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Won Jung <wone.jung@samsung.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] scsi: ufs: core: Reset urgent_bkops_lvl to allow runtime PM power mode
+Date: Thu,  5 Mar 2026 10:36:44 -0500
+Message-ID: <20260305153704.106918-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
-To: Pedro Falcato <pfalcato@suse.de>, Damien Le Moal <dlemoal@kernel.org>,
- Niklas Cassel <cassel@kernel.org>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260305145312.1081112-1-pfalcato@suse.de>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260305145312.1081112-1-pfalcato@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.6
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -8.30
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 57DCD2149F7
+X-Rspamd-Queue-Id: 4398B214E5F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223227-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223228-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:dkim,suse.de:email,suse.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,mediatek.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
-On 3/5/26 15:53, Pedro Falcato wrote:
-> Currently, whenever you boot with a QEMU drive over an AHCI interface,
-> you get:
-> [    1.632121] ata1.00: applying bridge limits
-> 
-> This happens due to the kernel not believing the given drive is SATA,
-> since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
-> a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
-> 
-> QEMU has set word 93 erroneously for SATA drives but does not, in any
-> way, emulate any of these real hardware details. There is no PATA
-> drive and no SATA cable.
-> 
-> As such, add a BRIDGE_OK quirk for QEMU HARDDISK. Special care is taken
-> to limit this quirk to "2.5+", to allow for fixed future versions.
-> 
-> This results in the max_hw_sectors being limited solely by the
-> controller interface's limits. Which, for AHCI controllers, takes it
-> from 128KB to 32767KB.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
->   drivers/ata/libata-core.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index d61846f03edc..c57e35ccc092 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -4231,6 +4231,7 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
->   	/* Devices that do not need bridging limits applied */
->   	{ "MTRON MSP-SATA*",		NULL,	ATA_QUIRK_BRIDGE_OK },
->   	{ "BUFFALO HD-QSU2/R5",		NULL,	ATA_QUIRK_BRIDGE_OK },
-> +	{ "QEMU HARDDISK",		"2.5+",	ATA_QUIRK_BRIDGE_OK },
->   
->   	/* Devices which aren't very happy with higher link speeds */
->   	{ "WD My Book",			NULL,	ATA_QUIRK_1_5_GBPS },
+From: Won Jung <wone.jung@samsung.com>
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+[ Upstream commit 5b313760059c9df7d60aba7832279bcb81b4aec0 ]
 
-Cheers,
+Ensures that UFS Runtime PM can achieve power saving after System PM
+suspend by resetting hba->urgent_bkops_lvl. Also modify the
+ufshcd_bkops_exception_event_handler to avoid setting urgent_bkops_lvl when
+status is 0, which helps maintain optimal power management.
 
-Hannes
+On UFS devices supporting UFSHCD_CAP_AUTO_BKOPS_SUSPEND, a BKOPS exception
+event can lead to a situation where UFS Runtime PM can't enter low-power
+mode states even after the BKOPS exception has been resolved.
+
+BKOPS exception with bkops status 0 occurs, the driver logs:
+
+ "ufshcd_bkops_exception_event_handler: device raised urgent BKOPS exception for bkops status 0"
+
+When a BKOPS exception occurs, ufshcd_bkops_exception_event_handler() reads
+the BKOPS status and sets hba->urgent_bkops_lvl to BKOPS_STATUS_NO_OP(0).
+This allows the device to perform Runtime PM without changing the UFS power
+mode.  (__ufshcd_wl_suspend(hba, UFS_RUNTIME_PM))
+
+During system PM suspend, ufshcd_disable_auto_bkops() is called, disabling
+auto bkops. After UFS System PM Resume, when runtime PM attempts to suspend
+again, ufshcd_urgent_bkops() is invoked. Since hba->urgent_bkops_lvl
+remains at BKOPS_STATUS_NO_OP(0), ufshcd_enable_auto_bkops() is triggered.
+
+However, in ufshcd_bkops_ctrl(), the driver compares the current BKOPS
+status with hba->urgent_bkops_lvl, and only enables auto bkops if
+curr_status >= hba->urgent_bkops_lvl.  Since both values are 0, the
+condition is met
+
+As a result, __ufshcd_wl_suspend(hba, UFS_RUNTIME_PM) skips power mode
+transitions and remains in an active state, preventing power saving even
+though no urgent BKOPS condition exists.
+
+Signed-off-by: Won Jung <wone.jung@samsung.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://patch.msgid.link/1891546521.01770806581968.JavaMail.epsvc@epcpadp2new
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+The bug exists in v5.15 and v6.1 — both LTS kernels. The vulnerable code
+pattern (`if (curr_status < BKOPS_STATUS_PERF_IMPACT)` setting
+`urgent_bkops_lvl = curr_status` where curr_status could be 0) has been
+present since the exception handler was first written.
+
+## Analysis
+
+### What the commit fixes
+
+This commit fixes a power management regression on UFS storage devices
+that support `UFSHCD_CAP_AUTO_BKOPS_SUSPEND`. The bug scenario:
+
+1. A device raises a spurious urgent BKOPS exception with status 0
+   (`BKOPS_STATUS_NO_OP`)
+2. `ufshcd_bkops_exception_event_handler()` sets `hba->urgent_bkops_lvl
+   = 0`
+3. During system suspend, `ufshcd_disable_auto_bkops()` resets
+   `is_urgent_bkops_lvl_checked = false` but does NOT reset
+   `urgent_bkops_lvl`
+4. After resume, Runtime PM tries to suspend via `__ufshcd_wl_suspend()`
+   → `ufshcd_bkops_ctrl()`
+5. In `ufshcd_bkops_ctrl()`, `curr_status(0) >= urgent_bkops_lvl(0)`
+   evaluates true, so auto BKOPS gets enabled
+6. With auto BKOPS enabled, the runtime suspend path skips power mode
+   transition, keeping the device in active state permanently
+
+This causes **persistent excessive power consumption** on
+mobile/embedded devices — a serious user-visible issue.
+
+### Two-part fix
+
+1. **`ufshcd_disable_auto_bkops()`**: Resets `urgent_bkops_lvl` to
+   `BKOPS_STATUS_PERF_IMPACT` (the default/safe value) when auto BKOPS
+   is disabled during system suspend. This mirrors what
+   `ufshcd_force_reset_auto_bkops()` already does at line 5987.
+
+2. **`ufshcd_bkops_exception_event_handler()`**: Adds `curr_status >
+   BKOPS_STATUS_NO_OP` check to prevent setting `urgent_bkops_lvl` to 0
+   when a device raises a spurious exception with status 0.
+
+### Stable kernel criteria assessment
+
+- **Fixes a real bug**: Yes — prevents UFS Runtime PM from entering low-
+  power modes, causing power drain
+- **Obviously correct**: Yes — both changes are small, logical, and
+  align with existing patterns (the reset matches
+  `ufshcd_force_reset_auto_bkops`, and the status 0 filter is clearly
+  the right semantic)
+- **Small and contained**: Yes — 2 lines changed in a single file, no
+  API/ABI changes
+- **No new features**: Correct — purely a bug fix
+- **Reviewed**: Yes — `Reviewed-by: Peter Wang` (MediaTek UFS
+  maintainer)
+- **Tested**: From Samsung, who manufactured the UFS device exhibiting
+  this bug
+- **Historical precedent**: Commit `be32acff43800` fixed the same class
+  of bug in 2020 and was stable material (had `Fixes:` tag)
+- **Wide applicability**: Affects all stable trees from v5.15+ (the
+  vulnerable code exists in all of them)
+- **Low risk**: The changes are minimal and defensive — they only affect
+  an edge case (status 0 exception) and reset to the safe default value
+
+### Risk assessment
+
+**Risk: Very Low**
+- The fix adds a safe default reset and tightens a condition to exclude
+  an invalid state
+- The `BKOPS_STATUS_PERF_IMPACT` reset value is the same value used in
+  initialization and in `ufshcd_force_reset_auto_bkops()`
+- No functional change for the normal case where status > 0
+- May need minor context adjustment for older stable trees (trace
+  function signature change) but the actual fix applies cleanly
+
+### Verification
+
+- **Verified** `ufshcd_disable_auto_bkops()` current code at line 5933:
+  does NOT reset `urgent_bkops_lvl` (confirmed via Read tool)
+- **Verified** `ufshcd_bkops_exception_event_handler()` at line 6065:
+  uses `if (curr_status < BKOPS_STATUS_PERF_IMPACT)` which accepts
+  status 0 (confirmed via Read tool)
+- **Verified** `ufshcd_bkops_ctrl()` at line 6030: `curr_status >=
+  status` where status comes from `hba->urgent_bkops_lvl` — so status 0
+  causes `0 >= 0` = true, enabling auto BKOPS (confirmed via Read tool)
+- **Verified** `ufshcd_force_reset_auto_bkops()` at line 5987: already
+  resets `urgent_bkops_lvl = BKOPS_STATUS_PERF_IMPACT`, confirming this
+  is the expected default (confirmed via Read tool)
+- **Verified** prior fix `be32acff43800` (2020): addressed same class of
+  bug where `urgent_bkops_lvl` got set to 0 via `ufshcd_bkops_ctrl`, had
+  `Fixes:` tag (confirmed via git show)
+- **Verified** prerequisite `0a5167e21126c` (refactor removing
+  `ufshcd_urgent_bkops()`): landed in v6.12. The fix itself does NOT
+  depend on this refactor — the two functions being changed exist in all
+  stable trees (confirmed by checking v6.11, v6.1, v5.15 code via git
+  show)
+- **Verified** `__ufshcd_wl_suspend()` calls
+  `ufshcd_disable_auto_bkops()` during system PM (not runtime PM) at
+  line 10059, confirming the suspend path described in the commit
+  message (confirmed via Grep)
+- **Verified** bug affects stable trees v5.15.y and v6.1.y by checking
+  the exception handler code is identical (confirmed via git show)
+- **Verified** BKOPS_STATUS_NO_OP = 0x0 and BKOPS_STATUS_PERF_IMPACT =
+  0x2 in include/ufs/ufs.h (confirmed via agent research)
+
+**YES**
+
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 09f0d77d57f02..c71a449850573 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5959,6 +5959,7 @@ static int ufshcd_disable_auto_bkops(struct ufs_hba *hba)
+ 
+ 	hba->auto_bkops_enabled = false;
+ 	trace_ufshcd_auto_bkops_state(hba, "Disabled");
++	hba->urgent_bkops_lvl = BKOPS_STATUS_PERF_IMPACT;
+ 	hba->is_urgent_bkops_lvl_checked = false;
+ out:
+ 	return err;
+@@ -6062,7 +6063,7 @@ static void ufshcd_bkops_exception_event_handler(struct ufs_hba *hba)
+ 	 * impacted or critical. Handle these device by determining their urgent
+ 	 * bkops status at runtime.
+ 	 */
+-	if (curr_status < BKOPS_STATUS_PERF_IMPACT) {
++	if ((curr_status > BKOPS_STATUS_NO_OP) && (curr_status < BKOPS_STATUS_PERF_IMPACT)) {
+ 		dev_err(hba->dev, "%s: device raised urgent BKOPS exception for bkops status %d\n",
+ 				__func__, curr_status);
+ 		/* update the current status as the urgent bkops level */
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+2.51.0
+
 
