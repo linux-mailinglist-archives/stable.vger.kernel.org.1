@@ -1,54 +1,69 @@
-Return-Path: <stable+bounces-223260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wF0pDg6/qWnNDQEAu9opvQ
-	(envelope-from <stable+bounces-223260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:36:14 +0100
+	id WCtKD3/AqWnNDQEAu9opvQ
+	(envelope-from <stable+bounces-223261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:42:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9792216559
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:36:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AA621664A
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 18:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF1293025E6B
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:33:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4383300B121
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 17:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26E3793DB;
-	Thu,  5 Mar 2026 17:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045D637BE97;
+	Thu,  5 Mar 2026 17:41:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22053A1A44
-	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 17:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122A13597B;
+	Thu,  5 Mar 2026 17:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772732016; cv=none; b=IN5jzF+6WbJki/4nWXJlwH04leXbcG+Ax3y3jgr/PXrrs3N60MbvNATNgNWYutRzPAmgwIZf8CPt7tKrVx5/MU3UDNH4UyJUNWW1Vy4X98Rz0Ga0PbZiggXbXVE/jJ2Vc4XsbSkzKCZqPGNDjQNLH25ihvfUTN2YA56LoHl/RM8=
+	t=1772732465; cv=none; b=HxGdLK+MsSg81ciFN8ri8ZDKdm3WwpWOdl6kwXrNOQmH8dv9FMpJShavIbvdDeXDQNmjjY4ABSFIJjgRT/br/3bfUq6JfeZ1yPuMmkuxoNX8Iouty9NfqeMUTjCh2VzWO/baEFYZl1M40JyyLU5Te+n5AZCqpRXUgLbDftJBoLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772732016; c=relaxed/simple;
-	bh=IRf5gsGaGwSK2QcHXeuqzWVzP3IavQq/n8LPR99CFgs=;
+	s=arc-20240116; t=1772732465; c=relaxed/simple;
+	bh=pY344Qti2NzyuYpU3rhT5T6p12DGiOJLB8iAlb1slxE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ru3RNBwC5vapMjXOSOhipv2x8f+rwSIk8dNa3e7XZ8HhihTHytQC4W4NOIuCacTgyuRLJit6juOp4+MooW7siKKia0ZMLSVMf8n8vJt/4RH/DIb9FA6nARmFU5PqBhVVq1Ptv752+AUfnNznHGQwvWwJmK2tlgLjgT188b1iPTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C36DD339;
-	Thu,  5 Mar 2026 09:33:27 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C9F63F694;
-	Thu,  5 Mar 2026 09:33:32 -0800 (PST)
-Date: Thu, 5 Mar 2026 17:33:25 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aam-ZSHWrkYX8spV@arm.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnoN6xmjA6Yg3fIajVDAQmWJaUYb0wJgEl4mR7EE+7ja5JdBH84IKQkiTQCVdjU1RPf5VKLlTCiB+/5UxBiMgEJuUzP5zwV4hNiA6nK+OuFf3M5pM7iZIrG7IMCcxRQFm8DOTwZ9sX+Lk53Nv+VBkKdLciT8kh8nlZmFnnAuYec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Thu, 5 Mar 2026 17:40:09 +0000
+From: Brett A C Sheffield <bacs@librecast.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Peter Schneider <pschneider1968@googlemail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	"zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	"ardb@kernel.org" <ardb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"graf@amazon.com" <graf@amazon.com>,
+	"guoweikang.kernel@gmail.com" <guoweikang.kernel@gmail.com>,
+	"henry.willard@oracle.com" <henry.willard@oracle.com>,
+	"hpa@zytor.com" <hpa@zytor.com>, "jbohac@suse.cz" <jbohac@suse.cz>,
+	"joel.granados@kernel.org" <joel.granados@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"noodles@fb.com" <noodles@fb.com>,
+	"paul.x.webb@oracle.com" <paul.x.webb@oracle.com>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"sohil.mehta@intel.com" <sohil.mehta@intel.com>,
+	"sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"yifei.l.liu@oracle.com" <yifei.l.liu@oracle.com>
+Subject: Re: [REGRESSION] Linux kernel 6.12.75 fails to compile with
+ -Werror=implicit-function-declaration
+Message-ID: <aam_-Y7q-c3gmfGY@auntie>
+References: <DD397543-DDDE-4215-A116-318AEAFFC359@live.com>
+ <0be301c0-f9be-4d70-9fdb-7a260ccf83ac@googlemail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,125 +72,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
-X-Rspamd-Queue-Id: A9792216559
+In-Reply-To: <0be301c0-f9be-4d70-9fdb-7a260ccf83ac@googlemail.com>
+X-Rspamd-Queue-Id: 99AA621664A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223260-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223261-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DMARC_NA(0.00)[librecast.net];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[googlemail.com,live.com,linux.ibm.com,linux-foundation.org,oracle.com,kernel.org,alien8.de,linux.intel.com,amazon.com,gmail.com,zytor.com,suse.cz,vger.kernel.org,redhat.com,fb.com,intel.com,linutronix.de];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.933];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.949];
+	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:mid,arm.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Looking at the patch again, some more comments.
+On 2026-03-04 20:00, Peter Schneider wrote:
+> I already found and reported this in the RC cycle [1], and Sasha dropped it in -rc2 [2], and now in the release, it 
+> obviously has, somewhat mysteriously, reappeared [3], affecting all of today's 6.x stable branch releases.
 
-On Mon, Mar 02, 2026 at 10:37:51PM -0800, Piotr Jaroszynski wrote:
-> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-> index bcac4f55f9c1..9868bfe4607c 100644
-> --- a/arch/arm64/mm/contpte.c
-> +++ b/arch/arm64/mm/contpte.c
-> @@ -390,6 +390,23 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
->  }
->  EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
->  
-> +static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
+Greg, Sasha et al.
 
-More of a nitpick: since this checks both the flags and write
-permission, I'd rename to something else. Maybe contpte_ptep_same() to
-somewhat resemble pte_same() used by __ptep_set_access_flags().
+Can we make a small adjustment to the stable kernel testing process please,
+whereby we release a kernel that we have actually tested, instead of adding and
+dropping patches at the last moment and releasing a kernel that no one has
+tested?
 
-> +{
-> +	pte_t *cont_ptep = contpte_align_down(ptep);
-> +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
+We are only a small pool of testers. If we find a bug, can we fix it, release a
+new RC and test again please?  We can have an RC3. Even an RC4.  Perhaps if we
+bogoselect fewer patches in the first place we might have less work to do. It's
+better to miss a backport for a bug no one has reported than to pull stuff in
+without proper review.
 
-We can drop the PTE_DIRTY from the mask as it's not relevant to the
-hardware permission. It probably doesn't matter in practice.
+The current stable process is introducing bugs. Bugs that never existed in
+mainline.
 
-> +	pteval_t entry_access = pte_val(entry) & access_mask;
-> +	int i;
-> +
-> +	for (i = 0; i < CONT_PTES; i++) {
-> +		pteval_t pte_access = pte_val(__ptep_get(cont_ptep + i)) & access_mask;
-> +
-> +		if (pte_access != entry_access)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->  					unsigned long addr, pte_t *ptep,
->  					pte_t entry, int dirty)
-> @@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->  	int i;
->  
->  	/*
-> -	 * Gather the access/dirty bits for the contiguous range. If nothing has
-> -	 * changed, its a noop.
-> +	 * Check whether all sub-PTEs in the CONT block already have the
-> +	 * requested access flags, using raw per-PTE values rather than the
-> +	 * gathered ptep_get() view.
+The 3 kernels released today were tested by no one before release. The seven
+kernels yesterday were similarly tested by no one before release.  We weren't
+given the opportunity.
 
-It's not just about the access flag but AF, dirty and write permission,
-all can be changed by this function (and only to a more permissive
-setting).
+There aren't enough of us to do this right, but we can do it less wrong with a
+bit of caution.
 
-> +	 *
-> +	 * ptep_get() gathers AF/dirty state across the whole CONT block,
-> +	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
-> +	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
-> +	 * the gathered result as authoritative for the entire range. But an
-> +	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
+Cheers,
 
-Or CPU equally, we don't force all CPUs in a system to support DBM.
 
-> +	 * each descriptor individually and will keep faulting on the target
-> +	 * sub-PTE if its flags haven't actually been updated. Gathering can
-> +	 * therefore cause false no-ops when only a sibling has been updated:
-> +	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
-> +	 *  - read faults:  target still lacks PTE_AF
-> +	 *
-> +	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
-> +	 * become the effective cached translation, so all entries must have
-> +	 * consistent attributes. Check the full CONT block before returning
-> +	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
-> +	 * range.
->  	 */
-> -	orig_pte = pte_mknoncont(ptep_get(ptep));
-> -	if (pte_val(orig_pte) == pte_val(entry))
-> +	if (contpte_all_subptes_match_access_flags(ptep, entry))
->  		return 0;
->  
-> +	/*
-> +	 * Use raw target pte (not gathered) for write-bit unfold decision.
-> +	 */
-> +	orig_pte = pte_mknoncont(__ptep_get(ptep));
-
-This is fine since all should have the same PTE_WRITE bit.
-
-Anyway, nothing major, so:
-
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Brett
 
