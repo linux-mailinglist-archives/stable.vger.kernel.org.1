@@ -1,162 +1,149 @@
-Return-Path: <stable+bounces-223190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HbAEdxdqWkL6AAAu9opvQ
-	(envelope-from <stable+bounces-223190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 11:41:32 +0100
+	id CJXwJqVfqWlc6QAAu9opvQ
+	(envelope-from <stable+bounces-223191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 11:49:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043DC20FD5C
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 11:41:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188B520FF5D
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 11:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 465483058444
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 10:40:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07850300A7E7
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 10:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05C4382F12;
-	Thu,  5 Mar 2026 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADF3376BD6;
+	Thu,  5 Mar 2026 10:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS8F24UG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XWE7Nbp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC84382372;
-	Thu,  5 Mar 2026 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A162222AC;
+	Thu,  5 Mar 2026 10:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772707250; cv=none; b=JpgaVsfHVukAvvTQHdHq69WIfRFXbnPPWdPJrTSWhAOY7L1o4Y+K3XVNhFyvV3ModocDYyfvBh94CA5ti8EmQJhj12+g8y2Y0uTckSmgfPRVGBtO3ntVd5DXpK0LNCfTORCyIlA+/FC2OmzI6J1VDYW2a8oqqXSuy1gYR0g9Uqo=
+	t=1772707593; cv=none; b=bbTje9pShDKJswi/tm6c6TrTYdrDQo6ZFlcK2DF4vS25C9sUJqSHp1VMRj60gD7K/7y7se0u7tkFUBOFYtGxRhICcBBvyopytLp6oiuvJ+YyCRqNUvhfxI8VypiclcLooLzdHHuy+d9eUCmxiMcVRmgRXmodnIFrHvbDu9mJjvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772707250; c=relaxed/simple;
-	bh=hzsXfB7P4G4WYEx5Pd6UFeqyQ4kF1hTUa0Oig7JuPJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q3RSgFDFnMb1ZManBwBx5JIN5c0bUitFV12wldrtCQJhr6pAGelh8KN5YEuGr27iUVAoGWZjyaiO+w052RFKsk9LVjDpWiQW4QGw9DSrUrIOUzBeStWFlNvKI3/VVfXi2Gpz3TojeTnhOmdE25v1NCu6EaA1xrd6X5O9QVW6ztM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS8F24UG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512DCC116C6;
-	Thu,  5 Mar 2026 10:40:47 +0000 (UTC)
+	s=arc-20240116; t=1772707593; c=relaxed/simple;
+	bh=gLsf5lob+ysEtsu2tZgLv9jcJO0q1TEZU82wQZrOGik=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dg9+wgt7PiMuDAyYkOyMHPDPuSCrqxKxv4nW/5o+kaQtTgjelG5ndskjk8ZSxWOcFY8H4BHQ0ClF4qbJpQ609yOw+wIN22L98IMEn/bFo/ENjsHFhbajum4bSug6TsJ4SFY+Wf/j/pMnjOTEXTMZ+SzYR7fi2dw8pgrbbBzQLZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XWE7Nbp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6BDC116C6;
+	Thu,  5 Mar 2026 10:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772707249;
-	bh=hzsXfB7P4G4WYEx5Pd6UFeqyQ4kF1hTUa0Oig7JuPJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bS8F24UGoMYUpzPfK1fUha1+8KSwCsJbE/giONrlagbGSkGnxK9uKeTPe88Eo53y2
-	 ow4KoAS9aQh/Su1iSrZt7SWqb5d8lnmbbEfFnuDFslh2qpW71wBmO8EHeQEQET96g3
-	 TcB1VEhbQ+EZgJ1Ce5QKqRo1Ooa8kQzWPk7HL9DG6GVNBZ5lJjemln6xdYK9m+Cy9p
-	 Gvj+PC+KKmV7FJD7l43xImictWudPeRr3kXAzNScaK8nuKWcmMu9eR3ieXy/O8bHku
-	 7wH06EXBPDa5fQzbYmllVLPeFSdW+2oRnPBQ1pyGQNPt26PgAaBErN+HKdbZB7cwOF
-	 JtiRDhXsdbnWQ==
-Date: Thu, 5 Mar 2026 12:40:43 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	s=k20201202; t=1772707593;
+	bh=gLsf5lob+ysEtsu2tZgLv9jcJO0q1TEZU82wQZrOGik=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XWE7Nbp/QLGR2GLxgVbWpawv+nlf2HWUJNOmvMD6ZxmvWs5BH3oBjkV+t6szuuiAW
+	 TaAoB0q2A4Wr5HTbXloXDs7lAmPidEUuJZ9C2JesPJa5su1nSzsZk0sxapgtnHExdT
+	 1cCi286vAqBB+krEeHCBbD+G98mdcuLYKyHyPi3+EcA0gprUzZWLPMEXd6DZ9gtQXN
+	 HZwoUdFhAC6va74unEE5TY3RfO19vHgHL6EXcetNtQ4qNelFhEeQTPsEA3QL/dy09z
+	 SJMokZLjPAF1fFC8JFgAVGIpBZZleoj29NapFEVmrV3mTnxb1B762Dwa+gmMmc3xiW
+	 1c+wUaCM2X8hA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vy6Dv-000000004CV-08sa;
+	Thu, 05 Mar 2026 11:46:31 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: memfd_luo: always dirty all folios
-Message-ID: <aaldqxw90rdwCt6p@kernel.org>
-References: <20260223173931.2221759-1-pratyush@kernel.org>
- <20260223173931.2221759-3-pratyush@kernel.org>
- <aZ65uvOrTDndpic6@kernel.org>
- <2vxzv7fabr84.fsf@kernel.org>
+Subject: [PATCH] net: mctp: fix device leak on probe failure
+Date: Thu,  5 Mar 2026 11:45:49 +0100
+Message-ID: <20260305104549.16110-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzv7fabr84.fsf@kernel.org>
-X-Rspamd-Queue-Id: 043DC20FD5C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 188B520FF5D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223190-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-223191-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,codeconstruct.com.au:email]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 09:44:27AM +0100, Pratyush Yadav wrote:
-> Hi Mike,
-> 
-> On Wed, Feb 25 2026, Mike Rapoport wrote:
-> 
-> > On Mon, Feb 23, 2026 at 06:39:29PM +0100, Pratyush Yadav wrote:
-> [...]
-> >> -		if (folio_test_dirty(folio))
-> >> -			flags |= MEMFD_LUO_FOLIO_DIRTY;
-> >> +		/*
-> >> +		 * A dirty folio is one which has been written to. A clean folio
-> >> +		 * is its opposite. Since a clean folio does not carry user
-> >> +		 * data, it can be freed by page reclaim under memory pressure.
-> >> +		 *
-> >> +		 * Saving the dirty flag at prepare() time doesn't work since it
-> >> +		 * can change later. Saving it at freeze() also won't work
-> >> +		 * because the dirty bit is normally synced at unmap and there
-> >> +		 * might still be a mapping of the file at freeze().
-> >> +		 *
-> >> +		 * To see why this is a problem, say a folio is clean at
-> >> +		 * preserve, but gets dirtied later. The pfolio flags will mark
-> >> +		 * it as clean. After retrieve, the next kernel might try to
-> >> +		 * reclaim this folio under memory pressure, losing user data.
-> >> +		 *
-> >> +		 * Unconditionally mark it dirty to avoid this problem. This
-> >> +		 * comes at the cost of making clean folios un-reclaimable after
-> >> +		 * live update.
-> >> +		 */
-> >
-> > Can we make the comment here shorter to only contain the gist of the issue?
-> 
-> Is this any better? Or should I try to make it shorter still?
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-Yep, thanks! :)
+This driver takes a reference to the USB device during probe but does
+not to release it on probe failures.
 
-I don't think it can be made shorter without loosing information. What we
-might do is to add a larger comment in what state we preserve folios on top
-of memfd_luo_preserve_folios() and leave the code inside the function
-alone. Can't say I have strong feelings about it.
+Drop the redundant device reference to fix the leak, reduce cargo
+culting, make it easier to spot drivers where an extra reference is
+needed, and reduce the risk of further memory leaks.
+
+Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
+Cc: stable@vger.kernel.org	# 6.15
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/net/mctp/mctp-usb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index ef860cfc629f..3b5dff144177 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -329,7 +329,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	SET_NETDEV_DEV(netdev, &intf->dev);
+ 	dev = netdev_priv(netdev);
+ 	dev->netdev = netdev;
+-	dev->usbdev = usb_get_dev(interface_to_usbdev(intf));
++	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
+ 	usb_set_intfdata(intf, dev);
  
-> 	/*
-> 	 * Tracking the dirty flag of the folio is difficult since it is
-> 	 * normally synced at unmap and there might still be mappings of
-> 	 * the file alive.
-> 	 *
-> 	 * Not tracking it correctly can cause a dirty folio to be
-> 	 * restored as clean after KHO. The next kernel might then try
-> 	 * to reclaim it, losing user data.
-> 	 *
-> 	 * Unconditionally mark the folio dirty to avoid this. This
-> 	 * comes at the cost of making clean folios un-reclaimable.
-> 	 */
-> 
-> [...]
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
-
+@@ -365,7 +365,6 @@ static void mctp_usb_disconnect(struct usb_interface *intf)
+ 	mctp_unregister_netdev(dev->netdev);
+ 	usb_free_urb(dev->tx_urb);
+ 	usb_free_urb(dev->rx_urb);
+-	usb_put_dev(dev->usbdev);
+ 	free_netdev(dev->netdev);
+ }
+ 
 -- 
-Sincerely yours,
-Mike.
+2.52.0
+
 
