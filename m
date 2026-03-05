@@ -1,454 +1,180 @@
-Return-Path: <stable+bounces-223275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YB5WIZj7qWlcJAEAu9opvQ
-	(envelope-from <stable+bounces-223275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 22:54:32 +0100
+	id UMgSKoP7qWlcJAEAu9opvQ
+	(envelope-from <stable+bounces-223276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 22:54:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD82218B3B
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 22:54:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8234218B1C
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 22:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B4FA30CA274
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 21:49:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB8BC300AD6B
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 21:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9521D35F193;
-	Thu,  5 Mar 2026 21:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E8835F5E8;
+	Thu,  5 Mar 2026 21:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsxlvzQ9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoLsCsNV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54994354AC7;
-	Thu,  5 Mar 2026 21:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE75351C1D
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 21:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772747396; cv=none; b=DK/J/m/tfx4nqfxiQxm2Vm57d1Gl3WvknzJiBwtaw7I4TpaB7HPKYogDTSGLbKDgBj8QWffml65WI1Pw3en7auTZa6kh/AtVy3SlcD2msZgI7lqI60oKQS42Ia9uySYxvgn5tOV2Ok17F8O3L9VpH9IccMFm9jU0MuMb1RBNQwA=
+	t=1772747646; cv=none; b=Fqy9MyhlvGZ/w/y8Col2vv1s0mHFy+0z88BGXbUSqFUSLRVoR5t2xBiKJ0AR8RvtvRbRb2bosTSIYVgM51ooAzhAks9kZxB9ePQJkyJXyAHpT1gSaYVdGSXBC513eZYWeS4Lunjpix1oxJe0U3soOBv0RUhxCmEYkPel178KkgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772747396; c=relaxed/simple;
-	bh=3/t4bdbqokSl/X8GtHRwTOf3R8xbOYBso+1WOELuR7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LyoccI83vr3ZolFr5EXOfQDrqcWeFZ3c5Honxn0C214E7F6J2sE4d0W8/0DG+ABj4ixczNa2JJz24v0+wDclS5DPdPoLKqY6hWIzG2bjptuaI+i+oldtbrA5Jc7uH+sh3yBBSJteGrA1rgyO+Qv9tgNMPy0FQWR7djkOOc5fQDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsxlvzQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FDFC116C6;
-	Thu,  5 Mar 2026 21:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772747395;
-	bh=3/t4bdbqokSl/X8GtHRwTOf3R8xbOYBso+1WOELuR7s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UsxlvzQ9KXgtMtIpPJ+zqFJEuvlmuPmSwCwsHOviZBVX8ZtXf0GaldknmJueqrQxu
-	 nVAmlJmdUQPrBbScEB8yyDBb2U22ATs1L7brIpCNuKkvZIkOod//2ql9331i2vOnqJ
-	 1qVkewAt9KFSZw6mery+wgb39Nh1/KfkjvM/0SgsIpeth3+lTeZ/GcEk18rE9rHXr0
-	 tLjvO2Kf2yA9cyv05j78v7Od/o4jqzxK/BNceiRvKHdHU8BqzJvHYkCHSjGK+1A1Lp
-	 HYIr4wu7MokP4H/gr4ArtMa/kBmRxGwiTv+PQM/hNlsQPdD2jfvamAkEPxOM9aIZ8j
-	 hGe6rqtmtX/Jg==
-Date: Fri, 6 Mar 2026 08:49:45 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Yuto Ohnuki <ytohnuki@amazon.com>
-Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>,
-	"Darrick J . Wong" <darrick.wong@oracle.com>,
-	Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+	s=arc-20240116; t=1772747646; c=relaxed/simple;
+	bh=HJCddEP3HpwEtFqNu8fH3f450OqH/961LoMvQQ4Dmvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uPp6IZrT5jiYlp6pyTV55o9qz+YGhrZ13aIkhqxEKqLj03D2d4TEiR23qfuBWReqJ8njY3sDD8R4OPKn0Cw4bziBjpNmZfo6ETAuZ7pI6SCfdzexCBxI6NRlPgwSlwVGHStfGLqHhUMnWL+Ca+PZiYjZh+0p59sYUYcQvQbR8wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoLsCsNV; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-797ab169454so87705857b3.3
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 13:54:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772747644; x=1773352444; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LDyT5wYyzGLSfGloP9Q597W13aZWnETTygjbppIux2I=;
+        b=RoLsCsNVO9/BSuieErIsbnqgIX1c5jJWKoiENzXkBGHT+LDBRxCehHEYRxcpqDhcpI
+         R3FnlEvwZ3chRXv7fW/k2gfTSxRahBlg/lcA5NAzcLpJwBosZx1zPQI1OrHqXL64gcdI
+         LMV97nbITiWn1X4HTo/uMI4S/W9fySASXcYMsuS2RLe4s2db2GN8HAiHhuD46e8fTP1V
+         IzbHIqRnAuYwjQjf6KB3ee5Ev7mnPk2UUHocHGOAqHiQaWpVQVOMNNr0zrJRUyAudquH
+         oV83RarCuDgHOAuwYvI66CURrVZQDAAAcrgBK/DyA3HarkjS9cg9BGsAPWILsDQRl4cL
+         7BKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772747644; x=1773352444;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LDyT5wYyzGLSfGloP9Q597W13aZWnETTygjbppIux2I=;
+        b=JC/d9EY/YNWEcQm1e++q8krW4PKJvppu1E1ulUj34pjd4FNqZmCwiHTXxcRm8hyvBJ
+         1ygC0ox3UXLBhlDQFI4Lvvu3A5Ek59iQ4PYac9Ip1pIBaNFlJm/5XeEK7NzXb0a4ksIP
+         gOTEcs1mIC44tmxZdk8cwEI7f/nvAT1NLETQi5HjLfRFNdLxWNYm0rO9e+8dbZ1Ljn4g
+         0IHcSwA5oAFbNKc0LENiHzfmE12teVt0tJBclGgrvvbzgnHTvpv0nHiUZ0CJs1EvlJVa
+         cLTCmeUvvu4GbKaE6eiizKaXBzyBMEfm+RoPpuDWsmXuWNZHTGPyEGWxdXNRBjUOorQ4
+         t67w==
+X-Forwarded-Encrypted: i=1; AJvYcCXiH5NBJ2kF0iqjJrBYDnX3/lPUyTU8E7z8zS0hfeTvggAB2s2nmvzpoHwvsA47zfPe01h/zVc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsA4WxRdoqdBF7BJo3uQ1eYUgGUsHLIt4Xpc2qekPkEwJ+GM1a
+	futVpvwEcdLJrgWtrNGDRIny923TuzT/OSAN+RE6veiLoq5MjE//RG6I
+X-Gm-Gg: ATEYQzyIqHBWcTWikIfifBjiGx6XbOe4OJnBPhBBeARTnsncmsfwhXQHX066mD65QmU
+	ex3nctaJJ17ysWIjTlfTcAQdsy4T2kKbh/kBMHxrw0b+XrMgygmrcIXqcwmlCLiZwrseS/79zBG
+	B7JBH0Xrkufh9XO7YfrP+RiNCj+JioAMA5sCQc00eW/fiKOWdHMgwhfMGcy+/tT9XYRclgJc9Hd
+	4hiTtUcS87Oq/MlLetc7UWXhDY/KIF19mvrUdc2fiNKgb/Jpz04dZ/qVFBVAFQQl+xSIU0G2vER
+	51sRZ++ZJlAkTwyau3Hp+9yj9eYJSonXLQz2Gxnpitjo7O6YjXvP1iaLKo1d4U285jObWwqoA6R
+	T0T165NE9jeiNgzUAYy3L5hOhNRidc/X5Vrdy2BTKrG/8b1yXTgfC0M+sRUroVfgZDJf77T3hfi
+	q71qy+oxYh9M7ixgKp59gxxZXhuNR0C8ps1gssny5Ov1CdxfYVfhxDX3WU
+X-Received: by 2002:a05:690c:660c:b0:798:6561:2a7c with SMTP id 00721157ae682-798c6ca2ea1mr59720497b3.41.1772747644186;
+        Thu, 05 Mar 2026 13:54:04 -0800 (PST)
+Received: from desktop-linux.python-stargazer.ts.net ([50.168.180.218])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876ca7354sm90121677b3.52.2026.03.05.13.54.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 13:54:03 -0800 (PST)
+From: Mehul Rao <mehulrao@gmail.com>
+To: jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] xfs: fix use-after-free of log items during AIL
- pushing
-Message-ID: <aan6eeNwMnBcRzhn@dread>
-References: <20260305185836.56478-2-ytohnuki@amazon.com>
+	Mehul Rao <mehulrao@gmail.com>
+Subject: [PATCH] tipc: validate conn_timeout to prevent divide-by-zero
+Date: Thu,  5 Mar 2026 16:53:36 -0500
+Message-ID: <20260305215336.645186-1-mehulrao@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305185836.56478-2-ytohnuki@amazon.com>
-X-Rspamd-Queue-Id: 1DD82218B3B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A8234218B1C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223275-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.sourceforge.net,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223276-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mehulrao@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 06:58:37PM +0000, Yuto Ohnuki wrote:
-> When a filesystem is shut down, background inode reclaim and the xfsaild
-> can race to abort and free dirty inodes. During xfs_iflush_cluster(), if
-> the filesystem is shut down, individual inodes are aborted, marked clean
-> and removed from the AIL. When the buffer is subsequently failed via
-> xfs_buf_ioend_fail(), the buffer is unlocked and pending inode reclaim
-> can make progress.
-> 
-> If the xfsaild is then preempted long enough for reclaim to complete its
-> work and the RCU grace period to expire, the inode and its log item are
-> freed before the xfsaild reacquires the AIL lock. This results in a
-> use-after-free when dereferencing the log item's li_ailp pointer at
-> offset 48.
-> 
-> Since commit 90c60e164012 ("xfs: xfs_iflush() is no longer necessary"),
-> xfs_inode_item_push() no longer holds ILOCK_SHARED while flushing,
-> removing the protection that prevented the inode from being reclaimed
-> during the flush.
-> 
-> xfs_dquot_item_push() has the same issue, as dquots can be reclaimed
-> asynchronously via a memory pressure driven shrinker while the AIL lock
-> is temporarily dropped.
-> 
-> The unmount sequence in xfs_unmount_flush_inodes() also contributes to
-> the race by pushing the AIL while background reclaim and inodegc are
-> still running.
-> 
-> Additionally, all tracepoints in the xfsaild_push() switch statement
-> dereference the log item after xfsaild_push_item() returns, when the
-> item may already be freed. The UAF is most likely when
-> xfs_iflush_cluster() returns -EIO and XFS_ITEM_LOCKED is returned.
-> 
-> Fix this by:
-> - Reordering xfs_unmount_flush_inodes() to stop background reclaim and
->   inodegc before pushing the AIL.
-> - Saving the ailp pointer in local variables in xfs_inode_item_push()
->   and xfs_dquot_item_push() when the AIL lock is held and the log item
->   is guaranteed to be valid.
-> - Capturing log item fields before calling xfsaild_push_item() so that
->   tracepoints do not dereference potentially freed log items.
->   A new xfs_ail_push_class trace event class is introduced for this
->   purpose, while the existing xfs_log_item_class remains unchanged to
->   preserve compatibility.
-> - Adding comments documenting that log items must not be referenced
->   after iop_push() returns.
+A user can set conn_timeout to any value via
+setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+tipc_sk_filter_connect() executes:
 
-I think this should be broken up into separate commits. Certainly
-the unmount changes should be a standalone commit...
+    delay %= (tsk->conn_timeout / 4);
 
-> Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-> Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-> Cc: <stable@vger.kernel.org> # v5.9
-> Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
-> ---
-> Changes in v2:
-> - Reordered xfs_unmount_flush_inodes() to stop reclaim before pushing
->   AIL suggested by Dave Chinner
-> - Introduced xfs_ail_push_class trace event to avoid dereferencing
->   freed log items in tracepoints
-> - Added comments documenting that log items must not be referenced
->   after iop_push() returns
-> - Saved ailp pointer in local variables in push functions
-> - Link to v1: https://lore.kernel.org/all/20260304162405.58017-2-ytohnuki@amazon.com/
-> ---
->  fs/xfs/xfs_dquot_item.c | 10 ++++++++--
->  fs/xfs/xfs_inode_item.c |  9 +++++++--
->  fs/xfs/xfs_mount.c      |  4 ++--
->  fs/xfs/xfs_trace.h      | 35 +++++++++++++++++++++++++++++++----
->  fs/xfs/xfs_trans_ail.c  | 28 ++++++++++++++++++++++++----
->  5 files changed, 72 insertions(+), 14 deletions(-)
-> 
-> diff --git a/fs/xfs/xfs_dquot_item.c b/fs/xfs/xfs_dquot_item.c
-> index 491e2a7053a3..223e7162db02 100644
-> --- a/fs/xfs/xfs_dquot_item.c
-> +++ b/fs/xfs/xfs_dquot_item.c
-> @@ -125,6 +125,7 @@ xfs_qm_dquot_logitem_push(
->  	struct xfs_dq_logitem	*qlip = DQUOT_ITEM(lip);
->  	struct xfs_dquot	*dqp = qlip->qli_dquot;
->  	struct xfs_buf		*bp;
-> +	struct xfs_ail		*ailp = lip->li_ailp;
->  	uint			rval = XFS_ITEM_SUCCESS;
->  	int			error;
->  
-> @@ -153,7 +154,12 @@ xfs_qm_dquot_logitem_push(
->  		goto out_unlock;
->  	}
->  
-> -	spin_unlock(&lip->li_ailp->ail_lock);
-> +	/*
-> +	 * After dropping the AIL lock, the log item may be freed via
-> +	 * memory pressure driven shrinker. Do not reference lip after
-> +	 * this point.
-> +	 */
-> +	spin_unlock(&ailp->ail_lock);
+If conn_timeout is in the range [0, 3], the integer division yields 0,
+and the modulo operation triggers a divide-by-zero exception, causing a
+kernel oops/panic.
 
-Not true. We hold the buffer lock here, which prevents reclaim from
-removing the log item from the buffer. Hence the point at which it
-becomes unsafe to reference the log item is when the cluster buffer
-lock is dropped. i.e.:
+Fix this by rejecting conn_timeout values less than 4 in
+tipc_setsockopt() with -EINVAL.  Values below 4ms are not meaningful as
+a connection timeout anyway.
 
->  
->  	error = xfs_dquot_use_attached_buf(dqp, &bp);
->  	if (error == -EAGAIN) {
-> @@ -174,7 +180,7 @@ xfs_qm_dquot_logitem_push(
->  	xfs_buf_relse(bp);
->  
->  out_relock_ail:
-> -	spin_lock(&lip->li_ailp->ail_lock);
-> +	spin_lock(&ailp->ail_lock);
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
+RIP: 0010:tipc_sk_filter_rcv+0x1b99/0x3040
+Call Trace:
+ tipc_sk_backlog_rcv+0xe4/0x1d0
+ __release_sock+0x1ef/0x2a0
+ release_sock+0x55/0x190
+ tipc_connect+0x140/0x510
+ __sys_connect+0x1bb/0x2e0
 
-the log item only becomes unsafe to reference after the call to
-xfs_buf_relse() just above the code that regains the AIL lock.
+Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
+Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+---
+ net/tipc/socket.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
->  out_unlock:
->  	mutex_unlock(&dqp->q_qlock);
->  	return rval;
-> diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
-> index 8913036b8024..f584e0a2f174 100644
-> --- a/fs/xfs/xfs_inode_item.c
-> +++ b/fs/xfs/xfs_inode_item.c
-> @@ -746,6 +746,7 @@ xfs_inode_item_push(
->  	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
->  	struct xfs_inode	*ip = iip->ili_inode;
->  	struct xfs_buf		*bp = lip->li_buf;
-> +	struct xfs_ail		*ailp = lip->li_ailp;
->  	uint			rval = XFS_ITEM_SUCCESS;
->  	int			error;
->  
-> @@ -771,7 +772,11 @@ xfs_inode_item_push(
->  	if (!xfs_buf_trylock(bp))
->  		return XFS_ITEM_LOCKED;
->  
-> -	spin_unlock(&lip->li_ailp->ail_lock);
-> +	/*
-> +	 * After dropping the AIL lock, the log item may be freed via
-> +	 * RCU callback. Do not reference lip after this point.
-> +	 */
-> +	spin_unlock(&ailp->ail_lock);
-
-Same for the inode log item here - it's when the cluster buffer is
-unlocked that the log item can be freed from under us.
-
-> diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
-> index 9c295abd0a0a..786e1fc720e5 100644
-> --- a/fs/xfs/xfs_mount.c
-> +++ b/fs/xfs/xfs_mount.c
-> @@ -621,9 +621,9 @@ xfs_unmount_flush_inodes(
->  
->  	xfs_set_unmounting(mp);
->  
-> -	xfs_ail_push_all_sync(mp->m_ail);
-> -	xfs_inodegc_stop(mp);
->  	cancel_delayed_work_sync(&mp->m_reclaim_work);
-> +	xfs_inodegc_stop(mp);
-> +	xfs_ail_push_all_sync(mp->m_ail);
->  	xfs_reclaim_inodes(mp);
->  	xfs_health_unmount(mp);
->  	xfs_healthmon_unmount(mp);
-
-This should be in it's own patch.
-
-> diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
-> index 813e5a9f57eb..ee4b72878f7b 100644
-> --- a/fs/xfs/xfs_trace.h
-> +++ b/fs/xfs/xfs_trace.h
-> @@ -1646,14 +1646,41 @@ TRACE_EVENT(xfs_log_force,
->  		  __entry->lsn, (void *)__entry->caller_ip)
->  )
->  
-> +DECLARE_EVENT_CLASS(xfs_ail_push_class,
-> +	TP_PROTO(dev_t dev, uint type, unsigned long flags, xfs_lsn_t lsn),
-> +	TP_ARGS(dev, type, flags, lsn),
-> +	TP_STRUCT__entry(
-> +		__field(dev_t, dev)
-> +		__field(uint, type)
-> +		__field(unsigned long, flags)
-> +		__field(xfs_lsn_t, lsn)
-> +	),
-> +	TP_fast_assign(
-> +		__entry->dev = dev;
-> +		__entry->type = type;
-> +		__entry->flags = flags;
-> +		__entry->lsn = lsn;
-> +	),
-> +	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
-> +		  MAJOR(__entry->dev), MINOR(__entry->dev),
-> +		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
-> +		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
-> +		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
-> +)
-> +
-> +#define DEFINE_AIL_PUSH_EVENT(name) \
-> +DEFINE_EVENT(xfs_ail_push_class, name, \
-> +	TP_PROTO(dev_t dev, uint type, unsigned long flags, xfs_lsn_t lsn), \
-> +	TP_ARGS(dev, type, flags, lsn))
-> +DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
-> +DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
-> +DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
-> +DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
-> +
->  #define DEFINE_LOG_ITEM_EVENT(name) \
->  DEFINE_EVENT(xfs_log_item_class, name, \
->  	TP_PROTO(struct xfs_log_item *lip), \
->  	TP_ARGS(lip))
-> -DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
-> -DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
-> -DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
-> -DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
->  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
->  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
->  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
-
-Move the definition of the xfs_ail_push_class to after the
-definition of the log item event trace points. i.e. the log item
-event definitions should be grouped with the definition of the log
-item event class, not have a whole new event class and trace event
-definitions between the class definition and event definitions...
-
-> diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
-> index 923729af4206..48b14146826b 100644
-> --- a/fs/xfs/xfs_trans_ail.c
-> +++ b/fs/xfs/xfs_trans_ail.c
-> @@ -387,6 +387,11 @@ xfsaild_push_item(
->  		return XFS_ITEM_PINNED;
->  	if (test_bit(XFS_LI_FAILED, &lip->li_flags))
->  		return xfsaild_resubmit_item(lip, &ailp->ail_buf_list);
-> +
-> +	/*
-> +	 * Once iop_push() returns, the log item may have been freed
-> +	 * and must not be dereferenced.
-> +	 */
->  	return lip->li_ops->iop_push(lip, &ailp->ail_buf_list);
->  }
-
-This should really be a comment in the header describing the
-funciton behaviour. i.e. something like: "@lip may have been
-released and freed by the time this function returns, so callers
-must not dereference the log item after calling this function."
-
->  
-> @@ -506,20 +511,35 @@ xfsaild_push(
->  	lsn = lip->li_lsn;
->  	while ((XFS_LSN_CMP(lip->li_lsn, ailp->ail_target) <= 0)) {
->  		int	lock_result;
-> +		dev_t dev;
-> +		uint type;
-> +		unsigned long flags;
-> +		xfs_lsn_t item_lsn;
->  
->  		if (test_bit(XFS_LI_FLUSHING, &lip->li_flags))
->  			goto next_item;
->  
-> +		/*
-> +		 * Store log item information before pushing, as the item
-> +		 * may be freed after dropping the AIL lock.
-> +		 */
-> +		dev = lip->li_log->l_mp->m_super->s_dev;
-
-Don't need dev - we can get to it from the ailp structure. i.e.
-the tracepoints can be passed the ailp and so the dev part of the
-tracepoint can remain hidden from this code (as it should be).
-
-> +		type = lip->li_type;
-> +		flags = lip->li_flags;
-> +		item_lsn = lip->li_lsn;
-> +
->  		/*
->  		 * Note that iop_push may unlock and reacquire the AIL lock.  We
->  		 * rely on the AIL cursor implementation to be able to deal with
->  		 * the dropped lock.
-> +		 * After this call returns, the log item may have been freed and
-> +		 * must not be referenced.
->  		 */
->  		lock_result = xfsaild_push_item(ailp, lip);
->  		switch (lock_result) {
->  		case XFS_ITEM_SUCCESS:
->  			XFS_STATS_INC(mp, xs_push_ail_success);
-> -			trace_xfs_ail_push(lip);
-> +			trace_xfs_ail_push(dev, type, flags, item_lsn);
->  
->  			ailp->ail_last_pushed_lsn = lsn;
->  			break;
-> @@ -537,7 +557,7 @@ xfsaild_push(
->  			 * AIL is being flushed.
->  			 */
->  			XFS_STATS_INC(mp, xs_push_ail_flushing);
-> -			trace_xfs_ail_flushing(lip);
-> +			trace_xfs_ail_flushing(dev, type, flags, item_lsn);
->  
->  			flushing++;
->  			ailp->ail_last_pushed_lsn = lsn;
-> @@ -545,14 +565,14 @@ xfsaild_push(
->  
->  		case XFS_ITEM_PINNED:
->  			XFS_STATS_INC(mp, xs_push_ail_pinned);
-> -			trace_xfs_ail_pinned(lip);
-> +			trace_xfs_ail_pinned(dev, type, flags, item_lsn);
->  
->  			stuck++;
->  			ailp->ail_log_flush++;
->  			break;
->  		case XFS_ITEM_LOCKED:
->  			XFS_STATS_INC(mp, xs_push_ail_locked);
-> -			trace_xfs_ail_locked(lip);
-> +			trace_xfs_ail_locked(dev, type, flags, item_lsn);
->  
->  			stuck++;
->  			break;
-
-At this point, xfsaild_push() is getting too long to easily read and
-understand.
-
-I think that we should factor the entire loop contents into a
-separate function so the loop looks like this:
-
-  	while ((XFS_LSN_CMP(lip->li_lsn, ailp->ail_target) <= 0)) {
-
-		xfsaild_process_logitem(ailp, lip, &stuck, &flushing);
-
-		count++;
-                                                                                 
-                /*                                                               
-                 * Are there too many items we can't do anything with?           
-                 *                                                               
-                 * If we are skipping too many items because we can't flush      
-                 * them or they are already being flushed, we back off and       
-                 * given them time to complete whatever operation is being       
-                 * done. i.e. remove pressure from the AIL while we can't make   
-                 * progress so traversals don't slow down further inserts and    
-                 * removals to/from the AIL.                                     
-                 *                                                               
-                 * The value of 100 is an arbitrary magic number based on        
-                 * observation.                                                  
-                 */                                                              
-                if (stuck > 100)                                                 
-                        break;                                                   
-                                                                                 
-                lip = xfs_trans_ail_cursor_next(ailp, &cur);                     
-                if (lip == NULL)                                                 
-                        break;                                                   
-                if (lip->li_lsn != lsn && count > 1000)                          
-                        break;                                                   
-                lsn = lip->li_lsn;                                               
-        }                                                                        
-
-Probably worth doing that as a separate patch, then adding the
-modifications to fix the bug as a followup patch.
-
--Dave.
-
--- 
-Dave Chinner
-dgc@kernel.org
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index 4c618c2b871d..85c07b0ba0ec 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -3184,6 +3184,10 @@ static int tipc_setsockopt(struct socket *sock, int lvl, int opt,
+ 		tsk_set_unreturnable(tsk, value);
+ 		break;
+ 	case TIPC_CONN_TIMEOUT:
++		if (value < 4) {
++			res = -EINVAL;
++			break;
++		}
+ 		tipc_sk(sk)->conn_timeout = value;
+ 		break;
+ 	case TIPC_MCAST_BROADCAST:
+--
+2.48.1
 
