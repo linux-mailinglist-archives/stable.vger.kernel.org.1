@@ -1,239 +1,255 @@
-Return-Path: <stable+bounces-223161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFO1Gt7cqGnGxwAAu9opvQ
-	(envelope-from <stable+bounces-223161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:31:10 +0100
+	id 6AoBEVfhqGnzyAAAu9opvQ
+	(envelope-from <stable+bounces-223162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:50:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FE6209D73
-	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:31:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7001520A00B
+	for <lists+stable@lfdr.de>; Thu, 05 Mar 2026 02:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8DB4F30494BC
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 01:30:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CDE4301AF58
+	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 01:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CECB21A95D;
-	Thu,  5 Mar 2026 01:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B981C84CB;
+	Thu,  5 Mar 2026 01:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OypenRTl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lwdlvx24"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA04B1E1E16;
-	Thu,  5 Mar 2026 01:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93AB33688A
+	for <stable@vger.kernel.org>; Thu,  5 Mar 2026 01:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772674204; cv=none; b=l2UJ3UlY5BYxW4ieO2cQvkow2ToRhm34odEluQw5p9h5jCzst9RYx7GbPcw4rkf0e42+/Icitz4DDeD4uEagK87zlj6/CgnrHlwlRNz5B2LooNClM+ZSJ89SOw5V+EnjgIeR1XDf8BC6jejHgKvAuLps3xI+uZUvX8j1xZMrlR0=
+	t=1772675412; cv=none; b=LCHPfxjT9MwQYkfaZoBYkYN+AtcLwGx7m7dNUHoxMDzjies+orzD6HkhETI1C+4Wyw91f8M2mnw8Kk1U9s1jyhIi41JlYFhUZucCMU9AhFaDmwxAmMMy5f/0m8HtqZ4AvZNcy+jimspIAZVTCi/WmGDCAwZvpz6KWT9SgDjTWfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772674204; c=relaxed/simple;
-	bh=oNU/jaVVUf/SRNVN4crRULN++oHkeGDmQU+FnUaIOCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FyyHvKmf4I10TR4WPqyZ7jZfYPi62qcXmng/YhhVdpjer5z/wF+Wl9aKBGFv4GE0rdsVc+tGwwF7Mxxsx8eqjhpsTdhJz29tO0KN+rPVEsdu6/otSnE1qx1T5F/fNc2zuhB5bwWG/yfHYhakXAtcnGNFB8VpntGotxszWdkw0js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OypenRTl; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772674203; x=1804210203;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oNU/jaVVUf/SRNVN4crRULN++oHkeGDmQU+FnUaIOCo=;
-  b=OypenRTlTYeP51hzCX4N9mCrbiZAwM8dFqec3rLzrSAFmawoW1YXQwhx
-   jxdYPjXu4rwxlfTEfoqxEUIERDBWKbXkDOPdJIbL0yhQ9+rIjZ+OpkDge
-   mPxLN0c1d1xlgcpwdEr21/USkhOue0iRNzJTS3KjFjsjU6KirF/Iu8YQq
-   kY6bni6o61k+Vhy3QwScy/oFFoic8xxSyRabI/dsC8ZcrToUlHrtpx75x
-   hcK3VOPcb9wZgqNl49mfpkD9N0HFQ/3p9LNlZRumyZ0z11en8tUQjV01J
-   fXmavEunI5mGmtdPUSycy7qA9fS9XvahZMYQtbc1pcs3roPD1BnQC5c6y
-   A==;
-X-CSE-ConnectionGUID: h64QWw5LTAWnuuZ6Hsydbw==
-X-CSE-MsgGUID: IgYYbAezRfy09DqTJnUmpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="61324294"
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="61324294"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:30:02 -0800
-X-CSE-ConnectionGUID: ApuRj/gDTbm8wBpDlrHS9Q==
-X-CSE-MsgGUID: dUdZd7y+RDSoxwR4pi0CbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="215391454"
-Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 04 Mar 2026 17:29:58 -0800
-Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxxXI-000000004wH-0Oif;
-	Thu, 05 Mar 2026 01:29:56 +0000
-Date: Thu, 5 Mar 2026 09:29:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chengwen Feng <fengchengwen@huawei.com>, linux-pci@vger.kernel.org,
-	bhelgaas@google.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	rafael@kernel.org, lenb@kernel.org, wei.huang2@amd.com,
-	Eric.VanTassell@amd.com, jonathan.cameron@huawei.com,
-	wangzhou1@hisilicon.com, wanghuiqiang@huawei.com,
-	liuyonglong@huawei.com, Chengwen Feng <fengchengwen@huawei.com>,
+	s=arc-20240116; t=1772675412; c=relaxed/simple;
+	bh=wQ/u9rQKUsL3bd6QgFMGoC5t57NYQRymsZ55pKSghoU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Ze0xoyJrAwktaA6FCXWIjev3DWczPO9/MJhSa5pHzqW20le4ZVJ/i3xxfLk5Z//kjmA6lj2LwTs6qdmG8GZlweI5C1zDdmQuTL0Yo3TlNkjadVMxV9Te6cRToZnu/wnguCV53cG3hR6B+To1MeESHL7XD3YfToCj/MLtpDoLF10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lwdlvx24; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65bfc858561so4153293a12.2
+        for <stable@vger.kernel.org>; Wed, 04 Mar 2026 17:50:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772675409; x=1773280209; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dD52BcDVoMQrtMpMvwdJ0XwlitnIFQsRkhRbjewdIjU=;
+        b=Lwdlvx24aN8ihrWBwA0ahku70e5Z4T9+8/9G3OuKgu9xTC07HtG5HVc9OBcQoDiWDU
+         YQhW9JelMEB28KuNxW8HVdzhNXChQcSLsNE1osr+qFxWrpRR5vRUXlzUDAAbEmE9Bx30
+         voiGbturQenA8mcH5RmCkVBwVoiONC6iSxwKblQkpK1n4WmcSomSvohrcVmVS1p+d8FZ
+         WE2CuOIq4f8cqBMbkz/2LxuxAP1tH2m+qVrCvY+MNoKgRdSWbQ4FZ6cfS73N4hVBNPHl
+         LySX3+0HwivOXD6EbkFrLYgy27585txZ2KT5lI0COSS0cS3G5dunEHpUyJg+AJABJKWC
+         WWAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772675409; x=1773280209;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dD52BcDVoMQrtMpMvwdJ0XwlitnIFQsRkhRbjewdIjU=;
+        b=NkQeu0qLSOmfpubr9GyjTkjM0ft+A80rIskIEnWF4KmaUNUFG6WMp3z23NcwLS2Tok
+         waB6Y7YiAuSsTyaLsPGdRAUS//YJKydv315qgAeawjLiEmqE5hTpf5vvtiFWe0/KGQtl
+         Hufh+uVkPXnjfhWbRr/0BsPe328kRTCZhQ0J4Vvt+VCdx1QlMqhYyiuXVCTq30KYPIn8
+         8yFw4rzDFcacxYtTZqaVNhrNyThuoQyOub5A1sVsrmn2ndhgwlAc1K5MHa26a3ucoZdz
+         FixXS2h9lC5v/7FB8qsW1rak9FYS9OJ9qhH2fOdfQkYbP90VKUc2+fctCSFBZJVkqUfp
+         38vA==
+X-Forwarded-Encrypted: i=1; AJvYcCXjca48sxC0wBKqsCQP1a5s48Wsxf+hZtMKbcgAmZU/nE2Z1nFZ1IUN3ScOuY1wpAPkmp7KhtU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxap+lBxgNlGiKJ58qi3/V0LiUT/MLlaefFC61pnGj/4pTZDQYO
+	vgchEmgdEmO3Stq+XkZCaniwaLxN0P0G85nxhPqFpeTJoxHYW5L3R1o+
+X-Gm-Gg: ATEYQzyHR3lLpFGo5NU7X99S/dUtCEnHuZRJqDV+4yfNL6QNuKX2zxdoDzqNO02mI6v
+	zoa2PT+oVRSiCs2yTZi6ezVJuQEN1bKSBrcsP3Oun+jOe/hPicQGfaOF7jqeE7Bc5HfrwFbHLxm
+	9NuxjRu6KNdgJtiJv1AMp9fXfs0IcSU0DHNQeYV9/2u17GKFyc8mGrWoMCeIdVZoox97xNMqMxC
+	T9BhnacG6s3EGM4PdrouuvVY9xHjeC5evrq7PuI3Hi9yciVI5voPVwB73LZjBZ/MuLZRg4C8ddt
+	7LfIhvU1acuKwYkkSNd1amq58N33fLAlUptj8YZgdaesoXaKklgyC3UzlsMH0mRP+/93qabMr1y
+	GiFOgFlSbSy9lSV8O6EqtbUsSSCzFy+skyuwsh9B++x9LXZQ+TY3t8pt+QbdQNEUdP0o1F+jHf+
+	WkahAL9nr+QpLOY4xwrhyATg==
+X-Received: by 2002:a17:907:97c4:b0:b7d:1cbb:5deb with SMTP id a640c23a62f3a-b93f11d67e3mr303322066b.27.1772675408979;
+        Wed, 04 Mar 2026 17:50:08 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935aee3ab4sm821988566b.61.2026.03.04.17.50.08
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 04 Mar 2026 17:50:08 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	gavinguo@igalia.com,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-Message-ID: <202603050927.IVSflNry-lkp@intel.com>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
+Subject: [Patch v4] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared THP
+Date: Thu,  5 Mar 2026 01:50:06 +0000
+Message-Id: <20260305015006.27343-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303003625.39035-1-fengchengwen@huawei.com>
-X-Rspamd-Queue-Id: A6FE6209D73
+X-Rspamd-Queue-Id: 7001520A00B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223161-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223162-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kvack.org,gmail.com,linux.dev,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,intel.com:dkim,intel.com:email,intel.com:mid]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,nvidia.com:email,igalia.com:email]
 X-Rspamd-Action: no action
 
-Hi Chengwen,
+Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+split_huge_pmd_locked()") return false unconditionally after
+split_huge_pmd_locked(). This may fail try_to_migrate() early when
+TTU_SPLIT_HUGE_PMD is specified.
 
-kernel test robot noticed the following build warnings:
+The reason is the above commit adjusted try_to_migrate_one() to, when a
+PMD-mapped THP entry is found, and TTU_SPLIT_HUGE_PMD is specified (for
+example, via unmap_folio()), return false unconditionally. This breaks the
+rmap walk and fail try_to_migrate() early, if this PMD-mapped THP is mapped
+in multiple processes.
 
-[auto build test WARNING on pci/next]
-[also build test WARNING on pci/for-linus rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v7.0-rc2 next-20260303]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The user sensible impact of this bug could be:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-get-cpu-steer-tag-fail-on-ARM64-platform/20260303-084305
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20260303003625.39035-1-fengchengwen%40huawei.com
-patch subject: [PATCH] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-config: loongarch-randconfig-002-20260305 (https://download.01.org/0day-ci/archive/20260305/202603050927.IVSflNry-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603050927.IVSflNry-lkp@intel.com/reproduce)
+  * On memory pressure, shrink_folio_list() may split partially mapped
+    folio with split_folio_to_list(). Then free unmapped pages without IO.
+    If failed, it may not be reclaimed.
+  * On memory failure, memory_failure() would call try_to_split_thp_page()
+    to split folio contains the bad page. If succeed, the PG_has_hwpoisoned
+    bit is only set in the after-split folio contains @split_at. By doing
+    so, we limit bad memory. If failed to split, the whole folios is not
+    usable.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603050927.IVSflNry-lkp@intel.com/
+One way to reproduce:
 
-All warnings (new ones prefixed by >>):
+    Create an anonymous THP range and fork 512 children, so we have a
+    THP shared mapped in 513 processes. Then trigger folio split with
+    /sys/kernel/debug/split_huge_pages debugfs to split the THP folio to
+    order 0.
 
->> drivers/pci/tph.c:92:20: warning: 'tph_invoke_dsm' defined but not used [-Wunused-function]
-      92 | static acpi_status tph_invoke_dsm(acpi_handle handle, u32 cpu_uid,
-         |                    ^~~~~~~~~~~~~~
->> drivers/pci/tph.c:56:12: warning: 'tph_extract_tag' defined but not used [-Wunused-function]
-      56 | static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
-         |            ^~~~~~~~~~~~~~~
+Without the above commit, we can successfully split to order 0.
+With the above commit, the folio is still a large folio.
 
+And currently there are two core users of TTU_SPLIT_HUGE_PMD:
 
-vim +/tph_invoke_dsm +92 drivers/pci/tph.c
+  * try_to_unmap_one()
+  * try_to_migrate_one()
 
-d2e8a34876ce69b Wei Huang 2024-10-02   55  
-d2e8a34876ce69b Wei Huang 2024-10-02  @56  static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
-d2e8a34876ce69b Wei Huang 2024-10-02   57  			   union st_info *info)
-d2e8a34876ce69b Wei Huang 2024-10-02   58  {
-d2e8a34876ce69b Wei Huang 2024-10-02   59  	switch (req_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   60  	case PCI_TPH_REQ_TPH_ONLY: /* 8-bit tag */
-d2e8a34876ce69b Wei Huang 2024-10-02   61  		switch (mem_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   62  		case TPH_MEM_TYPE_VM:
-d2e8a34876ce69b Wei Huang 2024-10-02   63  			if (info->vm_st_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   64  				return info->vm_st;
-d2e8a34876ce69b Wei Huang 2024-10-02   65  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   66  		case TPH_MEM_TYPE_PM:
-d2e8a34876ce69b Wei Huang 2024-10-02   67  			if (info->pm_st_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   68  				return info->pm_st;
-d2e8a34876ce69b Wei Huang 2024-10-02   69  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   70  		}
-d2e8a34876ce69b Wei Huang 2024-10-02   71  		break;
-d2e8a34876ce69b Wei Huang 2024-10-02   72  	case PCI_TPH_REQ_EXT_TPH: /* 16-bit tag */
-d2e8a34876ce69b Wei Huang 2024-10-02   73  		switch (mem_type) {
-d2e8a34876ce69b Wei Huang 2024-10-02   74  		case TPH_MEM_TYPE_VM:
-d2e8a34876ce69b Wei Huang 2024-10-02   75  			if (info->vm_xst_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   76  				return info->vm_xst;
-d2e8a34876ce69b Wei Huang 2024-10-02   77  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   78  		case TPH_MEM_TYPE_PM:
-d2e8a34876ce69b Wei Huang 2024-10-02   79  			if (info->pm_xst_valid)
-d2e8a34876ce69b Wei Huang 2024-10-02   80  				return info->pm_xst;
-d2e8a34876ce69b Wei Huang 2024-10-02   81  			break;
-d2e8a34876ce69b Wei Huang 2024-10-02   82  		}
-d2e8a34876ce69b Wei Huang 2024-10-02   83  		break;
-d2e8a34876ce69b Wei Huang 2024-10-02   84  	default:
-d2e8a34876ce69b Wei Huang 2024-10-02   85  		return 0;
-d2e8a34876ce69b Wei Huang 2024-10-02   86  	}
-d2e8a34876ce69b Wei Huang 2024-10-02   87  
-d2e8a34876ce69b Wei Huang 2024-10-02   88  	return 0;
-d2e8a34876ce69b Wei Huang 2024-10-02   89  }
-d2e8a34876ce69b Wei Huang 2024-10-02   90  
-d2e8a34876ce69b Wei Huang 2024-10-02   91  #define TPH_ST_DSM_FUNC_INDEX	0xF
-d2e8a34876ce69b Wei Huang 2024-10-02  @92  static acpi_status tph_invoke_dsm(acpi_handle handle, u32 cpu_uid,
-d2e8a34876ce69b Wei Huang 2024-10-02   93  				  union st_info *st_out)
-d2e8a34876ce69b Wei Huang 2024-10-02   94  {
-d2e8a34876ce69b Wei Huang 2024-10-02   95  	union acpi_object arg3[3], in_obj, *out_obj;
-d2e8a34876ce69b Wei Huang 2024-10-02   96  
-d2e8a34876ce69b Wei Huang 2024-10-02   97  	if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 7,
-d2e8a34876ce69b Wei Huang 2024-10-02   98  			    BIT(TPH_ST_DSM_FUNC_INDEX)))
-d2e8a34876ce69b Wei Huang 2024-10-02   99  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  100  
-d2e8a34876ce69b Wei Huang 2024-10-02  101  	/* DWORD: feature ID (0 for processor cache ST query) */
-d2e8a34876ce69b Wei Huang 2024-10-02  102  	arg3[0].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  103  	arg3[0].integer.value = 0;
-d2e8a34876ce69b Wei Huang 2024-10-02  104  
-d2e8a34876ce69b Wei Huang 2024-10-02  105  	/* DWORD: target UID */
-d2e8a34876ce69b Wei Huang 2024-10-02  106  	arg3[1].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  107  	arg3[1].integer.value = cpu_uid;
-d2e8a34876ce69b Wei Huang 2024-10-02  108  
-d2e8a34876ce69b Wei Huang 2024-10-02  109  	/* QWORD: properties, all 0's */
-d2e8a34876ce69b Wei Huang 2024-10-02  110  	arg3[2].integer.type = ACPI_TYPE_INTEGER;
-d2e8a34876ce69b Wei Huang 2024-10-02  111  	arg3[2].integer.value = 0;
-d2e8a34876ce69b Wei Huang 2024-10-02  112  
-d2e8a34876ce69b Wei Huang 2024-10-02  113  	in_obj.type = ACPI_TYPE_PACKAGE;
-d2e8a34876ce69b Wei Huang 2024-10-02  114  	in_obj.package.count = ARRAY_SIZE(arg3);
-d2e8a34876ce69b Wei Huang 2024-10-02  115  	in_obj.package.elements = arg3;
-d2e8a34876ce69b Wei Huang 2024-10-02  116  
-d2e8a34876ce69b Wei Huang 2024-10-02  117  	out_obj = acpi_evaluate_dsm(handle, &pci_acpi_dsm_guid, 7,
-d2e8a34876ce69b Wei Huang 2024-10-02  118  				    TPH_ST_DSM_FUNC_INDEX, &in_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  119  	if (!out_obj)
-d2e8a34876ce69b Wei Huang 2024-10-02  120  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  121  
-d2e8a34876ce69b Wei Huang 2024-10-02  122  	if (out_obj->type != ACPI_TYPE_BUFFER) {
-d2e8a34876ce69b Wei Huang 2024-10-02  123  		ACPI_FREE(out_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  124  		return AE_ERROR;
-d2e8a34876ce69b Wei Huang 2024-10-02  125  	}
-d2e8a34876ce69b Wei Huang 2024-10-02  126  
-d2e8a34876ce69b Wei Huang 2024-10-02  127  	st_out->value = *((u64 *)(out_obj->buffer.pointer));
-d2e8a34876ce69b Wei Huang 2024-10-02  128  
-d2e8a34876ce69b Wei Huang 2024-10-02  129  	ACPI_FREE(out_obj);
-d2e8a34876ce69b Wei Huang 2024-10-02  130  
-d2e8a34876ce69b Wei Huang 2024-10-02  131  	return AE_OK;
-d2e8a34876ce69b Wei Huang 2024-10-02  132  }
-d2e8a34876ce69b Wei Huang 2024-10-02  133  #endif
-d2e8a34876ce69b Wei Huang 2024-10-02  134  
+try_to_unmap_one() would restart the rmap walk, so only
+try_to_migrate_one() is affected.
 
+We can't simply revert commit 60fbb14396d5 ("mm/huge_memory: adjust
+try_to_migrate_one() and split_huge_pmd_locked()"), since it removed some
+duplicated check covered by page_vma_mapped_walk().
+
+This patch fixes this by restart page_vma_mapped_walk() after
+split_huge_pmd_locked(). Since we cannot simply return "true" to fix the
+problem, as that would affect another case:
+
+    When invoking folio_try_share_anon_rmap_pmd() from
+    split_huge_pmd_locked(), the latter can fail and leave a large folio
+    mapped through PTEs, in which case we ought to return true from
+    try_to_migrate_one(). This might result in unnecessary walking of the
+    rmap but is relatively harmless.
+
+Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Gavin Guo <gavinguo@igalia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: <stable@vger.kernel.org>
+
+---
+v4:
+  * only commit msg adjustment
+    - rephrase the reason analysis
+    - move reproduce method afterward
+    - more explanation on user sensible effect of the bug, especially expand
+      what "Limit bad page" means
+    - remove the explanation on whey it need to fork 512 child for reproduce
+    - explain why simply revert commit 60fbb14396d5 is not taken
+    - mention TTU_SPLIT_HUGE_PMD users and confirm not affect others
+    - rephrase the reason why can't simply return true
+v3:
+  * gather RB
+  * adjust the commit log and comment per David
+  * add userspace-visible runtime effect in change log
+v2:
+  * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+---
+ mm/rmap.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index beb423f3e8ec..e609dd5b382f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2444,11 +2444,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			__maybe_unused pmd_t pmdval;
+ 
+ 			if (flags & TTU_SPLIT_HUGE_PMD) {
++				/*
++				 * split_huge_pmd_locked() might leave the
++				 * folio mapped through PTEs. Retry the walk
++				 * so we can detect this scenario and properly
++				 * abort the walk.
++				 */
+ 				split_huge_pmd_locked(vma, pvmw.address,
+ 						      pvmw.pmd, true);
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
++				flags &= ~TTU_SPLIT_HUGE_PMD;
++				page_vma_mapped_walk_restart(&pvmw);
++				continue;
+ 			}
+ #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ 			pmdval = pmdp_get(pvmw.pmd);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
