@@ -1,218 +1,307 @@
-Return-Path: <stable+bounces-223337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMUXKnDOqml4XQEAu9opvQ
-	(envelope-from <stable+bounces-223337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:54:08 +0100
+	id MFZBOFnSqmn3XQEAu9opvQ
+	(envelope-from <stable+bounces-223338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 14:10:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316F722112A
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:54:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FCE2216A5
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 14:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E12A83026893
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 12:53:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFA4E307650A
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 13:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4FB390C9B;
-	Fri,  6 Mar 2026 12:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB95B392C56;
+	Fri,  6 Mar 2026 13:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUHZFVUt"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="m5pqdISy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9882D9792
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 12:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE59A25A655
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 13:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772801632; cv=none; b=V2h00ePHyp1om5PGjqVVEgMOPhWLzHV3zWiWeNEQZRZnVXeKARRrjTaVKJ4vog6gkBXrPkqRgGISvB49sC8AWXu7pREPaBM6dTc5vqP0dzwC7Ipkwh/X5vdOfB+psakHrwq2uMkeEVI5C5m/WfUftPfKXKTLm51b8+W90yEtzLg=
+	t=1772802416; cv=none; b=uO1TigGzaJIWcVuwxz7D+z5q8tZcOGYDINmrLGOD5N0lcWU4Myq3kpRrLT+HFhK7LTbEgsWbWyTHeMfGBtW2bX048keFvgDP7pMrGcJ41pzecG4Q8hcVpPIT7HELy/a8ukF2I+kVEUPlTH0gyyxLMKPP6bB2pJOSg6BOB7KskMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772801632; c=relaxed/simple;
-	bh=lk3J/0myuPulEZOU22yofh3RTU9+tKO22u2tikmqBYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yw8sX+nNIvYt3kcE02TMOQWMGjS/Jku9lveYm5u2J7r9B7n56io1fZLKVUyfnS/C8L3wbQdKJQ4K68rzPcSvXSk1dTGaNcTkgrRcSrR9HjdMiPdHqP+tDiQ0hbsV75ipco2qtgF8iZz3Zue+2EBtwWXsOKOvC8aNPoNl4keOADo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUHZFVUt; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ae46fc8ec1so39423455ad.3
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 04:53:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772801631; x=1773406431; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WMarrm7JpP1p2eI9Be2YtW3tsN95FbOLkt73JrG5xCk=;
-        b=kUHZFVUt9gmXntYyxPyRxtxo2n+vVh6OQwWcfMYpLSJsBWdJq3IiGcwB+XEzy+Td8T
-         N2JNH1q9r5YTg2VfC+W4biHtVnS/hLpwBJEzBVTNmeknI/vN3r9JH3X09WrC/Uc9xPCa
-         bu/astA7qcAC8vW7uuZBAtQLJswFtapm1FVIac/2513YhBikRSQJEHLxkRTgjn6c+Sfz
-         5oZWqiKGmgsRT3DVHR5znTPmzcd0x2AEZHFWUvpz8/uJFCukx2WY6urIaVvW15g+jacB
-         s0VzQCUfLEyrHG58Vmmxgqhv8ijHd5KrLr49nue5JaKL22I3zpl/IcWp1/hvdBsc9zrr
-         1eBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772801631; x=1773406431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WMarrm7JpP1p2eI9Be2YtW3tsN95FbOLkt73JrG5xCk=;
-        b=gE8sTlt9Iu6TDwmm5opEhXrZrqw6M8i2NVOrqQ0pyfFP7UULE1OtBnT5D/6f+i8Da4
-         jXG6sNudbKQwMCpfb16l0/m+xt+pwJt/ywFeUTIAPE4NIySDu4rr3wCS0yO68tyU1AgV
-         V4dkCDGxgJz1y9eonatmBbtkzKrgTCrrkYFj4/vE/KWDxb6fXUc5+/c6GEfHlalt8c9K
-         8NeNHHg+m1UgKLsnEBoiLEJcoS+DBFqVZeUnb1P34j7wTT/a1cfRAiWrTynhVcTq+rHz
-         lbelHdBv/pRD0iFKaUK5ExQBRp4V+d0yLgyw0UtDjd6njZpoCkNS/pBBFeTC1Sqd3cc7
-         06Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Rx9vOg/k6lTwEMEzbWWiTmNdJg7GRPVHKmOStP/kIuaEBnjT7vtzPE7MWl82iNmEBN/Qy6c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSKmZmu0D2dbSFSX69M0hELj1PiXgPi9s0ZFlLm+WGX9CVqAMj
-	+qqM+01UL3GXhdUdwTiMaHcZjXVObI0qnXILJiVAe2S/fXP2199otHv1Mux1BGsc
-X-Gm-Gg: ATEYQzz+/Hhw7TJ7HFknJg53a0FhhfDorNekNH5/gSCH7Q9OJfW5EBuMYL0hPKmJPgg
-	h6XrDwXrnBcqRyfMt3wiLzPMHh91vvtwXwQrT5rM65H3I0oyd4/h/Jsw5z/Ifi9Is1aC5ZAWUi9
-	N1AQcbuszJ24fEH+ieU1X7kK8D+oj8zEPYbfZtYlV41G+gzWgJp2q2LlbNtEnLXPTvGZlwOiC9P
-	6r86tyBKuPcGCJbcpYihFSttqVP1CLLJqF4MZ5YItxyG4LJOKAlgkT9CKmj4kXWipFVemAz4IGh
-	pDbJXscO27+6cHjd2h2fiJKDKgjgwtl2qGsGBy9yOcRBAFCT/XX3MAEVfZDtYWspZ2eI/tAqQJ0
-	GKiGTXLgxiwqXTPgBW63KxJboCJ6GlP/J/TVt7K6jPNoK3s3ol19RfqOSdmi2mtMaUlrthByDgF
-	JBOMGJdhX07CUZnp/Ghsp9VC6kNR7iyvysibEFQUe7hsIBFwYpYxBL2vG91vK4mvCujg==
-X-Received: by 2002:a17:902:e890:b0:2ae:5163:c2aa with SMTP id d9443c01a7336-2ae823a1852mr21849015ad.20.1772801630811;
-        Fri, 06 Mar 2026 04:53:50 -0800 (PST)
-Received: from localhost.localdomain ([222.109.75.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f74e7bsm19149515ad.46.2026.03.06.04.53.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Mar 2026 04:53:50 -0800 (PST)
-From: Yuchan Nam <entropy1110@gmail.com>
-To: sakari.ailus@linux.intel.com
-Cc: laurent.pinchart@ideasonboard.com,
-	w@1wt.eu,
-	security@kernel.org,
-	hans@jjverkuil.nl,
-	linux-media@vger.kernel.org,
-	Yuchan Nam <entropy1110@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
-Date: Fri,  6 Mar 2026 21:52:23 +0900
-Message-ID: <20260306125223.76040-1-entropy1110@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <aarKTtVvHpc9WBgZ@kekkonen.localdomain>
-References: <aarKTtVvHpc9WBgZ@kekkonen.localdomain>
+	s=arc-20240116; t=1772802416; c=relaxed/simple;
+	bh=sub6SrAvM26hT3A2v1j2XexzqEbSiD12Hc10869wByM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=rQPjjgE7Ni+moJY7Yg8MCX/VomjbLcayQ5PyZ1BpVaO5bM3C6vABDiBvGvsFsGUUYjfM/FWOmuabxaHKd7Y4GPbNNqnAYhrsl43BAMznCAvQkzcW4uOwkZ3nZivH6d3+QsAGXBp/8LGAmmvUacEf2kj9mr6p4mtB3IKErZpstWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=m5pqdISy; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20260306130651epoutp02c2c3b0ac58ae8a008fe578ba98150ca9~aQmaGnmbI1193811938epoutp02S
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 13:06:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20260306130651epoutp02c2c3b0ac58ae8a008fe578ba98150ca9~aQmaGnmbI1193811938epoutp02S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1772802411;
+	bh=n3LMl5Zi4sPPlfpsm0WvuuN09+O7qYxWpTXVegp0u14=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=m5pqdISyFXDRuxBalvh5BrUf7MmOCfvNnphXnL9LDFPUG2g2Ln/D/ocC+tqnT3GkH
+	 dC3sOpEnfT7g1t28X3O6L7rDNC6MRZqgFKDF7ly4qlZuLVTJtNyuS9L4WSH0SWcgMd
+	 qXJSquMN0MiMME3hNRsBOFXqPofsol9tWUjONtBY=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20260306130651epcas5p3b0853477fb4af80b127ecabfec9c7ba8~aQmZxUpm90362403624epcas5p3v;
+	Fri,  6 Mar 2026 13:06:51 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.87]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4fS6B20lPzz2SSKX; Fri,  6 Mar
+	2026 13:06:50 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260306130649epcas5p192fe5f950447e3c51232a2a9bb2821bb~aQmX2Lpxm1152411524epcas5p1S;
+	Fri,  6 Mar 2026 13:06:49 +0000 (GMT)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260306130642epsmtip1ba292795323ba4ed525b25da8cf5b772~aQmSPjo3m1863218632epsmtip1c;
+	Fri,  6 Mar 2026 13:06:42 +0000 (GMT)
+Message-ID: <08273adc-d8cf-48b3-ba45-853d363af0e6@samsung.com>
+Date: Fri, 6 Mar 2026 18:36:31 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] usb: dwc3: gadget: Prevent EP resource conflicts
+ during StartTransfer
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"jh0801.jung@samsung.com" <jh0801.jung@samsung.com>, "dh10.jung@samsung.com"
+	<dh10.jung@samsung.com>, "akash.m5@samsung.com" <akash.m5@samsung.com>,
+	"hongpooh.kim@samsung.com" <hongpooh.kim@samsung.com>,
+	"eomji.oh@samsung.com" <eomji.oh@samsung.com>, "h10.kim@samsung.com"
+	<h10.kim@samsung.com>, "shijie.cai@samsung.com" <shijie.cai@samsung.com>,
+	"alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+	"muhammed.ali@samsung.com" <muhammed.ali@samsung.com>,
+	"thiagu.r@samsung.com" <thiagu.r@samsung.com>, "pritam.sutar@samsung.com"
+	<pritam.sutar@samsung.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <20260303003955.5lbb6xdrg7tp3zzi@synopsys.com>
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 316F722112A
+X-CMS-MailID: 20260306130649epcas5p192fe5f950447e3c51232a2a9bb2821bb
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260227121338epcas5p4baebb406db37f07223545b2f85751bf2
+References: <CGME20260227121338epcas5p4baebb406db37f07223545b2f85751bf2@epcas5p4.samsung.com>
+	<20260227121236.963-1-selvarasu.g@samsung.com>
+	<20260228002711.e442cuxwld4s2f66@synopsys.com>
+	<20260303003955.5lbb6xdrg7tp3zzi@synopsys.com>
+X-Rspamd-Queue-Id: 41FCE2216A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223338-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:dkim,samsung.com:email,samsung.com:mid,synopsys.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,urldefense.com:url];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[ideasonboard.com,1wt.eu,kernel.org,jjverkuil.nl,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223337-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	REDIRECTOR_URL(0.00)[urldefense.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[selvarasu.g@samsung.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[entropy1110@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Action: no action
 
-MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
-queue teardown paths. This can race request object cleanup against vb2
-queue cancellation and lead to use-after-free reports.
 
-We already serialize request queueing against STREAMON/OFF with
-req_queue_mutex. Extend that serialization to REQBUFS, and also take
-the same mutex in media_request_ioctl_reinit() so REINIT is in the
-same exclusion domain.
+On 3/3/2026 6:09 AM, Thinh Nguyen wrote:
+> On Sat, Feb 28, 2026, Thinh Nguyen wrote:
+>> On Fri, Feb 27, 2026, Selvarasu Ganesan wrote:
+>>> The below “No resource for ep” warning appears when a StartTransfer
+>>> command is issued for bulk or interrupt endpoints in
+>>> `dwc3_gadget_ep_enable` while a previous StartTransfer on the same
+>>> endpoint is still in progress. The gadget functions drivers can invoke
+>>> `usb_ep_enable` (which triggers a new StartTransfer command) before the
+>>> earlier transfer has completed. Because the previous StartTransfer is
+>>> still active, `dwc3_gadget_ep_disable` can skip the required
+>>> `EndTransfer` due to `DWC3_EP_DELAY_STOP`, leading to the endpoint
+>>> resources are busy for previous StartTransfer and warning ("No resource
+>>> for ep") from dwc3 driver.
+>>>
+>>> Additionally, a race condition exists between dwc3_gadget_ep_disable()
+>>> and dwc3_gadget_ep_queue() when manipulating dep->flags. When
+>>> dwc3_gadget_ep_disable() calls dwc3_gadget_giveback(), the dwc->lock is
+>>> temporarily released. If dwc3_gadget_ep_queue() runs in that window, it
+>>> may set the DWC3_EP_TRANSFER_STARTED flag as part of
+>>> dwc3_send_gadget_ep_cmd(). When ep_disable resumes, it unconditionally
+>>> clears all flags except those explicitly masked, potentially clearing
+>>> DWC3_EP_TRANSFER_STARTED even though a new transfer has started. This
+>>> leads to "No resource for ep" warnings on subsequent StartTransfer
+>>> attempts.
+>>>
+>>> The underlying framework issue is that usb_ep_disable() is expected to
+>>> complete pending requests before returning, but is allowed to be called
+>>> from interrupt context where sleeping to wait for completion is not
+>>> possible.
+>>>
+>>> As temporary workarounds for this framework limitation:
+>>>
+>>> 1. In __dwc3_gadget_ep_enable(), add a check for the
+>>>     DWC3_EP_TRANSFER_STARTED flag before issuing a new StartTransfer.
+>>>     This prevents a second StartTransfer on an already busy endpoint,
+>>>     eliminating the resource conflict.
+>>>
+>>> 2. In __dwc3_gadget_ep_disable(), preserve the DWC3_EP_TRANSFER_STARTED
+>>>     flag when masking dep->flags if it is actually set, preventing the
+>>>     race with dwc3_gadget_ep_queue() from corrupting the flag state.
+>>>
+>>> These changes eliminate the "No resource for ep" warnings and potential
+>>> kernel panics caused by panic_on_warn.
+>>>
+>>> dwc3 13200000.dwc3: No resource for ep1out
+>>> WARNING: CPU: 0 PID: 700 at drivers/usb/dwc3/gadget.c:398 dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+>>> Call trace:
+>>> dwc3_send_gadget_ep_cmd+0x2f8/0x76c
+>>> __dwc3_gadget_ep_enable+0x490/0x7c0
+>>> dwc3_gadget_ep_enable+0x6c/0xe4
+>>> usb_ep_enable+0x5c/0x15c
+>>> mp_eth_stop+0xd4/0x11c
+>>> __dev_close_many+0x160/0x1c8
+>>> __dev_change_flags+0xfc/0x220
+>>> dev_change_flags+0x24/0x70
+>>> devinet_ioctl+0x434/0x524
+>>> inet_ioctl+0xa8/0x224
+>>> sock_do_ioctl+0x74/0x128
+>>> sock_ioctl+0x3bc/0x468
+>>> __arm64_sys_ioctl+0xa8/0xe4
+>>> invoke_syscall+0x58/0x10c
+>>> el0_svc_common+0xa8/0xdc
+>>> do_el0_svc+0x1c/0x28
+>>> el0_svc+0x38/0x88
+>>> el0t_64_sync_handler+0x70/0xbc
+>>> el0t_64_sync+0x1a8/0x1ac
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+>>> ---
+>>>
+>>> Note: No Fixes tag is added because this is a workaround for the
+>>> gadget framework issue where the gadget framework calls usb_ep_disable()
+>>> in interrupt context without ensuring endpoint flushing completes.
+>>> A proper fix requires refactoring the framework to make sure
+>>> usb_ep_disable is invoked in process context.
+>>>
+>>> Changes in v3:
+>>>   - Revised the commit message to detail the real gadget framework issue
+>>>     pointed out by the reviewer.
+>>>   - Merged the two fixes for the same ep wringing into one patch.
+>>> Link to v2: https://urldefense.com/v3/__https://lore.kernel.org/linux-usb/20251117155920.643-1-selvarasu.g@samsung.com/__;!!A4F2R9G_pg!cQzQQ5kAWF6CE5hQe7VqFdnaxqwzsTB1ZGNT1GvCH28GoB_nESZR5Y2jtxdZBls6wBIM4OtpvG4dSaylvNC3qbh547k$
+>>>
+>>> Changes in v2:
+>>> - Removed change-id.
+>>> - Updated commit message.
+>>> Link to v1: https://urldefense.com/v3/__https://lore.kernel.org/linux-usb/20251117152812.622-1-selvarasu.g@samsung.com/__;!!A4F2R9G_pg!cQzQQ5kAWF6CE5hQe7VqFdnaxqwzsTB1ZGNT1GvCH28GoB_nESZR5Y2jtxdZBls6wBIM4OtpvG4dSaylvNC38z-CRD4$
+>>> ---
+>>>   drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++++--
+>>>   1 file changed, 20 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+>>> index 0a688904ce8c5..3af1bbfe3d92b 100644
+>>> --- a/drivers/usb/dwc3/gadget.c
+>>> +++ b/drivers/usb/dwc3/gadget.c
+>>> @@ -971,8 +971,9 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
+>>>   	 * Issue StartTransfer here with no-op TRB so we can always rely on No
+>>>   	 * Response Update Transfer command.
+>>>   	 */
+>>> -	if (usb_endpoint_xfer_bulk(desc) ||
+>>> -			usb_endpoint_xfer_int(desc)) {
+>>> +	if ((usb_endpoint_xfer_bulk(desc) ||
+>>> +			usb_endpoint_xfer_int(desc)) &&
+>>> +			!(dep->flags & DWC3_EP_TRANSFER_STARTED)) {
+>>>   		struct dwc3_gadget_ep_cmd_params params;
+>>>   		struct dwc3_trb	*trb;
+>>>   		dma_addr_t trb_dma;
+>>> @@ -1096,6 +1097,23 @@ static int __dwc3_gadget_ep_disable(struct dwc3_ep *dep)
+>>>   	 */
+>>>   	if (dep->flags & DWC3_EP_DELAY_STOP)
+>>>   		mask |= (DWC3_EP_DELAY_STOP | DWC3_EP_TRANSFER_STARTED);
+>>> +
+>>> +	/*
+>>> +	 * When dwc3_gadget_ep_disable() calls dwc3_gadget_giveback(),
+>>> +	 * the dwc->lock is temporarily released. If dwc3_gadget_ep_queue()
+>>> +	 * runs in that window it may set the DWC3_EP_TRANSFER_STARTED flag as
+>>> +	 * part of dwc3_send_gadget_ep_cmd. The original code cleared the flag
+>>> +	 * unconditionally in the mask operation, which could overwrite the
+>>> +	 * concurrent modification.
+>>> +	 *
+>>> +	 * As a workaround for the interrupt context constraint where we cannot
+>>> +	 * wait for endpoint flushing, preserve the DWC3_EP_TRANSFER_STARTED
+>>> +	 * flag if it is set, avoiding resource conflicts until the framework
+>>> +	 * is fixed to properly synchronize endpoint lifecycle management.
+>>> +	 */
+>>> +	if (dep->flags & DWC3_EP_TRANSFER_STARTED)
+>>> +		mask |= DWC3_EP_TRANSFER_STARTED;
+>>> +
+>>>   	dep->flags &= mask;
+>>>   
+>>>   	/* Clear out the ep descriptors for non-ep0 */
+>>> -- 
+>>> 2.34.1
+>>>
+>> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+>>
+> Oh wait, don't pick this patch up yet.
+>
+> This will cause a regression for UAS device. When switching alt-setting
+> interface for BOT to UASP, the device needs to issue a Start Transfer
+> command.
+>
+> This workaround won't work. Can we fix the usb_ep_disable() interface
+> and rework this instead?
+>
+> BR,
+> Thinh
 
-This keeps request cleanup and queue cancellation from running in
-parallel for request-capable devices.
+Hi Thinh,
 
-Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
----
-Changes since v3:
-- Revert guard(mutex) usage in media_request_ioctl_reinit()
-- Restore explicit mutex_unlock() calls in media_request_ioctl_reinit()
+We’re trying to see how this change could cause a regression for UAS 
+devices.
+Could you explain why the workaround might be a problem for UAS? Are you 
+concerned that it could miss a valid StartTransfer when a previous 
+transfer finishes later than expected as part of ep_disable?
 
- drivers/media/mc/mc-request.c        | 5 +++++
- drivers/media/v4l2-core/v4l2-ioctl.c | 5 +++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+If we don’t use this temporary fix, the driver can still report “EP 
+resource busy” when an earlier StartTransfer hasn’t finished 
+before ep_disable returns. That can happen when a UAS device needs to 
+start a new transfer during ep_enable while the prior transfer is still 
+pending.
 
-diff --git a/drivers/media/mc/mc-request.c b/drivers/media/mc/mc-request.c
-index 8ad10c72f9db..4f632a9c292b 100644
---- a/drivers/media/mc/mc-request.c
-+++ b/drivers/media/mc/mc-request.c
-@@ -192,6 +192,8 @@ static long media_request_ioctl_reinit(struct media_request *req)
- 	struct media_device *mdev = req->mdev;
- 	unsigned long flags;
- 
-+	mutex_lock(&mdev->req_queue_mutex);
-+
- 	spin_lock_irqsave(&req->lock, flags);
- 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
- 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
-@@ -199,6 +201,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
- 			"request: %s not in idle or complete state, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	if (req->access_count) {
-@@ -206,6 +209,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
- 			"request: %s is being accessed, cannot reinit\n",
- 			req->debug_str);
- 		spin_unlock_irqrestore(&req->lock, flags);
-+		mutex_unlock(&mdev->req_queue_mutex);
- 		return -EBUSY;
- 	}
- 	req->state = MEDIA_REQUEST_STATE_CLEANING;
-@@ -216,6 +220,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
- 	spin_lock_irqsave(&req->lock, flags);
- 	req->state = MEDIA_REQUEST_STATE_IDLE;
- 	spin_unlock_irqrestore(&req->lock, flags);
-+	mutex_unlock(&mdev->req_queue_mutex);
- 
- 	return 0;
- }
-diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
-index 37d33d4a363d..a2b650f4ec3c 100644
---- a/drivers/media/v4l2-core/v4l2-ioctl.c
-+++ b/drivers/media/v4l2-core/v4l2-ioctl.c
-@@ -3082,13 +3082,14 @@ static long __video_do_ioctl(struct file *file,
- 	}
- 
- 	/*
--	 * We need to serialize streamon/off with queueing new requests.
-+	 * We need to serialize streamon/off/reqbufs with queueing new requests.
- 	 * These ioctls may trigger the cancellation of a streaming
- 	 * operation, and that should not be mixed with queueing a new
- 	 * request at the same time.
- 	 */
- 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
--	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
-+	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
-+	     cmd == VIDIOC_REQBUFS)) {
- 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
- 
- 		if (mutex_lock_interruptible(req_queue_lock))
--- 
-2.52.0
+The patch simply blocks a second StartTransfer when the same endpoint 
+already has a transfer in progress to prevent a “EP resource busy” issue.
+
+And it can cause a new StartTransfer to be issued later from ep_queue 
+while the starttransfer that should have been started during ep_enable 
+is skipped.
+
+Thanks,
+Selva
 
