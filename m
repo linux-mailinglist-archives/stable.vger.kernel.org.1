@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-223374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AJlIdQTq2lzZwEAu9opvQ
-	(envelope-from <stable+bounces-223374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:50:12 +0100
+	id IKDeM/ATq2lzZwEAu9opvQ
+	(envelope-from <stable+bounces-223375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:50:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07389226725
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:50:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB28226737
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 750EB30429B2
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:49:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9190300A4C5
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A730D3ED118;
-	Fri,  6 Mar 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4313EF0C1;
+	Fri,  6 Mar 2026 17:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9erEdPy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8rzqp8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645803ACF0C;
-	Fri,  6 Mar 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F297D3EBF37;
+	Fri,  6 Mar 2026 17:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772819388; cv=none; b=u+bII7AFjgb2VEQVLQYmFnnGksyCl+VaGFefD7RcEi1XmrQpdat02T+vkjQy7k0QjHkzKNLzPrcSqewLiqrK07PzRFmjoeVHHWOkCpMs+zx5BMr1h4heCb5lWg+7DJOpXpId6oec03uCUM/8t5a/QXjPOzerkvdPc6GvStKo6xY=
+	t=1772819420; cv=none; b=bpjIIf05XJlZRCD4QrsW84WaZGg/sOY7scC8PPVLuwjXh2Kbn8BHn6O8Zb42ojARLvjGbLRQBdXx5btQ9JoiRif74smaUMdSihgtbJzVCOSq1362/dx5PbuQiYfkLTklBbpn3ivRuQRfrI/hX5dwjyKVnZH7sRbVN/nkPmxWUU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772819388; c=relaxed/simple;
-	bh=ClySTMzX2OSJtqyWBM2VHIoDStBS0PCaH9Z/uLsTLG8=;
+	s=arc-20240116; t=1772819420; c=relaxed/simple;
+	bh=VbJRlfY1MntFcbhcYNVoUDgBwW4O9vvGohXljbwTu2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/Uc526/KJ8w2B4l2P46R7Sx6+1c5/414jZSt40wXR91406newsk8PC+UY4io8vql97dFujsKo9clI4CF2KCgt8vCuE8wh69nMjA8Mljdb/3W5iCkvnROC497+lcpXCOni+a6VMbLz/C7nOCGM052K+Q6uMfINTBbrJ1Wc1amRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9erEdPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C60C19425;
-	Fri,  6 Mar 2026 17:49:46 +0000 (UTC)
+	 MIME-Version; b=YR2V63OO5KyNOqPLuMaOJ+DdKXzGWe7wX8+OCfXUvwY5twX8YnIOfUn1u6xt/r+X1dB8mvlMWNhQVic/FLHG/7busSjfosEF4BEYfdqlBxoSIWgIIpD04NTgJ/1arr9BSTqtotvrVngHMpBDtISLP/aSzvwnxtTwW7xGE87pZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8rzqp8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F31C4CEF7;
+	Fri,  6 Mar 2026 17:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772819388;
-	bh=ClySTMzX2OSJtqyWBM2VHIoDStBS0PCaH9Z/uLsTLG8=;
+	s=k20201202; t=1772819419;
+	bh=VbJRlfY1MntFcbhcYNVoUDgBwW4O9vvGohXljbwTu2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9erEdPyWAMY3B6Q8gXENxtVBct8Z6liCEvgomI1mHJ8WMLhZRJi5KUa3n0j86HPF
-	 ngJxqoREzHnOgY6RpdyJmaX27UDdmKjvbVxG6FEdl5dFlZivrDsuAbxPRAICzHXV3K
-	 vAm+ZWKmpbKCwy86flHO5tFkogYIncUXZbL7oNEgIYDVOaeh7iN5GYAKPDDJi3JOmV
-	 AlA8aShcUKrH//gKFoualfTx2G0+09l7W8MPaB61AqFMA0ww1MhCxXlFwPXBRw2vl0
-	 pOFaa1L6I4vQvo/PKJlHzusHcIWPQCmMzSU6P0AIqbIqEiik0+//edkZBtNMuf8Tjo
-	 412engYj9n6IA==
+	b=o8rzqp8OVSqolFkVNeQspXer9okqfOX0L782LtG7QirXv//EHvzySIOfYLFfDuum6
+	 Wm7sEQeouDM2gHOydFL+E2mjww7fgJgqGF4HgVIMDFJocU861Us3pNpMmC3VxaZnZu
+	 cF0Pyz5k9PvVbAM8TRPMnu0pYYOtiHnSLEigu2sbkmghlwDxijNqPyoGjRNMuuUS0G
+	 2KKzm2m77jdAUZhgs3Si2OJ+mYgD99cxL6H12R9mX1q3LSa19mPSsyM0BQmXdGvr+T
+	 wImpPi7ASm6hCv+qQziUhR5HXbk88MRE5TSi8HRGPicvu1DjZNl+K2qGTk6OI7i1es
+	 uLJ1fVNhLfr/A==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
@@ -53,12 +53,12 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6.y] mptcp: pm: in-kernel: always set ID as avail when rm endp
-Date: Fri,  6 Mar 2026 18:49:08 +0100
-Message-ID: <20260306174907.2519153-2-matttbe@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: pm: in-kernel: always set ID as avail when rm endp
+Date: Fri,  6 Mar 2026 18:50:10 +0100
+Message-ID: <20260306175009.2520964-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260301013649.1696888-1-sashal@kernel.org>
-References: <20260301013649.1696888-1-sashal@kernel.org>
+In-Reply-To: <20260301014545.1708548-1-sashal@kernel.org>
+References: <20260301014545.1708548-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,10 +66,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8520; i=matttbe@kernel.org; h=from:subject; bh=ClySTMzX2OSJtqyWBM2VHIoDStBS0PCaH9Z/uLsTLG8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJXC09mvyaVLDs9Pq+NTT3S/GH8nptJsdLpudErGC8Uh h2W5dTuKGVhEONikBVTZJFui8yf+byKt8TLzwJmDisTyBAGLk4BmMhFTUaGGU5KC5JmaB875r7r m9XmTXUuHhtZNe5aBZyXe8b5dvaXLEaG/slGPUzv1vgna17ZdPfyFXfO705vQkp+NJxIWfBJKyC ZAQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8520; i=matttbe@kernel.org; h=from:subject; bh=VbJRlfY1MntFcbhcYNVoUDgBwW4O9vvGohXljbwTu2M=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJXC1/K7dqtLWFQat+TYe+Zr3f5UqXoilviSmYnlESn2 XWpfjfvKGVhEONikBVTZJFui8yf+byKt8TLzwJmDisTyBAGLk4BmMgNNYZ/Vm83rq8/+/nY4Z+b ef99spXNnbfgwu7Lubk3vA706D3+PpHhv4f57mUr3zrprlubcteq5c5jrW1KrJ+mek/erWrBZhz 6lBcA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07389226725
+X-Rspamd-Queue-Id: 4EB28226737
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -86,19 +86,19 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223375-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
 commit d191101dee25567c2af3b28565f45346c33d65f5 upstream.
@@ -221,10 +221,10 @@ Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
  1 file changed, 8 insertions(+), 12 deletions(-)
 
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 4b805d7f5769..b3342d9a7b88 100644
+index 293ec3448f52..9450c85c1d87 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -1605,10 +1605,8 @@ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+@@ -1601,10 +1601,8 @@ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
  	ret = remove_anno_list_by_saddr(msk, addr);
  	if (ret || force) {
  		spin_lock_bh(&msk->pm.lock);
@@ -236,7 +236,7 @@ index 4b805d7f5769..b3342d9a7b88 100644
  		mptcp_pm_remove_addr(msk, &list);
  		spin_unlock_bh(&msk->pm.lock);
  	}
-@@ -1646,17 +1644,15 @@ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
+@@ -1642,17 +1640,15 @@ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
  					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
  
  		list.ids[0] = mptcp_endp_get_local_id(msk, addr);
