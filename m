@@ -1,186 +1,183 @@
-Return-Path: <stable+bounces-223385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNorCTIuq2n6aQEAu9opvQ
-	(envelope-from <stable+bounces-223385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:42:42 +0100
+	id 0EZEJ3tDq2nJbgEAu9opvQ
+	(envelope-from <stable+bounces-223387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 22:13:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E532272B3
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:42:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33C6227C56
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 22:13:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65E84301D0E7
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 19:42:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C95BA300E48A
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 21:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0BD3EF0DA;
-	Fri,  6 Mar 2026 19:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813223F23B3;
+	Fri,  6 Mar 2026 21:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/RWrIgq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWQVhSmQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F7423A8B
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 19:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159B4481A9C
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 21:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772826158; cv=none; b=qSDTaTbT9fXkHQw8ICfLsTIvHfSXf5yals/Im6PdIbMg5rFF2MBg0AvetorsGnDXdL+s8OAS7NzOcmVbyTQn9+POVQjT3fjKvTarMsoj6QkkNJw8LWhk3SJWSVdFHgtXmVjrY8gQstQRgErEa/Oruu90gxnyUWKvy9cHsaE/pXg=
+	t=1772831598; cv=none; b=rLo2gZ/YbB3aF7E63cq5NOpQI89YYhPK7D8hx9RhT+qgxhZuQj2ua6bS2eztLM85xF8XC5FTeH+BcWy4G4xaqe9Lx9pLLTv3js9z5EowmWfMLyaZTi1zNp0fv5pWAkxiVe+uT9Byeq28Gq/0QhdBMWS8V7gXFf8IURnPs2oV34s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772826158; c=relaxed/simple;
-	bh=YK+Y54U96GRBS+z1qRIQBFTTPMEcbDyQJULkYV41Gjw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lImOYauEqtk0xHnWJNPnOUsaxswJrFciWJwKk+JJ6NYL6Sx52Za2O0XBVtK/XBxVIYbRN03I681lCO3wVBfjFO6wmQjo2Vn1gS5XgpklZev4t9baTMRzCDeijkD5J3Yo3DG4Lneq3VTW9+thp8jG4N/cgvJkG4EjQ4s/+GjchUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/RWrIgq; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1772831598; c=relaxed/simple;
+	bh=qOWkm4KaoM/M/IJUqxWIPVIv0S9czaoP8RjOHXBNsO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IuKPeAG/qAWrqU9OlAhurawDW++q9A9Ew8GXMhBxSl4BF3UJDwtMnQm2LpT0gSXrTo+34gzxanhF/LyS9qbg9z81+Hf94H0xZLxJA6YFKCSUbX7b2alAs+2al7FYa7fTtWcXyU0omXTLDkQq3M1pHinx03O89Jyu3iWEf+QfsJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWQVhSmQ; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a12c19affeso2779394e87.1
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 11:42:36 -0800 (PST)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a12cd0bd79so2965547e87.2
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 13:13:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772826155; x=1773430955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0x71R80oZPX+EWUfFkHezcVLeIdiVCuhQgybAe8h6wI=;
-        b=T/RWrIgq7lVbX4Ja1hH6WkqGC8oAZ5kGoDwDePK20iaCB6iGHS86DjHB3Kxmta4ZMW
-         xg6id8tWLIXOdx9JuPdKg0v1d1gwkvu6L8iXLSGvrEHH8vte9PlQfrqx2pUounOu6WfS
-         C1bWsxBqgPEFICXyFwM9DMnLEFIdsg1D4ZBRGFMGGeUtEf6Uimfr5GjzoZITldDDySAb
-         IxvcLv+u3IhWyebgAUnXfz6AmY2Pg0/6bRU9RgSSZjLbqxO3g1ixu2HV0MLDcKPvThuW
-         oFO6rBeOzZaM+vuRUHLHkAufi3HJOAwKCSD8L9UBXa+fAicuwmvRfm228DRtOeHbTRqL
-         Z4SQ==
+        d=gmail.com; s=20230601; t=1772831595; x=1773436395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cf/zNSP2mIwbDjec2q9Q1Mo/k5XXLlz6S1V2sE7Q5Sc=;
+        b=JWQVhSmQmi52tkEO1YchDWC/eCYAj/x0gfcyO/xf6LJuA+NCIs3VNzLOQFTOWLfyqT
+         Z5zK2+pE6YSCa54BLyA9lT8vFEX6GNOujBLtW+h+Id5jedtojWGDpcx71p1mxpOYi1v6
+         7cRozo2JPtZ14fZvYAEKeH6LBJsT1+P/m/afOnNXSsOehWtuiLNcTrwUh9wTlPOSokeq
+         IYXwBTMHP2TexMqWcPLs82xc+Hl2ezIQKW9H0qQUnZ2ozNtDloiSau/vE2mrql/7qAM/
+         YuWsXW9uuItzyCOs2XASaczBVWrTcdW7GQDCqrwc4MFit9sLbNFQbefsTySQ/Bv32pcX
+         rcpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772826155; x=1773430955;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0x71R80oZPX+EWUfFkHezcVLeIdiVCuhQgybAe8h6wI=;
-        b=KxyUBqsJNA/ujx7GOOoh2eSXlFcSE0EfP7EbMGTUJfyf/wD1OXCmAv7OHUnUnGf47k
-         KNiS5nNiEJApaCEuHtvIBl/zWfV1GTxABeLrImhIeDhn2N363JK0UmD4al+ICaq+gSVf
-         TZotSqYR6xiMw4BH6Gbtm2Afo/v+xnTx7c4NAaB5Kvqj9L8dvma63BllbKycvQgvQHEc
-         vHVQ9f6iY+/AIMcaU2QO8JSr4yQxBNNyL4ljtj4WAJiOqMtQGv8EQt7nmfwc4w+BMGbT
-         EwWrITYS+oAsoGJ9Z6YJMzYUFkeE32nTRzPCg6V4fz8rWoqkParobViVxLGsleDq1mxZ
-         FX5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXg5kYF+6bScoQL0mGaHvff/Um1BRmSaL1XocUjCF5Xn4OA/lS2ENJhZN7Dapsj7S/ngRX9V1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztyINcQwKheFT3cwJZJ8sBPW/VDjPaxnWZNKT+XYV7tSTb9R6l
-	TtvdcTFEyeBCk67Pb5nvOpqqEngCAQQcVeUyTZhkInb64y0h/Thby3+QrbWplSQ8
-X-Gm-Gg: ATEYQzwzHTZ9cOJAdFvNQevOhAT6CQCAylcmlh22P3I26s3jCJ8s3Ksr2+IeTjifIaP
-	BFna7Bf1jD7hRDbWRSmRDDcGfFEiFC0KkI+9eW8DBH0zD2W8d8EngwzbzN2wnz6WFn7kXkDTaEo
-	M+b13W/DpvSno8hbBAYwDLm2ui8GOprscGVCjF1FVE5/EGSTApSpxvXQ2Lycso1UDC/DpokG7e8
-	iGdmCwKy+iywrKp6n67yhhMNYfpGsxr9Q2BAdZQUdle/111YanEPHwCxhG8mBGFcZKoe0NTAbGH
-	DkDIS/99CkDL7kQgagX66mw+NUA9ixpfpRQrzCE2CDzblufX6v1aCZvk7OEpXa0u9todhR6g08t
-	yzeE/bZprd+i0/Hu5MOexR1chHrDaGPz/aGKtfRK7Xeg3MKxD9lG8loCuXiwDqY9CkM1GUKmWRK
-	FDY5+F
-X-Received: by 2002:a05:6512:690:b0:5a1:306e:ca03 with SMTP id 2adb3069b0e04-5a13c941528mr1263530e87.21.1772826155207;
-        Fri, 06 Mar 2026 11:42:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772831595; x=1773436395;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cf/zNSP2mIwbDjec2q9Q1Mo/k5XXLlz6S1V2sE7Q5Sc=;
+        b=RDbGsGa1e4xB8MfYTYX8/pMoRg33nON884wYf/U5P9YlYa/Kju7iT8IrQoJhH4UYH8
+         z71f458Mq1JY+YZVZFUx5W1spdgf7cgi892PBnmtanPkINXQo74wvldrfySEYutYMn7G
+         esQVFf+vcijgV1BT5sQjf+OE4c22REbX7JtohMKRDsZyRF9Z8ocdBJxtGSOxNl5vOLqJ
+         dXgdzP0bDQH4neaxoJwDel/DG6gJODq/CfL5skFoAnA/mc5ji7jNjnxQ6bBpvDB+zoA0
+         hlw+nvQRSrtFeMYO+eSd18cuNGP2z6ttqolxD5hCMvj7eLAKN4YoFBi4MCjYCLmT8ntg
+         YBWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZz0t2BMQ7IjQYl8ijqHxEZR8KRerJh/x0R2PpDya/9KLe4oywN4shTrYBo4XMxSS8DOEJkuU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbjkuLMpX7F+x0NI4J3DHgGCSzmqXXLzgQIJ9vyO8ag1N3oPkw
+	cl7een6Z3dN5ybWRcuGAPgYJZeySSLh173KXY1wxoXsfCAtMgLu+2l9Q
+X-Gm-Gg: ATEYQzxlFnb64r4dOyvYMAYPLtUczSGDU2cyofXJbIQP/fSwn+yRoC1Msau6MRpy9Kg
+	SJ2AiOPl3h5Lq+3dzOhMjmNOE6GF6IrrB+7RU6YJ9HgfvY+j6XRtVCo2AU7QOtSNWVGiEX/jOd7
+	2nZ+pgGhuHcdbFY7LDY32sWezH6AMpiumwtBGThXrgNaxnVcWH9KSBPzv1e527UO2VABIKm4NdN
+	dwVvxZJY5JJHWBzlVOv/ztqyDVfsb3E4WXYHX7yao0i/DTfFmIRABThFNCme8c4/s9ytZzUM3A2
+	5eyFoEUWniqTtbugxhDpH2shR6JJGEGGLEv4ZGtMULHaL4Le3sXjzLhnFn83y8HTkpc6LM8Q0gg
+	cmcOkH46BAkZ6urp00lqcPKEcCDypsx+l+ipRmcDtESrK6lndu2wCP3Pb7NFYMnoKmuWV3aoTpY
+	cbQKkp
+X-Received: by 2002:a05:6512:1315:b0:5a1:3c21:37f with SMTP id 2adb3069b0e04-5a13cab3728mr1533744e87.7.1772831595025;
+        Fri, 06 Mar 2026 13:13:15 -0800 (PST)
 Received: from router-0001 ([2a01:4f9:3080:2e0f::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13d01cfabsm515709e87.7.2026.03.06.11.42.31
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13d07e0f1sm554433e87.58.2026.03.06.13.13.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:42:33 -0800 (PST)
+        Fri, 06 Mar 2026 13:13:13 -0800 (PST)
 From: Alex Dvoretsky <advoretsky@gmail.com>
-To: alex@dvoretsky.name
-Cc: Alex Dvoretsky <advoretsky@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 3/3] igb: add XDP transition guards in igb_xdp_setup()
-Date: Fri,  6 Mar 2026 20:42:26 +0100
-Message-ID: <20260306194226.995095-4-advoretsky@gmail.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	stable@vger.kernel.org,
+	kurt@linutronix.de,
+	maciej.fijalkowski@intel.com,
+	Alex Dvoretsky <advoretsky@gmail.com>
+Subject: [PATCH net 0/3] igb: fix TX stall during XDP teardown with AF_XDP zero-copy
+Date: Fri,  6 Mar 2026 22:13:07 +0100
+Message-ID: <20260306211310.1213330-1-advoretsky@gmail.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260306194226.995095-1-advoretsky@gmail.com>
-References: <20260306194226.995095-1-advoretsky@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 04E532272B3
+X-Rspamd-Queue-Id: B33C6227C56
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,linutronix.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223387-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223385-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[advoretsky@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.940];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.988];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-igb_xdp_setup() calls igb_close() + igb_open() when transitioning
-between XDP and non-XDP mode on a running device. This has two issues:
+When an AF_XDP zero-copy application exits while an XDP program remains
+attached, igb can permanently stall a TX queue associated with the
+AF_XDP socket. The interface stops forwarding traffic and typically
+requires a driver reload to recover.
 
-1. When removing an XDP program that has AF_XDP zero-copy sockets,
-   ndo_xsk_wakeup() may be executing concurrently under rcu_read_lock().
-   If igb_close() tears down the rings while ndo_xsk_wakeup() is still
-   accessing them, it races with the teardown. Add synchronize_rcu()
-   before igb_close() when removing an XDP program to ensure all
-   in-flight ndo_xsk_wakeup() calls complete first.
+Reproducer:
 
-2. The igb_close()/igb_open() window leaves trans_start stale from
-   before the close: the TX watchdog can fire a spurious timeout and
-   queue a reset_task that races with igb_open(). Add
-   netif_trans_update() after igb_open() to refresh the timestamp, and
-   cancel_work() to drain any reset_task queued during the window.
+  1. Attach an XDP program to igb
+  2. Run an AF_XDP zero-copy application
+  3. kill -9 the application
 
-Fixes: 9cbc948b5a20 ("igb: add XDP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
----
- drivers/net/ethernet/intel/igb/igb_main.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+The TX watchdog eventually fires and the interface becomes
+unresponsive. Reproduced on Intel I210 with Linux 6.17.
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index ddb7ce9e97bf..9ba944bf67b4 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -2913,6 +2913,9 @@ static int igb_xdp_setup(struct net_device *dev, struct netdev_bpf *bpf)
- 
- 	/* device is up and bpf is added/removed, must setup the RX queues */
- 	if (need_reset && running) {
-+		if (!prog)
-+			/* Wait until ndo_xsk_wakeup completes. */
-+			synchronize_rcu();
- 		igb_close(dev);
- 	} else {
- 		for (i = 0; i < adapter->num_rx_queues; i++)
-@@ -2936,6 +2939,16 @@ static int igb_xdp_setup(struct net_device *dev, struct netdev_bpf *bpf)
- 	if (running)
- 		igb_open(dev);
- 
-+	/* Refresh trans_start to prevent the TX watchdog from firing on a
-+	 * stale timestamp from before igb_close(). Cancel any reset_task
-+	 * that igb_tx_timeout() may have queued between igb_close() setting
-+	 * __IGB_DOWN and the actual napi_synchronize() completion.
-+	 */
-+	if (need_reset && running) {
-+		netif_trans_update(dev);
-+		cancel_work(&adapter->reset_task);
-+	}
-+
- 	return 0;
- }
- 
--- 
+igb_clean_rx_irq_zc() lacks a __IGB_DOWN guard. When the AF_XDP process
+exits the XSK pool is destroyed, but NAPI continues polling. The
+function then repeatedly returns the full budget, which prevents
+napi_complete_done() from completing. As a result igb_down() blocks in
+napi_synchronize() and TX completions stop being processed, eventually
+triggering the TX watchdog.
+
+Patch 1 adds a __IGB_DOWN guard to igb_clean_rx_irq_zc() to break the
+infinite NAPI poll loop.
+
+Patch 2 prevents igb_tx_timeout() from scheduling reset_task during XDP
+transitions when the device is shutting down.
+
+Patch 3 adds synchronization in igb_xdp_setup() to ensure that pending
+ndo_xsk_wakeup() calls complete before the teardown continues, and
+refreshes trans_start after igb_open() to prevent false TX timeouts.
+
+igc handles a similar stale trans_start situation via
+txq_trans_cond_update() (commit 86ea56c5b0c7). This patch adds
+equivalent protection for igb during XDP transitions.
+
+Tested on Intel I210:
+
+  - AF_XDP ZC app exit with XDP attached
+  - XDP detach while AF_XDP running
+  - repeated XDP attach/detach cycles
+
+Alex Dvoretsky (3):
+  igb: check __IGB_DOWN in igb_clean_rx_irq_zc()
+  igb: skip reset in igb_tx_timeout() during XDP transition
+  igb: add XDP transition guards in igb_xdp_setup()
+
+ drivers/net/ethernet/intel/igb/igb_main.c | 15 +++++++++++++++
+ drivers/net/ethernet/intel/igb/igb_xsk.c  |  3 +++
+ 2 files changed, 18 insertions(+)
+
+--
 2.51.0
 
 
