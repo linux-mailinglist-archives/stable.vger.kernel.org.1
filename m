@@ -1,112 +1,136 @@
-Return-Path: <stable+bounces-223394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ag2JLxaq2mmcQEAu9opvQ
-	(envelope-from <stable+bounces-223394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 23:52:44 +0100
+	id iHHMDNdbq2nTcQEAu9opvQ
+	(envelope-from <stable+bounces-223395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 23:57:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CDD228687
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 23:52:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC93228713
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 23:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E59DB3048559
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 22:51:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1DFF3300846E
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 22:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E049B35DA77;
-	Fri,  6 Mar 2026 22:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED56535F606;
+	Fri,  6 Mar 2026 22:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="bODiCCTS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rQU6mmxZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D22F361F;
-	Fri,  6 Mar 2026 22:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05E93537CF;
+	Fri,  6 Mar 2026 22:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772837509; cv=none; b=GF4qvT/pgGMeSZyBF0kH6POA/zDHwhGbo2nstkaT85s7+A8e51nnGfkgQcs5HmQNB771W3iPB9i4LjYqZmYLqIFP2CJc/chykbY+7mrXj9apafXVXRj1XeyU32Srf1bq7HyGDwSIYU64rIgMybMv1D2wcY78Y0vlUSoQE/am9Fo=
+	t=1772837841; cv=none; b=rzrl5avIkZTCZya/8E9YTr9qta72114nv1obEpw+iSbu0GFVdZmDIIz22cLuLcFjS5yha2sOSagwDvKwLoKlMI4H2RzQo1cuZ9T6PuC9Ew1G/bwYd7U0knk9kMHdN0UXGabW/l9kBjHKQcTJ/DofhAzSWH3mZglW6g0GE/xwJWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772837509; c=relaxed/simple;
-	bh=hfl+bV3OYaINBb181OlWuBVLGA4mLAjDJST9Z8GqIAQ=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=SEfPiMiPxunR3D4q5Ygy8mf6GOVE9IRXQcsvL2myHnMEwNNMsDAqPfbQ1K0WJsQxVlHr48d71R/ieAgIfwCS4QyGJcKM7VFmEvcif3xnr7JIg5EYGOM5y18xli/5L20HE08miSBYT+QUXd5Yv0I0GvhSLBy6b1UKywuHSzlieWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=bODiCCTS; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3hSzwavHB6NZKvEKnt5LxFHBFnS5kUFqttrSiKePW6w=; b=bODiCCTSg/exLPqIvHDXMc+i+f
-	gkcQvy8jlD5lkbnZKJK6M8L9G9vE70M2CJM16oYMuc1jbLIabmmHaDzWuS7wB1YK183GmoT13baNL
-	vc5CFIYlH/NG8GOfkDqz2YmyCzEGs/pg7HOD34FLJcW2mZ7c0F22k0Z/yDyLIpoH5zmjyqhXqPGE3
-	TDM1Hl0g6xS4CDeLwXeVJw8qm+EIwR24bw86z/40Xb70ueEgfWDhLl3+K4O38JjMZCI8u1fOFEYxT
-	UwH0PO2XCQtQMfgc6b5bL1SfPr/5hnqwiM+iuhQAn1EaipD8V+ChsRwV7llTaR+eNidoYHNr1UkKf
-	12EMQexA==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
-	id 1vye1J-00000000PGC-0Wqp;
-	Fri, 06 Mar 2026 19:51:45 -0300
-Message-ID: <353be345dcf906816d61e127583032d2@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: smfrench@gmail.com, Thiago Becker <tbecker@redhat.com>, David Howells
- <dhowells@redhat.com>, linux-cifs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] smb: client: fix oops due to uninitialised var in
- smb2_unlink()
-In-Reply-To: <r7ojhnxu3jkr42oczp2o5w3hp5bs24ft5yav6nnlcohsybqeuv@zjvwndvvxayc>
-References: <20260306005706.830672-1-pc@manguebit.org>
- <r7ojhnxu3jkr42oczp2o5w3hp5bs24ft5yav6nnlcohsybqeuv@zjvwndvvxayc>
-Date: Fri, 06 Mar 2026 19:51:44 -0300
+	s=arc-20240116; t=1772837841; c=relaxed/simple;
+	bh=+UpDJ8R8P09+MTeCv2vqlFR2qoA2D9Oi9pY9w7S2NpM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=fwEwM044mEknpEeNe8pY9GSlpRmks1P/f/BV70iAvQs2sWqhixYHGpiq+uhJ42UD8/6z3Fsm3d/JK1uly/L9qmXjvgIa4J3Y7UjT75YbgrlD5N1uZSQkLV5fm73heGFIG7/z7X6RSCStFnJ3bAwDc4e1MXT0O3KRnhLib8IUKhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rQU6mmxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A959C4CEF7;
+	Fri,  6 Mar 2026 22:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772837841;
+	bh=+UpDJ8R8P09+MTeCv2vqlFR2qoA2D9Oi9pY9w7S2NpM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rQU6mmxZ5Jx7rNAFejrpaxCnUme6UV8ASDx6caVu2UEP2Z5rvv8f8noKKML98jSYW
+	 gLPBxBg3xU8hRkRMUlNTucpcKCuIMcsT4FuxToJfCoZ53Ugt4Yimi9tEFEOS8zJFlg
+	 FAK+BOgor9qTaGFy4UZVgKNV5kmZQ1SfXEk7+BT4=
+Date: Fri, 6 Mar 2026 14:57:20 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Josh Law <hlcj1234567@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>, Matthew Wilcox
+ <willy@infradead.org>, Alice Ryhl <aliceryhl@google.com>, Andrew Ballance
+ <andrewjballance@gmail.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Josh Law <objecting@objecting.org>
+Subject: Re: [PATCH v2] lib/maple_tree: fix swapped arguments in
+ mas_safe_pivot() call
+Message-Id: <20260306145720.e8b6afd26aeb9b5caa277026@linux-foundation.org>
+In-Reply-To: <20260306223219.2824040-1-objecting@objecting.org>
+References: <20260306223219.2824040-1-objecting@objecting.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 33CDD228687
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4DC93228713
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[manguebit.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[manguebit.org:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223394-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223395-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_CC(0.00)[oracle.com,infradead.org,google.com,gmail.com,vger.kernel.org,objecting.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[manguebit.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pc@manguebit.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.968];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,manguebit.org:dkim,manguebit.org:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:mid]
 X-Rspamd-Action: no action
 
-Henrique Carvalho <henrique.carvalho@suse.com> writes:
+On Fri,  6 Mar 2026 22:32:19 +0000 Josh Law <hlcj1234567@gmail.com> wrote:
 
-> Reviewed-by: Henrique Carvalho <henrique.carvalho@suse.com>
->
-> We got a lot of those replay uninitialised bugs. Maybe we should prevent
-> them by having a replay(func, cond) so we can take advantage of a clean
-> stack. Opinions?
+> From: Josh Law <objecting@objecting.org>
+> 
+> The call to mas_safe_pivot() in mas_wr_extend_null() has the pivot index
+> and maple type arguments swapped. The function signature expects
+> (mas, pivots, piv, type) but the call passes (mas, pivots, type, piv).
+> 
+> This causes the pivot index to be interpreted as a maple node type and
+> vice versa, leading to incorrect pivot lookups. In practice, this means
+> a null-extending store into a maple tree node can read the wrong pivot
+> value, potentially corrupting the range tracked by the maple state. For
+> a VMA maple tree, this could cause an incorrect vm_area_struct range to
+> be returned during operations like mmap or munmap, leading to silent
+> memory mapping corruption.
+> 
+> Every other mas_safe_pivot() call site in the file passes the arguments
+> in the correct (piv, type) order; this is the only one with them
+> reversed.
 
-Agreed.  No strong opinions.  I'm wondering if that should be
-implemented in the transport layer, therefore we could get rid of all
-that duplicate code.  Alternatively, having the thing implemented in
-netfslib instead.
+This all appears to be identical to v1?
+
+> Link: https://lkml.kernel.org/r/20260306200820.2819999-1-objecting@objecting.org
+> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> Cc: stable@vger.kernel.org
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Andrew Ballance <andrewjballance@gmail.com>
+> Cc: Liam Howlett <liam.howlett@oracle.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+
+Right here after the --- is where people add their
+what-i-changed-since-last time notes.
+
+>  lib/maple_tree.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
 
