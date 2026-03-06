@@ -1,323 +1,253 @@
-Return-Path: <stable+bounces-223299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODGQAYM+qmnGNwEAu9opvQ
-	(envelope-from <stable+bounces-223299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 03:40:03 +0100
+	id QLMsOhtBqmlQOAEAu9opvQ
+	(envelope-from <stable+bounces-223300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 03:51:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A60E21AA94
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 03:40:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DB421AC08
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 03:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C79F3304E701
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 02:39:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0484B30268A3
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 02:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD60353ED9;
-	Fri,  6 Mar 2026 02:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210F0367F3D;
+	Fri,  6 Mar 2026 02:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="QvMc7ZEo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0U8xGtU"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6930033ADA7;
-	Fri,  6 Mar 2026 02:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F9F367F2B;
+	Fri,  6 Mar 2026 02:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772764777; cv=none; b=FP1UMBRQlqZWSTqF/lNDf91fXc45EKPwqkkVxuGsrXw9byxRO+RNS5MCD8s232TAMhrEaGOCyNsPiiTCNWqBO2rPR8ZJfO5qSgpM37+weL11s7/QKgIpx1mW+gUmh1X8GUK7+0yr3NiiyZHMa/JOqy7CCRi8FcSzQU6URruHapw=
+	t=1772765462; cv=none; b=kqvqFCcMbQgsiDOi6n+KloWaF1zTt/HLsCFifSkpjWOz0+/Ok9rc7yiWP3a9uaZnECheUZYnIlX4413RsG5ME+n0ckvjww36P/PUeAXaulmMpOoUWkRwlAce9NJLvpYXYzmxumlpAOKSad+0mOVGBvjgytbopCBFa/pY2jJKx6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772764777; c=relaxed/simple;
-	bh=LHsKBcwmd53zqBIre+iA0x8ljilUSFlnJGGmBum3NhU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rOsuYGuLi6OlztoidSnivIdh8MamQlhdNJHStLonnD5NPdI5OrS3aV9X6jrq/qot4cbgg+6aTDfnot53r784m8JbbhjHvwnseSwbXuJrZsuNHDMpVfj/idJv1HnkHBXa+1teEGz24QLTIm8JzPNZ6pwTXXudS4vJAM+alGRr5YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=QvMc7ZEo; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=QvMc7ZEoHolohBPRfdI0/KXBJ25OmEr3lKaTcoT/8dBRIXPzDpHpxY40Wo6SaRscx381fmM9irZ1Z
-	 nYgQzhSQ/H1cw9nuDhABGs2NjRfgoZQWy5hSBJgZDGPfCUv9zx1YxEJvA9ZR/CXSPxqbbtKxvtr3jt
-	 ZmH+ZcS4jGlScYFw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-02-12080 (RichMail) with SMTP id 2f3069aa3e4f83a-058b6;
-	Fri, 06 Mar 2026 10:39:26 +0800 (CST)
-X-RM-TRANSID:2f3069aa3e4f83a-058b6
-From: Bin Lan <lanbincn@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Baocong Liu <baocong.liu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.12.y 2/2] f2fs: compress: fix UAF of f2fs_inode_info in f2fs_free_dic
-Date: Fri,  6 Mar 2026 10:38:46 +0800
-Message-Id: <20260306023846.2147903-2-lanbincn@139.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260306023846.2147903-1-lanbincn@139.com>
-References: <20260306023846.2147903-1-lanbincn@139.com>
+	s=arc-20240116; t=1772765462; c=relaxed/simple;
+	bh=SIwRlI/UnWUG8micCiLQ038ygvT8/SBxi3yO+kXx8iA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qq89GTWuMLC4KJ/4SRu80WaOKhvvRLPDPLUOxmVNKgg14JF7c6gmgqLVVJexWq501tY1RD03axbYwo2KPbT0DWA4Peh4ByiiltFarr9wRaj3Bj1lYnJfgb3MHx56Qip18FCxUdtbsDA1avI7i/EvHcTNr7Wb3DwN0GNNtrhxyfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0U8xGtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40FBC2BC87;
+	Fri,  6 Mar 2026 02:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772765462;
+	bh=SIwRlI/UnWUG8micCiLQ038ygvT8/SBxi3yO+kXx8iA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L0U8xGtUhxcaSwmlcvtBrSQZiFO6V5Hi1xPWeTNhLEUCTAhgfbDYrDcCXHk+g7cHh
+	 rBH1cN4ffl3t1xf3PYv0g/y7KT+zxEn2yTwitWaDRqQ+ObC0tswgLCnVIc2sEMUPjw
+	 A05fH3NQYN8BwlEsuyedEBNAJpD8s+hVruXsGhZpcDbUJcZZ3RfLww04oPzlYp9ELq
+	 /bRcndPpQxL0bh9pEgdjQaLrfWcj18kLo/9ZT9qNXmxhgTtT0glZrs0JkbXZMtGs0Q
+	 cq2yc/Ogp+EMK7qU8HXack/nQfvSrXe5nK9ckGIuTFKQKvfsmEJmPwzS36EiWEIQhx
+	 TA3UnQs1U6fVg==
+Date: Thu, 5 Mar 2026 21:51:00 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Brett A C Sheffield <bacs@librecast.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Peter Schneider <pschneider1968@googlemail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	"zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	"ardb@kernel.org" <ardb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"graf@amazon.com" <graf@amazon.com>,
+	"guoweikang.kernel@gmail.com" <guoweikang.kernel@gmail.com>,
+	"henry.willard@oracle.com" <henry.willard@oracle.com>,
+	"hpa@zytor.com" <hpa@zytor.com>, "jbohac@suse.cz" <jbohac@suse.cz>,
+	"joel.granados@kernel.org" <joel.granados@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"noodles@fb.com" <noodles@fb.com>,
+	"paul.x.webb@oracle.com" <paul.x.webb@oracle.com>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"sohil.mehta@intel.com" <sohil.mehta@intel.com>,
+	"sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"yifei.l.liu@oracle.com" <yifei.l.liu@oracle.com>
+Subject: Re: [REGRESSION] Linux kernel 6.12.75 fails to compile with
+ -Werror=implicit-function-declaration
+Message-ID: <aapBFGi7RP5NYsIs@laps>
+References: <DD397543-DDDE-4215-A116-318AEAFFC359@live.com>
+ <0be301c0-f9be-4d70-9fdb-7a260ccf83ac@googlemail.com>
+ <aam_-Y7q-c3gmfGY@auntie>
+ <aanlzq-RqDF9xkdI@laps>
+ <aan8XRoC4-ndXD67@karahi.librecast.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8A60E21AA94
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aan8XRoC4-ndXD67@karahi.librecast.net>
+X-Rspamd-Queue-Id: 64DB421AC08
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[139.com];
-	TAGGED_FROM(0.00)[bounces-223299-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,unisoc.com,google.com,kernel.org,139.com];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223300-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,googlemail.com,live.com,linux.ibm.com,linux-foundation.org,oracle.com,kernel.org,alien8.de,linux.intel.com,amazon.com,gmail.com,zytor.com,suse.cz,vger.kernel.org,redhat.com,fb.com,intel.com,linutronix.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_SPAM(0.00)[0.117];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+On Thu, Mar 05, 2026 at 10:57:49PM +0100, Brett A C Sheffield wrote:
+>On 2026-03-05 15:21, Sasha Levin wrote:
+>> On Thu, Mar 05, 2026 at 05:40:09PM +0000, Brett A C Sheffield wrote:
+>
+>> >The current stable process is introducing bugs. Bugs that never existed in
+>> >mainline.
+>>
+>> Releasing yesterday's tree was (my) human error: I don't have as much
+>> automation and scripting as Greg does, so many of the steps I've taken were
+>> manual and prone to errors. I'm working on improving this workflow on my end.
+>
+>This raises two questions:
+>
+>1) why do you not have the same tools? This whole process is highly automated,
+>both at your end, and ours. Little changes break scripts and cause much hassle
+>that could be avoided.  I had to debug my scripts before I could even get
+>started (my fault, my bug) because of a difference in how you sent the emails.
+>Others had similar problems by the sound of it.  Please, Greg, make these tools
+>and the process public and make sure whoever is cutting the release knows how to
+>use them.
 
-[ Upstream commit 39868685c2a94a70762bc6d77dc81d781d05bff5 ]
+Greg's scripts are public :)
 
-The decompress_io_ctx may be released asynchronously after
-I/O completion. If this file is deleted immediately after read,
-and the kworker of processing post_read_wq has not been executed yet
-due to high workloads, It is possible that the inode(f2fs_inode_info)
-is evicted and freed before it is used f2fs_free_dic.
+We have very different development environments. We use different tools, our
+workflows are different, and we (normally) handle different parts of the
+process. Sure, at times it creates issues (like here, when I'm trying to tackle
+some of Greg's work), but sometimes it also helps us catch issues that one of
+us would have missed. The latter part usually happens behind the scenes when no
+one notices.
 
-    The UAF case as below:
-    Thread A                                      Thread B
-    - f2fs_decompress_end_io
-     - f2fs_put_dic
-      - queue_work
-        add free_dic work to post_read_wq
-                                                   - do_unlink
-                                                    - iput
-                                                     - evict
-                                                      - call_rcu
-    This file is deleted after read.
+I suppose that if I were to do releases more often we'd likely end up with the
+same (or similar) set of scripts around this. We're not there.
 
-    Thread C                                 kworker to process post_read_wq
-    - rcu_do_batch
-     - f2fs_free_inode
-      - kmem_cache_free
-     inode is freed by rcu
-                                             - process_scheduled_works
-                                              - f2fs_late_free_dic
-                                               - f2fs_free_dic
-                                                - f2fs_release_decomp_mem
-                                      read (dic->inode)->i_compress_algorithm
+>2) why is so much scripting involved in cutting the final release? This should be
+>the exact kernel we just tested with our Tested-by lines and your signoff tacked
+>on.  Last minute changes break things.
 
-This patch store compress_algorithm and sbi in dic to avoid inode UAF.
+The stable kernel is managed by a quilt set of branches in the background.
+Every release of the stable tree (for forever?) has been generated that day
+from the quilt queue and released. There is no notion of "exact kernel" because
+the tree, until it's released, is ephermal.
 
-In addition, the previous solution is deprecated in [1] may cause system hang.
-[1] https://lore.kernel.org/all/c36ab955-c8db-4a8b-a9d0-f07b5f426c3f@kernel.org
+What happened in this case, is that I dropped the offending commit from the
+quilt queue and regenerated the trees, and pushed out -rc2. I'm still trying to
+learn why the change to the quilt queue wasn't pushed out, but when the trees
+were later regenrated from the queue, it still had the offending commit.
 
-Cc: Daeho Jeong <daehojeong@google.com>
-Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Baocong Liu <baocong.liu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Keep the original f2fs_vmalloc(workspace_size) in v6.12.y instead of
-f2fs_vmalloc(dic->sbi, workspace_size) per commit
-54ca9be0bc58 ("f2fs: introduce FAULT_VMALLOC"). ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
----
- fs/f2fs/compress.c | 38 +++++++++++++++++++-------------------
- fs/f2fs/f2fs.h     |  2 ++
- 2 files changed, 21 insertions(+), 19 deletions(-)
+There was no irresponsible last second change as you're trying to suggest.
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 60401a43b78d..cda7952526aa 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -211,13 +211,13 @@ static int lzo_decompress_pages(struct decompress_io_ctx *dic)
- 	ret = lzo1x_decompress_safe(dic->cbuf->cdata, dic->clen,
- 						dic->rbuf, &dic->rlen);
- 	if (ret != LZO_E_OK) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lzo decompress failed, ret:%d", ret);
- 		return -EIO;
- 	}
- 
- 	if (dic->rlen != PAGE_SIZE << dic->log_cluster_size) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lzo invalid rlen:%zu, expected:%lu",
- 				dic->rlen, PAGE_SIZE << dic->log_cluster_size);
- 		return -EIO;
-@@ -291,13 +291,13 @@ static int lz4_decompress_pages(struct decompress_io_ctx *dic)
- 	ret = LZ4_decompress_safe(dic->cbuf->cdata, dic->rbuf,
- 						dic->clen, dic->rlen);
- 	if (ret < 0) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lz4 decompress failed, ret:%d", ret);
- 		return -EIO;
- 	}
- 
- 	if (ret != PAGE_SIZE << dic->log_cluster_size) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"lz4 invalid ret:%d, expected:%lu",
- 				ret, PAGE_SIZE << dic->log_cluster_size);
- 		return -EIO;
-@@ -425,7 +425,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- 	stream = zstd_init_dstream(max_window_size, workspace, workspace_size);
- 	if (!stream) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s zstd_init_dstream failed", __func__);
- 		vfree(workspace);
- 		return -EIO;
-@@ -461,14 +461,14 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
- 
- 	ret = zstd_decompress_stream(stream, &outbuf, &inbuf);
- 	if (zstd_is_error(ret)) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s zstd_decompress_stream failed, ret: %d",
- 				__func__, zstd_get_error_code(ret));
- 		return -EIO;
- 	}
- 
- 	if (dic->rlen != outbuf.pos) {
--		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
-+		f2fs_err_ratelimited(dic->sbi,
- 				"%s ZSTD invalid rlen:%zu, expected:%lu",
- 				__func__, dic->rlen,
- 				PAGE_SIZE << dic->log_cluster_size);
-@@ -728,7 +728,7 @@ static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
- 
- void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 	struct f2fs_inode_info *fi = F2FS_I(dic->inode);
- 	const struct f2fs_compress_ops *cops =
- 			f2fs_cops[fi->i_compress_algorithm];
-@@ -798,7 +798,7 @@ void f2fs_end_read_compressed_page(struct page *page, bool failed,
- {
- 	struct decompress_io_ctx *dic =
- 			(struct decompress_io_ctx *)page_private(page);
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 
- 	dec_page_count(sbi, F2FS_RD_DATA);
- 
-@@ -1615,14 +1615,13 @@ static inline bool allow_memalloc_for_decomp(struct f2fs_sb_info *sbi,
- static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
- 		bool pre_alloc)
- {
--	const struct f2fs_compress_ops *cops =
--		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
-+	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
- 	int i;
- 
--	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
-+	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
- 		return 0;
- 
--	dic->tpages = page_array_alloc(F2FS_I_SB(dic->inode), dic->cluster_size);
-+	dic->tpages = page_array_alloc(dic->sbi, dic->cluster_size);
- 	if (!dic->tpages)
- 		return -ENOMEM;
- 
-@@ -1652,10 +1651,9 @@ static int f2fs_prepare_decomp_mem(struct decompress_io_ctx *dic,
- static void f2fs_release_decomp_mem(struct decompress_io_ctx *dic,
- 		bool bypass_destroy_callback, bool pre_alloc)
- {
--	const struct f2fs_compress_ops *cops =
--		f2fs_cops[F2FS_I(dic->inode)->i_compress_algorithm];
-+	const struct f2fs_compress_ops *cops = f2fs_cops[dic->compress_algorithm];
- 
--	if (!allow_memalloc_for_decomp(F2FS_I_SB(dic->inode), pre_alloc))
-+	if (!allow_memalloc_for_decomp(dic->sbi, pre_alloc))
- 		return;
- 
- 	if (!bypass_destroy_callback && cops->destroy_decompress_ctx)
-@@ -1690,6 +1688,8 @@ struct decompress_io_ctx *f2fs_alloc_dic(struct compress_ctx *cc)
- 
- 	dic->magic = F2FS_COMPRESSED_PAGE_MAGIC;
- 	dic->inode = cc->inode;
-+	dic->sbi = sbi;
-+	dic->compress_algorithm = F2FS_I(cc->inode)->i_compress_algorithm;
- 	atomic_set(&dic->remaining_pages, cc->nr_cpages);
- 	dic->cluster_idx = cc->cluster_idx;
- 	dic->cluster_size = cc->cluster_size;
-@@ -1733,7 +1733,8 @@ static void f2fs_free_dic(struct decompress_io_ctx *dic,
- 		bool bypass_destroy_callback)
- {
- 	int i;
--	struct f2fs_sb_info *sbi = F2FS_I_SB(dic->inode);
-+	/* use sbi in dic to avoid UFA of dic->inode*/
-+	struct f2fs_sb_info *sbi = dic->sbi;
- 
- 	f2fs_release_decomp_mem(dic, bypass_destroy_callback, true);
- 
-@@ -1776,8 +1777,7 @@ static void f2fs_put_dic(struct decompress_io_ctx *dic, bool in_task)
- 			f2fs_free_dic(dic, false);
- 		} else {
- 			INIT_WORK(&dic->free_work, f2fs_late_free_dic);
--			queue_work(F2FS_I_SB(dic->inode)->post_read_wq,
--					&dic->free_work);
-+			queue_work(dic->sbi->post_read_wq, &dic->free_work);
- 		}
- 	}
- }
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 998ac993543e..a6b06ac2751d 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1525,6 +1525,7 @@ struct compress_io_ctx {
- struct decompress_io_ctx {
- 	u32 magic;			/* magic number to indicate page is compressed */
- 	struct inode *inode;		/* inode the context belong to */
-+	struct f2fs_sb_info *sbi;	/* f2fs_sb_info pointer */
- 	pgoff_t cluster_idx;		/* cluster index number */
- 	unsigned int cluster_size;	/* page count in cluster */
- 	unsigned int log_cluster_size;	/* log of cluster size */
-@@ -1565,6 +1566,7 @@ struct decompress_io_ctx {
- 
- 	bool failed;			/* IO error occurred before decompression? */
- 	bool need_verity;		/* need fs-verity verification after decompression? */
-+	unsigned char compress_algorithm;	/* backup algorithm type */
- 	void *private;			/* payload buffer for specified decompression algorithm */
- 	void *private2;			/* extra payload buffer */
- 	struct work_struct verity_work;	/* work to verify the decompressed pages */
+>> This, however, wasn't an issue with our process, which is why I'm curious which
+>> bugs you're referring to?
+>>
+>> >The 3 kernels released today were tested by no one before release.
+>>
+>> Right - the 3 kernels released today simply dropped a commit that caused a
+>> built failure. We sometimes do that to address simple build or functionality
+>> breakages (this happened with v6.19.2 and v6.19.5 too).
+>>
+>> I don't disagree that there's a risk in doing so, but the risk is fairly minor,
+>> and doing a quick release allows users to get important fixes without waiting
+>> another cycle.
+>>
+>> We could discuss a policy change here, but could you show that doing these
+>> quick releases introduced regressions?
+>>
+>> If not, why are we changing something that works?
+>
+>It isn't working, as we've just demonstrated.
+
+So this is narrowly about the 3 releases from earlier today, where there were
+concerns that these small releases without -rcs prior are causing regressions.
+I'm trying to understand which regressions were caused by this type of
+releases.
+
+>It's not your fault, Sasha. It's a failure (lack) of process. You were trying to
+>release seven kernels, for the first time, without using the same tools as
+>usual.
+>
+>The problem was that you (following the broken process), released kernels,
+>after modifying them, without getting anyone to retest.
+>
+>In the rest of the software world testing happens after changes and before
+>release, not in the middle.
+>
+>That's (mainly) what I want to change. No more last minute dropped and added
+>patches.
+>
+>Tagging RCs would help at our end too, rather than relying on extracting
+>metadata from email headers, and trying to figure out which force-pushed commit
+>matches RCn at any given point in time.
+>
+>> >The seven kernels yesterday were similarly tested by no one before release.
+>> >We weren't given the opportunity.
+>>
+>> Could you explain this point please? There were quite a few folks who provided
+>> their Tested-by...
+>
+>Yes, I was one of them, although you omitted mine from the hastily pushed 6.6
+>and 6.12 kernels ;-)
+>
+>Taking 6.6 as an example because I have the numbers on the whiteboard beside me:
+>
+>RC1 had 375 patches.
+>RC2 had 956.
+>These are not the same kernel.
+
+It's not :)
+
+This one was a fun git bug to figure out.
+
+-rc2, however, had the same amount of time to be tested, and the test priod for
+-rc2 was Monday-Wednesday rather than the weeked for -rc1.
+
+-rc1 was in no place to be released as is, so what would have been my other
+choice? I can't release a tree with two thirds of it's commits missing, so I go
+ahead and do an -rc2 with more commits, and I allow time for testing.
+
+>Then we had another RC2 force-pushed over the top of the original RC2 confusing
+>the hell out of me after two long kernel bisects when I found my tree was out of
+>sync and wasting a bunch more time as I retested because I thought I must have
+>made a mistake.
+
+This is on me. I decided to push -rc2 because the issue was pointed out so
+quickly I felt I could sneak it in.
+
 -- 
-2.43.0
-
-
+Thanks,
+Sasha
 
