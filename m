@@ -1,61 +1,86 @@
-Return-Path: <stable+bounces-223328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CENuNzK6qmmiVwEAu9opvQ
-	(envelope-from <stable+bounces-223328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 12:27:46 +0100
+	id GCh/NuTBqmlXWQEAu9opvQ
+	(envelope-from <stable+bounces-223329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:00:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4852F21FA32
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 12:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A78822000A
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53D4A309BE9D
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 11:27:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE354309C2A6
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 11:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F490382361;
-	Fri,  6 Mar 2026 11:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BEA3822B7;
+	Fri,  6 Mar 2026 11:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/oTlek6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fTVuQsjD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427CF2DBF75;
-	Fri,  6 Mar 2026 11:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9142A367F25;
+	Fri,  6 Mar 2026 11:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772796435; cv=none; b=GQlPoUiR1EexYGzU7EB28xujFu44tZ1fECT32Msh4M/Prb69rXLqi0AzyU1XbnPo0BFzwLXcFi+1VJty2LN1knVH4uV2DX5iPSAxD51sPOTTLkQKN4VxFaH/556+SA4RtHpJiB2Vit+KXVP4J5VWA4ej9G2NSpQYcp/Bt98pEyU=
+	t=1772798321; cv=none; b=Lqj2p+x8+0kpreX5cTAqIFlvtQD02mx5IPBxCZBtMU8sH7n8hdAdCS32HsiTMLzWOCPpJb1eNE09VsgVrG8pFKOKdD89yTcC6m1au3vqZB8cvsV04+90xkqnn4h+akLyjFCLeG/KpcAE5IYNkVtZr0YDfBfcEUjVhbJPLgsAj8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772796435; c=relaxed/simple;
-	bh=j/K8I3jVG6Bt/uXmPNV+V3MKYNqc1O7pmt5S7Y54LuY=;
+	s=arc-20240116; t=1772798321; c=relaxed/simple;
+	bh=cEQaX+VtmqE/SxpWMBRV1Qx0pWS+puKGMQ6VzGSrkUc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PdbXATA7Qm5Y45nLJZKIcaFQSz7+Yzz4o4OF1LqXIPumo1djhbLb1fElr4t/EEUswvta4QFkNj/22nccQm9bUzX+vbXOqHCUGk0ljDN4X+K+3A70dry+Syb2JeK5tHYLXaqdw+a9NZkjE3+yFZNKwkWZl8jtltJjo/E1oSok/CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/oTlek6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8E6C4CEF7;
-	Fri,  6 Mar 2026 11:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772796435;
-	bh=j/K8I3jVG6Bt/uXmPNV+V3MKYNqc1O7pmt5S7Y54LuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/oTlek6boSrBZGmOvGNtil8EcszKIAFDZcZ77vlTYYnjumY+oVQs9k5B7ZcalBU6
-	 qdUVF1w1sCuLE20ixmPAOYzPbjs+KoVNyv94Qx47gHN7+xJmZi6RlBOrxj/b6AvCLI
-	 mDmOZoImPjcGAOCWeSwBAW3Hf4eJdEz7lsddJiJr5Z4ljpGhGxdql6T/N/46B1tsgm
-	 nlqFLlxBD71UtT2U2C2KlQN+Ci8pob04jl4r6n7xx4pdbqZtZdI37iZ/KnWeM6B94z
-	 ZUS3uyIchZEMpfyNoNHEPUHoxUHifZTytRmqCXFAf85c/VCEbo6uTByvd5c2DMtKSu
-	 2ofMuWI052k4Q==
-Date: Fri, 6 Mar 2026 11:27:09 +0000
-From: Will Deacon <will@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, ziy@nvidia.com, stable@vger.kernel.org,
-	ryan.roberts@arm.com, leitao@debian.org, jthoughton@google.com,
-	jhubbard@nvidia.com, jgg@nvidia.com, catalin.marinas@arm.com,
-	apopple@nvidia.com, pjaroszynski@nvidia.com
-Subject: Re: +
- arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
- added to mm-hotfixes-unstable branch
-Message-ID: <aaq6DTGcm5agvanh@willie-the-truck>
-References: <20260306011907.67CE4C116C6@smtp.kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kR8t4YmGr5FfMjMO8iG9KcPYbn8PKZ+99Q9JymsiInUA/7w774BZj+e8WDe0isJrvWVFRbwerC6MOAIC340mZtDcxZeQrJSdUzMpAGZi/E12HVSqY+XZzoM5avIAmw66ohab5I0vPklDcb6CkLOsIHsjYW2HNVy2RWj6CmYtIVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fTVuQsjD; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772798318; x=1804334318;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cEQaX+VtmqE/SxpWMBRV1Qx0pWS+puKGMQ6VzGSrkUc=;
+  b=fTVuQsjDzrgIyDVuJSmZAZB2JtSjQdN3rseM7OW0fZ7af+YgWyD4ZIzx
+   AtMo0uzSIkioZNSvd1ZbqqLgfhOYHNvsg7Tj5aVFK/SkvZlej2Jgehey8
+   Y14eGPRWdIktTvpj+xGxLyRq0bTZ1nBOxOvsGPBhpGOufhMC5qx0LpTZ4
+   ceUTxGcNDJZv37M7yoLW6jxNkreEhOIpUFVugML8YYOmduUNimdBAJ6+8
+   AJMqA743vutcaPtRViJUCj4fujuR3CK4sGa9o9/OV5+cDzm1XgtDRnC27
+   rBxrUUyPMZKu6BMLWGL8/soXLk6vLS2szwQX1i8gwt8w2PDfVWVCedtWy
+   Q==;
+X-CSE-ConnectionGUID: eTBh3d8lRUmCSOd6K6ZUHA==
+X-CSE-MsgGUID: k6sFTmdJRHiUU+whnVmrrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73095931"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="73095931"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 03:58:36 -0800
+X-CSE-ConnectionGUID: C9sHvJJDTHOtW+4gpDJeSw==
+X-CSE-MsgGUID: 1hJhBcTBSgCKnGYEoy/d5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="218224486"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.1])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 03:58:30 -0800
+Date: Fri, 6 Mar 2026 13:58:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	linux-doc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/6] gpiolib: unify gpio-hog code
+Message-ID: <aarBY4VjGC0DGGcN@ashevche-desk.local>
+References: <20260305-gpio-hog-fwnode-v1-0-97d7df6bbd17@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,53 +89,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306011907.67CE4C116C6@smtp.kernel.org>
-X-Rspamd-Queue-Id: 4852F21FA32
+In-Reply-To: <20260305-gpio-hog-fwnode-v1-0-97d7df6bbd17@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 8A78822000A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223328-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FREEMAIL_CC(0.00)[kernel.org,glider.be,gmail.com,iki.fi,atomide.com,armlinux.org.uk,lwn.net,linuxfoundation.org,vger.kernel.org,lists.infradead.org];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223329-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	DMARC_DNSFAIL(0.00)[intel.com : server fail];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 05:19:06PM -0800, Andrew Morton wrote:
+On Thu, Mar 05, 2026 at 10:51:25AM +0100, Bartosz Golaszewski wrote:
+> GPIO hogs are handled separately in three places: for OF, ACPI and
+> machine lookup. In addition hogs cannot be set up using software nodes.
+> A lot of that code is actually redundant and - except for some special
+> handling of OF nodes - can be unified in one place.
 > 
-> The patch titled
->      Subject: arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
->      arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
+> This series moves hogging into GPIO core and bases it on fwnode API
+> (with a single helper from OF to translate devicetree properties into
+> lookup flags), converts the two remaining users of machine hogs to using
+> software node approach and removes machine hog support entirely. In
+> addition, there's a patch extending the configurability of gpio-sim now
+> that it uses software nodes for hogs.
 > 
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
+> For merging: I think this should go through the GPIO tree with an Ack
+> from OMAP1 maintainers.
 > 
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Even with the new feature for gpio-sim, this series still removes twice
+> the number of lines, it adds.
 
-I'll take this one via arm64, as we already have a few fixes queued up
-there.
+Lovely! This was in my TODO list somewhere deep, but I never started it for
+real (had some very very initial patches)
 
-Will
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+(Maybe I will have time to test it later on, I need to check if there is a use
+of them on Intel Galileo Gen1 platform).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
