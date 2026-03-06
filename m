@@ -1,149 +1,239 @@
-Return-Path: <stable+bounces-223290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEJRLG8mqmkPMAEAu9opvQ
-	(envelope-from <stable+bounces-223290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:57:19 +0100
+	id 4DPpG5QrqmlaMgEAu9opvQ
+	(envelope-from <stable+bounces-223291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 02:19:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDC621A10B
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:57:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B0721A2FB
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 02:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EB91301D0FE
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 00:57:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31FDA300F286
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 01:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8582E2DDD;
-	Fri,  6 Mar 2026 00:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE9E315D29;
+	Fri,  6 Mar 2026 01:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="Kzqv9M6i"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sKGaqcIR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946F62BD022;
-	Fri,  6 Mar 2026 00:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E2314B8F;
+	Fri,  6 Mar 2026 01:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772758636; cv=none; b=WWmfPzAsshe+bfNOQJOGzJ1scE4wZCdVr+27IJQa+MbzbLaIIyBibvXPNOPq+86D3MLZ6E5KmoKZlwIA/DzVcygLlDOw+cM3scL799TLEl0SnifvVXg614RLrLX+i/UrO4IsS+QtvQkSoTCSR1PmD0LYvklWdEhFw1l/skLpQDo=
+	t=1772759948; cv=none; b=gMGA9E+VrbFe4pdxs5mT3x0eYF/JeV6RqfZuYdSLNhUTj05S3w9zQEzuLEsBHBObdasgSP/ugrl9LlK8kCEdNtDRc3c4JJqdE+Q0qBs/2JEC9Ohi3788OL6szsuRt9ff+a5zaW9Qh22258RVXAW3Nr6GiduF/ClvUB2jpKkqzWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772758636; c=relaxed/simple;
-	bh=PheWvQKuKXoRDzJjoK4g+1bTnXmcmswbNjq3GH+LA/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HSISAS/qEKm6FbeJoKzUN14c9G1LC3kZzOzK1AJ/y5o3YhHfE0oaq4qaPMNPmekank+OdQen3PdXfsngwvrck1Mzl8UOHFIrwYirw/QAQhMWzQr733aViauglgOmBWoqlyrLivTHWBgM973gl+OyJYa9Xh9cBRkEFojjUc+voC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=Kzqv9M6i; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=Am+vpWtLKJr+i43YD+agVSMu36j/0actMvUOyNiUl1I=; b=Kzqv9M6i39syYz1dOhbwaHnjXg
-	R4t7ph+yHNLppmx5K1xnGoyHsAh4hUBA5RPAflcH5Xw5y6/tGqbmreX8A+OcYD5WkGsRyOfh+s/rQ
-	L2c4sSTg7lleWtIMMqx2yVX0IjJSC9i/yrRmyBHSpvLQteY06tLicxVNijjbG+418Kw7gJ81NDfaR
-	T58Het90E2ZpVZ9o5xjUJuWW++yQ31hH+AI7xNtYj31LArtkAcD5NXqfdoJNYJd/tny26ssILTmoa
-	KuDUJKgdAf52QwBiepTuf4oizixB1GS1Y7OIq1toBIviKbg9FMqxQ1XoGhBRz3texmxKm/rRvw1Sy
-	mBk3FbSw==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
-	id 1vyJV5-00000000LXv-0HJs;
-	Thu, 05 Mar 2026 21:57:07 -0300
-From: Paulo Alcantara <pc@manguebit.org>
-To: smfrench@gmail.com
-Cc: Thiago Becker <tbecker@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] smb: client: fix oops due to uninitialised var in smb2_unlink()
-Date: Thu,  5 Mar 2026 21:57:06 -0300
-Message-ID: <20260306005706.830672-1-pc@manguebit.org>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1772759948; c=relaxed/simple;
+	bh=YqBF38cmNK/9MVBLp+TYA6nIrdV8FmaVsAGE2Wbuhkg=;
+	h=Date:To:From:Subject:Message-Id; b=b1LHw87c7iPROe7omhwAZaqQf+OoJ558BKPJ2DK7QzDI9pRgu2DuO4ikiAx42jbeX/GPydpKzBahDhXnBPUCnYqCuQ70sGFvmrKVE/2YECNV6mKuiwxDWF/daudC33QnvACLigi/eGr+sejKnQzMno2WrMrTCBtZ2KoE1Fy+6Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sKGaqcIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CE4C116C6;
+	Fri,  6 Mar 2026 01:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772759947;
+	bh=YqBF38cmNK/9MVBLp+TYA6nIrdV8FmaVsAGE2Wbuhkg=;
+	h=Date:To:From:Subject:From;
+	b=sKGaqcIRO5MfmIx4CDHj6kxYs7B40J9Z9auGvvPQlQA7FUHeRFm58Zf+o5vdJMb4k
+	 XBbBtbtkc6ZNs1DpZBEgTK+o8uWeXY/kB2GeClOWZHddfKdKushq0wJ+9X1hv33y+s
+	 s0qRc3hsGF8u/fVhq5N5xj+pxgPuQuIVR65CJK8A=
+Date: Thu, 05 Mar 2026 17:19:06 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,will@kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,leitao@debian.org,jthoughton@google.com,jhubbard@nvidia.com,jgg@nvidia.com,catalin.marinas@arm.com,apopple@nvidia.com,pjaroszynski@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260306011907.67CE4C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4EDC621A10B
+X-Rspamd-Queue-Id: 70B0721A2FB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[manguebit.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[manguebit.org:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223290-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-223291-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[pc@manguebit.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[manguebit.org:+];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,manguebit.org:dkim,manguebit.org:email,manguebit.org:mid]
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,arm.com:email,smtp.kernel.org:mid]
 X-Rspamd-Action: no action
 
-If SMB2_open_init() or SMB2_close_init() fails (e.g. reconnect), the
-iovs set @rqst will be left uninitialised, hence calling
-SMB2_open_free(), SMB2_close_free() or smb2_set_related() on them will
-oops.
 
-Fix this by initialising @close_iov and @open_iov before setting them
-in @rqst.
+The patch titled
+     Subject: arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
 
-Reported-by: Thiago Becker <tbecker@redhat.com>
-Fixes: 1cf9f2a6a544 ("smb: client: handle unlink(2) of files open by different clients")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Subject: arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
+Date: Thu, 05 Mar 2026 15:26:29 -0800
+
+contpte_ptep_set_access_flags() compared the gathered ptep_get() value
+against the requested entry to detect no-ops.  ptep_get() ORs AF/dirty
+from all sub-PTEs in the CONT block, so a dirty sibling can make the
+target appear already-dirty.  When the gathered value matches entry, the
+function returns 0 even though the target sub-PTE still has PTE_RDONLY set
+in hardware.
+
+For a CPU with FEAT_HAFDBS this gathered view is fine, since hardware may
+set AF/dirty on any sub-PTE and CPU TLB behavior is effectively gathered
+across the CONT range.  But page-table walkers that evaluate each
+descriptor individually (e.g.  a CPU without DBM support, or an SMMU
+without HTTU, or with HA/HD disabled in CD.TCR) can keep faulting on the
+unchanged target sub-PTE, causing an infinite fault loop.
+
+Gathering can therefore cause false no-ops when only a sibling has been
+updated:
+ - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+ - read faults:  target still lacks PTE_AF
+
+Fix by checking each sub-PTE against the requested AF/dirty/write state
+(the same bits consumed by __ptep_set_access_flags()), using raw per-PTE
+values rather than the gathered ptep_get() view, before returning no-op. 
+Keep using the raw target PTE for the write-bit unfold decision.
+
+Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a
+CONT range may become the effective cached translation and software must
+maintain consistent attributes across the range.
+
+Link: https://lkml.kernel.org/r/20260305-contpte-fault-loop-v2-1-0216f0026d7f@nvidia.com
+Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Breno Leitao <leitao@debian.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/smb/client/smb2inode.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 1c4663ed7e69..5280c5c869ad 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1216,6 +1216,7 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 	memset(resp_buftype, 0, sizeof(resp_buftype));
- 	memset(rsp_iov, 0, sizeof(rsp_iov));
+ arch/arm64/mm/contpte.c |   53 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 4 deletions(-)
+
+--- a/arch/arm64/mm/contpte.c~arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults
++++ a/arch/arm64/mm/contpte.c
+@@ -599,6 +599,27 @@ void contpte_clear_young_dirty_ptes(stru
+ }
+ EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
  
-+	memset(open_iov, 0, sizeof(open_iov));
- 	rqst[0].rq_iov = open_iov;
- 	rqst[0].rq_nvec = ARRAY_SIZE(open_iov);
++static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
++{
++	pte_t *cont_ptep = contpte_align_down(ptep);
++	/*
++	 * PFNs differ per sub-PTE. Match only bits consumed by
++	 * __ptep_set_access_flags(): AF, DIRTY and write permission.
++	 */
++	const pteval_t cmp_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
++	pteval_t entry_cmp = pte_val(entry) & cmp_mask;
++	int i;
++
++	for (i = 0; i < CONT_PTES; i++) {
++		pteval_t pte_cmp = pte_val(__ptep_get(cont_ptep + i)) & cmp_mask;
++
++		if (pte_cmp != entry_cmp)
++			return false;
++	}
++
++	return true;
++}
++
+ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+ 					unsigned long addr, pte_t *ptep,
+ 					pte_t entry, int dirty)
+@@ -608,14 +629,38 @@ int contpte_ptep_set_access_flags(struct
+ 	int i;
  
-@@ -1240,14 +1241,15 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 	creq = rqst[0].rq_iov[0].iov_base;
- 	creq->ShareAccess = FILE_SHARE_DELETE_LE;
+ 	/*
+-	 * Gather the access/dirty bits for the contiguous range. If nothing has
+-	 * changed, its a noop.
++	 * Check whether all sub-PTEs in the CONT block already match the
++	 * requested access flags/write permission, using raw per-PTE values
++	 * rather than the gathered ptep_get() view.
++	 *
++	 * __ptep_set_access_flags() can update AF, dirty and write
++	 * permission, but only to make the mapping more permissive.
++	 *
++	 * ptep_get() gathers AF/dirty state across the whole CONT block,
++	 * which is correct for a CPU with FEAT_HAFDBS. But page-table
++	 * walkers that evaluate each descriptor individually (e.g. a CPU
++	 * without DBM support, or an SMMU without HTTU, or with HA/HD
++	 * disabled in CD.TCR) can keep faulting on the target sub-PTE if
++	 * only a sibling has been updated. Gathering can therefore cause
++	 * false no-ops when only a sibling has been updated:
++	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
++	 *  - read faults:  target still lacks PTE_AF
++	 *
++	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
++	 * become the effective cached translation, so all entries must have
++	 * consistent attributes. Check the full CONT block before returning
++	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
++	 * range.
+ 	 */
+-	orig_pte = pte_mknoncont(ptep_get(ptep));
+-	if (pte_val(orig_pte) == pte_val(entry))
++	if (contpte_all_subptes_match_access_flags(ptep, entry))
+ 		return 0;
  
-+	memset(&close_iov, 0, sizeof(close_iov));
- 	rqst[1].rq_iov = &close_iov;
- 	rqst[1].rq_nvec = 1;
- 
- 	rc = SMB2_close_init(tcon, server, &rqst[1],
- 			     COMPOUND_FID, COMPOUND_FID, false);
-+	if (rc)
-+		goto err_free;
- 	smb2_set_related(&rqst[1]);
--	if (rc)
--		goto err_free;
- 
- 	if (retries) {
- 		/* Back-off before retry */
--- 
-2.53.0
+ 	/*
++	 * Use raw target pte (not gathered) for write-bit unfold decision.
++	 */
++	orig_pte = pte_mknoncont(__ptep_get(ptep));
++
++	/*
+ 	 * We can fix up access/dirty bits without having to unfold the contig
+ 	 * range. But if the write bit is changing, we must unfold.
+ 	 */
+_
+
+Patches currently in -mm which might be from pjaroszynski@nvidia.com are
+
+arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
 
 
