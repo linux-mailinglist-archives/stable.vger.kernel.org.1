@@ -1,187 +1,171 @@
-Return-Path: <stable+bounces-223382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJbsExksq2n6aQEAu9opvQ
-	(envelope-from <stable+bounces-223382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:33:45 +0100
+	id YON7BCsuq2n6aQEAu9opvQ
+	(envelope-from <stable+bounces-223383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:42:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2421227126
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:33:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69112272A5
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 20:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2F993053B11
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 19:33:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D672301DB95
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 19:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4009369214;
-	Fri,  6 Mar 2026 19:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C9842669D;
+	Fri,  6 Mar 2026 19:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KA7pV4SS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cp7HrUIt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C0366838
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 19:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61C2331A43
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 19:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772825602; cv=none; b=ChCzuJjvN/DLE/5K/+hBPhAibc6eqjTKsOIfY13mxeyMEYTDK0+rnJr/DOfBX9PYVaDa9ZBsEy8xKGjvEBI7vs2tDXGPxByrDYfsGLH4yaQv06zWa05Z6urxjIk0P4XpR8eatA10sKhUa2KYTGOF2QLH7Q0BupFQGtR3NHvMVOw=
+	t=1772826152; cv=none; b=T0F1B+jTyu/BYR5wzYoQAXhKHb29GTep+Mo4AhkAH0J9mZ6456Jh0jX6tewD4hH4jzM9Lpp1t7yG3bfqpde9h1BpqUTuHmxiBUZzcKzavAVxc3Yz22f+asQFw/HSgMxQZxcU6WYpETlayh3t/RR8RuKsNWbUrgQgXlTk2BbGfII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772825602; c=relaxed/simple;
-	bh=IROdmGyEAzVr2yFiikSwntP9m21zsnQy/XxqTLusAzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jon2f0W8pbdiphgXO1EcnY5rxxF7rYZeQvlNq5MLtkBfVPH8SCDImiNf4j/Pj5hB6x8I99F+IPGkvnQj4MZ1Z3r/f6MX/Nsk1rVn9t2+aEWHdJjBi2OYou9P5qLbqLjp8dpn8H9r1w1nvv2CWzt926VtQX6OpzWhnZ5WhLPW5LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KA7pV4SS; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so4164585e9.0
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 11:33:19 -0800 (PST)
+	s=arc-20240116; t=1772826152; c=relaxed/simple;
+	bh=QyCiCFC1ECgVgWK65lOVKlnDwha5jYw4E23o/9/yenY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rIAGo1dGSoXlmqznm4/EW2XherUI8QzOdEh8D0CBhFgj4OBo9h1h6B8F/yhhN/G3esxy7jqlHCRlH9RsQf7FzOc0kuOpvrD2AZy6cNUWKv5hEdaJpbnJTFtoFVYExM9gCW2SLCGKIQuJPPEIpFqURS+2YprryFDMcAoobXErECg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cp7HrUIt; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a12c310e8aso2543564e87.3
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 11:42:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772825598; x=1773430398; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MAHLJKAJtyM24CDiIlJtLVqFqt8qV70IncQ0oyS87N0=;
-        b=KA7pV4SS9DcWAFvGE59qAW/QNxeXo2ulD+xocap5/0Rh7gqVgyeJ34Asloou9iJV2G
-         pw1UcWNiTSKdaNKnS5j4hhLuBnBgjVZ4u0ZFu98IhB5rsp8xb84V7MpjEVSfBtFtgqVh
-         wfYHwLsaKVwKpxIDFLO0B5nMURHK2Vi+cVFLH3TzqlCUf0HMiGtazwsyxp+N5sDVr9Qa
-         pitk+5MC+QWQXv4ADqSaSdT7/LWh5N06DkzvtQvdWOEZR1PaBnC77d97qSU9/tdTxNyl
-         nDp1/blIcenZpxH6MTJivoGeMm5hb9kcZzNF+fYNog4wvLuwFf+26+pURdQGIcIH2otC
-         qVtg==
+        d=gmail.com; s=20230601; t=1772826150; x=1773430950; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mg0CrTw5bn++8caa5w9iDm4bmWhzQ1IwKlUrGcmtKr8=;
+        b=Cp7HrUItRjL4KLsA2xWgtxyDjR72/5xbq5wEyfP8DOIpTwdT5xoBlzO6whNtkqbwFm
+         coqcJiNMpu5JxCw4J+MDB0qX2qmoO5wrpLo1lXJpfrOZL6RPY15kiQmFeY9MAdxNdH/8
+         Rg13F6vwUNproUbVFqfTJePPtiKUkPs06XfReNn5TorLEEzYzG8+1FZghvq9woRlnvb0
+         hhMnL2hHonPY4ev/thaSfZmENh4Pt2BlQ646hfz4dSykptOpwUnDkflaqpo1yv9RSvmY
+         bmyNf61HJMPt2UUZEfgFoM+Rgc2kvWDR7UOJHvqUC1ZUYTQVPVEQ1WFFDVjdQRY3oLu9
+         99tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772825598; x=1773430398;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MAHLJKAJtyM24CDiIlJtLVqFqt8qV70IncQ0oyS87N0=;
-        b=ZDjIHgmGJY1DWL/i7LreU8x5N76HS0fiUPwrk0tuwAOqJ314sZHdiC5CpRbsApJyMR
-         kDA+8XPPMN0DAqtdJaNipq99dGV54aadvkPSp05KsJvB50xBKK9ovHyjAQuFdaKH1A2x
-         NsPt6KXEkwsE4m/McdMZYdUEBXU5WwPdYXqZWKlygfg97nmrBBz1ce/YU6L0u1ZcotjQ
-         r1L4BYGPxQG4yXkULfY27pmTnRTak/7ma69E1PSK/z8hRw7hl5zKdJPtGagZS43fEHX8
-         CxkholFOGK1xlVQ1SsQvmBUB5YT1JJyievl3D+N7B2sR/kWbjafo42tgsSb51yzC7hIY
-         GlFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWEGkd+nXEsMWxyKyZnJvdvqQN9cozpLGbJXJcIzrydPV9SHBZZovqnPsHIU3pVjDFzLDbtwm8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdqCn4OI/v07J6GJmHDxuiFNbsYhqjiWN1QlQbKqnSiyFI2OdI
-	JDm/RKm5U1Y2McJvjqkxvdTfYNqUsoN+bpgo4EptZHRTjBrTKaLQo75Po4sReYhUzOE=
-X-Gm-Gg: ATEYQzyygYxq/IOZMvLqJ5CU2l1uPpkzvfSv0rQs6/ADNOvUwV15R2q59uQcO/8ks8N
-	oi+rwbXBsPiVxnr2UY6DlO3tUeZZyWmH2q1Y37c7pT7QPmg2fYSV1WgepRLcZdH5LztYN7fZiQo
-	//cF59EQQS6PeXsX0UcqLfRl8PeEc/pXISMxKFNkJfy9eQ+wQYSbDNwqKfRwrKAq1glvpIa9L5a
-	NZ5iJ9vLw+DEYmlZpbVMbgdEKqCAgnZo/AGDYL9DMQKYx0DO/QUSOPq1N1QaRuAlEGWOes/Rimi
-	42v0pFRvodrxa4V8JZjlCUfWr18SsDOZy3VOm9cpxeTYQ/8DwZQ3G3nh8nTWxaCAmY7Jeh5X1sq
-	8JEP3wgBvsQskMnyZ4Es5/6Rgv99EbWCHu9iVt4CQ4Rr2DCvoUU434aadXMadye5Z1fCLl8qGog
-	5YN5cL/pu6wODDD0H/58WTHxjlv8uf+Eodw4ur6x4YfwaO+8ktne4binKCjhiQg6wHhg==
-X-Received: by 2002:a05:600c:3d90:b0:480:4d38:7abc with SMTP id 5b1f17b1804b1-485269304aamr51419315e9.11.1772825598302;
-        Fri, 06 Mar 2026 11:33:18 -0800 (PST)
-Received: from precision.tail0b5424.ts.net ([2804:7f0:6401:b8d7:ea6d:8ea1:ec5a:953d])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94e7b5581e5sm2512719241.12.2026.03.06.11.33.15
+        d=1e100.net; s=20230601; t=1772826150; x=1773430950;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mg0CrTw5bn++8caa5w9iDm4bmWhzQ1IwKlUrGcmtKr8=;
+        b=Wim5NM2mDxRDDB5YV4Zxsqr3uaXFIKGn7IDVQm5FvsNc+wyxuT3qfak+7o7KZiapTN
+         tF+N15ygWYYnXTj4hM/QkXPxaHYwafbKys1/PcRhLkYmRwbhSOBTjZojrFmxvCnubqNT
+         WrkhJvGA2ebLiF6b9Y2CFCerYqFhZ0RD0SRs0XpyyJEUQk8n+YoDhchkExfu0Ug0H4UT
+         lAoe1eqYwzxN8ABoAndwgsB0OM0tUuqbFFEtuxshw8Mc5oa6KI/ChmX78X5ZQ8wULw+i
+         lzbQHiVtO6EfmtIIPGtciqTYRUTNf18/bp93LyrpdpXB0NrvnUDf1m/gBXsMP18kqouk
+         lQJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFvXDFydRVWZYxoOFy/q3Ck+RiDgb6yFBHc75ixgEZtZHdRJlho/1GWvbDfsSNQ9RnKaPwvdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2K3oupW9yl2fJcu7OZ2fuSx5GIFo03D8B1ernHlSdK7r+vz4X
+	Rfb4SrCL2KYV+SemD1W1KucJR6uVWRt0a6AFINJzNhPoFlJY1BnISP/f2gqG/w+4
+X-Gm-Gg: ATEYQzxJ8okjImXYn7LiCg69ltXWZD//RKXOROIYT15PXhbnsRrfxVw/uVfV0jPXdta
+	myWGplIT85H314vZ2/EkkUks80xm9ezmixDQmD7iFH3/qj3PynC+z9OFWuNmNPGJxDGPNv/CoTn
+	xmkxYekJTmAlVrLbXU3MHueBY2Ne9QL/m+z/XSuuLoTLq/smWL+8JhMxUiZwcW9kce+v9dWUvQh
+	RB4AgsqjbwlhHCiGJn73Au3U85teQ1eauFoqj/rd5Yu1Woz43jCWpLa0NcYTIKKmP6oXenjSBBh
+	jBsxlwV+cuYDK/YKNv31NGxoIMtrAUwPD6s+ktGGhIL64hHfqKUIi1B+XjhqE0tPlDJmEo16Xly
+	CiAT6C2DVEtU09hbWmgi4ur5aEtBmXlVAlLbahbrwQ6cVHFgLRVgbD7yQdjJUUAnu2cotF5ench
+	daFvaKUInJRDWqVkI=
+X-Received: by 2002:ac2:4e10:0:b0:5a1:2efb:918f with SMTP id 2adb3069b0e04-5a13ccdd63cmr1393025e87.28.1772826149755;
+        Fri, 06 Mar 2026 11:42:29 -0800 (PST)
+Received: from router-0001 ([2a01:4f9:3080:2e0f::2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13d01cfabsm515709e87.7.2026.03.06.11.42.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:33:17 -0800 (PST)
-Date: Fri, 6 Mar 2026 16:33:13 -0300
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: Paulo Alcantara <pc@manguebit.org>
-Cc: smfrench@gmail.com, Thiago Becker <tbecker@redhat.com>, 
-	David Howells <dhowells@redhat.com>, linux-cifs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] smb: client: fix oops due to uninitialised var in
- smb2_unlink()
-Message-ID: <r7ojhnxu3jkr42oczp2o5w3hp5bs24ft5yav6nnlcohsybqeuv@zjvwndvvxayc>
-References: <20260306005706.830672-1-pc@manguebit.org>
+        Fri, 06 Mar 2026 11:42:29 -0800 (PST)
+From: Alex Dvoretsky <advoretsky@gmail.com>
+To: alex@dvoretsky.name
+Cc: Alex Dvoretsky <advoretsky@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/3] igb: check __IGB_DOWN in igb_clean_rx_irq_zc()
+Date: Fri,  6 Mar 2026 20:42:24 +0100
+Message-ID: <20260306194226.995095-2-advoretsky@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260306194226.995095-1-advoretsky@gmail.com>
+References: <20260306194226.995095-1-advoretsky@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306005706.830672-1-pc@manguebit.org>
-X-Rspamd-Queue-Id: D2421227126
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E69112272A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223382-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-223383-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.976];
+	FROM_NEQ_ENVFROM(0.00)[advoretsky@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.953];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,manguebit.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Reviewed-by: Henrique Carvalho <henrique.carvalho@suse.com>
+When an AF_XDP zero-copy application terminates abruptly (e.g.,
+kill -9), the XSK buffer pool is destroyed but NAPI polling continues.
+igb_clean_rx_irq_zc() keeps returning budget (no descriptors, no
+buffers to allocate, xsk_buff_alloc() returns NULL) which makes
+napi_complete_done() re-arm the poll indefinitely.
 
-We got a lot of those replay uninitialised bugs. Maybe we should prevent
-them by having a replay(func, cond) so we can take advantage of a clean
-stack. Opinions?
+Meanwhile, igb_down() → napi_synchronize() waits for a NAPI poll cycle
+that signals completion with done < budget — which never happens. This
+blocks igb_down() forever, and the 5-second TX watchdog fires because
+no TX completions are processed while NAPI is stuck. Since igb_down()
+never finishes, igb_up() is never called, and the TX queue remains
+permanently stalled.
 
-On Thu, Mar 05, 2026 at 09:57:06PM -0300, Paulo Alcantara wrote:
-> If SMB2_open_init() or SMB2_close_init() fails (e.g. reconnect), the
-> iovs set @rqst will be left uninitialised, hence calling
-> SMB2_open_free(), SMB2_close_free() or smb2_set_related() on them will
-> oops.
-> 
-> Fix this by initialising @close_iov and @open_iov before setting them
-> in @rqst.
-> 
-> Reported-by: Thiago Becker <tbecker@redhat.com>
-> Fixes: 1cf9f2a6a544 ("smb: client: handle unlink(2) of files open by different clients")
-> Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: linux-cifs@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> ---
->  fs/smb/client/smb2inode.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-> index 1c4663ed7e69..5280c5c869ad 100644
-> --- a/fs/smb/client/smb2inode.c
-> +++ b/fs/smb/client/smb2inode.c
-> @@ -1216,6 +1216,7 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
->  	memset(resp_buftype, 0, sizeof(resp_buftype));
->  	memset(rsp_iov, 0, sizeof(rsp_iov));
->  
-> +	memset(open_iov, 0, sizeof(open_iov));
->  	rqst[0].rq_iov = open_iov;
->  	rqst[0].rq_nvec = ARRAY_SIZE(open_iov);
->  
-> @@ -1240,14 +1241,15 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
->  	creq = rqst[0].rq_iov[0].iov_base;
->  	creq->ShareAccess = FILE_SHARE_DELETE_LE;
->  
-> +	memset(&close_iov, 0, sizeof(close_iov));
->  	rqst[1].rq_iov = &close_iov;
->  	rqst[1].rq_nvec = 1;
->  
->  	rc = SMB2_close_init(tcon, server, &rqst[1],
->  			     COMPOUND_FID, COMPOUND_FID, false);
-> +	if (rc)
-> +		goto err_free;
->  	smb2_set_related(&rqst[1]);
-> -	if (rc)
-> -		goto err_free;
->  
->  	if (retries) {
->  		/* Back-off before retry */
-> -- 
-> 2.53.0
-> 
-> 
+Fix this by adding an __IGB_DOWN check at the top of
+igb_clean_rx_irq_zc(), returning 0 immediately when the adapter is
+going down. This allows napi_synchronize() in igb_down() to complete,
+matching the pattern already used in igb_clean_tx_irq().
+
+Fixes: 2c6196013f84 ("igb: Add AF_XDP zero-copy Rx support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
+---
+ drivers/net/ethernet/intel/igb/igb_xsk.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_xsk.c b/drivers/net/ethernet/intel/igb/igb_xsk.c
+index 30ce5fbb5b77..ca4aa4d935d5 100644
+--- a/drivers/net/ethernet/intel/igb/igb_xsk.c
++++ b/drivers/net/ethernet/intel/igb/igb_xsk.c
+@@ -351,6 +351,9 @@ int igb_clean_rx_irq_zc(struct igb_q_vector *q_vector,
+ 	u16 entries_to_alloc;
+ 	struct sk_buff *skb;
+ 
++	if (test_bit(__IGB_DOWN, &adapter->state))
++		return 0;
++
+ 	/* xdp_prog cannot be NULL in the ZC path */
+ 	xdp_prog = READ_ONCE(rx_ring->xdp_prog);
+ 
+-- 
+2.51.0
+
 
