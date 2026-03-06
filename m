@@ -1,283 +1,222 @@
-Return-Path: <stable+bounces-223365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMiCOOEHq2kMZgEAu9opvQ
-	(envelope-from <stable+bounces-223365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:59:13 +0100
+	id mNntHWQJq2k/ZgEAu9opvQ
+	(envelope-from <stable+bounces-223366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:05:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7C7225960
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:59:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC85E225A3A
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE73A306374E
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 16:53:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33472300A3A5
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2767C3A1E96;
-	Fri,  6 Mar 2026 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A443AE708;
+	Fri,  6 Mar 2026 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UC6Dt5cH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HrM51kX3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wHtN9gec"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985B936C0AA
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 16:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3F436923F;
+	Fri,  6 Mar 2026 17:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772816022; cv=none; b=hR9C70aVSVJJ6wFGx49O13f8eM4IHx/2HzUJiivdkumCpga6DEKiMXo4dvSdHG8x529ESJ5Fo6gfyOAttQ0Hk4p4WxZpAxCZUE0Ccv31Xswn+TmAXshN0am/zumAXK74SZsx5GrrKxq/xuxkrRxI0Slywo47wff6IlIsabAomQc=
+	t=1772816563; cv=none; b=egM0SUcNKbUbtErxNMEnt8lL3jA5JpTMR3c8I7TAnmZ1u+hB2IvPSOY0ULCQbIYikfpKmTSodZN5tzJssjUeL36mgQi/eTDM4Sf3NclTM46hfXu1kzm09D9eJzkzLdG8gJDn9JluqRjTSFAmBFly6CanzalOPRIeqSNnUBjQ990=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772816022; c=relaxed/simple;
-	bh=dEgWalIxjYcg2EYY2421TQfsKS5RXz8KPnQ/ZxF9axA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bcYv6u1sDfGAC4PShED92VLTBvdjD/Y4z59+HgSUAxCyC/oFq13LTePhHFwP0ASpxTeECW9McDgRzAtszvNLp81ZTnlcbMhwThMa74TbidKB/w+swMMkA/LiLM6sEQZNGq530UXi5fpwslLrZXG9Erd03ABn6C2+ffY+C+Ku4Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UC6Dt5cH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HrM51kX3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772816020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hNQbk83T93bvLw/SSUDUDFDLerXYgajIMOvnuUhX6A8=;
-	b=UC6Dt5cH7ztw3vMeOSFc+p6+tHTyOuLMFSDdx3hqVQ1E5iz1MzTt693bdfB6ryl1FNGSAN
-	mXBcPVe1K1vclpESMfOZ1VuvcgQlFMi5vtwP6g7bPMtEa0SrjTpNlxe85U0F2d5abgzyKd
-	+RzSX6xUnlb6JXdpqDPF2ScbPRDcek0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-kfKcpl6-Me68ggPrisvjuQ-1; Fri, 06 Mar 2026 11:53:39 -0500
-X-MC-Unique: kfKcpl6-Me68ggPrisvjuQ-1
-X-Mimecast-MFC-AGG-ID: kfKcpl6-Me68ggPrisvjuQ_1772816019
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8ca3ef536ddso2478469785a.0
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 08:53:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1772816019; x=1773420819; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hNQbk83T93bvLw/SSUDUDFDLerXYgajIMOvnuUhX6A8=;
-        b=HrM51kX3cMJ8U9NGgYlNjvBlgtk2ONhUNY0M8+zRwWqeROpS+74NPI8qOD+Rd5V0aC
-         R3+Mpg0IGsJVowPS1NrtM+EkleTWcU/z5yYXNU62/HyJLfm/ZMKbFYLgUqlaH+CeQhLC
-         kuo00J0NPNkZXTvXELF5VFgW6XSbgG9ROZMHR8nW8lMDO8JfFWJ/zuv8cxU+dx4Fd7o0
-         5kGGq8GG9+DSaZmYk5cMEx3PaZ9nejq85zq3D5nTBFJMwS809HndBJgNZr51wRc0G/5M
-         uaNpqTxsnGKKxmTrr0yJh+/hebcKdT+CgJZCp/NkL+RYJVSa5NqsgAA5gTYZ7yVvSWax
-         NJjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772816019; x=1773420819;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hNQbk83T93bvLw/SSUDUDFDLerXYgajIMOvnuUhX6A8=;
-        b=S18tVazUo7niCY/dRSGooAQOjk52G29VRYveRhl0/92h0w8+VZSiu2blcumKsm+6/V
-         4tT683U4HUfApW6sMzPA6ZD+52Ca0JDYotugCxo77T7oa9BTIMWfPf612kabE9pm2ECe
-         wpLiMo4qp5RphgeD+RqmDG/dueC9rwctxWs3HsEwkeVjvJUiCvz9jsoQBR2mY7aa+Uly
-         1jk/l8Qp+NcFtgAEZGUmoQQWMPDgYyfjf8Kg+ElbwyPwptVlAcwwpwKc2Cu//g6WfX+R
-         VzFnQLDuT5g45rfc2xLx5357iwNXJy1lpvSZeTPKTTNpyRqgDqTjxmmLzieVD+b33sEv
-         h2Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ0lXVfdaymGlg5M8b4OIMJsXgM/nLoxlDvD+FwHI57MJdzkU4BvPM/WBtLfeWuwusS+Oqkro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJwU52WUPwJukZoygHgz9odBxVbMyUUxVrxPyclLxtZWOYzvo2
-	GNe02okQOmBhMUzAELu+YTFQpTbj0Kb8B4b8K6mnlsVYVzdJw4k76H/GlAeZDGiCdZ2hfVmmMaU
-	UJ+YObgg3GedRQIKE159N6YYs+xiEjwU53KIvik3KAi1K4EaebRluX9VVTg==
-X-Gm-Gg: ATEYQzza2ZxHluMvnVuSNf0uXOyX9I8cKjEF02lqDS313oboqWo8OdxG9fPKvUWPVlR
-	yb5FOQMPLpCbHBkjmUDjczzgzZxCrVpaY6S/jZxZFV64XYCvA+ugyQ2U//p20NuVnVtwLEcDQTo
-	Y4C/fyQtGz8/MKp80OqtXsMleuAhTqTjAy+NjOXyxQS31Yof6ZaJw3vHvaLryYw6JbO50GIRiJ0
-	pJTkgORABpE5udWYEcFzvcNNc0gPBg3dOGEoTqklzM782kO8skhFSdkq9PJYFXeNyzJkhpFrfO5
-	htTT8EGDnyzHG7CzT5lRRN2fS9KR5sGla2k82LxCHsobMjcUnXlt06gxodACj7IEr9me95aF2BO
-	SEYnklELpubl3cTbh/bSqNcNjvFSAiXDEKCfj5V5NoQW5z28BGPmWzYaFxd5onjPzyA61BFtHbj
-	0S0XCAkw==
-X-Received: by 2002:a05:620a:31a0:b0:8c0:88f3:fac4 with SMTP id af79cd13be357-8cd6d46fd1bmr344990285a.56.1772816018747;
-        Fri, 06 Mar 2026 08:53:38 -0800 (PST)
-X-Received: by 2002:a05:620a:31a0:b0:8c0:88f3:fac4 with SMTP id af79cd13be357-8cd6d46fd1bmr344986185a.56.1772816018115;
-        Fri, 06 Mar 2026 08:53:38 -0800 (PST)
-Received: from x1.local (bras-vprn-aurron9134w-lp130-03-174-91-117-149.dsl.bell.ca. [174.91.117.149])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a317187c0sm17735076d6.50.2026.03.06.08.53.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 08:53:37 -0800 (PST)
-Date: Fri, 6 Mar 2026 11:53:36 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Jonas Zhou <jonaszhou@zhaoxin.com>,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Message-ID: <aasGkA4r56pLqNC3@x1.local>
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+	s=arc-20240116; t=1772816563; c=relaxed/simple;
+	bh=J6IzFKD6GzJ1sKo0/UCXXuBIkAgin/TdtGtxv07nNU8=;
+	h=Date:To:From:Subject:Message-Id; b=KbTsyzHjtV0EJT/z+ckJmWyk4witIsnFnMxXwBXIBJwqweytTxysrJ51X3V4wj7PXEA39JM9K3Q0U6AA7pah20JMvpXHobZ8s31O5/mDNthkY0OKIWm1Jk0sF5jM0oRBxmYxXC0Q5YyLdvgYt/vIOVE34lNmbLiJDE4oImvySG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wHtN9gec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38420C4CEF7;
+	Fri,  6 Mar 2026 17:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772816563;
+	bh=J6IzFKD6GzJ1sKo0/UCXXuBIkAgin/TdtGtxv07nNU8=;
+	h=Date:To:From:Subject:From;
+	b=wHtN9gecCa929VB50jGkIvs3udEw4K5Ufci+JwJnGV/RHB6pwwT3lQpPHp8cJcPVm
+	 0+CemrqQD0N4SjrbMXrTNn7cpSfakUwlzj0ZkuPAsykA+04x6OBFH5d4o2xORFderz
+	 sv7ML+LbNWZFZCnqQzAYoiis4CNIbYipO9W3FxgE=
+Date: Fri, 06 Mar 2026 09:02:42 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,will@kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,leitao@debian.org,jthoughton@google.com,jhubbard@nvidia.com,jgg@nvidia.com,catalin.marinas@arm.com,balbirs@nvidia.com,apopple@nvidia.com,pjaroszynski@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged] arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch removed from -mm tree
+Message-Id: <20260306170243.38420C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
-X-Rspamd-Queue-Id: 4F7C7225960
+X-Rspamd-Queue-Id: CC85E225A3A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223365-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223366-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterx@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.976];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.982];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,x1.local:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,nvidia.com:email]
 X-Rspamd-Action: no action
 
-On Fri, Mar 06, 2026 at 10:03:32PM +0800, Jianhui Zhou wrote:
-> In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-> page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-> returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-> expects the index in huge page units (as calculated by
-> vma_hugecache_offset()). This mismatch means that different addresses
-> within the same huge page can produce different hash values, leading to
-> the use of different mutexes for the same huge page. This can cause
-> races between faulting threads, which can corrupt the reservation map
-> and trigger the BUG_ON in resv_map_release().
-> 
-> Fix this by replacing linear_page_index() with vma_hugecache_offset()
-> and applying huge_page_mask() to align the address properly. To make
-> vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
-> include/linux/hugetlb.h as a static inline function.
-> 
-> Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
-> Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
 
-Good catch.. only one trivial comment below.
+The quilt patch titled
+     Subject: arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
+has been removed from the -mm tree.  Its filename was
+     arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults.patch
 
-> ---
->  include/linux/hugetlb.h | 17 +++++++++++++++++
->  mm/hugetlb.c            | 11 -----------
->  mm/userfaultfd.c        |  5 ++++-
->  3 files changed, 21 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 65910437be1c..3f994f3e839c 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(struct hstate *h)
->  	return h->order + PAGE_SHIFT;
->  }
->  
-> +/*
-> + * Convert the address within this vma to the page offset within
-> + * the mapping, huge page units here.
-> + */
-> +static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-> +		struct vm_area_struct *vma, unsigned long address)
-> +{
-> +	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> +		(vma->vm_pgoff >> huge_page_order(h));
-> +}
-> +
->  static inline bool order_is_gigantic(unsigned int order)
->  {
->  	return order > MAX_PAGE_ORDER;
-> @@ -1197,6 +1208,12 @@ static inline unsigned int huge_page_shift(struct hstate *h)
->  	return PAGE_SHIFT;
->  }
->  
-> +static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-> +		struct vm_area_struct *vma, unsigned long address)
-> +{
-> +	return linear_page_index(vma, address);
-> +}
+This patch was dropped because it was merged into mainline or a subsystem tree
 
-IIUC we don't need this; the userfaultfd.c reference should only happen
-when CONFIG_HUGETLB_PAGE.  Please double check.
+------------------------------------------------------
+From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Subject: arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
+Date: Thu, 05 Mar 2026 15:26:29 -0800
 
-Thanks,
+contpte_ptep_set_access_flags() compared the gathered ptep_get() value
+against the requested entry to detect no-ops.  ptep_get() ORs AF/dirty
+from all sub-PTEs in the CONT block, so a dirty sibling can make the
+target appear already-dirty.  When the gathered value matches entry, the
+function returns 0 even though the target sub-PTE still has PTE_RDONLY set
+in hardware.
 
-> +
->  static inline bool hstate_is_gigantic(struct hstate *h)
->  {
->  	return false;
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 0beb6e22bc26..b87ed652c748 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1006,17 +1006,6 @@ static long region_count(struct resv_map *resv, long f, long t)
->  	return chg;
->  }
->  
-> -/*
-> - * Convert the address within this vma to the page offset within
-> - * the mapping, huge page units here.
-> - */
-> -static pgoff_t vma_hugecache_offset(struct hstate *h,
-> -			struct vm_area_struct *vma, unsigned long address)
-> -{
-> -	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> -			(vma->vm_pgoff >> huge_page_order(h));
-> -}
-> -
->  /**
->   * vma_kernel_pagesize - Page size granularity for this VMA.
->   * @vma: The user mapping.
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 927086bb4a3c..8efebc47a410 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -507,6 +507,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
->  	pgoff_t idx;
->  	u32 hash;
->  	struct address_space *mapping;
-> +	struct hstate *h;
->  
->  	/*
->  	 * There is no default zero huge page for all huge page sizes as
-> @@ -564,6 +565,8 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
->  			goto out_unlock;
->  	}
->  
-> +	h = hstate_vma(dst_vma);
-> +
->  	while (src_addr < src_start + len) {
->  		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
->  
-> @@ -573,7 +576,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
->  		 * in the case of shared pmds.  fault mutex prevents
->  		 * races with other faulting threads.
->  		 */
-> -		idx = linear_page_index(dst_vma, dst_addr);
-> +		idx = vma_hugecache_offset(h, dst_vma, dst_addr & huge_page_mask(h));
->  		mapping = dst_vma->vm_file->f_mapping;
->  		hash = hugetlb_fault_mutex_hash(mapping, idx);
->  		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-> -- 
-> 2.43.0
-> 
+For a CPU with FEAT_HAFDBS this gathered view is fine, since hardware may
+set AF/dirty on any sub-PTE and CPU TLB behavior is effectively gathered
+across the CONT range.  But page-table walkers that evaluate each
+descriptor individually (e.g.  a CPU without DBM support, or an SMMU
+without HTTU, or with HA/HD disabled in CD.TCR) can keep faulting on the
+unchanged target sub-PTE, causing an infinite fault loop.
 
--- 
-Peter Xu
+Gathering can therefore cause false no-ops when only a sibling has been
+updated:
+ - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+ - read faults:  target still lacks PTE_AF
+
+Fix by checking each sub-PTE against the requested AF/dirty/write state
+(the same bits consumed by __ptep_set_access_flags()), using raw per-PTE
+values rather than the gathered ptep_get() view, before returning no-op. 
+Keep using the raw target PTE for the write-bit unfold decision.
+
+Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a
+CONT range may become the effective cached translation and software must
+maintain consistent attributes across the range.
+
+Link: https://lkml.kernel.org/r/20260305-contpte-fault-loop-v2-1-0216f0026d7f@nvidia.com
+Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Breno Leitao <leitao@debian.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm64/mm/contpte.c |   53 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 4 deletions(-)
+
+--- a/arch/arm64/mm/contpte.c~arm64-contpte-fix-set_access_flags-no-op-check-for-smmu-ats-faults
++++ a/arch/arm64/mm/contpte.c
+@@ -599,6 +599,27 @@ void contpte_clear_young_dirty_ptes(stru
+ }
+ EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+ 
++static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
++{
++	pte_t *cont_ptep = contpte_align_down(ptep);
++	/*
++	 * PFNs differ per sub-PTE. Match only bits consumed by
++	 * __ptep_set_access_flags(): AF, DIRTY and write permission.
++	 */
++	const pteval_t cmp_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
++	pteval_t entry_cmp = pte_val(entry) & cmp_mask;
++	int i;
++
++	for (i = 0; i < CONT_PTES; i++) {
++		pteval_t pte_cmp = pte_val(__ptep_get(cont_ptep + i)) & cmp_mask;
++
++		if (pte_cmp != entry_cmp)
++			return false;
++	}
++
++	return true;
++}
++
+ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+ 					unsigned long addr, pte_t *ptep,
+ 					pte_t entry, int dirty)
+@@ -608,14 +629,38 @@ int contpte_ptep_set_access_flags(struct
+ 	int i;
+ 
+ 	/*
+-	 * Gather the access/dirty bits for the contiguous range. If nothing has
+-	 * changed, its a noop.
++	 * Check whether all sub-PTEs in the CONT block already match the
++	 * requested access flags/write permission, using raw per-PTE values
++	 * rather than the gathered ptep_get() view.
++	 *
++	 * __ptep_set_access_flags() can update AF, dirty and write
++	 * permission, but only to make the mapping more permissive.
++	 *
++	 * ptep_get() gathers AF/dirty state across the whole CONT block,
++	 * which is correct for a CPU with FEAT_HAFDBS. But page-table
++	 * walkers that evaluate each descriptor individually (e.g. a CPU
++	 * without DBM support, or an SMMU without HTTU, or with HA/HD
++	 * disabled in CD.TCR) can keep faulting on the target sub-PTE if
++	 * only a sibling has been updated. Gathering can therefore cause
++	 * false no-ops when only a sibling has been updated:
++	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
++	 *  - read faults:  target still lacks PTE_AF
++	 *
++	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
++	 * become the effective cached translation, so all entries must have
++	 * consistent attributes. Check the full CONT block before returning
++	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
++	 * range.
+ 	 */
+-	orig_pte = pte_mknoncont(ptep_get(ptep));
+-	if (pte_val(orig_pte) == pte_val(entry))
++	if (contpte_all_subptes_match_access_flags(ptep, entry))
+ 		return 0;
+ 
+ 	/*
++	 * Use raw target pte (not gathered) for write-bit unfold decision.
++	 */
++	orig_pte = pte_mknoncont(__ptep_get(ptep));
++
++	/*
+ 	 * We can fix up access/dirty bits without having to unfold the contig
+ 	 * range. But if the write bit is changing, we must unfold.
+ 	 */
+_
+
+Patches currently in -mm which might be from pjaroszynski@nvidia.com are
+
 
 
