@@ -1,176 +1,182 @@
-Return-Path: <stable+bounces-223344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGyuAJ7kqmkTYAEAu9opvQ
-	(envelope-from <stable+bounces-223344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:28:46 +0100
+	id oDjMCtLkqmkTYAEAu9opvQ
+	(envelope-from <stable+bounces-223345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:29:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757B6222AC2
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:28:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE61222B1E
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5B1330BD497
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:24:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 53BEE3025ECD
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AFF3B52F5;
-	Fri,  6 Mar 2026 14:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D4D3AA19D;
+	Fri,  6 Mar 2026 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zfm+i/ct"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IuzkZO1E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A437A3AE713
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 14:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326BA3A901C;
+	Fri,  6 Mar 2026 14:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772806987; cv=none; b=pevgsySobWyj7z71S2Ue6GiMuRGQJ1BOgAZFag/WKm8D56COGcOtDisgu90CNTou4fg5aqzzkjpLHvxvcYIana0+7dkDvGhtB50pz1QZ/poBDLDpLssC26hJN9DrwF+lMq9Ct+B6aPjR4sBTyEGQzP0WwfYhP7P+1l0UWfuEl8I=
+	t=1772807344; cv=none; b=sfTg8SPy/6kTk0Cnj4XMTdyEdJnw71ikrTZQeZbH4H9nO5aET9WLOIK2UfZrXTDN/98xxC47sPKYuE+qANQl6G6UKgDjAohOCWNUVF8ziwvuPJ3JPqoUb0LIZpZ99LAaGqAWUwRmvH2BxQ0Bo5f4MrkzoL54l/cwRaas1jMMt2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772806987; c=relaxed/simple;
-	bh=GmCXbPoc8/TfHGNMgmsNF/jXheLGU1o7tY0xuml1IPg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eoEsFW4Jf8UGw/8dr8FO2rYmDIzijmlF81a2wKdetglWs1HP2TuydD7KzLCmMefr90zfg6p1CSgZhiQNy4DvEkLKLvpxFvLBdmq8hTLRAJupep0r5BRG3f7XDm6tezLWlZ2vwXNS7I1xRPJuq1df4HTf3CbyjEMWJ8T2EDXsah8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zfm+i/ct; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-94acd026e45so2304445241.3
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 06:23:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772806983; x=1773411783; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dueXMGXpxv0xbCVmzWXvE/Ffw9BJfJL0ZtVGlTEf6/0=;
-        b=Zfm+i/ctjvhDXWS2Lhqs5rBZMtJKY1HiaHpnWI0w6pUnv2rjNRX63Zi0XG7mc83oyn
-         1J1jVErXSgH7YwOmP+01DomYkB5bLaRJOitrpOfYTG/GsgGfXW1vxGUS6N5qc1cIZDw4
-         pZghCPE4Sdcd0dEcbkPf2+zAbssAqy/HAuOHGTgNoF4uXOG0mvEvJ5Y9pVWjo4MQYOps
-         pgq18vi582kh2hdDBB1y4/S2T6Hr9nEiNv/aObeIha8Ank9TW9XCzZUG2HyYPZYqhg9m
-         p72/e89Zxzaez13+dXip3YqyoFMI3rA9I64Jq0X/gc65uvyk/eroPoMwDOEntwVledCw
-         jr/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772806983; x=1773411783;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dueXMGXpxv0xbCVmzWXvE/Ffw9BJfJL0ZtVGlTEf6/0=;
-        b=DnTKAb4bSQMXEf1aLUzn57M+2MR47GSztMmibYM1nMh1WH34BLN3YKrq/BvathcJZL
-         bzwhsXDEeQwuF5Y3ROGkKGSEoLeOrzLqALT65LLDn7uU8Z2BQTII4NjlWMDeY6wc013Y
-         4QjwkI1uAVQhkWkXrBBeD0+TQEvBeixmosK4uByfkwIh3pCxjFf+r71K6vwz8EBcrmTh
-         f3I8nFceCLXkV70PpgrVJZDsl2sIC//DlpsE4Mf0V0Y8rUluAAD+v6mUlEnKv/Q0gszH
-         31VWBB1bCTowuCom3jTKSTXNekKJ74bQUNyrl/hDiy6tiP8rHFB2WMNNIuZU97PUmDqT
-         9/5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXdi9ee8KnR374GZo6auz8Uv82VZTiOw5wUq/5QNtnqjM4SY8nl5GWcWdcU2BUBCLWRLeAImKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk6nsfp/6zH21OtCNHFfqNQCTDJA1dgAKDzsWxJvA7C/3gDr9H
-	rWx9iI2DiK5flQTmy0zSpPZvl6SRpFVMqThQ9roB2aVVeEmkQL6OJp0s
-X-Gm-Gg: ATEYQzy/Fd3CleMnbxFRlG3zBW8AQtvVoiJfAtHEHAen7gfJvPuhcxSoRNZNheF9wmg
-	ygAAXbBLRVATcP7P9unLLSF4WXiWDVjqJj4CG2grs1aWaG3fB7u0q/3+MX1y6T4lNhQQZWaVUWT
-	jObeboP8OYHnzKb15Y1EPKEAGeZfqVkGWeL6oTX4kmEDBXQTW6ryl+130smLd/SycPCm/e922xG
-	QFCn6HGGPHlKKZpjC/WDgKtBRTMxMlstrgUkAxC/fiMgZ8gxnxj/X+x9dKsKJtpwp57Eo6+qm1i
-	hK+7uUrfvgwS1Z71VVUjXEY4xngcdW/cRGWJimWIHSfLDGmohfEvj281CwTHfsajqMMKBjSlz0A
-	JYsoGrFMSrUs53D/uRNffsQWAwq0Kt5vWPrZyPDuG3SODQKU7QhHntjalpLLKHTUeK0Kl5pnEVS
-	swLMPa50E949V1PxkIbaO4h9FAWp2Hq01lmFdU2u/caR07L/on2Esm9yWBGpK3mjRiq5TWGNA7y
-	B9D9oA=
-X-Received: by 2002:a05:6102:1613:b0:5ff:22f5:e37e with SMTP id ada2fe7eead31-5ffe5f5af8bmr731824137.10.1772806983101;
-        Fri, 06 Mar 2026 06:23:03 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:1b3:a802:8875:ddd6:ede8:90d6:abeb])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94e7b36d64bsm1540781241.6.2026.03.06.06.23.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 06:23:02 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: srini@kernel.org
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1772807344; c=relaxed/simple;
+	bh=hKQUf5WDJPETTYg6XgZVG0XAdpM/T+JEq/CFscr1Cys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sDdRIQEH8qDF+v5FZPD37eVIkrOoPUxQfjU9iab/2WJV6IIvmG0LZYAiCgytTl2zPnAak2ec5e5lK0kvg6PyqKSjA8IsjVFMvppCrFcf3a7/tAJSaaLD4sPQASvMF0p7GzN8LbsXPIaImzh31kV7JPW1Bj8mFofCZ2GyQl0SEPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IuzkZO1E; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772807344; x=1804343344;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hKQUf5WDJPETTYg6XgZVG0XAdpM/T+JEq/CFscr1Cys=;
+  b=IuzkZO1EJD/4tXc15zuuTyyzZVlNFdPYjAjEnW28dUdMDQ5VXjKGb9U9
+   blr8VwB/RR/jDLIniwejueBhPcSKPIu9jUKiCuYU14OLJRQHF0nkpTd/H
+   6dwEFH43CKqeMtk8dk5Qd1poHY+7l6jDBnVQW1EzeX7WVogbQ/zEVY9lm
+   Id9ut8UWgDE5sOC4LbsVKG0MCgTBgfYlhCrhd9u1JLiFCzoFDEZN/l8JO
+   pLyyFMw9/ahFhwUeyyJ+kftYVeWmZ9Du6NgVIt/kuJuo7ioeqs8IujHhb
+   mXceXIm3PEdtzUZoRHROo8LLhttddb4v892kTLyAkOCJHhejycCi00bT2
+   g==;
+X-CSE-ConnectionGUID: h9X8ptlvSlapHiGFdxYeYg==
+X-CSE-MsgGUID: 27QmLi8kSDmV7sStVpajlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="73788743"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="73788743"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 06:29:03 -0800
+X-CSE-ConnectionGUID: MTr7+eJASyulE9m7KCUGvw==
+X-CSE-MsgGUID: CljKMFE5RsuatuijuZIEVg==
+X-ExtLoop1: 1
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.1])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 06:28:56 -0800
+Date: Fri, 6 Mar 2026 16:28:54 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Tobias Schrammm <t.schramm@manjaro.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>, Lee Jones <lee@kernel.org>,
+	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Christian Eggers <ceggers@arri.de>,
-	stable@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH] nvmem: imx: assign nvmem_cell_info::raw_len
-Date: Fri,  6 Mar 2026 11:22:35 -0300
-Message-Id: <20260306142235.1401319-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, chrome-platform@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 00/10] workqueue / drivers: Add device-managed
+ allocate workqueue
+Message-ID: <aarkpqHShro9kE6-@ashevche-desk.local>
+References: <20260305-workqueue-devm-v2-0-66a38741c652@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 757B6222AC2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305-workqueue-devm-v2-0-66a38741c652@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 2AE61222B1E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,lists.infradead.org,vger.kernel.org,arri.de,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223344-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,lwn.net,gmail.com,manjaro.org,linaro.org,collabora.com,chromium.org,lists.linux.dev,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-223345-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[festevam@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arri.de:email]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Christian Eggers <ceggers@arri.de>
+On Thu, Mar 05, 2026 at 10:45:39PM +0100, Krzysztof Kozlowski wrote:
+> Merging / Dependency
+> ====================
+> All further patches depend on the first one, thus this probably should
+> go via one tree, e.g. power supply.  The first patch might be needed for
+> other trees as well, e.g. if more drivers are discovered, so the best if
+> it is on dedicated branch in case it has to be shared.
+> 
+> Changes in v2:
+> ==============
+> - See individual patches
+> - Link to v1: https://patch.msgid.link/20260223-workqueue-devm-v1-0-10b3a6087586@oss.qualcomm.com
+> 
+> Description
+> ===========
+> Add a Resource-managed version of alloc_workqueue() to fix common
+> problem of drivers mixing devm() calls with destroy_workqueue.  Such
+> naive and discouraged driver approach leads to difficult to debug bugs
+> when the driver:
+> 
+> 1. Allocates workqueue in standard way and destroys it in driver
+> remove() callback,
+> 2. Sets work struct with devm_work_autocancel(),
+> 3. Registers interrupt handler with devm_request_threaded_irq().
+> 
+> Which leads to following unbind/removal path:
+> 
+> 1. destroy_workqueue() via driver remove(),
+> Any interrupt coming now would still execute the interrupt handler,
+> which queues work on destroyed workqueue.
+> 2. devm_irq_release(),
+> 3. devm_work_drop() -> cancel_work_sync() on destroyed workqueue.
+> 
+> devm_alloc_workqueue() has two benefits:
+> 1. Solves above problem of mix-and-match devres and non-devres code in
+> driver,
+> 2. Simplify any sane drivers which were correctly using
+> alloc_workqueue() + devm_add_action_or_reset().
 
-Avoid getting error messages at startup like the following on i.MX6ULL:
+Thanks, this version LGTM, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
-nvmem imx-ocotp0: cell mac-addr raw len 6 unaligned to nvmem word size 4
 
-This shouldn't cause any functional change as this alignment would
-otherwise be done in nvmem_cell_info_to_nvmem_cell_entry_nodup().
-
-Cc: stable@vger.kernel.org
-Fixes: 4327479e559c ("nvmem: core: verify cell's raw_len")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- drivers/nvmem/imx-ocotp-ele.c | 1 +
- drivers/nvmem/imx-ocotp.c     | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index 7807ec0e2d18..4585da51f7f4 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -131,6 +131,7 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
- 
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 7bf7656d4f96..108d78d7f6cb 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -589,6 +589,7 @@ MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids);
- static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
- 					 struct nvmem_cell_info *cell)
- {
-+	cell->raw_len = round_up(cell->bytes, 4);
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
- 
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 
