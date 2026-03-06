@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-223310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCw6KLNsqmkPRQEAu9opvQ
-	(envelope-from <stable+bounces-223310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:57:07 +0100
+	id qBKSF9ZsqmkPRQEAu9opvQ
+	(envelope-from <stable+bounces-223311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:57:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE55621BDC4
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7FB21BDE8
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DB61302AD1D
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 05:57:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98D86305184B
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 05:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9301936C588;
-	Fri,  6 Mar 2026 05:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3756736D9FD;
+	Fri,  6 Mar 2026 05:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="lPDOEQWT"
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="jBoR9R3K"
 X-Original-To: stable@vger.kernel.org
 Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AAC2DB791;
-	Fri,  6 Mar 2026 05:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33DA36D4F8;
+	Fri,  6 Mar 2026 05:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772776622; cv=none; b=jVPbno9CBeDXX8IVZuptvZjQ6cf+mUhRsmqXOj99trf9MWco2WXjXV+pF1imjjUqKlbszMx1X+BsgCk96vuPeM05KnvirFSS+KbQKmhSLFMG0alSiSiY0ZcCcy8Rm9mX0wbGL0WR8ZXl0yesIdaJKqiKP11e3oKanDW0O/xfZL0=
+	t=1772776625; cv=none; b=NqmSQ31TphXWAVE7JggfGXELg2XYeCMpYN8l7uvDK2/rpeZWYUCAE5UGpMllJEug7c84ZWp3OiGiP6gWmZW4sju4Ht5HI3k0r9pm1NmFCY32Iq64lWaqBgLRgKnrLbgwCscjz82HGv9hPx8KNeBkazM9OvwT/uwGy8xNd/P7v7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772776622; c=relaxed/simple;
-	bh=yVWRTWr2K5zF5AOYDd/Q/w65glmiFBSUw+cVbjAoqvc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YmOAt6UX+qyQ1P/vhoa8brRSQjRjPVzn1kfj1/Y1nqMJvc/F6hwjPBCEJmRiMJG+mFyNdxopnhL1uhnRBOkA+URi8FrOS0WcxYyxVqktRGm+8Y4v6dI0rFIfPSrUbJpERMx+1FwoTuILD8GUnoFFK0qxngKbhktqkHd7LNABIcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=lPDOEQWT; arc=none smtp.client-ip=211.125.140.165
+	s=arc-20240116; t=1772776625; c=relaxed/simple;
+	bh=2XT2pC15mVN+lX5dwtD+IHNSiOvmfczcHRV7Oa7zui0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UMx9YFLFIiv1XWeNcSDPBNc0DwS0bPhQyd27ezNhfXR/7Btvcd+bNp+EC6VOpi6l3zFf9tw0dnSuxjgkc3WoXggthyOz2DQR4ZmitYh85XLNKQ2n8JL+eWsELzEPTn5Kv50v1sc31ZdCrEoD3Ay8xh1u1LjuaauW16NmQGkEcHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=jBoR9R3K; arc=none smtp.client-ip=211.125.140.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1772776620; x=1804312620;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=nQYRjKyrx78rG0AQNmZ1lkIyhjfw5MLx9OflMRCGrl0=;
-  b=lPDOEQWTFoxFcm0+V5SjCXC+aoGcLy2lEJ3Nm5lfGu7FGzMAQUnDpXCk
-   uPJ68fu3EBF7YjA+tgKRfUI5bhu6j5TzJZ+d57zf+1DPVEKgWo4VZWJai
-   fEmiVeJltBpn77+HZP8zSc7m9E2wZ4nT4oELS93002Bftr5xGST7iWaKc
-   f3RnDQ/ponvJZfnSlmGAmyqksprLAKnrrzTgu8VcH5DITOFra2iN4+zuw
-   aw4ftfJZEDBOxNbnDqqe3Hlps76OTRnXAyTU+oqCtZDf5PO7RsiDFelZU
-   Nn6rlGWIg0AUMZVM9uzVbyioiOFqDGioTLCcqK8scXgxt71ExJ7gNUeUH
-   A==;
+  d=sony.com; s=s1jp; t=1772776623; x=1804312623;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=RJlkan/bm4WkpgfpFn8vBoIW/xcIt8h3GoUwLxbVo0w=;
+  b=jBoR9R3KoDQQhVFFm6BQj2uiEus4knhQX0zqm17VwyvCnti80YN9jCTb
+   21vo5OV7tXmTnI0EFkigfDVcz2XFiepW6ivPa1/WdBmoMEUHPKMr5WyUB
+   qwSNGr3JmsXXNTcEAeYnwX6emRuXYnLzoM+SWLcV1+5PCWXoJSxxAaYyu
+   R2FhvudPNcgfVvYYWRzNFHXyVSem6zPyqWgpN7YAEGZM+yUxpn+pnPnq7
+   uz31Ob4vrj4809glNq8+CrnJfwksgeNqsoWb00xTPrVgnfbvHXD6MKo7L
+   zz+hEEX6f/+ZR1SX6HUyf25tUctT34I1KB5AKPD3RJMyIx9fWp2P7xV8b
+   w==;
 Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
   by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 14:46:50 +0900
 X-IronPort-AV: E=Sophos;i="6.23,104,1770562800"; 
-   d="scan'208";a="619082191"
+   d="scan'208";a="619082192"
 Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob1.noc.sony.co.jp with ESMTP; 06 Mar 2026 14:46:49 +0900
+  by jpmta-ob1.noc.sony.co.jp with ESMTP; 06 Mar 2026 14:46:50 +0900
 From: Shashank Balaji <shashank.mahadasyam@sony.com>
-Subject: [PATCH v2 0/2] x86/x2apic: Fix hangup of defconfig kernel on
- resume from s2ram
-Date: Fri, 06 Mar 2026 14:46:27 +0900
-Message-Id: <20260306-x2apic-fix-v2-0-bee99c12efa3@sony.com>
+Date: Fri, 06 Mar 2026 14:46:28 +0900
+Subject: [PATCH v2 1/2] x86/x2apic: Disable x2apic on resume if the kernel
+ expects so
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,10 +64,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADRqqmkC/03MQQrCMBCF4auUWRtJBqujq95DumjG1M7CpCQSW
- krubiwILv8H79sguSguwa3ZILosSYKvgYcGeBr80yl51AbUeNaojVpwmIXVKIuilomNbdleNdT
- DHF2dd+ze154kvUNcdzub7/pj8J/JRml1MUzjiWggsl0Kfj1yeEFfSvkAOHo1VqMAAAA=
-X-Change-ID: 20260201-x2apic-fix-85c8c1b5cb90
+Message-Id: <20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com>
+References: <20260306-x2apic-fix-v2-0-bee99c12efa3@sony.com>
+In-Reply-To: <20260306-x2apic-fix-v2-0-bee99c12efa3@sony.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -79,16 +78,16 @@ Cc: Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
  Rahul Bukte <rahul.bukte@sony.com>, Daniel Palmer <daniel.palmer@sony.com>, 
  Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2033;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3265;
  i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
- bh=yVWRTWr2K5zF5AOYDd/Q/w65glmiFBSUw+cVbjAoqvc=;
- b=owGbwMvMwCU2bX1+URVTXyjjabUkhsxVWR63L8x8vPVksNhH3oMO2mv9LL7faQp9fmMR+7TCA
- CklRaYNHaUsDGJcDLJiiiylStW/9q4IWtJz5rUizBxWJpAhDFycAjCRVcwM/zR+uJ61YplXFXj/
- 6N5/Ht5rzy0461oSu+GfSdfkzv2nTOQYGbp8Nef4qEUc4/4855HkwuyCdrb5+19tv8a82v3X6/9
- x5iwA
+ bh=2XT2pC15mVN+lX5dwtD+IHNSiOvmfczcHRV7Oa7zui0=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhsxVWR5rE242JLve0ZA+/7Fp17vV+5Lm/u7euj/BYVt7W
+ qjR/Qu3O0pZGMS4GGTFFFlKlap/7V0RtKTnzGtFmDmsTCBDGLg4BWAir6Yx/Ga/KqIZ/mnj2X79
+ dRuUbX/0/HOY4GvFrsw1YUrehVfMPjGMDCtXC3A3W/Bc0nRiEYoutjqqzVPx4MC3I7Jt9x6Lp3W
+ 48QIA
 X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
  fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
-X-Rspamd-Queue-Id: EE55621BDC4
+X-Rspamd-Queue-Id: BC7FB21BDE8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -100,7 +99,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-223310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223311-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[sony.com:+];
@@ -114,58 +113,93 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uefi.org:url,sony.com:dkim,sony.com:email,sony.com:mid]
 X-Rspamd-Action: no action
 
-Changes in v2:
-- Patch 1's commit references the ACPI spec (Sohil Mehta)
-- Patch 2's commit references the Intel SDM (Jan's and Andrew's discussion)
-- Patch 3 to rename x2apic_available() to x2apic_without_ir_available() dropped
-due to a lack of direction
-- Link to v1: https://lore.kernel.org/r/20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support
+irq remapping or for other reasons. This causes the kernel to continue using
+the xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-On resume from s2ram, a defconfig kernel gets into a state where the x2apic
-hardware state and the kernel's perceived state are different.
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-On boot, x2apic is enabled by the firmware, and then the kernel disables it
-(relevant lines from dmesg):
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the pre-sleep
+configuration or initial boot configuration for each CPU, including MSR state:
 
-	[    0.000381] x2apic: enabled by BIOS, switching to x2apic ops
-	[    0.009939] APIC: Switched APIC routing to: cluster x2apic
-	[    0.095151] x2apic: IRQ remapping doesn't support X2APIC mode
-	[    0.095154] x2apic disabled
-	[    0.095551] APIC: Switched APIC routing to: physical flat
+	When executing from the power-on reset vector as a result of waking
+	from an S2 or S3 sleep state, the platform firmware performs only the
+	hardware initialization required to restore the system to either the
+	state the platform was in prior to the initial operating system boot,
+	or to the pre-sleep configuration state. In multiprocessor systems,
+	non-boot processors should be placed in the same state as prior to the
+	initial operating system boot.
 
-defconfig has CONFIG_IRQ_REMAP=n, which leads to x2apic being disabled,
-because on bare metal, x2apic has an architectural dependence on interrupt
-remapping.
+	(further ahead)
 
-While resuming from s2ram, x2apic is enabled again by the firmware, but
-the kernel continues using the physical flat apic routing. This causes a
-hangup.
+	 If this is an S2 or S3 wake, then the platform runtime firmware
+	 restores minimum context of the system before jumping to the waking
+	 vector. This includes:
 
-Patch 1 fixes this in lapic_resume() by disabling x2apic when the kernel expects
-it to be disabled.
-Patch 2 enables CONFIG_IRQ_REMAP in defconfig so that defconfig kernels at
-least don't disable x2apic because of a lack of IRQ_REMAP support.
+	 	CPU configuration. Platform runtime firmware restores the
+		pre-sleep configuration or initial boot configuration of each
+		CPU (MSR, MTRR, firmware update, SMBase, and so on). Interrupts
+		must be disabled (for IA-32 processors, disabled by CLI
+		instruction).
 
+		(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is allowed
+if "x2apic on" is a part of the initial boot configuration.
+
+[1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Cc: stable@vger.kernel.org
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
 Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
 Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
----
----
-Shashank Balaji (2):
-      x86/x2apic: Disable x2apic on resume if the kernel expects so
-      x86/defconfig: Add CONFIG_IRQ_REMAP
 
- arch/x86/configs/x86_64_defconfig |  1 +
- arch/x86/kernel/apic/apic.c       | 10 ++++++++++
- 2 files changed, 11 insertions(+)
 ---
-base-commit: e5dd3611420978eac7031c627604a64b01ec56eb
-change-id: 20260201-x2apic-fix-85c8c1b5cb90
 
-Best regards,
+Changes in v2:
+- Add __x2apic_disable() stub for !CONFIG_X86_X2APIC
+- Mention the ACPI spec in the commit message (Sohil Mehta)
+---
+ arch/x86/kernel/apic/apic.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index d93f87f29d03..c8cb82d5131c 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1894,6 +1894,7 @@ void __init check_x2apic(void)
+ 
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
+ 
+ void __init enable_IR_x2apic(void)
+@@ -2456,6 +2457,15 @@ static void lapic_resume(void *data)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		/*
++		 * x2apic may have been re-enabled by the firmware on resuming
++		 * from s2ram
++		 */
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
++
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
+
 -- 
-Shashank Balaji <shashank.mahadasyam@sony.com>
+2.43.0
 
 
