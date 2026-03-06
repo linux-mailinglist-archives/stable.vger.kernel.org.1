@@ -1,242 +1,267 @@
-Return-Path: <stable+bounces-223372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4I+xBj0Qq2kRZwEAu9opvQ
-	(envelope-from <stable+bounces-223372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:34:53 +0100
+	id 0CRXCX8Tq2lzZwEAu9opvQ
+	(envelope-from <stable+bounces-223373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:48:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E88E226447
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:34:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7782266E2
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A716309B506
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:22:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 405373037F1D
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748C43A1E96;
-	Fri,  6 Mar 2026 17:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ABC3EFD37;
+	Fri,  6 Mar 2026 17:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="v+ssIZeN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jC7utxMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9D236CE0E;
-	Fri,  6 Mar 2026 17:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F3F3ED118;
+	Fri,  6 Mar 2026 17:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772817646; cv=none; b=cyoksLXRTohLqh1UwooGn4PnNuS/65Pmi3+vip9edMezAIqDE+AmgLN+matvcVBp5aGDOqddxBSEuTyTeeU38A+t+VUAQTnhsrz5Ur5q6aPzX29U4zpmEUt4JZ1MWLqZiNibKZbslwdNjmu6B9sIa8hOA6rhm9NfVWActpnvU6M=
+	t=1772819324; cv=none; b=gyNvDUnYYdA9Vx26JBmOId1cizDMisbvL5XptyQtG7E5ufY+fONCkN/18CebXDvufcThKMERmUjlZUprLbPlt0Wen43QVG7HPzfz6Hjh2anwWecNymzPlkv0sNtVagWg6TrtKJ/8n+DthuoOZa6ySn1HW7JlpQLlCrnhFLOTkqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772817646; c=relaxed/simple;
-	bh=qPdJe4Z47VypuH7RvMq+bzweb9b+eflRKiFyyrJPYZM=;
-	h=Date:To:From:Subject:Message-Id; b=DBRaaS7WO/EaKMAFRPML1GPlH9APTTGF27Qt9WbSiSSe2tbG7u8e7BQ5RkpUJvu1qi31kIX/Tpsj/YkFgc559II8kPa7u55uqjdnzBRgY1OQZTKBUORQ5bhZ94Kr9/Mug/CHAUrNuE0fSK27QFD58nieOuUwbWhvIpvb2/vtK4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=v+ssIZeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B195BC4CEF7;
-	Fri,  6 Mar 2026 17:20:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772817645;
-	bh=qPdJe4Z47VypuH7RvMq+bzweb9b+eflRKiFyyrJPYZM=;
-	h=Date:To:From:Subject:From;
-	b=v+ssIZeNMoI3Ei826nxlS6X+GWXbuWHGcgvaKvD+COt4AaKgGwfFMHLOdASt+FNtH
-	 +9jDpjldhU4fkVwPzvlHZ23OU7a5bebNQnmchfMcn+w6YidJJtVVcVuZ7I+OsXX91t
-	 pqjPU2NMOv4LknRzpKnuPkKQ3o9ocF5U1ZaKA5E0=
-Date: Fri, 06 Mar 2026 09:20:45 -0800
-To: mm-commits@vger.kernel.org,xemul@parallels.com,stable@vger.kernel.org,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,ljs@kernel.org,JonasZhou@zhaoxin.com,hillf.zj@alibaba-inc.com,dgilbert@redhat.com,david@redhat.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260306172045.B195BC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1772819324; c=relaxed/simple;
+	bh=Hhi1VSoB/nvC1qdPIeFMWhKmBrYY7zchrXx55jAoWmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RNRIfkNkjzTkfGHTEishD2LejO60xXyxqIk+Hg7n7I5PrFgZyhtpFyJbqeCKyKKnlB3vJMoVhh0NOxF5UfEsVQCIkFLGTTkNkH3vxWUQY1SMTR57q4YN+rgngKcQKgWGzL/7u8V8RCU3mpsKL1YP8b7hg2u3g2h7lkFu0KOvuUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jC7utxMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D63CC4CEF7;
+	Fri,  6 Mar 2026 17:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772819323;
+	bh=Hhi1VSoB/nvC1qdPIeFMWhKmBrYY7zchrXx55jAoWmk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jC7utxMzxxTPDki8lmLpSoHB159HsK0KjVTi+weZ5Q7qnkf7OV1sub5cPSL/+IuDw
+	 4txO9Q4tABXSQjbl5NtnHgkBQiya6cygg1FpYo7LWiAS+b9UXsVR0UEK6XQr5xRmLD
+	 rthEEF/Gd2AxGlcat6zgy1oIe+tpobm5TzNNkgVoghmIdirCCBEF+6y9IrA6dYyk0/
+	 YBKcvpq0/1riVUDgz5OEzCERA/3Ry2l8tUx47ovUtIQN00YRyCr+idARKa6EyJJvHq
+	 snYhpV/sNs/eMZyCa6YTarlsXhNZeXgrmHLEwAIBU6zQ4aQ63Fqr9QCbG/Z8efbC01
+	 hE+B9CWTRqtag==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: pm: in-kernel: always set ID as avail when rm endp
+Date: Fri,  6 Mar 2026 18:48:14 +0100
+Message-ID: <20260306174813.2517544-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260301012618.1683684-1-sashal@kernel.org>
+References: <20260301012618.1683684-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 1E88E226447
+MIME-Version: 1.0
+X-Patchwork-Hint: ignore
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8520; i=matttbe@kernel.org; h=from:subject; bh=Hhi1VSoB/nvC1qdPIeFMWhKmBrYY7zchrXx55jAoWmk=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJXC8cVOM5xsvwiquVxvlTta3/+fMMMyR8vn09Oe8F+z PhAjNnHjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIlsmsXI8NPxMf9CpzSl93vT F3Fe69Vd9SXD4tsG091iM21ti6bem8Xwk/HfOQlBube+vS4mUYG/S27NODn5bcClFdkxS60Kpim 94AQA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9A7782266E2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_TO(0.00)[vger.kernel.org,parallels.com,kernel.org,redhat.com,suse.de,linux.dev,zhaoxin.com,alibaba-inc.com,gmail.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-223372-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223373-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.973];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
 X-Rspamd-Action: no action
 
+commit d191101dee25567c2af3b28565f45346c33d65f5 upstream.
 
-The patch titled
-     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+Syzkaller managed to find a combination of actions that was generating
+this warning:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+  WARNING: net/mptcp/pm_kernel.c:1074 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538, CPU#1: syz.7.48/2535
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 2535 Comm: syz.7.48 Not tainted 6.18.0-03987-gea5f5e676cf5 #17 PREEMPT(voluntary)
+  Hardware name: QEMU Ubuntu 25.10 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline]
+  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538
+  Code: 89 c7 e8 c5 8c 73 fe e9 f7 fd ff ff 49 83 ef 80 e8 b7 8c 73 fe 4c 89 ff be 03 00 00 00 e8 4a 29 e3 fe eb ac e8 a3 8c 73 fe 90 <0f> 0b 90 e9 3d ff ff ff e8 95 8c 73 fe b8 a1 ff ff ff eb 1a e8 89
+  RSP: 0018:ffffc9001535b820 EFLAGS: 00010287
+  netdevsim0: tun_chr_ioctl cmd 1074025677
+  RAX: ffffffff82da294d RBX: 0000000000000001 RCX: 0000000000080000
+  RDX: ffffc900096d0000 RSI: 00000000000006d6 RDI: 00000000000006d7
+  netdevsim0: linktype set to 823
+  RBP: ffff88802cdb2240 R08: 00000000000104ae R09: ffffffffffffffff
+  R10: ffffffff82da27d4 R11: 0000000000000000 R12: 0000000000000000
+  R13: ffff88801246d8c0 R14: ffffc9001535b8b8 R15: ffff88802cdb1800
+  FS:  00007fc6ac5a76c0(0000) GS:ffff8880f90c8000(0000) knlGS:0000000000000000
+  netlink: 'syz.3.50': attribute type 5 has an invalid length.
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  netlink: 1232 bytes leftover after parsing attributes in process `syz.3.50'.
+  CR2: 0000200000010000 CR3: 0000000025b1a000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   mptcp_pm_set_flags net/mptcp/pm_netlink.c:277 [inline]
+   mptcp_pm_nl_set_flags_doit+0x1d7/0x210 net/mptcp/pm_netlink.c:282
+   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
+   netlink_sendmsg+0x4ab/0x5b0 net/netlink/af_netlink.c:1894
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+   __sock_sendmsg+0xc9/0xf0 net/socket.c:733
+   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2608
+   ___sys_sendmsg+0x2de/0x320 net/socket.c:2662
+   __sys_sendmsg net/socket.c:2694 [inline]
+   __do_sys_sendmsg net/socket.c:2699 [inline]
+   __se_sys_sendmsg net/socket.c:2697 [inline]
+   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2697
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xed/0x360 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7fc6adb66f6d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007fc6ac5a6ff8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007fc6addf5fa0 RCX: 00007fc6adb66f6d
+  RDX: 0000000000048084 RSI: 00002000000002c0 RDI: 000000000000000e
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  netlink: 'syz.5.51': attribute type 2 has an invalid length.
+  R13: 00007fff25e91fe0 R14: 00007fc6ac5a7ce4 R15: 00007fff25e920d7
+   </TASK>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The actions that caused that seem to be:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+ - Create an MPTCP endpoint for address A without any flags
+ - Create a new MPTCP connection from address A
+ - Remove the MPTCP endpoint: the corresponding subflows will be removed
+ - Recreate the endpoint with the same ID, but with the subflow flag
+ - Change the same endpoint to add the fullmesh flag
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+In this case, msk->pm.local_addr_used has been kept to 0 as expected,
+but the corresponding bit in msk->pm.id_avail_bitmap was still unset
+after having removed the endpoint, causing the splat later on.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+When removing an endpoint, the corresponding endpoint ID was only marked
+as available for "signal" types with an announced address, plus all
+"subflow" types, but not the other types like an endpoint corresponding
+to the initial subflow. In these cases, re-creating an endpoint with the
+same ID didn't signal/create anything. Here, adding the fullmesh flag
+was creating the splat when calling __mark_subflow_endp_available() from
+mptcp_pm_nl_fullmesh(), because msk->pm.local_addr_used was set to 0
+while the ID was marked as used.
 
-------------------------------------------------------
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Fri, 6 Mar 2026 21:59:26 +0800
+To fix this issue, the corresponding bit in msk->pm.id_avail_bitmap can
+always be set as available when removing an MPTCP in-kernel endpoint. In
+other words, moving the call to __set_bit() to do it in all cases,
+except for "subflow" types where this bit is handled in a dedicated
+helper.
 
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units (as calculated by
-vma_hugecache_offset()).  This mismatch means that different addresses
-within the same huge page can produce different hash values, leading to
-the use of different mutexes for the same huge page.  This can cause races
-between faulting threads, which can corrupt the reservation map and
-trigger the BUG_ON in resv_map_release().
+Note: instead of adding a new spin_(un)lock_bh that would be taken in
+all cases, do all the actions requiring the spin lock under the same
+block.
 
-Fix this by replacing linear_page_index() with vma_hugecache_offset() and
-applying huge_page_mask() to align the address properly.  To make
-vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
-include/linux/hugetlb.h as a static inline function.
+This modification potentially fixes another issue reported by syzbot,
+see [1]. But without a reproducer or more details about what exactly
+happened before, it is hard to confirm.
 
-Link: https://lkml.kernel.org/r/tencent_F70AFD1D8067E3D2409764BC1A199DA6AF0A@qq.com
-Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: JonasZhou <JonasZhou@zhaoxin.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
-Cc: Pavel Emelyanov <xemul@parallels.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e255683c06df ("mptcp: pm: re-using ID of unused removed ADD_ADDR")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/606
+Reported-by: syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/68fcfc4a.050a0220.346f24.02fb.GAE@google.com [1]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260205-net-mptcp-misc-fixes-6-19-rc8-v2-1-c2720ce75c34@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in pm_netlink.c, because commit 8617e85e04bd ("mptcp: pm:
+  split in-kernel PM specific code") is not in this version, and move
+  code from pm_netlink.c to pm_kernel.c. Also, commit 636113918508
+  ("mptcp: pm: remove '_nl' from mptcp_pm_nl_rm_addr_received") renamed
+  mptcp_pm_nl_rm_subflow_received() to mptcp_pm_rm_subflow(). Apart from
+  that, the same patch can be applied in pm_netlink.c. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
+ net/mptcp/pm_netlink.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
- include/linux/hugetlb.h |   17 +++++++++++++++++
- mm/hugetlb.c            |   11 -----------
- mm/userfaultfd.c        |    5 ++++-
- 3 files changed, 21 insertions(+), 12 deletions(-)
-
---- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/include/linux/hugetlb.h
-@@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(s
- 	return h->order + PAGE_SHIFT;
- }
- 
-+/*
-+ * Convert the address within this vma to the page offset within
-+ * the mapping, huge page units here.
-+ */
-+static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-+		struct vm_area_struct *vma, unsigned long address)
-+{
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
-@@ -1197,6 +1208,12 @@ static inline unsigned int huge_page_shi
- 	return PAGE_SHIFT;
- }
- 
-+static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-+		struct vm_area_struct *vma, unsigned long address)
-+{
-+	return linear_page_index(vma, address);
-+}
-+
- static inline bool hstate_is_gigantic(struct hstate *h)
- {
- 	return false;
---- a/mm/hugetlb.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/mm/hugetlb.c
-@@ -1006,17 +1006,6 @@ static long region_count(struct resv_map
- 	return chg;
- }
- 
--/*
-- * Convert the address within this vma to the page offset within
-- * the mapping, huge page units here.
-- */
--static pgoff_t vma_hugecache_offset(struct hstate *h,
--			struct vm_area_struct *vma, unsigned long address)
--{
--	return ((address - vma->vm_start) >> huge_page_shift(h)) +
--			(vma->vm_pgoff >> huge_page_order(h));
--}
--
- /**
-  * vma_kernel_pagesize - Page size granularity for this VMA.
-  * @vma: The user mapping.
---- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/mm/userfaultfd.c
-@@ -507,6 +507,7 @@ static __always_inline ssize_t mfill_ato
- 	pgoff_t idx;
- 	u32 hash;
- 	struct address_space *mapping;
-+	struct hstate *h;
- 
- 	/*
- 	 * There is no default zero huge page for all huge page sizes as
-@@ -564,6 +565,8 @@ retry:
- 			goto out_unlock;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 864c26e22b24..218a126b4375 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1557,10 +1557,8 @@ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
+-		if (ret) {
+-			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		if (ret)
+ 			msk->pm.add_addr_signaled--;
+-		}
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
  	}
+@@ -1598,17 +1596,15 @@ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
  
-+	h = hstate_vma(dst_vma);
-+
- 	while (src_addr < src_start + len) {
- 		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+ 		list.ids[0] = mptcp_endp_get_local_id(msk, addr);
+-		if (remove_subflow) {
+-			spin_lock_bh(&msk->pm.lock);
+-			mptcp_pm_nl_rm_subflow_received(msk, &list);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
  
-@@ -573,7 +576,7 @@ retry:
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = vma_hugecache_offset(h, dst_vma, dst_addr & huge_page_mask(h));
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-_
-
-Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
-
-mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+-		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+-			spin_lock_bh(&msk->pm.lock);
++		spin_lock_bh(&msk->pm.lock);
++		if (remove_subflow)
++			mptcp_pm_nl_rm_subflow_received(msk, &list);
++		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
+ 			__mark_subflow_endp_available(msk, list.ids[0]);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
++		else /* mark endp ID as available, e.g. Signal or MPC endp */
++			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		spin_unlock_bh(&msk->pm.lock);
+ 
+ 		if (msk->mpc_endpoint_id == entry->addr.id)
+ 			msk->mpc_endpoint_id = 0;
+-- 
+2.51.0
 
 
