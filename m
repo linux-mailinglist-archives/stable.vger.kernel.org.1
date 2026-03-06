@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-223306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L7jECRNqmmIOwEAu9opvQ
-	(envelope-from <stable+bounces-223306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:42:28 +0100
+	id SN1vKalgqmmxQQEAu9opvQ
+	(envelope-from <stable+bounces-223307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:05:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C3921B3DB
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:42:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0018021B9EC
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 06:05:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38FDD3066E70
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 03:38:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 192013028B2B
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 05:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E50C36C0D0;
-	Fri,  6 Mar 2026 03:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F2D366815;
+	Fri,  6 Mar 2026 05:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5LMPYRz"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WfMiDJSU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D80369217;
-	Fri,  6 Mar 2026 03:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3B81D5141;
+	Fri,  6 Mar 2026 05:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772768296; cv=none; b=HO+jEiax9+pDqvwY5ejj7ishdEVimK2jpDZJ6o5ztflb+MqTy+lfeEWB98rBXky4ehoJ4Gkjii8h5LWTm/6iLosP6sZSXzLR72ZlT9IscmDy+iERPKnrZ29xQ5J9Lhpa3JukbIxZD3k5ZANb1AJr41KRudIsQMPAz8WGwZ/oyBc=
+	t=1772773540; cv=none; b=lGR5rM6wsWPoJpkrugmkOaOjLTavAtRLo8HT5YEJOW0E7pRVS8vgTl57+/T8mfLHRMehP6stYAgXqaOdZW78v+gZXQ4bC69B2fprMMc/lzGqKatkjdK85z9OuCjKgn2RQujoH1QDgn+lNv1fspCx10xrnJE1wKh3m6c75uRNdbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772768296; c=relaxed/simple;
-	bh=agnbrV4bRkUCMC0bqRHHY8STp+AM8bV+FkZeMZ8KuYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1VYn8qhnnp0nMBm7c9rGpVZDsRIA+mLI2ROe00tQcNBNjsQVm37pKiH8SQlFhgPlQ044AFSNaj4JTpohM54qQg9VSCE04wKcZeKLLrIih6h8FRg+KHYH5GKijhUJ4jd1d369g7jj5gR3VE27I+eWNYEbI1G9JuL1RmsVqM8sDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5LMPYRz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7819C19423;
-	Fri,  6 Mar 2026 03:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772768295;
-	bh=agnbrV4bRkUCMC0bqRHHY8STp+AM8bV+FkZeMZ8KuYc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5LMPYRzibSOT4oXX4rXkEw6vtgQJCETn9WARaQANTBV/+n+8LiOlWYrGOoApsUl5
-	 Qt8nzpu1tbMZdsIb2yM9AQYROBftskWlG6W6g6kebJLe3kkre6vzLSmUwPstbjs/bS
-	 UfoQ500YHGH2V8T/iPtWtaUVCJe7eBfFrQ1R++TO/YRQ8bNTjCPdLKx3t6gBLkjE23
-	 TdSFhgNtgJksIMqjMWeoj5eenx0ZEMO7OD6wKe/YkRPjk7Ug5b4m/D/EMcAAHLFeHe
-	 KWQqMRwWT1SYoLzKq3CJu9Hzd0cDyxo1TtFWEp+1oG0ohJOcnZOOI3Tg1ysQWCFOmA
-	 WHWnFqB/6Mchw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	kunit-dev@googlegroups.com,
-	Eric Biggers <ebiggers@kernel.org>,
+	s=arc-20240116; t=1772773540; c=relaxed/simple;
+	bh=MXdCqykNBi++6JAkj/eEXsUiF4er8/fECzYm7564Kcw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OlEbldsKgMfLxVFZ6qiUEQD3zf9p9l8KZdfQpnEmz9wwL5g1qrZFM8+8MWYudcOHok72hYJlbGAQ46ky67LrOnpf1Ie+kp2VF/xJJOmNIfs0C9sO4XRpG68h9tNrNIPBMbgXUnqHWOtEdTbTndkh0naWu5TTCnmoze7rnVgwYjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WfMiDJSU; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zC
+	9l8baCUS7gCT7xvhPz649icmxJifRfM6Va5tEJ970=; b=WfMiDJSUtKNp9YKWM6
+	wm+aose9FSFHFrcC8qgtVlvUs1m1rgetOpzME6NtxdKCFVWb6oq+th6g01yCfFCZ
+	g1Cqh9/0I2DWmZ2H0Vryodgk6C1UDAyq0Jf8m6KtKCMU+0GXkAUaFwd5XkBDjG2H
+	GL3lb9/59gAfclM7lC3QM03aU=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBXP2uBYKppaWxBPg--.56238S2;
+	Fri, 06 Mar 2026 13:05:06 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] lib/crc: tests: Make crc_kunit test only the enabled CRC variants
-Date: Thu,  5 Mar 2026 19:35:55 -0800
-Message-ID: <20260306033557.250499-2-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260306033557.250499-1-ebiggers@kernel.org>
-References: <20260306033557.250499-1-ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15.y] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
+Date: Fri,  6 Mar 2026 13:05:04 +0800
+Message-Id: <20260306050504.1395421-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,202 +61,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E3C3921B3DB
+X-CM-TRANSID:_____wBXP2uBYKppaWxBPg--.56238S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF1fCw4UZr1xXr47Xw17trb_yoW8uw18pr
+	9xG3WfGr15ur1rWa1vga18uryFkayqga1UJa97uw1Fv3srZw1fWw1vvFyfWayUtrZrJr4r
+	XF90kryrt3Z8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEdb17UUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3QI91mmqYIJtYwAA3b
+X-Rspamd-Queue-Id: 0018021B9EC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223306-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223307-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,163.com];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Like commit 4478e8eeb871 ("lib/crypto: tests: Depend on library options
-rather than selecting them") did with the crypto library tests, make
-crc_kunit depend on the code it tests rather than selecting it.  This
-follows the standard convention for KUnit and fixes an issue where
-enabling KUNIT_ALL_TESTS enabled non-test code.
+From: Chao Yu <chao@kernel.org>
 
-crc_kunit does differ from the crypto library tests in that it
-consolidates the tests for multiple CRC variants, with 5 kconfig
-options, into one KUnit suite.  Since depending on *all* of these
-kconfig options would greatly restrict the ability to enable crc_kunit,
-instead just depend on *any* of these options.  Update crc_kunit
-accordingly to test only the reachable code.
+[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
 
-Alternatively we could split crc_kunit into 5 test suites.  But keeping
-it as one is simpler for now.
+w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
 
-Fixes: e47d9b1a76ed ("lib/crc_kunit.c: add KUnit test suite for CRC library functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2835!
+Call Trace:
+ <TASK>
+ f2fs_allocate_data_block+0x6f4/0xc50
+ f2fs_map_blocks+0x970/0x1550
+ f2fs_iomap_begin+0xb2/0x1e0
+ iomap_iter+0x1d6/0x430
+ __iomap_dio_rw+0x208/0x9a0
+ f2fs_file_write_iter+0x6b3/0xfa0
+ aio_write+0x15d/0x2e0
+ io_submit_one+0x55e/0xab0
+ __x64_sys_io_submit+0xa5/0x230
+ do_syscall_64+0x84/0x2f0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0010:new_curseg+0x70f/0x720
+
+The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
+trigger foreground gc only if it allocates any physical block, it will be
+a little bit later when there is multiple threads writing data w/
+aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
+f2fs_map_blocks() does block allocations aggressively.
+
+In order to fix this issue, let's give a chance to trigger foreground
+gc in prior to block allocation in f2fs_map_blocks().
+
+Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ The context change is due to the commit 2f51ade9524c
+("f2fs: f2fs_do_map_lock") in v6.3 which is irrelevant to
+the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
- lib/crc/Kconfig           |  7 +------
- lib/crc/tests/crc_kunit.c | 28 ++++++++++++++++++++++------
- 2 files changed, 23 insertions(+), 12 deletions(-)
+ fs/f2fs/data.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index 70e7a6016de3..9ddfd1a29757 100644
---- a/lib/crc/Kconfig
-+++ b/lib/crc/Kconfig
-@@ -97,17 +97,12 @@ config CRC_OPTIMIZATIONS
- 	  Keep this enabled unless you're really trying to minimize the size of
- 	  the kernel.
- 
- config CRC_KUNIT_TEST
- 	tristate "KUnit tests for CRC functions" if !KUNIT_ALL_TESTS
--	depends on KUNIT
-+	depends on KUNIT && (CRC7 || CRC16 || CRC_T10DIF || CRC32 || CRC64)
- 	default KUNIT_ALL_TESTS
--	select CRC7
--	select CRC16
--	select CRC_T10DIF
--	select CRC32
--	select CRC64
- 	help
- 	  Unit tests for the CRC library functions.
- 
- 	  This is intended to help people writing architecture-specific
- 	  optimized versions.  If unsure, say N.
-diff --git a/lib/crc/tests/crc_kunit.c b/lib/crc/tests/crc_kunit.c
-index 9a450e25ac81..9428cd913625 100644
---- a/lib/crc/tests/crc_kunit.c
-+++ b/lib/crc/tests/crc_kunit.c
-@@ -266,12 +266,11 @@ crc_benchmark(struct kunit *test,
- 		kunit_info(test, "len=%zu: %llu MB/s\n",
- 			   len, div64_u64((u64)len * num_iters * 1000, t));
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 887e286d2c32..04e278b50da8 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1523,8 +1523,11 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
  	}
- }
  
--/* crc7_be */
--
-+#if IS_REACHABLE(CONFIG_CRC7)
- static u64 crc7_be_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	/*
- 	 * crc7_be() left-aligns the 7-bit CRC in a u8, whereas the test wants a
- 	 * right-aligned CRC (in a u64).  Convert between the conventions.
-@@ -292,13 +291,13 @@ static void crc7_be_test(struct kunit *test)
+ next_dnode:
+-	if (map->m_may_create)
++	if (map->m_may_create) {
++		if (f2fs_lfs_mode(sbi))
++			f2fs_balance_fs(sbi, true);
+ 		f2fs_do_map_lock(sbi, flag, true);
++	}
  
- static void crc7_be_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc7_be_wrapper);
- }
-+#endif /* CONFIG_CRC7 */
- 
--/* crc16 */
--
-+#if IS_REACHABLE(CONFIG_CRC16)
- static u64 crc16_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	return crc16(crc, p, len);
- }
- 
-@@ -316,13 +315,13 @@ static void crc16_test(struct kunit *test)
- 
- static void crc16_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc16_wrapper);
- }
-+#endif /* CONFIG_CRC16 */
- 
--/* crc_t10dif */
--
-+#if IS_REACHABLE(CONFIG_CRC_T10DIF)
- static u64 crc_t10dif_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	return crc_t10dif_update(crc, p, len);
- }
- 
-@@ -340,10 +339,13 @@ static void crc_t10dif_test(struct kunit *test)
- 
- static void crc_t10dif_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc_t10dif_wrapper);
- }
-+#endif /* CONFIG_CRC_T10DIF */
-+
-+#if IS_REACHABLE(CONFIG_CRC32)
- 
- /* crc32_le */
- 
- static u64 crc32_le_wrapper(u64 crc, const u8 *p, size_t len)
- {
-@@ -412,10 +414,13 @@ static void crc32c_test(struct kunit *test)
- 
- static void crc32c_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc32c_wrapper);
- }
-+#endif /* CONFIG_CRC32 */
-+
-+#if IS_REACHABLE(CONFIG_CRC64)
- 
- /* crc64_be */
- 
- static u64 crc64_be_wrapper(u64 crc, const u8 *p, size_t len)
- {
-@@ -461,28 +466,39 @@ static void crc64_nvme_test(struct kunit *test)
- 
- static void crc64_nvme_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc64_nvme_wrapper);
- }
-+#endif /* CONFIG_CRC64 */
- 
- static struct kunit_case crc_test_cases[] = {
-+#if IS_REACHABLE(CONFIG_CRC7)
- 	KUNIT_CASE(crc7_be_test),
- 	KUNIT_CASE(crc7_be_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC16)
- 	KUNIT_CASE(crc16_test),
- 	KUNIT_CASE(crc16_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC_T10DIF)
- 	KUNIT_CASE(crc_t10dif_test),
- 	KUNIT_CASE(crc_t10dif_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC32)
- 	KUNIT_CASE(crc32_le_test),
- 	KUNIT_CASE(crc32_le_benchmark),
- 	KUNIT_CASE(crc32_be_test),
- 	KUNIT_CASE(crc32_be_benchmark),
- 	KUNIT_CASE(crc32c_test),
- 	KUNIT_CASE(crc32c_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC64)
- 	KUNIT_CASE(crc64_be_test),
- 	KUNIT_CASE(crc64_be_benchmark),
- 	KUNIT_CASE(crc64_nvme_test),
- 	KUNIT_CASE(crc64_nvme_benchmark),
-+#endif
- 	{},
- };
- 
- static struct kunit_suite crc_test_suite = {
- 	.name = "crc",
+ 	/* When reading holes, we need its node page */
+ 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 -- 
-2.53.0
+2.34.1
 
 
