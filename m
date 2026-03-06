@@ -1,182 +1,211 @@
-Return-Path: <stable+bounces-223368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K70J5EJq2k/ZgEAu9opvQ
-	(envelope-from <stable+bounces-223368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:06:25 +0100
+	id GBAxGlQNq2k/ZgEAu9opvQ
+	(envelope-from <stable+bounces-223369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:22:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E729225A48
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:06:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2AB225F43
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9F8B302C935
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:04:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7F0F3048925
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F083988F8;
-	Fri,  6 Mar 2026 17:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748E941323D;
+	Fri,  6 Mar 2026 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYbMP0xE"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rT+ENp9n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E77F3EDABE
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 17:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E21F301016;
+	Fri,  6 Mar 2026 17:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772816693; cv=none; b=rWfzucd/aLSkFDzmysMLaETVoGEgFS/0ZC9lvEeOetctITIvmK4hARTCqS0cmkAQSswSO7QIuPxf4eL7EgK4LbjKLrXJcehE5notfPAll5dAFMvy6qD05CfAPhtHuaF4M/9nllVUHqLokNwaOSDcbS3aMF8vpwL/e/JNV1N/NFo=
+	t=1772817255; cv=none; b=BauRc3VQU+Ls/1BuOsD+B6v4jjx95F8n1PqfyczmcECjE4kpwnUCmuHfqx0dqspQEUKWy9qAIlVlyhxBpB2jscdPjmui8X4vqVSmxFxG0YlVx81xy/Ou1BCZnZPku116xXfB7OVcmb3wPdtp1JnOzNK+sDaVQ/zHXb7PkKZFHL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772816693; c=relaxed/simple;
-	bh=KgU5qIlmN4yivxWth4nZMfVPkNBmx99YR47kvHMtCt8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bp+MJEHbv4jXYu1i3KdeZyC0wi+Qiav7tyiaqb/n2mvKY1by6k7XN4FYw0UiNB6RWfWSz+Z4JlOPmLMkwuZcwK2rPuhe0liNgG4U941D0D69FRqGvL91R95+GDQy/s4yAgYkOshWg7UFcPg7SNR76DVgIQglKpNKxAlHdUuVCl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYbMP0xE; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-56a8584e3a2so7567807e0c.1
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 09:04:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772816691; x=1773421491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6R4KjQPrU7WLJvf7ZmVhX2kRs77Fj2PYQR90hIAEseI=;
-        b=QYbMP0xEizri31PzmLzUyzI2u6+AdxONThV2YD3by80vjDSerjOl3L29p1vv4QK4Jd
-         RRLh8UctMlXg9AFTZIgp4BGWOsOQUhQWZCT5gtHCTHAyhE7rFMgHqrEJrzf27B1DPJIU
-         fJ937AzHD/KXVR8pGL/qr3jIhE4RwfQ6XjOkLmzZvDZ6ff+6QsP4TX5zXtXZJnjWGY1s
-         Cu59G4t5uIfPuKHrTLPVW+equY+yLtJMgTFYAkGeIzgMgru6AIEh6hSe8VFUvi0xiu9G
-         uce/deLTCOJJipwtSwBbgzZdTV4xUlgaPCh63aSJhrlX6ZKrsW+VVHRew/Ekr5XplZTE
-         X0Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772816691; x=1773421491;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6R4KjQPrU7WLJvf7ZmVhX2kRs77Fj2PYQR90hIAEseI=;
-        b=vnvEKWGfoEfwSmaluIiUXlqhpkWRNu4sO9aAxWEazQsJ3ByXTF+5zlI8vdoylvkfwq
-         bitPz+DODjbi1pg8bsfUzN1/jLM2MGk7Q2WwOHAE+rDIyJJrsjX183GuGxv1u3Isu2AF
-         hG963Ua55Xg/h43cwg27unZuPPWSwgU3SPpo+j76w4eLZxujqV9YfeMoIFGTYDHtmX8T
-         gBcoxwNXtY/2bI0ujlyxujQhP8JWl7saA++Ms3IZ1OVGVOFHMl43sNiBcM0Nd3yHBFCZ
-         Bmgca9c9F2gWY/1XgLFlNWdEFc56nPpajlz3ks0R+HY/c3GaOVmEpLeCOnYY27fLUnZ9
-         YNRA==
-X-Gm-Message-State: AOJu0YzPrlbqsXCHmhJSjehr8e8DRcE/Y8priC1Rs4420LKlM8V0X44C
-	bL11+q1KK6ekob4/5NcmB3t2Zp0yQz0datgQabmA6U3c3l2iJuFjvuaSOZCBmQ==
-X-Gm-Gg: ATEYQzzYznCcfgL0vV1ZktaoIspPaDaoWUINXP09hP0/lNhdg/n/bSRrbcLF60WFFzD
-	PI9j/GsrHHRzka45niOfyklHr1qPDvs3zevKKUF7UEH7AuNt3nFpcHetLHWL0TTD70Xxh7at6Or
-	I769DqDlNMsmpEgtjGqVPma6+1mih+TRFKPU9xtAHpaIWnfArflyKLWF6nZ4hLPi3lcK3bjFBU6
-	2sJy2iacr3O3xh1ThhzlpKJ52STikIFO+ErVrVLT8Mblp9oybHi6F59CPp0N1sf/+UkMq1n9rNC
-	pNk68PiWYn3fuR/OFWZKU5B2v8yemm5HszMXEKoUZDOaJOwqUfjEPelsMIJ4bSLbGJDo1f0h7+C
-	Qw7iRum0lW98fC4kCeg33auBanglcUdP/6HBmR39dn0JXiuUkRBDS6v3CZXljjmHlv0DZawYuwi
-	mpA3vRtk+BXA30VnwDr15c/T1QPZcmL5o6g30SGK25hTsoBjjVNJasTU8/sWgnOcQewHo1v5w84
-	31oOUQ=
-X-Received: by 2002:a05:6122:829d:b0:568:e716:5faa with SMTP id 71dfb90a1353d-56b07e716b2mr1017214e0c.13.1772816690635;
-        Fri, 06 Mar 2026 09:04:50 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:1b3:a802:8875:ddd6:ede8:90d6:abeb])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56b0f889ed2sm332967e0c.13.2026.03.06.09.04.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 09:04:50 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: stable@vger.kernel.org
-Cc: broonie@kernel.org,
-	alexander.stein@ew.tq-group.com,
-	linux-sound@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2 stable-6.18 2/2] ASoC: fsl_xcvr: provide regmap names
-Date: Fri,  6 Mar 2026 14:04:21 -0300
-Message-Id: <20260306170421.1430704-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260306170421.1430704-1-festevam@gmail.com>
-References: <20260306170421.1430704-1-festevam@gmail.com>
+	s=arc-20240116; t=1772817255; c=relaxed/simple;
+	bh=sC0UA3HGh+vvY+glSh0Z1KBEsW7LssAg4KQrcg3e2HM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S4zucfdPxCFoI4zlV/69v52tfoGhHYxtYp+rDEmCJ5Di68I8vGsFcr30GmckQh1wbqsrBPrbReKMvc1WIj5IUgwyLmitWzGM7n7NwGSjfusVmf6I8e7NJXtVjR9wHpjoQEPsp8Z6A9Mk5wTEZMirBWNMr8iPeyMoVhymgIdsZlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rT+ENp9n; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6265G3jX2966823;
+	Fri, 6 Mar 2026 17:14:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=zqF2tgZOu4+g9WSY2jpKPjaKdyyB
+	itdYIpnUb0kkSb8=; b=rT+ENp9npbs9xC1Yq5iL4ucDCmHUpZhXExy4fkTiwxeD
+	Nuicpbx7u8DiiNHopqlphWbGCwJsh1hIwqro+MUOvxmFbksdNtsLl14T4hgy6jBi
+	eL1TuP53hZMHgO9+msdiDWyAgm/CiWF1EUsyWMJsys+RaOneFJxK2AaipmDLHxgl
+	P7jwixcZHlk+X9bx9yQOAEQjgAKG36M5OWOTnzxtZmgjaYio3XoPM76CbMPY5qj8
+	udLbJxl1it1Ar/QpXgGnBHhdhD2V7v9H7fg72KMJdFd5YjjXb79LLlCUd3UGbd7n
+	Y3LQsQ4Nbt8g1C/WtaG5Mx3I5bX533aLvBrNwbitFw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskd9mje-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Mar 2026 17:14:10 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 626DFfFu003201;
+	Fri, 6 Mar 2026 17:14:08 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmb2ygvm9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Mar 2026 17:14:08 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 626HE4k027918700
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Mar 2026 17:14:05 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D51332004E;
+	Fri,  6 Mar 2026 17:14:04 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A42182004D;
+	Fri,  6 Mar 2026 17:14:04 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Mar 2026 17:14:04 +0000 (GMT)
+From: Gerd Bayer <gbayer@linux.ibm.com>
+Subject: [PATCH v3 0/2] PCI: AtomicOps: Fix pci_enable_atomic_ops_to_root()
+Date: Fri, 06 Mar 2026 18:13:57 +0100
+Message-Id: <20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E729225A48
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFULq2kC/2XO2wrCMAyA4VcZubYj7dhBr3wPEVm76AJuHe0sk
+ 7F3txuCqJd/Qj4ygyfH5OGQzOAosGfbx8h2CZi27m8kuIkNClUuJRbiytNlMFyPdvCipKrAioz
+ RmEE8GRzF/cadzrFb9qN1z00Pcp2+IYnfUJACBTUmr+q81IWi4537x5Sy7lJjO1ixoD6Akj+fB
+ BWBBmVGe12Soj9gWZYXnNw6he0AAAA=
+X-Change-ID: 20251106-fix_pciatops-7e8608eccb03
+To: Bjorn Helgaas <bhelgaas@google.com>, Jay Cornwall <Jay.Cornwall@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Gerd Bayer <gbayer@linux.ibm.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: tSUQ0VflUwKyYu-21dE9ye7pIvfZXIQ6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA2MDE2MiBTYWx0ZWRfX9AWxr+yUj8zN
+ PSXhdYfOHWIGXToEllsf1uJ8DB4OOBN/Dl8fNTSVqeNX3GIunNwyo/bkBzMOQw9IcsplpHNVC0H
+ jJJZEBSfz4BjVxfzVJaUy49LeasL8SAlAvBWCE+/URaF2cSjWLvEvCcmrY/+hG/er0tH7mustpX
+ 8O//M+J2FlgDAwr17vhEmiiq+atrYidEjzyht+rPoSGhSSYnnyL75cpSWuUKV1w5Vw+ziY61D8c
+ XwG6I+gUzR71r9Lh/UMLogbsRVhWByZ1TwagiCbMlpLsAXP2roDpIZSk/5QZ7NlTZqd8CDSq/rU
+ rBG7+UKj+nsF1InuOBcShfGpr9o0wbtxCJIED+yD9sSI0WBp8+KrfYw/jCjODUzCRpkSV2viNs8
+ Gjn+LQvSqPZdxo2XrV5CUyJGZQgwZfDSNnxD34XukCgtAtZPe8Y8Rko43tdYQhBZBK8aHfk73/p
+ Zxc766MKqnBop4I3Ggw==
+X-Authority-Analysis: v=2.4 cv=H7DWAuYi c=1 sm=1 tr=0 ts=69ab0b62 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=AXBlPMOSM4AmvKD3g9wA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: T7KQx6Fzn0zi_m8NhBWvjPqEaQu8ZwtY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-06_05,2026-03-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603060162
+X-Rspamd-Queue-Id: 1F2AB225F43
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,ew.tq-group.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223368-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.956];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gbayer@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[festevam@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.988];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223369-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+]
 X-Rspamd-Action: no action
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+Hi Bjorn et al.
 
-commit 08fd332eeb88515af4f1892d91f6ef4ea7558b71 upstream.
+this series addresses a few issues that have come up with the helper
+function that enables Atomic Op Requests to be initiated by PCI
+enpoints:
 
-This driver uses multiple regmaps, which will causes name conflicts
-in debugfs like:
-  debugfs: '30cc0000.xcvr' already exists in 'regmap'
-Fix this by adding a name for the non-core regmap configurations.
+A. Most in-tree users of this helper use it incorrectly [0].
+B. On s390, Atomic Op Requests are enabled, although the helper
+   cannot know whether the root port is really supporting them.
+C. Loop control in the helper function does not guarantee that a root
+   port's capabilities are ever checked against those requested by the
+   caller.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://patch.msgid.link/20251216084931.553328-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Address these issue with the following patches:
+Patch 1: Make it harder to mis-use the enablement function,
+Patch 2: Addresses issues B. and C.
+
+I did test that issue B is fixed with these patches. Also, I verified
+that Atomic Ops enablement on a Mellanox/Nvidia ConnectX-6 adapter
+plugged straight into the root port of a x86 system still gets AtomicOp
+Requests enabled. However, I did not test this with any PCIe switches
+between root port and endpoint.
+
+Ideally, both patches would be incorporated immediately, so we could
+start correcting the mis-uses in the device drivers. I don't know of any
+complaints when using Atomic Ops on devices where the driver is
+mis-using the helper. Patch 2 however, is fixing an obseved issue.
+
+[0]: https://lore.kernel.org/all/fbe34de16f5c0bf25a16f9819a57fdd81e5bb08c.camel@linux.ibm.com/
+[1]: https://lore.kernel.org/all/20251105-mlxatomics-v1-0-10c71649e08d@linux.ibm.com/
+
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
 ---
-Changes since v1:
-- None.
+Changes in v3:
+- rebase to 7.0-rc2
+- gentle ping
+- add netdev and rdma lists for awareness
+- Link to v2: https://lore.kernel.org/r/20251216-fix_pciatops-v2-0-d013e9b7e2ee@linux.ibm.com
 
- sound/soc/fsl/fsl_xcvr.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in v2:
+- rebase to 6.19-rc1
+- otherwise unchanged to v1
+- Link to v1: https://lore.kernel.org/r/20251110-fix_pciatops-v1-0-edc58a57b62e@linux.ibm.com
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 06434b2c9a0f..a268fb81a2f8 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -1323,6 +1323,7 @@ static const struct reg_default fsl_xcvr_phy_reg_defaults[] = {
- };
- 
- static const struct regmap_config fsl_xcvr_regmap_phy_cfg = {
-+	.name = "phy",
- 	.reg_bits = 8,
- 	.reg_stride = 4,
- 	.val_bits = 32,
-@@ -1335,6 +1336,7 @@ static const struct regmap_config fsl_xcvr_regmap_phy_cfg = {
- };
- 
- static const struct regmap_config fsl_xcvr_regmap_pllv0_cfg = {
-+	.name = "pllv0",
- 	.reg_bits = 8,
- 	.reg_stride = 4,
- 	.val_bits = 32,
-@@ -1345,6 +1347,7 @@ static const struct regmap_config fsl_xcvr_regmap_pllv0_cfg = {
- };
- 
- static const struct regmap_config fsl_xcvr_regmap_pllv1_cfg = {
-+	.name = "pllv1",
- 	.reg_bits = 8,
- 	.reg_stride = 4,
- 	.val_bits = 32,
+---
+Gerd Bayer (2):
+      PCI: AtomicOps: Define valid root port capabilities
+      PCI: AtomicOps: Fix logic in enable function
+
+ drivers/pci/pci.c             | 43 +++++++++++++++++++++----------------------
+ include/uapi/linux/pci_regs.h |  8 ++++++++
+ 2 files changed, 29 insertions(+), 22 deletions(-)
+---
+base-commit: 5ee8dbf54602dc340d6235b1d6aa17c0f283f48c
+change-id: 20251106-fix_pciatops-7e8608eccb03
+
+Best regards,
 -- 
-2.34.1
+Gerd Bayer <gbayer@linux.ibm.com>
 
 
