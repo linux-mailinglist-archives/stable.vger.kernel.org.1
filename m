@@ -1,130 +1,193 @@
-Return-Path: <stable+bounces-223287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFP2HxEZqmlfLAEAu9opvQ
-	(envelope-from <stable+bounces-223287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:00:17 +0100
+	id AFInE5AeqmlLLgEAu9opvQ
+	(envelope-from <stable+bounces-223288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:23:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E7F2199AE
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:00:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957A2219C2D
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 01:23:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A5DE308C2DA
-	for <lists+stable@lfdr.de>; Thu,  5 Mar 2026 23:59:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93E15301068A
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 00:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEBE369991;
-	Thu,  5 Mar 2026 23:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0928C2BDC26;
+	Fri,  6 Mar 2026 00:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="lwCu2cUA"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lzRe2iaZ"
 X-Original-To: stable@vger.kernel.org
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC23352F85;
-	Thu,  5 Mar 2026 23:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819F02BD5BF
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 00:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772755147; cv=none; b=bqOJAWzDJq7+3OD7QQnhNBuFYc9SRAutPJ/PFluC1VhmOV6dcsK1pthvjiiK8fNU60xF9eNToSSG+YWoZEKsmVfKy3gwm0DmPhL0N3Rok374YDEv3D21YJmJnRUHPXttk5pJzPpIs81RTtg4PipqR1WZ3TO2DSxuNqJF7NxaiNw=
+	t=1772756613; cv=none; b=aPYui2kHZfTTxpslI2GmHiXnzT5xgHG4oOcF6GLbVRNpdWAzeZbHbBsCmy+nHGg1K78OJlEIFFv/0ZgVr07m3uEmWg7xiozSmR9i1EW0y/TOJ17R9MbTXO2SJhLxdpUwu2dtx4oEF/rY+QymQ51PwjvwBDh40zb9ZovFGUWha7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772755147; c=relaxed/simple;
-	bh=QLxo0RAKQmS1rfj80B0uElkCdb68NWudv6UOo2cnB70=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e8MGJaxJ7qlWyPwcPauAxoD8tcWPmNfXLKHozFcsXR8RwJbIuBcHqLLX5dY14PDVIyaVFp37vJJUwBFyqwiSfcc9nE5HRJne6bwXmGTjONj/LMPKwuHq0hVHoHNZjsChX0Z9yn9tDlL44HtaVFdS9e+a0gz5zeP4/oTi6nDLxww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=lwCu2cUA; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1772756613; c=relaxed/simple;
+	bh=62L+6M7Xh4VkXJIXHXPtJXy9TEc+gLulzl24WMfZK/Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rOAfyCMFJMzuTWgunE6ufn0LZSR8CmXD5kF7q6YQvLW5a32pA2NaedMEzNxspXfei3ShEGTMIO8+NCOSfRh6cdVJv5TBsoEB0P8Bx/KqE/RuMSzLG29ivYx6N5s/UrPdkCiL8B+jov+lzz0XpBWl2CcLluJinBY7E2yyQrZcqIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lzRe2iaZ; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439c56e822eso2899792f8f.2
+        for <stable@vger.kernel.org>; Thu, 05 Mar 2026 16:23:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1772755136;
-	bh=dW8wX9XYzRgg5ooK55cx/kbvRIBTMsUrpkdIhlp63go=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lwCu2cUApnILjn5lUwF+4A30+pSRjuaqosHTfWvNw/U/dtoElTsyuqRwI8zGw8bja
-	 yxAiVuEXbIBQ9nbeLDTp/DVxIT/yvZPubSVQDrwt1+dfEz76nQoHSS0Afcrm8Lzd54
-	 0owCL/tPFcEZcsf1OmDPLYYY/1vhXIcfWOJJC6WnvZIArY6SLNV23uuggatAASJGDC
-	 inbswKGoapPmqD4rk9aCPT38FYAqfn6+3790V5UcYmepEq1T9+J5QU48AMPdyYjLgW
-	 8AzSNcKC1fhJ5m6DRcRc4A9TNMYRg+TRetzu1e3JoW/cxQ/VM5bj40DFkaLwG8213w
-	 VG+zDD8PmHaiw==
-Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 9F6CF6000D;
-	Fri,  6 Mar 2026 07:58:54 +0800 (AWST)
-Message-ID: <17790d338e59896ff843bbd3a3bf434f20b189c3.camel@codeconstruct.com.au>
-Subject: Re: [PATCH] net: mctp: fix device leak on probe failure
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Johan Hovold <johan@kernel.org>, Matt Johnston
- <matt@codeconstruct.com.au>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Fri, 06 Mar 2026 07:58:54 +0800
-In-Reply-To: <20260305104549.16110-1-johan@kernel.org>
-References: <20260305104549.16110-1-johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2+deb12u1 
+        d=googlemail.com; s=20230601; t=1772756611; x=1773361411; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cURkb0Kn28gNKaPuK/J66U1F2W9xI12WyCWrTmdCGcs=;
+        b=lzRe2iaZRKW6DRj2S++f4x8S4+06rn2eDglhTrSEiv0jfx0huVodeXV6O0r3DKVRaj
+         YlWjbK6zu6ifXgIp99bHDHmNUr7g26O0IhccyZwD88gqb7e1YziPvaMiP1r2OjU3+7F1
+         SPcPANJfdCZC/NpWuA6McYgc0fJmktAv/fQ8WIy32AOma0k83ZOfNJWSd4w2V7M6mION
+         NSmdD0GZUpEFJpDP+T4GCziDM9GYByAOQgqO015lRT1AUzPMGnu60Hi3dHvjII7xqpkq
+         Z067ec5Q2AR3L9J31zyu5saKwub2feGzLDe8ImjHRt3L9RAeCA0oUe3csysSA77GlD88
+         +Udw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772756611; x=1773361411;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cURkb0Kn28gNKaPuK/J66U1F2W9xI12WyCWrTmdCGcs=;
+        b=q9cCT3fcUmjH2LlQAqN/b4x1+FZs3m2duec+3dHFpx67B3liaFhTtUlGxlETrwCs1E
+         ahUH0DepO57oXCfplIeWA6W9mQAsUCowzA11s5gzgTWw8kEdb26hd17YndXU4iFUyoEM
+         YUu/2tVhVLHolldIIyShXmml1AQCARU7ewh1lll8JKe/zWTXtFLDZcGkMNLqA/Za1ecj
+         fz/0I/YNahrOW+E9TZ9bqE3QwmXN1F+QCdOKmYi0fy4lo4gBD9V5b9Uit/uMIW/UfPOx
+         eRjSuhrV/FzJdIKYKMirUWbKAYA4FEnta6ZALNlJdi5bDmdY9pRObEj5DPqeZXyymOLu
+         Pbhg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeqngz+a+VrxtVXKcBbkUmqAIpYgBZaUvaAElrqOpmEMjx0Bqxk0n1AZ9f2ZlCOn8nxzEaXIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUHgkfqYyXRvNdT9H9G6y2iLUoWpTyvaq+V1eoK6CQfGADH9Vl
+	4Wi05GbR2EcpYg/v/7OtdpSFrr5TEnSb/Xin6rvrCuiM17cnOjIjGK8=
+X-Gm-Gg: ATEYQzz5jJQe30sNWXs4ArgfJVcC/70LyvLbgfPHmkHFbkWIp1JKm80SOWY2MRYQhN9
+	+73z+hoyDzTcW967MAUu4mh8o1NvsfWRDb+jlN3bo/FmWN5qTcPJW2XWLU5z7ONSHXpzAN6DYsX
+	7uCCkD977pZwITwOxVsXHgo9WlLt4VqdUe+4tiLAg6Jl43yzE0C4gY98scGfB+vzAl0GL5qgVh3
+	gUyYs/Tnm07edbJ1YCHtzYYopDvAoEleO20Mv2MxkJ0fPe10Bpt+HbSKb9QtbAh/lzDjyQ4WKIN
+	wqezptineLIJMLPCNGzdUZASsIqcbj9knhC8lJwQFUPnGK9/XTl6CXYXI19UsC1mGgZT1VcN1lG
+	RR+sSEU/Q5ND93MIr4C5PEsQBDeJ1pJKWu3WE7uQN/Uv/NqKmsLfsn0XA5ExWHUMZE48rePm1YM
+	l/UUx6sLGth0L2wYAEG8+kFrwauJSVtH3HIocqAVqqX9SM3TkTU6myuCMESMhbqBCSp2RilG/2L
+	g==
+X-Received: by 2002:a05:6000:2506:b0:439:c356:9f65 with SMTP id ffacd0b85a97d-439da656bc5mr334376f8f.15.1772756610659;
+        Thu, 05 Mar 2026 16:23:30 -0800 (PST)
+Received: from [192.168.1.3] (p5b05772c.dip0.t-ipconnect.de. [91.5.119.44])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b130abfasm35851035f8f.34.2026.03.05.16.23.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 16:23:30 -0800 (PST)
+Message-ID: <40c1c7a9-a882-459d-9c2a-e00655e43025@googlemail.com>
+Date: Fri, 6 Mar 2026 01:23:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 23E7F2199AE
+User-Agent: Betterbird (Windows)
+Subject: Re: [REGRESSION] Linux kernel 6.12.75 fails to compile with
+ -Werror=implicit-function-declaration
+Content-Language: de-DE
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ Sasha Levin <sashal@kernel.org>, Brett A C Sheffield <bacs@librecast.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Aditya Garg <gargaditya08@live.com>,
+ "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "ardb@kernel.org" <ardb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "graf@amazon.com" <graf@amazon.com>,
+ "guoweikang.kernel@gmail.com" <guoweikang.kernel@gmail.com>,
+ "henry.willard@oracle.com" <henry.willard@oracle.com>,
+ "hpa@zytor.com" <hpa@zytor.com>, "jbohac@suse.cz" <jbohac@suse.cz>,
+ Vegard Nossum <vegard.nossum@oracle.com>,
+ "joel.granados@kernel.org" <joel.granados@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "noodles@fb.com" <noodles@fb.com>,
+ "paul.x.webb@oracle.com" <paul.x.webb@oracle.com>,
+ "rppt@kernel.org" <rppt@kernel.org>,
+ "sohil.mehta@intel.com" <sohil.mehta@intel.com>,
+ "sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org"
+ <x86@kernel.org>, "yifei.l.liu@oracle.com" <yifei.l.liu@oracle.com>
+References: <DD397543-DDDE-4215-A116-318AEAFFC359@live.com>
+ <0be301c0-f9be-4d70-9fdb-7a260ccf83ac@googlemail.com>
+ <aam_-Y7q-c3gmfGY@auntie> <aanlzq-RqDF9xkdI@laps>
+ <6f42cb43-c281-4565-b968-afc34502b9fb@googlemail.com>
+ <2ffaf154-3b5d-4e49-a0d3-4aedef3501d4@oracle.com>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <2ffaf154-3b5d-4e49-a0d3-4aedef3501d4@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 957A2219C2D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[codeconstruct.com.au,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[codeconstruct.com.au:s=2022a];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223287-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[codeconstruct.com.au:+];
+	XM_UA_NO_VERSION(0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,live.com,linux.ibm.com,linux-foundation.org,kernel.org,alien8.de,linux.intel.com,amazon.com,gmail.com,oracle.com,zytor.com,suse.cz,vger.kernel.org,redhat.com,fb.com,intel.com,linutronix.de];
+	TAGGED_FROM(0.00)[bounces-223288-lists,stable=lfdr.de];
+	RBL_SEM_FAIL(0.00)[104.64.211.4:query timed out];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jk@codeconstruct.com.au,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[codeconstruct.com.au:dkim,codeconstruct.com.au:email,codeconstruct.com.au:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[peters-netzplatz.de:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mailvelope.com:url,googlemail.com:dkim,googlemail.com:mid]
 X-Rspamd-Action: no action
 
-Hi John,
+Hi Harshit,
 
-> Driver core holds a reference to the USB interface and its parent USB
-> device while the interface is bound to a driver and there is no need to
-> take additional references unless the structures are needed after
-> disconnect.
->=20
-> This driver takes a reference to the USB device during probe but does
-> not to release it on probe failures.
->=20
-> Drop the redundant device reference to fix the leak, reduce cargo
-> culting, make it easier to spot drivers where an extra reference is
-> needed, and reduce the risk of further memory leaks.
+Am 05.03.2026 um 23:46 schrieb Harshit Mogalapalli:
 
-Sounds good, but I would suggest syncing with Greg K-H too; he's in the
-process of doing a v2 for the same thing:
+> Hi Peter,
+> 
+> On 06/03/26 03:36, Peter Schneider wrote:
 
-  https://lore.kernel.org/netdev/2026022539-punch-supper-884c@gregkh/
+[...]
 
-Given the discussion there, this looks in-line with the longer-term move
-from usb_get_dev(), so:
+>> What does it do? Does is cause harm? I don't know. Do you know? Maybe Harshit could tell us if it's a serious omission 
+>> or if it's not critical. This, IMHO, should have been avoided. The better wording in the release announcements of 
+>> today would have been: "All users on X86 must upgrade", so that nobody stays, unaware, on a kernel with that 
+>> incomplete patch set.
+> 
+> I think only people having CONFIG_IMA are affected by this patch, and whoever have that will run into build failure. (As 
+> missing function is a for-sure build failure).
 
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Thanks very much for your detailed explanation, you have relieved my worries and headache!
 
-Thanks,
+Beste Grüße,
+Peter Schneider
 
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-Jeremy
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
