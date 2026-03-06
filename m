@@ -1,101 +1,96 @@
-Return-Path: <stable+bounces-223336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sC2wF+jNqmkNXQEAu9opvQ
-	(envelope-from <stable+bounces-223336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:51:52 +0100
+	id qMUXKnDOqml4XQEAu9opvQ
+	(envelope-from <stable+bounces-223337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:54:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AEA22101E
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:51:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316F722112A
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 13:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6132131A6E43
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 12:42:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E12A83026893
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 12:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE322877CF;
-	Fri,  6 Mar 2026 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4FB390C9B;
+	Fri,  6 Mar 2026 12:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="kdApaBin"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUHZFVUt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AC827FD71
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 12:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9882D9792
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 12:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772800902; cv=none; b=YbB5PV2RgbqTv60hWik9PMMk7iiA8Oz6fABo2P0Buk4Dtzst8SgW8Mgi5/lvi6bOjvcCoYg3OJ0Jrnli7/WL48PRauVd264S6NeA6eoo963F+iZNbpn94CjLzKY4ID/2/YQI1+3Rqrqt16RF8Dq75eA4v0KreYEzgdJ/hBQgy9I=
+	t=1772801632; cv=none; b=V2h00ePHyp1om5PGjqVVEgMOPhWLzHV3zWiWeNEQZRZnVXeKARRrjTaVKJ4vog6gkBXrPkqRgGISvB49sC8AWXu7pREPaBM6dTc5vqP0dzwC7Ipkwh/X5vdOfB+psakHrwq2uMkeEVI5C5m/WfUftPfKXKTLm51b8+W90yEtzLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772800902; c=relaxed/simple;
-	bh=HZ/1WFdnj+qO0WVw6GV1ZKDvd1Zn76kMVG0yFAr2u44=;
+	s=arc-20240116; t=1772801632; c=relaxed/simple;
+	bh=lk3J/0myuPulEZOU22yofh3RTU9+tKO22u2tikmqBYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MW1J5xF5xUzaWaPACqCwcFM5hYgKWsLCniJAXEF3DpoITqm1dYAqmRwJQXHbrd4h2qwO4ZEjpNyfn0/HTEDVToo8V2rD5r5b+gx+CCU/i6vwKxOFXXquOfyZmKa8lvNYnLZA3FDMvE7rd8E350RvUzLG1MzdXIJlDkGMwDxJOPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=kdApaBin; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48069a48629so96407595e9.0
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 04:41:40 -0800 (PST)
+	 MIME-Version; b=Yw8sX+nNIvYt3kcE02TMOQWMGjS/Jku9lveYm5u2J7r9B7n56io1fZLKVUyfnS/C8L3wbQdKJQ4K68rzPcSvXSk1dTGaNcTkgrRcSrR9HjdMiPdHqP+tDiQ0hbsV75ipco2qtgF8iZz3Zue+2EBtwWXsOKOvC8aNPoNl4keOADo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUHZFVUt; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ae46fc8ec1so39423455ad.3
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 04:53:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1772800899; x=1773405699; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772801631; x=1773406431; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CtS0r5TfYlqaL5VTrxQnay2hKIBKEN7+yQrm8HEoL/c=;
-        b=kdApaBinAt2kDkuIVkkiY6ZUkaY5pZz5QD5TdUX9op/vnu2Zu1O0IhSl2nZ8bbgKZd
-         IGa+dkdb/uvENx0/+TTDk5L6lgeFIACyM7bflYNrQ1ZqDda+mZDXPgykd0/lH2LUZjP2
-         411sWRLd55WzmvaHSS0F7UPzxlartjTKxDdvWYD+R20afVZ66BGZFj+dMrZeAv4J0XI2
-         meXPRxwAg3KtG5CvSLSL/ru9RS0DdYHa9wC9NK4RgEpdcJReIg0K+APFfGN3od0gcTkQ
-         /P5ctNkwpdFTNGX6FxN+X12wkl/fN+I3QPRth0VRimQ5IRqhZoh9ZJnPxjFaqCrEHtl0
-         76Og==
+        bh=WMarrm7JpP1p2eI9Be2YtW3tsN95FbOLkt73JrG5xCk=;
+        b=kUHZFVUt9gmXntYyxPyRxtxo2n+vVh6OQwWcfMYpLSJsBWdJq3IiGcwB+XEzy+Td8T
+         N2JNH1q9r5YTg2VfC+W4biHtVnS/hLpwBJEzBVTNmeknI/vN3r9JH3X09WrC/Uc9xPCa
+         bu/astA7qcAC8vW7uuZBAtQLJswFtapm1FVIac/2513YhBikRSQJEHLxkRTgjn6c+Sfz
+         5oZWqiKGmgsRT3DVHR5znTPmzcd0x2AEZHFWUvpz8/uJFCukx2WY6urIaVvW15g+jacB
+         s0VzQCUfLEyrHG58Vmmxgqhv8ijHd5KrLr49nue5JaKL22I3zpl/IcWp1/hvdBsc9zrr
+         1eBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772800899; x=1773405699;
+        d=1e100.net; s=20230601; t=1772801631; x=1773406431;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CtS0r5TfYlqaL5VTrxQnay2hKIBKEN7+yQrm8HEoL/c=;
-        b=HZ/ZPWylpPeA+slbrj7UgZ32VVRuGTk+QGqdZA15AbQZsAYkDFTC5HsKK8QMO/hztt
-         JK1lXpldnK//boYcAThRykc032/6fEGCpDEBshhj8JTzaRFqRI4nsadbT7H22Gjuw/wR
-         QFvSyzZsdG6i0E5HOlpbr3xjkDjtGuqQx+PZgIoxGvObKkkPJ/JUK1AcUUBOsGa1rLBr
-         8c8zZwI7fFUg7+VBAs/NyIyRXmngGIuqgO+sP7uxnhnJzXbStgMFYUStKsYe4N6jPImK
-         WL70AIAc98xCnduskFk/kE/fuoddPAXZfIC/D2dZzBQKd97KEC9qIL5WMZXAyGsl7BWZ
-         TNLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgesr2UHA7s8KqxiO38nsX0WqzbnMM3inkxxcVy/eux/t74WywZov8ai4Vx7TUCh0tXv9RwNI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVOw44JwoC2P3/v5Kp64tnymHMTPY8Qb/eglmofLQeG0fq2pD/
-	7EbSl7Qrok3I/Krf6VkDzACp9NzwS/u8+QOhlQe9jx8/R0HvQEMMHVpERPk1fXJgR+0=
-X-Gm-Gg: ATEYQzxcV284ZymttZx8pN9RX7ZPOnYMlzXTET5xQjizxFh4atuUx21KN5r/qrfLfA7
-	iOVAtZGt+5TKD+jyEUBLgMviuJn7729HqZvck4rZQuXHObkq3aKI3+gM/nm0jmEfyb1L2SPot4o
-	PwydoLQO8lhWUaDMCu+o9Jr62nHdVA4f/BeMRABCDVzbb90clUjSClIPAoXt8bjrNmqMCQVBSA0
-	BmoyqXkZMce6+BSoSU7szK1182P6p5OD4lzZQU4k56uAefycanw59IHQaTVgb0cX9ZlQUhLgY9r
-	4jbBGR+dENCYEzP15WlkCeJqpjioVHl214o8UdJIt9KCjSM89bf0O9/t4SW1TRbpH+zKpwdUbzX
-	oRlB2BjfreX0r4gmGsGTcnNXKXKZM5jmUu5X6EPK4dBagxq//+52j24EoqHj9uuGod8VLHi1vsM
-	LuDFy+QRWkNKbigVDICoUre1TrPFr09j/6Irj7pVtmzBQjA8tzXLlV
-X-Received: by 2002:a05:600c:3e08:b0:483:7eea:b172 with SMTP id 5b1f17b1804b1-485269675a7mr33794685e9.23.1772800899339;
-        Fri, 06 Mar 2026 04:41:39 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485276b0c38sm38150505e9.9.2026.03.06.04.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 04:41:38 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: vkoul@kernel.org,
-	Frank.Li@kernel.org,
-	biju.das.jz@bp.renesas.com,
-	geert+renesas@glider.be,
-	fabrizio.castro.jz@renesas.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com
-Cc: claudiu.beznea@tuxon.dev,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v9 2/8] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
-Date: Fri,  6 Mar 2026 14:41:27 +0200
-Message-ID: <20260306124133.2304687-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306124133.2304687-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20260306124133.2304687-1-claudiu.beznea.uj@bp.renesas.com>
+        bh=WMarrm7JpP1p2eI9Be2YtW3tsN95FbOLkt73JrG5xCk=;
+        b=gE8sTlt9Iu6TDwmm5opEhXrZrqw6M8i2NVOrqQ0pyfFP7UULE1OtBnT5D/6f+i8Da4
+         jXG6sNudbKQwMCpfb16l0/m+xt+pwJt/ywFeUTIAPE4NIySDu4rr3wCS0yO68tyU1AgV
+         V4dkCDGxgJz1y9eonatmBbtkzKrgTCrrkYFj4/vE/KWDxb6fXUc5+/c6GEfHlalt8c9K
+         8NeNHHg+m1UgKLsnEBoiLEJcoS+DBFqVZeUnb1P34j7wTT/a1cfRAiWrTynhVcTq+rHz
+         lbelHdBv/pRD0iFKaUK5ExQBRp4V+d0yLgyw0UtDjd6njZpoCkNS/pBBFeTC1Sqd3cc7
+         06Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9Rx9vOg/k6lTwEMEzbWWiTmNdJg7GRPVHKmOStP/kIuaEBnjT7vtzPE7MWl82iNmEBN/Qy6c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSKmZmu0D2dbSFSX69M0hELj1PiXgPi9s0ZFlLm+WGX9CVqAMj
+	+qqM+01UL3GXhdUdwTiMaHcZjXVObI0qnXILJiVAe2S/fXP2199otHv1Mux1BGsc
+X-Gm-Gg: ATEYQzz+/Hhw7TJ7HFknJg53a0FhhfDorNekNH5/gSCH7Q9OJfW5EBuMYL0hPKmJPgg
+	h6XrDwXrnBcqRyfMt3wiLzPMHh91vvtwXwQrT5rM65H3I0oyd4/h/Jsw5z/Ifi9Is1aC5ZAWUi9
+	N1AQcbuszJ24fEH+ieU1X7kK8D+oj8zEPYbfZtYlV41G+gzWgJp2q2LlbNtEnLXPTvGZlwOiC9P
+	6r86tyBKuPcGCJbcpYihFSttqVP1CLLJqF4MZ5YItxyG4LJOKAlgkT9CKmj4kXWipFVemAz4IGh
+	pDbJXscO27+6cHjd2h2fiJKDKgjgwtl2qGsGBy9yOcRBAFCT/XX3MAEVfZDtYWspZ2eI/tAqQJ0
+	GKiGTXLgxiwqXTPgBW63KxJboCJ6GlP/J/TVt7K6jPNoK3s3ol19RfqOSdmi2mtMaUlrthByDgF
+	JBOMGJdhX07CUZnp/Ghsp9VC6kNR7iyvysibEFQUe7hsIBFwYpYxBL2vG91vK4mvCujg==
+X-Received: by 2002:a17:902:e890:b0:2ae:5163:c2aa with SMTP id d9443c01a7336-2ae823a1852mr21849015ad.20.1772801630811;
+        Fri, 06 Mar 2026 04:53:50 -0800 (PST)
+Received: from localhost.localdomain ([222.109.75.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f74e7bsm19149515ad.46.2026.03.06.04.53.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Mar 2026 04:53:50 -0800 (PST)
+From: Yuchan Nam <entropy1110@gmail.com>
+To: sakari.ailus@linux.intel.com
+Cc: laurent.pinchart@ideasonboard.com,
+	w@1wt.eu,
+	security@kernel.org,
+	hans@jjverkuil.nl,
+	linux-media@vger.kernel.org,
+	Yuchan Nam <entropy1110@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] media: mc, v4l2: serialize REINIT and REQBUFS with req_queue_mutex
+Date: Fri,  6 Mar 2026 21:52:23 +0900
+Message-ID: <20260306125223.76040-1-entropy1110@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <aarKTtVvHpc9WBgZ@kekkonen.localdomain>
+References: <aarKTtVvHpc9WBgZ@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,119 +98,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5AEA22101E
+X-Rspamd-Queue-Id: 316F722112A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[tuxon.dev];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[ideasonboard.com,1wt.eu,kernel.org,jjverkuil.nl,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223337-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223336-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[tuxon.dev:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[entropy1110@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,tuxon.dev:dkim,renesas.com:email,bp.renesas.com:mid]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+MEDIA_REQUEST_IOC_REINIT can run concurrently with VIDIOC_REQBUFS(0)
+queue teardown paths. This can race request object cleanup against vb2
+queue cancellation and lead to use-after-free reports.
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+We already serialize request queueing against STREAMON/OFF with
+req_queue_mutex. Extend that serialization to REQBUFS, and also take
+the same mutex in media_request_ioctl_reinit() so REINIT is in the
+same exclusion domain.
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+This keeps request cleanup and queue cancellation from running in
+parallel for request-capable devices.
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Fixes: 6093d3002eab ("media: vb2: keep a reference to the request until dqbuf")
 Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Yuchan Nam <entropy1110@gmail.com>
 ---
+Changes since v3:
+- Revert guard(mutex) usage in media_request_ioctl_reinit()
+- Restore explicit mutex_unlock() calls in media_request_ioctl_reinit()
 
-Changes in v9:
-- collected tags
+ drivers/media/mc/mc-request.c        | 5 +++++
+ drivers/media/v4l2-core/v4l2-ioctl.c | 5 +++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-Changes in v8:
-- none
-
-Changes in v7:
-- collected tags
-
-Changes in v6:
-- update patch title and description
-- in rz_dmac_irq_handle_channel() lock only around the
-  updates for the error path and continued using the vc lock
-  as this is the error path and the channel will anyway be
-  stopped; this avoids updating the code with another lock
-  as it was suggested in the review process of v5 and the code
-  remain simpler for a fix, w/o any impact on performance
-
-Changes in v5:
-- none, this patch is new
-
- drivers/dma/sh/rz-dmac.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
-index 089e1ab29159..f30bdf69c740 100644
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -297,13 +297,10 @@ static void rz_dmac_disable_hw(struct rz_dmac_chan *channel)
- {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
+diff --git a/drivers/media/mc/mc-request.c b/drivers/media/mc/mc-request.c
+index 8ad10c72f9db..4f632a9c292b 100644
+--- a/drivers/media/mc/mc-request.c
++++ b/drivers/media/mc/mc-request.c
+@@ -192,6 +192,8 @@ static long media_request_ioctl_reinit(struct media_request *req)
+ 	struct media_device *mdev = req->mdev;
+ 	unsigned long flags;
  
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
- 
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
- }
- 
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -568,8 +565,8 @@ static int rz_dmac_terminate_all(struct dma_chan *chan)
- 	unsigned int i;
- 	LIST_HEAD(head);
- 
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
- 
-@@ -706,7 +703,9 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
++	mutex_lock(&mdev->req_queue_mutex);
 +
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
+ 	spin_lock_irqsave(&req->lock, flags);
+ 	if (req->state != MEDIA_REQUEST_STATE_IDLE &&
+ 	    req->state != MEDIA_REQUEST_STATE_COMPLETE) {
+@@ -199,6 +201,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
+ 			"request: %s not in idle or complete state, cannot reinit\n",
+ 			req->debug_str);
+ 		spin_unlock_irqrestore(&req->lock, flags);
++		mutex_unlock(&mdev->req_queue_mutex);
+ 		return -EBUSY;
+ 	}
+ 	if (req->access_count) {
+@@ -206,6 +209,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
+ 			"request: %s is being accessed, cannot reinit\n",
+ 			req->debug_str);
+ 		spin_unlock_irqrestore(&req->lock, flags);
++		mutex_unlock(&mdev->req_queue_mutex);
+ 		return -EBUSY;
+ 	}
+ 	req->state = MEDIA_REQUEST_STATE_CLEANING;
+@@ -216,6 +220,7 @@ static long media_request_ioctl_reinit(struct media_request *req)
+ 	spin_lock_irqsave(&req->lock, flags);
+ 	req->state = MEDIA_REQUEST_STATE_IDLE;
+ 	spin_unlock_irqrestore(&req->lock, flags);
++	mutex_unlock(&mdev->req_queue_mutex);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index 37d33d4a363d..a2b650f4ec3c 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -3082,13 +3082,14 @@ static long __video_do_ioctl(struct file *file,
  	}
  
+ 	/*
+-	 * We need to serialize streamon/off with queueing new requests.
++	 * We need to serialize streamon/off/reqbufs with queueing new requests.
+ 	 * These ioctls may trigger the cancellation of a streaming
+ 	 * operation, and that should not be mixed with queueing a new
+ 	 * request at the same time.
+ 	 */
+ 	if (v4l2_device_supports_requests(vfd->v4l2_dev) &&
+-	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF)) {
++	    (cmd == VIDIOC_STREAMON || cmd == VIDIOC_STREAMOFF ||
++	     cmd == VIDIOC_REQBUFS)) {
+ 		req_queue_lock = &vfd->v4l2_dev->mdev->req_queue_mutex;
+ 
+ 		if (mutex_lock_interruptible(req_queue_lock))
 -- 
-2.43.0
-
+2.52.0
 
