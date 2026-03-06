@@ -1,65 +1,78 @@
-Return-Path: <stable+bounces-223363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oONLOokDq2nDZQEAu9opvQ
-	(envelope-from <stable+bounces-223363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:40:41 +0100
+	id +IV2ENEHq2k/ZgEAu9opvQ
+	(envelope-from <stable+bounces-223364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:58:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCC522545F
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:40:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF0B225952
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 17:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7DD8300A8F1
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 16:33:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E80C31477DA
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 16:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1D736922E;
-	Fri,  6 Mar 2026 16:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EE4393DC0;
+	Fri,  6 Mar 2026 16:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcJnLIkQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cIWC8SXX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CAA367F2C;
-	Fri,  6 Mar 2026 16:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE0E33BBC6
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 16:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772814803; cv=none; b=jhHlSfVfe0RnC7DFQEtMdqtJeVDKAOivUj4WZ6iiHQyl1M1o1NiQvDbkvt2xTOuTxSRDjbkprk3PMV0jGlBEMlrw744xp7yQtIrHVEydCu9Auf/cTUNSh3Xh+ADbjgZ38kekoYC+wiRqAtndRM5Oh3sl/YHllE4oAIyBWTYRxwk=
+	t=1772815945; cv=none; b=fmcprtNwoNSW2QMgBXVgch5KQWzcuROqioR29JgcuaN4ywVbbd9Xw6bckoI18oq6U9qSdyTPM1GRvNYkOrR2n2p19GDbnU0m/yWmErPJX1r0FTbuRnRffj2Yz1yDIVXJMjCrA/lCE2GjmDBtPqnhe8zV6hycQKTiihOXFhIy05o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772814803; c=relaxed/simple;
-	bh=5DC8x9M4HvTzU9/g1k76jDOL3YSsKgNelTLy7lmqsMU=;
+	s=arc-20240116; t=1772815945; c=relaxed/simple;
+	bh=GpTfZf18pCNdMh0u6lmxOJZGE8n9YE0rGbitPXLVVU8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RKqVRYKXiYxGXk1OaITbd8C0Tr8IgOvMuH191NFp8bbv2lPCgPfKfk+xLVFxIbau4SOH3X0zMDxA5fweVxMCRMHQYWWUSADd+8wA4y3s9BCaqnnHZcDl3XFdA4GBZ+M2SJAKWCrSowSEmYDDFfbpsAWudz/hrY3w+9JD0lGIAEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcJnLIkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F3CC2BC87;
-	Fri,  6 Mar 2026 16:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772814802;
-	bh=5DC8x9M4HvTzU9/g1k76jDOL3YSsKgNelTLy7lmqsMU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcJnLIkQ7Cdo6hVBgWA/5A6k8FbAq4HOHaHHAfyRMGwB0PiVbvF2ChxqccbUe5AQ9
-	 P2Y7tmvH1gN8KU4qYDA6IE1hnevfHJkTl/I4JUrDZqKryNteKZS4XOMX5Z/0ArA3Lg
-	 RO+/wSON1S/E2Zj2K4mkfs3zWHreVnwclGTbOKp+Dflg5XJoZbM3x9sQ9tJ/wZNHMy
-	 OKP2pHDa2ceYaIKKjFszG8QtVOmIB6735OUhOG3gmhHsMv4I7Qp9ZFWCFz3VMm2MsR
-	 P9tg854wL5r+8ssUxkCLn6bS2brhvCGp11itUENaPTMGavTzu9KoFdAH6vf9sRgX1F
-	 1SCrcDqbv7p8g==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Dodji Seketeli <dodji@seketeli.org>,
-	John Moon <john@jmoon.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	libabigail@sourceware.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] check-uapi: link into shared objects
-Date: Fri,  6 Mar 2026 17:33:07 +0100
-Message-Id: <20260306163309.2015837-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260306163309.2015837-1-arnd@kernel.org>
-References: <20260306163309.2015837-1-arnd@kernel.org>
+	 MIME-Version; b=jX66roaimoAHKo4Ga+KxcjAAf7nD/ORRnrjD8UAG/tvPN6eHaheuNCjYHpstMnTT0ywgeUOYxZ5If7mrYo6FwnIoM+zwPdO81nTKZQDCWwgTn0R+Mipevd3exEw3rlSJIxY2Rx0v4/wOrYgLd5va1vzMd0fP6J+h1AffMIZuF/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cIWC8SXX; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772815942; x=1804351942;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GpTfZf18pCNdMh0u6lmxOJZGE8n9YE0rGbitPXLVVU8=;
+  b=cIWC8SXXDKY49dMriVDGlj20+CMz4ZIZGrdntF+qJtje9sDxSRX9MIDt
+   UpOEEeCyqQvL8eW57srt/JiTWUUHVhy/8Heg7oFpx7k+bqoH4S2Mj+4rV
+   M88R7lYK/MXIqSOIFGpNcHqju9/XRbHsilPyOrKsal2ZNPYmOECSMEglY
+   m4L/kD0MrwTvc5NdKZlyP2xjhpSIR/5HEZYHiT3vP9qX6I1Kkn47NwVQv
+   NSIW2R6Q/Yh2YV+NTHX4ne6Eao+FXZ0v70YzWFJ9id5QLzHeNLeAsdt1y
+   tHHTKQOqpgcC0Iw4coGKw8MakEmY1BkwJ2ao4Ycpqlt+EtwKSB01vu/R6
+   Q==;
+X-CSE-ConnectionGUID: WHpaTLIoRiu/BgT2RMP9cA==
+X-CSE-MsgGUID: 5MMoj7x7TOOe2pd+YraMBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="73843750"
+X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
+   d="scan'208";a="73843750"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 08:52:18 -0800
+X-CSE-ConnectionGUID: DpFJEyeqQPqhK2mFiS7lbA==
+X-CSE-MsgGUID: 2vQ0Q01OTMOP1t1seA3oQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
+   d="scan'208";a="223753611"
+Received: from dut6079bmgfrd.fm.intel.com ([10.80.55.56])
+  by fmviesa005.fm.intel.com with ESMTP; 06 Mar 2026 08:52:17 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	stable@vger.kernel.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v2 1/2] drm/xe: Fix missing xe_hw_engine_group_del_exec_queue() in error path
+Date: Fri,  6 Mar 2026 16:52:06 +0000
+Message-Id: <20260306165207.176758-2-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260306165207.176758-1-shuicheng.lin@intel.com>
+References: <20260306165207.176758-1-shuicheng.lin@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,74 +80,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6BCC522545F
+X-Rspamd-Queue-Id: ACF0B225952
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223363-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223364-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[shuicheng.lin@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.984];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.987];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Arnd Bergmann <arnd@arndb.de>
+When xa_alloc() fails after xe_hw_engine_group_add_exec_queue() has
+already succeeded, xe_hw_engine_group_del_exec_queue() is never called
+to undo the add.
 
-While testing ABI changes across all architectures, I found that abidiff
-sometimes produces nonsensical output. Further debugging identified
-missing or broken libelf support for architecture specific relocations
-in ET_REL binaries as the source of the problem[1].
+Add xe_hw_engine_group_del_exec_queue() at the kill_exec_queue label
+to fix it.
 
-Change the script to no longer produce a relocatable object file but
-instead create a shared library for each header. This makes abidiff
-work for all of the architectures in upstream linux kernels.
-
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33869
+Fixes: 7970cb36966c ("drm/xe/hw_engine_group: Register hw engine group's exec queues")
 Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Suggested-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- scripts/check-uapi.sh | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/check-uapi.sh b/scripts/check-uapi.sh
-index 955581735cb3..9fa45cbdecc2 100755
---- a/scripts/check-uapi.sh
-+++ b/scripts/check-uapi.sh
-@@ -178,8 +178,11 @@ do_compile() {
- 	local -r inc_dir="$1"
- 	local -r header="$2"
- 	local -r out="$3"
--	printf "int main(void) { return 0; }\n" | \
--		"$CC" -c \
-+	printf "int f(void) { return 0; }\n" | \
-+		"$CC" \
-+		  -shared \
-+		  -nostdlib \
-+		  -fPIC \
- 		  -o "$out" \
- 		  -x c \
- 		  -O0 \
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index 5c67185d5357..af915ccb4925 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -1408,6 +1408,8 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 	return 0;
+ 
+ kill_exec_queue:
++	if (q->vm && q->hwe->hw_engine_group)
++		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
+ 	xe_exec_queue_kill(q);
+ delete_queue_group:
+ 	if (xe_exec_queue_is_multi_queue_secondary(q))
 -- 
-2.39.5
+2.34.1
 
 
