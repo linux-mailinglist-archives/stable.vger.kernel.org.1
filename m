@@ -1,138 +1,164 @@
-Return-Path: <stable+bounces-223304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EP+ODFxIqmlkOgEAu9opvQ
-	(envelope-from <stable+bounces-223304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:22:04 +0100
+	id QPLqI3dKqmlkOgEAu9opvQ
+	(envelope-from <stable+bounces-223305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:31:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20E221B037
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:22:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E71EF21B1CB
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 04:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 998123089994
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 03:17:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 613183029E49
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 03:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CC723A9BD;
-	Fri,  6 Mar 2026 03:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4745933F581;
+	Fri,  6 Mar 2026 03:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaUt9Geq"
+	dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b="x/9//8zZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533B93321A2
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 03:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6F123FC5A;
+	Fri,  6 Mar 2026 03:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772767054; cv=none; b=got3u3KP6ubL9KQBauCjnJLUhSenyqim6pPbkfYaKMFfRyHpB5tXvgVSAFi25bLEtkcsBv7gkM/L2FDIdmTt5e6E/HeG4LndAwuzk9/pEh1MP8PrCFeHpHktRQs4i1WyqvmuMuC9ovwFqyeqZSAfYKHp5zjkKZWWAHLf1lOCOC4=
+	t=1772767856; cv=none; b=E7Iq8R88YMtx+Dsr8SzbjBk8CsPiJj/wfVMMHzZGF5MSa3tIpu+BM0mVFOwNrRGfMJfTDrORr/8GCXNJSr/ESzIfKKbgz7S/+Y2mOBHkauwIQH2LC/8xbTjOHjvb70ScmPrcR1SySawamjOEcD2prlut26ow7usuDKl+NGWmajM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772767054; c=relaxed/simple;
-	bh=Kwz+EBx2BAGOykkCJo/ZT700Gffm0roD+9YWlt+YudM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B8S7dCOjpPkoFil68B7Bngc4tv/sCedXYxcZ0bfHHhk22XFaWWcAUMjqJZsCsYAH1XzrdDw7zr6V3B0aZn9QdM8c2newUzIAeDV7l9X2sN03lNRSFSf4JALxY7NBsevX3CA+0hV6SIKHR90+L7OJf+wu22MnZN40/mwE3q8eQoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaUt9Geq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772767052;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TVPDcQKfIjg1KiD+Q4Cc9N52PUKSErwuPqzr2O/KUKQ=;
-	b=JaUt9GeqfJVDcvclhXqtAkOUU7OGPYoPWZCcPZ0jvitqHU9CHAFv5fPiMxVwZnNWNxDBDd
-	tsZGmfiALCIdLCu6KIHv17WXlcpOkqjx/dsXZGSUVlQrqsrkm7nz5gd/sC5QTsUYakXSvI
-	oe8UNwkxz6CUVtW/CSW/HI3F8oS2Swk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-_IEtg4TkP_Gbich3qNbZUQ-1; Thu,
- 05 Mar 2026 22:17:28 -0500
-X-MC-Unique: _IEtg4TkP_Gbich3qNbZUQ-1
-X-Mimecast-MFC-AGG-ID: _IEtg4TkP_Gbich3qNbZUQ_1772767047
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 355AA1800344;
-	Fri,  6 Mar 2026 03:17:27 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.21])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 486BC1800361;
-	Fri,  6 Mar 2026 03:17:22 +0000 (UTC)
-Date: Fri, 6 Mar 2026 11:17:17 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Mehul Rao <mehulrao@gmail.com>
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ublk: fix NULL pointer dereference in
- ublk_ctrl_set_size()
-Message-ID: <aapHPc07uU_dBwKG@fedora>
-References: <20260305193146.304526-1-mehulrao@gmail.com>
+	s=arc-20240116; t=1772767856; c=relaxed/simple;
+	bh=9JD6kBkSfcMgcL1f24JUH05YEvcrs2BAYO8Lh88O1+4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kGDcSECwptAtrSBCgBAUtTpZOcANHuHHo6obL7KxWG4HhR1bSpK4KTB1t+WLvQ8rerL79whcKFOqmK+dINizpmpyYgGFFoUSjxfRA04JE1RYe5FdgCstjNC6bx5FXxXjeAtnkQ/JrRT02qtto2dx8N4elWzZ9UXUlB4tW1zwTDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com; spf=none smtp.mailfrom=linux.spacemit.com; dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b=x/9//8zZ; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+	s=mxsw2412; t=1772767815;
+	bh=glyq+F+BtseRvj5gR/MbcEWW00ve4s02FxEWiBBWcqQ=;
+	h=From:Date:Subject:MIME-Version:Message-Id:To;
+	b=x/9//8zZ9FY3CAjeSOywIFkPhN1s4xyqiVo3M+NdhM/tnQ+3XN3CCRzTFdh2UuRS0
+	 ZgXvfLEUCBeR7T4MIj7ScZZy8LNaCkjBkpuIG1nqIaN7t8MEJBsYkQM3OGuiX7KODa
+	 ev7Dq+Y9rcP7doprN9d5uk5IeO1bAVkzztf8xA9M=
+X-QQ-mid: esmtpgz14t1772767813tef51b2a8
+X-QQ-Originating-IP: q5sbB4QY4DiPKFW1XvuMDhNDZLnpT6hQegF4Oki3utY=
+Received: from LT-PANJUNZHONG.dc.com ( [120.237.158.181])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 06 Mar 2026 11:30:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3452352524430289917
+EX-QQ-RecipientCnt: 7
+From: Junzhong Pan <panjunzhong@linux.spacemit.com>
+Date: Fri, 06 Mar 2026 11:30:09 +0800
+Subject: [PATCH] usb: gadget: uvc: fix interval_duration calculation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305193146.304526-1-mehulrao@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: C20E221B037
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260306-fix-uvc-interval-v1-1-9a2df6859859@linux.spacemit.com>
+X-B4-Tracking: v=1; b=H4sIAEBKqmkC/x2MQQqAIBAAvyJ7bsE0JPpKdDDdaiEstCQI/550H
+ JiZFxJFpgSDeCFS5sRHqNA2Atxmw0rIvjIoqYzU0uDCD97ZIYeLYrY7Su+08bOnrieo2RmpOv9
+ ynEr5ABtuZidiAAAA
+X-Change-ID: 20260306-fix-uvc-interval-0dc36dbde48e
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Frank Li <Frank.Li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Junzhong Pan <panjunzhong@linux.spacemit.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772767812; l=1195;
+ i=panjunzhong@linux.spacemit.com; s=20260306; h=from:subject:message-id;
+ bh=9JD6kBkSfcMgcL1f24JUH05YEvcrs2BAYO8Lh88O1+4=;
+ b=Ml0gZ8h12QkGWcIz9pcDjz8GbJKk2RitH5gEqV+Tw3Lr7CL+GPow8qBIdunAa8L5QXBgYUuh6
+ q7E2l+sfDRtA0e5+Xf1wJAT8yqzNhHXgNrGIO3dQAFM03gnxxx65IRJ
+X-Developer-Key: i=panjunzhong@linux.spacemit.com; a=ed25519;
+ pk=bY08BOg2T9H93/jG8fEE/tVmdXoQQMp9M2rtzPFoyJg=
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:linux.spacemit.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: ME/Ngba2Rsnv8Y3zloXp1i7IPbHLqbocAzRR3qbaMa13gIcGZKyzKB8i
+	MWIEzHTsg7e2uN1SW8bytzLmKErCo1PAGjQTvMm6/ybgZbW1UW2n8i91PHUo1jlC4AvUKua
+	tFs9otJ3zs3aWCXZ3O7udtmNhsZtvZvzOWGpAba/cysPqnuj54YAEhQvaGc6LFC0paj30wz
+	fsGJefHKF9KJ2avkMu/tP+6SXad1EzX77GNP3byj/AFFu4dm9HbwYoBPugbOi9RYsZ+5/pU
+	xLhzu5dcF38JlnMWZbjqTdqsyJG2nKPj3J3vHwpLly1AqrzdXQ0Se9Pm9MO/BwfM2vPlip5
+	xlB2i1fKX49VA0dPGMrO7hP2kYcPBByYXBpU4L7C8lwO+6aBiZeaX/H/lsRWH4pf9Apcras
+	FIj9+kUQXwEJ7aQ8r/8WTpv5EcqI5+AtkJJbLwgMPW0kyt0ondqKlSvjhQU7ugirXnsuQ5k
+	6c0i3x49S/u1dAPp+Hb44JchhodQofdTC4kjfPNt4/vhuGLmdv6zTl2DmAT0wygwAZ2AFbF
+	BYWfPyIAKMcujQOVMh11bBD5S876eMEVJ1a0Iujp+jo2337ZD4orz33UY9qJoopbQEqIPYe
+	g0Gen+xVdJ5Q/PmfD2QS5urZzaz/zzu/PT3SYMvzA0ckSDXo+ao0Oq3Fkr//+paDsMIG59g
+	iPkIivDIqD7IcMcqic+qS3XzUNofrA8K4l3t5/7L+bkr6MrEG4UygpAQsw1bHB87baiDce4
+	Oel9sTcTmx9zGt3njm2NSBjLVXtCb5hPp4C/l6xnKArcsAkgQ7CCfKRunZ30HHRCikayNwo
+	i55vxZy/EdCwgafu8TJFK2ioFXcRBtHRah8JXxoxpL3fmvxWhjK/l9DF/bXEL+BVhAcYJ3H
+	i7Z7irFKaqxdxKCgEXNNDQ1/m6wG/+lD5yWI+x28mCMTyFkhAP/uN3xPy6DNnThpbiqjEqs
+	lLYeqbwrUBBSjfviIYFNxRIKl4s9I2lzQvEZtWtlKeOkE298xAMC1kmmf6+VTBT3qHHgbrc
+	fghKAlGdwkPzRweOmGTwGk6QJT9iUwbjjHTGQtzN1T09sNehsiqJonazuL9b9HlYBRVJCcg
+	F+nylkDThJz9KbNwwYWeFgmgPZ/nZ0dfrCI+RO1xITu
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: E71EF21B1CB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_DKIM_ALLOW(-0.20)[linux.spacemit.com:s=mxsw2412];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223304-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.spacemit.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[spacemit.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[panjunzhong@linux.spacemit.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223305-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, Mar 05, 2026 at 02:31:46PM -0500, Mehul Rao wrote:
-> ublk_ctrl_set_size() unconditionally dereferences ub->ub_disk via
-> set_capacity_and_notify() without checking if it is NULL.
-> 
-> ub->ub_disk is NULL before UBLK_CMD_START_DEV completes (it is only
-> assigned in ublk_ctrl_start_dev()) and after UBLK_CMD_STOP_DEV runs
-> (ublk_detach_disk() sets it to NULL). Since the UBLK_CMD_UPDATE_SIZE
-> handler performs no state validation, a user can trigger a NULL pointer
-> dereference by sending UPDATE_SIZE to a device that has been added but
-> not yet started, or one that has been stopped.
-> 
-> Fix this by checking ub->ub_disk under ub->mutex before dereferencing
-> it, and returning -ENODEV if the disk is not available.
-> 
-> Fixes: 98b995660bff ("ublk: Add UBLK_U_CMD_UPDATE_SIZE")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+To correctly convert bInterval as interval_duration:
+  interval_duration = 2^(bInterval-1) * frame_interval
 
-Looks fine given ublk_detach_disk() is called with ub->mutex grabbed:
+Current code uses a wrong left shift operand, computing 2^bInterval
+instead of 2^(bInterval-1).
 
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Fixes: 010dc57cb516 ("usb: gadget: uvc: fix interval_duration calculation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junzhong Pan <panjunzhong@linux.spacemit.com>
+---
+ drivers/usb/gadget/function/uvc_video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
+index 7cea641b06b4..2f9700b3f1b6 100644
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -513,7 +513,7 @@ uvc_video_prep_requests(struct uvc_video *video)
+ 		return;
+ 	}
+ 
+-	interval_duration = 2 << (video->ep->desc->bInterval - 1);
++	interval_duration = 1 << (video->ep->desc->bInterval - 1);
+ 	if (cdev->gadget->speed < USB_SPEED_HIGH)
+ 		interval_duration *= 10000;
+ 	else
 
-Thanks,
-Ming
+---
+base-commit: 5ee8dbf54602dc340d6235b1d6aa17c0f283f48c
+change-id: 20260306-fix-uvc-interval-0dc36dbde48e
+
+Best regards,
+-- 
+Junzhong Pan <panjunzhong@linux.spacemit.com>
 
 
