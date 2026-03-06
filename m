@@ -1,67 +1,80 @@
-Return-Path: <stable+bounces-223342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOunGG/eqmlqXwEAu9opvQ
-	(envelope-from <stable+bounces-223342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:02:23 +0100
+	id iCgtLKzfqmlqXwEAu9opvQ
+	(envelope-from <stable+bounces-223343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:07:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9D02223BF
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:02:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8B92224FB
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FEC63016909
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:01:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDAA73058E11
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AF7384256;
-	Fri,  6 Mar 2026 14:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDBE3A7F6F;
+	Fri,  6 Mar 2026 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Rp0tgeMO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffyWdXI5"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE5D39C628
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 14:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A93313E2C
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 14:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772805659; cv=none; b=i6cXbp3Ju9Q0gzZKgS5ggngrj8yEy9/0G9tE66A2MnN38FETJS0DJR87xaeCCFaTYPVeKJDAxvwCSfj3klvQuuCZWxYxQFwLpzwS7qPeIg52Gc8KTVEEObTg3GZIv3l64K8u7jbzBtIp7lwEiwD3qAzlDSzkSMn6ZCz0EtQPVyE=
+	t=1772805994; cv=none; b=mMfATXM7seRBPAp8Uiyx2H6Q3WH0ESWolpp/tR9O8j4NmpZ+lar8BE43DNfUJqlDEaDu93TseIkgjN37+aL+Mcew09yR0EXm3y4XM9Fvs8jHkplbwIwzWECuB+H7cI42ynmcFR4KPjkLq7PmGRt+BAEnAcebZcZzQkztqc5p8NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772805659; c=relaxed/simple;
-	bh=rwcJjUw8LB/dFpLm95Eoxg+1cVOCbCR5++Qh1V42sV0=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=kCwoqmjH912Slk131BIoTDp/z+c8N+5RV+B8Q2f1hBgN9PZMxnEAi7yHtQW9mmBnYZV2Pmkn7EYX8tHYde+X4AwUvrvPkjbekcefPx4T8oiqL5t2Pf9ly8EPApVTfJs3ebyupD0J/+9yb3p0OkTeXe8OZt/Wn4tnl8f05OkouO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Rp0tgeMO; arc=none smtp.client-ip=203.205.221.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1772805643; bh=EO4E4RR2NMVQkuWMb7xivQNzUGAZ+NqsTaP5UMh4SU4=;
-	h=From:To:Cc:Subject:Date;
-	b=Rp0tgeMORSd8GZjC00t1ypC2UPTfPTSPybx+HDlUAdpnXQ0hhEmfNUpsiMyGsu/9R
-	 cAMA352/b7WIM+OCvj85Z1+8NOlrW5AukBxBmulNzrcmgePiwk4zHNTvZgG+mAg+3l
-	 cBLsQlHyxB7l6sK5lFFHHZ2JJRMzKAu9iaCHyvlA=
-Received: from zjh-os.zhaoxin.com ([2407:cdc0:d002::1061])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id EDCACC70; Fri, 06 Mar 2026 21:59:28 +0800
-X-QQ-mid: xmsmtpt1772805568tvj671ho7
-Message-ID: <tencent_F70AFD1D8067E3D2409764BC1A199DA6AF0A@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb56bAAPd7juxWrgPh++Gjl/gJCYRApNRUup2ECelGqd86l2Z+tAw
-	 TZoCbzo3M+9D6TOn7IHUbhmMD37MmH5s8nL5fRdGDbUd0B/cNfv9ZJEtPBIOqAyEwWlOD3BDjaW8
-	 SZtfTZviILef/JRGHoWRcJJhu3nuptb2cP0eCO0WjFzOjIJsw/fsozpP1GlOec5VdGFwgGEA1YYy
-	 cYl4f1pHa7RIFWIV7W0aYDtp8+gdaA3PynLrX1uNUDCPWZng9oqDNz+8/UA+eQXiUXRAe8/XMiyI
-	 mC3JyNWxeSGOLYTgBUXKxHojLiEder0y5fYnrRvgBbSb7Lqh1mZ6FZlm2s7QBIGJycyoWl81hCAy
-	 uEes/aCAMz6tZOdkUry9oZBQMADdRrRLITl5k94IxQmnSMHqp9o0IAa7JN4fVvXJaxmT1hoXcUgS
-	 o9mXq0kmAKNot2vXg0Qjjn8FjIl1ZJlQUl0k0V3VIgilx1mp7sxT1ImgJd7iqa5LhT2wIyiIb5I5
-	 bscaYR/JipocAH8ANcPVVvea51jzyvWq/aI1RoTPvW7pIW03ne3jKhASEbDdWVovu1Y/KsISVxx5
-	 8UairAnz8fv8KYr7W1zbpj73Oddy87EpLieQ2GjgnZGipnMIis7jCh6TcQLC0c8g8UKCLipQvLal
-	 vikHR2u5gT5Tn8oBSGZCM9R0NDql8tDaRrcUYGzfORj1xZVuPd19DHtwBZEQ99KCzQTIcxUh9uVq
-	 rQI1m4lg9s/Wdbl9B4BRXtLB2DTk5hKevSunsuKm48fqIMMNrQnQxs2r5KMR38UdihSq8mbIHzvs
-	 iiOENGd9yKbu6pavWV/fkUuYplQv6bnBdJsrEEDlsO1lerIgUytEszjvNoE0Aohg+sd2t6SCvp1E
-	 1UN3Ulj2+/tkVlFaThdn5yu9jcIZsqEIpjtkkD8XAKSj54Y1weAHE08wkGIpIx0v+15tj5B/WHvv
-	 B9TxhPvHVklU0h+vOOapetmh3RVKCzyZTUAnwU+DG+AWdiUaQtZ8kOF/SDY+7cQ09yGQ+cZW9LSf
-	 JmiYyMtXQX2m1pjjMV5esfxKBEQKSqsqNOBEXisg5SKDHdkuu5JcynTsjflAKKS4GR0y71F4KnbZ
-	 nPa4sLaY/VFs7j+4GpsS0WNLWwCnmdJvKirhBB
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Jianhui Zhou <jianhuizz@qq.com>
+	s=arc-20240116; t=1772805994; c=relaxed/simple;
+	bh=pew9Y3nMgHOEvgenC0yPfi4+wWkxb9Nhz+zKDRW1zKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RckSgT11+a54nJiifx4fd7yvmaHTCx//gGWKvo7j58E46nKAKkSaseI3xQYLe+NOUK7OLM4ZFA5eLRyHICQBldaCct/mS1Ir91LwiiFnjS/HVrp7lg9/VmaPbQdYpQhl0pZ2MBQ2uvtuotlPb2ANc5k86mrBFmu9d0kApT2xVBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffyWdXI5; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c738b98bfd9so976964a12.3
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 06:06:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772805992; x=1773410792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W13+CBFURjvfUajrgf80QK1S6lJ7DWAdvvvI450YWW4=;
+        b=ffyWdXI5UvuPr0Bg9ZNrT1tSJh3KYdGxbNzSkprepTBimHdWvmRrz4pAy35r28gtpQ
+         JcN+82CXKSDQbeVxI+PQKMlfz119y1DphWKa0MK3/HCXF3Ii2mctqQvgpvjkz6f5N3qk
+         epLD/xtAeIDWxp7GET68B/T3J2doLqQblp9Q5qYzRefvOHflr4R1xHuS2ToiMQtLovy4
+         uY2noceH/itBXdwPwwQ6YEhMDT07DPYHGVzwF0q1auEFlt031tkuj5vIVyGCUfDgSb7x
+         UnHw0fnsNJwQ7izacmmT/t8Neu3oytKWNMoOJSlN/PUjrIm1856t70MuAugp6/mNdLU/
+         rizQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772805992; x=1773410792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W13+CBFURjvfUajrgf80QK1S6lJ7DWAdvvvI450YWW4=;
+        b=ht5griGDkzNLuc9NgFb4kpqie9wenO74Dp2gIQK+awUyH+dzMxQ6JhhNI5V7rjCM37
+         PkNrf7uv5US+XfQ462TcFFHL1PLc16/yciU7sAInQaLyADPQINnnt6qzRgXTGWIqn9Ml
+         fvJcpBw7y+7rRrVI1bGoQI7wT5kXu9vfxD9l0bHY6+z5++C3XRr6vmfMCDvY4qjdp/1O
+         a0SceWbq1ksPLYc8cefPVLUiwWvJgkrXiFLohFagzu+CDFj3Ewq/XIEDJVznPQH7AxtN
+         +8EZoKWFLrhl30N1F35GMVLcjk5Ox/cRcm2OsL2ZEv9SPKY4tQnWdHTLgitZCA9OsvGK
+         huBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXg/IQhNeE6aaOU0o4UmZid6sfPbrnsfQxbYe81C6qFJSdE0CxhwBX71RvWvVQ+ELaEOnn/0s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1YEYoMBL5HdETKDvOvWi7kS02eibXadkAmAE/OEE7naDgldVg
+	y5SjnpX5/1LCQR1Lhna8whA2/NG5Iu8YH6Jelc52PFMxRAGtuZYeQLbg
+X-Gm-Gg: ATEYQzzOwHH3/8mMQgCbiGVBH++5ZEyOq+xVv3NZkQ8EqdC2s6Mz96ctlEE7wztcaTX
+	6bpAnlp7nGiKTh3HNQW/btzXI+G8eJRC+4wIOwFVPOQS0GgfMjofYLDaODaNd5XjlT6YhC4GAxr
+	msiS8Z7qIXt6O+bwu/wYuPpZHkz3xg6iKkE8+3oie5dIUzizbRMF6hdZIOz6BpC0J6awutoSoRK
+	/H5iFgu8GI0iuaV9761C8ZBGI1EXXR6E9e+CfFKCiTBkt3nZuTSTgSVCKvW/cy6HUwsEEj9qfkS
+	gQtkgGa7Gd4XNET+7dabUuWtatzBzeQx6HubxMcEZkRkYQyJzH3aHq1vuyEgQiPYFYEQHRG+J/o
+	r3uACwOek6GP9Bxhsuky6JZLXlQThKsPsEPGEVb/+zYy4LmX/qNk+Y8/1dFiLKV0DvEPJY25h6r
+	inx9doe/iy71xnTjIhZUV+kPajS/N/KAsksBTB/8Y=
+X-Received: by 2002:a05:6a21:514:b0:395:3677:2be4 with SMTP id adf61e73a8af0-39858e02140mr2687015637.0.1772805991793;
+        Fri, 06 Mar 2026 06:06:31 -0800 (PST)
+Received: from zjh-os.zhaoxin.com ([2404:7ac0:642d:3126:54a4:fbcc:e0a0:ce02])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e16cebbsm1786713a12.16.2026.03.06.06.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 06:06:31 -0800 (PST)
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
 To: Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -77,8 +90,8 @@ Cc: David Hildenbrand <david@kernel.org>,
 	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
 Subject: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Fri,  6 Mar 2026 21:59:26 +0800
-X-OQ-MSGID: <20260306135926.169662-1-jianhuizz@qq.com>
+Date: Fri,  6 Mar 2026 22:03:32 +0800
+Message-ID: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -87,40 +100,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BA9D02223BF
+X-Rspamd-Queue-Id: 2A8B92224FB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223342-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[qq.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	FREEMAIL_CC(0.00)[kernel.org,redhat.com,oracle.com,kvack.org,vger.kernel.org,zhaoxin.com,gmail.com,syzkaller.appspotmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-223343-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianhuizz@qq.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jianhuizzzzz@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qq.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:mid,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
-
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
 
 In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
 page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
