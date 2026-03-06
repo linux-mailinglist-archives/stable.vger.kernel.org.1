@@ -1,212 +1,383 @@
-Return-Path: <stable+bounces-223322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OES4IAqpqmmzVAEAu9opvQ
-	(envelope-from <stable+bounces-223322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:14:34 +0100
+	id sHMoCe2vqmluVQEAu9opvQ
+	(envelope-from <stable+bounces-223324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:43:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D735E21E86E
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:14:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2408F21F0D1
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5082E308DDA9
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 10:12:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F3A6300B8CE
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 10:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A9C367F3F;
-	Fri,  6 Mar 2026 10:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC74E363C7E;
+	Fri,  6 Mar 2026 10:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h0GzFVLP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LywcjCoS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3326035F17F
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 10:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F4333ADA0
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 10:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772791970; cv=none; b=tv/9kdOFIAokwkjy5z7mdlM5ZKMkAZvgYuHhUn5bzIoK9xb8BWPrVY0RzB83W92MKcU9yHNJE8c+xGtjI6Ivy0Z0/Nk3yr3NRJJftDAI2zO/X3Ws2MDW5+FdEruuI/IheBuLRV9+eDfk2HEgxCwIO5nQK6kN9eGNyGqOzzBxYAs=
+	t=1772793785; cv=none; b=Jvt2ij+Qp2NpfuQe5CWr2+itW9fG/3wGtmxRLdVgtCn/03WaAeSWvRIRCj5dpo1t/hsB92PhD3z5TQNXW9j0jqdqJkHRyv6M7PimvosPM7gB+Cq/hzlBIwG8BA9cVoqpNU+fo/mK+erVY+gU1HyftPLTcRc8WtHOR5Z4oCrlvfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772791970; c=relaxed/simple;
-	bh=vLTWreXrcuLexzfs+oXxVXznKD7YNAwC4CLC/PfG1/U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Rsgd2Rv2r8Lokwd2bWgp8IQevTBonL9dFCaPYGh9Nkt7NNW9jV62QE5wWRdyQVj0N69r6/Fy7vJe8mzsZDDfnfmLxemaqmwzzPmk3sho7mqymop1nOpI3cg/SvZy33GW4J/O1dcDQXJqe5ivQ3zhOtS4dbK+GXNGScx1NOcqXtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h0GzFVLP; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772791967; x=1804327967;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=vLTWreXrcuLexzfs+oXxVXznKD7YNAwC4CLC/PfG1/U=;
-  b=h0GzFVLP1BQRXUGPVVR4KSVJkVUXQM21YdQmn3vyixQsYB7b2B7OsjNt
-   MgF1U0OaixjUSttAZcyzXu8CoxHeClo6pcey52egfvy+Ot3dmP01heEoJ
-   TYRzoqnJBCrDW9oqaBm2ULa4f6bKjPI6yn8bqr7H82MhcdGkB1ZgRlI4Y
-   VOMucFSnwXefDpC8/hME033/ajF9VOZkPR23Ad7so20O4lKRfpdsVSUTH
-   fcK7W0gt9Rgu3CaVaQQ6Ef8A9wDWs2b0gEfPA0yXREjtMIC6/ORCSI6Zb
-   gD6sz9IeojAoy24kVhJRxwOnKOc8IWlSumrNRqfkBB3j/A9um2yXnUst7
-   g==;
-X-CSE-ConnectionGUID: yqn+xhfiQYWKm5KnRmTX6g==
-X-CSE-MsgGUID: pMpFaO/5SBu9hWldr3eyHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="77499082"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="77499082"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 02:12:46 -0800
-X-CSE-ConnectionGUID: fOJM/jljSVurv+s/oGPg7Q==
-X-CSE-MsgGUID: 0YbGUMOCRWOZcZ/R6LsLdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
-   d="scan'208";a="241977594"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.191])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 02:12:44 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Imre Deak <imre.deak@intel.com>, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>, Tao Liu
- <ltao@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/i915/dmc: fix an unlikely NULL pointer deference
- at probe
-In-Reply-To: <20260302174849.1541350-1-imre.deak@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <20260302174849.1541350-1-imre.deak@intel.com>
-Date: Fri, 06 Mar 2026 12:12:41 +0200
-Message-ID: <c24d25703c51fe7df93b16762bc82898b0485e98@intel.com>
+	s=arc-20240116; t=1772793785; c=relaxed/simple;
+	bh=E8qI3BxIhHl5FkRPrgOnccRYNamFfa13BgZ1KMEPE78=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wn8D/W23XuP4dT7EKl6zCqJIMqc51aNfrcFRf2PBKix8qrKUd21KRLxpRbJ33xRKW38AI4EMc3UGMav895lAVt1vg8hmolN97zS0hWz7OskFv9ChaPajWu7sPdtRrMunDOW5dgURHNcIUuy6Ma6+tMSC4nIimL2sc3FU8wPudBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LywcjCoS; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3598cab697eso3344552a91.1
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 02:43:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772793784; x=1773398584; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h6U/LpYgdoAju3gY53QJubegUkldAvW3G43OtE3PuT0=;
+        b=LywcjCoSbbyecUFdzkDFQDWXMeX7bo0EGOEarqDLv32BakEm0rxe0qSlRU+CVslLQ2
+         MotiNqlr18NNC+ltwtZs13ZiOAkdDfHPu9D6MbyMWYWV0mOERywZ1KOrpEAvb+H+3DPA
+         JHQNGfykXZhnilZTNp3cuK7ZCV29kdvcTaKNTaTdeb9amegivvh2rIF6K7W655AfHQS+
+         VLphqQzVaQIGMexzAOBzotGcwy2gv3sN7/xqHF23ug+2q/QtmZrxBzn8tpsD6JGqdR/8
+         Cg7DFfWqKK0YqYeQZGASbVS1+GwGaUTCOn9MVOZtG3SLW6oYL01Sv2q7Zc5ZX8UEfscT
+         xYew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772793784; x=1773398584;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h6U/LpYgdoAju3gY53QJubegUkldAvW3G43OtE3PuT0=;
+        b=k1DNEqab3GFThZBwohQebnPw72UMCNWfNNnEftyl0av0p3bow4FROh9xjyxgb1qeyv
+         UzE8SDIQM5kn7WXk2eq7BQbaB1+f1h6Jz7JZFKlGjPd+1WGJd7R4zCuZFsckzbbuf7Ms
+         RkQXkQ2h8VjayLV/SrffgKrm24i2TBo6RggjkQmoqDFEyFMtMiPZMKrtYcuXQncJ2aJC
+         q23fGvQfilER8XO5fEKwbjHvzR3MV15w1j1BK6933BVKoJL38zVpmRFooH2N70Bzm5pz
+         GPKeb3VGLx+1deA/WtMU3z0sbzylK7hZk0YuudC9L3jufSEI580QriA8vv9zCYYqCDvh
+         uSeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHWr7wMSTDqFn4wT00msC6/lKEtclMPT7r4r7pOEQuYDm6oLTOf4ot9iIJUANeZd3PlG5Je/E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7mlvsyA+XMqVu8T9VgEHoMZ7/aGMHBdP0hq3dwXX9179UwuxS
+	PAEVUTK6N+Qhyf1TKrwbsbj76k/JfGJ7X1WQY9wbyanvn7Ls/J0+f/84
+X-Gm-Gg: ATEYQzxez253OoavjiVUgoa5yMC4zMSq/EreYZdtnN4kAMKTG/harR4QjPWSQGIw9Cq
+	zcpWAPeM984vUfP6KXWjwMNAlGA2KZNprgJnna00/Ch23rMwFRagTUE884Mdrnq4J2pcctBP97N
+	gjERtEXQ4MUboYgnbLsF+cgPVPD5E/5NvJ31m0grxLPLb++RpEqnumkrO9U86EMcI1tKEJ0wEY9
+	l0f8Jf/yW37o0kAQl4iBGdqQkbb8qbWHhx/qWYa6j7DMNblkjN7dzutQrGaPB9bP8gg91u6dDqQ
+	CyIfsOTDe7jjCDoVtsTqEAsDp7lk6VJYilLNHnF5/4EJf9SjQG07ASKcZ01yu3dbeRUTHxlpp8I
+	8j3/gjnwTH8nBpoqFuKkukzP+N7/zaBxvbAJVu7tMKRMdaIj9sf5WApxGrE/GD77MU75jAb8k8r
+	ztxlk/fbCsgX6dgNCt5Islq8lm1I2t3LTtu2i+CfMi4taDew5cG0Z0ed3Z34oBDzUwUqyKCw==
+X-Received: by 2002:a17:90b:2b46:b0:359:901a:4b04 with SMTP id 98e67ed59e1d1-359b1c31042mr5199511a91.14.1772793783520;
+        Fri, 06 Mar 2026 02:43:03 -0800 (PST)
+Received: from kernel-fuzz.. ([138.199.21.245])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e16cefcsm1283870a12.19.2026.03.06.02.42.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 02:43:02 -0800 (PST)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: shaggy@kernel.org
+Cc: jfs-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] jfs: validate dmap-derived blkno to prevent buffer overflow
+Date: Fri,  6 Mar 2026 18:42:34 +0800
+Message-ID: <20260306104234.4113565-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: D735E21E86E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2408F21F0D1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_RHS_MATCH_TO(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223322-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[lists.sourceforge.net,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223324-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, 02 Mar 2026, Imre Deak <imre.deak@intel.com> wrote:
-> intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-> initialized, and dmc is thus NULL.
->
-> That would be the case when the call path is
-> intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-> gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-> intel_power_domains_init_hw() is called *before* intel_dmc_init().
->
-> However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-> conditionally, depending on the current and target DC states. At probe,
-> the target is disabled, but if DC6 is enabled, the function is called,
-> and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-> at probe, as we haven't seen this failure mode before.
->
-> It is also strange to have DC6 enabled at boot, since that would require
-> the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
-> the driver stopping / reprogramming the firmware is a poorly specified
-> sequence and as such unlikely an intentional BIOS behaviour. It's more
-> likely that BIOS is leaving an unintentionally enabled DC6 HW state
-> behind (without actually loading the required DMC firmware for this).
->
-> The tracking of the DC6 allowed counter only works if starting /
-> stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
-> DC6 state (since stopping the counter requires the DC5 counter captured
-> when the counter was started). Thus, using the HW DC6 state is incorrect
-> and it also leads to the above oops. Fix both issues by using the SW DC6
-> state for the tracking.
->
-> This is v2 of the fix originally sent by Jani, updated based on the
-> first References: discussion below.
->
-> Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
-> Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
-> Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-> Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Tao Liu <ltao@redhat.com>
-> Cc: <stable@vger.kernel.org> # v6.16+
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
+Dynamically corrupting on-disk metadata at runtime can cause dp->start
+in a dmap page to contain an invalid value. Both dbAllocNear() and
+dbAllocDmapLev() rebuild blkno from that on-disk value and pass it
+down the allocation path without validating that the resulting
+block number is still within the filesystem.
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+This can lead to an out-of-range AG index in dbAllocBits() and an
+out-of-bounds access to db_agfree[]. In testing, KASAN reports the
+resulting invalid access as slab-use-after-free.
 
-However, I still think the whole gen9_set_dc_state() is a bit fragile
-wrt DMC loaded or not. Pretty much everything else wraps the relevant
-parts within intel_dmc_has_payload(), and it's obvious what's going
-on. The comment for the function primarily talks about DMC but there's
-not even a mention of the possibility DMC is not loaded.
+Fix this by validating blkno immediately after it is reconstructed from
+dp->start in dbAllocNear() and dbAllocDmapLev(), and return -EIO if it
+is out of range. The missing validation has been present since
+the beginning of the git history.
 
-I also think intel_dmc_update_dc6_allowed_count() is fragile in oopsing
-when DMC is not loaded, and I still think that should be fixed too.
+The bug is reproducible on 7.0.0-rc2-next-20260304. With this fix,
+the invalid blkno is detected early, preventing the resulting
+out-of-bounds access and KASAN-reported slab-use-after-free.
 
-The patch at hand looks like it fixes the root cause, but I still think
-the parts around it could use some more robustness, if only to make it
-evident to the reader what the possible conditions are.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+Root cause
+==========
+The root cause is that both dbAllocNear() and dbAllocDmapLev()
+reconstruct blkno from the on-disk dmap field dp->start without
+verifying that the resulting block number is still within the valid
+filesystem range defined by bmp->db_mapsize:
+  blkno = le64_to_cpu(dp->start) + (word << L2DBWORD);
+or:
+  blkno = le64_to_cpu(dp->start) + (leafidx << L2DBWORD);
 
+If dp->start is corrupted in the image, the
+reconstructed blkno becomes invalid, and the later AG accounting ends
+up indexing db_agfree[] with an out-of-range value.
 
-BR,
-Jani.
+Reproduction (v6.18, x86_64, KASAN)
+===================================
+The PoC is relatively large, so it is provided separately through google drive:
+https://drive.google.com/drive/folders/1btOFM90WImywiv3HgZTWXv1UdKkXx9XP
 
+To reproduce the issue:
+  1. Build the PoC program: gcc poc.c -o poc
+  2. Build the ublk helper program from the ublk codebase, which is
+	 used to provide the runtime corruption capability:
+	  g++ -std=c++20 -fcoroutines -O2 -o standalone_replay \
+      standalone_replay_jfs.cpp targets/ublksrv_tgt.cpp \
+      -I. -Iinclude -Itargets/include \
+      -L./lib/.libs -lublksrv -luring -lpthread
+  3. Attach the crafted image through ublk:
+      ./standalone_replay add -t loop -f /path/to/image
+  4. Run the PoC: ./poc
+This reliably reproduces the bug.
 
-> ---
->  drivers/gpu/drm/i915/display/intel_display_power_well.c | 2 +-
->  drivers/gpu/drm/i915/display/intel_dmc.c                | 3 +--
->  2 files changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_power_well.c b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> index 9c8d29839cafc..969b2c421d308 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> +++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> @@ -852,7 +852,7 @@ void gen9_set_dc_state(struct intel_display *display, u32 state)
->  			power_domains->dc_state, val & mask);
->  
->  	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
-> -	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-> +	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
->  	if (!dc6_was_enabled && enable_dc6)
->  		intel_dmc_update_dc6_allowed_count(display, true);
->  
-> diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-> index c3b411259a0c5..90ba932d940ac 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dmc.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-> @@ -1598,8 +1598,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
->  		return false;
->  
->  	mutex_lock(&power_domains->lock);
-> -	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
-> -		      DC_STATE_EN_UPTO_DC6;
-> +	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
->  	if (dc6_enabled)
->  		intel_dmc_update_dc6_allowed_count(display, false);
+Fix
+===
+The simpler and direct fix is to validate blkno immediately 
+after it is rebuilt from dp->start, i.e. at the point where 
+corrupted disk metadata first enters the allocation path.
 
+This patch adds that check in the two source locations:
+- dbAllocNear()
+- dbAllocDmapLev()
+
+If the reconstructed blkno is outside bmp->db_mapsize, JFS reports
+corrupt metadata and aborts with -EIO.
+
+KASAN reports
+=============
+BUG: KASAN: slab-use-after-free in dbAllocBits+0x4a1/0x4b0 fs/jfs/jfs_dmap.c:2257
+
+CPU: 0 UID: 0 PID: 291 Comm: syz.0.1 Tainted: G           OE       6.18.0+ #10 PREEMPT(voluntary) 
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xd1/0x650 mm/kasan/report.c:482
+ kasan_report+0xfb/0x140 mm/kasan/report.c:595
+ __asan_report_load8_noabort+0x14/0x30 mm/kasan/report_generic.c:381
+ dbAllocBits+0x4a1/0x4b0 fs/jfs/jfs_dmap.c:2257
+ dbAllocDmap+0x68/0x120 fs/jfs/jfs_dmap.c:2034
+ dbAllocNear fs/jfs/jfs_dmap.c:1247 [inline]
+ dbAlloc+0x65b/0x990 fs/jfs/jfs_dmap.c:832
+ extBalloc fs/jfs/jfs_extent.c:336 [inline]
+ extAlloc+0x452/0xe10 fs/jfs/jfs_extent.c:127
+ jfs_get_block+0x349/0xad0 fs/jfs/inode.c:254
+ __block_write_begin_int+0x45f/0x1680 fs/buffer.c:2145
+ block_write_begin+0x90/0x1b0 fs/buffer.c:2256
+ jfs_write_begin+0x3f/0x1a0 fs/jfs/inode.c:306
+ generic_perform_write+0x409/0x8c0 mm/filemap.c:4255
+ __generic_file_write_iter+0x1bb/0x200 mm/filemap.c:4372
+ generic_file_write_iter+0xe5/0x370 mm/filemap.c:4398
+ do_iter_readv_writev+0x61d/0x850 fs/read_write.c:827
+ vfs_writev+0x323/0xca0 fs/read_write.c:1057
+ do_writev+0x144/0x330 fs/read_write.c:1103
+ __do_sys_writev fs/read_write.c:1171 [inline]
+ __se_sys_writev fs/read_write.c:1168 [inline]
+ __x64_sys_writev+0x7a/0xc0 fs/read_write.c:1168
+ x64_sys_call+0x1b7c/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:21
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x75a3843a75ad
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffedded3958 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
+RAX: ffffffffffffffda RBX: 000075a3845e5fd0 RCX: 000075a3843a75ad
+RDX: 0000000000000001 RSI: 0000200000001400 RDI: 0000000000000007
+RBP: 000075a3845a4630 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffedded3970
+R13: 000075a3845e5fa8 R14: 000075a3845e5fa0 R15: 000075a3845e5fac
+ </TASK>
+
+Allocated by task 267:
+ kasan_save_stack+0x39/0x70 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:77
+ kasan_save_alloc_info+0x37/0x60 mm/kasan/generic.c:573
+ unpoison_slab_object mm/kasan/common.c:342 [inline]
+ __kasan_slab_alloc+0x9d/0xa0 mm/kasan/common.c:368
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4978 [inline]
+ slab_alloc_node mm/slub.c:5288 [inline]
+ kmem_cache_alloc_node_noprof+0x1f9/0x7c0 mm/slub.c:5340
+ __alloc_skb+0x276/0x360 net/core/skbuff.c:660
+ alloc_skb_fclone include/linux/skbuff.h:1433 [inline]
+ tcp_stream_alloc_skb+0x39/0x550 net/ipv4/tcp.c:912
+ tcp_sendmsg_locked+0x1586/0x3f10 net/ipv4/tcp.c:1218
+ tcp_sendmsg+0x34/0x60 net/ipv4/tcp.c:1413
+ inet_sendmsg+0xb8/0x150 net/ipv4/af_inet.c:853
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ sock_write_iter+0x4ea/0x630 net/socket.c:1195
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x63b/0xf70 fs/read_write.c:686
+ ksys_write+0x1ed/0x250 fs/read_write.c:738
+ __do_sys_write fs/read_write.c:749 [inline]
+ __se_sys_write fs/read_write.c:746 [inline]
+ __x64_sys_write+0x77/0xc0 fs/read_write.c:746
+ x64_sys_call+0x79/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:2
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 261:
+ kasan_save_stack+0x39/0x70 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:77
+ __kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x6f/0xa0 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2543 [inline]
+ slab_free mm/slub.c:6642 [inline]
+ kmem_cache_free+0x384/0x7a0 mm/slub.c:6752
+ kfree_skbmem+0x13e/0x210 net/core/skbuff.c:1131
+ __kfree_skb+0x61/0x80 net/core/skbuff.c:1167
+ tcp_wmem_free_skb include/net/tcp.h:332 [inline]
+ tcp_eat_one_skb net/ipv4/tcp_output.c:2585 [inline]
+ tcp_grow_skb net/ipv4/tcp_output.c:2883 [inline]
+ tcp_write_xmit+0x373f/0x7aa0 net/ipv4/tcp_output.c:2957
+ __tcp_push_pending_frames+0xa7/0x360 net/ipv4/tcp_output.c:3182
+ tcp_push_pending_frames include/net/tcp.h:2221 [inline]
+ tcp_data_snd_check net/ipv4/tcp_input.c:5880 [inline]
+ tcp_rcv_established+0x9fa/0x31a0 net/ipv4/tcp_input.c:6450
+ tcp_v4_do_rcv+0x538/0x970 net/ipv4/tcp_ipv4.c:1931
+ tcp_v4_rcv+0x2b66/0x45e0 net/ipv4/tcp_ipv4.c:2374
+ ip_protocol_deliver_rcu+0xab/0x410 net/ipv4/ip_input.c:205
+ ip_local_deliver_finish+0x38d/0x610 net/ipv4/ip_input.c:239
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ NF_HOOK include/linux/netfilter.h:312 [inline]
+ ip_local_deliver+0x1bb/0x4e0 net/ipv4/ip_input.c:260
+ dst_input include/net/dst.h:474 [inline]
+ ip_rcv_finish net/ipv4/ip_input.c:453 [inline]
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ NF_HOOK include/linux/netfilter.h:312 [inline]
+ ip_rcv+0x5b1/0x8c0 net/ipv4/ip_input.c:573
+ __netif_receive_skb_one_core+0x1be/0x230 net/core/dev.c:6079
+ __netif_receive_skb+0x29/0x130 net/core/dev.c:6192
+ process_backlog+0x269/0x1190 net/core/dev.c:6544
+ __napi_poll.constprop.0+0xb4/0x4d0 net/core/dev.c:7594
+ napi_poll net/core/dev.c:7657 [inline]
+ net_rx_action+0xa88/0x1090 net/core/dev.c:7784
+ handle_softirqs+0x1d6/0x840 kernel/softirq.c:622
+ __do_softirq+0x10/0x18 kernel/softirq.c:656
+
+The buggy address belongs to the object at ffff888010bda000
+ which belongs to the cache skbuff_fclone_cache of size 488
+The buggy address is located 128 bytes inside of
+ freed 488-byte region [ffff888010bda000, ffff888010bda1e8)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10bda
+head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: f5(slab)
+raw: 000fffffc0000040 ffff88800a087c80 dead000000000122 0000000000000000
+raw: 0000000000000000 00000000000c000c 00000000f5000000 0000000000000000
+head: 000fffffc0000040 ffff88800a087c80 dead000000000122 0000000000000000
+head: 0000000000000000 00000000000c000c 00000000f5000000 0000000000000000
+head: 000fffffc0000001 ffffea000042f681 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff888010bd9f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888010bda000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff888010bda080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff888010bda100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888010bda180: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
+==================================================================
+---
+ fs/jfs/jfs_dmap.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index cdfa699cd7c8..b95bf52f7452 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1232,6 +1232,13 @@ dbAllocNear(struct bmap * bmp,
+ 		 * of the first block described by this dmap word.
+ 		 */
+ 		blkno = le64_to_cpu(dp->start) + (word << L2DBWORD);
++		if (blkno >= bmp->db_mapsize) {
++			jfs_error(bmp->db_ipbmap->i_sb,
++				  "blkno %lld from corrupt dmap (start %llu) out of range\n",
++				  (long long)blkno,
++				  (unsigned long long)le64_to_cpu(dp->start));
++			return -EIO;
++		}
+ 
+ 		/* if not all bits of the dmap word are free, get the
+ 		 * starting bit number within the dmap word of the required
+@@ -1976,6 +1983,13 @@ dbAllocDmapLev(struct bmap * bmp,
+ 	 * to the leaf at which free space was found.
+ 	 */
+ 	blkno = le64_to_cpu(dp->start) + (leafidx << L2DBWORD);
++	if (blkno >= bmp->db_mapsize) {
++		jfs_error(bmp->db_ipbmap->i_sb,
++			  "blkno %lld from corrupt dmap (start %llu) out of range\n",
++			  (long long)blkno,
++			  (unsigned long long)le64_to_cpu(dp->start));
++		return -EIO;
++	}
+ 
+ 	/* if not all bits of the dmap word are free, get the starting
+ 	 * bit number within the dmap word of the required string of free
 -- 
-Jani Nikula, Intel
+2.43.0
+
 
