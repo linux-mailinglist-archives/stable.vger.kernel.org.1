@@ -1,85 +1,86 @@
-Return-Path: <stable+bounces-223346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEtZLozmqmkTYAEAu9opvQ
-	(envelope-from <stable+bounces-223346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:37:00 +0100
+	id mGAPNL/lqmkTYAEAu9opvQ
+	(envelope-from <stable+bounces-223347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:33:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C11222C90
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:37:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77633222BB0
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 15:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9B14313CBB9
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:33:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02C0830364E0
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 14:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB138347534;
-	Fri,  6 Mar 2026 14:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FF4271A94;
+	Fri,  6 Mar 2026 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="JvuDaMDY"
+	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="hb07hmKV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C702234D907
-	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 14:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B94331A57
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 14:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772807594; cv=none; b=GHcUOrtj4iXvBoIcV5MfxHEZeh7ASrm5rSVZGHTujszhAlsZckKpsc/QtWNBo7oJFf419F9cwy/nBj1RK6f4+N3WP/ecEaoogHbKmBtq0Q6tS6uC9/Tbw6vbAalWJbc3DpRWUu2WWbtqKDLDwossJfbH0zya9FS/jOP/OHYvGf4=
+	t=1772807606; cv=none; b=RcF9D6pq4xLVNRbYkjHEezpB8CwSXBmWZnbIlksTB9IrjRtCcPw4IxeHXQsBF2UIKnIGyFXKsCMV0+mt+58zBAfKOZxZY4QFILhBMT2nCZPrXSMMaDb/kCveOw93L1GadLIV1Y0N/RfhQ2x47XdQL9+Yuhoo6yCkd61noLnZODk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772807594; c=relaxed/simple;
-	bh=V5+a72ZC6NLwNlJPuRbxmZ4cdjnC0AK1Zw75NzX2EUE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ttrV4wRa+MWhB5dc+r/kPK3f2+4pfTq7RgLszLAqGYCeVXJxia6tOBm+96MjBJpUjBm/u46U0pBlh61mW64fCQNvWA6sG6/QtVpUzWUoF/0zij0L3XZ8vLenRAoSQnLLSIC11GiMNhzWK2uW2L/Q/1LM1H5N6gHxWTqAHKeXIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=JvuDaMDY; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1772807606; c=relaxed/simple;
+	bh=Q9D7eBKxq86MNvlgm1qDMnqHysA/422W4yV9eBroyC4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cCmElnTDRWmmjsuO1NLxS5Rd2QpUuPQwEAcgIDoC7uZ6lcjMa6GHR6RiGzFLpLTgZgjc7HQejQc0A3CWX/vYL+20jlzhSF4mKiAkGgci1AFUPDbF74pgypuofbR45SkC2r7pTCtvvjDfZ/D3oPf8mf5Ut6tuGmAP8DFmg9gpJFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=hb07hmKV; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-439b78b638eso6118515f8f.2
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 06:33:12 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-439ac15f35fso5942094f8f.0
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 06:33:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flipper.net; s=google; t=1772807591; x=1773412391; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AMFiA7z3ai1QGEzG7JWM4eDTrrfS1PgbZ2wKh/4AWAw=;
-        b=JvuDaMDY4+QQYN8MpK7ZnPuHjigbI0jyrWMDZ+prCp4CrQ2FkuEIOsDwCMqUQT1QTI
-         BQxMODtWcwnsefOmT6hhFvIw8vid1vHZ1F2v/go21iucry+YhK0yvCVDqLWSgcUeDDfO
-         BvCqKM6O1Tv0jn8yNA1ZEmuSBfRXbekvsrtp+kurE+KFQepBeIqVEwUi1ee5Kq84Oqt2
-         iad7Jmmetefa2ZeVkyP7x27F6Bsudxk9ZMJ8wWogI49oZniX4LX/2NQ74B4JgjQkHo1z
-         Q2SKxgN22qFQ7A7N4cCCdF5vtRaFWmllSBLsIVcb+EAEOfOuNJG5OAH+6omP04uqdLcw
-         942Q==
+        d=flipper.net; s=google; t=1772807604; x=1773412404; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sz4biLahYPKsT9J1ufLdEia90vJM1vdO3bq5iy8XGEM=;
+        b=hb07hmKVFklaYksufnqvG4Dtv82VpVtF284kZVDLekZ0Hlo9DqXt9fT5waLAqEe6zW
+         EsaajfcccqaDX+qHghQidCN5OYGIpkR+TZNcbOR4iUu+TGflTsANcqu3O6OHBX8atPBa
+         rjxLvfDX1kH+jpaguxpa0ezpG83xwZB2LUE+gV0tV4/Q80I7LBHExvu/9E/HHHM7oBEJ
+         jXHBg1chLmBy5KRpTveuGfmJlhTvYO9gPZyXAyDVTnk1cs+qxwJeDCPNkPtz/jImCadY
+         83PvoEm3N6Loi8P0aMss9ElA9l3ZRE9uIY5FF3BFaXq4IJtj9tpmoz/vIZGdTMYLGDsf
+         vKFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772807591; x=1773412391;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AMFiA7z3ai1QGEzG7JWM4eDTrrfS1PgbZ2wKh/4AWAw=;
-        b=JnhRGTqWq3wNUTAJVZ/o9ehdXJQakI3u0ZQGo6Do/jinpOOJ4g/fVkVhlCz+jCb0aG
-         TaqHq0byQCrnO0Go8l5rZgA2WCvifPSCV1bqj/PW7PgrDJqeOmeODot2d7bzWRcLJsp0
-         8wLsyQ5+R4CSAg8VzDULZOETxXdNQ5bynZKkB+igjPGDqOZW5JLjMvGKFf+Rr2VvPDrA
-         b4RtDh2GLEcQg6bg1bdbZ5A1JHT45rBnyUmmA9g6y38uZoDxrl7TKh8KGEVica6gzXoY
-         4a1v9iUWEZfjJulTpWqZhaRvcnLbL9M5+IiZNgTqEGOLHuMQcT5FYZ4mPeZhjn7Fbqml
-         hzKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEGQm5jG6dWKgIpQaaqDPSiHzMfFz6BUgsMfY8uHS2pufjApHrhDGzX5R0INS3SeIuKSFCFfs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyehorK1y5RgStk/Xiaht8e5XbnEcJBITC3b7X66qqfQ3Tkm50p
-	A2vxTmM4PRFAn5MJehjXN410MdZ9SNCfYMczdXJq3miNh6RSIKjRdEGXNJgn2TjBcO2sJ24mxr0
-	RgZIM
-X-Gm-Gg: ATEYQzxKNQv+hCwwafHCW6sDlxZNCNY5vg/c5z/LIalA4BwUISKQJgx37DITzI0Ftg0
-	orOwIMVs/jPwXpjynGKXXPopWISN1fsOxQSqTLdX3lfeKlRMv5JZvR9XRw0GRmfGa6OiMOr7N4m
-	dfUYEtpctIA/Dkwd6cuHLu164YbYI56s6aC3+kWsgWLgsJGH3fZUywqbMJrZDoChRsa1C+bYLQH
-	3hUBp8KqeHV0JTehqh8kk0NRxfbukO7/XU1i3vfOkMNgjbCMEBRBZnl/sD1pFeWePD4EzLl09DZ
-	gOJ/Xf58p1wLx/xZHICVOdfubnTTss5lVZ9Oxe7yGicJOEhj9DDRkrVIL3gYNnFjhPH/GIaccpx
-	StQWmPiXfP43arhAtaszjPuq5aERCGyOiWQykKDsCqak0Agfx0koFCoGKI2au0DOqAMWBvYpjZD
-	kQloe00tcR/yYdsAH7ieR86XM1Fjm3ng8XquDxQF10Uc+XY+Bs9+QYWgxE3l/llCBi8co8mi3R+
-	AffVw==
-X-Received: by 2002:a05:6000:144e:b0:439:d8cc:3628 with SMTP id ffacd0b85a97d-439da89d71bmr3657783f8f.49.1772807591084;
-        Fri, 06 Mar 2026 06:33:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772807604; x=1773412404;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Sz4biLahYPKsT9J1ufLdEia90vJM1vdO3bq5iy8XGEM=;
+        b=lgm1wnT3+41ksqAbbqQIC0zhp19NoelHYJ52RkLENao0OGCAjxFme/33Sl3g2+3edn
+         Zr9Isma1pV4wEFdNs+cpxwECa7v3oYBOi13pL01ecpLncsKI2GGd0/Dzagru36cJ0KsS
+         9kTB7xHRDVKC4uMSMq4m4V+pkAyHXjX6LNkR0gPqgwh2FsKCT44FzWZZe/OhV5wZp9JI
+         FOhuJ1tggjcG2tYZHRSoJ+xF5lFHSMci4VqSrHH7ZIJocyckifwuMJXmEqJYZLx4uD4V
+         //eAg+TQkR0ciYwsH73wjqmFWv2lhuKY+ZhdwfD1OHdZtcnEmJGBcxNV0lfCivp62FAY
+         RBsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiqGqjgb+1nq4FnX73vDVrFqbafb1wsa97Bx5dPqDGyQyuPPQLnjlLkKawsUwbg8hPUxcgpaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZULGXdmB5UEG4h1g/QbTKYefGz2+n8dpJxl6bTUS8bwxuX5k8
+	v74SFttJfz4Y9KP28PGvHwkdVayznWK38GybF0Wm5B9mKHoNAHsfEIWOKrN2YLCgmXg=
+X-Gm-Gg: ATEYQzwzIZPntfN3UxkCMKJh5N2NpDEHHi9d6bM1OKHomCkmnXWVrXKb7uaw9Dkz+Qs
+	obzySWPJj513p7mxqTd9nAu6NHb5oBCxYDsMLq8M8jf4bR8gWg6em/JjJFMmEn+MnkGRNFpv4b5
+	gLYZVDABroL5Hz4UOxxtEvbVAOdkA4mWKND9nqlUsc7j0aN5DkNCI9WqBgXP2+A0kqm5Hj3MRlq
+	98C4dXESVxPzow5WFXiov62pV+m3p/5/2kb7F4PAhM1XDBP7aeiZLx5Xek64q5VJiofbQE5hviF
+	qPhFk864N3vm4wSLlLFdYygorTa7J6v9TwemP7y0b0wpRGd+JNRf85aEedFOojQ4mx5Y0OyKAeL
+	j6NPiv+vuVfTT2bFhBPQ4Jex2LDJdH9EXgB2OGLZJEeHDMqoqp2Eo1ixJ2RQ7KjjHOKPGQABJvR
+	iABbr3b9VTg5AQF0thQZlbJ+sQCX8TIe4cP1qQEdNEW1+UfVHxaaZvZzNcgwbnjM4o92aXLAYX0
+	YInENNnC7AQyJ3u
+X-Received: by 2002:a05:6000:1843:b0:439:c9b2:6571 with SMTP id ffacd0b85a97d-439da3697a9mr4240301f8f.41.1772807603922;
+        Fri, 06 Mar 2026 06:33:23 -0800 (PST)
 Received: from alchark-surface.localdomain (bba-86-98-192-109.alshamil.net.ae. [86.98.192.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad8daf2sm4635281f8f.2.2026.03.06.06.33.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad8daf2sm4635281f8f.2.2026.03.06.06.33.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 06:33:10 -0800 (PST)
+        Fri, 06 Mar 2026 06:33:23 -0800 (PST)
 From: Alexey Charkov <alchark@flipper.net>
-Subject: [PATCH v2 00/11] Add support for the TI BQ25792 battery charger
-Date: Fri, 06 Mar 2026 18:33:00 +0400
-Message-Id: <20260306-bq25792-v2-0-6595249d6e6f@flipper.net>
+Date: Fri, 06 Mar 2026 18:33:05 +0400
+Subject: [PATCH v2 05/11] power: supply: bq257xx: Fix VSYSMIN clamping
+ logic
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,10 +89,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJzlqmkC/2XMQQ7CIBCF4as0sxYzQEF05T1MF7Wd2kkMRWiIp
- uHuYrcu/5eXb4NEkSnBpdkgUubEi6+hDg0Mc+8fJHisDQqVRY1a3F/KnM5KoNSqH5x1rR2hvkO
- kid+7dOtqz5zWJX52OMvf+m9kKVCQJUOIWrfGXacnh0Dx6GmFrpTyBbO2JJegAAAA
-X-Change-ID: 20260303-bq25792-0132ac86846d
+Message-Id: <20260306-bq25792-v2-5-6595249d6e6f@flipper.net>
+References: <20260306-bq25792-v2-0-6595249d6e6f@flipper.net>
+In-Reply-To: <20260306-bq25792-v2-0-6595249d6e6f@flipper.net>
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Chris Morgan <macromorgan@hotmail.com>, 
@@ -102,26 +102,26 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, Alexey Charkov <alchark@flipper.net>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2808; i=alchark@flipper.net;
- h=from:subject:message-id; bh=V5+a72ZC6NLwNlJPuRbxmZ4cdjnC0AK1Zw75NzX2EUE=;
- b=owGbwMvMwCW2adGNfoHIK0sZT6slMWSuerr4XrRZXd4t/c4DBdMKF78/KlCg+ElWsUU1u6Aq7
- 8AukY57HRNZGMS4GCzFFFnmfltiO9WIb9YuD4+vMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
- oaGOsY4RAxenAEz1ui8M/+M2HKnQ/5y6kGfH8i3qEkckg/97Pd1rMe+N7AmHWiuWLWKMDIeM1Et
- 3vs6+cGyC0MtQwycazkq2a3uZp9bsKTm1zojHgBsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1911; i=alchark@flipper.net;
+ h=from:subject:message-id; bh=Q9D7eBKxq86MNvlgm1qDMnqHysA/422W4yV9eBroyC4=;
+ b=owGbwMvMwCW2adGNfoHIK0sZT6slMWSuerpE+vDa17tWlximfOM7VrhvSUAK8zyHheyO53Xnl
+ rdY82/w65jIwiDGxWAppsgy99sS26lGfLN2eXh8hZnDygQ2RKSBAQhYGPhyE/NKjXSM9Ey1DfUM
+ DXWMdYwYuDgFYKp7PzP8M//80iNKkmFiwPTSVjahl+VfuOfK3/8m9Om+59sddeppiQx/BQWXTFr
+ woJp39uYHy4J1nTRuVzd86xO5b8EnXVLct+AWGwA=
 X-Developer-Key: i=alchark@flipper.net; a=openpgp;
  fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
-X-Rspamd-Queue-Id: 65C11222C90
+X-Rspamd-Queue-Id: 77633222BB0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
 	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223346-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223347-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[kernel.org,hotmail.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -129,7 +129,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[flipper.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -139,64 +139,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,flipper.net:dkim,flipper.net:email,flipper.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,flipper.net:dkim,flipper.net:email,flipper.net:mid]
 X-Rspamd-Action: no action
 
-This adds support for the TI BQ25792 battery charger, which is similar in
-overall logic to the BQ25703A, but has a different register layout and
-slightly different lower-level programming logic.
+The minimal system voltage (VSYSMIN) is meant to protect the battery from
+dangerous over-discharge. When the device tree provides a value for the
+minimum design voltage of the battery, the user should not be allowed to
+set a lower VSYSMIN, as that would defeat the purpose of this protection.
 
-The series is organized as follows:
-- Patch 1 adds the new variant to the existing DT binding, including the
-  changes in electrical characteristics
-- Patches 2-4 are minor cleanups to the existing BQ25703A OTG regulator
-  driver, slimming down the code and making it more reusable for the new
-  BQ25792 variant
-- Patch 5 is a logical fix to the BQ25703A clamping logic for VSYSMIN
-  (this is a standalone fix which can be applied independently and may be
-  backported to stable)
-- Patches 6-8 are slight refactoring of the existing BQ25703A charger
-  driver to make it more reusable for the new BQ25792 variant
-- Patch 9 adds platform data to distinguish between the two variants in
-  the parent MFD driver, and binds it to the new compatible string
-- Patches 10-11 add variant-specific code to support the new BQ25792
-  variant in the regulator part and the charger part respectively,
-  selected by the platform data added in patch 9
+Flip the clamping logic when setting VSYSMIN to ensure that battery design
+voltage is respected.
 
+Cc: stable@vger.kernel.org
+Fixes: 1cc017b7f9c7 ("power: supply: bq257xx: Add support for BQ257XX charger")
 Signed-off-by: Alexey Charkov <alchark@flipper.net>
 ---
-Changes in v2:
-- Fix an error in DT schema (thanks Rob's bot)
-- Ensure the broadest constraints for all variants remain in the common
-  part of the schema, per writing-schema doc (thanks Krzysztof)
-- Link to v1: https://lore.kernel.org/r/20260303-bq25792-v1-0-e6e5e0033458@flipper.net
+ drivers/power/supply/bq257xx_charger.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
----
-Alexey Charkov (11):
-      dt-bindings: mfd: ti,bq25703a: Expand to include BQ25792
-      regulator: bq257xx: Remove reference to the parent MFD's dev
-      regulator: bq257xx: Drop the regulator_dev from the driver data
-      regulator: bq257xx: Make OTG enable GPIO really optional
-      power: supply: bq257xx: Fix VSYSMIN clamping logic
-      power: supply: bq257xx: Make the default current limit a per-chip attribute
-      power: supply: bq257xx: Consistently use indirect get/set helpers
-      power: supply: bq257xx: Add fields for 'charging' and 'overvoltage' states
-      mfd: bq257xx: Add BQ25792 support
-      regulator: bq257xx: Add support for BQ25792
-      power: supply: bq257xx: Add support for BQ25792
+diff --git a/drivers/power/supply/bq257xx_charger.c b/drivers/power/supply/bq257xx_charger.c
+index 02c7d8b61e82..7ca4ae610902 100644
+--- a/drivers/power/supply/bq257xx_charger.c
++++ b/drivers/power/supply/bq257xx_charger.c
+@@ -128,9 +128,8 @@ static int bq25703_get_min_vsys(struct bq257xx_chg *pdata, int *intval)
+  * @vsys: voltage value to set in uV.
+  *
+  * This function takes a requested minimum system voltage value, clamps
+- * it between the minimum supported value by the charger and a user
+- * defined minimum system value, and then writes the value to the
+- * appropriate register.
++ * it between the user defined minimum system value and the maximum supported
++ * value by the charger, and then writes the value to the appropriate register.
+  *
+  * Return: Returns 0 on success or error if an error occurs.
+  */
+@@ -139,7 +138,7 @@ static int bq25703_set_min_vsys(struct bq257xx_chg *pdata, int vsys)
+ 	unsigned int reg;
+ 	int vsys_min = pdata->vsys_min;
+ 
+-	vsys = clamp(vsys, BQ25703_MINVSYS_MIN_UV, vsys_min);
++	vsys = clamp(vsys, vsys_min, BQ25703_MINVSYS_MAX_UV);
+ 	reg = ((vsys - BQ25703_MINVSYS_MIN_UV) / BQ25703_MINVSYS_STEP_UV);
+ 	reg = FIELD_PREP(BQ25703_MINVSYS_MASK, reg);
+ 
 
- .../devicetree/bindings/mfd/ti,bq25703a.yaml       |  73 ++-
- drivers/mfd/bq257xx.c                              |  60 ++-
- drivers/power/supply/bq257xx_charger.c             | 534 ++++++++++++++++++++-
- drivers/regulator/bq257xx-regulator.c              | 123 ++++-
- include/linux/mfd/bq257xx.h                        | 415 ++++++++++++++++
- 5 files changed, 1164 insertions(+), 41 deletions(-)
----
-base-commit: d517cb8cea012f43b069617fc8179b45404f8018
-change-id: 20260303-bq25792-0132ac86846d
-
-Best regards,
 -- 
-Alexey Charkov <alchark@flipper.net>
+2.52.0
 
 
