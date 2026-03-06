@@ -1,304 +1,225 @@
-Return-Path: <stable+bounces-223319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JbxGMGfqmlLUgEAu9opvQ
-	(envelope-from <stable+bounces-223319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 10:34:57 +0100
+	id iE4uDzimqmlTVAEAu9opvQ
+	(envelope-from <stable+bounces-223320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:02:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02D321E032
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 10:34:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5B021E5CF
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 11:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 036FE311CC54
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 09:29:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9AA5306AECD
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 09:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A773451CE;
-	Fri,  6 Mar 2026 09:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2173563F6;
+	Fri,  6 Mar 2026 09:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWQiJ39x"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PapHIcQ2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B62344DB0;
-	Fri,  6 Mar 2026 09:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2468334DCD1
+	for <stable@vger.kernel.org>; Fri,  6 Mar 2026 09:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772789380; cv=none; b=ceFYdpD8AIqQu+WV5aqJpDL5tRgaU/UQ891DRmAF/SEbizvuKB2p9wukLD+c4hieHoMYxc1YXN/57bk1ru1/F+/U4KvszPPbBukYWcWuwBegEKtDiSR+lMN48okCHGodbqFB/3LSmYfwbfaOfQDVCWn3lK0IrrPfyqj74HmPNks=
+	t=1772791128; cv=none; b=YQcBZdAcZWIV7wnITXG2wxd/Sqm3qvxU0jXGYuaHmKceaV35469gQmM0YXcduJieic41QpHS3p8cxHvFRRY2kAW20aquS1pTp9YHVASYG8JDLdLI6526/KPyOGENrfTTegJTBJRg0Ss5apPSA5KHxWCwpHIfp2fO9+TMl9A5v5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772789380; c=relaxed/simple;
-	bh=FoiIGNp6DMC3eHerJOHrvzGKeWjUt+DKC9a9Fgi4Ni8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJ1T2SpL7sDcM+JGvKbfMn10dmhyBXBAnvC7I5KAHfwysWXu9B6MXMvlgV8Oek3eqKRAbRmuhicOloh2eydJj+LWB2eJ2mTKY/XDuGKSc2DQwNF4Xn6Ze/HsuBJXhAn1Uig1fsj60xJiNWmk4irrLbTrJSQbcxLgMwzffiV0wN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWQiJ39x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155F5C4CEF7;
-	Fri,  6 Mar 2026 09:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772789379;
-	bh=FoiIGNp6DMC3eHerJOHrvzGKeWjUt+DKC9a9Fgi4Ni8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QWQiJ39xbMfGlDkQBxCjEYkkBGt1Vmhyt0HWPbFAqj/TgdYixJS7+sTAacFheWQMf
-	 ceaQ6zpd5Ee9wwFDibZBYb6/dliriMauMpq48W1cRMSFZ+9nD11w0NY73R6zB/pNm1
-	 gxYw1kUwy/40fZHL3Vs1UYr3cnJ6xwbW8aBv7TKLHesu2iD/yFzhat7uniyKkc4Z1F
-	 5vb3LJiOZ/LKUq82Qh8q7qmGrN7uaHLKZiyVwY/1ryE7I6ibsS3Bdr7agsnb/daadi
-	 OSDKUZypC6ydvpXPm4eQY7vZ80ZKwFOhrItRXF1SCMi2PXtEKYzM1uKbTvQfcwxxTj
-	 IeNJe38fZ0jfA==
-Date: Fri, 6 Mar 2026 10:29:36 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>
-Cc: William Breathitt Gray <wbg@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-Message-ID: <aaqTVDQa7xn70bR_@monoceros>
-References: <20260130122353.2263273-1-cosmin-gabriel.tanislav.xa@renesas.com>
- <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
+	s=arc-20240116; t=1772791128; c=relaxed/simple;
+	bh=Oz0tkBnxcTRJj7izB1cmu6eAueiEzGskMrJQw7bQjR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GT0/Vg97HZkxAKqE0wpl8RgxBlG4Ascd6b37ysxViQWUtZrKCa6QaendG3AHYxDjKiZr1zO3m2qxpG+kKTjpmygRY0XDqV8Ppzkl7RoATlyCNlO5tuyWUuGIRKfknM9nhwuwhYUmnz6aP+GYax0v6bwlYEEJT37lhJEfB6eUIo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PapHIcQ2; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439b94a19fdso5055979f8f.0
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 01:58:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772791125; x=1773395925; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yw3kl19f6ACjjIuebG7y0ksKLkZoZCYwkXV8XNHoJb4=;
+        b=PapHIcQ2BIZNt3ACAqy5yFXDj7Jc38O0yXDLE/+tR0KYb0JW4Aqc+7KDYrU2BrGngc
+         uLmDUU1ZMWJUxZGt83a7rOWVnCBRlh2+TEivq2uZ0KhusWm2Oem0+CDaBJcVRjFk9C9q
+         rgM9c61iyfTnXiBFTUxLmW8hQKM9LupSPx5J0rySBAGF/8zHwVeL1UqblWnc8kiX67oF
+         kaMtp/6QVekscwT+Hlknx+jK0Bbc/dI9wo4gmxMmW8al2f/himaJ7IfFjxH5KZ38syxi
+         E9nIkzY2Iz7Uks9TZgq5/KM5g3WG0iKSqhUvQoToVp/N2oZvIHzo9+ZHyirxYJQ8t4bR
+         A9eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772791125; x=1773395925;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yw3kl19f6ACjjIuebG7y0ksKLkZoZCYwkXV8XNHoJb4=;
+        b=jOiVtISPfX3O1h3TN241jeLELQEQ9dnWF2x6AduErU1V5scffOWVbyJ+8lIocp31+y
+         isqEgsO/Yw7LWNg6jPjeWCj/wM/mCBeVTw3lQw4K8HnDX1gA2PO8d2lzd3B96DbdAp9G
+         u2HDDOys7T96B7kob4dh550RaxmvIFV6vn19gMNPec7KbIai3tgg+rGGpP2bJ5vDzhzZ
+         jF3nlqTkqHPCtzCgJ56BZ/Jo8xVqGfZJpUO/h6iWQ6K/X/rbcenI6kO+iVMXn+J5VUQM
+         zYO7P4R8NSWfW2d6fOGslXsu/N43+pAvP46uPCNWqhqDn2jL5jrBhEHTOHHQSITOfb7w
+         m+IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXz5dgByUWLKG6YH7iPPa/DHb3RatFm74Nl9ACBTAb5lnn7wxkdRwlL9HGtdK2UbRcu7Sm/ODI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlDmtmgZRRJJOPTeOaaE8ryUt1YBoDSrlAdtAsuWDt6jCcPXWy
+	E93sgH1SrB6X6B6/KJtovkNUe3P7MEK9itpkvT0pk0O9yQ7oZG9FbiTKTVWtOUv5F5A=
+X-Gm-Gg: ATEYQzxgPYenOEg1slWpmVd0ImLR1Yp88ET1kjDOQfLEHYF12InvERKRPOk6wRPI4qN
+	9DD7eCPRHWel0jIg9YpF7BxHyHLi4sj19I419q1QE77y8o7zvmu+o2tYEKAnRh5+TDGJ0g80W8Q
+	neeOEvHREZWpaZPp/fL7hwSnXoEldj2CL8hDUGiv3KsIwwWEDBIRm1hqBLWwm41DJo+uLR3+b0+
+	ybztEWzlH33ktdgMWDDaTbteigCk93OvyezxQcJEVGAhQPVANBla4ovbLthR1c0zI0p2Fqkv4UX
+	GFAa/HuNlL70U5DsSgCOJRQQ+KfjDqKFBb4JWbPMkoqUwz708Y6n8cYLnBfxskOrCt+YFw4k0V8
+	hr5aAPxW2e20cC0KipNo1VWJlSRN7CeuGVXpbLL+e4Hkfqkf9PXWTn3cDXB/VFUVty+d59NPHAM
+	PEYjFOz452jOiymwZOgqmsBAijSLgFoFpUdrCCRXXnZbQoPFFQ
+X-Received: by 2002:a05:6000:1a8d:b0:439:da0d:a025 with SMTP id ffacd0b85a97d-439da66250cmr2101323f8f.20.1772791125509;
+        Fri, 06 Mar 2026 01:58:45 -0800 (PST)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.67.140])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae2b9fbsm2720528f8f.23.2026.03.06.01.58.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2026 01:58:45 -0800 (PST)
+Message-ID: <2db61bc6-813d-468a-8ded-018dc9dfb0cf@suse.com>
+Date: Fri, 6 Mar 2026 11:58:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sdqtu4j6eja6jess"
-Content-Disposition: inline
-In-Reply-To: <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
-X-Rspamd-Queue-Id: E02D321E032
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/virt/tdx: Fix lockdep assertion failure in cache
+ flush for kexec
+To: "Huang, Kai" <kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "seanjc@google.com" <seanjc@google.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Verma, Vishal L" <vishal.l.verma@intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260302102226.7459-1-kai.huang@intel.com>
+ <20260302102226.7459-2-kai.huang@intel.com>
+ <4a15470a-5a10-4742-9faf-f66a88105d58@suse.com>
+ <51e221b9bcdeddffb95f2c39dcc285fb0e9f5951.camel@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <51e221b9bcdeddffb95f2c39dcc285fb0e9f5951.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BC5B021E5CF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-223319-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ukleinek@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223320-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_NEQ_ENVFROM(0.00)[nik.borisov@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
 
---sdqtu4j6eja6jess
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-MIME-Version: 1.0
 
-Hello,
+On 5.03.26 г. 23:35 ч., Huang, Kai wrote:
+> 
+>>>
+>>> The real requirement is tdx_cpu_flush_cache_for_kexec() must be done on
+>>> the same CPU.  It's OK that it can be preempted in the middle as long as
+>>> it won't be rescheduled to another CPU.
+>>
+>> TLDR: It wants migration disabled.
+> 
+> Basically yes.
+> 
+>>
+>>>
+>>> Remove the too strong lockdep_assert_preemption_disabled(), and change
+>>> this_cpu_{read|write}() to __this_cpu_{read|write}() which provide the more
+>>> proper check (when CONFIG_DEBUG_PREEMPT is true), which checks all
+>>> conditions that the context cannot be moved to another CPU to run in the
+>>> middle.
+>>>
+>>> Fixes: 61221d07e815 ("KVM/TDX: Explicitly do WBINVD when no more TDX SEAMCALLs")
+>>> Cc: stable@vger.kernel.org
+>>> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+>>> Signed-off-by: Kai Huang <kai.huang@intel.com>
+>>> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
+>>
+>>
+>> So how exactly does this patch prevent the BUG: printk in
+>> check_preemption_disabled from triggering, if the lockdep assert was
+>> triggering?
+> 
+> There's no real BUG here.  It's just the
+> lockdep_assert_preemption_disabled() is misused.
 
-On Fri, Jan 30, 2026 at 02:23:49PM +0200, Cosmin Tanislav wrote:
-> enable_count is only incremented after rz_mtu3_pwm_config() is called
-> for the current PWM channel, causing prescale to not be checked if one
-> PWM channel is enabled and we're enabling the second PWM channel of the
-> same HW channel.
->=20
-> To handle this edge case, if the user_count of the HW channel is larger
-> than 1 and the sibling PWM channel is enabled, check that the new
-> prescale is not smaller than the sibling's prescale.
->=20
-> If the new prescale is larger than the sibling's prescale, use the
-> sibling's prescale.
->=20
-> The user_count check is ensures that we are indeed dealing with a HW
-> channel that has two IOs.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 254d3a727421 ("pwm: Add Renesas RZ/G2L MTU3a PWM driver")
-> Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-> ---
->  drivers/pwm/pwm-rz-mtu3.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/pwm/pwm-rz-mtu3.c b/drivers/pwm/pwm-rz-mtu3.c
-> index ab39bd37edaf..f6073be1c2f8 100644
-> --- a/drivers/pwm/pwm-rz-mtu3.c
-> +++ b/drivers/pwm/pwm-rz-mtu3.c
-> @@ -142,6 +142,14 @@ rz_mtu3_get_channel(struct rz_mtu3_pwm_chip *rz_mtu3=
-_pwm, u32 hwpwm)
->  	return priv;
->  }
-> =20
-> +static u32 rz_mtu3_sibling_hwpwm(u32 hwpwm, bool is_primary)
-> +{
-> +	if (is_primary)
-> +		return hwpwm + 1;
-> +	else
-> +		return hwpwm - 1;
-> +}
+Essentially in check_preemption_disabled() the check is considered 
+passed IF ANY of the preempt disable conditions is met, i.e it's more 
+laxed. So yeah, makes sense!
 
-Can we please make this function a bit more sophisticated to not need
-is_primary? Something like:
-
-static u32 rz_mtu3_sibling_hwpwm(struct rz_mtu3_pwm_chip *rz_mtu3_pwm, u32 =
-hwpwm)
-{
-	struct rz_mtu3_pwm_channel *priv =3D rz_mtu3_get_channel(rz_mtu3_pwm, hwpw=
-m);
-
-	BUG_ON(priv->map->num_channel_ios !=3D 2);
-
-	if (priv->map->base_pwm_number =3D=3D hwpwm)
-		return hwpwm + 1;
-	else
-		return hwpwm - 1;
-}
-
-(Or if you want to save the rz_mtu3_get_channel() call, pass priv to
-rz_mtu3_sibling_hwpwm() which is already available at the call sites.)
-
-And well, BUG_ON isn't very loved, so either it should be dropped or the
-issue escalated in a more civilized manner. I keep it for the sake of
-simplicity during the discussion.
-
-> +
->  static bool rz_mtu3_pwm_is_ch_enabled(struct rz_mtu3_pwm_chip *rz_mtu3_p=
-wm,
->  				      u32 hwpwm)
->  {
-> @@ -322,6 +330,7 @@ static int rz_mtu3_pwm_config(struct pwm_chip *chip, =
-struct pwm_device *pwm,
->  	struct rz_mtu3_pwm_channel *priv;
->  	u64 period_cycles;
->  	u64 duty_cycles;
-> +	bool is_primary;
->  	u8 prescale;
->  	u16 pv, dc;
->  	u8 val;
-> @@ -329,6 +338,7 @@ static int rz_mtu3_pwm_config(struct pwm_chip *chip, =
-struct pwm_device *pwm,
-> =20
->  	priv =3D rz_mtu3_get_channel(rz_mtu3_pwm, pwm->hwpwm);
->  	ch =3D priv - rz_mtu3_pwm->channel_data;
-> +	is_primary =3D priv->map->base_pwm_number =3D=3D pwm->hwpwm;
-> =20
->  	period_cycles =3D mul_u64_u32_div(state->period, rz_mtu3_pwm->rate,
->  					NSEC_PER_SEC);
-> @@ -340,11 +350,15 @@ static int rz_mtu3_pwm_config(struct pwm_chip *chip=
-, struct pwm_device *pwm,
->  	 * different settings. Modify prescalar if other PWM is off or handle
->  	 * it, if current prescale value is less than the one we want to set.
->  	 */
-> -	if (rz_mtu3_pwm->enable_count[ch] > 1) {
-> -		if (rz_mtu3_pwm->prescale[ch] > prescale)
-> -			return -EBUSY;
-
-OK, I understood the issue. If the sibling is already on and the current
-IO is still off, enable_count doesn't account yet for the current
-IO and thus is 1 but still the prescaler must not be changed.
-
-The commit log needs updating to make this clearer.
-
-An alternative would be to check for
-
-	if (rz_mtu3_pwm->enable_count[ch] + (pwm->state.enabled ? 0 : 1) > 1)
-
-but I'm not sure this is better.
-
-> +	if (rz_mtu3_pwm->user_count[ch] > 1) {
-> +		u32 sibling_hwpwm =3D rz_mtu3_sibling_hwpwm(pwm->hwpwm, is_primary);
-
-Maybe add a comment here saying something like:
-
-	Not all channels have a sibling, but if user_count > 1 there is
-	one.
-> =20
-> -		prescale =3D rz_mtu3_pwm->prescale[ch];
-> +		if (rz_mtu3_pwm_is_ch_enabled(rz_mtu3_pwm, sibling_hwpwm)) {
-> +			if (rz_mtu3_pwm->prescale[ch] > prescale)
-> +				return -EBUSY;
-> +
-> +			prescale =3D rz_mtu3_pwm->prescale[ch];
-> +		}
->  	}
-> =20
->  	pv =3D rz_mtu3_pwm_calculate_pv_or_dc(period_cycles, prescale);
-> @@ -371,7 +385,7 @@ static int rz_mtu3_pwm_config(struct pwm_chip *chip, =
-struct pwm_device *pwm,
->  	if (rz_mtu3_pwm->prescale[ch] !=3D prescale && rz_mtu3_pwm->enable_coun=
-t[ch])
->  		rz_mtu3_disable(priv->mtu);
-> =20
-> -	if (priv->map->base_pwm_number =3D=3D pwm->hwpwm) {
-> +	if (is_primary) {
->  		rz_mtu3_8bit_ch_write(priv->mtu, RZ_MTU3_TCR,
->  				      RZ_MTU3_TCR_CCLR_TGRA | val);
->  		rz_mtu3_pwm_write_tgr_registers(priv, RZ_MTU3_TGRA, pv,
-
-All in all I'm unhappy with the hwpwm to channel+IO mapping, this makes
-this all more complicated. This is something that already bugged me when
-this driver was created.
-
-It's out of scope for this series of fixes, but I wonder if we could
-create a mapping from hwpwm to an IO-id like this:
-
-	hwpwm | IO-id
-	------+------
-	   0  |    0	(channel 0, io 0)
-	   1  |    1	(channel 0, io 1)
-	   2  |    2	(channel 1, io 0)
-	   3  |    4	(channel 2, io 0)
-           4  |    6	(channel 3, io 0)
-	   5  |    7	(channel 3, io 1)
-	   6  |    8	(channel 4, io 0)
-	   7  |    9	(channel 4, io 1)
-	   8  |   12	(channel 6, io 0)
-	   9  |   13	(channel 6, io 1)
-	  10  |   14	(channel 7, io 0)
-	  11  |   15	(channel 7, io 1)
-
-then the sibling would be just `io_id ^ 1` and the channel could
-be computed by `io_id >> 1` and the base id for a given io is just
-`io_id & ~1`.
-
-Tracking of an IO being enabled could be done using
-
-	enabled_io & (1 << io_id)
-
-I think this would be a simpler scheme that needs less memory and less
-pointer dereferencing and the check for the sibling being enabled would
-also be a trivial bit operation.
-
-Best regards
-Uwe
-
---sdqtu4j6eja6jess
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmmqnn0ACgkQj4D7WH0S
-/k7Wzwf/e+vzpYwwhFhW3E9JQ2D3JmIcRmgwwXg58CTquzjL9OqqWbAOb8er6weD
-dkefvUn8AT0d6TyuO8mEffQsdQJXl+G8P0NyB34Tyc+5xOKdeu5fPb2anOSPt1hO
-iRH9QlcU191sEnLCjkTIixMAAJWrJ4nmD8izL11D0QwC8QTSyp76pPzhl+b1f3x1
-jvDPNaWJiUmGfSFDdWsplrAmTqjUWgQoBENly8gE2iNzQiYnLeoi4H/y6rkjCrnL
-Q4wXUaue6LDo9WdkyfZF03p5rbja6v+glKggHyhoLzTeFfjFsSCWFLeyseaRGJLn
-WORN1nKDyxhQlwcdFDgyH/wuvsQrLg==
-=WvAD
------END PGP SIGNATURE-----
-
---sdqtu4j6eja6jess--
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
