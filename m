@@ -1,230 +1,242 @@
-Return-Path: <stable+bounces-223370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNVyFFoNq2k/ZgEAu9opvQ
-	(envelope-from <stable+bounces-223370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:22:34 +0100
+	id 4I+xBj0Qq2kRZwEAu9opvQ
+	(envelope-from <stable+bounces-223372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:34:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22332225F5A
-	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:22:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E88E226447
+	for <lists+stable@lfdr.de>; Fri, 06 Mar 2026 18:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61979305D6B6
-	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:15:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5A716309B506
+	for <lists+stable@lfdr.de>; Fri,  6 Mar 2026 17:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B057423A8B;
-	Fri,  6 Mar 2026 17:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748C43A1E96;
+	Fri,  6 Mar 2026 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="r3lYaMHr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="v+ssIZeN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D6733123D;
-	Fri,  6 Mar 2026 17:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9D236CE0E;
+	Fri,  6 Mar 2026 17:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772817255; cv=none; b=J38CLAk1nclXOdsP9SGCyFGoHsewl7932j0pCE+Jy32wrhx32vxYUS9+RUoy+AmDr8ErFAdK3BGSvpiezMLI7kdxOmfddSAbileEszwvcq35F99EPQzSnWwQma1BB2UWWCfYRPYpspikdS4rcat6E93ZXEveAiZwoIGm1r0fpvs=
+	t=1772817646; cv=none; b=cyoksLXRTohLqh1UwooGn4PnNuS/65Pmi3+vip9edMezAIqDE+AmgLN+matvcVBp5aGDOqddxBSEuTyTeeU38A+t+VUAQTnhsrz5Ur5q6aPzX29U4zpmEUt4JZ1MWLqZiNibKZbslwdNjmu6B9sIa8hOA6rhm9NfVWActpnvU6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772817255; c=relaxed/simple;
-	bh=o6VJeQyvdF8sluPuypwR31NZuyAPIZ6njNUnRKK3xck=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TmDNSgzLYEP8T21i18P0AEd8MYP3J8naCHkdD/c48g1sWldgqQpJ2nmZ1B/qHnKqMtRD2FuxJs2Ilw56cn7ZIKAZOOSCUG7GkVOFIvM1ZnljfZgRaR/w8B8oxai9vFUT65mYKsBDF9NlT8LKzMTY8awqNJDts4HgM9z31YDZhzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=r3lYaMHr; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6265xX6P1938926;
-	Fri, 6 Mar 2026 17:14:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yNgeVx
-	WFeQuNfZOKEGXswceUvqNdkuSeuOfc7dV8XuQ=; b=r3lYaMHryUKzL7x2Rs9w88
-	kEPef60F80ZffOh32orTXis6/O9WdCJin13jw/v9Lb33G66KTjKI18f8l20EH5ho
-	Hc5W0HPWotekpbW/J9hb7KI5LYhGhNNW3Q5qrMWSzZ1aGgjXnEmAz9wuZjkzfz1O
-	GgJH3DYK3BWpY7PIb3CJ8CfVrPCxidRhyZjj6xva9+qPHAMG+d63maKwt9BEH+Hx
-	Fbsg+3ZwcnQD4Zi+Ysn/i2NBj4gDQBer/n9RyLaQIbRe/8S4U9rIO7uafXi0LHkL
-	fGmuZchrnolK9jKoAkr9OgkZ/5g1EgfNbo451P5Ck3ZajrgSaTgqXIS1PVLu4jwA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrjhqpw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Mar 2026 17:14:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 626ExE9m008816;
-	Fri, 6 Mar 2026 17:14:08 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmdd1rg32-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Mar 2026 17:14:08 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 626HE5de46268762
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Mar 2026 17:14:05 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E69F2004F;
-	Fri,  6 Mar 2026 17:14:05 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1306E2004E;
-	Fri,  6 Mar 2026 17:14:05 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Mar 2026 17:14:05 +0000 (GMT)
-From: Gerd Bayer <gbayer@linux.ibm.com>
-Date: Fri, 06 Mar 2026 18:13:59 +0100
-Subject: [PATCH v3 2/2] PCI: AtomicOps: Fix logic in enable function
+	s=arc-20240116; t=1772817646; c=relaxed/simple;
+	bh=qPdJe4Z47VypuH7RvMq+bzweb9b+eflRKiFyyrJPYZM=;
+	h=Date:To:From:Subject:Message-Id; b=DBRaaS7WO/EaKMAFRPML1GPlH9APTTGF27Qt9WbSiSSe2tbG7u8e7BQ5RkpUJvu1qi31kIX/Tpsj/YkFgc559II8kPa7u55uqjdnzBRgY1OQZTKBUORQ5bhZ94Kr9/Mug/CHAUrNuE0fSK27QFD58nieOuUwbWhvIpvb2/vtK4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=v+ssIZeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B195BC4CEF7;
+	Fri,  6 Mar 2026 17:20:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772817645;
+	bh=qPdJe4Z47VypuH7RvMq+bzweb9b+eflRKiFyyrJPYZM=;
+	h=Date:To:From:Subject:From;
+	b=v+ssIZeNMoI3Ei826nxlS6X+GWXbuWHGcgvaKvD+COt4AaKgGwfFMHLOdASt+FNtH
+	 +9jDpjldhU4fkVwPzvlHZ23OU7a5bebNQnmchfMcn+w6YidJJtVVcVuZ7I+OsXX91t
+	 pqjPU2NMOv4LknRzpKnuPkKQ3o9ocF5U1ZaKA5E0=
+Date: Fri, 06 Mar 2026 09:20:45 -0800
+To: mm-commits@vger.kernel.org,xemul@parallels.com,stable@vger.kernel.org,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,ljs@kernel.org,JonasZhou@zhaoxin.com,hillf.zj@alibaba-inc.com,dgilbert@redhat.com,david@redhat.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260306172045.B195BC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-fix_pciatops-v3-2-99d12bcafb19@linux.ibm.com>
-References: <20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com>
-In-Reply-To: <20260306-fix_pciatops-v3-0-99d12bcafb19@linux.ibm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Jay Cornwall <Jay.Cornwall@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        Gerd Bayer <gbayer@linux.ibm.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69ab0b62 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=ud980_RLCRqylQVSWKAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA2MDE2MiBTYWx0ZWRfX2oKgBMBfkkba
- 7OetCSS45o7LKDtHWVw8/o9wNtN5TyurORZzR9G4uZ1TVAE75PNudQJMTde8oA7F1e8sTLPgJ59
- hVjdwh67zTEi0PpH+h/AaEgbt7xorqgJ6CpTC/3vq1SwguOB4ns230/x+fp3L+3RTt+UU8nZ+c5
- aLfRUjptJ65Tap5Pw1C0oapTw3+JY9udZykS378Tk7IL8DBfhvOZHiMlnWXzJLhd6swLyZcTvwl
- 9KTxLmilDvL0P3drgTEcbCNJIy4v3XZt73iHnKtusMMP91m36+yI7QEKAf0kSWUFIog/9xSdk+Q
- rtAcvoJykfi9Xwq1TbL+JUNcdM+6zcjyuFfe5W2cOiJqE6wdA2FrRafWShI+DjsQ3BUKoRIYghx
- r6uOVbu/WwI3UtlnkfXgG8+KLwzOqpjHVSC/rn1XZtXiaE4Y6kHqBMcqtxzaJl0d/nUn0GWqy+l
- stplczivw5lhcoT/vbA==
-X-Proofpoint-GUID: zn42x3jkt0ZS9LoIc48rpJ9nhUIXcNWk
-X-Proofpoint-ORIG-GUID: bRWP3uFGBbxRaVPYW9XwslJ_Ru1E7una
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-06_05,2026-03-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0 adultscore=0
- bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603060162
-X-Rspamd-Queue-Id: 22332225F5A
+X-Rspamd-Queue-Id: 1E88E226447
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.955];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gbayer@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223370-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+]
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,parallels.com,kernel.org,redhat.com,suse.de,linux.dev,zhaoxin.com,alibaba-inc.com,gmail.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-223372-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.973];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-Move the check for root port requirements past the loop within
-pci_enable_atomic_ops_to_root() that checks on potential switch
-(up- and downstream) ports.
 
-Inside the loop traversing the PCI tree upwards, prepend the switch case
-to validate the routing capability on any port with a fallthrough-case
-that does the additional check for Atomic Ops not being blocked on
-upstream ports.
+The patch titled
+     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
-Do not enable Atomic Op Requests if nothing can be learned about how the
-device is attached - e.g. if it is on an "isolated" bus, as in s390.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
-Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Fri, 6 Mar 2026 21:59:26 +0800
+
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units (as calculated by
+vma_hugecache_offset()).  This mismatch means that different addresses
+within the same huge page can produce different hash values, leading to
+the use of different mutexes for the same huge page.  This can cause races
+between faulting threads, which can corrupt the reservation map and
+trigger the BUG_ON in resv_map_release().
+
+Fix this by replacing linear_page_index() with vma_hugecache_offset() and
+applying huge_page_mask() to align the address properly.  To make
+vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
+include/linux/hugetlb.h as a static inline function.
+
+Link: https://lkml.kernel.org/r/tencent_F70AFD1D8067E3D2409764BC1A199DA6AF0A@qq.com
+Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: JonasZhou <JonasZhou@zhaoxin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
+Cc: Pavel Emelyanov <xemul@parallels.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/pci/pci.c | 30 ++++++++++++++----------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index cc8abe6b1d07661488895876dbbcf8aaeadf4a17..23db6ad5f310ed009a9b2ca4933c7498e0d22b85 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3677,7 +3677,7 @@ void pci_acs_init(struct pci_dev *dev)
- int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ include/linux/hugetlb.h |   17 +++++++++++++++++
+ mm/hugetlb.c            |   11 -----------
+ mm/userfaultfd.c        |    5 ++++-
+ 3 files changed, 21 insertions(+), 12 deletions(-)
+
+--- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/include/linux/hugetlb.h
+@@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(s
+ 	return h->order + PAGE_SHIFT;
+ }
+ 
++/*
++ * Convert the address within this vma to the page offset within
++ * the mapping, huge page units here.
++ */
++static inline pgoff_t vma_hugecache_offset(struct hstate *h,
++		struct vm_area_struct *vma, unsigned long address)
++{
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
++
+ static inline bool order_is_gigantic(unsigned int order)
  {
- 	struct pci_bus *bus = dev->bus;
--	struct pci_dev *bridge;
-+	struct pci_dev *bridge = NULL;
- 	u32 cap, ctl2;
+ 	return order > MAX_PAGE_ORDER;
+@@ -1197,6 +1208,12 @@ static inline unsigned int huge_page_shi
+ 	return PAGE_SHIFT;
+ }
+ 
++static inline pgoff_t vma_hugecache_offset(struct hstate *h,
++		struct vm_area_struct *vma, unsigned long address)
++{
++	return linear_page_index(vma, address);
++}
++
+ static inline bool hstate_is_gigantic(struct hstate *h)
+ {
+ 	return false;
+--- a/mm/hugetlb.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/mm/hugetlb.c
+@@ -1006,17 +1006,6 @@ static long region_count(struct resv_map
+ 	return chg;
+ }
+ 
+-/*
+- * Convert the address within this vma to the page offset within
+- * the mapping, huge page units here.
+- */
+-static pgoff_t vma_hugecache_offset(struct hstate *h,
+-			struct vm_area_struct *vma, unsigned long address)
+-{
+-	return ((address - vma->vm_start) >> huge_page_shift(h)) +
+-			(vma->vm_pgoff >> huge_page_order(h));
+-}
+-
+ /**
+  * vma_kernel_pagesize - Page size granularity for this VMA.
+  * @vma: The user mapping.
+--- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/mm/userfaultfd.c
+@@ -507,6 +507,7 @@ static __always_inline ssize_t mfill_ato
+ 	pgoff_t idx;
+ 	u32 hash;
+ 	struct address_space *mapping;
++	struct hstate *h;
  
  	/*
-@@ -3715,29 +3715,27 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
- 		switch (pci_pcie_type(bridge)) {
- 		/* Ensure switch ports support AtomicOp routing */
- 		case PCI_EXP_TYPE_UPSTREAM:
--		case PCI_EXP_TYPE_DOWNSTREAM:
--			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
--				return -EINVAL;
--			break;
--
--		/* Ensure root port supports all the sizes we care about */
--		case PCI_EXP_TYPE_ROOT_PORT:
--			if ((cap & cap_mask) != cap_mask)
--				return -EINVAL;
--			break;
--		}
--
--		/* Ensure upstream ports don't block AtomicOps on egress */
--		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-+			/* Upstream ports must not block AtomicOps on egress */
- 			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
- 						   &ctl2);
- 			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
- 				return -EINVAL;
-+			fallthrough;
-+		/* All switch ports need to route AtomicOps */
-+		case PCI_EXP_TYPE_DOWNSTREAM:
-+			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-+				return -EINVAL;
-+			break;
- 		}
--
- 		bus = bus->parent;
+ 	 * There is no default zero huge page for all huge page sizes as
+@@ -564,6 +565,8 @@ retry:
+ 			goto out_unlock;
  	}
  
-+	/* Finally, last bridge must be root port and support requested sizes */
-+	if ((!bridge) ||
-+	    (pci_pcie_type(bridge) != PCI_EXP_TYPE_ROOT_PORT) ||
-+	    ((cap & cap_mask) != cap_mask))
-+		return -EINVAL;
++	h = hstate_vma(dst_vma);
 +
- 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
- 				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
- 	return 0;
+ 	while (src_addr < src_start + len) {
+ 		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+ 
+@@ -573,7 +576,7 @@ retry:
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = vma_hugecache_offset(h, dst_vma, dst_addr & huge_page_mask(h));
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+_
 
--- 
-2.51.0
+Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
+
+mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
 
