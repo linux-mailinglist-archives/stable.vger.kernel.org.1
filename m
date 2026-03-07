@@ -1,169 +1,122 @@
-Return-Path: <stable+bounces-223410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CCFOembq2kJewEAu9opvQ
-	(envelope-from <stable+bounces-223410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:30:49 +0100
+	id WLCUOle3q2n7fwEAu9opvQ
+	(envelope-from <stable+bounces-223411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 06:27:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902AE229ECC
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:30:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE2F22A38F
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 06:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 690A43023680
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:30:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C1A630238CC
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 05:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291EB3002B9;
-	Sat,  7 Mar 2026 03:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CCD346AC6;
+	Sat,  7 Mar 2026 05:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z/244M4C"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="DCweGE8n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF91DF74F
-	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 03:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772854246; cv=pass; b=BtpP5dYIyJaRQspjtVzYytFaLLIa64Mbg41vfAxfATksRgRX4ctF68e3Xeoko4nkyVJINierUKdoG5CisafX5/W6YlHljuEQpAIpuN2jzC3poIFlzzb8ozZjRGGmpQS5nRPkPPnpgJUbmYIuFLEqvqLLYjX4SOzQEcsWjdzJXNU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772854246; c=relaxed/simple;
-	bh=WJp+EUY2BYaw4/mpGh2b4Iem8BljcSrMISuM2lan3Ic=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KNRIyS7P8NES3nCLXrVvOrMtEULzAmPDrAi2FsVX0TV1nZagt4quOOc8zbPeYpOD3LLOT2744bvHJVt8VtORhVqZXmxXlAAaVoKOXQVfdME8gds+vieMSNA+cGvd8K0qnF5NKWQYJq1SpzCRroIpUPWOGQ5RXdGoOZ74UZKWkRk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z/244M4C; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-503347dea84so1903841cf.3
-        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 19:30:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772854245; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cs0dhvjcst6s60jk7uc9F9wMxcwRxWomyLsptbSv11qC6vJNPxSsb9wpsYt/15hn6b
-         ayM5R3h0CUOPuOIH8RRLkVPnrsuoBo+wkCaH2vh6lVs2LPjc6omvf/EpR9g1RmZ1YAbH
-         RL4j8DRwXWy8nLUVN7JMbc355Cx8FjUy/muUSb3lZB/Tx1E72mhWtuXdZJHFUKxvDup6
-         2IHymajSxdpv4MH2LoyaFMltosO6GgpGDiPQS7Vs/99/Mizz+/WYVcHF75+fHVJ/g+oq
-         bBmdhKvopMECe/RVMPgBtjgYw6+ukf3i0sRsTnucU4GdgXu5Pfb2/b5OiiIDwY2FiJvP
-         hhEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WJp+EUY2BYaw4/mpGh2b4Iem8BljcSrMISuM2lan3Ic=;
-        fh=tII98Rnrg+93UjyXkg8RYXPcETY9xDfgUnUdwM49mbk=;
-        b=jjXW3ZgmsrSzqq7Y3NV4bUpWYBoVZizXV609PrUxQv02PSdrCzW7OSPanNNKq1DM6r
-         dbxLW3n5MCjYTPG9uVXertWP7q9Tqr+sJFw1hQFNdpNHe/25Hj9r7sAwCrKvkXisaePR
-         kaj/IqTXG1DYgeeezA68eRvjL9YdWItXLxDXlNQxZfK6dAj14kX9/uVMMsk2IJRoThGc
-         X8Chhg3i4nnaa95B4/kFQsJ+dIIH0tfdR4t4BJCdd6E+Pi5grAW/56WuGOmI7cOd1GLe
-         aBJE/squghVu5EvCAs0s5KtbJ+fVSHw+JnhMJkDvkB6/wgR0MLQcoOed+8he0We3ADay
-         HuGQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772854245; x=1773459045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WJp+EUY2BYaw4/mpGh2b4Iem8BljcSrMISuM2lan3Ic=;
-        b=z/244M4Cv+rUbQwwujE3b/ZK8z5ovrq9jGaxMbZoZ+DZ7mk/F0cyC55wToOJOHkoYO
-         g16p7dcgCekHtZT2ml/c6oQsyKXvIydn0wmPA3hMzxjbDMgkLoWXri+QLS/B+i99sbHV
-         EfhLwua3Qo0m+hkasEGAx55F/s9XAYxYbUPC4T2OiyrXAZb63AVy0CHOBJO9CxEwAY6n
-         ljFyJ7FThs9ia9TM50xGyXcM/wqZM+46S6NviYmi0OJ0sZVO24rJAZX+k9GfKUjuEstk
-         3LhoWYKf8LgQs5RC4C0X03vIX9nGj/n8OibN2nhlP/fzN4z5bUC9vs5HlJjmmyxTT6q7
-         ZwAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772854245; x=1773459045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WJp+EUY2BYaw4/mpGh2b4Iem8BljcSrMISuM2lan3Ic=;
-        b=EVjovIiPtXvd1SaU4IRrS2+N1iIQhANb86pxOZmGCh3VFa0Wwnan3S4mK9KXGpk7ya
-         JgIpqwv+NPTkSdpJFy5tioQKCR31LhyKaeqqgPaHzsJ6lynFZS1t0/eg9TXIAZpMN55g
-         elT6L95nJBsHubro8aZl/5tmYY2cw/VVEkCIgrFbkZ2Fjmct/hWAavQtkaTnXX6NGYks
-         oaS2exPbqSh2+X3na4blJ8xPlrV5jPAuOg2Oz5aigeSPKC0U4ssJpgLVSC2USlI90Sho
-         XNGWmwJ1yu9+6QfUf8IW5dNMWQd3TSRO0c2BnwFqaKoza2XasphDmFBNOqN5h/ZI1M67
-         cAkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVumbX0MIIalGyYnaidNwI0zztVLcpMoNrHw5L16fIgijwwbEQLiRRGKPOkqLx+nvcNzTmrMwo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqC8ijtOsYDTqYZaFEHYYOESv7STq/Nxnn90jSgD8RGOB8PtyA
-	vLl3515LElIZXIZ2WBPRoSdU4Tjtji2d9466yGIsHGvoGUtlueybpr2rLGg6FkMA1av2zDxf3rg
-	yteLS4ET7gSANGUbglEDDOVgERwd5WZmJw/d2lPW9
-X-Gm-Gg: ATEYQzyQZEiqHlBz1CZ6obePqGen/J5owuM9e3laIIaA7r5ZxptHG43MIwHk5dInURX
-	2ILFRyV5L6pfSn33tvAikjW6JMEnvEGkeQUfZHcuW/Oi8GwycTn7DJVx61FKdwnJmBqDQuEdqS5
-	x8el4ZH0DMKFkpzyjtI4U7SeKm/BBgo4qMnbKwh9d0YLaGNegfK+XftMy0Wv0m84ifA9T/mIDfd
-	dVHHFgwi1MGrYBVkabxTrNaSncAY7qfEbc/W2pxKFQBStoXFaJpvvBgsqNgq4uk4qsZOqvMRP4/
-	+WuFYIhZ
-X-Received: by 2002:ac8:5f90:0:b0:4f3:4cd3:164c with SMTP id
- d75a77b69052e-508f4916bb2mr60826821cf.21.1772854244481; Fri, 06 Mar 2026
- 19:30:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34676217733;
+	Sat,  7 Mar 2026 05:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772861265; cv=none; b=rLw9hZJrpgIwjPOxqzGipmDlfbsQK9Jj/3qHu7NUY8YS9HshXl4eqJ5+M0TRVa+SHexdyWs5kNBSxKJ+teCb03ju0kgwFc49abpEXQJ+dquFxdhuBaW5N3OvEe0Nh/Lpjea0Civ4h4N6rUAqtymsuy5QAhjigT6ClXQpKY57i/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772861265; c=relaxed/simple;
+	bh=uKz3EsiwEVc3021aQ/2iKQeWyA28noKv6A+7acQo8Es=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QfGrAGctW2h7czClA3CT1ZU3I7UOaLVH3MRzKgwr2i22MniL7o0da8QlgPu5GwIXL1tCyGmLKhZwDPJTVQAAasmYDN+Uf0ggGNbT1HauikIZbVwtUGeyInqkSpLPNKmXUH7FTZJzq6YZcsSD1OFtN3DQ8NpYqCKpxo5pn4sAfVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=DCweGE8n; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=Ef99pQ6BhbQYKEJKAhkUF+17RAs4E6wJGMJKDzOyINg=; 
+	b=DCweGE8ntf+8aj2qaJolSLw/3ZnU9TpvTh4jnoC8S/bZvGIDJ+UdBfQ+zCNmMRk0TbEIoUMr79D
+	XAj1arCr1AmKeANaHjIg2wsVKEBtx1oSUvNPwyyH0R1keS3WslUo3hE9BGcve4u9WrOYNEuaFf+J5
+	DSCyra9B3XJwRz2fWU137R2/5ifeN4BVO8ZXQT8ZrqARSUT5InM8Hy3egiujMeziX7FEEdlYvek6V
+	gbzlw5hf7e21SRc9ggtQ03WSLpMieX91fTseqBMi2StPBV8yncX7es5vtlVDwIN719DV0RxDqOn08
+	hQbMYeHji/VnJ5Yxd3BNi2FrDaS1c8F0cstA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vykC8-00CJS0-06;
+	Sat, 07 Mar 2026 13:27:21 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 07 Mar 2026 14:27:20 +0900
+Date: Sat, 7 Mar 2026 14:27:20 +0900
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Lothar Rubusch <l.rubusch@gmail.com>, stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: atmel-sha204a - Fix uninitialized data access on
+ OTP read error
+Message-ID: <aau3OCCHGZFARas8@gondor.apana.org.au>
+References: <20260220133135.1122081-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260306233821.196789-1-mehulrao@gmail.com>
-In-Reply-To: <20260306233821.196789-1-mehulrao@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 7 Mar 2026 04:30:33 +0100
-X-Gm-Features: AaiRm52IxOwyQRAQ3DbMqKQin6IPUJE3w17Kvc7B_jjoZjTMnEHedgCvEMqhs0I
-Message-ID: <CANn89iK6YAhfoEX2=dvJTrp4-JMjiDSmE0ELOCAt4j-m+-KVMQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: nexthop: fix percpu use-after-free in remove_nh_grp_entry
-To: Mehul Rao <mehulrao@gmail.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, petrm@nvidia.com, idosch@nvidia.com, 
-	netdev@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 902AE229ECC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260220133135.1122081-2-thorsten.blum@linux.dev>
+X-Rspamd-Queue-Id: 8CE2F22A38F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223410-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[davemloft.net,microchip.com,bootlin.com,tuxon.dev,gmail.com,vger.kernel.org,lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
+	TAGGED_FROM(0.00)[bounces-223411-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.933];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gondor.apana.org.au:dkim,gondor.apana.org.au:mid,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Sat, Mar 7, 2026 at 12:39=E2=80=AFAM Mehul Rao <mehulrao@gmail.com> wrot=
-e:
->
-> When removing a nexthop from a group, remove_nh_grp_entry() publishes
-> the new group via rcu_assign_pointer() then immediately frees the
-> removed entry's percpu stats with free_percpu(). However, the
-> synchronize_net() grace period in the caller remove_nexthop_from_groups()
-> runs after the free. RCU readers that entered before the publish still
-> see the old group and can dereference the freed stats via
-> nh_grp_entry_stats_inc() -> get_cpu_ptr(nhge->stats), causing a
-> use-after-free on percpu memory.
->
-> Fix by deferring the free_percpu() until after synchronize_net() in the
-> caller. Removed entries are chained via nh_list onto a local deferred
-> free list. After the grace period completes and all RCU readers have
-> finished, the percpu stats are safely freed.
->
-> Fixes: f4676ea74b85 ("net: nexthop: Add nexthop group entry stats")
+On Fri, Feb 20, 2026 at 02:31:36PM +0100, Thorsten Blum wrote:
+> Return early if atmel_i2c_send_receive() fails to avoid checking
+> potentially uninitialized data in 'cmd.data'.
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+> Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  drivers/crypto/atmel-sha204a.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-SGTM, thanks !
-
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
