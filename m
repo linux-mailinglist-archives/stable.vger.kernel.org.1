@@ -1,64 +1,94 @@
-Return-Path: <stable+bounces-223406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id lswsKryUq2k5egEAu9opvQ
-	(envelope-from <stable+bounces-223406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:00:12 +0100
+	id iI37NL2Vq2k5egEAu9opvQ
+	(envelope-from <stable+bounces-223407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:04:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548DE229B55
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:00:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B7D229B9B
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55405303CD35
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:00:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8A2BD301DD1F
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FCF2E11BC;
-	Sat,  7 Mar 2026 03:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34232FFDEA;
+	Sat,  7 Mar 2026 03:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="thDzOELM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H77Upqk2"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473068287E;
-	Sat,  7 Mar 2026 02:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24331244694
+	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 03:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772852405; cv=none; b=OkGhWr+h24mPBfTNBtO2SHE6GSpBCjbEPPML0WV8OjTw28rnboWLCEycilHDSDfNtoqZzRLRV/8VoiBVWf/RsjEabbRoxRXaf1uj2I9q2T6L79983Hba1afEbnYCYS5REgTOlX/tQBvisr+bffsSZ405SAVunn8fl7VLqTKop8c=
+	t=1772852659; cv=none; b=IVXOyiV+OrhPw/ijz/idysj1yll6OZEbIyyWKXVWm2TOHHpj4HGKrfOPiY0gWqE0XT6PaOG4yF+sXU0pqW4aFXpu+1N5ILOhg+1GTsI0kECA7QbiKap53r6WJ5AA6TatMH5NV8KCZ/awlu+eoydI3Zvlc9lO4Sj9wgtn20ogacs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772852405; c=relaxed/simple;
-	bh=fSeQF9QFhwUlzZ5CwrkNdIyaSa/TQ+ErlSkbiAiE+P8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i4xEIJatmBIPWvqXH5IwF0HsgaU5nZZ+dSxe5Mtv3uEPZq02IDMdpr9Id32EE4CG8DyGTZJgo0SIY7xI/AJoNQmL0JbQF1UMa98bpT7lbsF12baywxnbDwX1j86WQ3TPpqtdxJMRHKPR94LBB9xcvambaAdp6aK3xylexAqdeEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=thDzOELM; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1772852659; c=relaxed/simple;
+	bh=soc1nQwzOytP0zUgbCWxwApYixb4ALgKCcM8lxOFp2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nCiLoTywHkZG91bdV/2n2phhkf1RUC132V4QxYHUNlPCqMgMUhttldcQemGz2hftwe54S00GPxiZSywUCQE8BQfj4Y4uWrBH1Aa7X7vYcZ6LCAhD1bzQu3pCSgQSOKldwiFPbEbYKVbLVo0B6bTpCEk1o6UOjxRULJFEEk4HV14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H77Upqk2; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79800183233so137395977b3.1
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 19:04:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=thDzOELMQz89qgKQyfw3CkqW7bRk7hEWgjeu6xQZQW+5KalsR5yh/qSoSY7Itz601U6Q9zvxow20w
-	 NstnLCsQqzYcS8g2JuEhVydhdiB8b1La3ZeCGYg9xWIJ0ef7wVmrReGglbl2Gnh7XQdWXvYmN1yW+5
-	 oV6nRSFM5Brj16Jo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from China-139-kernel-team (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef569ab949c39f-023ce;
-	Sat, 07 Mar 2026 10:59:49 +0800 (CST)
-X-RM-TRANSID:2ef569ab949c39f-023ce
-From: Bin Lan <lanbincn@139.com>
-To: gregkh@linuxfoundation.org,
+        d=gmail.com; s=20230601; t=1772852656; x=1773457456; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TW4paroosegqJh0pxZU5dIW8jzge/McujMzL3aZu1UI=;
+        b=H77Upqk2cOqNk2kkF7tDWt+96za+yRB0u44K9oEBoMiH5tl/OHFHKCROrkGcJiyd+k
+         rNAd9IM+xtmLv4GFqNtBndgqbKIYelm4oGQBuFBAEzxGRRG8D8rQsFW1NnTbP/ZpGYYj
+         UQyzkrSVbl7Kk1XjjbVBUxsErnvePATrsb+j4Ii27bOlRTfG4pat89VitspOgpkjpapj
+         dYuM8h8jhimxjgzlGqsnOCeeKCHOGD03+QWB6z0dqxbKyts5hfltgfCfvubZTjnLbZrQ
+         xgeJcUT7YyedKiV1jZ9vpRTZixs+df1qh4od2k8BiGlRH2BNl83XUvoeZrnJEo1I9nE1
+         J1Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772852656; x=1773457456;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TW4paroosegqJh0pxZU5dIW8jzge/McujMzL3aZu1UI=;
+        b=j801LIzzFc3BfPsC7RrWR75b1euDjd3F+a2siYaifaKHDh2fcINQbumXhYGBDvpI3c
+         p5sD1TTa2wOQTIoYHNxZfSkYYeKdXf/uxlvP2nlxpycz9xlv1p8hsRupqhHakjMZdn2k
+         Gh8swXhjKKGMhXZpkPAcCHqoCHjF4JuzmTst7kAmDPMiVRX/LHRd4XtMSuaGPMTrU6x+
+         leC5BNtqfvTDnqP4B2dqkf7/PWeBNQ2uI5KYWhBMKDjHyL516ErxeqTJ7Nl35/Nb8w9M
+         +FlDa2D8srX41fhKyFypzZGFy6NV/kLsRf5o8HdUjRRO1XvK6q55WJ4zVXiwLKctDyji
+         AbUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVUcvdFz8M+LLwN7sGtYMHF0jiCQdDz3EbmlpbYD9HVsCUl2+QNLDvc8eon64Dq7SJ0yP1dQc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSCt7Gzlwgg/Uc7WI6DIQSpfPmFNV4ImVbiAXyNK985PgL1Ywr
+	7JucRWUcbz2bNKZYjrhUF08ChBnTXVE5AvVINAOAQyF64h1IWP6zMW2B
+X-Gm-Gg: ATEYQzwGfUug/5ydeB9zNeud7g6GOSWTRIFNQ85Vnz5GiA89IqCx6f1ZteNS4Pgqo7P
+	om5BLMmhtP1JxqK6FySWHH0jJhTpSk9HV83HAvet5se8QRd7pCqtKL2hIr11Bv/4r77gWE4/DdD
+	hf/qUwPYSH+ya2rSDPuFwDyFefMB6MNQnDOVw8CMHUJgdTU8gYzqa0BRMKMIEPRaE/jiGKFpUaW
+	I+osEjxaGDPjbLkBZQKaBbV3EHAYK3/de+w20S5loKQLOwz2XCllQ/Q34QjaNku67RztUAa5yoa
+	m40Bect+iBO7F3l6/Go5hrNs4GPsWxJKLhHvbcRZOpGn8LzJA4LjkWJFwlHJ7AQ8NIY8KeYD9HR
+	VX7pnyYvk6GXnC/iM7GFCxdhN5x24wFrtyev9XvHTjJ2+D+/wzR4VjFHpPsMoNX44mfxKeHW2sq
+	aeNrnHq2A37rBWczA6sqXK5FgjxkzlNnAo9ABZfD0aWssebnmko78XBSZsUUnypzGCxquaXZgzQ
+	jGXC21zBd0NE0qVOkET0y1o
+X-Received: by 2002:a05:690c:c50f:b0:796:4486:b7d0 with SMTP id 00721157ae682-798dd6a9c02mr41536297b3.4.1772852656158;
+        Fri, 06 Mar 2026 19:04:16 -0800 (PST)
+Received: from tux ([2601:7c0:c37c:4c00::5585])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-798dee66c5asm15100607b3.36.2026.03.06.19.04.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 19:04:15 -0800 (PST)
+From: Ethan Tidmore <ethantidmore06@gmail.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org
+Cc: Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
 	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	jaegeuk@kernel.org,
-	chao@kernel.org,
-	Ye Bin <yebin10@huawei.com>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.15.y] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
-Date: Sat,  7 Mar 2026 10:59:39 +0800
-Message-Id: <20260307025939.1170999-1-lanbincn@139.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v2] media: intel/ipu6: fix error pointer dereference
+Date: Fri,  6 Mar 2026 21:03:55 -0600
+Message-ID: <20260307030355.26840-1-ethantidmore06@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,128 +96,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 548DE229B55
+X-Rspamd-Queue-Id: D6B7D229B9B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223406-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,huawei.com,139.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
+	FREEMAIL_CC(0.00)[intel.com,kernel.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223407-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	NEURAL_HAM(-0.00)[-0.049];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.982];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,139.com:mid,139.com:email]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Ye Bin <yebin10@huawei.com>
+In a error path isp->psys is confirmed to be an error pointer not NULL
+so this condition is true and the error pointer is dereferenced. So
+isp-psys should be set to NULL beforegoing to out_ipu6_bus_del_devices.
 
-[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
+Detected by Smatch:
+drivers/media/pci/intel/ipu6/ipu6.c:690 ipu6_pci_probe() error:
+'isp->psys' dereferencing possible ERR_PTR()
 
-There's issue as follows when concurrently installing the f2fs.ko
-module and mounting the f2fs file system:
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
-Call Trace:
- <TASK>
- f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
- __get_meta_page+0x1d4/0x920 [f2fs]
- get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
- validate_checkpoint+0xac/0x290 [f2fs]
- f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
- f2fs_fill_super+0x1007/0x39b0 [f2fs]
- mount_bdev+0x183/0x250
- legacy_get_tree+0xf4/0x1e0
- vfs_get_tree+0x88/0x340
- do_new_mount+0x283/0x5e0
- path_mount+0x2b2/0x15b0
- __x64_sys_mount+0x1fe/0x270
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Above issue happens as the biset of the f2fs file system is not
-initialized before register "f2fs_fs_type".
-To address above issue just register "f2fs_fs_type" at the last in
-init_f2fs_fs(). Ensure that all f2fs file system resources are
-initialized.
-
-Fixes: f543805fcd60 ("f2fs: introduce private bioset")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Minor context conflict resolved. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Fixes: 25fedc021985a ("media: intel/ipu6: add Intel IPU6 PCI device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
 ---
- fs/f2fs/super.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+v2:
+- Add stable tag.
+- Add check for null instead of setting isp->psys to NULL.
+- Add Smatch warning.
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 6f6368400ee4..08fe8fa95924 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4634,9 +4634,6 @@ static int __init init_f2fs_fs(void)
- 	err = register_shrinker(&f2fs_shrinker_info);
- 	if (err)
- 		goto free_sysfs;
--	err = register_filesystem(&f2fs_fs_type);
--	if (err)
--		goto free_shrinker;
- 	f2fs_create_root_stats();
- 	err = f2fs_init_post_read_processing();
- 	if (err)
-@@ -4660,6 +4657,7 @@ static int __init init_f2fs_fs(void)
- 	if (err)
- 		goto free_compress_cache;
- 	err = f2fs_init_xattr_cache();
-+	err = register_filesystem(&f2fs_fs_type);
- 	if (err)
- 		goto free_casefold_cache;
- 	return 0;
-@@ -4679,8 +4677,6 @@ static int __init init_f2fs_fs(void)
- 	f2fs_destroy_post_read_processing();
- free_root_stats:
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
--free_shrinker:
- 	unregister_shrinker(&f2fs_shrinker_info);
- free_sysfs:
- 	f2fs_exit_sysfs();
-@@ -4704,6 +4700,7 @@ static int __init init_f2fs_fs(void)
- 
- static void __exit exit_f2fs_fs(void)
- {
-+	unregister_filesystem(&f2fs_fs_type);
- 	f2fs_destroy_xattr_cache();
- 	f2fs_destroy_casefold_cache();
- 	f2fs_destroy_compress_cache();
-@@ -4713,7 +4710,6 @@ static void __exit exit_f2fs_fs(void)
- 	f2fs_destroy_iostat_processing();
- 	f2fs_destroy_post_read_processing();
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
- 	unregister_shrinker(&f2fs_shrinker_info);
- 	f2fs_exit_sysfs();
- 	f2fs_destroy_garbage_collection_cache();
+ drivers/media/pci/intel/ipu6/ipu6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu6.c b/drivers/media/pci/intel/ipu6/ipu6.c
+index 34f67f4f1bb5..d033d4618169 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6.c
++++ b/drivers/media/pci/intel/ipu6/ipu6.c
+@@ -686,7 +686,7 @@ static int ipu6_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_ipu6_rpm_put:
+ 	pm_runtime_put_sync(&isp->psys->auxdev.dev);
+ out_ipu6_bus_del_devices:
+-	if (isp->psys) {
++	if (!IS_ERR_OR_NULL(isp->psys)) {
+ 		ipu6_cpd_free_pkg_dir(isp->psys);
+ 		ipu6_buttress_unmap_fw_image(isp->psys, &isp->psys->fw_sgt);
+ 	}
 -- 
-2.43.0
-
+2.53.0
 
 
