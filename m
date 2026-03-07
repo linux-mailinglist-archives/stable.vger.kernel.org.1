@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-223417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPRMFiX9q2mgiwEAu9opvQ
-	(envelope-from <stable+bounces-223417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 11:25:41 +0100
+	id iNxFI/L8q2mfiwEAu9opvQ
+	(envelope-from <stable+bounces-223416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 11:24:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA1B22B03A
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 11:25:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE2922B004
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 11:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FFB930221F2
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 10:24:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE9823013184
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 10:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41203296BDA;
-	Sat,  7 Mar 2026 10:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028FE36EA89;
+	Sat,  7 Mar 2026 10:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uCpBsKwl"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LqaSpoCj"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB362F25E4
-	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 10:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAAC330B15
+	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 10:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772879092; cv=none; b=jxn/8GXZa8nHdSKdfj/Ys/tPFW2NLq38IABjZs6y5waSuYVR/LBg6vD6i4XK/cKQp/us/4C4RfD05DmPbZw7klGJey6m70iP/BrIEeX2/gotVlUI74kqcXv35H4q/eAgGHLIRcLuaotW32BAmlwVVvzUT0V3ntgxU2G6CEyHp8Q=
+	t=1772879083; cv=none; b=s1bbbuW6m6a/sQ8fgHdEFbxSf5CTaW9WhDyesYE8wnF+Rs7bmx+Po9Rjj9YHqceHzrWCelyqCS0/eH83aZ8tploMZ02G25SMJ891kBiPh51qMNrwN8kZJil5/ddBO6yqNJtu1YJgBNQPWkaJdNZdnJoCCqXzySgJsjlSjZ4uLAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772879092; c=relaxed/simple;
-	bh=aSt391DxZe1C6jPD3lkNb/qzG9YGtaVJ33WAxoNfXjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WwY/AcoUiv0/OFuy2DE+fiiimVbBFYqClt7Hk2udI2jdtTFNHSgvvDyGgFnRc1tePsRCDsM2IpWB9f3iz+VrAvYzTCBXquJSXxpLG7z191R7cLjMJxAuGxUeYQxSlot87vFPha9EdTNoohGxXO/xLOl3ujp44zkY+BnpixTL6iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uCpBsKwl; arc=none smtp.client-ip=91.218.175.171
+	s=arc-20240116; t=1772879083; c=relaxed/simple;
+	bh=utRV2+6I3LgLduDu/KJXDgOGejeY0SEDZR5byLzsKp0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J1Aj8HStlZOy7HmhCCF32psBzEzsAgpsEIvBdyYv/bMHTsdc9iZBzg4/xrmjNFxqBJ7VFktyBeYD7RqGaTjm/jXXyaRW7FH34K4619R0FFUyM9HeJVjGelTu7twXSQCl/rgh8DvZPjkyaryojT/0ddQ0+xG92L/IoJpKOxLm8mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LqaSpoCj; arc=none smtp.client-ip=91.218.175.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772879078;
+	t=1772879080;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pu6e1byH9v32PoeInp9i7sLdqeOsmCpfac+V1Maiv94=;
-	b=uCpBsKwltM1OKZd19nJig/4JB3vgA71mMKjXxrw0hTgK3UFmwE73ZNx+I1LZEOKUSTASjL
-	aMpg7BShsmvIV/W4B/qAapeXE47ehT2Iq4kSQ7NxGfakkbbqSAsTIXeWrEG6vOOHn5L1bu
-	vcyBXqrNxaOMx1XVxGXdc+O0ZTssbfA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6USrcSxUYKm6Dm6G6yk0PRsoOGZoklo1MPA1uNlpK+g=;
+	b=LqaSpoCj7/KpcVmELXnVxPzG4KLOCydtk/5ipg11dq58sSF1e0ZGIL4jVJmG+EeBgAbq9o
+	ntncLS3tbS/jBkN1mGKjGBUSJS0XlAQSNCLrLMiD2OUyuJd0fEjtapHBLE20gjS7V2ut6D
+	0qodMdTqrr1n7lvsHMM/ZuvskRRKZmw=
 From: Thorsten Blum <thorsten.blum@linux.dev>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Daniel Lezcano <daniel.lezcano@kernel.org>,
@@ -56,9 +58,11 @@ Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	stable@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND 1/2] thermal: sprd: Fix temperature clamping in sprd_thm_temp_to_rawdata
-Date: Sat,  7 Mar 2026 11:24:20 +0100
-Message-ID: <20260307102422.306055-1-thorsten.blum@linux.dev>
+Subject: [PATCH RESEND 2/2] thermal: sprd: Fix raw temperature clamping in sprd_thm_rawdata_to_temp
+Date: Sat,  7 Mar 2026 11:24:21 +0100
+Message-ID: <20260307102422.306055-2-thorsten.blum@linux.dev>
+In-Reply-To: <20260307102422.306055-1-thorsten.blum@linux.dev>
+References: <20260307102422.306055-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,7 +71,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EFA1B22B03A
+X-Rspamd-Queue-Id: 3CE2922B004
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -75,12 +79,12 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223416-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -94,17 +98,17 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-0.991];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,alibaba.com:email]
 X-Rspamd-Action: no action
 
-The temperature was never clamped to SPRD_THM_TEMP_LOW or
-SPRD_THM_TEMP_HIGH because the return value of clamp() was not used. Fix
-this by assigning the clamped value to 'temp'.
+The raw temperature data was never clamped to SPRD_THM_RAW_DATA_LOW or
+SPRD_THM_RAW_DATA_HIGH because the return value of clamp() was not used.
+Fix this by assigning the clamped value to 'rawdata'.
 
-Casting SPRD_THM_TEMP_LOW and SPRD_THM_TEMP_HIGH to int is also
+Casting SPRD_THM_RAW_DATA_LOW and SPRD_THM_RAW_DATA_HIGH to u32 is also
 redundant and can be removed.
 
 Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
@@ -116,15 +120,15 @@ Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/thermal/sprd_thermal.c b/drivers/thermal/sprd_thermal.c
-index e546067c9621..70c879e75d85 100644
+index 70c879e75d85..44fa45f74da7 100644
 --- a/drivers/thermal/sprd_thermal.c
 +++ b/drivers/thermal/sprd_thermal.c
-@@ -192,7 +192,7 @@ static int sprd_thm_temp_to_rawdata(int temp, struct sprd_thermal_sensor *sen)
+@@ -178,7 +178,7 @@ static int sprd_thm_sensor_calibration(struct device_node *np,
+ static int sprd_thm_rawdata_to_temp(struct sprd_thermal_sensor *sen,
+ 				    u32 rawdata)
  {
- 	u32 val;
- 
--	clamp(temp, (int)SPRD_THM_TEMP_LOW, (int)SPRD_THM_TEMP_HIGH);
-+	temp = clamp(temp, SPRD_THM_TEMP_LOW, SPRD_THM_TEMP_HIGH);
+-	clamp(rawdata, (u32)SPRD_THM_RAW_DATA_LOW, (u32)SPRD_THM_RAW_DATA_HIGH);
++	rawdata = clamp(rawdata, SPRD_THM_RAW_DATA_LOW, SPRD_THM_RAW_DATA_HIGH);
  
  	/*
  	 * According to the thermal datasheet, the formula of converting
