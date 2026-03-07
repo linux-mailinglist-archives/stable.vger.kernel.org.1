@@ -1,202 +1,209 @@
-Return-Path: <stable+bounces-223408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ga9IkWbq2kLewEAu9opvQ
-	(envelope-from <stable+bounces-223408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:28:05 +0100
+	id aOVkEfWbq2kJewEAu9opvQ
+	(envelope-from <stable+bounces-223409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:31:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE61229E88
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA82229EDB
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F277D30465F0
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:28:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0478307D619
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4BE30DED5;
-	Sat,  7 Mar 2026 03:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3982288D5;
+	Sat,  7 Mar 2026 03:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXvemofJ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oEXcuYIj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EE52FDC57;
-	Sat,  7 Mar 2026 03:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772854081; cv=none; b=jlE67jlrl1PO0k5peb/oqmzb65+V9VEfY6k6Q91OeUIrI3ZJgto4KS4sUzyQo0ag8ARStieeTLkv4jLpStabiCF15tg968SbN3Ns89JXfwjl4uT5qQ2tBT9t55yECVRnh36AmZzuig8ZWCBdUvaukciWhpBaeX0Wk17+9M5DI+Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772854081; c=relaxed/simple;
-	bh=XSY0RglEN64n9U43+fR8Oah0dHCIZP40nqmbgL8bEdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Br7kzc8Asp9pdeatS1fPUCxKGvCI2wStCRgV50qz+0zDnbKn1VEoSCE4RdCApGv9PvtaDUr5gh92yn6SvHnZaUXHlROvdtQnJ+QPubjufAtehHBZ0LaxaNqkiL9y8ux66p1KiWB9N+ptlwLQCgDKwyAjjXO5EmIrM+UulrtE4sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXvemofJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7688C19422;
-	Sat,  7 Mar 2026 03:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772854081;
-	bh=XSY0RglEN64n9U43+fR8Oah0dHCIZP40nqmbgL8bEdU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXvemofJV3TLQz/8HqUT4pHQ9j+A+om0GqwG8KoD8BAR9KEOOIyGHzQoD9I59E2+g
-	 DGSV485DaT66aPMYg8swPqZsVCFMYhLUgHn41efx6RkbWoZDtSQJon/e/+rZN0udwX
-	 Wfjl5c5L3gxNBXEhmrEj3FM0UlED/2BaTEFKWxM+lkGPWrk55jRtkAQ36UGzeFbzDA
-	 AmKq83K3dGMzPYWVJglGFQW2Jb+3ZTHdoV+FOVuJoV4dG7JjA9vfwU02YwGkeBCSSJ
-	 PjgRCYwtuTJUgmYh7FnynTNcDyyFVaF+ZDo84NPK38Qe5znSyTWUUZAbP+NFx6nPNl
-	 cYN+dN3v3qY7A==
-From: SeongJae Park <sj@kernel.org>
-To: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Jonas Zhou <jonaszhou@zhaoxin.com>,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Fri,  6 Mar 2026 19:27:57 -0800
-Message-ID: <20260307032759.100915-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
-References: 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514A230EF9B
+	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 03:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772854207; cv=pass; b=dgJvF+nN/X5y7IKyHU3/VNN+W3Bh9oEWwOKJQicPbyH7m5BE4ksC7nttuEWpy9hPhLKvDRKERCb94ijrr2WO/du8o13E1jNEHXxMki84r563ULSFtrwpeOlSltVtoTZQma5lVPFKcrEvLOWfYAc6Ys0yhwIAwWyJPFZ75x8N//0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772854207; c=relaxed/simple;
+	bh=dvoJq25OvpD/Xk60DBZSv4vLrYpQuuw6VA1VafjxT34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gHpUg8Un0mUIR2aykAf7wM+HTQ4/Pcgs6AsURDFn81XkquSr7hbipqQEYkC9PjRi4LwAPQF5WJdl3hK40jx12DGiBzbC4FKEThWIJDqY05pzqP2vKM0zD3u70pSAbdrPR0WGkwhRPhaFU4zGZQskfiN2/MqgXnZYcyOev+NdSUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oEXcuYIj; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506c00df428so82554351cf.3
+        for <stable@vger.kernel.org>; Fri, 06 Mar 2026 19:30:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772854204; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XQLoZvhmw9CTVS+w92rFVxpTRlOlrlZEpjW4j9lh+8tollOPSWug1d0NcEGxgIOsn6
+         zQ6TmgiIpz7dqTJBSv1INDbLrdU9VROhSWRzwHe0xE7TEJSALb3TVJIwzV7n7LY2PtuK
+         8qqbznTO/NjOCR+Dyicvj7fR4Gi9vWFnCRgZthtgYWptiOiam02P5DM4Th3EzvVlakuO
+         eKnobKOPzmUK9zvpM0c0DREWhyLrjxxdIXKJADQ+0QloA4VFOlpC+i4mX5MtItqpl7VV
+         96RVUGnXsHfz1TsQ/Hae3aVDCwYhhjoYOeoTy2oJkr7NgYfhizhcVEXwqwswAfU1D2+J
+         5X0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xpDD14e4dbjVApZRVlBhM6AVpHA7sjMepTKpcHbSpv8=;
+        fh=CtWBWCQ9SBJbCou68U3+UQCKC9Jg/KKQCUGulMa3eD0=;
+        b=kPEHcUBlu3xkIege44tScnotQNcRuu3gPTisMSIR1s0eOmkCickVbf4IuSumbdWK+E
+         x3GIlJSBVdJK803JB1TiCXUdQmf2ZpWxsnj5wZcrHIDrgje5yeb+HIoofwUXXz4WLWEp
+         PxCJMyK2/y0C0xMC05/SkHYl1E8juTR6nejZFuTyPjuIcWyXxrXdIEcDIwYhx9fitGFE
+         oldeNuRfHQM2Cv4XF2lP7eZI57cbc2qFc8CCKIHkaYUa9/NFvWkj0WnONr8x7T1ojxcJ
+         PUchzURZVGpygcA8uZtNuhsWP6lytOB5YTlAdjj8TO41h0HD5W3e8CFtbb7qDLfBWMLx
+         FxEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772854204; x=1773459004; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xpDD14e4dbjVApZRVlBhM6AVpHA7sjMepTKpcHbSpv8=;
+        b=oEXcuYIjPsQRRMvWi0u8aQ4DPSWQihS70VnJ8w0N+fSyOUNZuI/Rq0KOZ6qagTkTrl
+         RBiQWuKAmNze1si9XO/f0wZxhyNjf5cQr6db+h3ECma8xDJp3Zp0cHDxhRNRBARO3FyV
+         rq4mys1SlHSHGM6pI+AYdSpUcuAJZS+6jYOhaXiKbjf7HLOfWVlSactBBcYw0Z4CSfqA
+         48cx+r9PZTKXMnF0G6AjCC8taRmEGthIVFolQZkaqOzPNShzoiH2s5OTmqKxu3KrEiXT
+         iwX4s9y7UXSgD9RQx7OP+Q9BPs/p09dZJkOorPTn0pFibYv4hBwSdrD4qjixe5AgQWuc
+         nddw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772854204; x=1773459004;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xpDD14e4dbjVApZRVlBhM6AVpHA7sjMepTKpcHbSpv8=;
+        b=Mv2OIcuIhhy5KRcY8FpNykskHsVUcDXJ5HZEZNu5Xfg5drwsefHb5wtDRxJD5ftq39
+         VdhpEJSFGX4f0xxIc4zt0+e4L106Kd3GzjdKB7iaHQCBIohkEM0ydjLLgEUX0eSHjgrQ
+         8hlerRy2iO+LFPGh5E089qNOnKgN1FNVLNgeU7YP381GSjK6+ck4aKMLGIHYPjov7FQK
+         3OaQAzVV6UcmUctOqftKUnyutzOvOar0TQNFsdsRsb2eWUr//zPP1mQc4EKCJ1Dog4E3
+         +EkCuNi8fYTQNPi3zP2erOOaAi/uJtD3zzqtIrgjt97e5DQxvjuzGjRWTbMagYcDjIAp
+         PHuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzVVrk+QtgQ7yg+NgYVDPJsqvq/j3TTe6sEEv8XNJ4TySuM0QTNb3cvF9Gpy9JeyKvLqxLqJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp2J+XCWvsMwIodGNwcpU9qIXBG17U0Y0DlRuv783W247c7Uti
+	e+fz+NID0OqQRuvCbPwE+Sw5/ClQvCPsSazev+bYXHw6CQs4oVP7UQWQQIZjlPisfm4bEF+7bMs
+	Jiv+CBZGhqQNI0v1CLaab3CSIoWkdSKcec674ABcK
+X-Gm-Gg: ATEYQzwiTv6Rz3TS5NuA9UmuEjAqxPh0dpvrX9eS8xfVon1GhzPiHrs5TfSpA+MKjWa
+	C/zPk8LHgjgh3CgAHbJsobZr4t9UYyepc5/sql2IaQv1L5wL+W2OF61QZhi7MUkr2/7bm4fAFha
+	8EBKcsnSOybp0kbWVEBuDad6mbZlXYC75dtkek0moBykqpbnH6vAflk+rCxuMgQT3Eq+R/q8bDW
+	yete2OliAwREwImO2OXQmC/vLV7y9NUuQRbYIAj4DbZKqZ3uYMVhBbmYly08wau8nyWx0TILSQS
+	VbTw3rC5KJEJQsNwnpg=
+X-Received: by 2002:ac8:7f47:0:b0:506:a43d:778f with SMTP id
+ d75a77b69052e-508f4908ed0mr56284151cf.34.1772854203826; Fri, 06 Mar 2026
+ 19:30:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DCE61229E88
+References: <20260306185005.22120-1-mehulrao@gmail.com>
+In-Reply-To: <20260306185005.22120-1-mehulrao@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sat, 7 Mar 2026 04:29:52 +0100
+X-Gm-Features: AaiRm52j54ex_mqVI2RoTx84B4nBaTH85pbob3IqxXcFMgge_tbsq8gKtlrBBik
+Message-ID: <CANn89iJA_rchh5mhRpLVgt8hN1q1NKA4WZ9OaixLngJZSCmOjg@mail.gmail.com>
+Subject: Re: [PATCH net v2] tipc: fix divide-by-zero in tipc_sk_filter_connect()
+To: Mehul Rao <mehulrao@gmail.com>
+Cc: jmaloy@redhat.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, ying.xue@windriver.com, tung.q.nguyen@dektech.com.au, 
+	netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BDA82229EDB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223408-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-223409-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.971];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.952];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hello Jianhui,
+On Fri, Mar 6, 2026 at 7:50=E2=80=AFPM Mehul Rao <mehulrao@gmail.com> wrote=
+:
+>
+> A user can set conn_timeout to any value via
+> setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+> SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+> tipc_sk_filter_connect() executes:
+>
+>     delay %=3D (tsk->conn_timeout / 4);
+>
+> If conn_timeout is in the range [0, 3], the integer division yields 0,
+> and the modulo operation triggers a divide-by-zero exception, causing a
+> kernel oops/panic.
+>
+> Fix this by clamping conn_timeout to a minimum of 4 at the point of use
+> in tipc_sk_filter_connect().
+>
 
-On Fri,  6 Mar 2026 22:03:32 +0800 Jianhui Zhou <jianhuizzzzz@gmail.com> wrote:
+Could you please add symbols to the following trace, using
+scripts/decode_stacktrace.sh ?
 
-> In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-> page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-> returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-> expects the index in huge page units (as calculated by
-> vma_hugecache_offset()). This mismatch means that different addresses
-> within the same huge page can produce different hash values, leading to
-> the use of different mutexes for the same huge page. This can cause
-> races between faulting threads, which can corrupt the reservation map
-> and trigger the BUG_ON in resv_map_release().
-> 
-> Fix this by replacing linear_page_index() with vma_hugecache_offset()
-> and applying huge_page_mask() to align the address properly. To make
-> vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
-> include/linux/hugetlb.h as a static inline function.
-> 
-> Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
-> Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Thanks.
+
+> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+> CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
+> RIP: 0010:tipc_sk_filter_rcv+0x1b99/0x3040
+> Call Trace:
+>  tipc_sk_backlog_rcv+0xe4/0x1d0
+>  __release_sock+0x1ef/0x2a0
+>  release_sock+0x55/0x190
+>  tipc_connect+0x140/0x510
+>  __sys_connect+0x1bb/0x2e0
+>
+> Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+> Signed-off-by: Mehul Rao <mehulrao@gmail.com>
 > ---
-[...]
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-[...]
-> +static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-> +		struct vm_area_struct *vma, unsigned long address)
-> +{
-> +	return linear_page_index(vma, address);
-> +}
-> +
-
-I just found this patch makes UML build fails as below.
-
-    $ make ARCH=um O=.kunit olddefconfig
-    Building with:
-    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
-    ERROR:root:In file included from ../io_uring/rsrc.c:9:
-    ../include/linux/hugetlb.h: In function ‘vma_hugecache_offset’:
-    ../include/linux/hugetlb.h:1214:16: error: implicit declaration of function ‘linear_page_index’ [-Wimplicit-function-declaration]
-     1214 |         return linear_page_index(vma, address);
-          |                ^~~~~~~~~~~~~~~~~
-
-Maybe we need to include pagemap.h?  I confirmed below attaching patch fix the
-error on my setup.
-
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From f55581ba154d6c8aaaf1f1d33cc317b5bf463147 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Fri, 6 Mar 2026 19:23:28 -0800
-Subject: [PATCH] mm/hugetlb: include pagemap.h to fix build error
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Without this, UML build fails as below:
-
-    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
-    ERROR:root:In file included from ../io_uring/rsrc.c:9:
-    ../include/linux/hugetlb.h: In function ‘vma_hugecache_offset’:
-    ../include/linux/hugetlb.h:1214:16: error: implicit declaration of function ‘linear_page_index’ [-Wimplicit-function-declaration]
-     1214 |         return linear_page_index(vma, address);
-          |                ^~~~~~~~~~~~~~~~~
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- include/linux/hugetlb.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 3f994f3e839cf..63426bd716839 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -15,6 +15,7 @@
- #include <linux/gfp.h>
- #include <linux/userfaultfd_k.h>
- #include <linux/nodemask.h>
-+#include <linux/pagemap.h>
- 
- struct mmu_gather;
- struct node;
--- 
-2.47.3
-
+> Changes in v2:
+> - Clamp conn_timeout at the point of use in tipc_sk_filter_connect()
+>   instead of rejecting small values in tipc_setsockopt()
+> - Link to v1: https://lore.kernel.org/netdev/20260305215336.645186-1-mehu=
+lrao@gmail.com/
+> ---
+>  net/tipc/socket.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+> index 4c618c2b871d..9329919fb07f 100644
+> --- a/net/tipc/socket.c
+> +++ b/net/tipc/socket.c
+> @@ -2233,6 +2233,8 @@ static bool tipc_sk_filter_connect(struct tipc_sock=
+ *tsk, struct sk_buff *skb,
+>                 if (skb_queue_empty(&sk->sk_write_queue))
+>                         break;
+>                 get_random_bytes(&delay, 2);
+> +               if (tsk->conn_timeout < 4)
+> +                       tsk->conn_timeout =3D 4;
+>                 delay %=3D (tsk->conn_timeout / 4);
+>                 delay =3D msecs_to_jiffies(delay + 100);
+>                 sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
+> --
+> 2.53.0
+>
 
