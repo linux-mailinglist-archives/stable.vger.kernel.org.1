@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-223405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO5KJu+Tq2kSegEAu9opvQ
-	(envelope-from <stable+bounces-223405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 03:56:47 +0100
+	id lswsKryUq2k5egEAu9opvQ
+	(envelope-from <stable+bounces-223406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:00:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D45229B3A
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 03:56:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548DE229B55
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 04:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ADC93022F8C
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 02:56:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55405303CD35
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 03:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD562E1746;
-	Sat,  7 Mar 2026 02:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FCF2E11BC;
+	Sat,  7 Mar 2026 03:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8Qg6Gki"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="thDzOELM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C327A2DCF41;
-	Sat,  7 Mar 2026 02:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473068287E;
+	Sat,  7 Mar 2026 02:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772852201; cv=none; b=GYNHWCB389gsxpSzfLSQmIvwgz4lPX3/icsl1EwttvEhr2Lo3nGvqGL3edzLtPG9Uls9O1s6OuhDNf1wBYTdU77tBY82FPvxhIwnyi+xEn6sjW0pilGnQFk4C7uRRv0CpJOj8hkX8k2b3xfeT/Qw32McvIfuNFO5QHAO14USFxA=
+	t=1772852405; cv=none; b=OkGhWr+h24mPBfTNBtO2SHE6GSpBCjbEPPML0WV8OjTw28rnboWLCEycilHDSDfNtoqZzRLRV/8VoiBVWf/RsjEabbRoxRXaf1uj2I9q2T6L79983Hba1afEbnYCYS5REgTOlX/tQBvisr+bffsSZ405SAVunn8fl7VLqTKop8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772852201; c=relaxed/simple;
-	bh=pxIvuwvEYaO6ieaDBTEST/67jzsmSiyiMXageS18q3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKzdFkqvK+aemAUvucqlx04gNhFJE+CquLKTDj2No9NhqC1U9jta1dfLi7L4tgTMmM3x+XCUSl3PJyV09o7ICsLBebWr4XJVsPiaXavnCGmNmnvCKnH9qy8SKsiilD6b01u37HPgeYnsr9kucAPuyE4aHiGE/ygJWrd2P059mOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8Qg6Gki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF47C4CEF7;
-	Sat,  7 Mar 2026 02:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772852201;
-	bh=pxIvuwvEYaO6ieaDBTEST/67jzsmSiyiMXageS18q3A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8Qg6GkisVN2IIp03Nq7B6feJmwzImgM0yriuEd3QRKbM+aXdOci7DEC6VUcW7kqN
-	 evLrw4EzngPuZODDykuPiVJMpM0cwe38ngX8BiEuL2RRHRt3xf8yTFrjGnUYPfIsIX
-	 KeNP4VLYP+fTfIpBlAmu3FVH1f1QwT2J6wgLkcLpk9SJnZGjF0zDA60IbREyJzZxYQ
-	 bgdObtC5yq7lHtfs0lBAo4P/OILt527OSJaErQYUO1Bs3nvDbgv0bx/mEb51QDfB4Y
-	 qOhV5cGoakpPIm09j/woOqPLkdnwEkKCd+B0ARfU1wByNKc0i7/Hkd4K6ixWjEurlE
-	 knA5QqFB+FtOg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: haokexin@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	edumazet@google.com,
-	claudiu.beznea@tuxon.dev,
-	davem@davemloft.net,
-	stable@vger.kernel.org,
-	netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	linux@armlinux.org.uk,
-	pabeni@redhat.com,
-	nicolas.ferre@microchip.com,
-	quanyang.wang@windriver.com
-Subject: Re: [net] net: macb: Shuffle the tx ring before enabling tx
-Date: Fri,  6 Mar 2026 18:56:38 -0800
-Message-ID: <20260307025638.1345906-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260305-zynqmp-v1-1-5de72254d56b@gmail.com>
-References: <20260305-zynqmp-v1-1-5de72254d56b@gmail.com>
+	s=arc-20240116; t=1772852405; c=relaxed/simple;
+	bh=fSeQF9QFhwUlzZ5CwrkNdIyaSa/TQ+ErlSkbiAiE+P8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i4xEIJatmBIPWvqXH5IwF0HsgaU5nZZ+dSxe5Mtv3uEPZq02IDMdpr9Id32EE4CG8DyGTZJgo0SIY7xI/AJoNQmL0JbQF1UMa98bpT7lbsF12baywxnbDwX1j86WQ3TPpqtdxJMRHKPR94LBB9xcvambaAdp6aK3xylexAqdeEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=thDzOELM; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=thDzOELMQz89qgKQyfw3CkqW7bRk7hEWgjeu6xQZQW+5KalsR5yh/qSoSY7Itz601U6Q9zvxow20w
+	 NstnLCsQqzYcS8g2JuEhVydhdiB8b1La3ZeCGYg9xWIJ0ef7wVmrReGglbl2Gnh7XQdWXvYmN1yW+5
+	 oV6nRSFM5Brj16Jo=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from China-139-kernel-team (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef569ab949c39f-023ce;
+	Sat, 07 Mar 2026 10:59:49 +0800 (CST)
+X-RM-TRANSID:2ef569ab949c39f-023ce
+From: Bin Lan <lanbincn@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	jaegeuk@kernel.org,
+	chao@kernel.org,
+	Ye Bin <yebin10@huawei.com>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 5.15.y] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
+Date: Sat,  7 Mar 2026 10:59:39 +0800
+Message-Id: <20260307025939.1170999-1-lanbincn@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,190 +66,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E4D45229B3A
+X-Rspamd-Queue-Id: 548DE229B55
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-223405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223406-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,huawei.com,139.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.992];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:url]
+	DKIM_TRACE(0.00)[139.com:-];
+	NEURAL_HAM(-0.00)[-0.049];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,139.com:mid,139.com:email]
 X-Rspamd-Action: no action
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+From: Ye Bin <yebin10@huawei.com>
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
+
+There's issue as follows when concurrently installing the f2fs.ko
+module and mounting the f2fs file system:
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
+Call Trace:
+ <TASK>
+ f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
+ __get_meta_page+0x1d4/0x920 [f2fs]
+ get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
+ validate_checkpoint+0xac/0x290 [f2fs]
+ f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
+ f2fs_fill_super+0x1007/0x39b0 [f2fs]
+ mount_bdev+0x183/0x250
+ legacy_get_tree+0xf4/0x1e0
+ vfs_get_tree+0x88/0x340
+ do_new_mount+0x283/0x5e0
+ path_mount+0x2b2/0x15b0
+ __x64_sys_mount+0x1fe/0x270
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Above issue happens as the biset of the f2fs file system is not
+initialized before register "f2fs_fs_type".
+To address above issue just register "f2fs_fs_type" at the last in
+init_f2fs_fs(). Ensure that all f2fs file system resources are
+initialized.
+
+Fixes: f543805fcd60 ("f2fs: introduce private bioset")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 ---
-net: macb: Shuffle the tx ring before enabling tx
+ fs/f2fs/super.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
-the rootfs may take an extended time to recover after a suspend. Upon
-investigation, it was determined that the issue originates from a problem
-in the macb driver. To resolve this issue, shuffle the tx ring and tx skb
-array so that the first unsent packet is positioned at the start of the tx
-ring.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 5bc35f651ebd..3ceeff22c12f 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-
-[ ... ]
-
-> @@ -668,6 +669,88 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
->  	netif_tx_stop_all_queues(ndev);
->  }
->
-> +/* Use juggling algorithm to left rotate tx ring and tx skb array */
-> +static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
-> +{
-> +	unsigned int i, head, tail, count, size, cycles, shift, curr, next;
-> +	struct macb_dma_desc desc, *desc_curr, *desc_next;
-> +	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
-> +	struct macb *bp = queue->bp;
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
-> +	head = queue->tx_head;
-> +	tail = queue->tx_tail;
-> +	size = bp->tx_ring_size;
-> +	count = CIRC_CNT(head, tail, size);
-> +
-> +	if (!(tail % size))
-> +		goto unlock;
-> +
-> +	if (!count) {
-> +		queue->tx_head = 0;
-> +		queue->tx_tail = 0;
-> +		goto unlock;
-> +	}
-> +
-> +	shift = tail % size;
-> +	cycles = gcd(size, shift);
-> +
-> +	for (i = 0; i < cycles; i++) {
-> +		memcpy(&desc, macb_tx_desc(queue, i), sizeof(struct macb_dma_desc));
-> +		memcpy(&tx_skb, macb_tx_skb(queue, i), sizeof(struct macb_tx_skb));
-> +
-> +		curr = i;
-> +		next = (curr + shift) % size;
-> +
-> +		while (next != i) {
-> +			desc_curr = macb_tx_desc(queue, curr);
-> +			desc_next = macb_tx_desc(queue, next);
-> +
-> +			memcpy(desc_curr, desc_next, sizeof(struct macb_dma_desc));
-                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Does this memcpy corrupt the descriptor fields on systems with 64-bit DMA?
-The macb_tx_desc() macro uses macb_adj_dma_desc_idx() to properly space the
-descriptor pointers in the ring according to the descriptor size reported by
-macb_dma_desc_get_size(bp), which can be 8 bytes (base), 16 bytes (with
-DMA64), or 24 bytes (with DMA64 + PTP). However, all three memcpy calls in
-this function use sizeof(struct macb_dma_desc), which is only 8 bytes and
-covers only the addr and ctrl fields.
-
-On systems where macb_dma64(bp) == true, such as the AMD ZynqMp platform
-this patch targets, each descriptor has an additional macb_dma_desc_64
-struct containing the upper 32 bits of the DMA address (addrh field).
-
-When the shuffle copies descriptors using only 8 bytes, it moves the lower
-32-bit address (desc->addr) and control word (desc->ctrl) to new positions
-but leaves the upper 32-bit address (addrh) unmoved in the old location.
-After the shuffle, hardware reads a composite 64-bit DMA address from
-mismatched descriptor slots: the old slot's addrh combined with the new
-slot's addr.
-
-This would cause DMA to a corrupted physical address, potentially leading
-to memory corruption or bus errors.
-
-The driver uses macb_dma_desc_get_size(bp) elsewhere for operations on the
-descriptor ring:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_alloc_consistent() {
-    ...
-    size = bp->tx_ring_size * macb_dma_desc_get_size(bp);
-    queue->tx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
-                                        &queue->tx_ring_dma, GFP_KERNEL);
-    ...
-}
-
-and in:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_free_consistent() {
-    ...
-    size = bp->tx_ring_size * macb_dma_desc_get_size(bp);
-    dma_free_coherent(&bp->pdev->dev, size, queue->tx_ring,
-                      queue->tx_ring_dma);
-    ...
-}
-
-Should the memcpy size here use macb_dma_desc_get_size(bp) instead of
-sizeof(struct macb_dma_desc)?
-
-The same issue appears at two other locations in this function (the initial
-memcpy saving desc at the start of the loop, and the final memcpy restoring
-desc at the end). Additionally, the stack-allocated "struct macb_dma_desc
-desc" temporary buffer may be too small to hold the extended descriptor.
-
-> +
-> +			if (next == bp->tx_ring_size - 1)
-> +				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-> +			if (curr == bp->tx_ring_size - 1)
-> +				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-> +
-> +			skb_curr = macb_tx_skb(queue, curr);
-> +			skb_next = macb_tx_skb(queue, next);
-> +			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
-> +
-> +			curr = next;
-> +			next = (curr + shift) % size;
-> +		}
-> +
-> +		desc_curr = macb_tx_desc(queue, curr);
-> +		memcpy(desc_curr, &desc, sizeof(struct macb_dma_desc));
-> +		if (i == bp->tx_ring_size - 1)
-> +			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-> +		if (curr == bp->tx_ring_size - 1)
-> +			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-> +		memcpy(macb_tx_skb(queue, curr), &tx_skb, sizeof(struct macb_tx_skb));
-> +	}
-> +
-> +	queue->tx_head = count;
-> +	queue->tx_tail = 0;
-> +
-> +	/* Make descriptor updates visible to hardware */
-> +	wmb();
-> +
-> +unlock:
-> +	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
-> +}
-
-[ ... ]
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 6f6368400ee4..08fe8fa95924 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4634,9 +4634,6 @@ static int __init init_f2fs_fs(void)
+ 	err = register_shrinker(&f2fs_shrinker_info);
+ 	if (err)
+ 		goto free_sysfs;
+-	err = register_filesystem(&f2fs_fs_type);
+-	if (err)
+-		goto free_shrinker;
+ 	f2fs_create_root_stats();
+ 	err = f2fs_init_post_read_processing();
+ 	if (err)
+@@ -4660,6 +4657,7 @@ static int __init init_f2fs_fs(void)
+ 	if (err)
+ 		goto free_compress_cache;
+ 	err = f2fs_init_xattr_cache();
++	err = register_filesystem(&f2fs_fs_type);
+ 	if (err)
+ 		goto free_casefold_cache;
+ 	return 0;
+@@ -4679,8 +4677,6 @@ static int __init init_f2fs_fs(void)
+ 	f2fs_destroy_post_read_processing();
+ free_root_stats:
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+-free_shrinker:
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ free_sysfs:
+ 	f2fs_exit_sysfs();
+@@ -4704,6 +4700,7 @@ static int __init init_f2fs_fs(void)
+ 
+ static void __exit exit_f2fs_fs(void)
+ {
++	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+@@ -4713,7 +4710,6 @@ static void __exit exit_f2fs_fs(void)
+ 	f2fs_destroy_iostat_processing();
+ 	f2fs_destroy_post_read_processing();
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+ 	unregister_shrinker(&f2fs_shrinker_info);
+ 	f2fs_exit_sysfs();
+ 	f2fs_destroy_garbage_collection_cache();
 -- 
-pw-bot: cr
+2.43.0
+
+
 
