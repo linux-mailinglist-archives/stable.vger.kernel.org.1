@@ -1,172 +1,148 @@
-Return-Path: <stable+bounces-223421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tDQbCP0crGkOlAEAu9opvQ
-	(envelope-from <stable+bounces-223421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 13:41:33 +0100
+	id yMW6EUsmrGnnlwEAu9opvQ
+	(envelope-from <stable+bounces-223422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 14:21:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976A522BB8E
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 13:41:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC26F22BED6
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 14:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85FBE300B9F4
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 12:41:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4B933021E4E
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 13:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D55B3909BB;
-	Sat,  7 Mar 2026 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6562652AF;
+	Sat,  7 Mar 2026 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGDkphF9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdMsnb5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F1333B6EB;
-	Sat,  7 Mar 2026 12:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D24E2459C9;
+	Sat,  7 Mar 2026 13:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772887287; cv=none; b=nJYI6xIp83lX3YxrVyuWDvnFy1Cd3sNhMKGIAi28vg+iZE0XVgWXr5/WX7u9M5w090JLsIQ5okDYvTCODJOsuxJsmWO2MYuQSJnGxXin1z7XoUCi0giYNlErepChI2PSbsthDa7CxzdrzmdyrpG0mSdUNJmDFaWQNRhrYYlwGfw=
+	t=1772889657; cv=none; b=u+qbchLkuCuzd3+a/nMtg59F/kDj8oTIm54DoNOHmnKX68lb2tD/qnMWzZnn3Ws9DZqRDkL6sPFFOaaIqUs9O0iwGZtHTQ2XnQi+39/5IBE/2ULpthT+Y7pLDW1am7imQo3UDf+Mz77EIqlFLeypSH8A8WyCveizdWQIybDTpB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772887287; c=relaxed/simple;
-	bh=cohMBJH2d1BVbpUwzitQc8rDzCnYSvKbs9OXEa4sgqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oA7fMFgmyfzbtWRFF6+T3wmU+OWP4qO3UBSk9A/iUL73Hrp/LwXcvMpCYWHReqDi9AKBEWTdNQ19izBGn5ovyKRTb6be/okZ7tpQbbvCb5gwAOayeVcv85f91ihgb3ytwoFUyGNdaBw80SuQzVcFrybM/5XUWsRJ2chh4h1jYec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGDkphF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA09C19422;
-	Sat,  7 Mar 2026 12:41:22 +0000 (UTC)
+	s=arc-20240116; t=1772889657; c=relaxed/simple;
+	bh=YyXFFIh/LzC8eDlQk2HzFl1QnoQ5WC9wW81N/VC2YLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ovgUekKzi8kK+LyRKDkj3sqW3jsKHE2krxQEe/WO9gltIx+2JOW98O6/EGY0lMyTTcoe2Ib7ipIE67HK1sAzIRF6oilPAYJpjsG7P8pQErbciFwg0NHm5gmp5Wop5zVMtVooEylC0iRbFApkqzVOKUPae8ntAvtxzdgSAUve/fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdMsnb5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD07C2BC86;
+	Sat,  7 Mar 2026 13:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772887286;
-	bh=cohMBJH2d1BVbpUwzitQc8rDzCnYSvKbs9OXEa4sgqw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AGDkphF9NBOJWhRSQ2if2XUnZ9H5dw6ibncSjdIWFCmQqIFUcQdAqqk+5gg+66H0R
-	 eF0GvvNF9VAD4S1bGO5JtnSDydZzkBbtlqgvbvIfPJq7LgCF0mI/iYZZTIn/SDMzBv
-	 n3cqoW+M22vs+xJsuTcYpeuhXf5IHBUK2eupsbVyXonLPkqpgZDTJzaSgHW4E1dZ6R
-	 wKUoX0RKn8Fmh/yr1eOZxvOPySV9+H2/574N7+h7/olIrK5bZF4hOPonQhTt1R6LbA
-	 aBsnZHXNXRExAvuubWBOT6SjDS6EpCio/pP3ojkDSwVCfexIvGmEVdarS9w8P+wthE
-	 05yvlaWcrD+UQ==
-Date: Sat, 7 Mar 2026 12:41:18 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Christofer Jonason <christofer.jonason@guidelinegeo.com>
-Cc: lars@metafoo.de, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, michal.simek@amd.com, victor.jonsson@guidelinegeo.com,
- linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: xilinx-xadc: Fix sequencer mode in
- postdisable for dual mux
-Message-ID: <20260307124118.1d527749@jic23-huawei>
-In-Reply-To: <20260304090727.1800289-1-christofer.jonason@guidelinegeo.com>
-References: <20260304090727.1800289-1-christofer.jonason@guidelinegeo.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1772889656;
+	bh=YyXFFIh/LzC8eDlQk2HzFl1QnoQ5WC9wW81N/VC2YLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GdMsnb5DQvd7xSPyJDYUCbU7SrRkxSAPQdzAjBlyPftcwJuBozODRtYUBIC5Qsqa4
+	 x2udf1m9NbaEW/Fl44s6NDMygm0FmhJ07b3REvuekXShYWDJwaryF3glay4oeFdlOM
+	 WV8LTnDmhUYHA8wLVBeoSbOkpeQqOEcH478IuakdSOCCx/oxTXJqJ3/D1zLAtFdetY
+	 F1+Dw9R6lMHk1MltvcCTZDYqv6qiZ8H4lONEE2eSxEHPHNS1UYf/l/633zMC3xe3+t
+	 Zv8eeQ632FA1lbIPzPCdWlTHXFNvJ48a5erzjx+9/R3+A4YXqFOyIuTIjPVCBbdb0W
+	 Ru2w59Mop1mMA==
+Date: Sat, 7 Mar 2026 08:20:55 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 5.10 000/334] 5.10.252-rc2 review
+Message-ID: <aawmN6mkFZnv0Nd3@laps>
+References: <20260302161007.2523181-1-sashal@kernel.org>
+ <992df439ca66e562353d285642c6ab8e1c69e2e6.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 976A522BB8E
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <992df439ca66e562353d285642c6ab8e1c69e2e6.camel@decadent.org.uk>
+X-Rspamd-Queue-Id: BC26F22BED6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-223422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223421-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.924];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Wed,  4 Mar 2026 10:07:27 +0100
-Christofer Jonason <christofer.jonason@guidelinegeo.com> wrote:
+On Fri, Mar 06, 2026 at 08:19:01PM +0100, Ben Hutchings wrote:
+>On Mon, 2026-03-02 at 11:10 -0500, Sasha Levin wrote:
+>> This is the start of the stable review cycle for the 5.10.252 release.
+>> There are 334 patches in this series, all will be posted as a response
+>> to this one.
+>
+>And yet they were not.
 
-> xadc_postdisable() unconditionally sets the sequencer to continuous
-> mode. For dual external multiplexer configurations this is incorrect:
-> simultaneous sampling mode is required so that ADC-A samples through
-> the mux on VAUX[0-7] while ADC-B simultaneously samples through the
-> mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
-> VAUX[8-15] channels return incorrect data.
-> 
-> Since postdisable is also called from xadc_probe() to set the initial
-> idle state, the wrong sequencer mode is active from the moment the
-> driver loads.
-> 
-> The preenable path already uses xadc_get_seq_mode() which returns
-> SIMULTANEOUS for dual mux. Fix postdisable to do the same.
-> 
-> Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+I don't think we ever did post the series for -rc2+, did we?
 
-I'll leave this on list for a little longer as I'd really like a confirmation
-of this one from the AMD Xilinx folk.
+I guess I need to remove the message...
 
+>> If anyone has any issues with these being applied, please
+>> let me know.
+>
+>I can some issues, such as these feature additions being backported:
+>
+>[...]
+>> Rui Feng (1):
+>>   misc: rtsx: Add SD Express mode support for RTS5261
+>[...]
+>> Ulf Hansson (1):
+>>   mmc: core: Initial support for SD express card/host
+>[...]
+>
+>supposedly as dependencies of:
+>
+>> Matthew Schwartz (1):
+>>   mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms
+>
+>But it doesn't depend on them.  And it also got reverted in this same
+>series.  So backporting the "dependencies" just introduced risk with no
+>benefit.
+>
+>Meanwhile, the stable-specific regressions in recent 5.10.y stable
+>releases (affecting ARM memset64() and IPv6 tunnels) were not addressed
+>in 5.10.252.
+
+Thanks for the heads-up, I've queued up both fixes.
+
+-- 
 Thanks,
-
-Jonathan
-
-> ---
-> Changes in v2:
->   - Align continuation line to opening parenthesis (Andy)
->  drivers/iio/adc/xilinx-xadc-core.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-> index e257c1b94..3980dfacb 100644
-> --- a/drivers/iio/adc/xilinx-xadc-core.c
-> +++ b/drivers/iio/adc/xilinx-xadc-core.c
-> @@ -817,6 +817,7 @@ static int xadc_postdisable(struct iio_dev *indio_dev)
->  {
->  	struct xadc *xadc = iio_priv(indio_dev);
->  	unsigned long scan_mask;
-> +	int seq_mode;
->  	int ret;
->  	int i;
->  
-> @@ -824,6 +825,12 @@ static int xadc_postdisable(struct iio_dev *indio_dev)
->  	for (i = 0; i < indio_dev->num_channels; i++)
->  		scan_mask |= BIT(indio_dev->channels[i].scan_index);
->  
-> +	/*
-> +	 * Use the correct sequencer mode for the idle state: simultaneous
-> +	 * mode for dual external mux configurations, continuous otherwise.
-> +	 */
-> +	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
-> +
->  	/* Enable all channels and calibration */
->  	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
->  	if (ret)
-> @@ -834,11 +841,11 @@ static int xadc_postdisable(struct iio_dev *indio_dev)
->  		return ret;
->  
->  	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
-> -		XADC_CONF1_SEQ_CONTINUOUS);
-> +				  seq_mode);
->  	if (ret)
->  		return ret;
->  
-> -	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
-> +	return xadc_power_adc_b(xadc, seq_mode);
->  }
->  
->  static int xadc_preenable(struct iio_dev *indio_dev)
-
+Sasha
 
