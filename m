@@ -1,142 +1,148 @@
-Return-Path: <stable+bounces-223427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLjqC5Y/rGkinwEAu9opvQ
-	(envelope-from <stable+bounces-223427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 16:09:10 +0100
+	id mJQUD6BArGl8oAEAu9opvQ
+	(envelope-from <stable+bounces-223428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 16:13:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D34222C525
-	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 16:09:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B421422C574
+	for <lists+stable@lfdr.de>; Sat, 07 Mar 2026 16:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EEA830293F5
-	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 15:09:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A7DC30131F6
+	for <lists+stable@lfdr.de>; Sat,  7 Mar 2026 15:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD6C3A2555;
-	Sat,  7 Mar 2026 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B00E3A452A;
+	Sat,  7 Mar 2026 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b="tWbuLXLw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmWEfbYk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C529628C874
-	for <stable@vger.kernel.org>; Sat,  7 Mar 2026 15:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B95395D87;
+	Sat,  7 Mar 2026 15:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772896145; cv=none; b=aJbxUvxbhNEH5K7f0F+xrO85V8WlEHkblIJNwCp/lLCVBHtQ3cafpTGNPe6GZOAwvmVdhRsPecROAwBs5kl93yjVHSD5p/h5IcXBfOeI7iBozMNS3joh8i2l6iq/Qxhc7MxykhQNU1rvr54CPl5S00Db9wLxveXsLJXUfVkre6c=
+	t=1772896359; cv=none; b=mtfLsUrDhtnIQ/B65SoNXV5Z33ziv+nHd+zeBNTTpsAZioAeR8pPKHaegWQ+PCeKT0XJpp4UMkjRcbaNOHKmE6ILWh5rw8GizvvAxjMifSbcbkwK3EKAzqcEnaCgya+NdRiPqi9xwNZZGkjl1UOTCajsRL3EPFEn5wur1Ra38LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772896145; c=relaxed/simple;
-	bh=Kf20q3KKi+xM3qNss1cCgTlfjVY+Zi/cdmEhEb/OiyE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvPw5suhaBfaC+7lZ/dF20gab7HVAnnf9oxuHzLuFIiPmv3L6wrE/H9QQpzEjdRjW6xhDY0K7F8jOn4pEAtilEHJ5kZtJw0ZoelPQTisRLIBynSyVuiBjoggNiKTejH3Su8cMgZTsrw8y6Y8E7KTiaFX2tc1JgdOtq5crq5B1d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name; spf=pass smtp.mailfrom=chrisdown.name; dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b=tWbuLXLw; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ae46fc8ec1so46733675ad.3
-        for <stable@vger.kernel.org>; Sat, 07 Mar 2026 07:09:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1772896144; x=1773500944; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u7B+3R/eVcF0a4VFyKy9Mj+9RSgZdL4bns+9ocGpr2c=;
-        b=tWbuLXLwgkd9q2RaAt/EUrPS6FS+oWLn3rYIqLMl71DyKAeAAsnW001HrIGVyZdtNp
-         9ZI4OcrQGxkySHuey1cPMDU4hqiaVQqsUSp48N0AZzXUuTCJySDgX1GjKfpQY628S/i+
-         x3UJNNqOGKWoPlns70GH5eQyISEv2FVL6Q29A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772896144; x=1773500944;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u7B+3R/eVcF0a4VFyKy9Mj+9RSgZdL4bns+9ocGpr2c=;
-        b=ALnPgLVLpyP13TGHMJ0F/1+lYFmdZa7z+7w1Bfnux3vn0HcYc1jOiO/qQU1nrtfm0U
-         Ueg/bY2YBhF6+wCfs3YIlYq19A9VJKcl+xrjhKzhLZewwXL9FPKwZmCKSOY6u4A+eNli
-         9bc8CfU2sru6fk+K8R1aYHZbSgYHbnv+YXDI9cHEwM8z2SXINatxRoXpHED+lfdV69WE
-         /nUs1ZpmYoTogaNRb0dYDmWN2ajQNNIYvj5VH895V9fBm9k9eQ6VWTEK5SFvqjGHwbdm
-         utYkGyoJL8+6BG5erVvTOEihiQ68sRg0BmuF8kFlDECvoomGBq4qiIjKSr91Zdn/C8zt
-         UTEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyXTGABdAADTtWR8McaEJEiH5BTKdVQUIKOD/W6vo+/RCWZFHNBOe5KqWuctmFcwYx/zyLhyY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjNkG8RhgZ+24/Zaygo5VR7IqvshduLhhdIha3VqQ9j0fFiNlS
-	yvWARo1COGoIuZYJxDhjd+SjlAKSl0tutZcZd1OMMnKwTI72MGRj4gn3ngdUfAfPKxoJsuecPnE
-	YQGAGOXFfDw==
-X-Gm-Gg: ATEYQzz6t+XK6BxJw9+88Qq3lHEmptQXknFgJXXl/t8PTg9mXDWeOJEfD0FNtBJOGvh
-	kIBzLTnytr5dFVe6mM+MY8/fCeU6XTv+AsjXsQywBIN51tWwOLPCqExck3sr15qsEGGiJAn8c3o
-	zV14Kso8GGsveGzhMv6DCFQ23RwFaUA5pitEbRXYX7tBqbpRCReVPMVMt8SMlw/U/rV6qZiwleS
-	LUHWrEPFw9Hr5V35XijMbQjKmgRoMLzQ19ZBMwAo0v4teZ6jwJ5xqI5SK8pssaDfkyo7DOV5MWD
-	5VTIDSBgWC4jLbt+RfsidhlB9eB+v5l86SP+J2b1stlXcfPR0NSXkdQc62iy+LOsn7xc0RpbCGP
-	IqRvDpPeetS+yRnJQkae5WtV19wiqij6u78ffNFRaR7xFb/xxeE0HMBiTR6MMNDWm7JzCkcA3AA
-	ErMXgCl/jHX8nYrWDHDqE=
-X-Received: by 2002:a17:902:ef46:b0:2ae:3b36:23e7 with SMTP id d9443c01a7336-2ae82398d80mr56455605ad.16.1772896144073;
-        Sat, 07 Mar 2026 07:09:04 -0800 (PST)
-Received: from localhost ([149.28.151.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f8baa3sm58418835ad.65.2026.03.07.07.09.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 07:09:03 -0800 (PST)
-Date: Sat, 7 Mar 2026 23:08:57 +0800
-From: Chris Down <chris@chrisdown.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm/huge_memory: Prevent huge zeropage refcount
- corruption in PMD move
-Message-ID: <aaw_iU38qvIrNGAA@chrisdown.name>
-References: <aaBVz7eb6-VBCvaz@chrisdown.name>
- <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
+	s=arc-20240116; t=1772896359; c=relaxed/simple;
+	bh=WAy+8low3pplFgAVrxMFFzftkqpYzsxhPoP9RFA1wOg=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=BOVoslQjAsz3bZMXo9t7v1yHUEYCfHMM7VSbQv/nWr4D3UqgGXZ9kMR8yoqK8cXRUPURvBLfPcSeS7zYBlCj1cHYpZCmYAfxKR/bH2jQ1dLDDWY+1DPP+8cKD1chaKuBAqb9Pwj34Ps3clS0jHe9YcGShFI7eAwUJPYUPxHu4KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmWEfbYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA136C2BCAF;
+	Sat,  7 Mar 2026 15:12:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772896358;
+	bh=WAy+8low3pplFgAVrxMFFzftkqpYzsxhPoP9RFA1wOg=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=TmWEfbYk5kXp+T06ZIjvWlf+KPf/bm8/wNHLbeNJeKLoxZ3yDxkRtQfApY0Yf2Q/9
+	 lMYbk/BzMt0zRRJ+Y6JIHvbSgfqodEj4W1D+5yLOcwNuj2fZViQqtYVguo76IB4g1L
+	 M0bvt0m/MzKGnNODs/9kwjLrjTmfWhYZqnc44vmiK8euj6NRsVT2Q5lARN8257DtWY
+	 luYs0YdIHLbJaHcfgXTIVUnE7KVAstFu7gC3pYsSIR9Bmq5pxMJ1zLCBYA1/xbP28n
+	 Cw1O+W84dtyy9cnsn0Kl5TMQ5cQ+6ELuUo+wkIVStXJqmBwnqbM4TC5sWjh1zGXoo9
+	 F/ge1MQQHu+2w==
+Received: from rostedt by gandalf with local (Exim 4.99.1)
+	(envelope-from <rostedt@kernel.org>)
+	id 1vytKc-000000010Ns-08Vs;
+	Sat, 07 Mar 2026 10:12:42 -0500
+Message-ID: <20260307151241.888254981@kernel.org>
+User-Agent: quilt/0.69
+Date: Sat, 07 Mar 2026 10:12:26 -0500
+From: Steven Rostedt <rostedt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
+Subject: [for-linus][PATCH 2/3] tracing: Fix enabling multiple events on the kernel command line and
+ bootconfig
+References: <20260307151224.447677123@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
-User-Agent: Mutt/2.2.15 (2b349c5e) (2025-10-02)
-X-Rspamd-Queue-Id: 7D34222C525
+Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: B421422C574
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chrisdown.name,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[chrisdown.name:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[chrisdown.name:+];
-	TAGGED_FROM(0.00)[bounces-223427-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223428-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chris@chrisdown.name,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.993];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,chrisdown.name:dkim,chrisdown.name:mid]
+	NEURAL_HAM(-0.00)[-0.944];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-David Hildenbrand (Arm) writes:
->Please squash that patch directly in #1.
->
->It doesn't make sense to leave something partially fixed in #1. It's
->been completely broken from the start. folio_mk_pmd() should never have
->been used.
+From: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
 
-The reason was to make sure that in theory the correct trees can be updated 
-based on Fixes: for each. But I agree that it probably doesn't really matter.
+Multiple events can be enabled on the kernel command line via a comma
+separator. But if the are specified one at a time, then only the last
+event is enabled. This is because the event names are saved in a temporary
+buffer, and each call by the init cmdline code will reset that buffer.
 
->
->Apart from that, the end results LGTM, thanks
+This also affects names in the boot config file, as it may call the
+callback multiple times with an example of:
+
+  kernel.trace_event = ":mod:rproc_qcom_common", ":mod:qrtr", ":mod:qcom_aoss"
+
+Change the cmdline callback function to append a comma and the next value
+if the temporary buffer already has content.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260302-trace-events-allow-multiple-modules-v1-1-ce4436e37fb8@oss.qualcomm.com
+Signed-off-by: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_events.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index b7343fdfd7b0..249d1cba72c0 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -4493,7 +4493,11 @@ static char bootup_event_buf[COMMAND_LINE_SIZE] __initdata;
+ 
+ static __init int setup_trace_event(char *str)
+ {
+-	strscpy(bootup_event_buf, str, COMMAND_LINE_SIZE);
++	if (bootup_event_buf[0] != '\0')
++		strlcat(bootup_event_buf, ",", COMMAND_LINE_SIZE);
++
++	strlcat(bootup_event_buf, str, COMMAND_LINE_SIZE);
++
+ 	trace_set_ring_buffer_expanded(NULL);
+ 	disable_tracing_selftest("running event tracing");
+ 
+-- 
+2.51.0
+
+
 
