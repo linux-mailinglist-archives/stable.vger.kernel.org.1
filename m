@@ -1,186 +1,185 @@
-Return-Path: <stable+bounces-223442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNdnGqMVrWlgyAEAu9opvQ
-	(envelope-from <stable+bounces-223442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:22:27 +0100
+	id OPSaLgEXrWmRyAEAu9opvQ
+	(envelope-from <stable+bounces-223443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:28:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C023622EACC
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:22:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6466722EB17
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CF3F3024948
-	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 06:21:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C46F13037D4F
+	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 06:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C720731283E;
-	Sun,  8 Mar 2026 06:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D523832BF5D;
+	Sun,  8 Mar 2026 06:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zav1hpQh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNWnnSfW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499A127B343
-	for <stable@vger.kernel.org>; Sun,  8 Mar 2026 06:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A502BD11;
+	Sun,  8 Mar 2026 06:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772950915; cv=none; b=cdasGv6VDTvYRf2g8BTxCGeF0UZ4Cf+QJ9QhGBF39y6qynmCHFavkVvdiDTxZ1/GUEepaepk+l1NDsDhkdsx4NJqUQoZgWmyJG0uD9Ns2da9p/CLKzf0qgt5fQSIVBLXjnn37vdqpBEnVadJisUr2khimKGCsXFQGpKgek4PET4=
+	t=1772951267; cv=none; b=tSHJqVh2pqgT70crtxfg+fbsV4eTQLMUlnSX5J1tmqpDw5j+kqoOeuhx4Hk07xM4r+EZRUV+AJHp9hc1FM48Ltc/b15LjLIrkKA3CDQUwVwRgz2/fUktz0V5gmIlexr25BDhL5tWfrvyNmuQAqhVc8RLcGTaCShO1JK0GQHII5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772950915; c=relaxed/simple;
-	bh=aDfY1//oaZiGxwXobUZnkGalUh5IkzKrDN2WK4Aqvh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sKfkW/FAHXiIOgLDI/ak2obJcHxJ2fZJA58LyEh1R4i39r/2WBP1jfkCwOOECqxg4gJaITErp7ZvVARxIcg4cEk6M28whHrxgM7sT11Pzf70cPRttYKF33kFaSFdXw61W6kbNSWFB8WB37VyRxQz+iCyNdVXeHMKpmX7qiQktIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zav1hpQh; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-798527f822cso104953967b3.3
-        for <stable@vger.kernel.org>; Sat, 07 Mar 2026 22:21:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772950912; x=1773555712; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AVNaLXkn+wpKe98IsLDOvHFrwY+Zchd/o/Oq0a38lCQ=;
-        b=Zav1hpQhTrL/0ouAZGxd4GYU6FrGQG5KqqOfYntbTlgHRnHUDu08mR/5G2mSN02Fvj
-         g9Hp6OecFv2UUNXFyCjTetyWjEor6BnQXdO97ewpHznqKeXenPkHOveYFJKs3Wk6ri2Z
-         MASswnqrOs402yguyi8I4cEutB8w5yWsk0S2O1EH5bGl7mcIOJybtuHE4q6trfXgheK8
-         1Z4ga0FbWMvBpImNeP5JUS7M79rKYCIo41MO8szLoKCOtu+7mMu7U5f83ppYKCBEl9H3
-         /Dy6qxoBac+o2nv4AqmTB8jRr8oGrARMx2GBGfNo+O29aH3NG5KleZdNEDrkVrGlouAn
-         uOCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772950912; x=1773555712;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AVNaLXkn+wpKe98IsLDOvHFrwY+Zchd/o/Oq0a38lCQ=;
-        b=ICPga/5jzVkYkNUpbg5FGvnbPUOj94+xpIxNs7Hyl88DORstUz4AAVBR7pAKvQPMl6
-         j4s4SOJEY30D9AYwwYs7rtTkT9Q54c7DRjrsCsd5mc2KO5ZWzQaAkulMjATKu6a7uTkq
-         TtMcMCaQ/K4PfwMrZ+e6CzjTcFqPsEbzjbT3GYz83HaG4Q32ZuRd0cJBN0uVW/t7to7q
-         5uLBKY61gjdl9N9TP8LDpZy99p+4MpeIklvDLiyypN7onrcBpPx+GDpm8sYduhI0Hp7q
-         np4/N6UtHXu6VUBflYn7/eR/6VWCxkVObivPyxBz2W3tdCbgYD+zkAyJ/ahs4K6Tr1j5
-         JTAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJhhRwxX9yrh+BSGt2GOvWD/6zB7b3qjbNItfaDeiVFJ/ZqvQ3Et3IuTCOePRFmSKBb+rgcno=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY3dBSiHFOZs49opvxOyNuklM5i8IjkUHsWT56zAWHAuHWkhTv
-	O1bPR5h4irw0vG4zpFo4D0eFzTVavSe6H8WiQcHq1BxUN/fCYOkLOgkK
-X-Gm-Gg: ATEYQzwUUOoajIH9czVBVNEyoYWZsMJg6CmWwzkZpqw1QE8ZSiFPtEhinfG9w/tVx/6
-	wUGTarA9cKgYGIwlVOnJV3sq7dXH7byQICWoHWfjXVhwUa1ZPRRdhc4tt/sL0p7gCforfBAcUrD
-	yPOj2JHTA2QTCX4RiclyPxnzCC0ZnUUmmRo7Fs4IGLYZDhKgJtj7S9xD/vOuRsJ+ifSO8yqhFBQ
-	580DsKzRO4CCCZTMLhlWvxiuDT5uNRm2Shj2Hr+NzdsLBeJ8d2iGRSW9TSGN8IBF1eqZPiMuvUM
-	nHkPtvON+xTUgC0FZwwvKzFzAPVDJI2HgZUPYtb6SsS6JhYYL83cMv+VjaGxi8rnNalCtoWUQh8
-	gMxGK6riq4sGo4WqY9vwz516lw7oIYYmNZV86fsKwUAdhl+HHAMXJ6xH+QV1E1n/TPD1on4dK/J
-	69Us2ekrHVTbFy1/Rz3b2yth6Ck4Ejao4fPzTZhjWBWQm5cHAEof9c5AJBZpBvcA35IPk//pPbY
-	YuK
-X-Received: by 2002:a05:690c:c52c:b0:798:65ed:bb9b with SMTP id 00721157ae682-798dd688c7fmr67064417b3.27.1772950912232;
-        Sat, 07 Mar 2026 22:21:52 -0800 (PST)
-Received: from CS-396-Lab-Machine.. (c-24-12-10-127.hsd1.il.comcast.net. [24.12.10.127])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-798dee4a70bsm28803647b3.32.2026.03.07.22.21.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 22:21:51 -0800 (PST)
-From: Tyllis Xu <livelycarpet87@gmail.com>
-X-Google-Original-From: Tyllis Xu <LivelyCarpet87@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: arnd@arndb.de,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ychen@northwestern.edu,
-	danisjiang@gmail.com,
-	Tyllis Xu <LivelyCarpet87@gmail.com>
-Subject: [PATCH] misc: ibmasm: fix OOB MMIO read in ibmasm_handle_mouse_interrupt()
-Date: Sun,  8 Mar 2026 00:21:08 -0600
-Message-ID: <20260308062108.258940-1-LivelyCarpet87@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772951267; c=relaxed/simple;
+	bh=x+5oBETJCIhKD/G4vbt1bz5h6D/Psa7OJAz2mIkVAhU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o8hMWuTfQu+osJOhzWmPXbw5B+m6j2thtq0Y/Azcz4YOAVPjoJPbdJs4+0awusrZAlGu/GK9ojssSgBI/oHeR/3WEI8AdjI3fge6wPLNK5qJiYSfOMdjZe2wXZJoRK3MzfE1gfw+0sabEC1R0NU0j2PIrhOVWirg4kDZmxvBaD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNWnnSfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16C3EC116C6;
+	Sun,  8 Mar 2026 06:27:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772951267;
+	bh=x+5oBETJCIhKD/G4vbt1bz5h6D/Psa7OJAz2mIkVAhU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=jNWnnSfWo3Ae3mdAQOlvDUWSAMfGWQImf7Yihrrwp+bxRlRyuL3mp4Zx6l4P6Zrgm
+	 KT8eeGACxOZ5e7rEIS0Rk7IO7+FI9CZTfoGjpdKiJW0mkcyf1IlHZPSfl5y7KLGZyB
+	 xgejnq3s4N4zr76lzhjC7u4GPM3CUOoCpLZOmQ0/0b3pJpBfHNhwe7XnUTjG/FVH1E
+	 EEDM/cVgGloSKPEkC+MkoDDmrqZjlBkufuYQaXqyPdzLswP1b+QqemBcfJ0VbvpQAu
+	 Js9qPkIkXoKADSobND+eRcyUHeVsgJ+EzcqjvogCP0ZETghRX+bLiwPnf+633G6Xly
+	 7hoSS51YS8mZQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01EAAF55109;
+	Sun,  8 Mar 2026 06:27:46 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v5 0/5] soc: qcom: ice: Fix race between qcom_ice_probe()
+ and of_qcom_ice_get()
+Date: Sun, 08 Mar 2026 11:57:26 +0530
+Message-Id: <20260308-qcom-ice-fix-v5-0-e47e8a44b6c4@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C023622EACC
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM4WrWkC/3XOTQ6CMBAF4KuQri0Zpj+IK+9hXJS2SBMBoUo0h
+ Ls7sNEQ3UzyXma+zMSiH4KP7JBMbPBjiKFrKahdwmxt2ovnwVFmCKgBM+C97RoerOdVeHKHRhi
+ QqhToGJ3cBk/1yp3OlOsQ793wWvURl/YPNCIHXtjMlMppBWiPXYxp/zBX2mpSGmzxRvFloNgYg
+ gxtjdpLLbCo8j+G/BgCcGNIMsBrlUswytlff8zz/AbjMpVqNwEAAA==
+X-Change-ID: 20260210-qcom-ice-fix-d2a3a045b32d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ Sumit Garg <sumit.garg@oss.qualcomm.com>, mani@kernel.org, 
+ Neeraj Soni <neeraj.soni@oss.qualcomm.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ stable@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2153;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=x+5oBETJCIhKD/G4vbt1bz5h6D/Psa7OJAz2mIkVAhU=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBprRbgIjxlREu2N3Oxerz1F9yhh7jyZHQc5N16l
+ tvwB7MMBvKJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaa0W4AAKCRBVnxHm/pHO
+ 9dyyB/93wf6GMc4BczXT9iqaup4Keirysld8TVVwloGUzTO1C15URXSemhc9cLglxFps2Z/YupN
+ iJSNH7ajHi9B7My4XwLRwt6HiNig0twur2b9iuM5/g8/s4OKxBWL+x2DP/5QEcnruoDjMOYwzcE
+ 09Q4x9L3RsA1suy4VOWwcwzsxOO85zb2mNl0H4sOxY2wMPQxdLxA29OWiYV9n7DLaP3nITgxrtc
+ buOoTRj55bEODjI1zBTqN4N2yMb0Dw923JfhELEC91VpIYz+HWApIoDbVjr8is6WxSYw46BcLIC
+ tANvJN28Cdz9LTWdp8s256y5sO+Z7uX3f1HXUvEjLXlKWmQX
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
+X-Rspamd-Queue-Id: 6466722EB17
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-223443-lists,stable=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[arndb.de,vger.kernel.org,northwestern.edu,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223442-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[livelycarpet87@gmail.com,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.984];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.937];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,northwestern.edu:email]
+	HAS_REPLYTO(0.00)[manivannan.sadhasivam@oss.qualcomm.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:replyto,oss.qualcomm.com:mid]
 X-Rspamd-Action: no action
 
-ibmasm_handle_mouse_interrupt() performs an out-of-bounds MMIO read
-when the queue reader or writer index from hardware exceeds
-REMOTE_QUEUE_SIZE (60).
+Hi,
 
-A compromised service processor can trigger this by writing an
-out-of-range value to the reader or writer MMIO register before
-asserting an interrupt. Since writer is re-read from hardware on
-every loop iteration, it can also be set to an out-of-range value
-after the loop has already started.
+This series fixes the race betwen qcom_ice_probe() and of_qcom_ice_get()
+but synchronizing the two APIs and properly propagating the error codes to
+clients.
 
-The root cause is that get_queue_reader() and get_queue_writer() return
-raw readl() values that are passed directly into get_queue_entry(),
-which computes:
+Merge Strategy
+==============
 
-  queue_begin + reader * sizeof(struct remote_input)
+Due to dependency, all patches should go through Qcom SoC tree.
 
-with no bounds check. This unchecked MMIO address is then passed to
-memcpy_fromio(), reading 8 bytes from unintended device registers.
-For sufficiently large values the address falls outside the PCI BAR
-mapping entirely, triggering a machine check exception.
-
-Fix by checking both indices against REMOTE_QUEUE_SIZE at the top of
-the loop body, before any call to get_queue_entry(). On an out-of-range
-value, reset the reader register to 0 via set_queue_reader() before
-breaking, so that normal queue operation can resume if the corrupted
-hardware state is transient.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Fixes: 278d72ae8803 ("[PATCH] ibmasm driver: redesign handling of remote control events")
-Cc: stable@vger.kernel.org
-Cc: ychen@northwestern.edu
-Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- drivers/misc/ibmasm/remote.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v5:
+- Used Xarray instead of platform drvdata for passing the pointer since driver
+  core frees drvdata on probe failure.
+- Link to v4: https://lore.kernel.org/r/20260302-qcom-ice-fix-v4-0-0e65740a5dcc@oss.qualcomm.com
 
-diff --git a/drivers/misc/ibmasm/remote.c b/drivers/misc/ibmasm/remote.c
-index ec816d3b38cb..521531738c9a 100644
---- a/drivers/misc/ibmasm/remote.c
-+++ b/drivers/misc/ibmasm/remote.c
-@@ -177,6 +177,11 @@ void ibmasm_handle_mouse_interrupt(struct service_processor *sp)
- 	writer = get_queue_writer(sp);
- 
- 	while (reader != writer) {
-+		if (reader >= REMOTE_QUEUE_SIZE || writer >= REMOTE_QUEUE_SIZE) {
-+			set_queue_reader(sp, 0);
-+			break;
-+		}
-+
- 		memcpy_fromio(&input, get_queue_entry(sp, reader),
- 				sizeof(struct remote_input));
- 
+Changes in v4:
+- For supporting multi-ice instances in a SoC, stored the err ptr in platform
+  drvdata instead of in a global pointer.
+- Link to v3: https://lore.kernel.org/r/20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com
+
+Changes in v3:
+- Dropped the platform driver removal patch and used the ice_handle to pass
+  error codes. This was done as I learned that we need to have the platform
+  driver design going forward and also removing it introduces other issues.
+- Link to v2: https://lore.kernel.org/r/20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com
+
+Changes in v2:
+
+- Added MODULE_* macros back
+- Removed spurious platform_device_put()
+- Added patches to remove NULL return
+
+---
+Manivannan Sadhasivam (5):
+      soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+      soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
+      soc: qcom: ice: Return proper error codes from devm_of_qcom_ice_get() instead of NULL
+      mmc: sdhci-msm: Remove NULL check from devm_of_qcom_ice_get()
+      scsi: ufs: ufs-qcom: Remove NULL check from devm_of_qcom_ice_get()
+
+ drivers/mmc/host/sdhci-msm.c | 10 ++++-----
+ drivers/soc/qcom/ice.c       | 49 ++++++++++++++++++++++++++++++++------------
+ drivers/ufs/host/ufs-qcom.c  | 10 ++++-----
+ 3 files changed, 46 insertions(+), 23 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260210-qcom-ice-fix-d2a3a045b32d
+
+Best regards,
 -- 
-2.43.0
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
 
 
