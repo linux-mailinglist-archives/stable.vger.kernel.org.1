@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-223441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLUlJIMRrWm8xwEAu9opvQ
-	(envelope-from <stable+bounces-223441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:04:51 +0100
+	id iNdnGqMVrWlgyAEAu9opvQ
+	(envelope-from <stable+bounces-223442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:22:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EB422EA5C
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:04:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C023622EACC
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 07:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A20FF3014133
-	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 06:04:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CF3F3024948
+	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 06:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDE8293C42;
-	Sun,  8 Mar 2026 06:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C720731283E;
+	Sun,  8 Mar 2026 06:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e6VPjo9B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zav1hpQh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D4E267B89
-	for <stable@vger.kernel.org>; Sun,  8 Mar 2026 06:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499A127B343
+	for <stable@vger.kernel.org>; Sun,  8 Mar 2026 06:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772949887; cv=none; b=NvCKYoKpDX8PEor7AZWNCUop+4oszah6+c9RmGCcWsAVp5QE2fFRxOq5ka0OZL+nsRRUbs87RcOpn95CjqfQwR4dgk+i7xxYQcLAGfg7eVklQEI7la0S4ycEePAOwo0G/JUUx99W+m81MRnzm96AN91MeVt4LL2Wtf8ee0Z2Dvg=
+	t=1772950915; cv=none; b=cdasGv6VDTvYRf2g8BTxCGeF0UZ4Cf+QJ9QhGBF39y6qynmCHFavkVvdiDTxZ1/GUEepaepk+l1NDsDhkdsx4NJqUQoZgWmyJG0uD9Ns2da9p/CLKzf0qgt5fQSIVBLXjnn37vdqpBEnVadJisUr2khimKGCsXFQGpKgek4PET4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772949887; c=relaxed/simple;
-	bh=Ko28LLLxZOaYbbCwlWUcoPQfzS4gJiS1IRs5ERZupuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j71c1YEq1/Pr05ArtgPr8g/7BXEFePWMBVJtzCy1KEBkpuC0ICWLBESKCU60YuqoVC0sm5xVGMBdZetFhpGyfmfs0s2BXPzUx38AxxgZI+ifMyH0GbEELqgRH6Z9LqY4uzmUo3J0mF6jD6wuHovlLBwLnoQguFB6JnCv4nHiQys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e6VPjo9B; arc=none smtp.client-ip=209.85.128.182
+	s=arc-20240116; t=1772950915; c=relaxed/simple;
+	bh=aDfY1//oaZiGxwXobUZnkGalUh5IkzKrDN2WK4Aqvh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sKfkW/FAHXiIOgLDI/ak2obJcHxJ2fZJA58LyEh1R4i39r/2WBP1jfkCwOOECqxg4gJaITErp7ZvVARxIcg4cEk6M28whHrxgM7sT11Pzf70cPRttYKF33kFaSFdXw61W6kbNSWFB8WB37VyRxQz+iCyNdVXeHMKpmX7qiQktIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zav1hpQh; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-793fdbb8d3aso128697667b3.3
-        for <stable@vger.kernel.org>; Sat, 07 Mar 2026 22:04:46 -0800 (PST)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-798527f822cso104953967b3.3
+        for <stable@vger.kernel.org>; Sat, 07 Mar 2026 22:21:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772949885; x=1773554685; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772950912; x=1773555712; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FYUTFHub9G2d8jZBvG3bgA1o3lA1GsQbn2lmvR17SYk=;
-        b=e6VPjo9BuH8jJXgBBoGdM9f5VmRXzAd78a4mCRsxByFoDSSBPagLqkecgOCVakKt6l
-         5tEHzbJiCivoHVRrkdrDJDtEeLwS+1D5IANuaQRGXeJlAf18Qtf/ojeguwpoGI80XowQ
-         xGjC7J+s7vCYKJeupXqRlYaZ5oRQ4L0Ykemx/51C40ckYtzwuQ6MGVhusudQQc15fmrr
-         7RIg8Cx2JCoQ45FIf67tJyKEKSfGk02aE6UNBNkGOGjJM4vauqGYNdgLBhBt46j+sRtn
-         cXi3hMzz9IsR8sQ+iZSIEOGu7hCiL68icNRajlqV4d5c+7B9y7ICCEF9ha/o++1dla7d
-         ffcg==
+        bh=AVNaLXkn+wpKe98IsLDOvHFrwY+Zchd/o/Oq0a38lCQ=;
+        b=Zav1hpQhTrL/0ouAZGxd4GYU6FrGQG5KqqOfYntbTlgHRnHUDu08mR/5G2mSN02Fvj
+         g9Hp6OecFv2UUNXFyCjTetyWjEor6BnQXdO97ewpHznqKeXenPkHOveYFJKs3Wk6ri2Z
+         MASswnqrOs402yguyi8I4cEutB8w5yWsk0S2O1EH5bGl7mcIOJybtuHE4q6trfXgheK8
+         1Z4ga0FbWMvBpImNeP5JUS7M79rKYCIo41MO8szLoKCOtu+7mMu7U5f83ppYKCBEl9H3
+         /Dy6qxoBac+o2nv4AqmTB8jRr8oGrARMx2GBGfNo+O29aH3NG5KleZdNEDrkVrGlouAn
+         uOCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772949885; x=1773554685;
+        d=1e100.net; s=20230601; t=1772950912; x=1773555712;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FYUTFHub9G2d8jZBvG3bgA1o3lA1GsQbn2lmvR17SYk=;
-        b=XhYcrEpZ7VuGajG9macbQZycb7o40X/zlG7gt54hUrriK3jqs9JWXXPRW9KX+fusL5
-         429J7skphKlz+ZOv4egDOQhrrSn4pvI50wFFsPEsMi+0Io3W32BMYtDYT7sdkepFEyym
-         QYLcrlXE74LkVo+gTCytZkEECLWi0amaTwUj78/igHxREjKrHfPV54w5ejNESv3MzN9k
-         416zBlurJC/AuavZI7sUUm7fdRGE8s/YAXb+mlJxlgIHnhhn8xevnRs8KCc9oz1n0aHP
-         pVMibFv681TH/+5obPWG2VpMUXA11ss0Elr/ZYL4qcJ9vxTtBF8mVeIE2L6EhfLOocpr
-         yf5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXiJpvNGa3KH5GKErhxiMo0FhkbW/b9pGMfuQNdQN47TWT6LASFGw3otXZPaHB5p28gkGVcQ/Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPZtFHBREw31KfTPoqpvPmNrTNsEYsNh879JpvGOBZobVyeWTu
-	iqYDSYxSLW0lXRzZ6smvJd4L4GkCH2yYJHg54S2HCQKiqOfCIgiUl2kC
-X-Gm-Gg: ATEYQzy67Xz4aCWvNwb8WCarVQX8lSp7ZLvrc1ODBcT1o9wBcSQpkkfkCt5ot2Etvy0
-	WpdQViPJLCpWeQBiJ62rICTNtgjizKIzy8/tge5eM+S4LS6esq5Qe3S6c3ho56VhbG1OzLWppOp
-	o9Gw9ADVw5vJ5E6XXANp8mZbA5eI+jXt+sS+4/swsIT+uFqKz9CfwxWnSBBYbPCA8y2/nZB22TI
-	RQ9fN/oF22YqtQqNVNQg9xCNedG/MQTRFWedbywXQ9shjryznon0iGP12Jku6WG0ESXM6DtGgwG
-	L70OaWRUSgH847DvxGf7DUUSLO2/UEVrXRcZdkAAkIPlSgJzRjCG2tsw5+SeizVf/qsQwcgFrv4
-	F7ngJgFOjeE9BDKCcBLinarTilZKQLnVLONn4jxMyHuVQzlAIHu6DjUMRo+kJv+NWE83Ijrpv6B
-	gFg4f8mzRFRYxOhqp4ZUfonpYNyXssJyhDDKZeFgDLnq3O12a5bmVUEK20NGze65N05Llq2V/Ca
-	sg0
-X-Received: by 2002:a05:690c:660c:b0:798:7019:fdbf with SMTP id 00721157ae682-798dd76ed98mr71325687b3.31.1772949885548;
-        Sat, 07 Mar 2026 22:04:45 -0800 (PST)
+        bh=AVNaLXkn+wpKe98IsLDOvHFrwY+Zchd/o/Oq0a38lCQ=;
+        b=ICPga/5jzVkYkNUpbg5FGvnbPUOj94+xpIxNs7Hyl88DORstUz4AAVBR7pAKvQPMl6
+         j4s4SOJEY30D9AYwwYs7rtTkT9Q54c7DRjrsCsd5mc2KO5ZWzQaAkulMjATKu6a7uTkq
+         TtMcMCaQ/K4PfwMrZ+e6CzjTcFqPsEbzjbT3GYz83HaG4Q32ZuRd0cJBN0uVW/t7to7q
+         5uLBKY61gjdl9N9TP8LDpZy99p+4MpeIklvDLiyypN7onrcBpPx+GDpm8sYduhI0Hp7q
+         np4/N6UtHXu6VUBflYn7/eR/6VWCxkVObivPyxBz2W3tdCbgYD+zkAyJ/ahs4K6Tr1j5
+         JTAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJhhRwxX9yrh+BSGt2GOvWD/6zB7b3qjbNItfaDeiVFJ/ZqvQ3Et3IuTCOePRFmSKBb+rgcno=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY3dBSiHFOZs49opvxOyNuklM5i8IjkUHsWT56zAWHAuHWkhTv
+	O1bPR5h4irw0vG4zpFo4D0eFzTVavSe6H8WiQcHq1BxUN/fCYOkLOgkK
+X-Gm-Gg: ATEYQzwUUOoajIH9czVBVNEyoYWZsMJg6CmWwzkZpqw1QE8ZSiFPtEhinfG9w/tVx/6
+	wUGTarA9cKgYGIwlVOnJV3sq7dXH7byQICWoHWfjXVhwUa1ZPRRdhc4tt/sL0p7gCforfBAcUrD
+	yPOj2JHTA2QTCX4RiclyPxnzCC0ZnUUmmRo7Fs4IGLYZDhKgJtj7S9xD/vOuRsJ+ifSO8yqhFBQ
+	580DsKzRO4CCCZTMLhlWvxiuDT5uNRm2Shj2Hr+NzdsLBeJ8d2iGRSW9TSGN8IBF1eqZPiMuvUM
+	nHkPtvON+xTUgC0FZwwvKzFzAPVDJI2HgZUPYtb6SsS6JhYYL83cMv+VjaGxi8rnNalCtoWUQh8
+	gMxGK6riq4sGo4WqY9vwz516lw7oIYYmNZV86fsKwUAdhl+HHAMXJ6xH+QV1E1n/TPD1on4dK/J
+	69Us2ekrHVTbFy1/Rz3b2yth6Ck4Ejao4fPzTZhjWBWQm5cHAEof9c5AJBZpBvcA35IPk//pPbY
+	YuK
+X-Received: by 2002:a05:690c:c52c:b0:798:65ed:bb9b with SMTP id 00721157ae682-798dd688c7fmr67064417b3.27.1772950912232;
+        Sat, 07 Mar 2026 22:21:52 -0800 (PST)
 Received: from CS-396-Lab-Machine.. (c-24-12-10-127.hsd1.il.comcast.net. [24.12.10.127])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-798dec8b31bsm29417947b3.1.2026.03.07.22.04.43
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-798dee4a70bsm28803647b3.32.2026.03.07.22.21.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 22:04:45 -0800 (PST)
+        Sat, 07 Mar 2026 22:21:51 -0800 (PST)
 From: Tyllis Xu <livelycarpet87@gmail.com>
 X-Google-Original-From: Tyllis Xu <LivelyCarpet87@gmail.com>
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
+To: gregkh@linuxfoundation.org
+Cc: arnd@arndb.de,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	ychen@northwestern.edu,
 	danisjiang@gmail.com,
 	Tyllis Xu <LivelyCarpet87@gmail.com>
-Subject: [PATCH] ibmasm: validate MFA offset against BAR0 size
-Date: Sun,  8 Mar 2026 00:04:10 -0600
-Message-ID: <20260308060411.258298-1-LivelyCarpet87@gmail.com>
+Subject: [PATCH] misc: ibmasm: fix OOB MMIO read in ibmasm_handle_mouse_interrupt()
+Date: Sun,  8 Mar 2026 00:21:08 -0600
+Message-ID: <20260308062108.258940-1-LivelyCarpet87@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -95,7 +95,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 08EB422EA5C
+X-Rspamd-Queue-Id: C023622EACC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -103,13 +103,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,northwestern.edu,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223441-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[arndb.de,vger.kernel.org,northwestern.edu,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223442-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -124,110 +124,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,northwestern.edu:email]
 X-Rspamd-Action: no action
 
-ibmasm_interrupt_handler() and ibmasm_send_i2o_message() dereference an
-MMIO pointer derived from a hardware-supplied MFA offset without bounds
-checking, allowing out-of-bounds MMIO reads and writes.
+ibmasm_handle_mouse_interrupt() performs an out-of-bounds MMIO read
+when the queue reader or writer index from hardware exceeds
+REMOTE_QUEUE_SIZE (60).
 
-A compromised service processor can supply a crafted MFA value whose offset
-exceeds the size of the mapped BAR0 region. The driver passes this
-through valid_mfa(), which only rejects the sentinel 0xFFFFFFFF, then
-immediately uses it to compute an MMIO pointer in interrupt context.
-A malicious message_size field can additionally drive
-ibmasm_receive_message() to read further beyond the end of the BAR.
+A compromised service processor can trigger this by writing an
+out-of-range value to the reader or writer MMIO register before
+asserting an interrupt. Since writer is re-read from hardware on
+every loop iteration, it can also be set to an out-of-range value
+after the loop has already started.
 
-The root cause is that get_i2o_message() adds the hardware-supplied
-GET_MFA_ADDR(mfa) offset to base_address with no upper bound check, and
-incoming_data_size() trusts the hardware message_size field without
-clamping it to the remaining mapped space.
+The root cause is that get_queue_reader() and get_queue_writer() return
+raw readl() values that are passed directly into get_queue_entry(),
+which computes:
 
-Fix by storing the BAR0 length at probe time and rejecting any MFA whose
-computed offset would place the i2o_message structure outside the mapped
-region. Also clamp the data sizes passed to ibmasm_receive_message() and
-the outbound memcpy_toio() to the remaining mapped space so that a
-crafted message_size or oversized dot command cannot drive reads or
-writes beyond the end of the BAR.
+  queue_begin + reader * sizeof(struct remote_input)
+
+with no bounds check. This unchecked MMIO address is then passed to
+memcpy_fromio(), reading 8 bytes from unintended device registers.
+For sufficiently large values the address falls outside the PCI BAR
+mapping entirely, triggering a machine check exception.
+
+Fix by checking both indices against REMOTE_QUEUE_SIZE at the top of
+the loop body, before any call to get_queue_entry(). On an out-of-range
+value, reset the reader register to 0 via set_queue_reader() before
+breaking, so that normal queue operation can resume if the corrupted
+hardware state is transient.
 
 Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: ychen@northwestern.edu
+Fixes: 278d72ae8803 ("[PATCH] ibmasm driver: redesign handling of remote control events")
 Cc: stable@vger.kernel.org
+Cc: ychen@northwestern.edu
 Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
 ---
- drivers/misc/ibmasm/ibmasm.h   |  1 +
- drivers/misc/ibmasm/lowlevel.c | 33 +++++++++++++++++++++++++++------
- drivers/misc/ibmasm/module.c   |  1 +
- 3 files changed, 29 insertions(+), 6 deletions(-)
+ drivers/misc/ibmasm/remote.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/misc/ibmasm/ibmasm.h b/drivers/misc/ibmasm/ibmasm.h
-index XXXXXXX..XXXXXXX 100644
---- a/drivers/misc/ibmasm/ibmasm.h
-+++ b/drivers/misc/ibmasm/ibmasm.h
-@@ -139,6 +139,7 @@ struct service_processor {
- 	struct list_head	node;
- 	spinlock_t		lock;
- 	void __iomem		*base_address;
-+	resource_size_t		bar0_size;
- 	unsigned int		irq;
- 	struct command		*current_command;
- 	struct command		*heartbeat;
-diff --git a/drivers/misc/ibmasm/module.c b/drivers/misc/ibmasm/module.c
-index XXXXXXX..XXXXXXX 100644
---- a/drivers/misc/ibmasm/module.c
-+++ b/drivers/misc/ibmasm/module.c
-@@ -96,6 +96,7 @@ static int ibmasm_init_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!sp->base_address) {
- 		dev_err(sp->dev, "Failed to ioremap pci memory\n");
- 		result =  -ENODEV;
- 		goto error_ioremap;
- 	}
-+	sp->bar0_size = pci_resource_len(pdev, 0);
-
- 	result = request_irq(sp->irq, ibmasm_interrupt_handler, IRQF_SHARED,
-diff --git a/drivers/misc/ibmasm/lowlevel.c b/drivers/misc/ibmasm/lowlevel.c
-index XXXXXXX..XXXXXXX 100644
---- a/drivers/misc/ibmasm/lowlevel.c
-+++ b/drivers/misc/ibmasm/lowlevel.c
-@@ -26,9 +26,17 @@ int ibmasm_send_i2o_message(struct service_processor *sp)
- 	mfa = get_mfa_inbound(sp->base_address);
- 	if (!mfa)
- 		return 1;
-+	if (GET_MFA_ADDR(mfa) + sizeof(struct i2o_message) > sp->bar0_size) {
-+		dev_err(sp->dev, "ignoring out-of-range MFA 0x%08x\n", mfa);
-+		return 1;
-+	}
-
- 	command_size = get_dot_command_size(command->buffer);
-+	command_size = min_t(unsigned int, command_size,
-+			     (unsigned int)(sp->bar0_size - GET_MFA_ADDR(mfa) -
-+					    sizeof(struct i2o_header)));
- 	header.message_size = outgoing_message_size(command_size);
-@@ -60,12 +68,25 @@ irqreturn_t ibmasm_interrupt_handler(int irq, void * dev_id)
-
- 	mfa = get_mfa_outbound(base_address);
- 	if (valid_mfa(mfa)) {
--		struct i2o_message *msg = get_i2o_message(base_address, mfa);
--		ibmasm_receive_message(sp, &msg->data, incoming_data_size(msg));
--	} else
--		dbg("didn't get a valid MFA\n");
-+		if (GET_MFA_ADDR(mfa) + sizeof(struct i2o_message) > sp->bar0_size) {
-+			dev_err(sp->dev,
-+				"ignoring out-of-range MFA 0x%08x\n", mfa);
-+		} else {
-+			struct i2o_message *msg = get_i2o_message(base_address, mfa);
-+			u32 max_data = (u32)(sp->bar0_size - GET_MFA_ADDR(mfa) -
-+					     sizeof(struct i2o_header));
-+
-+			ibmasm_receive_message(sp, &msg->data,
-+					       min_t(u32, incoming_data_size(msg),
-+						     max_data));
+diff --git a/drivers/misc/ibmasm/remote.c b/drivers/misc/ibmasm/remote.c
+index ec816d3b38cb..521531738c9a 100644
+--- a/drivers/misc/ibmasm/remote.c
++++ b/drivers/misc/ibmasm/remote.c
+@@ -177,6 +177,11 @@ void ibmasm_handle_mouse_interrupt(struct service_processor *sp)
+ 	writer = get_queue_writer(sp);
+ 
+ 	while (reader != writer) {
++		if (reader >= REMOTE_QUEUE_SIZE || writer >= REMOTE_QUEUE_SIZE) {
++			set_queue_reader(sp, 0);
++			break;
 +		}
-+	} else {
-+		dbg("didn't get a valid MFA\n");
-+	}
++
+ 		memcpy_fromio(&input, get_queue_entry(sp, reader),
+ 				sizeof(struct remote_input));
+ 
+-- 
+2.43.0
 
- 	set_mfa_outbound(base_address, mfa);
 
