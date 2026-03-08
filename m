@@ -1,158 +1,152 @@
-Return-Path: <stable+bounces-223452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LRzKtFOrWk+1QEAu9opvQ
-	(envelope-from <stable+bounces-223452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 11:26:25 +0100
+	id fiiRNs18rWnx3QEAu9opvQ
+	(envelope-from <stable+bounces-223453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 14:42:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A49C22F521
-	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 11:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332B223070E
+	for <lists+stable@lfdr.de>; Sun, 08 Mar 2026 14:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68D593012240
-	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 10:26:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1822300F9E2
+	for <lists+stable@lfdr.de>; Sun,  8 Mar 2026 13:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EC0367F25;
-	Sun,  8 Mar 2026 10:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28243815EF;
+	Sun,  8 Mar 2026 13:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S8pDzW1f"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761A019CC28;
-	Sun,  8 Mar 2026 10:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1B936C595
+	for <stable@vger.kernel.org>; Sun,  8 Mar 2026 13:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772965579; cv=none; b=tgQbxWtpmD6GtGxlkpqr7uV5KXd9Thky84bH4TG1AeTWyx80sq6kXwomk4kdLWGeL5Y/I20anXdD4Ht0v8S/4EMfX8CKXI37NM/0Q5BDVIIGadwYSESWfYZWU1yukV3SIQYtywKEWHDwwG9IgjbuQe5rZbaLEhJf/I+uXb+Jvyo=
+	t=1772977351; cv=none; b=owuC6AOKveX99pFKE7bkC3+zFiD2zYXoYq0Jp6jqXE60vtFYDcFmAqTF4h1fhSSEPkMwyBPc77RAVPYO289RjOcQyCqq42ZfJG2wovaJhGV1M3tI+3B3w86ddyXtg0ZfOEZzO7JW69BBzLiZrsWwUETxIQmiAuVBEEJYSCLvpXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772965579; c=relaxed/simple;
-	bh=b3rzRo0DwMxUrQcfu+O99IUprRq8kIZLzUeZ/gqPrJg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OMyq+RVP49f2p65NTgmTocCvTpVdCMMfocppIC3jpDttC1s96Gp/DHgqqFnN4C1cUxHgFWHZwZI8s+GUe+H4EH51AovNSEECXPCbu1l+KmavLW3pWH5Py5QBwbMUNIjxs3YJrsuZ1QCw4xFNN12op8kyvPA3AsKPb3GfPpmyFiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vzBKp-004Y9Y-0W;
-	Sun, 08 Mar 2026 10:26:07 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vzBKn-00000009J45-3iE0;
-	Sun, 08 Mar 2026 11:26:05 +0100
-Message-ID: <552119600ffc7b417c55c18d7fd8c236e0bb1626.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 000/334] 5.10.252-rc2 review
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	gregkh@linuxfoundation.org, patches@lists.linux.dev, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, 	shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, 	pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, 	broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-Date: Sun, 08 Mar 2026 11:26:00 +0100
-In-Reply-To: <aawmN6mkFZnv0Nd3@laps>
-References: <20260302161007.2523181-1-sashal@kernel.org>
-	 <992df439ca66e562353d285642c6ab8e1c69e2e6.camel@decadent.org.uk>
-	 <aawmN6mkFZnv0Nd3@laps>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-EcYjnyE4x1wAkZhwTAIf"
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1772977351; c=relaxed/simple;
+	bh=NByE4PT0wqkfdJU03jkGo6aPNrHHpfER3sZMXEnWO1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hVz5y4/WZ9M8o/1+CAGPiE3Ln63qpe06TvDXWCU5HYOoVTx32wxlvsxy14AwRlyItoyipI7e/9YOCHsa2FU+ucT2FB3ac7j1ArpUl8wQCzdaBc2zKghqOf290t8WuTKlrrhUoQq8Dyw4jKS6Ha54AGfnbk+GcdXs0M6BxtNtZbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S8pDzW1f; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2be27fa54feso7700160eec.0
+        for <stable@vger.kernel.org>; Sun, 08 Mar 2026 06:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772977350; x=1773582150; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HbKp0eloZA1EESwF31tdwEOfegEsBVQl6ISBISTgW7c=;
+        b=S8pDzW1fcg7JK2ZgQ+fBK734E4U+mH/d2NWCmaeoA4kg6JiK2WofB0EMNl+NUjc/r4
+         zjGVmibVwlfyP3vvCTqW46giAZmop9Yce8oP81KhHY1Qosk5I9E8fzfJvxGOTbGfhDt1
+         a/dWDyfm2jPNGDsJSdF7Wd6zoBLO6RPYl8e8/g3ZKEoCYSUE+d1OEX51NLBTiWhq/J/g
+         Z1lDrC+FEMJgzL6Sz4ECrvxema5xTg/NCXPQqC26BM1DB2ODWwxnBgBRFptJoVQ7CX1o
+         9wydMl1PoQLmyX5VaqYXUO0RxeWalXniiKi2qll+5XEIad36/TiQIkU8qkOjryI5np1c
+         QgKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772977350; x=1773582150;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HbKp0eloZA1EESwF31tdwEOfegEsBVQl6ISBISTgW7c=;
+        b=LWKnyUaRDF7i8M4i0BJMFa1eaGbR0NZsgJ8rmT0X9mRGc5XfwfusHag9z+G9zR4cB/
+         D9vzWDinPJzFW83Vm1OOgwC80OSOtN3bpSSJQlOkN2VTD3RRBQkko9yu0gWJLVjo5NoM
+         M1/GMzpFRSBvCZGRorheOH2C2kE5y7WnDYw92/z6eAxargPmYHe9lPEUUGjrLtsSM6/Y
+         7QhHum5aRYNzPne9qnelzRBR421RPI+lIK7EiMM9SB+CVz3/hpEvVEM2Tvw4o7o4U/iH
+         jB4sOzIwf8GSxuPTi5DWDjKQEAdIm9FEFofyd78LcHUOGj5cMcLVrPC+q630MOJmTrAA
+         kFBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPiq77rnzu7xkXiXoEqrk9OhDjGe1lruydJM9vgwXiKk//MabQv6LpcGTh6/RnDypy5QSi2pI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8xszulZS2QLHv81jZ1KHNzvt9OB5SqBDIyj/8+YPiLipcrZWV
+	JOEctI/2atwDRzfi7QJVChSR5v1J8hBhjYqT3JEtbndHBi573vobYBQC
+X-Gm-Gg: ATEYQzx3rM2FoaH55tNBHvwJGeTLOV7I4RX1GrBtYmowU3lUwjpJwLeoSmVj0kSP/Ap
+	jcJkQafeKwBhHiVeR0S7fhoceZ1v7cnDHqDgXRNiKVKZlf8Vdl4IxU14gE12dbHNkfLnZK5TLQC
+	ybrWPKj1a6UmmUfcKCH2oak2zdc3coEemngRGFHfsvwE0vZWGbbLFBuphqweix7RKVqGDQp2FNR
+	FEqX3ZzDogC2Yexs2XJ/D8nLwFJQnMrI440R+Y/K4DeiF9qWtkn30oQBui1AJoQJRp/EHe0XEKD
+	Hk0eZN2SUK3Q6cE/jFFGIEjrRooU37Dhago2kido7byWfk6rh1zxZtFI3drLfKNfz+L9qww1OSd
+	Qr733a4sFs9RHoJBMU2VrRxNujr70DEsb3Pc3R2aIaX8tk2m7V12M1t8P5ZCUUD1bC4NiWrc6tf
+	gLLtqkYJE=
+X-Received: by 2002:a05:7301:1018:b0:2ba:9835:112d with SMTP id 5a478bee46e88-2be4de928e2mr2880611eec.3.1772977349688;
+        Sun, 08 Mar 2026 06:42:29 -0700 (PDT)
+Received: from zjh-MS-7E01.. ([2602:fbf1:b002::1032])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f96f25bsm5636535eec.28.2026.03.08.06.42.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2026 06:42:29 -0700 (PDT)
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+To: sj@kernel.org
+Cc: aarcange@redhat.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	jianhuizzzzz@gmail.com,
+	jonaszhou@zhaoxin.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mike.kravetz@oracle.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	peterx@redhat.com,
+	rppt@kernel.org,
+	stable@vger.kernel.org,
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Sun,  8 Mar 2026 21:41:51 +0800
+Message-ID: <20260308134152.6877-1-jianhuizzzzz@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260307032759.100915-1-sj@kernel.org>
+References: <20260307032759.100915-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Rspamd-Queue-Id: 0A49C22F521
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 332B223070E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223452-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[decadent.org.uk];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[redhat.com,linux-foundation.org,kernel.org,gmail.com,zhaoxin.com,vger.kernel.org,kvack.org,oracle.com,linux.dev,suse.de,syzkaller.appspotmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223453-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.599];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[decadent.org.uk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianhuizzzzz@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.994];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+On Fri, Mar 07, 2026 at 03:27:00AM +0000, SeongJae Park wrote:
+> I just found this patch makes UML build fails as below.
+>
+>     ../include/linux/hugetlb.h:1214:16: error: implicit declaration of
+>     function 'linear_page_index' [-Wimplicit-function-declaration]
 
---=-EcYjnyE4x1wAkZhwTAIf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, 2026-03-07 at 08:20 -0500, Sasha Levin wrote:
-> On Fri, Mar 06, 2026 at 08:19:01PM +0100, Ben Hutchings wrote:
-> > On Mon, 2026-03-02 at 11:10 -0500, Sasha Levin wrote:
-> > > This is the start of the stable review cycle for the 5.10.252 release=
-.
-> > > There are 334 patches in this series, all will be posted as a respons=
-e
-> > > to this one.
-> >=20
-> > And yet they were not.
->=20
-> I don't think we ever did post the series for -rc2+, did we?
-[...]
-
-The patches for rc1 also weren't sent, or at least none of them reached
-the stable list.  And rc2 normally only adds or removes a small number
-of patches identified in the review of rc1, but this rc2 added nearly
-200 for no clear reason.
-
-Ben.
-
---=20
-Ben Hutchings
-Unix is many things to many people,
-but it's never been everything to anybody.
-
---=-EcYjnyE4x1wAkZhwTAIf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmmtTrgACgkQ57/I7JWG
-EQliUA//aJvKYHuzzwWsUaI2F5+vpT9HIbb2ZuQiUbjDnhBeauKbdG+W0yAgLSbs
-aTJ8Vt4S2zYjrqS9PFBOzTiRUeZksJh7rUUKeAUjIVODIPVaiuffQC8UnhF6fL2G
-pHRm76+jvDm1udi80F5DKQjtCtUlZNsR3uOH52E3IavwpeyeatiHDlUyQUFYvh4p
-nFDTbs/7LgBLUkXBztTKQPT/7qV8G3BLvH8cS1ky3MLW4l4ucIr1q4DWJo89kUOB
-cxaEkk1Ewm02SCV1sa4WL/aVDglKXYVtjVPXixO7VMWy7Edk0PQTGqMFqMDIiyYd
-xVZrveTprrgvSnugbmUl0tpgGOjMKcuDXAD6uJxMquk43ZwRcwWoq6eMWcbn+cWS
-jHlZHwyoV8lp+x8bKvf1Memf3SQBVkzZJSol9aMr7P7y6RBDqjSxLXyptR2dMUOD
-b9bozFHAvW1sEA+MfiKSN7ZlWV0Rc9K9UIvZaTW6Xntebyv+FoErFKsBX1+KSmhh
-r2COQQAIMXbLOIc993ujiKtoBs8A65bs2Fy28PGv+3dc1GvC6129RTT0Bc7JV/e/
-0tSNiF6CegldwsgSdnfG1ZWs+ZNrOs8TXkHb/DQn+wJf0cZAemi9ZM1Z0XPXr9y+
-hnN1hFjT18nkrbGqciykpRUbI42Z8nqzoMZAg/WiXgM/mrPtSVE=
-=xHR8
------END PGP SIGNATURE-----
-
---=-EcYjnyE4x1wAkZhwTAIf--
+Thanks for catching this! As Peter pointed out, the
+!CONFIG_HUGETLB_PAGE stub is actually unnecessary since
+mfill_atomic_hugetlb() is only compiled when CONFIG_HUGETLB_PAGE is
+enabled. I have removed it in v2, which also fixes this build error.
 
