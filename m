@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-223538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGLpDvSermm2GwIAu9opvQ
-	(envelope-from <stable+bounces-223538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:36 +0100
+	id ELC8Cteermm2GwIAu9opvQ
+	(envelope-from <stable+bounces-223539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C3A236EEE
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E66A236EC0
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE739303AF2B
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:19:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F9CA303EABE
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AA2313549;
-	Mon,  9 Mar 2026 10:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A0638BF9B;
+	Mon,  9 Mar 2026 10:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaCm0APF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzyxKWI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA4E38E5E3
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2E981732
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773051583; cv=none; b=YL0wg1IzMYnnK9+VrccPs+XoUEeprH9LjELfDki7K6jBq788wbZ+235E87uj/0/utt3ZH3TCYqpALTglTmiVimqnN/gGS7Kp9HYP7tYUq702rvWbYOhbCQQ53W7XndPEZDRrJeISddqUyS1SHDO72sReN6YTlGZ++oDHtTRjb00=
+	t=1773051604; cv=none; b=pvEN5zqompmRlveDi9gstACswYX5TS7cW+TyUn3NVdMfkBJRpe3vRP8CdaULT3crQaBq++2bLOJ1H6eb09C71Rz9+RxUDr5Zi2hQ8/K9y7TSY0r1S/cEhuhZlwQRxI5xQ1a75sT8dXZ76umo4OLy9/AF/9UeHrXqkU8wq4YJZ8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773051583; c=relaxed/simple;
-	bh=0czc614pZjQRReOgq7S1WuD9qxaIJb1DKlnW45FL/Do=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tEtO8ESi0BIMbvrgD2Agty8gmwjU4OqOP9ZgOEIB7LZ23KgrWz/pV/d9bxGi53cR2un6DnlOFpCjoikfanbYN2h0qxqFbgmzJNT8nwP6hTHb6zkuAcqdmLdKaJsi3NerzWjhfyN008vAAz+1mnTY2mOB4E3KqSOV+UolPjUzIlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaCm0APF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4166C4CEF7;
-	Mon,  9 Mar 2026 10:19:42 +0000 (UTC)
+	s=arc-20240116; t=1773051604; c=relaxed/simple;
+	bh=GMQD61fd2KErxWs1PJMWwJEFRZpmw0+HNGfeq9bZ4lc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LAk/CFZ9KRekGegqWPBPHHaEpJoGLqSdeby35L4fL5b4+ZjYSHv6tLcjzeUcVM8vkjoMWllE2qidwBIUpgedWK5ZkWAsK38yB752ktRoaMrGL4M1r3GPIlTVuhHDJodcgLmHxsktkPqyosbvM2w68Zi5AmDkstJcb0hWnbQvjsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzyxKWI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51CDC4CEF7;
+	Mon,  9 Mar 2026 10:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773051583;
-	bh=0czc614pZjQRReOgq7S1WuD9qxaIJb1DKlnW45FL/Do=;
+	s=korg; t=1773051604;
+	bh=GMQD61fd2KErxWs1PJMWwJEFRZpmw0+HNGfeq9bZ4lc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iaCm0APFB2mAFpSlALGSHrMFMnU7JuRjmTTARC8cdezVS8dJYHr6a/y0B4BspTzq4
-	 g23VMCLH+jXZL1LLXbVaJZKjmy79xxcPLuGXo5lcg1MVJMIh+kkpNWvbSRGSe0jokV
-	 xz/EPzYZGRem17CrZjR1a8aD/X1IHozUXwJ6wSjw=
-Subject: FAILED: patch "[PATCH] wifi: cfg80211: cancel rfkill_block work in" failed to apply to 5.10-stable tree
-To: d.dulov@aladdin.ru,johannes.berg@intel.com
+	b=BzyxKWI5FYeIvwk/6EYsKPujCMvOBn7ovRk4uTmGkct8R3kR02Sb2pFIBgcJVabCK
+	 gQaSNfwEm+BoilSjNM2E4GWSU3I5qzsWqITL5joJtTbytu4CKBgc+VAAF3aysjaAma
+	 ufRu/3MzWv1cGcQtROQ3yTo+skowz05em2Qv+idE=
+Subject: FAILED: patch "[PATCH] wifi: mac80211: fix NULL pointer dereference in" failed to apply to 5.10-stable tree
+To: vahagn@redrays.io,johannes.berg@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Mar 2026 11:19:35 +0100
-Message-ID: <2026030935-cassette-expensive-04de@gregkh>
+Date: Mon, 09 Mar 2026 11:20:01 +0100
+Message-ID: <2026030901-expensive-cosmetics-5a04@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A4C3A236EEE
+X-Rspamd-Queue-Id: 7E66A236EC0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -62,11 +62,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223538-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223539-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -74,16 +74,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_SPAM(0.00)[0.224];
+	NEURAL_SPAM(0.00)[0.127];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aladdin.ru:email,linuxtesting.org:url,msgid.link:url,linuxfoundation.org:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 767d23ade706d5fa51c36168e92a9c5533c351a1
+git cherry-pick -x 017c1792525064a723971f0216e6ef86a8c7af11
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030935-cassette-expensive-04de@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030901-expensive-cosmetics-5a04@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,57 +111,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 767d23ade706d5fa51c36168e92a9c5533c351a1 Mon Sep 17 00:00:00 2001
-From: Daniil Dulov <d.dulov@aladdin.ru>
-Date: Wed, 11 Feb 2026 11:20:24 +0300
-Subject: [PATCH] wifi: cfg80211: cancel rfkill_block work in
- wiphy_unregister()
+From 017c1792525064a723971f0216e6ef86a8c7af11 Mon Sep 17 00:00:00 2001
+From: Vahagn Vardanian <vahagn@redrays.io>
+Date: Mon, 23 Feb 2026 00:00:00 +0000
+Subject: [PATCH] wifi: mac80211: fix NULL pointer dereference in
+ mesh_rx_csa_frame()
 
-There is a use-after-free error in cfg80211_shutdown_all_interfaces found
-by syzkaller:
+In mesh_rx_csa_frame(), elems->mesh_chansw_params_ie is dereferenced
+at lines 1638 and 1642 without a prior NULL check:
 
-BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
-Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
-CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: events cfg80211_rfkill_block_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x116/0x1f0
- print_report+0xcd/0x630
- kasan_report+0xe0/0x110
- cfg80211_shutdown_all_interfaces+0x213/0x220
- cfg80211_rfkill_block_work+0x1e/0x30
- process_one_work+0x9cf/0x1b70
- worker_thread+0x6c8/0xf10
- kthread+0x3c5/0x780
- ret_from_fork+0x56d/0x700
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+    ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
+    ...
+    pre_value = le16_to_cpu(elems->mesh_chansw_params_ie->mesh_pre_value);
 
-The problem arises due to the rfkill_block work is not cancelled when wiphy
-is being unregistered. In order to fix the issue cancel the corresponding
-work in wiphy_unregister().
+The mesh_matches_local() check above only validates the Mesh ID,
+Mesh Configuration, and Supported Rates IEs.  It does not verify the
+presence of the Mesh Channel Switch Parameters IE (element ID 118).
+When a received CSA action frame omits that IE, ieee802_11_parse_elems()
+leaves elems->mesh_chansw_params_ie as NULL, and the unconditional
+dereference causes a kernel NULL pointer dereference.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+A remote mesh peer with an established peer link (PLINK_ESTAB) can
+trigger this by sending a crafted SPECTRUM_MGMT/CHL_SWITCH action frame
+that includes a matching Mesh ID and Mesh Configuration IE but omits the
+Mesh Channel Switch Parameters IE.  No authentication beyond the default
+open mesh peering is required.
 
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Crash confirmed on kernel 6.17.0-5-generic via mac80211_hwsim:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  RIP: 0010:ieee80211_mesh_rx_queued_mgmt+0x143/0x2a0 [mac80211]
+  CR2: 0000000000000000
+
+Fix by adding a NULL check for mesh_chansw_params_ie after
+mesh_matches_local() returns, consistent with how other optional IEs
+are guarded throughout the mesh code.
+
+The bug has been present since v3.13 (released 2014-01-19).
+
+Fixes: 8f2535b92d68 ("mac80211: process the CSA frame for mesh accordingly")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
+Signed-off-by: Vahagn Vardanian <vahagn@redrays.io>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 9af85d655027..d35cf04cbc81 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1212,6 +1212,7 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	/* this has nothing to do now but make sure it's gone */
- 	cancel_work_sync(&rdev->wiphy_work);
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 68901f1def0d..129e814abe76 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1636,6 +1636,9 @@ static void mesh_rx_csa_frame(struct ieee80211_sub_if_data *sdata,
+ 	if (!mesh_matches_local(sdata, elems))
+ 		goto free;
  
-+	cancel_work_sync(&rdev->rfkill_block);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
- 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
++	if (!elems->mesh_chansw_params_ie)
++		goto free;
++
+ 	ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
+ 	if (!--ifmsh->chsw_ttl)
+ 		fwd_csa = false;
 
 
