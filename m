@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-223541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MQUKf2ermm2GwIAu9opvQ
-	(envelope-from <stable+bounces-223541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:45 +0100
+	id TpfPFS6frmnPGwIAu9opvQ
+	(envelope-from <stable+bounces-223542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:21:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BB7236F04
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:20:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A0A236F37
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E94830185DA
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:20:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB0B03009F2F
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2F437BE95;
-	Mon,  9 Mar 2026 10:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7237835C192;
+	Mon,  9 Mar 2026 10:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niOiUs4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE1i8QXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048381732
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351E237BE95
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773051643; cv=none; b=AECU8vIET/++Nnf4Exi5Qb9OKc6JLzZyWjJj1GaRLbEvDXf9dG/klEvaxpPVFpOlAwRsvjRUgYTz13NowfsoQRapUJzhFxx6TLPytDHwfoPJe1XPiSvgyZ/ZO3y4V6qxu3dDt2YuOVcD/ReRevKUfDuq31+15evI4xM/5oItu3Q=
+	t=1773051680; cv=none; b=VVolCWhW6/EhyAFXRBBmLQDGdTn3JcwdsLQRDRk/n/BKKyiiEdQHZrpE5JwgWft7fykCdL/JCwLcsJMFZX3XdhjeRWdt+LCEGrlunZmgk2NS6OTyBLwMCCXxIeKpcPQwK1I2iFEZj4vCfUARYwGOdSqICNzL9J/EkNOnMG1sV30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773051643; c=relaxed/simple;
-	bh=Cc6jD8CxShdI89KM5MflUU7xv4qbHOdRVqEOCLlfuls=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UXFYWhrowa7EWq2goJ6kGv6YkMFD43X43XQQdgaNK62LDrvPP+jvQItircOiDjptpeQmy098zMuU/2e5ye8XNVsW6s9iFxX8kHOsUKMUh6KOIfXXn2SjfoBuMLKpVH5cyAr0s3OerFyHqqWVouaLl7UQQC9J1WIpfTorjwwVUHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niOiUs4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB85C4CEF7;
-	Mon,  9 Mar 2026 10:20:42 +0000 (UTC)
+	s=arc-20240116; t=1773051680; c=relaxed/simple;
+	bh=OtgViLSGlpl2SNmay+xzI5BH7EwolG3FcPP4y8MypKQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XkVwtBKSNqSwj98nD0uE4cz+weOwRmdYEmOCcvHMC58jrpFSjUvUMJKCsaoDmbym6rn3cYUW76T5/cwfQCx3FD39kFgSsnGBcaO38BgEnkd3JKIvL5ijSqgjSrnAhNMjC3b9kzo4aVGYkK07ni9VwYC0MmlZio4w+f+48PzUV+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE1i8QXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E4C4CEF7;
+	Mon,  9 Mar 2026 10:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773051642;
-	bh=Cc6jD8CxShdI89KM5MflUU7xv4qbHOdRVqEOCLlfuls=;
+	s=korg; t=1773051679;
+	bh=OtgViLSGlpl2SNmay+xzI5BH7EwolG3FcPP4y8MypKQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=niOiUs4oxENgmtudf6ouzjKBlgXbJNRYmvmZ+6lP+t6T2V/UaoWkYzudE1IG95Yo6
-	 9tulMOefM9+3srMicJL++zr14C7pomfiolnLDb5wFQsImyYojLgeJbh3TY0nvdDTxE
-	 pfd0Bwov1x3sJRpHSDXAOQsnLiBklbSjvNs9Qt9U=
-Subject: FAILED: patch "[PATCH] Bluetooth: Fix CIS host feature condition" failed to apply to 6.18-stable tree
-To: mariusz.skamra@codecoup.pl,luiz.von.dentz@intel.com,pmenzel@molgen.mpg.de
+	b=PE1i8QXlLf00YCre6jMb5rhslZHztt5M8DrSsL5wcds7t16GnEzWc8SZ5DIs7QLK3
+	 ZlGkXJf0ObUv7G4VhyBYCYg1ZUZevw2sEwLM6ebGo6PV5crbA4yy1xPCxwbnStFbeI
+	 CNdV8quePUTlxH1PWXXjA3TaDX3KAxLEncqKdmmc=
+Subject: FAILED: patch "[PATCH] gve: fix incorrect buffer cleanup in" failed to apply to 6.12-stable tree
+To: nktgrg@google.com,horms@kernel.org,hramamurthy@google.com,jordanrhee@google.com,joshwash@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Mar 2026 11:20:32 +0100
-Message-ID: <2026030932-henchman-travesty-7e47@gregkh>
+Date: Mon, 09 Mar 2026 11:21:17 +0100
+Message-ID: <2026030917-ferment-untamed-144d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 08BB7236F04
+X-Rspamd-Queue-Id: 51A0A236F37
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223541-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223542-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_SPAM(0.00)[0.206];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_SPAM(0.00)[0.372];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,codecoup.pl:email,linuxfoundation.org:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7cff9a40c6b0f72ccefdaf0ffe03cfac30348f51
+git cherry-pick -x fb868db5f4bccd7a78219313ab2917429f715cea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030932-henchman-travesty-7e47@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030917-ferment-untamed-144d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,39 +111,130 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7cff9a40c6b0f72ccefdaf0ffe03cfac30348f51 Mon Sep 17 00:00:00 2001
-From: Mariusz Skamra <mariusz.skamra@codecoup.pl>
-Date: Thu, 12 Feb 2026 14:46:46 +0100
-Subject: [PATCH] Bluetooth: Fix CIS host feature condition
+From fb868db5f4bccd7a78219313ab2917429f715cea Mon Sep 17 00:00:00 2001
+From: Ankit Garg <nktgrg@google.com>
+Date: Fri, 20 Feb 2026 13:53:24 -0800
+Subject: [PATCH] gve: fix incorrect buffer cleanup in
+ gve_tx_clean_pending_packets for QPL
 
-This fixes the condition for sending the LE Set Host Feature command.
-The command is sent to indicate host support for Connected Isochronous
-Streams in this case. It has been observed that the system could not
-initialize BIS-only capable controllers because the controllers do not
-support the command.
+In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
+buffer cleanup path. It iterates num_bufs times and attempts to unmap
+entries in the dma array.
 
-As per Core v6.2 | Vol 4, Part E, Table 3.1 the command shall be
-supported if CIS Central or CIS Peripheral is supported; otherwise,
-the command is optional.
+This leads to two issues:
+1. The dma array shares storage with tx_qpl_buf_ids (union).
+ Interpreting buffer IDs as DMA addresses results in attempting to
+ unmap incorrect memory locations.
+2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
+ the size of the dma array, causing out-of-bounds access warnings
+(trace below is how we noticed this issue).
 
-Fixes: 709788b154ca ("Bluetooth: hci_core: Fix using {cis,bis}_capable for current settings")
+UBSAN: array-index-out-of-bounds in
+drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
+range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
+Workqueue: gve gve_service_task [gve]
+Call Trace:
+<TASK>
+dump_stack_lvl+0x33/0xa0
+__ubsan_handle_out_of_bounds+0xdc/0x110
+gve_tx_stop_ring_dqo+0x182/0x200 [gve]
+gve_close+0x1be/0x450 [gve]
+gve_reset+0x99/0x120 [gve]
+gve_service_task+0x61/0x100 [gve]
+process_scheduled_works+0x1e9/0x380
+
+Fix this by properly checking for QPL mode and delegating to
+gve_free_tx_qpl_bufs() to reclaim the buffers.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mariusz Skamra <mariusz.skamra@codecoup.pl>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260220215324.1631350-1-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index f04a90bce4a9..0b0dc0965f5a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4592,7 +4592,7 @@ static int hci_le_set_host_features_sync(struct hci_dev *hdev)
- {
- 	int err;
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 28e85730f785..b57e8f13cb51 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -167,6 +167,25 @@ gve_free_pending_packet(struct gve_tx_ring *tx,
+ 	}
+ }
  
--	if (iso_capable(hdev)) {
-+	if (cis_capable(hdev)) {
- 		/* Connected Isochronous Channels (Host Support) */
- 		err = hci_le_set_host_feature_sync(hdev, 32,
- 						   (iso_enabled(hdev) ? 0x01 :
++static void gve_unmap_packet(struct device *dev,
++			     struct gve_tx_pending_packet_dqo *pkt)
++{
++	int i;
++
++	if (!pkt->num_bufs)
++		return;
++
++	/* SKB linear portion is guaranteed to be mapped */
++	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
++			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
++	for (i = 1; i < pkt->num_bufs; i++) {
++		netmem_dma_unmap_page_attrs(dev, dma_unmap_addr(pkt, dma[i]),
++					    dma_unmap_len(pkt, len[i]),
++					    DMA_TO_DEVICE, 0);
++	}
++	pkt->num_bufs = 0;
++}
++
+ /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
+  */
+ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+@@ -176,21 +195,12 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+ 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
+ 		struct gve_tx_pending_packet_dqo *cur_state =
+ 			&tx->dqo.pending_packets[i];
+-		int j;
+ 
+-		for (j = 0; j < cur_state->num_bufs; j++) {
+-			if (j == 0) {
+-				dma_unmap_single(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			} else {
+-				dma_unmap_page(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			}
+-		}
++		if (tx->dqo.qpl)
++			gve_free_tx_qpl_bufs(tx, cur_state);
++		else
++			gve_unmap_packet(tx->dev, cur_state);
++
+ 		if (cur_state->skb) {
+ 			dev_consume_skb_any(cur_state->skb);
+ 			cur_state->skb = NULL;
+@@ -1157,22 +1167,6 @@ static void remove_from_list(struct gve_tx_ring *tx,
+ 	}
+ }
+ 
+-static void gve_unmap_packet(struct device *dev,
+-			     struct gve_tx_pending_packet_dqo *pkt)
+-{
+-	int i;
+-
+-	/* SKB linear portion is guaranteed to be mapped */
+-	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
+-			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
+-	for (i = 1; i < pkt->num_bufs; i++) {
+-		netmem_dma_unmap_page_attrs(dev, dma_unmap_addr(pkt, dma[i]),
+-					    dma_unmap_len(pkt, len[i]),
+-					    DMA_TO_DEVICE, 0);
+-	}
+-	pkt->num_bufs = 0;
+-}
+-
+ /* Completion types and expected behavior:
+  * No Miss compl + Packet compl = Packet completed normally.
+  * Miss compl + Re-inject compl = Packet completed normally.
 
 
