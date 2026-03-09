@@ -1,203 +1,108 @@
-Return-Path: <stable+bounces-223719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yM5JLrcXr2kiNwIAu9opvQ
-	(envelope-from <stable+bounces-223719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:55:51 +0100
+	id mDriBHIZr2nHNgIAu9opvQ
+	(envelope-from <stable+bounces-223720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 20:03:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBBC23EED1
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:55:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D3423F1DB
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 20:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F287F3014A10
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 18:55:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1A4F30164BD
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 19:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3283EDAC6;
-	Mon,  9 Mar 2026 18:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011C733F8BC;
+	Mon,  9 Mar 2026 19:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uipK5l4C"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eYFNuoYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA483EDAC1
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 18:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EC0285C9D;
+	Mon,  9 Mar 2026 19:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773082538; cv=none; b=W5COlbmPEOqYTIMioRvR6m0eRIFRUIBwCn9FDL1/pwewp2APoG004V7NvkjlJMrWoVzyF5PHrDN4y4buTnU3HncoGvVX/6ssFU0u3FMjj1ZeezeQPTlEsIoN4DqPA6vGU86hMwDoLfmsqaiNzW3SpIWMD7lRldDoatxbm5zdsq4=
+	t=1773082971; cv=none; b=tng3Z0Y+aFOAe/T0dYyiZLqeXkS6GksOB3P6+RpU2bV3948UOmCgl0EVtqy9Wp9UCWh3oWyUKi+LsxnLidryB6UqxA9fw8viPXxyzRXqFT0yIMNapOGI0TPBRo93GBjgzY69LlmJEgJplHcnSLNj9qrJhK8w0s70mLF38I6vwCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773082538; c=relaxed/simple;
-	bh=EuNXZGUQMLT/Pnzi45pnR8goAicSe2lD7q+YZIZIk3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jb8EEspA7I1sXRnCbFotqxrwS7HWGIKf+ixB0usfT5CoPXSR7LbxVwQnRAu3BvaONvBMUt3xjSCoPNsf8qfcFefdeWvFL3owKES+D24CODCES27It42S3PeSQ/SsNa2SXPbUfgUuGzSdJaz2etDC8heSWFUil1TZ/cKHuiK+BAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uipK5l4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1674AC4CEF7;
-	Mon,  9 Mar 2026 18:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773082538;
-	bh=EuNXZGUQMLT/Pnzi45pnR8goAicSe2lD7q+YZIZIk3I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uipK5l4CYI/1iKn6ndca8dlf2T0H6ad7WJCa89gM6HRk7NTx3Tkcigdn3AfuuzwI2
-	 6ZXIG9dAdv5M1NNXc2qQUM30TnrQ7Oi1f89WRAxfy7VZd45BPtRL+tdKG5EGj1j8yf
-	 DzX0zeLNNOb5T4ab+TY0GSeyCD6vVshQbFXSx0HGSbHAdNRS6PgDP+muQWNSEEfFBk
-	 drXHF4XuqmH3KAacD55fYiXHpBqY+Gh3SHBgWAFuJ806xv0DavOlog2mnng8NxPuRS
-	 xpvCBjcnA3RLWbpGrriI0paZIr28lKSlXbQEruofTt2V6TKcaeu0/E2XKJHks6uELA
-	 4Mg47cgtvqTNA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Michal Suchanek <msuchanek@suse.de>,
-	Rainer Fiebig <jrf@mailbox.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] kbuild: Leave objtool binary around with 'make clean'
-Date: Mon,  9 Mar 2026 14:55:35 -0400
-Message-ID: <20260309185535.1355869-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030940-obliged-affront-0a04@gregkh>
-References: <2026030940-obliged-affront-0a04@gregkh>
+	s=arc-20240116; t=1773082971; c=relaxed/simple;
+	bh=ZJxuHaqVupo1aiRjhDHga7VJlJZFRrftyuA8Ijw/LHk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cIXvxiXGVYf3iLJMHXlm0+8wsvwLFKi4PyEXQIFUIiEcm+7u1nD/peTtE9hfoGkb2ecpcLHyw7R8IXlmkkoam+eYM1gpsFZkX18SQegW7q+Gq3QXi/kFpuXXHPWpWBLWwIoRbvSkmtMjSOBI4k++NcLupoCIMRc6GWnoL+l3LH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eYFNuoYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D01CC4CEF7;
+	Mon,  9 Mar 2026 19:02:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773082971;
+	bh=ZJxuHaqVupo1aiRjhDHga7VJlJZFRrftyuA8Ijw/LHk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eYFNuoYYj/ejfzWlXnnQJy9tdaG1EVkoadvdUf3hJjsNG2lWgS25mHqLVrFFj1yGO
+	 KXciY1yvZ30BefcKo4Un3tGrg31Ou+z/LiwYE3q6RSeb1cgc9oRaDFksw97tHLmuff
+	 Udw1ZVa907dbbm1xYXCHSQz8nn2r6EXPBXWKED60=
+Date: Mon, 9 Mar 2026 12:02:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: steven chen <chenste@linux.microsoft.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, Baoquan He
+ <bhe@redhat.com>
+Subject: Re: Patch "kexec: define functions to map and unmap segments" has
+ been added to the 6.12-stable tree
+Message-Id: <20260309120251.a7bd8ac9c2161c0b90fb1c0e@linux-foundation.org>
+In-Reply-To: <dc1de7c4-4ff9-4c12-89ae-dee1e76017f2@linux.microsoft.com>
+References: <20260308164105.18682-1-sashal@kernel.org>
+	<dc1de7c4-4ff9-4c12-89ae-dee1e76017f2@linux.microsoft.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3DBBC23EED1
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 97D3423F1DB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-223720-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223719-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,suse.de:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:mid]
 X-Rspamd-Action: no action
 
-From: Nathan Chancellor <nathan@kernel.org>
+On Mon, 9 Mar 2026 11:20:49 -0700 steven chen <chenste@linux.microsoft.com> wrote:
 
-[ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
+> > +void *kimage_map_segment(struct kimage *image,
+> > +			 unsigned long addr, unsigned long size)
+> > +{
+> 
+> please consider the following patch applicable or not:
+> 
+> [PATCH 1/2] kernel/kexec: Change the prototype of kimage_map_segment() - 
+> Pingfan Liu 
+> <https://lore.kernel.org/linux-integrity/20251105130922.13321-1-piliu@redhat.com/>
 
-The difference between 'make clean' and 'make mrproper' is documented in
-'make help' as:
-
-  clean     - Remove most generated files but keep the config and
-              enough build support to build external modules
-  mrproper  - Remove all generated files + config + various backup files
-
-After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
-target"), running 'make clean' then attempting to build an external
-module with the resulting build directory fails with
-
-  $ make ARCH=x86_64 O=build clean
-
-  $ make -C build M=... MO=...
-  ...
-  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
-
-as 'make clean' removes the objtool binary.
-
-Split the objtool clean target into mrproper and clean like Kbuild does
-and remove all generated artifacts with 'make clean' except for the
-objtool binary, which is removed with 'make mrproper'. To avoid a small
-race when running the objtool clean target through both objtool_mrproper
-and objtool_clean when running 'make mrproper', modify objtool's clean
-up find command to avoid using find's '-delete' command by piping the
-files into 'xargs rm -f' like the rest of Kbuild does.
-
-Cc: stable@vger.kernel.org
-Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
-Reported-by: Michal Suchanek <msuchanek@suse.de>
-Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
-Reported-by: Rainer Fiebig <jrf@mailbox.org>
-Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Makefile               | 8 ++++----
- tools/objtool/Makefile | 8 +++++---
- 2 files changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 022aed9031737..20c3688ff3bfb 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1356,13 +1356,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
- 
--PHONY += objtool_clean
-+PHONY += objtool_clean objtool_mrproper
- 
- objtool_O = $(abspath $(objtree))/tools/objtool
- 
--objtool_clean:
-+objtool_clean objtool_mrproper:
- ifneq ($(wildcard $(objtool_O)),)
--	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
-+	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
- endif
- 
- tools/: FORCE
-@@ -1529,7 +1529,7 @@ PHONY += $(mrproper-dirs) mrproper
- $(mrproper-dirs):
- 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
- 
--mrproper: clean $(mrproper-dirs)
-+mrproper: clean objtool_mrproper $(mrproper-dirs)
- 	$(call cmd,rmfiles)
- 	@find . $(RCS_FIND_IGNORE) \
- 		\( -name '*.rmeta' \) \
-diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index e9a0f89e9c39a..4efe652637f02 100644
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -87,10 +87,12 @@ $(LIBSUBCMD)-clean:
- 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
- 
- clean: $(LIBSUBCMD)-clean
--	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
--	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-+	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
- 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
- 
-+mrproper: clean
-+	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
-+
- FORCE:
- 
--.PHONY: clean FORCE
-+.PHONY: clean mrproper FORCE
--- 
-2.51.0
-
+That series was upstreamed in December.
 
