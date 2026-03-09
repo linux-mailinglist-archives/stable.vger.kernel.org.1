@@ -1,160 +1,166 @@
-Return-Path: <stable+bounces-223622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOskBzW1rmkSHwIAu9opvQ
-	(envelope-from <stable+bounces-223622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:55:33 +0100
+	id uEkvLsO2rmnMIAIAu9opvQ
+	(envelope-from <stable+bounces-223623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:02:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB19238434
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:55:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD46C2385D6
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F16B302B839
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 11:54:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FD65301EA35
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 12:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCAE3A5E92;
-	Mon,  9 Mar 2026 11:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1203A783A;
+	Mon,  9 Mar 2026 11:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ed2VF7d4"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qZYEnqzK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iqg9jVsT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qZYEnqzK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iqg9jVsT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD13A4525
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F669392C3D
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773057242; cv=none; b=j9D2myZ6lfOpmq+fPGvVZmGUXfHkQ9Xg0Efrp9WwMumM61RQa0Gr0YWBUippsFADVSA/DNct7xmdQXnz8bagmUHS4LZwJPut3+QFg6kgeXaG5G5x/mOUquBcNN/h//1HrMufOFoIDE3A+Jujzp2RQmLNa5ZLKug+gdRk1iQm1Go=
+	t=1773057599; cv=none; b=bRuRJUqI2fJYHR6LLoDtdtge2loGx4YQJ04h3n6VUmMJyvtW4XVVcozn48cupr2JrcUlL0vIKDNcszS8ZZzRseSV/lfcFF+1gZ2j6fJYPmh7mXP/P9YhBSB4EB0VN4H/V0Pf9rDlJIjv/aoYdIdJ+rPCa5W7w+pLpUghZ25XSq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773057242; c=relaxed/simple;
-	bh=X/+zob7ZhxaLHUNfCEjz1njTM6ff/CxwgbQ73QGxHqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8cYOgR22FgPgWoeKz1j6/82U4mnDw8syoZSsUJEDE9iOYRHUnPD5GdGgvR4BICtM5T2OeyePivZa44WZPMd70i9t6FHEEK04DY9dXE9MIncGjyaiLidlLbf/KFRd7Aeqbhjd6UEAxiSb4Gz7u+t1f5qNeuYZfmilowRk/s4XVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ed2VF7d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62536C4CEF7;
-	Mon,  9 Mar 2026 11:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773057241;
-	bh=X/+zob7ZhxaLHUNfCEjz1njTM6ff/CxwgbQ73QGxHqc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed2VF7d4ONLygzS4rewr+6e7Gx10SBZbVs8v5rPOLwDfIbYdl9kWxQdq8qA4Eqyi1
-	 ZfSFkjSpVgHXGDneZNhSLMX0A9ZifJj4wH+rViHSF3aWCHXJzJVmGTI2xRHlxZjFfb
-	 ZK0/JYAjq/y615/b01iv3g5ryemjOZcgakGSTOb2f5bCILa7SguIp7+bVi0bM+vMVh
-	 m0xUpFfUTgHWKTMrLPH602IapJc3CCtXJb44bXviSbmB4ZXv9r/dCBiCsEmzkcHMgq
-	 KJSaR6mJz5miFEa4Xr9dSt9brRPUV0KXdUfBtXOmq84AZnM3dfppONXTa7gb9qZEN/
-	 hVyYAhTn/Nftg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Vahagn Vardanian <vahagn@redrays.io>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] wifi: mac80211: fix NULL pointer dereference in mesh_rx_csa_frame()
-Date: Mon,  9 Mar 2026 07:53:59 -0400
-Message-ID: <20260309115359.840072-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030901-expensive-cosmetics-5a04@gregkh>
-References: <2026030901-expensive-cosmetics-5a04@gregkh>
+	s=arc-20240116; t=1773057599; c=relaxed/simple;
+	bh=m0xhQ1uZs4z8ceSwq+gGMXe79AXNiGXkw5mule+8kMY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QXOlIt6/Oi5tXix6Pr+fH+VdCO1E3EEL9YoQJS1YoIs+y8mmi0ksMyrWIcT8+JHPff+LCoWiLchSImq/HW26j+DtsVjnoEUN9FCFXxwdpXBJgvTGada2rvgkPydHFsp066MMqm68eEIhN4nZv2R5fospZVGHHciMVoE72tauTZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qZYEnqzK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iqg9jVsT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qZYEnqzK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iqg9jVsT; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 72E635BDE4;
+	Mon,  9 Mar 2026 11:59:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773057596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y2XKH/glVvKIHxkYZx605ZSWZPl5fwhHS9csfxByePA=;
+	b=qZYEnqzK1ikbR4BBvUHdBv6bvyU7unV1bvQVy1rkjjWBoyibGQGLKF0ThiTVEJYbSpxlfA
+	QtdToMFPyvsISRgEJsm3Acdfhd6t98dwveMR4Hm5aRSE08pH2IpAZFuTOT9U2el/8g0hp4
+	SCp8Kxu4wGRp+XLhRV12tw39Ro7J8ls=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773057596;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y2XKH/glVvKIHxkYZx605ZSWZPl5fwhHS9csfxByePA=;
+	b=iqg9jVsTGgYSE3XjbD39+BsLT+VLoJYPcMqfLmN+wW6odLoUsiFSrpWuPIr1BxsKQy55we
+	4BWoayVgXwkdC0Dg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773057596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y2XKH/glVvKIHxkYZx605ZSWZPl5fwhHS9csfxByePA=;
+	b=qZYEnqzK1ikbR4BBvUHdBv6bvyU7unV1bvQVy1rkjjWBoyibGQGLKF0ThiTVEJYbSpxlfA
+	QtdToMFPyvsISRgEJsm3Acdfhd6t98dwveMR4Hm5aRSE08pH2IpAZFuTOT9U2el/8g0hp4
+	SCp8Kxu4wGRp+XLhRV12tw39Ro7J8ls=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773057596;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y2XKH/glVvKIHxkYZx605ZSWZPl5fwhHS9csfxByePA=;
+	b=iqg9jVsTGgYSE3XjbD39+BsLT+VLoJYPcMqfLmN+wW6odLoUsiFSrpWuPIr1BxsKQy55we
+	4BWoayVgXwkdC0Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B0E33EEB0;
+	Mon,  9 Mar 2026 11:59:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8bgzCTy2rmkFHgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 09 Mar 2026 11:59:56 +0000
+Date: Mon, 09 Mar 2026 12:59:55 +0100
+Message-ID: <87zf4hmcw4.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ALSA: aoa: Handle empty codec list in i2sbus_pcm_prepare()
+In-Reply-To: <20260309114159.765304-3-thorsten.blum@linux.dev>
+References: <20260309114159.765304-3-thorsten.blum@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7DB19238434
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: BD46C2385D6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223622-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223623-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.924];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:dkim,suse.de:mid]
 X-Rspamd-Action: no action
 
-From: Vahagn Vardanian <vahagn@redrays.io>
+On Mon, 09 Mar 2026 12:41:59 +0100,
+Thorsten Blum wrote:
+> 
+> Replace two list_for_each_entry() loops with list_first_entry_or_null()
+> in i2sbus_pcm_prepare().
 
-[ Upstream commit 017c1792525064a723971f0216e6ef86a8c7af11 ]
+Hmm, I guess both can be simply list_first_entry(), as the codec list
+in this code path is guaranteed to be non-empty (it's called after
+i2sbus_pcm_open() which has the check of the valid codecs).
 
-In mesh_rx_csa_frame(), elems->mesh_chansw_params_ie is dereferenced
-at lines 1638 and 1642 without a prior NULL check:
+> Handle an empty codec list explicitly by returning -ENODEV, which avoids
+> using uninitialized 'bi.sysclock_factor' in the 32-bit code path.
 
-    ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
-    ...
-    pre_value = le16_to_cpu(elems->mesh_chansw_params_ie->mesh_pre_value);
+Which 32bit code path are you referring to...?
 
-The mesh_matches_local() check above only validates the Mesh ID,
-Mesh Configuration, and Supported Rates IEs.  It does not verify the
-presence of the Mesh Channel Switch Parameters IE (element ID 118).
-When a received CSA action frame omits that IE, ieee802_11_parse_elems()
-leaves elems->mesh_chansw_params_ie as NULL, and the unconditional
-dereference causes a kernel NULL pointer dereference.
 
-A remote mesh peer with an established peer link (PLINK_ESTAB) can
-trigger this by sending a crafted SPECTRUM_MGMT/CHL_SWITCH action frame
-that includes a matching Mesh ID and Mesh Configuration IE but omits the
-Mesh Channel Switch Parameters IE.  No authentication beyond the default
-open mesh peering is required.
+thanks,
 
-Crash confirmed on kernel 6.17.0-5-generic via mac80211_hwsim:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  RIP: 0010:ieee80211_mesh_rx_queued_mgmt+0x143/0x2a0 [mac80211]
-  CR2: 0000000000000000
-
-Fix by adding a NULL check for mesh_chansw_params_ie after
-mesh_matches_local() returns, consistent with how other optional IEs
-are guarded throughout the mesh code.
-
-The bug has been present since v3.13 (released 2014-01-19).
-
-Fixes: 8f2535b92d68 ("mac80211: process the CSA frame for mesh accordingly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vahagn Vardanian <vahagn@redrays.io>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ adapted pointer access elems-> to stack struct elems, and replaced goto free with return ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/mesh.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index d3a9ce1f8e53f..20b8ff83e3dbd 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1435,6 +1435,9 @@ static void mesh_rx_csa_frame(struct ieee80211_sub_if_data *sdata,
- 	if (!mesh_matches_local(sdata, &elems))
- 		return;
- 
-+	if (!elems.mesh_chansw_params_ie)
-+		return;
-+
- 	ifmsh->chsw_ttl = elems.mesh_chansw_params_ie->mesh_ttl;
- 	if (!--ifmsh->chsw_ttl)
- 		fwd_csa = false;
--- 
-2.51.0
-
+Takashi
 
