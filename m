@@ -1,58 +1,91 @@
-Return-Path: <stable+bounces-223485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKQaJThKrmlWBwIAu9opvQ
-	(envelope-from <stable+bounces-223485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 05:19:04 +0100
+	id UAJuNQtOrmlpCAIAu9opvQ
+	(envelope-from <stable+bounces-223486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 05:35:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F22233A6E
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 05:19:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8232A233B33
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 05:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D90C301FF9A
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 04:18:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 63BA23006785
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 04:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4CD283FD4;
-	Mon,  9 Mar 2026 04:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC29283FD4;
+	Mon,  9 Mar 2026 04:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ol8QqwPN"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CECfa9Kc"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011064.outbound.protection.outlook.com [52.101.57.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D445C257821;
-	Mon,  9 Mar 2026 04:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773029932; cv=none; b=Iu1ooL0ZhPgWeQWbU/cFCObRePF9fon3U+PusU2CwsEQFbcmDLrA2s7wUSi11lam70bISMm7Z5ZlIrKFwmhE4T27up7xf1UiOjg2MiPbPwB6f0zceHIzFb7kECg8WuARKiCEWK8cBIPjMvI7hW+UKuswammGbaGfiefg4AHcuv4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773029932; c=relaxed/simple;
-	bh=9U4uXKxGql6tmmX9FvIUwXrYinnE1PnRuSYUT66fISg=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3467FBAC;
+	Mon,  9 Mar 2026 04:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773030920; cv=fail; b=EA2RNr76OCB1VNdNPRtmx2ndY3grY6pYQqga9YEUy3P4C2WGze8lGkZpi/D2JQhzlWtFCp0gC1hfQ0//fwbI1ittL0ViXB5f+BokL9RRFtXJyCawTODhKQepRl5X7I+WkAUvEVCN7qnxfgS2bnMfyAtOs/PIlsLFGVyu+RURoRc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773030920; c=relaxed/simple;
+	bh=1MJFK95MG0ICryrLf7SYBNQ9q7uze1nfvR5+Gjctmyw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SPKJ9dQ7EPtgzHCk55Md8ko+0zzazUgYU/ro+OnFAQvsnSIUf8nLTCUK/o6UvW2nVrHXkAC/HYum5I47gADBrhywWyZgIRXZ2xmYnzuQW2h9TTbz1Vw3bqHmpTaFDagX7xZv9s9Jbtqpp1zacNuxtQ8r1dqY6cDECMJF3Tn3vjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ol8QqwPN; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=VcFeIjx/kFPapeVcWBRCbJKEh34txyf1s44oxCrJMLM=;
-	b=ol8QqwPNIUmxbtyWrgNcNqbEdLIpeRj6Pz/TpU3TDi14gpa7wLJpmDHXFdha5RdCid7NTLtTf
-	voC6PheOGh96yK0L9QAS865k3rYsGeK1D/sKryROy0/4JqM66H1zLhU7FxxLd8941ZOL+vMRs0S
-	d7tvBLpfx7y6tsXoh01LOjw=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fTkCQ6yyKzpTXt;
-	Mon,  9 Mar 2026 12:13:38 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id ACFA420168;
-	Mon,  9 Mar 2026 12:18:46 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 9 Mar 2026 12:18:45 +0800
-Message-ID: <004f0d24-4413-40b2-8e31-392cb7f69523@huawei.com>
-Date: Mon, 9 Mar 2026 12:18:44 +0800
+	 In-Reply-To:Content-Type; b=pb0XKhyDoQZXRjYlNJDOXLEb8jad4sXRkEMOPvhQ4m8CxV2s5B3fEe7rG9iavK8Ao+F1znGMTyBrGbroqiI5iKjodmGTw2ZRD56ijXof2RlxlR3DoIJhcWqG9vy5BlMaVJSLw+TxeN/kgCdWTKtVquMf7WJ03r6KBA2qwkEZ85I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CECfa9Kc; arc=fail smtp.client-ip=52.101.57.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KcXq7niSo/StjmZuZ7GUbxNvUtbWDDlRi8B8yqOSlysczOWsRs10Y36ttIWWl3IgDtT0XD6gjzYKRKuAU4kZM8449ud8CI/UYJxY3dstsDp1aYhIJ1CVlR5t1RRiaXyNWteGneghh+NVakbVAyz1Oun3t5krHfOIscmIwXMX6rAeeVTjJg4hdb7WD0VPdDKLaPtQWvTvK1jx9ln5JsVhC+PM2ua8ispKt4pMbUHFZACTEHh+7KxZ7qY7liP0j7Xxr/lcSQGeezocSYWx29nQmqONiUwuREznnJxmGfimsbo4hJ5w2WXg1U5o8VHQryJk73VQovjNH0okpRr5MKw+SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V3E+EUAXtkii6IMzBDsPvOQS6R2JfkwNHrgvmoqSWRc=;
+ b=gZ/xfQIdL4RZFQZZHU3Q2hExumXSLfXbHSknbNSer1yaIQbEWrKPYLizHFFUzxbwj9h7nxThPWNMPlvqPb9iJMtbi+5KQyoLRVXFbLjlLZAN5gb25dhwAhYN9A7hcr8GUifBtw1WBtSxvEZbiQE7aAyQoVjNwfZDIOYWLxX526MgkbxbPhPKRCcw9q0UNkhggINyqgBRY5mouNC0ip0Eq8h9XhNBPYzjk3B8BypZ/kxY7ufYoAL+OTzOIqY2gf0diysLzs/B8aIBdIBCOTIUyBAlIUDFgOdEvbfS+WzzqbpK+LbL5O2s2XAPSjlPbbYAF4+4jFxDq47Iu/BrOzCnaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V3E+EUAXtkii6IMzBDsPvOQS6R2JfkwNHrgvmoqSWRc=;
+ b=CECfa9KcD78f7E0PPzBoplMlkDA+lC2EqsuKSgNqby+V4AQeIZ5FPhIEZpSbUZFLFT5/PnXRPxZfPPoymDjXKgK8ChpSy4yL43Qn9/Ci6UhSEHHPayUAAa9sj5i/nQCyQ0bZXh7n1/BRWRL7wB6DZNtwsWeSuYZpJbPZf5FmHMk=
+Received: from BL1PR13CA0167.namprd13.prod.outlook.com (2603:10b6:208:2bd::22)
+ by MN6PR10MB8072.namprd10.prod.outlook.com (2603:10b6:208:4ff::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.20; Mon, 9 Mar
+ 2026 04:35:16 +0000
+Received: from MN1PEPF0000ECDA.namprd02.prod.outlook.com
+ (2603:10b6:208:2bd:cafe::68) by BL1PR13CA0167.outlook.office365.com
+ (2603:10b6:208:2bd::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.24 via Frontend Transport; Mon,
+ 9 Mar 2026 04:35:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ MN1PEPF0000ECDA.mail.protection.outlook.com (10.167.242.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Mon, 9 Mar 2026 04:35:14 +0000
+Received: from DFLE204.ent.ti.com (10.64.6.62) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 8 Mar
+ 2026 23:35:14 -0500
+Received: from DFLE208.ent.ti.com (10.64.6.66) by DFLE204.ent.ti.com
+ (10.64.6.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 8 Mar
+ 2026 23:35:13 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE208.ent.ti.com
+ (10.64.6.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Sun, 8 Mar 2026 23:35:13 -0500
+Received: from [172.24.233.103] (uda0132425.dhcp.ti.com [172.24.233.103])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6294ZA1E389753;
+	Sun, 8 Mar 2026 23:35:10 -0500
+Message-ID: <baba390d-e695-4df2-adab-e76061a75601@ti.com>
+Date: Mon, 9 Mar 2026 10:05:09 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,153 +93,160 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: <linux-pci@vger.kernel.org>, <bhelgaas@google.com>, Jonathan Corbet
-	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Huacai Chen
-	<chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul Walmsley
-	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, Mark
- Rutland <mark.rutland@arm.com>, Eric Van Tassell <Eric.VanTassell@amd.com>,
-	Wei Huang <wei.huang2@amd.com>, Ajit Khaparde <ajit.khaparde@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	<linux-acpi@vger.kernel.org>, <wangzhou1@hisilicon.com>,
-	<wanghuiqiang@huawei.com>, <liuyonglong@huawei.com>,
-	<stable@vger.kernel.org>, <jeremy.linton@arm.com>,
-	<sunilvl@oss.qualcomm.com>, <chenhuacai@loongson.cn>,
-	<wangliupu@loongson.cn>, Somnath Kotur <somnath.kotur@broadcom.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
-	<linux-riscv@lists.infradead.org>, <linux-perf-users@vger.kernel.org>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
- <20260306021920.23233-1-fengchengwen@huawei.com>
- <20260306100150.00003f38@huawei.com>
+Subject: Re: [PATCH] arm64: dts: ti: k3-am62a7-sk: Fix pinmux for pin M19 used
+ by sdhci1
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, Judith Mendez <jm@ti.com>
+CC: <nm@ti.com>, <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <stable@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+References: <20260212130843.1054100-1-s-vadapalli@ti.com>
+ <0633e48a-27a3-456a-8b9b-32e88d417560@ti.com>
+ <ebf6ad7e-cd22-41aa-b168-9b07f8387e62@ti.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260306100150.00003f38@huawei.com>
+In-Reply-To: <ebf6ad7e-cd22-41aa-b168-9b07f8387e62@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk500009.china.huawei.com (7.202.194.94)
-X-Rspamd-Queue-Id: 17F22233A6E
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDA:EE_|MN6PR10MB8072:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6dba21a-6f7a-459b-087a-08de7d954239
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	nFKLpRWv0SY1+xnUcZjF/XoaoHkl7hImPfTQ0pBuBRO7Y9txR17mvCD0zY5zoQiy3SWLdO8WSmGPUUTIBp5YgQy3kSWDh6/Yj4g6d20w7R8xncve0v7ecK00D4FpAdKkVatHAl8x57RwbGNqqr2vAqp+IEoJxlFeYKdEjthzLDiQSW5bMj8gJTRQGQKNdOwulrFC28CjpB5K9F/vjRI+QEsf991Aj4ScgfAd/xf5OxTovJAcooU6t9KbOl3LHH9lmMox0DEnuc8VpY4jWYJ4l536OPIYt8OYsBlzMMKhc3H45PQEYt/6zNnPLhToLl80F+6g+p4ELxjxIfglJkAMi6l42x3uqXa2vk6i9nv9zo6sA5jsXSR31bl9xdzN01eMNfv8N4poIl5h34BmeQsSM1NXTclMbaJr4vVEBILp3fX443a7C6+KKB9MsS5sg8H+XkokuXXGs5UF893/4UdEWoPgjFADf/KiJf7lVFYsghtl/OqIJ7qzjmraYg4u/nD9UYLWq8kyWA5mXfcKpAqkpEkAET5KiCT4GDCQFsTw8Qvmw4OnTvO/d6z0QJpYqkrcuQ3LDvXVx7slcGEtqVZbOu9zIgiGlpanFcghT23d85PyPplPrz4IBOEJTFwSmzCjDiyzbuYHH9JWtTN6VHA0SGhrVDK2Gs4HoSTE5727jSym7yNqU+te3bUn3x0kaEWuGhUaiYPbuDVi8xxefkB9wVGi6QWwqhmt4ZIhhAwgmYs=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iH4Lc0cv2pi6rWgvKZ32Cga3KC/553hLOWFCM1EXKE+wlXxpnVH4cqZmCgd1/dIhDn/vRZZnZpHJ8cFC+a7LLMfV7OGJ3jUJTC4gRbMMY3AQ5l7zXpjAZu5Yy3+tnkzqUsFf/mNvy5hcYHUvYqlMYjA8IhDH9Fhf4qag++N2oEGKqqqBcoZkY6u41rrCfabE+DJs4VbBGCV4HWHK02QGlvVtjO+6Fnwa0jBfLq/Jz+4/a3y6XUdqrqlXKMbnftHhw+2oyCTiTvAyea6wVJwPP0wsf9+uiwcGRCqzIW6ceDbEs7HDge3k+BPIb4BWaxMWHJWm+8syS7MkId+0uSqV7iGpUXEvLHsEPXjR0gu4ZswEnnaN3/sa4yhAfZ0hdG3/kQfQBWcD4C0g5d2+R7q530dSDEu19r3f5M5tcRyutUAnbIY+nE5ZGe/63883cdMQ
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 04:35:14.6618
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6dba21a-6f7a-459b-087a-08de7d954239
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECDA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB8072
+X-Rspamd-Queue-Id: 8232A233B33
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[43];
-	TAGGED_FROM(0.00)[bounces-223485-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223486-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:dkim,ti.com:email,ti.com:url,ti.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[ti.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vigneshr@ti.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.946];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-0.967];
+	TAGGED_RCPT(0.00)[stable,dt];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-On 3/6/2026 6:01 PM, Jonathan Cameron wrote:
-> On Fri, 6 Mar 2026 10:19:17 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
-> 
->> Currently the pcie_tph_get_cpu_st() has an issue on ARM64 platform:
->> 1. The pcie_tph_get_cpu_st() function directly uses cpu_uid as the input
->>    parameter to call the PCI ACPI DSM method. According to the DSM
->>    definition, the input value should be the ACPI Processor UID (see [1]
->>    for details).
->> 2. In the Broadcom driver implementation [2] (which invokes
->>    pcie_tph_get_cpu_st()), cpu_uid is obtained via
->>    cpumask_first(irq->cpu_mask) - this is the logical CPU ID of a CPU
->>    core, generated and managed by kernel (e.g., [0,255] for a system
->>    with 256 logical CPU cores).
->> 3. On ARM64 platforms, ACPI assigns Processor UID to cores listed in the
->>    MADT table, and this UID may not match the kernel's logical CPU ID.
->>    As a result, the current implementation fails to retrieve the correct
->>    CPU steer-tag in such cases.
->> 4. The function works on AMD x86 platforms only because the logical CPU
->>    ID is identical to the ACPI Processor UID on those systems.
->>
->> This commit fixes it by:
->> 1. For ACPI-enabled platforms, unify the CPU ACPI ID retrieval
->>    interface:
->>    - On arm64/riscv/loongarch: Rename existing get_acpi_id_for_cpu() to
->>      acpi_get_cpu_acpi_id().
->>    - On x86: Add new acpi_get_cpu_acpi_id() implementation that wraps
->>      cpu_acpi_id().
->> 2. Update pcie_tph_get_cpu_st() to use acpi_get_cpu_acpi_id(cpu) to get
->>    valid ACPI Processor UID for DSM calls.
->> 3. Renaming pcie_tph_get_cpu_st()'s input parameter cpu_uid to cpu for
->>    clarity, as the parameter now represents a logical CPU ID (not a
->>    UID).
->>
->> [1] According to ECN_TPH-ST_Revision_20200924
->>     (https://members.pcisig.com/wg/PCI-SIG/document/15470), the input
->>     is defined as: "If the target is a processor, then this field
->>     represents the ACPI Processor UID of the processor as specified in
->>     the MADT. If the target is a processor container, then this field
->>     represents the ACPI Processor UID of the processor container as
->>     specified in the PPTT."
->> [2] commit c214410c47d6e ("bnxt_en: Add TPH support in BNXT driver")
->>
->> Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->>
->> ---
->> Changes in v3:
->> - Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() other
->>   than add one new API.
-> Ah. I wasn't clear around that rename suggestion.  Split this into two patches.
-> 1) Rename
-> 2) The new stuff plus x86 implementation.
 
-Hi Jonathan,
 
-All fixes are applied in v4. Please review.
-
-Thanks.
-
-> 
+On 04/03/26 10:24, Siddharth Vadapalli wrote:
+> On 03/03/26 22:06, Judith Mendez wrote:
+>> Hi Siddharth,
 >>
->> Changes in v2:
->> - Add ECN _DSM reference doc name and its URL.
->> - Separate implement acpi_get_cpu_acpi_id() in each arch which supports
->>   ACPI.
->> - Refine commit-log.
+>> On 2/12/26 7:06 AM, Siddharth Vadapalli wrote:
+>>> According to the datasheet for the AM62Ax SoC [0], pin M19 has the
+>>> address
+>>> 0x000F40A8. Therefore, the offset to be passed to the AM62AX_IOPAD
+>>> macro is
+>>> 0xa8 and not 0x07c. With the existing incorrect offset, the following
+>>> error
+>>> is seen when Linux boots:
+>>>     fa00000.mmc: deferred probe pending: platform: supplier
+>>> regulator-5 not ready
+>>> with the SD Card being unusable and the boot process halting due to
+>>> the root
+>>> filesystem in the SD Card being inaccessible.
+>>>
+>>> Hence, fix it.
+>>>
+>>> [0]: https://www.ti.com/lit/ds/symlink/am62a7.pdf
+>>>
+>>> Fixes: 8f023012eb4a ("arm64: dts: ti: k3-am62a: Enable UHS mode
+>>> support for SD cards")
+>>> Cc: <stable@vger.kernel.org>
+>>> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+>>> ---
+>>>
+>>> Hello,
+>>>
+>>> This patch is based on commit
+>>> 37a93dd5c49b Merge tag 'net-next-7.0' of git://git.kernel.org/pub/
+>>> scm/ linux/kernel/git/netdev/net-next
+>>> of Mainline Linux.
+>>>
+>>> Regards,
+>>> Siddharth.
+>>>
+>>>   arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/
+>>> boot/ dts/ti/k3-am62a7-sk.dts
+>>> index e99bdbc2e0cb..9cfe7e7b317b 100644
+>>> --- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+>>> +++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+>>> @@ -398,7 +398,7 @@ AM62AX_IOPAD(0x01d4, PIN_INPUT, 7) /* (C15)
+>>> UART0_RTSn.GPIO1_23 */
+>>>       vddshv_sdio_pins_default: vddshv-sdio-default-pins {
+>>>           pinctrl-single,pins = <
+>>> -            AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19)
+>>> GPMC0_CLK.GPIO0_31 */
+>>> +            AM62AX_IOPAD(0x0a8, PIN_OUTPUT, 7) /* (M19)
+>>> GPMC0_CLK.GPIO0_31 */
 >>
->> ---
->>  Documentation/PCI/tph.rst          |  4 ++--
->>  arch/arm64/include/asm/acpi.h      |  4 ++--
->>  arch/loongarch/include/asm/acpi.h  |  2 +-
->>  arch/riscv/include/asm/acpi.h      |  2 +-
->>  arch/riscv/kernel/acpi_numa.c      |  2 +-
->>  arch/x86/include/asm/acpi.h        |  2 ++
->>  arch/x86/kernel/cpu/common.c       |  8 ++++++++
->>  drivers/acpi/pptt.c                | 16 ++++++++--------
->>  drivers/acpi/riscv/rhct.c          |  2 +-
->>  drivers/pci/tph.c                  | 11 ++++++-----
->>  drivers/perf/arm_cspmu/arm_cspmu.c |  2 +-
->>  include/linux/pci-tph.h            |  4 ++--
->>  12 files changed, 35 insertions(+), 24 deletions(-)
+>> What! I don't think this is right.
+>>
+>> Looking at device tree, regulator-5 is using main_gpio0 31 to control SD
+>> ENA with PMIC. Which is GPMC0_CLK (N22 pad) and VSEL_SD_SOC. Which is
+>> 0x000F407C address in the device datasheet. So as far as I can see, the
+>> original address is correct and just the (M19) name is wrong. Did you
+>> test this patch to see if that fixed the failure?
+> Yes, without this patch I saw the following:
+> [    2.108345] Waiting for root device PARTUUID=076c4a2a-02...
+> [   12.261669] platform fa00000.mmc: deferred probe pending: platform:
+> supplier regulator-5
 > 
+> Since the pin was named 'M19' in the comment, I corrected the offset to
+> match that of M19 and the issue was fixed. So it seems that although it
+> fixed the issue, it isn't really a fix.
 > 
-> 
+
+Refer to the schematics and not datasheet for pin routing. Please submit
+patch fixing the comment to say N22
+
+> Regards,
+> Siddharth.
+
+-- 
+Regards
+Vignesh
+https://ti.com/opensource
 
 
