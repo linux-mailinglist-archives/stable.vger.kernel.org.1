@@ -1,203 +1,230 @@
-Return-Path: <stable+bounces-223635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aB1PIXHErmn2IgIAu9opvQ
-	(envelope-from <stable+bounces-223635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:00:33 +0100
+	id UOqbLpHFrmn2IgIAu9opvQ
+	(envelope-from <stable+bounces-223636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:05:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C31D239547
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:00:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0AC23963F
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A892A3010B40
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:00:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3DD630CEAAA
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724B034C14C;
-	Mon,  9 Mar 2026 13:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218CB3BED05;
+	Mon,  9 Mar 2026 13:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hvJn90D2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsaDsNir"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011049.outbound.protection.outlook.com [52.101.57.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390C43AEF2E;
-	Mon,  9 Mar 2026 13:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773061228; cv=fail; b=Uz3grdXvppNcDvdEteOpY1IS/ot7Y4vjciXyAn7u/8nMjC0YjP+B8OKVm06cHN/2vrDE7trAEpiSGBB90WJ9sn9B575+WuWALJtY305JzWsN+zqrsCttAMP3YR5C2/kQ/ikzshAURrpmNojLHqSx86HXMx+iJjY7Zg5yZ7NZRts=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773061228; c=relaxed/simple;
-	bh=JX4MhOGom+PlDuFhugirmZde/smaxQlWxwtMkwOvm/o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=L8iPpDSIQWTtRTpU+tEeMyxQW1NBYLG25RXDg/rX5qiB8qgDaGzPe6uBPehdMqpTuy54iDlli2ZKzgnGmtaVitFD1IW9P3qNJJPPsU2q/BVmWB9ZdB/+kJNWkYRg1jaVE9XcWnoccOROLNOT5QUSe5Itgd2VhduG1dhT9qpjNEI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=hvJn90D2; arc=fail smtp.client-ip=52.101.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kSfS3Uz9aeqdTMQ3P2Gh30VxDh9aBcbC2H+Io0ZBRtv8/UpLQUTYsh2eASq+hdL8Tp5AGMFCcn83KypPVsm5MWTeordoIs14J+Wjxj4yLUogFfEsonfgw2sqonN0f8nIBwrBH2pU5rY2fVGBgEXwBIbrylbiUt8q0F/rw53KAWYjegyhqqB57OebLloxkbeQ/A0PLD0suidnJNBHx8GzWrLxaNJDXYxfR7m0ImMzlOMR/TfaNi45HQi4w7kwr2FSSTNUUKtCYyCq3gE18TOq3gWe02ISyLBMnG0553DcCrracMAfyxSn6Crev5oNxk5hbf0LbvgcJVaf6I2dYxkfzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zu7Nl1Yk8xxQlmJCGM0pFvX38CPzUnT1TAzJsYFYhQ8=;
- b=AbryZn+qatH+BBAgBaD+4zUFxYJsVtlW6VDtafTUFcmTICQ6yGWcuIsydWQIPZwAdnomqOuTGoiWpSwOdfECIynr4rvGERt4MT3QclGriPsW3Kw3v9gB0FOLmj6oIj18SfsSmU+fLQ+k8o+gsGYhIFtXouCTnmrDvGOujhiOwYcgPxtEh8a8Bl8NKTtLarwc6ws2nCfbv3hT5nOY6iXLCqb5lpnUR4klOghCYxS11zDriAK6OuUjd2dPZYEeEebP5bIkioqqkZmDduFHXrU6sb6j75rhzSwKWfm6k1acnXT7TdxAgU+QEoyyKWb2vTntt9AeGQXjejWDHeQm3N1pbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zu7Nl1Yk8xxQlmJCGM0pFvX38CPzUnT1TAzJsYFYhQ8=;
- b=hvJn90D2N6xEPBQWax2r6kFZNATsz2MvQZrBlhnY3EoWTc8wJSSooXi6/Ubb6UI5xlSx7ckKUjCeBE6aA96N7mmB2Yfur4N3rcwZkPkbDHAq3wGFHIuhRmaFyIUC7cpxSGuTFIMK7AtHcHl4v8q4PzQNcovQe308lXZHFfchMdU=
-Received: from CH0PR03CA0282.namprd03.prod.outlook.com (2603:10b6:610:e6::17)
- by SJ0PR10MB4638.namprd10.prod.outlook.com (2603:10b6:a03:2d8::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Mon, 9 Mar
- 2026 13:00:16 +0000
-Received: from CH2PEPF00000143.namprd02.prod.outlook.com
- (2603:10b6:610:e6:cafe::1e) by CH0PR03CA0282.outlook.office365.com
- (2603:10b6:610:e6::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Mon,
- 9 Mar 2026 12:59:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- CH2PEPF00000143.mail.protection.outlook.com (10.167.244.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Mon, 9 Mar 2026 13:00:16 +0000
-Received: from DLEE203.ent.ti.com (157.170.170.78) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 9 Mar
- 2026 08:00:15 -0500
-Received: from DLEE215.ent.ti.com (157.170.170.118) by DLEE203.ent.ti.com
- (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 9 Mar
- 2026 08:00:15 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE215.ent.ti.com
- (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Mon, 9 Mar 2026 08:00:15 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 629D0EXp1130425;
-	Mon, 9 Mar 2026 08:00:15 -0500
-Message-ID: <765b5e47-0092-4373-a4e9-c42763aeb4e9@ti.com>
-Date: Mon, 9 Mar 2026 08:00:14 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AABD3ACA78
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773061233; cv=none; b=g+teKE9yZ14+nWfpl6lR3bmPnEq4LVPc0QdUuohsfGANCLvVwekBkR7UZDGtN8l6fMwimRnMoGqdnAk7v8x+RMdTkLysBQ3tIs9T1QEhFXKYOUpmm6Vr2lQScPhU/TXayn8DO3UrR8hXzvuFSaScSwHip7UD6z3x6Or3pWgyP64=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773061233; c=relaxed/simple;
+	bh=dIpWMz+SEWJod9r6McbdlHcjg62WgABd0AfWYAgRQfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lM5+l+LNTLuB93qusfHlQVPB8zI4Wf/+JSuqShhPS0Jx8rvkUsYQfXs2L1H8vaw5mVbCvJjtVbMKLkTuoKW0FUOYP2vZ2gR8v/lmNzcAZ57SoFGmTuIpneJ7wlr8hUpoH1hhCSlJkDpnsHCEFw75YgXd7I+WCgjbUN7J90gIuHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsaDsNir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA130C4CEF7;
+	Mon,  9 Mar 2026 13:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773061232;
+	bh=dIpWMz+SEWJod9r6McbdlHcjg62WgABd0AfWYAgRQfM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dsaDsNirLw6whpx2UT5bd/N9Flhrrc3W9ndMVIdVV5mBAICEZuFwoTQ9/DvqxQT17
+	 m1ywc7iiZXf063sny6qvuL0K+bUMp4JzLFq2P7B2kUark7CGkpz6rS5l7+rLj2xw+j
+	 df1U40s2Lx8661yTlarfWwP+eudEcchHkieJgGnmdmtnYzp5xUlqU06Um346kSCLS5
+	 7S4EE7Bi9KK8VhJ3pjaOF3wof2ZAUm2teOWW6Rcw/HQYqVL80hKMlKmYO58Y6ul41A
+	 AvSE8WnnmxY+Xlv3p9siD+DZPxa6ZambyuHTyW4oqeXv1aY/bPkX1f1vWWNWFOUm4p
+	 +KlR7YXmtKw4w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ankit Garg <nktgrg@google.com>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets for QPL
+Date: Mon,  9 Mar 2026 09:00:29 -0400
+Message-ID: <20260309130029.867834-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026030918-unflawed-unmasking-3b8d@gregkh>
+References: <2026030918-unflawed-unmasking-3b8d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: ti: k3-am62a7-sk: Fix pin name in comment
- from M19 to N22
-To: Siddharth Vadapalli <s-vadapalli@ti.com>, <nm@ti.com>, <vigneshr@ti.com>,
-	<kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <jm@ti.com>
-CC: <stable@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<srk@ti.com>
-References: <20260309045539.2070793-1-s-vadapalli@ti.com>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20260309045539.2070793-1-s-vadapalli@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000143:EE_|SJ0PR10MB4638:EE_
-X-MS-Office365-Filtering-Correlation-Id: 36b8d536-d8db-4998-e7ef-08de7ddbcf60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	xAicWDJf4ez08Rci0SV3gZyqSVsMSuowjtbZv2OWUXWDqvH1SGWIIiyrzVeJMDV6F8DLHH6pG9XpZ0h8KsWftEqwc3BvOPRUwvxRCUPdlYOi1ff4l3ZZ1+VuhFgnIqxMVDxVv8EfFm3jLUuGwR5s8MTRWN+B/6uh0zR1u+qtDvQCuZ4bNS9o+8epLroJdvOTVxuQ1m0DFguprXN+kvNVH6iKfjpgabcSReX2xZ+TinfjCU2gMOFceirKe65F3s2ne+i8yH+uorlJktMyYhy4fKuGbcrVyr5DrKAWle/ACsbEjRLWQ/mJNbyKQEDOi1DjHg9fKXdOCTuZVqR4BQU721PMjNFXWRmQoCeKCGV8+MGLllESb/vVV3cVlnEpP9LbaJE8t8TflA9PR/AwnDu+7xadORunnYVgMJHDa7IZB0M4Nlt5H8+Mqi98h3bpRoXjQpsj3/cDK6Xr4heaS9rtvXKLTMqCVh1ImLUpZbc1DPqlLoJdH6gBl9qXB3atlScFp9/QVkY+6v+1oIKXuTrE8fyIBoWThk46AVxSir3ZqQo+1/vCAcqDd//E+usI4zZCyaOtIq4sU0eJutvz+Dll+xdXr4BJDFTiR3nB4hLy5qsW6UMC+GqboD4UsVoxRuiJHeRxyk/b/vJsINZCyZipPzaIqs9hC2fDk0HlQ5BomJiyN7mp1yQYliO6oPt5TW05WFG/pMGzHpzpGwFxbsC06BPHcr7KU8vzxKPGP1ay09ECf2vP+34y+n4D3M/9FxQKT9aVKmoAbfmPujrHne+U4A==
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	gXF6Td1U+LboPILL6swNMTHY4Y3KKwek05wyknyjynG0efKn2LwH4WxjTUBHWQa4ZEKGLeFUbDv9Ycm8XeQRFNwUK826SbyjsRtVU5/+Kr5BSRvSq5l5e7J+fGBJWauR4uN2pfXsUUQJAVpgKWvi2TnZ9r0+zxb1oPz+OEUA7RIaaIInpi5euIfETeCEED+YaGf2R281C4ORl2JA8EEH+uwcGiMM+jEsTwjtYqB1R6Jyc/OdSDFtL9+1sAE8gmOstn3Jp2+i6OWawg5RsHwwd+O66EPrYmBRAwAUdOT9Fu4LP2+IWI4HjL4maxcINuSO9mAXFxbiMzH54XhvWLAvQO8wzj5Ldm+TH307/b2gCKS6ujMV7FeBGSkoXQbQPvO8dDrzfG5WJ54iUHSCQuIaBWH/yY19ahk+IZXo4W+HogxRzW3McBdotHEBOSAbjWqt
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 13:00:16.2753
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36b8d536-d8db-4998-e7ef-08de7ddbcf60
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000143.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4638
-X-Rspamd-Queue-Id: 6C31D239547
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1B0AC23963F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223635-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ti.com:dkim,ti.com:email,ti.com:mid];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223636-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[ti.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[afd@ti.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.969];
-	TAGGED_RCPT(0.00)[stable,dt];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.981];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
-On 3/8/26 11:55 PM, Siddharth Vadapalli wrote:
-> The pin for GPMC0_CLK.GPIO0_31 at address 0x000F407C is N22 and not M19.
-> Hence, fix the pin name in the comment to avoid confusion.
-> 
-> Fixes: 8f023012eb4a ("arm64: dts: ti: k3-am62a: Enable UHS mode support for SD cards")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
+From: Ankit Garg <nktgrg@google.com>
 
-Reviewed-by: Andrew Davis <afd@ti.com>
+[ Upstream commit fb868db5f4bccd7a78219313ab2917429f715cea ]
 
-> 
-> Base-Commit: 1f318b96cc84 Linux 7.0-rc3
-> 
-> v1:
-> https://lore.kernel.org/r/20260212130843.1054100-1-s-vadapalli@ti.com/
-> Changes since v1:
-> - Corrected pin name in comment to N22 instead of updating address to match
->    the incorrect pin M19.
-> 
->   arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-> index e99bdbc2e0cb..b1a6f10adf26 100644
-> --- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-> +++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-> @@ -398,7 +398,7 @@ AM62AX_IOPAD(0x01d4, PIN_INPUT, 7) /* (C15) UART0_RTSn.GPIO1_23 */
->   
->   	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
->   		pinctrl-single,pins = <
-> -			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
-> +			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (N22) GPMC0_CLK.GPIO0_31 */
->   		>;
->   	};
->   
+In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
+buffer cleanup path. It iterates num_bufs times and attempts to unmap
+entries in the dma array.
+
+This leads to two issues:
+1. The dma array shares storage with tx_qpl_buf_ids (union).
+ Interpreting buffer IDs as DMA addresses results in attempting to
+ unmap incorrect memory locations.
+2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
+ the size of the dma array, causing out-of-bounds access warnings
+(trace below is how we noticed this issue).
+
+UBSAN: array-index-out-of-bounds in
+drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
+range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
+Workqueue: gve gve_service_task [gve]
+Call Trace:
+<TASK>
+dump_stack_lvl+0x33/0xa0
+__ubsan_handle_out_of_bounds+0xdc/0x110
+gve_tx_stop_ring_dqo+0x182/0x200 [gve]
+gve_close+0x1be/0x450 [gve]
+gve_reset+0x99/0x120 [gve]
+gve_service_task+0x61/0x100 [gve]
+process_scheduled_works+0x1e9/0x380
+
+Fix this by properly checking for QPL mode and delegating to
+gve_free_tx_qpl_bufs() to reclaim the buffers.
+
+Cc: stable@vger.kernel.org
+Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260220215324.1631350-1-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ netmem_dma_unmap_page_attrs() => dma_unmap_page() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 54 +++++++++-----------
+ 1 file changed, 24 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 857749fef37cf..e3c46f791abdc 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -157,6 +157,24 @@ gve_free_pending_packet(struct gve_tx_ring *tx,
+ 	}
+ }
+ 
++static void gve_unmap_packet(struct device *dev,
++			     struct gve_tx_pending_packet_dqo *pkt)
++{
++	int i;
++
++	if (!pkt->num_bufs)
++		return;
++
++	/* SKB linear portion is guaranteed to be mapped */
++	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
++			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
++	for (i = 1; i < pkt->num_bufs; i++) {
++		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
++			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
++	}
++	pkt->num_bufs = 0;
++}
++
+ /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
+  */
+ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+@@ -166,21 +184,12 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+ 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
+ 		struct gve_tx_pending_packet_dqo *cur_state =
+ 			&tx->dqo.pending_packets[i];
+-		int j;
+-
+-		for (j = 0; j < cur_state->num_bufs; j++) {
+-			if (j == 0) {
+-				dma_unmap_single(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			} else {
+-				dma_unmap_page(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			}
+-		}
++
++		if (tx->dqo.qpl)
++			gve_free_tx_qpl_bufs(tx, cur_state);
++		else
++			gve_unmap_packet(tx->dev, cur_state);
++
+ 		if (cur_state->skb) {
+ 			dev_consume_skb_any(cur_state->skb);
+ 			cur_state->skb = NULL;
+@@ -992,21 +1001,6 @@ static void remove_from_list(struct gve_tx_ring *tx,
+ 	}
+ }
+ 
+-static void gve_unmap_packet(struct device *dev,
+-			     struct gve_tx_pending_packet_dqo *pkt)
+-{
+-	int i;
+-
+-	/* SKB linear portion is guaranteed to be mapped */
+-	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
+-			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
+-	for (i = 1; i < pkt->num_bufs; i++) {
+-		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
+-			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
+-	}
+-	pkt->num_bufs = 0;
+-}
+-
+ /* Completion types and expected behavior:
+  * No Miss compl + Packet compl = Packet completed normally.
+  * Miss compl + Re-inject compl = Packet completed normally.
+-- 
+2.51.0
 
 
