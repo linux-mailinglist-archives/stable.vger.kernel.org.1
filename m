@@ -1,210 +1,305 @@
-Return-Path: <stable+bounces-223701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BeGBXzzrmnZKgIAu9opvQ
-	(envelope-from <stable+bounces-223701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:21:16 +0100
+	id qHoVIjj3rmnZKgIAu9opvQ
+	(envelope-from <stable+bounces-223702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:37:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FB23C9F8
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:21:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A5E23CD2E
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D76F30897B3
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 16:15:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BDF330AA047
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 16:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D838B3CC9EA;
-	Mon,  9 Mar 2026 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C413B8948;
+	Mon,  9 Mar 2026 16:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xf62G2Tn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ce62ZJDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0833ACA4B
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91533AA1BC;
+	Mon,  9 Mar 2026 16:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773072956; cv=none; b=ANe8U61zOx7znzxRM/AU4X6DMBiGhDPB2lZoY7TtGo7z9f6w1LP+/yjSlWAzZbQRWdXDlP3kVZdMncGthddtOc4IXEyNqiEk1tcoqTA0BQoJKYZFlSzTxLSa/2KLam2a+VEQvyTkEtyGTdzn7uycy2xBFIm9G3b2H7GqpQrzTug=
+	t=1773073632; cv=none; b=ZvHr3Z73pV43vEw54+t2MUojEc4x53fwol/ZoH3r+gTO6+VfDWmni2cubchmT8S9LaiXte6cefQ8K1NFaiPP/rcGjOxJmziUcSHjtLkWsOlFJf1v2Uu0yUp5kyq0A1E3LnaHzubpIS56dhG0yGtbK8l0/z76RB6teNuW+KdCudI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773072956; c=relaxed/simple;
-	bh=/8J/y/ydIeZDwt1Yb0Gj6w8SZbNsD96BCsV5eSDRWp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXeRll1/g/2DumoiZtKUScFnh3ZWBQDzC1m4/zZz/CTQUVRzhSdzeQaaSoaa8Ssd9yl9LTyiN5WZzR1SrPhl0YRUHslzw31qKYRMxa3RMUxuNBDSh+0VxqSuDKaMrvC6IjU/zYAYZCPVaVkHkRba38jHV8qWZ+vKWJ5WOD4Ii1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xf62G2Tn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9B0C2BC86;
-	Mon,  9 Mar 2026 16:15:55 +0000 (UTC)
+	s=arc-20240116; t=1773073632; c=relaxed/simple;
+	bh=pXeQ0w0IhglN90PkBAEavTvZdYtVONAKMna7t6PhtYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=igE0LUScQjyZc8SEfvAZI4Ilj0noiwGc2P89fFbWE+aqDdFXfiMGUSwfJl0m7U2rjUtMgNSUNCiP+feVVyUWHDGTxEPu2g9cv1KPgi6wvXgBUB6Z7uskWya9YQvrGR9rPlGoGCj/S7uN9GgzJuGt/zcEZf4AlslwmCiUKNDBTD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ce62ZJDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB13EC2BCB2;
+	Mon,  9 Mar 2026 16:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773072956;
-	bh=/8J/y/ydIeZDwt1Yb0Gj6w8SZbNsD96BCsV5eSDRWp0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xf62G2TnYPej9sqX9NVt/xtxuAVO9qNUpXpcLiejmr3ew0GG7H73UyXWcRDroAETl
-	 tV3MQE95kuoACjKmrAx2HTYBGmSWEvQc3/Gk4eQqRRJpK4f/mk87QbMXIEWzN5vkYv
-	 qpBpUYRRutko6zHrmFeWsUGHk5w2KZfKbrvQvZIyKYRC3dSLVdjDT29u45DmeOPin9
-	 XzPgpgvfSor9QH+NBm3Hql4sUIV/91CdJWdOeL3smgAsXfji/fOH1LB5yuZ/TaOwa4
-	 gXMqbnPWKnjKhZZJXi00QF9pT413Ucqn7QBJpx0b+FChj3yMglDtVkQ1vf7I5h2uET
-	 bsqcOCxDhIltA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] selftests: mptcp: join: check RM_ADDR not sent over same subflow
-Date: Mon,  9 Mar 2026 12:15:53 -0400
-Message-ID: <20260309161553.1302356-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260309161553.1302356-1-sashal@kernel.org>
-References: <2026030946-stuffy-divinely-da4b@gregkh>
- <20260309161553.1302356-1-sashal@kernel.org>
+	s=k20201202; t=1773073631;
+	bh=pXeQ0w0IhglN90PkBAEavTvZdYtVONAKMna7t6PhtYg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ce62ZJDvsWPo7o+oLk4O00O9mWYrl7bk09FX7fHwiuIy6YDvz3sFcumWYbjuJVbSM
+	 lOuOFvz/1tC9TBES9UDuwDwZPf8yjmonFMwBJepX/Y09cpOz3itSAoanbhqeJkIi2b
+	 kQGbQl5SdgiKp8WETIw3l/Byr0Vzys3DllRcFKxIesL+jWnP/VvGJg5PilQebaU9gY
+	 gXp4WGahAyQiIiqZSgXP5+dx86x2z8DLnbdbWZ6TeZJGfru46xqHTyI7GTSt/9H21q
+	 vzY4G+sJpRTDLG/ke+VAtdAPoGuQZIOBMQtm9xgGeKeZtJ0/XbB9ge4VmCQRt4uaW6
+	 /Y9lVqlkLoe6w==
+Date: Mon, 9 Mar 2026 09:27:10 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Yuto Ohnuki <ytohnuki@amazon.com>
+Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>,
+	"Darrick J . Wong" <darrick.wong@oracle.com>,
+	Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] xfs: avoid dereferencing log items after push
+ callbacks
+Message-ID: <20260309162710.GC6033@frogsfrogsfrogs>
+References: <20260308182804.33127-6-ytohnuki@amazon.com>
+ <20260308182804.33127-9-ytohnuki@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D4FB23C9F8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260308182804.33127-9-ytohnuki@amazon.com>
+X-Rspamd-Queue-Id: F3A5E23CD2E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223701-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223702-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.988];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.969];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+On Sun, Mar 08, 2026 at 06:28:08PM +0000, Yuto Ohnuki wrote:
+> After xfsaild_push_item() calls iop_push(), the log item may have been
+> freed if the AIL lock was dropped during the push. The tracepoints in
+> the switch statement dereference the log item after iop_push() returns,
+> which can result in a use-after-free.
 
-[ Upstream commit 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e ]
+How difficult would it be to add a refcount to xfs_log_item so that any
+other code walking through the AIL's log item list can't accidentally
+suffer from this UAF?  I keep seeing periodic log item UAF bugfixes on
+the list, which (to me anyway) suggests we ought to think about a
+struct(ural) fix to this problem.
 
-This validates the previous commit: RM_ADDR were sent over the first
-found active subflow which could be the same as the one being removed.
-It is more likely to loose this notification.
+I /think/ the answer to that is "sort of nasty" because of things like
+xfs_dquot embedding its own log item.  The other log item types might
+not be so bad because at least they're allocated separately.  However,
+refcount_t accesses also aren't free.
 
-For this check, RM_ADDR are explicitly dropped when trying to send them
-over the initial subflow, when removing the endpoint attached to it. If
-it is dropped, the test will complain because some RM_ADDR have not been
-received.
+> Fix this by capturing the log item type, flags, and LSN before calling
+> xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
+> event class that takes these pre-captured values and the ailp pointer
+> instead of the log item pointer.
+> 
+> Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+> Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+> Cc: <stable@vger.kernel.org> # v5.9
+> Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+> ---
+>  fs/xfs/xfs_trace.h     | 36 ++++++++++++++++++++++++++++++++----
+>  fs/xfs/xfs_trans_ail.c | 24 ++++++++++++++++--------
+>  2 files changed, 48 insertions(+), 12 deletions(-)
+> 
+> diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
+> index 813e5a9f57eb..0e994b3f768f 100644
+> --- a/fs/xfs/xfs_trace.h
+> +++ b/fs/xfs/xfs_trace.h
+> @@ -56,6 +56,7 @@
+>  #include <linux/tracepoint.h>
+>  
+>  struct xfs_agf;
+> +struct xfs_ail;
+>  struct xfs_alloc_arg;
+>  struct xfs_attr_list_context;
+>  struct xfs_buf_log_item;
+> @@ -1650,16 +1651,43 @@ TRACE_EVENT(xfs_log_force,
+>  DEFINE_EVENT(xfs_log_item_class, name, \
+>  	TP_PROTO(struct xfs_log_item *lip), \
+>  	TP_ARGS(lip))
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
+>  DEFINE_LOG_ITEM_EVENT(xlog_ail_insert_abort);
+>  DEFINE_LOG_ITEM_EVENT(xfs_trans_free_abort);
+>  
+> +DECLARE_EVENT_CLASS(xfs_ail_push_class,
+> +	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
+> +	TP_ARGS(ailp, type, flags, lsn),
+> +	TP_STRUCT__entry(
+> +		__field(dev_t, dev)
+> +		__field(uint, type)
+> +		__field(unsigned long, flags)
+> +		__field(xfs_lsn_t, lsn)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
+> +		__entry->type = type;
+> +		__entry->flags = flags;
+> +		__entry->lsn = lsn;
+> +	),
+> +	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
+> +		  MAJOR(__entry->dev), MINOR(__entry->dev),
+> +		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
+> +		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
+> +		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
+> +)
+> +
+> +#define DEFINE_AIL_PUSH_EVENT(name) \
+> +DEFINE_EVENT(xfs_ail_push_class, name, \
+> +	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
+> +	TP_ARGS(ailp, type, flags, lsn))
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
+> +
+>  DECLARE_EVENT_CLASS(xfs_ail_class,
+>  	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
+>  	TP_ARGS(lip, old_lsn, new_lsn),
+> diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+> index ac747804e1d6..14ffb77b12ea 100644
+> --- a/fs/xfs/xfs_trans_ail.c
+> +++ b/fs/xfs/xfs_trans_ail.c
+> @@ -365,6 +365,12 @@ xfsaild_resubmit_item(
+>  	return XFS_ITEM_SUCCESS;
+>  }
+>  
+> +/*
+> + * Push a single log item from the AIL.
+> + *
+> + * @lip may have been released and freed by the time this function returns,
+> + * so callers must not dereference the log item afterwards.
 
-Note that only the RM_ADDR are dropped, to allow the linked subflow to
-be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
-code is used. If the IPTables commands fail, that's OK, the tests will
-continue to pass, but not validate this part. This can be ignored:
-another subtest fully depends on such command, and will be marked as
-skipped.
+This is true after the xfsaild_push_item call, correct?  If so then I
+think the comment for the call needs updating too:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+	/*
+	 * Note that iop_push may unlock and reacquire the AIL lock.  We
+	 * rely on the AIL cursor implementation to be able to deal with
+	 * the dropped lock.
+	 *
+	 * The log item may have been freed by the push, so it must not
+	 * be accessed or dereferenced below this line.
+	 */
+	lock_result = xfsaild_push_item(ailp, lip);
 
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-3-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../testing/selftests/net/mptcp/mptcp_join.sh | 36 +++++++++++++++++++
- 1 file changed, 36 insertions(+)
+Otherwise this looks ok to me.
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 99cc28453317c..0a09810caca94 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -91,6 +91,24 @@ CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
- 			       6 0 0 65535,
- 			       6 0 0 0"
- 
-+# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
-+# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
-+#				  (ip[66] & 0xf0) == 0x40'"
-+CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
-+			      48 0 0 0,
-+			      84 0 0 240,
-+			      21 0 9 64,
-+			      48 0 0 32,
-+			      84 0 0 240,
-+			      21 0 6 192,
-+			      48 0 0 53,
-+			      21 0 4 12,
-+			      48 0 0 66,
-+			      84 0 0 240,
-+			      21 0 1 64,
-+			      6 0 0 65535,
-+			      6 0 0 0"
-+
- init_partial()
- {
- 	capout=$(mktemp)
-@@ -3854,6 +3872,14 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
- 
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		local i
- 		for i in $(seq 3); do
- 			pm_nl_del_endpoint $ns2 1 10.0.1.2
-@@ -3866,6 +3892,7 @@ endpoint_tests()
- 			chk_subflow_nr "after re-add id 0 ($i)" 3
- 			chk_mptcp_info subflows 3 subflows 3
- 		done
-+		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
- 
- 		mptcp_lib_kill_group_wait $tests_pid
- 
-@@ -3925,11 +3952,20 @@ endpoint_tests()
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
-+		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
--- 
-2.51.0
+--D
 
+> + */
+>  static inline uint
+>  xfsaild_push_item(
+>  	struct xfs_ail		*ailp,
+> @@ -462,11 +468,13 @@ static void
+>  xfsaild_process_logitem(
+>  	struct xfs_ail		*ailp,
+>  	struct xfs_log_item	*lip,
+> -	xfs_lsn_t		lsn,
+>  	int			*stuck,
+>  	int			*flushing)
+>  {
+>  	struct xfs_mount	*mp = ailp->ail_log->l_mp;
+> +	uint			type = lip->li_type;
+> +	unsigned long		flags = lip->li_flags;
+> +	xfs_lsn_t		item_lsn = lip->li_lsn;
+>  	int			lock_result;
+>  
+>  	/*
+> @@ -478,9 +486,9 @@ xfsaild_process_logitem(
+>  	switch (lock_result) {
+>  	case XFS_ITEM_SUCCESS:
+>  		XFS_STATS_INC(mp, xs_push_ail_success);
+> -		trace_xfs_ail_push(lip);
+> +		trace_xfs_ail_push(ailp, type, flags, item_lsn);
+>  
+> -		ailp->ail_last_pushed_lsn = lsn;
+> +		ailp->ail_last_pushed_lsn = item_lsn;
+>  		break;
+>  
+>  	case XFS_ITEM_FLUSHING:
+> @@ -496,22 +504,22 @@ xfsaild_process_logitem(
+>  		 * AIL is being flushed.
+>  		 */
+>  		XFS_STATS_INC(mp, xs_push_ail_flushing);
+> -		trace_xfs_ail_flushing(lip);
+> +		trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
+>  
+>  		(*flushing)++;
+> -		ailp->ail_last_pushed_lsn = lsn;
+> +		ailp->ail_last_pushed_lsn = item_lsn;
+>  		break;
+>  
+>  	case XFS_ITEM_PINNED:
+>  		XFS_STATS_INC(mp, xs_push_ail_pinned);
+> -		trace_xfs_ail_pinned(lip);
+> +		trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
+>  
+>  		(*stuck)++;
+>  		ailp->ail_log_flush++;
+>  		break;
+>  	case XFS_ITEM_LOCKED:
+>  		XFS_STATS_INC(mp, xs_push_ail_locked);
+> -		trace_xfs_ail_locked(lip);
+> +		trace_xfs_ail_locked(ailp, type, flags, item_lsn);
+>  
+>  		(*stuck)++;
+>  		break;
+> @@ -572,7 +580,7 @@ xfsaild_push(
+>  		if (test_bit(XFS_LI_FLUSHING, &lip->li_flags))
+>  			goto next_item;
+>  
+> -		xfsaild_process_logitem(ailp, lip, lsn, &stuck, &flushing);
+> +		xfsaild_process_logitem(ailp, lip, &stuck, &flushing);
+>  		count++;
+>  
+>  		/*
+> -- 
+> 2.50.1
+> 
+> 
+> 
+> 
+> Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
+> 
+> Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
+> 
+> 
+> 
+> 
 
