@@ -1,314 +1,177 @@
-Return-Path: <stable+bounces-223475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILj/GIsvrmlrAQIAu9opvQ
-	(envelope-from <stable+bounces-223475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 03:25:15 +0100
+	id mEoPBIIvrmlrAQIAu9opvQ
+	(envelope-from <stable+bounces-223476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 03:25:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E5E2333BA
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 03:25:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135BD2333AC
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 03:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFD4C304AC1B
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 02:22:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81262301E73E
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 02:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A7029BD88;
-	Mon,  9 Mar 2026 02:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63BE26560A;
+	Mon,  9 Mar 2026 02:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXS0xK/H"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WIPK784+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321B4291C33
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 02:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7970222F177;
+	Mon,  9 Mar 2026 02:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773022938; cv=none; b=XJEcSFoRmLf2N5J3UNCr1OyZZliD8YKGOPQcyq5adrq0fTXApF0g+t0AM7htnB02JFcR8t7BXnPlpj7axf/ccqgVq9Rc7PwU5JPU8u2wX9YC9bbFEY3fzdF2RcHvf0qJWIrqHYyaSnwW17v+jG0sf/MuK1vLDus2QLCFS/ufg9I=
+	t=1773022973; cv=none; b=jlqXKAHv0j7QauVYzD9ghhgWTtjXTiSD58Cj7hohJGjG1gGuxpwNk4mjjmmhFQcHP583F0jiea4GEybVhNT/zbmgULcavQKp+NhbrPlbe8kBua4HuEuF5oF+/y10PrC6QRaYNAMM+T6mvL96YDVo1oQsQdGlBK3T8w4xxnxn73U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773022938; c=relaxed/simple;
-	bh=sfhKlOxhZjp27RRqyMOv5tQbb25tvaGuKH9jjcuerK8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oQSImUW9kL9CnNKt1HizL0oH0y67Bmdzp9RggnD0KI84vdZMF/438HI7Rvt2ABbE+UEu0U9pYEISOGBfINADkSP3d29aJkwos5PB9sZ6XTb77tItobZOrwkqZeOdwzYVl6DT+qkgL5AZHN7ys8bcDDFVSupeqyh69ijKbsPhZ5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXS0xK/H; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so7045061a12.3
-        for <stable@vger.kernel.org>; Sun, 08 Mar 2026 19:22:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773022936; x=1773627736; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gplv2Tex9lazNCSIePgQz/7GHAFcH+CmqLMfgw0rRa0=;
-        b=qXS0xK/H+4hXaFLUlZ8x87PPHpUbo46YLYLBWMcdL9kyLAofzbPujHJCCKYCmfDIKI
-         BAaWPJKtf0PDXEyvBUJH3E98gWq9K6EfaAmpcYtIPoWKoQhKlNurghHkYy/OV2bqExfV
-         Eb1lGEnpPVGw1Y0vZ7+dIz611n+QcCpX/phanCnjfZbr22m7H9EUpzJHDj5Q6gH7kL88
-         A90UAYwwWr2fp4/MjdBikNAwFpE/NM8XRJeElQ8G+7xJJyXyZ0KIXrNNAtAcOBwia6an
-         vbOgLueVCmlSlNPm6E/SG7w/kjC/vBZNaJsjdqaz6fZ+1h5zHDx+ebWoCwIHouO8igbE
-         OjIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773022936; x=1773627736;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gplv2Tex9lazNCSIePgQz/7GHAFcH+CmqLMfgw0rRa0=;
-        b=G80j0eMqmOIzYwS43WAFTxbQaBZtlnfzx+FfTnfjZ0PntACK/4vfR3k2DmIezYVKt9
-         8bRzhm0Wwo1DFTA7q6Uel/s/geSsWdV5WNLPv1RXvIqaEl/Ua4qipTfeZchA99fCXBFQ
-         nJ+LErgl55ErAgox4plL8F9FZ/IXq8IJf6yZC4X6ZAeZyXICXdPX3uzXzdfxux0ea+v8
-         n8k1caXykf72Wr3/Dl6U0N+zNui/qSaAqY3NcgIbD1Rz3NkGlNgFXvade9Ab7Z7QBLoK
-         Jjp/3Od+itK1gKX9Y6ABUbNbKVANkGy1bqE0pRxkTL+wYmBA7hwRfTxE6K8hawAtm4AD
-         p6JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeddzvp7Ifzlu1R2Sxtee6++wSoJWWKDLMHOsiRwqYekiHLhtp/cUxe54Uuc538jd8f9NgNpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+f0Kj+raSiIF5mbJ7DBL6hAWSgslqZlV6XUUC3aXGTDA2h+VE
-	oX8FJ23LDSx3V3xfwIop2Nejk+LkOLE2HHUjMIv8VjFlLShWEkg+///lSmbvWjqVPEL4goEFIAS
-	OG3Igy70VZ+hiExFV1Q==
-X-Received: from pliy14.prod.google.com ([2002:a17:903:3d0e:b0:2ae:42de:7ed4])
- (user=guanyulin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:f64e:b0:2ae:3ab7:1545 with SMTP id d9443c01a7336-2ae82505e81mr96587345ad.43.1773022936417;
- Sun, 08 Mar 2026 19:22:16 -0700 (PDT)
-Date: Mon,  9 Mar 2026 02:22:05 +0000
-In-Reply-To: <20260309022205.28136-1-guanyulin@google.com>
+	s=arc-20240116; t=1773022973; c=relaxed/simple;
+	bh=ek6Q3pgrbgv6btK46kxZUTvf7+ZrdMXGyeriLGTUzAE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OmGEERtclkfWq0hHAy9ukhgTnV9KY6XNHBAsOPLL8xvgexrydmrJjiTaVOklAQhUaNpb95S7grkCaTGgZgkBjTu+LvU/tM3VV3cl9B5pehLMziDI1m+V0Yxwlp18VPi4rhdh8SV6CdGmZ0+oPAVU/RXPTjrKJADkymP1JsRcLBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WIPK784+; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=5v
+	sqXiU7O2Yi0ZaDaTEqsKFf1lQiln2PtajqeQs2Nyc=; b=WIPK784+ChbfpAdr+A
+	eQqyQsF+qh4fQjU3PzQZcy5YxlLugkrMrmVXiR3i45iDYOGCsqY8Dg94fvilvW0e
+	hGuTNjPB0hHGq9dWcHQs7xeDJEgAo3m2tVkMJkcSi1+GZi8xBymPq0Ltw8sa475q
+	pVR+VvRydzR2W0fHb/58FHGRE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDXV5TmLq5pRMZoPg--.11725S3;
+	Mon, 09 Mar 2026 10:22:33 +0800 (CST)
+From: Chenyuan Mi <chenyuan_mi@163.com>
+To: alexander.deucher@amd.com,
+	christian.koenig@amd.com
+Cc: Arunpravin.PaneerSelvam@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/amdgpu: protect waitq access with userq_mutex in wait IOCTL
+Date: Mon,  9 Mar 2026 10:22:28 +0800
+Message-ID: <20260309022229.63071-2-chenyuan_mi@163.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260309022229.63071-1-chenyuan_mi@163.com>
+References: <20260309022229.63071-1-chenyuan_mi@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260309022205.28136-1-guanyulin@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260309022205.28136-3-guanyulin@google.com>
-Subject: [PATCH v2 2/2] ALSA: usb: qcom: manage offload device usage
-From: Guan-Yu Lin <guanyulin@google.com>
-To: gregkh@linuxfoundation.org, mathias.nyman@intel.com, perex@perex.cz, 
-	tiwai@suse.com, quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
-	christophe.jaillet@wanadoo.fr, xiaopei01@kylinos.cn, 
-	wesley.cheng@oss.qualcomm.com
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-sound@vger.kernel.org, Guan-Yu Lin <guanyulin@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D9E5E2333BA
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXV5TmLq5pRMZoPg--.11725S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF17Ww13Xw45AF45XF18Krg_yoW5XryDpr
+	WrKr12kr4DXr429w1UJwnFgFWvgw4xWFWfKFn7Cry3uws8Aas09ryYkFWDXr18CrsrAFW2
+	qrn7A3y8tF1qkw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jqD73UUUUU=
+X-CM-SenderInfo: xfkh055xdqszrl6rljoofrz/xtbC1ArL3mmuLuqxEwAA3q
+X-Rspamd-Queue-Id: 135BD2333AC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223475-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,intel.com,perex.cz,suse.com,quicinc.com,kernel.org,arndb.de,wanadoo.fr,kylinos.cn,oss.qualcomm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223476-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-0.899];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[chenyuan_mi@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.983];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[163.com];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-The Qualcomm USB audio offload driver currently does not report its offload
-activity to the USB core. This prevents the USB core from properly tracking
-active offload sessions, which could allow the device to auto-suspend while
-audio offloading is in progress.
+amdgpu_userq_wait_ioctl() accesses the wait queue object obtained
+from xa_load() without holding userq_mutex or taking a reference on
+the queue. A concurrent AMDGPU_USERQ_OP_FREE call can destroy and
+free the queue between the xa_load() and the subsequent
+xa_alloc(&waitq->fence_drv_xa, ...), resulting in a use-after-free.
 
-Integrate usb_offload_get() and usb_offload_put() calls into the offload
-stream setup and teardown paths. Specifically, call usb_offload_get() when
-initializing the event ring and usb_offload_put() when freeing it.
+This is a regression introduced by commit 4b27406380b0
+("drm/amdgpu: Add queue id support to the user queue wait IOCTL"),
+which removed the indirect fence_drv_xa_ptr model and its NULL
+check safety net from commit ed5fdc1fc282 ("drm/amdgpu: Fix the
+use-after-free issue in wait IOCTL") and replaced it with a direct
+waitq->fence_drv_xa access, but did not add any lifetime protection
+around the new waitq pointer.
 
-Since the updated usb_offload_get() and usb_offload_put() APIs require the
-caller to hold the USB device lock, add the necessary device locking in
-handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
-requirement.
+Fix this by holding userq_mutex across the xa_load() and the
+subsequent fence_drv_xa operations, matching the locking used by
+the destroy path.
 
+Fixes: 4b27406380b0 ("drm/amdgpu: Add queue id support to the user queue wait IOCTL")
 Cc: stable@vger.kernel.org
-Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
+Signed-off-by: Chenyuan Mi <chenyuan_mi@163.com>
 ---
- sound/usb/qcom/qc_audio_offload.c | 102 ++++++++++++++++++------------
- 1 file changed, 60 insertions(+), 42 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
-index cfb30a195364..1da243662327 100644
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct uaudio_dev *dev)
- 		uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
- 				   PAGE_SIZE);
- 		xhci_sideband_remove_interrupter(uadev[dev->chip->card->number].sb);
-+		usb_offload_put(dev->udev);
- 	}
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index 8013260e29dc..1785ea7c18fe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -912,8 +912,10 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 		 */
+ 		num_fences = dma_fence_dedup_array(fences, num_fences);
  
-@@ -750,6 +751,7 @@ static void qmi_stop_session(void)
- 	struct snd_usb_substream *subs;
- 	struct usb_host_endpoint *ep;
- 	struct snd_usb_audio *chip;
-+	struct usb_device *udev;
- 	struct intf_info *info;
- 	int pcm_card_num;
- 	int if_idx;
-@@ -791,8 +793,13 @@ static void qmi_stop_session(void)
- 			disable_audio_stream(subs);
++		mutex_lock(&userq_mgr->userq_mutex);
+ 		waitq = xa_load(&userq_mgr->userq_xa, wait_info->waitq_id);
+ 		if (!waitq) {
++			mutex_unlock(&userq_mgr->userq_mutex);
+ 			r = -EINVAL;
+ 			goto free_fences;
  		}
- 		atomic_set(&uadev[idx].in_use, 0);
--		guard(mutex)(&chip->mutex);
--		uaudio_dev_cleanup(&uadev[idx]);
-+
-+		udev = uadev[idx].udev;
-+		if (udev) {
-+			guard(device)(&udev->dev);
-+			guard(mutex)(&chip->mutex);
-+			uaudio_dev_cleanup(&uadev[idx]);
-+		}
- 	}
- }
+@@ -932,6 +934,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 				r = dma_fence_wait(fences[i], true);
+ 				if (r) {
+ 					dma_fence_put(fences[i]);
++					mutex_unlock(&userq_mgr->userq_mutex);
+ 					goto free_fences;
+ 				}
  
-@@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
- 	er_pa = 0;
- 
- 	/* event ring */
-+	ret = usb_offload_get(subs->dev);
-+	if (ret < 0)
-+		goto exit;
-+
- 	ret = xhci_sideband_create_interrupter(uadev[card_num].sb, 1, false,
- 					       0, uaudio_qdev->data->intr_num);
- 	if (ret < 0) {
- 		dev_err(&subs->dev->dev, "failed to fetch interrupter\n");
--		goto exit;
-+		goto put_offload;
- 	}
- 
- 	sgt = xhci_sideband_get_event_buffer(uadev[card_num].sb);
-@@ -1219,6 +1230,8 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
- 	mem_info->dma = 0;
- remove_interrupter:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+put_offload:
-+	usb_offload_put(subs->dev);
- exit:
- 	return ret;
- }
-@@ -1483,6 +1496,7 @@ static int prepare_qmi_response(struct snd_usb_substream *subs,
- 	uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZE);
- free_sec_ring:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+	usb_offload_put(subs->dev);
- drop_sync_ep:
- 	if (subs->sync_endpoint) {
- 		uaudio_iommu_unmap(MEM_XFER_RING,
-@@ -1528,6 +1542,7 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
- 	u8 pcm_card_num;
- 	u8 pcm_dev_num;
- 	u8 direction;
-+	struct usb_device *udev = NULL;
- 	int ret = 0;
- 
- 	if (!svc->client_connected) {
-@@ -1597,50 +1612,53 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
- 
- 	uadev[pcm_card_num].ctrl_intf = chip->ctrl_intf;
- 
--	if (req_msg->enable) {
--		ret = enable_audio_stream(subs,
--					  map_pcm_format(req_msg->audio_format),
--					  req_msg->number_of_ch, req_msg->bit_rate,
--					  datainterval);
--
--		if (!ret)
--			ret = prepare_qmi_response(subs, req_msg, &resp,
--						   info_idx);
--		if (ret < 0) {
--			guard(mutex)(&chip->mutex);
--			subs->opened = 0;
--		}
--	} else {
--		info = &uadev[pcm_card_num].info[info_idx];
--		if (info->data_ep_pipe) {
--			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
--					       info->data_ep_pipe);
--			if (ep) {
--				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
--							    ep);
--				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
--							      ep);
-+	udev = subs->dev;
-+	scoped_guard(device, &udev->dev) {
-+		if (req_msg->enable) {
-+			ret = enable_audio_stream(subs,
-+						map_pcm_format(req_msg->audio_format),
-+						req_msg->number_of_ch, req_msg->bit_rate,
-+						datainterval);
-+
-+			if (!ret)
-+				ret = prepare_qmi_response(subs, req_msg, &resp,
-+							info_idx);
-+			if (ret < 0) {
-+				guard(mutex)(&chip->mutex);
-+				subs->opened = 0;
+@@ -948,8 +951,10 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 			 */
+ 			r = xa_alloc(&waitq->fence_drv_xa, &index, fence_drv,
+ 				     xa_limit_32b, GFP_KERNEL);
+-			if (r)
++			if (r) {
++				mutex_unlock(&userq_mgr->userq_mutex);
+ 				goto free_fences;
 +			}
-+		} else {
-+			info = &uadev[pcm_card_num].info[info_idx];
-+			if (info->data_ep_pipe) {
-+				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-+							info->data_ep_pipe);
-+				if (ep) {
-+					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+				}
-+
-+				info->data_ep_pipe = 0;
- 			}
  
--			info->data_ep_pipe = 0;
--		}
--
--		if (info->sync_ep_pipe) {
--			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
--					       info->sync_ep_pipe);
--			if (ep) {
--				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
--							    ep);
--				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
--							      ep);
-+			if (info->sync_ep_pipe) {
-+				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-+							info->sync_ep_pipe);
-+				if (ep) {
-+					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+				}
-+
-+				info->sync_ep_pipe = 0;
- 			}
+ 			amdgpu_userq_fence_driver_get(fence_drv);
  
--			info->sync_ep_pipe = 0;
-+			disable_audio_stream(subs);
-+			guard(mutex)(&chip->mutex);
-+			subs->opened = 0;
+@@ -961,6 +966,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 			/* Increment the actual userq fence count */
+ 			cnt++;
  		}
--
--		disable_audio_stream(subs);
--		guard(mutex)(&chip->mutex);
--		subs->opened = 0;
- 	}
++		mutex_unlock(&userq_mgr->userq_mutex);
  
- response:
+ 		wait_info->num_fences = cnt;
+ 		/* Copy userq fence info to user space */
 -- 
-2.53.0.473.g4a7958ca14-goog
+2.53.0
 
 
