@@ -1,108 +1,218 @@
-Return-Path: <stable+bounces-223691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDVdAjLtrmkWKQIAu9opvQ
-	(envelope-from <stable+bounces-223691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:54:26 +0100
+	id Hdv3KPfqrmkWKQIAu9opvQ
+	(envelope-from <stable+bounces-223692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:44:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABA423C2C2
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:54:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A2923BF44
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22B823067C40
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:38:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E5273007505
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1363C3DA7EC;
-	Mon,  9 Mar 2026 15:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E943D9043;
+	Mon,  9 Mar 2026 15:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="C2tDBMf9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJ8sIdN4"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F363DA7EB;
-	Mon,  9 Mar 2026 15:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE0C3D4100
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 15:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773070707; cv=none; b=bxo6jV8BvyZJL0M4iZlsvCxLMAdVc3U6GruoOVKwtxAgkwjbSYBXUgk50z6UdRE41d6U+DL1Dgj7k2BTPUyRpzrwunw0s4/j8J1KTR7FO5b1AP0c7p6WFhVBR0xM7x6hrnZhFTJhkMrLQ6IxiRIRRiHemYcYc3W5p0vz3E/cxqc=
+	t=1773070731; cv=none; b=deMXURNzZPg3HIIHkeWeQVPQw/EhbFzzxHDPbf5Rah09swlJKydPrCvMbrnx8nSKPJAL0ojlSBDjLPIRYkrI+HT7he4E4ryP4SWj1CV7ZydLB0jJFYJ5Pw9ZLjz1v1hwktcJ8aYpzWDfmzXc1iQaisLLY9PA/0bOK/6nSGFk0nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773070707; c=relaxed/simple;
-	bh=/5ynGWICZzQDBA7TvuJ43IB5Zbq1ElgWFH1QlBBPyro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hsPOsBaMuaxnpL8DzB5kQYyM1a5VsNVYRUPyZIPezgDcjTJuxjlrc+r3cbWnplDXWVZKXSh0devyCru/WvlcbO1TaMHpz7/m/mIxACCtsPnJAqo9IRIE668wutxG2mOrvuVWiS2zJRYDdnjptkNn1V9CKt0fhjDDmE1LmX/Q1aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=C2tDBMf9; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C7sMITIeHcAA5EyDdi31r5Bd3d/PSwOH7dQ59Jw/Kgs=; b=C2tDBMf9ENmojPzH9erp33Q+1i
-	wtrCgv5nt545Xfg52tZYZELno++MtEdy/QJ4xGnXI+iHSNUPU65ikeVnMcquRotvNcIrVU40JeHnq
-	8NFuy/k1peJmZQy39RejI2RYMMORtP7SMR9HL8DMOv7ZO8T2vzrA/G7GNKiE5xlthuOnrF33FCl6c
-	Wukt6XYIQVDcNKTIZ9WjOGdMSjb6P2fMCUT1qLXR/nshTTXHO3GpgKgB7fN6rvNg6g3/98fGl7qkC
-	1gyM3or/CqP/D+F3awzG/2udCt3pwVS5w0A74QfGggro28q24FIAcLyplJNZDHwfFzA2RQzz1vKEV
-	KKDxHrRw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzcgZ-00000006ANo-1trr;
-	Mon, 09 Mar 2026 15:38:23 +0000
-Date: Mon, 9 Mar 2026 15:38:23 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Johnny Hao <johnny_haocn@sina.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, slava@dubeyko.com,
-	vishal.moola@gmail.com
-Subject: Re: [PATCH 6.1.y 0/3] Fix patch backport review
-Message-ID: <aa7pb3ppx7lgj-F2@casper.infradead.org>
-References: <20260309050130.912344-1-johnny_haocn@sina.com>
+	s=arc-20240116; t=1773070731; c=relaxed/simple;
+	bh=mHDyfMIyBY3KFigReUYCrbyTDscrUqWgJTJJMXs3b8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PbN0lmkkK0QARbnVARIdZ11F8u5Gfb3B6OmDc2bKZQTSwHxLUUv3h9dG1cbB058f4ywJlQlYaPhK2BEor+EFbWBkjUmUxrQajZfVnhIacH3CFRGNNOVSy7AiwpDpNHkmyNM0o3S9U2fwBIwnP8igXnnof98+NWaMJC0b8ylzHbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJ8sIdN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375CBC4CEF7;
+	Mon,  9 Mar 2026 15:38:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773070730;
+	bh=mHDyfMIyBY3KFigReUYCrbyTDscrUqWgJTJJMXs3b8I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tJ8sIdN4BoX1ycwnT32cHW9fiXQnQSgEy/fBDBU8fHptfy9RX+aVfB6YuNxMEcQNt
+	 +qHsj8eLGZW1s+o1p5suulGxBMFqAiSsJe5FRLowuQncw7yg6miDGQ5hrFP3jDWCVO
+	 o8fquJ1ZWgGqLsIPMO0bILTAXNqTFE62KAz06ZtEd9O/qy1T2pLIwRC255eR1xP5qq
+	 FaN46G5sH5z+ah86my6HrWhjCLBNvvJI6X358+anMkELhyo9iOxvMrddgV3keoeqa8
+	 VOexsOPOxfeGOQnMf88S0eh0vZ2cnJg0D+W+q8K81DBZw+FAfh9nyrFwCXs8ij5z4y
+	 KlSwXYGgYvclw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: pm: in-kernel: always mark signal+subflow endp as used
+Date: Mon,  9 Mar 2026 11:38:46 -0400
+Message-ID: <20260309153846.1288656-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026030917-trout-chaos-80dd@gregkh>
+References: <2026030917-trout-chaos-80dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309050130.912344-1-johnny_haocn@sina.com>
-X-Rspamd-Queue-Id: 0ABA423C2C2
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 27A2923BF44
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223691-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[sina.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223692-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,dubeyko.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.990];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.984];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:dkim,casper.infradead.org:mid]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,addr.id:url]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 01:01:27PM +0800, Johnny Hao wrote:
-> This patch series is to backport the fix 736a0516a162
-> ("hfs: fix general protection fault in hfs_find_init()")
-> to 6.1.y and the other 2 patches are its dependence.
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-Please explain why backporting this fix is important.  The bug has
-been present for years and this is not a widely-used filesystem.
+[ Upstream commit 579a752464a64cb5f9139102f0e6b90a1f595ceb ]
+
+Syzkaller managed to find a combination of actions that was generating
+this warning:
+
+  msk->pm.local_addr_used == 0
+  WARNING: net/mptcp/pm_kernel.c:1071 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline], CPU#1: syz.2.17/961
+  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline], CPU#1: syz.2.17/961
+  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210, CPU#1: syz.2.17/961
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 961 Comm: syz.2.17 Not tainted 6.19.0-08368-gfafda3b4b06b #22 PREEMPT(full)
+  Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.17.0-debian-1.17.0-1build1 04/01/2014
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline]
+  RIP: 0010:mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline]
+  RIP: 0010:mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210
+  Code: 89 c5 e8 46 30 6f fe e9 21 fd ff ff 49 83 ed 80 e8 38 30 6f fe 4c 89 ef be 03 00 00 00 e8 db 49 df fe eb ac e8 24 30 6f fe 90 <0f> 0b 90 e9 1d ff ff ff e8 16 30 6f fe eb 05 e8 0f 30 6f fe e8 9a
+  RSP: 0018:ffffc90001663880 EFLAGS: 00010293
+  RAX: ffffffff82de1a6c RBX: 0000000000000000 RCX: ffff88800722b500
+  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: ffff8880158b22d0 R08: 0000000000010425 R09: ffffffffffffffff
+  R10: ffffffff82de18ba R11: 0000000000000000 R12: ffff88800641a640
+  R13: ffff8880158b1880 R14: ffff88801ec3c900 R15: ffff88800641a650
+  FS:  00005555722c3500(0000) GS:ffff8880f909d000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f66346e0f60 CR3: 000000001607c000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
+   netlink_sendmsg+0x4aa/0x5b0 net/netlink/af_netlink.c:1894
+   sock_sendmsg_nosec net/socket.c:727 [inline]
+   __sock_sendmsg+0xc9/0xf0 net/socket.c:742
+   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2592
+   ___sys_sendmsg+0x2de/0x320 net/socket.c:2646
+   __sys_sendmsg net/socket.c:2678 [inline]
+   __do_sys_sendmsg net/socket.c:2683 [inline]
+   __se_sys_sendmsg net/socket.c:2681 [inline]
+   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2681
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x143/0x440 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f66346f826d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007ffc83d8bdc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007f6634985fa0 RCX: 00007f66346f826d
+  RDX: 00000000040000b0 RSI: 0000200000000740 RDI: 0000000000000007
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6634985fa8
+  R13: 00007f6634985fac R14: 0000000000000000 R15: 0000000000001770
+   </TASK>
+
+The actions that caused that seem to be:
+
+ - Set the MPTCP subflows limit to 0
+ - Create an MPTCP endpoint with both the 'signal' and 'subflow' flags
+ - Create a new MPTCP connection from a different address: an ADD_ADDR
+   linked to the MPTCP endpoint will be sent ('signal' flag), but no
+   subflows is initiated ('subflow' flag)
+ - Remove the MPTCP endpoint
+
+In this case, msk->pm.local_addr_used has been kept to 0 -- because no
+subflows have been created -- but the corresponding bit in
+msk->pm.id_avail_bitmap has been cleared when the ADD_ADDR has been
+sent. This later causes a splat when removing the MPTCP endpoint because
+msk->pm.local_addr_used has been kept to 0.
+
+Now, if an endpoint has both the signal and subflow flags, but it is not
+possible to create subflows because of the limits or the c-flag case,
+then the local endpoint counter is still incremented: the endpoint is
+used at the end. This avoids issues later when removing the endpoint and
+calling __mark_subflow_endp_available(), which expects
+msk->pm.local_addr_used to have been previously incremented if the
+endpoint was marked as used according to msk->pm.id_avail_bitmap.
+
+Note that signal_and_subflow variable is reset to false when the limits
+and the c-flag case allows subflows creation. Also, local_addr_used is
+only incremented for non ID0 subflows.
+
+Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/613
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-4-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ pm_kernel.c => pm_netlink.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 864c26e22b24f..e8f5c7d686d72 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -661,6 +661,15 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 	}
+ 
+ exit:
++	/* If an endpoint has both the signal and subflow flags, but it is not
++	 * possible to create subflows -- the 'while' loop body above never
++	 * executed --  then still mark the endp as used, which is somehow the
++	 * case. This avoids issues later when removing the endpoint and calling
++	 * __mark_subflow_endp_available(), which expects the increment here.
++	 */
++	if (signal_and_subflow && local.addr.id != msk->mpc_endpoint_id)
++		msk->pm.local_addr_used++;
++
+ 	mptcp_pm_nl_check_work_pending(msk);
+ }
+ 
+-- 
+2.51.0
+
 
