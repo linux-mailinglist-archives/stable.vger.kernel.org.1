@@ -1,141 +1,137 @@
-Return-Path: <stable+bounces-223684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKqUHKvkrmmsJwIAu9opvQ
-	(envelope-from <stable+bounces-223684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:18:03 +0100
+	id CCH+GejlrmmsJwIAu9opvQ
+	(envelope-from <stable+bounces-223685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:23:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF55423B813
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:18:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19DC23B92F
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EEE430848C8
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:12:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42EE431F62E6
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F16E3D903C;
-	Mon,  9 Mar 2026 15:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5A93D9044;
+	Mon,  9 Mar 2026 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szP4LUjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igBATUz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAFD3D412B;
-	Mon,  9 Mar 2026 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6153D9040
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 15:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069157; cv=none; b=IdqXoytihdrmceVEfpbRLAhZRSPZgashn3vI3H10lT6ydAlcYMSKJ4XmrfCS+PURUIR78hvFHTzZJSo/QCU8TVTkcFS2sUZRfoswDoOwUCUvRRXwnJuPHoXzak7Mvqjbn6S6S0oy13vPi006Y0HAERyiSHfdokSmOzDJl5rWOFs=
+	t=1773069329; cv=none; b=A0gZW4uzTvehdRWLiCBRoHNBwrHynTcdZHr6RPPv99FsY0tjVgaa/OM8xJrMAZWPlcObtefQXuXHJsA1f9Tir6cQg2XK1JtV0DrJTOo7eMJIFPi4pqCCaZi3WxpTkQ5zv1N8ggokWV4dtA+7zkLjQQ8nlVDAVoWXSC97rJ7JNxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069157; c=relaxed/simple;
-	bh=ZkCWbqrc47NpgZ+L4btzWYAw5FFwdyUvBXauGv4F/bA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=anu+uMlBAHUmi9gtF3rao5YyvGXYzDXFsOF9LoPCXtY2SKciu6S33XnFNf2Rc22MIh9ketdQCdNiYn5rSuggrKkeVmWJaaIIYqpi+Y8Z0CsAHwo/366BtXwtUPOQvuLF2uw+7vTdiJfo/7tIefAwqTWfWnqN6TmiaiyTBrzGtL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szP4LUjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B0BC2BC86;
-	Mon,  9 Mar 2026 15:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773069156;
-	bh=ZkCWbqrc47NpgZ+L4btzWYAw5FFwdyUvBXauGv4F/bA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=szP4LUjoHtI6vLFkqGOZ2++T17No5A6BEAGf60bnwmpPmKyUSwdTNnjScaxXzwj5m
-	 Fm9JwTPiG74aghA5KXmIi0QmhBz2zk4NnyXC4dMqc87IXEDs/Qtv8BckS2u1dwiI2p
-	 R7sfNSNqABupVMrGSpmv1IoXPcBjShqO+e/Ts9srnrP3oQLkSFzfawQapT5VNQGNkh
-	 rd77cdaT1k4zKxeSc5x9aszEs9HhlNRVKjWlJ1YB65KTn4dxpHx4ZTZ4ZkOHlWiRIV
-	 lIOI1Zckun0xj3WrJzfsRWba/gRXaJhQAJdek673JNviYqeCnWywUmEBctgMLoMCfV
-	 h08OeRHaEJ8RA==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, 
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
- Ravi Hothi <ravi.hothi@oss.qualcomm.com>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, mohammad.rafi.shaik@oss.qualcomm.com, 
- ajay.nandam@oss.qualcomm.com, stable@vger.kernel.org
-In-Reply-To: <20260227144534.278568-1-ravi.hothi@oss.qualcomm.com>
-References: <20260227144534.278568-1-ravi.hothi@oss.qualcomm.com>
-Subject: Re: [PATCH v1] ASoC: qcom: qdsp6: Fix q6apm remove ordering during
- ADSP stop and start
-Message-Id: <177306915420.149479.15947778465321461228.b4-ty@kernel.org>
-Date: Mon, 09 Mar 2026 15:12:34 +0000
+	s=arc-20240116; t=1773069329; c=relaxed/simple;
+	bh=RSzDCCW5LiM+OcTL0v35NkCPW7E2tVuIs/8aUuxyKUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=je8n+y7DdzZFCWuis1eZffKu757cRPDNvz1PsDGOEWXJppd7WCTCBNUVmYptzk9IZrZ+wRccRl3dnJwvvTVsKIQ8cmpPY9hUII/j8a8WBEZQECS+3WbZ+4SbQYyLayHQ6afNJNmZZNel/CnfRvkbLMyb/Z6ppL/DuTJ88iQgquo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igBATUz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181CCC2BC86;
+	Mon,  9 Mar 2026 15:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773069329;
+	bh=RSzDCCW5LiM+OcTL0v35NkCPW7E2tVuIs/8aUuxyKUk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=igBATUz1p4W/OURIWYY2D845KZkmIfm+EyflGycp2GLoy2u9sS/aqnTzvR6fCVOM0
+	 927Dq7H3OvS7y0OHbVlCN8nSOL5Xw6ohYXyMew8aydPzZW6kvF/d2VTi3tmrVdp5zS
+	 3pst4Dmj9fRYU0Uq97pmqhurY2E4p0qAx6A3KHII=
+Date: Mon, 9 Mar 2026 16:15:27 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nathaniel Filardo <nwfilardo@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: 6.12 build failure for non-SMP systems
+Message-ID: <2026030904-entering-nuptials-d410@gregkh>
+References: <CAKsvP2YbMv+iiVb7NWSKmK_Ugi0Wgt78m1qtdDg9OkNVdhcEcQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-83dbb
-X-Rspamd-Queue-Id: DF55423B813
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKsvP2YbMv+iiVb7NWSKmK_Ugi0Wgt78m1qtdDg9OkNVdhcEcQ@mail.gmail.com>
+X-Rspamd-Queue-Id: E19DC23B92F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,perex.cz,suse.com,linux.dev,oss.qualcomm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223684-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-223685-lists,stable=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_SPAM(0.00)[0.207];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.927];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Fri, 27 Feb 2026 20:15:34 +0530, Ravi Hothi wrote:
-> During ADSP stop and start, the kernel crashes due to the order in which
-> ASoC components are removed.
+On Sat, Feb 21, 2026 at 02:04:49PM -0500, Nathaniel Filardo wrote:
+> Hi stable@
 > 
-> On ADSP stop, the q6apm-audio .remove callback unloads topology and removes
-> PCM runtimes during ASoC teardown. This deletes the RTDs that contain the
-> q6apm DAI components before their removal pass runs, leaving those
-> components still linked to the card and causing crashes on the next rebind.
+> The commit https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=e61f636cc31042b717a46f6937a2dfaf21f45c91,
+> first included in 6.12.64, does not properly guard its new references
+> to `stop_sched_class` under `CONFIG_SMP`, leading to build failures
+> like the following, even with the significantly newer 6.12.74 release:
 > 
-> [...]
+> > linux-armv5tel-unknown-linux-gnueabi>   LD      .tmp_vmlinux1
+> linux-armv5tel-unknown-linux-gnueabi>
+> /nix/store/cn2gkcaa5kfgzjah31c0qlifv9y4yqg5-armv5tel-unknown-linux-gnueabi-binutils-2.44/bin/armv5tel-unknown-linux-gnueabi-ld:
+> kernel/sched/build_policy.o: in function `scx_ops_disable_workfn':
+> > linux-armv5tel-unknown-linux-gnueabi> /build/linux-6.12.74/build/../kernel/sched/ext.c:4746:(.text+0x704c): undefined reference to `stop_sched_class'
+> > linux-armv5tel-unknown-linux-gnueabi> /nix/store/cn2gkcaa5kfgzjah31c0qlifv9y4yqg5-armv5tel-unknown-linux-gnueabi-binutils-2.44/bin/armv5tel-unknown-linux-gnueabi-ld: kernel/sched/build_policy.o: in function `atomic_set':
+> > linux-armv5tel-unknown-linux-gnueabi> /build/linux-6.12.74/build/../include/linux/atomic/atomic-instrumented.h:69:(.text+0x11c6c): undefined reference to `stop_sched_class'
+> 
+> A possible fix is simply to add the requisite guard, thus:
+> diff --git a/kernel/sched/ext.c.orig b/kernel/sched/ext.c
+> index 9f03255..9a3e5b2 100644
+> --- a/kernel/sched/ext.c.orig
+> +++ b/kernel/sched/ext.c
+> @@ -1059,8 +1059,10 @@ static struct scx_dispatch_q *find_user_dsq(u64 dsq_id)
+> 
+>  static const struct sched_class *scx_setscheduler_class(struct task_struct *p)
+>  {
+> +#ifdef CONFIG_SMP
+>   if (p->sched_class == &stop_sched_class)
+>   return &stop_sched_class;
+> +#endif
+> 
+>   return __setscheduler_class(p->policy, p->prio);
+>  }
+> 
+> But it may also be desirable to backport
+> https://github.com/torvalds/linux/commit/cac5cefbade90ff0bb0b393d301fa3b5234cf056
+> from mainline, which removes much of the distinction between UP and
+> SMP schedulers.
 
-Applied to
+That patch doesn't backport cleanly, so can you just submit this as a
+fixup for now in a format that we can apply it in?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+thanks,
 
-Thanks!
-
-[1/1] ASoC: qcom: qdsp6: Fix q6apm remove ordering during ADSP stop and start
-      commit: d6db827b430bdcca3976cebca7bd69cca03cde2c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+greg k-h
 
