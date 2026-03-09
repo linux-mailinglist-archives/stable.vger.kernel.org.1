@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-223636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOqbLpHFrmn2IgIAu9opvQ
-	(envelope-from <stable+bounces-223636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:05:21 +0100
+	id CBpoDE/Grmn2IgIAu9opvQ
+	(envelope-from <stable+bounces-223637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:08:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0AC23963F
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:05:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5DB2396DA
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3DD630CEAAA
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:00:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2B85300A4D2
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218CB3BED05;
-	Mon,  9 Mar 2026 13:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222B03A4F37;
+	Mon,  9 Mar 2026 13:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsaDsNir"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVdE5J3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AABD3ACA78
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8037378D99
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773061233; cv=none; b=g+teKE9yZ14+nWfpl6lR3bmPnEq4LVPc0QdUuohsfGANCLvVwekBkR7UZDGtN8l6fMwimRnMoGqdnAk7v8x+RMdTkLysBQ3tIs9T1QEhFXKYOUpmm6Vr2lQScPhU/TXayn8DO3UrR8hXzvuFSaScSwHip7UD6z3x6Or3pWgyP64=
+	t=1773061610; cv=none; b=gl/Mw00Loj/FQXZukUtub2Ath3IzBvjh5TETXxLNdwZ8lhZbk39bkm2Bz6K3FrD3J4j5GfWhsH/vCb4vciCunG/DjjPfRf3OAJaZfJ07Exa4atoT8NR8Y8Vgrs/8KPql94wOvCAc2+Qiy6I8GUjNSHTX+rZzNQIKVzo08JuD2Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773061233; c=relaxed/simple;
-	bh=dIpWMz+SEWJod9r6McbdlHcjg62WgABd0AfWYAgRQfM=;
+	s=arc-20240116; t=1773061610; c=relaxed/simple;
+	bh=D8WusAQW6nTsST/zkbJwVLlqggm3HAfugUq93a6gFik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lM5+l+LNTLuB93qusfHlQVPB8zI4Wf/+JSuqShhPS0Jx8rvkUsYQfXs2L1H8vaw5mVbCvJjtVbMKLkTuoKW0FUOYP2vZ2gR8v/lmNzcAZ57SoFGmTuIpneJ7wlr8hUpoH1hhCSlJkDpnsHCEFw75YgXd7I+WCgjbUN7J90gIuHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsaDsNir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA130C4CEF7;
-	Mon,  9 Mar 2026 13:00:31 +0000 (UTC)
+	 MIME-Version; b=hFbRaqs9qCU40EmsbJ6tK/rXOTc5UCRO4WWwzvBpTYSNH19LiFsB8hYb+CLbwSudPKKZqktVj1GvED6ue9Di8pGrjEFeSmsHJKdiu7vAnH/z4JZuiGaROMEGG4V5pKpGbfoDwA5q5OQufpW46BVbLVEwMf2lErQEgnLkVDFFkXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVdE5J3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE7EC4CEF7;
+	Mon,  9 Mar 2026 13:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773061232;
-	bh=dIpWMz+SEWJod9r6McbdlHcjg62WgABd0AfWYAgRQfM=;
+	s=k20201202; t=1773061610;
+	bh=D8WusAQW6nTsST/zkbJwVLlqggm3HAfugUq93a6gFik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsaDsNirLw6whpx2UT5bd/N9Flhrrc3W9ndMVIdVV5mBAICEZuFwoTQ9/DvqxQT17
-	 m1ywc7iiZXf063sny6qvuL0K+bUMp4JzLFq2P7B2kUark7CGkpz6rS5l7+rLj2xw+j
-	 df1U40s2Lx8661yTlarfWwP+eudEcchHkieJgGnmdmtnYzp5xUlqU06Um346kSCLS5
-	 7S4EE7Bi9KK8VhJ3pjaOF3wof2ZAUm2teOWW6Rcw/HQYqVL80hKMlKmYO58Y6ul41A
-	 AvSE8WnnmxY+Xlv3p9siD+DZPxa6ZambyuHTyW4oqeXv1aY/bPkX1f1vWWNWFOUm4p
-	 +KlR7YXmtKw4w==
+	b=rVdE5J3Zxdh/NjkUroRmryiqdJ2Rd8S/kVU7Q2taiJVT9huZVch6ZC+r/L9bF2lNd
+	 8PMFFLver8C3zzFS8JI0CS0r4pGDbS+sIw9OuaUHRmAvnCVQVgFhL9nTUCoHJD6GX6
+	 NcpYemqD7NrF6fpHE9sOBSCV8EeIWcLItOLpFAnomhE0siUA8E5w6WOo8mFtJfVS3U
+	 thRoM+JvZu+mrvruc0KH6bY7JitBq3iuLkkQlqigBiEK/l5pBpsuqpIO6SvcM2QWCi
+	 vcJnTlMUrd7UTnMEN78BvAH3RcJD5fIqY2z4MQoXfkKLPeaVFMmJ3VIeCN7J6Zz5uW
+	 lt+Nf5gSuxmbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ankit Garg <nktgrg@google.com>,
-	Jordan Rhee <jordanrhee@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Kim Phillips <kim.phillips@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets for QPL
-Date: Mon,  9 Mar 2026 09:00:29 -0400
-Message-ID: <20260309130029.867834-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] x86/sev: Allow IBPB-on-Entry feature for SNP guests
+Date: Mon,  9 Mar 2026 09:06:48 -0400
+Message-ID: <20260309130648.871470-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030918-unflawed-unmasking-3b8d@gregkh>
-References: <2026030918-unflawed-unmasking-3b8d@gregkh>
+In-Reply-To: <2026030937-dumping-dodgy-a0cb@gregkh>
+References: <2026030937-dumping-dodgy-a0cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,20 +65,20 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1B0AC23963F
+X-Rspamd-Queue-Id: 9D5DB2396DA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223636-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -87,143 +86,81 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.981];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.986];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,amd.com:email]
 X-Rspamd-Action: no action
 
-From: Ankit Garg <nktgrg@google.com>
+From: Kim Phillips <kim.phillips@amd.com>
 
-[ Upstream commit fb868db5f4bccd7a78219313ab2917429f715cea ]
+[ Upstream commit 9073428bb204d921ae15326bb7d4558d9d269aab ]
 
-In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
-buffer cleanup path. It iterates num_bufs times and attempts to unmap
-entries in the dma array.
+The SEV-SNP IBPB-on-Entry feature does not require a guest-side
+implementation. It was added in Zen5 h/w, after the first SNP Zen
+implementation, and thus was not accounted for when the initial set of SNP
+features were added to the kernel.
 
-This leads to two issues:
-1. The dma array shares storage with tx_qpl_buf_ids (union).
- Interpreting buffer IDs as DMA addresses results in attempting to
- unmap incorrect memory locations.
-2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
- the size of the dma array, causing out-of-bounds access warnings
-(trace below is how we noticed this issue).
+In its abundant precaution, commit
 
-UBSAN: array-index-out-of-bounds in
-drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
-range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
-Workqueue: gve gve_service_task [gve]
-Call Trace:
-<TASK>
-dump_stack_lvl+0x33/0xa0
-__ubsan_handle_out_of_bounds+0xdc/0x110
-gve_tx_stop_ring_dqo+0x182/0x200 [gve]
-gve_close+0x1be/0x450 [gve]
-gve_reset+0x99/0x120 [gve]
-gve_service_task+0x61/0x100 [gve]
-process_scheduled_works+0x1e9/0x380
+  8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
 
-Fix this by properly checking for QPL mode and delegating to
-gve_free_tx_qpl_bufs() to reclaim the buffers.
+included SEV_STATUS' IBPB-on-Entry bit as a reserved bit, thereby masking
+guests from using the feature.
 
-Cc: stable@vger.kernel.org
-Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260220215324.1631350-1-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ netmem_dma_unmap_page_attrs() => dma_unmap_page() ]
+Allow guests to make use of IBPB-on-Entry when supported by the hypervisor, as
+the bit is now architecturally defined and safe to expose.
+
+Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260203222405.4065706-2-kim.phillips@amd.com
+[ No SECURE_AVIC ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 54 +++++++++-----------
- 1 file changed, 24 insertions(+), 30 deletions(-)
+ arch/x86/boot/compressed/sev.c   | 1 +
+ arch/x86/include/asm/msr-index.h | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 857749fef37cf..e3c46f791abdc 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -157,6 +157,24 @@ gve_free_pending_packet(struct gve_tx_ring *tx,
- 	}
- }
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 4f61d48f25759..cdb3990a9c3ac 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -328,6 +328,7 @@ static void enforce_vmpl0(void)
+ 				 MSR_AMD64_SNP_VMSA_REG_PROTECTION |	\
+ 				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
+ 				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
++				 MSR_AMD64_SNP_RESERVED_BITS18_22 |	\
+ 				 MSR_AMD64_SNP_RESERVED_MASK)
  
-+static void gve_unmap_packet(struct device *dev,
-+			     struct gve_tx_pending_packet_dqo *pkt)
-+{
-+	int i;
-+
-+	if (!pkt->num_bufs)
-+		return;
-+
-+	/* SKB linear portion is guaranteed to be mapped */
-+	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
-+			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
-+	for (i = 1; i < pkt->num_bufs; i++) {
-+		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
-+			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
-+	}
-+	pkt->num_bufs = 0;
-+}
-+
- /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
-  */
- static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
-@@ -166,21 +184,12 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
- 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
- 		struct gve_tx_pending_packet_dqo *cur_state =
- 			&tx->dqo.pending_packets[i];
--		int j;
--
--		for (j = 0; j < cur_state->num_bufs; j++) {
--			if (j == 0) {
--				dma_unmap_single(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			} else {
--				dma_unmap_page(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			}
--		}
-+
-+		if (tx->dqo.qpl)
-+			gve_free_tx_qpl_bufs(tx, cur_state);
-+		else
-+			gve_unmap_packet(tx->dev, cur_state);
-+
- 		if (cur_state->skb) {
- 			dev_consume_skb_any(cur_state->skb);
- 			cur_state->skb = NULL;
-@@ -992,21 +1001,6 @@ static void remove_from_list(struct gve_tx_ring *tx,
- 	}
- }
+ /*
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index afd65c8150437..749e7fe245e65 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -630,11 +630,14 @@
+ #define MSR_AMD64_SNP_IBS_VIRT			BIT_ULL(14)
+ #define MSR_AMD64_SNP_VMSA_REG_PROTECTION	BIT_ULL(16)
+ #define MSR_AMD64_SNP_SMT_PROTECTION		BIT_ULL(17)
++#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
++#define MSR_AMD64_SNP_IBPB_ON_ENTRY		BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
  
--static void gve_unmap_packet(struct device *dev,
--			     struct gve_tx_pending_packet_dqo *pkt)
--{
--	int i;
--
--	/* SKB linear portion is guaranteed to be mapped */
--	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
--			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
--	for (i = 1; i < pkt->num_bufs; i++) {
--		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
--			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
--	}
--	pkt->num_bufs = 0;
--}
--
- /* Completion types and expected behavior:
-  * No Miss compl + Packet compl = Packet completed normally.
-  * Miss compl + Re-inject compl = Packet completed normally.
+ /* SNP feature bits reserved for future use. */
+ #define MSR_AMD64_SNP_RESERVED_BIT13		BIT_ULL(13)
+ #define MSR_AMD64_SNP_RESERVED_BIT15		BIT_ULL(15)
+-#define MSR_AMD64_SNP_RESERVED_MASK		GENMASK_ULL(63, 18)
++#define MSR_AMD64_SNP_RESERVED_BITS18_22	GENMASK_ULL(22, 18)
++#define MSR_AMD64_SNP_RESERVED_MASK		GENMASK_ULL(63, 24)
+ 
+ #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
+ 
 -- 
 2.51.0
 
