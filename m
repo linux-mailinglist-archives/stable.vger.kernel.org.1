@@ -1,92 +1,70 @@
-Return-Path: <stable+bounces-223495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPS+KKhjrmlbCwIAu9opvQ
-	(envelope-from <stable+bounces-223495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 07:07:36 +0100
+	id mHmjLBJmrmnKDQIAu9opvQ
+	(envelope-from <stable+bounces-223496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 07:17:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25010234157
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 07:07:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EA823422B
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 07:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70135300D47E
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 06:06:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5C87300A4D0
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 06:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF46F34F255;
-	Mon,  9 Mar 2026 06:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03821356A01;
+	Mon,  9 Mar 2026 06:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LaI9+fpB"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="dvUoKLk3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail78-58.sinamail.sina.com.cn (mail78-58.sinamail.sina.com.cn [219.142.78.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E7426E709
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 06:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4FE355F54
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 06:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773036415; cv=none; b=JjN9Xb0ltXHLRe4ADVrD9kL5C1uzR6533xSdlKuDiZokggqiCrEtvPtgeZOEwGU0/z3kDpTe1y7l+RSsqeI1RKv95zBlZ//nQ+cx1qQhwDANETKCfHBffRknQX4hHovQD6Yv1mcUZrodqsD1KvuFgZixecwcGNKxmymDrC77f9E=
+	t=1773037069; cv=none; b=bhMG8TtgbQcIL0FzXzekPj/e8wO6HWiVZBxJBWcsjTqttIWVcS9SHfFc+I2w7SbYc5iBXoE43PVgiMbUK68J+xJXSRTWVvtb2uXSGTq70KHb7DumUSf+iV2qqTir+m5vtl8Ai+dv8pYuGf1lCttvxgHp83VVvNmzR/pDOm9BoTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773036415; c=relaxed/simple;
-	bh=Lp+ftsTxOLed5B9S0H9PbQXH/8y95LLE6h5SJsWG9fQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A869eruOvWdLGnfQCg7fCHpMFBviBlkTfD4vDbbrfL3D0UKlttMSI/8CtpdTdjfZOhTYnORq7h0UCbrEBYuJU4NwE2zyLFxj7NNLb/iLDqL85e2kT9pwBf66a6RjuFHjzASEnKlPvXJ7TKcFmeYp+BELw9LnUw4pMuIEx4dzQEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LaI9+fpB; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ae8979dbb2so13468945ad.3
-        for <stable@vger.kernel.org>; Sun, 08 Mar 2026 23:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773036413; x=1773641213; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tWFv1BB7FN3hcOOghSBDtnN98xOSLiQpa+eHf8S5Tyg=;
-        b=LaI9+fpBmE9o2zOMOVVZYM8u01MaRAm5/GjsIMxia2JOuezVbc8zwcjUU21L5w78GN
-         ysYDS/M3R/Kjr9AbndhuFEicpG3otn4ZjeGqt+YQXPp7YZGTYwC9VWueZDwlrCZFPxoP
-         24ZK9qfTSbJzJ81ifoBz1KkCcLHaOyRnzLZdvbEMYb7eyNI+j0BYZ67w3Q/l5i40M+NY
-         boOdqS5j6eqOeTZSxM+hXO0IkkLeKn9xdeA3b2yU5gLX/7qCl383xDW0vNEqptETMTSB
-         ds0JI6oC5NtmSLWheE0I4GMKL5PpeLJ9lHZXiyTBO51qru6TaKc5269orXW2uWb+BSjb
-         myww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773036413; x=1773641213;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tWFv1BB7FN3hcOOghSBDtnN98xOSLiQpa+eHf8S5Tyg=;
-        b=ZBi9/kvjRH6S2+ElZecvyPj2TqMu1kklQe345WbO4zGg/OkA99E2dBCRT+U82XspOc
-         1cQG1X4rElorUxOl/cJLm5RRWXqA/OVd62UFAc5RfNuVpAd0gssu5ngs13Fu7Nz15gZ7
-         Gz+h0UlUFxfrBHAKDZGgnDOnk9k+Z1wMOqct1KMj3oeA5uRYi57S1LW5rx2C0957Nk9k
-         wJ+OAvLqN7kC9jTaEb1n1LAk17zZ66Qfyvv/QzlIhdKAOmABmqObSEGrP/Fa8o81qQCn
-         CBMLeQU4zQdA5XMNeQ+Z3Gi2xKEkiidbQKNeljZTdpLhxRHV/hjZ8Y7BIZrezdttCyj8
-         ZnKw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7yq29Th6cfKKIDHCTWG8k6IwdhnpHmJKZDLOK7R2G6w51UsT4/s5GH2m+nMKfEnwLFgvePzo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5iQHD0eTF9fKsKUIIcYrSOotJDj4yZy/5a/hOgUxxN7lxsHnJ
-	px05bEA3RybM/xkX3KwcG+RLtX1hxQ2o3LNONSMuQIBHd7CZFv6bQ1Dx
-X-Gm-Gg: ATEYQzzB+ybxTQrd8f9Z2Dt/7q5OoS+Dd3AF4mymPRJAI7F0yDeBQnAyhu2kwuXtKLA
-	3aW+aaEVlHMnTAYAXAeTTBuQRz5j16A1KHQYHEGGDrrjzZARzDfspMf3ytGs92082hzGyMKVbrz
-	h5a8Khoqur49o3G9lIfVmsQusvMVxluWFVDNtFAJ9T/FURcIUehh2xhTyJnK1gkmCFDq2mnQLPY
-	QZ1jgPFph99xTyaTb/5yjAmTNqRF8QxTgWk2Z1WmXBGWkZPnUsWz2jzSZNv6G9qtW331uLQ3oMQ
-	K6rqnaNDFB/3R+AAjbKNNl17h58ZNT/1hDHA6v8B3MONuedw1lwja9ccoTrUjkBipQ5jdt3hacr
-	Gz1B+9/n8RZq1KxqtwFaDKMmOXJ43atxxn/QeFzSRN4qWhez41JHiGl9OSwkSwcgnscrlitUFVY
-	iJ3qDMIklNq4X4gB8UBGQmlXh3MynfHX0Pf2okLlZtlAV2wFNbr7qZPlY=
-X-Received: by 2002:a17:902:f70a:b0:2ae:7f4a:8e2e with SMTP id d9443c01a7336-2ae82530c7amr95865405ad.52.1773036412848;
-        Sun, 08 Mar 2026 23:06:52 -0700 (PDT)
-Received: from localhost.localdomain ([119.204.109.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e57b1fsm133043635ad.12.2026.03.08.23.06.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2026 23:06:52 -0700 (PDT)
-From: James Kim <james010kim@gmail.com>
-To: robert.jarzmik@free.fr,
-	miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	James Kim <james010kim@gmail.com>,
+	s=arc-20240116; t=1773037069; c=relaxed/simple;
+	bh=JBNJVKw9Fqs4sAMM1/oX6j6JP5CAP3DI39e2DQmE+ac=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X0IvTbwk0M+KSY9LnDcEEx7HAIqg58wSFucCXIB6iiWR1pWZY5hT4ak1uHFKADjSd3aFzQRyJ7I2ktn/YUk53TSkBAv4HpxO8mrrlDX3Y/J3C/33CnvoGmbYH3/U3ri1W3cR30JrZJO/Mg0YTegSj2/UkXU3dYMMWeh53ymq7Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=dvUoKLk3; arc=none smtp.client-ip=219.142.78.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773037064;
+	bh=kAnQR3kzYOE/NeVOULepAAE03tQiseTOD8OM21kI3AU=;
+	h=From:Subject:Date:Message-Id;
+	b=dvUoKLk3VRlVjRrYpmh+IQed5F+SLlBQxIEYT1Jxu6m6K81K25t5ykgb3OllSUMk1
+	 mg5SDtylgOvrgwQrnbb+L98l4OTVm1pdEyOg+YSAgKL/oCbRzBrGIXIS7u6jLMaw3M
+	 YKQXCefEbbIUE2hDVuhZJ6CQsXeJYVgtP/dDaCOw=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.24) with ESMTP
+	id 69AE65D600002BF9; Mon, 9 Mar 2026 14:17:04 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 14173910747957
+X-SMAIL-UIID: 3851A38A9B3C4BBBB4D47F4123F744DE-20260309-141704-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH] mtd: docg3: fix use-after-free in docg3_release()
-Date: Mon,  9 Mar 2026 15:05:12 +0900
-Message-ID: <20260309060512.3634570-1-james010kim@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Cc: linux-kernel@vger.kernel.org,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Wenzhi Wang <wenzhi.wang@uwaterloo.ca>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 6.1.y 3/3] hfs: fix general protection fault in hfs_find_init()
+Date: Mon,  9 Mar 2026 14:16:49 +0800
+Message-Id: <20260309061649.1621436-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,80 +72,339 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25010234157
+X-Rspamd-Queue-Id: 87EA823422B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223496-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,dubeyko.com,uwaterloo.ca,physik.fu-berlin.de,vivo.com,sina.com];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223495-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[free.fr,bootlin.com,nod.at,ti.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[james010kim@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.981];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-0.987];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fu-berlin.de:email,sina.com:dkim,sina.com:email,sina.com:mid,uwaterloo.ca:email,vivo.com:email]
 X-Rspamd-Action: no action
 
-In docg3_release(), the docg3 pointer is obtained from
-cascade->floors[0]->priv before the loop that calls
-doc_release_device() on each floor. doc_release_device() frees the
-docg3 struct via kfree(docg3) at line 1881. After the loop,
-docg3->cascade->bch dereferences the already-freed pointer.
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-Fix this by accessing cascade->bch directly, which is equivalent
-since docg3->cascade points back to the same cascade struct, and
-is already available as a local variable. This also removes the
-now-unused docg3 local variable.
+[ Upstream commit 736a0516a16268995f4898eded49bfef077af709 ]
 
-Fixes: c8ae3f744ddc ("lib/bch: Rework a little bit the exported function names")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Kim <james010kim@gmail.com>
+The hfs_find_init() method can trigger the crash
+if tree pointer is NULL:
+
+[   45.746290][ T9787] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000008: 0000 [#1] SMP KAI
+[   45.747287][ T9787] KASAN: null-ptr-deref in range [0x0000000000000040-0x0000000000000047]
+[   45.748716][ T9787] CPU: 2 UID: 0 PID: 9787 Comm: repro Not tainted 6.16.0-rc3 #10 PREEMPT(full)
+[   45.750250][ T9787] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   45.751983][ T9787] RIP: 0010:hfs_find_init+0x86/0x230
+[   45.752834][ T9787] Code: c1 ea 03 80 3c 02 00 0f 85 9a 01 00 00 4c 8d 6b 40 48 c7 45 18 00 00 00 00 48 b8 00 00 00 00 00 fc
+[   45.755574][ T9787] RSP: 0018:ffffc90015157668 EFLAGS: 00010202
+[   45.756432][ T9787] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff819a4d09
+[   45.757457][ T9787] RDX: 0000000000000008 RSI: ffffffff819acd3a RDI: ffffc900151576e8
+[   45.758282][ T9787] RBP: ffffc900151576d0 R08: 0000000000000005 R09: 0000000000000000
+[   45.758943][ T9787] R10: 0000000080000000 R11: 0000000000000001 R12: 0000000000000004
+[   45.759619][ T9787] R13: 0000000000000040 R14: ffff88802c50814a R15: 0000000000000000
+[   45.760293][ T9787] FS:  00007ffb72734540(0000) GS:ffff8880cec64000(0000) knlGS:0000000000000000
+[   45.761050][ T9787] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   45.761606][ T9787] CR2: 00007f9bd8225000 CR3: 000000010979a000 CR4: 00000000000006f0
+[   45.762286][ T9787] Call Trace:
+[   45.762570][ T9787]  <TASK>
+[   45.762824][ T9787]  hfs_ext_read_extent+0x190/0x9d0
+[   45.763269][ T9787]  ? submit_bio_noacct_nocheck+0x2dd/0xce0
+[   45.763766][ T9787]  ? __pfx_hfs_ext_read_extent+0x10/0x10
+[   45.764250][ T9787]  hfs_get_block+0x55f/0x830
+[   45.764646][ T9787]  block_read_full_folio+0x36d/0x850
+[   45.765105][ T9787]  ? __pfx_hfs_get_block+0x10/0x10
+[   45.765541][ T9787]  ? const_folio_flags+0x5b/0x100
+[   45.765972][ T9787]  ? __pfx_hfs_read_folio+0x10/0x10
+[   45.766415][ T9787]  filemap_read_folio+0xbe/0x290
+[   45.766840][ T9787]  ? __pfx_filemap_read_folio+0x10/0x10
+[   45.767325][ T9787]  ? __filemap_get_folio+0x32b/0xbf0
+[   45.767780][ T9787]  do_read_cache_folio+0x263/0x5c0
+[   45.768223][ T9787]  ? __pfx_hfs_read_folio+0x10/0x10
+[   45.768666][ T9787]  read_cache_page+0x5b/0x160
+[   45.769070][ T9787]  hfs_btree_open+0x491/0x1740
+[   45.769481][ T9787]  hfs_mdb_get+0x15e2/0x1fb0
+[   45.769877][ T9787]  ? __pfx_hfs_mdb_get+0x10/0x10
+[   45.770316][ T9787]  ? find_held_lock+0x2b/0x80
+[   45.770731][ T9787]  ? lockdep_init_map_type+0x5c/0x280
+[   45.771200][ T9787]  ? lockdep_init_map_type+0x5c/0x280
+[   45.771674][ T9787]  hfs_fill_super+0x38e/0x720
+[   45.772092][ T9787]  ? __pfx_hfs_fill_super+0x10/0x10
+[   45.772549][ T9787]  ? snprintf+0xbe/0x100
+[   45.772931][ T9787]  ? __pfx_snprintf+0x10/0x10
+[   45.773350][ T9787]  ? do_raw_spin_lock+0x129/0x2b0
+[   45.773796][ T9787]  ? find_held_lock+0x2b/0x80
+[   45.774215][ T9787]  ? set_blocksize+0x40a/0x510
+[   45.774636][ T9787]  ? sb_set_blocksize+0x176/0x1d0
+[   45.775087][ T9787]  ? setup_bdev_super+0x369/0x730
+[   45.775533][ T9787]  get_tree_bdev_flags+0x384/0x620
+[   45.775985][ T9787]  ? __pfx_hfs_fill_super+0x10/0x10
+[   45.776453][ T9787]  ? __pfx_get_tree_bdev_flags+0x10/0x10
+[   45.776950][ T9787]  ? bpf_lsm_capable+0x9/0x10
+[   45.777365][ T9787]  ? security_capable+0x80/0x260
+[   45.777803][ T9787]  vfs_get_tree+0x8e/0x340
+[   45.778203][ T9787]  path_mount+0x13de/0x2010
+[   45.778604][ T9787]  ? kmem_cache_free+0x2b0/0x4c0
+[   45.779052][ T9787]  ? __pfx_path_mount+0x10/0x10
+[   45.779480][ T9787]  ? getname_flags.part.0+0x1c5/0x550
+[   45.779954][ T9787]  ? putname+0x154/0x1a0
+[   45.780335][ T9787]  __x64_sys_mount+0x27b/0x300
+[   45.780758][ T9787]  ? __pfx___x64_sys_mount+0x10/0x10
+[   45.781232][ T9787]  do_syscall_64+0xc9/0x480
+[   45.781631][ T9787]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   45.782149][ T9787] RIP: 0033:0x7ffb7265b6ca
+[   45.782539][ T9787] Code: 48 8b 0d c9 17 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48
+[   45.784212][ T9787] RSP: 002b:00007ffc0c10cfb8 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
+[   45.784935][ T9787] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffb7265b6ca
+[   45.785626][ T9787] RDX: 0000200000000240 RSI: 0000200000000280 RDI: 00007ffc0c10d100
+[   45.786316][ T9787] RBP: 00007ffc0c10d190 R08: 00007ffc0c10d000 R09: 0000000000000000
+[   45.787011][ T9787] R10: 0000000000000048 R11: 0000000000000206 R12: 0000560246733250
+[   45.787697][ T9787] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[   45.788393][ T9787]  </TASK>
+[   45.788665][ T9787] Modules linked in:
+[   45.789058][ T9787] ---[ end trace 0000000000000000 ]---
+[   45.789554][ T9787] RIP: 0010:hfs_find_init+0x86/0x230
+[   45.790028][ T9787] Code: c1 ea 03 80 3c 02 00 0f 85 9a 01 00 00 4c 8d 6b 40 48 c7 45 18 00 00 00 00 48 b8 00 00 00 00 00 fc
+[   45.792364][ T9787] RSP: 0018:ffffc90015157668 EFLAGS: 00010202
+[   45.793155][ T9787] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff819a4d09
+[   45.794123][ T9787] RDX: 0000000000000008 RSI: ffffffff819acd3a RDI: ffffc900151576e8
+[   45.795105][ T9787] RBP: ffffc900151576d0 R08: 0000000000000005 R09: 0000000000000000
+[   45.796135][ T9787] R10: 0000000080000000 R11: 0000000000000001 R12: 0000000000000004
+[   45.797114][ T9787] R13: 0000000000000040 R14: ffff88802c50814a R15: 0000000000000000
+[   45.798024][ T9787] FS:  00007ffb72734540(0000) GS:ffff8880cec64000(0000) knlGS:0000000000000000
+[   45.799019][ T9787] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   45.799822][ T9787] CR2: 00007f9bd8225000 CR3: 000000010979a000 CR4: 00000000000006f0
+[   45.800747][ T9787] Kernel panic - not syncing: Fatal exception
+
+The hfs_fill_super() calls hfs_mdb_get() method that tries
+to construct Extents Tree and Catalog Tree:
+
+HFS_SB(sb)->ext_tree = hfs_btree_open(sb, HFS_EXT_CNID, hfs_ext_keycmp);
+if (!HFS_SB(sb)->ext_tree) {
+	pr_err("unable to open extent tree\n");
+	goto out;
+}
+HFS_SB(sb)->cat_tree = hfs_btree_open(sb, HFS_CAT_CNID, hfs_cat_keycmp);
+if (!HFS_SB(sb)->cat_tree) {
+	pr_err("unable to open catalog tree\n");
+	goto out;
+}
+
+However, hfs_btree_open() calls read_mapping_page() that
+calls hfs_get_block(). And this method calls hfs_ext_read_extent():
+
+static int hfs_ext_read_extent(struct inode *inode, u16 block)
+{
+	struct hfs_find_data fd;
+	int res;
+
+	if (block >= HFS_I(inode)->cached_start &&
+	    block < HFS_I(inode)->cached_start + HFS_I(inode)->cached_blocks)
+		return 0;
+
+	res = hfs_find_init(HFS_SB(inode->i_sb)->ext_tree, &fd);
+	if (!res) {
+		res = __hfs_ext_cache_extent(&fd, inode, block);
+		hfs_find_exit(&fd);
+	}
+	return res;
+}
+
+The problem here that hfs_find_init() is trying to use
+HFS_SB(inode->i_sb)->ext_tree that is not initialized yet.
+It will be initailized when hfs_btree_open() finishes
+the execution.
+
+The patch adds checking of tree pointer in hfs_find_init()
+and it reworks the logic of hfs_btree_open() by reading
+the b-tree's header directly from the volume. The read_mapping_page()
+is exchanged on filemap_grab_folio() that grab the folio from
+mapping. Then, sb_bread() extracts the b-tree's header
+content and copy it into the folio.
+
+Reported-by: Wenzhi Wang <wenzhi.wang@uwaterloo.ca>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20250710213657.108285-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 ---
- drivers/mtd/devices/docg3.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/hfs/bfind.c  |  3 +++
+ fs/hfs/btree.c  | 57 +++++++++++++++++++++++++++++++++++++++----------
+ fs/hfs/extent.c |  2 +-
+ fs/hfs/hfs_fs.h |  1 +
+ 4 files changed, 51 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 33050a2a80f7..603fd0efc2ea 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -2049,7 +2049,6 @@ static int __init docg3_probe(struct platform_device *pdev)
- static void docg3_release(struct platform_device *pdev)
+diff --git a/fs/hfs/bfind.c b/fs/hfs/bfind.c
+index 6d37b4c75903..e46f650b5e9c 100644
+--- a/fs/hfs/bfind.c
++++ b/fs/hfs/bfind.c
+@@ -16,6 +16,9 @@ int hfs_find_init(struct hfs_btree *tree, struct hfs_find_data *fd)
  {
- 	struct docg3_cascade *cascade = platform_get_drvdata(pdev);
--	struct docg3 *docg3 = cascade->floors[0]->priv;
- 	int floor;
+ 	void *ptr;
  
- 	doc_unregister_sysfs(pdev, cascade);
-@@ -2057,7 +2056,7 @@ static void docg3_release(struct platform_device *pdev)
- 		if (cascade->floors[floor])
- 			doc_release_device(cascade->floors[floor]);
++	if (!tree || !fd)
++		return -EINVAL;
++
+ 	fd->tree = tree;
+ 	fd->bnode = NULL;
+ 	ptr = kzalloc(tree->max_key_len * 2 + 4, GFP_KERNEL);
+diff --git a/fs/hfs/btree.c b/fs/hfs/btree.c
+index 2fa4b1f8cc7f..e86e1e235658 100644
+--- a/fs/hfs/btree.c
++++ b/fs/hfs/btree.c
+@@ -21,8 +21,12 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	struct hfs_btree *tree;
+ 	struct hfs_btree_header_rec *head;
+ 	struct address_space *mapping;
+-	struct page *page;
++	struct folio *folio;
++	struct buffer_head *bh;
+ 	unsigned int size;
++	u16 dblock;
++	sector_t start_block;
++	loff_t offset;
  
--	bch_free(docg3->cascade->bch);
-+	bch_free(cascade->bch);
- }
+ 	tree = kzalloc(sizeof(*tree), GFP_KERNEL);
+ 	if (!tree)
+@@ -75,12 +79,40 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	unlock_new_inode(tree->inode);
  
- #ifdef CONFIG_OF
+ 	mapping = tree->inode->i_mapping;
+-	page = read_mapping_page(mapping, 0, NULL);
+-	if (IS_ERR(page))
++	folio = filemap_grab_folio(mapping, 0);
++	if (IS_ERR(folio))
+ 		goto free_inode;
+ 
++	folio_zero_range(folio, 0, folio_size(folio));
++
++	dblock = hfs_ext_find_block(HFS_I(tree->inode)->first_extents, 0);
++	start_block = HFS_SB(sb)->fs_start + (dblock * HFS_SB(sb)->fs_div);
++
++	size = folio_size(folio);
++	offset = 0;
++	while (size > 0) {
++		size_t len;
++
++		bh = sb_bread(sb, start_block);
++		if (!bh) {
++			pr_err("unable to read tree header\n");
++			goto put_folio;
++		}
++
++		len = min_t(size_t, folio_size(folio), sb->s_blocksize);
++		memcpy_to_folio(folio, offset, bh->b_data, sb->s_blocksize);
++
++		brelse(bh);
++
++		start_block++;
++		offset += len;
++		size -= len;
++	}
++
++	folio_mark_uptodate(folio);
++
+ 	/* Load the header */
+-	head = (struct hfs_btree_header_rec *)(kmap_local_page(page) +
++	head = (struct hfs_btree_header_rec *)(kmap_local_folio(folio, 0) +
+ 					       sizeof(struct hfs_bnode_desc));
+ 	tree->root = be32_to_cpu(head->root);
+ 	tree->leaf_count = be32_to_cpu(head->leaf_count);
+@@ -95,22 +127,22 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 
+ 	size = tree->node_size;
+ 	if (!is_power_of_2(size))
+-		goto fail_page;
++		goto fail_folio;
+ 	if (!tree->node_count)
+-		goto fail_page;
++		goto fail_folio;
+ 	switch (id) {
+ 	case HFS_EXT_CNID:
+ 		if (tree->max_key_len != HFS_MAX_EXT_KEYLEN) {
+ 			pr_err("invalid extent max_key_len %d\n",
+ 			       tree->max_key_len);
+-			goto fail_page;
++			goto fail_folio;
+ 		}
+ 		break;
+ 	case HFS_CAT_CNID:
+ 		if (tree->max_key_len != HFS_MAX_CAT_KEYLEN) {
+ 			pr_err("invalid catalog max_key_len %d\n",
+ 			       tree->max_key_len);
+-			goto fail_page;
++			goto fail_folio;
+ 		}
+ 		break;
+ 	default:
+@@ -121,12 +153,15 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
+ 	tree->pages_per_bnode = (tree->node_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 
+ 	kunmap_local(head);
+-	put_page(page);
++	folio_unlock(folio);
++	folio_put(folio);
+ 	return tree;
+ 
+-fail_page:
++fail_folio:
+ 	kunmap_local(head);
+-	put_page(page);
++put_folio:
++	folio_unlock(folio);
++	folio_put(folio);
+ free_inode:
+ 	tree->inode->i_mapping->a_ops = &hfs_aops;
+ 	iput(tree->inode);
+diff --git a/fs/hfs/extent.c b/fs/hfs/extent.c
+index 3f7e9bef9874..070245f8c215 100644
+--- a/fs/hfs/extent.c
++++ b/fs/hfs/extent.c
+@@ -71,7 +71,7 @@ int hfs_ext_keycmp(const btree_key *key1, const btree_key *key2)
+  *
+  * Find a block within an extent record
+  */
+-static u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off)
++u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off)
+ {
+ 	int i;
+ 	u16 count;
+diff --git a/fs/hfs/hfs_fs.h b/fs/hfs/hfs_fs.h
+index 68d0305880f7..1353af3169d5 100644
+--- a/fs/hfs/hfs_fs.h
++++ b/fs/hfs/hfs_fs.h
+@@ -190,6 +190,7 @@ extern const struct inode_operations hfs_dir_inode_operations;
+ 
+ /* extent.c */
+ extern int hfs_ext_keycmp(const btree_key *, const btree_key *);
++extern u16 hfs_ext_find_block(struct hfs_extent *ext, u16 off);
+ extern int hfs_free_fork(struct super_block *, struct hfs_cat_file *, int);
+ extern int hfs_ext_write_extent(struct inode *);
+ extern int hfs_extend_file(struct inode *);
 -- 
-2.43.0
+2.34.1
 
 
