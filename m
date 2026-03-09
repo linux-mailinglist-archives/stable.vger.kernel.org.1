@@ -1,256 +1,190 @@
-Return-Path: <stable+bounces-223517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOADBKicrmk7GwIAu9opvQ
-	(envelope-from <stable+bounces-223517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:10:48 +0100
+	id CPcRA2uermmqGwIAu9opvQ
+	(envelope-from <stable+bounces-223520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:18:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91DE236D2C
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:10:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C385236E00
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7478D303AF0B
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:09:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7778F300C393
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2329838E128;
-	Mon,  9 Mar 2026 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781DE38F936;
+	Mon,  9 Mar 2026 10:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XTZtbrPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gChEZ/N3"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012051.outbound.protection.outlook.com [40.93.195.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E7138BF9D;
-	Mon,  9 Mar 2026 10:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773050967; cv=fail; b=EiAZBWd+ihIcPctgNZXpgbSy2oiw1gjnI5DovGG48EDwcICsgl97MxQxoe1nVtcMnBNrWGlNW61UQHPrAYoRC+R2aoq1yMFR23sXU+jhuIVePbecc0+7VIEYDtcZ8p5uwC3+1CfkV7BOwtHrBinIZFyA+kMeTToPK8gKxejQIcY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773050967; c=relaxed/simple;
-	bh=u/CStnM7vbPpTaHM/VFExsrDzmrpaTcm40GfYc4BOaA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iLA1+BsZDfryReoqdIl3EKND+MEIVFL6ce3rMH2gHIheFujxAHrU4d9o0MO8fK1rIbLtyDW0vhqxQmY0JfoKjotfm/1bG9Sa2DifMjRRJueIbtjkYClDsNI6DOvFRgHLkabPCCw/DbWSvssu4xgdQaAaZDW18GxksxtK7fF1M7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XTZtbrPn; arc=fail smtp.client-ip=40.93.195.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZWo+43ioyh87scxBgJaxcnLrRKfiz4E3xxybRMGETxxYZ3qUkbp4Plh9EXOSk0hFok93EsIonVNqVF11M22LX1zqNaXyAB88r6SAo/EyzHzSjPJKxDtTmeZnZCpEeQpiZv7YSoKktsv7LWqUhU477jXb8TttR7cevx2C/vLXKA7RpUo3jv55hvZXttzy79Gf51/Usftrj/BFQBzMv8ox7mx9Y45ZH1calbSmjtWmL6tGfps6kqpTpiRxL1iVPxGTc/K9KZDZafmkQI/Wjg3jzTtLut4BLNmwx+Xnqtb3SDuM/grLHF3ugY2Trr063WpBNK62OmRyYczGmYkPu3DWgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=06ifmWujZgQph9729qfPF1ifM77xVP6T7nv6Fx32Xcg=;
- b=vj9nQqB8jaZ8wyu8/qoLs9FcZ44QIr0Bp4I/GxgOXSONObVZ8CA6aw3bOlsVKYMzyfqzY74ZUwKgLPcsb+WM3D5VS6pGHOlLVDuVs9qZ/Oz1t5R6KW1b//j+rZ5m0T9L+YdGzV8AOiL2NPaTJjX5nwKu8zgu4lqHaDoXBxK9VhUqQfL6GlzgqEndmughiFTPUSrqcEZFZmBxWA4Z51ZCVDHTZnN9AMRjYQU4SeyZ9Tg/+EogYvtSA0m3kvdsUGqqjH8Q3xGMu6eaJaRo6cbw+HN4Tp+0wC6dqNJFpD8uZVldnAXgl9nBg9GpHoZHviTrrRSiCMpCi8Var5nYcqlCkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=06ifmWujZgQph9729qfPF1ifM77xVP6T7nv6Fx32Xcg=;
- b=XTZtbrPnGzdalNkcKnDDqwBafDTx3HvJF8xR0VSrJava9matsU25ZBsjjyOkTQQHjRKgPKljLyDf3UN9MXjfqGdoqAMga3QGVPgYIqEbZZ/YOd6broaV0Slg/UDte+iJbzJfBV/5ECfOi1ivt0+GQXF8wRXcXfLGnzCOlSj1DUE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH7PR12MB7939.namprd12.prod.outlook.com (2603:10b6:510:278::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.9; Mon, 9 Mar
- 2026 10:09:22 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9700.009; Mon, 9 Mar 2026
- 10:09:22 +0000
-Message-ID: <dbe6a029-6b81-49da-b13a-6bcc28f1ae78@amd.com>
-Date: Mon, 9 Mar 2026 11:09:16 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/amdgpu: protect queue access in signal IOCTL
-To: Chenyuan Mi <chenyuan_mi@163.com>, alexander.deucher@amd.com
-Cc: Arunpravin.PaneerSelvam@amd.com, airlied@gmail.com, simona@ffwll.ch,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260309022229.63071-1-chenyuan_mi@163.com>
- <20260309022229.63071-3-chenyuan_mi@163.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260309022229.63071-3-chenyuan_mi@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0081.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::14) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C21938F24F
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773051481; cv=none; b=CWY6iA9rUvENkl8KNWHYOdCPsdHvaP/KKX5J9e6Hv3FLuZEaxu71mwKiHmdauF3aFRzOU9Dbb+6MdIlRDlPsixC2ZZCFJZ7+iebDzmj9x/a20RTpl8jmBrTU8j41MACXLZ/Q1GSWIefU1Ryzz9mWFpmapgAHF7rUhIKqJLIjGBE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773051481; c=relaxed/simple;
+	bh=XlM8pdkPnb6Npo+pWjvLuChz6KemJ55D6aVk/nx8CNo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QkjqdbmNBIHX6X5nD8/dGfA/Qf+zI9hly3ss+2CvejgKW6aIV9+hxm/1DC0Y3bpEDPdGwajLaAqpDswP0Khi/4FD9Rw47XCmDF+z9j5j22uoRchgpuUWMsgbD01x+finKHxkUVABmBC5U4eXgGojE0geKPz/PvknZP6rpmzjzmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gChEZ/N3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7954DC4CEF7;
+	Mon,  9 Mar 2026 10:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773051480;
+	bh=XlM8pdkPnb6Npo+pWjvLuChz6KemJ55D6aVk/nx8CNo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=gChEZ/N3fuuKYHPIoC1svyYgzImPzo1wDfWVCkGljNpd5FWFGLKemA5YFpCXeYQS9
+	 3tmT+t1iOkFg3bUxOf+1KW/Q14oX0VBFzyqf5LOUrCOwoiKY4dmR10kZUhDLkVt3O+
+	 iC1JzA9+9EIFFUW6Dmo89hFcnbku33sK7QQBjtBs=
+Subject: FAILED: patch "[PATCH] perf/x86/intel/uncore: Add per-scheduler IMC CAS count events" failed to apply to 6.12-stable tree
+To: zide.chen@intel.com,dapeng1.mi@linux.intel.com,peterz@infradead.org,reinette.chatre@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 09 Mar 2026 11:16:06 +0100
+Message-ID: <2026030906-onion-junkyard-156b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH7PR12MB7939:EE_
-X-MS-Office365-Filtering-Correlation-Id: a60a3e63-f239-4ee2-7daf-08de7dc3ef1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	AxE0jPhCcdLWJRNGlTN5l8D3nWMMnz2qFv4fQZDJwyqHrdSkszELMO1l9h5kS2t04un/rOSP70UWTPbbck4kah0bM16z6zDz/xUNaXVMDtahdI14LiQbaHfXmipSRC0+3QYjj1tY2zW7V0EV5DpqjHx4Fktnz981LO91wG6oVNb3/jHaeUGf0R1GEMI1jwP8SODtb/bC6g2jMIljbsQlimPKjx3OOT2sXsN5A0LGXBbbdjMrWTUvNjnHSG5uIcYaz2XrbiIJIBlgqK0udWmzhGItHn9MnRtseqjPsuLtRwk0+4uemi4TiJPHNbm+GKF78iinQNilebRxTOKzIV6p1sLlRf9fGFQQwF3lwTpFq73SBZUbfmUpAMHcTwmC4piG3zBep3n2Yv+2WBKLuZiVxQKN02Tmd4ifUqIG3d0euZnysjZFDgfWeTZw/9ueh3GM1Csi1e8brP/OG70sNECYubXBhB9Je6BcEpuvDyi60OFz0GjQDn01qFVe/8KPIx01XQ45oZKE2v/9Ej7uMWDG9xhNcNLW8Aq00lXQrz1U/7xrm055hypjeM/IDcSCXCNzio8v7GdpzvcFat8az1I/RNMZP8Bs4xlcqd6iwDhAbVSJO/9LlyIBJCMSdZLnlulmjTQNmee869jJn506GuX2G9rPCKr1Vjpzeum5gn4czZ1nWRkRQUR2LnF4kS3kpkctailwgecBShM6HZVNhvKhZ17d/NaORDAeQZP/lEpeFog=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2hXNVBHeFdPOElaSXV2L0gzRzhPRUFpN3RtMXQxdEtVTVJpOW5KdFlZRnc1?=
- =?utf-8?B?VEUxOEp4K1d4aUFXbnRGdWdMYUJ2d1NOblNERUJGVUFnZ0dER3NJUEdPUzY4?=
- =?utf-8?B?QllKNTMwVVFmMmowdE9WMDgrM3ZoNWlUYmhjMjAzZlJyVTZkUitZcWcwdkc4?=
- =?utf-8?B?a2dPYXJ0MTFsVjFINmZVWTM4aloxSU1wN2FVam5neCtiOGJ0THJWRExYdWts?=
- =?utf-8?B?WWM3TittMy9YdFRtRnhxbXB0NlA5azN4Zm82YWhKTjFaVWNtc0dwMlZ4Qm50?=
- =?utf-8?B?YVZJUXZIRTJHS0RnZjVXdEZlNTN1U0lSUVpLZEFWOWwvTWJ2elAxSElSWGdn?=
- =?utf-8?B?Yi9pdm1NajRJRnJnZWd0QkxQRlRhS0E3d0RnaHZkK25PZWxCdjl5Z3R2NDl4?=
- =?utf-8?B?WG95bTlpSmdqckl2eTJiYlFCc3BQb1ViN2tPS2YvR0l6NXZQc3V4QWVEa2JS?=
- =?utf-8?B?T0cvUHArNVk0b3RGZ3MzU0ZCRkRPd2xGNCt1WHlrcDFBaTA4d29vQ2pIWUtL?=
- =?utf-8?B?SzgySnN4eS9GTWRMUVBWcWI2ODE2WjFIRDRUOHppRWJPUmYrY2xSTDhTajNh?=
- =?utf-8?B?aHlVQ2c5UkZmTG0wM3FlaDh5OFdvcU5xdGhLaUYrQ1N2M3ZkYUlUS2xudSs3?=
- =?utf-8?B?OUFpMUJ2SWt1RnluNzZ1UlV2QlZCUVp4elpLWTdseE82N0d5V3FqQmJuRHI0?=
- =?utf-8?B?SGhnVHdJby9tQ1Vrbmp2WFpaSGViN2FrNzlJd1dyUHowV2lWUzdUWFNnZnBu?=
- =?utf-8?B?VlBzV2xuK29NVVVHbm1tZTI3NGU5a1ZPYzZWUmdqMGozeS9US2QrUWlKUnV5?=
- =?utf-8?B?d1ZTWDRQOURaUE5UbHJIT0E5MGc4N0JHempyeVFsN0IyanFBS1VvNzNRaWMx?=
- =?utf-8?B?ODNMdzF0d084S1dWNzlHOUZCWDhCSU1oSDVYVFpHamlpMG5JV0JDQ0hCVmRn?=
- =?utf-8?B?RTgzWHZKRFhCMWhESlhHRjZrRkx2TUUydnJUWkM2ZlN5OEphclA3Z1o4TGVM?=
- =?utf-8?B?WmY3dWdJVlZBRHRJLzRjQjRsbjdJOGd6cG1mNDN4UjRYY1hNS2VMcExKL25y?=
- =?utf-8?B?SzVlWWQ2MTkwZy90N3RVeUI3MUpyN2duRjBEOUFaUW00K0dFUjhrTE5pMUNh?=
- =?utf-8?B?OHNJb1UxcHNrK1JUOFozVytOc3dCem5JeHlRY2dtalB0dVJVQUpEL0hMek9w?=
- =?utf-8?B?UXpSZEJ6SUFsNFhZdWFoY21WeThFaDg4WXBSN1RhMWJ0VEhYdmxJYnRhYzBl?=
- =?utf-8?B?M0E0OStRSGNDajlwVis0akczNitFUjNxRDYxZmZVVEpxb1JpQXJETG9zTEM2?=
- =?utf-8?B?Sm1ibUdiZXdPYkMyckVIN1VxdGk3blBPSm4rK0hXcnBFTk9PeG01UFY5VjJF?=
- =?utf-8?B?S3lNbm56eW00UENUWEg3TjdTM1daZ1JGQjBwNFMweVR2QklSZzN1Tk51NEta?=
- =?utf-8?B?UHdVbTR3a3paQ3k0MktBR1JMWXpPQ1pwaGdjZ1R3eU5tbTVWTjVLamZNeEU1?=
- =?utf-8?B?ek5wYytGejV1ckxQZXo3dm1jdnV6R3AwQ0VvY0NpcGZwRStrQS9kNHdTd3FN?=
- =?utf-8?B?blplTW5YeER3VHNaQWVxKzZxSXFxMjRESFhzMUwrR1lncTVMWlJtek1zQ20v?=
- =?utf-8?B?Qy9XR2pYK09xa05NTDFaaUlwMlJYMm5rdEZnTnFneUc4YUJ5SnpDalBvU0lL?=
- =?utf-8?B?MGljeUNYNnpqSXBxNU5YOVUyY0pDUWRPMHAzQjFNWk1HK1FmcUNrbGdsWFho?=
- =?utf-8?B?bWdKZ2lIdmlYT1drV1NVUEhVK1dkNnd4UDRjNUEyY2d3c1MvemttN1dmcGpH?=
- =?utf-8?B?NFdkN0M2azBHYkIzcG1YdWR5TUZpMWkrU0tXcG56WC9Ncnk3MURMdlRHQmlI?=
- =?utf-8?B?cThhS2ZHaGlZY2xORi9idUo2UGp3TkJnOFRUQjlCUkhKRUZ3ZlhneFBlMk5J?=
- =?utf-8?B?bDY1K0xRcjJBdStzeDB3dk1kcnNNYU1GbUEzR1Q4YnJOM0hNeXNzakJ0Njdt?=
- =?utf-8?B?SXF5UUlkd3RFZWxnTVlWWDJhMklrVzhEdm81RFZ3Y0VRSDNmVUtoOEdMU3Rl?=
- =?utf-8?B?VTZKbktPdjVUTnVhUFFTWUpOZGQ1OUluT2hmYk1TaDVQeW5JMk5yaVJhRWlz?=
- =?utf-8?B?WWgzM2lMc0FuQmxkdzlBbVNaUkQ0U0JvUFNzaDh6Y1N3WHpvTDlKRENzOXg0?=
- =?utf-8?B?UUZlMStCZVdpUDlZbElCV2szN0JvUldPQ242dFkyaTFwNGlVeU5qLzVVQUxN?=
- =?utf-8?B?Nlc5ZXZaend5Q2hlb253OVVQbWUxVkhmblFTclBDWm5aTzBQYnRRTkIxZk1T?=
- =?utf-8?Q?jCWFnYO87aayVZywRN?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a60a3e63-f239-4ee2-7daf-08de7dc3ef1c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 10:09:22.0330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oEDoLV9eqIy4aaLsuQt+otAl9FOITBIWb1donO2zbxjaVadTMMnyNsSwZ0BtMq8z
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7939
-X-Rspamd-Queue-Id: B91DE236D2C
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5C385236E00
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-223517-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[163.com,amd.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223520-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	REDIRECTOR_URL(0.00)[aka.ms];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_SPAM(0.00)[0.323];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aka.ms:url]
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email,intel.com:email,gregkh:email]
 X-Rspamd-Action: no action
 
-On 3/9/26 03:22, Chenyuan Mi wrote:
-> [Some people who received this message don't often get email from chenyuan_mi@163.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> amdgpu_userq_signal_ioctl() retrieves the user queue via xa_load()
-> and then dereferences it in amdgpu_userq_fence_read_wptr(),
-> amdgpu_userq_fence_create(), and direct queue->last_fence accesses,
-> all before userq_mutex is acquired by amdgpu_userq_ensure_ev_fence().
-> 
-> A concurrent AMDGPU_USERQ_OP_FREE can destroy and free the queue
-> in this window, leading to a use-after-free.
-> 
-> This bug predates the queue-id wait ioctl changes and has been
-> present since the original signal/wait ioctl implementation.
-> 
-> Fix this by moving amdgpu_userq_ensure_ev_fence() before xa_load()
 
-Again that trivially causes a deadlock. So the patch is just not working at all.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Regards,
-Christian.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> so that the queue lookup and all subsequent accesses are performed
-> under the userq_mutex that ensure_ev_fence acquires. Add the
-> necessary mutex_unlock() calls to the error paths between the moved
-> ensure_ev_fence and the existing unlock.
-> 
-> Fixes: a292fdecd728 ("drm/amdgpu: Implement userqueue signal/wait IOCTL")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chenyuan Mi <chenyuan_mi@163.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-> index 1785ea7c18fe..7866f583eea4 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-> @@ -545,23 +545,28 @@ int amdgpu_userq_signal_ioctl(struct drm_device *dev, void *data,
->                 }
->         }
-> 
-> -       /* Retrieve the user queue */
-> +       /* We are here means UQ is active, make sure the eviction fence is valid */
-> +       amdgpu_userq_ensure_ev_fence(&fpriv->userq_mgr, &fpriv->evf_mgr);
-> +
-> +       /* Retrieve the user queue under userq_mutex (held by ensure_ev_fence) */
->         queue = xa_load(&userq_mgr->userq_xa, args->queue_id);
->         if (!queue) {
-> +               mutex_unlock(&userq_mgr->userq_mutex);
->                 r = -ENOENT;
->                 goto put_gobj_write;
->         }
-> 
->         r = amdgpu_userq_fence_read_wptr(adev, queue, &wptr);
-> -       if (r)
-> +       if (r) {
-> +               mutex_unlock(&userq_mgr->userq_mutex);
->                 goto put_gobj_write;
-> +       }
-> 
->         r = amdgpu_userq_fence_alloc(&userq_fence);
-> -       if (r)
-> +       if (r) {
-> +               mutex_unlock(&userq_mgr->userq_mutex);
->                 goto put_gobj_write;
-> -
-> -       /* We are here means UQ is active, make sure the eviction fence is valid */
-> -       amdgpu_userq_ensure_ev_fence(&fpriv->userq_mgr, &fpriv->evf_mgr);
-> +       }
-> 
->         /* Create a new fence */
->         r = amdgpu_userq_fence_create(queue, userq_fence, wptr, &fence);
-> --
-> 2.53.0
-> 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6a8a48644c4b804123e59dbfc5d6cd29a0194046
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030906-onion-junkyard-156b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6a8a48644c4b804123e59dbfc5d6cd29a0194046 Mon Sep 17 00:00:00 2001
+From: Zide Chen <zide.chen@intel.com>
+Date: Mon, 9 Feb 2026 16:52:25 -0800
+Subject: [PATCH] perf/x86/intel/uncore: Add per-scheduler IMC CAS count events
+
+IMC on SPR and EMR does not support sub-channels.  In contrast, CPUs
+that use gnr_uncores[] (e.g. Granite Rapids and Sierra Forest)
+implement two command schedulers (SCH0/SCH1) per memory channel,
+providing logically independent command and data paths.
+
+Do not reuse the spr_uncore_imc[] configuration for these CPUs.
+Instead, introduce a dedicated gnr_uncore_imc[] with per-scheduler
+events, so userspace can monitor SCH0 and SCH1 independently.
+
+On these CPUs, replace cas_count_{read,write} with
+cas_count_{read,write}_sch{0,1}.  This may break existing userspace
+that relies on cas_count_{read,write}, prompting it to switch to the
+per-scheduler events, as the legacy event reports only partial
+traffic (SCH0).
+
+Fixes: 632c4bf6d007 ("perf/x86/intel/uncore: Support Granite Rapids")
+Fixes: cb4a6ccf3583 ("perf/x86/intel/uncore: Support Sierra Forest and Grand Ridge")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260210005225.20311-1-zide.chen@intel.com
+
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 5ed6e0b7e715..0a1d08136cc1 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6497,6 +6497,32 @@ static struct intel_uncore_type gnr_uncore_ubox = {
+ 	.attr_update		= uncore_alias_groups,
+ };
+ 
++static struct uncore_event_desc gnr_uncore_imc_events[] = {
++	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=0x01,umask=0x00"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0,  "event=0x05,umask=0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1,  "event=0x06,umask=0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0, "event=0x05,umask=0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1, "event=0x06,umask=0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.unit, "MiB"),
++	{ /* end: all zeroes */ },
++};
++
++static struct intel_uncore_type gnr_uncore_imc = {
++	SPR_UNCORE_MMIO_COMMON_FORMAT(),
++	.name			= "imc",
++	.fixed_ctr_bits		= 48,
++	.fixed_ctr		= SNR_IMC_MMIO_PMON_FIXED_CTR,
++	.fixed_ctl		= SNR_IMC_MMIO_PMON_FIXED_CTL,
++	.event_descs		= gnr_uncore_imc_events,
++};
++
+ static struct intel_uncore_type gnr_uncore_pciex8 = {
+ 	SPR_UNCORE_PCI_COMMON_FORMAT(),
+ 	.name			= "pciex8",
+@@ -6544,7 +6570,7 @@ static struct intel_uncore_type *gnr_uncores[UNCORE_GNR_NUM_UNCORE_TYPES] = {
+ 	NULL,
+ 	&spr_uncore_pcu,
+ 	&gnr_uncore_ubox,
+-	&spr_uncore_imc,
++	&gnr_uncore_imc,
+ 	NULL,
+ 	&gnr_uncore_upi,
+ 	NULL,
 
 
