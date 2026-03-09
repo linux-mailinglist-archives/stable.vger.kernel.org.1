@@ -1,115 +1,207 @@
-Return-Path: <stable+bounces-223601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L2kHnynrmkFHQIAu9opvQ
-	(envelope-from <stable+bounces-223601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:57:00 +0100
+	id WAcxKTeormkFHQIAu9opvQ
+	(envelope-from <stable+bounces-223602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:00:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABFF2376F4
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:56:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62319237799
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FB4330763FB
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:52:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E45B302CD09
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59CC390234;
-	Mon,  9 Mar 2026 10:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Hu3BVn/b"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6636D393DD7;
+	Mon,  9 Mar 2026 10:59:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577A6364056;
-	Mon,  9 Mar 2026 10:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65491364056;
+	Mon,  9 Mar 2026 10:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773053575; cv=none; b=lMBBgt/TTialQXF67giiqsx0mfvWMHbkaSEXDnUB2WnggYwMbyH76aLvmANx0d8bmKFNYT+CFy51UU7ohnCj9gMWzI7xcQKGxYwJAqbFFM9nB1GhZQXygzI3LsVkEy1SZEYvitwW+3U4eBMCt06m25tn3ANFMds5feB4eiZUtp4=
+	t=1773053989; cv=none; b=rFFGz/KpnsviMWY7nTqGosATO5/uxZMil4vYdei5fAVr507Hk7x2g+oYeoJvsKE+isQYr09tQ21xuWcoBzplNbMJWS8g2G1LGd4erIB9VOEpISDHHhf3pnksud4YVJRYrIQ8eEix2/1M2mJRlaFBaX5B4FX3YNbDqObWMzGcGcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773053575; c=relaxed/simple;
-	bh=iktH1jROnqsVKKCnwzENbfNDMCokWUY8MGmKtoY2gsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IdN/rGIBDTgV1dZYt8eBBc3HOhSCiMZns5ihX4sPLXfRliPnLhLd3pqJFJ3YJ/Z/K5kmjIPZTi2XUTuFenia54ZyQ4VqQIXyUOOBugw81DQqk8jwZhG6DisZd4RlpiUL3HW50fkhdC3l6lL4mqNqLkaSlbhqIZgWQ2RkUhVIdKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Hu3BVn/b; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iktH1jROnqsVKKCnwzENbfNDMCokWUY8MGmKtoY2gsY=; b=Hu3BVn/bqAPA7o+m4BY7cW/Bt2
-	RGDh5/sFw0ZgPCf0rFFbK06Ycm1AYLjZXUvxl4CoEF82cwr5bMi/hKVf0k4cQ812rTJgPnzL0y6/K
-	IsMviG19LcWJQz9VULjBEjfZ1qgnbbdKCkUU53shHDq0Dzydk6xvtM5BHGPZ4LIiLOE9P8rrXHDP2
-	w6f445lkzEDE8AJE+rVEXbbaEQxTuUp2aDH+UNI894OfLRQniBNH5xPyVisLKW5xXhcHilSD1+Q/S
-	F4EIdmSUe2tVKFo8RaUXDAYenXsyRFo7vIwvCs4nLqBNv/1VhZSLJDsHWveF4exaILPeM/VLXazcd
-	NNU+iPTQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vzYEA-002ARk-Kp; Mon, 09 Mar 2026 10:52:46 +0000
-Date: Mon, 9 Mar 2026 03:52:41 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@kernel.org, Sasha Levin <sashal@kernel.org>, 
-	Corey Minyard <corey@minyard.net>, openipmi-developer@lists.sourceforge.net, 
-	linux-kernel@vger.kernel.org, Vlad Poenaru <thevlad@meta.com>, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH stable] ipmi: Fix use-after-free and list corruption on
- sender error
-Message-ID: <aa6mEr-pcU0iXNXG@gmail.com>
-References: <20260309-ipmi_stable-v1-1-be09c9686671@debian.org>
- <2026030953-imaging-resize-ce85@gregkh>
+	s=arc-20240116; t=1773053989; c=relaxed/simple;
+	bh=mU3WuS90d/NXHU6qT4OYOGJxAioyi0NsU/d4pUdpfrI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WCjIhrqVaZ6Bwmn5BvArIlycy7INy85x+Eqb5DLlaHIJ14MWpBfJFqlEArbvXJKIQXFx0SLf/OZnuzpRoi7jTh++71bSHRV/zDH+LCceMvjOLUm4WmcqWNDUFx1LNw9TToxEdyhmQF7JUFwgsAjyV4iEBsor28fNEt0sD26tpfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fTvC75nN2zJ46p5;
+	Mon,  9 Mar 2026 18:58:59 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 97A1940086;
+	Mon,  9 Mar 2026 18:59:42 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Mar
+ 2026 10:59:41 +0000
+Date: Mon, 9 Mar 2026 10:59:39 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Chengwen Feng <fengchengwen@huawei.com>
+CC: <linux-pci@vger.kernel.org>, <bhelgaas@google.com>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Gospodarek
+	<andrew.gospodarek@broadcom.com>, Somnath Kotur <somnath.kotur@broadcom.com>,
+	Wei Huang <wei.huang2@amd.com>, "Eric Van Tassell" <Eric.VanTassell@amd.com>,
+	<linux-acpi@vger.kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <stable@vger.kernel.org>, <jeremy.linton@arm.com>,
+	<sunilvl@ventanamicro.com>, <sunilvl@oss.qualcomm.com>,
+	<chenhuacai@loongson.cn>, <wangliupu@loongson.cn>, Ajit Khaparde
+	<ajit.khaparde@broadcom.com>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] PCI/TPH: Fix get cpu steer-tag fail on ARM64
+ platform
+Message-ID: <20260309105939.0000142b@huawei.com>
+In-Reply-To: <20260309041659.18815-3-fengchengwen@huawei.com>
+References: <20260303003625.39035-1-fengchengwen@huawei.com>
+	<20260309041659.18815-1-fengchengwen@huawei.com>
+	<20260309041659.18815-3-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026030953-imaging-resize-ce85@gregkh>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: DABFF2376F4
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Rspamd-Queue-Id: 62319237799
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	TAGGED_FROM(0.00)[bounces-223601-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.945];
+	RCPT_COUNT_TWELVE(0.00)[30];
+	TAGGED_FROM(0.00)[bounces-223602-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.609];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 11:34:08AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Mar 09, 2026 at 03:16:13AM -0700, Breno Leitao wrote:
-> > From: Corey Minyard <corey@minyard.net>
-> >
-> > [ Upstream commit f9323a44994c2ccd5e0d582bac6f2b2a662e5603 ]
->
-> This is not a valid git id in Linus's tree :(
+On Mon, 9 Mar 2026 12:16:58 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-Sorry about that, Greg. The correct commit is
-594c11d0e1d445f580898a2b8c850f2e3f099368 ("ipmi: Fix use-after-free and
-list corruption on sender error").
+> Currently the pcie_tph_get_cpu_st() has an issue on ARM64 platform:
+> 1. The pcie_tph_get_cpu_st() function directly uses cpu_uid as the input
+>    parameter to call the PCI ACPI DSM method. According to the DSM
+>    definition, the input value should be the ACPI Processor UID (see [1]
+>    for details).
+> 2. In the Broadcom driver implementation [2] (which invokes
+>    pcie_tph_get_cpu_st()), cpu_uid is obtained via
+>    cpumask_first(irq->cpu_mask) - this is the logical CPU ID of a CPU
+>    core, generated and managed by kernel (e.g., [0,255] for a system
+>    with 256 logical CPU cores).
+> 3. On ARM64 platforms, ACPI assigns Processor UID to cores listed in the
+>    MADT table, and this UID may not match the kernel's logical CPU ID.
+>    As a result, the current implementation fails to retrieve the correct
+>    CPU steer-tag in such cases.
+> 4. The function works on AMD x86 platforms only because the logical CPU
+>    ID is identical to the ACPI Processor UID on those systems.
+> 
+> This commit fixes it by:
+> 1. Add new acpi_get_cpu_acpi_id() implementation on x86 that wraps
+>    cpu_acpi_id(), completing the unified ACPI CPU ID retrieval interface
+>    across ACPI-enabled platforms.
+> 2. Update pcie_tph_get_cpu_st() to use acpi_get_cpu_acpi_id(cpu) to get
+>    valid ACPI Processor UID for DSM calls.
+> 3. Renaming pcie_tph_get_cpu_st()'s input parameter cpu_uid to cpu for
+>    clarity, as the parameter now represents a logical CPU ID (not a
+>    UID).
+> 
+> [1] According to ECN_TPH-ST_Revision_20200924
+>     (https://members.pcisig.com/wg/PCI-SIG/document/15470), the input
+>     is defined as: "If the target is a processor, then this field
+>     represents the ACPI Processor UID of the processor as specified in
+>     the MADT. If the target is a processor container, then this field
+>     represents the ACPI Processor UID of the processor container as
+>     specified in the PPTT."
+> [2] commit c214410c47d6e ("bnxt_en: Add TPH support in BNXT driver")
+> 
+> Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+If you do respin, might be worth some minor edits to the patch description
+just to make it more concise.  If not, I'm fine with current text, just takes
+a bit more reading than strictly necessary :)
+
+"
+pcie_tph_get_cpu_st() is broken on ARM64:
+1. pcie_tph_get_cpu_st() passes cpu_uid to the PCI ACPI DSM method.
+   cpu_uid should be the ACPI Processor UID [1].
+2. In BNXT, pcie_tph_get_cpu_st() is passed a cpu_uid obtained via
+   cpumask_first(irq->cpu_mask) - the logical CPU ID of a CPU core,
+   generated and managed by kernel (e.g., [0,255] for a system  with 256
+   logical CPU cores).
+3. On ARM64 platforms, ACPI assigns Processor UID to cores listed in the
+   MADT table, and this UID may not match the kernel's logical CPU ID.
+   When this occurs, the mismatch results in the wrong CPU steer-tag.
+4. On AMD x86 the logical CPU ID is identical to the ACPI Processor UID
+   so the mismatch is not seen.
+
+Resolution:
+1. Implement acpi_get_cpu_acpi_id() for x86, wrapping cpu_acpi_id().
+   All ACPI platforms now have an implementation.
+2. Use acpi_get_cpu_acpi_id() in pcie_tph_get_cpu_st() to translate from
+   logical CPU ID to ACPI Processor UID needed for the DSM call.
+3. Rename pcie_tpu_get_cpu_st() parameter from cpu_uid to cpu to
+   reflect that it is a logical CPU_ID.
+"
+
+
+The references are fine as is.
+
+Thanks,
+
+Jonathan
+
+
+> This commit fixes it by:
+> 1. Add new acpi_get_cpu_acpi_id() implementation on x86 that wraps
+>    cpu_acpi_id(), completing the unified ACPI CPU ID retrieval interface
+>    across ACPI-enabled platforms.
+> 2. Update pcie_tph_get_cpu_st() to use acpi_get_cpu_acpi_id(cpu) to get
+>    valid ACPI Processor UID for DSM calls.
+> 3. Renaming pcie_tph_get_cpu_st()'s input parameter cpu_uid to cpu for
+>    clarity, as the parameter now represents a logical CPU ID (not a
+>    UID).
+> 
+> [1] According to ECN_TPH-ST_Revision_20200924
+>     (https://members.pcisig.com/wg/PCI-SIG/document/15470), the input
+>     is defined as: "If the target is a processor, then this field
+>     represents the ACPI Processor UID of the processor as specified in
+>     the MADT. If the target is a processor container, then this field
+>     represents the ACPI Processor UID of the processor container as
+>     specified in the PPTT."
+> [2] commit c214410c47d6e ("bnxt_en: Add TPH support in BNXT driver")
 
 
