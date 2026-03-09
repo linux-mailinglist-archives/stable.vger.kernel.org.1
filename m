@@ -1,190 +1,263 @@
-Return-Path: <stable+bounces-223732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ILcMe1Ir2krTgIAu9opvQ
-	(envelope-from <stable+bounces-223732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 23:25:49 +0100
+	id oNoDJ15Or2noTgIAu9opvQ
+	(envelope-from <stable+bounces-223733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 23:49:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE3C24232D
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 23:25:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60B92425C3
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 23:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80594307A0B6
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 22:25:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03F3A309E82D
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 22:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF11A38F23D;
-	Mon,  9 Mar 2026 22:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136C334F479;
+	Mon,  9 Mar 2026 22:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfRMRZCk"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="htFesRCE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11DD34C808;
-	Mon,  9 Mar 2026 22:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B22279346
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 22:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773095145; cv=none; b=A4QroJ35c52JjqGEEv05UVyOkNAdQsQZXXsPUsY6Fau+1Mzzmy4dEGg/N7iE4G93tZxI/wuqwpqrRovwXngGD48Hf4mhjddxbCZcx9zpZ0erU96MIKXebtfhMcYr09W/P4YCpZutf3iGN+XR7m1GzRKJIFrrs7y/Su9ReWVS7Ds=
+	t=1773096388; cv=none; b=NMMgYzTJErJ0U/bqReCZ4C82mQFpYurWq6FW+0kniDOBoAr84VfplN4lAtmHm1+pBd+JdihhW0JR+rF5OfUeTTG71A+9YwAUqmTRvVLrr/wOqfcMes4iOixVBS1fjfTFP7qsNcxYumj5CKuYgIXrvqjGm2cl2hnzpuTy3GumbQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773095145; c=relaxed/simple;
-	bh=TiSypGeK56DQQOKvg7ZatSK7JXwhRoLz0dwJQliqOy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I1RAAjp/E0aOMjeMW2nImGL4OpTxfPGDqMfFU4aMtYVKh8gYP8GyNPG1UPDxP/8cGKTDulGPyrynCvs0aYPnwVo0cm83XEVQm7PogwtaTP7OhGJdq0UU6p6Z1DCtBznu0nYYjzM55hIsygjzYtchBL1zpIqac3o2Ga+uE+J2nAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfRMRZCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DCFC4CEF7;
-	Mon,  9 Mar 2026 22:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773095145;
-	bh=TiSypGeK56DQQOKvg7ZatSK7JXwhRoLz0dwJQliqOy8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OfRMRZCkaW14x4h++ltw2MbEi1947ewPfAslGYEaAis6OFVX2yauU1T2y/l+ohRjT
-	 CizbOLDBGX3Y3umqiy84HC8y8uYTq1r6YTww5hW4SiqCKVMRcsI0Yj07Oz1aBybHFc
-	 41MqX9lQfWbYqgeaR9dxGGMEbTPDyWlwqutwtkifeaaZ0WYxFJzf1jpfIuC0DhRmkW
-	 WZTHNChAK8BXt9nuHxZ8ymhXtI/BMh1w7MsUGWNHxhQ/qakQiHBb1tiGX+KmblE0Dl
-	 2+Y/fSIVCAkNr/qRnb10ZwGqChIN4Z6w131QROUVJFWT3CHCVdwM56Xmy8PfX8j1ai
-	 gw437vZPCQROQ==
-Date: Mon, 9 Mar 2026 18:25:43 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>, Len Brown <lenb@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: Patch "ACPI: APEI: GHES: Disable KASAN instrumentation when
- compile testing with clang < 18" has been added to the 6.12-stable tree
-Message-ID: <aa9I5wRCtUsGB6Td@laps>
-References: <20260308164129.19119-1-sashal@kernel.org>
- <20260309212807.GB3411535@ax162>
+	s=arc-20240116; t=1773096388; c=relaxed/simple;
+	bh=9oJXZTbJ45lIkgoe9ysG/iLguWyrhC1KjQ8i3g4dRk8=;
+	h=From:Subject:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SGJsi5hLz5Uke/dLcGCbHS4ngIVN9gwwU4nZz7ZVb1QCWny6ynO4TNdR5IrwOtnq5ljcstDXVLcRFHfbkfZ/3Ysh1uO0mupJadNpmI3BkcRN6WhWzmknsbeaP2fwD9Bz4Gq6Rdiy2ZlCLuifvh0xcy0FWJUybyskCtwB+hhempY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=htFesRCE; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fVBvL1pLmz9vH0;
+	Mon,  9 Mar 2026 23:46:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1773096382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uxXyYhuaXgVgBAiKw6Y7cFL5MPygTe4zGdSsObN4kRY=;
+	b=htFesRCEgekWkmq7/MY13CaHWln4FDuBkyAkBrEM1lHqjRUXKUjEfoQP7XLaQ6ZiUy8WsM
+	RSLYl2SArgaKEu/Y2vUVU8V62Q6rL+VP09qI5ek1tRZOfJr8exdD870SiePFDTN6hIICfb
+	efWmFAWBZzFO5VCj8YoC52Nx2R8Zwu6bnERq489Azpmm088d9Zaw/tw5GW+c5QDZQV7sQZ
+	YXfuzYKJ9yZpNFHuFEg4RieWXlaBjwNJAxSf0xCdAqnaoXNCgMHmJGwlyteohY11XbqUVe
+	Jd33bEM8yYKPrbatpFV0Q+B1ClKkh4KIaXhHQuWOoJUzzuoKoYc7l+1p8OeBlw==
+From: Rainer Fiebig <jrf@mailbox.org>
+Subject: Re: [PATCH 6.18.y] kbuild: Leave objtool binary around with 'make
+ clean'
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>, Michal Suchanek
+ <msuchanek@suse.de>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Nicolas Schier <nsc@kernel.org>
+References: <2026030939-sacrament-marry-5131@gregkh>
+ <20260309174349.1332818-1-sashal@kernel.org>
+Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <435dbd9c-38e2-2838-234c-6a07d6a01c1c@mailbox.org>
+Date: Mon, 9 Mar 2026 23:46:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260309212807.GB3411535@ax162>
-X-Rspamd-Queue-Id: 2CE3C24232D
+In-Reply-To: <20260309174349.1332818-1-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: wgf7gstpsd94gcpozwknqou9z9uj5hfj
+X-MBO-RS-ID: 3d4a46f2e4cb5362f38
+X-Rspamd-Queue-Id: E60B92425C3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223732-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223733-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[mailbox.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,intel.com,alien8.de,huawei.com,linux.alibaba.com,gmail.com,google.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jrf@mailbox.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,mailbox.org:dkim,mailbox.org:email,mailbox.org:mid,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 02:28:07PM -0700, Nathan Chancellor wrote:
->On Sun, Mar 08, 2026 at 12:41:28PM -0400, Sasha Levin wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18
->>
->> to the 6.12-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      acpi-apei-ghes-disable-kasan-instrumentation-when-co.patch
->> and it can be found in the queue-6.12 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->>
->>
->>
->> commit ccd3cab8095d5c53eaf8a6598ff339ffaad6a696
->> Author: Nathan Chancellor <nathan@kernel.org>
->> Date:   Wed Jan 14 16:27:11 2026 -0700
->>
->>     ACPI: APEI: GHES: Disable KASAN instrumentation when compile testing with clang < 18
->>
->>     [ Upstream commit b584bfbd7ec417f257f651cc00a90c66e31dfbf1 ]
->>
->>     After a recent innocuous change to drivers/acpi/apei/ghes.c, building
->>     ARCH=arm64 allmodconfig with clang-17 or older (which has both
->>     CONFIG_KASAN=y and CONFIG_WERROR=y) fails with:
->>
->>       drivers/acpi/apei/ghes.c:902:13: error: stack frame size (2768) exceeds limit (2048) in 'ghes_do_proc' [-Werror,-Wframe-larger-than]
->>         902 | static void ghes_do_proc(struct ghes *ghes,
->>             |             ^
->>
->>     A KASAN pass that removes unneeded stack instrumentation, enabled by
->>     default in clang-18 [1], drastically improves stack usage in this case.
->>
->>     To avoid the warning in the common allmodconfig case when it can break
->>     the build, disable KASAN for ghes.o when compile testing with clang-17
->>     and older. Disabling KASAN outright may hide legitimate runtime issues,
->>     so live with the warning in that case; the user can either increase the
->>     frame warning limit or disable -Werror, which they should probably do
->>     when debugging with KASAN anyways.
->>
->>     Closes: https://github.com/ClangBuiltLinux/linux/issues/2148
->>     Link: https://github.com/llvm/llvm-project/commit/51fbab134560ece663517bf1e8c2a30300d08f1a [1]
->>     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
->>     Cc: All applicable <stable@vger.kernel.org>
->>     Link: https://patch.msgid.link/20260114-ghes-avoid-wflt-clang-older-than-18-v1-1-9c8248bfe4f4@kernel.org
->>     Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>     Signed-off-by: Sasha Levin <sashal@kernel.org>
->>
->> diff --git a/drivers/acpi/apei/Makefile b/drivers/acpi/apei/Makefile
->> index 5db61dfb46915..1a0b85923cd42 100644
->> --- a/drivers/acpi/apei/Makefile
->> +++ b/drivers/acpi/apei/Makefile
->> @@ -1,6 +1,10 @@
->>  # SPDX-License-Identifier: GPL-2.0
->>  obj-$(CONFIG_ACPI_APEI)		+= apei.o
->>  obj-$(CONFIG_ACPI_APEI_GHES)	+= ghes.o
->> +# clang versions prior to 18 may blow out the stack with KASAN
->> +ifeq ($(CONFIG_COMPILE_TEST)_$(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_y_)
->> +KASAN_SANITIZE_ghes.o := n
->> +endif
->>  obj-$(CONFIG_ACPI_APEI_PCIEAER)	+= ghes_helpers.o
->>  obj-$(CONFIG_ACPI_APEI_EINJ)	+= einj.o
->>  einj-y				:= einj-core.o
->
->The backports you have taken to make this apply cleanly to 6.12
->
->  20260308164114.18890-1-sashal@kernel.org
->  20260308164118.18945-1-sashal@kernel.org
->  20260308164121.19006-1-sashal@kernel.org
->  20260308164125.19064-1-sashal@kernel.org
->
->are excessive in my opinion. I think you should just address the
->conflict... There is absolutely no dependency on those changes so
->"Stable-dep-of" is a bit misleading.
+Am 09.03.26 um 18:43 schrieb Sasha Levin:
+> From: Nathan Chancellor <nathan@kernel.org>
+> 
+> [ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
+> 
+> The difference between 'make clean' and 'make mrproper' is documented in
+> 'make help' as:
+> 
+>   clean     - Remove most generated files but keep the config and
+>               enough build support to build external modules
+>   mrproper  - Remove all generated files + config + various backup files
+> 
+> After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+> target"), running 'make clean' then attempting to build an external
+> module with the resulting build directory fails with
+> 
+>   $ make ARCH=x86_64 O=build clean
+> 
+>   $ make -C build M=... MO=...
+>   ...
+>   /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+> 
+> as 'make clean' removes the objtool binary.
+> 
+> Split the objtool clean target into mrproper and clean like Kbuild does
+> and remove all generated artifacts with 'make clean' except for the
+> objtool binary, which is removed with 'make mrproper'. To avoid a small
+> race when running the objtool clean target through both objtool_mrproper
+> and objtool_clean when running 'make mrproper', modify objtool's clean
+> up find command to avoid using find's '-delete' command by piping the
+> files into 'xargs rm -f' like the rest of Kbuild does.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+> Reported-by: Michal Suchanek <msuchanek@suse.de>
+> Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+> Reported-by: Rainer Fiebig <jrf@mailbox.org>
+> Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+> Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Nicolas Schier <nsc@kernel.org>
+> Tested-by: Nicolas Schier <nsc@kernel.org>
+> Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> [ Context ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  Makefile               | 8 ++++----
+>  tools/objtool/Makefile | 8 +++++---
+>  2 files changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 35c1fcb095717..827d27605b0de 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1440,13 +1440,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+>  	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+>  endif
+>  
+> -PHONY += objtool_clean
+> +PHONY += objtool_clean objtool_mrproper
+>  
+>  objtool_O = $(abspath $(objtree))/tools/objtool
+>  
+> -objtool_clean:
+> +objtool_clean objtool_mrproper:
+>  ifneq ($(wildcard $(objtool_O)),)
+> -	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
+> +	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
+>  endif
+>  
+>  tools/: FORCE
+> @@ -1623,7 +1623,7 @@ PHONY += $(mrproper-dirs) mrproper
+>  $(mrproper-dirs):
+>  	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
+>  
+> -mrproper: clean $(mrproper-dirs)
+> +mrproper: clean objtool_mrproper $(mrproper-dirs)
+>  	$(call cmd,rmfiles)
+>  	@find . $(RCS_FIND_IGNORE) \
+>  		\( -name '*.rmeta' \) \
+> diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+> index 99d3897e046c6..b436656cd1372 100644
+> --- a/tools/objtool/Makefile
+> +++ b/tools/objtool/Makefile
+> @@ -86,10 +86,12 @@ $(LIBSUBCMD)-clean:
+>  	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+>  
+>  clean: $(LIBSUBCMD)-clean
+> -	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+> -	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
+> +	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
+>  	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+>  
+> +mrproper: clean
+> +	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+> +
+>  FORCE:
+>  
+> -.PHONY: clean FORCE
+> +.PHONY: clean mrproper FORCE
+> 
 
-ack
+FWIW: the respective patches applied cleanly to 6.18.16, 6.12.75 and
+6.6.128.  In all three cases "make clean" worked as usual again and the
+external modules (VirtualBox) built fine during boot.  All good from my
+perspective.  Thanks!
 
--- 
-Thanks,
-Sasha
+Rainer
+
+
+
 
