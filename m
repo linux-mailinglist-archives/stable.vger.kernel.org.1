@@ -1,149 +1,150 @@
-Return-Path: <stable+bounces-223608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WF8GC7ysrmntHQIAu9opvQ
-	(envelope-from <stable+bounces-223608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:19:24 +0100
+	id sPcjG9OrrmntHQIAu9opvQ
+	(envelope-from <stable+bounces-223609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:15:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A158237C5B
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:19:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66B4237B59
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 162C630C1458
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 11:14:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3431302BDD5
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 11:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0EC396D0B;
-	Mon,  9 Mar 2026 11:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8718396D0B;
+	Mon,  9 Mar 2026 11:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ml/SYUqs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyC5AkNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BF238E112
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBF738BF8C
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773054875; cv=none; b=I0awtKW12pZXChs3R78S8FEu6YIYj3jY9DfzVrmtgTHeT5swGVzT2yTqvZyGarmzX/ZUTRI0SRAnevazzL9Updz3tILgxXEEguqigSbcKY5UUuRetSC/Ir9MfSPgRmh88B3ZumAu5rxrIMae0rjS0iOsQoSUtn2/6usopXj8p2w=
+	t=1773054879; cv=none; b=s93V+HLdwtK7GktYQGAHZbi6gf7QUYAT7bnEEPUYQUi/Dejy5vqZxPfL8hA6fcfciyFbjgrXsFq2opIvU5YwFsaTQ8+u1ky1WYV2ml5vWmziwOtQXkDuj6/QXiltI8eXNjArv3G2j2af1jDcOeaQnfrXltXI28nPAk4MX97lAbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773054875; c=relaxed/simple;
-	bh=gkkz/ghM5Yu2Efgw9MaceX1hCerU1wjenqODJua1y9E=;
+	s=arc-20240116; t=1773054879; c=relaxed/simple;
+	bh=2W3pFSG6qYVC8K/NGbx/WunuYTdw5B6tOMZknbcTE5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rb3N23+v829hdsX/8Un7icI2WruN9SoPiFA2HRiFS37b3SBl97ZtpL5V7E3ZwZDqegBz6vNGuFOOrQKDNR062XaejcQyNRBoftpje87dnpc5LUwpdVZi5hzZMMg50IFoMT+c9aXSPRdICOF1T2Yw9SLRWU3JiPToGDKbWlPjWD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ml/SYUqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23A2C4CEF7;
-	Mon,  9 Mar 2026 11:14:34 +0000 (UTC)
+	 MIME-Version; b=iloUX6MfyrxuW4LXxaO7QZhNB+h6c0ZrlOVrq/hxb/z+7Q1DTm4CeM94tPdYj+vg2arFHLoDxFl/TkEPIus5JvBMatlTOd/l5Nr6E7/orewJKVW8acoL2X6haD2pQJ5DSz95wqBpx8HiR+WfyTTF6W87wXMchBYZHAmRiR4a7aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyC5AkNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC809C4CEF7;
+	Mon,  9 Mar 2026 11:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773054875;
-	bh=gkkz/ghM5Yu2Efgw9MaceX1hCerU1wjenqODJua1y9E=;
+	s=k20201202; t=1773054879;
+	bh=2W3pFSG6qYVC8K/NGbx/WunuYTdw5B6tOMZknbcTE5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ml/SYUqsXVuCao7PkhOnmr5aCYqdAb+LYmv9z6XCTGJtgyuUqWEOJ7pCLtLNXdlRl
-	 98Js50hk8kobkYHhksUKxeZg5PKrHSodI+BR2PnG9l8tZ4F4lZvD//QQhuOAcVTucQ
-	 g9ON7xe72vjlTLtvi2ngP4blQxfT4dOuedQMEMvs8LsKe2KUF+7NtwNEoRWEPuc4Sy
-	 OBo85Z96Comdw/fFnPObenX4lerr0ktMYPxgAJefHR2mk+sH9pG9bFRMWUPeYouv/l
-	 UxbOSI0JmVVGVzM6Ry1bX7qE05/9K0O/CvL43lQid1gxWiwDgoSMOgAc6IGkwZGNDJ
-	 N1FLAY5hnpSVA==
+	b=pyC5AkNTnnZRnwbvxu4+PYlMmsk1Hir3ykO/rI65HGNnDBb//hPx91gnfO0hD4S74
+	 ZzMrbhcaCdWwaBaYuW38iCuSJHbvR+gjZvN9aGPCoyyAbgVkAimmKJUwBjZw1MXIY9
+	 lIW/vhjugl6Cuv8Wo9oIE3Bl34xZ7QEnRKd2tmil5cqA/mctqw+y4k2tSs57q6DwXk
+	 TaRPkj5A4NA8durk9/mgb2SXCVW9Qo/Njdijqq2gxN/F9TTDGkGVxWWT7u7nmBIsi1
+	 umg7NK2YlvntXzgb6hcvYHNHu1YChLGP0+2lzftN1uMYTC2dI7lQte4zIP0IrVoPHY
+	 uBFQgaDZApjOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Paul Kerry <p.kerry@sheffield.ac.uk>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Daniel Hodges <git@danielhodges.dev>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y] platform/x86: hp-bioscfg: Support allocations of larger data
-Date: Mon,  9 Mar 2026 07:14:33 -0400
-Message-ID: <20260309111433.811119-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] wifi: libertas: fix use-after-free in lbs_free_adapter()
+Date: Mon,  9 Mar 2026 07:14:37 -0400
+Message-ID: <20260309111437.811502-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030929-repeated-ungraded-202a@gregkh>
-References: <2026030929-repeated-ungraded-202a@gregkh>
+In-Reply-To: <2026030917-carry-easily-7913@gregkh>
+References: <2026030917-carry-easily-7913@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6A158237C5B
+X-Rspamd-Queue-Id: E66B4237B59
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223608-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-223609-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.929];
+	NEURAL_HAM(-0.00)[-0.986];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,sheffield.ac.uk:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,danielhodges.dev:email]
 X-Rspamd-Action: no action
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Daniel Hodges <git@danielhodges.dev>
 
-[ Upstream commit 916727cfdb72cd01fef3fa6746e648f8cb70e713 ]
+[ Upstream commit 03cc8f90d0537fcd4985c3319b4fafbf2e3fb1f0 ]
 
-Some systems have much larger amounts of enumeration attributes
-than have been previously encountered. This can lead to page allocation
-failures when using kcalloc().  Switch over to using kvcalloc() to
-allow larger allocations.
+The lbs_free_adapter() function uses timer_delete() (non-synchronous)
+for both command_timer and tx_lockup_timer before the structure is
+freed. This is incorrect because timer_delete() does not wait for
+any running timer callback to complete.
 
-Fixes: 6b2770bfd6f92 ("platform/x86: hp-bioscfg: enum-attributes")
+If a timer callback is executing when lbs_free_adapter() is called,
+the callback will access freed memory since lbs_cfg_free() frees the
+containing structure immediately after lbs_free_adapter() returns.
+
+Both timer callbacks (lbs_cmd_timeout_handler and lbs_tx_lockup_handler)
+access priv->driver_lock, priv->cur_cmd, priv->dev, and other fields,
+which would all be use-after-free violations.
+
+Use timer_delete_sync() instead to ensure any running timer callback
+has completed before returning.
+
+This bug was introduced in commit 8f641d93c38a ("libertas: detect TX
+lockups and reset hardware") where del_timer() was used instead of
+del_timer_sync() in the cleanup path. The command_timer has had the
+same issue since the driver was first written.
+
+Fixes: 8f641d93c38a ("libertas: detect TX lockups and reset hardware")
+Fixes: 954ee164f4f4 ("[PATCH] libertas: reorganize and simplify init sequence")
 Cc: stable@vger.kernel.org
-Reported-by: Paul Kerry <p.kerry@sheffield.ac.uk>
-Tested-by: Paul Kerry <p.kerry@sheffield.ac.uk>
-Closes: https://bugs.debian.org/1127612
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260225210646.59381-1-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[ kcalloc() => kvcalloc() ]
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Link: https://patch.msgid.link/20260206195356.15647-1-git@danielhodges.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ del_timer() => timer_delete_sync() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/libertas/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-index f346aad8e9d89..af4d1920d4880 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-@@ -94,8 +94,11 @@ int hp_alloc_enumeration_data(void)
- 	bioscfg_drv.enumeration_instances_count =
- 		hp_get_instance_count(HP_WMI_BIOS_ENUMERATION_GUID);
- 
--	bioscfg_drv.enumeration_data = kcalloc(bioscfg_drv.enumeration_instances_count,
--					       sizeof(*bioscfg_drv.enumeration_data), GFP_KERNEL);
-+	if (!bioscfg_drv.enumeration_instances_count)
-+		return -EINVAL;
-+	bioscfg_drv.enumeration_data = kvcalloc(bioscfg_drv.enumeration_instances_count,
-+						sizeof(*bioscfg_drv.enumeration_data), GFP_KERNEL);
-+
- 	if (!bioscfg_drv.enumeration_data) {
- 		bioscfg_drv.enumeration_instances_count = 0;
- 		return -ENOMEM;
-@@ -444,6 +447,6 @@ void hp_exit_enumeration_attributes(void)
- 	}
- 	bioscfg_drv.enumeration_instances_count = 0;
- 
--	kfree(bioscfg_drv.enumeration_data);
-+	kvfree(bioscfg_drv.enumeration_data);
- 	bioscfg_drv.enumeration_data = NULL;
+diff --git a/drivers/net/wireless/marvell/libertas/main.c b/drivers/net/wireless/marvell/libertas/main.c
+index 78e8b5aecec0e..91b9501c6d8cb 100644
+--- a/drivers/net/wireless/marvell/libertas/main.c
++++ b/drivers/net/wireless/marvell/libertas/main.c
+@@ -881,8 +881,8 @@ static void lbs_free_adapter(struct lbs_private *priv)
+ {
+ 	lbs_free_cmd_buffer(priv);
+ 	kfifo_free(&priv->event_fifo);
+-	del_timer(&priv->command_timer);
+-	del_timer(&priv->tx_lockup_timer);
++	timer_delete_sync(&priv->command_timer);
++	timer_delete_sync(&priv->tx_lockup_timer);
+ 	del_timer(&priv->auto_deepsleep_timer);
  }
+ 
 -- 
 2.51.0
 
