@@ -1,420 +1,243 @@
-Return-Path: <stable+bounces-223595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFTiIsSirmk9HAIAu9opvQ
-	(envelope-from <stable+bounces-223595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:36:52 +0100
+	id kOYJL5mjrmmbHAIAu9opvQ
+	(envelope-from <stable+bounces-223596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53D8237357
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CCC2373F8
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E6E5303A133
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:36:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3ABC43055628
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15CE38F931;
-	Mon,  9 Mar 2026 10:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14F63921DE;
+	Mon,  9 Mar 2026 10:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lBEG712f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ob0cqTaM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7B1355F49
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773052609; cv=none; b=S414V7SBxU1AUDyZinZsSxiJ+53REjPNTf/mVPNy6pT/eLJk5Kmfui6xnIA8ip7WGVGYlIZA0drM1QuyNPttmhD45x1YOSAdOv3JVU6bAgWQkSmsNSmsFZzNtKyk4wa2GFzTn0RRny8b3fC2ZFJEZhoF4qND3tkLv9esOXR1OtE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773052609; c=relaxed/simple;
-	bh=4nj5Md+bH/7O6KXxrnkTKVE1FOcPcbm3kVld80GmTi4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TK68OU6OZOzVzWt4SnTu6O/g63gZ0QUZGAjSO8ZUvfKO8y0m7p5tX33lQHE1xwbk2J/LhbiW34JNDLNs0uPgn4K5vAkRNE7J+XxZw90lCfaMx0agu4KIottsg9uy/BByMd720IohZGHU/vkeHSg5TH5LjjfGQD1dPURuU8YmyFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lBEG712f; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8513838B7AF
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773052705; cv=pass; b=Pcb9tp6CqgJsFdKLSjrM17cfM2m/SeCVd7x+oR9lcxr3Y2j5brCRViUWFBnXWCU5+L65LkDQOV3OPkOUdSRtI9kn325He66DjTZWZCsOliY1ub2Arh3MO8CmRuIeSWyyC/EFdBtJLCDqn5QzNeuAZjJsu29bh48bll66y0U4c2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773052705; c=relaxed/simple;
+	bh=zGQuc34+ynNDoCTXArYQlWm9klqKQ2W0kK6j2oLNx+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d+UB9Gx0ZSWRJMZsBSnxu5gBaeLSpSKOKGWP+XNWgwvPI0syMotPQVW/veGFt+PHcp/d25BgDxk0gNAxEwb0V+gIxz8ueWt4FsNBkh2uiTYcgrQUHx+/WDYLwd9FbUJKjtN88CMXKQAapSttwzstuzb11/X6k20Rmayu40tpCMk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ob0cqTaM; arc=pass smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aaf59c4f7cso49156645ad.1
-        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 03:36:47 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79901821bb0so4180797b3.2
+        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 03:38:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773052703; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YRdeGuT6kpejwbWoY/YtJuJBEB8dEVTUuv5CHMRGJhlDxpHGhh/KKZqgzIPvI9kiaM
+         xFaEpGmmYQJ3nGQGOL0pJ8oDP5MwmqBep7yyy2PoUKZtIAPUqnmBX0rwMDpWdl8041KO
+         zUBOA11WludpMfP+NPiwF0+i7yRKbImLhJze0GpN0/nZZvkCozHhJyFeZLekSjSi1S92
+         9ks03/SV2K8T2yse366p/9GkzFvO9FLChsbKtEzttAtSYtkim/5yrCIppVn5ZVsg/15V
+         v6K/1t9G9rO1+Z1Dh2397/LF6UkT+M87FuzdNSr3HrXj1kdxTDemAU676p1LkEKRQk3A
+         bCnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Pd/QwTFnDfoORdcPMrJQXvD9uG10tJG+M7oMPLvF7XI=;
+        fh=TH6PiaOQLdy2xo8xjOu30kEJ5lE9Wc8X+xa6vwgk2BQ=;
+        b=kArEr6i77qD3rgszAwXMvYmISGVUpmv1Y9dBQPhw0Yy3tzBELKKlzRN3WudM5HdFyp
+         yVYQMe10yC3JTo2SZ1bam/ygRTZ2K+qLYVT4sBIwV/7M4FHdvENzcCR+d94eX5AGLh71
+         KciHZWlPctj0zpIoKJ0eNWplD1Clqj6PJhofZ28xGFlXq+/rWgE8BqSWQ0OB7Qsz7tk9
+         3reZv2yjvlflWFTZoAXK7nvnh0yIviAGoSCZHozmPtyQeJcOxmc1WmjCaR2NZcUsP4+r
+         BZhmB1kuMuV4PfuzfdwpnRd6/oi2e5sdX08vL+A6oCRs4kG5S7HhcHOCrAgQ3uqwoJDq
+         CX3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773052607; x=1773657407; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3FQLEzus73hEHckeZ2hSuCSlybXmlMdL0gTM45TGOIc=;
-        b=lBEG712fUmnvyMCUnrrt8jWlOjWDX4cSg8VDqxXxKgTPZuK+f1Fadl4HZVI/M3BNyO
-         JrmjYbO0PiQ5RIInKykbjHi+Ho55/8QB2uc+DWy+O1Q4kFk0+ALTvrk+pbGb7R0Hk89J
-         O3nraS4bpyy9JNOxeOMHDPlEiyeTRTjNmqNQcVqMF0Hlr3XuppDnj4n/a5lBiH5CrIbS
-         eZwLari13pllsIVdX6Np3tRiM5fLAWr24T4T/z0q85oFM36221L/faXiAlquu8WmpmTK
-         qAe6tNwa/OFvfkcgO7vwrG+aeG/Llyh2TSQFOZA+k2H5jiDhoWwn2Rw8H6S7P+Vg2wn6
-         bb7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773052607; x=1773657407;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773052703; x=1773657503; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3FQLEzus73hEHckeZ2hSuCSlybXmlMdL0gTM45TGOIc=;
-        b=X1mN/qsg6VBiQW0UC7CQaMTSq50VN09vR7Ms9EFIKWCihEaHPt8uQwyOLjZvFv/o/b
-         1g2dIC/8ljWay26/EFkra2fzrLe+V0zGUP2suRS8i9hW+Gxf8cSytEWB5HWTh4ipPqLh
-         bnqcPZuGtJh8qCX/MUaN6qoZ0dALYofdtB5qfg39PHeVn0Q9SVqI0WWuPcMCHxBkmmUw
-         VxEzeISZrlMpxIWWFg7v2Ynz6Ufrnl1AujpEo4WM5Fj6DtTms/iOmR+/u0nLQ3RzzZSq
-         7NiH45gN3UupQ2Y1dPvXACklw9n2jh3njIqbiccABBE6ZC9xXIQexWVsvWL/LK6L37vw
-         34EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUEahfkMWh8+NeQ62KkIBrXQ0Dlbr3Xl5vaxESdkVlbKSaAbDGihxbig9N8XX52+aKog8oZkzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6hjPT/xp9K9tnCB/pHRBXC6VxNlp3USNM7GLi4T973D3qnOmw
-	hmTu7tyGITulh/fhd1++SIuWalnlfN3zRmqT4FRLicXkmrWj1IlBbuJ/Qj/TzOKER+sQDg==
-X-Gm-Gg: ATEYQzwOkkY+2M+hQd3Lh0Nz/mqMO+4o1XhtXVXX9YnXtpKSCWMq2P5HW6W4TGgL044
-	YYqAUQpywOHze3NoSNCJ1z8pK5w9KweNELGBYqhCi/5ZAvIjsfvJcAn3E/sbe0Rvtaq0vLgBGGy
-	8qTBrj1PFq+EdXiu/NGxqYl3fynWT2h2A5cEaEgR5PH62VMK9xhb+fQA4yu+SOkmDzd8sb7h0nc
-	gJ4IRY8aYoGrG3ZPNFFgKi96Mc7FyxUVVMv8DH0ks3wqGzDJwdVNLYOstu1He6BEusiqRk+Ll0p
-	12VQVC2Wv+023KWia0LkwH3HLeedWP6KexszChAiSXdOEt48DQo6MutffzUtCOWrlgxMgfkWU7f
-	Fz7CQQhtBWFLvqDMIOuGWJqW66CswrMtKyj+fQOZQtoAfclbza1kxNWxzoYSaIM5KU85nae5bnK
-	8bF46jI1lk5WIHGwSb153XY9KBAehCgsI9C+BSF7sEO2yal1hpfs8KEDXD0wyav/RfU1IzXA==
-X-Received: by 2002:a17:903:19ce:b0:2ad:e975:4735 with SMTP id d9443c01a7336-2ae8239798emr100153435ad.20.1773052607096;
-        Mon, 09 Mar 2026 03:36:47 -0700 (PDT)
-Received: from kernel-fuzz.. ([138.199.21.245])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e57b14sm145078525ad.19.2026.03.09.03.36.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 03:36:46 -0700 (PDT)
-From: ZhengYuan Huang <gality369@gmail.com>
-To: dsterba@suse.com,
-	clm@fb.com
-Cc: osandov@fb.com,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	zzzccc427@gmail.com,
-	ZhengYuan Huang <gality369@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] btrfs: validate free space bitmap size before testing bits
-Date: Mon,  9 Mar 2026 18:36:38 +0800
-Message-ID: <20260309103638.1500791-1-gality369@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=Pd/QwTFnDfoORdcPMrJQXvD9uG10tJG+M7oMPLvF7XI=;
+        b=Ob0cqTaM09uVsKogdZ/rjHfrDQPPWMwQVUeh7I7s5NoAKBRcO8X1L7XzD0u3lba7Gw
+         JhXt1et1VPGMzYlitoNQCkEazk4vasMQc4TQOn2p0ZNisnzsvx4Xs1gfy6Fxaf9tyNjb
+         dqBB2UIEsNMwsu1QvfhtIOBQYs7L0DtaqIvIhEpCmvCAJfDkV/gkKfwDisZvC3iW+4OC
+         rafsT0/WIhgmedqXMpKw9eYztRmOMIQWKNotP+qtiadhApSa72T9TqIUjwhr+9OTlC0L
+         vQrBziNOSM9Qs/uKEoicgsCToiqsmAQYZ7zJXSSkX0v7SxRfD/AJHpt8m66lAdokuR1V
+         A9Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773052703; x=1773657503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Pd/QwTFnDfoORdcPMrJQXvD9uG10tJG+M7oMPLvF7XI=;
+        b=YK6+6nlIW2l/nBMo8hZF4+5n3c15FybqmnUYomc2HIcvT0sHjA7uetCUy74TMGTlC/
+         6OaxCf0P9i/mEsccZJ034KY/8QGutIKdgT25TA5nwCFZLKUj8MwtQhe3LfuVIHmKQPG9
+         vpJ0DKPH6u7rY2TRBBe5NekqFvrfcqmSAOPgrx3IvDrAfi7ZZyuiOvwvuiGnm2HVVEjf
+         Mcon5cDxnU9pJ9OYGI4gBdQ3zoBLM2755gTlAhXf2/v/HUZpY0SJtib91d21tAP4M40f
+         WIYTCC0BbiGiQ9PjcYMN4Ne6nycZhwOzXpcZzkyGThD08cGfRRKGg7Nk+5ABosoUVT7b
+         EvKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrJNxo6SSKoTzRCjEzZQBKpOnnKAEi/G0NJggp3CYx1r4I7YBQp+wSH+JYRjBXoJIFRCCSGP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydee/yHCWRpD1pfydEIOTVgaQUuPpZP3C62iTagEayNlJlwSUl
+	/K19Zio+im9sw3GUqnUPC/ivmrdl6pHeMcKjVZcYV7tv5Q+vtestFDn7EO0aEvSeAIjnGPQtyml
+	k+VZXDwVrMT6IKF+I9Bte9agtYs7TIks=
+X-Gm-Gg: ATEYQzzRy/QpAsbonwx3pdyHBn7Bpq7RuRp+27pWSuKs8aSWE0SrgFMA4Xi0OxDyyAt
+	TZmkQk/90VcZnVOH83jpDtlM3aTbkGcfok41K0WTdYR0U3wOq449Jg/VcLMCoeTjSCv4wY88Uog
+	0KbaJBiB7DvZTAVPUXXCquHPzOZSasCpFFGVbeTzmlpL1ZYqW6t5EwjQfM5Z7aNKZVQNoIptPHn
+	9c3+qrFOLGBL2pxiSi+whH38EBJ9R+2SvTN8LERAhrXT0zGasEp7chHl+COXYpolz+U6WHdGkB3
+	gHPxd4xTiNy9Txh4Kq+cabxNUYd0fYueSDeqktX48xBphJqN/EtC6QWfX4Ji9KT9gUKIjNAa
+X-Received: by 2002:a05:690c:d88:b0:797:d7a8:c540 with SMTP id
+ 00721157ae682-798dd6b3e9cmr104166207b3.26.1773052703456; Mon, 09 Mar 2026
+ 03:38:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E53D8237357
+References: <20260308213116.7E884C116C6@smtp.kernel.org> <aa6ZrCZoEYgsPXka@redhat.com>
+In-Reply-To: <aa6ZrCZoEYgsPXka@redhat.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Mon, 9 Mar 2026 16:08:11 +0530
+X-Gm-Features: AaiRm51hNj-AFGnKqhLbYe8DDZ9RYDSgKSF5XQQrbdVnMc7oHyeFGGWqPOokc7c
+Message-ID: <CADhLXY6zH2A88dSDeTdsQJ77dEOPX5fkHu7PvhKL1beXGxs6Tw@mail.gmail.com>
+Subject: Re: + kernel-fork-validate-exit_signal-in-clone-syscall.patch added
+ to mm-nonmm-unstable branch
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org, 
+	vschneid@redhat.com, vincent.guittot@linaro.org, surenb@google.com, 
+	stable@vger.kernel.org, rppt@kernel.org, rostedt@goodmis.org, 
+	peterz@infradead.org, mingo@redhat.com, mhocko@suse.com, mgorman@suse.de, 
+	lorenzo.stoakes@oracle.com, liam.howlett@oracle.com, kees@kernel.org, 
+	juri.lelli@redhat.com, dietmar.eggemann@arm.com, david@kernel.org, 
+	bsegall@google.com, brauner@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 40CCC2373F8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[fb.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-223595-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.984];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-223596-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.876];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-A corrupt free-space-tree leaf can contain a FREE_SPACE_BITMAP item
-whose on-disk item size does not match the bitmap size implied by
-key.offset.
+On Mon, Mar 9, 2026 at 3:28=E2=80=AFPM Oleg Nesterov <oleg@redhat.com> wrot=
+e:
+>
+> On 03/08, Andrew Morton wrote:
+> >
+> > From: Deepanshu Kartikey <kartikey406@gmail.com>
+> > Subject: kernel/fork: validate exit_signal in clone() syscall
+> > Date: Sat, 7 Mar 2026 12:12:02 +0530
+> >
+> > When a child process exits, it sends exit_signal to its parent via
+> > do_notify_parent().  The clone() syscall constructs exit_signal as:
+> >
+> >   (lower_32_bits(clone_flags) & CSIGNAL)
+> >
+> > CSIGNAL is 0xff, so values in the range 65-255 are possible.  However,
+> > valid_signal() only accepts signals up to _NSIG (64 on x86_64), causing=
+ a
+> > WARN_ON in do_notify_parent() when the process exits:
+> >
+> >   WARNING: kernel/signal.c:2174 do_notify_parent+0xc7e/0xd70
+>
+> Aaah. Thanks Deepanshu! My bad, please see below.
+>
+> > The comment above kernel_clone() states that callers are expected to
+> > validate exit_signal.
+>
+> Yes, and man 2 clone says:
+>
+>       The termination signal is specified in the low byte of flags (clone=
+()) or in cl_args.exit_signal (clone3()).
+>       If no signal (i.e., zero) is specified, then the parent process is =
+not signaled when the child terminates.
+>
+> it doesn't document that nonzero non-valid signal acts as .exit_signal =
+=3D=3D 0.
+>
+> > --- a/kernel/fork.c~kernel-fork-validate-exit_signal-in-clone-syscall
+> > +++ a/kernel/fork.c
+> > @@ -2800,7 +2800,8 @@ SYSCALL_DEFINE5(clone, unsigned long, cl
+> >               .stack          =3D newsp,
+> >               .tls            =3D tls,
+> >       };
+> > -
+> > +     if (!valid_signal(args.exit_signal))
+> > +             return -EINVAL;
+> >       return kernel_clone(&args);
+>
+> Well, kernel_clone() has more users which doesn't validate .exit_signal,
+> say sys_ia32_clone().
+>
+> we need to move the valid_signal() check from copy_clone_args_from_user()
+> to kernel_clone() or copy_process()...
+>
+> So. This should fix my
+>
+>         [PATCH] do_notify_parent: sanitize the valid_signal() checks
+>         https://lore.kernel.org/all/aZsfg0Y055yuAvsq@redhat.com/
+>
+> do_notify_parent-sanitize-the-valid_signal-checks.patch in -mm tree.
+>
+> Somehow I was very sure that copy_process() paths already have the valid_=
+signal()
+> check but my memory fooled me.
+>
+> But this is a user visible change which can cause other bug reports...
+> Perhaps we should revert do_notify_parent-sanitize-the-valid_signal-check=
+s.patch
+> and this patch?
+>
+> Even if I think that the new valid_signal() check "fixes" the undocumente=
+d
+> behaviour, unlikely there is a sane application which passes non-valid ex=
+it
+> signal to sys_clone(). But who knows...
+>
+> Oleg.
+>
 
-The free-space-tree loading path currently uses key.offset to iterate
-bitmap coverage, but does not verify that the item size matches
-free_space_bitmap_size(fs_info, key.offset). This allows a zero-sized
-or otherwise truncated bitmap item to be consumed as if it contained
-valid bitmap data.
+Hi Oleg,
 
-Once bit access runs past the valid extent buffer range, the computed
-folio index can reach an unpopulated eb->folios[] slot and trigger a
-NULL dereference in assert_eb_folio_uptodate().
+Thank you for the review.
 
-Fix this by validating FREE_SPACE_BITMAP item sizes in
-load_free_space_bitmaps() before testing any bits. If the on-disk item
-size does not match the expected bitmap size, treat the free-space-tree
-leaf as corrupt and fail loading it with -EUCLEAN.
+You are correct that fixing only the clone() syscall is incomplete.
+sys_ia32_clone() and other kernel_clone() callers would remain
+unprotected. I will send a v2 with the valid_signal() check moved
+to kernel_clone() to cover all callers.
 
-Also add a defensive range check in extent_buffer_test_bit() so that
-corrupt metadata cannot drive bitmap bit access beyond the extent
-buffer even if a bad caller reaches that helper.
+Regarding your do_notify_parent patch =E2=80=94 since v2 will fix the root
+cause at kernel_clone(), your patch in the -mm tree can be dropped.
 
-The bug is reproducible on 7.0.0-rc2-next-20260306 with a dynamic
-metadata fuzzing tool that injects single-bit corruptions into btrfs
-leaf blocks at runtime. After this change, the corrupt bitmap item is
-rejected and the filesystem reports corruption instead of crashing.
-
-Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
-Cc: stable@vger.kernel.org # 4.5+
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
----
-Root cause
-==========
-The direct fault is a NULL dereference in assert_eb_folio_uptodate(),
-reached from the free-space-tree bitmap loading path:
-
-  caching_thread()
-    -> btrfs_load_free_space_tree()
-    -> load_free_space_bitmaps()
-    -> btrfs_free_space_test_bit()
-    -> extent_buffer_test_bit()
-    -> assert_eb_folio_uptodate()
-
-The corrupted metadata pattern is a FREE_SPACE_BITMAP item whose
-item_size is smaller than the bitmap size described by key.offset. In the
-reproducer, multiple bitmap items had item_size == 0 while key.offset
-still described non-empty bitmap ranges.
-
-For one failing item, the instrumented run showed:
-
-  leaf_len = 16384
-  ptr = 16312
-  item_size = 0
-  expected = 402
-  key.type = BTRFS_FREE_SPACE_BITMAP_KEY
-
-So only 72 bytes remained in the leaf data area, while the bitmap range
-described by key.offset required 402 bytes of bitmap data. The existing
-code did not validate that mismatch before iterating over bitmap bits.
-
-btrfs_free_space_test_bit() uses btrfs_item_ptr_offset() as the bitmap
-start, and extent_buffer_test_bit() then translates the bit access into
-a folio index. Without a range check, once start + BIT_BYTE(nr) goes past
-eb->len, the computed folio index can exceed the populated folio range of
-the extent buffer.
-
-extent_buffer objects are zero-initialized and only the first
-num_extent_folios(eb) entries in eb->folios[] are populated. An access
-past that range can therefore hit a NULL eb->folios[] slot, which is then
-dereferenced by assert_eb_folio_uptodate() via folio_test_uptodate().
-
-Reproduction (v6.18, x86_64, KASAN)
-===================================
-The PoC is relatively large, so it is provided separately through google drive:
-https://drive.google.com/drive/folders/1eB6QzkGViZhlq8xouE5WSVRU0fovu0qw
-
-To reproduce the issue:
-  1. Build the PoC program: gcc poc.c -o poc
-  2. Build the ublk helper program from the ublk codebase, which is
-	 used to provide the runtime corruption capability:
-	  g++ -std=c++20 -fcoroutines -O2 -o standalone_replay \
-      standalone_replay_btrfs.cpp targets/ublksrv_tgt.cpp \
-      -I. -Iinclude -Itargets/include \
-      -L./lib/.libs -lublksrv -luring -lpthread
-  3. Attach the crafted image through ublk:
-      ./standalone_replay add -t loop -f /path/to/image
-  4. Run the PoC: ./poc
-This reliably reproduces the bug.
-
-Test notes
-==========
-The reproducer was verified on 7.0.0-rc2-next-20260306 with runtime
-single-bit corruption injected into btrfs leaf blocks. I have not yet
-retested it on the latest stable kernel, but I can do so if needed.
-
-Fix
-===
-Two complementary defences are added:
-
-1. In load_free_space_bitmaps() (free-space-tree.c), validate that the
-   on-disk item_size equals free_space_bitmap_size(fs_info, key.offset)
-   before entering the per-sector bit-reading loop.  A mismatch is a
-   clear sign of on-disk corruption; log a specific error message and
-   return -EUCLEAN so the caller can handle it gracefully instead of
-   walking off the end of the leaf.
-
-2. In extent_buffer_test_bit() (extent_io.c), call check_eb_range()
-   before eb_bitmap_offset(), mirroring the pattern already used by
-   read_extent_buffer() and extent_buffer_get_byte().  This makes the
-   function safe against any caller that passes an out-of-range (start,
-   nr) pair, regardless of how the corruption reached this point.
-
-Defence (1) catches the specific free-space-tree path at the semantic
-layer and produces a meaningful log entry. Defence (2) is a generic
-safety net for the low-level helper that prevents the NULL-folio crash
-for any future caller that might bypass the upper-layer check.
-
-KASAN reports
-=============
-BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-BUG: KASAN: null-ptr-deref in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: null-ptr-deref in folio_test_uptodate include/linux/page-flags.h:787 [inline]
-BUG: KASAN: null-ptr-deref in assert_eb_folio_uptodate+0x198/0x2b0 fs/btrfs/extent_io.c:4071
-Read of size 8 at addr 0000000000000000 by task kworker/u8:0/12
-
-CPU: 1 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted 6.18.0+ #12 PREEMPT(voluntary) 
-Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: btrfs-cache btrfs_work_helper
-Call Trace:
-<TASK>
-dump_stack_lvl+0xbe/0x130
-print_report+0x437/0x650
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? early_section include/linux/mmzone.h:2184 [inline]
-? pfn_valid include/linux/mmzone.h:2196 [inline]
-? __virt_addr_valid+0xca/0x4c0 arch/x86/mm/physaddr.c:65
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? kasan_addr_to_slab+0xd/0xb0 mm/kasan/common.c:46
-kasan_report+0xfb/0x140
-? instrument_atomic_read include/linux/instrumented.h:68 [inline]
-? _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-? folio_test_uptodate include/linux/page-flags.h:787 [inline]
-? assert_eb_folio_uptodate+0x198/0x2b0 fs/btrfs/extent_io.c:4071
-? instrument_atomic_read include/linux/instrumented.h:68 [inline]
-? _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-? folio_test_uptodate include/linux/page-flags.h:787 [inline]
-? assert_eb_folio_uptodate+0x198/0x2b0 fs/btrfs/extent_io.c:4071
-kasan_check_range+0x11c/0x200
-__kasan_check_read+0x11/0x20
-assert_eb_folio_uptodate+0x198/0x2b0
-extent_buffer_test_bit+0xce/0x200
-btrfs_free_space_test_bit+0x1b3/0x270
-? __pfx_btrfs_free_space_test_bit+0x10/0x10 include/linux/sched/mm.h:332
-? __asan_memmove+0x30/0x80 mm/kasan/shadow.c:95
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? read_extent_buffer+0x114/0x3d0 fs/btrfs/extent_io.c:3946
-btrfs_load_free_space_tree+0x57a/0xe40
-? __pfx_btrfs_load_free_space_tree+0x10/0x10 fs/btrfs/free-space-tree.c:1492
-? __entry_text_end+0x1025b9/0x1025bd
-? __kasan_check_write+0x14/0x30 mm/kasan/shadow.c:37
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? instrument_atomic_write include/linux/instrumented.h:82 [inline]
-? atomic_long_set include/linux/atomic/atomic-instrumented.h:3223 [inline]
-? __rwsem_set_reader_owned kernel/locking/rwsem.c:177 [inline]
-? rwsem_set_reader_owned kernel/locking/rwsem.c:182 [inline]
-? rwsem_read_trylock kernel/locking/rwsem.c:257 [inline]
-? rwsem_read_trylock kernel/locking/rwsem.c:249 [inline]
-? __down_read_common kernel/locking/rwsem.c:1260 [inline]
-? __down_read kernel/locking/rwsem.c:1274 [inline]
-? down_read+0x1c5/0x4a0 kernel/locking/rwsem.c:1539
-? hung_task_set_blocker include/linux/hung_task.h:55 [inline]
-? rwsem_down_read_slowpath+0xbd0/0xca0 kernel/locking/rwsem.c:1070
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? trace_hardirqs_on+0x53/0x60 kernel/trace/trace_preemptirq.c:79
-caching_thread+0x3d5/0x1f20
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? save_trace+0x54/0x390 kernel/locking/lockdep.c:587
-? __pfx_caching_thread+0x10/0x10 fs/btrfs/block-group.c:533
-? __entry_text_end+0x1025b9/0x1025bd
-? instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-? atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:1301 [inline]
-? queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
-? do_raw_spin_lock+0x133/0x290 kernel/locking/spinlock_debug.c:116
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? find_held_lock+0x31/0x90 kernel/locking/lockdep.c:5350
-? spin_unlock include/linux/spinlock.h:391 [inline]
-? thresh_exec_hook fs/btrfs/async-thread.c:203 [inline]
-? btrfs_work_helper+0x1a2/0xa50 fs/btrfs/async-thread.c:311
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? pv_queued_spin_unlock arch/x86/include/asm/paravirt.h:562 [inline]
-? queued_spin_unlock arch/x86/include/asm/qspinlock.h:57 [inline]
-? do_raw_spin_unlock+0x14b/0x200 kernel/locking/spinlock_debug.c:142
-btrfs_work_helper+0x1d4/0xa50
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-process_one_work+0x8e0/0x1980
-? __pfx_process_one_work+0x10/0x10 include/linux/list.h:226
-? move_linked_works+0x1a8/0x2c0 kernel/workqueue.c:1165
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? assign_work+0x19d/0x240 kernel/workqueue.c:1206
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? __lock_is_held kernel/locking/lockdep.c:5601 [inline]
-? lock_is_held_type+0xa3/0x130 kernel/locking/lockdep.c:5940
-worker_thread+0x683/0xf80
-? __pfx_worker_thread+0x10/0x10 kernel/workqueue.c:3570
-kthread+0x3f0/0x850
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? trace_hardirqs_on+0x53/0x60 kernel/trace/trace_preemptirq.c:79
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
-? _raw_spin_unlock_irq+0x27/0x70 kernel/locking/spinlock.c:202
-? srso_alias_return_thunk+0x5/0xfbef5 arch/x86/lib/retpoline.S:220
-? spin_unlock_irq include/linux/spinlock.h:401 [inline]
-? calculate_sigpending+0x7c/0xb0 kernel/signal.c:194
-? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-ret_from_fork+0x50f/0x610
-? __pfx_kthread+0x10/0x10 arch/x86/include/asm/bitops.h:202
-ret_from_fork_asm+0x1a/0x30
-</TASK>
----
- fs/btrfs/extent_io.c       | 10 ++++++++++
- fs/btrfs/free-space-tree.c | 19 +++++++++++++++++++
- 2 files changed, 29 insertions(+)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 23273d0e6f22..14da72a9a950 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4254,6 +4254,16 @@ bool extent_buffer_test_bit(const struct extent_buffer *eb, unsigned long start,
- 	size_t offset;
- 	u8 *kaddr;
- 
-+	/*
-+	 * Defend against a corrupt bitmap item whose item_size is smaller
-+	 * than what key.offset implies: if start + BIT_BYTE(nr) would fall
-+	 * outside this extent buffer, eb_bitmap_offset() would compute an
-+	 * out-of-bounds folio index, and assert_eb_folio_uptodate() would
-+	 * then dereference a NULL eb->folios[] slot.
-+	 */
-+	if (check_eb_range(eb, start, BIT_BYTE(nr) + 1))
-+		return false;
-+
- 	eb_bitmap_offset(eb, start, nr, &i, &offset);
- 	assert_eb_folio_uptodate(eb, i);
- 	kaddr = folio_address(eb->folios[i]);
-diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
-index d86541073d42..04fde74c35e5 100644
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1555,6 +1555,8 @@ static int load_free_space_bitmaps(struct btrfs_caching_control *caching_ctl,
- 	u64 end, offset;
- 	u64 total_found = 0;
- 	u32 extent_count = 0;
-+	u32 expected_bitmap_size;
-+	u32 actual_bitmap_size;
- 	int ret;
- 
- 	block_group = caching_ctl->block_group;
-@@ -1578,6 +1580,23 @@ static int load_free_space_bitmaps(struct btrfs_caching_control *caching_ctl,
- 		ASSERT(key.type == BTRFS_FREE_SPACE_BITMAP_KEY);
- 		ASSERT(key.objectid < end && key.objectid + key.offset <= end);
- 
-+		/*
-+		 * Validate the on-disk item size matches what we compute
-+		 * from key.offset.  A zero-sized (or otherwise wrong-sized)
-+		 * bitmap item would cause extent_buffer_test_bit() to walk
-+		 * past the end of the leaf, ultimately dereferencing a NULL
-+		 * folio pointer in assert_eb_folio_uptodate().
-+		 */
-+		expected_bitmap_size = free_space_bitmap_size(fs_info, key.offset);
-+		actual_bitmap_size = btrfs_item_size(path->nodes[0], path->slots[0]);
-+		if (unlikely(actual_bitmap_size != expected_bitmap_size)) {
-+			btrfs_err(fs_info,
-+				  "corrupt free space bitmap for block group %llu: objectid=%llu expected item size %u got %u",
-+				  block_group->start, key.objectid,
-+				  expected_bitmap_size, actual_bitmap_size);
-+			return -EUCLEAN;
-+		}
-+
- 		offset = key.objectid;
- 		while (offset < key.objectid + key.offset) {
- 			bool bit_set;
--- 
-2.43.0
-
+Regards,
+Deepanshu Kartikey
 
