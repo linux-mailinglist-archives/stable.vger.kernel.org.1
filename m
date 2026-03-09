@@ -1,130 +1,166 @@
-Return-Path: <stable+bounces-223662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB9nMgPTrmlhJAIAu9opvQ
-	(envelope-from <stable+bounces-223662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:02:43 +0100
+	id uBNtN47Srmm1JAIAu9opvQ
+	(envelope-from <stable+bounces-223663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:00:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D2E23A3A6
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:02:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDFC23A33F
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 289BD3020D58
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 14:00:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 410D53028F78
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CD53B8D50;
-	Mon,  9 Mar 2026 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B273CC9F6;
+	Mon,  9 Mar 2026 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM5LYutE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ovj5osbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E313CCA10
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 14:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F9A38F948;
+	Mon,  9 Mar 2026 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773064813; cv=none; b=Jwqbz9cTW3tuhNfEI014ooKgIHuCEqsqZ0ECoEtICWNdAqOGcpo9EDehuqWP1j6zP5GyyLwhYgRLUQOAd2OUBUruN/JbygMO1QIZpN7KbFeuXcgskd9bsov4Y2Ypqlo7+qnTltzsGM4zR1OwqTYoln7b83Ahr+upaUVN+R8Z80U=
+	t=1773064822; cv=none; b=jOXFqjCuwhTlf3hPDgTzHEWJ7jM7CBatopmxNBz5mh++BmU5O8LytrVWY+C4PGx3+RODzEWYsbClaPZ9bLu/3t6Qv5Q3yyh/+Lrgcde9MDAxkaHgxxZNZjBPvu7i8rtswcjChvRcMUb3ou1becz4WQWb9Fsggradi6amm6lE2ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773064813; c=relaxed/simple;
-	bh=UvD+53ONYkW8ygV9bQLLL2/ULZ8C9eIEGA0I6PdX32o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQtI/6ltShCEeyF3W+b5LPH26+7kkNKcigbRscl5g4EFRl+itVdytMHDMnaKOGe5sCI6ryG3J8eWEWFgfPpneAXekfccNdHKftUBQUAN5mNoiI0ACQoERKW/VTE8GTYRToxClO2GGl1NiINnIE+HpIPe4uhFoNcKdWAVWscDQso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM5LYutE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C4FC4CEF7;
-	Mon,  9 Mar 2026 14:00:11 +0000 (UTC)
+	s=arc-20240116; t=1773064822; c=relaxed/simple;
+	bh=DnCTxrCceZEz1a9g0WegA+3Sbf1oc314HptMlIzKbcc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=MhqisUpAl/LiL53bZYCbEKDfqqmdPF3k35VC9umOegXD915Z/sMLbdH9nsyZZRqqWMM4drcK30SqJkKxPL9gQ5jI6otgDJaCH2FmO2Oenke0kh+b7sMN+PoCanqJuoVoRLXi/kCD7Z7TTVzwUWKzB8GDQc2yo5d3bJpPRADR6hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ovj5osbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0526AC4CEF7;
+	Mon,  9 Mar 2026 14:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773064812;
-	bh=UvD+53ONYkW8ygV9bQLLL2/ULZ8C9eIEGA0I6PdX32o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM5LYutE/g6BRY5qlpdE05V4xA/ej5nYuA/6zdfxtDg7lQE5Rn0WokmUB2sFIyqkM
-	 OD8HoXVWbG6cyE94aqoj2DA1kZcDQd+Wc2sUtrYZS1SxozH89iDVbt0gJf54fiM9/L
-	 7XJvt/moQdKm5EJ74e87e/HgO/SOFw7NZgUnSXmy/UWBMr+bVekVQxQ9kw84qa7ZV0
-	 6gItMlNLn7ntY3JC3KdNXBCFZCSvcNVI1PTiR3PlQf6iOo/FLqvce9Fd6wKKI4hMlC
-	 3UDBGbROLmX6dnShRy7oRIEi6EbRf53tvt7TZlH+jclJTHK7z3NCMNTBILDnle5P40
-	 Cj5l/tnUOydWg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] smb: client: Don't log plaintext credentials in cifs_set_cifscreds
-Date: Mon,  9 Mar 2026 10:00:09 -0400
-Message-ID: <20260309140009.1065571-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030914-pellet-condone-8fe6@gregkh>
-References: <2026030914-pellet-condone-8fe6@gregkh>
+	s=k20201202; t=1773064822;
+	bh=DnCTxrCceZEz1a9g0WegA+3Sbf1oc314HptMlIzKbcc=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=ovj5osbHOQZAbykrOKjaNKiC/PPZQXDRw1nyH+1XViznnSZDCqkeDx5eL9quBIBsQ
+	 UJC+r+PeVEAN8FjGoAUaaUnJPFZsycuEXyK1aLyYFm/GX3yiwe1Fbikx5wo5UJMDLV
+	 t10Ji3OWaEXZKc4PSXFCVEo0FVKQnUg5SUgfFK053iSmBp33N2MsYc/DSRmpr/4Jsv
+	 vq+RV1XC7qsxFY0uDaafX1ZuQj6Fx7MFR86Q1orM8qJtHBkOGLsO8FwPp2RBLLZbjp
+	 8xvRNFuZc0up6rzLjRwgdBlNLKCUbwfCpB6EwHAdTu2Vw3T5Q9uPTXbGs9bbimOBva
+	 DxPEH+dJN/kWQ==
+Message-ID: <0a25d83b-c6ea-4230-a89d-1f496b91764c@kernel.org>
+Date: Mon, 9 Mar 2026 15:00:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 76D2E23A3A6
+User-Agent: Mozilla Thunderbird
+From: vbabka@kernel.org
+Subject: Re: [PATCH] mm/slab: fix an incorrect check in obj_exts_alloc_size()
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: adilger.kernel@dilger.ca, akpm@linux-foundation.org,
+ cgroups@vger.kernel.org, hannes@cmpxchg.org, hao.li@linux.dev,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, shicenci@gmail.com,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ viro@zeniv.linux.org.uk, surenb@google.com, stable@vger.kernel.org
+References: <aa5NmA25QsFDMhof@hyeyoo>
+ <20260309072219.22653-1-harry.yoo@oracle.com>
+In-Reply-To: <20260309072219.22653-1-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5EDFC23A33F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223662-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223663-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[dilger.ca,linux-foundation.org,vger.kernel.org,cmpxchg.org,linux.dev,kvack.org,gmail.com,gentwo.org,google.com,zeniv.linux.org.uk];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.972];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,manguebit.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+On 3/9/26 08:22, Harry Yoo wrote:
+> obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
+> array from the same cache, to avoid creating slabs that are never freed.
+> 
+> There is one mistake that returns the original size when memory
+> allocation profiling is disabled. The assumption was that
+> memcg-triggered slabobj_ext allocation is always served from
+> KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
+> both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
+> allocation is served from normal kmalloc. This is because kmalloc_type()
+> prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
+> KMALLOC_RECLAIM with KMALLOC_NORMAL.
 
-[ Upstream commit 2f37dc436d4e61ff7ae0b0353cf91b8c10396e4d ]
+Hm that's suboptimal (leads to sparsely used obj_exts in normal kmalloc
+slabs) and maybe separately from this hotfix we could make sure that with
+SLUB_TINY, __GFP_ACCOUNT is preferred going forward?
 
-When debug logging is enabled, cifs_set_cifscreds() logs the key
-payload and exposes the plaintext username and password. Remove the
-debug log to avoid exposing credentials.
+> As a result, the recursion guard is bypassed and the problematic slabs
+> can be created. Fix this by removing the mem_alloc_profiling_enabled()
+> check entirely. The remaining is_kmalloc_normal() check is still
+> sufficient to detect whether the cache is of KMALLOC_NORMAL type and
+> avoid bumping the size if it's not.
+> 
+> Without SLUB_TINY, no functional change intended.
+> With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
+> now allocate a larger array if the sizes equal.
+> 
+> Reported-by: Zw Tang <shicenci@gmail.com>
+> Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from its own slab")
+> Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
-Fixes: 8a8798a5ff90 ("cifs: fetch credentials out of keyring for non-krb5 auth multiuser mounts")
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/cifs/connect.c | 1 -
- 1 file changed, 1 deletion(-)
+Added to slab/for-next-fixes, thanks!
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 677c757fffffb..098a2ad8cec4e 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -1874,7 +1874,6 @@ cifs_set_cifscreds(struct smb3_fs_context *ctx, struct cifs_ses *ses)
- 	/* find first : in payload */
- 	payload = upayload->data;
- 	delim = strnchr(payload, upayload->datalen, ':');
--	cifs_dbg(FYI, "payload=%s\n", payload);
- 	if (!delim) {
- 		cifs_dbg(FYI, "Unable to find ':' in payload (datalen=%d)\n",
- 			 upayload->datalen);
--- 
-2.51.0
+> ---
+> 
+> Zw Tang, could you please confirm that the warning disappears
+> on your test environment, with this patch applied?
+> 
+>  mm/slub.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 20cb4f3b636d..6371838d2352 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+>  	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+>  	struct kmem_cache *obj_exts_cache;
+>  
+> -	/*
+> -	 * slabobj_ext array for KMALLOC_CGROUP allocations
+> -	 * are served from KMALLOC_NORMAL caches.
+> -	 */
+> -	if (!mem_alloc_profiling_enabled())
+> -		return sz;
+> -
+>  	if (sz > KMALLOC_MAX_CACHE_SIZE)
+>  		return sz;
+>  
+> 
+> base-commit: 6432f15c818cb30eec7c4ca378ecdebd9796f741
 
 
