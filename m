@@ -1,133 +1,136 @@
-Return-Path: <stable+bounces-223678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN10HILfrmm/JQIAu9opvQ
-	(envelope-from <stable+bounces-223678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:56:02 +0100
+	id UNRXM5jgrmmoJgIAu9opvQ
+	(envelope-from <stable+bounces-223680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:00:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C483D23B05C
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 15:56:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B9123B29F
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4034930BDEE3
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 14:53:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF93230333E6
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 14:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC8A3D6492;
-	Mon,  9 Mar 2026 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D69A3D648B;
+	Mon,  9 Mar 2026 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oycuJ/90"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CF2Ov3kg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEC13D6661
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 14:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA593D646B;
+	Mon,  9 Mar 2026 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773068004; cv=none; b=O2jE2nK9jkKM99bf2jOCpqSPjVZiuaHs0xZkghbFmnFum42pKivKxX/QME97mc8tZt21px4GTmKvDlJXs5/SBveJkpRLjGDz1c0tRpdMcHmb0ycPPjVCdrtkEjkfQcmKxKcbHHB//Ogv/Gg0FgxPWOHa59iPiSy0js4OPzoEbMY=
+	t=1773068244; cv=none; b=U6Yzeuw+kNvaUSu9MrMO04QZ+CZej8CHuBfOMyBD66x3KdSDevXUvYxwxBGNLEx1p40AksI1dUmDJtTXerYneOfWfoVOzgmmECBiahsPNAwNJK3Mq5jywbFhgCyi6Fm3DZJYa+0EmYkqIc/hgnQ8+LTVZN/kp+W8oYwBDRqWkys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773068004; c=relaxed/simple;
-	bh=tozJPerkRyGg4q4oSufA52h0XMc8J80CZ8b4bJXX4uc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiL7LccBWCz1wMpiEf4s8uJP0K0qkvVro75I2I/V2EEsiHPXZymecFC8E231jSa+zq6Aq7fbnR3Lrxn3nMcfpEsyfGr424dNHDvF9a7tHpYNzs2Et2IMSCiv8/8Lgz10vd4cwtgNntpVODQB2IpsYGHe9TFtOXI4IWU989mhjmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oycuJ/90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19732C2BCB1;
-	Mon,  9 Mar 2026 14:53:23 +0000 (UTC)
+	s=arc-20240116; t=1773068244; c=relaxed/simple;
+	bh=SgAKIGd1iyjSqOuc5m1IuxF0zoIDLNEjC+79iZslBeM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZAA6izS9qKdWLucv54bygQJuzxNdTP0ZAlEEWWam7DbB8hjBKoFwQUN35IGmUBPhJEWF5rmqFcAI4JSQTMzJA7dodwSkEhMJ8cuu2bt3rJN2Hpn6EZJ9KE1S44cTuVmZC6FDEVGDiJ1+ANzQveerzjVM1+fSj+ZU11A2TvxauJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CF2Ov3kg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C518C2BCB5;
+	Mon,  9 Mar 2026 14:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773068003;
-	bh=tozJPerkRyGg4q4oSufA52h0XMc8J80CZ8b4bJXX4uc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oycuJ/90jV8dRNFg4xGr5mQ+EAVI1ITytrn72M31wmGpzGukeQRsDzjxPaNVAvCzW
-	 gfBqBzE71uZ753Zkxa6GsAo1RTvDUckLId4ki5F6KTHni+9/xlAafMfpnT7iqAMYo0
-	 jKkns9odJUlCNRlmEgXJhLxMgYZffgmd0VoUtkL+0TPmdIdig7iqdZ2lnKB1w/NFcV
-	 0lfRnP88I8kqdTuENYhN4dzTZ7qfRajni5tiNDymBqzrk/N9dzKheFl2miyZh9MfSZ
-	 DVj59BTl9Hhdonh4qIxywCr6XsgcfLdPW+U+HTgrupnEWLqpiRqmTbwvK6FuEoVqyf
-	 golTx6t0yUcYw==
+	s=k20201202; t=1773068243;
+	bh=SgAKIGd1iyjSqOuc5m1IuxF0zoIDLNEjC+79iZslBeM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CF2Ov3kgsHeC08FnPBZF3KmDxdgBTG4A5A0X8R8eZ9JMfaHW9V79VlS22JtO677Wo
+	 qq5IkoqzHqjxPcGrkNAebjswbWx/lO7NjD7Q+fMTdXYCQS+J8XHRE6w6Px+K8+cKXk
+	 mrRUHsMqkMkRsPiL1KMdc+kRx8SeIxK6ceXgRPmBXPvP1ncLL/pUd9CWRzLv315Q9I
+	 rz2G+XYy2011Gpgi+6RVoYHOepnoAg5jW0qYWIV/tI3eg3qO+re1rv8zOZxMpJ3KNL
+	 Z7CdSci9eeH2FHWs20eSyyevRAbrYEx8O/CqP7GbKFhLtn1F3tAmmxCBG6kg4OkW2T
+	 k38OGNSgVOoTA==
+Date: Mon, 9 Mar 2026 10:57:22 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Natalie Vock <natalie.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
-Date: Mon,  9 Mar 2026 10:53:21 -0400
-Message-ID: <20260309145321.1224813-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030948-convene-crummy-057e@gregkh>
-References: <2026030948-convene-crummy-057e@gregkh>
+To: Ian Rogers <irogers@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Leo Yan <leo.yan@arm.com>, Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>, Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: Re: [PATCH 6.19 027/844] perf metricgroup: Don't early exit if no
+ CPUID table exists
+Message-ID: <aa7f0sRAJW3RyIPK@laps>
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <20260228173244.1509663-28-sashal@kernel.org>
+ <072e2a07-5c6f-47b5-9695-0a3ffe854ac8@kernel.org>
+ <2026030924-recount-halved-605d@gregkh>
+ <CAP-5=fW6Rz14GszEm+bnh_qAFrLwf51khzfUzDapHyYJ2dpdkA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C483D23B05C
+In-Reply-To: <CAP-5=fW6Rz14GszEm+bnh_qAFrLwf51khzfUzDapHyYJ2dpdkA@mail.gmail.com>
+X-Rspamd-Queue-Id: 44B9123B29F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmx.de,amd.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223680-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223678-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.938];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.993];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gmx.de:email,amd.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email]
 X-Rspamd-Action: no action
 
-From: Natalie Vock <natalie.vock@gmx.de>
+On Mon, Mar 09, 2026 at 07:53:10AM -0700, Ian Rogers wrote:
+>On Mon, Mar 9, 2026 at 6:40 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Mon, Mar 09, 2026 at 08:40:33AM +0100, Jiri Slaby wrote:
+>> > On 28. 02. 26, 18:19, Sasha Levin wrote:
+>> > > From: Ian Rogers <irogers@google.com>
+>> > >
+>> > > [ Upstream commit cee275edcdb1acfdc8270f80e96f30750b633220 ]
+>> >
+>> > This breaks (userspace) perf:
+>> > $ ./perf stat -a -d -p 1 sleep 5
+>> > PID/TID switch overriding SYSTEM
+>> > Error:
+>> > No supported events found.
+>> >
+>> > Any ideas?
+>>
+>> Is it also broken in 7.0-rc3?  Or is this only a 6.19.y issue?
+>
+>There was a fix:
+>https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/commit/tools/perf/util/metricgroup.c?h=perf-tools-next&id=c5a244bf17caf2de22f9e100832b75f72b31d3e6
+>was that applied to 6.19.y?
 
-[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
+It's not even upstream yet :)
 
-This can be called while preemption is disabled, for example by
-dcn32_internal_validate_bw which is called with the FPU active.
-
-Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
-machine.
-
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
-Cc: stable@vger.kernel.org
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-index da8e0cd0fa26a..f2ce7fe3039ec 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -167,7 +167,7 @@ struct dc_stream_state *dc_create_stream_for_sink(
- 	if (sink == NULL)
- 		return NULL;
- 
--	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
- 	if (stream == NULL)
- 		goto alloc_fail;
- 
 -- 
-2.51.0
-
+Thanks,
+Sasha
 
