@@ -1,227 +1,299 @@
-Return-Path: <stable+bounces-223688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2M0mLjjmrmmsJwIAu9opvQ
-	(envelope-from <stable+bounces-223688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:24:40 +0100
+	id oDIZKPLsrmkWKQIAu9opvQ
+	(envelope-from <stable+bounces-223690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:53:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F7F23B96D
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:24:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0FE23C231
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:53:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64BFD3012D16
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:24:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C65973067622
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3913D9048;
-	Mon,  9 Mar 2026 15:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CC53D9043;
+	Mon,  9 Mar 2026 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nPMdMG6u"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lf9DQgKh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC153D75D2
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 15:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF2E389455;
+	Mon,  9 Mar 2026 15:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069864; cv=none; b=U8V3RdNq6YEhnxb+6gB+0O/FWnyOHskLBqJS2lsxkv0Ag/cgMYXvSK3ESgeSHFFioQsILSNbjrouuhAj85Aq3hTYStv0UZytOevN92n9hVQvdQwY8pXUlX7ysK7wOXfT9Lao5Npdto9q+/ohXMuZCSF6maTWGtxD7o4NckNV+Og=
+	t=1773070646; cv=none; b=TmVO3Kxiv9JtANZeGPLRBGd2isNkw/adyuyXklZ9p5e7yXeLsLZhaBQcY6zDSOYoRd1X8f8eyU5CrS7ahaz/REfm3Fw3CrVh3hbIrsbR9hQQdFPaKg0eFk0YCGqlO5u7FK7KJxCKdM78H56S0BjK11x+dqAE+2qULUAbJ3UFnAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069864; c=relaxed/simple;
-	bh=DpC95LEZ3PbFopiij8oraOckRlN1070hXVE25r0nDno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3/09x08r9RgpemrjQW0H/1GKkC8grNe1QTMTQ1YO35S8c4btFYwfvo/Sj01iPVZLqZ2C4dyLhiXC9y+WPvAo/1uXgALwfV1RQeUY5QSim7h8Ozd6W9LvNEUc1H/ke6axsAwiJXIk/vW8l4gUrr2iWFbqEaE0kWTmY5POU3S9s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nPMdMG6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8ECC4CEF7;
-	Mon,  9 Mar 2026 15:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773069863;
-	bh=DpC95LEZ3PbFopiij8oraOckRlN1070hXVE25r0nDno=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPMdMG6u8xWaCiSaW+MFOd3241WxkDYn4932WkjxrukMU2HLJ94COkNiOg1PlQfaf
-	 O5Q2jFTnE1XvwPtA5dyH6S6xXw0gxPN71KiL6z/N1N9Fcroy4WjV6qOiTMecTE7lBw
-	 xbkWuZ5w0xD+506llGnq3L3x8C4lkMZoPLGEs8ZhayXgNOdvbq/uXibpp9Qdx5k1oJ
-	 vha/NySDmdIcBi7OmDbehMrpw6wp0BuEMEyTT3D4Zw3xkWfHNKUQycf5sJjI2JnJgY
-	 2b2Qjlr6BdIJQ04b3WzxuDo/jOEWl5igOIjHswT96uqJSD5smpv213psDcLg+Gf0kI
-	 j4UOozFuri3Ug==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Frank Lorenz <lorenz-frank@web.de>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: pm: avoid sending RM_ADDR over same subflow
-Date: Mon,  9 Mar 2026 11:24:20 -0400
-Message-ID: <20260309152420.1280295-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030906-bullish-enjoying-edba@gregkh>
-References: <2026030906-bullish-enjoying-edba@gregkh>
+	s=arc-20240116; t=1773070646; c=relaxed/simple;
+	bh=NfWFfNKXJds5BykHNPrLNjvC2jU8E1juvCqg2x1EFzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KpadEedzGYQE0qk/m+98uZhJ2V22Lp+xMXbQSAfT7p6gSRw14W307oyPwLWbr65v/zKq+74CELeW0pIfr9D6fUn+gsvoyjg7rs6wZHZZcbLX08TlXompA2mS96zwXJBYidAyNWCdTxrHHXuq0aF8omcr7XgID7mA3gjafsx+FOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lf9DQgKh; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Wd+q3V3rXKK+6/4p69Oq5EEDf2sKUZ0QnX+sg+AiRq8=; b=lf9DQgKhdn6BV72IQveqjJZIeH
+	WevS47lWtQC5+c1Ox9xQPilM4kD+A0tjDJz6wQKgo0KtaRFhxZe5I4J0oZNpp2i07FYzSme+iLVty
+	HiPhliZWz13lPZ6pTrG1zo2gSzHX16N24ee4GsnjafA5Ryu+dXw74zw0xdwmYwikesYJHmAUMkPgo
+	47IVglfI7bmi6+/sZfoG0jcHaNLilSW1DLDVsjRwKIDTcHhZ/crWx/ViliwgVsbiPl4afsh9lLJsE
+	U8b3LTpG3HOPG9+GchqWqkyf021AJOPNSyRoyMbG3w/Tnke41DwlVVBFoBr4zxDPsQ6RHpxGb5K3G
+	4pJDehyA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vzcfW-00000006AKo-1J0L;
+	Mon, 09 Mar 2026 15:37:18 +0000
+Date: Mon, 9 Mar 2026 15:37:18 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Johnny Hao <johnny_haocn@sina.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, slava@dubeyko.com,
+	vishal.moola@gmail.com, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.1.y 2/3] highmem: add kernel-doc for memcpy_*_folio()
+Message-ID: <aa7pLpU_-S6quLCR@casper.infradead.org>
+References: <20260309050130.912344-1-johnny_haocn@sina.com>
+ <20260309050130.912344-3-johnny_haocn@sina.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 59F7F23B96D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309050130.912344-3-johnny_haocn@sina.com>
+X-Rspamd-Queue-Id: 9C0FE23C231
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,web.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223688-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223690-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[sina.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,dubeyko.com,gmail.com,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.992];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,infradead.org:email,casper.infradead.org:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sina.com:email,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+On Mon, Mar 09, 2026 at 01:01:29PM +0800, Johnny Hao wrote:
+> From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> 
+> [ Upstream commit 9af47276ed83cc346263e56243756543a2a33c9d ]
 
-[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
+what?  This patch isn't that commit.  That commit does indeed add
+kernel-doc.  This patch adds the functions themselves.  Please be
+more careful.
 
-RM_ADDR are sent over an active subflow, the first one in the subflows
-list. There is then a high chance the initial subflow is picked. With
-the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
-linked subflows are closed. This is done for each active MPTCP
-connection.
-
-MPTCP endpoints are likely removed because the attached network is no
-longer available or usable. In this case, it is better to avoid sending
-this RM_ADDR over the subflow that is going to be removed, but prefer
-sending it over another active and non stale subflow, if any.
-
-This modification avoids situations where the other end is not notified
-when a subflow is no longer usable: typically when the endpoint linked
-to the initial subflow is removed, especially on the server side.
-
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
-Cc: stable@vger.kernel.org
-Reported-by: Frank Lorenz <lorenz-frank@web.de>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to _nl-prefixed function names in pm_netlink.c and omitted stale subflow fallback ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mptcp/pm.c         |  2 +-
- net/mptcp/pm_netlink.c | 43 +++++++++++++++++++++++++++++++++++++-----
- net/mptcp/protocol.h   |  2 ++
- 3 files changed, 41 insertions(+), 6 deletions(-)
-
-diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index f1a8ae7a5af4f..c5131529e1587 100644
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -55,7 +55,7 @@ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_
- 	msk->pm.rm_list_tx = *rm_list;
- 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
- 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
--	mptcp_pm_nl_addr_send_ack(msk);
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
- 	return 0;
- }
- 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 293ec3448f52c..f3b1e9f685898 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -850,9 +850,23 @@ bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
- 	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
- }
- 
--void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
-+			       const struct mptcp_rm_list *rm_list)
- {
--	struct mptcp_subflow_context *subflow;
-+	u8 i, id = subflow_get_local_id(subflow);
-+
-+	for (i = 0; i < rm_list->nr; i++) {
-+		if (rm_list->ids[i] == id)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list)
-+{
-+	struct mptcp_subflow_context *subflow, *same_id = NULL;
- 
- 	msk_owned_by_me(msk);
- 	lockdep_assert_held(&msk->pm.lock);
-@@ -862,11 +876,30 @@ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
- 		return;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
--		if (__mptcp_subflow_active(subflow)) {
--			mptcp_pm_send_ack(msk, subflow, false, false);
--			break;
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
-+
-+		if (unlikely(rm_list &&
-+			     subflow_in_rm_list(subflow, rm_list))) {
-+			if (!same_id)
-+				same_id = subflow;
-+		} else {
-+			goto send_ack;
- 		}
- 	}
-+
-+	if (same_id)
-+		subflow = same_id;
-+	else
-+		return;
-+
-+send_ack:
-+	mptcp_pm_send_ack(msk, subflow, false, false);
-+}
-+
-+void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+{
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
- }
- 
- int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index dd5070d57d740..329071f6b9e17 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -818,6 +818,8 @@ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
- bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
- 				     const struct mptcp_addr_info *remote);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
- 			       const struct mptcp_rm_list *rm_list);
- void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
--- 
-2.51.0
-
+> This was inadvertently skipped when adding the new functions.
+> 
+> Link: https://lkml.kernel.org/r/20240124181217.1761674-1-willy@infradead.org
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+> ---
+>  include/linux/highmem.h | 164 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 164 insertions(+)
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index 44242268f53b..a2a0cfbc19a0 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -415,6 +415,170 @@ static inline void memzero_page(struct page *page, size_t offset, size_t len)
+>  	kunmap_local(addr);
+>  }
+>  
+> +/**
+> + * memcpy_from_folio - Copy a range of bytes from a folio.
+> + * @to: The memory to copy to.
+> + * @folio: The folio to read from.
+> + * @offset: The first byte in the folio to read.
+> + * @len: The number of bytes to copy.
+> + */
+> +static inline void memcpy_from_folio(char *to, struct folio *folio,
+> +		size_t offset, size_t len)
+> +{
+> +	VM_BUG_ON(offset + len > folio_size(folio));
+> +
+> +	do {
+> +		const char *from = kmap_local_folio(folio, offset);
+> +		size_t chunk = len;
+> +
+> +		if (folio_test_highmem(folio) &&
+> +		    chunk > PAGE_SIZE - offset_in_page(offset))
+> +			chunk = PAGE_SIZE - offset_in_page(offset);
+> +		memcpy(to, from, chunk);
+> +		kunmap_local(from);
+> +
+> +		to += chunk;
+> +		offset += chunk;
+> +		len -= chunk;
+> +	} while (len > 0);
+> +}
+> +
+> +/**
+> + * memcpy_to_folio - Copy a range of bytes to a folio.
+> + * @folio: The folio to write to.
+> + * @offset: The first byte in the folio to store to.
+> + * @from: The memory to copy from.
+> + * @len: The number of bytes to copy.
+> + */
+> +static inline void memcpy_to_folio(struct folio *folio, size_t offset,
+> +		const char *from, size_t len)
+> +{
+> +	VM_BUG_ON(offset + len > folio_size(folio));
+> +
+> +	do {
+> +		char *to = kmap_local_folio(folio, offset);
+> +		size_t chunk = len;
+> +
+> +		if (folio_test_highmem(folio) &&
+> +		    chunk > PAGE_SIZE - offset_in_page(offset))
+> +			chunk = PAGE_SIZE - offset_in_page(offset);
+> +		memcpy(to, from, chunk);
+> +		kunmap_local(to);
+> +
+> +		from += chunk;
+> +		offset += chunk;
+> +		len -= chunk;
+> +	} while (len > 0);
+> +
+> +	flush_dcache_folio(folio);
+> +}
+> +
+> +/**
+> + * folio_zero_tail - Zero the tail of a folio.
+> + * @folio: The folio to zero.
+> + * @offset: The byte offset in the folio to start zeroing at.
+> + * @kaddr: The address the folio is currently mapped to.
+> + *
+> + * If you have already used kmap_local_folio() to map a folio, written
+> + * some data to it and now need to zero the end of the folio (and flush
+> + * the dcache), you can use this function.  If you do not have the
+> + * folio kmapped (eg the folio has been partially populated by DMA),
+> + * use folio_zero_range() or folio_zero_segment() instead.
+> + *
+> + * Return: An address which can be passed to kunmap_local().
+> + */
+> +static inline __must_check void *folio_zero_tail(struct folio *folio,
+> +		size_t offset, void *kaddr)
+> +{
+> +	size_t len = folio_size(folio) - offset;
+> +
+> +	if (folio_test_highmem(folio)) {
+> +		size_t max = PAGE_SIZE - offset_in_page(offset);
+> +
+> +		while (len > max) {
+> +			memset(kaddr, 0, max);
+> +			kunmap_local(kaddr);
+> +			len -= max;
+> +			offset += max;
+> +			max = PAGE_SIZE;
+> +			kaddr = kmap_local_folio(folio, offset);
+> +		}
+> +	}
+> +
+> +	memset(kaddr, 0, len);
+> +	flush_dcache_folio(folio);
+> +
+> +	return kaddr;
+> +}
+> +
+> +/**
+> + * folio_fill_tail - Copy some data to a folio and pad with zeroes.
+> + * @folio: The destination folio.
+> + * @offset: The offset into @folio at which to start copying.
+> + * @from: The data to copy.
+> + * @len: How many bytes of data to copy.
+> + *
+> + * This function is most useful for filesystems which support inline data.
+> + * When they want to copy data from the inode into the page cache, this
+> + * function does everything for them.  It supports large folios even on
+> + * HIGHMEM configurations.
+> + */
+> +static inline void folio_fill_tail(struct folio *folio, size_t offset,
+> +		const char *from, size_t len)
+> +{
+> +	char *to = kmap_local_folio(folio, offset);
+> +
+> +	VM_BUG_ON(offset + len > folio_size(folio));
+> +
+> +	if (folio_test_highmem(folio)) {
+> +		size_t max = PAGE_SIZE - offset_in_page(offset);
+> +
+> +		while (len > max) {
+> +			memcpy(to, from, max);
+> +			kunmap_local(to);
+> +			len -= max;
+> +			from += max;
+> +			offset += max;
+> +			max = PAGE_SIZE;
+> +			to = kmap_local_folio(folio, offset);
+> +		}
+> +	}
+> +
+> +	memcpy(to, from, len);
+> +	to = folio_zero_tail(folio, offset + len, to + len);
+> +	kunmap_local(to);
+> +}
+> +
+> +/**
+> + * memcpy_from_file_folio - Copy some bytes from a file folio.
+> + * @to: The destination buffer.
+> + * @folio: The folio to copy from.
+> + * @pos: The position in the file.
+> + * @len: The maximum number of bytes to copy.
+> + *
+> + * Copy up to @len bytes from this folio.  This may be limited by PAGE_SIZE
+> + * if the folio comes from HIGHMEM, and by the size of the folio.
+> + *
+> + * Return: The number of bytes copied from the folio.
+> + */
+> +static inline size_t memcpy_from_file_folio(char *to, struct folio *folio,
+> +		loff_t pos, size_t len)
+> +{
+> +	size_t offset = offset_in_folio(folio, pos);
+> +	char *from = kmap_local_folio(folio, offset);
+> +
+> +	if (folio_test_highmem(folio)) {
+> +		offset = offset_in_page(offset);
+> +		len = min_t(size_t, len, PAGE_SIZE - offset);
+> +	} else
+> +		len = min(len, folio_size(folio) - offset);
+> +
+> +	memcpy(to, from, len);
+> +	kunmap_local(from);
+> +
+> +	return len;
+> +}
+> +
+>  /**
+>   * folio_zero_segments() - Zero two byte ranges in a folio.
+>   * @folio: The folio to write to.
+> -- 
+> 2.34.1
+> 
 
