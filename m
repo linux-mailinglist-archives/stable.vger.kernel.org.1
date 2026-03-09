@@ -1,184 +1,115 @@
-Return-Path: <stable+bounces-223600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHDqCFelrmkFHQIAu9opvQ
-	(envelope-from <stable+bounces-223600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:47:51 +0100
+	id 6L2kHnynrmkFHQIAu9opvQ
+	(envelope-from <stable+bounces-223601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:57:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C70237569
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:47:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DABFF2376F4
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D503C3019813
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:47:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FB4330763FB
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55C13932DA;
-	Mon,  9 Mar 2026 10:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59CC390234;
+	Mon,  9 Mar 2026 10:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hMPCmrTg"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Hu3BVn/b"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5323939B4
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577A6364056;
+	Mon,  9 Mar 2026 10:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773053268; cv=none; b=iBgz+0ytz7a6ImO/05aEzBYdrjHzNNLbgI0ToyAWh10nkslaQFW3oxAlP/RmuwN7cRR8c2MZBk4l3SKBQlwL+S7H0lDyAWKzIH7iNAzFwboPG9WUtyITkhPN8htvKM1+5FXzKqlgUyeAR2feli2EMsEzhUt4erfGMeLIGXHzy/o=
+	t=1773053575; cv=none; b=lMBBgt/TTialQXF67giiqsx0mfvWMHbkaSEXDnUB2WnggYwMbyH76aLvmANx0d8bmKFNYT+CFy51UU7ohnCj9gMWzI7xcQKGxYwJAqbFFM9nB1GhZQXygzI3LsVkEy1SZEYvitwW+3U4eBMCt06m25tn3ANFMds5feB4eiZUtp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773053268; c=relaxed/simple;
-	bh=dyJlDWhgWsRCO+gOiZRFkno+qqdcOrlbb349BcivbQk=;
+	s=arc-20240116; t=1773053575; c=relaxed/simple;
+	bh=iktH1jROnqsVKKCnwzENbfNDMCokWUY8MGmKtoY2gsY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5/QRhIYuJmmb8nsp2pPa1VH5h9/iPwGWx3e9uMMEeoPQDiXVmUBVw/E0/hg5CmUGw1b9IJ+Peqy54ZSWVxGoGn2Df442mJ+lpRRQRYINEUjgUt10rd4RqX2Veu5fMZIUKTjCXH5iHnPks+DjoXKD5M8kl9OeNVe+Ri+GN+4XD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hMPCmrTg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773053265;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZdZOwrPl3gvdedWKPAiRadD+I0w5wetF5I5tAZO3Dbo=;
-	b=hMPCmrTg+VuPc502PS4islPNGbAWLRwscBRsnpCCeyeAsoOVHoDFlyrrmw16xpMXXQgdWf
-	AFpq+3rVzTreM4oKPogS94tPijPa890R1lUk6POyL5pbH4AnjpE0ry3Vhy2a2vRaJLVweh
-	78UdJ8u7+LSoSvjNrHD6nypwT7b5isk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-iC7wUawuNbSyMSJyzcZlpA-1; Mon,
- 09 Mar 2026 06:47:39 -0400
-X-MC-Unique: iC7wUawuNbSyMSJyzcZlpA-1
-X-Mimecast-MFC-AGG-ID: iC7wUawuNbSyMSJyzcZlpA_1773053257
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B834918005B6;
-	Mon,  9 Mar 2026 10:47:36 +0000 (UTC)
-Received: from fedora (unknown [10.45.224.43])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A27F6180049D;
-	Mon,  9 Mar 2026 10:47:29 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon,  9 Mar 2026 11:47:36 +0100 (CET)
-Date: Mon, 9 Mar 2026 11:47:28 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
-	vschneid@redhat.com, vincent.guittot@linaro.org, surenb@google.com,
-	stable@vger.kernel.org, rppt@kernel.org, rostedt@goodmis.org,
-	peterz@infradead.org, mingo@redhat.com, mhocko@suse.com,
-	mgorman@suse.de, lorenzo.stoakes@oracle.com,
-	liam.howlett@oracle.com, kees@kernel.org, juri.lelli@redhat.com,
-	dietmar.eggemann@arm.com, david@kernel.org, bsegall@google.com,
-	brauner@kernel.org
-Subject: Re: + kernel-fork-validate-exit_signal-in-clone-syscall.patch added
- to mm-nonmm-unstable branch
-Message-ID: <aa6lQIECL7dChKkI@redhat.com>
-References: <20260308213116.7E884C116C6@smtp.kernel.org>
- <aa6ZrCZoEYgsPXka@redhat.com>
- <CADhLXY6zH2A88dSDeTdsQJ77dEOPX5fkHu7PvhKL1beXGxs6Tw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IdN/rGIBDTgV1dZYt8eBBc3HOhSCiMZns5ihX4sPLXfRliPnLhLd3pqJFJ3YJ/Z/K5kmjIPZTi2XUTuFenia54ZyQ4VqQIXyUOOBugw81DQqk8jwZhG6DisZd4RlpiUL3HW50fkhdC3l6lL4mqNqLkaSlbhqIZgWQ2RkUhVIdKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Hu3BVn/b; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iktH1jROnqsVKKCnwzENbfNDMCokWUY8MGmKtoY2gsY=; b=Hu3BVn/bqAPA7o+m4BY7cW/Bt2
+	RGDh5/sFw0ZgPCf0rFFbK06Ycm1AYLjZXUvxl4CoEF82cwr5bMi/hKVf0k4cQ812rTJgPnzL0y6/K
+	IsMviG19LcWJQz9VULjBEjfZ1qgnbbdKCkUU53shHDq0Dzydk6xvtM5BHGPZ4LIiLOE9P8rrXHDP2
+	w6f445lkzEDE8AJE+rVEXbbaEQxTuUp2aDH+UNI894OfLRQniBNH5xPyVisLKW5xXhcHilSD1+Q/S
+	F4EIdmSUe2tVKFo8RaUXDAYenXsyRFo7vIwvCs4nLqBNv/1VhZSLJDsHWveF4exaILPeM/VLXazcd
+	NNU+iPTQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vzYEA-002ARk-Kp; Mon, 09 Mar 2026 10:52:46 +0000
+Date: Mon, 9 Mar 2026 03:52:41 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org, Sasha Levin <sashal@kernel.org>, 
+	Corey Minyard <corey@minyard.net>, openipmi-developer@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, Vlad Poenaru <thevlad@meta.com>, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH stable] ipmi: Fix use-after-free and list corruption on
+ sender error
+Message-ID: <aa6mEr-pcU0iXNXG@gmail.com>
+References: <20260309-ipmi_stable-v1-1-be09c9686671@debian.org>
+ <2026030953-imaging-resize-ce85@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADhLXY6zH2A88dSDeTdsQJ77dEOPX5fkHu7PvhKL1beXGxs6Tw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Queue-Id: C0C70237569
+In-Reply-To: <2026030953-imaging-resize-ce85@gregkh>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: DABFF2376F4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
-	TAGGED_FROM(0.00)[bounces-223600-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[debian.org];
+	TAGGED_FROM(0.00)[bounces-223601-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[debian.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oleg@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.946];
+	NEURAL_HAM(-0.00)[-0.945];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 03/09, Deepanshu Kartikey wrote:
+On Mon, Mar 09, 2026 at 11:34:08AM +0100, Greg Kroah-Hartman wrote:
+> On Mon, Mar 09, 2026 at 03:16:13AM -0700, Breno Leitao wrote:
+> > From: Corey Minyard <corey@minyard.net>
+> >
+> > [ Upstream commit f9323a44994c2ccd5e0d582bac6f2b2a662e5603 ]
 >
-> > Well, kernel_clone() has more users which doesn't validate .exit_signal,
-> > say sys_ia32_clone().
-> >
-> > we need to move the valid_signal() check from copy_clone_args_from_user()
-> > to kernel_clone() or copy_process()...
-> >
-> > So. This should fix my
-> >
-> >         [PATCH] do_notify_parent: sanitize the valid_signal() checks
-> >         https://lore.kernel.org/all/aZsfg0Y055yuAvsq@redhat.com/
-> >
-> > do_notify_parent-sanitize-the-valid_signal-checks.patch in -mm tree.
-> >
-> > Somehow I was very sure that copy_process() paths already have the valid_signal()
-> > check but my memory fooled me.
-> >
-> > But this is a user visible change which can cause other bug reports...
-> > Perhaps we should revert do_notify_parent-sanitize-the-valid_signal-checks.patch
-> > and this patch?
-> >
-> > Even if I think that the new valid_signal() check "fixes" the undocumented
-> > behaviour, unlikely there is a sane application which passes non-valid exit
-> > signal to sys_clone(). But who knows...
-> >
-> > Oleg.
-> >
->
-> Hi Oleg,
->
-> Thank you for the review.
->
-> You are correct that fixing only the clone() syscall is incomplete.
-> sys_ia32_clone() and other kernel_clone() callers would remain
-> unprotected. I will send a v2 with the valid_signal() check moved
-> to kernel_clone() to cover all callers.
->
-> Regarding your do_notify_parent patch — since v2 will fix the root
-> cause at kernel_clone(), your patch in the -mm tree can be dropped.
+> This is not a valid git id in Linus's tree :(
 
-Well. my patch can be dropped with or without your v2. It is just
-a cleanup and I still think it is a good cleanup...
-
-But without your fix it is wrong. From the changelog:
-
-	The "sig" argument of do_notify_parent() must always be valid
-
-this is not true because (contrary to what I thought) sys_clone doesn't
-validate exit_signal. The
-
-	WARN_ON_ONCE(!valid_signal(sig))
-
-added by that patch allowed to notice the problem you are trying to fix.
-
-But again, this (your patch) is a user-visible change, and I am worried
-even if I think this change is good.
-
-Oleg.
+Sorry about that, Greg. The correct commit is
+594c11d0e1d445f580898a2b8c850f2e3f099368 ("ipmi: Fix use-after-free and
+list corruption on sender error").
 
 
