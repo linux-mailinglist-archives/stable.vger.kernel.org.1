@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-223718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNDtA14Tr2kiNgIAu9opvQ
-	(envelope-from <stable+bounces-223718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:37:18 +0100
+	id yM5JLrcXr2kiNwIAu9opvQ
+	(envelope-from <stable+bounces-223719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:55:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5813823EAFF
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:37:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBBC23EED1
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 387233000594
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 18:37:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F287F3014A10
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 18:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDB034BA49;
-	Mon,  9 Mar 2026 18:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3283EDAC6;
+	Mon,  9 Mar 2026 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbKze7fk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uipK5l4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C4346E7F
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 18:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA483EDAC1
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773081421; cv=none; b=R0XmLicKQnLzjUq3PKUbD1Q8TIbYaGiJao6SgfoMPixN/ApmrbnszJyL9c3GbvVwCYF78buJCqZ4jwmkR9Emv+8KonZiw667uhilmjQhxfi66KjQx29mk4tyECQtDesjEXbTnBGb0ZOy9Z/u7wJ2t9SwJTPkYT2IQ5hZNv/9Xmk=
+	t=1773082538; cv=none; b=W5COlbmPEOqYTIMioRvR6m0eRIFRUIBwCn9FDL1/pwewp2APoG004V7NvkjlJMrWoVzyF5PHrDN4y4buTnU3HncoGvVX/6ssFU0u3FMjj1ZeezeQPTlEsIoN4DqPA6vGU86hMwDoLfmsqaiNzW3SpIWMD7lRldDoatxbm5zdsq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773081421; c=relaxed/simple;
-	bh=mxAxOmQdYjnEqMTYxnAUtL7aeRRp+KWuxlBoZAtkI74=;
+	s=arc-20240116; t=1773082538; c=relaxed/simple;
+	bh=EuNXZGUQMLT/Pnzi45pnR8goAicSe2lD7q+YZIZIk3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqwuaJsZKN63WEdQn4BOhrrnbFYmM7j+arsGsXwQyKTVhBOWrrLKih3iknclfyiCVZ4swmIY6YN9tLBJaUP9RIR+kuEQFffaFpTX5Fw2vS/eNOD3cK/LQ/Nf4X1NY8+VASIipy+7Yu+LYd8H1poHN/AbGv680pHA0me1FSjbuZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbKze7fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6D8C4CEF7;
-	Mon,  9 Mar 2026 18:37:00 +0000 (UTC)
+	 MIME-Version; b=Jb8EEspA7I1sXRnCbFotqxrwS7HWGIKf+ixB0usfT5CoPXSR7LbxVwQnRAu3BvaONvBMUt3xjSCoPNsf8qfcFefdeWvFL3owKES+D24CODCES27It42S3PeSQ/SsNa2SXPbUfgUuGzSdJaz2etDC8heSWFUil1TZ/cKHuiK+BAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uipK5l4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1674AC4CEF7;
+	Mon,  9 Mar 2026 18:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773081421;
-	bh=mxAxOmQdYjnEqMTYxnAUtL7aeRRp+KWuxlBoZAtkI74=;
+	s=k20201202; t=1773082538;
+	bh=EuNXZGUQMLT/Pnzi45pnR8goAicSe2lD7q+YZIZIk3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbKze7fkLP9X9PypcfuHTFupzVfcUzugWlPbglrBmi46hXHrwg3IQxCXKgXWf+1x0
-	 Z9kl0e1BOz8nn+5K+RQt90OPWIKUq58xfK25WdkKn5+qchLUt6qyXT/4EnPVC3NRB3
-	 zjbrPWmHMS6Eq3dmPNK2ln8U9PFxUArSqhycJ2b1je2oSOcpAakqX2HhKC2DhAq6ac
-	 i6zaCz2Y5svcucxSdvNilXxQNmYBvQ8KAiMVxz/dIPVDD+GX6qB4kgZ4reLbK+6UE/
-	 vApfOtvwBwYUVLaYoPKu/0JFBeMcDY6iLIPc4oT72uWS2JRLFwDDS+unDsdJEIB/YU
-	 YIH7NJbZVMadw==
+	b=uipK5l4CYI/1iKn6ndca8dlf2T0H6ad7WJCa89gM6HRk7NTx3Tkcigdn3AfuuzwI2
+	 6ZXIG9dAdv5M1NNXc2qQUM30TnrQ7Oi1f89WRAxfy7VZd45BPtRL+tdKG5EGj1j8yf
+	 DzX0zeLNNOb5T4ab+TY0GSeyCD6vVshQbFXSx0HGSbHAdNRS6PgDP+muQWNSEEfFBk
+	 drXHF4XuqmH3KAacD55fYiXHpBqY+Gh3SHBgWAFuJ806xv0DavOlog2mnng8NxPuRS
+	 xpvCBjcnA3RLWbpGrriI0paZIr28lKSlXbQEruofTt2V6TKcaeu0/E2XKJHks6uELA
+	 4Mg47cgtvqTNA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Nathan Chancellor <nathan@kernel.org>,
@@ -53,12 +53,12 @@ Cc: Nathan Chancellor <nathan@kernel.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] kbuild: Leave objtool binary around with 'make clean'
-Date: Mon,  9 Mar 2026 14:36:58 -0400
-Message-ID: <20260309183658.1347302-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] kbuild: Leave objtool binary around with 'make clean'
+Date: Mon,  9 Mar 2026 14:55:35 -0400
+Message-ID: <20260309185535.1355869-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030940-mule-parched-b1ff@gregkh>
-References: <2026030940-mule-parched-b1ff@gregkh>
+In-Reply-To: <2026030940-obliged-affront-0a04@gregkh>
+References: <2026030940-obliged-affront-0a04@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,20 +66,20 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5813823EAFF
+X-Rspamd-Queue-Id: 3DBBC23EED1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223718-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223719-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mailbox.org:email,infradead.org:email,suse.de:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,suse.de:email,msgid.link:url]
 X-Rspamd-Action: no action
 
 From: Nathan Chancellor <nathan@kernel.org>
@@ -148,10 +148,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index ae059d1885110..616909ef5acef 100644
+index 022aed9031737..20c3688ff3bfb 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1370,13 +1370,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+@@ -1356,13 +1356,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
  	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
  endif
  
@@ -168,7 +168,7 @@ index ae059d1885110..616909ef5acef 100644
  endif
  
  tools/: FORCE
-@@ -1547,7 +1547,7 @@ PHONY += $(mrproper-dirs) mrproper
+@@ -1529,7 +1529,7 @@ PHONY += $(mrproper-dirs) mrproper
  $(mrproper-dirs):
  	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
  
@@ -178,10 +178,10 @@ index ae059d1885110..616909ef5acef 100644
  	@find . $(RCS_FIND_IGNORE) \
  		\( -name '*.rmeta' \) \
 diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
-index 02d1fccd495f4..4f6f3121d8ecd 100644
+index e9a0f89e9c39a..4efe652637f02 100644
 --- a/tools/objtool/Makefile
 +++ b/tools/objtool/Makefile
-@@ -91,10 +91,12 @@ $(LIBSUBCMD)-clean:
+@@ -87,10 +87,12 @@ $(LIBSUBCMD)-clean:
  	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
  
  clean: $(LIBSUBCMD)-clean
