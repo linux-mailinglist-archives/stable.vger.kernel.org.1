@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-223548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IQlL0Kfrmm2GwIAu9opvQ
-	(envelope-from <stable+bounces-223548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:21:54 +0100
+	id MGyNCFGfrmm2GwIAu9opvQ
+	(envelope-from <stable+bounces-223549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:22:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C52236F54
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:21:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8791B236F71
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00A5B300862C
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:21:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54FA03004C3F
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED50D35C192;
-	Mon,  9 Mar 2026 10:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6846D38F255;
+	Mon,  9 Mar 2026 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVSl2+9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbHE8oCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13C138F225
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7F138F229
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773051707; cv=none; b=ozW09f7gAHOI7CliaLkGECkb/sXZ3V1rLyN/SWTlkXFvHf3JNQTfzeHX4MTo81DGYG6FdKTnIp0nVru2AbFdFCqzroe5LrDqOZn3G7/gQoBEGDV6k6tFTXegAfttriwdVbJrxM6+GofCKFb6QiXjUsGcD6kVJ4HnElV+HjCCTqE=
+	t=1773051724; cv=none; b=JYfLIEgZCuuNrTXa/HTso8oAe9r3EpC7JIkv8RhRmeubhcQWo35eEWzqTSbYpV9a61K4RUk8ahTNWQ7WNN0Zq6WmND/+TEfEA2SAQD9j/fBbBTq99HGx8M36gvgYOklnJWaNc/anspMWnqeOeUbLwC63g6xh+rzcESWcNMfRuk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773051707; c=relaxed/simple;
-	bh=qL353ZcGp+lI58xqZsrlFFxN+aVf6/XmCrIMX8vVae4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ie06H+tFbMW1ZlCXYhoHIT9CdXmrubAoES21XuK1Z5pB4nGont2j1e19/4fw6AftK8K/NvoVaWqB6KLxIkLtlI1SqZIZjREIa8LL9yR/qzk7n+75CwQRvV6pVsGMxGRS+SyExy08OpAmq6akkuiLBL7Aml4GO3b/QCidRw18IwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVSl2+9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F50C4CEF7;
-	Mon,  9 Mar 2026 10:21:46 +0000 (UTC)
+	s=arc-20240116; t=1773051724; c=relaxed/simple;
+	bh=0QQVXdKK8LWU0HJMYPOx/CYfgVy3u8AWzrHLoi2lcVk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TR4ejYg9XjgBXX31dkMQIHJdabvh5Md2OGLJpWr9blGSiEzU6QJ23ITHsHRAbRT+eM0kKzYPVfQAtV/UHox788uvtjG7jGMykGP5SGc3yJrLDVWcpk1hkuoYwdFIvaO4xxBFNP6qUrRJKMIpH3CE+iaMTzYAcOG29KdJ3v9wDVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbHE8oCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3695C4CEF7;
+	Mon,  9 Mar 2026 10:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773051707;
-	bh=qL353ZcGp+lI58xqZsrlFFxN+aVf6/XmCrIMX8vVae4=;
+	s=korg; t=1773051724;
+	bh=0QQVXdKK8LWU0HJMYPOx/CYfgVy3u8AWzrHLoi2lcVk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AVSl2+9K4xfxXxfPGHvxePhMB0D1mEeDKDNPniFCI+9/4Xmd92IOfaZaQyBdL5M1h
-	 AuKZH4Rlr0RKj+7U5AJGu/QMOpvnFeMT4OmJWBB7mem+giZ8ijB59kWrtTk9uMLnob
-	 5yVhAFPU8ldJ2cVUYvFiQkratFavGWtescPn9bws=
-Subject: FAILED: patch "[PATCH] net: phy: register phy led_triggers during probe to avoid" failed to apply to 5.10-stable tree
-To: andrew@lunn.ch,pabeni@redhat.com,yangshiji66@outlook.com
+	b=fbHE8oCef2QhNI7Y1FOs7PbeVqTgEQPPD2zVBE54LulGaVzBuljwOFy6Q9h77aONY
+	 D8boOKtxqIDg4p7CyUU46sVTXI6LxNl8VWOOglTunQKpDcg3IarZtCBl4xJRmkxRON
+	 dZRT3jEXbRxSoebFcSb/P5O3kV6q43t61U4NwFNM=
+Subject: FAILED: patch "[PATCH] RDMA/irdma: Fix kernel stack leak in irdma_create_user_ah()" failed to apply to 5.15-stable tree
+To: jgg@ziepe.ca,jgg@nvidia.com,leon@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Mar 2026 11:21:36 +0100
-Message-ID: <2026030936-gloomily-culminate-0226@gregkh>
+Date: Mon, 09 Mar 2026 11:22:01 +0100
+Message-ID: <2026030901-book-commodity-3938@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E2C52236F54
+X-Rspamd-Queue-Id: 8791B236F71
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -62,45 +62,44 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223549-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223548-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[lunn.ch,redhat.com,outlook.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_SPAM(0.00)[0.331];
+	NEURAL_SPAM(0.00)[0.267];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,outlook.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,lunn.ch:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,ziepe.ca:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x c8dbdc6e380e7e96a51706db3e4b7870d8a9402d
+git cherry-pick -x 74586c6da9ea222a61c98394f2fc0a604748438c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030936-gloomily-culminate-0226@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030901-book-commodity-3938@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,123 +111,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c8dbdc6e380e7e96a51706db3e4b7870d8a9402d Mon Sep 17 00:00:00 2001
-From: Andrew Lunn <andrew@lunn.ch>
-Date: Sun, 22 Feb 2026 16:26:01 +0100
-Subject: [PATCH] net: phy: register phy led_triggers during probe to avoid
- AB-BA deadlock
+From 74586c6da9ea222a61c98394f2fc0a604748438c Mon Sep 17 00:00:00 2001
+From: Jason Gunthorpe <jgg@ziepe.ca>
+Date: Mon, 16 Feb 2026 11:02:49 -0400
+Subject: [PATCH] RDMA/irdma: Fix kernel stack leak in irdma_create_user_ah()
 
-There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-LED_TRIGGER_PHY are enabled:
+struct irdma_create_ah_resp {  // 8 bytes, no padding
+    __u32 ah_id;               // offset 0 - SET (uresp.ah_id = ah->sc_ah.ah_info.ah_idx)
+    __u8  rsvd[4];             // offset 4 - NEVER SET <- LEAK
+};
 
-[ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-[ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-[ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-[ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-[ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-[ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-[ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-[ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-[ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-[ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-[ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-[ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+rsvd[4]: 4 bytes of stack memory leaked unconditionally. Only ah_id is assigned before ib_respond_udata().
 
-Here LED_TRIGGER_PHY is registering LED triggers during phy_attach
-while holding RTNL and then taking triggers_list_lock.
+The reserved members of the structure were not zeroed.
 
-[ 1362.191101] [<806c2640>] register_netdevice_notifier+0x60/0x168      <-- Trying to get lock "rtnl_mutex" via rtnl_lock();
-[ 1362.197073] [<805504ac>] netdev_trig_activate+0x194/0x1e4
-[ 1362.202490] [<8054e28c>] led_trigger_set+0x1d4/0x360                 <-- Hold lock "triggers_list_lock" by down_read(&triggers_list_lock);
-[ 1362.207511] [<8054eb38>] led_trigger_write+0xd8/0x14c
-[ 1362.212566] [<80381d98>] sysfs_kf_bin_write+0x80/0xbc
-[ 1362.217688] [<8037fcd8>] kernfs_fop_write_iter+0x17c/0x28c
-[ 1362.223174] [<802cbd70>] vfs_write+0x21c/0x3c4
-[ 1362.227712] [<802cc0c4>] ksys_write+0x78/0x12c
-[ 1362.232164] [<80014504>] syscall_common+0x34/0x58
-
-Here LEDS_TRIGGER_NETDEV is being enabled on an LED. It first takes
-triggers_list_lock and then RTNL. A classical AB-BA deadlock.
-
-phy_led_triggers_registers() does not require the RTNL, it does not
-make any calls into the network stack which require protection. There
-is also no requirement the PHY has been attached to a MAC, the
-triggers only make use of phydev state. This allows the call to
-phy_led_triggers_registers() to be placed elsewhere. PHY probe() and
-release() don't hold RTNL, so solving the AB-BA deadlock.
-
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Closes: https://lore.kernel.org/all/OS7PR01MB13602B128BA1AD3FA38B6D1FFBC69A@OS7PR01MB13602.jpnprd01.prod.outlook.com/
-Fixes: 06f502f57d0d ("leds: trigger: Introduce a NETDEV trigger")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Shiji Yang <yangshiji66@outlook.com>
-Link: https://patch.msgid.link/20260222152601.1978655-1-andrew@lunn.ch
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://patch.msgid.link/3-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 9b8eaac63b90..cbb4af604aa5 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1866,8 +1866,6 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		goto error;
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 15af53237217..7251cd7a2147 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -5212,7 +5212,7 @@ static int irdma_create_user_ah(struct ib_ah *ibah,
+ #define IRDMA_CREATE_AH_MIN_RESP_LEN offsetofend(struct irdma_create_ah_resp, rsvd)
+ 	struct irdma_ah *ah = container_of(ibah, struct irdma_ah, ibah);
+ 	struct irdma_device *iwdev = to_iwdev(ibah->pd->device);
+-	struct irdma_create_ah_resp uresp;
++	struct irdma_create_ah_resp uresp = {};
+ 	struct irdma_ah *parent_ah;
+ 	int err;
  
- 	phy_resume(phydev);
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_register(phydev);
- 
- 	/**
- 	 * If the external phy used by current mac interface is managed by
-@@ -1982,9 +1980,6 @@ void phy_detach(struct phy_device *phydev)
- 	phydev->phy_link_change = NULL;
- 	phydev->phylink = NULL;
- 
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_unregister(phydev);
--
- 	if (phydev->mdio.dev.driver)
- 		module_put(phydev->mdio.dev.driver->owner);
- 
-@@ -3778,16 +3773,27 @@ static int phy_probe(struct device *dev)
- 	/* Set the state to READY by default */
- 	phydev->state = PHY_READY;
- 
-+	/* Register the PHY LED triggers */
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_register(phydev);
-+
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
--	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
-+	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev)) {
- 		err = of_phy_leds(phydev);
-+		if (err)
-+			goto out;
-+	}
-+
-+	return 0;
- 
- out:
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	/* Re-assert the reset signal on error */
--	if (err)
--		phy_device_reset(phydev, 1);
-+	phy_device_reset(phydev, 1);
- 
- 	return err;
- }
-@@ -3801,6 +3807,9 @@ static int phy_remove(struct device *dev)
- 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
- 		phy_leds_unregister(phydev);
- 
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	phydev->state = PHY_DOWN;
- 
- 	phy_cleanup_ports(phydev);
 
 
