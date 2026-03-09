@@ -1,193 +1,203 @@
-Return-Path: <stable+bounces-223717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sELsArYRr2nJNQIAu9opvQ
-	(envelope-from <stable+bounces-223717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:30:14 +0100
+	id SNDtA14Tr2kiNgIAu9opvQ
+	(envelope-from <stable+bounces-223718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:37:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3A623E9B7
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:30:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5813823EAFF
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 19:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDCC730107A8
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 18:30:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 387233000594
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 18:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B6A33D6DD;
-	Mon,  9 Mar 2026 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDB034BA49;
+	Mon,  9 Mar 2026 18:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uaLDyC/Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbKze7fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA75347FC4;
-	Mon,  9 Mar 2026 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C4346E7F
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773081010; cv=none; b=uCcqtg83b8jGVbu0LTJl/JGF1Eqep4EBHqT+Iftq0LqCOix/KftbdG5Tzib9CkVRLVrddL2FqAxIENb32w2WhjGuUx6BIz2hEbziQXWBbiyx/WqXCxGhZJlMgDVQuBTz+N7AycBBw5tVcUvXzp98kkIbFYySRY1qoOOhJ/MW89A=
+	t=1773081421; cv=none; b=R0XmLicKQnLzjUq3PKUbD1Q8TIbYaGiJao6SgfoMPixN/ApmrbnszJyL9c3GbvVwCYF78buJCqZ4jwmkR9Emv+8KonZiw667uhilmjQhxfi66KjQx29mk4tyECQtDesjEXbTnBGb0ZOy9Z/u7wJ2t9SwJTPkYT2IQ5hZNv/9Xmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773081010; c=relaxed/simple;
-	bh=+UJzHjLZwGGuI0AfcKQEJwS7MIb4u6KWqXh3m3TH5Xc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JHgLjLhOxzBj+/JSyRl9nAx5HuT+mudoU+9XuXebiwNaou7hBnZzaWzO/CcYsqpM+QrdELKPu4f1O7aJbd38J9EHZky3lGXh0EGb6Y7K8pFesMorRjdT+H631ThloDD/JNzGSqyPrbH6hDsNEpd3Dd1EwDwqWUE97/zQJeGG4O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uaLDyC/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7DEC4CEF7;
-	Mon,  9 Mar 2026 18:30:08 +0000 (UTC)
+	s=arc-20240116; t=1773081421; c=relaxed/simple;
+	bh=mxAxOmQdYjnEqMTYxnAUtL7aeRRp+KWuxlBoZAtkI74=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZqwuaJsZKN63WEdQn4BOhrrnbFYmM7j+arsGsXwQyKTVhBOWrrLKih3iknclfyiCVZ4swmIY6YN9tLBJaUP9RIR+kuEQFffaFpTX5Fw2vS/eNOD3cK/LQ/Nf4X1NY8+VASIipy+7Yu+LYd8H1poHN/AbGv680pHA0me1FSjbuZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbKze7fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6D8C4CEF7;
+	Mon,  9 Mar 2026 18:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773081010;
-	bh=+UJzHjLZwGGuI0AfcKQEJwS7MIb4u6KWqXh3m3TH5Xc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uaLDyC/Qu4fy3deedF/z2hM1aI3c2Gcg8EgLOV7AOL//UeUIBB9JuM9N+i6shGkzg
-	 4SWrQguTccGJFTKQXdq2SiYxestVtCoivtoCeIh66kCBt5xs74Isc/kbw4nZjaud3v
-	 5Qd37dK40jfFSERQ2QmT6WLRgHN4UzR04W1ipAZ48RQECrpVQiLX5y5cPY++5GD7QH
-	 2gUXiNs5o9pGxcolfkti6P5q26SrkTfBUIP4svv6CfgBtL4+KrhIaZpsNCwLCOTh1v
-	 bl33Ax5d315dur+HvExLqTW6qN02aqieyLFwmQzaoX7x6E0agtrx7KUIrHuZrUfyJT
-	 uu0GelEVTJKCA==
-Message-ID: <6d263c6c-9a2c-46ef-bbd5-fd812f57b902@kernel.org>
-Date: Mon, 9 Mar 2026 19:30:06 +0100
+	s=k20201202; t=1773081421;
+	bh=mxAxOmQdYjnEqMTYxnAUtL7aeRRp+KWuxlBoZAtkI74=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hbKze7fkLP9X9PypcfuHTFupzVfcUzugWlPbglrBmi46hXHrwg3IQxCXKgXWf+1x0
+	 Z9kl0e1BOz8nn+5K+RQt90OPWIKUq58xfK25WdkKn5+qchLUt6qyXT/4EnPVC3NRB3
+	 zjbrPWmHMS6Eq3dmPNK2ln8U9PFxUArSqhycJ2b1je2oSOcpAakqX2HhKC2DhAq6ac
+	 i6zaCz2Y5svcucxSdvNilXxQNmYBvQ8KAiMVxz/dIPVDD+GX6qB4kgZ4reLbK+6UE/
+	 vApfOtvwBwYUVLaYoPKu/0JFBeMcDY6iLIPc4oT72uWS2JRLFwDDS+unDsdJEIB/YU
+	 YIH7NJbZVMadw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Rainer Fiebig <jrf@mailbox.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] kbuild: Leave objtool binary around with 'make clean'
+Date: Mon,  9 Mar 2026 14:36:58 -0400
+Message-ID: <20260309183658.1347302-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026030940-mule-parched-b1ff@gregkh>
+References: <2026030940-mule-parched-b1ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: check RM_ADDR not
- sent over same" failed to apply to 5.15-stable tree
-Content-Language: fr
-To: gregkh@linuxfoundation.org, kuba@kernel.org, martineau@kernel.org
-Cc: stable@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>
-References: <2026030948-nickname-laxative-fd1d@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2026030948-nickname-laxative-fd1d@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9F3A623E9B7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5813823EAFF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223718-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223717-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mailbox.org:email,infradead.org:email,suse.de:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-Hi Greg, Sasha,
+From: Nathan Chancellor <nathan@kernel.org>
 
-On 09/03/2026 11:29, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+[ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
 
-Thank you for the notification! And thank you Sasha for having resolved
-some conflicts already!
+The difference between 'make clean' and 'make mrproper' is documented in
+'make help' as:
 
-(...)
+  clean     - Remove most generated files but keep the config and
+              enough build support to build external modules
+  mrproper  - Remove all generated files + config + various backup files
 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e Mon Sep 17 00:00:00 2001
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> Date: Tue, 3 Mar 2026 11:56:04 +0100
-> Subject: [PATCH] selftests: mptcp: join: check RM_ADDR not sent over same
->  subflow
-> 
-> This validates the previous commit: RM_ADDR were sent over the first
-> found active subflow which could be the same as the one being removed.
-> It is more likely to loose this notification.
-> 
-> For this check, RM_ADDR are explicitly dropped when trying to send them
-> over the initial subflow, when removing the endpoint attached to it. If
-> it is dropped, the test will complain because some RM_ADDR have not been
-> received.
-> 
-> Note that only the RM_ADDR are dropped, to allow the linked subflow to
-> be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
-> code is used. If the IPTables commands fail, that's OK, the tests will
-> continue to pass, but not validate this part. This can be ignored:
-> another subtest fully depends on such command, and will be marked as
-> skipped.
-> 
-> The 'Fixes' tag here below is the same as the one from the previous
-> commit: this patch here is not fixing anything wrong in the selftests,
-> but it validates the previous fix for an issue introduced by this commit
-> ID.
+After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+target"), running 'make clean' then attempting to build an external
+module with the resulting build directory fails with
 
-No need to backport this patch: it is just a validation in the selftest
-for the parent commit, and the subtest that it modifies is not in v5.15.
-CI can use newer selftests version to validate the fix on v5.15.
+  $ make ARCH=x86_64 O=build clean
 
-Cheers,
-Matt
+  $ make -C build M=... MO=...
+  ...
+  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+
+as 'make clean' removes the objtool binary.
+
+Split the objtool clean target into mrproper and clean like Kbuild does
+and remove all generated artifacts with 'make clean' except for the
+objtool binary, which is removed with 'make mrproper'. To avoid a small
+race when running the objtool clean target through both objtool_mrproper
+and objtool_clean when running 'make mrproper', modify objtool's clean
+up find command to avoid using find's '-delete' command by piping the
+files into 'xargs rm -f' like the rest of Kbuild does.
+
+Cc: stable@vger.kernel.org
+Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+Reported-by: Michal Suchanek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+Reported-by: Rainer Fiebig <jrf@mailbox.org>
+Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ Makefile               | 8 ++++----
+ tools/objtool/Makefile | 8 +++++---
+ 2 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index ae059d1885110..616909ef5acef 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1370,13 +1370,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
+ 
+-PHONY += objtool_clean
++PHONY += objtool_clean objtool_mrproper
+ 
+ objtool_O = $(abspath $(objtree))/tools/objtool
+ 
+-objtool_clean:
++objtool_clean objtool_mrproper:
+ ifneq ($(wildcard $(objtool_O)),)
+-	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
+ endif
+ 
+ tools/: FORCE
+@@ -1547,7 +1547,7 @@ PHONY += $(mrproper-dirs) mrproper
+ $(mrproper-dirs):
+ 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
+ 
+-mrproper: clean $(mrproper-dirs)
++mrproper: clean objtool_mrproper $(mrproper-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find . $(RCS_FIND_IGNORE) \
+ 		\( -name '*.rmeta' \) \
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 02d1fccd495f4..4f6f3121d8ecd 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -91,10 +91,12 @@ $(LIBSUBCMD)-clean:
+ 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+ 
+ clean: $(LIBSUBCMD)-clean
+-	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+-	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
++	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 
++mrproper: clean
++	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
++
+ FORCE:
+ 
+-.PHONY: clean FORCE
++.PHONY: clean mrproper FORCE
 -- 
-Sponsored by the NGI0 Core fund.
+2.51.0
 
 
