@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-223620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EfzMCmyrmkSHwIAu9opvQ
-	(envelope-from <stable+bounces-223620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:42:33 +0100
+	id IOskBzW1rmkSHwIAu9opvQ
+	(envelope-from <stable+bounces-223622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:55:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C16523811C
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:42:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB19238434
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 12:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39A7B304ADB5
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 11:42:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F16B302B839
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 11:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A9A3A0E85;
-	Mon,  9 Mar 2026 11:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCAE3A5E92;
+	Mon,  9 Mar 2026 11:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aN7ZKl1L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ed2VF7d4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15E437883D
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD13A4525
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 11:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773056547; cv=none; b=AjZEni6vhCRDVxPR9IL1AHDbZsLvAei4gvWx3CYwDEiNTrsvpqtmT0h/flHdI/0ywuIxwJkDtvhJ6pJzcA8lJGkkoeCLTb7w1x8DkJmnN31r4HPtj0tUAKyp1roJuuVp+CT/AzJUSTD9syogJ736J0ODtcHm70h8U+LNvTibNJQ=
+	t=1773057242; cv=none; b=j9D2myZ6lfOpmq+fPGvVZmGUXfHkQ9Xg0Efrp9WwMumM61RQa0Gr0YWBUippsFADVSA/DNct7xmdQXnz8bagmUHS4LZwJPut3+QFg6kgeXaG5G5x/mOUquBcNN/h//1HrMufOFoIDE3A+Jujzp2RQmLNa5ZLKug+gdRk1iQm1Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773056547; c=relaxed/simple;
-	bh=4yDM0lfF7BoqLhkv0025L9Q3UBy/NJWhMbxL+NknpAw=;
+	s=arc-20240116; t=1773057242; c=relaxed/simple;
+	bh=X/+zob7ZhxaLHUNfCEjz1njTM6ff/CxwgbQ73QGxHqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch99QTjwlvuvEwFiB8quewlwLobKV2b6w1pAZbimlKnxl8yiXRoDYoti4ZUmTiRqA/oR7N+CJDUJo4JVz+tSKsQ469h+TURPo47JUcOxjDxDR4VhU1Eony0wZ2psWG2MiSpGvvvuhZMt5hITP0Vt7aDeMf3s15FHulVT+4ABOmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aN7ZKl1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02938C2BC86;
-	Mon,  9 Mar 2026 11:42:26 +0000 (UTC)
+	 MIME-Version; b=i8cYOgR22FgPgWoeKz1j6/82U4mnDw8syoZSsUJEDE9iOYRHUnPD5GdGgvR4BICtM5T2OeyePivZa44WZPMd70i9t6FHEEK04DY9dXE9MIncGjyaiLidlLbf/KFRd7Aeqbhjd6UEAxiSb4Gz7u+t1f5qNeuYZfmilowRk/s4XVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ed2VF7d4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62536C4CEF7;
+	Mon,  9 Mar 2026 11:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773056547;
-	bh=4yDM0lfF7BoqLhkv0025L9Q3UBy/NJWhMbxL+NknpAw=;
+	s=k20201202; t=1773057241;
+	bh=X/+zob7ZhxaLHUNfCEjz1njTM6ff/CxwgbQ73QGxHqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aN7ZKl1LpmMEmMjO3zw6OjqC012WXyICK2VZKMx+RwibAscAtY+UD6Fy1wibBJ7Ed
-	 rNI5UoA4AmjN8BNVldKbp4zqZvokvRtVsEH4VQdf3JpByjLMNSahR1y4m7TohdUSXk
-	 C9b/WRvWipclUIrBrCpbiIptmsve6lU5QPiMcCyjJMvsKV7A7AyN/c1HjZW/jAjMVZ
-	 R16J15/vKOJP9+WFwchEU+HCMbV+iQcqEjC+/nT2PzC4zSgyyhg6ZsCG+1bH09e0ZW
-	 +VvJatKWP5Rl9LfWPIJxlH2a6EeFkF1j57/kSo2j8YuYgXW+V4GdO9rYunE2aId8L8
-	 L8XnhlGfQ+jKQ==
+	b=ed2VF7d4ONLygzS4rewr+6e7Gx10SBZbVs8v5rPOLwDfIbYdl9kWxQdq8qA4Eqyi1
+	 ZfSFkjSpVgHXGDneZNhSLMX0A9ZifJj4wH+rViHSF3aWCHXJzJVmGTI2xRHlxZjFfb
+	 ZK0/JYAjq/y615/b01iv3g5ryemjOZcgakGSTOb2f5bCILa7SguIp7+bVi0bM+vMVh
+	 m0xUpFfUTgHWKTMrLPH602IapJc3CCtXJb44bXviSbmB4ZXv9r/dCBiCsEmzkcHMgq
+	 KJSaR6mJz5miFEa4Xr9dSt9brRPUV0KXdUfBtXOmq84AZnM3dfppONXTa7gb9qZEN/
+	 hVyYAhTn/Nftg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Daniil Dulov <d.dulov@aladdin.ru>,
+Cc: Vahagn Vardanian <vahagn@redrays.io>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
-Date: Mon,  9 Mar 2026 07:42:24 -0400
-Message-ID: <20260309114224.831897-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] wifi: mac80211: fix NULL pointer dereference in mesh_rx_csa_frame()
+Date: Mon,  9 Mar 2026 07:53:59 -0400
+Message-ID: <20260309115359.840072-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260309114224.831897-1-sashal@kernel.org>
-References: <2026030934-cocoa-wrangle-1781@gregkh>
- <20260309114224.831897-1-sashal@kernel.org>
+In-Reply-To: <2026030901-expensive-cosmetics-5a04@gregkh>
+References: <2026030901-expensive-cosmetics-5a04@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4C16523811C
+X-Rspamd-Queue-Id: 7DB19238434
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -80,8 +79,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223620-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-223622-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,63 +90,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxtesting.org:url,aladdin.ru:email,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Action: no action
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Vahagn Vardanian <vahagn@redrays.io>
 
-[ Upstream commit 767d23ade706d5fa51c36168e92a9c5533c351a1 ]
+[ Upstream commit 017c1792525064a723971f0216e6ef86a8c7af11 ]
 
-There is a use-after-free error in cfg80211_shutdown_all_interfaces found
-by syzkaller:
+In mesh_rx_csa_frame(), elems->mesh_chansw_params_ie is dereferenced
+at lines 1638 and 1642 without a prior NULL check:
 
-BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
-Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
-CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: events cfg80211_rfkill_block_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x116/0x1f0
- print_report+0xcd/0x630
- kasan_report+0xe0/0x110
- cfg80211_shutdown_all_interfaces+0x213/0x220
- cfg80211_rfkill_block_work+0x1e/0x30
- process_one_work+0x9cf/0x1b70
- worker_thread+0x6c8/0xf10
- kthread+0x3c5/0x780
- ret_from_fork+0x56d/0x700
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+    ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
+    ...
+    pre_value = le16_to_cpu(elems->mesh_chansw_params_ie->mesh_pre_value);
 
-The problem arises due to the rfkill_block work is not cancelled when wiphy
-is being unregistered. In order to fix the issue cancel the corresponding
-work in wiphy_unregister().
+The mesh_matches_local() check above only validates the Mesh ID,
+Mesh Configuration, and Supported Rates IEs.  It does not verify the
+presence of the Mesh Channel Switch Parameters IE (element ID 118).
+When a received CSA action frame omits that IE, ieee802_11_parse_elems()
+leaves elems->mesh_chansw_params_ie as NULL, and the unconditional
+dereference causes a kernel NULL pointer dereference.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+A remote mesh peer with an established peer link (PLINK_ESTAB) can
+trigger this by sending a crafted SPECTRUM_MGMT/CHL_SWITCH action frame
+that includes a matching Mesh ID and Mesh Configuration IE but omits the
+Mesh Channel Switch Parameters IE.  No authentication beyond the default
+open mesh peering is required.
 
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Crash confirmed on kernel 6.17.0-5-generic via mac80211_hwsim:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  RIP: 0010:ieee80211_mesh_rx_queued_mgmt+0x143/0x2a0 [mac80211]
+  CR2: 0000000000000000
+
+Fix by adding a NULL check for mesh_chansw_params_ie after
+mesh_matches_local() returns, consistent with how other optional IEs
+are guarded throughout the mesh code.
+
+The bug has been present since v3.13 (released 2014-01-19).
+
+Fixes: 8f2535b92d68 ("mac80211: process the CSA frame for mesh accordingly")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
+Signed-off-by: Vahagn Vardanian <vahagn@redrays.io>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ adapted pointer access elems-> to stack struct elems, and replaced goto free with return ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/mesh.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index f291af14a6459..a844f5253aa41 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1104,6 +1104,7 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	/* this has nothing to do now but make sure it's gone */
- 	cancel_work_sync(&rdev->wiphy_work);
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index d3a9ce1f8e53f..20b8ff83e3dbd 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1435,6 +1435,9 @@ static void mesh_rx_csa_frame(struct ieee80211_sub_if_data *sdata,
+ 	if (!mesh_matches_local(sdata, &elems))
+ 		return;
  
-+	cancel_work_sync(&rdev->rfkill_block);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
- 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
++	if (!elems.mesh_chansw_params_ie)
++		return;
++
+ 	ifmsh->chsw_ttl = elems.mesh_chansw_params_ie->mesh_ttl;
+ 	if (!--ifmsh->chsw_ttl)
+ 		fwd_csa = false;
 -- 
 2.51.0
 
