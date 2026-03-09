@@ -1,195 +1,254 @@
-Return-Path: <stable+bounces-223480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIJgAcE5rmnCAgIAu9opvQ
-	(envelope-from <stable+bounces-223480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 04:08:49 +0100
+	id qFH8Dhw/rmndAwIAu9opvQ
+	(envelope-from <stable+bounces-223481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 04:31:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C9223376E
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 04:08:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD56923388B
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 04:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA0AA3002B43
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 03:08:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F471300B044
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 03:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224B427510E;
-	Mon,  9 Mar 2026 03:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30D4270545;
+	Mon,  9 Mar 2026 03:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ks7JkhbG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K64wNThA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD197155326
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 03:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773025722; cv=pass; b=Yq1+C1u14+bPs3lpR2au48vTQ1nHhclrp2M94H0P22JI1bJy05XbhMsHrj1gABjC0fQ2VSSJQbe9JBhefcZUk/m1RQvmUDelLzX60JLZk1MjpG7sj3Y1ZMm3KnghaQ6jNKh+W2Lu6eAinaYsObW0Vgo5xwv+eEdImvKcMxYvrVc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773025722; c=relaxed/simple;
-	bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lvDjrhmOfMDOIr+fLkdvdvkKvgeXO1syPzlKZVp2am7dcH4Ew+EvrV7OGLXXGgTIwzDJrubIXUGI9pz54Nz95sxq9ZALcmsGk0A1H8tG+STTtl7nhmESAR8QHmN67P0vibpdocaCMUzP7lYtcIQjWqy7vKocdUPicUa0IfRoUJs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ks7JkhbG; arc=pass smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A5217A2E8
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 03:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773027087; cv=none; b=KUGQGgq7QQwmmgISrJ6xUZBxxdGRLxKd7LR4BkMHEEx17z9vLp658mkmhs4yiifJN5XRw/ajYf5yFvt5Uoz5coNimix1NKKg1WEbZrK3YOXiTlbXroTxjJg/6d6p7rLfbJD8gdTLT1HeLGBeTJl54Ppt3DiOojfBbisa0DdNJf0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773027087; c=relaxed/simple;
+	bh=WK3VMsmiVA4UhKOimIlT2Y7HmxJOqocaXkxmjVqvFPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fH65VQSviTI06V4K/GJ2lYWgABhfEAcgKp8J+Dahbfvu/8pUFyLi9aDIkaqI3dX+HVULCOWMVBYnmymniAUcLLOR0Qoj6LwCQv0dv6F6FuudoU5BFgeU4KHTvs44/i9kFxdIujUnZwlIbok8aIjh7639LUKvgj/htMxpxfB+yF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K64wNThA; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2be1b5fe11cso7742675eec.0
-        for <stable@vger.kernel.org>; Sun, 08 Mar 2026 20:08:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773025721; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K/7nQUfS4yHvIB1GK0+VcLxNT4jYfb3NqOzxCUNQLo4Pa49tWbrj+OksIFvAOlmz11
-         MCkzIvxX2sbfXbWsEemNOMpYAGxjNx7fMn0n7LQOwu4C/MU2UgQvBW1JDc22pVoSXhJn
-         OcjKxc9fefRRCsLv4tjo/U8cLvtOln6WL2nhCc/oPdCQl7/Mw483/HdbFXtqB6qIIIJu
-         TobtDc0cK5s/kVaWnvH3zBc05KEiCthOYEwp8hODt1mqA0CkxR0uI1BYGxrpIHDjR0Dv
-         9XkS5barUEYFtYGCDVgelLcHq6oGQuhr6ReBDZvBKwIZHBuy8kvwMrv7DIbi05C8WwJU
-         TCkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
-        fh=Mn60u8DNlCA9k7zDP/WhlBUjHW335kwykjmQoZcgqEA=;
-        b=IhNvqRTIj+B0Vf9jKDDXUdthP5Jylf77lga9AkYAlsMzBdMeMPedr5uk7vrn9qVrXg
-         KhQT4uArOylUdjWInxWUkSw8iZHlTrJXfHuMs8qZsBPs8OTPimGQAxObhp3r4U/7kFrb
-         CcLRcRBvL3baNPsgSLW1TqILu4lXpq2/D4oJxPCn7V8XeyPtN3HVImEzkAaP/+nHJngt
-         qrXh3q/D0ndp6juloArP9GWIExySuwSbj5oVxjmDewqy5Q7Itzx5g6YlfCuL8CRb+rl5
-         ilADCzK/OlijCTOKZfH46Ff2xT5Aj5eDHeLQb4MQNsVKBFL7DxyggBlZXnQJBWcaSIXu
-         8k5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae5636ab04so77955345ad.3
+        for <stable@vger.kernel.org>; Sun, 08 Mar 2026 20:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773025721; x=1773630521; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773027086; x=1773631886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
-        b=Ks7JkhbGh4eIKHbpBqKHYcuddl3UUhRfH+IA4hGF1FAkD88KJE6FwJM0L/jgrSZ7p6
-         6VXxJS9LbiqG5piCREHYTnGB8MADSoK0NpCcia85ERn1SAwGPGnOLGfhw3IqciPwg5Ny
-         FirM3wTuPv4KWFC+dOQFVav5WBkmrFSlibL+Gluvixqql1jhbxmheygabHMt2qmZVQXX
-         GLjutv2BtWem3K1dGUNZV2DdMsvNYxDY0bW5/gziCgVo0XQFPRuhBRA8AFxZ/Noxo3jp
-         I6vTyA9poaNNRnQXJ9Lbuy5tgwZe09Ilt4vLcXk1ehowrHFhAg1FFk9f2OkKWG2dzSOs
-         UMxg==
+        bh=KRG8W6zvaeyPSQPZSzI9vt2gCkqaLRuFzjk0nW6pVNs=;
+        b=K64wNThAN41wzjzsTSMM75vXMynf4gUV0dr5llI/WU2mUH5eYS+Nqv9G1uz0h5Zomr
+         wmbrR5C5P8EF5FzSHifcRdL6BPferxAwd2TX5g1hFqIRF4ybh8s9uLmZT5wcoiO7/QhF
+         xLLJbA1c+I7UqSP+MRzYEBHj/exYnoCg9rb5HhXel55s5VJMCtw2Cmyb1DwUhAay4leK
+         sotlIi701g0zyAufk5szN4yd5bHt0uIRg+MNFuO5jh6gA65Ak+LJenwJJWBBCDf0WtH6
+         X3LywqTY0tLBq/AIuAvy01WpRkT12Hxe2ccQDzNhQAaHUSHA17fQgKtRfh5z3GQRS18U
+         0TeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773025721; x=1773630521;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1773027086; x=1773631886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
-        b=HeAUzYv8aY56NqaQG54/hM33AKXAVQBZyHxGm/eDEoivcWX6tFKIPtyCJz9efx18MZ
-         FOTUKXTnRdjoa/jGECpOm4VrHl5lGwPp9+48LjJWyNYi5G6l8oguPYVzXOTVNIwDUkE7
-         0uk8cwd8SB0/cA3z5KKRATQQTr1I3CzxDcPYo9t99S77EDUT3XdA3McTPxo0W8vxWDhE
-         xwa22LimorteD9KkwSRFhDf0f+pZ9FtjlPfg8/ipJo87PAYwy5ApvA4VcTyT1oyGb5wI
-         JAuM90esvYWg/YhDfr9v46pD/xMsLsj9VIW5fQdw9x1PZ76wPM8yfvYO25zajgbkun8r
-         DyCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK7jXgKcpzS3++arvHb1tYfi6ECT6W82Ji5Z5ysxhNbVz47o1yuuDx3kPdc8YZt735k+P1THA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxrb9IhpGKF94M/6QYfXKgE/D+iX6ye+ta4iR/aBR+IGH9DUXkV
-	LLHBT5ipeg6AYx+Q6kdB8DQbwfOlkjCwmU0JpeQXkGIeLCA3tWDOI7wXHLMXh/60WkPK9YbzYa8
-	aeSJNC0WmrIq2ehJakAeV97rCUtmRxuo=
-X-Gm-Gg: ATEYQzyUDo7d4zrzQgQyoMkE6HhELj4y6dNBG3h3ZtW0XlRW/U/Q8CFwiyLRQuUY7eH
-	FCPpQNF3dX7jto5eFUNJipvBZ+T/IrG0BzxsM+yPQ7x7rFsLumQxYrGusVfKUBBJy81Pmro1ycV
-	DhbGMvUjpTu6rdVgGcGhgpSlivX5S02cmIFmnn2efaHKt8Lsz56gm23MG7mjZpGc6WDNsXkiZmE
-	UPnUHdObQMHFX2rzAMMtstwY5LAuwz4QFEmGJduTNCza3fAmsktSPzCv/dsXiHcsHXZrTPJPG3/
-	tG80Amr2DSZ7HweBYqT6iCeOyBUNXbvrd9URw2wOQA==
-X-Received: by 2002:a05:7300:b90b:b0:2be:6f6:a39c with SMTP id
- 5a478bee46e88-2be4dff28a3mr3189470eec.13.1773025720706; Sun, 08 Mar 2026
- 20:08:40 -0700 (PDT)
+        bh=KRG8W6zvaeyPSQPZSzI9vt2gCkqaLRuFzjk0nW6pVNs=;
+        b=uhO63Qp9b/cAQFEkz51NYK39j6URkI5ij1K8TbFDNcz1s0xz4ZMTRXeg17noOasqh6
+         qU4SqWtczj8CjBduTMONTx0OQQMrrI4mVp5GunbrN6NDdf7SYf3ZMFCGucQMy2B1uvjJ
+         6Zufe0yUweqPs3goEFz6ixTKt30gbAOKFb2y7vFH7Sge1Vqpmxr4TlR9wIvc8PL3a3ea
+         QREvViMw2xdz1AEu6B1ZO2GOyrzBwtZujsZQ9Zr4iIhQNoTHSOl+FmNZqdhvGF4tLpVw
+         GGRROXCfLbvSJ8st5VHd7T4JcA6RPKSN3raY3pklOL1d1t8SzpGz2mxG5TAzUpPkgV22
+         CtRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqRf+vEX9gy6TlaB2teDslLMJqWrhiIICnZ1HxXTS61GOwQulzr1wMr2GofrTGjN3XyYbTaIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR0ouDM7Usj3s8R1NnZosE+8osZyl+EjZOcXeo+9ffi7Kvr8UM
+	NOkQtSahNmLaMEkWejJlrPyukZaNoM/LL9nDdmhkufqUD91Dv7seY/Nm
+X-Gm-Gg: ATEYQzwDk9wGX4+jysdD79dh5gb8a43DVP1pSj4YdyKvfvLqtXz2Almhg4vEJWOGd8u
+	gbpFar6nJv33ILHojLUpHcuuNZ5ALkSIUOEE8DlnPe4uOE+I8y4U2UuKNTPhd2C2i6rWp7bmvrb
+	Oml4501PWVKE1BJ2t6YrjLuQo8HQEBtgE+wHRG47+A0li55QFkiQVwO+d5xXi2X/n26gyLfV5Sw
+	Ed2FC9fboNeEgDj6v7DmovQCwWe9PEXKtw99+8dtXVfSrWQ2S5o5xyVcc6ykcxRan3sa6bcwSE0
+	gk3vWNayt/dcrqhWYTWtMeTNefaSqlHli+yxVvRMnLcfK8Nq/6A2BaY1ESQzr9WUAYyEeBL6Zzq
+	15i7fXpd6f/aoeRpX0JswOWSgyLvUVNcT+RMk4+/zlmUN+vJikPGzprcuBGUwHUfSxvI2Fb9kP4
+	4MiaaqZAyS1L4NVdteNc41DSO2WVuv6fzswMAiLg==
+X-Received: by 2002:a17:903:32c9:b0:2ad:d5ea:4c89 with SMTP id d9443c01a7336-2ae823a296emr93888925ad.22.1773027085592;
+        Sun, 08 Mar 2026 20:31:25 -0700 (PDT)
+Received: from zjh-os.zhaoxin.com ([2404:7ac0:6c91:c65e:191e:9b9a:a3e:cb03])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae840ccb6csm123370615ad.92.2026.03.08.20.31.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2026 20:31:25 -0700 (PDT)
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	SeongJae Park <sj@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Jonas Zhou <jonaszhou@zhaoxin.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
+	Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: [PATCH v3] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Mon,  9 Mar 2026 11:30:53 +0800
+Message-ID: <20260309033053.220012-1-jianhuizzzzz@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
- <20260307143542.179953-1-jianhuizzzzz@gmail.com> <ffc6106b-292b-d8d7-3c34-aebe4feb6e5f@google.com>
-In-Reply-To: <ffc6106b-292b-d8d7-3c34-aebe4feb6e5f@google.com>
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Date: Mon, 9 Mar 2026 11:08:29 +0800
-X-Gm-Features: AaiRm5345nQP7wJtt_NLhvQXt--b6XhTjz5lByTfdLY_4-yd1IfeVU4kfncXG9s
-Message-ID: <CAEgWzV62v3TPrvLLpQac-KBkDFNTWg-=V2Xep_2+h0c5NXOaYA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-To: Hugh Dickins <hughd@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	Andrea Arcangeli <aarcange@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
-	SeongJae Park <sj@kernel.org>, Jonas Zhou <jonaszhou@zhaoxin.com>, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 00C9223376E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CD56923388B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223480-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,oracle.com,google.com,zhaoxin.com,kvack.org,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-223481-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.935];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jianhuizzzzz@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-0.994];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Action: no action
 
-On Sun, Mar 08, 2026, Hugh Dickins wrote:
-> I have not thought it through, nor checked (someone else please do so
-> before this might reach stable trees); but I believe it's very likely
-> that that Fixes attribution to a 4.11 commit is wrong - more likely 6.7's
-> a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c").
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units (as calculated by
+vma_hugecache_offset()). This mismatch means that different addresses
+within the same huge page can produce different hash values, leading to
+the use of different mutexes for the same huge page. This can cause
+races between faulting threads, which can corrupt the reservation map
+and trigger the BUG_ON in resv_map_release().
 
-You are right. Before a08c7193e4f1, linear_page_index() called
-linear_hugepage_index() for hugetlb VMAs, which returned the index in
-huge page units. The bug was introduced when a08c7193e4f1 removed that
-special casing but missed updating the caller in mm/userfaultfd.c.
+Fix this by replacing linear_page_index() with vma_hugecache_offset()
+and applying huge_page_mask() to align the address properly. To make
+vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
+include/linux/hugetlb.h as a static inline function.
 
-I will fix the Fixes tag in v3. Thanks!
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+---
+v3:
+- Fix Fixes tag to a08c7193e4f1 (Hugh Dickins)
 
-Hugh Dickins <hughd@google.com> =E4=BA=8E2026=E5=B9=B43=E6=9C=889=E6=97=A5=
-=E5=91=A8=E4=B8=80 10:09=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sat, 7 Mar 2026, Jianhui Zhou wrote:
->
-> > In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-> > page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-> > returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-> > expects the index in huge page units (as calculated by
-> > vma_hugecache_offset()). This mismatch means that different addresses
-> > within the same huge page can produce different hash values, leading to
-> > the use of different mutexes for the same huge page. This can cause
-> > races between faulting threads, which can corrupt the reservation map
-> > and trigger the BUG_ON in resv_map_release().
-> >
-> > Fix this by replacing linear_page_index() with vma_hugecache_offset()
-> > and applying huge_page_mask() to align the address properly. To make
-> > vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
-> > include/linux/hugetlb.h as a static inline function.
-> >
-> > Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetl=
-b for huge page UFFDIO_COPY")
->
-> I have not thought it through, nor checked (someone else please do so
-> before this might reach stable trees); but I believe it's very likely
-> that that Fixes attribution to a 4.11 commit is wrong - more likely 6.7's
-> a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c").
->
-> Hugh
+v2:
+- Remove unnecessary !CONFIG_HUGETLB_PAGE stub for vma_hugecache_offset()
+  (Peter Xu, SeongJae Park)
+
+ include/linux/hugetlb.h | 11 +++++++++++
+ mm/hugetlb.c            | 11 -----------
+ mm/userfaultfd.c        |  5 ++++-
+ 3 files changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 65910437be1c..f003afe0cc91 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(struct hstate *h)
+ 	return h->order + PAGE_SHIFT;
+ }
+ 
++/*
++ * Convert the address within this vma to the page offset within
++ * the mapping, huge page units here.
++ */
++static inline pgoff_t vma_hugecache_offset(struct hstate *h,
++		struct vm_area_struct *vma, unsigned long address)
++{
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
++
+ static inline bool order_is_gigantic(unsigned int order)
+ {
+ 	return order > MAX_PAGE_ORDER;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 0beb6e22bc26..b87ed652c748 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1006,17 +1006,6 @@ static long region_count(struct resv_map *resv, long f, long t)
+ 	return chg;
+ }
+ 
+-/*
+- * Convert the address within this vma to the page offset within
+- * the mapping, huge page units here.
+- */
+-static pgoff_t vma_hugecache_offset(struct hstate *h,
+-			struct vm_area_struct *vma, unsigned long address)
+-{
+-	return ((address - vma->vm_start) >> huge_page_shift(h)) +
+-			(vma->vm_pgoff >> huge_page_order(h));
+-}
+-
+ /**
+  * vma_kernel_pagesize - Page size granularity for this VMA.
+  * @vma: The user mapping.
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 927086bb4a3c..8efebc47a410 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -507,6 +507,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 	pgoff_t idx;
+ 	u32 hash;
+ 	struct address_space *mapping;
++	struct hstate *h;
+ 
+ 	/*
+ 	 * There is no default zero huge page for all huge page sizes as
+@@ -564,6 +565,8 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 			goto out_unlock;
+ 	}
+ 
++	h = hstate_vma(dst_vma);
++
+ 	while (src_addr < src_start + len) {
+ 		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+ 
+@@ -573,7 +576,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = vma_hugecache_offset(h, dst_vma, dst_addr & huge_page_mask(h));
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+-- 
+2.43.0
+
 
