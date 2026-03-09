@@ -1,165 +1,230 @@
-Return-Path: <stable+bounces-223577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBB9EiChrmkLHAIAu9opvQ
-	(envelope-from <stable+bounces-223577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:52 +0100
+	id AOaQLgahrmkLHAIAu9opvQ
+	(envelope-from <stable+bounces-223579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6787237157
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590C23712A
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FE6B3043D2A
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:28:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 07750300C6E5
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611FB38F959;
-	Mon,  9 Mar 2026 10:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F05138F95A;
+	Mon,  9 Mar 2026 10:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKQf5fZh"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3C34DB44;
-	Mon,  9 Mar 2026 10:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C72838F95F
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773052129; cv=none; b=PiWbl6k1DPUEuoxuxCOuQyZ7PF6pPJ/XUD++YqMT6esrKRiuhCu3PMQU/stLsv9YyZTtGIrj+kzrzNaoaBsv7RFutpw7xmC0x7W+Hl09qG3aHkJa8tK5GEM5klaZ8TM/NTFMXoFrIYVFbzIyP98OGMabYkCgqIFjnQxzgN74QRk=
+	t=1773052156; cv=none; b=uF7+fwr6JHJIGhHrjsrBgveBY7HuCLqsHi/vuf1VOWm4RtncHU19YeQ+/D2tAjRa7SsqhUfP557bUT92ErxycbfDevMRhalbXcYxWmNZELMDqXkOtBXOK+teUgjcI+V2R0mFV3xZscGzeCPDZ1Jtq+Ymr7mfH6oK0/6fccHslko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773052129; c=relaxed/simple;
-	bh=oeGbNvYNeLEMdzYsVNQfSow8qwSs7c8u3UPk74uZnmc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ac9e9EZTNreLxnEefPpyjTKS/Kg9257rUvxpAoOdJ7YLbtkvAjJJcqcUezgmBU36babONqqzJItCjEBwmrUH/Fq7DM7ayUkSMVLSM7vGM2nt/mm2f7+50fS909VdS6BsyWlbmmnQXbKKO4sDaILIXMRJNdhvDZouFvlbH36R/H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fTtWG6PDFzJ46vK;
-	Mon,  9 Mar 2026 18:27:54 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id A6E264056E;
-	Mon,  9 Mar 2026 18:28:37 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Mar
- 2026 10:28:36 +0000
-Date: Mon, 9 Mar 2026 10:28:35 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Chengwen Feng <fengchengwen@huawei.com>
-CC: <linux-pci@vger.kernel.org>, <bhelgaas@google.com>, Paul Walmsley
-	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	<linux-acpi@vger.kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<wei.huang2@amd.com>, <Eric.VanTassell@amd.com>, <wangzhou1@hisilicon.com>,
-	<wanghuiqiang@huawei.com>, <liuyonglong@huawei.com>,
-	<stable@vger.kernel.org>, <jeremy.linton@arm.com>,
-	<sunilvl@ventanamicro.com>, <sunilvl@oss.qualcomm.com>,
-	<chenhuacai@loongson.cn>, <wangliupu@loongson.cn>,
-	<linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH v4 0/2] Fix get cpu steer-tag fail on ARM64 platform
-Message-ID: <20260309102835.000037ad@huawei.com>
-In-Reply-To: <20260309041659.18815-1-fengchengwen@huawei.com>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
-	<20260309041659.18815-1-fengchengwen@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1773052156; c=relaxed/simple;
+	bh=+4i1jRUYMPn2jR0Qd2aOQam2I2flofMrnDkBZLGVSyU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AP0rQR7VGuDYg/Q0flAqnPRXv6GMCDBh9R9vMYPdjG6OVtlpl/XfnfUQla1LpsFDAQm9GeqTyW7u8YbJxNFv8PHhvT0Cs0fPXBsOVdTsOnM+4eJV2xXAJBHBugTsYB81pVrC3HVPc0lTuwmsg+CQ0kjVKW0Q3SxOol6p2djX+CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKQf5fZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43A5C4CEF7;
+	Mon,  9 Mar 2026 10:29:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773052156;
+	bh=+4i1jRUYMPn2jR0Qd2aOQam2I2flofMrnDkBZLGVSyU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=oKQf5fZhUW6rZcQiPm7Ns98uhoCun9CAeMwFiXTd3PnLfYm4QjDURrLKo+nW9G5c9
+	 WCTd0iJuYGLhIWLCGFc+IbsFh82FZmk6k1eBWkvt/uUI6k+7tGhIGUQaBy21iN5yGa
+	 UfNI1pNunXWmkVCuj7w3LgcOzSz342Ixg3BfisfY=
+Subject: FAILED: patch "[PATCH] mptcp: pm: avoid sending RM_ADDR over same subflow" failed to apply to 6.6-stable tree
+To: matttbe@kernel.org,kuba@kernel.org,lorenz-frank@web.de,martineau@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 09 Mar 2026 11:29:05 +0100
+Message-ID: <2026030905-alkaline-earphone-b901@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Rspamd-Queue-Id: D6787237157
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0590C23712A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-223577-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223579-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,web.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_SPAM(0.00)[0.346];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.590];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Mon, 9 Mar 2026 12:16:56 +0800
-Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-> This patchset addresses the issue where retrieving the CPU steer-tag
-> fails on ARM64 platforms. The first commit is a pure renaming of the
-> ACPI CPU ID retrieval interface (no functional changes), which serves
-> as preparation for the second commit that implements the core fix for
-> the steer-tag retrieval logic.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Hi,
+To reproduce the conflict and resubmit, you may use the following commands:
 
-For future reference, please keep same lists +CC on every patch
-(for a small series, send everything to everyone who gets any patch).
-For me at least, that led to my filter putting patch 1 in a totally different
-place from the rest and some confusion.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x fb8d0bccb221080630efcd9660c9f9349e53cc9e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030905-alkaline-earphone-b901@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Also, don't send in reply to a previous version. Just start a new email
-thread.  That both avoids deep nesting in email clients and generally
-ensures your series ends up in the right place if people are sorting
-by time of sending.
+Possible dependencies:
 
-No need to resend this time unless others ask for it. 
 
-Thanks,
 
-Jonathan
+thanks,
 
-> 
-> ---
-> Changes in v4:
-> - Split the rename into a separate commit.
-> 
-> Changes in v3:
-> - Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() other
->   than add one new API.
-> 
-> Changes in v2:
-> - Add ECN _DSM reference doc name and its URL.
-> - Separate implement acpi_get_cpu_acpi_id() in each arch which supports
->   ACPI.
-> - Refine commit-log.
-> 
-> Chengwen Feng (2):
->   ACPI: Rename get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() on
->     non-x86
->   PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
-> 
->  Documentation/PCI/tph.rst          |  4 ++--
->  arch/arm64/include/asm/acpi.h      |  4 ++--
->  arch/loongarch/include/asm/acpi.h  |  2 +-
->  arch/riscv/include/asm/acpi.h      |  2 +-
->  arch/riscv/kernel/acpi_numa.c      |  2 +-
->  arch/x86/include/asm/acpi.h        |  2 ++
->  arch/x86/kernel/cpu/common.c       |  8 ++++++++
->  drivers/acpi/pptt.c                | 16 ++++++++--------
->  drivers/acpi/riscv/rhct.c          |  2 +-
->  drivers/pci/tph.c                  | 11 ++++++-----
->  drivers/perf/arm_cspmu/arm_cspmu.c |  2 +-
->  include/linux/pci-tph.h            |  4 ++--
->  12 files changed, 35 insertions(+), 24 deletions(-)
-> 
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fb8d0bccb221080630efcd9660c9f9349e53cc9e Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 3 Mar 2026 11:56:03 +0100
+Subject: [PATCH] mptcp: pm: avoid sending RM_ADDR over same subflow
+
+RM_ADDR are sent over an active subflow, the first one in the subflows
+list. There is then a high chance the initial subflow is picked. With
+the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
+linked subflows are closed. This is done for each active MPTCP
+connection.
+
+MPTCP endpoints are likely removed because the attached network is no
+longer available or usable. In this case, it is better to avoid sending
+this RM_ADDR over the subflow that is going to be removed, but prefer
+sending it over another active and non stale subflow, if any.
+
+This modification avoids situations where the other end is not notified
+when a subflow is no longer usable: typically when the endpoint linked
+to the initial subflow is removed, especially on the server side.
+
+Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Cc: stable@vger.kernel.org
+Reported-by: Frank Lorenz <lorenz-frank@web.de>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 7298836469b3..57a456690406 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -212,9 +212,24 @@ void mptcp_pm_send_ack(struct mptcp_sock *msk,
+ 	spin_lock_bh(&msk->pm.lock);
+ }
+ 
+-void mptcp_pm_addr_send_ack(struct mptcp_sock *msk)
++static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
++			       const struct mptcp_rm_list *rm_list)
+ {
+-	struct mptcp_subflow_context *subflow, *alt = NULL;
++	u8 i, id = subflow_get_local_id(subflow);
++
++	for (i = 0; i < rm_list->nr; i++) {
++		if (rm_list->ids[i] == id)
++			return true;
++	}
++
++	return false;
++}
++
++static void
++mptcp_pm_addr_send_ack_avoid_list(struct mptcp_sock *msk,
++				  const struct mptcp_rm_list *rm_list)
++{
++	struct mptcp_subflow_context *subflow, *stale = NULL, *same_id = NULL;
+ 
+ 	msk_owned_by_me(msk);
+ 	lockdep_assert_held(&msk->pm.lock);
+@@ -224,19 +239,35 @@ void mptcp_pm_addr_send_ack(struct mptcp_sock *msk)
+ 		return;
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+-		if (__mptcp_subflow_active(subflow)) {
+-			if (!subflow->stale) {
+-				mptcp_pm_send_ack(msk, subflow, false, false);
+-				return;
+-			}
++		if (!__mptcp_subflow_active(subflow))
++			continue;
+ 
+-			if (!alt)
+-				alt = subflow;
++		if (unlikely(subflow->stale)) {
++			if (!stale)
++				stale = subflow;
++		} else if (unlikely(rm_list &&
++				    subflow_in_rm_list(subflow, rm_list))) {
++			if (!same_id)
++				same_id = subflow;
++		} else {
++			goto send_ack;
+ 		}
+ 	}
+ 
+-	if (alt)
+-		mptcp_pm_send_ack(msk, alt, false, false);
++	if (same_id)
++		subflow = same_id;
++	else if (stale)
++		subflow = stale;
++	else
++		return;
++
++send_ack:
++	mptcp_pm_send_ack(msk, subflow, false, false);
++}
++
++void mptcp_pm_addr_send_ack(struct mptcp_sock *msk)
++{
++	mptcp_pm_addr_send_ack_avoid_list(msk, NULL);
+ }
+ 
+ int mptcp_pm_mp_prio_send_ack(struct mptcp_sock *msk,
+@@ -470,7 +501,7 @@ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_
+ 	msk->pm.rm_list_tx = *rm_list;
+ 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
+ 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
+-	mptcp_pm_addr_send_ack(msk);
++	mptcp_pm_addr_send_ack_avoid_list(msk, rm_list);
+ 	return 0;
+ }
+ 
 
 
