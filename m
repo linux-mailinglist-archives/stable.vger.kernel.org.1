@@ -1,180 +1,210 @@
-Return-Path: <stable+bounces-223598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KO8AJH+krmkFHQIAu9opvQ
-	(envelope-from <stable+bounces-223598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:44:15 +0100
+	id qGqQB3alrmkFHQIAu9opvQ
+	(envelope-from <stable+bounces-223599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:48:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA468237499
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:44:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F06237587
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E52FC303CC10
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:44:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA027307AA16
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA463392C35;
-	Mon,  9 Mar 2026 10:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3E67081F;
+	Mon,  9 Mar 2026 10:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Et7bjnPv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2k+OyIA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D04739280C
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3C3939B5
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773053049; cv=none; b=Ezza20xzvO1VS3o6yt4PEkeO+1/Xe2CQf8UH4Wwuq/ELzeJeUMhC8lHfc3h1fAEPI4LnTnTYhr5uIHrASIEW608IKoB67WhV5yf3j7CiwRfy7ZoFXmYZg+7phuthOHALALauC/3pgODOpigtbbMBBqZ6RB1UMVkcSypfK0lQxPM=
+	t=1773053176; cv=none; b=PBM5BSgWqgaZ4yB1/bZA0BvD7VhwxW5/ZLMgD72Bu0KyVKC3gCovLhCec0szpMZEgie1OzkmnhT2Y3ZMS/3ygJaCPULImzAqKpqaI9zRTQsXl+mqiFuMXfmCoboaJIPJuBeuuB5itsglpeRBXtLb7oyxCrmBymUWDJ3oMP+jr70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773053049; c=relaxed/simple;
-	bh=byKChppY0pg20bvPo2oZLSWFrOtLCVbHq3l0rsOXczY=;
+	s=arc-20240116; t=1773053176; c=relaxed/simple;
+	bh=o7zitKHdQAd9c2Tsyz3y+v+M/geb+4XgWhFo6cmTvJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+h6X3yGkaS9yKcCY/aO5MW1sgJzzylNGWMZv3gNxgGLGWSfWo/ycY+yu5og+vuUXPEM/exlx12elWaGvg2NuEPCt1Fk88Ol+6dRlWe+RZSy/4BogpGuEFnA0FHLuB/iK7Y9bz3ORx0TsU4qgei+gkmdelHCkYhqnNOmvuk83dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Et7bjnPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830C6C19423;
-	Mon,  9 Mar 2026 10:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773053049;
-	bh=byKChppY0pg20bvPo2oZLSWFrOtLCVbHq3l0rsOXczY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et7bjnPvJMiaBucQrvvnBGDaqbj5HKzATXdRQ14zPGnHXnBtQLuP619zaQ8+nz+LI
-	 JeHAjMBBBBizEBRA0x32IruHdiHWEPVCqjaQumkApHpSJgbiV50yLNcO2RwSFGnvP6
-	 7EarCH2ti+DnW/O66UT9HGV64jtp6icIkMlIZ2DFYvSp+npj0CtItfv1lwKsueuFLj
-	 P7yd+QMAwjtausCY8EJHsxlcPsFi50RsvrVZKJCFAi+G1BhCpAwl1x5iw3QGgobEfx
-	 SBl7IsZyMsZz+g0BA2Y2kSLEPsqhnGJPU8q5tH2svIEkOMqnT+sWZZRFUDHVV784HE
-	 VL09/I9hSbMoA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zide Chen <zide.chen@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] perf/x86/intel/uncore: Add per-scheduler IMC CAS count events
-Date: Mon,  9 Mar 2026 06:44:06 -0400
-Message-ID: <20260309104406.795578-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260309104406.795578-1-sashal@kernel.org>
-References: <2026030906-onion-junkyard-156b@gregkh>
- <20260309104406.795578-1-sashal@kernel.org>
+	 MIME-Version:Content-Type; b=IvAPCH2MllNXEy4uo0j72OQIEhjLGYm/kqoXl415irIPtTZp2Esc54wBg0LwIlOoA2MPWQCb6rySKRFvuXlOeZnfk4IPt1CM7jeVezfsMICwQff8UYBpMU8Ia8pQw6G1pafIww8WmXBUa4jZG6TSWvypaItHClOjZxbqkUlcPGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2k+OyIA; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79907171da2so1187927b3.2
+        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 03:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773053173; x=1773657973; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BZg1yY5ls1mtKKFKgOw9TLLgLzir1wngFNkwG/M8ZHo=;
+        b=I2k+OyIAvNJbLV+mFqiAY5UfIw2E8zQjFIhuBGPQMlyYHx82YqZ4zJMsMpDuN9Z/R9
+         y31CPectduwyrgAz6+diCJJK4/3dJqN0QyFcLzlDXsMl0wrcggWGa8gchNp7H8Gpqj5V
+         wWidMjdcUjWw9Tfh2zBDsY5pIMyY5hh6Ki5UzD2yn+QSdQnI9ZT5yb+6Gt036qU5OLU9
+         L3UO5GUxfFUJwHApT6cQNFhe2sLc2VquPK469w8b4d1e0r4ij4dlxfXALX4R+dAKi+qc
+         b/MkXJWjACa+FAPdmR+O657ddiiUGYK+RrjutpG5i0sHGV8Jtp/jvckD14S6MaywS//9
+         D7cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773053173; x=1773657973;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BZg1yY5ls1mtKKFKgOw9TLLgLzir1wngFNkwG/M8ZHo=;
+        b=Y29p+9mwiMzJIBWWby6NX4y6RuOTHIum82/bSaZirgoryi/hL0DKpmPViBBskGVwwV
+         vZfTUGD/JCHI5Pff0AcxTS2gyYbKdmTjCbThq/y8rU90G+9J8AEeqRHmuPb6p08HQXb3
+         8fxXQdRCA2Bp8mTWXWyJoHjVEHSTHUQY6POaLmKU3rr29L8XNO3DV8ezAYM0+vrgF6dC
+         N0pnSg5Q/hGqcLhdBeCC+0AD+aQAnSye5PbwZLsVFzOu3LTSxcVbwEUF5Llu9JK/L01o
+         VYPRTCg+/eiSIxeJgAcjbJU6+qyjjS8mGOsJCA4QWboMXl75iq86VvmqiWf9tPXdE8o9
+         dsFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXl+IzoxrTvJvTTcp8zRj32KnvVjT8994nYrXEwU5oasgow5n3cuVmeUWFsKJtWat0I/Tdukx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzajS4odOgcFI5xU6NymGOV2eJqagQSzVjEfei1QfFRiZPmuhTs
+	ltU8FoHdicujWuErRJMmQC9HD9RMWZxykFj5n4u5TzX9EE5AVIh+UKjq
+X-Gm-Gg: ATEYQzy3g6eDIktW/eibN+rdZZWg1Mw1lxoAQdD8u5YY0AD5J+JGNOlyBr+k6M9Yrwy
+	QQgRPIdJZOIW7oCI+tVHptCJecT0L0rEEtBygXOmfVndBpYdvlpjnPdTXCbgq94hDQyfarvjPTr
+	+uhELfFM7uIE92rhGqIGXEb5nCuI0XBwdzoOHlAGwfkPv2GzpN+/7/yZ/2E1nAPFQThf3PSbFNV
+	MFTNN+iLoTHm/dENZUIJJKZ31RQcB3fRE/037U4sGHMozb07So3jF6h8NtIKj0a5qntLgtiTUeN
+	MzusO9MkbNl9nbM6O2CSlK+QH0w35AwMLuzkfNKp4ewjUiZ3Uste+tsIbXAj8CrR8OxZstx2NCK
+	h6y+MSUfpL4q2tt/tn/wWQWtYiUySkSvJufZdHfX+iFkrW5Ez+3geYeeToqK4H/Hz7045hzZfoG
+	IMS6zcYPCZNgMToF9awelROA==
+X-Received: by 2002:a05:690c:c52e:b0:794:cf56:5bc4 with SMTP id 00721157ae682-798dd7967acmr94008297b3.43.1773053173020;
+        Mon, 09 Mar 2026 03:46:13 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:bac1:76c0:3d0::26a:dc])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-798dec8bba7sm44033197b3.2.2026.03.09.03.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 03:46:12 -0700 (PDT)
+From: =?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	oscar.alfonso.diaz@gmail.com,
+	=?UTF-8?q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
+Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
+Date: Mon,  9 Mar 2026 10:45:59 +0000
+Message-ID: <20260309104559.22252-1-fjhhz1997@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <8155c8f93c233e430c75c98bcdaea219b16e9596.camel@sipsolutions.net>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA468237499
+X-Rspamd-Queue-Id: B1F06237587
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223598-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223599-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.987];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fjhhz1997@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.949];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,infradead.org:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Zide Chen <zide.chen@intel.com>
+On Sun, 2026-03-08 at 16:45 +0000, 傅继晗 wrote:
+> Fix this by falling back to the first entry in local->chanctx_list
+> when the monitor vif has no chanctx and the driver uses real channel
+> contexts. This is analogous to how ieee80211_hw_conf_chan() already
+> uses the same pattern.
 
-[ Upstream commit 6a8a48644c4b804123e59dbfc5d6cd29a0194046 ]
+On Mon, 2026-03-09, Johannes Berg wrote:
+> I did have pretty much the same attempt at a fix:
+> https://lore.kernel.org/linux-wireless/20251216111909.25076-2-johannes@sipsolutions.net/
+>
+> but it was reported to cause crashes on certain devices, so we didn't
+> think it was very safe at the time.
+>
+> Is that no longer an issue?
 
-IMC on SPR and EMR does not support sub-channels.  In contrast, CPUs
-that use gnr_uncores[] (e.g. Granite Rapids and Sierra Forest)
-implement two command schedulers (SCH0/SCH1) per memory channel,
-providing logically independent command and data paths.
+Hi Johannes,
 
-Do not reuse the spr_uncore_imc[] configuration for these CPUs.
-Instead, introduce a dedicated gnr_uncore_imc[] with per-scheduler
-events, so userspace can monitor SCH0 and SCH1 independently.
+Thanks for the quick review and for pointing me to your earlier v2
+patch.
 
-On these CPUs, replace cas_count_{read,write} with
-cas_count_{read,write}_sch{0,1}.  This may break existing userspace
-that relies on cas_count_{read,write}, prompting it to switch to the
-per-scheduler events, as the legacy event reports only partial
-traffic (SCH0).
+I see the key difference between our approaches: your v2 iterates
+the chanctx_list and only proceeds when there is exactly one entry
+(going to fail_rcu if more than one exists), while mine blindly takes
+the first entry via list_first_entry_or_null(). Your approach is
+clearly safer -- in a multi-chanctx scenario, there is no way to know
+which channel the user intends to inject on, so refusing is the
+correct behaviour.
 
-Fixes: 632c4bf6d007 ("perf/x86/intel/uncore: Support Granite Rapids")
-Fixes: cb4a6ccf3583 ("perf/x86/intel/uncore: Support Sierra Forest and Grand Ridge")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Zide Chen <zide.chen@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260210005225.20311-1-zide.chen@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/events/intel/uncore_snbep.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+I have tested my patch on an MT7921AU (mt76, USB) adapter across
+v6.13, v6.19, and v7.0-rc2 with managed + monitor coexistence, and
+have not observed any crashes. However, my testing was limited to a
+single-chanctx scenario (one managed interface + one monitor
+interface), so it does not rule out crashes in multi-chanctx
+configurations.
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 76d96df1475a1..c453ee7a52074 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6607,6 +6607,32 @@ static struct intel_uncore_type gnr_uncore_ubox = {
- 	.attr_update		= uncore_alias_groups,
- };
- 
-+static struct uncore_event_desc gnr_uncore_imc_events[] = {
-+	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=0x01,umask=0x00"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0,  "event=0x05,umask=0xcf"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1,  "event=0x06,umask=0xcf"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0, "event=0x05,umask=0xf0"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1, "event=0x06,umask=0xf0"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.unit, "MiB"),
-+	{ /* end: all zeroes */ },
-+};
+Could you share some details about the crashes that were reported
+with your v2? For example, which devices/drivers were affected and
+what the crash signature looked like? That would help me understand
+whether the issue was specific to multi-chanctx usage or something
+more fundamental with accessing the chanctx_list in this code path.
+
+If you agree, I would like to send a v2 that combines both approaches:
+use list_first_entry_or_null() for simplicity, but add a
+list_is_singular() guard so we only proceed when there is exactly one
+chanctx -- matching the safety constraint from your v2:
+
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2399,10 +2399,24 @@
+-	if (chanctx_conf)
++	if (chanctx_conf) {
+ 		chandef = &chanctx_conf->def;
+-	else if (local->emulate_chanctx)
++	} else if (local->emulate_chanctx) {
+ 		chandef = &local->hw.conf.chandef;
+-	else
+-		goto fail_rcu;
++	} else {
++		struct ieee80211_chanctx *ctx;
 +
-+static struct intel_uncore_type gnr_uncore_imc = {
-+	SPR_UNCORE_MMIO_COMMON_FORMAT(),
-+	.name			= "imc",
-+	.fixed_ctr_bits		= 48,
-+	.fixed_ctr		= SNR_IMC_MMIO_PMON_FIXED_CTR,
-+	.fixed_ctl		= SNR_IMC_MMIO_PMON_FIXED_CTL,
-+	.event_descs		= gnr_uncore_imc_events,
-+};
-+
- static struct intel_uncore_type gnr_uncore_pciex8 = {
- 	SPR_UNCORE_PCI_COMMON_FORMAT(),
- 	.name			= "pciex8",
-@@ -6654,7 +6680,7 @@ static struct intel_uncore_type *gnr_uncores[UNCORE_GNR_NUM_UNCORE_TYPES] = {
- 	NULL,
- 	&spr_uncore_pcu,
- 	&gnr_uncore_ubox,
--	&spr_uncore_imc,
-+	&gnr_uncore_imc,
- 	NULL,
- 	&gnr_uncore_upi,
- 	NULL,
--- 
-2.51.0
++		ctx = list_first_entry_or_null(&local->chanctx_list,
++					       struct ieee80211_chanctx,
++					       list);
++		if (ctx && list_is_singular(&local->chanctx_list))
++			chandef = &ctx->conf.def;
++		else
++			goto fail_rcu;
++	}
 
+This avoids the ambiguity of picking an arbitrary chanctx in
+multi-chanctx scenarios while still fixing the common single-chanctx
+case (e.g. one managed + one monitor interface).
+
+Alternatively, if you would prefer to revive your own patch, I am
+happy to help test it on mt76 hardware.
+
+Thanks,
+Jihan
 
