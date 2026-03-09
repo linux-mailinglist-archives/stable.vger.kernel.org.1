@@ -1,201 +1,345 @@
-Return-Path: <stable+bounces-223625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAmPDsG6rmmxIQIAu9opvQ
-	(envelope-from <stable+bounces-223625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:19:13 +0100
+	id AK+oLzLArmlEIgIAu9opvQ
+	(envelope-from <stable+bounces-223626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:42:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16B3238AD5
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:19:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E4923903C
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 13:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B96731A9D1C
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 12:12:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A6C9730299F3
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 12:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AA0376BEC;
-	Mon,  9 Mar 2026 12:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE4B3A7F4E;
+	Mon,  9 Mar 2026 12:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="eX/JzwT9"
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="IatC9sZX"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from out30-76.freemail.mail.aliyun.com (out30-76.freemail.mail.aliyun.com [115.124.30.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276093A7F60;
-	Mon,  9 Mar 2026 12:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596F93A960F;
+	Mon,  9 Mar 2026 12:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773058337; cv=none; b=h9TBCq0D4TY+ifTnXZ82Z109wzOf6Fw/NOoiCmMMMJ4pD3+ED373PLOTJwG57Fdmx1Ezs7kEwklcRQ7vgpv1v+O/NhNrVpY1wyzNxLWHwqqfC3POjxY55vJ4rYichg37NIchJU6ZWxkSvkDDlm9d/mylRtJYavhLkhwOMBlS7eA=
+	t=1773059395; cv=none; b=P84a+rAr1kK1Lw1GnEukJ71iePnDr33Z1Spm6y1MLX5faeyYx3ybREayqI4bur05cV0wDt6cgkDTWPxrYTqb/uVbRA+EwVIn9A//8yzQaQEc80jETCfiLkUKDMsnhlo3U1ov0xwZFSoXErYHAuD/hMNKGzwj3tl3CdhMQ4Sz6iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773058337; c=relaxed/simple;
-	bh=1AkQY3UjZoTtRHE1imcrpxvIEH6TRQY7DY0WnYSDjv8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JpPpEhm+lbfn4myDBRz+XVi6mq8Y882uBWOQNxoDUftJOwqL21WoisZF5YHI2jcRzUk63h0llAx8zXXiVC4bId2s/jOgVswbh78KHWwTyAj7akdKI+ibLGiw5OvUDt5PcCVJdiIPAZ7hVKSvQr8GYRCQ8fsl9H3ukHZ8wWucg9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=eX/JzwT9; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=s94M7DGxzITAy84g2XAueMSi4reqo0hpF/UuKtKwq1w=; b=eX/JzwT9z67PHmcOFYRxcMRFLC
-	nDohndzWLquFpLTgVSW5a4Wnw/ju+GcCebMiqec1fVxW3Jr49dxIHyGeLFtMeBsE/eM8dBMspLNt1
-	adB+ez4gazxsQIlFkw1BBcRHHOBgyBhNF+6COKjw3XF7ek/9Auil/kYghoBPq7YJMiZ4edDTGCUow
-	aFpqO5O0IscvK0l/a15MS2p1kG8Y9ZeYWXzMTICtzT9UtyVgUFEKOxSRtpcVmiCtjoZHRuW1vuZd3
-	Z6RQl2GGBRhpk2K1QLCPsQcbh9kdzg31FmvirnZg4SbYcPFL2e/NcF47LSV1QxfolxJbX3CQHSr97
-	I3hVJguQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vzZT1-002D0O-Sk; Mon, 09 Mar 2026 12:12:12 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Mar 2026 05:11:34 -0700
-Subject: [PATCH stable v6.18 v2] ipmi: Fix use-after-free and list
- corruption on sender error
+	s=arc-20240116; t=1773059395; c=relaxed/simple;
+	bh=AF5TdnYPYUeE4FSiTTUAAzNTYuZAFf7NfXo1QYNQg30=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VUnKmnnNsY9btlYECVVhJhWYujjRpia2UFt0bbB8uZxndeb3E1HP+/SNyW4te38pK3nEjnegtZtVP2PkRv0Q+TnOGbmBAQEOjyuBLdcefdoLkd/NNGvyhkNueNNImPaVwLZ6q2Ow9YWTXdnzZGE2h+A3fkPpaHy9rBrbGrveJyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=IatC9sZX; arc=none smtp.client-ip=115.124.30.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=aliyun.com; s=s1024;
+	t=1773059389; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=c/KsLjTr+e+IEzm7JSuxb8EkSaS2b2m4L4UIMfSDjnY=;
+	b=IatC9sZXHmT4vFsXTqWu+P+OXvKtDJL1beD0P9bBA2uzWOUEHfTghsEySPMVftneaRONfC5te49kgtldo5Mohd73t6TnDvuF9Uhkm4gzZ3iIbpCCKANb52h86vV1I7ViZH7oX9FTWwq5pwtT0+1rSCjrHy7GtRIALL4BCuy0wI8=
+Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X-Z1hr8_1773059376 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 09 Mar 2026 20:29:49 +0800
+From: Ruohan Lan <ruohanlan@aliyun.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	syzbot+2faa4825e556199361f9@syzkaller.appspotmail.com,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 5.15.y] Bluetooth: hci_core: Fix use-after-free in vhci_flush()
+Date: Mon,  9 Mar 2026 20:29:21 +0800
+Message-Id: <20260309122921.628283-1-ruohanlan@aliyun.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-ipmi_stable-v2-1-9ed91630be53@debian.org>
-X-B4-Tracking: v=1; b=H4sIAPa4rmkC/22NQQ6CMBBFr9LMmpIWQgVW3sMQw8AAYxRIi42G9
- O6GsnX9339vB0eWyUEtdrDk2fEyQy2yREA3tfNIknuoBWQqMypXleT1xXe3tfgkiT1pxKEoi9x
- AImC1NPAn2m5wMsKbVJfQnKt744O67RAe/MRuW+w3xr2Or78dr6WWSKrqKlMac9HXnpDbOV3sC
- E0I4QeU6XxVxwAAAA==
-X-Change-ID: 20260309-ipmi_stable-bde1bbf58536
-To: stable@kernel.org, Sasha Levin <sashal@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Corey Minyard <corey@minyard.net>, 
- openipmi-developer@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
- Vlad Poenaru <thevlad@meta.com>, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2834; i=leitao@debian.org;
- h=from:subject:message-id; bh=LCf/XcokkkpR9itGzPknY6ElDr4XJx3/5SjeXj4Rm98=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprrkXaLG/Z5SwHsovF3D3zFP209m/BnTNQIUJB
- BbiZ5WZKxqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa65FwAKCRA1o5Of/Hh3
- bXFPD/9Rtxb/GrN5noow262DV05XgWKkhYBljIG8jET1aVtbGpt31l5GW+Sl+ikdOS/q4Px9zof
- WlVTeP7ShP97mENhkT3i2RciUKV/9EAtIi0hCZcUt7bhul5fVjJjKrgqdi2OAxCU1HvBaYcJKAX
- i5IRu4OnASS7zrqeohdjb05L1OJH5bIj0AfipbrDB5v277xNeJK+qHg0H1SLEVu5+/Mkqfb6iN3
- UkdLHTC9n5tJd4TNHSzGQCs4v7J0MAG1nV96PhFUh4qIKAXBXSLD8VSrxZ1xSsFnkae38698PZE
- H4drnyBJSA5NJqu5SWHy8K8blibFjTRa9+Qa8d/SaE246e6+jVo4a+atcuL0NUj7CcCHJvt+U2a
- Q49pCnmneO+BWcrP1OacockYpNgi0ezfFAfq+SuyThBju+aZM4ntpPwwsr9ACmaS7rf/nXZSQgX
- UYlGKYkDCA1OTQClpgeKNeY+VIkBA/njt8UzGnp3GldVmOJs5iGSCJXJbNl5xLJJ4A1SOyQU0Ee
- zObvtFc2XHyZA3Ix+pGjwd1QkCVH1wwBudc+FLHwoThlf4c8z0RuEjPRhXoB6oRhH/FYEg37p4f
- gMabEEqESUUunuQSx2IGbyQjk2zIDGdWgZ9IMl26n6KVJZlH6HtyZpnkIP3U9pHcgWUrdDRR0Fa
- /sfx/E2Lf1CfCvw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: A16B3238AD5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B6E4923903C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[aliyun.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[aliyun.com:s=s1024];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223625-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,syzkaller.appspotmail.com,molgen.mpg.de,intel.com,aliyun.com];
+	TAGGED_FROM(0.00)[bounces-223626-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[aliyun.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.943];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,minyard.net:email]
+	FROM_NEQ_ENVFROM(0.00)[ruohanlan@aliyun.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[aliyun.com:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable,2faa4825e556199361f9];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,aliyun.com:dkim,aliyun.com:email,aliyun.com:mid,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Action: no action
 
-From: Corey Minyard <corey@minyard.net>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 594c11d0e1d445f580898a2b8c850f2e3f099368 ]
+[ Upstream commit 1d6123102e9fbedc8d25bf4731da6d513173e49e ]
 
-The analysis from Breno:
+syzbot reported use-after-free in vhci_flush() without repro. [0]
 
-When the SMI sender returns an error, smi_work() delivers an error
-response but then jumps back to restart without cleaning up properly:
+From the splat, a thread close()d a vhci file descriptor while
+its device was being used by iotcl() on another thread.
 
-1. intf->curr_msg is not cleared, so no new message is pulled
-2. newmsg still points to the message, causing sender() to be called
-   again with the same message
-3. If sender() fails again, deliver_err_response() is called with
-   the same recv_msg that was already queued for delivery
+Once the last fd refcnt is released, vhci_release() calls
+hci_unregister_dev(), hci_free_dev(), and kfree() for struct
+vhci_data, which is set to hci_dev->dev->driver_data.
 
-This causes list_add corruption ("list_add double add") because the
-recv_msg is added to the user_msgs list twice. Subsequently, the
-corrupted list leads to use-after-free when the memory is freed and
-reused, and eventually a NULL pointer dereference when accessing
-recv_msg->done.
+The problem is that there is no synchronisation after unlinking
+hdev from hci_dev_list in hci_unregister_dev().  There might be
+another thread still accessing the hdev which was fetched before
+the unlink operation.
 
-The buggy sequence:
+We can use SRCU for such synchronisation.
 
-  sender() fails
-    -> deliver_err_response(recv_msg)  // recv_msg queued for delivery
-    -> goto restart                    // curr_msg not cleared!
-  sender() fails again (same message!)
-    -> deliver_err_response(recv_msg)  // tries to queue same recv_msg
-    -> LIST CORRUPTION
+Let's run hci_dev_reset() under SRCU and wait for its completion
+in hci_unregister_dev().
 
-Fix this by freeing the message and setting it to NULL on a send error.
-Also, always free the newmsg on a send error, otherwise it will leak.
+Another option would be to restore hci_dev->destruct(), which was
+removed in commit 587ae086f6e4 ("Bluetooth: Remove unused
+hci-destruct cb").  However, this would not be a good solution, as
+we should not run hci_unregister_dev() while there are in-flight
+ioctl() requests, which could lead to another data-race KCSAN splat.
 
-Reported-by: Breno Leitao <leitao@debian.org>
-Closes: https://lore.kernel.org/lkml/20260127-ipmi-v1-0-ba5cc90f516f@debian.org/
-Fixes: 9cf93a8fa9513 ("ipmi: Allow an SMI sender to return an error")
-Cc: stable@vger.kernel.org # 4.18
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Note that other drivers seem to have the same problem, for exmaple,
+virtbt_remove().
+
+[0]:
+BUG: KASAN: slab-use-after-free in skb_queue_empty_lockless include/linux/skbuff.h:1891 [inline]
+BUG: KASAN: slab-use-after-free in skb_queue_purge_reason+0x99/0x360 net/core/skbuff.c:3937
+Read of size 8 at addr ffff88807cb8d858 by task syz.1.219/6718
+
+CPU: 1 UID: 0 PID: 6718 Comm: syz.1.219 Not tainted 6.16.0-rc1-syzkaller-00196-g08207f42d3ff #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xd2/0x2b0 mm/kasan/report.c:521
+ kasan_report+0x118/0x150 mm/kasan/report.c:634
+ skb_queue_empty_lockless include/linux/skbuff.h:1891 [inline]
+ skb_queue_purge_reason+0x99/0x360 net/core/skbuff.c:3937
+ skb_queue_purge include/linux/skbuff.h:3368 [inline]
+ vhci_flush+0x44/0x50 drivers/bluetooth/hci_vhci.c:69
+ hci_dev_do_reset net/bluetooth/hci_core.c:552 [inline]
+ hci_dev_reset+0x420/0x5c0 net/bluetooth/hci_core.c:592
+ sock_do_ioctl+0xd9/0x300 net/socket.c:1190
+ sock_ioctl+0x576/0x790 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fcf5b98e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fcf5c7b9038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fcf5bbb6160 RCX: 00007fcf5b98e929
+RDX: 0000000000000000 RSI: 00000000400448cb RDI: 0000000000000009
+RBP: 00007fcf5ba10b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fcf5bbb6160 R15: 00007ffd6353d528
+ </TASK>
+
+Allocated by task 6535:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4359
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ vhci_open+0x57/0x360 drivers/bluetooth/hci_vhci.c:635
+ misc_open+0x2bc/0x330 drivers/char/misc.c:161
+ chrdev_open+0x4c9/0x5e0 fs/char_dev.c:414
+ do_dentry_open+0xdf0/0x1970 fs/open.c:964
+ vfs_open+0x3b/0x340 fs/open.c:1094
+ do_open fs/namei.c:3887 [inline]
+ path_openat+0x2ee5/0x3830 fs/namei.c:4046
+ do_filp_open+0x1fa/0x410 fs/namei.c:4073
+ do_sys_openat2+0x121/0x1c0 fs/open.c:1437
+ do_sys_open fs/open.c:1452 [inline]
+ __do_sys_openat fs/open.c:1468 [inline]
+ __se_sys_openat fs/open.c:1463 [inline]
+ __x64_sys_openat+0x138/0x170 fs/open.c:1463
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 6535:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2381 [inline]
+ slab_free mm/slub.c:4643 [inline]
+ kfree+0x18e/0x440 mm/slub.c:4842
+ vhci_release+0xbc/0xd0 drivers/bluetooth/hci_vhci.c:671
+ __fput+0x44c/0xa70 fs/file_table.c:465
+ task_work_run+0x1d1/0x260 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x6ad/0x22e0 kernel/exit.c:955
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1104
+ __do_sys_exit_group kernel/exit.c:1115 [inline]
+ __se_sys_exit_group kernel/exit.c:1113 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1113
+ x64_sys_call+0x21ba/0x21c0 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88807cb8d800
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 88 bytes inside of
+ freed 1024-byte region [ffff88807cb8d800, ffff88807cb8dc00)
+
+Fixes: bf18c7118cf8 ("Bluetooth: vhci: Free driver_data on file release")
+Reported-by: syzbot+2faa4825e556199361f9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f62d64848fc4c7c30cd6
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 ---
-Changes in v2:
-- Fix the commit id and add the proper branch (gregkh)
-- Link to v1: https://patch.msgid.link/20260309-ipmi_stable-v1-1-be09c9686671@debian.org
----
- drivers/char/ipmi/ipmi_msghandler.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci_core.h |  2 ++
+ net/bluetooth/hci_core.c         | 34 ++++++++++++++++++++++++++++----
+ 2 files changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 0a886399f9daf..5ed8e95589fb7 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4848,8 +4848,15 @@ static void smi_work(struct work_struct *t)
- 			if (newmsg->recv_msg)
- 				deliver_err_response(intf,
- 						     newmsg->recv_msg, cc);
--			else
--				ipmi_free_smi_msg(newmsg);
-+			if (!run_to_completion)
-+				spin_lock_irqsave(&intf->xmit_msgs_lock,
-+						  flags);
-+			intf->curr_msg = NULL;
-+			if (!run_to_completion)
-+				spin_unlock_irqrestore(&intf->xmit_msgs_lock,
-+						       flags);
-+			ipmi_free_smi_msg(newmsg);
-+			newmsg = NULL;
- 			goto restart;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index f6ab6fe7fd80..b906151c0783 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -28,6 +28,7 @@
+ #include <linux/idr.h>
+ #include <linux/leds.h>
+ #include <linux/rculist.h>
++#include <linux/srcu.h>
+ 
+ #include <net/bluetooth/hci.h>
+ #include <net/bluetooth/hci_sock.h>
+@@ -308,6 +309,7 @@ struct amp_assoc {
+ 
+ struct hci_dev {
+ 	struct list_head list;
++	struct srcu_struct srcu;
+ 	struct mutex	lock;
+ 
+ 	const char	*name;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index cd4d931368a0..a587472c5f12 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1048,7 +1048,7 @@ static int hci_linkpol_req(struct hci_request *req, unsigned long opt)
+ 
+ /* Get HCI device by index.
+  * Device is held on return. */
+-struct hci_dev *hci_dev_get(int index)
++static struct hci_dev *__hci_dev_get(int index, int *srcu_index)
+ {
+ 	struct hci_dev *hdev = NULL, *d;
+ 
+@@ -1061,6 +1061,8 @@ struct hci_dev *hci_dev_get(int index)
+ 	list_for_each_entry(d, &hci_dev_list, list) {
+ 		if (d->id == index) {
+ 			hdev = hci_dev_hold(d);
++			if (srcu_index)
++				*srcu_index = srcu_read_lock(&d->srcu);
+ 			break;
  		}
  	}
-
----
-base-commit: 6258e292d7463f96d0f06dff2a39093a54c9d16f
-change-id: 20260309-ipmi_stable-bde1bbf58536
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+@@ -1068,6 +1070,22 @@ struct hci_dev *hci_dev_get(int index)
+ 	return hdev;
+ }
+ 
++struct hci_dev *hci_dev_get(int index)
++{
++	return __hci_dev_get(index, NULL);
++}
++
++static struct hci_dev *hci_dev_get_srcu(int index, int *srcu_index)
++{
++	return __hci_dev_get(index, srcu_index);
++}
++
++static void hci_dev_put_srcu(struct hci_dev *hdev, int srcu_index)
++{
++	srcu_read_unlock(&hdev->srcu, srcu_index);
++	hci_dev_put(hdev);
++}
++
+ /* ---- Inquiry support ---- */
+ 
+ bool hci_discovery_active(struct hci_dev *hdev)
+@@ -1918,9 +1936,9 @@ static int hci_dev_do_reset(struct hci_dev *hdev)
+ int hci_dev_reset(__u16 dev)
+ {
+ 	struct hci_dev *hdev;
+-	int err;
++	int err, srcu_index;
+ 
+-	hdev = hci_dev_get(dev);
++	hdev = hci_dev_get_srcu(dev, &srcu_index);
+ 	if (!hdev)
+ 		return -ENODEV;
+ 
+@@ -1942,7 +1960,7 @@ int hci_dev_reset(__u16 dev)
+ 	err = hci_dev_do_reset(hdev);
+ 
+ done:
+-	hci_dev_put(hdev);
++	hci_dev_put_srcu(hdev, srcu_index);
+ 	return err;
+ }
+ 
+@@ -3780,6 +3798,11 @@ struct hci_dev *hci_alloc_dev_priv(int sizeof_priv)
+ 	if (!hdev)
+ 		return NULL;
+ 
++	if (init_srcu_struct(&hdev->srcu)) {
++		kfree(hdev);
++		return NULL;
++	}
++
+ 	hdev->pkt_type  = (HCI_DM1 | HCI_DH1 | HCI_HV1);
+ 	hdev->esco_type = (ESCO_HV1);
+ 	hdev->link_mode = (HCI_LM_ACCEPT);
+@@ -4029,6 +4052,9 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+ 
++	synchronize_srcu(&hdev->srcu);
++	cleanup_srcu_struct(&hdev->srcu);
++
+ 	cancel_work_sync(&hdev->rx_work);
+ 	cancel_work_sync(&hdev->cmd_work);
+ 	cancel_work_sync(&hdev->tx_work);
+-- 
+2.43.0
 
 
