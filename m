@@ -1,110 +1,150 @@
-Return-Path: <stable+bounces-223639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aC6jFqzGrmn2IgIAu9opvQ
-	(envelope-from <stable+bounces-223639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:10:04 +0100
+	id UMINK+fHrmlwIwIAu9opvQ
+	(envelope-from <stable+bounces-223640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:15:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5CD239790
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:10:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357C6239888
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53A7D3035A43
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DB50304604C
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571C23C2773;
-	Mon,  9 Mar 2026 13:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4yf9JcQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6DA3B52F0;
+	Mon,  9 Mar 2026 13:13:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828C73BE167
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5DA3AEF22
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773061770; cv=none; b=A4NeyJd98ckWJRu2YbynXdyErsrANgzNYJ0TvsTUcRxX06VU5MhRczmvjJr38OOkBg9TZo81M5AiG4BQK9hVvsbxqpSRYFHC5t/pYDeYH1Kph9WxPEgVdCFkOoXy7pOI8toPs3bp56urMU0KW/M/IhdczabRg6RCcqAWJQCqqvg=
+	t=1773061982; cv=none; b=RIwObc8UbSyLmjHW4e7x2tZPd4hU+QlTE1VRsDgii/lW2MlwZVYFhvx/ib/ZKUC+sbtz/vQ0NtVD5CfJUDQj7kw3AayfjI2BT8yA5Fzff+d5oryG7RMI1kyQChQzeFYoqLJ7XYxup/3MJyezuNUMj0LlJvjMPPLcnQlKPp/VOkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773061770; c=relaxed/simple;
-	bh=rLZ5SfMw5tuBIj88iEJ3cVvT4yM3ioED2XVf2im3GlE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AYRwosDfe3djC5OHdr6BSGTwfPpOYKtmewikvJwVpTg0lfALTkqD+GpT8YTtdwXZNibj635wVbbmteiVi8PxVdsSHpKXjO+CphuXx/wJvxqG5ka2jFljVviRJHAWKAgSoDAqFZ+vJ+mfqxzJM4b3ZFmwrDwJOP1seZsOkXwUK2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4yf9JcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F57C2BC86;
-	Mon,  9 Mar 2026 13:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773061769;
-	bh=rLZ5SfMw5tuBIj88iEJ3cVvT4yM3ioED2XVf2im3GlE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y4yf9JcQ5RQbnbAYcLhln5qEv04CQGgnvNcrzpz28AbKr27QIArRHNNNmJIhIE4Oc
-	 H+hl45JHlSbnLp3SZRWH73yQYbCOxaU145x64th5I/ScIg3c3wxTK0rwqTsX3v2YPY
-	 37+uFX65aERuq4k5GLb6ieCaRmG2sVyxPoR4FFvE=
-Date: Mon, 9 Mar 2026 14:09:27 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Boris Faure <boris@fau.re>
-Subject: Re: please pick up patch for v6.19 soundwire build error
-Message-ID: <2026030921-lash-strongbox-87b5@gregkh>
-References: <ecf1447f-e450-46e7-b3d6-ab4632907492@infradead.org>
+	s=arc-20240116; t=1773061982; c=relaxed/simple;
+	bh=T4qFY7FaLo6TLAHs/evhC0/XEbBc7h4A2iWsQnpXJLU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jxt04yVeDU8EvswLbJUoeVmMhREWkBKia51sWESvKIBjfYoZfLLvfdH2a+UUZ3Rs3aMg/s/rpGmrvziy9o3W47NsKTOVDAk9VsaJVzEiwOcQkTeVsvrFcroLcSxAG3Wfy47ka4qS9rlvS12atmQtIxy4STD0ISojuQiGxvs+b9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8E68B5BD8F;
+	Mon,  9 Mar 2026 13:12:59 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 44AC73EEFA;
+	Mon,  9 Mar 2026 13:12:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MoN8D1vHrmm9dgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 09 Mar 2026 13:12:59 +0000
+Date: Mon, 09 Mar 2026 14:12:58 +0100
+Message-ID: <87o6kxm9id.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	stable@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ALSA: aoa: Handle empty codec list in i2sbus_pcm_prepare()
+In-Reply-To: <CFB7A246-8C9D-4F49-8143-2883030C1135@linux.dev>
+References: <20260309114159.765304-3-thorsten.blum@linux.dev>
+	<87zf4hmcw4.wl-tiwai@suse.de>
+	<CFB7A246-8C9D-4F49-8143-2883030C1135@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ecf1447f-e450-46e7-b3d6-ab4632907492@infradead.org>
-X-Rspamd-Queue-Id: DD5CD239790
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 357C6239888
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223639-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_SPAM(0.00)[0.200];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-223640-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_SPAM(0.00)[0.378];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:mid]
 X-Rspamd-Action: no action
 
-On Sun, Mar 08, 2026 at 01:31:26PM -0700, Randy Dunlap wrote:
+On Mon, 09 Mar 2026 13:55:02 +0100,
+Thorsten Blum wrote:
 > 
-> commit bbb758a6943e
-> Author: Boris Faure <boris@fau.re>
-> Date:   Thu Jan 29 14:14:54 2026 +0000
+> On 9. Mar 2026, at 12:59, Takashi Iwai wrote:
+> > On Mon, 09 Mar 2026 12:41:59 +0100, Thorsten Blum wrote:
+> >> Replace two list_for_each_entry() loops with list_first_entry_or_null()
+> >> in i2sbus_pcm_prepare().
+> > 
+> > Hmm, I guess both can be simply list_first_entry(), as the codec list
+> > in this code path is guaranteed to be non-empty (it's called after
+> > i2sbus_pcm_open() which has the check of the valid codecs).
 > 
->     ASoC: sdca: Fix missing regmap dependencies in Kconfig
-> 
-> 
-> for kernel versions 6.19.*
-> to fix build errors.
-> 
-> I applied it to 6.19.6 and it fixed the build errors that I had.
+> That guarantee only holds for open/prepare, not for i2sbus_resume() via
+> i2sbus_pcm_prepare_both(). It's probably uncommon in practice, but
+> i2sbus_pcm_prepare() should still handle it safely.
 
-Now queued up, thanks.
+Then we should fix i2sbus_resume() instead.  It can simply bail out
+when the codec list empty.  Ditto for i2bus_suspend().
 
-greg k-h
+> >> Handle an empty codec list explicitly by returning -ENODEV, which avoids
+> >> using uninitialized 'bi.sysclock_factor' in the 32-bit code path.
+> > 
+> > Which 32bit code path are you referring to...?
+> 
+> The SNDRV_PCM_FORMAT_S32_BE/SNDRV_PCM_FORMAT_U32_BE branch.
+
+The description is confusing :)  It's about 32bit PCM *format*, not
+about 32bit code path.
+
+
+thanks,
+
+Takashi
 
