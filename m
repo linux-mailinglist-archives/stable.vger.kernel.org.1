@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-223637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBpoDE/Grmn2IgIAu9opvQ
-	(envelope-from <stable+bounces-223637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:08:31 +0100
+	id gGwbFg3HrmlwIwIAu9opvQ
+	(envelope-from <stable+bounces-223638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:11:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5DB2396DA
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:08:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1B92397FB
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 14:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2B85300A4D2
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:06:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26C1030484C7
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 13:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222B03A4F37;
-	Mon,  9 Mar 2026 13:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D13A9D88;
+	Mon,  9 Mar 2026 13:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVdE5J3Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLHhwbAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8037378D99
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA5238F65F
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 13:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773061610; cv=none; b=gl/Mw00Loj/FQXZukUtub2Ath3IzBvjh5TETXxLNdwZ8lhZbk39bkm2Bz6K3FrD3J4j5GfWhsH/vCb4vciCunG/DjjPfRf3OAJaZfJ07Exa4atoT8NR8Y8Vgrs/8KPql94wOvCAc2+Qiy6I8GUjNSHTX+rZzNQIKVzo08JuD2Og=
+	t=1773061613; cv=none; b=acP40VGl+v+qSmbdGaFQ0mxQiF0vWwrH+2qQb94MB0WgF1pE2UdkLd/AdmIOQLmM01Gg/2FvEhV0R+y77JGLQsfqjSgYEFX64rpbnb+uCY5QuOPq3eloekI3ETbnPz/aRY4L8aNyPezBhR6uiH3f3NubR04JA+e/jvGRlZM0dCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773061610; c=relaxed/simple;
-	bh=D8WusAQW6nTsST/zkbJwVLlqggm3HAfugUq93a6gFik=;
+	s=arc-20240116; t=1773061613; c=relaxed/simple;
+	bh=xIIlMHQzzrYoFHXYTfkJtW5+XNMFN1Jwv4QrCoRw87E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFbRaqs9qCU40EmsbJ6tK/rXOTc5UCRO4WWwzvBpTYSNH19LiFsB8hYb+CLbwSudPKKZqktVj1GvED6ue9Di8pGrjEFeSmsHJKdiu7vAnH/z4JZuiGaROMEGG4V5pKpGbfoDwA5q5OQufpW46BVbLVEwMf2lErQEgnLkVDFFkXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVdE5J3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE7EC4CEF7;
-	Mon,  9 Mar 2026 13:06:49 +0000 (UTC)
+	 MIME-Version; b=EVQag+tUKEM5IJJbTGJE4k5o/Hy+8gRdvjqusjiqqlLYT5W0J66bVk0zTOOIFu9wYBafoNWzmp+fQLpQN/mBIERXPch/Z3VgXb8jKplyMomi886L/S8w0MqTAOI8uh51Vh1tBuvRqXxncWMmn8nVkm9z+cnM3sYZQ9WsLJM02y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLHhwbAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DCDC4CEF7;
+	Mon,  9 Mar 2026 13:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773061610;
-	bh=D8WusAQW6nTsST/zkbJwVLlqggm3HAfugUq93a6gFik=;
+	s=k20201202; t=1773061613;
+	bh=xIIlMHQzzrYoFHXYTfkJtW5+XNMFN1Jwv4QrCoRw87E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVdE5J3Zxdh/NjkUroRmryiqdJ2Rd8S/kVU7Q2taiJVT9huZVch6ZC+r/L9bF2lNd
-	 8PMFFLver8C3zzFS8JI0CS0r4pGDbS+sIw9OuaUHRmAvnCVQVgFhL9nTUCoHJD6GX6
-	 NcpYemqD7NrF6fpHE9sOBSCV8EeIWcLItOLpFAnomhE0siUA8E5w6WOo8mFtJfVS3U
-	 thRoM+JvZu+mrvruc0KH6bY7JitBq3iuLkkQlqigBiEK/l5pBpsuqpIO6SvcM2QWCi
-	 vcJnTlMUrd7UTnMEN78BvAH3RcJD5fIqY2z4MQoXfkKLPeaVFMmJ3VIeCN7J6Zz5uW
-	 lt+Nf5gSuxmbQ==
+	b=uLHhwbAI0srgv/1mcWFkquVwBcdfhLZlPK6f8Obsj7gHjFjbs0sodW4eQ+amEkSjL
+	 rpqCYsm0nBnii24GNk+Hnnm3lJpMih7yRZoHX0rMiAE/NSS4YNzutq7ybPo+LFuOmA
+	 4BtQ6OdyBeNA8WaPmnA11JN+gVDUsxyI6Vo/EiMkc6CTgs+hvVHgQ7B2wM51/Cg2AY
+	 lN5E9IfNDC6xa54vyrq1QafC6aNrWtp/pUJSoJ37wShwYbuTnXQqY4IbVJE4ly5JFp
+	 bEyYUVG/47iWPJEnJbuzcqlsLi7Q5bKnR50RMVyU819pIL0uCF6oVJAKSXzjWWZ8f3
+	 89Yh3ecVNq33w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kim Phillips <kim.phillips@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	stable@kernel.org,
+Cc: Mariusz Skamra <mariusz.skamra@codecoup.pl>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] x86/sev: Allow IBPB-on-Entry feature for SNP guests
-Date: Mon,  9 Mar 2026 09:06:48 -0400
-Message-ID: <20260309130648.871470-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y] Bluetooth: Fix CIS host feature condition
+Date: Mon,  9 Mar 2026 09:06:50 -0400
+Message-ID: <20260309130651.871521-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026030937-dumping-dodgy-a0cb@gregkh>
-References: <2026030937-dumping-dodgy-a0cb@gregkh>
+In-Reply-To: <2026030932-henchman-travesty-7e47@gregkh>
+References: <2026030932-henchman-travesty-7e47@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,102 +63,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9D5DB2396DA
+X-Rspamd-Queue-Id: AB1B92397FB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223637-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223638-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.986];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.983];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,amd.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mpg.de:email,codecoup.pl:email]
 X-Rspamd-Action: no action
 
-From: Kim Phillips <kim.phillips@amd.com>
+From: Mariusz Skamra <mariusz.skamra@codecoup.pl>
 
-[ Upstream commit 9073428bb204d921ae15326bb7d4558d9d269aab ]
+[ Upstream commit 7cff9a40c6b0f72ccefdaf0ffe03cfac30348f51 ]
 
-The SEV-SNP IBPB-on-Entry feature does not require a guest-side
-implementation. It was added in Zen5 h/w, after the first SNP Zen
-implementation, and thus was not accounted for when the initial set of SNP
-features were added to the kernel.
+This fixes the condition for sending the LE Set Host Feature command.
+The command is sent to indicate host support for Connected Isochronous
+Streams in this case. It has been observed that the system could not
+initialize BIS-only capable controllers because the controllers do not
+support the command.
 
-In its abundant precaution, commit
+As per Core v6.2 | Vol 4, Part E, Table 3.1 the command shall be
+supported if CIS Central or CIS Peripheral is supported; otherwise,
+the command is optional.
 
-  8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
-
-included SEV_STATUS' IBPB-on-Entry bit as a reserved bit, thereby masking
-guests from using the feature.
-
-Allow guests to make use of IBPB-on-Entry when supported by the hypervisor, as
-the bit is now architecturally defined and safe to expose.
-
-Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260203222405.4065706-2-kim.phillips@amd.com
-[ No SECURE_AVIC ]
+Fixes: 709788b154ca ("Bluetooth: hci_core: Fix using {cis,bis}_capable for current settings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mariusz Skamra <mariusz.skamra@codecoup.pl>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ iso_capable() => cis_capable() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c   | 1 +
- arch/x86/include/asm/msr-index.h | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 4f61d48f25759..cdb3990a9c3ac 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -328,6 +328,7 @@ static void enforce_vmpl0(void)
- 				 MSR_AMD64_SNP_VMSA_REG_PROTECTION |	\
- 				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
- 				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
-+				 MSR_AMD64_SNP_RESERVED_BITS18_22 |	\
- 				 MSR_AMD64_SNP_RESERVED_MASK)
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index cc1d340a32c62..9f01837250a5e 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -4546,7 +4546,7 @@ static int hci_le_set_host_feature_sync(struct hci_dev *hdev)
+ {
+ 	struct hci_cp_le_set_host_feature cp;
  
- /*
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index afd65c8150437..749e7fe245e65 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -630,11 +630,14 @@
- #define MSR_AMD64_SNP_IBS_VIRT			BIT_ULL(14)
- #define MSR_AMD64_SNP_VMSA_REG_PROTECTION	BIT_ULL(16)
- #define MSR_AMD64_SNP_SMT_PROTECTION		BIT_ULL(17)
-+#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
-+#define MSR_AMD64_SNP_IBPB_ON_ENTRY		BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
+-	if (!iso_capable(hdev))
++	if (!cis_capable(hdev))
+ 		return 0;
  
- /* SNP feature bits reserved for future use. */
- #define MSR_AMD64_SNP_RESERVED_BIT13		BIT_ULL(13)
- #define MSR_AMD64_SNP_RESERVED_BIT15		BIT_ULL(15)
--#define MSR_AMD64_SNP_RESERVED_MASK		GENMASK_ULL(63, 18)
-+#define MSR_AMD64_SNP_RESERVED_BITS18_22	GENMASK_ULL(22, 18)
-+#define MSR_AMD64_SNP_RESERVED_MASK		GENMASK_ULL(63, 24)
- 
- #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
- 
+ 	memset(&cp, 0, sizeof(cp));
 -- 
 2.51.0
 
