@@ -1,125 +1,213 @@
-Return-Path: <stable+bounces-223589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEUaHYKhrmkLHAIAu9opvQ
-	(envelope-from <stable+bounces-223589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:31:30 +0100
+	id AFBXErmhrmkLHAIAu9opvQ
+	(envelope-from <stable+bounces-223590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:32:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FA12371F0
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E838237211
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97EEC304044C
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:30:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25725306B4CD
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C350D3921DE;
-	Mon,  9 Mar 2026 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0307F254AFF;
+	Mon,  9 Mar 2026 10:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxOgvsBJ"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBBF37DEBF;
-	Mon,  9 Mar 2026 10:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87BF3803F6
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773052223; cv=none; b=axfOEmQGpFh9Jc91z6Pa0gOAPJ5JFkSiUZQ4rfvkJPg/S5lThgbkWuTZmgANjrNppRJdzFXE556b+UTCJK92lf9SodKpBMabumlvuEYTBb9uu6RgmzQ4fNZJWUFhWjqymUVx+d7cUU0HAbiD+qCn0n8+w2qRy2QDdxvx6s2fqtc=
+	t=1773052241; cv=none; b=OcxSig1RixboJf6MB1ChBMumZ5zqtNnHnNB5jJ5uKrANnYCemw2cwwWSwj4CCx+eT2EgJd+BkiLaSqZOyc0DWSjMSdzoIQOmIYt8OIPiy2ihG9l+IQbcBJrmbVbNHmBslhzWhP5yUc+zY4midEIyYTEVH1Fyfy38SZOe/TIVKwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773052223; c=relaxed/simple;
-	bh=S39RhiGVyimXCDjc1xM5yDuZY2cvR5hVkmeqHSg9+Tg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HziSm9V/BDEY582fZrho78j0Ey4Yl1JOZyaZRrkwywv8HOJOhrAsWXepGVFHWy9X/jUFdDG+1Qta/dRzERo5AMFOrZmJddG+K6pCod6VsMaYxxLr91Y+Iefy0zpsvDePA5BICDePCWqaaMPjEU/7qTaqnMPpF1rNGEV72JAhszY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fTtYy5PyzzHnHKh;
-	Mon,  9 Mar 2026 18:30:14 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4D32140086;
-	Mon,  9 Mar 2026 18:30:18 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Mar
- 2026 10:30:16 +0000
-Date: Mon, 9 Mar 2026 10:30:15 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Chengwen Feng <fengchengwen@huawei.com>
-CC: <linux-pci@vger.kernel.org>, <bhelgaas@google.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Huacai Chen
-	<chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul Walmsley
-	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Sunil V L
-	<sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>,
-	<linux-acpi@vger.kernel.org>, <wei.huang2@amd.com>,
-	<Eric.VanTassell@amd.com>, <wangzhou1@hisilicon.com>,
-	<wanghuiqiang@huawei.com>, <liuyonglong@huawei.com>,
-	<stable@vger.kernel.org>, <jeremy.linton@arm.com>,
-	<sunilvl@oss.qualcomm.com>, <chenhuacai@loongson.cn>,
-	<wangliupu@loongson.cn>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-riscv@lists.infradead.org>, <linux-perf-users@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] ACPI: Rename get_acpi_id_for_cpu() to
- acpi_get_cpu_acpi_id() on non-x86
-Message-ID: <20260309103015.000070c3@huawei.com>
-In-Reply-To: <20260309041659.18815-2-fengchengwen@huawei.com>
-References: <20260303003625.39035-1-fengchengwen@huawei.com>
-	<20260309041659.18815-1-fengchengwen@huawei.com>
-	<20260309041659.18815-2-fengchengwen@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1773052241; c=relaxed/simple;
+	bh=0Lp4UPV1jmmzBbPC6qPY+xwYerFbknqx+aRTqJZpo1I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TzKSKmmZuNGYtL/bpGsvrGRiUTHbYeEKJiIjkdVr19kDbOt+TFTvgkP/B+FReKIDX0HEtkVM5cf74d/YP1ugYq3Sp3Oli1aZXzccGaMRFrv+fPv6nOROvRQ0w3JN4GEML4jJsqA8kfO+3n+tH6V4Dysbc1HjB5iocJhUtsYWhIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxOgvsBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A36C4CEF7;
+	Mon,  9 Mar 2026 10:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773052241;
+	bh=0Lp4UPV1jmmzBbPC6qPY+xwYerFbknqx+aRTqJZpo1I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=TxOgvsBJ7qW4fTQo/WVTMuzJoutxXpnA7mcMcAHXNsr9sh5/9uworZhKyLbB1wxOo
+	 KTjHSTnHf6+Y6/o4w29xo8UU5rhY0jC7Jw4MY6TcMaZjBEjRmPO0PMIMZHmEJhvNsT
+	 K2naQplMS0dUo6lSX4LJnIugEVCZMH+Bw7CPDwXg=
+Subject: FAILED: patch "[PATCH] kbuild: Leave objtool binary around with 'make clean'" failed to apply to 6.18-stable tree
+To: nathan@kernel.org,jpoimboe@kernel.org,jrf@mailbox.org,msuchanek@suse.de,nsc@kernel.org,peterz@infradead.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 09 Mar 2026 11:30:39 +0100
+Message-ID: <2026030939-sacrament-marry-5131@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Rspamd-Queue-Id: 11FA12371F0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9E838237211
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	TAGGED_FROM(0.00)[bounces-223589-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223590-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.497];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	NEURAL_SPAM(0.00)[0.248];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,infradead.org:email]
 X-Rspamd-Action: no action
 
-On Mon, 9 Mar 2026 12:16:57 +0800
-Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-> To unify the CPU ACPI ID retrieval interface across architectures,
-> rename the existing get_acpi_id_for_cpu() function to
-> acpi_get_cpu_acpi_id() on arm64/riscv/loongarch platforms.
-> 
-> This is a pure rename with no functional change, preparing for a
-> consistent ACPI Processor UID retrieval interface across all ACPI-enabled
-> platforms.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030939-sacrament-marry-5131@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 27 Feb 2026 22:40:48 -0700
+Subject: [PATCH] kbuild: Leave objtool binary around with 'make clean'
+
+The difference between 'make clean' and 'make mrproper' is documented in
+'make help' as:
+
+  clean     - Remove most generated files but keep the config and
+              enough build support to build external modules
+  mrproper  - Remove all generated files + config + various backup files
+
+After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+target"), running 'make clean' then attempting to build an external
+module with the resulting build directory fails with
+
+  $ make ARCH=x86_64 O=build clean
+
+  $ make -C build M=... MO=...
+  ...
+  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+
+as 'make clean' removes the objtool binary.
+
+Split the objtool clean target into mrproper and clean like Kbuild does
+and remove all generated artifacts with 'make clean' except for the
+objtool binary, which is removed with 'make mrproper'. To avoid a small
+race when running the objtool clean target through both objtool_mrproper
+and objtool_clean when running 'make mrproper', modify objtool's clean
+up find command to avoid using find's '-delete' command by piping the
+files into 'xargs rm -f' like the rest of Kbuild does.
+
+Cc: stable@vger.kernel.org
+Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+Reported-by: Michal Suchanek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+Reported-by: Rainer Fiebig <jrf@mailbox.org>
+Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+
+diff --git a/Makefile b/Makefile
+index e944c6e71e81..d76d706a5580 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1497,13 +1497,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
+ 
+-PHONY += objtool_clean
++PHONY += objtool_clean objtool_mrproper
+ 
+ objtool_O = $(abspath $(objtree))/tools/objtool
+ 
+-objtool_clean:
++objtool_clean objtool_mrproper:
+ ifneq ($(wildcard $(objtool_O)),)
+-	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
+ endif
+ 
+ tools/: FORCE
+@@ -1686,7 +1686,7 @@ PHONY += $(mrproper-dirs) mrproper
+ $(mrproper-dirs):
+ 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
+ 
+-mrproper: clean $(mrproper-dirs)
++mrproper: clean objtool_mrproper $(mrproper-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find . $(RCS_FIND_IGNORE) \
+ 		\( -name '*.rmeta' \) \
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 6964175abdfd..76bcd4e85de3 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -142,13 +142,15 @@ $(LIBSUBCMD)-clean:
+ 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+ 
+ clean: $(LIBSUBCMD)-clean
+-	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+-	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
++	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
+ 	$(Q)$(RM) -r -- $(OUTPUT)feature
+ 
++mrproper: clean
++	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
++
+ FORCE:
+ 
+-.PHONY: clean FORCE
++.PHONY: clean mrproper FORCE
+
 
