@@ -1,275 +1,211 @@
-Return-Path: <stable+bounces-223708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHcTInj7rmnZKgIAu9opvQ
-	(envelope-from <stable+bounces-223708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:55:20 +0100
+	id SJB6Ebj6rmnZKgIAu9opvQ
+	(envelope-from <stable+bounces-223709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:52:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB91C23D280
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:55:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4395A23D1CC
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 17:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B334312F022
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 16:49:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D2CDE300107B
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 16:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21E03D9046;
-	Mon,  9 Mar 2026 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7992741B6;
+	Mon,  9 Mar 2026 16:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IXRTXnUO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e8i9w6fM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2983F3D7D79
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 16:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C54322A1D4
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 16:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773074894; cv=fail; b=hKZMcwsSQT9Rli1sWq1GLB2boxyl11Y7ao8uJzbr9tLqnRLzXbmUK0j+0C1oYBILba/jap/VEmpmPoZw2Ty96qc9CYibCzdgRoVuwUegeLWRbp8G0ZbilAIt0EvL7FEzO1XPcMIAWIv5FOE27W31gq9zrjrq2VWBFoXM5bzbp9U=
+	t=1773074999; cv=pass; b=dbtr8W1G7Uz7tDBXTrEG0gGPCBkW0mqV7GZ74vhtWy3dCYiERonrTbxOA1qHYRKmZtOuhLJhvYy3R0g3Q1nbsFsfQtlmsX4MZA6Doov38KnG9vVDZJLV8PyL/DUN697n/CzyDiExfGLJ+OK4DwB8xAnxzEZ/9DtwV48lxdtlrrs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773074894; c=relaxed/simple;
-	bh=Mx3ginhVXJLSQ6R5HnrlQFHXnF3aHadQoRXqHj8mk+Y=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=nYlA99k6oW+ARZqA4DGC26LQ9sN6ndaBSw3A+QCP9Xg4UriBgitUrrAHWPyCPVlK/UBwbugKH/HYPZIneW4nkfO/ojSdgpRFDmVVyxqJK70Hx25xpMzpx5GuZqIlS9qrEmXMIh53xvsXcla2HUqPJtPkgBe+nRrZki0ZHukUNfA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IXRTXnUO; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773074893; x=1804610893;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=Mx3ginhVXJLSQ6R5HnrlQFHXnF3aHadQoRXqHj8mk+Y=;
-  b=IXRTXnUOg3r5wUOjb3tllaq6+k16uDTWjbFfZfI7cBKYKdk8uyA/tYId
-   oLDJCvc98oR2U0HYrfRHE/Ytw3wobsVa01lUvsHJ2AVFIGxepqJouDUxD
-   ikNnounnXukLzTtxVU1I8q9dcvg/GMeEBWuNINssXQeF764g80MQvC2N8
-   31uL0LRfg//1k3ST1x1JVCBLgKaCFhQbu/d+y8td4vf9TuO/h3W+x+sBw
-   zPv7sE/CRKsYCaU2saGnWNG8A9FRnblKpV8uPG+FYNUBkA2Nplrcz/6o3
-   T+Sgdo7alhiW3DF1eq+qy5UaJx1YQDmEZD8xGNxVZjm9f2dvDArVGHhGU
-   w==;
-X-CSE-ConnectionGUID: FaUmmMy6TN6Qm+aerCRgiA==
-X-CSE-MsgGUID: cIT4Ve3gTDyJvdqtfx54qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84741324"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="84741324"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 09:48:13 -0700
-X-CSE-ConnectionGUID: mi2RXe3gSeWJEK1DzN0O4w==
-X-CSE-MsgGUID: 3usXzaCMRoCb/lSSQ9t2+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="224507555"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 09:48:13 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 09:48:12 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 09:48:12 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.25)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 09:48:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xla9TNAWe3TO0ZaXLMFBX2ZdlXJsQUydBr08faM/R+4dADibqsRRbWl71rLg3d8YiLKxEVfViOiyAxzRQJmD+oF/b0q2OXfIacHrUoDJTMhU6g02tk3MH6iCrOjNly1FnbCRxXXa5Wxbn/eLEd08IxT6VlTBWgRBdiEOXVRseXX8N42t6Vtun2g+/1WqyVodPb1DKQ5owC9bOvyuYJWxYns9dRLo0S5ws/9y6zVPM029kuKAZyePQhT28kwmF05Y61xTjZOSxCQ+e8g8y69iPKpQ6lk4f7AlHFdFchGJH+JphuVIFPjLjmdVugYPKDjKXNvSpOXIYiqrxPTcgUSSeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zZGsvYHZv6qjigxLgv0QIwH3Esik2BZDuSJjPr2n0yQ=;
- b=WNmF/+2iK4HJR1pBjGxwvJbz2XbOXGeQC+Ywf+ZGeehBWB6mkagnbOqntlE3zH1BGUd2tQjZSxAhH66a9d2viJUVEzgpGpxTGP6+oKmz1KoiOv9o7UmtLYOFHh1X1Odo9+aTlQ7knD76HxZJTYD6lphBhYlcUkf4ifg55/7ngEcEAd64Ljr8+qr1SnIbZ2BaQXvFcWsoEQs+IWVxAMGtkSrryZBnK9D2XmjzVemXgNjBCWSXPtnX6DRmc5OPl58G2hVKy0aYGIp9sMAxXnv1o9T5GbuqWkv7KtDDT/20zBQ5hz4a866SBeDFB+dqkmZpl5xjWDoHyXicE1QKe951Zw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by CO1PR11MB5186.namprd11.prod.outlook.com (2603:10b6:303:9b::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.10; Mon, 9 Mar
- 2026 16:48:09 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523%5]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
- 16:48:09 +0000
-From: Imre Deak <imre.deak@intel.com>
-To: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
-CC: Mohammed Thasleem <mohammed.thasleem@intel.com>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Tao Liu <ltao@redhat.com>,
-	<stable@vger.kernel.org>, Jani Nikula <jani.nikula@intel.com>
-Subject: [CI] drm/i915/dmc: Fix an unlikely NULL pointer deference at probe
-Date: Mon, 9 Mar 2026 18:48:03 +0200
-Message-ID: <20260309164803.1918158-1-imre.deak@intel.com>
-X-Mailer: git-send-email 2.49.1
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: GVZP280CA0009.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:273::7) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	s=arc-20240116; t=1773074999; c=relaxed/simple;
+	bh=KAaPZbb0DZR9Gm52FjNA4Inv7exM2JbDH3cVjDEaakU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N1XQIMG1aaMEoAgplrDKvq2g//ago52lofJuCm2PseJ1gXDAaSOd0bDwpHHMOYL0yiFwnQCAfNvxBWUTMHXFs+aU9QWcZYN6efPEgn7xx3Qli5JUl5id4EoelsIslpEfeo891GnF0Ly1ZKHBYr/WA/pfPDpPrpyHHHtXmgZSr90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e8i9w6fM; arc=pass smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cd90401034so61531685a.0
+        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 09:49:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773074997; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PxYHZhKjH5yRG0mOaGgfFaD/bZsR10Ao6vSWRw410mRGUG7WSU1fV1QhBRByPpacvx
+         +R+YO8qs9STZ5zGAW+6FowVzXR4R5ekHgj4cPuXDvQMsFjAaPOMa29ZQ/J8KxjCaEZRn
+         zD/qJ8pJ61fulk67m+HH3CRU6Cnp96k2frBUlO03awS1Qc87J39zT0a3dsoCV2YrY2LL
+         hsUadrssBKLBhL1DAz6DuPRCLR6TsLYirg8oqgtqyWKL/kn21lC/FTeljdbwPwveYue0
+         WhSBvewk1PLqMmiYPUhqclMlP7FtHQwhjzXYVSd7BSR1O+o8aMp9TnVPJ0+vdXHi47tg
+         UcHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ezYVrHR1lgcWwO9n3xsdtR2MeYabbPAdyBaDkHGJ+Z0=;
+        fh=Twe8LfSSzCRuKFh4R8dnC2TIy69Rmx2fuF1hUsegUmI=;
+        b=d/P5M3UlXS4eBPsWvlRDHiTSYM8wWoanKLHktJzml/v9WnxtsLTLwoOUOveZ+nGQrY
+         vPXs1iqiK8/rxC4+tc8l7PKutdancZIZUIWw1Zux1R7ydgj5Jsu9fVAVMYW+kR6sIZD0
+         564Nfahl3zPCxeA8DoEoqrVFUVT5O+zIVsc943UwXuO7U6lIeovZVu8GAMtrClqbYu1a
+         9hG9KauL63sDRGqnyveWZ+YEwjPe9jZVuhpA7ROCDXhmzfOUvfph2/rvdYbB5tGk296G
+         Z1bDJngh+nllrB15IYFuPxyiy17p13iiZkioil1uRiBljAKBUbvNvSDqw1IZktFWJZfU
+         DRvQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773074997; x=1773679797; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ezYVrHR1lgcWwO9n3xsdtR2MeYabbPAdyBaDkHGJ+Z0=;
+        b=e8i9w6fMF4QIzhv3ERPxJnOHdSDX30bsicBiXS1x7nPzm/Nxjm211pJb1cY+DiJp7k
+         /kQlgwSJzst7XyAmU+acGborBFlDC2wc2sXLn/KRTdN95WIqp4p2bzntBGF6A2gHAD+5
+         KR5Ky0cs0fjzPe5uEuOspEWNm+ZUtjycYSaErI7plcL71QzXQt+4wW2J7ol/wM5JpR0+
+         wSzC82IaSA6gNy3BOQnSL33CCQNINWJyTx/UxmkwcEXvWUWzULfUKYrTtoMXTO30KQdG
+         kyO/kXn6dhvvx3yn7iZAyyYSau/kWVkT5d6yJqKU1mx8X6GhNulohMgSE7iSIio2TSk+
+         TZ/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773074997; x=1773679797;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ezYVrHR1lgcWwO9n3xsdtR2MeYabbPAdyBaDkHGJ+Z0=;
+        b=OsEpIYu08waruM3bnSFOe0/ZcxiKdSu3X8qCNt0xZHwg9W3jb3wqE5TRV+s7lYDro1
+         P7TRH3BUSGh6L2LwhzBNP5ouvhJ/7ctCSHYC4NiDbPvYiQ4vjaMUH/cDkNO1eWe35BLq
+         tinW/JEUqL+EmPqHiGl06MD1X7rpEVbsj+CnSkfTMOnME9GBxZ1B5fpnL1MdgrBGV0Pm
+         YjSy2WlwFbsbAYwSnG75QkXdUhJTIMLw3jniBC3Bvo5swoaT0m92fEVk6Qr540GF7Zyl
+         /CxGk1LqDW9X1K3G2Q5DMEee9Su6+Ok5rO/XSoHUlOM4h6AFZnUelW+bPCLBD8ue82vK
+         zVsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJCjyZC4E67v4RFNLXdRzh9u9HnW9rEUghCdt7WNLJv9bkRRyLyX/HAN3WPZYfBXzBuuoUzgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFB5zhAZfQSPKQwESxuUb0ZGwVUMVsljcExdb3ye5urAORT/ec
+	m4uOadAT87k/eJa09LKKWSImaB5V54TOJg80GxN8+P8Tn1hWFUHjrB+G7ZCkg/nyUj7L1H3tAT+
+	33yxwVekgX5CKzBp8EFqXUBjZpK6erk4=
+X-Gm-Gg: ATEYQzxk1EP1aToxgjW/mEtDQ2fKVkJ60I8Szgz+PY1W0cAZzCAwqmnHbJxF9dWoR+k
+	P+hAAy7h07sJL4asct+DnLRYG22ViB1cFgaN5OaN/0eVrIiQvUniCdc2BUBW/9wzdNnwMx2KXIL
+	Tq0V37Z4O1zV2fDcMxb6157mgIjI5T0amlnqG2iG4MNNRIRamoDEQXePurOs6l6G925hNh3MpVS
+	j2oNi7JKVmldSKSiXSLnR0lWflwHQkpVn/ZMfKnI3PBHOcU82iHOY3Mus9rk0/k2dtEV5eMaGRV
+	PEQ4drdeui7flmW94jKfMxQTaIGveD1qQ40ejacwOILHZ99+4seqGAfZ1XFsfqyVDIBZgUKrk3d
+	lio4is+u7Y1xKtJagukFaKI9zNrz8wkZkOAczTkHd+8kbYc3/98S8YbgtgkR1GGfcoHpREg3hGc
+	cpb7xESMvK3GZeDyTx6VP4
+X-Received: by 2002:a0c:cdc1:0:b0:89a:ec6:102c with SMTP id
+ 6a1803df08f44-89a30a348b0mr122617186d6.19.1773074997053; Mon, 09 Mar 2026
+ 09:49:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|CO1PR11MB5186:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26a64278-3f6b-4909-f61c-08de7dfba502
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: p5HeuLE7iLon1XDPbez27QOGq/Kk19ASVP3NOiY2WpCa7RYoa0vW3kz47opuhQcVuDJyh+IuX/EylQfNYrMkOc/tQukgwVjAE14eQ0Yagy/KFFDIxwDmV7uQ4EdR87bKblYjUJjvCNIhEJ1h8uSWlO+zsOa/FrOs+c5Z+ozOsQIaH2FqQpa9xu6TDFN+vXjGmH2iIp4jjSNXgTmTsH0Cu/EfxsHuyDR1NhZ5/oCK5gPu9EVo99E0K495ZWLVf9yDfHUYEYey6Y7MahP72SDMoocAi7rlx+QgyVrXmUOfou4VjF8TSE5BTe3do20YRdqU9Q7vZTaBlgaUJP+d+nQjur3lwr/goqPWCXTVBh4iJBo24jw+qItmsFVk82lRsp0ybp147LumCcfuxe2VsyP44c3sE13p2wgxXHd3zafxiC4BrCZuQ6WdU+X5KhEe9x+C2W34xs9Dga6IjqRuuoOccHUX/kh1LwdF4+VdjRUJIVHQkNSKJEL5fsruCosF0YqxUFLwGn6FFDoAJfpjUX+Uowfsm/nL8nxT1czjIj/0LBePKpca4ZB5PwfW8IBGXujPpZ3GTVAgbk3Qc2L6Nc2xzArL21y6ybo8LUkmCs+t2A7ZQcWhcKshhleCZfVFgONFUJ4t39/gIghtHziutMIBy5aPiFFATza7NVGEHaUC/xwpH3umeSIyY/XW0GMEybv/
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?BAtfvUEtG/8ct/ENqtHL7lFjObg609o47qHo5uqyg9Inj5XgTL2Dn/OFCoy6?=
- =?us-ascii?Q?UmNe8mFv0/ZKKo1QKOQxQu5jUowzU4HeWGS+b9IIq8jSAP8w7MEYpqPvkL/X?=
- =?us-ascii?Q?Makcd8oyA4aGZfF/DOkXh5oFM8FoFF+2alz4aKRyxfUQB/A11rlUemmV+z7o?=
- =?us-ascii?Q?gSxGnYfAHQPjNmRNPsPObqVaLBnomo8niT+EVcIPtKK250qsnGFtChazx4+i?=
- =?us-ascii?Q?XcDy7cW6EhAH2oPvgtBUUCdYdK2RadGS9aiby+mE/jgXT2PxZPTpPqNuEG8W?=
- =?us-ascii?Q?BWWLDY0Wl7zrUqH3C0nkTjdf84qPeAUtbqLRvQqpORZPcLUbWWCKemKYJ3LX?=
- =?us-ascii?Q?IN6UPDUMjHt6SBAznqS98Ps6ur6/l+WiHUG/osjr6oqbCbKxPeVC3gbzY9SO?=
- =?us-ascii?Q?c51dIJulAbSmFWKtgC3EdSKA/5va+MS7tKAEzLjE6f5f+olwWPfeke4lfvzU?=
- =?us-ascii?Q?ozmgNgX++BWz8wtx2y8lkEHO6fLiELAuc+GPmNGQ8LeiKb0THk++p5ARHDjB?=
- =?us-ascii?Q?Bhna3+OngrQUyf1rBf5vTLbsT7H1ciLryisn59s/HWuhINqhwRbaP5OC8qCM?=
- =?us-ascii?Q?FnvFXc4Mi9OtoxI4iJSWTbHEnJ6SFSsfNX8RRqmUQxwLFBZxfS5Cg+F93YPt?=
- =?us-ascii?Q?97nqSaailtjLXqvIcMZ0+0T0ke2JPWy6aAnm6dNlm/2AQdqgyuzaf0jcckGE?=
- =?us-ascii?Q?U4Jr6pQW/7eHKnUXMVdAnW6s3S+gDaM4K0Sl+wFp+Rx1T6BA+qRg4JZurpup?=
- =?us-ascii?Q?OgPMAIfYGqjdfGPY5nGmPS0IpJva3ww86+OPAabZVQrhCt/jSMlJtAU7ilEJ?=
- =?us-ascii?Q?XfIOBNjLtCESzaixdYAXil7S7l41TeicHN1Qi9eEmQXR0GZlLX4OXWGwqVUc?=
- =?us-ascii?Q?39uoGCAYsTgq6WRYu5Wv6sc07aSgKgS3Az1rU1XEjRdxgufUjiZ4L73Z2hfE?=
- =?us-ascii?Q?IbDehn8ko6jw3jFjzgt75Ss0aAtfGwf4AqJNJY+eud+z7bluHyoMZJWKPd0m?=
- =?us-ascii?Q?FFL3Jhr4BNd0g+4yAe6vgAVhMvcHLVWKL9K7M+V5Ncdk1+oD8AQPPf9YHWZG?=
- =?us-ascii?Q?W72Zrmqd8Y+YSV/kTdaYTO/5VO7WFsFICQJNQwQyUA+tB1PUp8ZylwAObRHR?=
- =?us-ascii?Q?qc7j+PGh82qSYmKksvDvlBlM48X3SBaivD0S0TLqv+QXl23QAVxQU1VPt96j?=
- =?us-ascii?Q?3/RAlhq518biaEuEYsSUbOTZz0QPwgcDr8MIuqHDuEvMS2dF7jXxeeGkjIUR?=
- =?us-ascii?Q?g8wnzOKJ0NmA2Z13priowxresueNB0z6Ie+FeKxKbj1eMJqK5FNoFu4zVbx7?=
- =?us-ascii?Q?xO99TGwcMNXFDOTtB7nf9xeBMLV92WOhZrVBNmbGcFTcJiBAqo6qWAp0IQ/D?=
- =?us-ascii?Q?TgLLwE492TFRBDzNH4mYnA+t45WYgafRWk5/QE2OmwLT96EbjWRJFaxPkyx4?=
- =?us-ascii?Q?ALrfvg2HRu+PzhGcfyr6thgx5dcVzm/dQzkuobFBchdaaLmQwL6ss47QTeiZ?=
- =?us-ascii?Q?RD5ct1FLibDMsKhDLs05SxPwFVJiv95tiJ1fGc0aeMgs0lpRspxHm0d/Fxv+?=
- =?us-ascii?Q?LwRsIr500DH54BZc5GxAIiyy13Mk0VAH7GVJ8CYt60fXjombuvTsBmjeBP4c?=
- =?us-ascii?Q?mnNcpg0T3JxPhA1RkcUYJ+CqdJCTfoi6VhF4a8Z1a0m1Sz/iCwbv+imvBTr1?=
- =?us-ascii?Q?X0M/TiBM6N3zXvFooULMJldXz/pm3UIEUkwa1VJStjFhkek8yYIRVbBu5vzD?=
- =?us-ascii?Q?CKAYMt0xZg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: dvlucT+oMfDHthlLpJPJhBwm3dG6vO7+xxpWvQzvVBCfO/N4kU6pxoX5ILOuZVBIiVldXTrDq9/kLKIIgiwgpfDCL6ZERZIw/QETMrIKOUaDZowEbs+pQzeQSOLzpn0TdF08kA1Qer3Y+d6wlU6eYz4EgxhRsAN6i1OPmF87jsQatYy0XOvwLhOJMqAAhbkjl8/b2WV2fdNWz3fU9JENP1mg9Ffia0eNlR4AyYY+v4mgy2Y20q77v29Prle+S/YkLNoxAeZXj08V3oAIjZ2FkQikhfkD3h1HwyOKg1CEunWDlzBN9ein2cys8RUx6v7ChNHIirc4eddsFQPAAKwfmw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26a64278-3f6b-4909-f61c-08de7dfba502
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 16:48:09.3848
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gARvEDF2HUR1TEXOVS2GdgF63gETC4HtDKPuwVAAwDLULvditd/9l0q+x6AtMECyWLKUGTGY/cJALZDidr1SGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5186
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: DB91C23D280
+References: <20260309103049.22169-1-bharathsm@microsoft.com> <nvmbb2fbm2zkqyk4x254d33llskfldguygq5pfkedv36upems7@jcofwqya42t4>
+In-Reply-To: <nvmbb2fbm2zkqyk4x254d33llskfldguygq5pfkedv36upems7@jcofwqya42t4>
+From: Steve French <smfrench@gmail.com>
+Date: Mon, 9 Mar 2026 11:49:45 -0500
+X-Gm-Features: AaiRm53tLnbdLcEbou2BkAZ73WFR62nyhqqgct1D2L97UsGXrHnh4TsVioqBhIg
+Message-ID: <CAH2r5mtjTN1gs0sbZsKtRzRO6vRfYFPpZc-14EPfRSKPOoqbag@mail.gmail.com>
+Subject: Re: [PATCH] smb: client: fix in-place encryption corruption in SMB2_write()
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: Bharath SM <bharathsm.hsk@gmail.com>, linux-cifs@vger.kernel.org, 
+	dhowells@redhat.com, sprasad@microsoft.com, pc@manguebit.com, 
+	ematsumiya@suse.de, bharathsm@microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4395A23D1CC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223709-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223708-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,redhat.com,microsoft.com,manguebit.com,suse.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.977];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email]
 X-Rspamd-Action: no action
 
-intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-initialized, and dmc is thus NULL.
+merged into cifs-2.6.git for-next
 
-That would be the case when the call path is
-intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-intel_power_domains_init_hw() is called *before* intel_dmc_init().
+On Mon, Mar 9, 2026 at 10:52=E2=80=AFAM Henrique Carvalho
+<henrique.carvalho@suse.com> wrote:
+>
+> Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
+>
+> On Mon, Mar 09, 2026 at 04:00:49PM +0530, Bharath SM wrote:
+> > SMB2_write() places write payload in iov[1..n] as part of rq_iov.
+> > smb3_init_transform_rq() pointer-shares rq_iov, so crypt_message()
+> > encrypts iov[1] in-place, replacing the original plaintext with
+> > ciphertext. On a replayable error, the retry sends the same iov[1]
+> > which now contains ciphertext instead of the original data,
+> > resulting in corruption.
+> >
+> > The corruption is most likely to be observed when connections are
+> > unstable, as reconnects trigger write retries that re-send the
+> > already-encrypted data.
+> >
+> > This affects SFU mknod, MF symlinks, etc. On kernels before
+> > 6.10 (prior to the netfs conversion), sync writes also used
+> > this path and were similarly affected. The async write path
+> > wasn't unaffected as it uses rq_iter which gets deep-copied.
+> >
+> > Fix by moving the write payload into rq_iter via iov_iter_kvec(),
+> > so smb3_init_transform_rq() deep-copies it before encryption.
+> >
+> > Cc: stable@vger.kernel.org #6.3+
+> > Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+> > ---
+> >  fs/smb/client/smb2pdu.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> > index c43ca74e8704..5188218c25be 100644
+> > --- a/fs/smb/client/smb2pdu.c
+> > +++ b/fs/smb/client/smb2pdu.c
+> > @@ -5307,7 +5307,10 @@ SMB2_write(const unsigned int xid, struct cifs_i=
+o_parms *io_parms,
+> >
+> >       memset(&rqst, 0, sizeof(struct smb_rqst));
+> >       rqst.rq_iov =3D iov;
+> > -     rqst.rq_nvec =3D n_vec + 1;
+> > +     /* iov[0] is the SMB header; move payload to rq_iter for encrypti=
+on safety */
+> > +     rqst.rq_nvec =3D 1;
+> > +     iov_iter_kvec(&rqst.rq_iter, ITER_SOURCE, &iov[1], n_vec,
+> > +                   io_parms->length);
+> >
+> >       if (retries) {
+> >               /* Back-off before retry */
+> > --
+> > 2.48.1
+> >
 
-However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-conditionally, depending on the current and target DC states. At probe,
-the target is disabled, but if DC6 is enabled, the function is called,
-and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-at probe, as we haven't seen this failure mode before.
 
-It is also strange to have DC6 enabled at boot, since that would require
-the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
-the driver stopping / reprogramming the firmware is a poorly specified
-sequence and as such unlikely an intentional BIOS behaviour. It's more
-likely that BIOS is leaving an unintentionally enabled DC6 HW state
-behind (without actually loading the required DMC firmware for this).
 
-The tracking of the DC6 allowed counter only works if starting /
-stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
-DC6 state (since stopping the counter requires the DC5 counter captured
-when the counter was started). Thus, using the HW DC6 state is incorrect
-and it also leads to the above oops. Fix both issues by using the SW DC6
-state for the tracking.
+--=20
+Thanks,
 
-This is v2 of the fix originally sent by Jani, updated based on the
-first Link: discussion below.
-
-Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
-Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
-Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Tao Liu <ltao@redhat.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Tested-by: Tao Liu <ltao@redhat.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
----
- drivers/gpu/drm/i915/display/intel_display_power_well.c | 2 +-
- drivers/gpu/drm/i915/display/intel_dmc.c                | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_display_power_well.c b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-index 1e03187dbd38a..f855f0f886946 100644
---- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-@@ -852,7 +852,7 @@ void gen9_set_dc_state(struct intel_display *display, u32 state)
- 			power_domains->dc_state, val & mask);
- 
- 	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
--	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-+	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (!dc6_was_enabled && enable_dc6)
- 		intel_dmc_update_dc6_allowed_count(display, true);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-index c3b411259a0c5..90ba932d940ac 100644
---- a/drivers/gpu/drm/i915/display/intel_dmc.c
-+++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-@@ -1598,8 +1598,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
- 		return false;
- 
- 	mutex_lock(&power_domains->lock);
--	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
--		      DC_STATE_EN_UPTO_DC6;
-+	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (dc6_enabled)
- 		intel_dmc_update_dc6_allowed_count(display, false);
- 
--- 
-2.49.1
-
+Steve
 
