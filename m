@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-223584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENGzFV2hrmkLHAIAu9opvQ
-	(envelope-from <stable+bounces-223584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:30:53 +0100
+	id wI1RBiKhrmm2GwIAu9opvQ
+	(envelope-from <stable+bounces-223585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0D42371AF
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:30:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF8523715E
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 11:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4A6B3053BBE
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:29:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6E4FB301F7BE
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 10:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DA538F94C;
-	Mon,  9 Mar 2026 10:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346A937649D;
+	Mon,  9 Mar 2026 10:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jABifRT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OedcDuJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C697081F
-	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC61734DB44
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 10:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773052170; cv=none; b=V1e15pJhaAC738UEingzH841fWm3DyLHGUi3rQkAWDBw4h0k8tzIzGKiWdueB5grhfaxNQt7+Ss7BcQF3bdvZEhuPwJpILc7RA6FQ9IiXjFf7H0RnJOsqxMoW//wCErD7aM78AJq1Au5Zuc9z9NgJhmiiQ8bGgRKAAE1W41CjoA=
+	t=1773052189; cv=none; b=qeQ4ZXkChGn0yypVih3gNPdAq91rQyvn5Scf9TCptPeuDIMzK6pE1ZAz8XASpnfcDlvMsgWUegfvcEMZyZS22/QJKk4DbS37qqsEBt4owPiIz4BkrSPdwGCUYg6mvcRDli8YlMvXt8ShtKfIyTcEDHFVH5/brgTOsyhEtc7u6tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773052170; c=relaxed/simple;
-	bh=BLlSDS7X3/CzouTNzElkaIIqIVjlJEDWUAbar41eAAA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YpfiW6/x7hUAu9BVCyqhvkZM37+y2xb0sSbf2HIfX54xMYFwIK4lR5WZnPqjolUhhlT9cs47hOMUHXKtVVrFg6zMEjQEbTFyMMuUiFho6vY/wTBid4qN43MlzRJ+cytrBTcKQnsgSoK3fBybBihpzktSNpo8Y7XvXqUTwFbSE4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jABifRT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71F5C4CEF7;
-	Mon,  9 Mar 2026 10:29:29 +0000 (UTC)
+	s=arc-20240116; t=1773052189; c=relaxed/simple;
+	bh=rCECQJqpCalwhR6QItx4ZPpRxh9Rdo0etW5Z3VtK1U0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K0SHa6Z34Gw0Lw2mrG8xAkLGYrIOKkbbW12OMP81nOym5w5Kyz8TzZG9wnqRCw1ClwRwC6CaI9qI1l/9kjM6yaDIWmWRSG619GICIaxRqi1WzKun3046cVUIFS1LSGk1JBaDu90+pPDKyiodh42Yq7+ZLG/RDGAwITL0qYf8tYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OedcDuJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818BAC4CEF7;
+	Mon,  9 Mar 2026 10:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773052170;
-	bh=BLlSDS7X3/CzouTNzElkaIIqIVjlJEDWUAbar41eAAA=;
+	s=korg; t=1773052188;
+	bh=rCECQJqpCalwhR6QItx4ZPpRxh9Rdo0etW5Z3VtK1U0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jABifRT+7tKsx/nEM5U9TKWYO3ODCwMzbfgRtRWottVo95G7q3GuVUQ6ibCWlosFG
-	 peAYf6bOWawwhSa+zlglvlcMJbxoOOIst7Zmwn47dUiCozwyBeZa8aytp60p8vVu/f
-	 /Iug68Y41LMOtITPY/18LMPNrb89CxBTcOEfcHxM=
-Subject: FAILED: patch "[PATCH] mptcp: pm: in-kernel: always mark signal+subflow endp as used" failed to apply to 6.1-stable tree
+	b=OedcDuJE7+tlOT8d6US0Vb/LhNqKOQcBwhJy+x78rG/iyjMdSkt+66AObL6AfOfm/
+	 S5uSIaM1tN9Q0cqO2+CxBPsYK0g+onumW7q/BBtqdkafL3jPxHyb8PAlxiXpN0bspX
+	 VGoOoISuVIy7+/1OkMH4qlo8Ky17ehxH80/cJ6NM=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: join: check RM_ADDR not sent over same" failed to apply to 6.12-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 09 Mar 2026 11:29:21 +0100
-Message-ID: <2026030921-surround-rind-f7d6@gregkh>
+Date: Mon, 09 Mar 2026 11:29:46 +0100
+Message-ID: <2026030946-stuffy-divinely-da4b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB0D42371AF
+X-Rspamd-Queue-Id: 7FF8523715E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -62,11 +62,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223584-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223585-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -74,32 +74,32 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_SPAM(0.00)[0.129];
+	NEURAL_SPAM(0.00)[0.203];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 579a752464a64cb5f9139102f0e6b90a1f595ceb
+git cherry-pick -x 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030921-surround-rind-f7d6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026030946-stuffy-divinely-da4b@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,119 +111,112 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 579a752464a64cb5f9139102f0e6b90a1f595ceb Mon Sep 17 00:00:00 2001
+From 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 3 Mar 2026 11:56:05 +0100
-Subject: [PATCH] mptcp: pm: in-kernel: always mark signal+subflow endp as used
+Date: Tue, 3 Mar 2026 11:56:04 +0100
+Subject: [PATCH] selftests: mptcp: join: check RM_ADDR not sent over same
+ subflow
 
-Syzkaller managed to find a combination of actions that was generating
-this warning:
+This validates the previous commit: RM_ADDR were sent over the first
+found active subflow which could be the same as the one being removed.
+It is more likely to loose this notification.
 
-  msk->pm.local_addr_used == 0
-  WARNING: net/mptcp/pm_kernel.c:1071 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210, CPU#1: syz.2.17/961
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 961 Comm: syz.2.17 Not tainted 6.19.0-08368-gfafda3b4b06b #22 PREEMPT(full)
-  Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.17.0-debian-1.17.0-1build1 04/01/2014
-  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline]
-  RIP: 0010:mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline]
-  RIP: 0010:mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210
-  Code: 89 c5 e8 46 30 6f fe e9 21 fd ff ff 49 83 ed 80 e8 38 30 6f fe 4c 89 ef be 03 00 00 00 e8 db 49 df fe eb ac e8 24 30 6f fe 90 <0f> 0b 90 e9 1d ff ff ff e8 16 30 6f fe eb 05 e8 0f 30 6f fe e8 9a
-  RSP: 0018:ffffc90001663880 EFLAGS: 00010293
-  RAX: ffffffff82de1a6c RBX: 0000000000000000 RCX: ffff88800722b500
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffff8880158b22d0 R08: 0000000000010425 R09: ffffffffffffffff
-  R10: ffffffff82de18ba R11: 0000000000000000 R12: ffff88800641a640
-  R13: ffff8880158b1880 R14: ffff88801ec3c900 R15: ffff88800641a650
-  FS:  00005555722c3500(0000) GS:ffff8880f909d000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f66346e0f60 CR3: 000000001607c000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
-   netlink_sendmsg+0x4aa/0x5b0 net/netlink/af_netlink.c:1894
-   sock_sendmsg_nosec net/socket.c:727 [inline]
-   __sock_sendmsg+0xc9/0xf0 net/socket.c:742
-   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2592
-   ___sys_sendmsg+0x2de/0x320 net/socket.c:2646
-   __sys_sendmsg net/socket.c:2678 [inline]
-   __do_sys_sendmsg net/socket.c:2683 [inline]
-   __se_sys_sendmsg net/socket.c:2681 [inline]
-   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2681
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x143/0x440 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f66346f826d
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007ffc83d8bdc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f6634985fa0 RCX: 00007f66346f826d
-  RDX: 00000000040000b0 RSI: 0000200000000740 RDI: 0000000000000007
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6634985fa8
-  R13: 00007f6634985fac R14: 0000000000000000 R15: 0000000000001770
-   </TASK>
+For this check, RM_ADDR are explicitly dropped when trying to send them
+over the initial subflow, when removing the endpoint attached to it. If
+it is dropped, the test will complain because some RM_ADDR have not been
+received.
 
-The actions that caused that seem to be:
+Note that only the RM_ADDR are dropped, to allow the linked subflow to
+be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
+code is used. If the IPTables commands fail, that's OK, the tests will
+continue to pass, but not validate this part. This can be ignored:
+another subtest fully depends on such command, and will be marked as
+skipped.
 
- - Set the MPTCP subflows limit to 0
- - Create an MPTCP endpoint with both the 'signal' and 'subflow' flags
- - Create a new MPTCP connection from a different address: an ADD_ADDR
-   linked to the MPTCP endpoint will be sent ('signal' flag), but no
-   subflows is initiated ('subflow' flag)
- - Remove the MPTCP endpoint
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-In this case, msk->pm.local_addr_used has been kept to 0 -- because no
-subflows have been created -- but the corresponding bit in
-msk->pm.id_avail_bitmap has been cleared when the ADD_ADDR has been
-sent. This later causes a splat when removing the MPTCP endpoint because
-msk->pm.local_addr_used has been kept to 0.
-
-Now, if an endpoint has both the signal and subflow flags, but it is not
-possible to create subflows because of the limits or the c-flag case,
-then the local endpoint counter is still incremented: the endpoint is
-used at the end. This avoids issues later when removing the endpoint and
-calling __mark_subflow_endp_available(), which expects
-msk->pm.local_addr_used to have been previously incremented if the
-endpoint was marked as used according to msk->pm.id_avail_bitmap.
-
-Note that signal_and_subflow variable is reset to false when the limits
-and the c-flag case allows subflows creation. Also, local_addr_used is
-only incremented for non ID0 subflows.
-
-Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/613
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-4-4b5462b6f016@kernel.org
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-3-4b5462b6f016@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index b5316a6c7d1b..b2b9df43960e 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -418,6 +418,15 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 	}
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index dc1f200aaa81..058ad5a13d24 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -104,6 +104,24 @@ CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
+ 			       6 0 0 65535,
+ 			       6 0 0 0"
  
- exit:
-+	/* If an endpoint has both the signal and subflow flags, but it is not
-+	 * possible to create subflows -- the 'while' loop body above never
-+	 * executed --  then still mark the endp as used, which is somehow the
-+	 * case. This avoids issues later when removing the endpoint and calling
-+	 * __mark_subflow_endp_available(), which expects the increment here.
-+	 */
-+	if (signal_and_subflow && local.addr.id != msk->mpc_endpoint_id)
-+		msk->pm.local_addr_used++;
++# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
++# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
++#				  (ip[66] & 0xf0) == 0x40'"
++CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
++			      48 0 0 0,
++			      84 0 0 240,
++			      21 0 9 64,
++			      48 0 0 32,
++			      84 0 0 240,
++			      21 0 6 192,
++			      48 0 0 53,
++			      21 0 4 12,
++			      48 0 0 66,
++			      84 0 0 240,
++			      21 0 1 64,
++			      6 0 0 65535,
++			      6 0 0 0"
 +
- 	mptcp_pm_nl_check_work_pending(msk);
- }
+ init_partial()
+ {
+ 	capout=$(mktemp)
+@@ -4217,6 +4235,14 @@ endpoint_tests()
+ 		chk_subflow_nr "after no reject" 3
+ 		chk_mptcp_info subflows 2 subflows 2
  
++		# To make sure RM_ADDR are sent over a different subflow, but
++		# allow the rest to quickly and cleanly close the subflow
++		local ipt=1
++		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
++			-p tcp -m tcp --tcp-option 30 \
++			-m bpf --bytecode \
++			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
++			-j DROP || ipt=0
+ 		local i
+ 		for i in $(seq 3); do
+ 			pm_nl_del_endpoint $ns2 1 10.0.1.2
+@@ -4229,6 +4255,7 @@ endpoint_tests()
+ 			chk_subflow_nr "after re-add id 0 ($i)" 3
+ 			chk_mptcp_info subflows 3 subflows 3
+ 		done
++		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
+ 
+ 		mptcp_lib_kill_group_wait $tests_pid
+ 
+@@ -4288,11 +4315,20 @@ endpoint_tests()
+ 		chk_mptcp_info subflows 2 subflows 2
+ 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
+ 
++		# To make sure RM_ADDR are sent over a different subflow, but
++		# allow the rest to quickly and cleanly close the subflow
++		local ipt=1
++		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
++			-p tcp -m tcp --tcp-option 30 \
++			-m bpf --bytecode \
++			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
++			-j DROP || ipt=0
+ 		pm_nl_del_endpoint $ns1 42 10.0.1.1
+ 		sleep 0.5
+ 		chk_subflow_nr "after delete ID 0" 2
+ 		chk_mptcp_info subflows 2 subflows 2
+ 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
++		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
+ 
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
+ 		wait_mpj 4
 
 
