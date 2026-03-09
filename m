@@ -1,182 +1,227 @@
-Return-Path: <stable+bounces-223689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBqnNi3prmlRKAIAu9opvQ
-	(envelope-from <stable+bounces-223689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:37:17 +0100
+	id 2M0mLjjmrmmsJwIAu9opvQ
+	(envelope-from <stable+bounces-223688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:24:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5859023BD07
-	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:37:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F7F23B96D
+	for <lists+stable@lfdr.de>; Mon, 09 Mar 2026 16:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B332C30729DC
-	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:24:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 64BFD3012D16
+	for <lists+stable@lfdr.de>; Mon,  9 Mar 2026 15:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DE13D7D7F;
-	Mon,  9 Mar 2026 15:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3913D9048;
+	Mon,  9 Mar 2026 15:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="XQS6+1DF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nPMdMG6u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com [91.207.212.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6FC3D5229;
-	Mon,  9 Mar 2026 15:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC153D75D2
+	for <stable@vger.kernel.org>; Mon,  9 Mar 2026 15:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069865; cv=none; b=WND6vBMdd0Odd2xCyv8VsEnx4XGr3waHpBoWufER11oxPIcOkzUtW39PFrpYSPH+OxVhYfphYxPvhFPi2ihxQGbLidjbysKtOs73emXzJ9oRFVTJSvjRTNBB2Q9wuc9hNz5YXDNFgPUazy3L/uSB67a+pwM7v8foyhWX3zz7p7s=
+	t=1773069864; cv=none; b=U8V3RdNq6YEhnxb+6gB+0O/FWnyOHskLBqJS2lsxkv0Ag/cgMYXvSK3ESgeSHFFioQsILSNbjrouuhAj85Aq3hTYStv0UZytOevN92n9hVQvdQwY8pXUlX7ysK7wOXfT9Lao5Npdto9q+/ohXMuZCSF6maTWGtxD7o4NckNV+Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069865; c=relaxed/simple;
-	bh=oXjAn/frMEepxVkPh4OGIzVy+5lq+FiyZyDdSC/VmC0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=RzAnGk3/n5JE63LV59ge8gpqjWV9ALiqRTx5M1N6enPDnjrsx8FJo4ulIYBtA2Yu5RuE3pwybv4Y3NQ4U+pBLVQZOQR9agN//DblSf1XUGsXPZerrIqGbv41QD6+Vv7gO08DFa9BsEb3s3IFUQiGwqi5XbWhqzFipqq728dPzvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=XQS6+1DF; arc=none smtp.client-ip=91.207.212.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
-	by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6296QwPF4109588;
-	Mon, 9 Mar 2026 15:24:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=dk201812; bh=Aj4Z112A+l8JwYyMToVVYm9
-	DQ9T6e9MfPk1hwZSFXS0=; b=XQS6+1DFyaDuir2kCvXSmPkZoAvLlEjVKs9lnyk
-	cPEh6U6L7lrVP+r/78tk0QXtp1u6iAg3Fp5CEtQjnVHjDCiJXOjU0Lx4OZszBdty
-	tC+EpVThhtEAnhnFFeraoR1y/XLPGfkQBxppa4y4/Hwpx0uhjTMXuvloaGHoIIQE
-	cdp3qB3T5QKUXBvBgdsuymugGn0rHFnQVdae74IWxjUwHNusdD0ZE3JmO+4uRdbT
-	OL4uBC/PrxLQ9T8JRb+G1aE/MnLIviPpc33kf93E5jHzzKe+qD+MhT7IY1lgGqDD
-	Ue+k8ZANTHb7wo12qGw1dr6799HbfHfy+FogOhujBWApD1A==
-Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4crb5thjrf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Mar 2026 15:24:13 +0000 (GMT)
-Received: from NP-A-BELLE.kl.imgtec.org (172.25.8.171) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 15:24:11 +0000
-From: Alessio Belle <alessio.belle@imgtec.com>
-Date: Mon, 9 Mar 2026 15:23:48 +0000
-Subject: [PATCH] drm/imagination: Fix deadlock in soft reset sequence
+	s=arc-20240116; t=1773069864; c=relaxed/simple;
+	bh=DpC95LEZ3PbFopiij8oraOckRlN1070hXVE25r0nDno=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B3/09x08r9RgpemrjQW0H/1GKkC8grNe1QTMTQ1YO35S8c4btFYwfvo/Sj01iPVZLqZ2C4dyLhiXC9y+WPvAo/1uXgALwfV1RQeUY5QSim7h8Ozd6W9LvNEUc1H/ke6axsAwiJXIk/vW8l4gUrr2iWFbqEaE0kWTmY5POU3S9s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nPMdMG6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8ECC4CEF7;
+	Mon,  9 Mar 2026 15:24:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773069863;
+	bh=DpC95LEZ3PbFopiij8oraOckRlN1070hXVE25r0nDno=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nPMdMG6u8xWaCiSaW+MFOd3241WxkDYn4932WkjxrukMU2HLJ94COkNiOg1PlQfaf
+	 O5Q2jFTnE1XvwPtA5dyH6S6xXw0gxPN71KiL6z/N1N9Fcroy4WjV6qOiTMecTE7lBw
+	 xbkWuZ5w0xD+506llGnq3L3x8C4lkMZoPLGEs8ZhayXgNOdvbq/uXibpp9Qdx5k1oJ
+	 vha/NySDmdIcBi7OmDbehMrpw6wp0BuEMEyTT3D4Zw3xkWfHNKUQycf5sJjI2JnJgY
+	 2b2Qjlr6BdIJQ04b3WzxuDo/jOEWl5igOIjHswT96uqJSD5smpv213psDcLg+Gf0kI
+	 j4UOozFuri3Ug==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Frank Lorenz <lorenz-frank@web.de>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: pm: avoid sending RM_ADDR over same subflow
+Date: Mon,  9 Mar 2026 11:24:20 -0400
+Message-ID: <20260309152420.1280295-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026030906-bullish-enjoying-edba@gregkh>
+References: <2026030906-bullish-enjoying-edba@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260309-fix-soft-reset-v1-1-121113be554f@imgtec.com>
-X-B4-Tracking: v=1; b=H4sIAAPmrmkC/x2MSQqAMAwAvyI5G6gNuH1FPEibai5WGhGh9O8Wj
- wMzk0E5CSvMTYbEj6jEs0LXNuCO7dwZxVcGa2xvyEwY5EWN4cbEyjeOgayjYSRPHmp0Ja7GP1z
- WUj74xUCNYAAAAA==
-X-Change-ID: 20260309-fix-soft-reset-8f32c3783d3d
-To: Frank Binns <frank.binns@imgtec.com>,
-        Matt Coster
-	<matt.coster@imgtec.com>,
-        Brajesh Gupta <brajesh.gupta@imgtec.com>,
-        "Alexandru Dadu" <alexandru.dadu@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Alessio Belle <alessio.belle@imgtec.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773069851; l=1481;
- i=alessio.belle@imgtec.com; s=20251208; h=from:subject:message-id;
- bh=oXjAn/frMEepxVkPh4OGIzVy+5lq+FiyZyDdSC/VmC0=;
- b=4sgUkNMjtGNG2WtaU3PEDkX9NgOL7wAfyB8aDWHlZzroC8B2s9UBz2PaMYIJUEnVKyqWsmKLw
- md5aGMs2HrHCSNVOTRiegzWwf877o7LC2cugvMgnYhxMIeGiFzwWn74
-X-Developer-Key: i=alessio.belle@imgtec.com; a=ed25519;
- pk=2Vtuk+GKBRjwMqIHpKk+Gx6zl7cgtq0joszcOc0zF4g=
-X-Proofpoint-ORIG-GUID: TVBurlFqrxhG_zc3r0SHg3lx7lbIi4k5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDEzOSBTYWx0ZWRfX4jUcNPPgPEPc
- Sa7eggDdeHKuD6L6HLWisSPdndYMFoO5rAcNdjCt+cBq8k0M4FBKxRFE/l0gqxC+vfd63Ixn1kB
- y0jcd7AFh7Ytys56wwKu3KJJGJYzxt+YoeeTcv9Xf/13fjN5kfD37zWPxBTkEqnov8NkMu5TKbh
- 2QI8jrGzRtpsGCaMrC3qrIsSPh6YUwr13LK1GGlix40y8nCaiP/J7k9GytSBLFKzzN7Cm+c6FID
- vxWmPlxq8dzzk7QJwhoONIUc6Si1oK4sVQ4ouJS6ZoyQtrTpUKJef2zYh085iiewbgrs/bVdOa/
- BYo8E295lBa6t/NDomakW9LldBD0bt2QAZ6Fx27ljwQQXNelrTSp3tXUbNpzoxx+ecryC1/upzw
- 7QzbGDK+CgWLye+kEalwqyDA1F3pQ9ikTsPjxmG1hYKWzFmCXpcjFjzq/8ZCAfufaTdbwKo1iTd
- IYpzH4MnVoVBzIRtU4w==
-X-Authority-Analysis: v=2.4 cv=VN7QXtPX c=1 sm=1 tr=0 ts=69aee61d cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=Rd4DrVCMV_EA:10 a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
- a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8 a=3oOJLAxtiLN628aBsBcA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-GUID: TVBurlFqrxhG_zc3r0SHg3lx7lbIi4k5
-X-Rspamd-Queue-Id: 5859023BD07
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 59F7F23B96D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[imgtec.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[imgtec.com:s=dk201812];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223689-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[imgtec.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[imgtec.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[kernel.org,web.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223688-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alessio.belle@imgtec.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.931];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,imgtec.com:dkim,imgtec.com:email,imgtec.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-The soft reset sequence is currently executed from the threaded IRQ
-handler, hence it cannot call disable_irq() which internally waits
-for IRQ handlers, i.e. itself, to complete.
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-Use disable_irq_nosync() during a soft reset instead.
+[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
 
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
+RM_ADDR are sent over an active subflow, the first one in the subflows
+list. There is then a high chance the initial subflow is picked. With
+the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
+linked subflows are closed. This is done for each active MPTCP
+connection.
+
+MPTCP endpoints are likely removed because the attached network is no
+longer available or usable. In this case, it is better to avoid sending
+this RM_ADDR over the subflow that is going to be removed, but prefer
+sending it over another active and non stale subflow, if any.
+
+This modification avoids situations where the other end is not notified
+when a subflow is no longer usable: typically when the endpoint linked
+to the initial subflow is removed, especially on the server side.
+
+Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reported-by: Frank Lorenz <lorenz-frank@web.de>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted to _nl-prefixed function names in pm_netlink.c and omitted stale subflow fallback ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/mptcp/pm.c         |  2 +-
+ net/mptcp/pm_netlink.c | 43 +++++++++++++++++++++++++++++++++++++-----
+ net/mptcp/protocol.h   |  2 ++
+ 3 files changed, 41 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
-index 7a8765c0c1ed..046cce76498a 100644
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -510,7 +510,16 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
- 	}
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index f1a8ae7a5af4f..c5131529e1587 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -55,7 +55,7 @@ int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_
+ 	msk->pm.rm_list_tx = *rm_list;
+ 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
+ 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
+-	mptcp_pm_nl_addr_send_ack(msk);
++	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
+ 	return 0;
+ }
  
- 	/* Disable IRQs for the duration of the reset. */
--	disable_irq(pvr_dev->irq);
-+	if (hard_reset) {
-+		disable_irq(pvr_dev->irq);
-+	} else {
-+		/*
-+		 * Soft reset is triggered as a response to a FW command to the Host and is
-+		 * processed from the threaded IRQ handler. This code cannot (nor needs to)
-+		 * wait for any IRQ processing to complete.
-+		 */
-+		disable_irq_nosync(pvr_dev->irq);
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 293ec3448f52c..f3b1e9f685898 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -850,9 +850,23 @@ bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
+ 	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
+ }
+ 
+-void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
++static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
++			       const struct mptcp_rm_list *rm_list)
+ {
+-	struct mptcp_subflow_context *subflow;
++	u8 i, id = subflow_get_local_id(subflow);
++
++	for (i = 0; i < rm_list->nr; i++) {
++		if (rm_list->ids[i] == id)
++			return true;
 +	}
++
++	return false;
++}
++
++void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
++					  const struct mptcp_rm_list *rm_list)
++{
++	struct mptcp_subflow_context *subflow, *same_id = NULL;
  
- 	do {
- 		if (hard_reset) {
-
----
-base-commit: d2e20c8951e4bb5f4a828aed39813599980353b6
-change-id: 20260309-fix-soft-reset-8f32c3783d3d
-
-Best regards,
+ 	msk_owned_by_me(msk);
+ 	lockdep_assert_held(&msk->pm.lock);
+@@ -862,11 +876,30 @@ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
+ 		return;
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+-		if (__mptcp_subflow_active(subflow)) {
+-			mptcp_pm_send_ack(msk, subflow, false, false);
+-			break;
++		if (!__mptcp_subflow_active(subflow))
++			continue;
++
++		if (unlikely(rm_list &&
++			     subflow_in_rm_list(subflow, rm_list))) {
++			if (!same_id)
++				same_id = subflow;
++		} else {
++			goto send_ack;
+ 		}
+ 	}
++
++	if (same_id)
++		subflow = same_id;
++	else
++		return;
++
++send_ack:
++	mptcp_pm_send_ack(msk, subflow, false, false);
++}
++
++void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
++{
++	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
+ }
+ 
+ int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index dd5070d57d740..329071f6b9e17 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -818,6 +818,8 @@ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
+ bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
+ 				     const struct mptcp_addr_info *remote);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
++void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
++					  const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+ 			       const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
 -- 
-Alessio Belle <alessio.belle@imgtec.com>
+2.51.0
 
 
