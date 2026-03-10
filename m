@@ -1,120 +1,140 @@
-Return-Path: <stable+bounces-223845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBsEDXXpr2nkdAIAu9opvQ
-	(envelope-from <stable+bounces-223845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:50:45 +0100
+	id QGloOYzrr2nkdAIAu9opvQ
+	(envelope-from <stable+bounces-223846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:59:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4334248D66
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:50:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8325A248F9E
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D278130470F9
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:48:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1819F309326D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E940279907;
-	Tue, 10 Mar 2026 09:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3625644CAFB;
+	Tue, 10 Mar 2026 09:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6jOYhkN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHC9I1dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D294536921E;
-	Tue, 10 Mar 2026 09:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B7144D685
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 09:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773136114; cv=none; b=umMUP2jZrWa04v24lx1uLFfwaJEg2kpW9pT3xY0F9mDdgV1euq5bfTrSd165GWIY8GsKe3cVRNCOxspCD/Tuyj9ZFxVm/LiEprqnBoTvZaaN6iFT3tpo0QG4T7kM0bGPU3VCjXQL3TzI6rxL6QUxvZIJDvDMD3oL4ufkefNpJ2g=
+	t=1773136322; cv=none; b=KeX0I5A7FFA+K9brscAo9fM2wrSezY+Uqu+j7MCxWiaFicIfobMbKsvQYdoWxMGf/J1rl4na1XKpDAriO2isngIDmxa51h2RfmPL3jVnh4iOQMDlf2zFHma2o61VpS9zlvZk4fpQfAgB8cRyGBSqm1qKVqEXJ8wV3kCf4aNNFTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773136114; c=relaxed/simple;
-	bh=L1yvzOSxU9NCf04mh5XL35W/zpGczWoYGgiPaoSk1Uc=;
+	s=arc-20240116; t=1773136322; c=relaxed/simple;
+	bh=8ysz94gib4MN0k3nl5PPYgdRJBfMJOzqmlFpZ18fESM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2i+sO4rMqZkCGdPdyY71vZ0b8TCfGsIUhRMMLGncN+P8fKP5UEyQ/z2aOP2x0VlshalJElffMrCMN9gHXZA7S9SepEa2XVeoVTD1S91tYKEDLbdXawMsLTeb/uFR8M4iTkoFsUoUdgstOR1ApJ5Y+MXIWsC/Co3CnKqaZ3QaOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6jOYhkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E06C19423;
-	Tue, 10 Mar 2026 09:48:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NJfLc1fGS90aCU6MsVfOQoKL3G/akZ7tpNFdbzciNP3GYtsSbfShBtPcu8LVMxW0rQMnlBqtSJ6RzvRn8B91YJgiKCCZ3Qa6lFq4Pipy45rYLLpd2wigT+43KPJF8GxqnjWS9LoAv3X0H6kkYwa0QkzqEA4sCWNVph9g9MQLO2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHC9I1dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9360DC19423;
+	Tue, 10 Mar 2026 09:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773136114;
-	bh=L1yvzOSxU9NCf04mh5XL35W/zpGczWoYGgiPaoSk1Uc=;
+	s=k20201202; t=1773136322;
+	bh=8ysz94gib4MN0k3nl5PPYgdRJBfMJOzqmlFpZ18fESM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q6jOYhkNNJZz9jOIJ30JvKt+vBnQZTS4tAr6Jl9xJ558Yr+lzj0i8+OXoNZl57bOv
-	 KGgqi28y9yy/EyhH+AiIYnLfMk8qcnCW0184y6o4m66Hp6ygXbgj6E2P2QWAqrpjjv
-	 cvkt9N1o3yRBTfrsGds2O4Zv9WiqB4cj08TQHTiCfjTVOUgucs+tb0NQDwPwO3eFls
-	 BE9kex6k1+/yZDkiwYnTQC2GaRym+ZKE+dCWssCeOuePasA8GNDB/S3cmkRX4xFg2a
-	 h+HAT0fBHEI2S24vCw4nOQtVl468+ZjP9FnMSGNKULDmgH8ByJecZJmzoqbVjZhRav
-	 0n08xcC7M6b5Q==
-Date: Tue, 10 Mar 2026 05:48:33 -0400
+	b=vHC9I1dCFfL9Y4CseLhfg6SY9WxTe88WXMnVvkIrT/7GDZ1pQ+vA3NV+snMTjwmiP
+	 Rhp+h45ydL84Hx8EcGRsuqwnEbT0oaJATK2uU3sxiuTDOLvLITqA1cPaa542lBZ3ki
+	 KMlsqCBA+RFbPmMrDMc9iwo+m0rAh4coJ04N6dQN5YcN0ZaZqpYHXzZBf5QoAQih/L
+	 ALQmt6sl55G5KNX1YJBteu/+q2X5eseGQ9oqTtJitGXFrkW3TmTTqAibJjwxogCSts
+	 2F9h3iLOY0HZBJeKQFvMbYa713Rpzo94DNmLb/pF7dgxOKhuHAGd18Lbsjh/uu28h9
+	 woviAaCmuSH2g==
+Date: Tue, 10 Mar 2026 05:52:00 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	gregkh@linuxfoundation.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: Patches not posted as reply to stable-rc reviews (was "Re:
- [PATCH 6.18 000/757] 6.18.16-rc2 review")
-Message-ID: <aa_o8WKGFjhRUPgx@laps>
-References: <20260302160853.2519610-1-sashal@kernel.org>
- <iy7dogrbld3h5ygezzkhp3sebokfibu5suegpidlsrmp2ibfwd@fvstv7j7dcfm>
+To: Doug Anderson <dianders@chromium.org>
+Cc: stable@vger.kernel.org, Lee Jones <lee@kernel.org>
+Subject: Re: FAILED: Patch "mfd: core: Add locking around 'mfd_of_node_list'"
+ failed to apply to 6.12-stable tree
+Message-ID: <aa_pwNNEtfaOxkHW@laps>
+References: <20260301012249.1679321-1-sashal@kernel.org>
+ <CAD=FV=XAGzoRaA2bFT3X=eqiMR93pSUkXyTQk6euzhUR+fUY9w@mail.gmail.com>
+ <CAD=FV=XpJE-UkJEH9QrKA3P10h70=+vDuF6gc9xmZroyYKzx9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <iy7dogrbld3h5ygezzkhp3sebokfibu5suegpidlsrmp2ibfwd@fvstv7j7dcfm>
-X-Rspamd-Queue-Id: A4334248D66
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=XpJE-UkJEH9QrKA3P10h70=+vDuF6gc9xmZroyYKzx9g@mail.gmail.com>
+X-Rspamd-Queue-Id: 8325A248F9E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223845-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223846-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 11:16:37AM +0800, Shung-Hsi Yu wrote:
->Hi Sasha,
+On Mon, Mar 09, 2026 at 03:50:33PM -0700, Doug Anderson wrote:
+>Hi,
 >
->On Mon, Mar 02, 2026 at 11:08:53AM -0500, Sasha Levin wrote:
->> This is the start of the stable review cycle for the 6.18.16 release.
->> There are 757 patches in this series, all will be posted as a response
->> to this one...
+>On Sun, Mar 1, 2026 at 7:01 PM Doug Anderson <dianders@chromium.org> wrote:
+>>
+>> Sasha,
+>>
+>> On Sat, Feb 28, 2026 at 5:22 PM Sasha Levin <sashal@kernel.org> wrote:
+>> >
+>> > The patch below does not apply to the 6.12-stable tree.
+>> > If someone wants it applied there, or to any other stable or longterm
+>> > tree, then please email the backport, including the original git commit
+>> > id to <stable@vger.kernel.org>.
+>> >
+>> > Thanks,
+>> > Sasha
+>> >
+>> > ------------------ original commit in Linus's tree ------------------
+>> >
+>> > From 20117c92bcf9c11afd64d7481d8f94fdf410726e Mon Sep 17 00:00:00 2001
+>> > From: Douglas Anderson <dianders@chromium.org>
+>> > Date: Wed, 10 Dec 2025 11:30:03 -0800
+>> > Subject: [PATCH] mfd: core: Add locking around 'mfd_of_node_list'
+>>
+>> Can you give any more details? I tried:
+>>
+>> git checkout v6.12.74
+>> git cherry-pick 20117c92bcf9 # ("mfd: core: Add locking around
+>> 'mfd_of_node_list'")
+>>
+>> It seems to apply all the way back to 6.1 cleanly. NOTE: I didn't try
+>> building with those older kernels. I can try if need be.
+>>
+>> -Doug
 >
->It seems that patches were not posted as response. It was for 6.19, but
->not for the rest (6.18, 6.12, 6.6, 6.1, 5.15, and 5.10).
+>FWIW, I checked and v6.12.76 has the patch. So does the top of the 6.6
+>and 6.1 stable trees. So I guess this was a false positive report?
+>...or maybe you tried to apply it twice?
 
-Yup, they ended up going only to patches@. I've fixed that.
+Nope, it was an issue with scripts on my end. Nothing needed for those trees :)
 
 -- 
 Thanks,
