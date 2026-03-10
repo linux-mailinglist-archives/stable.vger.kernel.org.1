@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-223944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mK12Ocj8r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-223944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:12 +0100
+	id 2ABHCM/8r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-223945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B58A24A204
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 968B324A21B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA5743163AA8
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:11:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1E8331661BC
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957BD2D24B7;
-	Tue, 10 Mar 2026 11:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB71313537;
+	Tue, 10 Mar 2026 11:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uv6hZFwd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2TgovUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E7A2BF3E2;
-	Tue, 10 Mar 2026 11:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B622BF3E2;
+	Tue, 10 Mar 2026 11:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141079; cv=none; b=Np3cK+w0YVxJHsdXqXUg/3nodqBWZv0xGpyANOsV2PMzPxbNzks86qSbD4pQOcPmDfyuWjFLjXeYdpbvDgQzbFzFhZT2J4pGWCnISix80zJWPDv8JELLrDwrc4LPgqHkbvgALPtfYSxltFIb+GxtgljGYmeGhI3DU9wjAL0WcH4=
+	t=1773141080; cv=none; b=NqIUDaTbn/TFjuWCVTSGv4+aSn3NS+kBV9J4I+IcbmaeUHYa1ZyamHU8vlrniIVT68dIYDEIIr0qOyFywceAGCaNuDlLS1DfGzlQdU9rMSSOg5t4vkxjj+yxOh2QAATXH30BLc9frTVGYfLMc2HWVsDZ78EOUukHm6flakuGOBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141079; c=relaxed/simple;
-	bh=/xCk9wZoKz4PDUZYFlsBWww20E1X06K9mUbR6l1Aqgo=;
+	s=arc-20240116; t=1773141080; c=relaxed/simple;
+	bh=jqf7/qLX9U5APWKsGf8/pfELpobv0EkK+qCk3MQqkog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVTiEUbLLejz56uesOYjo4q1+duWHzmceO6qvU/A19VQOsIcwqB7YlBIMbxdGkTzgIdOyQiB6YH8BooMA2ZZfdvzAJjD2+be6XM2YbPISsXwehF19BT9b3ourPHAPNyUE6UYYVErw+s7smm+l6A3jcpAWZN4ntbmjHhmFBzOFkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uv6hZFwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4DAC2BC9E;
-	Tue, 10 Mar 2026 11:11:18 +0000 (UTC)
+	 MIME-Version; b=BwbaEwql/aJjFBPRfJhziKqTwUQBLrY0eUxOYjR1Fzhaa56/kCF2ykurcAQ9c+Zqja6cH72uxkTOOmxRs706gZgKdsOpfVZ8SVC9wg1/sfgW371odyl4QseuMmDXUc3cEdmhyL4Cge6zDd3bxM/BnVA15VHCgylF62ctZ3DYCag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2TgovUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A4DC2BC9E;
+	Tue, 10 Mar 2026 11:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141079;
-	bh=/xCk9wZoKz4PDUZYFlsBWww20E1X06K9mUbR6l1Aqgo=;
+	s=k20201202; t=1773141080;
+	bh=jqf7/qLX9U5APWKsGf8/pfELpobv0EkK+qCk3MQqkog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uv6hZFwdq1mDVWu9XQxrEGWV1YQWaKcUHkDgJP6v9N7F9MF0p4KBR99V00qByeVMR
-	 OSeb3+pNsGTm1JcErrDCPlvtQ0hy4ydKzsB4ciDnir500s/pNM3MnBd6msgmT33+je
-	 1Qoa5/SdRr6s+DEXyHQX94nHQ5YjexVgK9PgiTut/nzFqXD6Uxk2bhr+G3wHfO9gmE
-	 SI83qj1SlMEgePJWiLhgIjLHCgzVPIBPl7nTCkYl8rAV89Fk9gJXH8wROrLAxYe5wd
-	 SwwIVuiMvx1dPV8l4TUGjG90qyZt3qGU10Wh06B8eNJkqvRAXqd1HyOHLLLerIKjKK
-	 tP4njKrvFOVAw==
+	b=b2TgovUomUjxJgjeifI1Qyhkcjn6ai1RPO0s7TVk7TvA2diQdxdW3qK639WRpeBWN
+	 dQUCbr3Ph/a0s6CoJWCr8m51B8HP+wBpA6yKLdVt3pw8nNh6lQYjFfO+8ci80VqmOG
+	 RvspI8WZ4UXww0+dKjGZEfz04wibodublwaqqS3v60zm2dd0KB2RrzwzLQeVejcb21
+	 i3lXOfM81ZiZbwFWq/8tKq//3OXmzsSYWSHu7vUXhtS7t6nzs97rHZ20EE37XgkXeA
+	 dqX3QTnv7NM5UcKXXxam0FjeWJfjCDo7H48urtns2Oa2D3xUbEATN+kXO54JXsCSwp
+	 qnCwbynOaC7DQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 079/311] ALSA: usb: qcom: Correct parameter comment for uaudio_transfer_buffer_setup()
-Date: Tue, 10 Mar 2026 07:02:06 -0400
-Message-ID: <6a8dc0a9f5b35a8fb708eeeaa580569a2a4053ea.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 080/311] mm/slab: pass __GFP_NOWARN to refill_sheaf() if fallback is available
+Date: Tue, 10 Mar 2026 07:02:07 -0400
+Message-ID: <5c45fb8347c5ead932dac1c5f9a430e7474829d9.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -64,9 +67,10 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B58A24A204
+X-Rspamd-Queue-Id: 968B324A21B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
@@ -76,54 +80,94 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223944-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223945-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
 X-Rspamd-Action: no action
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit 1d6452a0ce78cd3f4e48943b5ba21d273a658298 ]
+[ Upstream commit 021ca6b670bebebc409d43845efcfe8c11c1dd54 ]
 
-At fixing the memory leak of xfer buffer, we forgot to update the
-corresponding comment, too.  This resulted in a kernel-doc warning
-with W=1.  Let's correct it.
+When refill_sheaf() is called, failing to refill the sheaf doesn't
+necessarily mean the allocation will fail because a fallback path
+might be available and serve the allocation request.
 
-Fixes: 5c7ef5001292 ("ALSA: qc_audio_offload: avoid leaking xfer_buf allocation")
-Link: https://patch.msgid.link/20260226154414.1081568-4-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suppress spurious warnings by passing __GFP_NOWARN along with
+__GFP_NOMEMALLOC whenever a fallback path is available.
+
+When the caller is alloc_full_sheaf() or __pcs_replace_empty_main(),
+the kernel always falls back to the slowpath (__slab_alloc_node()).
+For __prefill_sheaf_pfmemalloc(), the fallback path is available
+only when gfp_pfmemalloc_allowed() returns true.
+
+Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/linux-mm/aZt2-oS9lkmwT7Ch@debian.local
+Fixes: 1ce20c28eafd ("slab: handle pfmemalloc slabs properly with sheaves")
+Link: https://lore.kernel.org/linux-mm/aZwSreGj9-HHdD-j@hyeyoo
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260223133322.16705-1-harry.yoo@oracle.com
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/qcom/qc_audio_offload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
-index cfb30a195364a..297490f0f5874 100644
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -1007,7 +1007,7 @@ static int enable_audio_stream(struct snd_usb_substream *subs,
- /**
-  * uaudio_transfer_buffer_setup() - fetch and populate xfer buffer params
-  * @subs: usb substream
-- * @xfer_buf: xfer buf to be allocated
-+ * @xfer_buf_cpu: xfer buf to be allocated
-  * @xfer_buf_len: size of allocation
-  * @mem_info: QMI response info
-  *
+diff --git a/mm/slub.c b/mm/slub.c
+index 889c2804bbfeb..b68db0f5a6374 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2715,7 +2715,7 @@ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ 	if (!sheaf)
+ 		return NULL;
+ 
+-	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC)) {
++	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+ 		free_empty_sheaf(s, sheaf);
+ 		return NULL;
+ 	}
+@@ -5092,7 +5092,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 		return NULL;
+ 
+ 	if (empty) {
+-		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC)) {
++		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+ 			full = empty;
+ 		} else {
+ 			/*
+@@ -5395,9 +5395,14 @@ EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
+ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
+ 				      struct slab_sheaf *sheaf, gfp_t gfp)
+ {
+-	int ret = 0;
++	gfp_t gfp_nomemalloc;
++	int ret;
++
++	gfp_nomemalloc = gfp | __GFP_NOMEMALLOC;
++	if (gfp_pfmemalloc_allowed(gfp))
++		gfp_nomemalloc |= __GFP_NOWARN;
+ 
+-	ret = refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC);
++	ret = refill_sheaf(s, sheaf, gfp_nomemalloc);
+ 
+ 	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
+ 		return ret;
 -- 
 2.51.0
 
