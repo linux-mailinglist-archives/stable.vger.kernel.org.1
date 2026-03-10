@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-224575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJGCOJiBsGmwjwIAu9opvQ
-	(envelope-from <stable+bounces-224575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:39:52 +0100
+	id yH5RIduBsGmwjwIAu9opvQ
+	(envelope-from <stable+bounces-224576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:40:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45863257F54
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:39:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C86F257F74
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0D2830FA327
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:39:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 933F0300B9FB
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C4D3D5677;
-	Tue, 10 Mar 2026 20:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEF33DFC9F;
+	Tue, 10 Mar 2026 20:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnZgSk7/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mYLM6pvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53D93CA487;
-	Tue, 10 Mar 2026 20:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9F43D8123;
+	Tue, 10 Mar 2026 20:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773175185; cv=none; b=qE3yOgaHdJTYDkgggikfXwFgM68TFpyUVS1h61uLnN5CAWlmpr3tQaxoxuuYlKiYZ32wdp4MXAuqy49H1sqHzPrJPk2n4p7SIt7FsdbdXOFzfGQ3SLDicVgcYsOjL7jzafEhbT40756vGYkAp4KhnMPaj/JCIQnUy6MDkhZoB9o=
+	t=1773175256; cv=none; b=LofmEPB9fV+bnK0RNxaVYlnq452jEXshU510rRAODkS4sjv1Xk9eDDkiCwGElVk4UwTU0lyDcDFHthLLUEzHWgAfDHPKJEBDcJgsL4si8X8Lt0oDz7PG97vqMcBDLi5Or0aglEPGwlA4rvwDiTQmgVZA5jMLfWTSkB/eEkLqJXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773175185; c=relaxed/simple;
-	bh=lt1/kxTCNg5v0pkAV3T5RZBbwlgFYhCBNmjK4LavN8I=;
+	s=arc-20240116; t=1773175256; c=relaxed/simple;
+	bh=ZCEr9y6H2pqBw4O/TEzdGPAdahJAFjsn9PAQUf4ZC6k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4NFSwE3pMb78KkjQKYz6pMFJmHNfkIRc9dqSE2qjnXTW/pGO0sqkq4a5NlntvcKTfKuBoFBE23s4rmgUxfNJPx5CQvSeqjTxgVnX/4dr+pvPB2LkbsOiYJMNWDFcUphRaKHibFcf09ixNP6rtkhW+emvv8MUWHz3dhz+KHlTJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnZgSk7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4DBC19423;
-	Tue, 10 Mar 2026 20:39:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=azmPa3hlbYO73TN0UU3pZ7L0+BoesExhLH3yS61Ur3DuxnYsz1topNqGw2AbXiCKuVlOnNDp9CWplsaoZLEVvVW/5KduGPPSCSzSdraksIOwbVRr7u+9QV5iUG+/ekiyqdqo7TiGOOC3nNY3uHF8XweoSqoO2RXfxyJ/5E9JIjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mYLM6pvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414CFC19423;
+	Tue, 10 Mar 2026 20:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773175185;
-	bh=lt1/kxTCNg5v0pkAV3T5RZBbwlgFYhCBNmjK4LavN8I=;
+	s=k20201202; t=1773175256;
+	bh=ZCEr9y6H2pqBw4O/TEzdGPAdahJAFjsn9PAQUf4ZC6k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cnZgSk7/fvXTT1Sm6fsvYQ/KJyrZHRcrpBBAa+72nZiTT2VLRSAtCytOJvAm3USqh
-	 BGe18+B8a+yMVvpNeidjef9g618170K5eSaFlaV3NZaleSrcZq4SpC5+OwmMhiId6W
-	 FFsxCwXBz7ZSSnEZHyffwTXNVILudTC+3kJOdQB1oKmH+gSD3kHggIlor9ztSItzgC
-	 NHf5jsiIxMvrfgQul977mci+dcVGVJjM5/4jVqCQMYPvfrNeSQAjoQM2y1SS58HFs+
-	 GzmO8jXUvoR9gM3PTiBTi8lvvwUImuotdpaBgHb+NYtJX6WWwzogUut5/c0yj6dmSY
-	 THqAfjo1Ll42w==
-Date: Tue, 10 Mar 2026 13:39:44 -0700
+	b=mYLM6pvzy8q0FH+KUvcMNueqpGSnhx7FoPm6cuN2Ts7jFt2CKIfh0t8X5dLNBFVko
+	 0Lh1ex8eiDLXETsBFtWct5eH3QHw83KRNcTdUqEM87U9PaP6armSbiT5+fZOehmK4E
+	 dkpN4Z2Ji8coOm/Qw2GEgkfyxXZfMYIlOUgG0PK7YKH3LyzxAwNBuz5CEJTn7btD9H
+	 y2tjWAQ09gcB+M6rg0vt/tMlhIS/JEyKtTzK1182k/6RlZiyh0I15J4aftMUSqQ67j
+	 U3w6d9bO6oRfUPIDILLLDThlPfKVHWXqVfiRaNYgFHbZ8gsfWrjq9n1Powl8yvF9sO
+	 PcbHv4zT2tBXg==
+Date: Tue, 10 Mar 2026 13:40:55 -0700
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: Yuto Ohnuki <ytohnuki@amazon.com>
 Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>,
@@ -53,11 +53,11 @@ Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] xfs: stop reclaim before pushing AIL during
- unmount
-Message-ID: <20260310203944.GV1105363@frogsfrogsfrogs>
+Subject: Re: [PATCH v4 2/4] xfs: avoid dereferencing log items after push
+ callbacks
+Message-ID: <20260310204055.GX1105363@frogsfrogsfrogs>
 References: <20260310183835.89827-6-ytohnuki@amazon.com>
- <20260310183835.89827-7-ytohnuki@amazon.com>
+ <20260310183835.89827-8-ytohnuki@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,8 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310183835.89827-7-ytohnuki@amazon.com>
-X-Rspamd-Queue-Id: 45863257F54
+In-Reply-To: <20260310183835.89827-8-ytohnuki@amazon.com>
+X-Rspamd-Queue-Id: 2C86F257F74
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -75,11 +75,11 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224575-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -95,22 +95,21 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 06:38:37PM +0000, Yuto Ohnuki wrote:
-> The unmount sequence in xfs_unmount_flush_inodes() pushed the AIL while
-> background reclaim and inodegc are still running. This is broken
-> independently of any use-after-free issues - background reclaim and
-> inodegc should not be running while the AIL is being pushed during
-> unmount, as inodegc can dirty and insert inodes into the AIL during the
-> flush, and background reclaim can race to abort and free dirty inodes.
+On Tue, Mar 10, 2026 at 06:38:38PM +0000, Yuto Ohnuki wrote:
+> After xfsaild_push_item() calls iop_push(), the log item may have been
+> freed if the AIL lock was dropped during the push. Background inode
+> reclaim or the dquot shrinker can free the log item while the AIL lock
+> is not held, and the tracepoints in the switch statement dereference
+> the log item after iop_push() returns.
 > 
-> Reorder xfs_unmount_flush_inodes() to stop inodegc and cancel background
-> reclaim before pushing the AIL. Stop inodegc before cancelling
-> m_reclaim_work because the inodegc worker can re-queue m_reclaim_work
-> via xfs_inodegc_set_reclaimable.
+> Fix this by capturing the log item type, flags, and LSN before calling
+> xfsaild_push_item(), and introducing a new xfs_ail_push_class trace
+> event class that takes these pre-captured values and the ailp pointer
+> instead of the log item pointer.
 > 
 > Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
 > Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
@@ -118,42 +117,152 @@ On Tue, Mar 10, 2026 at 06:38:37PM +0000, Yuto Ohnuki wrote:
 > Cc: <stable@vger.kernel.org> # v5.9
 > Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
 
-Looks good now,
+That looks like a solid fix to me; thanks for working on this!
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
 --D
 
 > ---
->  fs/xfs/xfs_mount.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  fs/xfs/xfs_trace.h     | 36 ++++++++++++++++++++++++++++++++----
+>  fs/xfs/xfs_trans_ail.c | 26 +++++++++++++++++++-------
+>  2 files changed, 51 insertions(+), 11 deletions(-)
 > 
-> diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
-> index 9c295abd0a0a..ef1ea8a1238c 100644
-> --- a/fs/xfs/xfs_mount.c
-> +++ b/fs/xfs/xfs_mount.c
-> @@ -608,8 +608,9 @@ xfs_unmount_check(
->   * have been retrying in the background.  This will prevent never-ending
->   * retries in AIL pushing from hanging the unmount.
->   *
-> - * Finally, we can push the AIL to clean all the remaining dirty objects, then
-> - * reclaim the remaining inodes that are still in memory at this point in time.
-> + * Stop inodegc and background reclaim before pushing the AIL so that they
-> + * are not running while the AIL is being flushed. Then push the AIL to
-> + * clean all the remaining dirty objects and reclaim the remaining inodes.
->   */
->  static void
->  xfs_unmount_flush_inodes(
-> @@ -621,9 +622,9 @@ xfs_unmount_flush_inodes(
+> diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
+> index 813e5a9f57eb..0e994b3f768f 100644
+> --- a/fs/xfs/xfs_trace.h
+> +++ b/fs/xfs/xfs_trace.h
+> @@ -56,6 +56,7 @@
+>  #include <linux/tracepoint.h>
 >  
->  	xfs_set_unmounting(mp);
+>  struct xfs_agf;
+> +struct xfs_ail;
+>  struct xfs_alloc_arg;
+>  struct xfs_attr_list_context;
+>  struct xfs_buf_log_item;
+> @@ -1650,16 +1651,43 @@ TRACE_EVENT(xfs_log_force,
+>  DEFINE_EVENT(xfs_log_item_class, name, \
+>  	TP_PROTO(struct xfs_log_item *lip), \
+>  	TP_ARGS(lip))
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_push);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_pinned);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_locked);
+> -DEFINE_LOG_ITEM_EVENT(xfs_ail_flushing);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_mark);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_skip);
+>  DEFINE_LOG_ITEM_EVENT(xfs_cil_whiteout_unpin);
+>  DEFINE_LOG_ITEM_EVENT(xlog_ail_insert_abort);
+>  DEFINE_LOG_ITEM_EVENT(xfs_trans_free_abort);
 >  
-> -	xfs_ail_push_all_sync(mp->m_ail);
->  	xfs_inodegc_stop(mp);
->  	cancel_delayed_work_sync(&mp->m_reclaim_work);
-> +	xfs_ail_push_all_sync(mp->m_ail);
->  	xfs_reclaim_inodes(mp);
->  	xfs_health_unmount(mp);
->  	xfs_healthmon_unmount(mp);
+> +DECLARE_EVENT_CLASS(xfs_ail_push_class,
+> +	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn),
+> +	TP_ARGS(ailp, type, flags, lsn),
+> +	TP_STRUCT__entry(
+> +		__field(dev_t, dev)
+> +		__field(uint, type)
+> +		__field(unsigned long, flags)
+> +		__field(xfs_lsn_t, lsn)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->dev = ailp->ail_log->l_mp->m_super->s_dev;
+> +		__entry->type = type;
+> +		__entry->flags = flags;
+> +		__entry->lsn = lsn;
+> +	),
+> +	TP_printk("dev %d:%d lsn %d/%d type %s flags %s",
+> +		  MAJOR(__entry->dev), MINOR(__entry->dev),
+> +		  CYCLE_LSN(__entry->lsn), BLOCK_LSN(__entry->lsn),
+> +		  __print_symbolic(__entry->type, XFS_LI_TYPE_DESC),
+> +		  __print_flags(__entry->flags, "|", XFS_LI_FLAGS))
+> +)
+> +
+> +#define DEFINE_AIL_PUSH_EVENT(name) \
+> +DEFINE_EVENT(xfs_ail_push_class, name, \
+> +	TP_PROTO(struct xfs_ail *ailp, uint type, unsigned long flags, xfs_lsn_t lsn), \
+> +	TP_ARGS(ailp, type, flags, lsn))
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_push);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_pinned);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_locked);
+> +DEFINE_AIL_PUSH_EVENT(xfs_ail_flushing);
+> +
+>  DECLARE_EVENT_CLASS(xfs_ail_class,
+>  	TP_PROTO(struct xfs_log_item *lip, xfs_lsn_t old_lsn, xfs_lsn_t new_lsn),
+>  	TP_ARGS(lip, old_lsn, new_lsn),
+> diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+> index 923729af4206..63266d31b514 100644
+> --- a/fs/xfs/xfs_trans_ail.c
+> +++ b/fs/xfs/xfs_trans_ail.c
+> @@ -365,6 +365,12 @@ xfsaild_resubmit_item(
+>  	return XFS_ITEM_SUCCESS;
+>  }
+>  
+> +/*
+> + * Push a single log item from the AIL.
+> + *
+> + * @lip may have been released and freed by the time this function returns,
+> + * so callers must not dereference the log item afterwards.
+> + */
+>  static inline uint
+>  xfsaild_push_item(
+>  	struct xfs_ail		*ailp,
+> @@ -505,7 +511,10 @@ xfsaild_push(
+>  
+>  	lsn = lip->li_lsn;
+>  	while ((XFS_LSN_CMP(lip->li_lsn, ailp->ail_target) <= 0)) {
+> -		int	lock_result;
+> +		int		lock_result;
+> +		uint		type = lip->li_type;
+> +		unsigned long	flags = lip->li_flags;
+> +		xfs_lsn_t	item_lsn = lip->li_lsn;
+>  
+>  		if (test_bit(XFS_LI_FLUSHING, &lip->li_flags))
+>  			goto next_item;
+> @@ -514,14 +523,17 @@ xfsaild_push(
+>  		 * Note that iop_push may unlock and reacquire the AIL lock.  We
+>  		 * rely on the AIL cursor implementation to be able to deal with
+>  		 * the dropped lock.
+> +		 *
+> +		 * The log item may have been freed by the push, so it must not
+> +		 * be accessed or dereferenced below this line.
+>  		 */
+>  		lock_result = xfsaild_push_item(ailp, lip);
+>  		switch (lock_result) {
+>  		case XFS_ITEM_SUCCESS:
+>  			XFS_STATS_INC(mp, xs_push_ail_success);
+> -			trace_xfs_ail_push(lip);
+> +			trace_xfs_ail_push(ailp, type, flags, item_lsn);
+>  
+> -			ailp->ail_last_pushed_lsn = lsn;
+> +			ailp->ail_last_pushed_lsn = item_lsn;
+>  			break;
+>  
+>  		case XFS_ITEM_FLUSHING:
+> @@ -537,22 +549,22 @@ xfsaild_push(
+>  			 * AIL is being flushed.
+>  			 */
+>  			XFS_STATS_INC(mp, xs_push_ail_flushing);
+> -			trace_xfs_ail_flushing(lip);
+> +			trace_xfs_ail_flushing(ailp, type, flags, item_lsn);
+>  
+>  			flushing++;
+> -			ailp->ail_last_pushed_lsn = lsn;
+> +			ailp->ail_last_pushed_lsn = item_lsn;
+>  			break;
+>  
+>  		case XFS_ITEM_PINNED:
+>  			XFS_STATS_INC(mp, xs_push_ail_pinned);
+> -			trace_xfs_ail_pinned(lip);
+> +			trace_xfs_ail_pinned(ailp, type, flags, item_lsn);
+>  
+>  			stuck++;
+>  			ailp->ail_log_flush++;
+>  			break;
+>  		case XFS_ITEM_LOCKED:
+>  			XFS_STATS_INC(mp, xs_push_ail_locked);
+> -			trace_xfs_ail_locked(lip);
+> +			trace_xfs_ail_locked(ailp, type, flags, item_lsn);
+>  
+>  			stuck++;
+>  			break;
 > -- 
 > 2.50.1
 > 
