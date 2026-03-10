@@ -1,225 +1,144 @@
-Return-Path: <stable+bounces-224589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOa/A7mSsGkukgIAu9opvQ
-	(envelope-from <stable+bounces-224589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:52:57 +0100
+	id mEICN6GUsGkukgIAu9opvQ
+	(envelope-from <stable+bounces-224592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:01:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10D2258881
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:52:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F20258A08
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 44187309E753
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:52:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAA7B3119467
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9203F1677;
-	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25FA3F20EA;
+	Tue, 10 Mar 2026 22:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9XDLVkP"
+	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="ot9Q50H+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE543EE1EA;
-	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C9E3F20F0
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 22:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773179560; cv=none; b=ojgy+P5zbGeMsRW7dHaaG63VdWt49ih6xJTcZeLgC7R/U3q4cVF1eqSWXa9h5Q8dbJIgbUGgKvt1xIu4CPot6LKLXBW5IkEnWrKJZceUuLzf5GoGUsIk3qopPQcmqhikFNgO/AKDSBmjRqf2u3g8tuIiBqHXJSLmcHZCjF9ZMdg=
+	t=1773180044; cv=none; b=gVaOzYEw4SiHgs/KXK1zWoThzrMT4RWCvJjsHGZ9Bx9pRwVg7EeJxnOU0wPSuczCywbp/Kwq3ieDBSrqyHQz9TOMxHSKP4hhNL0tvOid7gX904Xm1TBNMNdn85iZ6e3OraraH6h1qZ9MRqlTHYxfAmwBSTtuXvk/SJWRsZ6Z83A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773179560; c=relaxed/simple;
-	bh=9DspE8ZzxPIkgad3kbhVNSegbVmg7d6ttJzOySzgDE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=B458eZM6DLYMIhVcYvJ3iTpJHSdkP2a1aW19MwptkymzZ55B/luE9wSCoo0YsKer2Rn7aub+2M+ukTSU8dfHwUFwQOn/X4o5wkp+YSiAgDhCep5RjcNY3r9bR/aRpqfWqd4eDzI7CDe24V0kBZ+PHoebQw0+tYUhoblZ2JH95nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9XDLVkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C5BC2BCAF;
-	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773179560;
-	bh=9DspE8ZzxPIkgad3kbhVNSegbVmg7d6ttJzOySzgDE4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=V9XDLVkPIUguhDuLOIiUIpyMSxaGPliXRd7O6lqvaXBBvEXDJAKzrSK6ZeN/F1Xfh
-	 jUA8CdDYMJjHcHrse0iQOy7CsVP5oqh1gKttZym7Wk6Onv3Ncjth8aMn072v+4820p
-	 JKejxWFMoZQqjf88JQ0li2hVFTd+DM1a3rq34A1UjO2tDsqlw9JTVfizZAx8/rtcvY
-	 /abfz1lpZSCUDNmBxqi74Xk88jjcSfHCeT71YpX9s6YQW1oPiEFKLHojqNVzUfWTPP
-	 PFrtaONJFG1J9ZAyPMHvLg3W/QCkoN4xHt+XbVT6HcRyS6HZSJUvfdC6TETrMiH74y
-	 aFgnA4khDntVQ==
-Date: Tue, 10 Mar 2026 16:52:39 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Gerd Bayer <gbayer@linux.ibm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Jay Cornwall <Jay.Cornwall@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1773180044; c=relaxed/simple;
+	bh=Vu8s7jUwMOvlyEwIzaoSMQ+wQNXgnXVAF0jZnj55++4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uBJtR+J1AIAcN5ErAyaZPmd/ZSdVvbwPzMldQU8cD5JuwA3S2HcJ4fxFQQFQh9uqp8qhOcwJai8DNdCn4+NLolTTezwMQqg76alEXPcc67u+KTJQV7BrPjY5OUNuF1Ie5m3wcDwjbKamzWnXogezLLKRBpkawuhOA1h//w7FxBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=pass smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=ot9Q50H+; arc=none smtp.client-ip=109.224.244.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johannes-moeller.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=johannes-moeller.dev; s=protonmail; t=1773180034; x=1773439234;
+	bh=Ejdg6l7b/i4f0KmxGuMk1g7CgiSer0a95DBCWcHIAss=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=ot9Q50H+wXeyoT+d80eVg0z87DsxbnTf9aO1/V6DOyY6Lgb9D6qmb9vmo/P+09zVU
+	 EJmK06/RBlaHddkG12kwS8TuggUXdgl8zmf6+oY/5ugkyfougNQNQThzCpad0EjceR
+	 sNuSOskQqQhoXzIGxFqW4tfXzhNh5YNv3goR0EkQQxcL+GuUYKPpFMWYp9WDcd06AG
+	 Dit4HSVcUG4WCWU4TvfBVYLqFN9gkrjUJ3US2uVSAPNaSm/FSPEEKIu9fEGOBOuy9W
+	 ID1YPvoMWcvKSxTeZSjnr3KZ+86lS2UsWW9CxZ+SiIWaa7J1ESak2nTrPQJuscTY+V
+	 S3X3uaViwQXUQ==
+X-Pm-Submission-Id: 4fVnqx3Xvtz1DDL4
+From: =?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>
+To: linux-bluetooth@vger.kernel.org
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] PCI: AtomicOps: Fix logic in enable function
-Message-ID: <20260310215239.GA299126@bhelgaas>
+Subject: [PATCH 1/2] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+Date: Tue, 10 Mar 2026 21:59:46 +0000
+Message-ID: <20260310215947.35756-1-research@johannes-moeller.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306-fix_pciatops-v3-2-99d12bcafb19@linux.ibm.com>
-X-Rspamd-Queue-Id: C10D2258881
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 41F20258A08
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[johannes-moeller.dev:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-224592-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224589-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[3];
+	DMARC_NA(0.00)[johannes-moeller.dev];
+	FREEMAIL_CC(0.00)[gmail.com,johannes-moeller.dev,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[research@johannes-moeller.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[johannes-moeller.dev:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[johannes-moeller.dev:dkim,johannes-moeller.dev:email,johannes-moeller.dev:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Fri, Mar 06, 2026 at 06:13:59PM +0100, Gerd Bayer wrote:
-> Move the check for root port requirements past the loop within
-> pci_enable_atomic_ops_to_root() that checks on potential switch
-> (up- and downstream) ports.
-> 
-> Inside the loop traversing the PCI tree upwards, prepend the switch case
-> to validate the routing capability on any port with a fallthrough-case
-> that does the additional check for Atomic Ops not being blocked on
-> upstream ports.
+l2cap_ecred_reconf_rsp() casts the incoming data to struct
+l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
+result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
+with result at offset 0).
 
-Thanks for looking at this.  I think this makes good sense, and I'd
-like to:
+This causes two problems:
 
-  - Hoist the problem description up here.  IIUC we enable AtomicOps on
-    s390 when we shouldn't, which presumably leads to some problem.  I
-    think the same could happen anywhere we don't have a Root Port,
-    e.g., jailhouse, loongarch, maybe some VMM guests?
+ - The sizeof(*rsp) length check requires 8 bytes instead of the
+   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
+   with -EPROTO.
 
-  - Reduce or remove the text above, which is basically C code
-    translated to English, and move it down after the problem
-    description, so we can state the problem and symptom, followed by
-    the solution.
+ - rsp->result reads from offset 6 instead of offset 0, returning
+   wrong data when the packet is large enough to pass the check.
 
-I think the core is (as you say below) that if there's no Root Port,
-we previously allowed endpoints to use AtomicOps even in cases where
-we don't know if the recipient supports them.
+Fix by using the correct type.  Also pass the already byte-swapped
+result variable to BT_DBG instead of the raw __le16 field.
 
-That *sounds* bad, and if you actually saw some kind of corruption as
-a result, that would make this very compelling.
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+---
+ net/bluetooth/l2cap_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Do not enable Atomic Op Requests if nothing can be learned about how the
-> device is attached - e.g. if it is on an "isolated" bus, as in s390.
-> 
-> Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index ad98db9632fd..f8ed03095592 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5424,7 +5424,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
+ 					 u8 *data)
+ {
+ 	struct l2cap_chan *chan, *tmp;
+-	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
++	struct l2cap_ecred_reconf_rsp *rsp = (void *) data;
+ 	u16 result;
+ 
+ 	if (cmd_len < sizeof(*rsp))
+@@ -5432,7 +5432,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
+ 
+ 	result = __le16_to_cpu(rsp->result);
+ 
+-	BT_DBG("result 0x%4.4x", rsp->result);
++	BT_DBG("result 0x%4.4x", result);
+ 
+ 	if (!result)
+ 		return 0;
+-- 
+2.43.0
 
-If there's any public report of the problem, include the URL here.
-
-> Cc: stable@vger.kernel.org
-> Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-> ---
->  drivers/pci/pci.c | 30 ++++++++++++++----------------
->  1 file changed, 14 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index cc8abe6b1d07661488895876dbbcf8aaeadf4a17..23db6ad5f310ed009a9b2ca4933c7498e0d22b85 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3677,7 +3677,7 @@ void pci_acs_init(struct pci_dev *dev)
->  int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
->  {
->  	struct pci_bus *bus = dev->bus;
-> -	struct pci_dev *bridge;
-> +	struct pci_dev *bridge = NULL;
->  	u32 cap, ctl2;
->  
->  	/*
-> @@ -3715,29 +3715,27 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
-
-Since we're looking at this, I think we should update the spec
-references in this function (in a separate patch).  
-
-  * Per PCIe r5.0, sec 9.3.5.10, the AtomicOp Requester Enable bit
-  * in Device Control 2 is reserved in VFs and the PF value applies
-  * to all associated VFs.
-
-It looks like the AtomicOp Requester Enable part of PCIe r5.0, sec
-9.3.5.10, was incorporated into the Device Control 2 Register
-description in PCIe r7.0, sec 7.5.3.16.
-
-  * Per PCIe r4.0, sec 6.15, endpoints and root ports may be
-  * AtomicOp requesters.  For now, we only support endpoints as
-  * requesters and root ports as completers.  No endpoints as
-  * completers, and no peer-to-peer.
-
-This looks like PCIe r7.0, sec 6.15.  Same section as r4.0, but we
-should at least make both of these refer to the same spec revision.
-
->  		switch (pci_pcie_type(bridge)) {
->  		/* Ensure switch ports support AtomicOp routing */
->  		case PCI_EXP_TYPE_UPSTREAM:
-> -		case PCI_EXP_TYPE_DOWNSTREAM:
-> -			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> -				return -EINVAL;
-> -			break;
-> -
-> -		/* Ensure root port supports all the sizes we care about */
-> -		case PCI_EXP_TYPE_ROOT_PORT:
-> -			if ((cap & cap_mask) != cap_mask)
-> -				return -EINVAL;
-> -			break;
-> -		}
-> -
-> -		/* Ensure upstream ports don't block AtomicOps on egress */
-> -		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-> +			/* Upstream ports must not block AtomicOps on egress */
->  			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
->  						   &ctl2);
->  			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
->  				return -EINVAL;
-> +			fallthrough;
-> +		/* All switch ports need to route AtomicOps */
-> +		case PCI_EXP_TYPE_DOWNSTREAM:
-> +			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> +				return -EINVAL;
-> +			break;
->  		}
-> -
->  		bus = bus->parent;
->  	}
->  
-> +	/* Finally, last bridge must be root port and support requested sizes */
-> +	if ((!bridge) ||
-> +	    (pci_pcie_type(bridge) != PCI_EXP_TYPE_ROOT_PORT) ||
-> +	    ((cap & cap_mask) != cap_mask))
-> +		return -EINVAL;
-> +
->  	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
->  				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
->  	return 0;
-> 
-> -- 
-> 2.51.0
-> 
 
