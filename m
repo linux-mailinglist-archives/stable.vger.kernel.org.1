@@ -1,123 +1,165 @@
-Return-Path: <stable+bounces-224540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WF6GDtZhsGloigIAu9opvQ
-	(envelope-from <stable+bounces-224540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:24:22 +0100
+	id mESvKDpjsGloigIAu9opvQ
+	(envelope-from <stable+bounces-224541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:30:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4592565B9
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:24:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29422566A6
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 326C13068A3A
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:24:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13E95301C5AF
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122052DAFA5;
-	Tue, 10 Mar 2026 18:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826E03128B0;
+	Tue, 10 Mar 2026 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBppPdW3"
+	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="Ujb1eEvO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FDD2D8760;
-	Tue, 10 Mar 2026 18:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C88D2E6CD8
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 18:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773167056; cv=none; b=UFxgjbWHkzqGq5JsvsP7iBiriQe11OdfQnlscp7RFxAp3ut9mxLwAtcBfQUkh2/J6gK2nlDPACmT343zgho4TgZbHS8AtDetGEGYikRwb+Q+Ta+Wv0FJym6k3Ws72KDwsz6dO0sHdhxGo0i/M7MN0v7Z+eFekh87Z6ygimUntNw=
+	t=1773167410; cv=none; b=aBKS3yhUBAlFMtUkDR9WTBuPNLp28gtgSD3r6KaRQK9MwgZYLr4mqlXAtf5O+ti7WDhQYgH8H+wEVBZEESuVSCJEgKvDREarjvPLHwXKg9ol+Stq4CPNdkZtun6xQ3fF9tjRIEqxmyBRf8+1EyZdo21kW/lnC2YdV4eoo05RwSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773167056; c=relaxed/simple;
-	bh=60fgkUWv92rLl/BzDoW4SUNLQP2bHEZxw7UrCs7abIg=;
+	s=arc-20240116; t=1773167410; c=relaxed/simple;
+	bh=Q82pOOBE83e/q/m6f1OSGwQNAP+n7WowzUryYjeqrsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TM4yygKuEc5MAolrPjypIjSKPWSaj0xhBsuSVHCYe0/koAOGULtQbEP+wF1PFIxMmH29O3EpM6himsJjcC4+N97EvCZ8D59LC5Lx7s0RJTxBg9CuBUqyFC4b0ad5jKnLyY+XErsJO2YpNlQ1tSU3sHK8EmE3LhbgOYEU7ffiGnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBppPdW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E11C19423;
-	Tue, 10 Mar 2026 18:24:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773167056;
-	bh=60fgkUWv92rLl/BzDoW4SUNLQP2bHEZxw7UrCs7abIg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBppPdW33AdnO65LirAuuQCuyc0yAjz8IHfD6Oz5XBSkkHJ4wuk2hYjfgZ3+f0xCw
-	 /8RSI8DCAXhS68OOaLJ7lVQ7/LmOS6sIfejXfD133JUwwwOeSZRq0TafcfVCi3uUqX
-	 X/nW/eLSQEDtJPxN89fDZ56h9OJf0TMwb3rtmVtpGbYzxFL79IDtSlBoXA/tldrgQJ
-	 km/C1+XfbFv00YK3gqf2X3uRB8TxlJaAVj7QoI3dagJt4seqgfTcwpkRvk9K7g3G0O
-	 DDnR293hcji+pqLfGbQcKFqu9W92EAok8L75heenXeInVBRvyeUKJpNar1vGwMtXP3
-	 4Dw6y+qHWUTvw==
-From: Conor Dooley <conor@kernel.org>
-To: linux-riscv@lists.infradead.org,
-	Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Valentina.FernandezAlanis@microchip.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] firmware: microchip: fail auto-update probe if no flash found
-Date: Tue, 10 Mar 2026 18:24:11 +0000
-Message-ID: <20260310-gyration-smasher-1eb31125b2b6@spud>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260303-emphatic-roundness-8fe5cd8c3159@spud>
-References: <20260303-emphatic-roundness-8fe5cd8c3159@spud>
+	 MIME-Version:Content-Type; b=OymRrkDYrPwxKdZr1ycX/sfq4cBCl/8EUvAaGkdTdks5OEJ6rdfQh/3Iyk6G3cFfRudFOD35uYZsHNLYBkrZ2940FbaCEcQT6BW9vfN0SFvQfZam2tObrMH5mzJYxGCznakRAw8dzr6RIa/sRCPkiRlgD3jnzCRz0Dd0BpZ7kpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=fail smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=Ujb1eEvO; arc=none smtp.client-ip=51.83.17.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=johannes-moeller.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=johannes-moeller.dev; s=protonmail; t=1773167389; x=1773426589;
+	bh=XJkQp5Wbj4iNMSJZmrOx0V0Aa05ZAU2aZ27gcUy+XHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Ujb1eEvOlnVBtM+VH012y+UPScJfh+ZyTRJG3Jg9PPCkW8287WJDvPMMYT5E760bO
+	 LJxmG1gcvzYurdyQvEb03U2BGay3aTY/6qhzU+lecTll4IWA8UE1Ag6bsPsTUKT2In
+	 BUgdzjF+5j+mwyZpC7XImVZ+ycAODwnPJMD0Cnn0YH4eu6w8ElmyzvHFC9ovTtxYTa
+	 +DlL3vk68hM7gjwcC8pu+PZeA+p1YvBtdNMVA8bYnDghHkYmSxD8t1IqgZivOgB+Ui
+	 MzZLDXtWCRLUVcIpU6C0FCKz0e3WSUtra9YE3Jmi3L5Kgomy7fuV1hw/3ChcRQDDsw
+	 cjP6YSgPcFk6A==
+X-Pm-Submission-Id: 4fVj8p0BP0z2ScX9
+From: =?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>
+To: security@kernel.org
+Cc: marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	w@1wt.eu,
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: L2CAP: Fix stack buffer overflow in deferred ECRED connection response
+Date: Tue, 10 Mar 2026 19:28:31 +0100
+Message-ID: <20260310182831.131781-1-research@johannes-moeller.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <abBJTIQolY8l0fxW@1wt.eu>
+References: <abBJTIQolY8l0fxW@1wt.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=836; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=hWgL2DzJiZOmEy7GIVpd1Ka6l//mB6IOSxtqxJ4xxNo=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkbEs88+LWhQ4RZ7uH3mW/rL5ee0hfQmM4ne/7Fpi2Lr x/Pz93T3VHKwiDGxSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJeAsyMvyttczhfnZpstkb nxIm723tHa+O/hR9teby+gmJKllfoxYy/A8r/c26O3uug/fn2fX2la92TmV45tfVujT8SNG/GaY s57gB
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9E4592565B9
+X-Rspamd-Queue-Id: A29422566A6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[johannes-moeller.dev:s=protonmail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224540-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224541-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[johannes-moeller.dev];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,1wt.eu,johannes-moeller.dev,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[research@johannes-moeller.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[johannes-moeller.dev:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Conor Dooley <conor.dooley@microchip.com>
+l2cap_ecred_rsp_defer() appends channel SCIDs to
+rsp_flex->dcid[rsp->count++] without checking rsp->count against
+L2CAP_ECRED_MAX_CID.  The dcid[] flexible array member is backed by a
+stack-allocated structure with room for only L2CAP_ECRED_MAX_CID (5)
+entries.
 
-On Tue, 03 Mar 2026 11:24:06 +0000, Conor Dooley wrote:
-> There's no point letting the driver probe if there is no flash, as
-> trying to do a firmware upload will fail. Move the code that attempts
-> to get the flash from firmware upload to probe, and let it emit a
-> message to users stating why auto-update is not supported.
-> The code currently could have a problem if there's a flash in
-> devicetree, but the system controller driver fails to get a pointer to
-> it from the mtd subsystem, which will cause
-> mpfs_sys_controller_get_flash() to return an error. Check for errors and
-> null, instead of just null, in the new clause.
-> 
-> [...]
+Per-request validation in l2cap_ecred_conn_req() limits a single
+L2CAP_ECRED_CONN_REQ to at most 5 SCIDs, but multiple requests can
+reuse the same attacker-controlled signaling identifier.  When
+__l2cap_ecred_conn_rsp_defer() later walks all channels with that
+ident, the callback writes past the fixed backing array.  For LE links
+(SCIDs 0x0040..0x007f) the maximum overwrite is 118 bytes past the end
+of the buffer.
 
-Applied to riscv-soc-fixes, thanks!
+Add a bounds check in l2cap_ecred_rsp_defer() that cleans up excess
+channels, and reject incoming requests in l2cap_ecred_conn_req() when
+channels are already pending for the same ident.
 
-[1/1] firmware: microchip: fail auto-update probe if no flash found
-      https://git.kernel.org/conor/c/c30b2509164f
+Fixes: da49b602f7f7 ("Bluetooth: L2CAP: Use DEFER_SETUP to group ECRED connections")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+---
+ net/bluetooth/l2cap_core.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Thanks,
-Conor.
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index ad98db9632fd..a0b56fb0afb0 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3833,6 +3833,12 @@ static void l2cap_ecred_rsp_defer(struct l2cap_chan *chan, void *data)
+ 	    !test_and_clear_bit(FLAG_DEFER_SETUP, &chan->flags))
+ 		return;
+ 
++	if (rsp->count >= L2CAP_ECRED_MAX_CID) {
++		chan->ident = 0;
++		l2cap_chan_del(chan, ECONNRESET);
++		return;
++	}
++
+ 	/* Reset ident so only one response is sent */
+ 	chan->ident = 0;
+ 
+@@ -5132,6 +5138,15 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
+ 		goto unlock;
+ 	}
+ 
++	/* Check if incoming channels are already pending for this ident */
++	list_for_each_entry(chan, &conn->chan_l, list) {
++		if (chan->ident == cmd->ident &&
++		    !test_bit(FLAG_ECRED_CONN_REQ_SENT, &chan->flags)) {
++			result = L2CAP_CR_LE_INVALID_PARAMS;
++			goto unlock;
++		}
++	}
++
+ 	result = L2CAP_CR_LE_SUCCESS;
+ 
+ 	for (i = 0; i < num_scid; i++) {
+
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+-- 
+2.43.0
+
 
