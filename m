@@ -1,145 +1,201 @@
-Return-Path: <stable+bounces-223792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNKWCFXdr2kzdAIAu9opvQ
-	(envelope-from <stable+bounces-223792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:59:01 +0100
+	id CBj2JQTer2kzdAIAu9opvQ
+	(envelope-from <stable+bounces-223794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:01:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6561F247C42
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:59:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FF8247CD4
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F7CA3011BC1
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:54:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A627F3015A78
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAD943901F;
-	Tue, 10 Mar 2026 08:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C56B43CEC7;
+	Tue, 10 Mar 2026 09:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mq5rd7+E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3CUmkxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C043901B;
-	Tue, 10 Mar 2026 08:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC9A40759B;
+	Tue, 10 Mar 2026 09:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773132895; cv=none; b=ggR+niw12J5HLc0qJbmoXsClQDwQc/Xe3odXudbPlqjzM1iUZTN73IL9+JKpoNeHiObFX5tR6tS9PrElTdZZ2pOb26vszHn8BJ9LsylI1t6+i+DCBvnzCGmeHcp28LKNzS0cxztu7DDuIuclIWiKAW3fVapIVdZLmny64XT/ms0=
+	t=1773133308; cv=none; b=CyjIRuMA+j0T4qktd/yVqFA0jd61IdliXQsPeV7cU0aM/fvWeFs88qiAIKr7iDEYGZAuH2CaXI5KxY5Fp4K000Fna/y5jbOkJmbmyWpLu8UK3c0mHfBpMFxjL9O0JZ0dV7eTp/0iLYMcVH5mfm9gYcIFU2vKeeaXIPJzesb6+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773132895; c=relaxed/simple;
-	bh=+IGCKgqPFHDe5JXoy8PHXf111KpMuolV8jtRpNeWfQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jNl0eM9qnLCHN0QA6AEzbS+g8ah2lf8gCpzqejybve3DQWGeF2oDazXwKqOjupsFeAUDQNcRY2kg6vPsJfcdpCCySVKoehSJ9xIQVcArhsiuJtfS4c3EDv7ecI0B/JXNw1YjYwry6THOLp6VQ3fGXpWd6+KyVVYhXxdChGerWvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mq5rd7+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F34AC19423;
-	Tue, 10 Mar 2026 08:54:55 +0000 (UTC)
+	s=arc-20240116; t=1773133308; c=relaxed/simple;
+	bh=u2Vzam/bYA8NgPkPOiOe7/hybQIcVlVZQq2S9mdk6yA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c+RAeywAUhGz6OW+nzC691sjbRK+ZPebpwBLaSp7YzlIL9Nl6J92Fbq6n264wMhchOJtyxgvz8UQnc0ILpumdIluoMfUj0wF31UrWEphlcYrRAqmUg465YGZpCtKVQsXuVqUgGQgeqRov9Xk+YqTaHxL8BpziA16HunzH7D5Ew4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3CUmkxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED944C19423;
+	Tue, 10 Mar 2026 09:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773132895;
-	bh=+IGCKgqPFHDe5JXoy8PHXf111KpMuolV8jtRpNeWfQc=;
+	s=k20201202; t=1773133308;
+	bh=u2Vzam/bYA8NgPkPOiOe7/hybQIcVlVZQq2S9mdk6yA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=mq5rd7+EfhMEwbrTHQdfWHOa2RLs8tXbtHUagjVTbtXoOgVpV3WjiGSW2n+lEcX4f
-	 GwAvCwrN4vS9TZTb9kgPLKwa5b1LZLnWS2GjrOx8mB44opLBfGLEShHjKHKnvF6vCl
-	 SjuI2+pDexe4RKaHNEYfOzmYb17/74RiK5GolGGK5OKZrpHzU6BhkC9QA3fl/1uXG2
-	 NVHGHyPm7MqRLPuGE/UlXZb5W+D0PMpRWWgjx1luKpnaa2F+ganVR+DvuqSlOmgtEd
-	 3CrVdtcsdo85M8IjOA+Pefx++wCMEvX+Tyu/TIuoj7yCbplA+gL3+QPOaV5RsH0I6s
-	 aSCZWUa6qGFkg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vzsrd-00000000Lpv-0ITl;
-	Tue, 10 Mar 2026 08:54:53 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Quentin Perret <qperret@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
+	b=m3CUmkxiQNWKnTq2OcXs1ei9ZwJ+kqQEJmYgF1nwy0UKJt/iQZOJ7aCFVWcLKAw74
+	 9fsioppodr4kXiO0yV2SrEzkKTV4o8ByF9T19sGs1qp11JFoTzI6kqSn6XnOktioLo
+	 MrucCmbwSW+Ga12hP0/GYYv6v9imyokDg/Zbp8HUup45zpv5sXUGbja3YMrwvNKuxG
+	 e0OnbmJgIXw1tZZiEEm/pZ3DEwERc0JvsHEHXJmW5x2i7TNVPNldD4UsZSAM01IREy
+	 /Kk9fZ7qRTmm+9MBuYRCu9r9yhgt3j42KdBDBPdjqKhdUE/U5h+xqfwJiehUUYvsei
+	 +A1McfDbIhLLw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: pkvm: Don't reprobe for ICH_VTR_EL2.TDS on CPU hotplug
-Date: Tue, 10 Mar 2026 08:54:33 +0000
-Message-ID: <20260310085433.3936742-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+Cc: Sheetal <sheetal@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	linux-sound@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] ALSA: hda/hdmi: Add Tegra238 HDA codec device ID
+Date: Tue, 10 Mar 2026 05:01:01 -0400
+Message-ID: <20260310090145.2709021-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.6
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, catalin.marinas@arm.com, qperret@google.com, tabba@google.com, vdonnefort@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Rspamd-Queue-Id: 6561F247C42
+X-Rspamd-Queue-Id: B7FF8247CD4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223792-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223794-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RSPAMD_URIBL_FAIL(0.00)[msgid.link:query timed out,nvidia.com:query timed out];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nvidia.com,suse.de,kernel.org,perex.cz,suse.com,gmail.com,vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email]
 X-Rspamd-Action: no action
 
-Hotplugging a CPU off and back on fails with pKVM, as we try to
-probe for ICH_VTR_EL2.TDS. In a non-VHE setup, this is achieved
-by using an EL2 stub helper. However, the stubs are out of reach
-once pKVM has deprivileged the kernel. The CPU never boots.
+From: Sheetal <sheetal@nvidia.com>
 
-Since pKVM doesn't allow late onlining of CPUs, we can detect
-that protected mode is enforced early on, and return the current
-state of the capability.
+[ Upstream commit 5f4338e5633dc034a81000b2516a78cfb51c601d ]
 
-Fixes: 2a28810cbb8b2 ("KVM: arm64: GICv3: Detect and work around the lack of ICV_DIR_EL1 trapping")
-Reported-by: Vincent Donnefort <vdonnefort@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
+Add Tegra238 HDA codec device in hda_device_id list.
+
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Link: https://patch.msgid.link/20260302084217.3135982-1-sheetal@nvidia.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index c31f8e17732a3..947ff71b3b66b 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2345,6 +2345,9 @@ static bool can_trap_icv_dir_el1(const struct arm64_cpu_capabilities *entry,
- 	    !is_midr_in_range_list(has_vgic_v3))
- 		return false;
- 
-+	if (system_capabilities_finalized() && is_protected_kvm_enabled())
-+		return cpus_have_final_cap(ARM64_HAS_ICH_HCR_EL2_TDIR);
-+
- 	if (is_kernel_in_hyp_mode())
- 		res.a1 = read_sysreg_s(SYS_ICH_VTR_EL2);
- 	else
+LLM Generated explanations, may be completely bogus:
+
+## Analysis: ALSA: hda/hdmi: Add Tegra238 HDA codec device ID
+
+### Commit Overview
+This is a single-line addition of a new HDA codec device ID
+(`0x10de0032`) for the Tegra238 HDMI/DP audio codec to the existing
+`snd_hda_id_tegrahdmi[]` device ID table.
+
+### Classification: New Device ID Addition
+
+This falls squarely into the **"New Device IDs"** exception category for
+stable backports. The change:
+
+1. Adds exactly one line: `HDA_CODEC_ID_MODEL(0x10de0032, "Tegra238
+   HDMI/DP", MODEL_TEGRA234)`
+2. Uses an existing model type (`MODEL_TEGRA234`) — the same model used
+   by surrounding entries (Tegra234, SoC 33, Tegra264, SoC 35)
+3. The driver already fully exists in stable trees
+4. No new code paths, no new features, no behavioral changes for
+   existing hardware
+
+### Risk Assessment
+- **Risk: Extremely low.** This is a data-only change — adding an entry
+  to a device ID table. It cannot affect any existing hardware or code
+  path.
+- **Scope: Minimal.** One line in one file.
+- **Regression potential: Near zero.** The new entry is only matched
+  when the specific Tegra238 hardware is present.
+
+### User Impact
+Without this ID, users with Tegra238 SoCs would have no HDMI/DP audio
+support. This is a real hardware enablement fix for NVIDIA's Tegra238
+platform.
+
+### Stable Kernel Rules Compliance
+1. **Obviously correct and tested**: Yes — follows the exact same
+   pattern as all other entries in the table, uses the same model as the
+   adjacent Tegra234 entry.
+2. **Fixes a real bug**: Yes — hardware doesn't work without its device
+   ID in the table.
+3. **Small and contained**: Yes — one line.
+4. **No new features/APIs**: Correct — uses existing driver
+   infrastructure.
+
+### Verification
+- Reviewed the diff: confirms a single `HDA_CODEC_ID_MODEL` line
+  insertion using existing `MODEL_TEGRA234` model type, consistent with
+  adjacent entries.
+- The file `sound/hda/codecs/hdmi/tegrahdmi.c` contains the full Tegra
+  HDMI codec driver with probe, init, build_pcms, etc. — the driver is
+  complete and existing.
+- The new entry is placed in numerical order between `0x10de0031`
+  (Tegra234) and `0x10de0033` (SoC 33), both using `MODEL_TEGRA234`.
+- Commit is signed off by NVIDIA engineer (sheetal@nvidia.com) and
+  accepted by the ALSA maintainer (Takashi Iwai).
+
+### Conclusion
+This is a textbook device ID addition — the single most common and least
+risky type of stable backport. It enables HDMI/DP audio on Tegra238
+hardware with zero risk to existing functionality.
+
+**YES**
+
+ sound/hda/codecs/hdmi/tegrahdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/hda/codecs/hdmi/tegrahdmi.c b/sound/hda/codecs/hdmi/tegrahdmi.c
+index 5f6fe31aa2028..ebb6410a48313 100644
+--- a/sound/hda/codecs/hdmi/tegrahdmi.c
++++ b/sound/hda/codecs/hdmi/tegrahdmi.c
+@@ -299,6 +299,7 @@ static const struct hda_device_id snd_hda_id_tegrahdmi[] = {
+ 	HDA_CODEC_ID_MODEL(0x10de002f, "Tegra194 HDMI/DP2",	MODEL_TEGRA),
+ 	HDA_CODEC_ID_MODEL(0x10de0030, "Tegra194 HDMI/DP3",	MODEL_TEGRA),
+ 	HDA_CODEC_ID_MODEL(0x10de0031, "Tegra234 HDMI/DP",	MODEL_TEGRA234),
++	HDA_CODEC_ID_MODEL(0x10de0032, "Tegra238 HDMI/DP",	MODEL_TEGRA234),
+ 	HDA_CODEC_ID_MODEL(0x10de0033, "SoC 33 HDMI/DP",	MODEL_TEGRA234),
+ 	HDA_CODEC_ID_MODEL(0x10de0034, "Tegra264 HDMI/DP",	MODEL_TEGRA234),
+ 	HDA_CODEC_ID_MODEL(0x10de0035, "SoC 35 HDMI/DP",	MODEL_TEGRA234),
 -- 
-2.47.3
+2.51.0
 
 
