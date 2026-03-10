@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-224095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOYhItz/r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-224095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:26:20 +0100
+	id cKcpChn9r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12D024AAFF
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:26:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945BD24A33B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 197073220088
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:14:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 297D73031234
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0202BF3E2;
-	Tue, 10 Mar 2026 11:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FE4387583;
+	Tue, 10 Mar 2026 11:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIKBJ/NW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RB1lYCr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31683859DF;
-	Tue, 10 Mar 2026 11:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F543859DF;
+	Tue, 10 Mar 2026 11:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141228; cv=none; b=sIRUdHDGahE3rWiTEB1AICOcpzF0f2m5Hf/39NmMjGP4pnofgTf+8FIWM3Hq13wWA3MJt3pR81/9XykKrWZByczVq8CuxGT80pT+fQu3eKmOofBsekypfJlC3I6yyU64qisGFcoemJuHHgS7ulvKrFQ6ET8tKX1OzUSxBCkDLFo=
+	t=1773141229; cv=none; b=Pcx3mGalSJmsfXWnH+72wIe9nWQA+X2SEi5SHHLUirkgA8DyE765g/wTXdDT7VyityQGFycO+64id2IXjod8NQirkxtWi/+Z/UGinkALZ6oIoGynOU7E5suw6XTDlJ4IgRXmWeiMDWDqa6aiWs0ZSX6+O3vSgQX8FizXcjhNzRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141228; c=relaxed/simple;
-	bh=q/y8tNWfBbeYXSO0t/ZVDOmywKaGelUvEQ3GXk8kRxI=;
+	s=arc-20240116; t=1773141229; c=relaxed/simple;
+	bh=8IR4PP04duRSTiV4ISE6cFPUeS+SxWcKYCuAjg/xwpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwJBiu5RTKVF1tOnj1VXj/uCxiV1+IhIqdEXD3kkVgmSNN/7uuPM9CWRyLKlUnjsQAXQbZqBL6TlurmvFjU+jse+nMIP7O/2bjo47qs/QGUUHPqkLELj3vIhIr3PfEmB7UIn7RW5SZUBsUxh9cBK2bOWlQG1KYTrCxIZhtVaHD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIKBJ/NW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32DEC2BC86;
-	Tue, 10 Mar 2026 11:13:47 +0000 (UTC)
+	 MIME-Version; b=Du0Lop8HIVz3WHUrb2IS3u/WQDAp3DNvnABHO79pg3rRwIaBEBjMtzAo1+arxEmd+DsOaIHoctBocANzv1VOG+ixLlrgi0WIarxZWaQl1keIh4HqbEQWDI8pVY6hzu/ZLwux4ruRMFLJS/JMtETxIz+Wvakq34VShrOi5wNlGh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RB1lYCr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B80C19423;
+	Tue, 10 Mar 2026 11:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141228;
-	bh=q/y8tNWfBbeYXSO0t/ZVDOmywKaGelUvEQ3GXk8kRxI=;
+	s=k20201202; t=1773141229;
+	bh=8IR4PP04duRSTiV4ISE6cFPUeS+SxWcKYCuAjg/xwpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIKBJ/NW/hZMde1/rB0aWbnW4xjKOlpN4oB0Dm9aXXORfGUuINKC3VvoIDyd/K/Lf
-	 KbdcPo0e+n5HTu49Mf869GmWCrC52+vTAZlnNsJ2LzbrkFmxhimUlumCMtKCP1Ad7j
-	 SsRMbuQVjxk3asPHoNrVX+d/kmHQnMgzA3cy1/hvdTzeVv8UfTLnCwWOcnFhSBFt6z
-	 5YEK7jmoEKrqpRq2IhzIO7TuyLhjJPhb+AeiGgfbUONP3UCaMZOspwdoSS+gt21Zqs
-	 YsW0tqmRVwmEByd4uQexbEIemA19jpKQLdMS+GXdfAhqWi39OKtajMXthAhA6lowCk
-	 wjkTUd7MI+EfA==
+	b=RB1lYCr+ozQLPmo5qCYgOm14D6l8rgWCKddQQz8jhMhVGWSoCaQyBtWj0fUWeK1x8
+	 MKtgnDPRxGvsfjvYZQgXv7ZFRA4p+oZySdSunJxyqmzkJQF+747Tydb49FEglQIXFI
+	 jp6ikH+S3UtdeJLSXNV0GGEU5I25K3Rk8WJavU+hS3cfFJMav0E2ddQXiVC0OCgq7Y
+	 1bazIHy6CmQRWaApPqy0r6wDi6A5cOtodzDqZJqjEYHihGpNNyoQqf/p3eEM2K+jMp
+	 C3guP59R29+o65m9RkEIAarZr5c/C7SGyNWggBOJAOHDxzk/9hscmxFNM49FBGjCrZ
+	 zjmSRQFTeYPoA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Harry Wentland <harry.wentland@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 230/311] drm/amd/display: Use mpc.preblend flag to indicate 3D LUT
-Date: Tue, 10 Mar 2026 07:04:37 -0400
-Message-ID: <654dc2f413a1019d79a8c941071aee41d003b789.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 231/311] drm/amd/display: Enable DEGAMMA and reject COLOR_PIPELINE+DEGAMMA_LUT
+Date: Tue, 10 Mar 2026 07:04:38 -0400
+Message-ID: <91648b08e85d0ff62d0a78d11be14d6abd08979f.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -67,114 +67,107 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F12D024AAFF
+X-Rspamd-Queue-Id: 945BD24A33B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224095-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224096-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit c28b3ec3ca034fd1abc832fef46ce36eb13f8fad ]
+[ Upstream commit a4fa2355e0add57253468ef13bd08f11285f3b6e ]
 
 [WHAT]
-New ASIC's 3D LUT is indicated by mpc.preblend.
+Create DEGAMMA properties even if color pipeline is enabled, and enforce
+the mutual exclusion in atomic check by rejecting any commit that
+attempts to enable both COLOR_PIPELINE on the plane and DEGAMMA_LUT on
+the CRTC simultaneously.
 
-Fixes: 0de2b1afea8d ("drm/amd/display: add 3D LUT colorop")
+Fixes: 18a4127e9315 ("drm/amd/display: Disable CRTC degamma when color pipeline is enabled")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4963
 Reviewed-by: Melissa Wen <mwen@igalia.com>
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 43175f6164d32cb96362d16e357689f74298145c)
+(cherry picked from commit 196a6aa727f1f15eb54dda5e60a41543ea9397ee)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c   | 6 ++++--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c   | 16 ++++++++--------
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c  |  8 ++++++++
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-index 20a76d81d532d..12c52bffe9964 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_color.c
-@@ -1706,6 +1706,7 @@ __set_dm_plane_colorop_3dlut(struct drm_plane_state *plane_state,
- 	struct dc_transfer_func *tf = &dc_plane_state->in_shaper_func;
- 	struct drm_atomic_state *state = plane_state->state;
- 	const struct amdgpu_device *adev = drm_to_adev(colorop->dev);
-+	bool has_3dlut = adev->dm.dc->caps.color.dpp.hw_3d_lut || adev->dm.dc->caps.color.mpc.preblend;
- 	const struct drm_device *dev = colorop->dev;
- 	const struct drm_color_lut32 *lut3d;
- 	uint32_t lut3d_size;
-@@ -1722,7 +1723,7 @@ __set_dm_plane_colorop_3dlut(struct drm_plane_state *plane_state,
- 	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 9fcd72d87d25b..39fcbc3e702dc 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -765,15 +765,15 @@ int amdgpu_dm_crtc_init(struct amdgpu_display_manager *dm,
+ 	dm->adev->mode_info.crtcs[crtc_index] = acrtc;
  
- 	if (colorop_state && !colorop_state->bypass && colorop->type == DRM_COLOROP_3D_LUT) {
--		if (!adev->dm.dc->caps.color.dpp.hw_3d_lut) {
-+		if (!has_3dlut) {
- 			drm_dbg(dev, "3D LUT is not supported by hardware\n");
- 			return -EINVAL;
- 		}
-@@ -1875,6 +1876,7 @@ amdgpu_dm_plane_set_colorop_properties(struct drm_plane_state *plane_state,
- 	struct drm_colorop *colorop = plane_state->color_pipeline;
- 	struct drm_device *dev = plane_state->plane->dev;
- 	struct amdgpu_device *adev = drm_to_adev(dev);
-+	bool has_3dlut = adev->dm.dc->caps.color.dpp.hw_3d_lut || adev->dm.dc->caps.color.mpc.preblend;
- 	int ret;
+ 	/* Don't enable DRM CRTC degamma property for
+-	 * 1. Degamma is replaced by color pipeline.
+-	 * 2. DCE since it doesn't support programmable degamma anywhere.
+-	 * 3. DCN401 since pre-blending degamma LUT doesn't apply to cursor.
++	 * 1. DCE since it doesn't support programmable degamma anywhere.
++	 * 2. DCN401 since pre-blending degamma LUT doesn't apply to cursor.
++	 * Note: DEGAMMA properties are created even if the primary plane has the
++	 * COLOR_PIPELINE property. User space can use either the DEGAMMA properties
++	 * or the COLOR_PIPELINE property. An atomic commit which attempts to enable
++	 * both is rejected.
+ 	 */
+-	if (plane->color_pipeline_property)
+-		has_degamma = false;
+-	else
+-		has_degamma = dm->adev->dm.dc->caps.color.dpp.dcn_arch &&
+-			      dm->adev->dm.dc->ctx->dce_version != DCN_VERSION_4_01;
++	has_degamma = dm->adev->dm.dc->caps.color.dpp.dcn_arch &&
++		      dm->adev->dm.dc->ctx->dce_version != DCN_VERSION_4_01;
  
- 	/* 1D Curve - DEGAM TF */
-@@ -1907,7 +1909,7 @@ amdgpu_dm_plane_set_colorop_properties(struct drm_plane_state *plane_state,
+ 	drm_crtc_enable_color_mgmt(&acrtc->base, has_degamma ? MAX_COLOR_LUT_ENTRIES : 0,
+ 				   true, MAX_COLOR_LUT_ENTRIES);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 7474f1bc1d0b8..44b9c8ca6d719 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1256,6 +1256,14 @@ static int amdgpu_dm_plane_atomic_check(struct drm_plane *plane,
  	if (ret)
  		return ret;
  
--	if (adev->dm.dc->caps.color.dpp.hw_3d_lut) {
-+	if (has_3dlut) {
- 		/* 1D Curve & LUT - SHAPER TF & LUT */
- 		colorop = colorop->next;
- 		if (!colorop) {
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-index a2de3bba83464..cc124ab6aa7f7 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_colorop.c
-@@ -60,6 +60,7 @@ int amdgpu_dm_initialize_default_pipeline(struct drm_plane *plane, struct drm_pr
- 	struct drm_colorop *ops[MAX_COLOR_PIPELINE_OPS];
- 	struct drm_device *dev = plane->dev;
- 	struct amdgpu_device *adev = drm_to_adev(dev);
-+	bool has_3dlut = adev->dm.dc->caps.color.dpp.hw_3d_lut || adev->dm.dc->caps.color.mpc.preblend;
- 	int ret;
- 	int i = 0;
- 
-@@ -112,7 +113,7 @@ int amdgpu_dm_initialize_default_pipeline(struct drm_plane *plane, struct drm_pr
- 
- 	i++;
- 
--	if (adev->dm.dc->caps.color.dpp.hw_3d_lut) {
-+	if (has_3dlut) {
- 		/* 1D curve - SHAPER TF */
- 		ops[i] = kzalloc(sizeof(*ops[0]), GFP_KERNEL);
- 		if (!ops[i]) {
++	/* Reject commits that attempt to use both COLOR_PIPELINE and CRTC DEGAMMA_LUT */
++	if (new_plane_state->color_pipeline && new_crtc_state->degamma_lut) {
++		drm_dbg_atomic(plane->dev,
++			       "[PLANE:%d:%s] COLOR_PIPELINE and CRTC DEGAMMA_LUT cannot be enabled simultaneously\n",
++			       plane->base.id, plane->name);
++		return -EINVAL;
++	}
++
+ 	ret = amdgpu_dm_plane_fill_dc_scaling_info(adev, new_plane_state, &scaling_info);
+ 	if (ret)
+ 		return ret;
 -- 
 2.51.0
 
