@@ -1,111 +1,154 @@
-Return-Path: <stable+bounces-224502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HRhBUMfsGmCgAIAu9opvQ
-	(envelope-from <stable+bounces-224502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 14:40:19 +0100
+	id KJHmI0slsGnYgQIAu9opvQ
+	(envelope-from <stable+bounces-224503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:06:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DCD25096D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 14:40:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397C025153D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88E2B317EE11
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:09:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C463B334C789
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A3F3E9285;
-	Tue, 10 Mar 2026 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F8B3EC2DA;
+	Tue, 10 Mar 2026 12:48:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C98B3C13E7;
-	Tue, 10 Mar 2026 12:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2303EC2C3
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 12:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773146843; cv=none; b=u8zyq8CSpy+6FnsmFv7B772yZVeGrdf7RqU5L8bJ8e9B3hZxkpaKPasZ3PJpiCLd/sAyoPJamDHqtD9BZ2xSv6H/snoFF4kNpyv0NfF6FPU1yBSDVObouBfcygIozE5uB59IH3umjsS4QjpY9GT3yLFzieiShGXQGG71ryNygvw=
+	t=1773146910; cv=none; b=EvC7GjOjsQxqjNp1xT3Clei8qTnSbnhW0rgZsIi8WJhKAtfZbEuwHzUEkaDp/4+v+o4sNHPfuisKinQ+l3GiAuacxOCd/MFfogOBxzYLGwAUp3+weqDTFLH4hbJsWpmweIXNEsaG7T7dyPBfSpmjNqUl7DSVftFpQTMbrgZ8u5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773146843; c=relaxed/simple;
-	bh=mcD91CdK32P2jAV8ZjbOOB4DHxdoVLkmEhWmNOR3ie8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMLKdSL9F4EFVv6plBcU3AwoorY1PI0btEg0AshYe/59obePhiFISosBFi74reP/5WikCufJhBaE7W3Nb+Hpsw15kSUXbQTLm7JCkCOs6tuPhpNdCCeQzeQrQh44x4cstVz4BGmbi8TQ5l6o6+uP52yf0ozkV/w6uAwszvogqoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: sashal@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	patches@lists.linux.dev,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.19 000/311] 6.19.7-rc1 review
-Date: Tue, 10 Mar 2026 12:47:06 +0000
-Message-ID: <20260310124709.3216-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
-References: <cover.1773140654.git.sashal@kernel.org>
+	s=arc-20240116; t=1773146910; c=relaxed/simple;
+	bh=hLaviU5buci/iG+3IFZ8KM5SjFs5/S+pJjyjwtRoJxo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Gnu8W+uOYz3Yzr8ZZyl8X+OOhrlLZ0qTY5L3wCBExE9oLCYiG0XEoSNNAC1/Cguo24HUuH/0ueZfsn3vGULEM/TCt29WgN5R7A5IdttM5O5KmDv3rq+VzjqgPhvWs3ug8x0TY+TBE3Ovy9Kf0IFmdldnaHqQb6jWzX0f/xLhreE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vzwVa-0007Ht-AG; Tue, 10 Mar 2026 13:48:22 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vzwVY-004hN1-2E;
+	Tue, 10 Mar 2026 13:48:22 +0100
+Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id C25C54FD59F;
+	Tue, 10 Mar 2026 12:48:21 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 10 Mar 2026 13:48:03 +0100
+Subject: [PATCH can] can: netlink: can_changelink(): add missing error
+ handling to call can_ctrlmode_changelink()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B1DCD25096D
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAAITsGkC/yWN0QrCMAxFf2Xk2UDb6QR/RWTUJs7obCWdIoz9u
+ 9E93sPlnBkqq3CFQzOD8luqlGzDbxpI15gHRiHbEFzoXOsdppj7NOn4KMT9ehkl3zESIasWRWN
+ kaEC/83tyXRu2nMCET+WLfP6xI5gHTiusr/ON0/TLwLJ8AZgrizyTAAAA
+X-Change-ID: 20260310-can_ctrlmode_changelink-add-error-handling-1517d06324ec
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-b6adf
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1352; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=hLaviU5buci/iG+3IFZ8KM5SjFs5/S+pJjyjwtRoJxo=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcIMyhm/nX4xrHtHP5U7ee2PjmrMu3aT5/7Ffrxm9Wn
+ +N/MG19WkcpC4MYF4OsmCLL0h8nFAUCHUp7XyZMgpnDygQyhIGLUwAmksDJ8E+17KP0vC+LFopU
+ FQtNnPn41iNfa5NTthtdmt+E975JdLrFyLBIy3t66eSuD8f9o/NuvHgVfywtMKxc7/+KmUpRm88
+ 6yHEBAA==
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Rspamd-Queue-Id: 397C025153D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224502-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224503-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.511];
+	MID_RHS_MATCH_FROM(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.967];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,librecast.net:mid,librecast.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-# Librecast Test Results
+In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
+CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
+can_ctrlmode_changelink() function. But the call to
+can_ctrlmode_changelink() is missing the error handling.
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Add the missing error handling and propagation to the call
+can_ctrlmode_changelink().
 
-CPU/kernel: Linux auntie 6.19.7-rc1-g2867504d9c53 #2 SMP PREEMPT_DYNAMIC Tue Mar 10 12:44:04 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+Cc: stable@vger.kernel.org
+Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/dev/netlink.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 0498198a4696..766d455950f5 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -601,7 +601,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	/* We need synchronization with dev->stop() */
+ 	ASSERT_RTNL();
+ 
+-	can_ctrlmode_changelink(dev, data, extack);
++	err = can_ctrlmode_changelink(dev, data, extack);
++	if (err)
++		return err;
+ 
+ 	if (data[IFLA_CAN_BITTIMING]) {
+ 		struct can_bittiming bt;
+
+---
+base-commit: e3f5e0f22cfc2371e7471c9fd5b4da78f9df7c69
+change-id: 20260310-can_ctrlmode_changelink-add-error-handling-1517d06324ec
+
+Best regards,
+--  
+Marc Kleine-Budde <mkl@pengutronix.de>
+
 
