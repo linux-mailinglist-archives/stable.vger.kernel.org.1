@@ -1,139 +1,195 @@
-Return-Path: <stable+bounces-223862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNaGAU75r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-223862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:58:22 +0100
+	id iPOrAHP8r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-223865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:11:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A54249D43
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:58:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041DD24A0D2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D465C30B0A2D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:52:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B3F58302825D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CF03815F5;
-	Tue, 10 Mar 2026 10:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C8E382F29;
+	Tue, 10 Mar 2026 11:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1dZ4uFs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1ouNFlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842303822B7;
-	Tue, 10 Mar 2026 10:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C5F381AF8;
+	Tue, 10 Mar 2026 11:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773139922; cv=none; b=UOtLJpOY2cu3AtAHSk7UIXzHScgeyVMeF7K925LIriX2WLqKmdQCCpz+hhT8QVqTE3aUl91qdv6Z3CrBcdAm99ae4scnSKVMVvpC9s0o7LrDUVhplLWgOFCvz+hfgUlwaUtsHR6MAL+1BPA9FwW1Z7eRrLbtOV/zGzIDqyYp+YI=
+	t=1773140769; cv=none; b=n6dJRfTatzSAgTx5O8mgaPrrE9aad2aI0rpkj/0rNki+v18Br/vaTEO4PsuhqNeii93yurBjqBLELeqtw/Wl0LnUxJovWtoqVHXaV2usJbYlISBpBL7tsFvoOsVdv4wZ/xnAcfEAsL4g4U0ODx7HCemTlCS2NUt7RfzQ9wCNdiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773139922; c=relaxed/simple;
-	bh=GrPnMKq8qTTLkSYj+FJaMFdtv5tT9Y8pQdQVL/qtdFI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PR18NF7gMMtaSI0b6h5rYDcOuqTq8oSGYw6t33Jzjme+viIe3/mEtADRW4vMXqqot1YGR738nwwjuzZZ32qQwUasMX3iKgD9VukMPwqRAIdVVqG9OPupBlnZVqY/rVEK3s8rQqfIuA8Ia/pOaHhSNSLBFI0UUMLizWolF3k43r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1dZ4uFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E63C19423;
-	Tue, 10 Mar 2026 10:52:02 +0000 (UTC)
+	s=arc-20240116; t=1773140769; c=relaxed/simple;
+	bh=4Uw3rbhPIpjWT+KTWz+d/ibpcIgb/7XP+USSZW4yF+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PlV5uXOsqiqq0fGmwh+dZE8IiIqvAqZZRGyHEINAsNuNVOFi4f5BvsXiUVFTywnMbYXlWHicPtHGPY0Iocwa5Hvnn/NoSf9YWdSYpzDzyaoeveFG4UalO81QgMQLZXVQUtQv7zGB42xAbv5NUflQLsewJvawuRNyTj3OxQ+mmG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1ouNFlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0300C19423;
+	Tue, 10 Mar 2026 11:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773139922;
-	bh=GrPnMKq8qTTLkSYj+FJaMFdtv5tT9Y8pQdQVL/qtdFI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a1dZ4uFsaXmQApLh6YtjH9fDB1EYtW7zDkkcc1+My3UIHxVZo//APXtHZyRH6OsE5
-	 qZUlE1YN3TQ7fx5R6ZsnxBfU3+aQ+SsGzTU9ipzx8dN1kpTAXFtPwr5j45/LoUb4mj
-	 z61etJSbS3YgvuMR0eJQRGtq5V3JXJ+/rK0wB5YUSBnkuSafs9MikawB5OceULd0Gk
-	 /apGCf+iTl/JmDRvFoww+iUcAr04ge4+igf3IWc/pamRKy/QaB66UXEVQusnRpnLSJ
-	 IsgjajzxEOsnkWcq0YZFVkcsThTYeHR8SAwclfdSmMsoIEZLrirAO+DppNI+3Xl3JU
-	 GWD2vSG5WI5Zg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vzugy-000000004Zd-0eWZ;
-	Tue, 10 Mar 2026 11:52:00 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Dave Penkler <dpenkler@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
+	s=k20201202; t=1773140768;
+	bh=4Uw3rbhPIpjWT+KTWz+d/ibpcIgb/7XP+USSZW4yF+E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B1ouNFlXXLcEmzA5WAS+bS2zf4O37mLQnjVvroWC5ZZOJWFrZjnJsSr8WKCswRttM
+	 mn+hwBKLQvSFDrA9211aou0KPwYk2OTNNM8HDeQ2sQQBV2QhY1SDRROE+EtvpoufUw
+	 i+aBSOsvYFPfrJhpMhsblRkhs2CGhoBDRWHDehG+vWUB3KjjAYIjEh+sbjNWfmPgJn
+	 0OJ69lzqaPbREQwAJyvmwtaru2BfVK/Wo+dTST1u53Hco2dj3xU3N/PtyL9d/rVe0M
+	 /i99tFDkp64JXISHs5wSfSMPx8YYdRlEoBqDz5w7hE/bzSHo1oRd8CGlKT6x1iIlFh
+	 +62QsqklVvBpA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH] gpib: lpvo_usb: fix memory leak on disconnect
-Date: Tue, 10 Mar 2026 11:51:27 +0100
-Message-ID: <20260310105127.17538-1-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
+Cc: Haocheng Yu <yuhaocheng035@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.19 001/311] perf/core: Fix refcount bug and potential UAF in perf_mmap
+Date: Tue, 10 Mar 2026 07:00:48 -0400
+Message-ID: <f1336d6544902b9273e41080663fc11a01187e90.1773140655.git.sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
+References: <cover.1773140654.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86A54249D43
+X-Rspamd-Queue-Id: 041DD24A0D2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223862-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,infradead.org,linuxfoundation.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223865-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,infradead.org:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email]
 X-Rspamd-Action: no action
 
-The driver iterates over the registered USB interfaces during GPIB
-attach and takes a reference to their USB devices until a match is
-found. These references are never released which leads to a memory leak
-when devices are disconnected.
+From: Haocheng Yu <yuhaocheng035@gmail.com>
 
-Fix the leak by dropping the unnecessary references.
+commit 77de62ad3de3967818c3dbe656b7336ebee461d2 upstream.
 
-Fixes: fce79512a96a ("staging: gpib: Add LPVO DIY USB GPIB driver")
-Cc: stable@vger.kernel.org	# 6.13
-Cc: Dave Penkler <dpenkler@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Syzkaller reported a refcount_t: addition on 0; use-after-free warning
+in perf_mmap.
+
+The issue is caused by a race condition between a failing mmap() setup
+and a concurrent mmap() on a dependent event (e.g., using output
+redirection).
+
+In perf_mmap(), the ring_buffer (rb) is allocated and assigned to
+event->rb with the mmap_mutex held. The mutex is then released to
+perform map_range().
+
+If map_range() fails, perf_mmap_close() is called to clean up.
+However, since the mutex was dropped, another thread attaching to
+this event (via inherited events or output redirection) can acquire
+the mutex, observe the valid event->rb pointer, and attempt to
+increment its reference count. If the cleanup path has already
+dropped the reference count to zero, this results in a
+use-after-free or refcount saturation warning.
+
+Fix this by extending the scope of mmap_mutex to cover the
+map_range() call. This ensures that the ring buffer initialization
+and mapping (or cleanup on failure) happens atomically effectively,
+preventing other threads from accessing a half-initialized or
+dying ring buffer.
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202602020208.m7KIjdzW-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Haocheng Yu <yuhaocheng035@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260202162057.7237-1-yuhaocheng035@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c b/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-index 389dde5a8481..e6ea9422d6f2 100644
---- a/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-+++ b/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-@@ -402,7 +402,7 @@ static int usb_gpib_attach(struct gpib_board *board, const struct gpib_board_con
- 		for (j = 0 ; j < MAX_DEV ; j++) {
- 			if ((assigned_usb_minors & 1 << j) == 0)
- 				continue;
--			udev =	usb_get_dev(interface_to_usbdev(lpvo_usb_interfaces[j]));
-+			udev = interface_to_usbdev(lpvo_usb_interfaces[j]);
- 			device_path = kobject_get_path(&udev->dev.kobj, GFP_KERNEL);
- 			match = gpib_match_device_path(&lpvo_usb_interfaces[j]->dev,
- 						       config->device_path);
-@@ -417,7 +417,7 @@ static int usb_gpib_attach(struct gpib_board *board, const struct gpib_board_con
- 		for (j = 0 ; j < MAX_DEV ; j++) {
- 			if ((assigned_usb_minors & 1 << j) == 0)
- 				continue;
--			udev =	usb_get_dev(interface_to_usbdev(lpvo_usb_interfaces[j]));
-+			udev = interface_to_usbdev(lpvo_usb_interfaces[j]);
- 			DIA_LOG(1, "dev. %d: bus %d -> %d  dev: %d -> %d\n", j,
- 				udev->bus->busnum, config->pci_bus, udev->devnum, config->pci_slot);
- 			if (config->pci_bus == udev->bus->busnum &&
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 69c56cad88a89..c0bb657e28e31 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7188,28 +7188,28 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			ret = perf_mmap_aux(vma, event, nr_pages);
+ 		if (ret)
+ 			return ret;
+-	}
+ 
+-	/*
+-	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+-	 * vma.
+-	 */
+-	vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_ops = &perf_mmap_vmops;
++		/*
++		 * Since pinned accounting is per vm we cannot allow fork() to copy our
++		 * vma.
++		 */
++		vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
++		vma->vm_ops = &perf_mmap_vmops;
+ 
+-	mapped = get_mapped(event, event_mapped);
+-	if (mapped)
+-		mapped(event, vma->vm_mm);
++		mapped = get_mapped(event, event_mapped);
++		if (mapped)
++			mapped(event, vma->vm_mm);
+ 
+-	/*
+-	 * Try to map it into the page table. On fail, invoke
+-	 * perf_mmap_close() to undo the above, as the callsite expects
+-	 * full cleanup in this case and therefore does not invoke
+-	 * vmops::close().
+-	 */
+-	ret = map_range(event->rb, vma);
+-	if (ret)
+-		perf_mmap_close(vma);
++		/*
++		 * Try to map it into the page table. On fail, invoke
++		 * perf_mmap_close() to undo the above, as the callsite expects
++		 * full cleanup in this case and therefore does not invoke
++		 * vmops::close().
++		 */
++		ret = map_range(event->rb, vma);
++		if (ret)
++			perf_mmap_close(vma);
++	}
+ 
+ 	return ret;
+ }
 -- 
-2.52.0
+2.51.0
 
 
