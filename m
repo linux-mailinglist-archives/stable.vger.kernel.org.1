@@ -1,213 +1,184 @@
-Return-Path: <stable+bounces-224504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOFdEOsksGnYgQIAu9opvQ
-	(envelope-from <stable+bounces-224504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:04:27 +0100
+	id +JnkC5oosGn/ggIAu9opvQ
+	(envelope-from <stable+bounces-224505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:20:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD532514C5
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:04:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D313C251C0F
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C6AD35889FE
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:24:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B29B833EA176
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B913BD237;
-	Tue, 10 Mar 2026 13:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF40540DFD6;
+	Tue, 10 Mar 2026 13:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F0OgBRW0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QZFqRoXm"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hitZNBiL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77748391E4B
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2B640DFB7
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773148380; cv=none; b=DLDN1MvRmK8tIYbQJF0q553DJNrv4n5RVr9Ygjp5PxRvsvkQcjA7oIwsB/5r7GpskpBNkFkyN9gtCPWytV/iRpukkgztr8Kenjl4Xdt19Pc7hvj3cft5z2OafDCzPT8KniKTMbKTjq9H0Mo8TN9NTEbYs6+2SBZppPP4kAoL1HU=
+	t=1773150232; cv=none; b=Ut9e9Mgi5l3OGu/dDIc3ty0gDHxuOWoSbESaHfd5Wwb/E4PywwRhmtqkQ1MJM8cC4TSaxTMpDanpA2YSAPvWJ+LypYtQDT5sZHO8q2wKPvP/9xz8P8COmaDjX3rWbDpFhvqQrKk1qd0K7Ch+xntHIWp4k1wIjLB/+mCJSEWdyAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773148380; c=relaxed/simple;
-	bh=kqR8StKY9gPtFVZE8MTGyyw9pd2MeOvNSDrUH4L/DX4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bTV1ok8We6VJ1DQpxNMlAxQlp9YQ9jE8RIslrfLLRzAnqDwec23eWjTD4ajQK+LBkReNoIdeGc7xrhQnXnobikWwWrR2zO1BNcqpHPd9ornrT0Vubf6KmvQH4MfmQ5Enqe9POC4dTIBAeCXOTeEp4VH8A5+BfwgERT39iRx/wT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F0OgBRW0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QZFqRoXm; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62ACaYUP789294
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=; b=F0OgBRW0OTgeLbyX
-	NL8ziTwO7GSbC540v6G5OAScayy21O6zSkI9hsNWzF5J+rUbcZW1HBSUmB+p/vKD
-	bvOOpQbzlUU17OOvftXMn7S90Av/LsULrV2va4Ae8dTu1slOeevO+TcmH7KRHLZ8
-	Tx0OsmpKuRUsvQkfsY83ZhobuK7u0EW05vIHbgxL1LN+bbMrme7tVgD52f5ahXg1
-	OQOfozi1EZdV9vTfmkVu+bOIMrUxtQc0kuBmVH+vM8I0o/Z9KFOxp05+kgtMvwr6
-	resOqr3Z1Rx6ofBFijfMAR19y8ZwfdMcEjGURjIChunr3V6/mi3ee/nRnpWZNuQL
-	P/zIHw==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ct1ekuyv9-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:57 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-899f6011df3so55462656d6.0
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 06:12:57 -0700 (PDT)
+	s=arc-20240116; t=1773150232; c=relaxed/simple;
+	bh=E+RwkapHSz9lM+BBecuOvJwlLoYN8H2Y3nfHJE6eidM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oK2p8GazPAtAy0TMpLmuKOGgkCjX0JLyQaKEMSOTnlAXIaegk2gKlj09+JywTSMEaE0h8pvqf1E+kC31Ooy9UxfSWQrL5BMJPM7fXW/UCNhDgtWB7ue6l3EdZt5F10p9TRpOB9mzRPrAwzm7Sl9lk3BnBkRJUQR8nIkMOSu7+d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hitZNBiL; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-829a6463afeso2244722b3a.3
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 06:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773148377; x=1773753177; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=;
-        b=QZFqRoXm4S1+lbWwOBmO+3wYQXQOSIaX3wNRk220CsuLEtXJlbJgojijul9jzpXA3d
-         vp4DeOTiBVQFem2d5vmuJD36+iQC2j6Twsh2g8cMHssn7IhXM3OLOMrkeYftfkTRpY+x
-         IgqSmBoEDd31TBQhJYrAvZVP0TIG/5qI8CgTCK6TozvZNByICdH7S/aFnOKeW5VSRGhp
-         QXFjfACXM5x0g/xZRhqPh8B4JCLVujl8/uoDLGrjSLVxOfxe795aTMTohM5VV5pAFe/y
-         QmR1V5TI7nEO5mdnDVLydBOqnycz3gPzPWuMm9j6DHq/VcsT6oEwUAFoqaP7A/F0jLJ+
-         4WOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773148377; x=1773753177;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20230601; t=1773150231; x=1773755031; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=;
-        b=W4n31C+9VUo0QRKtvJ9KQFFzAB9jq4tBlEeNEQ5qNsYS+b2PI3Y9DVJxH6/5PrqAcK
-         L7bfA+GriFu4kgvqi29by6WBA59jFEDx2gp0etsLdljOgOBVB/muWR0NEWgXwxWbcJwL
-         hQLIDF5y03JpHrwuqIU2EvxExJkSBNj4r3eGNW0alNQpcqnH3GjHkmf+WoCUicqfpNc2
-         d6BtzXmfpasEW6Au5U25hDmKAwH2wX2MWzsQK4ogOs84KO2ZaaGSda90KRL9E0f8kVgl
-         QmSFZB6MrDchxHTOkT79WzhKI+QRJQ+No6kpCS8Pwbkod8qWR3L8fAz1AyL1K3zTG0WD
-         kLGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWn8P2gYDFtNSTBKvEBQaU+4S977B/H4OvucYNqfnQAQqtf1qVHIF84Zg1XNg281jyPMNh9CSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyZGWMQm/sfhbxjziQR2Jqi8Ps0lebioGkroqSwb7/5j1Qk1iC
-	Nl9XU9cNQk80GWyIZZF0lUdN/jW1bps8KtCc3gipPTAhKMTBRZYouwkZHOqInrx3+mfqGuE5QGO
-	ZnuG5jJVIkGLVn/AJEPKzeTIugub0eb1x1g2MpCQ6ahHUNIV9UTwNhpldHsc=
-X-Gm-Gg: ATEYQzxc4CitWRQFuT6nwpZ2Xid11hpktqOolm+KmvYn9LlhjQz9St577a+6GGjM9Fq
-	HJMpIRCDsaP48YmBmH0/MpMp57/S22ijY1Pt+UcXssq7qAtTUXJs8w60tojo/J8dDQUkw2eesL4
-	qV0zVhat7hywd+O9DaqKmA+UltdcGslRmS36SHShP3Sw0m4NPlBkYqLh8QzV73+ILN5E4yNIcmI
-	puUxKQKHVPi79sM8ygfOW/1FuGFCmkfV9/+RoT5bP9bJC9AThiX2FbWOq47pC52YqabzURnp1Wc
-	kqKZKk01ud26fZCwOwr90Hsaa4RUeyDoTmLpkec/qGWkvJhfBhKtRtF13APHz+zGrM5AWTrYfUA
-	qV+VCimkTvG0QZSH2+ZWxtIKN3ieqD5dmlnh6Ff12gpJkYTwLc02cZob77ZUK+jwf/ctwLV0Sh8
-	gerZE=
-X-Received: by 2002:a05:6214:8016:b0:89a:45d4:4e42 with SMTP id 6a1803df08f44-89a45d4561bmr91222336d6.5.1773148376663;
-        Tue, 10 Mar 2026 06:12:56 -0700 (PDT)
-X-Received: by 2002:a05:6214:8016:b0:89a:45d4:4e42 with SMTP id 6a1803df08f44-89a45d4561bmr91222016d6.5.1773148376160;
-        Tue, 10 Mar 2026 06:12:56 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942f15d532sm489707566b.54.2026.03.10.06.12.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 06:12:55 -0700 (PDT)
-Message-ID: <d7998d09-145e-4651-9027-b06ceb87860c@oss.qualcomm.com>
-Date: Tue, 10 Mar 2026 14:12:52 +0100
+        bh=BlFXAC6NpFjc8ppHZ0xc1jeIVSmvB7USqRZB0vsWL/A=;
+        b=hitZNBiLdrcGKIsai/0OS723lb4IufcaDhjbR2liIB7MylmtUheeRwAGV9WgFg41N+
+         rTZiTPlFXJpmXQf9FQE47lYOSNpV43m7h+d6T9y7j2lkqr6FMvu/oNxt1IDjvNmAa+3c
+         J0STqlMJ0sOPhPuA6IkqpCxN1u7UAjgVJII63bqXQPnm3zV7kW+ez+fKPRYsHb2jGSTp
+         lRLBjsAsYBGAJ/jI8zRC64WSDrpLRFEWa60Le7xRzx5HX2WNBBoaTYGVkpd6HLlj+hSA
+         Y/hAwCJfWTEUTSKUUHXWRuyfcQEhftbpUdj0Riihs+z8r0VnOQX/Zw+gr9xbi/nrf+QY
+         O7Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773150231; x=1773755031;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BlFXAC6NpFjc8ppHZ0xc1jeIVSmvB7USqRZB0vsWL/A=;
+        b=Iy9NxxHnGEtwfA3/LFVEHwFMXis8ldWaX/0IENiMyH0ceIp9Bj4V1c7PJWRTJtgqCk
+         YaxJ0UFOctwYzYxYqaKIkhESibzGv+wy12ER+OxiE7gTiY3u7axNxyu1HyrEIxduQZuD
+         u4yMjjVZzaC13qOyAIs4O72E9yY+YpuAMUOaenw9NTZEqWEqtUJAOEKB7qU8IMFFnRgN
+         AcmSw4qZiOI82lnb7gFX4zj0Ffw3OYrQooH1H9jtPe8+3y6hUMQRpUSvZAUG3oFqMTcm
+         JA0nKSjsdlOHY5Uurwkk042MXYePBfMwVi1Db36uZMDsTQATpPV31ydxg7OFccHQkAdu
+         3xvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmoGc4vvCqNujuLQK+EpC34H13BHmXeFHVaMBJAch7bMAYI5ae7RR/pQp7gF4jAyquQ0Gf1+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWTVD50EmHc9+nSS35wAXqeqBbiJts0yvMyimo03AFdy1UiYQn
+	cWyyXWGogN6EbBCr+nXCY0CJxk7TIHQzjdo+knJFPxcJLBVc2USZFwIvvGzFRCp2G8SFXCfG4uS
+	LNzFEEw==
+X-Received: from pfbhd10.prod.google.com ([2002:a05:6a00:658a:b0:829:7e81:95a8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1815:b0:821:8492:7f66
+ with SMTP id d2e1a72fcca58-829a2ded871mr13241391b3a.22.1773150230824; Tue, 10
+ Mar 2026 06:43:50 -0700 (PDT)
+Date: Tue, 10 Mar 2026 06:43:49 -0700
+In-Reply-To: <20260302102226.7459-2-kai.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/msm/dpu: fix mismatch between power and frequency
-To: yuanjie yang <yuanjie.yang@oss.qualcomm.com>, robin.clark@oss.qualcomm.com,
-        lumag@kernel.org, abhinav.kumar@linux.dev, jesszhan0024@gmail.com,
-        sean@poorly.run, marijn.suijten@somainline.org, airlied@gmail.com,
-        simona@ffwll.ch, neil.armstrong@linaro.org, krzk@kernel.org,
-        abelvesa@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, tingwei.zhang@oss.qualcomm.com,
-        aiqun.yu@oss.qualcomm.com
-References: <20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: EKK61RLl-I17DfnFkS7r_cdGCRrcsH2B
-X-Proofpoint-ORIG-GUID: EKK61RLl-I17DfnFkS7r_cdGCRrcsH2B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDExNCBTYWx0ZWRfXzUr7A5OLHPbx
- u4RMUYPssyhIviRIn/jC9ixMhLwil25eBQRO8PzuE9LUVR5exMjwfsNuJ5sn8q1tp1n1N0VDGRW
- rr74W36mzhrwlVcjSq7t3YfvqrESflIXYYJdIqpr7P6OxhGyjoYPI5Zb6J00Zi9S31FOumAHwFb
- QJSguL4cub3nMrxg/yy7px3Sge+5hl+wEqQth9jddI9Q06iouAIBbkJZ+wBlilOiSEzbPRALzIl
- 6I95lwZEMqDVxAd7pifGjIkZRfWW+ZI9wBZy2iO3XaaM1BIJAoKGIsZgIiHvE2zEBmk3ibJAIN/
- xQc28NU+PeiFtGAznYX2pFC4v68oB4j/Jvd3SKy6Z4nPw/FNY3V8YvUUxOnyuxqLfhYgr20Boxs
- EpzzOEQ8ipsbntbWOLHdt+7ixVh49bPQeRGFwo60a+rl1kAlpjYEiAsJ+T8rLcEbA0i+R9/53Zg
- jcGVVwNSqlVZiCkJz0w==
-X-Authority-Analysis: v=2.4 cv=eIEeTXp1 c=1 sm=1 tr=0 ts=69b018d9 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=EUspDBNiAAAA:8 a=EmtiIJl_oBPMN_jmJGIA:9 a=QEXdDO2ut3YA:10
- a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_02,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100114
-X-Rspamd-Queue-Id: CBD532514C5
+Mime-Version: 1.0
+References: <20260302102226.7459-1-kai.huang@intel.com> <20260302102226.7459-2-kai.huang@intel.com>
+Message-ID: <abAgFQVKhyig0oDj@google.com>
+Subject: Re: [PATCH v2] x86/virt/tdx: Fix lockdep assertion failure in cache
+ flush for kexec
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: dave.hansen@linux.intel.com, pbonzini@redhat.com, kas@kernel.org, 
+	rick.p.edgecombe@intel.com, tglx@kernel.org, bp@alien8.de, mingo@redhat.com, 
+	x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D313C251C0F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224505-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,linaro.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/9/26 7:37 AM, yuanjie yang wrote:
-> From: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
-> 
-> During DPU runtime suspend, calling dev_pm_opp_set_rate(dev, 0) drops
-> the MMCX rail to MIN_SVS while the core clock frequency remains at its
-> original (highest) rate. When runtime resume re-enables the clock, this
-> may result in a mismatch between the rail voltage and the clock rate.
-> 
-> For example, in the DPU bind path, the sequence could be:
->   cpu0: dev_sync_state -> rpmhpd_sync_state
->   cpu1:                                     dpu_kms_hw_init
-> timeline 0 ------------------------------------------------> t
-> 
-> After rpmhpd_sync_state, the voltage performance is no longer guaranteed
-> to stay at the highest level. During dpu_kms_hw_init, calling
-> dev_pm_opp_set_rate(dev, 0) drops the voltage, causing the MMCX rail to
-> fall to MIN_SVS while the core clock is still at its maximum frequency.
-> When the power is re-enabled, only the clock is enabled, leading to a
-> situation where the MMCX rail is at MIN_SVS but the core clock is at its
-> highest rate. In this state, the rail cannot sustain the clock rate,
-> which may cause instability or system crash.
-> 
-> Remove the call to dev_pm_opp_set_rate(dev, 0) from dpu_runtime_suspend
-> to ensure the correct vote is restored when DPU resumes.
-> 
-> Fixes: b0530eb11913 ("drm/msm/dpu: Use OPP API to set clk/perf state")
-> Signed-off-by: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
+On Mon, Mar 02, 2026, Kai Huang wrote:
+> TDX can leave the cache in an incoherent state for the memory it uses.
+> During kexec the kernel does a WBINVD for each CPU before memory gets
+> reused in the second kernel.
+>=20
+> There were two considerations for where this WBINVD should happen.  In
+> order to handle cases where the cache might get into an incoherent state
+> while the kexec is in the initial stages, it is needed to do this later
+> in the kexec path, when the kexecing CPU stops all remote CPUs.  However,
+> the later kexec process is sensitive to existing races.  So to avoid
+> perturbing that operation, it is better to do it earlier.
+>=20
+> The existing solution is to track the need for the kexec time WBINVD
+> generically (i.e., not just for TDX) in a per-cpu var.  The late
+> invocation only happens if the earlier TDX specific logic in
+> tdx_cpu_flush_cache_for_kexec() didn=E2=80=99t take care of the work.  Th=
+is
+> earlier WBINVD logic was built into KVM=E2=80=99s existing syscore ops sh=
+utdown()
+> handler, which is called earlier in the kexec path.
+>=20
+> However, this accidentally added it to KVM=E2=80=99s unload path as well =
+(also
+> the "error path" when bringing up TDX during KVM module load), which
+> uses the same internal functions.  This makes some sense too, though,
+> because if KVM is getting unloaded, TDX cache affecting operations will
+> likely cease.  So it is a good point to do the work before KVM is
+> unloaded and won't have a chance to handle the shutdown operation in the
+> future.
+>=20
+> Unfortunately this KVM unload invocation triggers a lockdep warning in
+> tdx_cpu_flush_cache_for_kexec().  Since tdx_cpu_flush_cache_for_kexec()
+> is doing WBINVD on a specific CPU, it has an assert for preemption being
+> disabled.  This works fine for the kexec time invocation, but the KVM
+> unload path calls this as part of a CPUHP callback for which, despite
+> always executing on the target CPU, preemption is not disabled.
+>=20
+> It might be better to add the earlier invocation logic to a dedicated
+> arch/x86 TDX syscore shutdown() handler, but to make the fix more
+> backport friendly just adjust the lockdep assert in the
+> tdx_cpu_flush_cache_for_kexec().
+>=20
+> The real requirement is tdx_cpu_flush_cache_for_kexec() must be done on
+> the same CPU.  It's OK that it can be preempted in the middle as long as
+> it won't be rescheduled to another CPU.
+>=20
+> Remove the too strong lockdep_assert_preemption_disabled(), and change
+> this_cpu_{read|write}() to __this_cpu_{read|write}() which provide the mo=
+re
+> proper check (when CONFIG_DEBUG_PREEMPT is true), which checks all
+> conditions that the context cannot be moved to another CPU to run in the
+> middle.
+>=20
+> Fixes: 61221d07e815 ("KVM/TDX: Explicitly do WBINVD when no more TDX SEAM=
+CALLs")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
+> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
 > ---
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-
-Konrad
+Acked-by: Sean Christopherson <seanjc@google.com>
 
