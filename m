@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-224429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJgnAKICsGnOeQIAu9opvQ
-	(envelope-from <stable+bounces-224429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:38:10 +0100
+	id OG1tGlsFsGlregIAu9opvQ
+	(envelope-from <stable+bounces-224430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:49:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FEC24B2A9
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:38:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9724F24B9CD
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F413307343F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:30:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 528F4307DCA2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D835738945C;
-	Tue, 10 Mar 2026 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B28389479;
+	Tue, 10 Mar 2026 11:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j/YbpRUp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qmbXUZp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50F37B413;
-	Tue, 10 Mar 2026 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EBC387361;
+	Tue, 10 Mar 2026 11:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142162; cv=none; b=laYlPwA6Kn/Q5u5ETSYc4sDL/4FOGdbMyi8TbX3qRj6ZowocFa1+j0ecw6VQdFwF6rskEgAPLW/r4Kj75uo2bLSoawqaUryaKLj4BVLgRtVj8kSzvcmxCD5L4cSFIu2uFAIHDBgE4keJ9eJtC95tCu0VYAqpqMIcZigRtZ4kirA=
+	t=1773142163; cv=none; b=aUkJ55jDOZAuZ6l7lGP041uf2MS1k0DYL9R4qMIXa8X7yYbXGeusA0wRS8mRhcso9OIlpXtM6Zca438Xb8Z48YWZwIIVEpJzVQDkoRFEIgdmySSx9Ks2LbV0PXB6WMpSWKrvpkWzwKHET5aoiGVJ9QKNuTc+HreeW/l1/Q9dkfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142162; c=relaxed/simple;
-	bh=mk10/7xLiwqTE/254pk/IoXlm8tj8qVX7CHQqIz7VfI=;
+	s=arc-20240116; t=1773142163; c=relaxed/simple;
+	bh=LfPb6PnVHObb82wjpXWZ74Qo5NTXmf9poH5MsQo+8/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYgg9wUQvSp95WYSfLgTeqdG9iQEYZRlQw0nhzs6ibqAjK/IMH6L6HQIXZfA5e7uP2yp6ZrY189ie2vD/tjtZaO4qSuRZRtC8xpMRZykW2idc2PBM9oJHrxNTAYn1Ffg4sX/5C+OH1LA+t/8rFJiP2oWeuiZ1DZmwTStYJpfG2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j/YbpRUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB078C2BC86;
-	Tue, 10 Mar 2026 11:29:21 +0000 (UTC)
+	 MIME-Version; b=PbiTqcWLBk6ZkKNzSqjDU0a7e+ZnDYxmnvbvsRM903375vjdFvS4xnGoV/H2sws0IMIP5mAT800NLuqGU6d3VJBw0UxQiTc2Fb0DmBMEoYtHhmO2HQy5QmEXtK/inCn9dUbDmAOokzPG63nuKnVXFsWtgFFBBJmcB+Q189uwEn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qmbXUZp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C174DC19423;
+	Tue, 10 Mar 2026 11:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142162;
-	bh=mk10/7xLiwqTE/254pk/IoXlm8tj8qVX7CHQqIz7VfI=;
+	s=k20201202; t=1773142163;
+	bh=LfPb6PnVHObb82wjpXWZ74Qo5NTXmf9poH5MsQo+8/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/YbpRUpt/pxQ4S9ICYQOaM5m8KdqRuvHYw8wcy6xoeTW+Zf8kRlXViZT7KrcB75l
-	 0H8qyDflHa1wvIPRmjFrVenSNklZtkXh0riVhb3Rrr2ngQkYuhimAK+PVPjW1Ops1M
-	 ukUA1NJWjNE672Qn3t3mqJjvHNvOdudI/dLgzRqIxxpGWAKHIdeB2mqpevr4qEQGDB
-	 yqj8gDtK3Os1CSfQAZoaChCJJzcGdPFMEktzMkJ71uiCj8kWsy0j7FTI2GPePSmVWj
-	 pCTKUFSNURDxwpC79T6ENgw6vf5fn951FFAo1KJRQ2c+TAinsoQN1A28DPYfONXw7e
-	 wVuud5M60D5pA==
+	b=qmbXUZp8FUBY8O8p2oWpPI/DX7qBb/XbGnLyneai98bm//bYAAACofwVYJTjB9vHo
+	 Aytw44OzW3ez/xAEi0pV8MaB7moaZ6LjwT4WswsmliakFgqM0LOZ+plSOEJLtC+wHE
+	 jcsaw2csC1DcI7Uc3hrWyXpta9UKfbjB5Qkcm+lc02zrffbe5fEzeakq794KNbIYT6
+	 GgLh7HN7QWrbYGSdBXovM/EoXEyl+kF2u/4HffBNY429O0DDbUkDPUsSfOSoenSsKU
+	 L6PLm4fZ/kVxWT7h7z7ormBleVexRfV1kXWauWRe6OteOYYg+utO15oPHA1Y3EBGpb
+	 cfBvWUtTcazbg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Vimlesh Kumar <vimleshk@marvell.com>,
 	Shinas Rasheed <srasheed@marvell.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 250/314] octeon_ep: avoid compiler and IQ/OQ reordering
-Date: Tue, 10 Mar 2026 07:18:29 -0400
-Message-ID: <1b693bfd17e4f586d018f99210512604949e47f9.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 251/314] octeon_ep_vf: Relocate counter updates before NAPI
+Date: Tue, 10 Mar 2026 07:18:30 -0400
+Message-ID: <75b1f138d4156daa5f1da3b99b272855014e35c2.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -67,20 +67,20 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 88FEC24B2A9
+X-Rspamd-Queue-Id: 9724F24B9CD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224429-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224430-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -94,158 +94,76 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,marvell.com:email]
 X-Rspamd-Action: no action
 
 From: Vimlesh Kumar <vimleshk@marvell.com>
 
-[ Upstream commit 43b3160cb639079a15daeb5f080120afbfbfc918 ]
+[ Upstream commit 2ae7d20fb24f598f60faa8f6ecc856dac782261a ]
 
-Utilize READ_ONCE and WRITE_ONCE APIs for IO queue Tx/Rx
-variable access to prevent compiler optimization and reordering.
-Additionally, ensure IO queue OUT/IN_CNT registers are flushed
-by performing a read-back after writing.
+Relocate IQ/OQ IN/OUT_CNTS updates to occur before NAPI completion.
+Moving the IQ/OQ counter updates before napi_complete_done ensures
+1. Counter registers are updated before re-enabling interrupts.
+2. Prevents a race where new packets arrive but counters aren't properly
+   synchronized.
 
-The compiler could reorder reads/writes to pkts_pending, last_pkt_count,
-etc., causing stale values to be used when calculating packets to process
-or register updates to send to hardware. The Octeon hardware requires a
-read-back after writing to OUT_CNT/IN_CNT registers to ensure the write
-has been flushed through any posted write buffers before the interrupt
-resend bit is set. Without this, we have observed cases where the hardware
-didn't properly update its internal state.
-
-wmb/rmb only provides ordering guarantees but doesn't prevent the compiler
-from performing optimizations like caching in registers, load tearing etc.
-
-Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Fixes: 1cd3b407977c3 ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Signed-off-by: Sathesh Edara <sedara@marvell.com>
 Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
 Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
-Link: https://patch.msgid.link/20260227091402.1773833-3-vimleshk@marvell.com
+Link: https://patch.msgid.link/20260227091402.1773833-4-vimleshk@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeon_ep/octep_main.c   | 21 +++++++++------
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++------
- 2 files changed, 32 insertions(+), 16 deletions(-)
+ .../marvell/octeon_ep_vf/octep_vf_main.c        | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index 7f8ed8f0ade49..16f52d4b11e91 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -562,17 +562,22 @@ static void octep_clean_irqs(struct octep_device *oct)
-  */
- static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
- {
--	u32 pkts_pend = oq->pkts_pending;
-+	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
-+	u32 last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	u32 pkts_processed = READ_ONCE(iq->pkts_processed);
-+	u32 pkt_in_done = READ_ONCE(iq->pkt_in_done);
- 
- 	netdev_dbg(iq->netdev, "enabling intr for Q-%u\n", iq->q_no);
--	if (iq->pkts_processed) {
--		writel(iq->pkts_processed, iq->inst_cnt_reg);
--		iq->pkt_in_done -= iq->pkts_processed;
--		iq->pkts_processed = 0;
-+	if (pkts_processed) {
-+		writel(pkts_processed, iq->inst_cnt_reg);
-+		readl(iq->inst_cnt_reg);
-+		WRITE_ONCE(iq->pkt_in_done, (pkt_in_done - pkts_processed));
-+		WRITE_ONCE(iq->pkts_processed, 0);
- 	}
--	if (oq->last_pkt_count - pkts_pend) {
--		writel(oq->last_pkt_count - pkts_pend, oq->pkts_sent_reg);
--		oq->last_pkt_count = pkts_pend;
-+	if (last_pkt_count - pkts_pend) {
-+		writel(last_pkt_count - pkts_pend, oq->pkts_sent_reg);
-+		readl(oq->pkts_sent_reg);
-+		WRITE_ONCE(oq->last_pkt_count, pkts_pend);
- 	}
- 
- 	/* Flush the previous wrties before writing to RESEND bit */
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index f2a7c6a76c742..74de19166488f 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -324,10 +324,16 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 				      struct octep_oq *oq)
- {
- 	u32 pkt_count, new_pkts;
-+	u32 last_pkt_count, pkts_pending;
- 
- 	pkt_count = readl(oq->pkts_sent_reg);
--	new_pkts = pkt_count - oq->last_pkt_count;
-+	last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	new_pkts = pkt_count - last_pkt_count;
- 
-+	if (pkt_count < last_pkt_count) {
-+		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
-+			oq->q_no, pkt_count, last_pkt_count);
-+	}
- 	/* Clear the hardware packets counter register if the rx queue is
- 	 * being processed continuously with-in a single interrupt and
- 	 * reached half its max value.
-@@ -338,8 +344,9 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 		pkt_count = readl(oq->pkts_sent_reg);
- 		new_pkts += pkt_count;
- 	}
--	oq->last_pkt_count = pkt_count;
--	oq->pkts_pending += new_pkts;
-+	WRITE_ONCE(oq->last_pkt_count, pkt_count);
-+	pkts_pending = READ_ONCE(oq->pkts_pending);
-+	WRITE_ONCE(oq->pkts_pending, (pkts_pending + new_pkts));
- 	return new_pkts;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 1d9760b4b8f47..17efc8eab4cfb 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -286,12 +286,13 @@ static void octep_vf_clean_irqs(struct octep_vf_device *oct)
  }
  
-@@ -414,7 +421,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 	u16 rx_ol_flags;
- 	u32 read_idx;
- 
--	read_idx = oq->host_read_idx;
-+	read_idx = READ_ONCE(oq->host_read_idx);
- 	rx_bytes = 0;
- 	desc_used = 0;
- 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
-@@ -499,7 +506,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 		napi_gro_receive(oq->napi, skb);
- 	}
- 
--	oq->host_read_idx = read_idx;
-+	WRITE_ONCE(oq->host_read_idx, read_idx);
- 	oq->refill_count += desc_used;
- 	oq->stats->packets += pkt;
- 	oq->stats->bytes += rx_bytes;
-@@ -522,22 +529,26 @@ int octep_oq_process_rx(struct octep_oq *oq, int budget)
+ /**
+- * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
++ * octep_vf_update_pkt() - Update IQ/OQ IN/OUT_CNT registers.
+  *
+  * @iq: Octeon Tx queue data structure.
+  * @oq: Octeon Rx queue data structure.
+  */
+-static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
++
++static void octep_vf_update_pkt(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
  {
- 	u32 pkts_available, pkts_processed, total_pkts_processed;
- 	struct octep_device *oct = oq->octep_dev;
-+	u32 pkts_pending;
+ 	u32 pkts_pend = oq->pkts_pending;
  
- 	pkts_available = 0;
- 	pkts_processed = 0;
- 	total_pkts_processed = 0;
- 	while (total_pkts_processed < budget) {
- 		 /* update pending count only when current one exhausted */
--		if (oq->pkts_pending == 0)
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		if (pkts_pending == 0)
- 			octep_oq_check_hw_for_pkts(oct, oq);
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
- 		pkts_available = min(budget - total_pkts_processed,
--				     oq->pkts_pending);
-+				     pkts_pending);
- 		if (!pkts_available)
- 			break;
+@@ -308,6 +309,17 @@ static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq, struct octep_vf_oq *
  
- 		pkts_processed = __octep_oq_process_rx(oct, oq,
- 						       pkts_available);
--		oq->pkts_pending -= pkts_processed;
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
- 		total_pkts_processed += pkts_processed;
- 	}
+ 	/* Flush the previous wrties before writing to RESEND bit */
+ 	smp_wmb();
++}
++
++/**
++ * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
++ *
++ * @iq: Octeon Tx queue data structure.
++ * @oq: Octeon Rx queue data structure.
++ */
++static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq,
++				    struct octep_vf_oq *oq)
++{
+ 	writeq(1UL << OCTEP_VF_OQ_INTR_RESEND_BIT, oq->pkts_sent_reg);
+ 	writeq(1UL << OCTEP_VF_IQ_INTR_RESEND_BIT, iq->inst_cnt_reg);
+ }
+@@ -333,6 +345,7 @@ static int octep_vf_napi_poll(struct napi_struct *napi, int budget)
+ 	if (tx_pending || rx_done >= budget)
+ 		return budget;
+ 
++	octep_vf_update_pkt(ioq_vector->iq, ioq_vector->oq);
+ 	if (likely(napi_complete_done(napi, rx_done)))
+ 		octep_vf_enable_ioq_irq(ioq_vector->iq, ioq_vector->oq);
  
 -- 
 2.51.0
