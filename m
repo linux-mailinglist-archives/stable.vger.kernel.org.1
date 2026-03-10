@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-224442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FG+AfUDsGkWegIAu9opvQ
-	(envelope-from <stable+bounces-224442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:49 +0100
+	id 8OP0BGwDsGkWegIAu9opvQ
+	(envelope-from <stable+bounces-224443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD4A24B6CF
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E8B24B515
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6B35530810BF
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE7CC3058AEA
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CBB423141;
-	Tue, 10 Mar 2026 11:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C44042314E;
+	Tue, 10 Mar 2026 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LG6582Ho"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GN2pBKTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47855421F0E;
-	Tue, 10 Mar 2026 11:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F35938910E;
+	Tue, 10 Mar 2026 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142175; cv=none; b=CxWel5979kC6eOf3pCuvVkOZIvmDFc/nvG7spCGZzfoE7938/J9m3xEhQUvDid0hldqfENZcdmQA95gLMAyJYZerd3QWzR90/Ktw/U9i9eeoKQYxhCzwaUOMyQ+53a59vmUxLG2HEOcT9xnkgF4bfRPptSQHq0Slq0Xp7oDSXEw=
+	t=1773142176; cv=none; b=uUFcgLrIkcIHoF4wATmB+KJb3Wvb6LvSJZeMex4zbx5yI+gEpQyftR8cDxWjbGYjK9FSxi1BI7qMsm/rFSiX/RNNG046GzjF7Kt9f0jEX/ovLIhZuOcOTE2INsuZXQniRY4oEB59LSx81DJC0gkVVPNfUN8xn9VVguX954Wuq/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142175; c=relaxed/simple;
-	bh=N7Wyh5ramUXGxgblyxj6McCO9h990p/XpTpfY9fEEbo=;
+	s=arc-20240116; t=1773142176; c=relaxed/simple;
+	bh=64S2yWuK24xY6fH+j5RONgS8TV1Jk+Jm4CVdAbLPUeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSS5PUJ3/spYjLcFQAus5M3ulCB3VLGD/22jtDIO4zQrp06TgoiWBFI7ouMUkoQgJl4Ms1aqZKbDDP9M0vGgwNUOfm6w6xBN69SmCIL/BFLBLCfJ+SFe0DcDzRJuy8E2g4sVLvhfX7Wc/3yVgqenBPuEXpni/5Odnz8T0tuy/dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LG6582Ho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B05C2BCAF;
-	Tue, 10 Mar 2026 11:29:34 +0000 (UTC)
+	 MIME-Version; b=eFVfuK9uysj3fK59j/LJhb+I+nmkOHYfLs9U7gbJ1b81YSHbxl5vQPbFNupO+Np873hEMFlbcePVH81vQbwUikO+DWGDd3btwsNYUV2C5vSdmbN1A0I4CvReIEl7J4YiG+z5daws7LoPDpUiRhpdDsHueLQrLLtvtGoI9MosBvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GN2pBKTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37334C2BC9E;
+	Tue, 10 Mar 2026 11:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142175;
-	bh=N7Wyh5ramUXGxgblyxj6McCO9h990p/XpTpfY9fEEbo=;
+	s=k20201202; t=1773142176;
+	bh=64S2yWuK24xY6fH+j5RONgS8TV1Jk+Jm4CVdAbLPUeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LG6582HoksGu4muVYX/ZP9rcpaal6tsWV08jo5hphmLwVSzMVI/jmcVMNXbQDgux3
-	 AEGawvXuxW1crHF0mnEorxPD2twf3evqY+rX3Lna2blx7QZ9QqWIurp/O3aXf7eid0
-	 24gNZ5ufv4qyyQEuVOMeoENn+6T9BuWrRQH/9Sd1jMoWBdK9hBU87Bl+qGp0Iuy9Zp
-	 YpruWTEtcF68XD7agv0Mshp6CAKTx/PAl3wy5ScYw4DaM2ctZG3dGKNcS8Zv5GLKnN
-	 alyem0N6rfjT7h3Lvw4B/q9X8tL8YyW6I44Ds47AfgmoiHrqb/6VnAV0IGa8SQdmnD
-	 eJ1fYpb5tdmSg==
+	b=GN2pBKTVyZK0YiCL6e4b+WUgNL9njOtT9ECUoZzOSCIFiYllbNMs0CmZO2+H8tvy2
+	 nNj/azdL0kQ0+ztAe1tbkex+TwFyab17TgqNmJZ1IJmgHQjezRoz8FYdHnrdXo9Ueq
+	 jQJ+Dpe9os9XSIV1f8IrTN5xb/NibCEEwm/BYbVUF24RPLA9648POgDWkbD0QoehKp
+	 4Bv3k2QP/BTac8GInscO5seu31yuCEczT4jXc5MK6WMwWzXYo0os5MNIdQuq/f/I0O
+	 1SPk/AOOvPiZaIlCjz0hLXFO05vpZlhm8eNEzADFez+eSCBKWTvPNZLfJk9QEECe9a
+	 GVMuR7jjkyh5A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Kohei Enju <kohei@enjuk.jp>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
+Cc: Vivek Behera <vivek.behera@siemens.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Saritha Sanigani <sarithax.sanigani@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 263/314] iavf: fix netdev->max_mtu to respect actual hardware limit
-Date: Tue, 10 Mar 2026 07:18:42 -0400
-Message-ID: <6469b12943208edf008b38254f35f495b17a484b.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 264/314] igb: Fix trigger of incorrect irq in igb_xsk_wakeup
+Date: Tue, 10 Mar 2026 07:18:43 -0400
+Message-ID: <78cd77df1851479183a4e9130bd8425c23e770c1.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -68,20 +68,20 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9DD4A24B6CF
+X-Rspamd-Queue-Id: 74E8B24B515
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224442-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224443-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -95,74 +95,110 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,enjuk.jp:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,siemens.com:email]
 X-Rspamd-Action: no action
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Vivek Behera <vivek.behera@siemens.com>
 
-[ Upstream commit b84852170153671bb0fa6737a6e48370addd8e1a ]
+[ Upstream commit d4c13ab36273a8c318ba06799793cc1f5d9c6fa1 ]
 
-iavf sets LIBIE_MAX_MTU as netdev->max_mtu, ignoring vf_res->max_mtu
-from PF [1]. This allows setting an MTU beyond the actual hardware
-limit, causing TX queue timeouts [2].
+The current implementation in the igb_xsk_wakeup expects
+the Rx and Tx queues to share the same irq. This would lead
+to triggering of incorrect irq in split irq configuration.
+This patch addresses this issue which could impact environments
+with 2 active cpu cores
+or when the number of queues is reduced to 2 or less
 
-Set correct netdev->max_mtu using vf_res->max_mtu from the PF.
+cat /proc/interrupts | grep eno2
+ 167:          0          0          0          0 IR-PCI-MSIX-0000:08:00.0
+ 0-edge      eno2
+ 168:          0          0          0          0 IR-PCI-MSIX-0000:08:00.0
+ 1-edge      eno2-rx-0
+ 169:          0          0          0          0 IR-PCI-MSIX-0000:08:00.0
+ 2-edge      eno2-rx-1
+ 170:          0          0          0          0 IR-PCI-MSIX-0000:08:00.0
+ 3-edge      eno2-tx-0
+ 171:          0          0          0          0 IR-PCI-MSIX-0000:08:00.0
+ 4-edge      eno2-tx-1
 
-Note that currently PF drivers such as ice/i40e set the frame size in
-vf_res->max_mtu, not MTU. Convert vf_res->max_mtu to MTU before setting
-netdev->max_mtu.
+Furthermore it uses the flags input argument to trigger either rx, tx or
+both rx and tx irqs as specified in the ndo_xsk_wakeup api documentation
 
-[1]
- # ip -j -d link show $DEV | jq '.[0].max_mtu'
- 16356
-
-[2]
- iavf 0000:00:05.0 enp0s5: NETDEV WATCHDOG: CPU: 1: transmit queue 0 timed out 5692 ms
- iavf 0000:00:05.0 enp0s5: NIC Link is Up Speed is 10 Gbps Full Duplex
- iavf 0000:00:05.0 enp0s5: NETDEV WATCHDOG: CPU: 6: transmit queue 3 timed out 5312 ms
- iavf 0000:00:05.0 enp0s5: NIC Link is Up Speed is 10 Gbps Full Duplex
- ...
-
-Fixes: 5fa4caff59f2 ("iavf: switch to Page Pool")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: 80f6ccf9f116 ("igb: Introduce XSK data structures and helpers")
+Signed-off-by: Vivek Behera <vivek.behera@siemens.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_xsk.c | 38 +++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 4b0fc8f354bc9..53a0366fbf998 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -2797,7 +2797,22 @@ static void iavf_init_config_adapter(struct iavf_adapter *adapter)
- 	netdev->watchdog_timeo = 5 * HZ;
+diff --git a/drivers/net/ethernet/intel/igb/igb_xsk.c b/drivers/net/ethernet/intel/igb/igb_xsk.c
+index 30ce5fbb5b776..ce4a7b58cad2f 100644
+--- a/drivers/net/ethernet/intel/igb/igb_xsk.c
++++ b/drivers/net/ethernet/intel/igb/igb_xsk.c
+@@ -524,6 +524,16 @@ bool igb_xmit_zc(struct igb_ring *tx_ring, struct xsk_buff_pool *xsk_pool)
+ 	return nb_pkts < budget;
+ }
  
- 	netdev->min_mtu = ETH_MIN_MTU;
--	netdev->max_mtu = LIBIE_MAX_MTU;
++static u32 igb_sw_irq_prep(struct igb_q_vector *q_vector)
++{
++	u32 eics = 0;
 +
-+	/* PF/VF API: vf_res->max_mtu is max frame size (not MTU).
-+	 * Convert to MTU.
-+	 */
-+	if (!adapter->vf_res->max_mtu) {
-+		netdev->max_mtu = LIBIE_MAX_MTU;
-+	} else if (adapter->vf_res->max_mtu < LIBETH_RX_LL_LEN + ETH_MIN_MTU ||
-+		   adapter->vf_res->max_mtu >
-+			   LIBETH_RX_LL_LEN + LIBIE_MAX_MTU) {
-+		netdev_warn_once(adapter->netdev,
-+				 "invalid max frame size %d from PF, using default MTU %d",
-+				 adapter->vf_res->max_mtu, LIBIE_MAX_MTU);
-+		netdev->max_mtu = LIBIE_MAX_MTU;
-+	} else {
-+		netdev->max_mtu = adapter->vf_res->max_mtu - LIBETH_RX_LL_LEN;
-+	}
++	if (!napi_if_scheduled_mark_missed(&q_vector->napi))
++		eics = q_vector->eims_value;
++
++	return eics;
++}
++
+ int igb_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags)
+ {
+ 	struct igb_adapter *adapter = netdev_priv(dev);
+@@ -542,20 +552,32 @@ int igb_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags)
  
- 	if (!is_valid_ether_addr(adapter->hw.mac.addr)) {
- 		dev_info(&pdev->dev, "Invalid MAC address %pM, using random\n",
+ 	ring = adapter->tx_ring[qid];
+ 
+-	if (test_bit(IGB_RING_FLAG_TX_DISABLED, &ring->flags))
+-		return -ENETDOWN;
+-
+ 	if (!READ_ONCE(ring->xsk_pool))
+ 		return -EINVAL;
+ 
+-	if (!napi_if_scheduled_mark_missed(&ring->q_vector->napi)) {
++	if (flags & XDP_WAKEUP_TX) {
++		if (test_bit(IGB_RING_FLAG_TX_DISABLED, &ring->flags))
++			return -ENETDOWN;
++
++		eics |= igb_sw_irq_prep(ring->q_vector);
++	}
++
++	if (flags & XDP_WAKEUP_RX) {
++		/* If IGB_FLAG_QUEUE_PAIRS is active, the q_vector
++		 * and NAPI is shared between RX and TX.
++		 * If NAPI is already running it would be marked as missed
++		 * from the TX path, making this RX call a NOP
++		 */
++		ring = adapter->rx_ring[qid];
++		eics |= igb_sw_irq_prep(ring->q_vector);
++	}
++
++	if (eics) {
+ 		/* Cause software interrupt */
+-		if (adapter->flags & IGB_FLAG_HAS_MSIX) {
+-			eics |= ring->q_vector->eims_value;
++		if (adapter->flags & IGB_FLAG_HAS_MSIX)
+ 			wr32(E1000_EICS, eics);
+-		} else {
++		else
+ 			wr32(E1000_ICS, E1000_ICS_RXDMT0);
+-		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
