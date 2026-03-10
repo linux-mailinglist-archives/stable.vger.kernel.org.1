@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-224366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOBNAcAEsGlAegIAu9opvQ
-	(envelope-from <stable+bounces-224366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:47:12 +0100
+	id QLg2EmYDsGnOeQIAu9opvQ
+	(envelope-from <stable+bounces-224367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B2024B882
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B9E24B507
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DDAEC3094B7B
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:28:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F23173027C8A
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6DD38E114;
-	Tue, 10 Mar 2026 11:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B6738E107;
+	Tue, 10 Mar 2026 11:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvRZBDZ+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QR+pUR6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D110387562;
-	Tue, 10 Mar 2026 11:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8944387562;
+	Tue, 10 Mar 2026 11:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142062; cv=none; b=EJVOQTNL2dV23rZrUiSwWG2TafGjtntTjSUKMaWMgcVNL1O0hbkfCvV2Qg3v+xa8Qg5H2ArtWybMLY8UxzzKzV4bnYxuMENWrVhCjkL0CRgH41vrX63fRd7AgUt609Ii9fE3ac+Q09fVXgZ3TZWEC5w76awUaQ9J6BWC+O7N+1Q=
+	t=1773142063; cv=none; b=DfjWPoH3iU6uYAbVA3GBjpkKJhhMtZoGiv6YJEfBAiUZR8j70L9j4ub0lF5JjSIwgakq2olNPKNdxYdHaPb5ddnHy5xAsdSXOrnMKHR+2JQ7E584WLMh8JSgDFOqEKLMFo7qhKOHeW89Q401uaOvb7rLD7L4lp6u4CdSZVNAZ80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142062; c=relaxed/simple;
-	bh=A1hCgKFnypW4LK2yCvcoAw4KxK75MGEbbJkD/m4TcoM=;
+	s=arc-20240116; t=1773142063; c=relaxed/simple;
+	bh=e0SrHwk+T1GklansSl1rogFcuihbGNxOPYFB4ZkVbqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBasGEJAWDgE+lqlaxNx7yH1Z9cghzp2uPA/03Z7vV2LEpjYtIzdUnpKcAPBiA2BJTCESm4kfGuaRn2c0RkVvi73+tSUAZgvqn33Trz/P1GKshgM/BHx9KjAdnd2EvnR1088UoJJnEO5YDpBLnhg+1Ldh9ZZEeZFjRgAwPCF13s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvRZBDZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1545C19423;
-	Tue, 10 Mar 2026 11:27:40 +0000 (UTC)
+	 MIME-Version; b=KwEfe3NGRkN/uP8/qGyoRFW2VKi1/gTMJF3um95H6+YPhYtMkW+TEMA8BFWbT17vUJNbVP9JoNzv4V8cQVZz4VKi9KHvaYyhAWvH6XUrDdGK4yRy02jPTQiza+LtuZy90fLUvVVxXHMiSyuM2VmG7V66LuNUpasLBTo7nbqQ8gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QR+pUR6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1F2C2BC86;
+	Tue, 10 Mar 2026 11:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142061;
-	bh=A1hCgKFnypW4LK2yCvcoAw4KxK75MGEbbJkD/m4TcoM=;
+	s=k20201202; t=1773142062;
+	bh=e0SrHwk+T1GklansSl1rogFcuihbGNxOPYFB4ZkVbqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvRZBDZ+cf6vCtF2hIvL+hV3TJsZ2wseHS+3yLODDKuODmAClulAK6AxBg1gKHhtV
-	 acaouohG489gLNxrcHsZJrEC4z7uMJSeLwL2buIhn4BMhvhSws3/s+f9Fm83Cny4dR
-	 MFDLX1NJ4v89FR2XIxfFjl+Yb+QJEXYFzeqf2zRrfKv38e7XzKOyGHzDgEindQIWqO
-	 6U3OLzjqbjtZfix0wfpBFPcu+MaHq+zhQaHUQrECdb5Fl/5tMCS9qBFQS6Tp49x4BS
-	 DySpCGlANiOKmFB2kwIqxA9yGBJKXT7J1SdSV5yH4VtPum6OkHDyzrMf5Obm5Rv1E/
-	 zgdfgTyO6Nm6g==
+	b=QR+pUR6N76/z6e74Or/FML0r1MopXbbW+I1DckxfAokJsZJdRTKooY1F/GlXAUxVO
+	 /hCuO/ICy/8WyjYpDniS/CJDgLY4Tl0ZMTDNrTTCW3yLsyaagjOy3ZnUcdTVhBPfCM
+	 L0YSZOYKBqDLwGgMWVKARtesOyAo+KBSmCpsS2bc/n4oDg3d6zN3JNSGnnAvRYxuy3
+	 Wa4LcxOzXZ+CVQay8vP6vv0gNfV4eUIDWehqJaYg80fkeK01Q62rMIYebxciN83+3m
+	 of2mLNcvqhUg5ZBKlj66pUQfBgV6eZgH/j7kpI3anMk0ZtgqdcgR2Ufzs0Wjwg47l9
+	 bM/8bPL2SiYlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.org>,
-	Thiago Becker <tbecker@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+Cc: Junxiao Bi <junxiao.bi@oracle.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.18 187/314] smb: client: fix oops due to uninitialised var in smb2_unlink()
-Date: Tue, 10 Mar 2026 07:17:26 -0400
-Message-ID: <64138396a360d21337687e5ed4267c66825e8585.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 188/314] scsi: core: Fix refcount leak for tagset_refcnt
+Date: Tue, 10 Mar 2026 07:17:27 -0400
+Message-ID: <3172968da9147b4d3e35c4e54d4e7552c55525a3.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -68,7 +67,7 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37B2024B882
+X-Rspamd-Queue-Id: 65B9E24B507
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224366-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224367-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -89,69 +88,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,manguebit.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,oracle.com:email]
 X-Rspamd-Action: no action
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit 048efe129a297256d3c2088cf8d79515ff5ec864 upstream.
+commit 1ac22c8eae81366101597d48360718dff9b9d980 upstream.
 
-If SMB2_open_init() or SMB2_close_init() fails (e.g. reconnect), the
-iovs set @rqst will be left uninitialised, hence calling
-SMB2_open_free(), SMB2_close_free() or smb2_set_related() on them will
-oops.
+This leak will cause a hang when tearing down the SCSI host. For example,
+iscsid hangs with the following call trace:
 
-Fix this by initialising @close_iov and @open_iov before setting them
-in @rqst.
+[130120.652718] scsi_alloc_sdev: Allocation failure during SCSI scanning, some SCSI devices might not be configured
 
-Reported-by: Thiago Becker <tbecker@redhat.com>
-Fixes: 1cf9f2a6a544 ("smb: client: handle unlink(2) of files open by different clients")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
+PID: 2528     TASK: ffff9d0408974e00  CPU: 3    COMMAND: "iscsid"
+ #0 [ffffb5b9c134b9e0] __schedule at ffffffff860657d4
+ #1 [ffffb5b9c134ba28] schedule at ffffffff86065c6f
+ #2 [ffffb5b9c134ba40] schedule_timeout at ffffffff86069fb0
+ #3 [ffffb5b9c134bab0] __wait_for_common at ffffffff8606674f
+ #4 [ffffb5b9c134bb10] scsi_remove_host at ffffffff85bfe84b
+ #5 [ffffb5b9c134bb30] iscsi_sw_tcp_session_destroy at ffffffffc03031c4 [iscsi_tcp]
+ #6 [ffffb5b9c134bb48] iscsi_if_recv_msg at ffffffffc0292692 [scsi_transport_iscsi]
+ #7 [ffffb5b9c134bb98] iscsi_if_rx at ffffffffc02929c2 [scsi_transport_iscsi]
+ #8 [ffffb5b9c134bbf0] netlink_unicast at ffffffff85e551d6
+ #9 [ffffb5b9c134bc38] netlink_sendmsg at ffffffff85e554ef
+
+Fixes: 8fe4ce5836e9 ("scsi: core: Fix a use-after-free")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223232728.93350-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_scan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 69cb81fa0d3ab..5c25f25aa2efb 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1205,6 +1205,7 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 	memset(resp_buftype, 0, sizeof(resp_buftype));
- 	memset(rsp_iov, 0, sizeof(rsp_iov));
- 
-+	memset(open_iov, 0, sizeof(open_iov));
- 	rqst[0].rq_iov = open_iov;
- 	rqst[0].rq_nvec = ARRAY_SIZE(open_iov);
- 
-@@ -1229,14 +1230,15 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 	creq = rqst[0].rq_iov[0].iov_base;
- 	creq->ShareAccess = FILE_SHARE_DELETE_LE;
- 
-+	memset(&close_iov, 0, sizeof(close_iov));
- 	rqst[1].rq_iov = &close_iov;
- 	rqst[1].rq_nvec = 1;
- 
- 	rc = SMB2_close_init(tcon, server, &rqst[1],
- 			     COMPOUND_FID, COMPOUND_FID, false);
--	smb2_set_related(&rqst[1]);
- 	if (rc)
- 		goto err_free;
-+	smb2_set_related(&rqst[1]);
- 
- 	if (retries) {
- 		for (int i = 0; i < ARRAY_SIZE(rqst);  i++)
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 3c6e089e80c38..f405ef9c0e1e8 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -356,6 +356,7 @@ static struct scsi_device *scsi_alloc_sdev(struct scsi_target *starget,
+ 	 * since we use this queue depth most of times.
+ 	 */
+ 	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
++		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+ 		put_device(&starget->dev);
+ 		kfree(sdev);
+ 		goto out;
 -- 
 2.51.0
 
