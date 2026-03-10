@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-224418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLlqFv4DsGlAegIAu9opvQ
-	(envelope-from <stable+bounces-224418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:58 +0100
+	id wAsNDugCsGnOeQIAu9opvQ
+	(envelope-from <stable+bounces-224419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:39:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C0A24B701
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F073B24B384
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFE243162855
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:30:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E74BE3084315
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFDF33A9C6;
-	Tue, 10 Mar 2026 11:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08849368971;
+	Tue, 10 Mar 2026 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcVTP0yg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdzxT1CU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53AF2FFDF7;
-	Tue, 10 Mar 2026 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF97B2FFDF7;
+	Tue, 10 Mar 2026 11:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142151; cv=none; b=SGSWS1BvmknPUbUPhqpiwMGM1dMeDe/uDOYjUqUDL17QV1742FqW7yUjNl4oGcZDcpwmIYL6rk21eLmA+ehL1044Gtd3ow+7PbgA61DCIwvNn7MzaqJFPI/CcBfVfAzM85qoiqGaucGqwz8D16pcdpXm2EQspKzhnqvzYygQ1wg=
+	t=1773142152; cv=none; b=KQbtmLnvPCUftV7LeJU4vgaSEY/yy9+uDhj0E3YunwL4eLOcVVzw6zim/jnQo/m2x0WRdh9wrDANmluUy6acgD7BJ3uMvUoI/HQFsXtxr5413dahBhji5A2w8xjNYHyKoBnXngrOjFWBnWwHM0wuV+crW18m6jlScWPeKlX/+bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142151; c=relaxed/simple;
-	bh=ahSBGcr7K28Zh6xOe2WTsZijfDYtRbBzgdvARh/uVcc=;
+	s=arc-20240116; t=1773142152; c=relaxed/simple;
+	bh=aNVA/xl+P5kNgSXY4oTnfEGExlKafQ9T53Xqdvay7jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IU/bCi4+cY7QaN/jXIvFf/87MOUjxwcCe/pEbVxcdpotEsn1TcthbY8Rn7eIZmlxOh8rvGoO2fn8JGl62/DIfoPbOkaj+aQPqTGqog5eiGPNGTKfCAlS27GBTPa8cC8+u2+CsqDi2rx1ov979azDChYWth8IWpTKex5xQuzLIC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcVTP0yg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12916C2BCAF;
-	Tue, 10 Mar 2026 11:29:10 +0000 (UTC)
+	 MIME-Version; b=fs34Cm94oPemh2aE38psSj9kb2alAhl2wKL3HSY4IqScFqItrNmEIwvFJ7VgCeyQ8JE4EPnFKYqtnz3xSxp7uKust334zHyqi9D7nijyI9Ia6OVu9pYjYefaXjOQz8Aft/gswzCP+8PJCvR611MtgUctB6NP5XPgsGcnVEhLM2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdzxT1CU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098A4C19423;
+	Tue, 10 Mar 2026 11:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142151;
-	bh=ahSBGcr7K28Zh6xOe2WTsZijfDYtRbBzgdvARh/uVcc=;
+	s=k20201202; t=1773142152;
+	bh=aNVA/xl+P5kNgSXY4oTnfEGExlKafQ9T53Xqdvay7jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcVTP0ygBCS0IzFn5EkgZPrMkcRepF4xxrHUSjaqFzfSv4QvU4fRkMGebui9nAeCn
-	 ZBzF8eQfz1/M7IRl+xdL7QovojZ0oCUVvSIrkjH3yGc88JZvSOVN5iBxMCJ2ByAnxq
-	 Jci/3gFzWMbAl8BYK2UXgcDqWnaNnfMT8tAwPZYRfdIA9f97QE1Jiax65zObSJQydL
-	 dlBbrEuepCNoPsQQOKRtodcuQSmh8bM9jgfjfN84XunQqtIuWHO2pvKDK4ms774dBY
-	 Afme6Vw4r2k1YttyikrxXJEH8Py0ukj+RK9lrAmkGgTLVaE8Qiw1ryQQ4vyylzm1AD
-	 o1X2JYghVsfyw==
+	b=cdzxT1CUSMgkZ5RucPUDkjRqbfzjcg7HqGgxc5vSRd8W1tq9ZXIZw67z0jURs6C4m
+	 BW8CqKB6wvA+E+01rp7bQ94h4FiuWia3gXbvGUSIeg2x78+H8qxvVFcR9T2O6XSIxD
+	 /QMEBU1lxd/9IEsjiCqPB2O6zMvSqkyA2r6mg2m1Ij68Ryx+94wRepxFomGIYuR6i6
+	 ePHFBSNx+Kwh+u9MiP+AkiVDH09NJy83yOg/QH0eQfraJY+eY8mnIlqlbp/AobLgNR
+	 OHngRP1SF6hiOX6AX+bWl2TzYaMtbraB/MJGfGR7ayFvk8dk2jymXQ5TIV8CWe1gSV
+	 Aokz4jfx3bUPw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>,
-	syzbot+5b11eccc403dd1cea9f8@syzkaller.appspotmail.com,
+Cc: Alban Bedel <alban.bedel@lht.dlh.de>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 239/314] can: bcm: fix locking for bcm_op runtime updates
-Date: Tue, 10 Mar 2026 07:18:18 -0400
-Message-ID: <ee4627bdebaac2179b809478ff8a710df26b8dde.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 240/314] can: mcp251x: fix deadlock in error path of mcp251x_open
+Date: Tue, 10 Mar 2026 07:18:19 -0400
+Message-ID: <a92e72d5214a64ce2a4407c80c457b256f0c4cd2.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -66,76 +65,101 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D1C0A24B701
+X-Rspamd-Queue-Id: F073B24B384
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224418-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224419-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,5b11eccc403dd1cea9f8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,pengutronix.de:email,hartkopp.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Alban Bedel <alban.bedel@lht.dlh.de>
 
-[ Upstream commit c35636e91e392e1540949bbc67932167cb48bc3a ]
+[ Upstream commit ab3f894de216f4a62adc3b57e9191888cbf26885 ]
 
-Commit c2aba69d0c36 ("can: bcm: add locking for bcm_op runtime updates")
-added a locking for some variables that can be modified at runtime when
-updating the sending bcm_op with a new TX_SETUP command in bcm_tx_setup().
+The mcp251x_open() function call free_irq() in its error path with the
+mpc_lock mutex held. But if an interrupt already occurred the
+interrupt handler will be waiting for the mpc_lock and free_irq() will
+deadlock waiting for the handler to finish.
 
-Usually the RX_SETUP only handles and filters incoming traffic with one
-exception: When the RX_RTR_FRAME flag is set a predefined CAN frame is
-sent when a specific RTR frame is received. Therefore the rx bcm_op uses
-bcm_can_tx() which uses the bcm_tx_lock that was only initialized in
-bcm_tx_setup(). Add the missing spin_lock_init() when allocating the
-bcm_op in bcm_rx_setup() to handle the RTR case properly.
+This issue is similar to the one fixed in commit 7dd9c26bd6cf ("can:
+mcp251x: fix deadlock if an interrupt occurs during mcp251x_open") but
+for the error path.
 
-Fixes: c2aba69d0c36 ("can: bcm: add locking for bcm_op runtime updates")
-Reported-by: syzbot+5b11eccc403dd1cea9f8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-can/699466e4.a70a0220.2c38d7.00ff.GAE@google.com/
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260218-bcm_spin_lock_init-v1-1-592634c8a5b5@hartkopp.net
+To solve this issue move the call to free_irq() after the lock is
+released. Setting `priv->force_quit = 1` beforehand ensure that the IRQ
+handler will exit right away once it acquired the lock.
+
+Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
+Link: https://patch.msgid.link/20260209144706.2261954-1-alban.bedel@lht.dlh.de
+Fixes: bf66f3736a94 ("can: mcp251x: Move to threaded interrupts instead of workqueues.")
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/spi/mcp251x.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 5e690a2377e48..756acfd20c6c2 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1170,6 +1170,7 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
- 		if (!op)
- 			return -ENOMEM;
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index b797e08499d70..b46262e791301 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1214,6 +1214,7 @@ static int mcp251x_open(struct net_device *net)
+ {
+ 	struct mcp251x_priv *priv = netdev_priv(net);
+ 	struct spi_device *spi = priv->spi;
++	bool release_irq = false;
+ 	unsigned long flags = 0;
+ 	int ret;
  
-+		spin_lock_init(&op->bcm_tx_lock);
- 		op->can_id = msg_head->can_id;
- 		op->nframes = msg_head->nframes;
- 		op->cfsiz = CFSIZ(msg_head->flags);
+@@ -1257,12 +1258,24 @@ static int mcp251x_open(struct net_device *net)
+ 	return 0;
+ 
+ out_free_irq:
+-	free_irq(spi->irq, priv);
++	/* The IRQ handler might be running, and if so it will be waiting
++	 * for the lock. But free_irq() must wait for the handler to finish
++	 * so calling it here would deadlock.
++	 *
++	 * Setting priv->force_quit will let the handler exit right away
++	 * without any access to the hardware. This make it safe to call
++	 * free_irq() after the lock is released.
++	 */
++	priv->force_quit = 1;
++	release_irq = true;
++
+ 	mcp251x_hw_sleep(spi);
+ out_close:
+ 	mcp251x_power_enable(priv->transceiver, 0);
+ 	close_candev(net);
+ 	mutex_unlock(&priv->mcp_lock);
++	if (release_irq)
++		free_irq(spi->irq, priv);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
