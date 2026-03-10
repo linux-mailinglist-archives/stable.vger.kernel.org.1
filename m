@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-224226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBR3HGkAsGm0eQIAu9opvQ
-	(envelope-from <stable+bounces-224226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:28:41 +0100
+	id QEMLEkYCsGnOeQIAu9opvQ
+	(envelope-from <stable+bounces-224227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:36:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1320B24AC80
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:28:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BDD24B183
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36358306E201
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:25:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7AED430A7924
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3EB389469;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4887389DE0;
 	Tue, 10 Mar 2026 11:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCXj6ucx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bwn2QMsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D8B38945D;
-	Tue, 10 Mar 2026 11:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E243803CD;
+	Tue, 10 Mar 2026 11:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141923; cv=none; b=d8WMXjs17z7I3xnHhmtRAlZSufgdP/P6e6Xeu3oFdapndExlIZKWIXoR3qg3arsyVEFbRQ6K0Yf9yWmhmzGygW+yQe88+U+oHZ19Zc/BVECwujAh7erjm/gTz60r8RiJ0muwI809d9iDkAce2BI2q1YHrAGPErJ9p92gUUw5mmI=
+	t=1773141924; cv=none; b=DwER2fTVuY2c3sU959KvjVz8tpaR5rVn/ER0el2HzHGBIlzudWM2yNFOgju4f7JmbhfdfXk+i6A8dZ0szp5CCkEC1yfbP3VK/0T6GBN+k6R62SWALNJOt9Lj4lWWQehhgcwaOEGCB21wk31DMhsEfWzv95mDU5gcCYro3cKWYbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141923; c=relaxed/simple;
-	bh=1H8tS93g5vML4WV+PRvfLEjMaib0+B+pkC6ZNtQU62Q=;
+	s=arc-20240116; t=1773141924; c=relaxed/simple;
+	bh=BLXrZOdh6J5LKfL+wresQSvJ657X1tqO8/6I/ccrxow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5RLp05xny0E2WyNlHoBp6mzTZ3/s+7tKFmCL0VdgbEdHJw5y6AZt6MaVQfhv4bSP11lIt+8ZNzxaPkzRBPtC5412uihnbQ9YNppPPB/N51SLjZ9vM1TPbC2n8G/jFEDkfE6ui8OD1pQNXGrfrgZwgCUsKmrad5k8kvn7Aj1tJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCXj6ucx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B536FC2BCB8;
-	Tue, 10 Mar 2026 11:25:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X5OUrmnRok7k3lbKrDiOx63cBopLxrZy/SbqHXaP0YyyOICuNqPzayFRNOQ/nAoTq67gVE+u+6qkfD3LFC8vsVo5xPMv4ycR/0oWlAiW+/dSMmzhBLdfpmZyO1EQafzs8Evwz2bTXFnNLCnTcovraR1TAN5NkRA1KKyuw7OdBRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bwn2QMsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AC1C19423;
+	Tue, 10 Mar 2026 11:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141923;
-	bh=1H8tS93g5vML4WV+PRvfLEjMaib0+B+pkC6ZNtQU62Q=;
+	s=k20201202; t=1773141924;
+	bh=BLXrZOdh6J5LKfL+wresQSvJ657X1tqO8/6I/ccrxow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCXj6ucxxmmaDDcL9yhZWHBFfMnrPobpBqLmONz0437ZOq/H+veXxhOfJKibFUogj
-	 6KF6jdSJMfrqul3CPLQZeiiWyCupDAKtw+TXGuClq8QXxNqteYTeR0BgO5zDRBdnFu
-	 tBT5VFmh3Mr3PWOuaFGVUEDNClmE0LLJTN/tpCmW1FLeTcqG+8EdsxpQX+szgQGEZF
-	 wVHxGmroQBzKg4FqgrVPzcKWTBzVOwHryEjh35zwFzQPlHs1jIgc+pVZ2m9FR4oh/n
-	 mg+X3ePi8H4RyiVbHGM1nm3TEoYoBTuSrTqLDS+g94M9jGG/588hn189NB6vwssntR
-	 1wjxgKGHm3U+g==
+	b=Bwn2QMsFDy9xFGFknwQg7yJG/K7uj8eurvB7JFTW1GuGC3e4VDygvGtIo3XNpp6wQ
+	 RwKhCSbjNSzoDp1QMx+f+tVC1PuWQtPyPUT0qOUzFTa3EbRtsd+Ih1Kq7gTWjckLCu
+	 J1u7Wrp8Wabjs/F+blNr7uZEHtxayrmzkKXRAWpvLHRN+/Afvnocp3IcTvKqkqKws2
+	 cuthubFTrUZTfFa9p0/tnRQTT3mqLbEOm2+GyaNeRLxt7sPvcKLE5WhRwKMgRQYNtS
+	 fI5qVHOs1TMKHkdqZtn45vkwx1PSeYGVsGTQ4IL2vkiDomjIHKWcb00Zwc3lEQ/QeF
+	 F1iJiYrDFiB7w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/314] PCI: dwc: ep: Flush MSI-X write before unmapping its ATU entry
-Date: Tue, 10 Mar 2026 07:15:06 -0400
-Message-ID: <1759518c6ce0b162cb2e3334e8266eab89223e19.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 048/314] drm/amdgpu/userq: Do not allow userspace to trivially triger kernel warnings
+Date: Tue, 10 Mar 2026 07:15:07 -0400
+Message-ID: <c4817aa4826452ae3ce08138a2d9a67f57ea76ca.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -63,95 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1320B24AC80
+X-Rspamd-Queue-Id: 70BDD24B183
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224226-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224227-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,igalia.com:email]
 X-Rspamd-Action: no action
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit c22533c66ccae10511ad6a7afc34bb26c47577e3 ]
+[ Upstream commit 7b7d7693a55d606d700beb9549c9f7f0e5d9c24f ]
 
-Endpoint drivers use dw_pcie_ep_raise_msix_irq() to raise an MSI-X
-interrupt to the host using a writel(), which generates a PCI posted write
-transaction.  There's no completion for posted writes, so the writel() may
-return before the PCI write completes.  dw_pcie_ep_raise_msix_irq() also
-unmaps the outbound ATU entry used for the PCI write, so the write races
-with the unmap.
+Userspace can either deliberately pass in the too small num_fences, or the
+required number can legitimately grow between the two calls to the userq
+wait ioctl. In both cases we do not want the emit the kernel warning
+backtrace since nothing is wrong with the kernel and userspace will simply
+get an errno reported back. So lets simply drop the WARN_ONs.
 
-If the PCI write loses the race with the ATU unmap, the write may corrupt
-host memory or cause IOMMU errors, e.g., these when running fio with a
-larger queue depth against nvmet-pci-epf:
-
-  arm-smmu-v3 fc900000.iommu:      0x0000010000000010
-  arm-smmu-v3 fc900000.iommu:      0x0000020000000000
-  arm-smmu-v3 fc900000.iommu:      0x000000090000f040
-  arm-smmu-v3 fc900000.iommu:      0x0000000000000000
-  arm-smmu-v3 fc900000.iommu: event: F_TRANSLATION client: 0000:01:00.0 sid: 0x100 ssid: 0x0 iova: 0x90000f040 ipa: 0x0
-  arm-smmu-v3 fc900000.iommu: unpriv data write s1 "Input address caused fault" stag: 0x0
-
-Flush the write by performing a readl() of the same address to ensure that
-the write has reached the destination before the ATU entry is unmapped.
-
-The same problem was solved for dw_pcie_ep_raise_msi_irq() in commit
-8719c64e76bf ("PCI: dwc: ep: Cache MSI outbound iATU mapping"), but there
-it was solved by dedicating an outbound iATU only for MSI. We can't do the
-same for MSI-X because each vector can have a different msg_addr and the
-msg_addr may be changed while the vector is masked.
-
-Fixes: beb4641a787d ("PCI: dwc: Add MSI-X callbacks handler")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260211175540.105677-2-cassel@kernel.org
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: a292fdecd728 ("drm/amdgpu: Implement userqueue signal/wait IOCTL")
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2c333ea579de6cc20ea7bc50e9595ef72863e65c)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 7f2112c2fb215..6d3beec92b54e 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -793,6 +793,9 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index 5c181ac75d548..ead1538974454 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -829,7 +829,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
  
- 	writel(msg_data, ep->msi_mem + offset);
+ 			dma_resv_for_each_fence(&resv_cursor, gobj_read[i]->resv,
+ 						DMA_RESV_USAGE_READ, fence) {
+-				if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
++				if (num_fences >= wait_info->num_fences) {
+ 					r = -EINVAL;
+ 					goto free_fences;
+ 				}
+@@ -846,7 +846,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
  
-+	/* flush posted write before unmap */
-+	readl(ep->msi_mem + offset);
-+
- 	dw_pcie_ep_unmap_addr(epc, func_no, 0, ep->msi_mem_phys);
+ 			dma_resv_for_each_fence(&resv_cursor, gobj_write[i]->resv,
+ 						DMA_RESV_USAGE_WRITE, fence) {
+-				if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
++				if (num_fences >= wait_info->num_fences) {
+ 					r = -EINVAL;
+ 					goto free_fences;
+ 				}
+@@ -870,7 +870,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 					goto free_fences;
  
- 	return 0;
+ 				dma_fence_unwrap_for_each(f, &iter, fence) {
+-					if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
++					if (num_fences >= wait_info->num_fences) {
+ 						r = -EINVAL;
+ 						goto free_fences;
+ 					}
+@@ -894,7 +894,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 			if (r)
+ 				goto free_fences;
+ 
+-			if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
++			if (num_fences >= wait_info->num_fences) {
+ 				r = -EINVAL;
+ 				goto free_fences;
+ 			}
 -- 
 2.51.0
 
