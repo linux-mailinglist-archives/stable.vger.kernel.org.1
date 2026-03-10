@@ -1,204 +1,209 @@
-Return-Path: <stable+bounces-224582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABzPNyKPsGmrkgIAu9opvQ
-	(envelope-from <stable+bounces-224582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:37:38 +0100
+	id iKPbFkiPsGkukgIAu9opvQ
+	(envelope-from <stable+bounces-224583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:38:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73B725861A
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:37:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07F825863F
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D4AE302640D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:37:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 660733014FFA
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1AA3DF00F;
-	Tue, 10 Mar 2026 21:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214E3DD522;
+	Tue, 10 Mar 2026 21:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiqWOm9i"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I/slvI3K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0F43D090A
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773178650; cv=none; b=oFKEPjZ0qQsROd6sQKA3k1cxN0Jm3oPr2in/QlH5HxKX9vsyw3VBo7J9/pEGcryuPCczRQEFSwytO9yHTYPsyY9ndEtcm8YfXAKFtM9B5uNb4aA9BG4fKhfLxx+wm+TD+xh9ocL6x98phS/7qI2y2hNBTBgmJTPTeAJTAVedVD4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773178650; c=relaxed/simple;
-	bh=vi2Qvmf3Zq0oIDMP34elGkN+LcArNOp2egai9DJBBfQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503013E0235
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773178693; cv=pass; b=GI0VoLOP80/olkOLvt20Ug0soTKkDVzBhuUQqCQ28deOQjer7CdCSdvm8TYjiJf7Vij2Uzdx/B7A54tI8swNFLrrMY0mij63eR/pnJl9IFSjoZwkexssGMekuPpcJGupyZ2jWXdz+MO2qycskx1VnH/JwITvc8UJKgjFGFatSm0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773178693; c=relaxed/simple;
+	bh=ZPwcQ2r1NA3+uZe3Qm2FZaVeuwbnwlqTqvDNIrs7NkQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=baIEC/IOrVdPDzSHItK5gypoVhuzDHNaHM4YWN3p/0d6P0b+1djIaAJPi7jZZuGNLWfcVSvwGsnrhZeWbNX622EcoYy5l8sqvt5Vxv+0S4h0iWjn+8xQ9NU5FkklgJtBKU1vTpV4RT3i8RzoLw9wLExopPYO4/W+sUJG50JyDwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiqWOm9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AC5C19425
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773178650;
-	bh=vi2Qvmf3Zq0oIDMP34elGkN+LcArNOp2egai9DJBBfQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PiqWOm9iNzqquK7yF260rL12kHFvc7/a048oZg8MOeUeVERQ9sCzW62zKL5F46MQq
-	 rqi4AfHRxbJFy0ktXkq2h7AL54x2DRN0vmuTta2R/jnp9+3THSBCKGceFN2HAH24mv
-	 apP2veSBPWrre7tuEArRBKsW7OXk51v/Oi7oQDqJrJT7+eIM34dEgJ/DCYByvO/tKv
-	 OTVWlQqKFCO9mcQ9t+HGL38JYHKa6gUxBI6uandyaoZy6vqnAITTq/MzpLCD2Mhrfs
-	 M+XAirj9JiXWYPwC4p3/jQzMh0VR+5UtwDwuzstlt+8M5YhqHAsN7+czjJxi+wbQoA
-	 oK6Q78jGaOawg==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so1622152266b.2
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 14:37:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWjx4pvKO3N9xkN82pBE4TaSPbg0lm867wW33lEbmBEdzW+ann3BoGUFy70jWGVYbJjRtHHiC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPQQGfPaL/c8RhJnbeVTYN/R2fAIwVLANmQ9b7y85iOTF/Zi+h
-	+jbmd9w1Xpg8g65YJr+1gyW0KafJYXibImMAWxDdI+Wzx3GcYb+0IHj4lQOb2cDLvNN0JxZ+Qbp
-	02uCf91op0rYDzEfcqyPwBUSELNNmgGg=
-X-Received: by 2002:a17:907:8692:b0:b86:f3d2:efae with SMTP id
- a640c23a62f3a-b972e4f7745mr5608966b.35.1773178648922; Tue, 10 Mar 2026
- 14:37:28 -0700 (PDT)
+	 To:Cc:Content-Type; b=lrL2ADg5IfLZvUYbzfcB/gzFggtEWxcuVwP4DqJOq98QvJwfetTiCSOUz8rBRlZu+CWLUt6pdjWrpubP8KDnQEIq8KLfnAONwSQ7qGp0xGcsqMQpCmr0XDRYvSVOtGrVYWW/siycnF4+38Y8TZDOxNg7SGfyhxNqRrgLRniXGCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I/slvI3K; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64ae222d978so13278274d50.1
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 14:38:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773178691; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gXHkmui+BFTSBsNuW8V5AZX17mUxen030GLN4Sg31nFtMrCJ3MZiKZibqO0xNmrICV
+         Wqdhl22LIuSZE2Btu1Ha4cuXeAXc3yHfc4q5Jw9EbJViqZE55ii0VhaesP7W+kdNVL4j
+         OMP2zOEkBHRvZx68zEbGG+T1LN9FaL58G4u41MjQpfyNzTJF46Z2gbEqgdwm4fBwsg+s
+         dV9HCztBrTHwffmgC1Qw4xF4HQjyz5d7MGnE+gNjmhkJR9wFSHEBuQaaBxtDanW1eHzb
+         5nRUfID1NQFNfRa1LAO9qZNj/OWdk0zWbBT6T7RJ7++sDtJHIPCpnYZ6bwYp3DeV9YCO
+         kcRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hveQy5NQ41c3CMqNE96UtONH6cbf9Yvx1Ya2d6ApTtU=;
+        fh=5VoiPLkHQuiNiJ4EaBrJ+fIWuJd7kaLOZhs8wOgG98E=;
+        b=SrSIxowVBNj655pVFZl1hCexotcp2o56yY1beAM0Q7AWWMQTQ4nljBYUtusyzTAmMQ
+         qFZZmWy4/eh+IpYk/kA+agcBtYGHAccLexQW9XIdRs0pdI+yIEvlpIGOMYAQEG3ereTi
+         8/XXk1Lk9NjJVQ3HTm+JUsIk++vM2JE8x6f+7b1QOCfdWn4ZRqLZKzNXwd/V7hXlN68y
+         rt6cGHPOge2krB4HqJIsUw6fTkdYz/aeOSWUIPGeVYfijYchD+ClZ6Y+bkwwgaO5IpTB
+         iX9drG68M5wkB71AvQK5+/ASbAYvIk6sHdbCkOH+h1pbbWOGrOUbJvzVhQeCeaGSjaeF
+         PulA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773178691; x=1773783491; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hveQy5NQ41c3CMqNE96UtONH6cbf9Yvx1Ya2d6ApTtU=;
+        b=I/slvI3KbW3cL4q4+cgb7QF5nBq10QpKDYUgwWMffLQiIKzdaU73AaPNpdqibtfRVI
+         qgbKfjb4ToPGW8Coct9VV8trCRKsWZFjQhpQbvzv8/rZ9Q6ElwNHCBvgCX9S97cVAcd6
+         Z8NTZsuRmrVcLb5hyUy0Ec3K5Ouok8aDgL7p2ZXL/fX1Pq4C+m9woJlPOQizhWEpw5PE
+         hICll5HXmMEsoTL8CFt3PVvLmm846JZw/jtKXjXEVRbvbw709v1gWdsi2o2gPY+qu7TR
+         naaCYPm49knD7Yx/OZT6VNoY8tGRjyKKy+Ie0cW1XlPf6240Lb2agIMlwEvlpLgvBoUY
+         m3sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773178691; x=1773783491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hveQy5NQ41c3CMqNE96UtONH6cbf9Yvx1Ya2d6ApTtU=;
+        b=HWMmBTKqMGMSpnaUkTjx1xsPF2kh/4v7WAhtlVwjWR1J7aGtXZMTliLl0fz58T304q
+         p1vC/SAQGpGLnf3WCoMIBDd0TMMkI3pMdTeKh7nNo0jJwYBMSOB60cjBH8G/FcyBtT+I
+         4a/CZ+BQsvGWMrwTjjVp2vWAULqpYSUAZNGE+HFlG+YV/9LFlzv5Dv+DIHB3VMLePVO0
+         oaR9fdgIw5u02Zj2F0P1+I66t9oHabcjMP+S79udFtI/W8IbUPEkNSx06P2wVhzI0zUT
+         qN7GCSiEd81qcmTzPlfURv//D1CVEvva66Vk22salWUBkACUQtnPV3DKdvOXHiAW3Guh
+         Kxyg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8WIkBQp+U6xa9Ffz7E+oWm4wfWufjT9QWZzXcSDHsjAJAiw697HiWshMJb3rlfsAGZaOJU80=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBr+XW6ipJIvjTo/n04EqjMK9wKB08LzeDEpwISi2D1fIo79T/
+	e4HPmpekve2NptR+7kwbrm8Uu/+cnq7x9nJMBU6oYUPI+obrCQCnrBST7aZwrdzbOrRFMdQrnNp
+	/+NfSOC1+XrJHtPHYEmA4PPYCLzVWzBQ=
+X-Gm-Gg: ATEYQzz8hsv0xdNJ1UiqLYT+3GYX5T4tFKeFxnRVohLnO7aE8t96UYipPonaLvuCUjn
+	jHIucnOYI4u1ly+PDlg6A6I/8oPbFWEJQu7YwROtimQ6LQYntDWaNLyhOVoIvfhkhhnrDHC7BkW
+	oxmYsbb1uLOg6dXVjxl6Sh+K5k3AzhC66lwFtQ+5l0hryKqqRXnj+HQl7sGixIEsNRxMh1igtNQ
+	VcvyQ6ypFQVnwLtiuDFs4uSA2jHswJzzn9ViAO/zhnppV9wMq6fPzTEYGFBfHTctUmxIGwa3YXC
+	hud/DX8/tPylO5UWVf/vcEb+9qvt5qu15s2B3IJopBu9S6TsA+F7LJYyQRGLM2fRgwfllA==
+X-Received: by 2002:a53:ea47:0:b0:64c:bae1:2168 with SMTP id
+ 956f58d0204a3-64d6569d107mr167282d50.12.1773178691339; Tue, 10 Mar 2026
+ 14:38:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310202414.406078-1-pbonzini@redhat.com> <20260310202414.406078-3-pbonzini@redhat.com>
-In-Reply-To: <20260310202414.406078-3-pbonzini@redhat.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 10 Mar 2026 14:37:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOLc030xTsnkYWvp5yUtnzQgVZnXXhvKZWC__1wRSP61A@mail.gmail.com>
-X-Gm-Features: AaiRm53nunzZPeKBuLRdmx8nvaIFMefKdOsgKkVNj1gA_JuToYvT0Y8wannWhGg
-Message-ID: <CAO9r8zOLc030xTsnkYWvp5yUtnzQgVZnXXhvKZWC__1wRSP61A@mail.gmail.com>
-Subject: Re: [PATCH 2/5] KVM: SVM: check validity of VMCB when returning from SMM
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com, 
-	xinyang@anthropic.com, stable@vger.kernel.org
+References: <abBJh7sJ11RKVGhd@1wt.eu> <20260310212949.74577-1-research@johannes-moeller.dev>
+In-Reply-To: <20260310212949.74577-1-research@johannes-moeller.dev>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 10 Mar 2026 17:38:00 -0400
+X-Gm-Features: AaiRm53xz9dxt3JPEvkeUJ8tCDsdQcU_Aebq03uBnJBN2lF3yWrHb5b0HIBdwOo
+Message-ID: <CABBYNZLMBkBREoqmBpjwnTedhAQoHiFqN2wO-QCvpnMp+Bsfcg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+To: =?UTF-8?Q?Lukas_Johannes_M=C3=B6ller?= <research@johannes-moeller.dev>
+Cc: security@kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Willy Tarreau <w@1wt.eu>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E73B725861A
+X-Rspamd-Queue-Id: F07F825863F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224582-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224583-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,holtmann.org,gmail.com,1wt.eu,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,johannes-moeller.dev:email,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 1:24=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> The VMCB12 is stored in guest memory and can be mangled while in SMM; it
-> is then reloaded by svm_leave_smm(), but it is not checked again for
-> validity.
->
-> Move the check code out of vmx_set_nested_state()
-> (the other "not a VMLAUNCH/VMRESUME" path that emulates a nested vmentry)
-> and reuse it in svm_leave_smm().
+Hi Lukas,
 
-This chunk probably needs to be:
-
-Move the cached vmcb12 control and save consistency checks into a
-helper and reuse it in svm_leave_smm().
-
+On Tue, Mar 10, 2026 at 5:30=E2=80=AFPM Lukas Johannes M=C3=B6ller
+<research@johannes-moeller.dev> wrote:
 >
+> l2cap_ecred_reconf_rsp() casts the incoming data to struct
+> l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
+> result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
+> with result at offset 0).
+>
+> This causes two problems:
+>
+>  - The sizeof(*rsp) length check requires 8 bytes instead of the
+>    correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
+>    with -EPROTO.
+>
+>  - rsp->result reads from offset 6 instead of offset 0, returning
+>    wrong data when the packet is large enough to pass the check.
+>
+> Fix by using the correct type.  Also pass the already byte-swapped
+> result variable to BT_DBG instead of the raw __le16 field.
+>
+> Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Cre=
+dit Based Mode")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Lukas Johannes M=C3=B6ller <research@johannes-moeller.dev>
 > ---
->  arch/x86/kvm/svm/nested.c | 12 ++++++++++--
->  arch/x86/kvm/svm/svm.c    |  4 ++++
->  arch/x86/kvm/svm/svm.h    |  1 +
->  3 files changed, 15 insertions(+), 2 deletions(-)
+>  net/bluetooth/l2cap_core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 7b61124051a7..de9906adb73b 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -419,6 +419,15 @@ static bool nested_vmcb_check_controls(struct kvm_vc=
-pu *vcpu)
->         return __nested_vmcb_check_controls(vcpu, ctl);
->  }
+> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+> index ad98db9632fd..f8ed03095592 100644
+> --- a/net/bluetooth/l2cap_core.c
+> +++ b/net/bluetooth/l2cap_core.c
+> @@ -5424,7 +5424,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2c=
+ap_conn *conn,
+>                                          u8 *data)
+>  {
+>         struct l2cap_chan *chan, *tmp;
+> -       struct l2cap_ecred_conn_rsp *rsp =3D (void *) data;
+> +       struct l2cap_ecred_reconf_rsp *rsp =3D (void *) data;
+>         u16 result;
 >
-> +int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
-> +{
-> +       if (!nested_vmcb_check_save(vcpu) ||
-> +           !nested_vmcb_check_controls(vcpu))
-> +               return -EINVAL;
-> +
-> +       return 0;
-> +}
-
-Nit: if we make this a boolean we could just do:
-
-bool nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
-{
-       return nested_vmcb_check_save(vcpu) && nested_vmcb_check_controls(vc=
-pu);
-}
-
-> +
->  /*
->   * If a feature is not advertised to L1, clear the corresponding vmcb12
->   * intercept.
-> @@ -1034,8 +1043,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
->         nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
->         nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
+>         if (cmd_len < sizeof(*rsp))
+> @@ -5432,7 +5432,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2c=
+ap_conn *conn,
 >
-> -       if (!nested_vmcb_check_save(vcpu) ||
-> -           !nested_vmcb_check_controls(vcpu)) {
-> +       if (nested_svm_check_cached_vmcb12(vcpu) < 0) {
->                 vmcb12->control.exit_code    =3D SVM_EXIT_ERR;
->                 vmcb12->control.exit_info_1  =3D 0;
->                 vmcb12->control.exit_info_2  =3D 0;
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 477fda63653b..95495048902c 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4890,6 +4890,10 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, co=
-nst union kvm_smram *smram)
->         vmcb12 =3D map.hva;
->         nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
->         nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
-> +
-> +       if (nested_svm_check_cached_vmcb12(vcpu) < 0)
-> +               goto unmap_save;
-> +
->         ret =3D enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa, v=
-mcb12, false);
+>         result =3D __le16_to_cpu(rsp->result);
 >
->         if (ret)
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index ebd7b36b1ceb..6942e6b0eda6 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -797,6 +797,7 @@ static inline int nested_svm_simple_vmexit(struct vcp=
-u_svm *svm, u32 exit_code)
+> -       BT_DBG("result 0x%4.4x", rsp->result);
+> +       BT_DBG("result 0x%4.4x", result);
 >
->  int nested_svm_exit_handled(struct vcpu_svm *svm);
->  int nested_svm_check_permissions(struct kvm_vcpu *vcpu);
-> +int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu);
->  int nested_svm_check_exception(struct vcpu_svm *svm, unsigned nr,
->                                bool has_error_code, u32 error_code);
->  int nested_svm_exit_special(struct vcpu_svm *svm);
+>         if (!result)
+>                 return 0;
 > --
-> 2.53.0
->
->
+> 2.43.0
+
+Looks good, but need to include linux-bluetooth so CI can pickup and
+check if there are any regressions caused by this change.
+
+--=20
+Luiz Augusto von Dentz
 
