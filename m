@@ -1,110 +1,110 @@
-Return-Path: <stable+bounces-224572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDY4IfN+sGmwjwIAu9opvQ
-	(envelope-from <stable+bounces-224572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:28:35 +0100
+	id wAVaKxN/sGmwjwIAu9opvQ
+	(envelope-from <stable+bounces-224573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:29:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E04257D9C
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 664BE257DB4
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0699830B1F4F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:24:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85A6531392C2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CDF28BA95;
-	Tue, 10 Mar 2026 20:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF2F3E92BE;
+	Tue, 10 Mar 2026 20:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cn1AjjU2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LdzuRbb8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UI9WcncQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ape8kHsL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E7D3E9F75
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 20:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937543EB7E7
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 20:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773174267; cv=none; b=JA/4tnhvaSH4mpAm6h57Hg6ounkwRiVX+YcnV1VdT4s/1qA4C9xyMVfSZFUZax/HUnGmXQHA0LHqDvonp9mWPAvWIIiT27kZbApQp2cOcT0IMscFoHgQDLsXzgRiLGeskY3qQHhOU5ago9auLb/uhQF67+X6FtqPp1jkIs0B9Mw=
+	t=1773174270; cv=none; b=CgbvlQew9tSHY0IhFZ3/65yLRlahNEuufBSFrcCBQDLR4bQMKVCCUVW/pRFpMC9UxAyAef0a/uQicYVO7ScS9u73cf7tksoYgjzPwwCA13bNCEzrT9d2SzFnwZXw6F4SyuH8ESL3N9Q/hKGWHHKJHybWLxeek9cj6V1Q2vUAl5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773174267; c=relaxed/simple;
-	bh=XzfjV0NwKwYFZsCPkm9GQbhIVKJ1rr5+J23oLRZx2CI=;
+	s=arc-20240116; t=1773174270; c=relaxed/simple;
+	bh=UVUiXt98QDeNvnqUrAq5eGxYRODlEkBstmozUC7w1fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtOEKLjdjW6BjD2Jj46TXr9yyhq3u44esBJPLBACTgJjRId2VHDAvHhGZ4sA8wiNh+ibYavi5/bJ9I8V2461j3alnPyduNwJXOXj7vG+e8R9kYDc/9yaxjl2KX/eb1vll96YSjVP2VEfXAzNrgfUokfSQtQDqOgUi7U5y66Q8f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cn1AjjU2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LdzuRbb8; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=P42jHfSfDovWCDIguXcy6B3PdWnXkipMvE+slJCVPumkPgs+exgy5fkr9ksLY6gQko/3VDIbu9zjQ6sRWS6RjbPneUdVwML2pH3vlXDtaq8+PcYZ/pwlIe0CXN8whL7gIF3H7Q7M30dUUMaOZ6QkaH5UGu2xoscGch9eOZoZKD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UI9WcncQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ape8kHsL; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773174264;
+	s=mimecast20190719; t=1773174268;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
-	b=cn1AjjU2nLIH6KVFkAjtpPpY5wBwHVs1RDF8z4mJyFnmstxT+5S3+e6kMAPLdWli88ojxc
-	8kJGIWR4wH/rmf62Gp0xAySZHkUXQnfqYLkgzQKDTv5aNMYPUe6y5nhHAnkBn3B6YA6UXT
-	h47AIG02hXHnlgBRjVQWkB72FjUdWXk=
+	bh=ISzayfMc5PLVDoc63KqzP7tRn0dS/ZiGeioFlqaIWsk=;
+	b=UI9WcncQ9t5m7IcPHD+U+LIDOHI2hpReu+zsQxjr5NE91k6jUUwo5subGLrzWPqP10AikT
+	tlLhUqqsKEXlQ5pAE6sYLG0KVzDwqhK2qGLZXDiJMqDrl3IBiGZPlgIA4sR7EsMHWaZfLJ
+	eSy0qL3X10nHXCAniUrq72Hk/s6wpak=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-XBtTCAMqMA6rTSLaHg1hTg-1; Tue, 10 Mar 2026 16:24:22 -0400
-X-MC-Unique: XBtTCAMqMA6rTSLaHg1hTg-1
-X-Mimecast-MFC-AGG-ID: XBtTCAMqMA6rTSLaHg1hTg_1773174262
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so105958965e9.3
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:24:22 -0700 (PDT)
+ us-mta-3-qwLjTt1TNRu1bdtbH2386Q-1; Tue, 10 Mar 2026 16:24:25 -0400
+X-MC-Unique: qwLjTt1TNRu1bdtbH2386Q-1
+X-Mimecast-MFC-AGG-ID: qwLjTt1TNRu1bdtbH2386Q_1773174264
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4853553944fso2221965e9.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:24:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773174262; x=1773779062; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1773174264; x=1773779064; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
-        b=LdzuRbb8MobO9rreTqNhgtujUtTvdKApvNz5U6dOahThNtXueTsMHKOKI+9dYa5Bwy
-         LBWW5msVfzBvQs/31I1OGkV7Hhbt4eBigX38SGzau5/kzQ5iQfdSLFfGgyO/ByFKBXYq
-         ugi8SuTRq6q0jeA7O+DdgTaMeYRuJ5UyLa6up+SR6yI6ZkoUpRzob0DlP95ANFPR28tu
-         LneNS+S+ArcIz3fdD847WPEg9+uxXj+IW83q+eeUJuYoQsDhKEutgtqi+w/JnehX5ofq
-         lFAg0kXNl9/vbgspixVvfQv5GK/pnozkdllyJyKXLMkrmCU3/eJZkhKClTop/hk3AJFm
-         exUA==
+        bh=ISzayfMc5PLVDoc63KqzP7tRn0dS/ZiGeioFlqaIWsk=;
+        b=Ape8kHsL5NrlH2lcGGrKTfiUO8seuo+9U0Qk6QPResoO66kIoJ7gBQkdigpKadRU0a
+         sZjtq0hKZclWiJWZuXK3hiN3SnVmt3iNw673zuGliwbNBlrIK4bG1GsDlH4Hx/J82G4g
+         w5084MCQUvchjYlWpFnLKYPZv5pUNXEc+rOhAKi3vFAumExQVJHxgDilTo7u6Nwy3AGt
+         37hB65/pS2QVL2ClcFEvxnp2krFSBuc/ootfAt4usDcRUx1Q/bFTeEpdnJGCdN2uwXam
+         OA68z6z0BMw7moQX/ileJVJwyJNJRdpDpSz29z8x9nnHzHsRTIoALwMS3ZCM3wqfsUr7
+         H6UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773174262; x=1773779062;
+        d=1e100.net; s=20230601; t=1773174264; x=1773779064;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8TGyObaOA+0rXaSG+XOwiWbo5MYOrwO/NaEY5gkjsyg=;
-        b=b9XUVPNAb3TlxQTMXSa2k6W7br1iA6iCURV0gPB7cYl/2IGFppWRKcUEPmkm5lYlQB
-         noTBSytH8QEAoLiKSmMrS/gBVzaEQQABPuRoGuJuNXWhUA/hf1UC9H3lHjzFDMv4DN0c
-         mf0oMXOOfatAtoR+/IHKjdRY73AFT66og3qeYRYi6dGYdKlLpwaUZ72R5XMbnahWx4sm
-         LrcuxJ0HbQWo8CIf2pYAhvfo79yNsWMe3iBnkE78jnfRbfzgaoBYhIpNCBabD7kTVKpu
-         4QbYI4e5Aq0putq1s0Rhxkm6pQfNdHeKTyv0x/0yWd1GKqkticqvWgLde2dPChWWsx6V
-         W8lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlfWNdax8uq3f+CoZdAtaT5+gyb31pi0amsz8Zk6uANfDelKK1BmOYYvFmZ9of5dguGp3S3qs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaSCviyTDw2TVkLNBnBSPtPDvDKMlATJeFjnbTDEjBOD69WFXo
-	Hw9xwjQc0AOzqLvk/AJiSDnpYobmQK0FEU0qfTrU3G3LFqD2oKnn64VcVE14J/UDERz03MaSZj7
-	GAKyQiBuBlQbeAXc4OxWq3D8+9OjpxYLWfiJxubZGVaYgkrnI0YSa3kHeiQ==
-X-Gm-Gg: ATEYQzxRt5xPGtCxbUlQWgcjxmGcmrU9hjGzoI9jj9BVR8Eu8KAeSZ9ytk8ri4pCPVo
-	/Hia/AhGgHYl0zPaDoh2mS5z8tHu48UXf42hpvweFFntiVhJFpExOvo8lFKEpeTH96HaSpCWJ9t
-	B95PBVNaDe9lhnKXeq1xTjLfK/tq6CHNOEot7+Vg4UEppXghGKo4Zxm5TlzYBdUoKb3EU9HG1Q7
-	D9aRsc7MBmp1fIGmpZhpjzHrJlDh9GdlUdMqfxnnPDSnpg/Z4C0sU8+U5NPjGRunxPrJkkhfidX
-	Ky1AHKavrwoaEFyshJ/K5gXzZ6WcY9gv3JyOlffh2LiCgq3Vx/3hRD4dFuY8kVU1XXoC97HogBo
-	wdaMnZHQa3ZGJtXjO8JkBzhjDicTfAydeE4AfAVyB5RrXNK6PNXvRLMvG/gttJwtkGJdAkRrwUa
-	eC9b7oQXwznzjTTEJtaxBSE9NA/hI=
-X-Received: by 2002:a05:600c:1d16:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-4854b0a6fcamr2153825e9.6.1773174261640;
-        Tue, 10 Mar 2026 13:24:21 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d16:b0:483:1403:c47f with SMTP id 5b1f17b1804b1-4854b0a6fcamr2153445e9.6.1773174261198;
-        Tue, 10 Mar 2026 13:24:21 -0700 (PDT)
+        bh=ISzayfMc5PLVDoc63KqzP7tRn0dS/ZiGeioFlqaIWsk=;
+        b=oeDwDKF9bm7B5GjVwaOOFb94fz4rvP8JurqVvJoHxC7ywZMmdIEOOy94l8v4SwpwVQ
+         GrPGKL6PR29vcCESI7G1X4pD8qpG7OI9Lp+QVoe9d1ZwWSfpMvrWLI6OrXNpXHdQOEr9
+         Rj+N63i3N9x1F8KEsNTZ2bHTMXYhYe3k1V9cfaccVfPdwB70CNLj3Nm8aRiPsItq54JS
+         ByeC1rkKR/Cu7cnvT0MAWC4VrDkxjpJD0b1vrGCc/FribcVcg5l574L9Xhj2zYGV/4IK
+         JklMbPO71wBiBhieIyLlyFMS13INVycqvusRIAkCVBPHy+GS742ZiH03dfEZoOn5RQ2K
+         5p+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU4jCPTXVqtJfIh7TmuJrVfQ3r2gfJiA73aau38Y/9f9sGcKcDgTBdAMyZHTFS+En5sL96sFP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV2DIUwOYPTFiDfvEXLoM15cz0nM7IOMNDqLKPam1P4MWAtlVG
+	hBm5lDirUdv1STUswkSHIxpLY2/zqUQgg/Iq1im7io9Y1dOZGZXuLa204dJ9csppjWrLmX/Lzhg
+	ch3qvIsrBLKMYoSm4MEM53tJqFGDtzKMtP+XbNduFV7ed/wjnIxiCRH9YGQ==
+X-Gm-Gg: ATEYQzym9HW56cuZi2dOMdKToNfPOCbZQ9WgtQRkJ0c5JLn7aAfqhv6LFGBbDExqSVo
+	Dhp6iqJSLiMgPFpCQSnuWeiCfU4pS1FznD+PADA1AB1gImulnUPQ+jKk1Z8NWvNxM6nFqT5hhmD
+	SIgBwYGpL9fVWUt4UAW/H7TuJBDE+q0b8nc0xBDyTG7RH/Ri29nwTjZfmZElTSXpY1fKgORE47h
+	+g7Y+mDE4mLnS/G27u8gj7shXJdfjvpw4fTaboovOOE1hVZlux+WclB+fKcoeixxhhTtr8gUXQR
+	H8r4IGaV0N66p1brZeIV2U7GjALN8T1r/qajGkglgAni61qyvmeIOpSIZRPYcS2yPu9TkJo6p9x
+	eqMaRCgztGmACoeX+7xZI8GtQI4XmNWa1AYFuZfS1RXgohzoJb60tmRl+qm3xsD4L4VP4S7WZzG
+	ZgOT/EuZY1WgV6qpauUTn4STkbx38=
+X-Received: by 2002:a05:600c:81c5:b0:485:3f58:da2 with SMTP id 5b1f17b1804b1-4854b291de0mr284225e9.16.1773174264285;
+        Tue, 10 Mar 2026 13:24:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:81c5:b0:485:3f58:da2 with SMTP id 5b1f17b1804b1-4854b291de0mr283965e9.16.1773174263824;
+        Tue, 10 Mar 2026 13:24:23 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.144.138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b0cc00asm1231095e9.7.2026.03.10.13.24.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854a18bcf4sm6851425e9.0.2026.03.10.13.24.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 13:24:19 -0700 (PDT)
+        Tue, 10 Mar 2026 13:24:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	xinyang@anthropic.com,
 	stable@vger.kernel.org
-Subject: [PATCH 2/5] KVM: SVM: check validity of VMCB when returning from SMM
-Date: Tue, 10 Mar 2026 21:24:11 +0100
-Message-ID: <20260310202414.406078-3-pbonzini@redhat.com>
+Subject: [PATCH 3/5] selftests: kvm: extract common functionality out of smm_test.c
+Date: Tue, 10 Mar 2026 21:24:12 +0100
+Message-ID: <20260310202414.406078-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260310202414.406078-1-pbonzini@redhat.com>
 References: <20260310202414.406078-1-pbonzini@redhat.com>
@@ -115,7 +115,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 01E04257D9C
+X-Rspamd-Queue-Id: 664BE257DB4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_FROM(0.00)[bounces-224572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224573-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -146,79 +146,135 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-The VMCB12 is stored in guest memory and can be mangled while in SMM; it
-is then reloaded by svm_leave_smm(), but it is not checked again for
-validity.
-
-Move the check code out of vmx_set_nested_state()
-(the other "not a VMLAUNCH/VMRESUME" path that emulates a nested vmentry)
-and reuse it in svm_leave_smm().
-
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/nested.c | 12 ++++++++++--
- arch/x86/kvm/svm/svm.c    |  4 ++++
- arch/x86/kvm/svm/svm.h    |  1 +
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/include/x86/smm.h | 17 ++++++++++++
+ .../testing/selftests/kvm/lib/x86/processor.c | 26 ++++++++++++++++++
+ tools/testing/selftests/kvm/x86/smm_test.c    | 27 ++-----------------
+ 3 files changed, 45 insertions(+), 25 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/x86/smm.h
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 7b61124051a7..de9906adb73b 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -419,6 +419,15 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu)
- 	return __nested_vmcb_check_controls(vcpu, ctl);
- }
- 
-+int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
-+{
-+	if (!nested_vmcb_check_save(vcpu) ||
-+	    !nested_vmcb_check_controls(vcpu))
-+		return -EINVAL;
+diff --git a/tools/testing/selftests/kvm/include/x86/smm.h b/tools/testing/selftests/kvm/include/x86/smm.h
+new file mode 100644
+index 000000000000..19337c34f13e
+--- /dev/null
++++ b/tools/testing/selftests/kvm/include/x86/smm.h
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef SELFTEST_KVM_SMM_H
++#define SELFTEST_KVM_SMM_H
 +
-+	return 0;
++#include "kvm_util.h"
++
++#define SMRAM_SIZE	65536
++#define SMRAM_MEMSLOT	((1 << 16) | 1)
++#define SMRAM_PAGES	(SMRAM_SIZE / PAGE_SIZE)
++
++void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu,
++		 uint64_t smram_gpa,
++		 const void *smi_handler, size_t handler_size);
++
++void inject_smi(struct kvm_vcpu *vcpu);
++
++#endif /* SELFTEST_KVM_SMM_H */
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index fab18e9be66c..23a44941e283 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -8,6 +8,7 @@
+ #include "kvm_util.h"
+ #include "pmu.h"
+ #include "processor.h"
++#include "smm.h"
+ #include "svm_util.h"
+ #include "sev.h"
+ #include "vmx.h"
+@@ -1444,3 +1445,28 @@ bool kvm_arch_has_default_irqchip(void)
+ {
+ 	return true;
+ }
++
++void setup_smram(struct kvm_vm *vm, struct kvm_vcpu *vcpu,
++		 uint64_t smram_gpa,
++		 const void *smi_handler, size_t handler_size)
++{
++	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, smram_gpa,
++				    SMRAM_MEMSLOT, SMRAM_PAGES, 0);
++	TEST_ASSERT(vm_phy_pages_alloc(vm, SMRAM_PAGES, smram_gpa,
++				       SMRAM_MEMSLOT) == smram_gpa,
++		    "Could not allocate guest physical addresses for SMRAM");
++
++	memset(addr_gpa2hva(vm, smram_gpa), 0x0, SMRAM_SIZE);
++	memcpy(addr_gpa2hva(vm, smram_gpa) + 0x8000, smi_handler, handler_size);
++	vcpu_set_msr(vcpu, MSR_IA32_SMBASE, smram_gpa);
 +}
 +
- /*
-  * If a feature is not advertised to L1, clear the corresponding vmcb12
-  * intercept.
-@@ -1034,8 +1043,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
- 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
- 
--	if (!nested_vmcb_check_save(vcpu) ||
--	    !nested_vmcb_check_controls(vcpu)) {
-+	if (nested_svm_check_cached_vmcb12(vcpu) < 0) {
- 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
- 		vmcb12->control.exit_info_1  = 0;
- 		vmcb12->control.exit_info_2  = 0;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 477fda63653b..95495048902c 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4890,6 +4890,10 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	vmcb12 = map.hva;
- 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
- 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
++void inject_smi(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vcpu_events events;
 +
-+	if (nested_svm_check_cached_vmcb12(vcpu) < 0)
-+		goto unmap_save;
-+
- 	ret = enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa, vmcb12, false);
++	vcpu_events_get(vcpu, &events);
++	events.smi.pending = 1;
++	events.flags |= KVM_VCPUEVENT_VALID_SMM;
++	vcpu_events_set(vcpu, &events);
++}
+diff --git a/tools/testing/selftests/kvm/x86/smm_test.c b/tools/testing/selftests/kvm/x86/smm_test.c
+index 55c88d664a94..ade8412bf94a 100644
+--- a/tools/testing/selftests/kvm/x86/smm_test.c
++++ b/tools/testing/selftests/kvm/x86/smm_test.c
+@@ -14,13 +14,11 @@
+ #include "test_util.h"
  
- 	if (ret)
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ebd7b36b1ceb..6942e6b0eda6 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -797,6 +797,7 @@ static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
+ #include "kvm_util.h"
++#include "smm.h"
  
- int nested_svm_exit_handled(struct vcpu_svm *svm);
- int nested_svm_check_permissions(struct kvm_vcpu *vcpu);
-+int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu);
- int nested_svm_check_exception(struct vcpu_svm *svm, unsigned nr,
- 			       bool has_error_code, u32 error_code);
- int nested_svm_exit_special(struct vcpu_svm *svm);
+ #include "vmx.h"
+ #include "svm_util.h"
+ 
+-#define SMRAM_SIZE 65536
+-#define SMRAM_MEMSLOT ((1 << 16) | 1)
+-#define SMRAM_PAGES (SMRAM_SIZE / PAGE_SIZE)
+ #define SMRAM_GPA 0x1000000
+ #define SMRAM_STAGE 0xfe
+ 
+@@ -113,18 +111,6 @@ static void guest_code(void *arg)
+ 	sync_with_host(DONE);
+ }
+ 
+-void inject_smi(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_vcpu_events events;
+-
+-	vcpu_events_get(vcpu, &events);
+-
+-	events.smi.pending = 1;
+-	events.flags |= KVM_VCPUEVENT_VALID_SMM;
+-
+-	vcpu_events_set(vcpu, &events);
+-}
+-
+ int main(int argc, char *argv[])
+ {
+ 	vm_vaddr_t nested_gva = 0;
+@@ -140,16 +126,7 @@ int main(int argc, char *argv[])
+ 	/* Create VM */
+ 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
+ 
+-	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, SMRAM_GPA,
+-				    SMRAM_MEMSLOT, SMRAM_PAGES, 0);
+-	TEST_ASSERT(vm_phy_pages_alloc(vm, SMRAM_PAGES, SMRAM_GPA, SMRAM_MEMSLOT)
+-		    == SMRAM_GPA, "could not allocate guest physical addresses?");
+-
+-	memset(addr_gpa2hva(vm, SMRAM_GPA), 0x0, SMRAM_SIZE);
+-	memcpy(addr_gpa2hva(vm, SMRAM_GPA) + 0x8000, smi_handler,
+-	       sizeof(smi_handler));
+-
+-	vcpu_set_msr(vcpu, MSR_IA32_SMBASE, SMRAM_GPA);
++	setup_smram(vm, vcpu, SMRAM_GPA, smi_handler, sizeof(smi_handler));
+ 
+ 	if (kvm_has_cap(KVM_CAP_NESTED_STATE)) {
+ 		if (kvm_cpu_has(X86_FEATURE_SVM))
 -- 
 2.53.0
 
