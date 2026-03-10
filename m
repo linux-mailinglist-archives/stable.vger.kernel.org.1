@@ -1,223 +1,169 @@
-Return-Path: <stable+bounces-223863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPYgKfr6r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-223863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:05:30 +0100
+	id cGUKESv/r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D7D249F29
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A975A24A8DC
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F105F3030126
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:05:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58B6E324C79A
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E25F381B07;
-	Tue, 10 Mar 2026 11:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F8B3876B7;
+	Tue, 10 Mar 2026 11:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q3U0XS5Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbsA3Jvq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127A8383C64
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 11:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0092538A718;
+	Tue, 10 Mar 2026 11:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140703; cv=none; b=F8VITdugAw6oGp4fqV5eup55ScluXcnqJhJ8SNqjV5sjcFMmREs05+ir0l1zkbUUDc8uv28ztTc9PO3COB8ftDmq94xQ4SjmIEnGDexZmYzLxTIXA1yA4Yfhm+YO/e71jFC/HGafGkdspnVM3dsQbM2IBTHRPHn/5s22gw3PMVA=
+	t=1773141278; cv=none; b=awpidu+WrYLt8+HhK28/7UM8P4kcqdHw0z8ELEKMgB5yoh34gDPRACR+eNRJwpek3mhprKtfUBP4X7ow8ShY0/W5sKN+ReVXsL6oErn7bIA6i4CMmfuFYNklPmfMDrxQ5kLxv/eMv44UpOLiuSJysr4OMP4Fc/GBO/RozSNQlAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140703; c=relaxed/simple;
-	bh=y/Y49EAr01paPWu39qxKvb9Xx3oXrJtEm6wtVh7OKWk=;
+	s=arc-20240116; t=1773141278; c=relaxed/simple;
+	bh=58Gor0ktNtkTotZ9aPBf5ta6XTsbeRT78T4FL/GLp9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZqzTKOYl1N1RZuwyMh+6/+c1ELO1TCAVH8YuWb6XIpYo5Bfphrszlu350CRp0iEEEFQZDOrXUfe8DW+nbppKoBVDqJwaFvbCyLvcKnIYwWdkF8nVr44YSvfsR5LtJFpm3gRjynet4sj7ATM0450Nlvu4tu/PAQ3z4rdUTBuwnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q3U0XS5Z; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae4e538abdso89446655ad.3
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773140701; x=1773745501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GGNmukUV6ZynmQPnufsr7pSOWgOJq6CQN8CVvI47374=;
-        b=Q3U0XS5ZpxJUk8sMw14B8ohs8ber8RLzyDEdXMsmHMs9Q1jHZ4ocDFsxnUaUwKQ1YB
-         WqBVU9sWYR9Yy44OfjP6NxRin3xjgpfBbp9y+/0Lpw/ROIZ/4qhZF3khl0vPnz5CNj6c
-         NSx5JQe0iAn1AMZ+50mRhoDQzsv00khZuMKdQnJiBZPFDnSypDyzb3bM7ofEzYyQYFCk
-         HTjGrJa7z+hHj6Y/iWiRdCvk+C1jsGcfyHr3gWSHTt6ofJFmqhpkziFhtVfZPWTmG04P
-         hhmvdWMZz50wkzp9y1KT+po/HIuRhnEbwfS3go46Hs3QvhyS0fSpvFskf1DYtQbhSmJ9
-         nong==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773140701; x=1773745501;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GGNmukUV6ZynmQPnufsr7pSOWgOJq6CQN8CVvI47374=;
-        b=VN7Cbj5nbEssHd29DMT18q8lXyRzTdK9OlnqR1UwLBH8SVq1wv7tf3RwWL4vkoHTNy
-         eSM6xrJP9cAa9WkEescVbeBTY+8OCkaZmAdaJTP5XsTPCUJzQZWlC+r+JhmBLkpsnOEA
-         JpMoQOMZkjSDrq2vOAqy7tjzWi4sJnAdZY9E1UpKImzZlxN9OXwPb63ERc2FZYBl6sXj
-         JA8Z7V3T/eNFIpC/SMiOabtfOnpkOgdIHOzF/oHUn0An9clnZVuZ/KtU6hHxnTWOfZt0
-         0XAFmQevONeZYj/aq0RFzvre0DAWFZAg68eOeAbQMFkFuxdlIyr+/XVaVIuS98H1ihFo
-         PLmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVw840pVT2HnzSBEdRXvP81YU4xxGqcueFfA/6X3iX1xHQ2FBct8oHrXlIqZpOvidAhsZogEa0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkIW3Y56Dl2DALd614fW6ihRq+og85TkpLK6ekP5SvtVZaJrPk
-	EE1XkNJk6qk8jIlcIfGnXE1onJ4C/b4Zo2JuJG53KoJRzxuz9N92q6Rf
-X-Gm-Gg: ATEYQzw6r+N9PqX22q21o1rxR0UUAwnnMpwpNCvEiry1iJ4l0HA2HfmtgemgRqbksTP
-	PRyccaBpNYtQMWkOieOx8RR+w9WL6WMG0NMLDUR77c9Yhg9iLvBEcbYt4geHYCBzWZtbHkchiGr
-	TK55WRkPyije7aah8PQ5GHeCqq3QsObGSl3PUyjh+I8AumgMT4vsLCNN8RyA3aTTg6RVxNw2TnS
-	ratfQM4igv7kxsVpOt7xE4/VsX5by4XSbtDBYV7Zuk4xuu9ZS4uq6CHJCaJaKRjwjzx+Du4gTUL
-	/KUdhxIlPZqYktNLVx1nJ49Q+Wj4I85YYBl+cMrpxGpWOwi7rxkywOVBAOUjt8JsNc4K8CTFemy
-	9hdys20/QKbIcyiM6OtFbcCONkHXA80ahhoy9T0NmeLelG0MLCNyc6JQwAZEDNU/9AgAeOJuqSS
-	+StGaFGFt4dfLCwnHByR5ycOEohq+3H5PGXI5FKIM=
-X-Received: by 2002:a17:903:2283:b0:2ae:5223:59ac with SMTP id d9443c01a7336-2ae823849famr139615335ad.13.1773140701141;
-        Tue, 10 Mar 2026 04:05:01 -0700 (PDT)
-Received: from zjh-os.zhaoxin.com ([2404:7ac0:6c5d:6b3c:b482:76f9:3eac:e82d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e5c167sm141829815ad.1.2026.03.10.04.04.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 04:05:00 -0700 (PDT)
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	SeongJae Park <sj@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Jonas Zhou <jonaszhou@zhaoxin.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
-	Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: [PATCH v4] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Tue, 10 Mar 2026 19:05:26 +0800
-Message-ID: <20260310110526.335749-1-jianhuizzzzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+	 MIME-Version; b=Ukkbei4EDwS2KcwKQFI4vzTOxZjVFvIFBeEl/GL5tkjAeWmGlVPNu5CbL0kXctJ1rLst+Ezrj/HFsS+I0TgP5qYk/kZSLk4iEIgGWV+IR5o4Res1m5RNP6R6Skd07I5/Z/orvJX1R+GPzI81C29F418B98dKUqtWmIJJDZovRJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbsA3Jvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03493C2BC86;
+	Tue, 10 Mar 2026 11:14:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773141277;
+	bh=58Gor0ktNtkTotZ9aPBf5ta6XTsbeRT78T4FL/GLp9k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AbsA3JvqiZDSkzq01R6xNweMMj71jKl1nJ2o8r0hXhlc6ruEnlJryRv74u0K2B0pN
+	 I4w/wYHA1LUwmqXkZ2G9iSpSwnjYtAADa2ji4UbZZaPxrTy46y9iUezVPY8uxnhZHO
+	 MB+SRLkAoJzzO129Vfc3u0M3Pk8yQemFRZrj3SxT5qTsnMapl8c9r2mYM17CUa4/oN
+	 0RwBm+eo75mfuNCAMNUYPXL96HzGy6a4eMb9ytvR9/flzhe9XvE2DXpURWDIeAHvBQ
+	 ufD05CJGx1hQOdXQ+dDhNiY2bVq8IAkQ7O/gb0hC+yPN9eW8tGNDZnjqMD1PeAIGDG
+	 z4La9tvukGB8A==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 280/311] nfc: nci: clear NCI_DATA_EXCHANGE before calling completion callback
+Date: Tue, 10 Mar 2026 07:05:27 -0400
+Message-ID: <80f72393c86f2db9a3bd717b0d714ff030656b2c.1773140655.git.sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
+References: <cover.1773140654.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 09D7D249F29
+X-Rspamd-Queue-Id: A975A24A8DC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,oracle.com,google.com,zhaoxin.com,kvack.org,vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-224145-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-223863-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianhuizzzzz@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,dama.to:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units. This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page. This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
+From: Jakub Kicinski <kuba@kernel.org>
 
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
+[ Upstream commit 0efdc02f4f6d52f8ca5d5889560f325a836ce0a8 ]
 
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Move clear_bit(NCI_DATA_EXCHANGE) before invoking the data exchange
+callback in nci_data_exchange_complete().
+
+The callback (e.g. rawsock_data_exchange_complete) may immediately
+schedule another data exchange via schedule_work(tx_work).  On a
+multi-CPU system, tx_work can run and reach nci_transceive() before
+the current nci_data_exchange_complete() clears the flag, causing
+test_and_set_bit(NCI_DATA_EXCHANGE) to return -EBUSY and the new
+transfer to fail.
+
+This causes intermittent flakes in nci/nci_dev in NIPA:
+
+  # #  RUN           NCI.NCI1_0.t4t_tag_read ...
+  # # t4t_tag_read: Test terminated by timeout
+  # #          FAIL  NCI.NCI1_0.t4t_tag_read
+  # not ok 3 NCI.NCI1_0.t4t_tag_read
+
+Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-5-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v4:
-- Introduce hugetlb_linear_page_index() instead of exposing
-  vma_hugecache_offset(); call hstate_vma() internally to simplify
-  the API (David Hildenbrand)
+ net/nfc/nci/data.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-v3:
-- Fix Fixes tag to a08c7193e4f1 (Hugh Dickins)
-
-v2:
-- Remove unnecessary !CONFIG_HUGETLB_PAGE stub for vma_hugecache_offset()
-  (Peter Xu, SeongJae Park)
-
- include/linux/hugetlb.h | 17 +++++++++++++++++
- mm/userfaultfd.c        |  2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 65910437be1c..67d4f0924646 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(struct hstate *h)
- 	return h->order + PAGE_SHIFT;
+diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
+index 78f4131af3cf3..5f98c73db5afd 100644
+--- a/net/nfc/nci/data.c
++++ b/net/nfc/nci/data.c
+@@ -33,7 +33,8 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 	conn_info = nci_get_conn_info_by_conn_id(ndev, conn_id);
+ 	if (!conn_info) {
+ 		kfree_skb(skb);
+-		goto exit;
++		clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++		return;
+ 	}
+ 
+ 	cb = conn_info->data_exchange_cb;
+@@ -45,6 +46,12 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 	timer_delete_sync(&ndev->data_timer);
+ 	clear_bit(NCI_DATA_EXCHANGE_TO, &ndev->flags);
+ 
++	/* Mark the exchange as done before calling the callback.
++	 * The callback (e.g. rawsock_data_exchange_complete) may
++	 * want to immediately queue another data exchange.
++	 */
++	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++
+ 	if (cb) {
+ 		/* forward skb to nfc core */
+ 		cb(cb_context, skb, err);
+@@ -54,9 +61,6 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 		/* no waiting callback, free skb */
+ 		kfree_skb(skb);
+ 	}
+-
+-exit:
+-	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
  }
  
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 927086bb4a3c..5590989e18c7 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -573,7 +573,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ /* ----------------- NCI TX Data ----------------- */
 -- 
-2.43.0
+2.51.0
 
 
