@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-224338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHZDKU8DsGnOeQIAu9opvQ
-	(envelope-from <stable+bounces-224338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:03 +0100
+	id IBD9HUkDsGkWegIAu9opvQ
+	(envelope-from <stable+bounces-224339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:40:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1318E24B4AF
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:41:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776E724B49B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A53F30C1911
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:28:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41F4830D0FDF
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF37B407570;
-	Tue, 10 Mar 2026 11:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9C38A73A;
+	Tue, 10 Mar 2026 11:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/O0mqjH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohgi+L2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930A038A70C;
-	Tue, 10 Mar 2026 11:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD338A712;
+	Tue, 10 Mar 2026 11:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142032; cv=none; b=d9+7VcaP3LSs//rWo9T028iv00BrTAwk9GGvn9Ut8IrB8yxGjbChg56yS/TBBnLrhA2MiJpMWhHzt6RfB19hkkIy7kj6aZpN4kx+Pdx8IfYciHduGLYNEwL5f9tjbJVLKSUYTf1ZffYCkz2LWJtStJwzDR8qAaTYZQXl3fhA/es=
+	t=1773142033; cv=none; b=D0qQI+ziN9KoYSYXHenYeq3DPsah3wzL+L7bu2NiOVqJarEaBWxiVy9KgBCZd1SA0HID8XSqf7HOe7KIEilaxJyfrkAAw/8IzYhF2UJk94DGgJds8grqsWm91UDW1C2smDPoFQ1MQArEIX3XRC1zl+srhImBNQe4DDQcwd23D/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142032; c=relaxed/simple;
-	bh=i9vTgBhdGYtSgbHedKvlPjzhpLm4qwhBEduqgROpz6o=;
+	s=arc-20240116; t=1773142033; c=relaxed/simple;
+	bh=/18lp1/ktXGi595Asi6XrzuAJmGWcNaiTcK26oYENqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHQbhwaq001r8SYc4LeJoI5qXtlWnf0viaS8teEG8Ff+McR9zKTHSqz/TqJ+n51/z8AaRaZoj4ZivD+1BUXyMKfvbvopwD2K4wD6F2WmX099SXtDLnNeuka0TQL2wEEBsr1eycxDetrs+oLKJ8CCObDjrAaFH5kt8CFQlShU/AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/O0mqjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA5EC2BC86;
-	Tue, 10 Mar 2026 11:27:11 +0000 (UTC)
+	 MIME-Version; b=I+fDPNCRAPpnz8VeHRfLABs3GM0aXRnuoufycziIYshYZpqkpeYM/MmnCjkqgMp5aurDTofLo+C6PGIqROC2frjqWMQ2OTFpfDthQ+nSeGhLSVoPhOT5jqVXist8QiBqr6S2whoixEHEq87k32cJje9pb9eAyWwFbEuebO0Fc74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohgi+L2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96AEC19423;
+	Tue, 10 Mar 2026 11:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142032;
-	bh=i9vTgBhdGYtSgbHedKvlPjzhpLm4qwhBEduqgROpz6o=;
+	s=k20201202; t=1773142033;
+	bh=/18lp1/ktXGi595Asi6XrzuAJmGWcNaiTcK26oYENqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/O0mqjH4e0VzZM7r//unHS5imMYnG2bQhtsgIFpoeIN//c60jHZjU9IXkKh7M/ng
-	 CVeWUM4cIcnbTDKWMe6BE13ljfGuCBFziLiq1eiuGNJ9KP18TrnhhjdLfzPMt/aMBi
-	 UHoWEqi2QwmU2t+NYReWQTms1/8Aj5GJREm1MeYeW28v6yoqshSG34sbsmvVEo1bHn
-	 H6oTV7b1w6N+bErUVdT6w7Ct1MPx+Ep8NHVk2HlhqTlASprcV+qZN75tcWRdQTb1S7
-	 e3Ptis5suV2ygb97R+6RlvPeJdWTAGEnFC5+rb6P1iqLhc06mx5+ZarldnZkrJwVFu
-	 uBrPtL5pYd5MQ==
+	b=ohgi+L2PIKV7LDxTHBS4DtcrefH1ODRKOqRcZE+f/+xhdf19m1PXHPM7Q9b7+RmiB
+	 K5z0hNk8uvf/NugXPGpvX6/uKP7JrBnB6gMz8+wotSn+ZRdRK5XAy9ggTgaNr6dr/u
+	 uB77Ma+Hp87V6k/16InicCICsEGbHOC9dd6W95dWzAgU3Q3tDv1min0oVFYGv5cLT1
+	 FJYlP4Sy/WN3J5wmymko7WhhJgrw44YqI+q12YOYHKs9LOdKFJ1a5Kqf6Qr6++xh/W
+	 ZcsWQzzO3ZU88p4Ep8KavHQyQT62jT98yPONlWX7yA4oLXecmLy5/TGRomvcY+GNSZ
+	 oM9kIedUPX4gA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Panagiotis Foliadis <pfoliadis@posteo.net>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
+Cc: Juhyung Park <qkrwngud825@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.18 159/314] ALSA: hda/realtek: Add quirk for Acer Aspire V3-572G
-Date: Tue, 10 Mar 2026 07:16:58 -0400
-Message-ID: <686a34e921378b458570d4bc9c0f8a2f9588fcfc.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 160/314] ALSA: hda/realtek: add quirk for Samsung Galaxy Book Flex (NT950QCT-A38A)
+Date: Tue, 10 Mar 2026 07:16:59 -0400
+Message-ID: <ec095f85983f0a548889ceee1eb4fcb21fb347c5.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -66,26 +65,27 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1318E24B4AF
+X-Rspamd-Queue-Id: 776E724B49B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224338-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,linuxfoundation.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224339-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,27 +93,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[posteo.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Panagiotis Foliadis <pfoliadis@posteo.net>
+From: Juhyung Park <qkrwngud825@gmail.com>
 
-commit cbddd303416456db5ceeedaf9e262096f079e861 upstream.
+commit 9fb16a5c5ff93058851099a2b80a899b0c53fe3f upstream.
 
-The Acer Aspire V3-572G has a combo jack (ALC283) but the BIOS
-sets pin 0x19 to 0x411111f0 (not connected), so the headset mic
-is not detected.
+Similar to other Samsung laptops, NT950QCT also requires the
+ALC298_FIXUP_SAMSUNG_AMP quirk applied.
 
-Add a quirk to override pin 0x19 as a headset mic and enable
-headset mode.
-
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221075
-Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
-Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://patch.msgid.link/20260221-fix-detect-mic-v1-1-b6e427b5275d@posteo.net
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Juhyung Park <qkrwngud825@gmail.com>
+Link: https://patch.msgid.link/20260222122609.281191-2-qkrwngud825@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -121,17 +114,17 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 11c526d94858d..a094d60194b53 100644
+index a094d60194b53..f40e00a578d99 100644
 --- a/sound/hda/codecs/realtek/alc269.c
 +++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6451,6 +6451,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x079b, "Acer Aspire V5-573G", ALC282_FIXUP_ASPIRE_V5_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x080d, "Acer Aspire V5-122P", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x0840, "Acer Aspire E1", ALC269VB_FIXUP_ASPIRE_E1_COEF),
-+	SND_PCI_QUIRK(0x1025, 0x0943, "Acer Aspire V3-572G", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x100c, "Acer Aspire E5-574G", ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1025, 0x101c, "Acer Veriton N2510G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x102b, "Acer Aspire C24-860", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE),
+@@ -7150,6 +7150,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xc188, "Samsung Galaxy Book Flex (NT950QCT-A38A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Book Flex (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
 -- 
 2.51.0
 
