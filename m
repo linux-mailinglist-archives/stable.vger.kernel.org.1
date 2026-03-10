@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-224045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K+JOp3/r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-224045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:25:17 +0100
+	id 6AVHAlj+r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:19:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CE124AA45
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6FD24A673
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFCEF31EDFAE
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:13:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4EAC315E3D3
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC46936EA89;
-	Tue, 10 Mar 2026 11:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FAC386454;
+	Tue, 10 Mar 2026 11:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFYJXa+8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdiaYuuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703763859DC;
-	Tue, 10 Mar 2026 11:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484F938735E;
+	Tue, 10 Mar 2026 11:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141179; cv=none; b=iJ8TEnndWiXXeBt2NxSiT/TGMWXYS2+PHZBHwOo0gH1ySZH7LbvJEI4eahJB8nj+7WzpVtn7q/0QRKHUGjkrI3E0JXTEcqNSWonZR4H+2O8hJr3udSe98SoySbPx6YrAnhuwpXSnjnFx1VdiNSXMhqRrDhym3NOmT+LM96T+RXs=
+	t=1773141180; cv=none; b=QD4h75y/8bFgb05eeNzNtjwYriN6rqYljpN8VfRtj5WxaX5mS+eOiRSpI6l112BiHMoyMy3E5MBysyw3KvXjOz1rOBqKwvDW/5YU/MbMastY/I1Rqe5GLGOFVjuR9E2PlD4OMDa62ecVbKhLhcSYdsk6SnwV0rE0uNuSYVpKLHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141179; c=relaxed/simple;
-	bh=yILICB01yIfGtMLITw9t304k5DaGvmknZkrOf8HLh8w=;
+	s=arc-20240116; t=1773141180; c=relaxed/simple;
+	bh=GwlRp6wpc5xvGDsv14OXVgROznCR5FRMP9G2lpwq/U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXUKCpnQW2HHQfQw/7VdVm0mMUu97LU4/Q2VjNBOtrGno0ERub39dIuPXbzVT2JRRpCQLKk9OxD+x5R0Vhg+9QWkNQVJWOSc0gQUiBCT9gabPTRxMwT25e0LcQPtpbhcvpQKfrrHOKzUtKDdviemx0h7buykjW7mFkLeEQQn0fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFYJXa+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB04BC19423;
-	Tue, 10 Mar 2026 11:12:58 +0000 (UTC)
+	 MIME-Version; b=rEmqKFInh1K/DTaJ8ah8aIY9u3hceVe3BEWV54+BKOc9mGVRqPcjo0rHrGWxPlUabuqkj2FtsnkL8r6NGCSmToemOxnNKMlcbJdcyZh6kkm4H7eX4Pp4buQpYJw4ji6BVxoLPL67WzXGujDme1ZYzP6GUAFAEl6mekbC4NAEHD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdiaYuuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F3CC2BC86;
+	Tue, 10 Mar 2026 11:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141179;
-	bh=yILICB01yIfGtMLITw9t304k5DaGvmknZkrOf8HLh8w=;
+	s=k20201202; t=1773141180;
+	bh=GwlRp6wpc5xvGDsv14OXVgROznCR5FRMP9G2lpwq/U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFYJXa+8Tmh03DGQL0s3tJ9muRILwo+LdHmHnC528GPQF/EL96oHoKXwo65xx/U4N
-	 WlCWpBf/E+VkLsml78aKEgRQkHqGGZGeQq84e8Rkn9z70zWzVMyFc5vwJfeLSEuY93
-	 SJ1TtU5PVwx/X/OjfhsBWrrDWK5rtVNAxAE13o7FV+Vd2TQsRoRRvxRwZ+iyq3sG2X
-	 HsPMu8U3xMr6/gxj5P1zFfTWYecFgaZ1SZlVKBgrPCoJLrWqRyhU1hPA8xiUefxFXj
-	 5wjHhHFoSxjysWLYuZk5Z2IHatgDW1kApo5gBLe91Ypnw8+Hl/wt3UyFfoBFczjv5s
-	 9kAoxiCR1tlLA==
+	b=rdiaYuuGjDqRh8UMf2TXEFAQvGiDHOnzR7C/lzadTHI7ATk551R2n3eMnvivCLk/0
+	 Wg4bFuwETniFsCT9aaE0ItRMIONYtykP93GiqX9Fi2EGbC0RUzxE498pXAleSo6M6l
+	 VupNfXFcR9hCzkHMz9vbfvwr6AKtwm1gllZLKsswImfwv5OaaDIzmx12cPvoJ2ZseD
+	 k42X6Ch0Pw3H3twH8Y9ehIj3SDwiIaeO82cqF1EHqN69uVBpYv+4jk5V9UFO0MQzn1
+	 3CZdIVY4AmOfiyEs/pnA2XnWwqa/vD1h5qZnHfr861hfRLqsiHc7VnevfsQaiOc7fY
+	 zEN53BSxFnG+A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Hao Yu <haoyufine@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Florian Eckert <fe@dev.tdt.de>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 180/311] hwmon: (aht10) Fix initialization commands for AHT20
-Date: Tue, 10 Mar 2026 07:03:47 -0400
-Message-ID: <ecb9cd8eaec5ffdf61b2b0b524047c2a38361859.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 181/311] pinctrl: equilibrium: rename irq_chip function callbacks
+Date: Tue, 10 Mar 2026 07:03:48 -0400
+Message-ID: <421600c4826b8382bb2204e8f0e28cde06bc1cc1.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -65,83 +65,122 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 72CE124AA45
+X-Rspamd-Queue-Id: 7B6FD24A673
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,roeck-us.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224045-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224046-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Hao Yu <haoyufine@gmail.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit b7497b5a99f54ab8dcda5b14a308385b2fb03d8d ]
+[ Upstream commit 1f96b84835eafb3e6f366dc3a66c0e69504cec9d ]
 
-According to the AHT20 datasheet (updated to V1.0 after the 2023.09
-version), the initialization command for AHT20 is 0b10111110 (0xBE).
-The previous sequence (0xE1) used in earlier versions is no longer
-compatible with newer AHT20 sensors. Update the initialization
-command to ensure the sensor is properly initialized.
+Renaming of the irq_chip callback functions to improve clarity.
 
-While at it, use binary notation for DHT20_CMD_INIT to match the notation
-used in the datasheet.
-
-Fixes: d2abcb5cc885 ("hwmon: (aht10) Add support for compatible aht20")
-Signed-off-by: Hao Yu <haoyufine@gmail.com>
-Link: https://lore.kernel.org/r/20260222170332.1616-3-haoyufine@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Stable-dep-of: 3e00b1b332e5 ("pinctrl: equilibrium: fix warning trace on load")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aht10.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-equilibrium.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hwmon/aht10.c b/drivers/hwmon/aht10.c
-index 007befdba9776..4ce019d2cc80e 100644
---- a/drivers/hwmon/aht10.c
-+++ b/drivers/hwmon/aht10.c
-@@ -37,7 +37,9 @@
- #define AHT10_CMD_MEAS	0b10101100
- #define AHT10_CMD_RST	0b10111010
+diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
+index 48b55c5bf8d4f..49c8232b525a9 100644
+--- a/drivers/pinctrl/pinctrl-equilibrium.c
++++ b/drivers/pinctrl/pinctrl-equilibrium.c
+@@ -23,7 +23,7 @@
+ #define PIN_NAME_LEN	10
+ #define PAD_REG_OFF	0x100
  
--#define DHT20_CMD_INIT	0x71
-+#define AHT20_CMD_INIT	0b10111110
-+
-+#define DHT20_CMD_INIT	0b01110001
+-static void eqbr_gpio_disable_irq(struct irq_data *d)
++static void eqbr_irq_mask(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -36,7 +36,7 @@ static void eqbr_gpio_disable_irq(struct irq_data *d)
+ 	gpiochip_disable_irq(gc, offset);
+ }
  
- /*
-  * Flags in the answer byte/command
-@@ -341,7 +343,7 @@ static int aht10_probe(struct i2c_client *client)
- 		data->meas_size = AHT20_MEAS_SIZE;
- 		data->crc8 = true;
- 		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
--		data->init_cmd = AHT10_CMD_INIT;
-+		data->init_cmd = AHT20_CMD_INIT;
- 		break;
- 	case dht20:
- 		data->meas_size = AHT20_MEAS_SIZE;
+-static void eqbr_gpio_enable_irq(struct irq_data *d)
++static void eqbr_irq_unmask(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -50,7 +50,7 @@ static void eqbr_gpio_enable_irq(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&gctrl->lock, flags);
+ }
+ 
+-static void eqbr_gpio_ack_irq(struct irq_data *d)
++static void eqbr_irq_ack(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -62,10 +62,10 @@ static void eqbr_gpio_ack_irq(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&gctrl->lock, flags);
+ }
+ 
+-static void eqbr_gpio_mask_ack_irq(struct irq_data *d)
++static void eqbr_irq_mask_ack(struct irq_data *d)
+ {
+-	eqbr_gpio_disable_irq(d);
+-	eqbr_gpio_ack_irq(d);
++	eqbr_irq_mask(d);
++	eqbr_irq_ack(d);
+ }
+ 
+ static inline void eqbr_cfg_bit(void __iomem *addr,
+@@ -92,7 +92,7 @@ static int eqbr_irq_type_cfg(struct gpio_irq_type *type,
+ 	return 0;
+ }
+ 
+-static int eqbr_gpio_set_irq_type(struct irq_data *d, unsigned int type)
++static int eqbr_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -166,11 +166,11 @@ static void eqbr_irq_handler(struct irq_desc *desc)
+ 
+ static const struct irq_chip eqbr_irq_chip = {
+ 	.name = "gpio_irq",
+-	.irq_mask = eqbr_gpio_disable_irq,
+-	.irq_unmask = eqbr_gpio_enable_irq,
+-	.irq_ack = eqbr_gpio_ack_irq,
+-	.irq_mask_ack = eqbr_gpio_mask_ack_irq,
+-	.irq_set_type = eqbr_gpio_set_irq_type,
++	.irq_ack = eqbr_irq_ack,
++	.irq_mask = eqbr_irq_mask,
++	.irq_mask_ack = eqbr_irq_mask_ack,
++	.irq_unmask = eqbr_irq_unmask,
++	.irq_set_type = eqbr_irq_set_type,
+ 	.flags = IRQCHIP_IMMUTABLE,
+ 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+ };
 -- 
 2.51.0
 
