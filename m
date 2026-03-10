@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-223909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCmwKp/7r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-223909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:08:15 +0100
+	id aHQZMjv8r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-223911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:10:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BFB24A003
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:08:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E17C24A072
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CEC73035E33
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:07:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AF233037EED
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671FD387590;
-	Tue, 10 Mar 2026 11:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D082D978B;
+	Tue, 10 Mar 2026 11:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMsT3rwP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ksyA4gTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C4B38553F;
-	Tue, 10 Mar 2026 11:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C26248F73;
+	Tue, 10 Mar 2026 11:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140807; cv=none; b=uIdCY6V139SN6IKAzPDPAeucq98fuihl2yWG15Qts1xgFwrXIq6FCZOjPndNeGZfPfZt/F0Sk4tcLrLYXDfziavFvuQdCD5lqs0X4nbk+MTyTlTBkkr4IIkd0AcleBHruZQy/s7eVixkN0OgyXdGT6L7iBBRa/VsEX0mHvIsa84=
+	t=1773141047; cv=none; b=roABWc3lwWuw6h4ANZaenQgkZ4SID5ZGejgZhrN0/S1vfzna7xNXltmjvnQtdCw7MHJPLIoVMbBx/zI4ptFhaGPRX8mbB7aLgh79dcp/5oXQw2y9xhT0Avh86EdueIjtagV9nemrz7PC8lyzD6EYH67MnaSTAmDhmfkTmfDxzhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140807; c=relaxed/simple;
-	bh=hgdfRU7sgtgjdf/4Za+A1lw1c6EKqEC/A23iJVnzUVE=;
+	s=arc-20240116; t=1773141047; c=relaxed/simple;
+	bh=n2WKvHJec7FWj/kKO2jY/OlrsFSuFiHtbt96GV6LzWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEjNUGE3NCS8DjMbSEKEFFDexHuGGzDKkx/GYcZR++cQCTOVsP6ixc+VwTogsfosdYdSgeslngNBc/N27CdLnXYJSrOdfF2pObJwIKxwl1GU3R9KrWFlMsiEfQ5mYYL+EqGUsIIbX+Eu5N/EA/Hr+5jw5aFiNyQMNjG7v0dZZLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMsT3rwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48998C2BC9E;
-	Tue, 10 Mar 2026 11:06:46 +0000 (UTC)
+	 MIME-Version; b=Dp5hE9jQ2pisdJpCKb8HpgvY80xdhnz/5HSVmPXGipKPPDzrUPFwmtu74WFqzgv14quvLPgxziT/9Ug3BPA3IiGQ1N3xJMXWIuYCinSgcJeIoGE0z+O+/Sqb8p3UeoQttLEVszkWpG/FA9VbEG9MDc6Vd0PPJ9qMtWs1MhvRp1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ksyA4gTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE65C19423;
+	Tue, 10 Mar 2026 11:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773140807;
-	bh=hgdfRU7sgtgjdf/4Za+A1lw1c6EKqEC/A23iJVnzUVE=;
+	s=k20201202; t=1773141047;
+	bh=n2WKvHJec7FWj/kKO2jY/OlrsFSuFiHtbt96GV6LzWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMsT3rwPMzB1lh6A0TmBNm4FZNKgTZxGhCR3GQEIB0PKd/3jabqzDVs5jXbB6iQB6
-	 5YZdhPtpecHkwLa7rbo1DsKJ5hVvqEVVXrqz2+4ffrOCtQQo3dqTXF1IJerRz2aR+M
-	 6XZAPn7eyV7RnuU60MOg/J7AOP5zvWUcdZqMn8l8hXxnV+gDZzWzDYbf9+D6byYCEv
-	 U3w9TfJXDfK0pgTZlnZhgcb4GYP29lxIILnn3ehbOPdMVq0H/SAYsvzvej7qSlej7v
-	 1+Jjpk7FMyHDbNwlQhpynfzuJPhtV9E+Yfczpd5hQUZrE2ZCtfXwRLUDSzgkORwAmx
-	 RzW/2owGPmKEg==
+	b=ksyA4gTtZ58NGruX/9/HHE5/4AMuYXnYgUvg0xPFcE1i6tWSY2a5kYiqCM2ypXs33
+	 4loIf+sfZiCtqGxnmhq3VkbBZgYkvV386hJSIPc/qBvPQmKFTGeMnXxycCftaqIm/Z
+	 /PqxdzVClockw7mQpTnu+aYwkb5Gcpg6ij6w6qK/q1/768Vo8jwtB9sopg4zwn+/d1
+	 qxgCF7Ypd9I6Pyw78ISglDQwHnfyodotNcnSvBRidTEGWQF3XweZLOXE14SSxRpzr2
+	 jB9dL18xvDatPAn2wdVMnDKf3D6JpqeG8sBoFFJQjELUAYWjyR9CSU2vKNlX2uCL48
+	 QhF+a6udXO1+w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
+Cc: Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 045/311] clk: scu/imx8qxp: do not register driver in probe()
-Date: Tue, 10 Mar 2026 07:01:32 -0400
-Message-ID: <6d9a4a86fb92453081835162e5e05a3fefb0e2cc.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 046/311] cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko
+Date: Tue, 10 Mar 2026 07:01:33 -0400
+Message-ID: <0634c576944d6780712afbbf00f655512d497d32.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -67,20 +67,20 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 50BFB24A003
+X-Rspamd-Queue-Id: 2E17C24A072
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223909-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223911-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -94,137 +94,105 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,nxp.com:email,tq-group.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 78437ab3b769f80526416570f60173c89858dd84 ]
+[ Upstream commit e7e222ad73d93fe54d6e6e3a15253a0ecf081a1b ]
 
-imx_clk_scu_init() registers the imx_clk_scu_driver while commonly being
-called from IMX driver's probe() callbacks.
+Moving the symbol devm_cxl_add_nvdimm_bridge() to
+drivers/cxl/cxl_pmem.c, so that cxl_pmem can export a symbol that gives
+cxl_acpi a depedency on cxl_pmem kernel module. This is a prepatory patch
+to resolve the issue of a race for nvdimm_bus object that is created
+during cxl_acpi_probe().
 
-However, it neither makes sense to register drivers from probe()
-callbacks of other drivers, nor does the driver core allow registering
-drivers with a device lock already being held.
+No functional changes besides moving code.
 
-The latter was revealed by commit dc23806a7c47 ("driver core: enforce
-device_lock for driver_match_device()") leading to a deadlock condition
-described in [1].
-
-Besides that, nothing seems to unregister the imx_clk_scu_driver once
-the corresponding driver module is unloaded, which leaves the
-driver-core with a dangling pointer.
-
-Also, if there are multiple matching devices for the imx8qxp_clk_driver,
-imx8qxp_clk_probe() calls imx_clk_scu_init() multiple times.  However,
-any subsequent call after the first one will fail, since the driver-core
-does not allow to register the same struct platform_driver multiple
-times.
-
-Hence, register the imx_clk_scu_driver from module_init() and unregister
-it in module_exit().
-
-Note that we first register the imx8qxp_clk_driver and then call
-imx_clk_scu_module_init() to avoid having to call
-imx_clk_scu_module_exit() in the unwind path of imx8qxp_clk_init().
-
-Fixes: dc23806a7c47 ("driver core: enforce device_lock for driver_match_device()")
-Fixes: 220175cd3979 ("clk: imx: scu: fix build break when compiled as modules")
-Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Closes: https://lore.kernel.org/lkml/13955113.uLZWGnKmhe@steina-w/
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa8x/MBa8x
-Link: https://lore.kernel.org/lkml/DFU7CEPUSG9A.1KKGVW4HIPMSH@kernel.org/ [1]
-Acked-by: Abel Vesa <abelvesa@kernel.org>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20260212235842.85934-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Ira Weiny <ira.weiny@intel.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com?>
+Link: https://patch.msgid.link/20260205001633.1813643-2-dave.jiang@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Stable-dep-of: 96a1fd0d84b1 ("cxl: Fix race of nvdimm_bus object when creating nvdimm objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 24 +++++++++++++++++++++++-
- drivers/clk/imx/clk-scu.c     | 12 +++++++++++-
- drivers/clk/imx/clk-scu.h     |  2 ++
- 3 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/cxl/core/pmem.c | 13 +++----------
+ drivers/cxl/cxl.h       |  2 ++
+ drivers/cxl/pmem.c      | 14 ++++++++++++++
+ 3 files changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index 3ae162625bb1a..c781425a005ef 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -346,7 +346,29 @@ static struct platform_driver imx8qxp_clk_driver = {
- 	},
- 	.probe = imx8qxp_clk_probe,
- };
--module_platform_driver(imx8qxp_clk_driver);
-+
-+static int __init imx8qxp_clk_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_driver_register(&imx8qxp_clk_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = imx_clk_scu_module_init();
-+	if (ret)
-+		platform_driver_unregister(&imx8qxp_clk_driver);
-+
-+	return ret;
-+}
-+module_init(imx8qxp_clk_init);
-+
-+static void __exit imx8qxp_clk_exit(void)
-+{
-+	imx_clk_scu_module_exit();
-+	platform_driver_unregister(&imx8qxp_clk_driver);
-+}
-+module_exit(imx8qxp_clk_exit);
- 
- MODULE_AUTHOR("Aisheng Dong <aisheng.dong@nxp.com>");
- MODULE_DESCRIPTION("NXP i.MX8QXP clock driver");
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index 34c9dc1fb20e5..c90d21e05f916 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -191,6 +191,16 @@ static bool imx_scu_clk_is_valid(u32 rsrc_id)
- 	return p != NULL;
+diff --git a/drivers/cxl/core/pmem.c b/drivers/cxl/core/pmem.c
+index 8853415c106a9..e1325936183a6 100644
+--- a/drivers/cxl/core/pmem.c
++++ b/drivers/cxl/core/pmem.c
+@@ -115,15 +115,8 @@ static void unregister_nvb(void *_cxl_nvb)
+ 	device_unregister(&cxl_nvb->dev);
  }
  
-+int __init imx_clk_scu_module_init(void)
-+{
-+	return platform_driver_register(&imx_clk_scu_driver);
-+}
-+
-+void __exit imx_clk_scu_module_exit(void)
-+{
-+	return platform_driver_unregister(&imx_clk_scu_driver);
-+}
-+
- int imx_clk_scu_init(struct device_node *np,
- 		     const struct imx_clk_scu_rsrc_table *data)
+-/**
+- * devm_cxl_add_nvdimm_bridge() - add the root of a LIBNVDIMM topology
+- * @host: platform firmware root device
+- * @port: CXL port at the root of a CXL topology
+- *
+- * Return: bridge device that can host cxl_nvdimm objects
+- */
+-struct cxl_nvdimm_bridge *devm_cxl_add_nvdimm_bridge(struct device *host,
+-						     struct cxl_port *port)
++struct cxl_nvdimm_bridge *__devm_cxl_add_nvdimm_bridge(struct device *host,
++						       struct cxl_port *port)
  {
-@@ -215,7 +225,7 @@ int imx_clk_scu_init(struct device_node *np,
- 		rsrc_table = data;
- 	}
- 
--	return platform_driver_register(&imx_clk_scu_driver);
-+	return 0;
+ 	struct cxl_nvdimm_bridge *cxl_nvb;
+ 	struct device *dev;
+@@ -155,7 +148,7 @@ struct cxl_nvdimm_bridge *devm_cxl_add_nvdimm_bridge(struct device *host,
+ 	put_device(dev);
+ 	return ERR_PTR(rc);
  }
+-EXPORT_SYMBOL_NS_GPL(devm_cxl_add_nvdimm_bridge, "CXL");
++EXPORT_SYMBOL_FOR_MODULES(__devm_cxl_add_nvdimm_bridge, "cxl_pmem");
  
- /*
-diff --git a/drivers/clk/imx/clk-scu.h b/drivers/clk/imx/clk-scu.h
-index af7b697f51cae..ca82f2cce8974 100644
---- a/drivers/clk/imx/clk-scu.h
-+++ b/drivers/clk/imx/clk-scu.h
-@@ -25,6 +25,8 @@ extern const struct imx_clk_scu_rsrc_table imx_clk_scu_rsrc_imx8dxl;
- extern const struct imx_clk_scu_rsrc_table imx_clk_scu_rsrc_imx8qxp;
- extern const struct imx_clk_scu_rsrc_table imx_clk_scu_rsrc_imx8qm;
+ static void cxl_nvdimm_release(struct device *dev)
+ {
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index ba17fa86d249e..2854e47fd9869 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -893,6 +893,8 @@ void cxl_driver_unregister(struct cxl_driver *cxl_drv);
+ struct cxl_nvdimm_bridge *to_cxl_nvdimm_bridge(struct device *dev);
+ struct cxl_nvdimm_bridge *devm_cxl_add_nvdimm_bridge(struct device *host,
+ 						     struct cxl_port *port);
++struct cxl_nvdimm_bridge *__devm_cxl_add_nvdimm_bridge(struct device *host,
++						       struct cxl_port *port);
+ struct cxl_nvdimm *to_cxl_nvdimm(struct device *dev);
+ bool is_cxl_nvdimm(struct device *dev);
+ int devm_cxl_add_nvdimm(struct cxl_port *parent_port, struct cxl_memdev *cxlmd);
+diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
+index e197883690efc..714beaf1704be 100644
+--- a/drivers/cxl/pmem.c
++++ b/drivers/cxl/pmem.c
+@@ -13,6 +13,20 @@
  
-+int __init imx_clk_scu_module_init(void);
-+void __exit imx_clk_scu_module_exit(void);
- int imx_clk_scu_init(struct device_node *np,
- 		     const struct imx_clk_scu_rsrc_table *data);
- struct clk_hw *imx_scu_of_clk_src_get(struct of_phandle_args *clkspec,
+ static __read_mostly DECLARE_BITMAP(exclusive_cmds, CXL_MEM_COMMAND_ID_MAX);
+ 
++/**
++ * __devm_cxl_add_nvdimm_bridge() - add the root of a LIBNVDIMM topology
++ * @host: platform firmware root device
++ * @port: CXL port at the root of a CXL topology
++ *
++ * Return: bridge device that can host cxl_nvdimm objects
++ */
++struct cxl_nvdimm_bridge *devm_cxl_add_nvdimm_bridge(struct device *host,
++						     struct cxl_port *port)
++{
++	return __devm_cxl_add_nvdimm_bridge(host, port);
++}
++EXPORT_SYMBOL_NS_GPL(devm_cxl_add_nvdimm_bridge, "CXL");
++
+ static void clear_exclusive(void *mds)
+ {
+ 	clear_exclusive_cxl_commands(mds, exclusive_cmds);
 -- 
 2.51.0
 
