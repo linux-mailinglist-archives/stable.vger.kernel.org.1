@@ -1,147 +1,225 @@
-Return-Path: <stable+bounces-224588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMbQDeGRsGkukgIAu9opvQ
-	(envelope-from <stable+bounces-224588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:49:21 +0100
+	id YOa/A7mSsGkukgIAu9opvQ
+	(envelope-from <stable+bounces-224589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:52:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA72725879E
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:49:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10D2258881
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CBC13024EF0
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:49:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44187309E753
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEEB245005;
-	Tue, 10 Mar 2026 21:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9203F1677;
+	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="vnOfhVHU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9XDLVkP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE740DFA0
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE543EE1EA;
+	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773179358; cv=none; b=lmH08jdZj+bM1W0G4mmutus3aPEQ1MCv71hDeUbQL7sbLGDD7kedtZA1sq08iuVYlLwlPirXZ9/vWruczExOCSPOiE0/JqbSZvkGyhmeOf2dAwL7UgSMdBulOsrTOGnsWENQU7YEM0X1O1hR8dxSHWm1dkA/e5xTgZWU7xb367Y=
+	t=1773179560; cv=none; b=ojgy+P5zbGeMsRW7dHaaG63VdWt49ih6xJTcZeLgC7R/U3q4cVF1eqSWXa9h5Q8dbJIgbUGgKvt1xIu4CPot6LKLXBW5IkEnWrKJZceUuLzf5GoGUsIk3qopPQcmqhikFNgO/AKDSBmjRqf2u3g8tuIiBqHXJSLmcHZCjF9ZMdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773179358; c=relaxed/simple;
-	bh=hYH8Z9qW6L7Pv4SzbvmBYP473SK0UCSUn2tmsDcH0U0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sCb0tDwcEp4mu6OPPuhMniFzw24K2QvboQiSyuXvhV1LvzmN9DB3uFIxD7qVONKQ+Dw8BTUdWtZVpaPu0bz2xGZBM25soahSi28FUtkODktvn7n4XvQMyI2IozwPziR05EMBQ+nAKZVbsY/Mxb+j+tkqnfkuvEGzNoDulC+P1og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=pass smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=vnOfhVHU; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johannes-moeller.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=johannes-moeller.dev; s=protonmail; t=1773179353; x=1773438553;
-	bh=QF6qc+aNL5LpCNRDF2PTtarXrsxuPHhlrVLr96bSGbU=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=vnOfhVHUvAiy2histAJ+80dVFzXEtocqUXWxLq4KchhkEKC+OS3luB8dNZU7UHpV3
-	 ZTS+301I9vGi2/py6FZjWgyL2TvJDov+cRinogM4CFXg7Vl/Q0ZcozwDZYVhBH3OsB
-	 YJ/r04AIJ/LxO75i1/Zx3dF8VgEU4V+dzyUPk06xWzBi9rXerbnHUsSLFpXbSNeo+d
-	 /TV3oD+M23tosE7SNctpo/xWImLzFZCor953EfIbPTgvUnAtMJublpgoXpRJUxM3De
-	 k9yqb6elBFXEwk9J/sDbXI4AMo+fFD5Pj+aYsusD5JyyDxtbJP9NaXZcIAYHrA5EW6
-	 o2jZ2wiucMovQ==
-X-Pm-Submission-Id: 4fVnZw1crNz2ScPP
-From: =?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>
-To: netfilter-devel@vger.kernel.org
-Cc: Florian Westphal <fw@strlen.de>,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	s=arc-20240116; t=1773179560; c=relaxed/simple;
+	bh=9DspE8ZzxPIkgad3kbhVNSegbVmg7d6ttJzOySzgDE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=B458eZM6DLYMIhVcYvJ3iTpJHSdkP2a1aW19MwptkymzZ55B/luE9wSCoo0YsKer2Rn7aub+2M+ukTSU8dfHwUFwQOn/X4o5wkp+YSiAgDhCep5RjcNY3r9bR/aRpqfWqd4eDzI7CDe24V0kBZ+PHoebQw0+tYUhoblZ2JH95nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9XDLVkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C5BC2BCAF;
+	Tue, 10 Mar 2026 21:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773179560;
+	bh=9DspE8ZzxPIkgad3kbhVNSegbVmg7d6ttJzOySzgDE4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=V9XDLVkPIUguhDuLOIiUIpyMSxaGPliXRd7O6lqvaXBBvEXDJAKzrSK6ZeN/F1Xfh
+	 jUA8CdDYMJjHcHrse0iQOy7CsVP5oqh1gKttZym7Wk6Onv3Ncjth8aMn072v+4820p
+	 JKejxWFMoZQqjf88JQ0li2hVFTd+DM1a3rq34A1UjO2tDsqlw9JTVfizZAx8/rtcvY
+	 /abfz1lpZSCUDNmBxqi74Xk88jjcSfHCeT71YpX9s6YQW1oPiEFKLHojqNVzUfWTPP
+	 PFrtaONJFG1J9ZAyPMHvLg3W/QCkoN4xHt+XbVT6HcRyS6HZSJUvfdC6TETrMiH74y
+	 aFgnA4khDntVQ==
+Date: Tue, 10 Mar 2026 16:52:39 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Gerd Bayer <gbayer@linux.ibm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Jay Cornwall <Jay.Cornwall@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] netfilter: nf_conntrack_sip: fix Content-Length u32 truncation in sip_help_tcp()
-Date: Tue, 10 Mar 2026 21:49:01 +0000
-Message-ID: <20260310214901.71422-1-research@johannes-moeller.dev>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH v3 2/2] PCI: AtomicOps: Fix logic in enable function
+Message-ID: <20260310215239.GA299126@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA72725879E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306-fix_pciatops-v3-2-99d12bcafb19@linux.ibm.com>
+X-Rspamd-Queue-Id: C10D2258881
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[johannes-moeller.dev:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[johannes-moeller.dev];
-	TAGGED_FROM(0.00)[bounces-224588-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224589-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[research@johannes-moeller.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[johannes-moeller.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[johannes-moeller.dev:dkim,johannes-moeller.dev:email,johannes-moeller.dev:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-sip_help_tcp() parses the SIP Content-Length header with
-simple_strtoul(), which returns unsigned long, but stores the result in
-unsigned int clen.  On 64-bit systems, values exceeding UINT_MAX are
-silently truncated before computing the SIP message boundary.
+On Fri, Mar 06, 2026 at 06:13:59PM +0100, Gerd Bayer wrote:
+> Move the check for root port requirements past the loop within
+> pci_enable_atomic_ops_to_root() that checks on potential switch
+> (up- and downstream) ports.
+> 
+> Inside the loop traversing the PCI tree upwards, prepend the switch case
+> to validate the routing capability on any port with a fallthrough-case
+> that does the additional check for Atomic Ops not being blocked on
+> upstream ports.
 
-For example, Content-Length 4294967328 (2^32 + 32) is truncated to 32,
-causing the parser to miscalculate where the current message ends.  The
-loop then treats trailing data in the TCP segment as a second SIP
-message and processes it through the SDP parser.
+Thanks for looking at this.  I think this makes good sense, and I'd
+like to:
 
-Fix this by changing clen to unsigned long to match the return type of
-simple_strtoul(), and reject Content-Length values that exceed the
-remaining TCP payload length.
+  - Hoist the problem description up here.  IIUC we enable AtomicOps on
+    s390 when we shouldn't, which presumably leads to some problem.  I
+    think the same could happen anywhere we don't have a Root Port,
+    e.g., jailhouse, loongarch, maybe some VMM guests?
 
-Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
----
-Note: simple_strtoul() is deprecated; a follow-up patch could convert
-to kstrtoul() with stricter input validation.
+  - Reduce or remove the text above, which is basically C code
+    translated to English, and move it down after the problem
+    description, so we can state the problem and symptom, followed by
+    the solution.
 
- net/netfilter/nf_conntrack_sip.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+I think the core is (as you say below) that if there's no Root Port,
+we previously allowed endpoints to use AtomicOps even in cases where
+we don't know if the recipient supports them.
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index ca748f8dbff1..eb6295f0e08c 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1534,7 +1534,8 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- {
- 	struct tcphdr *th, _tcph;
- 	unsigned int dataoff, datalen;
--	unsigned int matchoff, matchlen, clen;
-+	unsigned int matchoff, matchlen;
-+	unsigned long clen;
- 	unsigned int msglen, origlen;
- 	const char *dptr, *end;
- 	s16 diff, tdiff = 0;
-@@ -1573,6 +1574,9 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 		if (dptr + matchoff == end)
- 			break;
- 
-+		if (clen > datalen)
-+			break;
-+
- 		term = false;
- 		for (; end + strlen("\r\n\r\n") <= dptr + datalen; end++) {
- 			if (end[0] == '\r' && end[1] == '\n' &&
+That *sounds* bad, and if you actually saw some kind of corruption as
+a result, that would make this very compelling.
 
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
--- 
-2.43.0
+> Do not enable Atomic Op Requests if nothing can be learned about how the
+> device is attached - e.g. if it is on an "isolated" bus, as in s390.
+> 
+> Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
 
+If there's any public report of the problem, include the URL here.
+
+> Cc: stable@vger.kernel.org
+> Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
+> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+> ---
+>  drivers/pci/pci.c | 30 ++++++++++++++----------------
+>  1 file changed, 14 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index cc8abe6b1d07661488895876dbbcf8aaeadf4a17..23db6ad5f310ed009a9b2ca4933c7498e0d22b85 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3677,7 +3677,7 @@ void pci_acs_init(struct pci_dev *dev)
+>  int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+>  {
+>  	struct pci_bus *bus = dev->bus;
+> -	struct pci_dev *bridge;
+> +	struct pci_dev *bridge = NULL;
+>  	u32 cap, ctl2;
+>  
+>  	/*
+> @@ -3715,29 +3715,27 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+
+Since we're looking at this, I think we should update the spec
+references in this function (in a separate patch).  
+
+  * Per PCIe r5.0, sec 9.3.5.10, the AtomicOp Requester Enable bit
+  * in Device Control 2 is reserved in VFs and the PF value applies
+  * to all associated VFs.
+
+It looks like the AtomicOp Requester Enable part of PCIe r5.0, sec
+9.3.5.10, was incorporated into the Device Control 2 Register
+description in PCIe r7.0, sec 7.5.3.16.
+
+  * Per PCIe r4.0, sec 6.15, endpoints and root ports may be
+  * AtomicOp requesters.  For now, we only support endpoints as
+  * requesters and root ports as completers.  No endpoints as
+  * completers, and no peer-to-peer.
+
+This looks like PCIe r7.0, sec 6.15.  Same section as r4.0, but we
+should at least make both of these refer to the same spec revision.
+
+>  		switch (pci_pcie_type(bridge)) {
+>  		/* Ensure switch ports support AtomicOp routing */
+>  		case PCI_EXP_TYPE_UPSTREAM:
+> -		case PCI_EXP_TYPE_DOWNSTREAM:
+> -			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
+> -				return -EINVAL;
+> -			break;
+> -
+> -		/* Ensure root port supports all the sizes we care about */
+> -		case PCI_EXP_TYPE_ROOT_PORT:
+> -			if ((cap & cap_mask) != cap_mask)
+> -				return -EINVAL;
+> -			break;
+> -		}
+> -
+> -		/* Ensure upstream ports don't block AtomicOps on egress */
+> -		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
+> +			/* Upstream ports must not block AtomicOps on egress */
+>  			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
+>  						   &ctl2);
+>  			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
+>  				return -EINVAL;
+> +			fallthrough;
+> +		/* All switch ports need to route AtomicOps */
+> +		case PCI_EXP_TYPE_DOWNSTREAM:
+> +			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
+> +				return -EINVAL;
+> +			break;
+>  		}
+> -
+>  		bus = bus->parent;
+>  	}
+>  
+> +	/* Finally, last bridge must be root port and support requested sizes */
+> +	if ((!bridge) ||
+> +	    (pci_pcie_type(bridge) != PCI_EXP_TYPE_ROOT_PORT) ||
+> +	    ((cap & cap_mask) != cap_mask))
+> +		return -EINVAL;
+> +
+>  	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
+>  				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
+>  	return 0;
+> 
+> -- 
+> 2.51.0
+> 
 
