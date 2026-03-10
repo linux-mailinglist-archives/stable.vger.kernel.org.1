@@ -1,275 +1,243 @@
-Return-Path: <stable+bounces-223850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJhmMK3vr2nkdAIAu9opvQ
-	(envelope-from <stable+bounces-223850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:17:17 +0100
+	id AH4SONHvr2nkdAIAu9opvQ
+	(envelope-from <stable+bounces-223851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:17:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477DB2493D0
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5112493E9
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C5B730805FA
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:14:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13E07308D0D6
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAF544D022;
-	Tue, 10 Mar 2026 10:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA744B69C;
+	Tue, 10 Mar 2026 10:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="g2lNVnDZ";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="g2lNVnDZ"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DKl+8A9L"
 X-Original-To: stable@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013049.outbound.protection.outlook.com [40.107.162.49])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C1B43E48A
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 10:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.49
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773137653; cv=fail; b=ou08M2mi78OG7nHtPGHY8pbtrUH7+eHsdw3zc1XPcfojpeQ956ccHvIIMOzA+/wYt0HbG3OQ1PdNIXSJAlOEK/x//xIQ6x8KaNc0DX/FgTtN/MrG1mhZQ8oIQT3ea4MpvUZh0lG3ISRfO5M8KiEb68Hf5rQ4B2sK/Kljx4pJo48=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773137653; c=relaxed/simple;
-	bh=5BbxYhL+hyaVEHt3LjDHf+uw5hhnvsX60qsHzviz+wE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MKtJjQDtpIEK+Ub99pzfLzgjbJeb6pavsgC+kuebgGhp+kMmNfsRTgv692fNhyg8c9vnQC+6KP5FvttFYkzB8nokKfAAj5qQQ0ze6WiTvhgWzxmBu7AllVpJN10u87QRdwECsAMNBEvd/+i4yLuyG2OnqD6Ng/v5tgoXGoGcm3I=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=g2lNVnDZ; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=g2lNVnDZ; arc=fail smtp.client-ip=40.107.162.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=o6X6gSx7UnQxAiJ2lZeKNQVOeTylp3TJJQ84qzcLmV5z9Sr2t/VkXRTkG63fFmkY3azvQysSkLMW+zjwXxO9D6Xlz84b5SMNR6RagClVBqzwl6WVKYW8UCi0njoMmPaupWhW1xyVuhSAxzkptfaOBne26CAUFBecyyFppdpiGjWO8yyjQru3zq+eU39S+gXHznWPDMvQqMtfLfaD3m0PG74PZracjYgTNRPzIYTXudifEHjzPrH2K8ywmUo+kteKKdy25HbAGdv7/uQjZmw54BK+7Wca1JPlxn+oJ31iMCnPlIyYSMNg+tacuLAUz90wI8S/XsbNhkkM3GvLxRCDgA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=75fJgtMiuv71uu2+0KuMSE4uY3sN9niqpQ3au/YGYVY=;
- b=j3KNScnKBu+XWyYIdntvgpuQbReSXqOpSn/AT5buBgOFCUAUjg2VQp/Sq5iED+IGprNE8TDH9IoxYgQQ9Zz0qridewYdO17A4795nTtsv3N4HOJ1sK2WG1hl7fHTZnMvJfWMZFcgxQz4QSm/zBMzukSgeEKMRZwQiigdMZS5lfP0/dYt26vbmY+x3opE+C2xDkGoN5vCjkkz1hIr3Y7Lms0qH/0W95LwWfH9UYqme+Wmju6KS5Q2/PdzzS5u2CQdTxbcvY0B+EckmSQ5Dls8Fp2LlxIqBCaS44uE+7aF6uaD0pk2dNCgmCoF3c4ycaRozxnvhMPZLSZrLqeGhLANvw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=75fJgtMiuv71uu2+0KuMSE4uY3sN9niqpQ3au/YGYVY=;
- b=g2lNVnDZAKCjW52K4/PEImmmI8pQlXApL8/O8VmarpthyHHap5SIto3P9qXPYlKyWTbiU5AsLoDh/3xPuPBcBsMJVrLDo7eFsCS2DW57vSYp/0L9phtecjoQEKwZC7dblhNY9f2bj09gNdtXKpLsd0JlP+d2c+NcvF/2uy2uNcE=
-Received: from AS4PR10CA0020.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5d8::10)
- by AS8PR08MB5976.eurprd08.prod.outlook.com (2603:10a6:20b:299::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
- 2026 10:14:07 +0000
-Received: from AM4PEPF00027A69.eurprd04.prod.outlook.com
- (2603:10a6:20b:5d8:cafe::5) by AS4PR10CA0020.outlook.office365.com
- (2603:10a6:20b:5d8::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Tue,
- 10 Mar 2026 10:14:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM4PEPF00027A69.mail.protection.outlook.com (10.167.16.87) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.18
- via Frontend Transport; Tue, 10 Mar 2026 10:14:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eGntd2EAARV68YeG5z2WtcHwPPuN9UvhXsV6y1+a6zFQrWSY41x7a06L3HJiQ1OJW1xOpRgHmqtFuTxBWrTvOR9wTQev+q/1qYXpi+cQN3qguaIaGo5xLG+N8B9Lg89WYVT+kapF5UQiN398jB/q0Sh4g/+FGF9kzR+ESczsEjMPdAs01bs6QKlMMX4SWLia4aKeCQqYSjQyC8SdU4R0H0H8aMh7wFfV9acZmCQsykF+PJoLF5ekOM5rqYBgIkMV8COnaT5LQOl3Y7tg/8qlOowrFrm1xMetkEnM8JcNyLfw8/xLSUE4mmDXU1i3JLPBAMgHASjWq2AMCNe51UXL3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=75fJgtMiuv71uu2+0KuMSE4uY3sN9niqpQ3au/YGYVY=;
- b=Jf6jkVto6paR69vc06E1BKk9EayftaRsxQoahmvUcand+xWgolTq/rOdrrUS7LkrZTPKuWsrAPtFZXva92Majhe7OKYfukfeWUiwY0HBYlk8cyoD4wNmj0IzMmpKTL90ZUaUnaIzEQ5eJRJTSohYHtXtGpbo1D6g55lPaUJ0XB7sVzVH+eur7dUGPsLr0bivZrHoWXfzVsgdl/m+E0yrGdJoSWkJt5tnQG+1Mk8MWG5ec8tcfcCYF+1JOTpsfWfkXzDxsKQ8sPx0+V8MxMdHBoWASbhE6Rk9Fj0RXop+H8EcOo+hNxrYI5JEomfwafygwXwfCuSGT5QFQZutJkHvdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=75fJgtMiuv71uu2+0KuMSE4uY3sN9niqpQ3au/YGYVY=;
- b=g2lNVnDZAKCjW52K4/PEImmmI8pQlXApL8/O8VmarpthyHHap5SIto3P9qXPYlKyWTbiU5AsLoDh/3xPuPBcBsMJVrLDo7eFsCS2DW57vSYp/0L9phtecjoQEKwZC7dblhNY9f2bj09gNdtXKpLsd0JlP+d2c+NcvF/2uy2uNcE=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AM0PR08MB11754.eurprd08.prod.outlook.com (2603:10a6:20b:743::9)
- by VI0PR08MB10990.eurprd08.prod.outlook.com (2603:10a6:800:252::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
- 2026 10:13:04 +0000
-Received: from AM0PR08MB11754.eurprd08.prod.outlook.com
- ([fe80::3427:f97c:862d:1850]) by AM0PR08MB11754.eurprd08.prod.outlook.com
- ([fe80::3427:f97c:862d:1850%4]) with mapi id 15.20.9678.017; Tue, 10 Mar 2026
- 10:13:04 +0000
-Message-ID: <7a3f67c0-ab25-4b74-8002-0650cb3ffa0d@arm.com>
-Date: Tue, 10 Mar 2026 10:13:03 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: arm64: pkvm: Don't reprobe for ICH_VTR_EL2.TDS on
- CPU hotplug
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Joey Gouly <joey.gouly@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
- Vincent Donnefort <vdonnefort@google.com>, stable@vger.kernel.org
-References: <20260310085433.3936742-1-maz@kernel.org>
- <5a5afd0a-de2d-4697-a5ba-0e470ddb20f2@arm.com> <86cy1c6mve.wl-maz@kernel.org>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86cy1c6mve.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P265CA0012.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:339::16) To AM0PR08MB11754.eurprd08.prod.outlook.com
- (2603:10a6:20b:743::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECA243DA2B;
+	Tue, 10 Mar 2026 10:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773137674; cv=none; b=iGfEfv8zu7kW6uMsHHlFrCRTh9/HhT+9QZNcMi7MnT6jvH3kXJJBapFFB+cMsc3d8bN3QswToobxVUm013omHiYhrMUmn0LaLjEN8Q4xyaixhUWKo4wGW/MUZ0i0bRE2U9BWlC8Je5AV3zf9LjbcX/BSGEdriXgwaVb2E2SfQ5U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773137674; c=relaxed/simple;
+	bh=kTvCXDglSMMQvrZ5eq2/6jOsZYTsvbROi36DsOdkY+w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=raaMIK1jPswx9HnORLSCU6rW2Q34s6Hhho9jLLN6tirS/ZLcXLNz62cxg74KDQ725NC9eiFKpuPtFsf7YSrsv6GlQvAG6qaCekcQqGr2TBzDd4EMdSlNZUgQpFzyqpgsHnoS+ibxTWX2ua0Id8RRUB0DpH0qxEX7B1bgGKtktMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DKl+8A9L; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=2ku8YpBCRFl5lmli1qzDWV/ZYCmF2JRzCMFWRdL9mEo=; b=DKl+8A9LxG8O/Fvs33AEvVMga8
+	0+cJpsQpec2iZXwxjdmvV5zFY/2A+APzzMMcZNWf75R+wi//pU9iy6RijjGAnMtxrM3jLuTnqzuvc
+	2YcJiRtmfKlm/ErmBXsFzi0RdTzKKscelN9bceenTvnLUQB2e8lmLvIS5UvM2e49PAPLj5orD6J7B
+	ZfHE6mkhQ/Hca97a0SWJ5fE1VKg9YhE0JXo7Rmt3ApHAmqVaDqeC/+s2tTZcomJwT65s6GOMGVOvo
+	9UgIdpyzxFqQi2HPV/LwAUuvyo0N8VkgN+fuDa7Y/Xw/OjNDSBjftd6eLuVTV+zVKYe/4t8dxW6Ug
+	m5U3Duvw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vzu6J-002vDH-Ml; Tue, 10 Mar 2026 10:14:08 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 10 Mar 2026 03:13:16 -0700
+Subject: [PATCH v2] perf/x86: Move event pointer setup earlier in
+ x86_pmu_enable()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AM0PR08MB11754:EE_|VI0PR08MB10990:EE_|AM4PEPF00027A69:EE_|AS8PR08MB5976:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a88171d-2137-4524-b46e-08de7e8dc355
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info-Original:
- 7i76hJnm5ZdVdM7/1mXsKWS3XwnZke9ZB+IxWWQUHYUhUpQt8XlNNz9eb7DTQnIQQ2T0mghMh6ZetPyLpJgWH30luQNv76aAfxQoaYekIT3tYbI6yC4y3nPKASi3EyaDTj5k0l+UwmXxzno8brPoVd5YaiRKpTbOb9oOsfdyEx5gBiPpCTfSrfOdWARV+6kNCsYS8+39SuopzhsSZQkrp8iKO5xVcbd/QLDTGSeQtgOXwbw9ZZO6Xhc0OtCvqaG7TX7BfOI//eNY2BQtL9PUy1EZcgERQEo5PYzsOuzY8wEcXvdPvZo9XJLg/hwYO8YwiA3pu3zDyCwU9uqoX7tqYort6oLj74WXKbSz6Wem1Qa/+eUOEN4XkPsSy5OVWfVPDbt40Yg1Vl5LCKmOAwvZzJOnelyoBo8FgmgGd1PsSNaWrxfsW2HNg9SssUdNlw0+rkLgExzz6ejG9IDfXQChIarn3ghE4mKzEL3NtLv5PxLHI5iUXjAP3/vxWrvUkuB3YZYFyxd8vqIN83sjRRecjKqs6EHPnj69DbdcH7h73WHmH8aEJ8Iga3A7254Z8cdYtRgJuGw2BYUtQnd5lLvNQkfnXi30z40Xo4fSEw97OX2FgP7/m8VCw9lQIEX0OBDwrrr1+WdPmheCnuJQ8/5CSddF2vAcCfMV2c7bzEvn1yjsUiRyqj/G/NpEIJjRXNHhtOJuKyzSfX6c5nVaYOpcCTqkWX5TVC2aRq0PTHgpPjo=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11754.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- FPQKgXPy4SlGneXnhDJ2CzNlWWobvBuSnf9KfU44/PDP57xE5efyvyYIMqtAhafbcmb8LntXBjAVxyl+JFtx0dIoCsuHbwnGJWFsvZOQUEAD+0AcgkL41B60q1cLwS3w/unWkm9caclZMyaX9m//zzE4m8VH3HyBeISN68DRt2ZQX5hm3G2b+cBYVDbsveogL792+JrJaSBPlE8tpCx/zfoo1IQLnU3G2xq7Z1T5kgqKPbdJ9I+KCPCC7viwHm+yLpKijT6RRKcWiQYpPB/VLsRfgd/d5MV2eRmRIndFR/px/4YTTcTkhSLTMEU6d/pgzXrW9jddpUbSeUhdVQeS7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10990
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM4PEPF00027A69.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	83bc4056-0fb5-4ebf-8ae3-08de7e8d9def
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|82310400026|376014|7416014|36860700016|14060799003|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	eVoE8okahumdgyfGG8/+zh6GEsP+hbfCkqpG4AgeDXnI/xa+QXQysYFP4rs+jSQ58G7tm4lMH52ruxu7UQeK5Kj7360ibW36wmois+fPgAS52mFTG/y/mTUgpZDLjY1MC8EY3homA1n0UAn1GQyTXQVEJmuUPX7wFzmBVYb0TH2DTHJFo99c3vJ0Q6YB+Q7mIAV49h7wRN8vHolw6m1Nff0mNcEAKUL//mvh6bAxjKHAo+n6JxC/VU4P/QeZfSOHmJ+dFSvZOpf6w+OM/A4AB2NFZ6tKROlIbDsPUbpIbLvc8sx8AWIybmDSmRjtEdbFdsScVVgfGqiG9DoozRio8jImpH5xsFIlZpE70Gx3siVhvzoyIy/2HGn1oysvWUIOa5XUVdxGnpcVIc8oNs3LCAdaMVqlw8U7kRzZcdY5mNToCLZDkjm5AMHs3Fi6cqJPATx+WUB93A//7Jeq1zimKpHgG+a3ky86Yc8CdGtCvqLY176BlPseZZoMmmm4O0wKSmmAoDsK7vIO5geZ8194oivykcba9cGYEbw5dpJNpeqm1K514/4judUxx9mJw8rrDXkOzSO/uKeKcHHdhQkzs5NP6d2/PvlBACDsOwiIRJj5R259pXIJbyktYy7W/OaJZyqkis6BfayVBS7t0Zk7sKtlDEyqmDiRHvSIMwt2GLZBAgwQZ1RxqWnMrGQYmuC6eNDosKjoIyErF/RakQDU5HT4qnHO9Y/meOf33gM7/nVS8MPdArIz9XHPiRux6jtEtPtXRPu+/4lIyGMwLdP7Kg==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(82310400026)(376014)(7416014)(36860700016)(14060799003)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	89phEBJLaQHOCMn7c3UZw0FFR6XK3NS1ZeBS5p7ZJ5NJGZAjHP7gsOZsBLoi/w+1S0gRM94htMOJWtaop4J8yHs/pUmY6HE2jK21n8jvtNSVzSCm7mxlwTgQdATpooBKuu6jNmFuzRHikN9SlF3TDVlBMXL5hkiQkBIQIWd9uZrDeN3ogDBqExdN3Zu5tQfFGbiL9mReEHDOQibnsQVZfoVXAJqmM+JITPWRAWPpXa9BqVjAcVLd88bVUdZr0CkMZILZACY0SRL/o/1wuuhBj/TnPl2fxr4VTybtnFDRCkdFWT9nXol+ACTar+HLjNksUb+s2KNLaRlxdPUwBeH4VSeCRLkrN0CF/xsuNyu8ji/61P1+x/M19T98JeT0Tka5GkHhY4UJb5Njhbd01jtV/xgIvIBnrlI0G4kVy6+cUbbp0r2Ssg8XCGF1tE0GVofI
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 10:14:06.4877
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a88171d-2137-4524-b46e-08de7e8dc355
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00027A69.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB5976
-X-Rspamd-Queue-Id: 477DB2493D0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260310-perf-v2-1-4a3156fce43c@debian.org>
+X-B4-Tracking: v=1; b=H4sIALvur2kC/12NQQ6DIBBFr0JmLQ0DqVVWvUfjAmXQ6UIMWNPGe
+ PcGu+vyJ++/t0OmxJTBih0SbZw5zmCFrgQMk5tHkuzBCtBK18qoVi6UggzeaO+UwZtroBKwJAr
+ 8PjWP7rfzq3/SsJZvISbOa0yfs7Nh4f6UG0qUtcIQ+qvBpjV3Tz27+RLTCN1xHF/jPWCSqwAAA
+ A==
+X-Change-ID: 20260309-perf-fd32da0317a8
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4412; i=leitao@debian.org;
+ h=from:subject:message-id; bh=kTvCXDglSMMQvrZ5eq2/6jOsZYTsvbROi36DsOdkY+w=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpr+7qKzw/BrvD33/WOk0N8nLCfWzEDfTOIrflC
+ Vk12NMTFj6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa/u6gAKCRA1o5Of/Hh3
+ baDsD/9J5ucGltT5P4ckOvQjyUztdnkI5TLnC/IbwHqM/6F21UMv6nRU7hyOdciptIgaF8PqKvk
+ KGRk5RCquq01gBqgufJFkf7De6ArQPbDC3xaty0CjXTFbTEiuskpNxXqNdXjXFTx6Z05nyveL3V
+ PYF5hRgNVH8Qj5tKz3cfFpIb/DJWtfuudofFCnG+vLJJlYaHyhSYgpPhKvFMW2YViiiunGlfeq2
+ M8DZaNVyVjOARddNX6IhWZWdHPw0S8fUqF/WagyxMv9RRyz32KY6motyByiJtQ1OZe0pQWUo0aO
+ y14z2kmcg4OjbjaCrEBejfffhCK4oLJTMbAQfh5SSqzXB0dHE/GspI19cZE5ai2txtsB3sYRfub
+ Gcz5QYE8AIjUxDGoZnKonzw39FH81sV/dnY+xaYUp6OEat9rJcoy34RcYcoh9nDUO5JG3KgDQkX
+ 6Zt8QTqsPA4i+X90xIo1Lup5qx/CbWgquVwHNMkvkeVrZz+4IVV1yJSNWaLrkfMSD+sx50uedTZ
+ UmXNUkN8GIRtuY3V6ClUQeMh20fGrcr47JIriaCpX150NlKMalaOOdh8Qc7O0a9g80c/aVp8/sv
+ uNf50jL0/cX3dq/lw/JLrI+BYA7Ajon/iSa5mMDOu5U2W0JLF4jRy45y4FgjE6QKnwV/nNo6+LY
+ GG6GlCpIm7YbrNw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 5A5112493E9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=3];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=selector1];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223850-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:dkim,arm.com:email,arm.com:mid];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[arm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[suzuki.poulose@arm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[debian.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223851-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[debian.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 10/03/2026 09:43, Marc Zyngier wrote:
-> On Tue, 10 Mar 2026 09:17:43 +0000,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->> On 10/03/2026 08:54, Marc Zyngier wrote:
->>> Hotplugging a CPU off and back on fails with pKVM, as we try to
->>> probe for ICH_VTR_EL2.TDS. In a non-VHE setup, this is achieved
->>> by using an EL2 stub helper. However, the stubs are out of reach
->>> once pKVM has deprivileged the kernel. The CPU never boots.
->>>
->>> Since pKVM doesn't allow late onlining of CPUs, we can detect
->>> that protected mode is enforced early on, and return the current
->>> state of the capability.
->>>
->>> Fixes: 2a28810cbb8b2 ("KVM: arm64: GICv3: Detect and work around the lack of ICV_DIR_EL1 trapping")
->>> Reported-by: Vincent Donnefort <vdonnefort@google.com>
->>> Signed-off-by: Marc Zyngier <maz@kernel.org>
->>> Cc: stable@vger.kernel.org
->>> ---
->>>    arch/arm64/kernel/cpufeature.c | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
->>> index c31f8e17732a3..947ff71b3b66b 100644
->>> --- a/arch/arm64/kernel/cpufeature.c
->>> +++ b/arch/arm64/kernel/cpufeature.c
->>> @@ -2345,6 +2345,9 @@ static bool can_trap_icv_dir_el1(const struct arm64_cpu_capabilities *entry,
->>>    	    !is_midr_in_range_list(has_vgic_v3))
->>>    		return false;
->>>    +	if (system_capabilities_finalized() &&
->>> is_protected_kvm_enabled())
->>> +		return cpus_have_final_cap(ARM64_HAS_ICH_HCR_EL2_TDIR);
->>
->> Is it a worth adding a comment here ? Otherwise this looks very odd -
->> Returning the system state of a capability for a "hotplugged" CPU.
-> 
-> How about this?
-> 
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 947ff71b3b66b..32c2dbcc0c641 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -2345,6 +2345,12 @@ static bool can_trap_icv_dir_el1(const struct arm64_cpu_capabilities *entry,
->   	    !is_midr_in_range_list(has_vgic_v3))
->   		return false;
->   
-> +	/*
-> +	 * pKVM prevents late onlining of CPUs. This means that whatever
-> +	 * state the capability is in after deprivilege cannot be affected
-> +	 * by a new CPU booting -- this is garanteed to be a CPU we have
-> +	 * already seen, and the cap is therefore unchanged.
-> +	 */
+A production AMD EPYC system crashed with a NULL pointer dereference
+in the PMU NMI handler:
 
-Thanks, that looks good.
+  BUG: kernel NULL pointer dereference, address: 0000000000000198
+  RIP: x86_perf_event_update+0xc/0xa0
+  Call Trace:
+   <NMI>
+   amd_pmu_v2_handle_irq+0x1a6/0x390
+   perf_event_nmi_handler+0x24/0x40
 
+The faulting instruction is `cmpq $0x0, 0x198(%rdi)` with RDI=0,
+corresponding to the `if (unlikely(!hwc->event_base))` check in
+x86_perf_event_update() where hwc = &event->hw and event is NULL.
 
+drgn inspection of the vmcore on CPU 106 showed a mismatch between
+cpuc->active_mask and cpuc->events[]:
 
->   	if (system_capabilities_finalized() && is_protected_kvm_enabled())
->   		return cpus_have_final_cap(ARM64_HAS_ICH_HCR_EL2_TDIR);
-> 
->>
->> Otherwise
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+  active_mask: 0x1e (bits 1, 2, 3, 4)
+  events[1]:   0xff1100136cbd4f38  (valid)
+  events[2]:   0x0                 (NULL, but active_mask bit 2 set)
+  events[3]:   0xff1100076fd2cf38  (valid)
+  events[4]:   0xff1100079e990a90  (valid)
 
-Cheers
-Suzuki
+The event that should occupy events[2] was found in event_list[2]
+with hw.idx=2 and hw.state=0x0, confirming x86_pmu_start() had run
+(which clears hw.state and sets active_mask) but events[2] was
+never populated.
 
+Another event (event_list[0]) had hw.state=0x7 (STOPPED|UPTODATE|ARCH),
+showing it was stopped when the PMU rescheduled events, confirming the
+throttle-then-reschedule sequence occurred.
 
+The root cause is commit 7e772a93eb61 ("perf/x86: Fix NULL event access
+and potential PEBS record loss") which moved the cpuc->events[idx]
+assignment out of x86_pmu_start() and into step 2 of x86_pmu_enable(),
+after the PERF_HES_ARCH check. This broke any path that calls
+pmu->start() without going through x86_pmu_enable() -- specifically
+the unthrottle path:
 
-> 
-> Thanks!
-> 
-> 	M.
-> 
+  perf_adjust_freq_unthr_events()
+    -> perf_event_unthrottle_group()
+      -> perf_event_unthrottle()
+        -> event->pmu->start(event, 0)
+          -> x86_pmu_start()     // sets active_mask but not events[]
+
+The race sequence is:
+
+  1. A group of perf events overflows, triggering group throttle via
+     perf_event_throttle_group(). All events are stopped: active_mask
+     bits cleared, events[] preserved (x86_pmu_stop no longer clears
+     events[] after commit 7e772a93eb61).
+
+  2. While still throttled (PERF_HES_STOPPED), x86_pmu_enable() runs
+     due to other scheduling activity. Stopped events that need to
+     move counters get PERF_HES_ARCH set and events[old_idx] cleared.
+     In step 2 of x86_pmu_enable(), PERF_HES_ARCH causes these events
+     to be skipped -- events[new_idx] is never set.
+
+  3. The timer tick unthrottles the group via pmu->start(). Since
+     commit 7e772a93eb61 removed the events[] assignment from
+     x86_pmu_start(), active_mask[new_idx] is set but events[new_idx]
+     remains NULL.
+
+  4. A PMC overflow NMI fires. The handler iterates active counters,
+     finds active_mask[2] set, reads events[2] which is NULL, and
+     crashes dereferencing it.
+
+Move the cpuc->events[hwc->idx] assignment in x86_pmu_enable() to
+before the PERF_HES_ARCH check, so that events[] is populated even
+for events that are not immediately started. This ensures the
+unthrottle path via pmu->start() always finds a valid event pointer.
+
+Fixes: 7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: stable@vger.kernel.org
+---
+Changes in v2:
+- Move event pointer setup earlier in x86_pmu_enable() (peterz)
+- Rewrote the patch title, given the new approach
+- Link to v1: https://patch.msgid.link/20260309-perf-v1-1-601ffb531893@debian.org
+---
+ arch/x86/events/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 03ce1bc7ef2ea..54b4c315d927f 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1372,6 +1372,8 @@ static void x86_pmu_enable(struct pmu *pmu)
+ 			else if (i < n_running)
+ 				continue;
+ 
++			cpuc->events[hwc->idx] = event;
++
+ 			if (hwc->state & PERF_HES_ARCH)
+ 				continue;
+ 
+@@ -1379,7 +1381,6 @@ static void x86_pmu_enable(struct pmu *pmu)
+ 			 * if cpuc->enabled = 0, then no wrmsr as
+ 			 * per x86_pmu_enable_event()
+ 			 */
+-			cpuc->events[hwc->idx] = event;
+ 			x86_pmu_start(event, PERF_EF_RELOAD);
+ 		}
+ 		cpuc->n_added = 0;
+
+---
+base-commit: 0bcac7b11262557c990da1ac564d45777eb6b005
+change-id: 20260309-perf-fd32da0317a8
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
