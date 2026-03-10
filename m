@@ -1,153 +1,194 @@
-Return-Path: <stable+bounces-224177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA0SKbT9r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-224177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:17:08 +0100
+	id kIUADRL/r2mQeQIAu9opvQ
+	(envelope-from <stable+bounces-224180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:22:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF8624A4AC
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:17:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307AF24A88D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5B76D30039A8
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:17:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33BF1302B45E
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF8636896F;
-	Tue, 10 Mar 2026 11:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64F5386C02;
+	Tue, 10 Mar 2026 11:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="PvRdeXcM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxjpZg6B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp120.iad3b.emailsrvr.com (smtp120.iad3b.emailsrvr.com [146.20.161.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD73372B31
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 11:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682A73806B8;
+	Tue, 10 Mar 2026 11:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141420; cv=none; b=HNAlEFWVXR8sbTaM7jhFroiLjFveEMvb/QxKoUsuhyBzA6gftEuE2YVpfclYqU/hWSeSFnRGo/AZB+AJ72uzAGAeeX5GAm1CITADI+406188lVl3U0ZCygMicpprRgwsrf6fPruNGtVLORxqBgJdelOrEr6TcwNi/cyaHJRNn4k=
+	t=1773141636; cv=none; b=CmlR7uv5ExruddQkw6OOGI+kMAivEiC+qsqNX/xjjgdQu59RqGbSkWWPM0z0pXRyDQ4sjdRMqMM+HfD5VgdEp+7SmYiS4cqZJaqLetTe1Puyo6Daj0dDAFUlkJ+3D+X6VREHXvhqPu9hAotr60hxoU1g27FOPf789u6QOZvTphk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141420; c=relaxed/simple;
-	bh=aE92pupaNgfpAcjrWGvfnpRHer38DfIUodQwoHnlewg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W7CrTVXJhGTvu0LdmKGgfTpVViUM24+qn01jOwGV4QotlGbe6+pC7mBIdVlZAwXQO44713R+nvTvohnEYrmJBgRPcZi1TB/qGkCXs52CL9shflHeX0liT0jb7uwwAkfMwBlhRjK7054xSZZCHKh1K3/237F1fLQeaw1k2Ir7PuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=PvRdeXcM; arc=none smtp.client-ip=146.20.161.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1773141082;
-	bh=aE92pupaNgfpAcjrWGvfnpRHer38DfIUodQwoHnlewg=;
-	h=From:To:Subject:Date:From;
-	b=PvRdeXcMzfhRlvemu5mdRQ1o2KCPTih0MqycnkZ7ZWQQpm1lORX4KnXQxO1a5LUQw
-	 P9EaMEACQnGTCOcAKnFRTVmrFTi1qPGd3PhYx1hoBJKEq3L5BfUu+qr87sQJUWoZhN
-	 ode+1opA9CwUrRkldJ/mdnhdTpPMojyYUmZ3on0o=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp24.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 35607401B6;
-	Tue, 10 Mar 2026 07:11:21 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1773141636; c=relaxed/simple;
+	bh=7llWn5eM3DAtNUSSYnqzzAhrVtUca7G0zQBLrLb69ws=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tK5J5hBq5/YeRoKWLSmOg35p3C1AO8ZR/WcxTZdcQ+rH/+I+zcf+907Ro1HE0eauv4x5iWvuoBaIrtvIF7PEt8lEJt+/E0L5nfWMsowxu2bcfqGovf/RKoaUdhgmyeBGoJQ58Dqm9OFDXU8EOxW2g0daB82pVhRHR2w8dl5eqYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxjpZg6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E7CC2BCAF;
+	Tue, 10 Mar 2026 11:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773141636;
+	bh=7llWn5eM3DAtNUSSYnqzzAhrVtUca7G0zQBLrLb69ws=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AxjpZg6BqSSbQL3NIep2IeXtLC63o7b6eRHzNV0zqxyIH+SFegY2TlrZvmwqlZ/s4
+	 ZdUZzGWUPm6bQn1eUieY7T+s+sg4jDvuNw+t54FodDSlzFAPrB4IsxvxSydqrG6YZG
+	 Fj3rwpjh41xpkOEntLkWxYOZLC5mfg762ci5mwFedp7NKTzXjexaA2ISowYTE/fgz0
+	 LlZxtaSHP3PmFbkFJzGD9OM6pOjm+vMYBFsJMttg5MOPAF8ujvNhQQ4nZtLW5pUZ5l
+	 hNn9QnWLvbBhc2ncfnHuP5j/bAW0QChgyypze848sDsUMfxic6I6e+LBXt8TSwf4Cu
+	 g2n1wi9FuaRMA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH] comedi: runflags cannot determine whether to reclaim chanlist
-Date: Tue, 10 Mar 2026 11:11:04 +0000
-Message-ID: <20260310111104.70959-1-abbotti@mev.co.uk>
+Cc: Haocheng Yu <yuhaocheng035@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.18 001/314] perf/core: Fix refcount bug and potential UAF in perf_mmap
+Date: Tue, 10 Mar 2026 07:14:20 -0400
+Message-ID: <3bea029b3ba1ccefc533605e9d145fcd52d11615.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
+References: <cover.1773141554.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Classification-ID: 8eb0b720-eb0d-425d-b263-4f6452de4f67-1-1
-X-Rspamd-Queue-Id: 4AF8624A4AC
+X-Rspamd-Queue-Id: 307AF24A88D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mev.co.uk,none];
-	R_DKIM_ALLOW(-0.20)[mev.co.uk:s=20221208-6x11dpa4];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,mev.co.uk,visionengravers.com,qq.com,syzkaller.appspotmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,infradead.org,linuxfoundation.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-224180-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224177-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abbotti@mev.co.uk,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mev.co.uk:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,f238baf6ded841b5a82e];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,msgid.link:url,infradead.org:email,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Haocheng Yu <yuhaocheng035@gmail.com>
 
-syzbot reported a memory leak [1], because commit 4e1da516debb ("comedi:
-Add reference counting for Comedi command handling") did not consider
-the exceptional exit case in do_cmd_ioctl() where runflags is not set.
-This caused chanlist not to be properly freed by do_become_nonbusy(),
-as it only frees chanlist when runflags is correctly set.
+commit 77de62ad3de3967818c3dbe656b7336ebee461d2 upstream.
 
-Added a check in do_become_nonbusy() for the case where runflags is not
-set, to properly free the chanlist memory.
+Syzkaller reported a refcount_t: addition on 0; use-after-free warning
+in perf_mmap.
 
-[1]
-BUG: memory leak
-  backtrace (crc 844a0efa):
-    __comedi_get_user_chanlist drivers/comedi/comedi_fops.c:1815 [inline]
-    do_cmd_ioctl.part.0+0x112/0x350 drivers/comedi/comedi_fops.c:1890
-    do_cmd_ioctl drivers/comedi/comedi_fops.c:1858 [inline]
+The issue is caused by a race condition between a failing mmap() setup
+and a concurrent mmap() on a dependent event (e.g., using output
+redirection).
 
-Fixes: 4e1da516debb ("comedi: Add reference counting for Comedi command handling")
-Reported-by: syzbot+f238baf6ded841b5a82e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f238baf6ded841b5a82e
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Cc: <stable@vger.kernel.org> # 6.19+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+In perf_mmap(), the ring_buffer (rb) is allocated and assigned to
+event->rb with the mmap_mutex held. The mutex is then released to
+perform map_range().
+
+If map_range() fails, perf_mmap_close() is called to clean up.
+However, since the mutex was dropped, another thread attaching to
+this event (via inherited events or output redirection) can acquire
+the mutex, observe the valid event->rb pointer, and attempt to
+increment its reference count. If the cleanup path has already
+dropped the reference count to zero, this results in a
+use-after-free or refcount saturation warning.
+
+Fix this by extending the scope of mmap_mutex to cover the
+map_range() call. This ensures that the ring buffer initialization
+and mapping (or cleanup on failure) happens atomically effectively,
+preventing other threads from accessing a half-initialized or
+dying ring buffer.
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202602020208.m7KIjdzW-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Haocheng Yu <yuhaocheng035@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260202162057.7237-1-yuhaocheng035@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
-index b91e0b5ac394..c09bbe04be6c 100644
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -793,13 +793,15 @@ static void do_become_nonbusy(struct comedi_device *dev,
- 	__comedi_clear_subdevice_runflags(s, COMEDI_SRF_RUNNING |
- 					     COMEDI_SRF_BUSY);
- 	spin_unlock_irqrestore(&s->spin_lock, flags);
--	if (comedi_is_runflags_busy(runflags)) {
-+	if (async) {
- 		/*
- 		 * "Run active" counter was set to 1 when setting up the
- 		 * command.  Decrement it and wait for it to become 0.
- 		 */
--		comedi_put_is_subdevice_running(s);
--		wait_for_completion(&async->run_complete);
-+		if (comedi_is_runflags_busy(runflags)) {
-+			comedi_put_is_subdevice_running(s);
-+			wait_for_completion(&async->run_complete);
-+		}
- 		comedi_buf_reset(s);
- 		async->inttrig = NULL;
- 		kfree(async->cmd.chanlist);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c34b927e5ece3..6889a6bd8a395 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7187,28 +7187,28 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			ret = perf_mmap_aux(vma, event, nr_pages);
+ 		if (ret)
+ 			return ret;
+-	}
+ 
+-	/*
+-	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+-	 * vma.
+-	 */
+-	vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
+-	vma->vm_ops = &perf_mmap_vmops;
++		/*
++		 * Since pinned accounting is per vm we cannot allow fork() to copy our
++		 * vma.
++		 */
++		vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
++		vma->vm_ops = &perf_mmap_vmops;
+ 
+-	mapped = get_mapped(event, event_mapped);
+-	if (mapped)
+-		mapped(event, vma->vm_mm);
++		mapped = get_mapped(event, event_mapped);
++		if (mapped)
++			mapped(event, vma->vm_mm);
+ 
+-	/*
+-	 * Try to map it into the page table. On fail, invoke
+-	 * perf_mmap_close() to undo the above, as the callsite expects
+-	 * full cleanup in this case and therefore does not invoke
+-	 * vmops::close().
+-	 */
+-	ret = map_range(event->rb, vma);
+-	if (ret)
+-		perf_mmap_close(vma);
++		/*
++		 * Try to map it into the page table. On fail, invoke
++		 * perf_mmap_close() to undo the above, as the callsite expects
++		 * full cleanup in this case and therefore does not invoke
++		 * vmops::close().
++		 */
++		ret = map_range(event->rb, vma);
++		if (ret)
++			perf_mmap_close(vma);
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
