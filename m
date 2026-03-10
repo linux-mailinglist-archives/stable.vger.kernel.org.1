@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-224142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFwAC+r+r2mQeQIAu9opvQ
-	(envelope-from <stable+bounces-224142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:22:18 +0100
+	id 0CcSCij/r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A676024A836
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:22:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FC24A8D5
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00645308C461
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:15:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C9AE324ADF2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293A13859EA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4CF3876D0;
 	Tue, 10 Mar 2026 11:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5sEY9R0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnlKNuTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2DF38A720;
-	Tue, 10 Mar 2026 11:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30072388364;
+	Tue, 10 Mar 2026 11:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141275; cv=none; b=OCAYQFs1/IiLndTmFwp5+oJ02Y3NY3HQxjtV+sRAhAbt/naeqo/wIYZShpG7axipHKixYN1Pr4ydKq5hmFcOH/UCt8mhSJL/52B3DO3qJstVhN8LhTRiEByepUgpyTdE5uNm5ZjUeALaMDNZmVYpGMLKrvNYjPb95dH1GFSjFvA=
+	t=1773141276; cv=none; b=tPcmdsLf6nWmeoJ3SY8+ldcsis03bk6rnXss5GRcWmsj/iEzJLTZhGXG5QtsiYnCR1wVr2kdKc4rDmwSWDoW62yInSZAzoU6ahOZgT6lbJ0ig2OgQW1XBnLC+DIW61EFQyv/9VwCUy8UIVc2KogoyHOutYU8F/bA0hvOSZlwGgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141275; c=relaxed/simple;
-	bh=5S23d50eJOj1XYh8oCrO41AdzRn+vzTqr6a6Q4bcAh4=;
+	s=arc-20240116; t=1773141276; c=relaxed/simple;
+	bh=pScjQtZGnL4N4URp9eQ6R1L1dFyMN50g0++HvtUueQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJA0qYzoABT6dwHacwi00QipNorCgpd2Px3lW8Srg5j8q/2m83h1+4XTbaN4Fs+vldtDdKePVLLS1XIMpQL7kiIqvYKSZ7WuRHaCHwxY7KtzxbM9wK3oX5DLwKtaVQUI89BvMXsVOxLXzZk4rXdeF87pH2I0PFxe54/sWBz5Oro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5sEY9R0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768CBC19423;
-	Tue, 10 Mar 2026 11:14:34 +0000 (UTC)
+	 MIME-Version; b=Q0jjYOcL0Gk9hkpKvNEPvKoFV+jB/ofWmaTPUxEIhz1MWEvc7styL+Fn0VxoCuj/l/2Tro75o+ZXqgSZxqtJlJUW8UPEi99zjpM/yAPRC2gIR+wTgpWIfD+/vhRk1JQtHYLWtrhRlga4qx4afxiieNxxS2tdn9Baew77Iq7TYbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnlKNuTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBA2C2BC9E;
+	Tue, 10 Mar 2026 11:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773141275;
-	bh=5S23d50eJOj1XYh8oCrO41AdzRn+vzTqr6a6Q4bcAh4=;
+	bh=pScjQtZGnL4N4URp9eQ6R1L1dFyMN50g0++HvtUueQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5sEY9R0QEqvGeqg5adKy2hUd7aHYJT5/UFY0URgK+jAJz5rjaW21WynK6cAs4UyR
-	 t7ISeJPjtlfrnIaepzooYqqdqHsrsoD3323gLct4RDPfXE1y2MXs1nEQojwDoN/7Fc
-	 L8/qHUWq5CeaiXqxBlH9v5a7kBCPZidDp71H9mPgEEXE3jIuXxoV/pgoL9epc8idQd
-	 n+LXm2fs7ljWPA3Oe1PNKxBYZY9FOsdRPIlHnBnElOLQi+NkcuyXMpl2r/uNF1ils3
-	 zTU1tcSudw15JS40aPhT6YRuVf3cPMVkN7wX+yOktrqpm04geBzqglTEFUmXtdu8Oh
-	 Y0lajHoJxNSyg==
+	b=mnlKNuTMFL9w3KsJzELo2yy5KAISGL1+qeFaEjY45dyiMgRZb5bS2xzw5DQXCkwX8
+	 EO9GJ86DYxPmvlREN83GSQqHluTAMZ4raJ9Ozi07pl9FMT6N80TfWZq6i6Wyw+9BHg
+	 mZPbIoZIDqKzxiG3Te8WSicpvTzN/a4Pjph7M1JngN+1j2OGr2t3bsUvrUfSOGhBoR
+	 neQd/wji/Mr//ZyHlrXYRjv6m/x4dTvRi5Cqwf4qW6Xxs3ms3TixRP12F6vU71ZPsa
+	 498MFGuBEXn6hqsr9r7AQHzvGjoYo7KkrWtYtiKC+GERLuKRdwWXimJG2bhzOKAZdx
+	 89Vrh7Mt/iNIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Joe Damato <joe@dama.to>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 277/311] net: devmem: use READ_ONCE/WRITE_ONCE on binding->dev
-Date: Tue, 10 Mar 2026 07:05:24 -0400
-Message-ID: <034acd14605d676d84b20cb807a22cd3efa8171e.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 278/311] nfc: nci: free skb on nci_transceive early error paths
+Date: Tue, 10 Mar 2026 07:05:25 -0400
+Message-ID: <fe26683b6eef0ae265819d3db677dc6527469ccd.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -65,25 +65,25 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A676024A836
+X-Rspamd-Queue-Id: 7E3FC24A8D5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224142-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224143-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,76 +93,74 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,meta.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dama.to:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 40bf00ec2ee271df5ba67593991760adf8b5d0ed ]
+[ Upstream commit 7bd4b0c4779f978a6528c9b7937d2ca18e936e2c ]
 
-binding->dev is protected on the write-side in
-mp_dmabuf_devmem_uninstall() against concurrent writes, but due to the
-concurrent bare reads in net_devmem_get_binding() and
-validate_xmit_unreadable_skb() it should be wrapped in a
-READ_ONCE/WRITE_ONCE pair to make sure no compiler optimizations play
-with the underlying register in unforeseen ways.
+nci_transceive() takes ownership of the skb passed by the caller,
+but the -EPROTO, -EINVAL, and -EBUSY error paths return without
+freeing it.
 
-Doesn't present a critical bug because the known compiler optimizations
-don't result in bad behavior. There is no tearing on u64, and load
-omissions/invented loads would only break if additional binding->dev
-references were inlined together (they aren't right now).
+Due to issues clearing NCI_DATA_EXCHANGE fixed by subsequent changes
+the nci/nci_dev selftest hits the error path occasionally in NIPA,
+and kmemleak detects leaks:
 
-This just more strictly follows the linux memory model (i.e.,
-"Lock-Protected Writes With Lockless Reads" in
-tools/memory-model/Documentation/access-marking.txt).
+unreferenced object 0xff11000015ce6a40 (size 640):
+  comm "nci_dev", pid 3954, jiffies 4295441246
+  hex dump (first 32 bytes):
+    6b 6b 6b 6b 00 a4 00 0c 02 e1 03 6b 6b 6b 6b 6b  kkkk.......kkkkk
+    6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+  backtrace (crc 7c40cc2a):
+    kmem_cache_alloc_node_noprof+0x492/0x630
+    __alloc_skb+0x11e/0x5f0
+    alloc_skb_with_frags+0xc6/0x8f0
+    sock_alloc_send_pskb+0x326/0x3f0
+    nfc_alloc_send_skb+0x94/0x1d0
+    rawsock_sendmsg+0x162/0x4c0
+    do_syscall_64+0x117/0xfc0
 
-Fixes: bd61848900bf ("net: devmem: Implement TX path")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Link: https://patch.msgid.link/20260302-devmem-membar-fix-v2-1-5b33c9cbc28b@meta.com
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-2-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c    | 2 +-
- net/core/devmem.c | 6 ++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/nfc/nci/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 062415cc3e5a4..d45be2357a5ce 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3983,7 +3983,7 @@ static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
- 	if (shinfo->nr_frags > 0) {
- 		niov = netmem_to_net_iov(skb_frag_netmem(&shinfo->frags[0]));
- 		if (net_is_devmem_iov(niov) &&
--		    net_devmem_iov_binding(niov)->dev != dev)
-+		    READ_ONCE(net_devmem_iov_binding(niov)->dev) != dev)
- 			goto out_free;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 46681bdaeabff..f6dc0a94b8d54 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1035,18 +1035,23 @@ static int nci_transceive(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 	struct nci_conn_info *conn_info;
+ 
+ 	conn_info = ndev->rf_conn_info;
+-	if (!conn_info)
++	if (!conn_info) {
++		kfree_skb(skb);
+ 		return -EPROTO;
++	}
+ 
+ 	pr_debug("target_idx %d, len %d\n", target->idx, skb->len);
+ 
+ 	if (!ndev->target_active_prot) {
+ 		pr_err("unable to exchange data, no active target\n");
++		kfree_skb(skb);
+ 		return -EINVAL;
  	}
  
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index ec4217d6c0b4f..e9c5d75091800 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -387,7 +387,8 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
- 	 * net_device.
- 	 */
- 	dst_dev = dst_dev_rcu(dst);
--	if (unlikely(!dst_dev) || unlikely(dst_dev != binding->dev)) {
-+	if (unlikely(!dst_dev) ||
-+	    unlikely(dst_dev != READ_ONCE(binding->dev))) {
- 		err = -ENODEV;
- 		goto out_unlock;
- 	}
-@@ -504,7 +505,8 @@ static void mp_dmabuf_devmem_uninstall(void *mp_priv,
- 			xa_erase(&binding->bound_rxqs, xa_idx);
- 			if (xa_empty(&binding->bound_rxqs)) {
- 				mutex_lock(&binding->lock);
--				binding->dev = NULL;
-+				ASSERT_EXCLUSIVE_WRITER(binding->dev);
-+				WRITE_ONCE(binding->dev, NULL);
- 				mutex_unlock(&binding->lock);
- 			}
- 			break;
+-	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
++		kfree_skb(skb);
+ 		return -EBUSY;
++	}
+ 
+ 	/* store cb and context to be used on receiving data */
+ 	conn_info->data_exchange_cb = cb;
 -- 
 2.51.0
 
