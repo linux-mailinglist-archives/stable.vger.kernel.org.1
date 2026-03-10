@@ -1,175 +1,171 @@
-Return-Path: <stable+bounces-224513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OcyG8YzsGl2hAIAu9opvQ
-	(envelope-from <stable+bounces-224513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 16:07:50 +0100
+	id YEmOE6dGsGnFhgIAu9opvQ
+	(envelope-from <stable+bounces-224514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:28:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC2252E29
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 16:07:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D42B254BF5
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 766BB30244CC
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:07:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE0AC31E8D76
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AF630B50C;
-	Tue, 10 Mar 2026 15:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C363161BE;
+	Tue, 10 Mar 2026 15:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gt5oTT6q";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y0zwAQzE";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="B8KBkKIG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EnJ+ZysA"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dFSOrwfX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79042C11CB
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 15:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3840C30FC06
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 15:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155265; cv=none; b=KDlRWb7Tanth8X3qCcEBxbb43QfHbdG7l5TYkIG8I+FQX6WolpOAl/cZ5+UjBDRh3RTiQFxOFoBWcycuptf5aUJEU2I5ZXWXy053EvqwOGGceInIGK8uKZKnVvsNYLQ7284PIc2pkEfTPpnfDStLhsUjSP70i/14awEqz8f8vGY=
+	t=1773156162; cv=none; b=mb2A3hkI5Ln4Jr0TRQuVqgTuGGoV2K5nLGWpzKqzqiOw30N9CrliEwquTXEHxhmrqMz1N5WE29I4/G7WIuxLHLSB4CXAcYC7SfSkuIktE+JdIOWVkRc18ztWb7emzp6PnJVLtZD+sQT9rIOufcu9JDBdKrDfn5WaoxZqR83Ezz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155265; c=relaxed/simple;
-	bh=UinGvoENzCKqpay/yZPCI8XGtcpRKy8yOEuG4j2UelA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WO7g6FaPycsDhuPfBcQrPQtOj8toh+HyjcQAqYnPRXLILpC1rKb8SThwAC4KZtH7EIcUV22GmmKR5fpluzHp7AiCW8oFoEyvq2vciuddy3LfM6otrrPI2q5VwveC5Q+AG5EQbJJUFgRa9QAalyKPYoCDWKvsauSMN2bBnr0Ld90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gt5oTT6q; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y0zwAQzE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=B8KBkKIG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EnJ+ZysA; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0E0835BCFF;
-	Tue, 10 Mar 2026 15:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773155263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMxUZjTf0fkPqQOSMlmI9PQkeO5iBltUcV8wio/rEnE=;
-	b=gt5oTT6qwuntLkeowNMdA8iXmLMS5caVPTKEtfsJrUqmq0lhjmdkv063RGZ4r0ZaMe4eBi
-	F/iDFTX/re5MLkamm5YhlI20HNlooLD326Mbr8aAVwIq+NtZR2yEgeOIjQBLK/yCB5dr7F
-	tU1R5g7v7fAv0WWAChw6snt126YxTgE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773155263;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMxUZjTf0fkPqQOSMlmI9PQkeO5iBltUcV8wio/rEnE=;
-	b=Y0zwAQzENQUhHJU79wwJodOb+PiIZNNMRz2R5nqfW0/nEcFGcHub7Ajv8gTWo9JNIt89lX
-	+4eJQ+0TkHaP8PCQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B8KBkKIG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EnJ+ZysA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773155262; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMxUZjTf0fkPqQOSMlmI9PQkeO5iBltUcV8wio/rEnE=;
-	b=B8KBkKIGC1jlMt6mWQXGlSnUURmAa6Fg34C8DnNpPdK8HauOqDCLGkHiI22HqjTDAxocEU
-	k4QdOnf6YA5VWwt/8lJqjt8SKKDyu2PJap1VKOv5eDaY5+xYLzgOLvdAdvedqMJ7Ap43kM
-	q+uYZMGo1Me4nvIYfZ1T4NJlQM0nC/g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773155262;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMxUZjTf0fkPqQOSMlmI9PQkeO5iBltUcV8wio/rEnE=;
-	b=EnJ+ZysAzSrNqsl0CMa1GmScbFVyqMBTTVBVge6hKFrNiD69EFyZExt/ajsyTn3Yfzjp4W
-	odvxkXAtWfhPK8CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DAD723F4FB;
-	Tue, 10 Mar 2026 15:07:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xsiqNL0zsGmmPwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 10 Mar 2026 15:07:41 +0000
-Date: Tue, 10 Mar 2026 16:07:26 +0100
-Message-ID: <878qbzradt.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
-In-Reply-To: <20260310102921.210109-3-thorsten.blum@linux.dev>
-References: <20260310102921.210109-3-thorsten.blum@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1773156162; c=relaxed/simple;
+	bh=0B5D+xcZnYpODXXTE/w/ZKzIe3Lk711aU4jM5s38GCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YBi6IwcLyvC0Ha6N1orsBBhVggJF9Z0jDH8Qy3ppbUFBiD/TPWYmdm2KIz5Rt3Zt3FhSbcrOVXcfrC326UVgQwzCNKQQqbxAFt6iNHmcttRjY7B3qRzfqQvwZDkHfjbCyAF7IWyqkPBVKYarcZXh9r+4YBAZsLUxyEcGlEPYtmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dFSOrwfX; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-661b08b04deso4660972a12.2
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 08:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773156157; x=1773760957; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pXqWkcr2J0YLzB75Md3f2DD8lWCxZB7UrtOSQKxl2i0=;
+        b=dFSOrwfX0lPuiizdnbPrCy9eCQRpPti1j83tfmDHtRteTtDSOaOA6KeRSOm4Vb+zgu
+         zavwc64D7Fq4MY8F5Sk9SZruGM+AZM4RdBhIcq6TXIlKJb9/JEBLMD821o5DSHCBXffr
+         4N1kjoxQnoZL4kmCwNSPZWPyXPVhsccCj3hJw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773156157; x=1773760957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pXqWkcr2J0YLzB75Md3f2DD8lWCxZB7UrtOSQKxl2i0=;
+        b=w2X1+WBD4L2bbFPh5CXztpXYQBoFaS56xRFZG7W7RBc27bz3bhd0OUgQJcyyu/rsWf
+         fkv8fNRs/TLrdGw3Ttj482N+jCDRWmT1NnvbIjW73VZ3bLyKjRhmcA0ZD5F0mFGn5I8N
+         D9ZXTrlt++ddUupKqUQ64pIqOyjmq5zGgEAczED+t7u8s/lBy2VFq4MAUUocPCcQZ0/d
+         Dk6t4grEtFa8PjRZa2XMxDZPEHfKs4DnoTtFSUkp/hC4ndpAAjfmUDeMNDd9zRtVhkre
+         +YFs0pm1VGKmrVW6GMdgsLB5K84Tpw3ksIbXjakq6mSG0WscBQuyy/Dld00UanVbZmRL
+         sCqA==
+X-Forwarded-Encrypted: i=1; AJvYcCX30dtO8TqZ85sLH3o2qoSuXGYh5DHF2EEkX0kdybaUZi2SfdCcXgCHEj3JDtvsTvotV8QWyzE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKgE0Mz5Tyhw3LO9Bjx7xsTFWZ/27fiNPVdVsJSsDjF1C9JR/n
+	kE3kXR07w8Wuu6+0Rzy9AZ+WykxqbELlumItPjpjN3legHehwxmNmO7a+jGAzv6p4Ql3VHuVjQd
+	9HbQ77ysq
+X-Gm-Gg: ATEYQzwMljfGlcv4qxtTTo1bh0GTn/ZJfOi82VBGtHeGcFIHhXnB6eqAXuez2OmyqcJ
+	6JIBK7VgOBDESRrj3hjRsRrpkYUXMeOT768TjFaxQWoJ1hRz/AAjTQ/dIdG4Zyi95IMqwnKfhWp
+	mgZ+vBCbMTJ7AaikZxzYx36IhDuVQbjHE5iB5GtII4ugSXZipa1vAOl/abvMK9EM5K7PP4+TUc9
+	ZXYYC7ssTQmAoxhgzbv5+aYj13Aacxic+Hqbcli5KXO4UXNhwVeDMa34EtJpgytI1yPe5rk+/tw
+	IeUYxNhUeiNeWCCR0xgQw8RhwgdZv+se1ZKJ5up4vi+Jka68qpdI6VIxnjLlJgQYRcSl0Se/Sed
+	XhGHZrIcMX7RXYcxlmMZymq0BE/DTaUjYRZs8e6sPaChHBgTKYb9VzUlclllxBrlM89np80sgam
+	+PrNS1NlxPq6TBYTW9T9as/zxbYS0Qk4OAXhA3RiOXiA8IFnHkmmo27MzZ7R2HEA==
+X-Received: by 2002:a17:907:fd18:b0:b96:f863:deb8 with SMTP id a640c23a62f3a-b96f863f2f7mr452957766b.53.1773156157060;
+        Tue, 10 Mar 2026 08:22:37 -0700 (PDT)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942ef8b8absm498355566b.17.2026.03.10.08.22.35
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 08:22:36 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso15711825e9.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 08:22:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXFHuxBX6kbEj5xF368IKb3i5IJiP7LaRMKKCrCY+cl2Keihsl9TrScJ/uypwLhEp4avGBszE4=@vger.kernel.org
+X-Received: by 2002:a05:6000:4308:b0:439:ccec:fcd0 with SMTP id
+ ffacd0b85a97d-439da88bce0mr28625198f8f.29.1773156153747; Tue, 10 Mar 2026
+ 08:22:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 09EC2252E29
+MIME-Version: 1.0
+References: <20260310022300.311125-1-jassisinghbrar@gmail.com>
+In-Reply-To: <20260310022300.311125-1-jassisinghbrar@gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 10 Mar 2026 08:22:22 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=USFLx1J1+maF3KraYEMPJNq-xjqGLkb_bfozO2LykbAg@mail.gmail.com>
+X-Gm-Features: AaiRm52sFhfgXaKy11zfc97LD3nUTKnamhyLGT4mfiWTWXwVCrZCzPBHRzN8S3M
+Message-ID: <CAD=FV=USFLx1J1+maF3KraYEMPJNq-xjqGLkb_bfozO2LykbAg@mail.gmail.com>
+Subject: Re: [PATCH] irqchip/qcom-mpm: Fix missing mailbox TX done acknowledgment
+To: jassisinghbrar@gmail.com
+Cc: linux-kernel@vger.kernel.org, shawn.guo@linaro.org, maz@kernel.org, 
+	stable@vger.kernel.org, andersson@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4D42B254BF5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224514-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224513-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:dkim,suse.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,chromium.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, 10 Mar 2026 11:29:20 +0100,
-Thorsten Blum wrote:
-> --- a/sound/aoa/soundbus/i2sbus/core.c
-> +++ b/sound/aoa/soundbus/i2sbus/core.c
-> @@ -405,6 +405,9 @@ static int i2sbus_resume(struct macio_dev* dev)
->  	int err, ret = 0;
->  
->  	list_for_each_entry(i2sdev, &control->list, item) {
-> +		if (list_empty(&i2sdev->sound.codec_list))
-> +			continue;
+Hi,
 
-This can be even outside the loop and immediately return 0, as the
-remaining part is also the loop of codec_list.
+On Mon, Mar 9, 2026 at 7:23=E2=80=AFPM <jassisinghbrar@gmail.com> wrote:
+>
+> From: Jassi Brar <jassisinghbrar@gmail.com>
+>
+> The mbox_client for qcom-mpm sends NULL doorbell messages via
+> mbox_send_message() but never signals TX completion.
+> Set knows_txdone=3Dtrue and call mbox_client_txdone() after a
+> successful send, matching the pattern used by other Qualcomm
+> mailbox clients (smp2p, smsm, qcom_aoss etc) of similar controller.
+>
+> Fixes: a6199bb514d8a6 "irqchip: Add Qualcomm MPM controller driver"
+> Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+> ---
+>  drivers/irqchip/irq-qcom-mpm.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-  	int err, ret = 0;
-  
- +	if (list_empty(&i2sdev->sound.codec_list))
- +		return 0;
- +
-  	list_for_each_entry(i2sdev, &control->list, item) {
-  		/* reset i2s bus format etc. */
-  		i2sbus_pcm_prepare_both(i2sdev);
+It's up to you, but according to all the research I did w/ NULL
+messages, the mbox_client_txdone() didn't really do anything useful in
+this case so we don't _really_ need to add it. The fact that it
+historically did nothing is one reason why the new
+mbox_ring_doorbell() series explicitly documents that you need not
+(and, ideally, should not) call txdone() for doorbells.
 
+Specifically, mbox_client_txdone() will just call tx_tick(). That will
+set `chan->active_req` to NULL (it already was). It will call
+msg_submit() which likely doesn't do anything (since we don't queue
+NULL messages in normal situations). It will notice that `mssg` is
+NULL so it will return before calling tx_done() or signalling the
+completion.
 
-thanks,
+If we make this change, then I'll need to spin my mbox_ring_doorbell()
+series to delete the code. That's OK with me if that's what you want
+to do, but I don't see a lot of benefit.
 
-Takashi
+-Doug
 
