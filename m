@@ -1,190 +1,205 @@
-Return-Path: <stable+bounces-224523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BGQD1hNsGnFhgIAu9opvQ
-	(envelope-from <stable+bounces-224523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:56:56 +0100
+	id 4DbrJaFNsGnFhgIAu9opvQ
+	(envelope-from <stable+bounces-224524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:58:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13FD255264
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:56:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AAE2552A5
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5719A31B2F92
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 16:55:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6F1C303B4EF
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 16:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CE33AA4ED;
-	Tue, 10 Mar 2026 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0EA31DDBB;
+	Tue, 10 Mar 2026 16:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="enmAyuJx"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k6JJXqQl"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FCDF507
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 16:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11813BE64A;
+	Tue, 10 Mar 2026 16:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773161702; cv=none; b=e1fQcfCbzXyfYQXciVMRJD8Qv1zOj7q2KcUuC11LWO8PS2+e560Ig/8thn3XBUISwvqhIXSyENHPWKCR5+hpjLsRefx/gqZFWVr5lfRyoUPGg7nGbzz7SudjCCw+kfVLqhQfyOwiJc5HMhnhx0OKBGBk5nujnJhZ9u4DaE8ZE34=
+	t=1773161791; cv=none; b=f7NPiZmf1bZ9+WKV1sZAJjPnfkFonWlKnHP3TPUbl86z98iJ7KwjLUqRSXse24/QlCUwJFXsVcN8SNWu4dIPctqUYomE+4O95mEAu048ErYFeNAQZkvFSG0C0RbjKDPAzp+eAy335khNiuFz55bcacYPaUU8W0gbA3KbSTiMr1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773161702; c=relaxed/simple;
-	bh=9P8NMCKtoNI2F5hiVkCwUSDHR3BfpsngyuzyAyR+F4s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=PIcoQaiTHatdBnrDhijYDfmr3Qvg45xc5Twwch7hW3O6dhnuysGGlMT4rkmmJHhfxE69S4bbB3MsgqFCd3J0SbYfZePizzSWglf5FDCGVIQLCOhfXOq/gI0FXf2+vE+NF70vCHW3IJRmJwtfpEI2KnoKesplYIXqdl8SAC3nknE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=enmAyuJx; arc=none smtp.client-ip=66.163.189.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773161694; bh=/6JpoN9Cu82uGBMGC97VXmXgq/oyaVfI/6fUi0qOZQE=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=enmAyuJx8Hl5uCoG8f1KOXGGV7+xgCwHdbmcwyaufP3JIBtf+dNl353epKNY1i222WwaqNiqPIifgX2HrFh/Sdp3IOZyjRrJj7oICwF86e3i3uzPt0LGlYi7ykQSuZ5f2k3GQpHApvaBF8+jIsrJ/5rjMm89AAP6MZMZH5FpyzuukgisfMs/VO7uVAaQiC8sDG+ylOb6mT8Uo+otN4CgEV/9BlCGxgSJsreUW9szTqxtk5J/QZxWA8Yo9SgLcaERviAcnhgjHPwyQB9vrXUAXfIbAQqiokcdk5ZjDjKb1cbYWcP/RZT6gele3LuyWedjIdLcCyTxUZKRUssjvXDq2g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1773161694; bh=yMg//Qp6sVStkt4gFMy6Sr4UKvqd70sXZwDAcqRH4m9=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=KS3pnWpjlyiir0jNl2qGLqrDQfbYDWuq8RUe/m5TfJTy7j5RA8TYjl+IYAWkui/VIemsfILIeboXrQ7kF4UxJ+WUzJp2Q9bWXbl0TJzdZrQ0rzhBqwaQCE06MavOCucAIcGFwJnmyvgYuW1Uwh5zJWpKgInWMNkIwA1EEiztmNcQsmBawKMxpjxgHCHa8EdOEp3VbnqoBoqxXyZ/bYxOZ8v7sj/aKQMU5wIG65WZFfEQsEtYfCVNlal5URLK/DbKmi7bFab5IQvAyT3pDzjgbzZ9gZ7eO5yjV8xBI1pDZ+dgnZMgQ0lRqNxLcC1cjPtnLSsKNGGa0F2At5nn6zdX+w==
-X-YMail-OSG: r2bUql8VM1ns62WQMl9FVe_YO9VUJZhsOh.JKHQ3va0mrfgpYQJGguKgKF37Rwk
- ETVFkUKVQlKDYa95r8FeIQLJjyFiqOzQe7FgEZpWX9C9Sja.21VNU5HSLeCArvWN8iw.sicox18t
- bLqh3PO_PwMa297u3nM4nbld5P6t1TljdPShNr5vavprNNC1uqtjZaP6PTfLROJZMX5cNy6h4_tN
- OBWE4LTiirsKHVELyxJeZg2j17JWt.99cWIU55I4E9m1ty1Q4czhud7r2SlobZ8.WbhZy_Y0KCpA
- 278aUqYW8HiYaqMqzd3sHyOFnePPu9eZVVg8GoN62LQuhqIqjDLSDx6IeMrtp5Q9ddeG7jCr5LMq
- i_Ub9reIhDfi2evxbINbXTQckh_D_yJex7vrdO3_MCE4LBislv9w1a9UuQiVK0D3ML6.K3WOSfBj
- Oif6qBmT4RgZCFAltjeHwwloRj6j2zsqpP6rRi.6PFZs1kwFskKBXCB_RPfsKnPj0PogfJVAyNsj
- GeNZAnUpkiWNhI7_uxnDsTneg71zpe.0YYSeZkYiu.JwvLzSnn2oybW.hv9j.QOPyslPrx8sHeUu
- ye_nxygjcXLkSMzUvgkeKVx4bnWLRrkqnx3zbTJwqeG92JNVq8rpJaTLh2Tv27QNcjHBVcepYlJ9
- 70B.kAMJwDDjvJrd_lT1x9dXe7TCln6LK43m5bVXTR0ROtQNV0thE9yYSdqepyr2pEQck.z7abd_
- vGU_3crJOHTapX82i8VtA7bgVnrvssbRwrxyWywDTYyihDarfxtZWlb0YleEL6Lhn97has72OWxB
- pqInivB80TATAJOVcwW_JRuXTl3SkACs1wTZ5Ihgy2YUN_hCytnzLnouELS9YaMZ8aagidzPmK3e
- idZOQX0HudTNjkTGECBzcjqp.hv_1Fd7433JGE1ejtaZGTfHOTfxd9n1Drca6aInjrJwJX3aCDCM
- 7P5codWrambcMqXfEPTz6DkmnG.Y2s4enB54Y_0XnPPCsy8DEr.ODkK7OpZBswhx0PSpvZnyvDWF
- aSDdKnN87weGeiiO1_rpyN98LOP2Qbno98GXZqnEFIDoeuhTMvmlmr00XbBMg6aFUEivQO6exxx1
- u1FbQUJa8XsoPQF9MjCj2AjmhFk6Jlh1Wb7An0Hf7ViX9CQZfGq_xFXbfHHbx1nF9NyslW1a.A.e
- m6NLRrZ4585tiYKGOtIOWhLOJanCX2ZL6ItXwXfJj8p.IgVOgqKIhFix61rAfRyLZfmQM3xzsIgs
- AXy6NtvIeb8f_shmWc.uY_oYsKJH.guc55nUpnC2xSh21SaUIYbcV5Wq5GmQBfGqrIPmlbrdsgOo
- q_nyTZmPGYUayfGjUXjYJG0Aficr_9KZJPfGBvcxFQCMnT33pJxMd10jFIkCgepl.YAxCKHBkT3U
- JE5NBpomARo6QxTWvVwAtEfELkaypB1Z_c0eA0TQrvZJv2xlhGrYqBcdjGtQGb_udQ9z8V.cjqiy
- QZXP86.VzfG6qkFMnThcISzKAjPbQOrKPWgyQm10UiAL4ZodzRLh5rqL70VHgWgHfUGbjruBPM7D
- 1ayoH5CWIKwpBJcn8mUiCuzUpPc6XcJGpuYW0BxT39KbXDJMWUsnHK5bXApWeBK.BmVLj60Ak8wn
- YCjwHKlyXh2HzwG6DEN1t2vxymCcB1ewcAf.ZkVOtTIqQDGtUZE1GUFhv_cWmOTAmGz4pJcEXFB9
- 6LcW3lsH8xzNb3G92nOP6xJBn1sE6luVYkp66Eit92Ywe0SiCUhSQHb7k5H2e4EO4VM1f3dSmhiL
- ugcHeDKmstuPmt3CDOxkVwTQ2OYjryagQKBLkqnaFk2RhqkfXxYJOm2UTFH.OXXk90Q.TlpivX9v
- 3IGvAyvJv8iE87clhfuf_fspZzMLYCYJIumIJ09_.FX4z3.lsXdKQZvljIxk5mWEEDAFXzSu1eue
- 7YdE4KKWKTrsyAQnX2AcFE6DLGlbIFW9M1cmKaxLGcydYRMl9Q6nXtgiFeepTliLtlCsy4F22_En
- LEeL5UWIqUzUF3Q87ObyXDKMTZlavQMP83U7DmrG3tR2w0q4dQ1bfa4vWrMOYbAhk.EfoBddenEE
- kzqxII86e.FX2cMK.FNh_noSKi4A_mPOkut4xdGhPY93xYCejunFMOo56Ujj56MQmMKYaBt2SyDu
- 7tlWVczz3YxGYMIZW0YLw7w6j7ASVe0Bwde8_J23fHU3EKw1MOFaiqWNxCr889ecKPR19n6uSo7u
- z3qATw_XXVXTPevCPX5WJDvltT9hiBDSssq4M6BV7QDgdOo9C55XrQK43E5KFNw4nkBNUhQo4j0W
- F40gI4alWVSytT54a2KucQBo-
-X-Sonic-MF: <abhishek_sts8@yahoo.com>
-X-Sonic-ID: d49c1791-66c4-4c54-92b5-20a428de0e6d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Tue, 10 Mar 2026 16:54:54 +0000
-Received: by hermes--production-sg3-6959968fbd-g29qv (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 26379b06fff81670246abaf6a31f69d7;
-          Tue, 10 Mar 2026 16:44:43 +0000 (UTC)
-From: Abhishek Kumar <abhishek_sts8@yahoo.com>
-To: mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com,
-	Abhishek Kumar <abhishek_sts8@yahoo.com>
-Subject: [PATCH] media: em28xx: fix use-after-free in em28xx_v4l2_open()
-Date: Tue, 10 Mar 2026 22:14:37 +0530
-Message-ID: <20260310164437.865472-1-abhishek_sts8@yahoo.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773161791; c=relaxed/simple;
+	bh=2yyLA1eqQVjSIg1EbJ1Vg5k8O6YyDi6rLlAA/FqS8s8=;
+	h=Date:To:From:Subject:Message-Id; b=R6bUN92xsXc70eSlC3kbJIhlCMDBYNNyEcSWrnO8Iq9Ex5qzpwoILLrzsw761rsMPrgIQG7aSmCVL21dZHNO3Oy5Tv+aUt72KyQuTHimkJu6FQBZGtx46GvhBhSn/lrJKGcnWEBKQgPu9jMVkoW1BbUb1YS2jWutBY8Ucs/62g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k6JJXqQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE1AC19423;
+	Tue, 10 Mar 2026 16:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773161791;
+	bh=2yyLA1eqQVjSIg1EbJ1Vg5k8O6YyDi6rLlAA/FqS8s8=;
+	h=Date:To:From:Subject:From;
+	b=k6JJXqQlNgh+480yUDKPdEEf3S7NgMjkEhqYqGBHLmLaoKMO/aH/ux1ywcPjjFcOU
+	 2m4KHErbBc1VO1i56dtPSFQusFIGkT/eExNgUeyOh6y1kkLYEto/GBa9RZLgmB/AHU
+	 Roh2QvBuYFpzKLF8Lt19C1TOZAZwDZ/YmO3oYxtI=
+Date: Tue, 10 Mar 2026 09:56:30 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,sidhartha.kumar@oracle.com,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,mike.kravetz@oracle.com,JonasZhou@zhaoxin.com,hughd@google.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch added to mm-new branch
+Message-Id: <20260310165631.4AE1AC19423@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20260310164437.865472-1-abhishek_sts8.ref@yahoo.com>
-X-Rspamd-Queue-Id: B13FD255264
+X-Rspamd-Queue-Id: B5AAE2552A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[yahoo.com,reject];
-	R_DKIM_ALLOW(-0.20)[yahoo.com:s=s2048];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,yahoo.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[yahoo.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224523-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224524-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,oracle.com,redhat.com,suse.de,linux.dev,zhaoxin.com,google.com,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abhishek_sts8@yahoo.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[yahoo.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,c025d34b8eaa54c571b8];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-em28xx_v4l2_open() reads dev->v4l2 without holding dev->lock,
-creating a race with em28xx_v4l2_init()'s error path and
-em28xx_v4l2_fini(), both of which free the em28xx_v4l2 struct
-and set dev->v4l2 to NULL under dev->lock.
 
-This race leads to two issues:
- - use-after-free in v4l2_fh_init() when accessing vdev->ctrl_handler,
-   since the video_device is embedded in the freed em28xx_v4l2 struct.
- - NULL pointer dereference in em28xx_resolution_set() when accessing
-   v4l2->norm, since dev->v4l2 has been set to NULL.
+The patch titled
+     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+has been added to the -mm mm-new branch.  Its filename is
+     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
-Fix this by moving the mutex_lock() before the dev->v4l2 read and
-adding a NULL check for dev->v4l2 under the lock.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
-Reported-by: syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c025d34b8eaa54c571b8
-Fixes: 8139a4d583ab ("[media] em28xx: move v4l2 user counting fields from struct em28xx to struct v4l2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Tue, 10 Mar 2026 19:05:26 +0800
+
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units.  This mismatch means that different
+addresses within the same huge page can produce different hash values,
+leading to the use of different mutexes for the same huge page.  This can
+cause races between faulting threads, which can corrupt the reservation
+map and trigger the BUG_ON in resv_map_release().
+
+Fix this by introducing hugetlb_linear_page_index(), which returns the
+page index in huge page granularity, and using it in place of
+linear_page_index().
+
+Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: JonasZhou <JonasZhou@zhaoxin.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/media/usb/em28xx/em28xx-video.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/usb/em28xx/em28xx-video.c b/drivers/media/usb/em28xx/em28xx-video.c
-index b0c184f237a7..5f13f63fbdee 100644
---- a/drivers/media/usb/em28xx/em28xx-video.c
-+++ b/drivers/media/usb/em28xx/em28xx-video.c
-@@ -2126,7 +2126,7 @@ static int em28xx_v4l2_open(struct file *filp)
+ include/linux/hugetlb.h |   17 +++++++++++++++++
+ mm/userfaultfd.c        |    2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+--- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/include/linux/hugetlb.h
+@@ -792,6 +792,23 @@ static inline unsigned huge_page_shift(s
+ 	return h->order + PAGE_SHIFT;
+ }
+ 
++/**
++ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
++ *				 page size granularity.
++ * @vma: the hugetlb VMA
++ * @address: the virtual address within the VMA
++ *
++ * Return: the page offset within the mapping in huge page units.
++ */
++static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
++		unsigned long address)
++{
++	struct hstate *h = hstate_vma(vma);
++
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
++
+ static inline bool order_is_gigantic(unsigned int order)
  {
- 	struct video_device *vdev = video_devdata(filp);
- 	struct em28xx *dev = video_drvdata(filp);
--	struct em28xx_v4l2 *v4l2 = dev->v4l2;
-+	struct em28xx_v4l2 *v4l2;
- 	enum v4l2_buf_type fh_type = 0;
- 	int ret;
- 
-@@ -2143,13 +2143,19 @@ static int em28xx_v4l2_open(struct file *filp)
- 		return -EINVAL;
- 	}
- 
-+	if (mutex_lock_interruptible(&dev->lock))
-+		return -ERESTARTSYS;
-+
-+	v4l2 = dev->v4l2;
-+	if (!v4l2) {
-+		mutex_unlock(&dev->lock);
-+		return -ENODEV;
-+	}
-+
- 	em28xx_videodbg("open dev=%s type=%s users=%d\n",
- 			video_device_node_name(vdev), v4l2_type_names[fh_type],
- 			v4l2->users);
- 
--	if (mutex_lock_interruptible(&dev->lock))
--		return -ERESTARTSYS;
--
- 	ret = v4l2_fh_open(filp);
- 	if (ret) {
- 		dev_err(&dev->intf->dev,
--- 
-2.43.0
+ 	return order > MAX_PAGE_ORDER;
+--- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/mm/userfaultfd.c
+@@ -769,7 +769,7 @@ retry:
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+_
+
+Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
+
+mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
 
 
