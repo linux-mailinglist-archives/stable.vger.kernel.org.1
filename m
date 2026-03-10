@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-223897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONNQHPH8r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-223897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:53 +0100
+	id MHzEL9X8r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-223898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D5C24A29C
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E5B24A238
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F331E3069825
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:06:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B2A93043D6E
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7B1387569;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECF1387577;
 	Tue, 10 Mar 2026 11:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvcy+i/V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aREIpUQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A72387368;
-	Tue, 10 Mar 2026 11:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2667386C02;
+	Tue, 10 Mar 2026 11:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140796; cv=none; b=o8XrozlPJukV+Jy9zyP6TduESE928RNLyfMvyCLX2J/zV+OxroXWnMsDVAaKt7v3ZqWFTYud+AQW39nOIliFEHo4L3GJGihF4y8vseDEyhqH4TMExaAiAPrMxoZ+gIYOtn8Z/Zn/dXA1xTnGuipd9F/+pU5F23Rx3tuCeIotL6k=
+	t=1773140797; cv=none; b=cCf+lMnDKfQ8935FZZaeNhPmtsHMfCSYUfArhrL7bjNcWcufJw2R2igvTOlR6UuKDYthJ1sguQtS+ZBetw2RkkZ19AoaSgywwhtiWqGdXM4xzrot4PhGe//wjbt7Wu4HCqU8U3+g81KxagtMrjUu6InyAdJdRUdVvX9OfFnNO7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140796; c=relaxed/simple;
-	bh=xog/9INT4CDDhigivBKMVonYOJSZ2D978RqOiCUxYl8=;
+	s=arc-20240116; t=1773140797; c=relaxed/simple;
+	bh=UBkE7B3y+8cTE4i2+DWlPLjgyfJTgWtmD4EsWNvY8L8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ry+evZyd4LahCDH7m7damD07EalOWvj3JyAwrGGjQ79vZjXMMODhgqGsy6lI54YHqiI88XdeycgMW32ByVhWnK/QSPwvrjzwHTExkX62UXshtc7a51yMABXncQmk7MMUSK78pNblahKwZJfH3ytw/4OqznT8YVgDDAqYKxeaaUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvcy+i/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1666C2BC86;
-	Tue, 10 Mar 2026 11:06:35 +0000 (UTC)
+	 MIME-Version; b=GF96ZpYQQufkX6HKu/g1kMB+PelvQRfsJWVDUyJfUWjdylC9OxXy+7dv5T82Yf2FyJq6kUxYNiXljOUkb0Z+N18EmDlR61mko83TaHtTiBMRVGZIkg2k5EWHEXtV/quOChbMm+uPlZcdB8m458qprCh/Pog253MyZTqWXn/uCuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aREIpUQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE632C2BCAF;
+	Tue, 10 Mar 2026 11:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773140796;
-	bh=xog/9INT4CDDhigivBKMVonYOJSZ2D978RqOiCUxYl8=;
+	s=k20201202; t=1773140797;
+	bh=UBkE7B3y+8cTE4i2+DWlPLjgyfJTgWtmD4EsWNvY8L8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvcy+i/VPYaH1llNf0erDVdr1hf+bZsmnf0PGxRzv2TMH+66bUoo+Nd4LrivyicGF
-	 geTNmZ0/Z+ii6uUoGqiLByAo6JhpZGt5rBUJYiQjgCn1ciOutmL5Vfbe6LPW5zOKdQ
-	 ZiYgrRirnDn/+1exNBwvb6ORgm19N7gklrW/qmi9YvvwYwYGgjaxcTw2jVHVJne2V6
-	 QnWoWdNIkJWpSDxZPJuiShO8lfADmyyE1Wh+ptzHzPgLekbnsIIJTiCpPdL44iDG02
-	 5fNBd1BrYfOwlvq+NM57hSyD6H7dWdQzOxW0NkSWjrMiukuZpDbx2nAqG1coTQLUq0
-	 dxbb7j2pAFxEw==
+	b=aREIpUQN6ImrASxVedNDC3BAIq5R1GY3Kq0jZtBE5Vw5L4A6HOnPZ/ZX5py/GeEt8
+	 5pLscGnLRPf8hLlJugjQApejsuNFB7ZmdVoMPPkykcMxfgrobBLTtEXgGh7H8bLZng
+	 NwmQeRmPcjiKQ5rVTNls4PZIuy+6o8cUiETQdI8GxIrVAC+exm0zFLrHrqn9Z8wWKe
+	 g/6+EbL9Bglb6STqq9+9/WfjWdsLkGZZMWDizCi68Ap+FRC0VW4ZlpWLX34hYrUgvG
+	 2DVrzi+fIG+sgo3Bs6rY5Sr0obzLC7FejvZF4VdEdSkjZIrIrw1zfG8K65snOdZzXt
+	 oW2KzFUQ/e/Hw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Lizhi Hou <lizhi.hou@amd.com>,
 	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 033/311] accel/amdxdna: Switch to always use chained command
-Date: Tue, 10 Mar 2026 07:01:20 -0400
-Message-ID: <c944462643de878e3f3c28236456b0558ecd38dc.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 034/311] accel/amdxdna: Fix crash when destroying a suspended hardware context
+Date: Tue, 10 Mar 2026 07:01:21 -0400
+Message-ID: <2f9000382038695bd00687f9c087e087915c76c8.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -66,25 +65,25 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 96D5C24A29C
+X-Rspamd-Queue-Id: 28E5B24A238
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223897-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223898-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,47 +92,44 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
 X-Rspamd-Action: no action
 
 From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit c68a6af400ca80596e8c37de0a1cb564aa9da8a4 ]
+[ Upstream commit 8363c02863332992a1822688da41f881d88d1631 ]
 
-Preempt commands are only supported when submitted as chained commands.
-To ensure preempt support works consistently, always submit commands in
-chained command format.
+If userspace issues an ioctl to destroy a hardware context that has
+already been automatically suspended, the driver may crash because the
+mailbox channel pointer is NULL for the suspended context.
 
-Set force_cmdlist to true so that single commands are filled using the
-chained command layout, enabling correct handling of preempt commands.
+Fix this by checking the mailbox channel pointer in aie2_destroy_context()
+before accessing it.
 
-Fixes: 3a0ff7b98af4 ("accel/amdxdna: Support preemption requests")
+Fixes: 97f27573837e ("accel/amdxdna: Fix potential NULL pointer dereference in context cleanup")
 Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260206060251.4050512-1-lizhi.hou@amd.com
+Link: https://patch.msgid.link/20260206060306.4050531-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/accel/amdxdna/aie2_message.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 37d05f2e986f9..6378a0bc7b6ea 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -23,9 +23,9 @@
- #include "amdxdna_pci_drv.h"
- #include "amdxdna_pm.h"
+diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
+index 2c5b27d90563e..43657203d22b7 100644
+--- a/drivers/accel/amdxdna/aie2_message.c
++++ b/drivers/accel/amdxdna/aie2_message.c
+@@ -274,6 +274,9 @@ int aie2_destroy_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwc
+ 	struct amdxdna_dev *xdna = ndev->xdna;
+ 	int ret;
  
--static bool force_cmdlist;
-+static bool force_cmdlist = true;
- module_param(force_cmdlist, bool, 0600);
--MODULE_PARM_DESC(force_cmdlist, "Force use command list (Default false)");
-+MODULE_PARM_DESC(force_cmdlist, "Force use command list (Default true)");
- 
- #define HWCTX_MAX_TIMEOUT	60000 /* milliseconds */
- 
++	if (!hwctx->priv->mbox_chann)
++		return 0;
++
+ 	xdna_mailbox_stop_channel(hwctx->priv->mbox_chann);
+ 	ret = aie2_destroy_context_req(ndev, hwctx->fw_ctx_id);
+ 	xdna_mailbox_destroy_channel(hwctx->priv->mbox_chann);
 -- 
 2.51.0
 
