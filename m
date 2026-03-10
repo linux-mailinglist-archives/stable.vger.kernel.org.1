@@ -1,144 +1,178 @@
-Return-Path: <stable+bounces-223743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHwdIy6Nr2n4aQIAu9opvQ
-	(envelope-from <stable+bounces-223743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:17:02 +0100
+	id iOTCB5aOr2kragIAu9opvQ
+	(envelope-from <stable+bounces-223745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:23:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09329244B1C
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:17:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECC2244BCC
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81D4530233C8
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 03:17:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 369E2315923D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 03:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BA62EA480;
-	Tue, 10 Mar 2026 03:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A893BA243;
+	Tue, 10 Mar 2026 03:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DrXJm1vI"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="fxjB361v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631AE1A9F88
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 03:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C67D385501;
+	Tue, 10 Mar 2026 03:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773112616; cv=none; b=LrTvWTc3huydguAjmna7X8lo7PO3Xl3tXsJoemUJfs+X79dJ6qIaSGay+NXcPRjNziEcyWpqRILTVgdPJIW6e2DUaGdyAWYj3dc/aZM1zHB+YE9fjrPM7k9bTM9PPz+//tqYPXacNyoThoE+wTIhipQa39tPBG83PaadmdF2DFA=
+	t=1773112864; cv=none; b=WLtaG4FVBaqccwbl5Gfaruce8NRiWMJpKbrC7JhlZxZXFS4EYcbgiMhmbIpG4t/u6wJ4dq6sbEUl5O38rKhPoFz0jcKQpLjYBGJmRDeMhAlL79/NjPZDy+e/Zi3u5rXZS5Dhr7WcdLTW8zYf1F8V/jem7fw/4Jtu5clPVYF6q50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773112616; c=relaxed/simple;
-	bh=kypLUIpa+hG/hxMKpxLiGtUToGhjkCNpD5x/99R8CXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MftbPQu0b6avZO8GaSLRiNYFLrbwYbbEocEUCxbwRWzF/ZW5D/q/p2zR/Gc+CXTBtJsDF68UP4Ni/sLKnOrews35jjqy08W2zquh+68hJVK39iN+cFtGGaCe3GWKrd9YP2EErqixNpE5foMiPtj9xgtPOxkn4mHHCA/LSMwfWLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DrXJm1vI; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48374014a77so146194465e9.3
-        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 20:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773112614; x=1773717414; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kypLUIpa+hG/hxMKpxLiGtUToGhjkCNpD5x/99R8CXo=;
-        b=DrXJm1vImIGWv+eb6mA7pEzAsKVKljF+uo4V4uFIdBYVDnS3kjQOAHrvqXfjWo9E7B
-         TINDlPXBQofvsUuPAA2ZGMZlJ1564X7v77cjkLBeHVpieRIC4nhYsHh67mCZgEejG+RD
-         1k4ybl3vaPdyz8Td2wD+VtBsByiZbTJoTjV30NfqmXLDxjYgZ4Jbew1a+1RqsrjZ3tGI
-         9pnhnJLi0tp0G5uEd1JVwc0w09NIeLTGgajW2+oiFzbCIQeRTkHJI1jcQQpFkcl2Fl8D
-         /XPfe4DbpYHWad0rf9Z5ZOyRhBqInrjevCftb9T2bV7ncCffTqVrEnzpaDQc4jlEE48c
-         havw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773112614; x=1773717414;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kypLUIpa+hG/hxMKpxLiGtUToGhjkCNpD5x/99R8CXo=;
-        b=lChcjAmtx3deJT2BBXPTfAQY8b+h0qiUYwmu8Pso8nJANHDhT4lfPh6+N1ZHFKf22P
-         FdRavq4oJeHp0H3A9eCVPUWNCtrSLZ/pDoRJcqr2U49d74MxxGMBSrgRFyJMBecVCe8s
-         rMgoVcfo5IAP9zcfkbdCOcrk1PsDXLERiScJ5k8H8LO/QPagvuHU2Vd4tkCz/qMnaArA
-         bZksXeHr9vVC3nrdyVEuOZd/F3l8V5K2WXhRR6VKUqjdW07LRYm4xP4xuwcXePCLVThO
-         KcVdzzx9uofUPE2bWzDoxy2tL61iqMaV+1wd+SwhYlbc7gIjRT6U1yzzGX16L0XNiPmg
-         IXiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYgG/FwItpNpwfmOuZALIWltr1Ah8uzHVKBssSdkqz8irnu5R1KHJbotOUDWpz1v68KzbzGOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFEQw50KEEminiHEXq0OE9kNgIyuBfPJ4bcVUSiWxpZWGfU4dp
-	4yq+hLs+4d60HPLaaRNumGvSKxlHomhHltpEzYvg0XlN9PU4CSTSw0OULBtisVDp5o0=
-X-Gm-Gg: ATEYQzzkqG50QTu2bfcje9/IlHpVE6127V8dflyXPcBF8flOE/Lh8jezH/ue+hz3Izg
-	SpCitSEk2/l2O4o9acvSotm9VaNFVpjhZtQCFjfsFGGBiKP29ynn2qfV1cLq3LE3wVzpbd8YDww
-	wCHeEhZdUMx8RUgFrgsRfy24VOExvT4H7BbVhLpRAdTRKGyd8Ls0ejfeieKgSie6ZUC9UHXph8t
-	tZRxvjts0Bafu7SQy6T4KJplOE88wK+2HyP3++UkM3rL2JWmvDgXPslYHUvzjgTb0lbu5uTJKuw
-	RHg/ae06WP7+8DRL9pf6ega15nWB9wAyzT3LjrZRbJ1K1zKWupqJUCj4gz02R6ktV24+Dv6bpew
-	wg9vapLb/OkBJSPHERmFJA4qZb71mwSKOb1t8Pn6e5WQbHZU3ky6+DWrwIKryxSNRmlanB9s3a0
-	8fdtrFVCe0ofDL7sQSfA==
-X-Received: by 2002:a05:600c:1f13:b0:485:40db:d40c with SMTP id 5b1f17b1804b1-48540dbd6ecmr46089435e9.3.1773112613741;
-        Mon, 09 Mar 2026 20:16:53 -0700 (PDT)
-Received: from u94a ([2401:e180:8d01:1fb3:e42c:360:78fd:1fec])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f8481c1sm12689470eec.15.2026.03.09.20.16.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 20:16:52 -0700 (PDT)
-Date: Tue, 10 Mar 2026 11:16:37 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	gregkh@linuxfoundation.org, patches@lists.linux.dev, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Patches not posted as reply to stable-rc reviews (was "Re: [PATCH
- 6.18 000/757] 6.18.16-rc2 review")
-Message-ID: <iy7dogrbld3h5ygezzkhp3sebokfibu5suegpidlsrmp2ibfwd@fvstv7j7dcfm>
-References: <20260302160853.2519610-1-sashal@kernel.org>
+	s=arc-20240116; t=1773112864; c=relaxed/simple;
+	bh=e9DKhxJ7I29sGub6miMoMkUxUTyXd5sexvIzavurIVA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YIHVMMxTAq8sdyYl2R+WyJBaR1VQ0QktURP3XqB84RWeNWeJ4LOogxSm9DiLgPKcWBMwmvHG7BiZBb/zq1yDhLjRt2rn2+1My9bV9v0t9y/6EDb1t8N40J3dSf5sTExiot0zwYw5EOT+uR2cyBkfhhNB6FBB91gRAfyTwxb+Wog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=fxjB361v; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=CoRpNTmhms6uOa5K4ZBNB1qadS4KRwgybZKo09j4UpA=;
+	b=fxjB361v9DDU1Vc+vLq2UHX6kf3YaHF64h4a8BYjj4aAMs12yChq1Z0Yq6LWSEtvySPL+BtAo
+	SmhO/UwvL3+krDUwG6Ey2Y4dTPD6DcU6QbkOWDYEtWJMfpBjNaajoNIgGcRf4UfrVM1Nvz67TAV
+	1UXfCWkUyhSSX4AnepSv81U=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fVJtT143zz1prR7;
+	Tue, 10 Mar 2026 11:16:01 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 00BA9404AD;
+	Tue, 10 Mar 2026 11:20:58 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 10 Mar 2026 11:20:56 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>, Sunil V
+ L <sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>, Chengwen
+ Feng <fengchengwen@huawei.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Kees Cook <kees@kernel.org>, Yanteng Si
+	<si.yanteng@linux.dev>, Sean Christopherson <seanjc@google.com>, Kai Huang
+	<kai.huang@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Thomas Huth
+	<thuth@redhat.com>, Thorsten Blum <thorsten.blum@linux.dev>, Kevin Loughlin
+	<kevinloughlin@google.com>, Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra
+	<peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin
+ Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
+	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
+ Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
+ Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Ajit Khaparde
+	<ajit.khaparde@broadcom.com>, Wei Huang <wei.huang2@amd.com>, Andy Gospodarek
+	<andrew.gospodarek@broadcom.com>, Somnath Kotur <somnath.kotur@broadcom.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <linux-pci@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linux-riscv@lists.infradead.org>, <xen-devel@lists.xenproject.org>,
+	<linux-acpi@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v5 0/2] Fix get cpu steer-tag fail on ARM64 platform
+Date: Tue, 10 Mar 2026 11:20:47 +0800
+Message-ID: <20260310032049.25387-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302160853.2519610-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: 09329244B1C
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
+X-Rspamd-Queue-Id: AECC2244BCC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223743-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-223745-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[61];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hi Sasha,
+This patchset addresses the issue where retrieving the CPU steer-tag
+fails on ARM64 platforms. The first commit is a pure renaming of the
+ACPI CPU ID retrieval interface (no functional changes), which serves
+as preparation for the second commit that implements the core fix for
+the steer-tag retrieval logic.
 
-On Mon, Mar 02, 2026 at 11:08:53AM -0500, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.18.16 release.
-> There are 757 patches in this series, all will be posted as a response
-> to this one...
+---
+Changes in v5:
+- Refine commit-log of commit 2/2
+- Replace cpu_acpi_id() by acpi_get_cpu_acpi_id() on x86
 
-It seems that patches were not posted as response. It was for 6.19, but
-not for the rest (6.18, 6.12, 6.6, 6.1, 5.15, and 5.10).
+Changes in v4:
+- Split the rename into a separate commit.
 
-[...]
+Changes in v3:
+- Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() other
+  than add one new API.
+
+Changes in v2:
+- Add ECN _DSM reference doc name and its URL.
+- Separate implement acpi_get_cpu_acpi_id() in each arch which supports
+  ACPI.
+- Refine commit-log.
+
+Chengwen Feng (2):
+  ACPI: Rename get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() on
+    non-x86
+  PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+
+ Documentation/PCI/tph.rst          |  4 ++--
+ arch/arm64/include/asm/acpi.h      |  4 ++--
+ arch/loongarch/include/asm/acpi.h  |  2 +-
+ arch/riscv/include/asm/acpi.h      |  2 +-
+ arch/riscv/kernel/acpi_numa.c      |  2 +-
+ arch/x86/include/asm/acpi.h        |  2 ++
+ arch/x86/include/asm/cpu.h         |  1 -
+ arch/x86/include/asm/smp.h         |  1 -
+ arch/x86/kernel/cpu/common.c       | 12 ++++++++++++
+ arch/x86/xen/enlighten_hvm.c       |  4 ++--
+ drivers/acpi/pptt.c                | 16 ++++++++--------
+ drivers/acpi/riscv/rhct.c          |  2 +-
+ drivers/pci/tph.c                  | 11 ++++++-----
+ drivers/perf/arm_cspmu/arm_cspmu.c |  2 +-
+ include/linux/pci-tph.h            |  4 ++--
+ 15 files changed, 41 insertions(+), 28 deletions(-)
+
+-- 
+2.17.1
+
 
