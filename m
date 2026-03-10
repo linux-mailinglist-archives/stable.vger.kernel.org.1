@@ -1,233 +1,190 @@
-Return-Path: <stable+bounces-224594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I0DHAeesGkflQIAu9opvQ
-	(envelope-from <stable+bounces-224594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:41:11 +0100
+	id iA1BHyCfsGkwlQIAu9opvQ
+	(envelope-from <stable+bounces-224595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:45:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA412259080
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:41:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1925C2590B3
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 443DB31E3706
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:40:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74CB23025120
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C763B6C0E;
-	Tue, 10 Mar 2026 22:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968E43B636E;
+	Tue, 10 Mar 2026 22:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="OLh0befG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIkxt3pp"
 X-Original-To: stable@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37493B27F7;
-	Tue, 10 Mar 2026 22:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACEC2D8DC2
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 22:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773182405; cv=fail; b=ejTiijOFY3lo5jMg3PxREQDsrKL7qkaml4r7jYtGKBbB5sivi0nmQuTVBJAdUWkyoQ57mtCk/kU9708fSVkkIxlJkVTyOVU1juSX+OP/xlo2KumqQIcNNAmjZDAhf/hQyQ2/KZS0yECZQdefXtM9WASl4kBI1n1mgRVzxDNHqLI=
+	t=1773182747; cv=pass; b=hFJ4DsAfHTNEQWWXW8gmBQIIgAbC/WD45tyuD+CrN+hVQvKwWbCn5worRQ4QvUBgSlSRUXracCDvCKKR5FO1+YnSTsjrKypOXaaYrxnA+PutiMzUtYXIGw8q5vRZ0PSCsYbZnkQm6q4I2gbqpnkzTHkxp0374tEMPTPx3x3yOWo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773182405; c=relaxed/simple;
-	bh=HnrCLdj6RygG0EoO9wwK9H/c8JLj1gr6ZH/6MSUtKeQ=;
-	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MHWxZ0XLcUqz4u9UHqWsPIWhHJG891X9NwQ/VoJLE0D5NrnT8ANjB8DIz0YUTM2lnHeSPgHBTWUhEfQQi29udlBJofJYYIkrKGmnjnJQCJh3LLhmLb3jc5z6VLpHYRuexxVwHkN78sP/fACnYBlb9+6+ywXESt4U2VKR/EyNHxc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=OLh0befG; arc=fail smtp.client-ip=52.101.52.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a6FuBQTZVkw6lglQZbZt/z1EmdG/mFVt4TKI9z33VTEjNqO5EZhTJJ9QD3G7M8u862dh2j3Nr685tmvPF4E4RSS2JIucppG/0d4AIFMrSJ1bXxTu8MQ+nbAY3qnL+sjihiZol/Zu1W9pGAcfDiyB/S6P5DLf/oXGJMrKBCsCKW55jYUk+p99gZEISD1Y7Dhqfr8eOA9igocwL8EE8rvRtTL03YW0H0zx2OQh5PBBU5AQ6CqrI1/Cq/a20F6MLQigB97YfgoqGRrcJG6nH5N2m2vSA1q6zPRRULksDQw1luEURVtT61jamdF6p3JL2d3+aYSojiMlJpbGscp4AHSWaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T5ya/14xemD/FSVbl/3h5BjXqa8QljYPw+uZsXlmhvw=;
- b=CeyqxuDd9d2EwajTtPP7/i2FyWwTlaa3rhz0vp9Y4Z2AuCqgoQSIHxAQgq4uH+lvh26ic0eVjrKEdBUhwYAVfLKITe9VNB2RNrOksWoYHn2QeoYCTBxqjNwea0a65Xt7GzwW1rnF0IVqqeHSfjLeeVO9IKbNBeAYTswo2o2URVkVI7fyLwxDAlGDBwK8Wy6JMa9LWJ+n7cfjolLdLqmszeOBtXfraY67/BDT0MLMxg35NfZo3zvuOtuGuI70IwTkwUGJzfhfe+UmExbpwVIlFdc56hT0UUeQLzO30YhRWls1uIzBOgLevgAIojwhlNuVMhWDuLuIHxoxxwO3qsRn/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
- dkim=pass header.d=citrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T5ya/14xemD/FSVbl/3h5BjXqa8QljYPw+uZsXlmhvw=;
- b=OLh0befGjmqooOT15+f6FYL3ssxtC8tCGnpIE/bGkf3niQsZWm68QvF385ug3uFfVMNALkBovNip2OiFvErwOWvTvixRQz80wSdHmxEHDRlcnS+BUMS2g/NrdM/RZEVrU8is3v9cwnarRyg/4fIVwpsLzYj9ub6jXHDa2WeNqMg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=citrix.com;
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
- by SJ0PR03MB5518.namprd03.prod.outlook.com (2603:10b6:a03:289::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
- 2026 22:39:54 +0000
-Received: from CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
- ([fe80::a70d:dc32:bba8:ce37%6]) with mapi id 15.20.9700.010; Tue, 10 Mar 2026
- 22:39:58 +0000
-Message-ID: <89f34cfe-7b77-4f66-b3ed-8104c5b50eaf@citrix.com>
-Date: Tue, 10 Mar 2026 22:39:48 +0000
-User-Agent: Mozilla Thunderbird
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>,
- Sunil V L <sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Kees Cook <kees@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>, Sean Christopherson <seanjc@google.com>,
- Kai Huang <kai.huang@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Thomas Huth <thuth@redhat.com>, Thorsten Blum <thorsten.blum@linux.dev>,
- Kevin Loughlin <kevinloughlin@google.com>, Zheyun Shen
- <szy0127@sjtu.edu.cn>, Peter Zijlstra <peterz@infradead.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin Li <xin@zytor.com>,
- "Ahmed S . Darwish" <darwi@linutronix.de>,
- Sohil Mehta <sohil.mehta@intel.com>,
- Ilkka Koskinen <ilkka@os.amperecomputing.com>,
- Robin Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>,
- Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
- Ajit Khaparde <ajit.khaparde@broadcom.com>, Wei Huang <wei.huang2@amd.com>,
- Andy Gospodarek <andrew.gospodarek@broadcom.com>,
- Somnath Kotur <somnath.kotur@broadcom.com>, wangzhou1@hisilicon.com,
- wanghuiqiang@huawei.com, liuyonglong@huawei.com, linux-pci@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linux-riscv@lists.infradead.org, xen-devel@lists.xenproject.org,
- linux-acpi@vger.kernel.org, linux-perf-users@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] ACPI: Rename get_acpi_id_for_cpu() to
- acpi_get_cpu_acpi_id() on non-x86
-To: Bjorn Helgaas <helgaas@kernel.org>,
- Chengwen Feng <fengchengwen@huawei.com>
-References: <20260310175305.GA730372@bhelgaas>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-In-Reply-To: <20260310175305.GA730372@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P265CA0131.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9f::23) To CH8PR03MB8275.namprd03.prod.outlook.com
- (2603:10b6:610:2b9::7)
+	s=arc-20240116; t=1773182747; c=relaxed/simple;
+	bh=NwwXHeQBm0xRS2zYJadsYZWaw82EYyPo5w3EDKS9vp0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=i8s09B6KbcOwD1Bmq+ql9pP5MWG50OoNjh51vS+gL8QzFShgYLtOJXcgOl1hfO4wP0IC93YpCD2wolrUKGqi0d9n0ImgpSjJpX77mURNj7QRE1CIQ23WiQTCvyZvn2Z3nbvG9GLoTAxUIL5LQhBLq5U/UIL+gsUId0icNvRnOvo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIkxt3pp; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2be22d699c9so550956eec.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 15:45:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773182745; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NPRG/yrJvfqObUTktvInkEDE/R5rv8NwSsxLFJf3TPU36nuwBWzdl7I5qsIXzdih80
+         9ELQG0N2357kev0lKizDy6GrRn1EH5eTiXcu3AU11EICbJrRr6LdeolLHxGoIUMEBXI1
+         8FWI1kMGyOd1vb0oT/dBUEg9Om8lQFzjc/GjABr6oM7+OnPGagu4v2n75/agrLonYBUZ
+         +NEc4nygFbYiT9OMQT7N5s2cm9z0zS72cSeqXdzOVoskvpJbJtQhdyLEJUuXTCO+7iAu
+         CX3+mb4hXCo8Njtgrj3PSWMnywoPY7CKzv1/crr9WkvBcQcDMKok3uTLGRmwVP/riZf2
+         ERfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AcppTpjnVFhwx13Ei2/3uaCsu4NJqsetsGA5pNmZ6VM=;
+        fh=0+M6lS5WkmHDm/Z6/nOrEP90vKcy80xLvqJDOcXrBGY=;
+        b=iShrsFUkjGvzMQDQWcAJDh+l+WTo4e8WDGQs5DbVCNPm8H8DcjKornRDgXDU0+mg/S
+         GJlHKcsYznbh1XD891bBilLVwj+WPSoPi9YX8dM355IglXFOQrJH9okSPEYPQf+X+0k1
+         7QdRiUaMZgi01CuY2NFs/n8uNxbvNdkCS6h1fGKnDsrBBE7fhmdbfFnvBrhOep+MDntK
+         NSAWCeFcsgKAHuH+vmNNngs10G20t6M1hHH8Z8xfNe20PgKE6EjlNLM3h5kKCi6Lntyg
+         WQgeaKMicanJO3CK09iALmo9+SwteEacnJ0oy7xTLn4Qe/lOgHD9O+XEMjRWwy090tKq
+         b4LQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773182745; x=1773787545; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AcppTpjnVFhwx13Ei2/3uaCsu4NJqsetsGA5pNmZ6VM=;
+        b=JIkxt3pp3CLOTQqhAFNxefuFPdiS2it8Up4l96I8OJHdXhDWcgEev4/os3tOee73zP
+         P2pV/pv2tTXFlt4VZByLmwvD/VncXBozBRgi7EeFuqKrCqgd1s1bk2IFi56ilA+Zd0CG
+         r/O3951dFGhc4crweV6247RJBXeNSHeY+Q7oIn3RLQ37/O3Slr/lwTNGPNuxCCn1V8UP
+         Ke8t6cVagVf5YVaQDJh28dV6fFGcEkSVXSjIbvbLKF5ECSmUxkwt490c++kumccQRa1H
+         cUBjr8q+aEAlxsAvnncuz9F/k+tYCkUf7TDaUAG6t/4vEl4lMWTh7d4NcunXbnY0wX8q
+         /5Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773182745; x=1773787545;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AcppTpjnVFhwx13Ei2/3uaCsu4NJqsetsGA5pNmZ6VM=;
+        b=ng0UeaEpQlxvuZxwuU8Jf7ICPK9WNVIvzvMPVaoQ7p19g7zqMYPrXmzQGwHFz8bCiz
+         ZkHrtZVqee+T7E0S1/+C8deFmduILeORD92FO45xEtSyN9WF8ynDL+4Do+IT2Fx4hNXL
+         x+arIa2joKwxMuXy+p5xsDA32erqbpwh5L30TS8SrC50tP+SsfVsithqVqgVt1JNKXH0
+         EZX7OItkcyjZIG/EpTuMDzTOusiXpGvBFTmZiOEnjthhQUUJv1UwUehj+fDaku7BR96s
+         kFV6gk1QjqkbuO+opn+bbXU/DEAhCmvsKI51vkA17WnPbPNT/iYNzYm8DCVTwMgt/F2j
+         mYKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNKygx0p+FfPTcvByf/K5MA+Y3o/X1XqQBFribJXmVUuBSXngmYrm72QinBJBW30YbH0mVPjw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm7R3iNNUXM2D8QibFkv93pSUr0FctzpSWFUvDJPphSINre5uq
+	cnEMnWgvaBgWhy4RdR28YYizCWoLvqxt135iSg2+GdjA+Krl1MQfr5JGAbNLZQySXez2WxIrZvY
+	EfI2TUFkFEHhm12aWm2sjQVFHVNAtJGM=
+X-Gm-Gg: ATEYQzwYV6+X18AnlkTvM3v3Gnh7DWyvkz8kfs48lYuXNyKtCWsMv7607DWzGFiDLFF
+	xliP7+PxkIPkHk4WH3fqmD53WEmSFKV3qESq9AzVlK7oO/hzc5WIyye4eygyzU/bYxy1cXkNo3C
+	4l4/zc9VuxqK+sfAmlC01+EO+2Ji0/cZ/hrL4zIhPUHYrnOH5W4elsTiF2UG0S1QpPheNYAdbtB
+	oLVsBYbV7CTUiyJgqTCmIfxiNHnVUJzBuqDZzDk+0nogr+gVqvTmQq1StU05qHUCJh7KlFeSZ36
+	srTuadi46hAe+zrXY8jbulixEWCzUZQ1eidjt2GMy2LEh1plq2WpWnYtHXeoLeUknIo10zl+TVH
+	tj7v+pR1HQEkbNsGGfVclW2U=
+X-Received: by 2002:a05:7300:3253:b0:2bd:d111:cf18 with SMTP id
+ 5a478bee46e88-2be8a589a62mr79976eec.8.1773182745139; Tue, 10 Mar 2026
+ 15:45:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|SJ0PR03MB5518:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ec7f3b8-a59e-49fc-4842-08de7ef5f52f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	0uGaJBptse/dAAqoo9odz6TEboL6x1eofnu0U5I34ebOa2ydcGqAcURoHxeqKeO3q62Mk5AIsz1uGpcRUD51NtKqNO+im0qexd9ilZKJZwf/sVWbvl9FkuGXGlAR406DyLp52UojePLAqEJKSJJpfuOlxgOnt0mVBkxJN6z+adZXzeuwWlSNTcE2sm5+Mcbo8rlNnBVBK6m2P7UzW2lI03Yai/YAtCivMkx7lshvcpmyQU6beOumt/PhWTn9VavQB6dxRkuFDRldT2anaLSy05shimis65lY/86L7Ph65C0dcQnAikX35j9vq3YffbG+ewMZatuwAvx+VS5mkXNpysipAZE0tCOIsJzprkl2htuAgKHB26cB8Iphxp8mgqHxR/pPpGtfkwbzfEm3umXlA6fyULummSFXzgYr0RBrckPf1CMtH3ML09mhbi9mhxjQUH34bLVxRTXGehvJAOmtHAO6RfZpxctAwHNM7zamEqCkqE8aE/PJuIGvCCiPOImsLdYDetUwzZ0rJHdApQ7O06VJcFegGh3y7W+1o+C0nnQmgSL9PsHd47dg7WEAMnQnNAAWK2NFmnJSgh0YtqnNlIPSgpV3/MKdVTRjoYv+CLIJEvylvZsytoZVU1dHgXCtt+w4UbfdU4HvNSO7E6+tC4V2GQzuo7Q8QClKdx2hbNmPlsDsaLWFnXZqMhwKxEvLMBFb6gQv2PJC14pljFl2sByALSYynly2akYCUwJFGmc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Yk5PbGRvSzVOcnFMOTR0c3hjbVZuNnZ4emp0MTJXcldGRDRRc2JyN0U2R25n?=
- =?utf-8?B?RXQ0Qng2QlppaWt3N1Nhckt2WS9TRHNkWkJYMVcxQWpzeVNCV2lkanhUajVv?=
- =?utf-8?B?eWpIbEF4Y1FPMzMvVDUvZFRia0I3M2crMTlEbGplR3VLUml1Ti94aVlyY2NU?=
- =?utf-8?B?b1MvdnJ6Uzc5S05uUmZPbi9NMzlQYkRuMkpSbTRCK25kMkwzQ3A4ekFmb1ky?=
- =?utf-8?B?NGJROTNkY05lZnZETVVqOW5tMlYzVk5HWnNQc3VrUkZ2K0xaRkwyVGpmQkl6?=
- =?utf-8?B?V0RjU2NtN2svclpta3FJa1Y1WGVyN01tQVVFelgrbENrcDdad0lLaUExbnNn?=
- =?utf-8?B?cUpCUnpVN3BCQ0kvRGdUYlhXa053aFlFVWVyVk5KejR1cWp6bmxNT0h1WXRE?=
- =?utf-8?B?QjV1L0FNdGhKNlR5QWVZdEZObHliK3czeTFlMUFUbVk5eHZXLzlyZHJYbTly?=
- =?utf-8?B?UFVtbU1PUVZNU2w1RjFUY0UybjRvbVFFSHl2L1BkTlUwKzlhakoySzI5aFR4?=
- =?utf-8?B?SHNySnJTNXZ1TDNLbDU2K3hjdFFpeldidUNFaCtGRFc0RkxvMEV1M2lHbjRx?=
- =?utf-8?B?aWx6d0ZpSVNudDdNUEk5amI3blo3cy9XNzNFZ3BTU0hkK01XTUJ2MUlabk10?=
- =?utf-8?B?N2x5b0VoZUh1WHhLV3o5dW1LZ2Jtb0RvOW94a1J5a1BBODhKNWpZRnZ4S2xH?=
- =?utf-8?B?WjlvdEdteWUxRG5ZZnVnbmUvYmE1bHBEciswOW1VbFREbzFlWksvbUJZRno5?=
- =?utf-8?B?UzFBU0YrVjROdTN0NnkrSXRtUFNuSFhNSE1KOXRTbXc3VUVoNUtWeEViclNa?=
- =?utf-8?B?d0FRemNqMGhERnZVaTAvMzQ3cFozNWtlczE2UVN5Sk4xNklPZkZkYTAzL2Mw?=
- =?utf-8?B?YjVxbXNTVjdBdTZSYVprQys4U1pZeUxlVmZ5dXY4S3N3U1VaL1FBazJHZ1Zl?=
- =?utf-8?B?R0ErTi84MHdlSFh0bENQS1d4d1NMbWdaci9SSkRPcDI1NDM3QlZZc0I2b1g5?=
- =?utf-8?B?UjFxbTRKVnI5S1dIclZXNVpMdVdnVHdQTDlreXlQRTdIcDQ3NGFwL1diY1kv?=
- =?utf-8?B?eHR4eWNOd09aNldnMUdaT09BOWhIQmYzM2VYTFVsQU8rcFRQdGdsYkloZkVR?=
- =?utf-8?B?NU9qRWlCYllPSmkydXFJZTlITHdKcDBFR1VTT3VUcVovcXJ1RnlCYVlNMlJy?=
- =?utf-8?B?V1RwMXNTblltZHZ3bzFnSmhRMEF1Q2JoM0RESjhYNHoxclVXYkFYZUd6R3oz?=
- =?utf-8?B?QkQzK0FoQndBRHIyVzl0dHJBRFByWUxZTXdpdURzSVNReXlXQ1BmZTBWVW9L?=
- =?utf-8?B?WmdwcEpXaU1KektuMFR2ZUlDRVNQelBPbDMvK0xRMTFtRzNHeXA3eEhQSm4r?=
- =?utf-8?B?WFNGaHVWQktaVTBzRmpmUngvMWQ0R1hGOVlnRjJ4Uk9Qb1o3Uzd0Yk9SUjlr?=
- =?utf-8?B?VGw4QzBKelF1c05LYnMydEg3ZE1odjczR21WWllIdFJjc3p4M0ZNMEN6MFNK?=
- =?utf-8?B?N1lrVXRrK3JvVzdVRUcvSlRMWVhFVFpiZDJ3UW1Ob2dkaktvL24zeUFKME8r?=
- =?utf-8?B?aW83N0dMWmhhUlIxMHRoZWY2UzlYdGd5L0ZHajNFaGh4ckpnblBVdFhJR3VB?=
- =?utf-8?B?TGx3djJITzJlblJXM1hBRFAvYjFjZWU4VTFQNThzbXBzSjBpMzErNkdCa25Q?=
- =?utf-8?B?V2Qxc1BPRDdBQkptbGxDaG9YSktVL09DNmV0VEhCTjh5MUMzS2dxV0pFVkpI?=
- =?utf-8?B?TXJTbGc2K3Mxbm5WWFFvV1JJdU55ZHl1bVg5aVlmQWkxUTdqL29Ra3Eya1Ny?=
- =?utf-8?B?eVlZZHN2ZWxabXZsdXFkSExFcUFYK0ZqQ2w2MFZ2eW85VGk5bjJ5bWNYZWhR?=
- =?utf-8?B?Z3FFV200Y1paTm5LV00xRnc2SnVCT0IrMDRkNlYwQkNkSnRlTEZmZXNWNVBK?=
- =?utf-8?B?NFdGdDIvRlEyZWlsWXVyd3lmeG5VQ3NERDlucndkaHd0a1lQMVpaTEJ5Q1Fl?=
- =?utf-8?B?by9QUThVdG83a0dPTWdKb081c1BQczBEdlJoU3dKcmVCZFJCZnZicTB4MlJ0?=
- =?utf-8?B?cUpwU2lTaWJxaDRNVFpUVTR4NHd3TnZXZEFoM0VJaDlPaE9PdDRQR3pRcUkz?=
- =?utf-8?B?T0s1bW1pem5uSkV2SnBaZ2N1TldjU212N2Z3YW0rNGsvSVJhTVFOcHRqYmVJ?=
- =?utf-8?B?VHpZK0tZMEZFbDRYbVdKYThoVDY1aXJYTlgraXk3UkdLMVY5RnhmL2RNUXZm?=
- =?utf-8?B?endqSUs3UWhRbG5mbWQ5NUh4MVh4QzlRT1NSclNJUnRTQXNWNkVQT1hLWlJQ?=
- =?utf-8?B?ajlPN0t2R2lSVUJwbXpLQTgvVDRDMmhRMkVEa0JYanBWREpRcmNmdz09?=
-X-OriginatorOrg: citrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ec7f3b8-a59e-49fc-4842-08de7ef5f52f
-X-MS-Exchange-CrossTenant-AuthSource: CH8PR03MB8275.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 22:39:58.0577
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w1CHoC9U+cpBf9KaJCKXbaFHOUzVk/9lCW28q1CpouRGxDPSK3i9wKvtNhtfeZBolw2H3VZagHko59xaJlcwT2gvUMZSFHWjbUx6esRQymE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB5518
-X-Rspamd-Queue-Id: DA412259080
+References: <20260203221224.GA2703490@ax162> <20260205131815.2943152-1-mlksvender@gmail.com>
+ <aYS9bRugxr1rUvA3@levanger>
+In-Reply-To: <aYS9bRugxr1rUvA3@levanger>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Mar 2026 23:45:32 +0100
+X-Gm-Features: AaiRm515Nd5QLPcAZuOPkqTuJziLIjbUrquMksP3iOdIj6zJC7o4W4g4PWJLZlo
+Message-ID: <CANiq72n-z0v_deUVPWeg1h0c6KQ+r6xfNDf72o29_0yy6KbqGA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] kbuild: add rustc-max-version macro
+To: Nicolas Schier <nsc@kernel.org>, HeeSu Kim <mlksvender@gmail.com>, nathan@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun@google.com, charmitro@posteo.net, dakr@kernel.org, gary@garyguo.net, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, lossin@kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1925C2590B3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[citrix.com,reject];
-	R_DKIM_ALLOW(-0.20)[citrix.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[citrix.com:+];
+	TAGGED_FROM(0.00)[bounces-224595-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,umich.edu];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224594-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrew.cooper3@citrix.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_GT_50(0.00)[63];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,citrix.com:dkim,citrix.com:mid]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On 10/03/2026 5:53 pm, Bjorn Helgaas wrote:
->   - Split the x86 part to a separate patch and maybe (a tangent, but
->     looks dubious to me) figure out whether/why xen needs xen_vcpu_id
->     to be ACPI CPU IDs
+On Thu, Feb 5, 2026 at 4:55=E2=80=AFPM Nicolas Schier <nsc@kernel.org> wrot=
+e:
+>
+> For readability, a less-than version check might be easier to read; and
+> that would probably better match the suggested version range check:
+>
+>     rustc-lt-version =3D $(if $(call rustc-min-version, $(1)),,y)
+>     rustc-version-range =3D $(and $(call rustc-lt-version,$(2)), $(call r=
+ustc-min-version,$(1)))
+>
+> so that the actual version check could become
+>
+>     # The bug was fixed in Rust 1.90.0, so only apply for 1.88.x to < 1.9=
+0.0
+>     rustdoc_modifiers_workaround :=3D $(if $(call rustc-version-range, 10=
+8800, 109000), \
+>                 -Cunsafe-allow-abi-mismatch=3Dfixed-x18)
+>
+> or:
+>
+>     ifeq ($(call rustc-version-range, 108800, 109000),y)
+>     rustdoc_modifiers_workaround :=3D -Cunsafe-allow-abi-mismatch=3Dfixed=
+-x18
+>     endif
 
-This is an unfortunate mess made decades ago with no good solution. 
-It's to do with how Xen and dom0 share responsibility for the system.
+Yeah, exactly, I think the range check looks simpler for readers.
 
-Xen PV dom0 (only, but still widely in use; ring-deprivileging and
-predates hardware virt) is OSPM for the whole system, seeing the real
-ACPI tables but with a number of vCPUs generally less than the whole system.
+I would say let's do it as an improvement on top, and to simplify the
+delta needed later on and to avoid the `99`, I will change the patch
+on apply to be `rustc-lt-version`.
 
-This causes Linux to have a split idea of what CPUs are, held together
-by hope and duct tape.
+If no one shouts, I will do that, keeping the Acked-bys. Then we can
+easily add the range check on top.
 
-Xen PVH dom0 (hardware virt) is OSPM, but has an MADT matching it's vCPU
-layout.  It still sees the system DSDT/etc, so while this is better from
-Linux's point of view, it's still not great.
+Thanks!
 
-Regular unprivileged VMs get a fully coherent set of CPUID + ACPI tables.
-
-~Andrew
+Cheers,
+Miguel
 
