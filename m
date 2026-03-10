@@ -1,256 +1,187 @@
-Return-Path: <stable+bounces-223785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMdzHSXRr2kfcgIAu9opvQ
-	(envelope-from <stable+bounces-223785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:07:01 +0100
+	id KOyGLXfRr2kfcgIAu9opvQ
+	(envelope-from <stable+bounces-223786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:08:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DB6246F09
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:07:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26474246F87
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 001A2306EE2F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:04:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5AD30B3107
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351813ED10A;
-	Tue, 10 Mar 2026 08:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AA3364954;
+	Tue, 10 Mar 2026 08:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="aAaOdvXn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9KoiDn8"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB383E5EF6;
-	Tue, 10 Mar 2026 08:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5B2363C5A;
+	Tue, 10 Mar 2026 08:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773129868; cv=none; b=meCl7docabbpY0wIjCZtyV6szFCut+HssFtJ4plLywEkR41IdrGHLbL6ipgpmk3Pn8LE2ke8D7O30einUX505xaU3UhUrx3+qZf4EAHqycfYz0OMNrL27Lm6G0oACUf+3pfG+xU7aEnThoFGasyAaai4AhwTXYu8V6da0vFjCsE=
+	t=1773129974; cv=none; b=c58yMIILfD9Aqz29QVVMC5WT6IFZr0XuxOwhWdtoH2Bix/1Pa35rpoTDDvEvyKAgP1Y9GH2mSs0SnjbdvSj8pLspVEG6WxDumO/hENk4O+z2lo+1vOjn8FKZCHam/nBYFceawwIg7t0CVWAd0k2AU71TmORwvm6EAB4ZN/NvTJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773129868; c=relaxed/simple;
-	bh=iUWBljZc+c+VPy0nz/GTjnH0L2vq5pMf68IWb113iJc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HKZzhWxcYOorQAm0y0Jd7KRiS1Cq/zfC/YU9ph6yZ8bhSxMsPTQK/Rn5prV+okRTzZNEBaP37Mqx65DypCES20DiSz25WSt5tGIzWSvH7Y8az3cDvUSKSt4KQwbhoILdCXl+9DG+ZvVNDANryLG84Oheo+ro1e6LjlXMRz08iEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=aAaOdvXn; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=aAaOdvXnZ7RLY4DKP7GTyA3Xa6dSAGGagX71k2TBapmCf2YHnvhmW+rkLwbmhqxrPGaBLPq8ersoW
-	 lUPqD1EGMxsxLQYfqhW/Jhm/UXlkXi8BnWXBHbn2kAL1WEL/LWTvj0QwKgljjrx8YDc1m6EbmvAXR0
-	 Si9+a6NWcwn6uuQE=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f3769afd069396-023dc;
-	Tue, 10 Mar 2026 16:04:15 +0800 (CST)
-X-RM-TRANSID:2f3769afd069396-023dc
-From: XiaoHua Wang <561399680@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: pablo@netfilter.org,
-	netdev@vger.kernel.org,
-	sbrivio@redhat.com,
-	XiaoHua Wang <561399680@139.com>
-Subject: [PATCH 6.1.y 2/2] netfilter: nft_set_pipapo: prevent overflow in lookup table allocation
-Date: Tue, 10 Mar 2026 16:02:46 +0800
-Message-Id: <20260310080246.3543546-2-561399680@139.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260310080246.3543546-1-561399680@139.com>
-References: <20260310080246.3543546-1-561399680@139.com>
+	s=arc-20240116; t=1773129974; c=relaxed/simple;
+	bh=JAl2csVKExJVZNiaSgPkE6Fx7imG+FeCdCMjpeS660A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XXCYTITkx3BC1vpZ0hAAnUa2xX9peNAnN/AwP3iflNlpa1KgxK85ubWGcXcgEHmHnsDzO2icGm6m2LT9NmKWbB8CSXsxrasRed0evwrTHtztzfoIONidkgAgt/iTJPD30H9eyycsBNnvAxfaIMEoEOaZZaJrEbwA9ntFMu4oASk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9KoiDn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79652C19423;
+	Tue, 10 Mar 2026 08:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773129974;
+	bh=JAl2csVKExJVZNiaSgPkE6Fx7imG+FeCdCMjpeS660A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=i9KoiDn8U9BTpvHz6PCznPky0OU+TKakgXxXQRs3Z/W1xpzGuzdMqRs/5+6D1XdKG
+	 chPddQQTMb6IHcEfNFCrfCFTs9CSjp+Z8S3P2EHAU05fRINmoo4KhPu+TEjyNQJ2z+
+	 Cn0gdRARHoAF76k9G5PZqS0X8j9Mh1U2MSDUsHXfr0NgvrBnFZI4YM+g0jOTV9SStf
+	 478/qLOgUHtshcC7hOyQ97qF20WMXJQkugPn7ffnAF+HDXJ4NbxVuc31KSVgKEt9/q
+	 PKfXswwGxg7UIE+N8JqsVJKTS2LX2OYKT1kOZ2zLTe3eesUoXq0pNGEKBqUoDvO/WK
+	 t4oL0Ksnhr6bA==
+Message-ID: <ad95d781-7eb2-4c0c-a9e9-aaabae8eb602@kernel.org>
+Date: Tue, 10 Mar 2026 09:06:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 027/844] perf metricgroup: Don't early exit if no
+ CPUID table exists
+To: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Leo Yan <leo.yan@arm.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, James Clark <james.clark@linaro.org>,
+ Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>
+References: <20260228173244.1509663-1-sashal@kernel.org>
+ <20260228173244.1509663-28-sashal@kernel.org>
+ <072e2a07-5c6f-47b5-9695-0a3ffe854ac8@kernel.org>
+ <2026030924-recount-halved-605d@gregkh>
+ <CAP-5=fW6Rz14GszEm+bnh_qAFrLwf51khzfUzDapHyYJ2dpdkA@mail.gmail.com>
+ <aa7f0sRAJW3RyIPK@laps>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <aa7f0sRAJW3RyIPK@laps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 34DB6246F09
+X-Rspamd-Queue-Id: 26474246F87
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223785-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-223786-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[netfilter.org,vger.kernel.org,redhat.com,139.com];
-	DKIM_TRACE(0.00)[139.com:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[561399680@139.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.976];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,139.com:mid,139.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email]
 X-Rspamd-Action: no action
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+On 09. 03. 26, 15:57, Sasha Levin wrote:
+> On Mon, Mar 09, 2026 at 07:53:10AM -0700, Ian Rogers wrote:
+>> On Mon, Mar 9, 2026 at 6:40 AM Greg KH <gregkh@linuxfoundation.org> 
+>> wrote:
+>>>
+>>> On Mon, Mar 09, 2026 at 08:40:33AM +0100, Jiri Slaby wrote:
+>>> > On 28. 02. 26, 18:19, Sasha Levin wrote:
+>>> > > From: Ian Rogers <irogers@google.com>
+>>> > >
+>>> > > [ Upstream commit cee275edcdb1acfdc8270f80e96f30750b633220 ]
+>>> >
+>>> > This breaks (userspace) perf:
+>>> > $ ./perf stat -a -d -p 1 sleep 5
+>>> > PID/TID switch overriding SYSTEM
+>>> > Error:
+>>> > No supported events found.
+>>> >
+>>> > Any ideas?
+>>>
+>>> Is it also broken in 7.0-rc3?  Or is this only a 6.19.y issue?
 
-[ Upstream commit 4c5c6aa9967dbe55bd017bb509885928d0f31206 ]
+It's broken in linus/master too.
 
-When calculating the lookup table size, ensure the following
-multiplication does not overflow:
+>> There was a fix:
+>> https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools- 
+>> next.git/commit/tools/perf/util/metricgroup.c?h=perf-tools- 
+>> next&id=c5a244bf17caf2de22f9e100832b75f72b31d3e6
+>> was that applied to 6.19.y?
+> 
+> It's not even upstream yet :)
 
-- desc->field_len[] maximum value is U8_MAX multiplied by
-  NFT_PIPAPO_GROUPS_PER_BYTE(f) that can be 2, worst case.
-- NFT_PIPAPO_BUCKETS(f->bb) is 2^8, worst case.
-- sizeof(unsigned long), from sizeof(*f->lt), lt in
-  struct nft_pipapo_field.
+Right. (And it fixes the issue.)
 
-Then, use check_mul_overflow() to multiply by bucket size and then use
-check_add_overflow() to the alignment for avx2 (if needed). Finally, add
-lt_size_check_overflow() helper and use it to consolidate this.
-
-While at it, replace leftover allocation using the GFP_KERNEL to
-GFP_KERNEL_ACCOUNT for consistency, in pipapo_resize().
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ Adjust context ]
-Signed-off-by: XiaoHua Wang <561399680@139.com>
----
- net/netfilter/nft_set_pipapo.c | 58 ++++++++++++++++++++++++++--------
- 1 file changed, 44 insertions(+), 14 deletions(-)
-
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index ad9d0bb43248..c90fb381bf7a 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -610,6 +610,30 @@ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
- 			 nft_genmask_cur(net), get_jiffies_64());
- }
- 
-+
-+/**
-+ * lt_calculate_size() - Get storage size for lookup table with overflow check
-+ * @groups:	Amount of bit groups
-+ * @bb:		Number of bits grouped together in lookup table buckets
-+ * @bsize:	Size of each bucket in lookup table, in longs
-+ *
-+ * Return: allocation size including alignment overhead, negative on overflow
-+ */
-+static ssize_t lt_calculate_size(unsigned int groups, unsigned int bb,
-+				 unsigned int bsize)
-+{
-+	ssize_t ret = groups * NFT_PIPAPO_BUCKETS(bb) * sizeof(long);
-+
-+	if (check_mul_overflow(ret, bsize, &ret))
-+		return -1;
-+	if (check_add_overflow(ret, NFT_PIPAPO_ALIGN_HEADROOM, &ret))
-+		return -1;
-+	if (ret > INT_MAX)
-+		return -1;
-+
-+	return ret;
-+}
-+
- /**
-  * pipapo_resize() - Resize lookup or mapping table, or both
-  * @f:		Field containing lookup and mapping tables
-@@ -628,6 +652,7 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
- 	union nft_pipapo_map_bucket *new_mt, *old_mt = f->mt;
- 	size_t new_bucket_size, copy;
- 	int group, bucket;
-+	ssize_t lt_size;
- 
- 	new_bucket_size = DIV_ROUND_UP(rules, BITS_PER_LONG);
- #ifdef NFT_PIPAPO_ALIGN
-@@ -643,10 +668,11 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
- 	else
- 		copy = new_bucket_size;
- 
--	new_lt = kvzalloc(f->groups * NFT_PIPAPO_BUCKETS(f->bb) *
--			  new_bucket_size * sizeof(*new_lt) +
--			  NFT_PIPAPO_ALIGN_HEADROOM,
--			  GFP_KERNEL);
-+	lt_size = lt_calculate_size(f->groups, f->bb, new_bucket_size);
-+	if (lt_size < 0)
-+		return -ENOMEM;
-+
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return -ENOMEM;
- 
-@@ -845,7 +871,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- {
- 	unsigned long *new_lt;
- 	int groups, bb;
--	size_t lt_size;
-+	ssize_t lt_size;
- 
- 	lt_size = f->groups * NFT_PIPAPO_BUCKETS(f->bb) * f->bsize *
- 		  sizeof(*f->lt);
-@@ -855,15 +881,17 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- 		groups = f->groups * 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_LARGE_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 	} else if (f->bb == NFT_PIPAPO_GROUP_BITS_LARGE_SET &&
- 		   lt_size < NFT_PIPAPO_LT_SIZE_LOW) {
- 		groups = f->groups / 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_SMALL_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 
- 		/* Don't increase group width if the resulting lookup table size
- 		 * would exceed the upper size threshold for a "small" set.
-@@ -874,7 +902,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- 		return;
- 	}
- 
--	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL_ACCOUNT);
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return;
- 
-@@ -1348,13 +1376,15 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 
- 	for (i = 0; i < old->field_count; i++) {
- 		unsigned long *new_lt;
-+		ssize_t lt_size;
- 
- 		memcpy(dst, src, offsetof(struct nft_pipapo_field, lt));
- 
--		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
--				  src->bsize * sizeof(*dst->lt) +
--				  NFT_PIPAPO_ALIGN_HEADROOM,
--				  GFP_KERNEL_ACCOUNT);
-+		lt_size = lt_calculate_size(src->groups, src->bb, src->bsize);
-+		if (lt_size < 0)
-+			goto out_lt;
-+
-+		new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 		if (!new_lt)
- 			goto out_lt;
- 
+thanks,
 -- 
-2.43.0
-
-
+js
+suse labs
 
