@@ -1,225 +1,163 @@
-Return-Path: <stable+bounces-224545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOvyCZ1lsGloigIAu9opvQ
-	(envelope-from <stable+bounces-224545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:40:29 +0100
+	id sJMiFxZpsGmNjAIAu9opvQ
+	(envelope-from <stable+bounces-224547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:55:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9223E2567DE
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:40:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021DF256BA6
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC051314F17F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:39:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D985730C234D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7E631A572;
-	Tue, 10 Mar 2026 18:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5683B7B91;
+	Tue, 10 Mar 2026 18:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="lmPwzUnv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buo0Tb5X"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5ED31A065;
-	Tue, 10 Mar 2026 18:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322C03C0639
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 18:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773167945; cv=none; b=m2OmVZzjevcR77JZV5/nl6iOzMdrjVEbizo/lSRsSW+rX0G3elqYg88lJqBlxpI2/mxP9YfoiC8LoFhcVeOjZc57m5V4IPHxKuNSQceHqOekNG3vHC+7NpPI5rN2QeC2AE23zzlTEIfHVog5YCE9Fx8cBIDATR1j1y4MFjZIE94=
+	t=1773168813; cv=none; b=OqBASiR/fl04v5USXUqkKfTxziu76gBKHm6iI4WI8Dc2SyCbmWCUiouzMwuMDTL1N+GQTwDd7F6rmXED+IdLRghgQFEbU4LyBodqpx7pnoiXsGXJMLPaiIX8Vcde2gnjJYg8w9NHQA5V98T/SEEUTe1VkwGK2heuVk4YITJKsFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773167945; c=relaxed/simple;
-	bh=A9j5b+rQvehAI7NL74S2TgM6Wg4Uf9+5xGABk0nrT3g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CfoNcQouje7MdOEdJGZDlvq6GONqJIyKIArBJseig25m4uud6tyd1cxR3a3dl5ONPyl5kOxCLAqewEJgy8uqlzc873NC1hRjdk1oxGBOi5lywQWISKRbQ7iU7aWBuea9PTLQVhlBRlIMOngt5YdGbVrb9N/GgJkVJk79qnnKrAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=lmPwzUnv; arc=none smtp.client-ip=44.245.243.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1773168813; c=relaxed/simple;
+	bh=C+YhAYa/zpX9wWGnavj5axbhk3T9OzYwmyrcso6nRMo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HHNeOifjxeGL/zE0JDXcpxcm9BKwrXqSEfyUg96nF7OBdFbNJaS11sWgeoXyZX9bRHV0GR47JV4V8O9UOl4rKoHmMvvVU1VJDqSYt3AIWmcmPsCevNxcvqv6q7Dj8smEjMhQ5PXM0AuPYKWp/XqppYjlXy4fnHa9XgZZxUL1g8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buo0Tb5X; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cd7ecedf2cso292281585a.3
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 11:53:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1773167944; x=1804703944;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vVjnwKHzMvt5HNbkq0uZWsIbyPr5V7v/G9NKgqI0neI=;
-  b=lmPwzUnvXelLnqpJqsouvs+mKXk38osHhIGC80f6yt6mSj3wDePwKS18
-   auYG9ZL6oJNdzWDNWo8n2WHNgIG7RhIYox844DF4K2aa719sE/skvsTEy
-   W63Onz+mvkR2A0WQufognVsAByokmN4+RefuMt1Fif1/DuEffzfeqd2LX
-   34fclsVnbZ/ppJMIpP6ManhBNXM6bBJmfXAIMquLW9nZmYtabylfgYKrS
-   z5PyF3YBwywpTyY6uOVDF2MxU8ruwLr3SXFIeac+GrGrhyid6GVlguPNv
-   z6T0o2lVQbC2VYDfKR47HMvYzomk6SQ/jBomu8WgHYdbN2NwsaqXjq6Vs
-   Q==;
-X-CSE-ConnectionGUID: Je/2pfdCQx6p8Wu2rlTgfA==
-X-CSE-MsgGUID: hIGc9hrdRi6q8VP2S86ucA==
-X-IronPort-AV: E=Sophos;i="6.23,112,1770595200"; 
-   d="scan'208";a="14264659"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 18:39:01 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:13189]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.33.152:2525] with esmtp (Farcaster)
- id e285a619-f1d8-4fda-8b32-bf3b74c52e60; Tue, 10 Mar 2026 18:39:00 +0000 (UTC)
-X-Farcaster-Flow-ID: e285a619-f1d8-4fda-8b32-bf3b74c52e60
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 10 Mar 2026 18:38:57 +0000
-Received: from c889f3b07a0a.amazon.com (10.106.82.15) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 10 Mar 2026 18:38:55 +0000
-From: Yuto Ohnuki <ytohnuki@amazon.com>
-To: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>
-CC: "Darrick J . Wong" <darrick.wong@oracle.com>, Brian Foster
-	<bfoster@redhat.com>, <linux-xfs@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Yuto Ohnuki <ytohnuki@amazon.com>,
-	<syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com>,
-	<stable@vger.kernel.org>, "Darrick J. Wong" <djwong@kernel.org>
-Subject: [PATCH v4 3/4] xfs: save ailp before dropping the AIL lock in push callbacks
-Date: Tue, 10 Mar 2026 18:38:39 +0000
-Message-ID: <20260310183835.89827-9-ytohnuki@amazon.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20260310183835.89827-6-ytohnuki@amazon.com>
-References: <20260310183835.89827-6-ytohnuki@amazon.com>
+        d=gmail.com; s=20230601; t=1773168808; x=1773773608; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FLQ8LDeGKXboJUnLLEJGwv7md1mGO7c1nRHDugs5XoI=;
+        b=buo0Tb5XFPMOr5o3YHwY07FgKunGAppXTs5J3OA4aA4gLfwCaWT47/YkHzXrHTvXFO
+         r3D2KCOimBMxTF2Zu9xZyQXDAv4JN0JLzzAfSbzWsD0tFTmft5QFe53uwDgHBJYk3lnZ
+         CT50o2O2gKA/5GdarXukfj5LGSFmOZ1EYqAs2JA2QI4fyWdF2uA+IAa0sXQZdQF/iXQO
+         x7zJEDqqn7MeVbr/Fu+8u+2LTVConCZndczGjZknOPAogFEMOeQO3UV1hvmXLGRgqoHs
+         xmpNf02k+dS2yyTtQ0mt7jM8oJOsa+84CTQyTaTk43MIKchwizled3lcx2Y5R3C2+tNX
+         Cupg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773168808; x=1773773608;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FLQ8LDeGKXboJUnLLEJGwv7md1mGO7c1nRHDugs5XoI=;
+        b=obeaZAZ604ccwnPs6NqNmOU7E0kSGebBUT+HcgfKZDgUSOpPC+NPWRHf7o1x9E4/M9
+         S/qvzHUVeAbH4hq2thEb0Xd9ucbQOig63TfXLbHzxLvmHpiWstYCr1gqjuHd6595hSQ4
+         ASpG5rePub7/3L2Hu9v1j8WYEd7N9p2Eqyz9VrHPWAHyK9hDGEJYi/qXIyevCwMobKCr
+         rUFgzVcRglR+W94XwLb8u6ZOZqg0GW0oc94lbenS39/hsRB8j3zO/ISby4i8IowsKwmE
+         r9bvR/0FT+3bzCNayoUzN5moOTOdYWY6GEcyeLjO6KCS9//W7fzRIb9sHW/TAOrf2xQH
+         cjGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVF4cQGlBswA+K7GljlfB7DHCwb9kizBYxM3JS8gA/SdukkT4iZ6Tp41QRaudShlqt4uX7vfw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvDdIz7etErks61ZP8Ir6jXOlXQZJ2jXyqoecQ08jS2yruoOkX
+	1ooJSQu/QlrpZA/Q3ezxJuocnBS4OLy07ttUBaM84ep3C9TvNceanXiN
+X-Gm-Gg: ATEYQzyrrxpOZblP0DewM/BpUilNbLd4vwpOJGP0J+tTIzxMggZbwcV/ElUqNTSeap0
+	tci5VRye19BF9tW4fy0Miuvttgnw9Hz+jSyw/24j4K1y4f03QYGSxYjXYI/CmWfwRWFnviUXGnX
+	ml11OgI0wtuD137hmttsPbgZX6rtA4QlZTxPRacCZfMqDA/39VAMfTDx8pQeH5d8aeAuStzrnKv
+	UhABZNsg7uSlMXv/dNyUKC6C9QgvSDGTldlviyTymoGzwK3LVaw3VWD8NYTCit24d9Q+JTro2X0
+	oPr6mY+9XxoEFUG4wIPqZbEbujMmK562F8oJmJv+NYIQHOzT/ib+51EIyvKWRCraDwKDzdhbaLm
+	vvyumDAOQg14QO576oefMigzGoocGdHMpGqT4SYPL0tNHWQUAeoiQIhpskBxOQl+BBmPRgMtuA1
+	iMgSzN9IZGWwywIvARSsnQIeNqM4vVbbPQIQ7B72C/UKtIKhkpcQ==
+X-Received: by 2002:a05:620a:27d0:b0:8cd:7547:712 with SMTP id af79cd13be357-8cd75470fbcmr1680711485a.76.1773168807908;
+        Tue, 10 Mar 2026 11:53:27 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda129d012sm12863785a.19.2026.03.10.11.53.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 11:53:27 -0700 (PDT)
+Message-ID: <8d14f8e4-26fb-4824-bf3a-4e8f8ff16dd5@gmail.com>
+Date: Tue, 10 Mar 2026 11:53:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D036UWC002.ant.amazon.com (10.13.139.242) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/314] 6.18.17-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <cover.1773141554.git.sashal@kernel.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9223E2567DE
+X-Rspamd-Queue-Id: 021DF256BA6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-6.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-224547-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224545-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ytohnuki@amazon.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-is dropped to perform buffer IO. Once the cluster buffer no longer
-protects the log item from reclaim, the log item may be freed by
-background reclaim or the dquot shrinker. The subsequent spin_lock()
-call dereferences lip->li_ailp, which is a use-after-free.
+On 3/10/26 04:19, Sasha Levin wrote:
+> 
+> This is the start of the stable review cycle for the 6.18.17 release.
+> There are 314 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu Mar 12 11:19:16 AM UTC 2026.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/rawdiff/?id=linux-6.18.y&id2=v6.18.16
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-Fix this by saving the ailp pointer in a local variable while the AIL
-lock is held and the log item is guaranteed to be valid.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-Cc: <stable@vger.kernel.org> # v5.9
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
----
- fs/xfs/xfs_dquot_item.c | 9 +++++++--
- fs/xfs/xfs_inode_item.c | 9 +++++++--
- 2 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/fs/xfs/xfs_dquot_item.c b/fs/xfs/xfs_dquot_item.c
-index 491e2a7053a3..65a0e69c3d08 100644
---- a/fs/xfs/xfs_dquot_item.c
-+++ b/fs/xfs/xfs_dquot_item.c
-@@ -125,6 +125,7 @@ xfs_qm_dquot_logitem_push(
- 	struct xfs_dq_logitem	*qlip = DQUOT_ITEM(lip);
- 	struct xfs_dquot	*dqp = qlip->qli_dquot;
- 	struct xfs_buf		*bp;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -153,7 +154,7 @@ xfs_qm_dquot_logitem_push(
- 		goto out_unlock;
- 	}
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	error = xfs_dquot_use_attached_buf(dqp, &bp);
- 	if (error == -EAGAIN) {
-@@ -172,9 +173,13 @@ xfs_qm_dquot_logitem_push(
- 			rval = XFS_ITEM_FLUSHING;
- 	}
- 	xfs_buf_relse(bp);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
- 
- out_relock_ail:
--	spin_lock(&lip->li_ailp->ail_lock);
-+	spin_lock(&ailp->ail_lock);
- out_unlock:
- 	mutex_unlock(&dqp->q_qlock);
- 	return rval;
-diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
-index 8913036b8024..4ae81eed0442 100644
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -746,6 +746,7 @@ xfs_inode_item_push(
- 	struct xfs_inode_log_item *iip = INODE_ITEM(lip);
- 	struct xfs_inode	*ip = iip->ili_inode;
- 	struct xfs_buf		*bp = lip->li_buf;
-+	struct xfs_ail		*ailp = lip->li_ailp;
- 	uint			rval = XFS_ITEM_SUCCESS;
- 	int			error;
- 
-@@ -771,7 +772,7 @@ xfs_inode_item_push(
- 	if (!xfs_buf_trylock(bp))
- 		return XFS_ITEM_LOCKED;
- 
--	spin_unlock(&lip->li_ailp->ail_lock);
-+	spin_unlock(&ailp->ail_lock);
- 
- 	/*
- 	 * We need to hold a reference for flushing the cluster buffer as it may
-@@ -795,7 +796,11 @@ xfs_inode_item_push(
- 		rval = XFS_ITEM_LOCKED;
- 	}
- 
--	spin_lock(&lip->li_ailp->ail_lock);
-+	/*
-+	 * The buffer no longer protects the log item from reclaim, so
-+	 * do not reference lip after this point.
-+	 */
-+	spin_lock(&ailp->ail_lock);
- 	return rval;
- }
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.50.1
-
-
-
-
-Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
-
-Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
-
-
-
+Florian
 
