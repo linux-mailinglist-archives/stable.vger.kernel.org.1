@@ -1,281 +1,354 @@
-Return-Path: <stable+bounces-223779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBFnC0nOr2kfcgIAu9opvQ
-	(envelope-from <stable+bounces-223779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:54:49 +0100
+	id EI0AEnzOr2kfcgIAu9opvQ
+	(envelope-from <stable+bounces-223780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:55:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9519246AF3
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930E5246B28
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40188303299B
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 07:54:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D924F3032774
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 07:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0862E364EBA;
-	Tue, 10 Mar 2026 07:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28963364EA5;
+	Tue, 10 Mar 2026 07:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q2LeOYx8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XMczXr1f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fu5SWn+v"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86795362127
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 07:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96111364954
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 07:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773129284; cv=none; b=UF7kx3mktBwGbaaGoSwlxWdCK8BVI694sSSh8nDRpXP1FinR3btyGgdUyDVVcccW5+16e9+mTXKx6bOWWUxsHhxH1yPkwlGD4Ej1l7rlr+GhtFPea+3IOP11XG3W56Uy+G1rJR2xvJV/Rl2HeexNqD4zQ7W9iMRj5cGnlwuDNsU=
+	t=1773129300; cv=none; b=kfsIW6Q5DmM2SkzDWiZ2rMMDxZ1aHA17JFeiiYNq9pCga35H6L1I3+NGlrAGibkbfeecXfNxQCEiWOUrsj4qj8YqmlRJ+kN73Qr//CX18mq7QPrSB0dnrsJ1fgON1XakQ/SdhABZaiXfSDlhbhNfVHEWhdIYHT6b/kmTHUCMQnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773129284; c=relaxed/simple;
-	bh=gNInfhjd6MISyIxpaQFrR/jdhlcl9F16klySSUxMkGk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CbHXs4J//xNlvaJD8T9YNAD34S5W4GDz71itl2KFUQqhO7mguKofdcCmFOxYlbKEMGbOJzZtXNjO2Fjaed/obosDsBAF5ADNX3I96mQfwMxTVNmz17uVywlh8DrXtJ8d4piQqpmeh4y+bowNahoMENOvkHsezEeUJ/7+ipLhqaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q2LeOYx8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XMczXr1f; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A2EI0r2362950
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 07:54:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=+0oCbgUSnbR1XCQY05IPXN3M
-	te7+uEnIM7kPBZI0/2M=; b=Q2LeOYx8VRu5+XO2x+zpD/h1ScmVF3mIRHF+m44H
-	Hl49ara2cSreUZQQ6elDA7NLKjHl4UE1fnRBkt7SumHsn5MYUZUckYlPjTiflhvi
-	x+oSdV4oolnDKjw6+m/SsqZnrGMawLPTuDdMt/z6TeYYFsS88qG4w4uoXLMzMbi0
-	C00jyyvgYU7pcY1qArmz/CtxZ3oDzaeBbCHML3q8ulysz3FlyqLJ+N60Sh/XWVgf
-	Gk6koNnFi0ZLVCOGSa2j0MCzi2IOQeIj6NRZKSGaLrkVp2eke1M+YR+trtei1d6F
-	xZcrEg86nTWSmkMkhZ+ANnxyerG/Ezn/KI3MMvo57GQAhQ==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ct032b5f3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 07:54:42 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-829ad972df6so1466754b3a.3
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 00:54:42 -0700 (PDT)
+	s=arc-20240116; t=1773129300; c=relaxed/simple;
+	bh=EIPl/s34jrAmGYpuXVIZW16E7Jf/p7GwvfRwqQMJ0pA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qLaMU0yBRrGPLiQBH+lo+GzI0Ctiej9gby0Z/ZC9Jg+G1O9I30IiD1mU9kWHxyhtdaB7WEmMTeRmkQi80sSjC1/5c6WxDHLn1QGtr/SKQmyNflTmm8yu/ks9b/5Q3veNM/6SMJ/5HmvkbEXWw4SqJLjN7JhnAZuazVNj9nvu3hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fu5SWn+v; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-829a27414a3so2159618b3a.3
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 00:54:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773129282; x=1773734082; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0oCbgUSnbR1XCQY05IPXN3Mte7+uEnIM7kPBZI0/2M=;
-        b=XMczXr1fPF6FuvxKlUvVmTs0yXBYJpl0X/Xx1T4n61GYCVwbUM2gOhGvhky83H2OL/
-         /xr+YY2xsovfX5JpHsNkVwwWlm7gxHn9Ekwt+inNFbhnFTnSs/Q9ZwUcMHEFAmdl3flX
-         p1o/CkLF1cWf3g2ome8Xza1MMkoLok2ZjjysdNUXYP+xVN9hnXYrmIEOL9QXZzfx8Tdq
-         Tzw5Zxw2oFutUdRzmiHatxb72B+6NviLY/I1Y5BHhG/zmv7QdRa0umxNYpCxzcqi/ZAs
-         5tD+JDqutSijKSRunOYMu0hOd9lCj4Zri/GRyiF9edb43Idy7ZDhTl55vVKBdkVAfev4
-         TbgQ==
+        d=gmail.com; s=20230601; t=1773129299; x=1773734099; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MeGJ6/I7dDVsZynsQyzX66bp2Bn9p9ixrGY7BHboZCM=;
+        b=fu5SWn+vTIkoNQ4YeL0CvdQAZUsjGFkOYYgrXYJaUNEeD4TLZ30wX2rJn1jXUCL1Yd
+         LSuTZb3uid3Zy0gd97vZSPxbmAiJG+venJChWV9g5FtrAyO5/OlYWNSCtlb90UrMuCEE
+         WDexVagKtlXwekNOljk+SJnjccg6KaNArr6QgAekUlWyvnF4FcQTndxcDe77tcLHY2eP
+         16f50FuQQegoRAp0ZOSoK67t9yGIDAbFdbqCeFMN+CyvWLTFX/Mw22gdOMbxWsqOv1gW
+         DrYi5HZBaypo0jDTRBqB2uNAYp2DSAX3ez2+Xi/kZUJ9ugEfjoxMi75Hbdt1nVgLc+ja
+         vZ8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773129282; x=1773734082;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+0oCbgUSnbR1XCQY05IPXN3Mte7+uEnIM7kPBZI0/2M=;
-        b=NAjsa75p64elmqPJ+Ct7Qjpg92Lmf8rZ+/Uy9ctaiopa5Eu2W07AbJrM6dJm0M5KUO
-         yuwRVsSCkEGQP/lcJUgL9sS4uBm91naclbETRnV3caTokyAPZlCiCfV0/G5Dhr4H0pJG
-         Oytr0VRVm6QFssYfn6qL8vCmR7Wpcsm3KpsSdci9aDfARB/vFRnbVojCPVIPQDZ1HLKo
-         2WKMG6yrmRz3GZt7aLh5yITfMhah1zDP4Q1jAnihE4lu0hi0GfvFLw8Om4osdEXZHbD8
-         AKtTpA1YVx6LyTixmBYjElXQuFeZosMsLgRgvf69Pfe8yx9K1xtYaLdCtBeSWxlr2ffL
-         UB3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXHQ/JnAyRYVOm+Hr7Epczxk+6mtxvm6Kz1Xh2oC3y/P10N2NrOMg/bq3YAewK94H4SCNbWewA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWlh1WXh096srq1TuCeq1w2Qs9tdwa5GKTPrce1MDAKobmAbEI
-	1KAy1Jhl1Kj0Z0RWqD9MDW2It/qNBQKowlZ0c3jNAGym7zl+/X/jsmnLwhGRtRQ5kA0VSACV05Q
-	UwRit8AzV+c1I7MQ0urV9jrEnheoMTGNXyD8e4cxS0LdbB6+YdFQ/vRu4Qmw=
-X-Gm-Gg: ATEYQzxRUMpRCmyMOPi8XjVTghlRRzUhrVflOgts261gJIh1WYtWdHhhN8EF+J/L8jL
-	/Ft0H2hWDgQlWDBFBsiXVRKoVos6YoIne1HMLOkY4Sh0/atcp3vdhN1esMBUjmvrwJ9Lj9YTarQ
-	PIAsBo4nZ9Ho5ddiKLCzL+l5TAi3Kzh61y61Cr6LVTO8V18Xok5wYSihljHIf2uZEEDQ4N4ommE
-	3wk0sUlVp0mqBcE9tF8TSaQK9aMU+Cs1YT+bL4NMBVwpa/sUH8ip/C0hHUYCTczxw2U/hIxdXo7
-	Fw6RMrYwFerdJicP1iDCO7Bs/J4JSKa8IMVt2xqWu9c65kdN77Hy9SXj4jR6Nv9yi99ZXfB8+kr
-	pNQnQfewrdZkwk5m3UmgnwIDyMg0pxRph2EBGrFiVgGTV4aBm
-X-Received: by 2002:a05:6a00:2e15:b0:823:f96:63bb with SMTP id d2e1a72fcca58-829a2f8be9amr13946865b3a.52.1773129282128;
-        Tue, 10 Mar 2026 00:54:42 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2e15:b0:823:f96:63bb with SMTP id d2e1a72fcca58-829a2f8be9amr13946849b3a.52.1773129281470;
-        Tue, 10 Mar 2026 00:54:41 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a4635d62sm13060340b3a.5.2026.03.10.00.54.38
+        d=1e100.net; s=20230601; t=1773129299; x=1773734099;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MeGJ6/I7dDVsZynsQyzX66bp2Bn9p9ixrGY7BHboZCM=;
+        b=c9yt9SEQkIyMiLaQURTOtsT72E9vKtbrr4U2XG8onnxzgxlISp/rwCYzJTI//+n0Nz
+         RVqzuAxvI5Fuqz1fzbLchvLwv4FeE2xYWZ/HLLo/0Ja2sqX9TthueWVqHlwxg9vPU29J
+         ZfqQw+KbcHTkoJtyRFUpfc8qqgxlaN6z+KsyUw+P4/WS+DOIXYVyR8IjIajJo3wTegqD
+         DTGu3hYS8AKUT6FJmu2ilB+fi8bDGmPWSaEJmS3pojnjQfdloj4s7sOfWn3YhVEo+hlD
+         GS3Q0WF9AeTCcEQK9HKZqb2Dvpo8hOP/RaqaIb8AthwqiEpNjvKPBu2jqta8tx2DT7Zg
+         2I9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU/Sw+HnECOI8lm9BXCvCmcIRXro4q1+I5eR6CXQpVyCSvSXOYmWoBtuhvEemofskWpkVzVms8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtJV3PBUquI3zBeKUIy0hGjmtyMTZ/Hqfe8B2Sxf0rNadOyoxO
+	t0+ay0cTX5cskWkiKJkeYgN3T7XdhaUYolU4noo+rG1snMKdnrZjSKtW
+X-Gm-Gg: ATEYQzzuPkz1T9NexAkZuI8WBgYquWRvdPfVxdXtDZKOF72gwGMzM/q9Z9YXcj++BXW
+	Wm0Iq8SqqX7hkDFKQKzV7wdru7hEeL7gU+hO1GqGuER+JHK3UNJMZSVTbkvVfytn3I5AG6vrmDg
+	pCTvMZCCOmvwPpGcOLIiZWj8MZOe7pr67wyk4iE6Q0K1CfjnYbDpdV0CsemzoBJbvNcCSC3VFuu
+	dFDAQiStGiJlPaqLe+g0VlHh2z2fPBBiswqs8UAxNf1PMcP2TlJDodMiN4nnqteb3I/EzYQAUq9
+	2b4C6RrJjyODBBNzvGZFNuI3JxRrZEKW/rfckzMATX28H+3UKbAlFUQO2eU/ZdfI80ZSv+Pofiz
+	javktF/F7M5/MYiJDK1tyFoguqJ9WHp+y9xCc+NkAFXeJam60gPTWyLcYFJejw0p2ifd+trYfVx
+	VNJfJrqobFd8q4ZlmUZgtkNEgl42AcP7OiS7y+TBzL8jtEGIAY5fMNKlmldrxOFwIJWlAONA==
+X-Received: by 2002:a05:6a00:2d1e:b0:827:32c1:a1cc with SMTP id d2e1a72fcca58-829a2f4fd83mr11578207b3a.42.1773129298723;
+        Tue, 10 Mar 2026 00:54:58 -0700 (PDT)
+Received: from kernel-fuzz.. ([138.199.21.245])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a48b2c41sm12433318b3a.54.2026.03.10.00.54.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 00:54:41 -0700 (PDT)
-Date: Tue, 10 Mar 2026 13:24:35 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5/7] slimbus: qcom-ngd-ctrl: Initialize controller
- resources in controller
-Message-ID: <20260310075435.sshej5qbahcyjxti@hu-mojha-hyd.qualcomm.com>
-References: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
- <20260309-slim-ngd-dev-v1-5-5843e3ed62a3@oss.qualcomm.com>
+        Tue, 10 Mar 2026 00:54:58 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: dsterba@suse.com,
+	clm@fb.com,
+	wqu@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: reloc: unlink orphan reloc roots before dropping them
+Date: Tue, 10 Mar 2026 15:54:47 +0800
+Message-ID: <20260310075447.2088205-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309-slim-ngd-dev-v1-5-5843e3ed62a3@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA2NSBTYWx0ZWRfXxRgHWUugk8j6
- ADv98dOPp/XYAAWeW+GMTLW3gzgGvcdxLQYLDNJhyQ84afqkiBYpnWrcTPx3XlwP7S6LV5JV8mD
- +MT2joMucyXLd2xlvIpyl8+5Wy7DpKqHzV4T/DIZ53wtp+hsd8LGOPCcLdHlb3+0sK4wt2VVFCD
- /sAeIkp7bpjiDLhLRiQFiLKROA7DtE/hW/57x2IeZddwMRxhhg8U1pAb4y+cW92lIEpcYNCnuVd
- mda2AvrEUcr/EVSOeFTz6fs4emonQ/aDbOW14V94MtIlCELlT+Mt7poXoeCXMvxK1DTfz6mVVmI
- /JP+4bad7e6f4hv4S/ZZ9T+a216ci+GUWJ+ZKOhROSA20i370IQkjSvG/8if6WSA/UST6dcQ5LO
- vSMSc74nwsHhAW1w4OCvNTC8A813FvLxbY9ul1PGCoSNHYNxuNrYt0Y2WXiTfPWd2S36CNMbUSk
- yqK4wfhnF+E9BVTprQg==
-X-Proofpoint-ORIG-GUID: AroHuEh-g4hh5OxCkZEo9CQrFHig1Nss
-X-Proofpoint-GUID: AroHuEh-g4hh5OxCkZEo9CQrFHig1Nss
-X-Authority-Analysis: v=2.4 cv=WtEm8Nfv c=1 sm=1 tr=0 ts=69afce42 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=gbuOVpkGrxRoZeIW0QkA:9 a=CjuIK1q_8ugA:10
- a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100065
-X-Rspamd-Queue-Id: C9519246AF3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 930E5246B28
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email,hu-mojha-hyd.qualcomm.com:mid,oss.qualcomm.com:dkim];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-223780-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223779-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mukesh.ojha@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 11:09:06PM -0500, Bjorn Andersson wrote:
-> The work structs and work queue are controller resources, create and
-> destroy them in the controller context. Creating them as part of the
-> child device's probe path seems to be okay now that the controller's
-> probe has been updated, but if for some reason the child does not probe
-> successfully a SSR or PDR notification will schedule_work() on an
-> uninitialized "ngd_up_work".
-> 
-> Move the initialization of these controller resources to the controller
-> probe function to avoid any issues, and to clarify the ownership.
-> 
-> Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-> ---
->  drivers/slimbus/qcom-ngd-ctrl.c | 38 ++++++++++++++++----------------------
->  1 file changed, 16 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-> index 76944c515291a62fb9cb192bec5cd5c2caa542f4..d932f7fd6170773890f561e3af444ac2c5730338 100644
-> --- a/drivers/slimbus/qcom-ngd-ctrl.c
-> +++ b/drivers/slimbus/qcom-ngd-ctrl.c
-> @@ -1584,25 +1584,8 @@ static int qcom_slim_ngd_probe(struct platform_device *pdev)
->  	pm_runtime_enable(dev);
->  	pm_runtime_get_noresume(dev);
->  	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
-> -	if (ret) {
-> +	if (ret)
->  		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
-> -		return ret;
-> -	}
-> -
-> -	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
-> -	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
-> -	ctrl->mwq = create_singlethread_workqueue("ngd_master");
-> -	if (!ctrl->mwq) {
-> -		dev_err(&pdev->dev, "Failed to start master worker\n");
-> -		ret = -ENOMEM;
-> -		goto wq_err;
-> -	}
-> -
-> -	return 0;
-> -wq_err:
-> -	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
-> -	if (ctrl->mwq)
-> -		destroy_workqueue(ctrl->mwq);
->  
->  	return ret;
->  }
-> @@ -1649,9 +1632,18 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
->  	init_completion(&ctrl->qmi.qmi_comp);
->  	init_completion(&ctrl->qmi_up);
->  
-> +	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
-> +	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
-> +
-> +	ctrl->mwq = create_singlethread_workqueue("ngd_master");
-> +	if (!ctrl->mwq)
-> +		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
-> +
->  	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
-> -	if (IS_ERR(ctrl->pdr))
-> -		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-> +	if (IS_ERR(ctrl->pdr)) {
-> +		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-> +		goto err_destroy_mwq;
-> +	}
->  
->  	ret = of_qcom_slim_ngd_register(dev, ctrl);
->  	if (ret)
-> @@ -1685,6 +1677,8 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
->  	qcom_slim_ngd_unregister(ctrl);
->  err_pdr_release:
->  	pdr_handle_release(ctrl->pdr);
-> +err_destroy_mwq:
-> +	destroy_workqueue(ctrl->mwq);
->  
->  	return ret;
->  }
-> @@ -1697,6 +1691,8 @@ static void qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
->  	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
->  
->  	qcom_slim_ngd_unregister(ctrl);
-> +
-> +	destroy_workqueue(ctrl->mwq);
->  }
->  
->  static void qcom_slim_ngd_remove(struct platform_device *pdev)
-> @@ -1707,8 +1703,6 @@ static void qcom_slim_ngd_remove(struct platform_device *pdev)
->  	qcom_slim_ngd_enable(ctrl, false);
->  	qcom_slim_ngd_exit_dma(ctrl);
->  	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
-> -	if (ctrl->mwq)
-> -		destroy_workqueue(ctrl->mwq);
->  
->  	kfree(ctrl->ngd);
->  	ctrl->ngd = NULL;
+clean_dirty_subvols() walks rc->dirty_subvol_roots during relocation
+recovery at mount time. That list can contain both normal subvolume
+roots and orphan relocation roots.
 
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+For normal subvolume roots, clean_dirty_subvols() first removes
+root->reloc_dirty_list from rc->dirty_subvol_roots and then drops the
+associated relocation tree. But for orphan relocation roots it directly
+calls btrfs_drop_snapshot(root, false, true) without unlinking
+root->reloc_dirty_list first.
 
-> 
-> -- 
-> 2.51.0
-> 
+This leaves a freed btrfs_root still linked in rc->dirty_subvol_roots.
+Later list_del_init() on a neighboring entry writes through that stale
+list node, triggering a slab-use-after-free in clean_dirty_subvols().
 
+Fix this by removing orphan relocation roots from
+rc->dirty_subvol_roots before calling btrfs_drop_snapshot().
+
+The bug is reproducible on 7.0.0-rc2-next-20260309 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime. After
+the fix, orphan relocation roots are removed from the dirty_subvol_roots
+list before they can be freed, so the recovery path no longer writes
+into freed memory.
+
+Fixes: 30d40577e322 ("btrfs: reloc: Also queue orphan reloc tree for cleanup to avoid BUG_ON()")
+Cc: stable@vger.kernel.org # 5.1+
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+Root cause
+==========
+clean_dirty_subvols() walks rc->dirty_subvol_roots, which can contain
+both normal subvolume roots and orphan relocation roots.
+
+For normal roots, it first removes root->reloc_dirty_list from the list
+before dropping the related relocation tree. But for orphan relocation
+roots it calls btrfs_drop_snapshot(root, false, true) directly, without
+unlinking root->reloc_dirty_list first.
+
+btrfs_drop_snapshot() can free the last reference to root via
+btrfs_put_root(), leaving a freed btrfs_root still linked in
+rc->dirty_subvol_roots. Later list_del_init() on a neighboring entry
+writes through that stale list node and triggers the slab-use-after-free.
+
+Reproduction (v6.18, x86_64, KASAN)
+===================================
+The PoC is relatively large, so it is provided separately through google drive:
+https://drive.google.com/drive/folders/1-e2ynmoQ4JzWs4F-jMtndh5pe3Vce2Zm
+
+To reproduce the issue:
+  1. Build the ublk helper program from the ublk codebase, which is
+	 used to provide the runtime corruption capability:
+	  g++ -std=c++20 -fcoroutines -O2 -o standalone_replay \
+      standalone_replay_btrfs.cpp targets/ublksrv_tgt.cpp \
+      -I. -Iinclude -Itargets/include \
+      -L./lib/.libs -lublksrv -luring -lpthread
+  2. Attach the crafted image through ublk:
+      ./standalone_replay add -t loop -f /path/to/image
+  3. Mount the image:
+	  mount -o loop /path/to/image /mnt
+This reliably reproduces the bug.
+
+Fix
+===
+Remove orphan relocation roots from rc->dirty_subvol_roots before
+calling btrfs_drop_snapshot() on them.
+
+That restores the normal list lifetime rule:
+  unlink from external containers first,
+  then allow the final put/free to happen.
+
+This is a minimal fix. Since both branches now call
+list_del_init(&root->reloc_dirty_list), it may be possible to move the
+unlink before the if/else and simplify the flow. I left that out here to
+avoid changing more than needed, but I can respin the patch that way if
+preferred.
+
+KASAN reports
+=============
+BUG: KASAN: slab-use-after-free in __list_del include/linux/list.h:204 [inline]
+BUG: KASAN: slab-use-after-free in __list_del_entry include/linux/list.h:226 [inline]
+BUG: KASAN: slab-use-after-free in list_del_init include/linux/list.h:295 [inline]
+BUG: KASAN: slab-use-after-free in clean_dirty_subvols+0x2dc/0x350 fs/btrfs/relocation.c:1472
+Write of size 8 at addr ffff888014172838 by task syz-executor/265
+
+CPU: 1 UID: 0 PID: 265 Comm: syz-executor Not tainted 6.18.0+ #14 PREEMPT(voluntary) 
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xd1/0x650 mm/kasan/report.c:482
+ kasan_report+0xfb/0x140 mm/kasan/report.c:595
+ __asan_report_store8_noabort+0x17/0x30 mm/kasan/report_generic.c:386
+ __list_del include/linux/list.h:204 [inline]
+ __list_del_entry include/linux/list.h:226 [inline]
+ list_del_init include/linux/list.h:295 [inline]
+ clean_dirty_subvols+0x2dc/0x350 fs/btrfs/relocation.c:1472
+ btrfs_recover_relocation+0xe64/0x11d0 fs/btrfs/relocation.c:4207
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ x64_sys_call+0x1a7d/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7dcca37a8fde
+Code: 0f 1f 40 00 48 c7 c2 b0 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc521c2e08 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007ffc521c31b0 RCX: 00007dcca37a8fde
+RDX: 00007ffc521c35d0 RSI: 00007ffc521c31b0 RDI: 00007dcca3865d4f
+RBP: 00007dcca3865d4f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000400 R11: 0000000000000246 R12: 00007ffc521c35d0
+R13: 00007dcca3865dde R14: 00000000ffffffff R15: 585858582e7a7973
+ </TASK>
+
+Allocated by task 265:
+ kasan_save_stack+0x39/0x70 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:77
+ kasan_save_alloc_info+0x37/0x60 mm/kasan/generic.c:573
+ poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+ __kasan_kmalloc+0xc3/0xd0 mm/kasan/common.c:417
+ kasan_kmalloc include/linux/kasan.h:262 [inline]
+ __kmalloc_cache_noprof+0x25f/0x800 mm/slub.c:5771
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ btrfs_alloc_root+0xb6/0xd20 fs/btrfs/disk-io.c:643
+ read_tree_root_path+0x15d/0xaa0 fs/btrfs/disk-io.c:1025
+ btrfs_read_tree_root+0x42/0x70 fs/btrfs/disk-io.c:1086
+ btrfs_recover_relocation+0x298/0x11d0 fs/btrfs/relocation.c:4104
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ x64_sys_call+0x1a7d/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 265:
+ kasan_save_stack+0x39/0x70 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x40 mm/kasan/common.c:77
+ __kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x6f/0xa0 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2543 [inline]
+ slab_free mm/slub.c:6642 [inline]
+ kfree+0x2bf/0x6b0 mm/slub.c:6849
+ btrfs_put_root fs/btrfs/disk-io.c:1851 [inline]
+ btrfs_put_root+0x1f7/0x2f0 fs/btrfs/disk-io.c:1832
+ btrfs_drop_snapshot+0x1e78/0x2a60 fs/btrfs/extent-tree.c:6286
+ clean_dirty_subvols+0x23e/0x350 fs/btrfs/relocation.c:1496
+ btrfs_recover_relocation+0xe64/0x11d0 fs/btrfs/relocation.c:4207
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ x64_sys_call+0x1a7d/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:166
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The buggy address belongs to the object at ffff888014172000
+ which belongs to the cache kmalloc-rnd-06-4k of size 4096
+The buggy address is located 2104 bytes inside of
+ freed 4096-byte region [ffff888014172000, ffff888014173000)
+---
+ fs/btrfs/relocation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 0765e06d00b8..2bff2db7afbd 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -1492,7 +1492,8 @@ static int clean_dirty_subvols(struct reloc_control *rc)
+ 			}
+ 			btrfs_put_root(root);
+ 		} else {
+-			/* Orphan reloc tree, just clean it up */
++			/* Orphan reloc tree, unlink it first and clean it up */
++			list_del_init(&root->reloc_dirty_list);
+ 			ret2 = btrfs_drop_snapshot(root, false, true);
+ 			if (ret2 < 0) {
+ 				btrfs_put_root(root);
 -- 
--Mukesh Ojha
+2.43.0
+
 
