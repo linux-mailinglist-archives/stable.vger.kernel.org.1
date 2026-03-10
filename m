@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-224315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JM6KiUDsGnOeQIAu9opvQ
-	(envelope-from <stable+bounces-224315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:40:21 +0100
+	id uPMgEHsBsGnOeQIAu9opvQ
+	(envelope-from <stable+bounces-224316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:33:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458E224B435
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:40:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CB424AF6B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5C6730C4553
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:27:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA20E3049328
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423F638A716;
-	Tue, 10 Mar 2026 11:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6523838A714;
+	Tue, 10 Mar 2026 11:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwQzP64a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OldCqp34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0436833A9C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CBD3876A1;
 	Tue, 10 Mar 2026 11:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142010; cv=none; b=paSkx7csA/nmb0CB6vbewDSQykGAFEXhGQ7mfrep7S1xyCHNgP8JPhJZnJa9J6nrUwbMMXLlfrQQoUIcXEdGj7ewM359pVVQmNos7C6n10GwtPR5jxYRJj3gh+z0KPZasmqb2UDwknwy18HvbBRr8WjTVoL96wwBDExhU1mhSJM=
+	t=1773142011; cv=none; b=WVXI+KqLUGfqIRcu4ajnZo8A+aotSKrIcgnP9RmaypXOOQt1svO11vMFAzSkDAMPlnNbC4+zbK0zNqDqfoxpNIO5tG9sn30NPry9gvZ2iUgSn/BzPuS2SFxUvBAmpifpvo/btx/MmaO2YEzzh5MN1oG3f7ui7GxiKqaS0mNIpMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142010; c=relaxed/simple;
-	bh=jt85BVncvHIdkZiZ2NEjZThQNdp77XXPatolFkMZ2rM=;
+	s=arc-20240116; t=1773142011; c=relaxed/simple;
+	bh=m9qQSJnBS9HbeKpzrLF9MpZxwn/Dc0SqwJ2wbcRHEEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mxhlyq5mK7TzCxRfmd6P7588MNnyg8i1gEOlwLNHT4sbJTZzk9KZax/RqX9oxhmMZZNml40LkOnqoLti6UC72eia8dIVLHGYPwd/tLA/+5qwDiqLJVUxSlmdHTAedBCd8gAQVUC58l3KWUORgdJ8P5eiroSmE4sasA5IpJfr0wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwQzP64a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D21CC19423;
-	Tue, 10 Mar 2026 11:26:49 +0000 (UTC)
+	 MIME-Version; b=iX3M+y8QzQtzTPi/h2j92OzNQINCS0zY1jQ7BTLwWbbPIWrIr5IFZVPGEIRhq6vm8QsnDIgWXf+AvkElk6/m0sEsbH7g79TfO93gBG3KCU+F0+a1znnvYfDpg11FTkSO0Nygpj/OYByAcDwTU+cytOt6ptgpOMcxuLoLruAwexw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OldCqp34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216CEC2BC86;
+	Tue, 10 Mar 2026 11:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142009;
-	bh=jt85BVncvHIdkZiZ2NEjZThQNdp77XXPatolFkMZ2rM=;
+	s=k20201202; t=1773142010;
+	bh=m9qQSJnBS9HbeKpzrLF9MpZxwn/Dc0SqwJ2wbcRHEEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YwQzP64aMhsvZrBVMPnKd/UhH8Uyhu9Q11POZn02brmvS2S2/wPVkYoezAQxO7C5T
-	 P6g5Zi/QhvDXXm8qDyE1IvcwuPEpI2Qh/lvcQyU+6Rgmxq7EOoCjHuZ7QtB32T/JEU
-	 EMoRSDdJQXbgULp3pvoU3WkwOpQUAkpdtDGk4WB5MGLJxuwQ6ymVo62xncK404KFtW
-	 Iv+7j2TMD0qcnBQ9LgnRkBgUKTCoJiE0uGcYSf9j/UgqsEiBd8mWlfkYP7itzS4dX5
-	 hoLGH/3YkEfjrmE5mQI0bhJLtDRXl78gd0h7gUoCaa8ls0nqZa8WI0epn5UN4zfkrM
-	 Ro7B+gOysZfQQ==
+	b=OldCqp34HLx+l5uoqEjSe1g8Ue1fjpjO8q7qGUNHv7f879yh49UTEtKoFD456Z9Kh
+	 KWYEsRq1B0qGsLjVZFBNEM964aDBt/ayr9+yIH9EIBXpTuj7E0oQckxnYHp979M+tK
+	 d5eoj206vkbr6HEsyVgVdjGZGM0mg7JlDrZsv4jGiFviY9hbJQPVZUrzSZ4wTHyDDQ
+	 3qiCHoLd0R3jvHur04ntQx+rH3t4j8wAdRLhrS+IAO/74pHvgl1j3Aqzl3DRhRVmYi
+	 Y+BUYJx/gInCJ5sTtmYuRYJo/Os+kllwAR3X62obSxLLiid+GmWKCNRXvAkGBbBdOz
+	 +etpSqhLybreQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Petko Manolov <petkan@nucleusys.com>,
-	stable <stable@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 136/314] net: usb: pegasus: validate USB endpoints
-Date: Tue, 10 Mar 2026 07:16:35 -0400
-Message-ID: <7e8e1e56a1a9f2349d5d7ff1d65381bd4a2095fc.1773141555.git.sashal@kernel.org>
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@kernel.org
+Subject: [PATCH 6.18 137/314] can: ems_usb: ems_usb_read_bulk_callback(): check the proper length of a message
+Date: Tue, 10 Mar 2026 07:16:36 -0400
+Message-ID: <e9f48599f902ac0207bb68a73fcab0d379dd61cd.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -66,96 +66,88 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 458E224B435
+X-Rspamd-Queue-Id: D6CB424AF6B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-224316-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224315-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,nucleusys.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 11de1d3ae5565ed22ef1f89d73d8f2d00322c699 upstream.
+commit 38a01c9700b0dcafe97dfa9dc7531bf4a245deff upstream.
 
-The pegasus driver should validate that the device it is probing has the
-proper number and types of USB endpoints it is expecting before it binds
-to it.  If a malicious device were to not have the same urbs the driver
-will crash later on when it blindly accesses these endpoints.
+When looking at the data in a USB urb, the actual_length is the size of
+the buffer passed to the driver, not the transfer_buffer_length which is
+set by the driver as the max size of the buffer.
 
-Cc: Petko Manolov <petkan@nucleusys.com>
-Cc: stable <stable@kernel.org>
+When parsing the messages in ems_usb_read_bulk_callback() properly check
+the size both at the beginning of parsing the message to make sure it is
+big enough for the expected structure, and at the end of the message to
+make sure we don't overflow past the end of the buffer for the next
+message.
+
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022347-legibly-attest-cc5c@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/2026022316-answering-strainer-a5db@gregkh
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/pegasus.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/ems_usb.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
-index 0f16a133c75d1..475b066081c7f 100644
---- a/drivers/net/usb/pegasus.c
-+++ b/drivers/net/usb/pegasus.c
-@@ -815,8 +815,19 @@ static void unlink_all_urbs(pegasus_t *pegasus)
+diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
+index fac8ac79df59f..d8c881130e900 100644
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -445,6 +445,11 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
+ 		start = CPC_HEADER_SIZE;
  
- static int alloc_urbs(pegasus_t *pegasus)
- {
-+	static const u8 bulk_ep_addr[] = {
-+		1 | USB_DIR_IN,
-+		2 | USB_DIR_OUT,
-+		0};
-+	static const u8 int_ep_addr[] = {
-+		3 | USB_DIR_IN,
-+		0};
- 	int res = -ENOMEM;
- 
-+	if (!usb_check_bulk_endpoints(pegasus->intf, bulk_ep_addr) ||
-+	    !usb_check_int_endpoints(pegasus->intf, int_ep_addr))
-+		return -ENODEV;
+ 		while (msg_count) {
++			if (start + CPC_MSG_HEADER_LEN > urb->actual_length) {
++				netdev_err(netdev, "format error\n");
++				break;
++			}
 +
- 	pegasus->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!pegasus->rx_urb) {
- 		return res;
-@@ -1171,6 +1182,7 @@ static int pegasus_probe(struct usb_interface *intf,
+ 			msg = (struct ems_cpc_msg *)&ibuf[start];
  
- 	pegasus = netdev_priv(net);
- 	pegasus->dev_index = dev_index;
-+	pegasus->intf = intf;
+ 			switch (msg->type) {
+@@ -474,7 +479,7 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
+ 			start += CPC_MSG_HEADER_LEN + msg->length;
+ 			msg_count--;
  
- 	res = alloc_urbs(pegasus);
- 	if (res < 0) {
-@@ -1182,7 +1194,6 @@ static int pegasus_probe(struct usb_interface *intf,
- 
- 	INIT_DELAYED_WORK(&pegasus->carrier_check, check_carrier);
- 
--	pegasus->intf = intf;
- 	pegasus->usb = dev;
- 	pegasus->net = net;
- 
+-			if (start > urb->transfer_buffer_length) {
++			if (start > urb->actual_length) {
+ 				netdev_err(netdev, "format error\n");
+ 				break;
+ 			}
 -- 
 2.51.0
 
