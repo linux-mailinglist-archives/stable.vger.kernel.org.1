@@ -1,151 +1,192 @@
-Return-Path: <stable+bounces-224591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDj2CI2UsGkukgIAu9opvQ
-	(envelope-from <stable+bounces-224591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:00:45 +0100
+	id OB2ZB5mWsGkukgIAu9opvQ
+	(envelope-from <stable+bounces-224593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:09:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B911225898E
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:00:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24719258B7F
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1E6623026B5F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:00:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36DDD3023DB0
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDDD3F20F4;
-	Tue, 10 Mar 2026 22:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F273E8C44;
+	Tue, 10 Mar 2026 22:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="GbJg+KUH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L00YXZHP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7797136B05F;
-	Tue, 10 Mar 2026 22:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC323CFF4F;
+	Tue, 10 Mar 2026 22:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773180041; cv=none; b=MzEE5MDBvKr6DdxKgepkPiPw8cVE3Czu0qikRLNR+DgC4sRMJUqcuc5oxb8v6Eb3QSoI7RhEuOZsaGR5wEKWxvn9VZzxYwWidMhiwUbBXCk45NR8nn3t125kVIvbtw6xwY/Xd9A45Rv863BsFwarCbLRjJOlRMg7C6uZ/JbJbvE=
+	t=1773180562; cv=none; b=mwsvLCVY5tmgIWxaBNf//QDM/3Z/VaFIiSEvCQ/9K6ogT2K6wS7VcBOW8FsLLO9o/2PCyX+FV0PHZlKNHnAj0vzVvioJz9QPxtlU88hjHlaIW6jy1ZWht7N5tyqGB6Iz7Wko8NLju43abYig63AuA8uDb9r5ziS/wV/QEFmuVDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773180041; c=relaxed/simple;
-	bh=koGOcD/39JRJlUIo/80r7zi0PGrQKcjt1Zjdekk9KaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AhQjFTQIv1mr3NyJiehdNxcCIuq1tyYT3qRxn7nEzmNrDP2BIKuhxt9swq9uyynZ14y7PRiThL0qroNrVZ/pDAgUcNCgXfY2sYKbffipfN20DL1B8Cr9CPTm2f8VHB5v9+AMDIuGDSaPqG1gDu4RmoHZO8iFPrRHvJ5K0ad7lx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=pass smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=GbJg+KUH; arc=none smtp.client-ip=79.135.106.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johannes-moeller.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=johannes-moeller.dev; s=protonmail; t=1773180038; x=1773439238;
-	bh=hZEJp9rUkZ10x1+tyxfdIyN6b5ZE3brXj1HdhI3Pomo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=GbJg+KUHYaanVfVg6/Cg9LBsQ79CmVoIN2K1mjboFF8EeOMvXuD3i/3UeTnZ5c7yF
-	 U4BvhTa4M2XwriTvah+Zq85PNH/aiReXaQvtXpEDX26RqG7mgRB4//3jGV0F4psgLD
-	 ikKbww1Omun7isuwLAPJj88bORJsWu2udCuT//OpcVxfBx98Zo9jLBadLWLjCBBZ2g
-	 RLyPSbLRQOpz8Y1FST+x7rpUjAP2aDIZYaWQARZ4Fhdr1OIeWg5h4Em+oWdlXBkiIe
-	 NuDnlhupU+SelV39KmaKUIHNxFPNbN2CBLSi0hRzPh6SPxTvhofMogx7b1XxbHzV4O
-	 svqeuweG7VKkQ==
-X-Pm-Submission-Id: 4fVnr52wJnz1DDL7
-From: =?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>
-To: linux-bluetooth@vger.kernel.org
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
-Date: Tue, 10 Mar 2026 21:59:47 +0000
-Message-ID: <20260310215947.35756-2-research@johannes-moeller.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260310215947.35756-1-research@johannes-moeller.dev>
-References: <20260310215947.35756-1-research@johannes-moeller.dev>
+	s=arc-20240116; t=1773180562; c=relaxed/simple;
+	bh=W80lkFXkPyxzZPzLe6vTEN0SYi+yr5xZNTGscVmS0ko=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PyfdK/Me9Qp1k01OJg5UPVhyxHoGxUQudxatPJlCBUfUow3aRdj5nnFfV4XqzqSvfaHcFr44aHuJDWoTdm9djNq20etf2gQz6TdOjKbIwlKOARqa91xkj9ou0v6GiCpTVy0ScxaIFiibB7RcmNZS02Z8ExyIsSgk976/TJXUwpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L00YXZHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F86C19423;
+	Tue, 10 Mar 2026 22:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773180561;
+	bh=W80lkFXkPyxzZPzLe6vTEN0SYi+yr5xZNTGscVmS0ko=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=L00YXZHPMVeEfxwGWu/AsurKr2xWM9c1K5M3MtDaIn5nfcen4jicy1Q3i8rLIm5yf
+	 WfvG20wIi1QYyAKqVzaODlOcIZAjN1oBjLxF9C/amXt1SGV5lxTwZfkpQvXdvW9gAg
+	 U5fgwzShrDb/Z15j0gztxNaymw4OC6qlveBz2cGZnyhROtlLohCqWPm8uXMsbT9F27
+	 CbZuzIyVxmIfJ98YaFyJMcT3cZFIirNKa3bxELZvJJRpc3CFl/8aYvCTYeWpkA6BN0
+	 oBTJJOco6wPHguHYPtf3q7EkbWZ3hux+WxUaIr/01eGtMcm8Pr8xqHRXg8MC7nxSZp
+	 RRiGt6sycGkpg==
+Date: Tue, 10 Mar 2026 17:09:20 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Chengwen Feng <fengchengwen@huawei.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Kees Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Zheyun Shen <szy0127@sjtu.edu.cn>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Xin Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Wei Huang <wei.huang2@amd.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, wangzhou1@hisilicon.com,
+	wanghuiqiang@huawei.com, liuyonglong@huawei.com,
+	linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, stable@vger.kernel.org,
+	Wathsala Vithanage <wathsala.vithanage@arm.com>
+Subject: Re: [PATCH v5 2/2] PCI/TPH: Fix get cpu steer-tag fail on ARM64
+ platform
+Message-ID: <20260310220920.GA826995@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B911225898E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <657142d1-1632-4a3e-8800-ee1dd5763d78@arm.com>
+X-Rspamd-Queue-Id: 24719258B7F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[johannes-moeller.dev:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224591-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224593-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DMARC_NA(0.00)[johannes-moeller.dev];
-	FREEMAIL_CC(0.00)[gmail.com,johannes-moeller.dev,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[63];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[research@johannes-moeller.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[johannes-moeller.dev:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,johannes-moeller.dev:dkim,johannes-moeller.dev:email,johannes-moeller.dev:mid]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-l2cap_information_rsp() checks that cmd_len covers the fixed
-l2cap_info_rsp header (type + result, 4 bytes) but then reads
-rsp->data without verifying that the payload is present:
+On Tue, Mar 10, 2026 at 10:58:49AM -0500, Jeremy Linton wrote:
+> On 3/9/26 10:20 PM, Chengwen Feng wrote:
+> > pcie_tph_get_cpu_st() is broken on ARM64:
+> > 1. pcie_tph_get_cpu_st() passes cpu_uid to the PCI ACPI DSM method.
+> >     cpu_uid should be the ACPI Processor UID [1].
+> > 2. In BNXT, pcie_tph_get_cpu_st() is passed a cpu_uid obtained via
+> >     cpumask_first(irq->cpu_mask) - the logical CPU ID of a CPU core,
+> >     generated and managed by kernel (e.g., [0,255] for a system  with 256
+> >     logical CPU cores).
+> > 3. On ARM64 platforms, ACPI assigns Processor UID to cores listed in the
+> >     MADT table, and this UID may not match the kernel's logical CPU ID.
+> >     When this occurs, the mismatch results in the wrong CPU steer-tag.
+> > 4. On AMD x86 the logical CPU ID is identical to the ACPI Processor UID
+> >     so the mismatch is not seen.
 
- - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
-   4 bytes past the header (needs cmd_len >= 8).
+> >   int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
+> > -			unsigned int cpu_uid, u16 *tag)
+> > +			unsigned int cpu, u16 *tag)
+> >   {
+> >   #ifdef CONFIG_ACPI
+> > +	u32 cpu_uid = acpi_get_cpu_acpi_id(cpu);
 
- - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
-   (needs cmd_len >= 5).
+From AI review (gemini/gemini-3.1-pro-preview):
 
-A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
-out-of-bounds read of adjacent skb data.
+  Does this code need to validate that `cpu` is within bounds before
+  using it?  Before this change, the `cpu_uid` parameter was passed
+  opaquely to the ACPI firmware via `tph_invoke_dsm()`, which would
+  gracefully handle invalid values.
 
-Guard each data access with the required payload length check.  If the
-payload is too short, skip the read and let the state machine complete
-with safe defaults (feat_mask and remote_fixed_chan remain zero from
-kzalloc), so the info timer cleanup and l2cap_conn_start() still run
-and the connection is not stalled.
+  Now, `cpu` is treated as a logical CPU index and passed to
+  `acpi_get_cpu_acpi_id(cpu)`. On architectures like arm64 and riscv,
+  `acpi_get_cpu_acpi_id()` uses `cpu` directly as an array index
+  (`&cpu_madt_gicc[cpu]` and `&cpu_madt_rintc[cpu]`). On x86, it uses
+  `per_cpu(x86_cpu_to_acpiid, cpu)`.
 
-Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
----
- net/bluetooth/l2cap_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+  If a caller passes an out-of-bounds `cpu` index (for example, if an
+  IRQ affinity mask is empty and `cpumask_first()` returns
+  `nr_cpu_ids`, or if userspace passes an arbitrary ID via
+  `mlx5_st_alloc_index()`), this will result in an out-of-bounds
+  memory read.
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index f8ed03095592..93e41d9ac124 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4616,7 +4616,8 @@ static inline int l2cap_information_rsp(struct l2cap_conn *conn,
- 
- 	switch (type) {
- 	case L2CAP_IT_FEAT_MASK:
--		conn->feat_mask = get_unaligned_le32(rsp->data);
-+		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
-+			conn->feat_mask = get_unaligned_le32(rsp->data);
- 
- 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
- 			struct l2cap_info_req req;
-@@ -4635,7 +4636,8 @@ static inline int l2cap_information_rsp(struct l2cap_conn *conn,
- 		break;
- 
- 	case L2CAP_IT_FIXED_CHAN:
--		conn->remote_fixed_chan = rsp->data[0];
-+		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
-+			conn->remote_fixed_chan = rsp->data[0];
- 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
- 		conn->info_ident = 0;
- 
--- 
-2.43.0
+  Consider adding a bounds check:
 
+    if (cpu >= nr_cpu_ids)
+      return -EINVAL;
+
+I agree that this is an issue, and I think implementations of
+acpi_get_cpu_acpi_id() should validate their inputs.
+
+I don't know if there's a value that can never be a valid ACPI CPU UID
+and could be used as an error value from acpi_get_cpu_acpi_id().  I do
+see a few mentions of a ~0 value meaning "all processors" (ACPI r6.6,
+sec 5.2.12.13).  
 
