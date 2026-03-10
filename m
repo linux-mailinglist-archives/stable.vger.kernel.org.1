@@ -1,169 +1,165 @@
-Return-Path: <stable+bounces-224405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ACmJNsDsGkWegIAu9opvQ
-	(envelope-from <stable+bounces-224405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:23 +0100
+	id kNxTHEr/r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE8C24B6AB
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:43:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1E424A925
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 119AF3056B4F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:30:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9AFD4303D88B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1434138945E;
-	Tue, 10 Mar 2026 11:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569A637F007;
+	Tue, 10 Mar 2026 11:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcIKWbcZ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="k0ItWpFr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4233C3BF4;
-	Tue, 10 Mar 2026 11:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE45314D13;
+	Tue, 10 Mar 2026 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142138; cv=none; b=IMzohH4YlQf2DAGr4JSOtI7EI6zDpiuR/gdEkNPP0hwBFzRHJVO3lBqNhEl0lQalgp7/8yvoydB3FS1BgPfYDaHVLmypwYKeyBcBh2RpG1QsEeOPyqJyU7LtqjYHJz0PaWea7as2q1605Vshc8GbvDRJnsP1JJg0rvKfd6YYoQk=
+	t=1773141494; cv=none; b=ayxm6q7RTRRd9UEhndoR4/Do3CD+hlqQ5SDEo8gCM6nrSPk8tNGVzWal7zFiBMwahC/PQ4+5AC9DC9m78awXkkHK4CmnINM0n3xHUqvnuJ9N6DCYhyfoBYoQDVGzfv1av0C+VhXFEllXCjYTMsETm2EvQzzAvhjg3O1v9fJexB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142138; c=relaxed/simple;
-	bh=FsVwqOhUn9q+gkN2PQNnZqu7c9ufkMJhdbVu6B7dass=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSJTvaA4k/IfAaKCt5ekp5ZI+Ab79jUN14KMkFrZfAt8MKVQl5JDRnF6vp6poNeCgg/+YbvP/hO/c1s3MRzc3A+mbRkL4UXZ0y28HX2cLQsZSAzHJR1Dg+L7YoW48z4xi5ysxYsKeVpKMyzGTW/a8i6CdmgwtD+J23kdTjX09U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcIKWbcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55D6C19423;
-	Tue, 10 Mar 2026 11:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142138;
-	bh=FsVwqOhUn9q+gkN2PQNnZqu7c9ufkMJhdbVu6B7dass=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcIKWbcZxqk/dFWuueK5oLD3pSVLp8mKK/6oEnixxAqxLk1MZ4kOOlMw0p8wxnZBv
-	 k+6OXb1slVHtv+1OuOLsTAxxxASdEb8NMcmNMAn7X941+eEQSA+sq5U3r/3f4JlYRt
-	 J15RLpqYI9na/HD9ngNhuto5Wrx/dz04e+CPJTz4VIMQiqOUgePZiDFPSWlt+2Vrhg
-	 jpHR0Cb6jBLThZtSkBTo4IEnFDfp+xoukNgIoNXMTLYdGjGKmlc4aZt2PcLXwNslNW
-	 LM8mvknZ5GdcgxZgHuNCm5XRNMIDvdBvgXAwGU1ITRUCC+1sJoxvVYDWW/54KV615v
-	 U4NQnZmjFjzIA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Justin Tee <justintee8345@gmail.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Aristeu Rozanski <aris@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 226/314] nvmet-fcloop: Check remoteport port_state before calling done callback
-Date: Tue, 10 Mar 2026 07:18:05 -0400
-Message-ID: <5070ce5aca0be81db2eb04102830fc81f27842f3.1773141555.git.sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
-References: <cover.1773141554.git.sashal@kernel.org>
+	s=arc-20240116; t=1773141494; c=relaxed/simple;
+	bh=keOhyXrvN5qREOF0Z+aLwGzUovBlxaJJ6XX1xa1whzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sxmiojAAryMMq9Owonixdf5tncp0W/Q27pOC8zpUM5M3jXXXfalTR6PjfvsweMN2pa2XZLEVUHKCNdwLAWUJcuz4f+HCXI7atAzX/l/C1pWlgWsUuCC/UhOImdFmdKG5Eym+Vvptx7HMpHhQuVWtZOmRSgUZYLtVdrX3bnd5UJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=k0ItWpFr; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.95.65.66] (unknown [167.220.238.66])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4ED2F20B710C;
+	Tue, 10 Mar 2026 04:18:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4ED2F20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773141492;
+	bh=Kgzc2oPfF/BASQsZXTQUEjIXgI5WMGm8pDvFQ+jBV+k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k0ItWpFrcIBohaxQGzM69xX5PmGKzri1+xhv2IKje2gA/eVxzGWG/2M8jiYYPARTF
+	 fe09BTdNjC5lbKOyoUXr3TMaBcYSFzCPxpvZcVYdbmSzpa3alpbfICSGJydzghIu9W
+	 CPQD83qY245UPjO95vLgADE7JfAp43wdyUmo/pHc=
+Message-ID: <8d5360bb-eaf1-4325-acc7-5f3ccdb59dc2@linux.microsoft.com>
+Date: Tue, 10 Mar 2026 16:48:05 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Drivers: hv: vmbus: Fix potential NULL pointer
+ dereference in vmbus_acpi_add()
+To: =?UTF-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
+ <a.vatoropin@crpt.ru>, "K. Y. Srinivasan" <kys@microsoft.com>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Saurabh Sengar <ssengar@linux.microsoft.com>,
+ Michael Kelley <mikelley@microsoft.com>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260310084140.473079-1-a.vatoropin@crpt.ru>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <20260310084140.473079-1-a.vatoropin@crpt.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2DE8C24B6AB
+X-Rspamd-Queue-Id: DE1E424A925
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,suse.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-224178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224405-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[namjain@linux.microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,linux.microsoft.com:dkim,linux.microsoft.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,crpt.ru:email]
 X-Rspamd-Action: no action
 
-From: Justin Tee <justintee8345@gmail.com>
 
-[ Upstream commit dd677d0598387ea623820ab2bd0e029c377445a3 ]
 
-In nvme_fc_handle_ls_rqst_work, the lsrsp->done callback is only set when
-remoteport->port_state is FC_OBJSTATE_ONLINE.  Otherwise, the
-nvme_fc_xmt_ls_rsp's LLDD call to lport->ops->xmt_ls_rsp is expected to
-fail and the nvme-fc transport layer itself will directly call
-nvme_fc_xmt_ls_rsp_free instead of relying on LLDD's done callback to free
-the lsrsp resources.
+On 3/10/2026 2:12 PM, Ваторопин Андрей wrote:
+> From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+> 
+> The current driver supports detection via both the ACPI interface and the
+> Device Tree interface (OF).
+> 
+> In the function vmbus_platform_driver_probe() upon driver detection via OF,
+> the branch vmbus_device_add() should be executed.
+> 
+> However, the variable "acpi_disabled" is a global variable that, in general
+> equals 0 when CONFIG_ACPI is enabled. Therefore, it may enter another
+> branch with vmbus_acpi_add().
+> 
+> Therefore, in the function vmbus_acpi_add(), when the device is not ACPI,
+> the ACPI_COMPANION macro may return a NULL value, and this pointer is then
+> dereferenced.
+> 
+> Add a NULL pointer check for the "device" pointer before dereferencing it.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: f83705a51275 ("Driver: VMBus: Add Devicetree support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+> ---
+>   drivers/hv/vmbus_drv.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+> index bc4fc1951ae1..c9ee3375b524 100644
+> --- a/drivers/hv/vmbus_drv.c
+> +++ b/drivers/hv/vmbus_drv.c
+> @@ -2571,6 +2571,9 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+>   	struct acpi_device *ancestor;
+>   	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+>   
+> +	if (!device)
+> +		return -ENODEV;
+> +
+>   	vmbus_root_device = &device->dev;
+>   
+>   	/*
 
-Update the fcloop_t2h_xmt_ls_rsp routine to check remoteport->port_state.
-If online, then lsrsp->done callback will free the lsrsp.  Else, return
--ENODEV to signal the nvme-fc transport to handle freeing lsrsp.
+I understand the case we are trying to make here, but I tried 
+reproducing this at my end, where we are probing VMBus using Devicetree, 
+and CONFIG_ACPI is enabled and there is no "acpi=off" in kernel cmdline.
+But still, when the control reaches this particular function - 
+vmbus_platform_driver_probe(), acpi_disabled still shows up as 1 for me.
+Can you please share your configuration how you are able to reproduce 
+this issue.
 
-Cc: Ewan D. Milne <emilne@redhat.com>
-Tested-by: Aristeu Rozanski <aris@redhat.com>
-Acked-by: Aristeu Rozanski <aris@redhat.com>
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Closes: https://lore.kernel.org/linux-nvme/21255200-a271-4fa0-b099-97755c8acd4c@work/
-Fixes: 10c165af35d2 ("nvmet-fcloop: call done callback even when remote port is gone")
-Signed-off-by: Justin Tee <justintee8345@gmail.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/nvme/target/fcloop.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Secondly, let's say this case happens, then while our fix prevents null 
+pointer crash from happening, it does not fix the problem completely in 
+the sense - vmbus_device_add() should still have been called in this 
+scenario IMO. Please see if there is any way to do that, or comment, if 
+you feel this issue won't be there.
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index 5dffcc5becae8..305ab7ee6e760 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -492,6 +492,7 @@ fcloop_t2h_xmt_ls_rsp(struct nvme_fc_local_port *localport,
- 	struct fcloop_rport *rport = remoteport->private;
- 	struct nvmet_fc_target_port *targetport = rport->targetport;
- 	struct fcloop_tport *tport;
-+	int ret = 0;
- 
- 	if (!targetport) {
- 		/*
-@@ -501,12 +502,18 @@ fcloop_t2h_xmt_ls_rsp(struct nvme_fc_local_port *localport,
- 		 * We end up here from delete association exchange:
- 		 * nvmet_fc_xmt_disconnect_assoc sends an async request.
- 		 *
--		 * Return success because this is what LLDDs do; silently
--		 * drop the response.
-+		 * Return success when remoteport is still online because this
-+		 * is what LLDDs do and silently drop the response.  Otherwise,
-+		 * return with error to signal upper layer to perform the lsrsp
-+		 * resource cleanup.
- 		 */
--		lsrsp->done(lsrsp);
-+		if (remoteport->port_state == FC_OBJSTATE_ONLINE)
-+			lsrsp->done(lsrsp);
-+		else
-+			ret = -ENODEV;
-+
- 		kmem_cache_free(lsreq_cache, tls_req);
--		return 0;
-+		return ret;
- 	}
- 
- 	memcpy(lsreq->rspaddr, lsrsp->rspbuf,
--- 
-2.51.0
-
+Regards,
+Naman
 
