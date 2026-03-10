@@ -1,154 +1,213 @@
-Return-Path: <stable+bounces-224503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJHmI0slsGnYgQIAu9opvQ
-	(envelope-from <stable+bounces-224503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:06:03 +0100
+	id YOFdEOsksGnYgQIAu9opvQ
+	(envelope-from <stable+bounces-224504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:04:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397C025153D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:06:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD532514C5
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 15:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C463B334C789
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:10:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C6AD35889FE
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 13:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F8B3EC2DA;
-	Tue, 10 Mar 2026 12:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B913BD237;
+	Tue, 10 Mar 2026 13:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F0OgBRW0";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QZFqRoXm"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2303EC2C3
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 12:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77748391E4B
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773146910; cv=none; b=EvC7GjOjsQxqjNp1xT3Clei8qTnSbnhW0rgZsIi8WJhKAtfZbEuwHzUEkaDp/4+v+o4sNHPfuisKinQ+l3GiAuacxOCd/MFfogOBxzYLGwAUp3+weqDTFLH4hbJsWpmweIXNEsaG7T7dyPBfSpmjNqUl7DSVftFpQTMbrgZ8u5o=
+	t=1773148380; cv=none; b=DLDN1MvRmK8tIYbQJF0q553DJNrv4n5RVr9Ygjp5PxRvsvkQcjA7oIwsB/5r7GpskpBNkFkyN9gtCPWytV/iRpukkgztr8Kenjl4Xdt19Pc7hvj3cft5z2OafDCzPT8KniKTMbKTjq9H0Mo8TN9NTEbYs6+2SBZppPP4kAoL1HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773146910; c=relaxed/simple;
-	bh=hLaviU5buci/iG+3IFZ8KM5SjFs5/S+pJjyjwtRoJxo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Gnu8W+uOYz3Yzr8ZZyl8X+OOhrlLZ0qTY5L3wCBExE9oLCYiG0XEoSNNAC1/Cguo24HUuH/0ueZfsn3vGULEM/TCt29WgN5R7A5IdttM5O5KmDv3rq+VzjqgPhvWs3ug8x0TY+TBE3Ovy9Kf0IFmdldnaHqQb6jWzX0f/xLhreE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vzwVa-0007Ht-AG; Tue, 10 Mar 2026 13:48:22 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vzwVY-004hN1-2E;
-	Tue, 10 Mar 2026 13:48:22 +0100
-Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C25C54FD59F;
-	Tue, 10 Mar 2026 12:48:21 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 10 Mar 2026 13:48:03 +0100
-Subject: [PATCH can] can: netlink: can_changelink(): add missing error
- handling to call can_ctrlmode_changelink()
+	s=arc-20240116; t=1773148380; c=relaxed/simple;
+	bh=kqR8StKY9gPtFVZE8MTGyyw9pd2MeOvNSDrUH4L/DX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTV1ok8We6VJ1DQpxNMlAxQlp9YQ9jE8RIslrfLLRzAnqDwec23eWjTD4ajQK+LBkReNoIdeGc7xrhQnXnobikWwWrR2zO1BNcqpHPd9ornrT0Vubf6KmvQH4MfmQ5Enqe9POC4dTIBAeCXOTeEp4VH8A5+BfwgERT39iRx/wT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F0OgBRW0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QZFqRoXm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62ACaYUP789294
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=; b=F0OgBRW0OTgeLbyX
+	NL8ziTwO7GSbC540v6G5OAScayy21O6zSkI9hsNWzF5J+rUbcZW1HBSUmB+p/vKD
+	bvOOpQbzlUU17OOvftXMn7S90Av/LsULrV2va4Ae8dTu1slOeevO+TcmH7KRHLZ8
+	Tx0OsmpKuRUsvQkfsY83ZhobuK7u0EW05vIHbgxL1LN+bbMrme7tVgD52f5ahXg1
+	OQOfozi1EZdV9vTfmkVu+bOIMrUxtQc0kuBmVH+vM8I0o/Z9KFOxp05+kgtMvwr6
+	resOqr3Z1Rx6ofBFijfMAR19y8ZwfdMcEjGURjIChunr3V6/mi3ee/nRnpWZNuQL
+	P/zIHw==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ct1ekuyv9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:12:57 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-899f6011df3so55462656d6.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 06:12:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773148377; x=1773753177; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=;
+        b=QZFqRoXm4S1+lbWwOBmO+3wYQXQOSIaX3wNRk220CsuLEtXJlbJgojijul9jzpXA3d
+         vp4DeOTiBVQFem2d5vmuJD36+iQC2j6Twsh2g8cMHssn7IhXM3OLOMrkeYftfkTRpY+x
+         IgqSmBoEDd31TBQhJYrAvZVP0TIG/5qI8CgTCK6TozvZNByICdH7S/aFnOKeW5VSRGhp
+         QXFjfACXM5x0g/xZRhqPh8B4JCLVujl8/uoDLGrjSLVxOfxe795aTMTohM5VV5pAFe/y
+         QmR1V5TI7nEO5mdnDVLydBOqnycz3gPzPWuMm9j6DHq/VcsT6oEwUAFoqaP7A/F0jLJ+
+         4WOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773148377; x=1773753177;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DPwKz9eLYQdHUXIO83LJugJwTVZobApTJtsv+MC4jxE=;
+        b=W4n31C+9VUo0QRKtvJ9KQFFzAB9jq4tBlEeNEQ5qNsYS+b2PI3Y9DVJxH6/5PrqAcK
+         L7bfA+GriFu4kgvqi29by6WBA59jFEDx2gp0etsLdljOgOBVB/muWR0NEWgXwxWbcJwL
+         hQLIDF5y03JpHrwuqIU2EvxExJkSBNj4r3eGNW0alNQpcqnH3GjHkmf+WoCUicqfpNc2
+         d6BtzXmfpasEW6Au5U25hDmKAwH2wX2MWzsQK4ogOs84KO2ZaaGSda90KRL9E0f8kVgl
+         QmSFZB6MrDchxHTOkT79WzhKI+QRJQ+No6kpCS8Pwbkod8qWR3L8fAz1AyL1K3zTG0WD
+         kLGw==
+X-Forwarded-Encrypted: i=1; AJvYcCWn8P2gYDFtNSTBKvEBQaU+4S977B/H4OvucYNqfnQAQqtf1qVHIF84Zg1XNg281jyPMNh9CSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyZGWMQm/sfhbxjziQR2Jqi8Ps0lebioGkroqSwb7/5j1Qk1iC
+	Nl9XU9cNQk80GWyIZZF0lUdN/jW1bps8KtCc3gipPTAhKMTBRZYouwkZHOqInrx3+mfqGuE5QGO
+	ZnuG5jJVIkGLVn/AJEPKzeTIugub0eb1x1g2MpCQ6ahHUNIV9UTwNhpldHsc=
+X-Gm-Gg: ATEYQzxc4CitWRQFuT6nwpZ2Xid11hpktqOolm+KmvYn9LlhjQz9St577a+6GGjM9Fq
+	HJMpIRCDsaP48YmBmH0/MpMp57/S22ijY1Pt+UcXssq7qAtTUXJs8w60tojo/J8dDQUkw2eesL4
+	qV0zVhat7hywd+O9DaqKmA+UltdcGslRmS36SHShP3Sw0m4NPlBkYqLh8QzV73+ILN5E4yNIcmI
+	puUxKQKHVPi79sM8ygfOW/1FuGFCmkfV9/+RoT5bP9bJC9AThiX2FbWOq47pC52YqabzURnp1Wc
+	kqKZKk01ud26fZCwOwr90Hsaa4RUeyDoTmLpkec/qGWkvJhfBhKtRtF13APHz+zGrM5AWTrYfUA
+	qV+VCimkTvG0QZSH2+ZWxtIKN3ieqD5dmlnh6Ff12gpJkYTwLc02cZob77ZUK+jwf/ctwLV0Sh8
+	gerZE=
+X-Received: by 2002:a05:6214:8016:b0:89a:45d4:4e42 with SMTP id 6a1803df08f44-89a45d4561bmr91222336d6.5.1773148376663;
+        Tue, 10 Mar 2026 06:12:56 -0700 (PDT)
+X-Received: by 2002:a05:6214:8016:b0:89a:45d4:4e42 with SMTP id 6a1803df08f44-89a45d4561bmr91222016d6.5.1773148376160;
+        Tue, 10 Mar 2026 06:12:56 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942f15d532sm489707566b.54.2026.03.10.06.12.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 06:12:55 -0700 (PDT)
+Message-ID: <d7998d09-145e-4651-9027-b06ceb87860c@oss.qualcomm.com>
+Date: Tue, 10 Mar 2026 14:12:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/msm/dpu: fix mismatch between power and frequency
+To: yuanjie yang <yuanjie.yang@oss.qualcomm.com>, robin.clark@oss.qualcomm.com,
+        lumag@kernel.org, abhinav.kumar@linux.dev, jesszhan0024@gmail.com,
+        sean@poorly.run, marijn.suijten@somainline.org, airlied@gmail.com,
+        simona@ffwll.ch, neil.armstrong@linaro.org, krzk@kernel.org,
+        abelvesa@kernel.org
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, tingwei.zhang@oss.qualcomm.com,
+        aiqun.yu@oss.qualcomm.com
+References: <20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAAITsGkC/yWN0QrCMAxFf2Xk2UDb6QR/RWTUJs7obCWdIoz9u
- 9E93sPlnBkqq3CFQzOD8luqlGzDbxpI15gHRiHbEFzoXOsdppj7NOn4KMT9ehkl3zESIasWRWN
- kaEC/83tyXRu2nMCET+WLfP6xI5gHTiusr/ON0/TLwLJ8AZgrizyTAAAA
-X-Change-ID: 20260310-can_ctrlmode_changelink-add-error-handling-1517d06324ec
-To: Vincent Mailhol <mailhol@kernel.org>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-b6adf
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1352; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=hLaviU5buci/iG+3IFZ8KM5SjFs5/S+pJjyjwtRoJxo=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcIMyhm/nX4xrHtHP5U7ee2PjmrMu3aT5/7Ffrxm9Wn
- +N/MG19WkcpC4MYF4OsmCLL0h8nFAUCHUp7XyZMgpnDygQyhIGLUwAmksDJ8E+17KP0vC+LFopU
- FQtNnPn41iNfa5NTthtdmt+E975JdLrFyLBIy3t66eSuD8f9o/NuvHgVfywtMKxc7/+KmUpRm88
- 6yHEBAA==
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Rspamd-Queue-Id: 397C025153D
+X-Proofpoint-GUID: EKK61RLl-I17DfnFkS7r_cdGCRrcsH2B
+X-Proofpoint-ORIG-GUID: EKK61RLl-I17DfnFkS7r_cdGCRrcsH2B
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDExNCBTYWx0ZWRfXzUr7A5OLHPbx
+ u4RMUYPssyhIviRIn/jC9ixMhLwil25eBQRO8PzuE9LUVR5exMjwfsNuJ5sn8q1tp1n1N0VDGRW
+ rr74W36mzhrwlVcjSq7t3YfvqrESflIXYYJdIqpr7P6OxhGyjoYPI5Zb6J00Zi9S31FOumAHwFb
+ QJSguL4cub3nMrxg/yy7px3Sge+5hl+wEqQth9jddI9Q06iouAIBbkJZ+wBlilOiSEzbPRALzIl
+ 6I95lwZEMqDVxAd7pifGjIkZRfWW+ZI9wBZy2iO3XaaM1BIJAoKGIsZgIiHvE2zEBmk3ibJAIN/
+ xQc28NU+PeiFtGAznYX2pFC4v68oB4j/Jvd3SKy6Z4nPw/FNY3V8YvUUxOnyuxqLfhYgr20Boxs
+ EpzzOEQ8ipsbntbWOLHdt+7ixVh49bPQeRGFwo60a+rl1kAlpjYEiAsJ+T8rLcEbA0i+R9/53Zg
+ jcGVVwNSqlVZiCkJz0w==
+X-Authority-Analysis: v=2.4 cv=eIEeTXp1 c=1 sm=1 tr=0 ts=69b018d9 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=EmtiIJl_oBPMN_jmJGIA:9 a=QEXdDO2ut3YA:10
+ a=OIgjcC2v60KrkQgK7BGD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100114
+X-Rspamd-Queue-Id: CBD532514C5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224504-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,ffwll.ch,linaro.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.511];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
-CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
-can_ctrlmode_changelink() function. But the call to
-can_ctrlmode_changelink() is missing the error handling.
+On 3/9/26 7:37 AM, yuanjie yang wrote:
+> From: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
+> 
+> During DPU runtime suspend, calling dev_pm_opp_set_rate(dev, 0) drops
+> the MMCX rail to MIN_SVS while the core clock frequency remains at its
+> original (highest) rate. When runtime resume re-enables the clock, this
+> may result in a mismatch between the rail voltage and the clock rate.
+> 
+> For example, in the DPU bind path, the sequence could be:
+>   cpu0: dev_sync_state -> rpmhpd_sync_state
+>   cpu1:                                     dpu_kms_hw_init
+> timeline 0 ------------------------------------------------> t
+> 
+> After rpmhpd_sync_state, the voltage performance is no longer guaranteed
+> to stay at the highest level. During dpu_kms_hw_init, calling
+> dev_pm_opp_set_rate(dev, 0) drops the voltage, causing the MMCX rail to
+> fall to MIN_SVS while the core clock is still at its maximum frequency.
+> When the power is re-enabled, only the clock is enabled, leading to a
+> situation where the MMCX rail is at MIN_SVS but the core clock is at its
+> highest rate. In this state, the rail cannot sustain the clock rate,
+> which may cause instability or system crash.
+> 
+> Remove the call to dev_pm_opp_set_rate(dev, 0) from dpu_runtime_suspend
+> to ensure the correct vote is restored when DPU resumes.
+> 
+> Fixes: b0530eb11913 ("drm/msm/dpu: Use OPP API to set clk/perf state")
+> Signed-off-by: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
+> ---
 
-Add the missing error handling and propagation to the call
-can_ctrlmode_changelink().
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Cc: stable@vger.kernel.org
-Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/dev/netlink.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 0498198a4696..766d455950f5 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -601,7 +601,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	/* We need synchronization with dev->stop() */
- 	ASSERT_RTNL();
- 
--	can_ctrlmode_changelink(dev, data, extack);
-+	err = can_ctrlmode_changelink(dev, data, extack);
-+	if (err)
-+		return err;
- 
- 	if (data[IFLA_CAN_BITTIMING]) {
- 		struct can_bittiming bt;
-
----
-base-commit: e3f5e0f22cfc2371e7471c9fd5b4da78f9df7c69
-change-id: 20260310-can_ctrlmode_changelink-add-error-handling-1517d06324ec
-
-Best regards,
---  
-Marc Kleine-Budde <mkl@pengutronix.de>
-
+Konrad
 
