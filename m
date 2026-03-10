@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-224096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKcpChn9r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-224096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:33 +0100
+	id aGLLABr9r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945BD24A33B
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4FA24A347
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 297D73031234
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:14:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33E183037264
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FE4387583;
-	Tue, 10 Mar 2026 11:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1248538758B;
+	Tue, 10 Mar 2026 11:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RB1lYCr+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lc+EFM2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F543859DF;
-	Tue, 10 Mar 2026 11:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FBA352C4F;
+	Tue, 10 Mar 2026 11:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141229; cv=none; b=Pcx3mGalSJmsfXWnH+72wIe9nWQA+X2SEi5SHHLUirkgA8DyE765g/wTXdDT7VyityQGFycO+64id2IXjod8NQirkxtWi/+Z/UGinkALZ6oIoGynOU7E5suw6XTDlJ4IgRXmWeiMDWDqa6aiWs0ZSX6+O3vSgQX8FizXcjhNzRw=
+	t=1773141230; cv=none; b=FFYYG5zKkAwDMEO1WGzGBzpCtawX6diRNQM8Wai4w3raVPZ/AOr+AqmSctUhxedHROyesXsggJCoisTrqWZXfhz8UgBz8HkioOSJo8bJmUuQ3W7QNTOU1SRR2956s3NfgkAfKQ43KFj8WPz8INIWTM9WbADImfowqJy3nOofPDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141229; c=relaxed/simple;
-	bh=8IR4PP04duRSTiV4ISE6cFPUeS+SxWcKYCuAjg/xwpA=;
+	s=arc-20240116; t=1773141230; c=relaxed/simple;
+	bh=1jm+wmBzWnBcffeSje0Sk42KTXRULunFYtJczS8ul+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Du0Lop8HIVz3WHUrb2IS3u/WQDAp3DNvnABHO79pg3rRwIaBEBjMtzAo1+arxEmd+DsOaIHoctBocANzv1VOG+ixLlrgi0WIarxZWaQl1keIh4HqbEQWDI8pVY6hzu/ZLwux4ruRMFLJS/JMtETxIz+Wvakq34VShrOi5wNlGh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RB1lYCr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B80C19423;
-	Tue, 10 Mar 2026 11:13:48 +0000 (UTC)
+	 MIME-Version; b=ZAh1IprSckkwCqBvH0oZQbyBFDILgeScyOIovfFKydysY1cU08TKpbqti4XQ+6j5YNeyquE8QvnQ2T1HgumQ+r6z+GxfO2gbr/2fEcH3f91qDku474y8Hg7w9jIdap0bOIIIST2ZyvjbWqmmUAkDhnJoKzNpFWveI6Xl6+l8s+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lc+EFM2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDDBC2BC9E;
+	Tue, 10 Mar 2026 11:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141229;
-	bh=8IR4PP04duRSTiV4ISE6cFPUeS+SxWcKYCuAjg/xwpA=;
+	s=k20201202; t=1773141230;
+	bh=1jm+wmBzWnBcffeSje0Sk42KTXRULunFYtJczS8ul+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RB1lYCr+ozQLPmo5qCYgOm14D6l8rgWCKddQQz8jhMhVGWSoCaQyBtWj0fUWeK1x8
-	 MKtgnDPRxGvsfjvYZQgXv7ZFRA4p+oZySdSunJxyqmzkJQF+747Tydb49FEglQIXFI
-	 jp6ikH+S3UtdeJLSXNV0GGEU5I25K3Rk8WJavU+hS3cfFJMav0E2ddQXiVC0OCgq7Y
-	 1bazIHy6CmQRWaApPqy0r6wDi6A5cOtodzDqZJqjEYHihGpNNyoQqf/p3eEM2K+jMp
-	 C3guP59R29+o65m9RkEIAarZr5c/C7SGyNWggBOJAOHDxzk/9hscmxFNM49FBGjCrZ
-	 zjmSRQFTeYPoA==
+	b=lc+EFM2QPTUTJ7Py3a8T2vL/rEKPFZEeJV1j8hJ8nyvvZNggyQRkFXyKYGEzHz5nr
+	 UZxVdJ9skCGT2cbOFEnSFSh7hHbPp8b9c2XcmuwU4iJvuo4FxeWPs5HnGkMhQ3w/XS
+	 7oLDC4dAPiq02DMDChiyzThDkAp1VsHKbz0TtsenzqZs+63a+IDc2T3EZgVbdVly6v
+	 pe0OaWnlanGP9SWKAMDahlmr69ckfGgGdwhg7iF3zpkkCOszb+DJhTKYfYIDj2FTko
+	 cKzqlq2ww3aJUSK0OKwttw61paS862385Ra5UPSzaHUvJnSziqgoMfyXs+68EerjIK
+	 KnC45siQ+nLyw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 231/311] drm/amd/display: Enable DEGAMMA and reject COLOR_PIPELINE+DEGAMMA_LUT
-Date: Tue, 10 Mar 2026 07:04:38 -0400
-Message-ID: <91648b08e85d0ff62d0a78d11be14d6abd08979f.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 232/311] net: dsa: realtek: rtl8365mb: fix rtl8365mb_phy_ocp_write return value
+Date: Tue, 10 Mar 2026 07:04:39 -0400
+Message-ID: <5b1609cc8bf4ca66d78a526d8e8e3376d3f214da.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -67,107 +68,72 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 945BD24A33B
+X-Rspamd-Queue-Id: 8D4FA24A347
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224096-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[yahoo.com,lunn.ch,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224097-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Alex Hung <alex.hung@amd.com>
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-[ Upstream commit a4fa2355e0add57253468ef13bd08f11285f3b6e ]
+[ Upstream commit 7cbe98f7bef965241a5908d50d557008cf998aee ]
 
-[WHAT]
-Create DEGAMMA properties even if color pipeline is enabled, and enforce
-the mutual exclusion in atomic check by rejecting any commit that
-attempts to enable both COLOR_PIPELINE on the plane and DEGAMMA_LUT on
-the CRTC simultaneously.
+Function rtl8365mb_phy_ocp_write() always returns 0, even when an error
+occurs during register access. This patch fixes the return value to
+propagate the actual error code from regmap operations.
 
-Fixes: 18a4127e9315 ("drm/amd/display: Disable CRTC degamma when color pipeline is enabled")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4963
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 196a6aa727f1f15eb54dda5e60a41543ea9397ee)
+Link: https://lore.kernel.org/netdev/a2dfde3c-d46f-434b-9d16-1e251e449068@yahoo.com/
+Fixes: 2796728460b8 ("net: dsa: realtek: rtl8365mb: serialize indirect PHY register access")
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260301-realtek_namiltd_fix1-v1-1-43a6bb707f9c@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c   | 16 ++++++++--------
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c  |  8 ++++++++
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/net/dsa/realtek/rtl8365mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-index 9fcd72d87d25b..39fcbc3e702dc 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -765,15 +765,15 @@ int amdgpu_dm_crtc_init(struct amdgpu_display_manager *dm,
- 	dm->adev->mode_info.crtcs[crtc_index] = acrtc;
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
+index c575e164368c8..f938a3f701cc9 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -769,7 +769,7 @@ static int rtl8365mb_phy_ocp_write(struct realtek_priv *priv, int phy,
+ out:
+ 	rtl83xx_unlock(priv);
  
- 	/* Don't enable DRM CRTC degamma property for
--	 * 1. Degamma is replaced by color pipeline.
--	 * 2. DCE since it doesn't support programmable degamma anywhere.
--	 * 3. DCN401 since pre-blending degamma LUT doesn't apply to cursor.
-+	 * 1. DCE since it doesn't support programmable degamma anywhere.
-+	 * 2. DCN401 since pre-blending degamma LUT doesn't apply to cursor.
-+	 * Note: DEGAMMA properties are created even if the primary plane has the
-+	 * COLOR_PIPELINE property. User space can use either the DEGAMMA properties
-+	 * or the COLOR_PIPELINE property. An atomic commit which attempts to enable
-+	 * both is rejected.
- 	 */
--	if (plane->color_pipeline_property)
--		has_degamma = false;
--	else
--		has_degamma = dm->adev->dm.dc->caps.color.dpp.dcn_arch &&
--			      dm->adev->dm.dc->ctx->dce_version != DCN_VERSION_4_01;
-+	has_degamma = dm->adev->dm.dc->caps.color.dpp.dcn_arch &&
-+		      dm->adev->dm.dc->ctx->dce_version != DCN_VERSION_4_01;
+-	return 0;
++	return ret;
+ }
  
- 	drm_crtc_enable_color_mgmt(&acrtc->base, has_degamma ? MAX_COLOR_LUT_ENTRIES : 0,
- 				   true, MAX_COLOR_LUT_ENTRIES);
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-index 7474f1bc1d0b8..44b9c8ca6d719 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1256,6 +1256,14 @@ static int amdgpu_dm_plane_atomic_check(struct drm_plane *plane,
- 	if (ret)
- 		return ret;
- 
-+	/* Reject commits that attempt to use both COLOR_PIPELINE and CRTC DEGAMMA_LUT */
-+	if (new_plane_state->color_pipeline && new_crtc_state->degamma_lut) {
-+		drm_dbg_atomic(plane->dev,
-+			       "[PLANE:%d:%s] COLOR_PIPELINE and CRTC DEGAMMA_LUT cannot be enabled simultaneously\n",
-+			       plane->base.id, plane->name);
-+		return -EINVAL;
-+	}
-+
- 	ret = amdgpu_dm_plane_fill_dc_scaling_info(adev, new_plane_state, &scaling_info);
- 	if (ret)
- 		return ret;
+ static int rtl8365mb_phy_read(struct realtek_priv *priv, int phy, int regnum)
 -- 
 2.51.0
 
