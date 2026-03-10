@@ -1,124 +1,205 @@
-Return-Path: <stable+bounces-223763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eK/bH9+rr2kHbgIAu9opvQ
-	(envelope-from <stable+bounces-223763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 06:27:59 +0100
+	id KDm5JjS3r2mKbwIAu9opvQ
+	(envelope-from <stable+bounces-223764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 07:16:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F419245793
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 06:27:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 616A3245C1B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 07:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EF52305B293
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:27:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6DE73302B4F4
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 06:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8412355F49;
-	Tue, 10 Mar 2026 05:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C4C2E285C;
+	Tue, 10 Mar 2026 06:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phKkhOhK"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="uOqpuSqW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail78-58.sinamail.sina.com.cn (mail78-58.sinamail.sina.com.cn [219.142.78.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5BC28468E;
-	Tue, 10 Mar 2026 05:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E29309EF9
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 06:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=219.142.78.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773120472; cv=none; b=IebHSeLCSRnQ3G5lSsplawwx4dSW9KZSZc40e7tg1PMzNBkOwRxhenH1A5B9jaTvnFRqU5C0btqfQG1R5MPNXujGw5BaC0VTNFtZcJaapkgqytNPULIbuo0nkKL0LsFdTxg37yaHkZEHTdRZkMdJBHC1PFOPaVI4bOTFecH3sRI=
+	t=1773123376; cv=none; b=HmHsEOYJdGse2rs/fsJNjV/Csrye/KygAPSwktfSlFe5eeLGa6NbSxgrcgQMaKUmWsKz58LSHr/yTN/QLrELowrjfow9pfiMh7KNmmgEre3/rvq3jL5eKCz8Q1Una4w2gAukIEFlQTi8CPbbEEI0wrJTsX7mRe3wn0iQ9JTr4+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773120472; c=relaxed/simple;
-	bh=anH1pe6TUk7ae3GJ2eiwpGsBVXXD6aMEmUhsJEHTvns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZmT7TJzekrCRqkAUbLKuGDLl9VjrcKvQrcCsvVpDzvmhcnZqwG7m7/8EXENla+Lng46wupFCS9wkAKqSAdu92K4xES5OGFNZM/CcruvbrNJvc4EgzLOp+dYVl4Dduamkho9m8C+dI1u8O1Z7qdWmMKC+zN2w6b1gLSxLaj5JsIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phKkhOhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC20C19423;
-	Tue, 10 Mar 2026 05:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773120472;
-	bh=anH1pe6TUk7ae3GJ2eiwpGsBVXXD6aMEmUhsJEHTvns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=phKkhOhKeybGPIsZTHeoxD+QUtRrfzDIPpd+9ItXIVR3U7Bn4UCnRuGStiwvr6svW
-	 1se/9q8g5Gta5L8mAZFp5GSPCW7h0d11bBuGDyi0ijmtAQNqt0EQUP4nq+uE4ViT03
-	 V7vNU09AmLSYtuUqO71PU0Et1xy6osZyFiGoHVGq7hlEDw3wytd/HJdwIkEwBli5md
-	 UGlXmbEZQqzvgUodrVVdPCDcrg/QZ3Czs80CeT3h6QU3RJ6E8Bg50lRJCMPQQB0jIq
-	 fs9xONNDDWhjMJW9q5+DDXd4ZB22GCPcxZtkNq4l7O4d1zTSCSqvX61w3NrDo7MGjb
-	 YYTsH7MnoH5Ag==
-Date: Tue, 10 Mar 2026 16:27:46 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Yuto Ohnuki <ytohnuki@amazon.com>
-Cc: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>,
-	"Darrick J . Wong" <darrick.wong@oracle.com>,
-	Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1773123376; c=relaxed/simple;
+	bh=V406/rPXu/YUIisP2G7qY+gz/9cYq0sph96OdoYyzlI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UmSPCBiacW+Gqcgue0UfhJxqspHSgyKqxgpJyV9m1gq2U9akEf48Bp7n/EOly1sGsDzX7vUqgFuR9XFp9lntJd57YVJ2W8yysEnTjbR/ItpaFjnpFjDygyQeerrPHnyEUDz4hPMhcrFLvvlk9Qhmp6XN+Ag09YSpjSHGtDMQXUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=uOqpuSqW; arc=none smtp.client-ip=219.142.78.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773123372;
+	bh=gJOZXId0GFVYAen4FctmUbODBh+w5e6b09y93ORS6hE=;
+	h=From:Subject:Date:Message-Id;
+	b=uOqpuSqW8y0omnp5MA9h2h7LKpLO/VzxDnpkDxIe7NqZprsOinsAjV0h2rdI9KfXz
+	 bN9Gefjap+jatw6Y+kTiaS3dETeesK6VtJaFyXOAKSJr/8gVPW0lwogBgh1OwYZ/0W
+	 6S0WeatoIqon75DYFZQeJbViPre5BbdYLP7u0yNY=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.24) with ESMTP
+	id 69AFB702000008BC; Tue, 10 Mar 2026 14:15:33 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 47989410748319
+X-SMAIL-UIID: 8723722B6C934E3D9F8B2BE32A179915-20260310-141533-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] xfs: save ailp before dropping the AIL lock in
- push callbacks
-Message-ID: <aa-r0lbQbh6YzKfg@dread>
-References: <20260308182804.33127-6-ytohnuki@amazon.com>
- <20260308182804.33127-10-ytohnuki@amazon.com>
+Cc: linux-kernel@vger.kernel.org,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] bpf: Do mark_chain_precision for ARG_CONST_ALLOC_SIZE_OR_ZERO
+Date: Tue, 10 Mar 2026 14:15:27 +0800
+Message-Id: <20260310061527.1059694-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260308182804.33127-10-ytohnuki@amazon.com>
-X-Rspamd-Queue-Id: 1F419245793
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 616A3245C1B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-223763-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-223764-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	URIBL_MULTI_FAIL(0.00)[sina.com:server fail,sto.lore.kernel.org:server fail];
+	DKIM_TRACE(0.00)[sina.com:+];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,sina.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Sun, Mar 08, 2026 at 06:28:09PM +0000, Yuto Ohnuki wrote:
-> In xfs_inode_item_push() and xfs_qm_dquot_logitem_push(), the AIL lock
-> is dropped to perform buffer IO. Once the cluster buffer no longer
-> protects the log item from reclaim, the log item may be freed by
-> background reclaim or the dquot shrinker. The subsequent spin_lock()
-> call dereferences lip->li_ailp, which is a use-after-free.
-> 
-> Fix this by saving the ailp pointer in a local variable while the AIL
-> lock is held and the log item is guaranteed to be valid.
-> 
-> Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
-> Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
-> Cc: <stable@vger.kernel.org> # v5.9
-> Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-looks good to me.
+[ Upstream commit 2fc31465c5373b5ca4edf2e5238558cb62902311 ]
 
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Precision markers need to be propagated whenever we have an ARG_CONST_*
+style argument, as the verifier cannot consider imprecise scalars to be
+equivalent for the purposes of states_equal check when such arguments
+refine the return value (in this case, set mem_size for PTR_TO_MEM). The
+resultant mem_size for the R0 is derived from the constant value, and if
+the verifier incorrectly prunes states considering them equivalent where
+such arguments exist (by seeing that both registers have reg->precise as
+false in regsafe), we can end up with invalid programs passing the
+verifier which can do access beyond what should have been the correct
+mem_size in that explored state.
+
+To show a concrete example of the problem:
+
+0000000000000000 <prog>:
+       0:       r2 = *(u32 *)(r1 + 80)
+       1:       r1 = *(u32 *)(r1 + 76)
+       2:       r3 = r1
+       3:       r3 += 4
+       4:       if r3 > r2 goto +18 <LBB5_5>
+       5:       w2 = 0
+       6:       *(u32 *)(r1 + 0) = r2
+       7:       r1 = *(u32 *)(r1 + 0)
+       8:       r2 = 1
+       9:       if w1 == 0 goto +1 <LBB5_3>
+      10:       r2 = -1
+
+0000000000000058 <LBB5_3>:
+      11:       r1 = 0 ll
+      13:       r3 = 0
+      14:       call bpf_ringbuf_reserve
+      15:       if r0 == 0 goto +7 <LBB5_5>
+      16:       r1 = r0
+      17:       r1 += 16777215
+      18:       w2 = 0
+      19:       *(u8 *)(r1 + 0) = r2
+      20:       r1 = r0
+      21:       r2 = 0
+      22:       call bpf_ringbuf_submit
+
+00000000000000b8 <LBB5_5>:
+      23:       w0 = 0
+      24:       exit
+
+For the first case, the single line execution's exploration will prune
+the search at insn 14 for the branch insn 9's second leg as it will be
+verified first using r2 = -1 (UINT_MAX), while as w1 at insn 9 will
+always be 0 so at runtime we don't get error for being greater than
+UINT_MAX/4 from bpf_ringbuf_reserve. The verifier during regsafe just
+sees reg->precise as false for both r2 registers in both states, hence
+considers them equal for purposes of states_equal.
+
+If we propagated precise markers using the backtracking support, we
+would use the precise marking to then ensure that old r2 (UINT_MAX) was
+within the new r2 (1) and this would never be true, so the verification
+would rightfully fail.
+
+The end result is that the out of bounds access at instruction 19 would
+be permitted without this fix.
+
+Note that reg->precise is always set to true when user does not have
+CAP_BPF (or when subprog count is greater than 1 (i.e. use of any static
+or global functions)), hence this is only a problem when precision marks
+need to be explicitly propagated (i.e. privileged users with CAP_BPF).
+
+A simplified test case has been included in the next patch to prevent
+future regressions.
+
+Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20220823185300.406-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[ The context change is due to the commit 8ab4cdcf03d0
+("bpf: Tidy up verifier check_func_arg()") in v6.0
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ kernel/bpf/verifier.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 48776d23b44e..fd9e891fe48b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5539,6 +5539,9 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
+ 			return -EACCES;
+ 		}
+ 		meta->mem_size = reg->var_off.value;
++		err = mark_chain_precision(env, regno);
++		if (err)
++			return err;
+ 	} else if (arg_type_is_int_ptr(arg_type)) {
+ 		int size = int_ptr_type_to_size(arg_type);
+ 
 -- 
-Dave Chinner
-dgc@kernel.org
+2.34.1
+
 
