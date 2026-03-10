@@ -1,59 +1,113 @@
-Return-Path: <stable+bounces-224570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJFiIq58sGnLjgIAu9opvQ
-	(envelope-from <stable+bounces-224570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:18:54 +0100
+	id 6NoOEOh+sGmwjwIAu9opvQ
+	(envelope-from <stable+bounces-224571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:28:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90144257824
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:18:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBE5257D8E
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 301BD303EDA4
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:17:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32A1330D9405
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 20:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE403E959A;
-	Tue, 10 Mar 2026 20:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810403EAC8B;
+	Tue, 10 Mar 2026 20:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGzsBDFN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LkLPTygH";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ENN7Aunw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B8B3E92B0;
-	Tue, 10 Mar 2026 20:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCA13E929B
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 20:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773173831; cv=none; b=FdohHFYRPTsMIkck1hO6tZKK5qIUqG8EO+zyqarrll+U0QHR+7maitLlBruSPoY37bfyn01RRP8I1c+YUOYuNn20Fbw/IcqlfWhNYQN5vuJHbsmeXFw3AL9sDxq/BGv/G9e1b+34TX+iLdMs1KNOMdzuvV5voUU4fHa8lc024Ak=
+	t=1773174267; cv=none; b=tHRp+JJwN2K6NKkVHBGl08gsOmRJKd3rvnBzjByRt/X0kkD8reA1p5+wWcywAk/3uq/K7DoarIZrztl2zbKLJXcc6iSoCONDahKuKELi5VVKtTfn1bTjcVh37dTFn8xEgOTIav54qK5b96d/jkp7CQWn3Brjhlo0AEAHuSXXeZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773173831; c=relaxed/simple;
-	bh=foU1OAkBdvYLo564dfsPQ/XRQ9g0KRuxk4aQottRw6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CxVEydc81fcp3J/cvoGwAj6mPG97tOzvFoDGFQbHZq7CgZ0/BRO3pl5LsgyTteAGckfWxk+viFntqNAdH7oGc03i4j0MkMwkLdQMXXCl5w4yDOmCbODL9hhZ9kURf+yp1YRoUE68+sVHw8TjbV2ax0xdFt3emhESQezGfjC3wBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGzsBDFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15746C19423;
-	Tue, 10 Mar 2026 20:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773173831;
-	bh=foU1OAkBdvYLo564dfsPQ/XRQ9g0KRuxk4aQottRw6w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DGzsBDFN4oxaDlyrmS739aPfmcC41gN02+eCZSyIR5ctQxAp4q80tTWUx2ol57lDI
-	 eNmJQW+2aEU4CLDFoboqPjojq/fEl0s2COJdapHG+usU95U5cJf7ofpLkwxZu6JIto
-	 Dgcci3/bYLPSr+66hpGZ5Ps0EI6cWK76o+ifmQ6T40JSyf+f65p4vCbVHfopT9tGeI
-	 9m/j0utMGGrLBvj2kPy925+UZdCOZcWbsGwG048GeuDPOCutz+LAopvf1xX8s0CFYl
-	 95TERHODXpemUVYc4tHJrA6sOX2RLFzpzziEWm6RnHzhiox4h2kyj14RxnPsYzGfI9
-	 rV0ny42Wlxk6g==
-From: Eric Biggers <ebiggers@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10] net/tcp-md5: Fix MAC comparison to be constant-time
-Date: Tue, 10 Mar 2026 13:17:08 -0700
-Message-ID: <20260310201708.120088-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1773174267; c=relaxed/simple;
+	bh=JJO5qewKWIqGbxpfcpQoE00DHR/fbyp+xQU2r4R6u5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PPraIYjnKCjK76spNvpehNeRmWPyzjQkGi2h5Qry6e4v/ETPUsC/sD9Z0Iqa0Lhs8QF4lrAeTx171l469hm4VcxBwnBiVCmKWg22SXR0mGr4l7B2N8qS15o94o8QTKfaUMt+2rAcfaBwAGmIvp0jDrrJVSsD2mAhK5EKXnhjNyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LkLPTygH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ENN7Aunw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773174262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
+	b=LkLPTygHV/HP4DVQUeK0YijcwFAJCa3WOmhdCU9mE7xN7yyS7Hh7dD8Q7KRAXB7m3qqh5d
+	AhQ3cugOVz4PC5HsvK/9oNvtpO1uJ1sYwQknDRJpq0xvfG/zZVkzqDMoCZvdxM/xvvWP86
+	hnP+DmJ8IfgbyoJdDbuGKQZWLh6Moik=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-294-gNiXhBrtPZq2gGlRj8NuFA-1; Tue, 10 Mar 2026 16:24:20 -0400
+X-MC-Unique: gNiXhBrtPZq2gGlRj8NuFA-1
+X-Mimecast-MFC-AGG-ID: gNiXhBrtPZq2gGlRj8NuFA_1773174259
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-439c54e0f6aso186537f8f.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 13:24:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773174259; x=1773779059; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
+        b=ENN7AunwnuoxQNdjN9tfHrr0HKXiET+Gl7YqtAzhncsOaua049ULloIia0dTfg2/pH
+         Vnc6gSGuBaQJ6zb3nYNtPYauC9VO1vlivLVJ3XvDN/RKpWFIokA/TDaiw81jnmgElGGt
+         APn4S6+w8+WGLIFyST3Q7Mlg7oqPYFcHfksrab5/mfn+nS24laPkl1e/FrNNvIqyIzeA
+         q+iZxg5NoCbp49RZD8ywG1ToovQaASe8xQ/AOSRil/qjQdHzgcMiveHtlcQKU8Dg4JCG
+         tP/n6DoMmLEzu5nbGwjh10FQhlP1wXkeXqzrDxTBmmPHcquChGlnGKU7Uk/sBkof8/TV
+         QLkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773174259; x=1773779059;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BJ85Lkzx3nSPKz8vbaVq+hpymVq+1ScaQgtLPpniKs4=;
+        b=dsuJ2DUANnQFkHaBK0IljkSIfGpxWbY8iRB6rGCIYQ5pK5fBxyQDi8xozySJaRGQv/
+         wAXXr/9HKWPMmus4bG6cFLq+4CtnD3JQetRqe8JNf55RitqPPFiW070eILIVwSb7rgoU
+         qeE7IPjFfRfnM9Jbdq5SfguIqn1ixllIlo/XAAgXH0vm8SI2UrbcaG8Ti+qVRkOtjuqw
+         +Ih6uAaunM4v3C3Fp5tH9dVjd5onGZfp7/PB8wrvoxkdF9FEZ8oaABkEc1SBPF0NWNK9
+         CIDWQ/4MjgfuhfkCm1TAnU8FxFTnjol4XN0geFERXfVgtliWLD0eduS/j+ia0Vc8PCSt
+         9phQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFlVfI+H5v/9fyaTSfZb2SpQYSuQBxYzQfN1hK1LYCcOlhSBnMlua5giWZXG3GquRtN/uaEJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwthY3TyrUPr0ks2Yccy0MosYUfXjefIlHvBez3YTEsjkAqvEh/
+	pUW//ri0DNNjoXaZhfzPWKBMJY3h7DMw/Ty8OBPNmAxR6AKWOI3bYF1lALIaiz/sO3zlG5Ab97H
+	vvlP/nyDG35TYEaxoUqwkEQbhZWkdKGWFAzv4cr6lS7hKat2BWVDEzZB7IQ==
+X-Gm-Gg: ATEYQzy1pcFNEmfmsTnp6p30+KyIc2Lkx5U6HTknE9yhx4wQYZVBA/eNDDbVRwY7DBo
+	GmfzAyPHx/2KF6CMLvItbpUsSUsCkMPLDQAWZfaXFUe9s4M+fCmrBO+neAla/4PvKrSN8xjVemH
+	NwLywlKCW6Ork2j4rpWNQzZOiBQFYS2L6FDQsNz6REDTpNHELqvroVKXuLSOBuw99yVAY0yvxgo
+	CDUpXHfxZMsZGePsoE2udJh5YV9AsXBeiBpnfgh5l0MocPvjMDNDEgBCIN9M3pyXaz1Hd/iyzyX
+	h2r9/dAdkD6kN8NdSAPm3iAdscUuS5MP5ua9d1lUDmSJCrdZFi0Axv6Ikgyw695qKWPQcPwkR0Q
+	NbuDfpo3+lSv9dyxdzlj6my8nJ/SE/CeP6MxTFp9xqYy3ZqRU+guNmgPutZYVtYh+HGJhwYNoSf
+	yBwIjqyGXYycRdOve3bnkOy6CecWE=
+X-Received: by 2002:a05:6000:2908:b0:439:b6b3:faa7 with SMTP id ffacd0b85a97d-439f8c10e3dmr43757f8f.28.1773174259357;
+        Tue, 10 Mar 2026 13:24:19 -0700 (PDT)
+X-Received: by 2002:a05:6000:2908:b0:439:b6b3:faa7 with SMTP id ffacd0b85a97d-439f8c10e3dmr43703f8f.28.1773174258827;
+        Tue, 10 Mar 2026 13:24:18 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.144.138])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f81a3638sm621443f8f.9.2026.03.10.13.24.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 13:24:16 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	xinyang@anthropic.com,
+	stable@vger.kernel.org
+Subject: [PATCH 1/5] KVM: VMX: check validity of VMCS controls when returning from SMM
+Date: Tue, 10 Mar 2026 21:24:10 +0100
+Message-ID: <20260310202414.406078-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260310202414.406078-1-pbonzini@redhat.com>
+References: <20260310202414.406078-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,140 +115,163 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 90144257824
+X-Rspamd-Queue-Id: CDBE5257D8E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TAGGED_FROM(0.00)[bounces-224571-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224570-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pbonzini@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,anthropic.com:email]
 X-Rspamd-Action: no action
 
-commit 46d0d6f50dab706637f4c18a470aac20a21900d3 upstream.
+The VMCS12 is not available while in SMM.  However, it can be overwritten
+if userspace manages to trigger copy_enlightened_to_vmcs12() - for example
+via KVM_GET_NESTED_STATE.
 
-To prevent timing attacks, MACs need to be compared in constant
-time.  Use the appropriate helper function for this.
+Because of this, the VMCS12 has to be checked for validity before it is
+used to generate the VMCS02.  Move the check code out of vmx_set_nested_state()
+(the other "not a VMLAUNCH/VMRESUME" path that emulates a nested vmentry)
+and reuse it in vmx_leave_smm().
 
-Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
-Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Xinyang Ge <xinyang@anthropic.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- net/ipv4/tcp_ipv4.c | 5 +++--
- net/ipv6/tcp_ipv6.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 39 +++++++++++++++++++++++++++------------
+ arch/x86/kvm/vmx/nested.h |  1 +
+ arch/x86/kvm/vmx/vmx.c    |  4 ++++
+ 3 files changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 3dfa856e99267..855cca214a021 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -76,10 +76,11 @@
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- #include <linux/inetdevice.h>
- #include <linux/btf_ids.h>
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index cb925cc53389..d4bc47079809 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -6849,13 +6849,34 @@ void vmx_leave_nested(struct kvm_vcpu *vcpu)
+ 	free_nested(vcpu);
+ }
  
-+#include <crypto/algapi.h>
- #include <crypto/hash.h>
- #include <linux/scatterlist.h>
++int nested_vmx_check_restored_vmcs12(struct kvm_vcpu *vcpu)
++{
++	enum vm_entry_failure_code ignored;
++	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
++
++	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
++	    vmcs12->vmcs_link_pointer != INVALID_GPA) {
++		struct vmcs12 *shadow_vmcs12 = get_shadow_vmcs12(vcpu);
++
++		if (shadow_vmcs12->hdr.revision_id != VMCS12_REVISION ||
++		    !shadow_vmcs12->hdr.shadow_vmcs)
++			return -EINVAL;
++	}
++
++	if (nested_vmx_check_controls(vcpu, vmcs12) ||
++	    nested_vmx_check_host_state(vcpu, vmcs12) ||
++	    nested_vmx_check_guest_state(vcpu, vmcs12, &ignored))
++		return -EINVAL;
++
++	return 0;
++}
++
+ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
+ 				struct kvm_nested_state __user *user_kvm_nested_state,
+ 				struct kvm_nested_state *kvm_state)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	struct vmcs12 *vmcs12;
+-	enum vm_entry_failure_code ignored;
+ 	struct kvm_vmx_nested_state_data __user *user_vmx_nested_state =
+ 		&user_kvm_nested_state->data.vmx[0];
+ 	int ret;
+@@ -6986,25 +7007,20 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
+ 	vmx->nested.mtf_pending =
+ 		!!(kvm_state->flags & KVM_STATE_NESTED_MTF_PENDING);
  
- #include <trace/events/tcp.h>
+-	ret = -EINVAL;
+ 	if (nested_cpu_has_shadow_vmcs(vmcs12) &&
+ 	    vmcs12->vmcs_link_pointer != INVALID_GPA) {
+ 		struct vmcs12 *shadow_vmcs12 = get_shadow_vmcs12(vcpu);
  
-@@ -762,11 +763,11 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb)
- 		if (!key)
- 			goto out;
++		ret = -EINVAL;
+ 		if (kvm_state->size <
+ 		    sizeof(*kvm_state) +
+ 		    sizeof(user_vmx_nested_state->vmcs12) + sizeof(*shadow_vmcs12))
+ 			goto error_guest_mode;
  
- 
- 		genhash = tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
--		if (genhash || memcmp(hash_location, newhash, 16) != 0)
-+		if (genhash || crypto_memneq(hash_location, newhash, 16))
- 			goto out;
- 
++		ret = -EFAULT;
+ 		if (copy_from_user(shadow_vmcs12,
+ 				   user_vmx_nested_state->shadow_vmcs12,
+-				   sizeof(*shadow_vmcs12))) {
+-			ret = -EFAULT;
+-			goto error_guest_mode;
+-		}
+-
+-		if (shadow_vmcs12->hdr.revision_id != VMCS12_REVISION ||
+-		    !shadow_vmcs12->hdr.shadow_vmcs)
++				   sizeof(*shadow_vmcs12)))
+ 			goto error_guest_mode;
  	}
  
- 	if (key) {
-@@ -1449,11 +1450,11 @@ static bool tcp_v4_inbound_md5_hash(const struct sock *sk,
- 	 */
- 	genhash = tcp_v4_md5_hash_skb(newhash,
- 				      hash_expected,
- 				      NULL, skb);
- 
--	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
-+	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
- 		net_info_ratelimited("MD5 Hash failed for (%pI4, %d)->(%pI4, %d)%s L3 index %d\n",
- 				     &iph->saddr, ntohs(th->source),
- 				     &iph->daddr, ntohs(th->dest),
- 				     genhash ? " tcp_v4_calc_md5_hash failed"
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 8b9709420c052..523aa2efdc499 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -61,10 +61,11 @@
- #include <net/busy_poll.h>
- 
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- 
-+#include <crypto/algapi.h>
- #include <crypto/hash.h>
- #include <linux/scatterlist.h>
- 
- #include <trace/events/tcp.h>
- 
-@@ -808,11 +809,11 @@ static bool tcp_v6_inbound_md5_hash(const struct sock *sk,
- 	/* check the signature */
- 	genhash = tcp_v6_md5_hash_skb(newhash,
- 				      hash_expected,
- 				      NULL, skb);
- 
--	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
-+	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
- 		net_info_ratelimited("MD5 Hash %s for [%pI6c]:%u->[%pI6c]:%u L3 index %d\n",
- 				     genhash ? "failed" : "mismatch",
- 				     &ip6h->saddr, ntohs(th->source),
- 				     &ip6h->daddr, ntohs(th->dest), l3index);
-@@ -1069,11 +1070,11 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb)
- 		key = tcp_v6_md5_do_lookup(sk1, &ipv6h->saddr, l3index);
- 		if (!key)
- 			goto out;
- 
- 		genhash = tcp_v6_md5_hash_skb(newhash, key, NULL, skb);
--		if (genhash || memcmp(hash_location, newhash, 16) != 0)
-+		if (genhash || crypto_memneq(hash_location, newhash, 16))
- 			goto out;
+@@ -7015,9 +7031,8 @@ static int vmx_set_nested_state(struct kvm_vcpu *vcpu,
+ 			kvm_state->hdr.vmx.preemption_timer_deadline;
  	}
- #endif
  
- 	if (th->ack)
-
-base-commit: aed5c3b77cd53ba74f66767b03bfb9177662af4b
+-	if (nested_vmx_check_controls(vcpu, vmcs12) ||
+-	    nested_vmx_check_host_state(vcpu, vmcs12) ||
+-	    nested_vmx_check_guest_state(vcpu, vmcs12, &ignored))
++	ret = nested_vmx_check_restored_vmcs12(vcpu);
++	if (ret < 0)
+ 		goto error_guest_mode;
+ 
+ 	vmx->nested.dirty_vmcs12 = true;
+diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
+index b844c5d59025..213a448104af 100644
+--- a/arch/x86/kvm/vmx/nested.h
++++ b/arch/x86/kvm/vmx/nested.h
+@@ -22,6 +22,7 @@ void nested_vmx_setup_ctls_msrs(struct vmcs_config *vmcs_conf, u32 ept_caps);
+ void nested_vmx_hardware_unsetup(void);
+ __init int nested_vmx_hardware_setup(int (*exit_handlers[])(struct kvm_vcpu *));
+ void nested_vmx_set_vmcs_shadowing_bitmap(void);
++int nested_vmx_check_restored_vmcs12(struct kvm_vcpu *vcpu);
+ void nested_vmx_free_vcpu(struct kvm_vcpu *vcpu);
+ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 						     bool from_vmentry);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 48f0e426a8a2..e9fa59e92548 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8540,6 +8540,10 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+ 	}
+ 
+ 	if (vmx->nested.smm.guest_mode) {
++		/* Triple fault if the state is invalid.  */
++		if (nested_vmx_check_restored_vmcs12(vcpu) < 0)
++			return 1;
++
+ 		ret = nested_vmx_enter_non_root_mode(vcpu, false);
+ 		if (ret)
+ 			return ret;
 -- 
 2.53.0
 
