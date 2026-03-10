@@ -1,167 +1,186 @@
-Return-Path: <stable+bounces-223781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4COZDdbPr2kfcgIAu9opvQ
-	(envelope-from <stable+bounces-223781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:01:26 +0100
+	id QMTDDzXQr2kfcgIAu9opvQ
+	(envelope-from <stable+bounces-223782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:03:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1BA246D63
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:01:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1488C246E15
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01EB53047DE9
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 07:58:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A8B03061505
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 08:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060ED3659EB;
-	Tue, 10 Mar 2026 07:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8CA3D4120;
+	Tue, 10 Mar 2026 08:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hEGZLiNh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/Fx/rtc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F04A364959;
-	Tue, 10 Mar 2026 07:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423833D4124
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 08:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773129495; cv=none; b=kJHgXlkxChmVkyYCYp4OBqZ/qv7ygkVPoor7cRgTUjYURZGbAxZa3RAODr4kjStAYgcz6m318JxMd59aBGus2w6qYDQKXfaf7KWetm7/RmbVb/+FitRuc0J20EchyzcW8+JYxbLqFB6oG/3Tt8PFdmDoQ6KUZohw4YmmrSv2P1w=
+	t=1773129612; cv=none; b=gv23sDPo/0qcIBvZiAPxNV4ioQU7ZRBvz0Vth00ar47R5/gHGIHR6N/MgBlg4KWBB1KrVz+G1VlSX52vPASVIa+qyQ0XUPjP9BmQCyIJgeIjOU1wX8QhvbvuabqSyuLINuIhONS6TgNTFSkh6XrWdcp7pYbOPMPd6mxfLBHjG8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773129495; c=relaxed/simple;
-	bh=9rrgTplL9Jyn3YMjwg2ZeOydsNyzxReM6UUAuxh5reM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSjMQgV8KXmcFKPpuNA0/dsw1ZHMhYIubEjiKks3TNiKC2E7EXO7T/9QzQ52Zx+sa9a4frO83q3ZGXUybzFYNNJzzJdzCBx9PydDPA236CeEf1QqiT3W6uQcDPN1jNiYkU2B0t6irWUOOpJQ+X0ZBVnndUd6AcnwYzWZX8lomTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hEGZLiNh; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773129493; x=1804665493;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9rrgTplL9Jyn3YMjwg2ZeOydsNyzxReM6UUAuxh5reM=;
-  b=hEGZLiNhoOwnmyXWfQHDqAXAGHlFz3gkI9z5DPGT3W04x8dDZQDOibUD
-   P2j/aKhei39+OYr1i+9pamISfj+ZIzrjXiWgY6+6cQHeB4m9V786INGbx
-   08y/9GY4ilW9zcfQipWaO74n26kMAORG/rJ01ishoqkJ6q2OhlAPzOnVl
-   ii0Bh1ZYGlUYWSpxawxBBDnOFsm5f+WwDF1siRWosa6jSk5T6CgV91IvS
-   +VdZ2rNN1qvATKtAecwBDhEZi74t/47K1Ab/YefCiiU68WRYSD/2zLQxp
-   Wn+wD/UcuN9fj4CxBKwq4ja3lwCB3LP41bCfh/H63V0NWR1JabIVwopCw
-   g==;
-X-CSE-ConnectionGUID: agdlsgR3T6Gk0mkcribI4A==
-X-CSE-MsgGUID: pHuZHbT+ShSWIZWRhDwCpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="78045007"
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="78045007"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 00:58:09 -0700
-X-CSE-ConnectionGUID: Y3MHkOYCRJOTQu+Z55BGAA==
-X-CSE-MsgGUID: RgOeO4QgR6S9fb3Et5pDCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
-   d="scan'208";a="220066680"
-Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2026 00:58:07 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] iommu/vt-d: Only handle IOPF for SVA when PRI is supported
-Date: Tue, 10 Mar 2026 15:55:20 +0800
-Message-ID: <20260310075520.295104-1-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773129612; c=relaxed/simple;
+	bh=1psb+i8PgITcl3ezHGYbCLbfijR3fK2v53fQmyavhKI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dee/bP8Yl3Kvs5DVOMnw4jqfvuucMJ3kmtwgkd/aPXenjEk1ktYkq2LVKIZsFRfgPnX7BID/Vf/wtDQPua40BVGvA93I+aUXNCM4F/GqnsvICll+Ts+epQp96xFxAvNT3VqykSkpSQK7Jpviw0EPLkluFds+imibvQn32XjVE9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/Fx/rtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DD4C2BC9E
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 08:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773129612;
+	bh=1psb+i8PgITcl3ezHGYbCLbfijR3fK2v53fQmyavhKI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=W/Fx/rtcytb6wVC31tuxtLa9fAfesKZ7e2f3oKnSAgYB/P9acmljVk3fWU9NxhD6n
+	 xVYRQghqWLrHDmL9jgQIAtYzJ2rDlDRGfUdhYxg8mJMcRR5tl0ruA9nTxVUJnsLTE7
+	 J8L/Herct9vMmLM4gG1ZQRmcKkjaM1lgvMQhrRR9BBb/0rtlqwqyIJ1P5XJ520UjMx
+	 LzlNr/NKu+Ek9gzmvlfAWJ2WutvLVp6sihi/Gz4I4DR9doc2KcuQKW48Haoc40gyvw
+	 IiSaza9sgl78T1w67rTbAdckRmi2azz9vQMuXpV8MpQig9UMFTlCqCmJr+KCHQd/GJ
+	 Q88uupRSGdedQ==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso17616736a12.1
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 01:00:11 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwLyvKq27gTJXPq8m+0fP363n1ZqnIqa8nSVOgXsv6cVBGbRrZc
+	UJgskcfbVP03OmFAVioQE0vhDfFc32DB5pwrhrDRmBoWB0Ay6VD7bepqkWhDlFZzkAIf58YXAH3
+	VsPp3Pzl3md60r7cVK+xwwH51UwltJps=
+X-Received: by 2002:a05:6402:21c8:b0:662:b0cf:b997 with SMTP id
+ 4fb4d7f45d1cf-662b0cfbbdcmr1563652a12.16.1773129610352; Tue, 10 Mar 2026
+ 01:00:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF1BA246D63
+References: <20260308164226.20791-1-sashal@kernel.org>
+In-Reply-To: <20260308164226.20791-1-sashal@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 10 Mar 2026 15:59:51 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7GxtWRZyAT=kedLEMu=C5wH--NUzRjwi3DKXzUq+QZjA@mail.gmail.com>
+X-Gm-Features: AaiRm52C7G-z1pB3zXQthf18qpZJ_0Hk9OPyho5Ex2_bCefBcutq4Ik4nggrVE0
+Message-ID: <CAAhV-H7GxtWRZyAT=kedLEMu=C5wH--NUzRjwi3DKXzUq+QZjA@mail.gmail.com>
+Subject: Re: Patch "LoongArch/orc: Use RCU in all users of __module_address()."
+ has been added to the 6.12-stable tree
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, bigeasy@linutronix.de, 
+	WANG Xuerui <kernel@xen0n.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1488C246E15
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223781-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-223782-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,linux.intel.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,infradead.org:email,linux.dev:email,linutronix.de:email,xen0n.name:email]
 X-Rspamd-Action: no action
 
-In intel_svm_set_dev_pasid(), the driver unconditionally manages the IOPF
-handling during a domain transition. However, commit a86fb7717320
-("iommu/vt-d: Allow SVA with device-specific IOPF") introduced support for
-SVA on devices that handle page faults internally without utilizing the
-PCI PRI. On such devices, the IOMMU-side IOPF infrastructure is not
-required. Calling iopf_for_domain_replace() on these devices is incorrect
-and can lead to unexpected failures during PASID attachment or unwinding.
+Hi, Sasha,
 
-Add a check for info->pri_supported to ensure that the IOPF queue logic
-is only invoked for devices that actually rely on the IOMMU's PRI-based
-fault handling.
+On Mon, Mar 9, 2026 at 12:42=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> This is a note to let you know that I've just added the patch titled
+>
+>     LoongArch/orc: Use RCU in all users of __module_address().
+>
+> to the 6.12-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>
+> The filename of the patch is:
+>      loongarch-orc-use-rcu-in-all-users-of-__module_addre.patch
+> and it can be found in the queue-6.12 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
+Is this really needed in 6.12?
 
-Fixes: 17fce9d2336d ("iommu/vt-d: Put iopf enablement in domain attach path")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/svm.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
-index fea10acd4f02..57cd1db7207a 100644
---- a/drivers/iommu/intel/svm.c
-+++ b/drivers/iommu/intel/svm.c
-@@ -164,9 +164,12 @@ static int intel_svm_set_dev_pasid(struct iommu_domain *domain,
- 	if (IS_ERR(dev_pasid))
- 		return PTR_ERR(dev_pasid);
- 
--	ret = iopf_for_domain_replace(domain, old, dev);
--	if (ret)
--		goto out_remove_dev_pasid;
-+	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
-+	if (info->pri_supported) {
-+		ret = iopf_for_domain_replace(domain, old, dev);
-+		if (ret)
-+			goto out_remove_dev_pasid;
-+	}
- 
- 	/* Setup the pasid table: */
- 	sflags = cpu_feature_enabled(X86_FEATURE_LA57) ? PASID_FLAG_FL5LP : 0;
-@@ -181,7 +184,8 @@ static int intel_svm_set_dev_pasid(struct iommu_domain *domain,
- 
- 	return 0;
- out_unwind_iopf:
--	iopf_for_domain_replace(old, domain, dev);
-+	if (info->pri_supported)
-+		iopf_for_domain_replace(old, domain, dev);
- out_remove_dev_pasid:
- 	domain_remove_dev_pasid(domain, dev, pasid);
- 	return ret;
--- 
-2.43.0
-
+Huacai
+>
+>
+> commit cb7c7e4265d8d6fbba83f1d4df9a028837702e06
+> Author: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Date:   Wed Jan 8 10:04:47 2025 +0100
+>
+>     LoongArch/orc: Use RCU in all users of __module_address().
+>
+>     [ Upstream commit f99d27d9feb755aee9350fc89f57814d7e1b4880 ]
+>
+>     __module_address() can be invoked within a RCU section, there is no
+>     requirement to have preemption disabled.
+>
+>     Replace the preempt_disable() section around __module_address() with
+>     RCU.
+>
+>     Cc: Huacai Chen <chenhuacai@kernel.org>
+>     Cc: WANG Xuerui <kernel@xen0n.name>
+>     Cc: loongarch@lists.linux.dev
+>     Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+>     Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>     Link: https://lore.kernel.org/r/20250108090457.512198-19-bigeasy@linu=
+tronix.de
+>     Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+>     Stable-dep-of: 055c7e75190e ("LoongArch: Handle percpu handler addres=
+s for ORC unwinder")
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/u=
+nwind_orc.c
+> index 471652c0c8653..59809c3406c03 100644
+> --- a/arch/loongarch/kernel/unwind_orc.c
+> +++ b/arch/loongarch/kernel/unwind_orc.c
+> @@ -399,7 +399,7 @@ bool unwind_next_frame(struct unwind_state *state)
+>                 return false;
+>
+>         /* Don't let modules unload while we're reading their ORC data. *=
+/
+> -       preempt_disable();
+> +       guard(rcu)();
+>
+>         if (is_entry_func(state->pc))
+>                 goto end;
+> @@ -514,14 +514,12 @@ bool unwind_next_frame(struct unwind_state *state)
+>         if (!__kernel_text_address(state->pc))
+>                 goto err;
+>
+> -       preempt_enable();
+>         return true;
+>
+>  err:
+>         state->error =3D true;
+>
+>  end:
+> -       preempt_enable();
+>         state->stack_info.type =3D STACK_TYPE_UNKNOWN;
+>         return false;
+>  }
 
