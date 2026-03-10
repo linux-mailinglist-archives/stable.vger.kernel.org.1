@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-224071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BNBKr3/r2mmdwIAu9opvQ
-	(envelope-from <stable+bounces-224071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:25:49 +0100
+	id mNeDDKD+r2mmdwIAu9opvQ
+	(envelope-from <stable+bounces-224072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:21:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCF524AABE
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AFD24A753
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1AD2320776D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:13:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02F663209205
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E72387574;
-	Tue, 10 Mar 2026 11:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42572387583;
+	Tue, 10 Mar 2026 11:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ux8tP2jU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+6sZniA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B98387362;
-	Tue, 10 Mar 2026 11:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066902BF3E2;
+	Tue, 10 Mar 2026 11:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141206; cv=none; b=sbR75I25AGr+rWZqpviJf1bTjwfGNHgmnlhnqrv6bDR2vnYLWP9Bv56WMr0y7qPf8HBSj46F6JDApZfhiijqgye8mvL5FmNJIQ7xF8e/ZfEG58y0Kz4asCxe6qDs2lq2xnnXD3BQpZ1fvZvJPior3SX5sHRPdw1EEM8VWjokZS0=
+	t=1773141207; cv=none; b=a8dwyuNR3vTTIH1hRkivdDhOmVdRFdQJWI8EkzQWrQvpVFnrSIQ7ux2/MUSXvzS2ZjDBfSwLllHTUp7c2JkqPktAFqNABxTx2u3z3iB+J0B6zkz9FsmVas9jpRtZEcu4+p5sMN5rdtDruE+wP8ZowmVumUto3dHZxgB18GkJhR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141206; c=relaxed/simple;
-	bh=FfFyr1DUk+VQUoxlOj6+FV0S6Tfd7g7L4nG4kXmuoYI=;
+	s=arc-20240116; t=1773141207; c=relaxed/simple;
+	bh=GV6ZUhs+bT82GMQ5cPlMm9yXf+0y9AI6JYxLmgXdr7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWRdSmJjf7OcqjP8NHeafVn8WLGcaL8+dojMTJi5AJTordvEdVR8QcgHqw3IOJNO8cFK//KhMwujpFJxNAcW4POemIEIgjhXVB05aYf3GXFJQyH7vJahxdlnVMCB6LeViBNHL8WlRs7Qz/ZE68bAmaz+M7Q148D4hwakW/P4Pzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ux8tP2jU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D21C2BC86;
-	Tue, 10 Mar 2026 11:13:25 +0000 (UTC)
+	 MIME-Version; b=FOxblpDajMiVRl65DOgtSvGUdLlgu2fS8akYIAm9Ui2mVe+f1eaRfv3sLfwhvlGaob/J8H3zby9drFRIi2YtAp3LUx21QlLPDkZPyNMjzpBgmKFFB0D9IQMgMB4opCddT6VzJeBZZoiDjU0TyrNLev7X1IJE81BmExB1VJJ21PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+6sZniA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D037C2BCB0;
+	Tue, 10 Mar 2026 11:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773141206;
-	bh=FfFyr1DUk+VQUoxlOj6+FV0S6Tfd7g7L4nG4kXmuoYI=;
+	bh=GV6ZUhs+bT82GMQ5cPlMm9yXf+0y9AI6JYxLmgXdr7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ux8tP2jUw//bOmGSSMlZqa6iXvOFbYJ01vCNFiFVlosnwUt64BaRYGKNgl+d0DtAW
-	 q5a4CNyzkSlbUu3h1XyCQs/Sst6Bz+VBrPCPWFb7Vt5pzi6Lq+zMki/O/OTVpxwOJd
-	 OHIKOE82LprYJMh/RW6ikZan7HSVm1NXfkRDfpZNHeWXAkxb55lNE/SV1YDS59o/gr
-	 EdZRbpR7lqXo3fvi3fXbXzcleVU6vxjU0zXy8YwUpd+kr3S6ocZg2rQJHQ8dEMcK7h
-	 CeHm6r7DhClQdiKmJaTyU2honvvjsw1JKoYxMwN4XkKhI1IpNfrnSFrccjumyzdiul
-	 FPt2MXE0HbLyw==
+	b=U+6sZniA9yWPIa45nAapHyNzVnU5xnrECPm57inD1WRFZxNNa/20d67bgrpcQZc4f
+	 w1K1jABDfLQO9xiV5rN8E2HT2S6tp5WtfvqRL3N9SBspw147L0lCOgRryy9P6L077e
+	 UI+rLZQd0fA/fO3M6U0OsDbqOnrq+LDAlmpLUioM9LgdN4bIqK4XakyxtF1x/t3T3f
+	 OrPF3a3IId69HZX7BijQZnYhuJR6ER19j1G2Of3isr4dgwbXRmncmYJsnWiLdQAbEX
+	 3X55erdHaXRKUHj69EbLjGFj2JvEG3bURqo79XhiJMP3uHevaq7J2Wt6dVex0owngo
+	 WtqgpY+aQyK2g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Alper Ak <alperyasinak1@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 206/311] inet: annotate data-races around isk->inet_num
-Date: Tue, 10 Mar 2026 07:04:13 -0400
-Message-ID: <4cde93823642660dbf498b3be14ba220b9ef562d.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.19 207/311] crypto: ccp - Fix use-after-free on error path
+Date: Tue, 10 Mar 2026 07:04:14 -0400
+Message-ID: <0f8187b30400ca0948c33092fe9d374a18571b37.1773140655.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
 References: <cover.1773140654.git.sashal@kernel.org>
@@ -66,21 +66,22 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CCF524AABE
+X-Rspamd-Queue-Id: 89AFD24A753
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224071-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,amd.com,gondor.apana.org.au,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-224072-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -88,142 +89,53 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
 X-Rspamd-Action: no action
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alper Ak <alperyasinak1@gmail.com>
 
-[ Upstream commit 29252397bcc1e0a1f85e5c3bee59c325f5c26341 ]
+[ Upstream commit 889b0e2721e793eb46cf7d17b965aa3252af3ec8 ]
 
-UDP/TCP lookups are using RCU, thus isk->inet_num accesses
-should use READ_ONCE() and WRITE_ONCE() where needed.
+In the error path of sev_tsm_init_locked(), the code dereferences 't'
+after it has been freed with kfree(). The pr_err() statement attempts
+to access t->tio_en and t->tio_init_done after the memory has been
+released.
 
-Fixes: 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use RCU / hlist_nulls")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260225203545.1512417-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Move the pr_err() call before kfree(t) to access the fields while the
+memory is still valid.
+
+This issue reported by Smatch static analyser
+
+Fixes:4be423572da1 ("crypto/ccp: Implement SEV-TIO PCIe IDE (phase1)")
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet6_hashtables.h | 2 +-
- include/net/inet_hashtables.h  | 2 +-
- include/net/ip.h               | 2 +-
- net/ipv4/inet_hashtables.c     | 8 ++++----
- net/ipv4/tcp_diag.c            | 2 +-
- net/ipv6/inet6_hashtables.c    | 3 ++-
- 6 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/crypto/ccp/sev-dev-tsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index 282e29237d936..c16de5b7963fd 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -175,7 +175,7 @@ static inline bool inet6_match(const struct net *net, const struct sock *sk,
- {
- 	if (!net_eq(sock_net(sk), net) ||
- 	    sk->sk_family != AF_INET6 ||
--	    sk->sk_portpair != ports ||
-+	    READ_ONCE(sk->sk_portpair) != ports ||
- 	    !ipv6_addr_equal(&sk->sk_v6_daddr, saddr) ||
- 	    !ipv6_addr_equal(&sk->sk_v6_rcv_saddr, daddr))
- 		return false;
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index ac05a52d9e138..5a979dcab5383 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -345,7 +345,7 @@ static inline bool inet_match(const struct net *net, const struct sock *sk,
- 			      int dif, int sdif)
- {
- 	if (!net_eq(sock_net(sk), net) ||
--	    sk->sk_portpair != ports ||
-+	    READ_ONCE(sk->sk_portpair) != ports ||
- 	    sk->sk_addrpair != cookie)
- 	        return false;
+diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
+index 40d02adaf3f6d..7ad7e7a413c0f 100644
+--- a/drivers/crypto/ccp/sev-dev-tsm.c
++++ b/drivers/crypto/ccp/sev-dev-tsm.c
+@@ -378,9 +378,9 @@ void sev_tsm_init_locked(struct sev_device *sev, void *tio_status_page)
+ 	return;
  
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 69d5cef460040..7f9abd457e018 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -101,7 +101,7 @@ static inline void ipcm_init_sk(struct ipcm_cookie *ipcm,
- 
- 	ipcm->oif = READ_ONCE(inet->sk.sk_bound_dev_if);
- 	ipcm->addr = inet->inet_saddr;
--	ipcm->protocol = inet->inet_num;
-+	ipcm->protocol = READ_ONCE(inet->inet_num);
+ error_exit:
+-	kfree(t);
+ 	pr_err("Failed to enable SEV-TIO: ret=%d en=%d initdone=%d SEV=%d\n",
+ 	       ret, t->tio_en, t->tio_init_done, boot_cpu_has(X86_FEATURE_SEV));
++	kfree(t);
  }
  
- #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index f5826ec4bcaa8..46817b4c141b6 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -200,7 +200,7 @@ static bool inet_bind2_bucket_addr_match(const struct inet_bind2_bucket *tb2,
- void inet_bind_hash(struct sock *sk, struct inet_bind_bucket *tb,
- 		    struct inet_bind2_bucket *tb2, unsigned short port)
- {
--	inet_sk(sk)->inet_num = port;
-+	WRITE_ONCE(inet_sk(sk)->inet_num, port);
- 	inet_csk(sk)->icsk_bind_hash = tb;
- 	inet_csk(sk)->icsk_bind2_hash = tb2;
- 	sk_add_bind_node(sk, &tb2->owners);
-@@ -224,7 +224,7 @@ static void __inet_put_port(struct sock *sk)
- 	spin_lock(&head->lock);
- 	tb = inet_csk(sk)->icsk_bind_hash;
- 	inet_csk(sk)->icsk_bind_hash = NULL;
--	inet_sk(sk)->inet_num = 0;
-+	WRITE_ONCE(inet_sk(sk)->inet_num, 0);
- 	sk->sk_userlocks &= ~SOCK_CONNECT_BIND;
- 
- 	spin_lock(&head2->lock);
-@@ -352,7 +352,7 @@ static inline int compute_score(struct sock *sk, const struct net *net,
- {
- 	int score = -1;
- 
--	if (net_eq(sock_net(sk), net) && sk->sk_num == hnum &&
-+	if (net_eq(sock_net(sk), net) && READ_ONCE(sk->sk_num) == hnum &&
- 			!ipv6_only_sock(sk)) {
- 		if (sk->sk_rcv_saddr != daddr)
- 			return -1;
-@@ -1206,7 +1206,7 @@ int __inet_hash_connect(struct inet_timewait_death_row *death_row,
- 
- 		sk->sk_hash = 0;
- 		inet_sk(sk)->inet_sport = 0;
--		inet_sk(sk)->inet_num = 0;
-+		WRITE_ONCE(inet_sk(sk)->inet_num, 0);
- 
- 		if (tw)
- 			inet_twsk_bind_unhash(tw, hinfo);
-diff --git a/net/ipv4/tcp_diag.c b/net/ipv4/tcp_diag.c
-index d83efd91f461c..7935702e394b2 100644
---- a/net/ipv4/tcp_diag.c
-+++ b/net/ipv4/tcp_diag.c
-@@ -509,7 +509,7 @@ static void tcp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 			if (r->sdiag_family != AF_UNSPEC &&
- 			    sk->sk_family != r->sdiag_family)
- 				goto next_normal;
--			if (r->id.idiag_sport != htons(sk->sk_num) &&
-+			if (r->id.idiag_sport != htons(READ_ONCE(sk->sk_num)) &&
- 			    r->id.idiag_sport)
- 				goto next_normal;
- 			if (r->id.idiag_dport != sk->sk_dport &&
-diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-index 5e1da088d8e11..182d38e6d6d8d 100644
---- a/net/ipv6/inet6_hashtables.c
-+++ b/net/ipv6/inet6_hashtables.c
-@@ -95,7 +95,8 @@ static inline int compute_score(struct sock *sk, const struct net *net,
- {
- 	int score = -1;
- 
--	if (net_eq(sock_net(sk), net) && inet_sk(sk)->inet_num == hnum &&
-+	if (net_eq(sock_net(sk), net) &&
-+	    READ_ONCE(inet_sk(sk)->inet_num) == hnum &&
- 	    sk->sk_family == PF_INET6) {
- 		if (!ipv6_addr_equal(&sk->sk_v6_rcv_saddr, daddr))
- 			return -1;
+ void sev_tsm_uninit(struct sev_device *sev)
 -- 
 2.51.0
 
