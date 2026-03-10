@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-224243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAoPIpkBsGnOeQIAu9opvQ
-	(envelope-from <stable+bounces-224243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:33:45 +0100
+	id +CuRDkEBsGm0eQIAu9opvQ
+	(envelope-from <stable+bounces-224244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:32:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C1024AFC1
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C982E24AEF7
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:32:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3AA132EFDF5
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:25:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D792C32F0B64
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7FD387562;
-	Tue, 10 Mar 2026 11:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3F83876A3;
+	Tue, 10 Mar 2026 11:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlA5Ga8u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2qN7NjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD163876A3;
-	Tue, 10 Mar 2026 11:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5137C388364;
+	Tue, 10 Mar 2026 11:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141940; cv=none; b=Ie5poaYuy/JfBZOJWISyoqnteWUcNnafKU1zxgmcmU5IBEsoEaJCAvG4ayGExQoomzMm3LL7SY0doKtNdmlbakbpweGctl2kPsFtXhxNUhqF0aI0J5N80wdO7gowe8RLaqeAs2nfu49gi0xMxFenBR+myenYFqKaJb8IAcOG9j4=
+	t=1773141941; cv=none; b=MkV47XQIbT/Ut1w1hKvfwUgEoH7akfWh9lKdQXoYVEVtOylrq35B86KXCMcs0r5Drl4R0gIfTxqSnz6h/m8cEscyeS0qSBy4fjYWpovd87O9gb7BsID6efTVk5iYMrT4q6xmF+zYo7QqxcLP294ke3N7mRXDQSbhq78ye6SD0BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141940; c=relaxed/simple;
-	bh=YiZPymN7dxn1ugYtNiA8rdoZkN7WYwZ+I34jDwkU+Kw=;
+	s=arc-20240116; t=1773141941; c=relaxed/simple;
+	bh=KSIyL8tW1ftYIq3gAWH1W4ZN7SNZfecpnULDP/7ajq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqAcLYj7HQRhIpVnGgyZ07tuRmg15ou2U96jOfK6ZZN1JHQP4663fTgV9iqCP1cO5beglg3fLzSFC0Y8cJZoFRmaf7vPGYZEAOWvXG2p0w2og06T1S72KlIcrOL3xKeUnMqEesG/3mBJdld5H+MpO0SaUV/kPKGmsr9KM6nCBQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlA5Ga8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B144C19423;
-	Tue, 10 Mar 2026 11:25:39 +0000 (UTC)
+	 MIME-Version; b=qMdmSr5Ku0NfECyVFCeXw8WaR62FnlUQtVcTZwxKStg2SKVyCSIFgEPK2Nx27mrx112q53tu0lSYIJNLn3pT/tCmGy0N7xCGKzei0RDBbSYJMy5kv3oQ28zQcWtIVzas+bIeaQ1Y7TWl4SO+TFQ5CsWZmA2jjZ+C8FCJeo9oswc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2qN7NjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947D7C2BCAF;
+	Tue, 10 Mar 2026 11:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141940;
-	bh=YiZPymN7dxn1ugYtNiA8rdoZkN7WYwZ+I34jDwkU+Kw=;
+	s=k20201202; t=1773141941;
+	bh=KSIyL8tW1ftYIq3gAWH1W4ZN7SNZfecpnULDP/7ajq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlA5Ga8uhJWLuggztCLETgjVNLBrvubhmvh2CSZ9PRQACDlnmvujiif4ULqb3ur2d
-	 Ea7TlkQgozYuFr82//gTkptnun4kpNNcl7+4AL/BJNxQzZsKPyoAwCv77BgU7LBlez
-	 0HPUC1r0URigZ29aOcNMDKi1ZaBjWKpt6JgxM5hQKOwabXfQb0XZ7fdIZrivgWJtmU
-	 ZeUPTPoJOTsM/odlQKf+v8TMhBQza+sVVBh1Eal2vgC/mrSbY5Mf07jOCpaj+TtyKL
-	 hPovRRw9EYCKiGp8IZZKX6DmnzPwCqcnAO784GWDk3OB8j+vZSyKpkbUIww2XEBV72
-	 SP1U1ZK9djO5Q==
+	b=f2qN7NjPxgcF8r9Sn5bU6I/9867ylbIOZFxmJcoOoyWmUyfB5YxhYYkUXxV+I4+xi
+	 oQmEKsv0JGhbmqPWygB7elX9lZyyxiTHNnKLG5pjQYbwQKVaI8rV2i/5s1uVOQsd/1
+	 h4qxcPKOy3pwb2bZwvs1yY5KEONyueo7UjIOmlcISNwsgcjA9lF0U3ZKR3HSXguluz
+	 RRcx9shYQuON5aTJYMZOX6E84qKKjHL0uEuP0oSGD4c8XNZeTenu/zlQfHfffAZ1Yj
+	 sAKKwJr773niQ7YflonD+Ea/qdbGiG5pFrSG0rwIFe5HciPVEXrX0vvO9ajSVRqjeK
+	 PI6xLytD9COdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: "T.J. Mercier" <tjmercier@google.com>,
-	Jerome Lee <jaewookl@quicinc.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: David Carlier <devnexen@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 064/314] selftests/bpf: Fix OOB read in dmabuf_collector
-Date: Tue, 10 Mar 2026 07:15:23 -0400
-Message-ID: <364283edaa007c0dffc411cd102fdeabb35dcca4.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 065/314] sched_ext: Fix SCX_EFLAG_INITIALIZED being a no-op flag
+Date: Tue, 10 Mar 2026 07:15:24 -0400
+Message-ID: <77df6e7427c7838d93eefb258856b00b3d5a713d.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -66,26 +65,27 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 15C1024AFC1
+X-Rspamd-Queue-Id: C982E24AEF7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224243-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-224244-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -96,40 +96,42 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-From: "T.J. Mercier" <tjmercier@google.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 6881af27f9ea0f5ca8f606f573ef5cc25ca31fe4 ]
+[ Upstream commit 749989b2d90ddc7dd253ad3b11a77cf882721acf ]
 
-Dmabuf name allocations can be less than DMA_BUF_NAME_LEN characters,
-but bpf_probe_read_kernel always tries to read exactly that many bytes.
-If a name is less than DMA_BUF_NAME_LEN characters,
-bpf_probe_read_kernel will read past the end. bpf_probe_read_kernel_str
-stops at the first NUL terminator so use it instead, like
-iter_dmabuf_for_each already does.
+SCX_EFLAG_INITIALIZED is the sole member of enum scx_exit_flags with no
+explicit value, so the compiler assigns it 0. This makes the bitwise OR
+in scx_ops_init() a no-op:
 
-Fixes: ae5d2c59ecd7 ("selftests/bpf: Add test for dmabuf_iter")
-Reported-by: Jerome Lee <jaewookl@quicinc.com>
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Link: https://lore.kernel.org/r/20260225003349.113746-1-tjmercier@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    sch->exit_info->flags |= SCX_EFLAG_INITIALIZED; /* |= 0 */
+
+As a result, BPF schedulers cannot distinguish whether ops.init()
+completed successfully by inspecting exit_info->flags.
+
+Assign the value 1LLU << 0 so the flag is actually set.
+
+Fixes: f3aec2adce8d ("sched_ext: Add SCX_EFLAG_INITIALIZED to indicate successful ops.init()")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/dmabuf_iter.c | 2 +-
+ kernel/sched/ext_internal.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/dmabuf_iter.c b/tools/testing/selftests/bpf/progs/dmabuf_iter.c
-index 13cdb11fdeb2b..9cbb7442646e5 100644
---- a/tools/testing/selftests/bpf/progs/dmabuf_iter.c
-+++ b/tools/testing/selftests/bpf/progs/dmabuf_iter.c
-@@ -48,7 +48,7 @@ int dmabuf_collector(struct bpf_iter__dmabuf *ctx)
+diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
+index 601cfae8cc765..8039a750490f8 100644
+--- a/kernel/sched/ext_internal.h
++++ b/kernel/sched/ext_internal.h
+@@ -69,7 +69,7 @@ enum scx_exit_flags {
+ 	 * info communication. The following flag indicates whether ops.init()
+ 	 * finished successfully.
+ 	 */
+-	SCX_EFLAG_INITIALIZED,
++	SCX_EFLAG_INITIALIZED   = 1LLU << 0,
+ };
  
- 	/* Buffers are not required to be named */
- 	if (pname) {
--		if (bpf_probe_read_kernel(name, sizeof(name), pname))
-+		if (bpf_probe_read_kernel_str(name, sizeof(name), pname) < 0)
- 			return 1;
- 
- 		/* Name strings can be provided by userspace */
+ /*
 -- 
 2.51.0
 
