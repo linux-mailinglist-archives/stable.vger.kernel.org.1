@@ -1,207 +1,182 @@
-Return-Path: <stable+bounces-224546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIKpF55lsGloigIAu9opvQ
-	(envelope-from <stable+bounces-224546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:40:30 +0100
+	id KGtkF2NlsGloigIAu9opvQ
+	(envelope-from <stable+bounces-224543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:39:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB532567E5
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:40:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18BE2567B2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 19:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B423130173BE
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 263C6317C4B2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF77324705;
-	Tue, 10 Mar 2026 18:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C919831B114;
+	Tue, 10 Mar 2026 18:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QhOsZeQg"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Lg/wj79U"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607F431A07F;
-	Tue, 10 Mar 2026 18:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7990331A065;
+	Tue, 10 Mar 2026 18:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773168025; cv=none; b=YOMbzpuCokwpxBuqMuyemPOaOLsPK7xjycpmi8rnQnXvzsgAtjXNZS/jF0QYJfrvapp7efVdzeKJW7kTmuEU2VV4oWe03GUjBxT3iL9cytbWb95PmyHb2j7EGR3eGasz9XrlAW2RqHNZ8is0NcA2LvJtJWI1NJ4pGlHgpQRBOkM=
+	t=1773167935; cv=none; b=jhdyr72mCUI5cmNyqTgPygMfZlv4xWtBDst9fiEsiqTgKJmrwINfn80Btbxuh0ysI2OblQoGrpvYiu60uVhNHmvduZJrw72xQaOv2S2rjEoamhvIItfpA48X7lUVLENPVjZjigSb2IBj0g7XEVHMrPVFzfJ0WzvmOxWDkagGBv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773168025; c=relaxed/simple;
-	bh=G1hcaDMlY4C6ZaVbmkrRLOsJe6oTn5vXYw0EZ32Lclw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dNVrrbQc2NK/IEnpOMtOMm6FyFzD5EhiBdQTopcnJ4dKrHRpcD7Pqwn53q2iPN9+m7iySFoaUjEnLWxMi4UHKWzTplQw6f20xEI9ClA4qC8z7pzUBgFenMzb/IxK5vxNwIawm/xmLA3CCwuQkE0WiN+84+YPxUvhOHi4B4qHO44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QhOsZeQg; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773168023; x=1804704023;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=G1hcaDMlY4C6ZaVbmkrRLOsJe6oTn5vXYw0EZ32Lclw=;
-  b=QhOsZeQgjKioH+RyVPjpOhgAFa75B52QernwDi2O7TcjQbOcJX2rgoGj
-   3FGMpd/YL7sXG+bbJtbv0RkxDWvWMMl3MVT1duGYRb/OfDN1lTVIvYiPS
-   zeaPp6xJJ//ULnn1am4rYOAiRyYkn7DfYB63Xa8g4jd8E+pXxr+GGFAem
-   x79ZD0siwhZwD0g6HcT55XUWRjgI+xktYusVn6Ni/0uU7MwTSgCVMqFVp
-   woS8J/xBt8To59bi9nFyJYJ19brD6eNHrlbB2IvxbMBlHxa3LpXi0vW5e
-   SG23zQUD4GPiDzuUEUSEJEA5/jTEybFeJhqUZ70zvcVszqStG5Sg/YCNj
-   A==;
-X-CSE-ConnectionGUID: 34TYnX/KSxWuo4d1MyslEg==
-X-CSE-MsgGUID: c5cDL78gRQm701CpXJ9ISg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="73248591"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="73248591"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 11:40:22 -0700
-X-CSE-ConnectionGUID: zu9TJGtgQQy+0cTlxhFhBA==
-X-CSE-MsgGUID: yd0bVJBGRFql7n1aA3WKEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="224389692"
-Received: from gaggeryt-mobl.sc.intel.com ([172.25.65.89])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 11:40:20 -0700
-From: gaggery.tsai@intel.com
-To: linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com
-Cc: ckeepax@opensource.cirrus.com,
-	mstrozek@opensource.cirrus.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	broonie@kernel.org,
-	TsaiGaggery <gaggery.tsai@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: SDCA: Fix NULL pointer dereference in sdca_jack_process()
-Date: Tue, 10 Mar 2026 11:38:29 -0700
-Message-ID: <20260310183829.2907805-1-gaggery.tsai@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773167935; c=relaxed/simple;
+	bh=HeqsfeBcTBt4ArfKV32ZtW3E86s8D5Uxvo1ghrvN2zo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ACOTyln0zeIBL4S3dNRDLeDwRbIdoW1k77AJyCY1Ee0/7rXeCtkHjhKoxekqTymd5GAMqef1+Cs7/gmU/nX3hXkXuSA6PM5tp73KIrEOur6oRrymyWjOKZqkHLla4scgQCz+NLI7G8+Tj3ZD32SXsZmQSnOsWmg+8A+JrxDl58E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Lg/wj79U; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773167934; x=1804703934;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JtOydYU3WqE8Z2TOBVP6syGAXK8byl5NV2hYUJzJtXk=;
+  b=Lg/wj79UAHpAX+ITMKjZb/Jzsfm537R7rg2pMX2XJmsL0gox1ds0t9sk
+   I/m58Ww/YaT7WnSYvfcx81smDawVXb5GP4aziC0wEydeZRWzTaIo3LedI
+   Bufy7bKWrGGcHKVN41Vldps/dD6UXJGAE1h28vGnkE/8Zi0ipVM11Hb+u
+   /AeSfYl5HWXC2Lg7MxrDfrruNCZ+O+tq3n3F/FruU2G0aG17l4Q4kbXWE
+   qb1AU2HC8kC54aAshr3q/eqvg0dE7znbtQfW6DFPcL63VwuOKqLtPX8k3
+   gS2sUIXnopB6I+7F+THyZ4Kh8evLJpL9v6ineDhoLy2O+AsC7zO8MubSM
+   w==;
+X-CSE-ConnectionGUID: oeo/sL4gQqWEEvSO1v0gOQ==
+X-CSE-MsgGUID: bkRKWOB/QDGgDahUeXi26Q==
+X-IronPort-AV: E=Sophos;i="6.23,112,1770595200"; 
+   d="scan'208";a="14738389"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 18:38:50 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:3067]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.33.152:2525] with esmtp (Farcaster)
+ id 08a1a1eb-2d27-4c44-9dbf-ad6240b37571; Tue, 10 Mar 2026 18:38:50 +0000 (UTC)
+X-Farcaster-Flow-ID: 08a1a1eb-2d27-4c44-9dbf-ad6240b37571
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 18:38:50 +0000
+Received: from c889f3b07a0a.amazon.com (10.106.82.15) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 18:38:48 +0000
+From: Yuto Ohnuki <ytohnuki@amazon.com>
+To: Carlos Maiolino <cem@kernel.org>, Dave Chinner <dchinner@redhat.com>
+CC: "Darrick J . Wong" <darrick.wong@oracle.com>, Brian Foster
+	<bfoster@redhat.com>, <linux-xfs@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Yuto Ohnuki <ytohnuki@amazon.com>,
+	<syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v4 1/4] xfs: stop reclaim before pushing AIL during unmount
+Date: Tue, 10 Mar 2026 18:38:37 +0000
+Message-ID: <20260310183835.89827-7-ytohnuki@amazon.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20260310183835.89827-6-ytohnuki@amazon.com>
+References: <20260310183835.89827-6-ytohnuki@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CFB532567E5
+X-ClientProxiedBy: EX19D036UWC002.ant.amazon.com (10.13.139.242) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B18BE2567B2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-6.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-224546-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224543-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gaggery.tsai@intel.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[ytohnuki@amazon.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,cirrus.com:email]
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-From: TsaiGaggery <gaggery.tsai@intel.com>
+The unmount sequence in xfs_unmount_flush_inodes() pushed the AIL while
+background reclaim and inodegc are still running. This is broken
+independently of any use-after-free issues - background reclaim and
+inodegc should not be running while the AIL is being pushed during
+unmount, as inodegc can dirty and insert inodes into the AIL during the
+flush, and background reclaim can race to abort and free dirty inodes.
 
-sdca_jack_process() unconditionally dereferences component->card and
-card->snd_card at the top of the function. This causes a NULL pointer
-dereference when the SDCA IRQ handler fires after the ASoC card has
-been torn down.
+Reorder xfs_unmount_flush_inodes() to stop inodegc and cancel background
+reclaim before pushing the AIL. Stop inodegc before cancelling
+m_reclaim_work because the inodegc worker can re-queue m_reclaim_work
+via xfs_inodegc_set_reclaimable.
 
-The crash occurs deterministically on platforms where snd_soc_bind_card()
-fails (e.g. due to missing machine driver support). The sequence is:
-
-  1. soc_probe_component() sets component->card and calls
-     snd_soc_component_probe(), which registers the SDCA IRQ handler
-     via sdca_irq_populate() / devm_request_threaded_irq().
-
-  2. snd_soc_bind_card() fails (e.g. sof_sdw returns -ENOTSUPP when
-     no matching machine driver is found for the codec configuration).
-
-  3. soc_cleanup_card_resources() -> soc_remove_component() sets
-     component->card = NULL.
-
-  4. The SDCA IRQ handler remains registered because it is tied to
-     device lifetime (devm), not card lifetime.
-
-  5. A subsequent SoundWire alert fires via
-     cdns_update_slave_status_work() -> sdw_handle_slave_status() ->
-     handle_nested_irq() -> detected_mode_handler() ->
-     sdca_jack_process(), which dereferences the now-NULL
-     component->card, causing the crash at offset 0xa0
-     (offsetof(struct snd_soc_card, snd_card)).
-
-  BUG: kernel NULL pointer dereference, address: 00000000000000a0
-  RIP: 0010:sdca_jack_process+0x47/0x470 [snd_soc_sdca]
-  Call Trace:
-   detected_mode_handler+0x2e/0x70 [snd_soc_sdca]
-   handle_nested_irq+0xa9/0x120
-   regmap_irq_thread+0x1d5/0x320
-   handle_nested_irq+0xa9/0x120
-   sdw_handle_slave_status+0xe92/0x17d0 [soundwire_bus]
-   cdns_update_slave_status_work+0x25e/0x470 [soundwire_cadence]
-
-Fix this by deferring the rwsem and kctl initialization until after
-a NULL check on card and card->snd_card, returning -ENODEV if the
-card is not available. This is consistent with the same defensive
-pattern used by existing SDCA codec drivers (e.g. rt721-sdca.c,
-rt712-sdca.c).
-
-Tested on Intel Panther Lake with Cirrus Logic CS42L45/CS35L57
-SoundWire codecs. The crash reproduces reliably when
-snd_soc_bind_card() fails and can be triggered by any unsupported
-codec configuration that causes card registration to return an error.
-
-Fixes: 82e12800f563 ("ASoC: SDCA: Add ability to connect SDCA jacks to ASoC jacks")
-Cc: stable@vger.kernel.org
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Signed-off-by: Gaggery Tsai <gaggery.tsai@intel.com>
+Reported-by: syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=652af2b3c5569c4ab63c
+Fixes: 90c60e164012 ("xfs: xfs_iflush() is no longer necessary")
+Cc: <stable@vger.kernel.org> # v5.9
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
 ---
- sound/soc/sdca/sdca_jack.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_mount.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_jack.c b/sound/soc/sdca/sdca_jack.c
-index 49d317d3b8c8..b52d88a08634 100644
---- a/sound/soc/sdca/sdca_jack.c
-+++ b/sound/soc/sdca/sdca_jack.c
-@@ -37,13 +37,21 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
- 	struct device *dev = interrupt->dev;
- 	struct snd_soc_component *component = interrupt->component;
- 	struct snd_soc_card *card = component->card;
--	struct rw_semaphore *rwsem = &card->snd_card->controls_rwsem;
-+	struct rw_semaphore *rwsem;
- 	struct jack_state *state = interrupt->priv;
--	struct snd_kcontrol *kctl = state->kctl;
-+	struct snd_kcontrol *kctl;
- 	struct snd_ctl_elem_value *ucontrol __free(kfree) = NULL;
- 	unsigned int reg, val;
- 	int ret;
+diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
+index 9c295abd0a0a..ef1ea8a1238c 100644
+--- a/fs/xfs/xfs_mount.c
++++ b/fs/xfs/xfs_mount.c
+@@ -608,8 +608,9 @@ xfs_unmount_check(
+  * have been retrying in the background.  This will prevent never-ending
+  * retries in AIL pushing from hanging the unmount.
+  *
+- * Finally, we can push the AIL to clean all the remaining dirty objects, then
+- * reclaim the remaining inodes that are still in memory at this point in time.
++ * Stop inodegc and background reclaim before pushing the AIL so that they
++ * are not running while the AIL is being flushed. Then push the AIL to
++ * clean all the remaining dirty objects and reclaim the remaining inodes.
+  */
+ static void
+ xfs_unmount_flush_inodes(
+@@ -621,9 +622,9 @@ xfs_unmount_flush_inodes(
  
-+	if (!card || !card->snd_card) {
-+		dev_dbg(dev, "card not yet bound, deferring jack event\n");
-+		return -ENODEV;
-+	}
-+
-+	rwsem = &card->snd_card->controls_rwsem;
-+	kctl = state->kctl;
-+
- 	guard(rwsem_write)(rwsem);
+ 	xfs_set_unmounting(mp);
  
- 	if (!kctl) {
+-	xfs_ail_push_all_sync(mp->m_ail);
+ 	xfs_inodegc_stop(mp);
+ 	cancel_delayed_work_sync(&mp->m_reclaim_work);
++	xfs_ail_push_all_sync(mp->m_ail);
+ 	xfs_reclaim_inodes(mp);
+ 	xfs_health_unmount(mp);
+ 	xfs_healthmon_unmount(mp);
 -- 
-2.43.0
+2.50.1
+
+
+
+
+Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
+
+Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
+
+
 
 
