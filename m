@@ -1,205 +1,190 @@
-Return-Path: <stable+bounces-224524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DbrJaFNsGnFhgIAu9opvQ
-	(envelope-from <stable+bounces-224524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:58:09 +0100
+	id gCqYA1xQsGmBiAIAu9opvQ
+	(envelope-from <stable+bounces-224525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:09:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AAE2552A5
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CDF2554DA
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6F1C303B4EF
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 16:56:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8576630745C2
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0EA31DDBB;
-	Tue, 10 Mar 2026 16:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B143F3CCFD1;
+	Tue, 10 Mar 2026 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k6JJXqQl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LE80cUBM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11813BE64A;
-	Tue, 10 Mar 2026 16:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DF6321445
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 17:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773161791; cv=none; b=f7NPiZmf1bZ9+WKV1sZAJjPnfkFonWlKnHP3TPUbl86z98iJ7KwjLUqRSXse24/QlCUwJFXsVcN8SNWu4dIPctqUYomE+4O95mEAu048ErYFeNAQZkvFSG0C0RbjKDPAzp+eAy335khNiuFz55bcacYPaUU8W0gbA3KbSTiMr1Y=
+	t=1773162466; cv=none; b=oysT0+HX38j0hBAJwVIcL8DDN1qxkzsgce4QNQ581dwk8kE20WQbcsM6yiG4jw+ralom/T82bNNBiiwm+lpxOm0KYf2c0i9YiJd2BnDhrl1ZVUoVNNWA7LDzHl3LI9vmKOoGpK1aR0xNriLpPGiOfvQybZ9hZqgyZtyVppp4D7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773161791; c=relaxed/simple;
-	bh=2yyLA1eqQVjSIg1EbJ1Vg5k8O6YyDi6rLlAA/FqS8s8=;
-	h=Date:To:From:Subject:Message-Id; b=R6bUN92xsXc70eSlC3kbJIhlCMDBYNNyEcSWrnO8Iq9Ex5qzpwoILLrzsw761rsMPrgIQG7aSmCVL21dZHNO3Oy5Tv+aUt72KyQuTHimkJu6FQBZGtx46GvhBhSn/lrJKGcnWEBKQgPu9jMVkoW1BbUb1YS2jWutBY8Ucs/62g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k6JJXqQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE1AC19423;
-	Tue, 10 Mar 2026 16:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773161791;
-	bh=2yyLA1eqQVjSIg1EbJ1Vg5k8O6YyDi6rLlAA/FqS8s8=;
-	h=Date:To:From:Subject:From;
-	b=k6JJXqQlNgh+480yUDKPdEEf3S7NgMjkEhqYqGBHLmLaoKMO/aH/ux1ywcPjjFcOU
-	 2m4KHErbBc1VO1i56dtPSFQusFIGkT/eExNgUeyOh6y1kkLYEto/GBa9RZLgmB/AHU
-	 Roh2QvBuYFpzKLF8Lt19C1TOZAZwDZ/YmO3oYxtI=
-Date: Tue, 10 Mar 2026 09:56:30 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,sidhartha.kumar@oracle.com,rppt@kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,mike.kravetz@oracle.com,JonasZhou@zhaoxin.com,hughd@google.com,david@kernel.org,aarcange@redhat.com,jianhuizzzzz@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch added to mm-new branch
-Message-Id: <20260310165631.4AE1AC19423@smtp.kernel.org>
+	s=arc-20240116; t=1773162466; c=relaxed/simple;
+	bh=WbbQzFfNash0ak6vvZ8JHHiDHuWiqvb6G0aj2KzAHH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HbhCdA4rSkDYXz5HFSy/zDHbM2ygSUgL2hoSU0qkjn/8oBBbo1fivaZNxW74JqITxvvDSaw+V7s88GD4oHGtDAg9NUf379QNx+eHfCDaJug6YolYKRaSB2szVBu3DeNPAUdvy1L+8L5HnBgNIErvL1PYSlTQv3ASZYy4Tga8sLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LE80cUBM; arc=none smtp.client-ip=74.125.224.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64c9cabfe5dso185668d50.0
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 10:07:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773162463; x=1773767263; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FsE/wJoZGbLF5L8GTMnDOMdqAYhi1A4RQQKPiPPW3gA=;
+        b=LE80cUBMMhejDveZZ4so4bJ28DUCDiH1wCRsy+EN3UR6TGbho6Wsjzhn6CpC70Agrk
+         +QQg90Z9QXw73IHJeVNENUMz4vezd04VKGqLFIFT3y3hp/ZEj+B5bP/0UHKpn6CyocW9
+         5mTNe6xbIcSCvkOcu6dKsUvpPWiYBKmOfzFffJJiCQ1lK7TlS2bp5/GfPoAAmccoBrLc
+         br8EP1Mh9m+6Q/EDp63nbD9KXSViiFFlzH2TTrf/NZqtHzTVtmO1YJ8yg1WQw/o8DbmV
+         YnL1KENepScbUkWFGYW7Q09fDJ+aJbqUyqPUKiLBHlFaN6qIxBJ3msntHqFZKmj2QNAm
+         FiTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773162463; x=1773767263;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FsE/wJoZGbLF5L8GTMnDOMdqAYhi1A4RQQKPiPPW3gA=;
+        b=gZDBkJuJc92I84sUny0+YhuiOQbYImADuWBHDTgoOGY8dMkk74aRDFLbQ3v9Uv0PU/
+         nNbmWyN4tIANFd8FWXOQ7Ve9lS0DLrL8UHqQN3oPnjLEgQMORmDAWckqEYbfXSwsO6bM
+         H6DzHsqkJ0ujF/X8ca7hFmWSgSD7/DVaqwcBkS1PVyeEeYoco30nqdh/RGL00PDiGNBG
+         LV2eWsCgyka+E1NbJWoPi7V1MSNtZl0fZuIMDoAqtBdFPbwFCbCPmW0XLs5tKnhEpK9q
+         3KJzWZnb9byrslQF27OvQdr/dYWK92vHMdWrZPmwpPleZDup4pgqAXrswdw7Nlmi6nkw
+         F+Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtNBiDQtOts+rvOiGxWxv/i/xzVs31+zmGUkbjEjSZh2qMJZZ2KErmL5XjWqG2ZtBEryVnizs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3PJgjolay/oAGdebODX+036Y74HLq8EvEMXqMPYF7fWdJljqk
+	QMW6C3dFK9oZjvlS8PvRczVUQ8ic937Yvx0Lan8zvnwf/tYxFIY5CeWU
+X-Gm-Gg: ATEYQzwUeaSMBDcZTdV6ywshpox+SO7NUUusay932s6fe2YtI2yrGMMYmXoJtbmC8di
+	uqclGGkKA8uFmQgZuVRszys0iJdpvGcHtOGqnKygWy2zAaRbNL2dfMorl04qBadr+BzVZRnerKA
+	my1PnrSd6hH6PY2N/tLRRIiu9ao6eHVXweOC/7CwM2EpjyfSqSnlKWVvBwfxLLDwAp3mRLnzVHj
+	whGzqK5PuZKRrBret+lYl204jXbvt54XQgQPJh0sONgmLLP2q4Nq1HZiZcQOQ30vxktgFEv4dr/
+	8ZHKGUUL6RgFzjKL5ZEVw2s+6pbOPSREEtyxZm7D8cCwc1bUBUjN4tcGSTZhZufo66Xx/dVZipD
+	k10yufSRTtavhTCS0XrlcwfOng99UIdVqHzHf9avXTgt/iFB2YPsW6VwaFl5hCsh++ql1bCrSu+
+	VK3UOL5xXSekIquq6/Ir2D1mGPon7QfRi09XyOn/YXIyh8QXHYSLaP+4/bt+JeRv7w2gE=
+X-Received: by 2002:a53:ee42:0:b0:64a:ce57:cac4 with SMTP id 956f58d0204a3-64d5a13e158mr2992719d50.24.1773162463385;
+        Tue, 10 Mar 2026 10:07:43 -0700 (PDT)
+Received: from desktop-linux.python-stargazer.ts.net ([50.168.180.218])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64d175d32cdsm6930041d50.2.2026.03.10.10.07.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 10:07:42 -0700 (PDT)
+From: Mehul Rao <mehulrao@gmail.com>
+To: jmaloy@redhat.com,
+	davem@davemloft.net
+Cc: edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ying.xue@windriver.com,
+	tung.q.nguyen@dektech.com.au,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	stable@vger.kernel.org,
+	Mehul Rao <mehulrao@gmail.com>
+Subject: [PATCH net v3] tipc: fix divide-by-zero in tipc_sk_filter_connect()
+Date: Tue, 10 Mar 2026 13:07:30 -0400
+Message-ID: <20260310170730.28841-1-mehulrao@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: B5AAE2552A5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 63CDF2554DA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224524-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[google.com,kernel.org,redhat.com,windriver.com,dektech.com.au,vger.kernel.org,lists.sourceforge.net,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224525-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,oracle.com,redhat.com,suse.de,linux.dev,zhaoxin.com,google.com,gmail.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mehulrao@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+A user can set conn_timeout to any value via
+setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+tipc_sk_filter_connect() executes:
 
-The patch titled
-     Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-has been added to the -mm mm-new branch.  Its filename is
-     mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+    delay %= (tsk->conn_timeout / 4);
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+If conn_timeout is in the range [0, 3], the integer division yields 0,
+and the modulo operation triggers a divide-by-zero exception, causing a
+kernel oops/panic.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Fix this by clamping conn_timeout to a minimum of 4 at the point of use
+in tipc_sk_filter_connect().
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
+RIP: 0010:tipc_sk_filter_rcv (net/tipc/socket.c:2236 net/tipc/socket.c:2362)
+Call Trace:
+ tipc_sk_backlog_rcv (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:32 include/net/sock.h:2357 net/tipc/socket.c:2406)
+ __release_sock (include/net/sock.h:1185 net/core/sock.c:3213)
+ release_sock (net/core/sock.c:3797)
+ tipc_connect (net/tipc/socket.c:2570)
+ __sys_connect (include/linux/file.h:62 include/linux/file.h:83 net/socket.c:2098)
 
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Tue, 10 Mar 2026 19:05:26 +0800
-
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units.  This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page.  This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
-
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
-
-Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: JonasZhou <JonasZhou@zhaoxin.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mehul Rao <mehulrao@gmail.com>
 ---
+Changes in v3:
+- Decode stack trace symbols (Eric Dumazet)
+- Link to v2: https://lore.kernel.org/netdev/20260306185005.22120-1-mehulrao@gmail.com/
 
- include/linux/hugetlb.h |   17 +++++++++++++++++
- mm/userfaultfd.c        |    2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+Changes in v2:
+- Clamp conn_timeout at the point of use in tipc_sk_filter_connect()
+  instead of rejecting small values in tipc_setsockopt()
+- Link to v1: https://lore.kernel.org/netdev/20260305215336.645186-1-mehulrao@gmail.com/
+---
+ net/tipc/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/include/linux/hugetlb.h
-@@ -792,6 +792,23 @@ static inline unsigned huge_page_shift(s
- 	return h->order + PAGE_SHIFT;
- }
- 
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
---- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-+++ a/mm/userfaultfd.c
-@@ -769,7 +769,7 @@ retry:
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-_
-
-Patches currently in -mm which might be from jianhuizzzzz@gmail.com are
-
-mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation.patch
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index 4c618c2b871d..9329919fb07f 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2233,6 +2233,8 @@ static bool tipc_sk_filter_connect(struct tipc_sock *tsk, struct sk_buff *skb,
+ 		if (skb_queue_empty(&sk->sk_write_queue))
+ 			break;
+ 		get_random_bytes(&delay, 2);
++		if (tsk->conn_timeout < 4)
++			tsk->conn_timeout = 4;
+ 		delay %= (tsk->conn_timeout / 4);
+ 		delay = msecs_to_jiffies(delay + 100);
+ 		sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
+-- 
+2.53.0
 
 
