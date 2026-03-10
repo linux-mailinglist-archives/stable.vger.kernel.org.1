@@ -1,146 +1,180 @@
-Return-Path: <stable+bounces-224528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJRANtpUsGkJiQIAu9opvQ
-	(envelope-from <stable+bounces-224528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:28:58 +0100
+	id WGXEAPRUsGkJiQIAu9opvQ
+	(envelope-from <stable+bounces-224529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:29:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2C025593D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC0F25594B
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9107131B59DC
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:24:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5353431CA482
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05D73CF02A;
-	Tue, 10 Mar 2026 17:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B483D1710;
+	Tue, 10 Mar 2026 17:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kqnAEbB6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oBfW7J5Q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kqnAEbB6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oBfW7J5Q"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852A2DB7B9;
-	Tue, 10 Mar 2026 17:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41EF2949E0
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 17:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773163488; cv=none; b=GP5SGAn6VoAQ11VI5CfQJpU7QYR2ZL76hWDxQWsHgk7fWJ4qWmma3TsYsmkaPpWLjiUAU1m7uBQrol4WVEv5Kbdy9wHxD3S/FKOi2lIQi5B5A2VLz20gHqWEkq/G1EGTVSLhm5S30xnIt49lB83GJXO0H5A24kRc+CdvYFCi42I=
+	t=1773163509; cv=none; b=cvHNsTXpC8EWQMntShPDOFKe+/XmtJAn4CtxLQveXegixOQc/C0r+MmpEHCFE/79167xf+yqr5bgmdA9E87X6mtVmaUMkPqXPL2v9OAR6ao6L05r7rvHy+Gsih15P+qq5jTJmtI7IxUNyRe+ArKdD6dJyVsILfJ8X6nWuA6EsWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773163488; c=relaxed/simple;
-	bh=/ZLHb41tF9gOmEmiEjRMLrS/NfJM9CSRUwSa3rGkEnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qvw/MSgrYy0whAE7uTkRzLYpX7DmSwmwgMGcsqNp9KL+obghhvDbn7QaKEMcaZRe0rb/hUGjpe2Wd1kl7WdnsY4HR2Obfs9GpHFTvaMSRLq/44qDOY+oN3h9FgKwoRFaHJBNwk8pIEUJS8PLQd6rNIcHTixWL4JwV1kpg14robg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5ECBE14BF;
-	Tue, 10 Mar 2026 10:24:40 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5D383F694;
-	Tue, 10 Mar 2026 10:24:45 -0700 (PDT)
-Date: Tue, 10 Mar 2026 17:24:42 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Reda CHERKAOUI <redacherkaoui67@gmail.com>
-Cc: will@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/mm: harden ASID allocator against empty bitmap
- after rollover
-Message-ID: <abBT2gV84-9uaHkJ@arm.com>
-References: <20260219113715.8001-1-redacherkaoui67@gmail.com>
+	s=arc-20240116; t=1773163509; c=relaxed/simple;
+	bh=X9K8266PYIrXt/mDmGLTxbtOIt/CN7sNaos1k59WePw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mFgx+J7lm7Bf6ZjU7ROzVJUOE3f+1bKa1aroGJHrzeAY30UYtoTdF47RBJMOJneCzQKDJPlvJaF1EXdhCgVn8h4nUOtNCf+lVG1e4WR9aj6JBQOADBrMruyahj8tpY17pm5HkY62SmHVsJYCAFkZExYmp14lx+ZCcL16PWbOJQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kqnAEbB6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oBfW7J5Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kqnAEbB6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oBfW7J5Q; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5159C5BCFF;
+	Tue, 10 Mar 2026 17:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773163506; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ankmUMc4iLPKVU5XNjpVjNeLZP7KF9IDia47WayHwPg=;
+	b=kqnAEbB6bdJEn562AkPjZoUnrp5Rzhp3tmSo/mQmvYH5u3CwbGtJ4SLW2cc9m+vAUDjafn
+	K2IxbKgI/uUcOuez1nrKnD7rFWfcK+Pi+9uBTByyNiva24/n1tQZ/IVhW1xD9qAvfpXqdk
+	Yt3HSkfXl9MCca47pfhoManjYiW+30M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773163506;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ankmUMc4iLPKVU5XNjpVjNeLZP7KF9IDia47WayHwPg=;
+	b=oBfW7J5QgzG30SIa3KuBzCNLFXOdUBmFEwAa3so+ABEdEjYu57PjNP0ia2kRZxZKIjUOeT
+	zX5Wv3c5vX0L2qCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773163506; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ankmUMc4iLPKVU5XNjpVjNeLZP7KF9IDia47WayHwPg=;
+	b=kqnAEbB6bdJEn562AkPjZoUnrp5Rzhp3tmSo/mQmvYH5u3CwbGtJ4SLW2cc9m+vAUDjafn
+	K2IxbKgI/uUcOuez1nrKnD7rFWfcK+Pi+9uBTByyNiva24/n1tQZ/IVhW1xD9qAvfpXqdk
+	Yt3HSkfXl9MCca47pfhoManjYiW+30M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773163506;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ankmUMc4iLPKVU5XNjpVjNeLZP7KF9IDia47WayHwPg=;
+	b=oBfW7J5QgzG30SIa3KuBzCNLFXOdUBmFEwAa3so+ABEdEjYu57PjNP0ia2kRZxZKIjUOeT
+	zX5Wv3c5vX0L2qCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B9523F585;
+	Tue, 10 Mar 2026 17:25:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mZ89BfJTsGkOUQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 10 Mar 2026 17:25:06 +0000
+Date: Tue, 10 Mar 2026 18:25:05 +0100
+Message-ID: <87tsunppfy.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Mehul Rao <mehulrao@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain()
+In-Reply-To: <CAMNhdctTJYdzQvv1MtZtqUjYSjrtiu_6J6E9eQJSjx-wmXfWKg@mail.gmail.com>
+References: <20260305193508.311096-1-mehulrao@gmail.com>
+	<87qzpttm77.wl-tiwai@suse.de>
+	<CAMNhdctTJYdzQvv1MtZtqUjYSjrtiu_6J6E9eQJSjx-wmXfWKg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260219113715.8001-1-redacherkaoui67@gmail.com>
-X-Rspamd-Queue-Id: 3F2C025593D
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 7AC0F25594B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224528-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-224529-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.965];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:dkim,suse.de:mid]
 X-Rspamd-Action: no action
 
-On Thu, Feb 19, 2026 at 11:37:14AM +0000, Reda CHERKAOUI wrote:
-> new_context() assumes that after incrementing asid_generation and calling
-> flush_context(), find_next_zero_bit() will always find a free ASID.
+On Tue, 10 Mar 2026 18:11:19 +0100,
+Mehul Rao wrote:
 > 
-> If that invariant is ever violated, __set_bit(NUM_USER_ASIDS, asid_map)
-> would write past the end of the bitmap. Add a defensive check so the
-> kernel fails loudly instead of silently corrupting memory.
-> Cc: stable@vger.kernel.org
 > 
-> Signed-off-by: Reda CHERKAOUI <redacherkaoui67@gmail.com>
-> ---
->  arch/arm64/mm/context.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
+> Hi Takashi,  
 > 
-> diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
-> index b2ac06246327..74c1ece7db78 100644
-> --- a/arch/arm64/mm/context.c
-> +++ b/arch/arm64/mm/context.c
-> @@ -160,6 +160,7 @@ static u64 new_context(struct mm_struct *mm)
->  	static u32 cur_idx = 1;
->  	u64 asid = atomic64_read(&mm->context.id);
->  	u64 generation = atomic64_read(&asid_generation);
-> +	unsigned long idx;
->  
->  	if (asid != 0) {
->  		u64 newasid = asid2ctxid(ctxid2asid(asid), generation);
-> @@ -194,9 +195,11 @@ static u64 new_context(struct mm_struct *mm)
->  	 * a reserved TTBR0 for the init_mm and we allocate ASIDs in even/odd
->  	 * pairs.
->  	 */
-> -	asid = find_next_zero_bit(asid_map, NUM_USER_ASIDS, cur_idx);
-> -	if (asid != NUM_USER_ASIDS)
-> +	idx = find_next_zero_bit(asid_map, NUM_USER_ASIDS, cur_idx);
-> +	if (idx != NUM_USER_ASIDS) {
-> +		asid = idx;
->  		goto set_asid;
-> +	}
->  
->  	/* We're out of ASIDs, so increment the global generation count */
->  	generation = atomic64_add_return_relaxed(ASID_FIRST_VERSION,
-> @@ -204,7 +207,10 @@ static u64 new_context(struct mm_struct *mm)
->  	flush_context();
->  
->  	/* We have more ASIDs than CPUs, so this will always succeed */
-> -	asid = find_next_zero_bit(asid_map, NUM_USER_ASIDS, 1);
-> +	idx = find_next_zero_bit(asid_map, NUM_USER_ASIDS, 1);
-> +	if (unlikely(idx == NUM_USER_ASIDS))
-> +		panic("ASID allocator: no free ASIDs after rollover\n");
-> +	asid = idx;
+> Thanks for applying!
+> 
+> It was found through an LLM-assisted static analysis pipeline that scans
+> kernel subsystems for concurrency bugs, then verified with KASAN by writing a
+> PoC that races snd_pcm_drain() against snd_pcm_close() on linked snd-dummy
+> substreams from two threads.
+> 
+> The race window is narrow, so I injected a msleep(50) between the unlock and
+> the runtime field access to reliably trigger the KASAN splat
+> (slab-use-after-free in snd_pcm_drain). Without the delay it didn't fire in
+> 3000 iterations though.
+> 
+> Please let me know if you would like these kinds of patches in the future. I
+> am new to kernel development and this was one of my first patches. I am trying
+> to learn as I go.
 
-How do you even hit this? Is it if you have less ASIDs than the number
-of CPUs? The kernel complains about this in asids_update_limit.
+Sure, more fixes in this level of good quality are appreciated.
 
-Anyway, given how you are not following up on maintainer's comments, I
-assume these patches are automatically generated.
 
--- 
-Catalin
+thanks,
+
+Takashi
 
