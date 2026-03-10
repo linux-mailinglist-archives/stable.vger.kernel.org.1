@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-224581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOvjIZKOsGkukgIAu9opvQ
-	(envelope-from <stable+bounces-224581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:35:14 +0100
+	id kEITJMCTsGkukgIAu9opvQ
+	(envelope-from <stable+bounces-224590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:57:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC1D2585A8
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:35:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08922588EA
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FE34325A243
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:31:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2C7F30888ED
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 21:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419503EFD04;
-	Tue, 10 Mar 2026 21:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA763ECBC9;
+	Tue, 10 Mar 2026 21:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="MRus8NSx"
+	dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b="1LMof0gK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3616309EF9
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E153CA4BE
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 21:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773178260; cv=none; b=fXNajDBFSrvFYr2qIs2EDOcTLjTFZw4+RcvmLOk1UzWYOBhy2vTSkiL8FE9oSGbOj62doTppOSaU0EEPPlfTptkpd64Pe5Hd/Ky73CGfF09qQIXHWZHKe9QjUcY0DHnKcFP0qXBPNVo0OEB0JvURasklmHW5eIQumODOlqYj4dM=
+	t=1773179785; cv=none; b=qEoVBsASkWjvL0v3AcG8LFLsIBMLBuyoduu+F11XzBW9hGxw0vZEiZCe3zfdglvOyfcZIS+cbyrOi8stIPRNZxLrWP8UGIk7TKpa4h1xhwdqScp1ErAbmbIlD8Cj4ezndJ7g7uf5GmO3g8qzRl8mqSBFfjFQMnCTKyWizJlEVyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773178260; c=relaxed/simple;
-	bh=Vu8s7jUwMOvlyEwIzaoSMQ+wQNXgnXVAF0jZnj55++4=;
+	s=arc-20240116; t=1773179785; c=relaxed/simple;
+	bh=koGOcD/39JRJlUIo/80r7zi0PGrQKcjt1Zjdekk9KaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bC8pTx3yUG4zibIfQxqHPWwQWgOsY0lNe5Azrec5MBNcqpxkzO80xtUfPWUw+5clBIJXFjXPp/hpkRr+OmR4XcPF+LLOH2SP5/Y3KHR7m7PA12LANt5bHdYmZuOHP3dIrottCW1eUonUWWJ8MLt9QezbL8+4/+aSd0G+lA5s9pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=pass smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=MRus8NSx; arc=none smtp.client-ip=109.224.244.106
+	 MIME-Version:Content-Type; b=RMzt/V2pjuj5/S6y94YrQYlcK4NwRxS+zfm15jan1O4ZSfRPGF8rRgut+R1mzjFxrVz4ioFTjOj2SOsp00cnyMbjnfiA0vGD4P+WtkgKW4LPFOtQ+SkIC+Od4TdH8dfvIwD1vm/w8K8D+wvNg/ussykXeNACQ58pbM2axQwJD/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev; spf=pass smtp.mailfrom=johannes-moeller.dev; dkim=pass (2048-bit key) header.d=johannes-moeller.dev header.i=@johannes-moeller.dev header.b=1LMof0gK; arc=none smtp.client-ip=185.70.43.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=johannes-moeller.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johannes-moeller.dev
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=johannes-moeller.dev; s=protonmail; t=1773178249; x=1773437449;
-	bh=Ejdg6l7b/i4f0KmxGuMk1g7CgiSer0a95DBCWcHIAss=;
+	d=johannes-moeller.dev; s=protonmail; t=1773178262; x=1773437462;
+	bh=hZEJp9rUkZ10x1+tyxfdIyN6b5ZE3brXj1HdhI3Pomo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=MRus8NSxFzAAA2xJeghfXEa0DeqsSfvp4VFrinP2OsXTTZi7xvI+zleO8/vWuJPGt
-	 aeDvuRvorr2WKFDRixUwKeyA2NxQEyKkTMDxNU/h0snfWJnEIDFWAiQ1a40T5mavES
-	 k3XQKRjHxbOh5UnGuXBaeD1WeJ+1PMYqWZ5Krii5WCvq/pWjzLylOYuXHDNJvrKUmR
-	 z3VmRfgchq7XQ4YI4DIaPWPYWfW6fQ+oxLgnw/1UF6dprVYEIXeD76v8mfBfQDbV8N
-	 hec9G+8cnqQzg4coniFEutcMGlgBCObvwruogb4Ir4A7mSi4K43iS9RKL7ZFaRM+0Q
-	 SZcPQDV68wYnQ==
-X-Pm-Submission-Id: 4fVn9g73n2z1DDKr
+	b=1LMof0gK2yRk7Ab74enYH3/Dw/YEoAW5smPd/N5BNLHLHZ0LxuM8fI36tWkh3DOOp
+	 uA5hk0yzkgQTdCRwKnnT3hojCtxU+NxjPhRhf5bmpixrgrSm6/FI0a1odnRWGCO4iu
+	 lReHfydQLnV+W7iohKkzO6gryWIrirnbkka0X/0UbdVYsej0CTvgj6eQj6zPgXHm/V
+	 sNFoimKkd5fdj+5l2zaXWBFNWpfNyXm1SE86ldBMWHGZiDZzti2qbGnZmkk8vm1kAw
+	 6xg/U9yGdvpGgQ7K8GmasAcWWdHeC3ugEXsP5wf7EZ/3gxu1sL06fvaDME0Jyuzpry
+	 8pA3z0AoK1SJA==
+X-Pm-Submission-Id: 4fVn9x4JcGz1DDL3
 From: =?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>
 To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
 Cc: security@kernel.org,
@@ -54,12 +54,13 @@ Cc: security@kernel.org,
 	Willy Tarreau <w@1wt.eu>,
 	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
-Date: Tue, 10 Mar 2026 21:29:48 +0000
-Message-ID: <20260310212949.74577-1-research@johannes-moeller.dev>
+Subject: [PATCH 2/2] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
+Date: Tue, 10 Mar 2026 21:29:49 +0000
+Message-ID: <20260310212949.74577-2-research@johannes-moeller.dev>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <abBJh7sJ11RKVGhd@1wt.eu>
+In-Reply-To: <20260310212949.74577-1-research@johannes-moeller.dev>
 References: <abBJh7sJ11RKVGhd@1wt.eu>
+ <20260310212949.74577-1-research@johannes-moeller.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,19 +69,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ADC1D2585A8
+X-Rspamd-Queue-Id: E08922588EA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[johannes-moeller.dev:s=protonmail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224581-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224590-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[johannes-moeller.dev];
 	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -94,58 +95,62 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[research@johannes-moeller.dev,stable@vger.kernel.org];
 	FREEMAIL_CC(0.00)[kernel.org,holtmann.org,gmail.com,1wt.eu,johannes-moeller.dev,vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,johannes-moeller.dev:dkim,johannes-moeller.dev:email,johannes-moeller.dev:mid]
 X-Rspamd-Action: no action
 
-l2cap_ecred_reconf_rsp() casts the incoming data to struct
-l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
-result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
-with result at offset 0).
+l2cap_information_rsp() checks that cmd_len covers the fixed
+l2cap_info_rsp header (type + result, 4 bytes) but then reads
+rsp->data without verifying that the payload is present:
 
-This causes two problems:
+ - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
+   4 bytes past the header (needs cmd_len >= 8).
 
- - The sizeof(*rsp) length check requires 8 bytes instead of the
-   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
-   with -EPROTO.
+ - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
+   (needs cmd_len >= 5).
 
- - rsp->result reads from offset 6 instead of offset 0, returning
-   wrong data when the packet is large enough to pass the check.
+A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
+out-of-bounds read of adjacent skb data.
 
-Fix by using the correct type.  Also pass the already byte-swapped
-result variable to BT_DBG instead of the raw __le16 field.
+Guard each data access with the required payload length check.  If the
+payload is too short, skip the read and let the state machine complete
+with safe defaults (feat_mask and remote_fixed_chan remain zero from
+kzalloc), so the info timer cleanup and l2cap_conn_start() still run
+and the connection is not stalled.
 
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
 Cc: stable@vger.kernel.org
 Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
 ---
- net/bluetooth/l2cap_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index ad98db9632fd..f8ed03095592 100644
+index f8ed03095592..93e41d9ac124 100644
 --- a/net/bluetooth/l2cap_core.c
 +++ b/net/bluetooth/l2cap_core.c
-@@ -5424,7 +5424,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
- 					 u8 *data)
- {
- 	struct l2cap_chan *chan, *tmp;
--	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
-+	struct l2cap_ecred_reconf_rsp *rsp = (void *) data;
- 	u16 result;
+@@ -4616,7 +4616,8 @@ static inline int l2cap_information_rsp(struct l2cap_conn *conn,
  
- 	if (cmd_len < sizeof(*rsp))
-@@ -5432,7 +5432,7 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
+ 	switch (type) {
+ 	case L2CAP_IT_FEAT_MASK:
+-		conn->feat_mask = get_unaligned_le32(rsp->data);
++		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
++			conn->feat_mask = get_unaligned_le32(rsp->data);
  
- 	result = __le16_to_cpu(rsp->result);
+ 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
+ 			struct l2cap_info_req req;
+@@ -4635,7 +4636,8 @@ static inline int l2cap_information_rsp(struct l2cap_conn *conn,
+ 		break;
  
--	BT_DBG("result 0x%4.4x", rsp->result);
-+	BT_DBG("result 0x%4.4x", result);
+ 	case L2CAP_IT_FIXED_CHAN:
+-		conn->remote_fixed_chan = rsp->data[0];
++		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
++			conn->remote_fixed_chan = rsp->data[0];
+ 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
+ 		conn->info_ident = 0;
  
- 	if (!result)
- 		return 0;
 -- 
 2.43.0
 
