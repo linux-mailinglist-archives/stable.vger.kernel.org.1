@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-224460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENugCo8DsGnOeQIAu9opvQ
-	(envelope-from <stable+bounces-224460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:42:07 +0100
+	id gJvIJaAFsGlregIAu9opvQ
+	(envelope-from <stable+bounces-224461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:50:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54C924B5A1
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:42:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CC224BA9D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0E79309A30D
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E909C3089E35
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7D73B7B61;
-	Tue, 10 Mar 2026 11:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9422425CD9;
+	Tue, 10 Mar 2026 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxHpex0B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nY0ISczA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E0387587;
-	Tue, 10 Mar 2026 11:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C16838F939;
+	Tue, 10 Mar 2026 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142192; cv=none; b=HOPTPifJ+CLRZ0zV85OESm/KXpwmaklWcMIhiy6+tNsXBbfVn9tVax83xo7E3ZdikwvPGNQa/G83THHcqUyfodLY+H+u/Ho0G9IcsyC7Bc59GeuoBFIXX+7hIJUvA8zW/uZYoHpAfiKBjKbe2wmC4+5pDuZzIshZdAacirnNrUc=
+	t=1773142193; cv=none; b=Nd24hOmUzADiW33Z/kfTxX9FwzLeUBCdeYM4NPxrHyoi6mXqpbiScBfM4zjLXmHqiOQkLX3TJ8Zk3axdD04VonO7wQrgvGJBzCstlzCehyRSlN+DXVarb3P6WvcDn7n8LKfLAydb/IZjqfH6rNMLcvAh3TSKqf4J4xvmVJdWsmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142192; c=relaxed/simple;
-	bh=hmu0wLCp7Swkj1DuOjs/S7Jw0XiqtqhzzLqSv41/yiU=;
+	s=arc-20240116; t=1773142193; c=relaxed/simple;
+	bh=LVU74UQWEH643l4SnKnVJ2RShOQuKyYCTZWfZLaC8gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hs926YcfzizztMy+Hkoch0uE5GJZ2RifW1GAoyINLLBc48ccyrf1maY5ryvT4Z3HhtbxlfgNm7TWBcqrkWrO+Y+T2C9WeZnuEWgbvdz4k6dp1mDWG2OYg+lKsHSr8ue2xlbyk+qCApN507FhICRQzLiWvr+EOkNvSi8wrDxbo8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxHpex0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C07C19423;
-	Tue, 10 Mar 2026 11:29:51 +0000 (UTC)
+	 MIME-Version; b=NrbZY5OJyv2z8n/tkkPtX4ZzuV33moTSDVvAYLZ8N3h1+afZMnXAA38tBAPBSk/JQRNMLga+GJoZnY+ZI1zWFCX+vq9G0XjZiyQ5Vr3868KCuU9fYroifft6XOi7CZcNR6a7sptwtwmN+rOYy8mNfKQe6c0XdOaP66Lj0Jmk7s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nY0ISczA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EF9C2BC9E;
+	Tue, 10 Mar 2026 11:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142192;
-	bh=hmu0wLCp7Swkj1DuOjs/S7Jw0XiqtqhzzLqSv41/yiU=;
+	s=k20201202; t=1773142193;
+	bh=LVU74UQWEH643l4SnKnVJ2RShOQuKyYCTZWfZLaC8gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxHpex0B83yKVw8bGK9P6gPowTJK2q5L72hybs6/gFV0uRPYwKvGYsU3frme+WkAA
-	 9PsZ1Z7ACEo/1VsZoXyk4aYeePitEgc9qoXy8DN6E08P0WwoMG61OHFxeHzvyvb8Ge
-	 4JMp0/ThNUJo8SR2W46WjNWOnzuJbe/D3EjffKyzSIWDCGNmqw/MfjTzeZ5FWGYC9+
-	 5IkHYRDDdtHKXy3+nQanZ6QT0MU8FJ+7RH/hzgA3kXqYybr35rTu+a5zZzlD0ojvZD
-	 NKBZiGPMR06hPJIfOepPJHzwf9Q8XIkN/RQJ/Dp/mSHHrAl+UVUqXZVfQa0twPD9vw
-	 vz5IZQUT5Nf7w==
+	b=nY0ISczARxmKmmU8btivH0sspduPaKXAwgQXfqM/srArLC4N1Xkb79xe9IAZMWOGI
+	 G7O2wt4u56eHr90fely+W+4RPA/MsasfnFKNelo0Xo8gbpZmdDubgBVie779pAegqR
+	 bvqDu7AJNTGAZ+BdB+TkB6RCfqOj1PpilVqEXllF30I2R2AzJL7fT+AsjuZZ6xH+3b
+	 HEe0J1JdzqC1DkV5g6Y6GdLeFKOSi+PDOrrTxQ/tkzZV3OVCfp2fTWmBe2LgmJQ7vU
+	 xECPHxso3WcKtkWXOKuearBSQD7chHf/E3QvK+SuuR//Gdkp0BSzLsnIM6Fe9an3mn
+	 bvONNUk8cx+hw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ian Ray <ian.ray@gehealthcare.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 281/314] net: nfc: nci: Fix zero-length proprietary notifications
-Date: Tue, 10 Mar 2026 07:19:00 -0400
-Message-ID: <ba1182c8784ac5a1fb70d88f89868efcc849ff7a.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 282/314] net_sched: sch_fq: clear q->band_pkt_count[] in fq_reset()
+Date: Tue, 10 Mar 2026 07:19:01 -0400
+Message-ID: <a42a427069ef9accb155510b731246aa2179c0b2.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -65,104 +68,75 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D54C924B5A1
+X-Rspamd-Queue-Id: D2CC224BA9D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224460-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224461-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gehealthcare.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f7d92f11bd33a6eb49c7c812255ef4ab13681f0f ]
+[ Upstream commit a4c2b8be2e5329e7fac6e8f64ddcb8958155cfcb ]
 
-NCI NFC controllers may have proprietary OIDs with zero-length payload.
-One example is: drivers/nfc/nxp-nci/core.c, NXP_NCI_RF_TXLDO_ERROR_NTF.
+When/if a NIC resets, queues are deactivated by dev_deactivate_many(),
+then reactivated when the reset operation completes.
 
-Allow a zero length payload in proprietary notifications *only*.
+fq_reset() removes all the skbs from various queues.
 
-Before:
+If we do not clear q->band_pkt_count[], these counters keep growing
+and can eventually reach sch->limit, preventing new packets to be queued.
 
--- >8 --
-kernel: nci: nci_recv_frame: len 3
--- >8 --
+Many thanks to Praveen for discovering the root cause.
 
-After:
-
--- >8 --
-kernel: nci: nci_recv_frame: len 3
-kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x23, plen=0
-kernel: nci: nci_ntf_packet: unknown ntf opcode 0x123
-kernel: nfc nfc0: NFC: RF transmitter couldn't start. Bad power and/or configuration?
--- >8 --
-
-After fixing the hardware:
-
--- >8 --
-kernel: nci: nci_recv_frame: len 27
-kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x5, plen=24
-kernel: nci: nci_rf_intf_activated_ntf_packet: rf_discovery_id 1
--- >8 --
-
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260302163238.140576-1-ian.ray@gehealthcare.com
+Fixes: 29f834aa326e ("net_sched: sch_fq: add 3 bands and WRR scheduling")
+Diagnosed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260304015640.961780-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/sched/sch_fq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index e419e020a70a3..46681bdaeabff 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1482,10 +1482,20 @@ static bool nci_valid_size(struct sk_buff *skb)
- 	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
- 
- 	if (skb->len < hdr_size ||
--	    !nci_plen(skb->data) ||
- 	    skb->len < hdr_size + nci_plen(skb->data)) {
- 		return false;
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index fee922da2f99c..5e41930079948 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -826,6 +826,7 @@ static void fq_reset(struct Qdisc *sch)
+ 	for (idx = 0; idx < FQ_BANDS; idx++) {
+ 		q->band_flows[idx].new_flows.first = NULL;
+ 		q->band_flows[idx].old_flows.first = NULL;
++		q->band_pkt_count[idx] = 0;
  	}
-+
-+	if (!nci_plen(skb->data)) {
-+		/* Allow zero length in proprietary notifications (0x20 - 0x3F). */
-+		if (nci_opcode_oid(nci_opcode(skb->data)) >= 0x20 &&
-+		    nci_mt(skb->data) == NCI_MT_NTF_PKT)
-+			return true;
-+
-+		/* Disallow zero length otherwise. */
-+		return false;
-+	}
-+
- 	return true;
- }
- 
+ 	q->delayed		= RB_ROOT;
+ 	q->flows		= 0;
 -- 
 2.51.0
 
