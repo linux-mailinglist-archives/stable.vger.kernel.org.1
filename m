@@ -1,227 +1,236 @@
-Return-Path: <stable+bounces-223751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Gb/F6OSr2kragIAu9opvQ
-	(envelope-from <stable+bounces-223751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:40:19 +0100
+	id 4E2QN3WZr2lbawIAu9opvQ
+	(envelope-from <stable+bounces-223752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:09:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24C4244EA4
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:40:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573EB24526D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 407A83029A97
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 03:40:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26327304C624
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183333BA259;
-	Tue, 10 Mar 2026 03:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1579D3CA4BE;
+	Tue, 10 Mar 2026 04:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LDGh/p7r"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cxuXTtRz";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aufOQDiT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C144D3B961F
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 03:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773114013; cv=pass; b=QQfX+MlZYiceYi4cGs45tTvEhkeZlw9fEmNoB/iWP5RBXDF+iRtckh1hZzvOlGOoJ72A/YxOrDp80KrflN8mCdUeXCdrtCdpKB3zmLPPDVcjMIJtidRcCkBDm+TJz2PDvo/XqGzwgYqrBL39Lvy0DXvZu6KjJGqoYKx2brQ/rnY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773114013; c=relaxed/simple;
-	bh=nrF7vlGYzrNGs/7YHhPH/NnJVLHS4kdieXhq3F5zpFc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AOfx6kRVZDTFreMKyOi0k7IgdzxIHSITWo0xk+7JEWlsqh8hr36/xr1ZfZCq95U5UoBj3QmGJjHkbhYJoSaIIRXLWAsbZk2QhmfL0frT6xn105JCrPmzY/r60GH4JN59V1gfLTDRUssFLOYKxd7tm99LXD7ls1FjzhUKshJVIoE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LDGh/p7r; arc=pass smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c2af7d09533so7915183a12.1
-        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 20:40:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773114012; cv=none;
-        d=google.com; s=arc-20240605;
-        b=A8yLg5YUher8lXYlhjaOqQRz3+05BOUGWtmPM6ZJE8HrT/qRlj1WkeN/LbMmwm0d0s
-         j019GLU2nNniVqSXyXQAQWkgKRsdwwYTNmRSFIstPRHk2utRWmk1PmvmYUHt7VhvS6vE
-         WWYmYKdXOPpuRShUIMCc2gG89du5rsnzGHpBOOPQxnZUDj0jrAsqvooU66be84CGX1YI
-         0T/qzR37gbpmMmBGcmkeStxXFDeZKYCU2YlQEffAqMAqAgVFfet0Ew7c2IiSBOXo4ckv
-         6jU/N5I2wr4jjbWq3YI2R3gtF1yzraDuX7F5Y38EBEQl3WG6qq6jYiHEA9LYyNJFEs02
-         u9Cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
-        fh=pZj2HLmy1sc3g18/LAgqDufoTh9yNMoX95hnOXkee84=;
-        b=kMk3yh0IFcu8ky4V+SRVrdS45IviirOUeMQbVdjUGTaasE8K86Vn+F4myP1wHHA42g
-         ycOt9P8xLk7ok6XEt1EtyKwbkrSUGBukZSnL0i83nv0udifhdsUPoZ00b9aTL/CSpebu
-         UG3VoR2Uw466ChdX9KP0swqZrw4pkWj/Bo4U4qc0KNdXsLj4gdR2jxFiT8qESSWRhQjw
-         6qL2ztVEpZ9a/UziAX9SonAokjsvvqfygC5oMRaFM/LiY5yPoDpO785JLe/IZZqaFXrq
-         S7fBYgK272DM1bu2Wa8XFFaSH6xO95shZc4YJez/LOVrv4cyYMz8GNNu4s6XvELLEFXo
-         e2mA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AA13B9619
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773115757; cv=none; b=I58c6O0wLIWHDTJuqIsOpzTihBW+MD0t4I0YJcFA4mBA2ON3YvsDpglUgl2+O7T0sjQOxjrIjqViHMz+1zJiw28SthpIfQUQmFcWa9s0fIoqAYM7QBGexagEi5y4Hmbhjkh4OljP8DF08qTisxL7rb8ygRg4436SFmw1T7YaALM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773115757; c=relaxed/simple;
+	bh=j0BNFKTy6YhD81KGaBZfVR4UgpqXpUIBSqeGb+WvIjw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DYV0P7NSiMu4+CpVoJHKdiWVAZLpzpMjYD1NGCB8OIK6Xn8ptCN9t2ldoYYMZ/azBn18g+Xt/dAlQwp8Fhjh4dwTvW6+e+9XL13WQ8bRyZl9mpGxK2tbYo3kCmvkHLUAOBuwzUdDj6l3LeFdf6p3hwPKogLx73yCo0ZvTkKItxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cxuXTtRz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aufOQDiT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A2EhM52817805
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=DNXiimRcU/ja8ktsL318nq
+	SuUFiZZt63sxQ0hRN6KkQ=; b=cxuXTtRz+nA/G+pqN3wV4e/OLdSaf63RH2dZ9U
+	44nKSgLlgKKnmEuzzWn9PwHYIE4DuH1iFphH8cdU5l1561GwtUGhwKzOjhSDmn0l
+	h/xUTJz0lul+yXE3h2SwAkmNxhBDnLosVSmMWc/tDFI1HjtKkzO7lZBtrGTGi20L
+	JQFG3uoJiS2MWqKRmonlfUPdnJq9DGu+En/nbn/Gi60ckpR1xpb4o4tYbY5JsbVM
+	9JREnjcAXf6z5op8KI/Pi8MoEtk2lP9f3v2hD3RRKHGic6Jn2P0GiIQ5z1aYgdmL
+	HByJY7T9IjF8+pYCCt2pnWXtcboA/gZCSttdOkzOV2CAXgWw==
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4csyr42dn8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:15 +0000 (GMT)
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-4171d16aad4so19506506fac.3
+        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 21:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773114012; x=1773718812; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
-        b=LDGh/p7r4q4O4SNLhBjYnjbsAWHkfrcHUi/YqyWGyBQCMy8rpaRzIiI8nRaATiFmgz
-         WXDg+LaLkXdxnNhVsYRPoomPfBjn9QcTAj0ZW5hBUdzM+ntlWClVGhP+Ai9TI//i4Qds
-         uYmAjTuU9IOGx/qaBC3UJ93WjrpKdL464r+HcmOVwaIXypg1fMC/GdVhu2QWEp+EZnCK
-         hNm3w6YGZxM8Vy2NmvRUnvtf0HwgJIM9+9Ymn8boWZiQsiUcItdrRpwGMaNdk01Wh3vS
-         HcAfLdNtoHGrci7cbcR3NIWZSgpykecmktQp2Frk2R5n4f2C5LosFp2MJQuGjjSFDPL7
-         aKJg==
+        d=oss.qualcomm.com; s=google; t=1773115755; x=1773720555; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DNXiimRcU/ja8ktsL318nqSuUFiZZt63sxQ0hRN6KkQ=;
+        b=aufOQDiT8TBPCA2Pz0/CPH/aG5tvGwciWUeF6W/2Txy2Kvemab+eOrFTnyEx5iXiaK
+         KNoL98K4u6YtnmaQAo7HXkGnIR6jlUQF8LDgYp0yYi9bm68EToZDbDEz/xEIP7bi/WB7
+         7QozVWNwpdP4pY5/NGbOoVfRE+OLMxKGuL8IJT2FEz9DEzsbQ4wcxQd7Ltwb1OWMRP1b
+         gPRv7eqdzg4NjqbrilqSgmJonJM+fG3Q3re7huhMq28mXLVK0FvEvVYi3UAkKbv/FwRJ
+         wWqXH80J8Yeh54YOZka9sykGOY9MD2ZsjZ1oZuh+/JtuCUYXgUbZBrj3V6JkZHt4RsCP
+         eOOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773114012; x=1773718812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
-        b=iTe3iQack8qj6xIFJx88prtexduH8iImTE7faxMpVqi1sraKwLkAcGVHThr02Lny2+
-         Y6Y0MVT4Y16X2l3/iR1AL1QJieqsa13asWIjim/en2A+YhB0yYzFYVwkv5820UUDJdfh
-         Yz9jSc6RP1A+3guzkG/y67/MORBiLsYzWJwGrc5Y3mxjWMAKdegXzF46as/U+TdVzW/u
-         JrWIWBL8Ac4oNgPTcs4aBhCpHPdROaMMswCe4e2+SLoXRQdE850PeOA0xKu84xPkxd3m
-         z+JQabUSfrlUTwxxePD/cgBoimw/LttloSD45MG6dkVVjwpiOAkfuhhg7kyaPBPJRc37
-         BWxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCpemVl/+DS2lJ2qgd4Lj7tWQi5vCwF31aZ+WHINrt4gbKX+OTclnX4cV+W4kOK+EaLRYBtxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfi/puzRm0hiqD5L0ZTdthc5pEvXret1ATMgknP1bPjxjTSTqE
-	yiyX4M+Abw++q1LbwpscW3LxN9jXzMIZS8ykVvKepgHBE+VnSRZSi1IBNnFizAax8pJBagbT6uz
-	F11fJjdiaOhYp0X6tP7Y6lK/OUOZ3D4I=
-X-Gm-Gg: ATEYQzwtODlMUOF8gqrbw4VHSF6GafJBVE0IjrFWkA5q+8KNechfsiXpUnlAM/d1xUu
-	cCy5qzqCcSuBzHLCdsSY+DpBv1Fa4TzlVO3N3Zt0LRcn6ZIa4llOCrnOkrt4+PTJ1WJz4pNf8ZW
-	4CvLWxvLs4+FMzWr/6S+BtRait/XJ6nEQ1QS7orYxstt6dTiUIbaapc5Z8qo1CnN7/qaAAlVS7i
-	g608uvl90rcwlXNEmu8P8wqXr/Tn5Rk85Yv4+lZn4ulz9xFqa5jp2t6giGm2qHO13TKyeYrZKkH
-	WYn3T14=
-X-Received: by 2002:a05:6a21:9ccb:b0:395:291b:f555 with SMTP id
- adf61e73a8af0-398590ebdaamr11794026637.69.1773114012045; Mon, 09 Mar 2026
- 20:40:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773115755; x=1773720555;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DNXiimRcU/ja8ktsL318nqSuUFiZZt63sxQ0hRN6KkQ=;
+        b=CVWJ3ZeUYrviY2/UlfvttKH6DxQz78sM0tNeOhfhhlvrpZFHAA5SnQqa3UG4jl8Cx3
+         KaUSksMcMwnnIOurCCyDO5pPJVN5maC8Eof4RZ2ZkbkJ5VuWQ0KUeyts5eSzsKKp4/NZ
+         gGqVNZcfxxnuCAbI/mEmQWDKTPx5o85sjQMvi5XpB9Mj22MfUhwbE8Uet75CtCAtiRfH
+         F1VuG/ekg44Q/Emyta2JmtsW64M+JUXvhBEVqqAyxNgLYcl54b7Mavfy1iaQX3BQJh00
+         ORxux+gf15/6Qpw8ysgXhyuAe/H+k0BaJAU5dCGjpMKg+dOwqfdmh7IUmIwN/b8iNTVm
+         hXSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXkZZwvdJVR2p5xRVRRxFNVcGiYGoENiJRcei4+9OZyoWqp0zyzAWEX5A9RsUcrDXK5c6dPcU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUZCpmLlxbkzTFiRpj1Rd++Hl4aXPsZhXdE9iK/WhYlZAeclBS
+	XtFHsYYXhQDoh37cdFbhSHuh7cz63Vx+FZbBIOaq+i/Ie1Ys+rM3OXSry1bjDbW/6EL1bZyF4Og
+	hvPdoLvsxIsH9ReBbxN8cjzCh7CCbSiYex3AiWtMs7ON8Cow/Xmv7tbuJtfk=
+X-Gm-Gg: ATEYQzwgHCkk6j2uvXvdPMdS0aXB+fMEVTPRgjRE35EtJU7TqNHX6cuE5vIODKryOl2
+	ukoaWJnmkbZZUjqokEj1XqzbR5h1i+0jWuhqmeUOkqnX/zarq3m7h4DalydPZKtW+OElXyaVUXz
+	BG7EphMQdB4CZXZhJopE5LWXywsuPS28eaXEujM0HMFz1Ck8VNHuz/WiW76KgwEltMJMjnM9Wne
+	h2SDqp+KtRAe0gHbobQidhvsv64OJutnCdwdswVrrIkk1IcJbuKKRiOpzEXx2FG3F5q06kT/Zyk
+	h4b5rvIkMSGSJ3YRxe0i2PGt0NObswQNCC+OxzvxcCvhse9tqzTdZzaaQMUrSa0AsgipTEKWwjv
+	5BjUfCV/KKBY8Ob5JWZqgiH3zGL8RfPFaYvmwcDUOI8g=
+X-Received: by 2002:a05:6870:a919:b0:3ff:4ab4:774c with SMTP id 586e51a60fabf-416e4448983mr8187452fac.43.1773115754881;
+        Mon, 09 Mar 2026 21:09:14 -0700 (PDT)
+X-Received: by 2002:a05:6870:a919:b0:3ff:4ab4:774c with SMTP id 586e51a60fabf-416e4448983mr8187440fac.43.1773115754466;
+        Mon, 09 Mar 2026 21:09:14 -0700 (PDT)
+Received: from [192.168.86.59] ([104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41756e24c39sm1595685fac.20.2026.03.09.21.09.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 21:09:13 -0700 (PDT)
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Subject: [PATCH 0/7] slimbus: qcom-ngd-ctrl: Fix some race conditions and
+ deadlocks
+Date: Mon, 09 Mar 2026 23:09:01 -0500
+Message-Id: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aa5NmA25QsFDMhof@hyeyoo> <20260309072219.22653-1-harry.yoo@oracle.com>
-In-Reply-To: <20260309072219.22653-1-harry.yoo@oracle.com>
-From: Zw Tang <shicenci@gmail.com>
-Date: Tue, 10 Mar 2026 11:40:00 +0800
-X-Gm-Features: AaiRm51P9s3DC7FjytFC4I2paYZUeQw-qAwJyjCHl-40jBVff_9Gjy4xmE9iqAQ
-Message-ID: <CAPHJ_VLzRECge4=L5RRqZyf-Sou8APi=Sc=d0brBAMdj3UC_Cw@mail.gmail.com>
-Subject: Re: [PATCH] mm/slab: fix an incorrect check in obj_exts_alloc_size()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: adilger.kernel@dilger.ca, akpm@linux-foundation.org, 
-	cgroups@vger.kernel.org, hannes@cmpxchg.org, hao.li@linux.dev, 
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, vbabka@kernel.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	viro@zeniv.linux.org.uk, surenb@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E24C4244EA4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF2Zr2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDI0ND3eKczFzdvPQU3ZTUMl1zE0MzszQjyzQDY1MloJaCotS0zAqwcdG
+ xtbUAiaawhl4AAAA=
+X-Change-ID: 20260211-slim-ngd-dev-74166f29f035
+To: Srinivas Kandagatla <srini@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1915;
+ i=bjorn.andersson@oss.qualcomm.com; h=from:subject:message-id;
+ bh=j0BNFKTy6YhD81KGaBZfVR4UgpqXpUIBSqeGb+WvIjw=;
+ b=owEBgwJ8/ZANAwAKAQsfOT8Nma3FAcsmYgBpr5lo/sm0Oc/SNYaBVYkBX9corkkNtHKlrnJ7G
+ 33ol92WVd2JAkkEAAEKADMWIQQF3gPMXzXqTwlm1SULHzk/DZmtxQUCaa+ZaBUcYW5kZXJzc29u
+ QGtlcm5lbC5vcmcACgkQCx85Pw2ZrcX26BAAxYhAAgDtmIR4dpqW+cOKTpmOCnBn859XYM+y+yq
+ 5tvkpSWjhgFBfpAcY2IwtEPvf7G3JVHdxkBZNZT9E5c39/RfY25ivjVXBQoutkZNa6RzgoISnjH
+ PBOTja8kFKbnFlX/o1L3KJeor2KAxjhaFKXT5tzjhpnARdWZ45dmxdpPQ8QMPZw46ueLmfJH5dA
+ uRO8CU2hWAGotrYZqwJKCecSFrHNTsp1dvoMihjBj3UYX2unvZ7QNOGKvmGEuj034M8ngo1opQW
+ 4Ulv7tVih38/sDOgGkpKt4EbIwt5hWAHC4O43WlBfnwzkzOJTQ+J2Xi4hJaFKEB3gcRfXM6GziH
+ uhceCPWvEun8xJCO/Kpl7pJbmVKTY3QzwFa8bJayOQIQAXjJkSKLEz2pIDK4Yq45vO7ujzhX6pK
+ cbMmtTrimblqZcnoW9HGfhhvV6kM6gs5uU27Z2MPDnaMyyoAXcgwqsA4cZG+HllmUEtuKgwm8v5
+ Uv0oIxPeQv2Jtian6T7JFEBm/hhUC5VruOWhJbF615fFFs5B8qcRDmIctedaavrKvgDA10UInlc
+ PvjY9n1E0XGw5+G9Sf+snp2yIgwR7nt2vonyqCmwS7VxiZ7bdaWhu3BoC1mRgEo5c8yedOeyV+T
+ 0CniPghvvexKeT53UNVy+hFGUXzsenQvyVeSBsb9QC/Q=
+X-Developer-Key: i=bjorn.andersson@oss.qualcomm.com; a=openpgp;
+ fpr=05DE03CC5F35EA4F0966D5250B1F393F0D99ADC5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDAzMSBTYWx0ZWRfX/4xU9c/ejIWh
+ kvd5za4vnggDsrwShhzrdzw2bPbVF6ncsdKfnd35uGK3AyQmUsxBhQ7Jse2Im61H3dlRlmlawEt
+ uygfpvQ33rLf+NLk5M80qAhQadmxJQ14VcD+B3Ekha2vStvDx2iGwSgCDfK0ueHwfnMEujImTbj
+ psG9a5rRAc5jBzzuHj0UZ/XHVQqqV0CXyr2O9nbXdFTeLwXOgyvtxtwi3SKCDqCufUhcUU+Il68
+ bU7bXjvHF182s4PQViCTAFApYLPpMTnCloyOfnSv9hRDLd0PyRuTZ2Uvon17Aqgf84mS3ecMIVL
+ OhQ1Na9NT1FNg+V7GP4D0L+2098dMBffPQouVTo+obUCxWVKS+51YaLCYn+16HJWK8PU2ceAIr4
+ sYT3kUHHeINg18sMUbpQRbouz6kgvUoLyv8TuGa5zn4aeJolgScB1hMJxnrmJgPftqWVe71OGHF
+ y/nuglpx9GVLfxMpnJA==
+X-Proofpoint-GUID: 3hy8PGxqeatB6M1A02yNQqigHh2-HhXo
+X-Proofpoint-ORIG-GUID: 3hy8PGxqeatB6M1A02yNQqigHh2-HhXo
+X-Authority-Analysis: v=2.4 cv=KNRXzVFo c=1 sm=1 tr=0 ts=69af996b cx=c_pps
+ a=CWtnpBpaoqyeOyNyJ5EW7Q==:117 a=DaeiM5VmU20ml6RIjrOvYw==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=N-1BD95YXHRArY_OaYMA:9 a=QEXdDO2ut3YA:10
+ a=vh23qwtRXIYOdz9xvnmn:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100031
+X-Rspamd-Queue-Id: 573EB24526D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-223751-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shicenci@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223752-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[bjorn.andersson@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email,mail.gmail.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Hi Harry,
+When the qcom-ngd-ctrl driver is probed after the ADSP remoteproc, the
+SSR notifier will fire immediately, which results in
+qcom_slim_ngd_ssr_pdr_notify() attempting to schedule_work() on an
+unitialized work_struct.
 
-Thanks for the patch.
+The concrete result of this is that my db845c/RB3 now fails to boot 100%
+of the time.
 
-I tested it on my environment with the original syzkaller reproducer,
-and the warning no longer reproduces after applying the patch.
+In reviewing the problematic code, a few other problems where
+discovered, such that platform_driver_unregister() is used to unregister
+the child device.
 
-Kernel version tested: v7.0-rc2
+Lastly, with the db845c booting, it was determined that attempting to
+stop the ADSP remoteproc causes the slimbus driver to deadlock.
 
-Tested-by: Zw Tang shicenci@gmail.com
+Note that while this solves the problems described above, and unblock
+boot as well as restart of the remoteproc, this stack needs more love.
+
+Upon tearing down the slimbus controller (when the ADSP goes down), the
+slimbus devices attempts to access their slimbus devices - which is
+prevented by the controller being runtime suspended. This results in a
+wall of errors in the log, about failing transactions.
+
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+---
+Bjorn Andersson (7):
+      slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
+      slimbus: qcom-ngd-ctrl: Fix probe error path ordering
+      slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
+      slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd
+      slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
+      slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
+      slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+
+ drivers/slimbus/qcom-ngd-ctrl.c | 127 +++++++++++++++++++++++++---------------
+ 1 file changed, 80 insertions(+), 47 deletions(-)
+---
+base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
+change-id: 20260211-slim-ngd-dev-74166f29f035
 
 Best regards,
-Zw Tang
+-- 
+Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-Harry Yoo <harry.yoo@oracle.com> =E4=BA=8E2026=E5=B9=B43=E6=9C=889=E6=97=A5=
-=E5=91=A8=E4=B8=80 15:22=E5=86=99=E9=81=93=EF=BC=9A
->
-> obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
-> array from the same cache, to avoid creating slabs that are never freed.
->
-> There is one mistake that returns the original size when memory
-> allocation profiling is disabled. The assumption was that
-> memcg-triggered slabobj_ext allocation is always served from
-> KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
-> both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
-> allocation is served from normal kmalloc. This is because kmalloc_type()
-> prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
-> KMALLOC_RECLAIM with KMALLOC_NORMAL.
->
-> As a result, the recursion guard is bypassed and the problematic slabs
-> can be created. Fix this by removing the mem_alloc_profiling_enabled()
-> check entirely. The remaining is_kmalloc_normal() check is still
-> sufficient to detect whether the cache is of KMALLOC_NORMAL type and
-> avoid bumping the size if it's not.
->
-> Without SLUB_TINY, no functional change intended.
-> With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
-> now allocate a larger array if the sizes equal.
->
-> Reported-by: Zw Tang <shicenci@gmail.com>
-> Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from it=
-s own slab")
-> Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C=
-0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->
-> Zw Tang, could you please confirm that the warning disappears
-> on your test environment, with this patch applied?
->
->  mm/slub.c | 7 -------
->  1 file changed, 7 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 20cb4f3b636d..6371838d2352 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct km=
-em_cache *s,
->         size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
->         struct kmem_cache *obj_exts_cache;
->
-> -       /*
-> -        * slabobj_ext array for KMALLOC_CGROUP allocations
-> -        * are served from KMALLOC_NORMAL caches.
-> -        */
-> -       if (!mem_alloc_profiling_enabled())
-> -               return sz;
-> -
->         if (sz > KMALLOC_MAX_CACHE_SIZE)
->                 return sz;
->
->
-> base-commit: 6432f15c818cb30eec7c4ca378ecdebd9796f741
-> --
-> 2.43.0
->
 
