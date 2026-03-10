@@ -1,178 +1,146 @@
-Return-Path: <stable+bounces-224527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOgLIxlTsGmBiAIAu9opvQ
-	(envelope-from <stable+bounces-224527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:21:29 +0100
+	id kJRANtpUsGkJiQIAu9opvQ
+	(envelope-from <stable+bounces-224528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:28:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C97255740
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2C025593D
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 18:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28EF53059807
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:21:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9107131B59DC
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 17:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B8E2D3739;
-	Tue, 10 Mar 2026 17:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uLi3m8uE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lmZvTPXk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uLi3m8uE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lmZvTPXk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05D73CF02A;
+	Tue, 10 Mar 2026 17:24:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865653D0901
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 17:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852A2DB7B9;
+	Tue, 10 Mar 2026 17:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773163267; cv=none; b=nOCTYYQ2HDEozvgfh8CGZme7X+YmjIgeun8vIqiLnrBLh5YaqPVcVtfyrBNmXe2/vI+KsUs6uji10TPZ7G1isc4qsJkzu48pNDb3gtrU63VpCv4Qp4+KNVM4vjDVX2pznc2RE6tqDjvYxQ3TjCOtZhU8wycBE+llg7VB/Sl6gbY=
+	t=1773163488; cv=none; b=GP5SGAn6VoAQ11VI5CfQJpU7QYR2ZL76hWDxQWsHgk7fWJ4qWmma3TsYsmkaPpWLjiUAU1m7uBQrol4WVEv5Kbdy9wHxD3S/FKOi2lIQi5B5A2VLz20gHqWEkq/G1EGTVSLhm5S30xnIt49lB83GJXO0H5A24kRc+CdvYFCi42I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773163267; c=relaxed/simple;
-	bh=K0ZRzDvM8SkxEsbysp9oFli6kLPgNyFze32bPnUgZnE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ksi0x6YXGZUF/yVvruzFQ5isZ9wM/j6q8IRC7WBDP/WpPfF1mNCdpqCxzNKjLnVjWyJnd/i5vvAkCtCIJBR1Q0sUupk9ymxhcb8/VxjyYgJXCQNPy6DVus3oim8vIWDhoncDt4KxQqfasKdDIXbaD3vC5CoTPA/dzQuAAUxBaek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uLi3m8uE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lmZvTPXk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uLi3m8uE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lmZvTPXk; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 65F5A4D284;
-	Tue, 10 Mar 2026 17:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773163263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nd4HCw16AO/h0kHzWXcAUQ225vWTAP/sWpAzSj5/tKk=;
-	b=uLi3m8uEruaUUhwUyaLTSMGbRT4y3yBVsIWYMeiUXG5iLKKyBtxDKlTGkBXSSkFY1XkcTE
-	VP+ZO50LbDnrpU0DtlfZbMuwnfD+v4wNZSsL6k4cicAHf1VFzfaASUX7lckHb+xs1F7PN+
-	UrG/XLFceNkWGRl+aZ2z4C1PeC/190g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773163263;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nd4HCw16AO/h0kHzWXcAUQ225vWTAP/sWpAzSj5/tKk=;
-	b=lmZvTPXkWQgzHmoANvB8p+i3TUbr1VU54OrAinVMc2iQhNQzbdOOiL1VKu5naHMb9OiAFZ
-	CHe0+EAbtKdLx0Bg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uLi3m8uE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lmZvTPXk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773163263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nd4HCw16AO/h0kHzWXcAUQ225vWTAP/sWpAzSj5/tKk=;
-	b=uLi3m8uEruaUUhwUyaLTSMGbRT4y3yBVsIWYMeiUXG5iLKKyBtxDKlTGkBXSSkFY1XkcTE
-	VP+ZO50LbDnrpU0DtlfZbMuwnfD+v4wNZSsL6k4cicAHf1VFzfaASUX7lckHb+xs1F7PN+
-	UrG/XLFceNkWGRl+aZ2z4C1PeC/190g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773163263;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nd4HCw16AO/h0kHzWXcAUQ225vWTAP/sWpAzSj5/tKk=;
-	b=lmZvTPXkWQgzHmoANvB8p+i3TUbr1VU54OrAinVMc2iQhNQzbdOOiL1VKu5naHMb9OiAFZ
-	CHe0+EAbtKdLx0Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EAFAE3F581;
-	Tue, 10 Mar 2026 17:21:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id t8XWN/xSsGmyTAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 10 Mar 2026 17:21:00 +0000
-Date: Tue, 10 Mar 2026 18:21:00 +0100
-Message-ID: <87y0jzppmr.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	stable@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
-In-Reply-To: <933E291B-23F2-4144-80F0-EC5730F65B75@linux.dev>
-References: <20260310102921.210109-3-thorsten.blum@linux.dev>
-	<878qbzradt.wl-tiwai@suse.de>
-	<933E291B-23F2-4144-80F0-EC5730F65B75@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1773163488; c=relaxed/simple;
+	bh=/ZLHb41tF9gOmEmiEjRMLrS/NfJM9CSRUwSa3rGkEnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qvw/MSgrYy0whAE7uTkRzLYpX7DmSwmwgMGcsqNp9KL+obghhvDbn7QaKEMcaZRe0rb/hUGjpe2Wd1kl7WdnsY4HR2Obfs9GpHFTvaMSRLq/44qDOY+oN3h9FgKwoRFaHJBNwk8pIEUJS8PLQd6rNIcHTixWL4JwV1kpg14robg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5ECBE14BF;
+	Tue, 10 Mar 2026 10:24:40 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5D383F694;
+	Tue, 10 Mar 2026 10:24:45 -0700 (PDT)
+Date: Tue, 10 Mar 2026 17:24:42 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Reda CHERKAOUI <redacherkaoui67@gmail.com>
+Cc: will@kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/mm: harden ASID allocator against empty bitmap
+ after rollover
+Message-ID: <abBT2gV84-9uaHkJ@arm.com>
+References: <20260219113715.8001-1-redacherkaoui67@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 14C97255740
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219113715.8001-1-redacherkaoui67@gmail.com>
+X-Rspamd-Queue-Id: 3F2C025593D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224527-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224528-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.965];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:mid]
 X-Rspamd-Action: no action
 
-On Tue, 10 Mar 2026 17:30:01 +0100,
-Thorsten Blum wrote:
+On Thu, Feb 19, 2026 at 11:37:14AM +0000, Reda CHERKAOUI wrote:
+> new_context() assumes that after incrementing asid_generation and calling
+> flush_context(), find_next_zero_bit() will always find a free ASID.
 > 
-> On 10. Mar 2026, at 16:07, Takashi Iwai wrote:
-> > On Tue, 10 Mar 2026 11:29:20 +0100, Thorsten Blum wrote:
-> >> --- a/sound/aoa/soundbus/i2sbus/core.c
-> >> +++ b/sound/aoa/soundbus/i2sbus/core.c
-> >> @@ -405,6 +405,9 @@ static int i2sbus_resume(struct macio_dev* dev)
-> >> 	int err, ret = 0;
-> >> 
-> >> 	list_for_each_entry(i2sdev, &control->list, item) {
-> >> +		if (list_empty(&i2sdev->sound.codec_list))
-> >> +			continue;
-> > 
-> > This can be even outside the loop and immediately return 0, as the
-> > remaining part is also the loop of codec_list.
+> If that invariant is ever violated, __set_bit(NUM_USER_ASIDS, asid_map)
+> would write past the end of the bitmap. Add a defensive check so the
+> kernel fails loudly instead of silently corrupting memory.
+> Cc: stable@vger.kernel.org
 > 
-> The i2sdev pointer is only assigned by the outer list_for_each_entry(),
-> which iterates the controller's device list. Since each device has its
-> own codec list, list_empty(&i2sdev->sound.codec_list) must be checked
-> inside the loop; before the loop i2sdev is uninitialized.
+> Signed-off-by: Reda CHERKAOUI <redacherkaoui67@gmail.com>
+> ---
+>  arch/arm64/mm/context.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+> index b2ac06246327..74c1ece7db78 100644
+> --- a/arch/arm64/mm/context.c
+> +++ b/arch/arm64/mm/context.c
+> @@ -160,6 +160,7 @@ static u64 new_context(struct mm_struct *mm)
+>  	static u32 cur_idx = 1;
+>  	u64 asid = atomic64_read(&mm->context.id);
+>  	u64 generation = atomic64_read(&asid_generation);
+> +	unsigned long idx;
+>  
+>  	if (asid != 0) {
+>  		u64 newasid = asid2ctxid(ctxid2asid(asid), generation);
+> @@ -194,9 +195,11 @@ static u64 new_context(struct mm_struct *mm)
+>  	 * a reserved TTBR0 for the init_mm and we allocate ASIDs in even/odd
+>  	 * pairs.
+>  	 */
+> -	asid = find_next_zero_bit(asid_map, NUM_USER_ASIDS, cur_idx);
+> -	if (asid != NUM_USER_ASIDS)
+> +	idx = find_next_zero_bit(asid_map, NUM_USER_ASIDS, cur_idx);
+> +	if (idx != NUM_USER_ASIDS) {
+> +		asid = idx;
+>  		goto set_asid;
+> +	}
+>  
+>  	/* We're out of ASIDs, so increment the global generation count */
+>  	generation = atomic64_add_return_relaxed(ASID_FIRST_VERSION,
+> @@ -204,7 +207,10 @@ static u64 new_context(struct mm_struct *mm)
+>  	flush_context();
+>  
+>  	/* We have more ASIDs than CPUs, so this will always succeed */
+> -	asid = find_next_zero_bit(asid_map, NUM_USER_ASIDS, 1);
+> +	idx = find_next_zero_bit(asid_map, NUM_USER_ASIDS, 1);
+> +	if (unlikely(idx == NUM_USER_ASIDS))
+> +		panic("ASID allocator: no free ASIDs after rollover\n");
+> +	asid = idx;
 
-Ah indeed.  Now I applied to for-next branch.
+How do you even hit this? Is it if you have less ASIDs than the number
+of CPUs? The kernel complains about this in asids_update_limit.
 
+Anyway, given how you are not following up on maintainer's comments, I
+assume these patches are automatically generated.
 
-thanks,
-
-Takashi
+-- 
+Catalin
 
