@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-224456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wG84C0gEsGlAegIAu9opvQ
-	(envelope-from <stable+bounces-224456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:45:12 +0100
+	id kMkSFpYFsGlAegIAu9opvQ
+	(envelope-from <stable+bounces-224457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:50:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B282224B7D6
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:45:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D19C24BA49
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 12:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 11F2E30C2364
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30B5B308DCAE
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 11:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6ED38E111;
-	Tue, 10 Mar 2026 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C799038A73B;
+	Tue, 10 Mar 2026 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/e83xIi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2xHU/GY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF2C38945D;
-	Tue, 10 Mar 2026 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB8C387587;
+	Tue, 10 Mar 2026 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142188; cv=none; b=eNKYn2a0u/O6Jo3GqL9ccq8h7WgtxrSEL7NZ3NbJOTok9CbkOMc4dc0cdiCg+eo4AUws8M/8Yf+hUbe8jjxAFXQdnPB54zr5Gl1dUwFq5EVKpngBX3q4+hvazofG3h7HQZBrGgCx5avFWnA22jPrbcWTpUcKUugpS7fFS9ju5TU=
+	t=1773142189; cv=none; b=BVimuJxMFV3qAIUrulBRWx4feBWMZ6T9U2mcdveNG1tNRVRQMsjwgq+i9VfDBf7c6/WR5DSrSH5rvvCIgA/p5MFkUXxgWSPNzRLhhLFWypfEGWQ5GJeotdgQeiSVwtYidHIIqQxPoRNQbOSQgiAGiAt1NY4uvaEd7fBCw49xExw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142188; c=relaxed/simple;
-	bh=8GckiOyDdlmhJNJgYX2RsOU70YtQ+wonOfOC3VfCH0Y=;
+	s=arc-20240116; t=1773142189; c=relaxed/simple;
+	bh=vBsTLKWA9BKsGE5i2sAZKfN0NxLugNrDR2lDsckRbnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkf6V8dYM5+EX/KlvSERC8KIRAPmdzMjrh4v3vsTdVs6iTIPS1uU/xMhqHlXjVgV4YhUUjspGE48NUCs6jMG72NqVM1o/Lh69HL0wyRxaHeVf2EBpRoCaTY9CR4Z1KNEs7+MDxXt6ESMB8pNBjAr+UfPv82Pako0j+XVpLFu7sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/e83xIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0218AC19423;
-	Tue, 10 Mar 2026 11:29:47 +0000 (UTC)
+	 MIME-Version; b=J6oxPvqwxlUuQukkbUTmyqdB9XLxIwrbinuWCWH9zcEz6SLrdaBFWa+768JULcjwCIV1ex50r77WjZGvjzH7aZfQkfO76+rjIiuzFKv2XVgpt125VgocUsk2RLimNeGY4S4yujogDqL/I/hZtPCAGWJxlGIBtXNYRxc36+MVQKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2xHU/GY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5006C2BC9E;
+	Tue, 10 Mar 2026 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773142188;
-	bh=8GckiOyDdlmhJNJgYX2RsOU70YtQ+wonOfOC3VfCH0Y=;
+	s=k20201202; t=1773142189;
+	bh=vBsTLKWA9BKsGE5i2sAZKfN0NxLugNrDR2lDsckRbnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/e83xIiNJLAGM5pDoXUt/YXs8TBnYFGnNJxVLyieiTVAlj5EV3p3D4sYamRZOmWm
-	 VbRW02dW/kXaY3Er2ny/PLol0zEJxDO8LqX+6uDyTOFiddBus7wWGqtlw1oULVe7Ly
-	 27JeocUo5DAbd/alPVQYP/MxSkn4tQWv+qnRy3wqK7HXu7PUb8M+l8AMUE8qYSUFH8
-	 hfxZiCRmZXhlI2PaULI/8pjN8UElsDk2WmOshEhprMwUS1QkFyknuQBiuzNHLF3VRx
-	 zg6Tm/yZwqB4drX2Mybhycx/kv8hdGKKuQ7utWhtvjEtoCMKjMdvLdlxasBqe0kSrj
-	 Sly79k7KNs5wg==
+	b=N2xHU/GYMHhUJEhbDKSTDxHf8D6i3njibX3hkX6wJ8jQQirnGc7VVNfN9CV+ZpxJz
+	 dSN+ZP63OBpQ6vVjD00OiAyd2LL/PsK9hzezWJxsY2dYClIVZeAdGOMooU2CFp/vNJ
+	 zxXYxFhIBYmSlB3DTQuvRcP6l5K/wGM+G6U9qf/aQBpxg7HYxNDsgXu+O0d77Uuc1g
+	 6gcFz1sEu6GBPZWcDrZ2cP+fWv4o1xkZ6bh2Q8DmrcfP56h/JifKyCsx2BJ5yhplm1
+	 TTgrUf1z2ilEdzcyksPKmSavBoRXg6YpXTfrxNy0NIQIKPR2c1hm4T/TB0+EC7fKJK
+	 Nw8hOgCGrlEGg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Miroslav Lichvar <mlichvar@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+Cc: Olivier Sobrie <olivier@sobrie.be>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 277/314] timekeeping: Fix timex status validation for auxiliary clocks
-Date: Tue, 10 Mar 2026 07:18:56 -0400
-Message-ID: <f3ffeaa335b33efeab8d671f1f07292041b2c0f3.1773141555.git.sashal@kernel.org>
+Subject: [PATCH 6.18 278/314] hwmon: (max6639) fix inverted polarity
+Date: Tue, 10 Mar 2026 07:18:57 -0400
+Message-ID: <59fed0c7cc760bc1134bdea1dde5a5e57f36ad7b.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
 References: <cover.1773141554.git.sashal@kernel.org>
@@ -65,25 +65,25 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B282224B7D6
+X-Rspamd-Queue-Id: 5D19C24BA49
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224456-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224457-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,56 +93,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sobrie.be:email,roeck-us.net:email]
 X-Rspamd-Action: no action
 
-From: Miroslav Lichvar <mlichvar@redhat.com>
+From: Olivier Sobrie <olivier@sobrie.be>
 
-[ Upstream commit e48a869957a70cc39b4090cd27c36a86f8db9b92 ]
+[ Upstream commit 170a4b21f49b3dcff3115b4c90758f0a0d77375a ]
 
-The timekeeping_validate_timex() function validates the timex status
-of an auxiliary system clock even when the status is not to be changed,
-which causes unexpected errors for applications that make read-only
-clock_adjtime() calls, or set some other timex fields, but without
-clearing the status field.
+According to MAX6639 documentation:
 
-Do the AUX-specific status validation only when the modes field contains
-ADJ_STATUS, i.e. the application is actually trying to change the
-status. This makes the AUX-specific clock_adjtime() behavior consistent
-with CLOCK_REALTIME.
+  D1: PWM Output Polarity. PWM output is low at
+  100% duty cycle when this bit is set to zero. PWM
+  output is high at 100% duty cycle when this bit is set
+  to 1.
 
-Fixes: 4eca49d0b621 ("timekeeping: Prepare do_adtimex() for auxiliary clocks")
-Signed-off-by: Miroslav Lichvar <mlichvar@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260225085231.276751-1-mlichvar@redhat.com
+Up to commit 0f33272b60ed ("hwmon: (max6639) : Update hwmon init using
+info structure"), the polarity was set to high (0x2) when no platform
+data was set. After the patch, the polarity register wasn't set anymore
+if no platform data was specified. Nowadays, since commit 7506ebcd662b
+("hwmon: (max6639) : Configure based on DT property"), it is always set
+to low which doesn't match with the comment above and change the
+behavior compared to versions prior 0f33272b60ed.
+
+Fixes: 0f33272b60ed ("hwmon: (max6639) : Update hwmon init using info structure")
+Signed-off-by: Olivier Sobrie <olivier@sobrie.be>
+Link: https://lore.kernel.org/r/20260304212039.570274-1-olivier@sobrie.be
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timekeeping.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/max6639.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 340fef20bdcd0..c7dcccc5f3d6b 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2639,7 +2639,8 @@ static int timekeeping_validate_timex(const struct __kernel_timex *txc, bool aux
+diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
+index a06346496e1d9..1fc12e1463b58 100644
+--- a/drivers/hwmon/max6639.c
++++ b/drivers/hwmon/max6639.c
+@@ -623,7 +623,7 @@ static int max6639_init_client(struct i2c_client *client,
+ 			return err;
  
- 	if (aux_clock) {
- 		/* Auxiliary clocks are similar to TAI and do not have leap seconds */
--		if (txc->status & (STA_INS | STA_DEL))
-+		if (txc->modes & ADJ_STATUS &&
-+		    txc->status & (STA_INS | STA_DEL))
- 			return -EINVAL;
- 
- 		/* No TAI offset setting */
-@@ -2647,7 +2648,8 @@ static int timekeeping_validate_timex(const struct __kernel_timex *txc, bool aux
- 			return -EINVAL;
- 
- 		/* No PPS support either */
--		if (txc->status & (STA_PPSFREQ | STA_PPSTIME))
-+		if (txc->modes & ADJ_STATUS &&
-+		    txc->status & (STA_PPSFREQ | STA_PPSTIME))
- 			return -EINVAL;
- 	}
+ 		/* Fans PWM polarity high by default */
+-		err = regmap_write(data->regmap, MAX6639_REG_FAN_CONFIG2a(i), 0x00);
++		err = regmap_write(data->regmap, MAX6639_REG_FAN_CONFIG2a(i), 0x02);
+ 		if (err)
+ 			return err;
  
 -- 
 2.51.0
