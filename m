@@ -1,324 +1,180 @@
-Return-Path: <stable+bounces-223837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPXbBPvmr2nkdAIAu9opvQ
-	(envelope-from <stable+bounces-223837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:40:11 +0100
+	id GALlLQXnr2nkdAIAu9opvQ
+	(envelope-from <stable+bounces-223838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6E1248A90
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:40:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171DF248A9E
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 10:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AF5531ACF66
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:27:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B557131A1545
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 09:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611F6438FE7;
-	Tue, 10 Mar 2026 09:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45363438FE7;
+	Tue, 10 Mar 2026 09:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D56yGs/U"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dJEJ7iZ4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D258410D36
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 09:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773134853; cv=fail; b=px378nSva9oU/IuBTLr7Cb2+5WiAncjlFvNcb+VWgZ5b42LJLdBFJRahhJFdbdfYFp4JlEPl9l8psmJcgyOhICQZSTuyJvhi3iJ+TkDBZ9pceTMlopTgm6E2/m3uBlz0+WWippaKhXb4BJkdo9lbCuIpWbRmQ5EeqlfOniTBwjk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773134853; c=relaxed/simple;
-	bh=GcmUecu40HfgTnI2nHiawMNXeGfCoO4qXFsQeeRDkls=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RBMKq/8T9Ys/ms56p5LiPcxAzJYQeFJWWyB+WkfJm6VGFBCLiP7IrxRKRG5AUvy3JzEDqdwxCtCfs30tCj3/l1coT/CQ1PEI+IzfMasAjnPsASb3DG+B/XqWC2oHA3P8h2uqbSzHwAe/HVCZKaK5SfWgtxzDsMD5iw0XhMRqSck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D56yGs/U; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773134851; x=1804670851;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=GcmUecu40HfgTnI2nHiawMNXeGfCoO4qXFsQeeRDkls=;
-  b=D56yGs/U/ZAL6r0ggODCYYTnX/dAXEe736x35EdLKYOxAVuCDbSpS50K
-   6aSDapD6jvY10DZv9Pqsnk7IfMp8o7nyMmPQChtXabYU9Magf3wNIG9Gq
-   NFIx6lfvDAq9PtBaxonwX144CEy9iBuTFFkzpB/80eHuqgPid/hqKPoj3
-   qK80dYsnsCHf9EhVUFJiLMeODUDhVWzPJQQDQYMu1aSTx465j5I1FYDwr
-   7SmlL3t8/B5bKxSe8sZ9q/jT7i9bHYrhBvcB3F6XL67qpcEOX9R/EkPeW
-   pu4mBRwCnguvWD0C8aa1jiL2ksxIMG452HEx8vI4ub/q+vkV8oEWNCv88
-   A==;
-X-CSE-ConnectionGUID: 4SwNj5UCQViIlQRPA/y6dQ==
-X-CSE-MsgGUID: DlNOR+jFT+qcC8p7+X+u/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="73876583"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="73876583"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 02:27:31 -0700
-X-CSE-ConnectionGUID: sfhuk8vVQWuFoIhrCo16dQ==
-X-CSE-MsgGUID: hhEwGloMRDCPQc+fAjRDAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="219175681"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 02:27:30 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 10 Mar 2026 02:27:29 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 10 Mar 2026 02:27:29 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.18) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 10 Mar 2026 02:27:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nJGiN84IrF31AnSFZax6h7EftVsNJ2qR563d4vZd6oZSW1keOMbDKxylwJtz0VBPBAYTLnXLCwsd+/jpbIX7plCJHFpuXnwackSmvlbh3MK7Mw5p0RXGBoEdXm0kyWElN+7AlA9fQbsRR83XcI40Z7Rb+j6yS4O83s0sX80Kv6tEUlDUeW6F/qjcCB0slqY4WeOo5JTcH+3lmWjdxCihv5TonQeizlOI8Ncg/u4gC97efqwH8iszB72+myRoTM3RA1VbN83LI6w7174NY5POzzLajxmyPlxbnePys1SqirlmxMQ7keCnIbz/KDfxF9Kg77ONiZRRovyKz3M35e/m1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wqdqkc/dHVanUMfgi7cHeyDFw6o5CCY9KAy1wTvV/g4=;
- b=FGiF4Sw1G8ctk8DvPetwm0iRn5Ep/D1BppOKIdkTzbIBn50xgMXSP1hlVcTBoIuMFyAzg5mt2/6r41QjXwMFmIFSosUD9F5WK8o4LYPb9uHdw4NATZUbacw4vl0pjfml+D7rdCYSdBJHqQ36VwrJW2HHfsA90WwzIR8nV/SdffJen4Rwqo9gBHTwEKpOQUaXtXQGH4r0SQ+jgKeBEtkzZ5hRT4qN9eZkpIycymXii13oYQh0UBtY4Hz/NCiiZfaCHt0C1peZF3lOUfAYJGZ4sx8nPIVi2gbt+AoKY3qAZIDN69ifkrXa2v/IB/KjimJ3x3dRpUj9DyBahoAvWmVGtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by DSWPR11MB9560.namprd11.prod.outlook.com (2603:10b6:8:36d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
- 2026 09:27:22 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523%5]) with mapi id 15.20.9700.010; Tue, 10 Mar 2026
- 09:27:22 +0000
-Date: Tue, 10 Mar 2026 11:26:44 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Tao Liu <ltao@redhat.com>,
-	<stable@vger.kernel.org>, Jani Nikula <jani.nikula@intel.com>
-Subject: Re: [CI] drm/i915/dmc: Fix an unlikely NULL pointer deference at
- probe
-Message-ID: <aa_j1Gxa7iWEEYHi@ideak-desk.lan>
-Reply-To: <imre.deak@intel.com>
-References: <20260309164803.1918158-1-imre.deak@intel.com>
- <aa_Y7shwd1Vqiy3i@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aa_Y7shwd1Vqiy3i@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-X-ClientProxiedBy: GV2PEPF00023A08.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::20f) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDBE42DFFD
+	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 09:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773134864; cv=none; b=thYKrYCNyMU5Dxxg/kOjadgm+fOxid5VQp5DGUsIrtlNMGfakV127PzwAgPYu+9eyju2o3iowHJO1sRFCUoVoxwAQ4WgncRsAmISky+vojRI6KNDUJPo+TzmUwD/jkMusguuTXwSkHJMaPbKn2vhE5kq2dQu9eafCMhavh1Sm20=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773134864; c=relaxed/simple;
+	bh=D7ObvPSYJaCOfp/8eCZNwv9y3mCkOjCMhOnGCGubwyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dgbFUuQbTteKNSTIR9rsv2BeFX1y5uAcLcuuwsbV+LMlf76YCVmotQAkA0I2ZOuGC7Qu9f/C/ToWI0LKFV+983uxkeGNG7kJIIcetpI6+wmu7zqOxMBuOkuwrAl0zvzoKfVZUHvbQCylmekH7p/+e/R7hYUWVN2zc2lfRuRNmC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dJEJ7iZ4; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4853e1ce427so19785765e9.3
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 02:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773134861; x=1773739661; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n6mbdjmVIwUUAco7q5KTIV1hgiOZLKIqNBms+EgWnbs=;
+        b=dJEJ7iZ4eGs1jVg8LvOJQImv+xYpF8TqlR5j3/QZKCIkZWES7pDz0qTR06jGsBOON3
+         /ssv6GoP96+0R9JodRigRBb9TCkyRdT7kGl7xXhGYhK3ZvZfR1biHnaW5KwLJdjtuGVY
+         Xe2aVCJHy5G/uUqByN37NkklM3zHVR38TSNsOxRmzi9n5rB+fOk7sFd8PXYuR4EeiIi/
+         UNSNrjmfvzJ/gExMQXYKk/XbZogDDbHftt4R9iZfUFK8nrVargFXo5qsUdarlwGbeCWt
+         WeJCnxsz9ZAO9B8meczTEVuTRHD1Aoa+mRC821tc1PaVgSXal2SJab9tto+xwudnvwwW
+         VFhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773134861; x=1773739661;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n6mbdjmVIwUUAco7q5KTIV1hgiOZLKIqNBms+EgWnbs=;
+        b=SnMJ/aMr4ZMrX+XE/+9UjkkEllUI6V/xbgymRii5X3mC1y+XEmOzYQQKZTuUjZt59D
+         sPucXFMFauRmba8E7EVe3otDrnr2QqeYQwMgHlcXAj6zEd0yw6GDIIfYu/zHX2qwmPIA
+         3/1t+qppQlIy/lL994xwQkkpNwQB1Kijx8ZBZ230sJuqcB6CKz2rZD2rkBxujgVx1Eb4
+         9zyC4BKP+qKPQRr1M+36I/tq8Gcky6r8Vw1r0qVDj7X2er/1CRPOe/9emAx054YAY9VI
+         h/LIqpBGf736L4RqW6JfX2pHet6KkP+PSvKplTDdDJSYWZz/vbBjzFb1P9an8jwYxLUe
+         L2UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYjNYeUNxp4t2EdioyoKdiIOTt+6HrssNJAa4r6AntCpRcXJjcQ1yacrvEWxYNDrAin6tTwZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA1gRKixoGTZomIysohgCChEYV8kmGg39TtDaDZdp0BUi8s2u1
+	TqUGNDk+RsqrErRc4RA1u8QUh/0sPXe9MS0BakRFIYLAaErV1s52sXEhqZy2rMrhyw==
+X-Gm-Gg: ATEYQzyTEgF6SFjip7HiTBfk9ps+jv9qT9b5V2CGiKGEPyePJTVcIHlqH6qmesuAIBC
+	gblN3/gOx9YuTml6UbPMQHpbxiazWOQf2KY6bPMa0YDn3OJL05Uajgp/37k3ppqfDPpspbPsXIq
+	ZhAd9bItJT3gtc31nwd2FIfPJBo611xof7CH+8lL1yQX0Fp3pfYdL+kfmQrn3nIc/PfneZ7aWPf
+	7wgTlVa7hEk14e6sP6FH0WXxRMByCgVpvcuVX6bguk5iMnVnPnGGka/3SyN5fkB7/Cbt3KO9qqN
+	onxcXIXQHEbBWghPDVikL+SEiYK5wlpXJMT3Vipg2Lmkvqhq6CWVBNaRo2+ZwnI28i/dDHTBExu
+	1KH3abSRZJf9xjl49VJGy7nj9jP0sernIuXEnExM/0g3PYtDrIZReEca8uRsQiD458gPOqhO1fc
+	YAv1dIsKraakoQbO4lTuV+i40ReOS4HCpCgo+IjdRPLE0jlKTO86kqz8kQ5LTEHyNx/8XnhBdFU
+	RJN3g==
+X-Received: by 2002:a05:600c:500d:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-4852695b9f7mr235710785e9.16.1773134860464;
+        Tue, 10 Mar 2026 02:27:40 -0700 (PDT)
+Received: from google.com (198.115.140.34.bc.googleusercontent.com. [34.140.115.198])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4853f8f9938sm31136055e9.23.2026.03.10.02.27.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 02:27:39 -0700 (PDT)
+Date: Tue, 10 Mar 2026 09:27:35 +0000
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>, Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Quentin Perret <qperret@google.com>, Fuad Tabba <tabba@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: pkvm: Don't reprobe for ICH_VTR_EL2.TDS on
+ CPU hotplug
+Message-ID: <aa_kBwF3dv8L6TD8@google.com>
+References: <20260310085433.3936742-1-maz@kernel.org>
+ <5a5afd0a-de2d-4697-a5ba-0e470ddb20f2@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|DSWPR11MB9560:EE_
-X-MS-Office365-Filtering-Correlation-Id: c60fb968-8ffe-41e2-bcb7-08de7e873b5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: jQXmRWW+rto38Q9DkmwW7CrQ+a1+UBLs8EFjIxQXC56DaSBlT5WcStL44fm9TAWxYIr+HrrBiAOgceXGYDTt6UhVoQ31pQGxHw0aw+VPI1Z0jy4673S1xGxNsP2tp20UgWvirlx9rkLZjoDavfV0aWLG3UDtyT2b8DhkOb6E5x4LXIrb0Mx/I5stzioZ2k+EgDUHcbpjJiHVz6P2+lLvqyQf8WJlUaQkbREvHAbuVxD5wPt5JkJ9kOmAz/cX5VlGouro9qbwCEnqieW8+k/EliRFv0ocYRKjc8w6iYQzRv9gH2TewCnP5p1+aMyg3ik1wyrotj+C24JvoQIjkT1e3XEWEGyaycDLoVix7zstfdrwZKATVNYSq2VDinFcpesojLJrZeLQPby45+7P/8gGLHm2J3EDkUdDON5+aAjl4sgklwD0sZe4SA4aeuev/lhrSsMeFpHJI9bZfMGLOT+saFaB8FpiCv/RLusQjkuygiplMuH94SWJwSa+rurACYyLA4lqCcK5dQ5mNbtDSHKvbz7H0ZFM977p6xGOrz5tiQ0broX9Z91I0CDxZeQFwKS8JrZaBa1s1flbuQRSxzm1HSdAsnjSLbX8SGxf4MdbAsb2Czz+FIpVzzS8nxJrudz3IAyKHXtpqp9Em+8H2942N7tZ4RJYSTNXu2SX5cMZLgDlnuZspWT5M+5hTNgI/mn5
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?GW5xVeqcpOtRveAkpd2hTI175H9pDaCaPLkh2aacXE+qAtbV1sdVnbBbPG?=
- =?iso-8859-1?Q?73d53u/a3Vj9qCW1h4Z0LRIWQQiZlF/2TOCh3kKYE/rsXs9n1Ph3hiD1UF?=
- =?iso-8859-1?Q?DVQxjXaLTJrcjnp5hB3wI35sFAKoHiikPu5JWTdTcaz5NECLYFPn+btkkp?=
- =?iso-8859-1?Q?v/sWoxvUaIQKg/TxkBaFrxnFe5vI2etLUp6qTlBZzKQhoRvh7OX3Ob3ieD?=
- =?iso-8859-1?Q?L/rX8ImTsNLKGa36DCCyd+XvcdfgBepdji1WadDVlvL+JhY2ntfh4QrEm/?=
- =?iso-8859-1?Q?jm8wOz/COfKqtKTTqP65HPUhG6hmx6pxB4cHDyuzjnJymnfhQ12sSi2U+/?=
- =?iso-8859-1?Q?kB9oEt4Kz5egFDpij2qUnaWswYQ1wf0MnkWe81oKE2OP0biSlBpuYZdu6C?=
- =?iso-8859-1?Q?XpQ5KZk2vzIoESsGRbN8f6CCqtaNYBJho7XJq6Zd1NrVpTAs3ijeAQ6f6A?=
- =?iso-8859-1?Q?Icy/J0Yf7T9l2e+kMrqZOnqe6SZo3TQtFy2bCopM2nXqLr4dMJtyPCLeqr?=
- =?iso-8859-1?Q?mkuhQDLybIqvR2l9cSNq/pNaNdoVkJXk6vRn7DOKO+oc8PSEei0sUEu4+z?=
- =?iso-8859-1?Q?39DXBEFZs86/FMZfPLJJG8Y22SVKhAhPN+VuSEWkJHrlGsc3CE6yeZNEzt?=
- =?iso-8859-1?Q?FObBZ0BARdVBY6CAuHUaWix6ZIqU6SxCMuG3xbYl/0JV/Wt2MZGWlwkCjp?=
- =?iso-8859-1?Q?1n288GSEvXS3L3t6Akmib7YHWZWQPgdhpCkh/kIzRRw4YaXvOpXiqamO7R?=
- =?iso-8859-1?Q?iHysP1IpxBfe8GitokyAPG/YaAwxrNP/NbSbIv+PDwO1Il2LYJ+a4DMG1U?=
- =?iso-8859-1?Q?lf6w28MA9XOOemvpYnspiRDM37GClBeI/tT9ydexdDH7t2iVFmJdFAN0Oo?=
- =?iso-8859-1?Q?Tu/wtpygL+CD7QWI95hYFC2H2SF/BSVImkZDsH7yqqXTp7F3WkHjJqxoXe?=
- =?iso-8859-1?Q?hZZui5BnBK8H3vDJtkycSha+RVZpX+xnWqTvsbzrMYumWBS8M1XPvAQaZF?=
- =?iso-8859-1?Q?rBGH2YTremQXQhwHonMwZdjY27dQrDqHWJbYvLKL/CR1AM0LBhJvSULv3O?=
- =?iso-8859-1?Q?X3UVrgxWg7DukwFMfDBHhRHjITyjx/1wXN1Lfqg43LgAcUXOl0rx5NnID4?=
- =?iso-8859-1?Q?GwtGPdWaJNQIqvfpG6VGiyYxzm8seArFlM9m/3q4d/iMxUbdWfAm7Gm6JA?=
- =?iso-8859-1?Q?RzvzMemWjEZ3dySOYTW/xDdBEmCtVbXzj2PaZExZetr29L8amnIgpNUBfa?=
- =?iso-8859-1?Q?AooVb6x1ZXG5OjPGO2kt0TWKVnb939JDANhQnr8G1EAtySC+hPk0dWtDyG?=
- =?iso-8859-1?Q?PKvM1TXzQ7ecN0g29mqZq6fpPqfPyp+FvU9+lMO5vxKJ6LcEZsXPmmCeoC?=
- =?iso-8859-1?Q?m8Vck++pZ14+VVZIpbcJsP+FjFfZGpqo3bxCUcyyD3p0qCVaNmhImn8KUk?=
- =?iso-8859-1?Q?v/2SwkzK+E8RZYkX5omuAZ8lpGqZFeJKSLMwpfYfqcKNivG7GnYzwocdJ8?=
- =?iso-8859-1?Q?H3EPEEP2FIZ5J/wYt6hzqkOx883XmyJ5BZflRzpBcNWx1r7Yh0RemoXe3A?=
- =?iso-8859-1?Q?kB4iGw13cqvGBdehyeXJ3xGvObDDIsEsPSgPFXHcCjfpEhD6219Glw/BS/?=
- =?iso-8859-1?Q?EHoJyowAZ51epIbLxZWSfKR4lEgmRKXAi0VKixgvbJBk8b8kQ5xiuxTu3+?=
- =?iso-8859-1?Q?NZPpijTL+64hfkcuTduyfuxZpAYonx/dPKA98nKS+eG2qaKFK3yGECpAuF?=
- =?iso-8859-1?Q?gySi+nzXj4y65GEOiwc/Qs9cWq7NGnA2hQhcKsrS/ikvfosJqfSGh+ienr?=
- =?iso-8859-1?Q?MaOR2KuRLw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: kABQiGqfQef5vWFERYO1bOi0RL/zBPasPvp0qdJNrZO7q+SR+6ZjWlsSiZ23aBkX+5sMXWgJxNMmPEj+I57JejXVbEHjYxvfDpy5L1jLv0kWJdt24+PiZrEL5WNVylPFtdit6k747fCj+Wc9RajoVLhfxL3Z7O1jqyieegbEEAern9jrnRXZpzalv8UwyA8ZaTpOl6v0sQUD13Lx8giJloEAOWiCUEdlYfg+SJ/6qRsI6MfIBVlMq+Z0QB4ivBpGxB34VAfnX3d1WSkTQwnAI7JiTihBbVQ1H4HZKoS2Am5CavnxxqJfHTHO/SXJWfm+lSjNFeSBFIfhXxaGw0mQKg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c60fb968-8ffe-41e2-bcb7-08de7e873b5e
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 09:27:22.0140
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Eku7MKiLhVb6Nt6UqgjiDaFNKnPfcm5D2IzjzAqjJZAYT33dt6O2LEGs9pXcPb0KqXOXX+nr5a6A7JAEoqwGbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9560
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 5B6E1248A90
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a5afd0a-de2d-4697-a5ba-0e470ddb20f2@arm.com>
+X-Rspamd-Queue-Id: 171DF248A9E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223837-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:replyto];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[imre.deak@intel.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-223838-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[vdonnefort@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 10:40:14AM +0200, Ville Syrjälä wrote:
-> On Mon, Mar 09, 2026 at 06:48:03PM +0200, Imre Deak wrote:
-> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-> > initialized, and dmc is thus NULL.
+On Tue, Mar 10, 2026 at 09:17:43AM +0000, Suzuki K Poulose wrote:
+> On 10/03/2026 08:54, Marc Zyngier wrote:
+> > Hotplugging a CPU off and back on fails with pKVM, as we try to
+> > probe for ICH_VTR_EL2.TDS. In a non-VHE setup, this is achieved
+> > by using an EL2 stub helper. However, the stubs are out of reach
+> > once pKVM has deprivileged the kernel. The CPU never boots.
 > > 
-> > That would be the case when the call path is
-> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
+> > Since pKVM doesn't allow late onlining of CPUs, we can detect
+> > that protected mode is enforced early on, and return the current
+> > state of the capability.
 > > 
-> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-> > conditionally, depending on the current and target DC states. At probe,
-> > the target is disabled, but if DC6 is enabled, the function is called,
-> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-> > at probe, as we haven't seen this failure mode before.
-> > 
-> > It is also strange to have DC6 enabled at boot, since that would require
-> > the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
-> > the driver stopping / reprogramming the firmware is a poorly specified
-> > sequence and as such unlikely an intentional BIOS behaviour. It's more
-> > likely that BIOS is leaving an unintentionally enabled DC6 HW state
-> > behind (without actually loading the required DMC firmware for this).
-> 
-> Wasn't the original case some kdump kernel thing?
-
-According to Jani the original issue was a KASAN run in QEMU, see [1].
-Not sure if that also resulted in kexec/kdump.
-
-However the case reported by Tao later is related to kexec/kdump indeed.
-
-> I think that has a few issues:
-> - loading full GPU drivers for a kdump kernel after the real kernel
->   has crashed seems a bit risky. Who knows what state the hardware
->   is in after the crash...
-> - we should probably try to unload DMC at kexec time (to the extent
->   that DMC can actually be unloaded)
-
-AFAICS that involves calling the pci_driver::shutdown which (for both xe
-and i915) ends up calling intel_power_domains_disable(), which disables
-DC states at least (hence the kexec'ed kernel should still not see DC6
-being enabled). The DMC FW event handlers are not disabled though in
-this case (which would be what you refer to unloading DMC I presume) as
-opposed to system/runtime suspend, where all the DMC events are also
-disabled.
-
-I agree that the kexec->shutdown, driver remove etc. handlers should be
-synced at least wrt. the above DMC unloading with the suspend handlers.
-However, I consider that as a separate issue to the one fixed in this
-patch, which is using the HW DC state (which is unreliable) incorrectly
-to track the DC6 allowed counter (the correct way being using the SW DC
-state instead). So are you okay to go ahead with this patch still for
-now and follow up with syncing the above shutdown/driver remove handlers
-with the suspend ones?
-
-[1] https://lore.kernel.org/all/43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com
-
-> > The tracking of the DC6 allowed counter only works if starting /
-> > stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
-> > DC6 state (since stopping the counter requires the DC5 counter captured
-> > when the counter was started). Thus, using the HW DC6 state is incorrect
-> > and it also leads to the above oops. Fix both issues by using the SW DC6
-> > state for the tracking.
-> > 
-> > This is v2 of the fix originally sent by Jani, updated based on the
-> > first Link: discussion below.
-> > 
-> > Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
-> > Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
-> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> > Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> > Cc: Tao Liu <ltao@redhat.com>
-> > Cc: <stable@vger.kernel.org> # v6.16+
-> > Tested-by: Tao Liu <ltao@redhat.com>
-> > Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > Fixes: 2a28810cbb8b2 ("KVM: arm64: GICv3: Detect and work around the lack of ICV_DIR_EL1 trapping")
+> > Reported-by: Vincent Donnefort <vdonnefort@google.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: stable@vger.kernel.org
 > > ---
-> >  drivers/gpu/drm/i915/display/intel_display_power_well.c | 2 +-
-> >  drivers/gpu/drm/i915/display/intel_dmc.c                | 3 +--
-> >  2 files changed, 2 insertions(+), 3 deletions(-)
+> >   arch/arm64/kernel/cpufeature.c | 3 +++
+> >   1 file changed, 3 insertions(+)
 > > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_display_power_well.c b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> > index 1e03187dbd38a..f855f0f886946 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-> > @@ -852,7 +852,7 @@ void gen9_set_dc_state(struct intel_display *display, u32 state)
-> >  			power_domains->dc_state, val & mask);
-> >  
-> >  	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
-> > -	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-> > +	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
-> >  	if (!dc6_was_enabled && enable_dc6)
-> >  		intel_dmc_update_dc6_allowed_count(display, true);
-> >  
-> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
-> > index c3b411259a0c5..90ba932d940ac 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-> > @@ -1598,8 +1598,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
-> >  		return false;
-> >  
-> >  	mutex_lock(&power_domains->lock);
-> > -	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
-> > -		      DC_STATE_EN_UPTO_DC6;
-> > +	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
-> >  	if (dc6_enabled)
-> >  		intel_dmc_update_dc6_allowed_count(display, false);
-> >  
-> > -- 
-> > 2.49.1
+> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > index c31f8e17732a3..947ff71b3b66b 100644
+> > --- a/arch/arm64/kernel/cpufeature.c
+> > +++ b/arch/arm64/kernel/cpufeature.c
+> > @@ -2345,6 +2345,9 @@ static bool can_trap_icv_dir_el1(const struct arm64_cpu_capabilities *entry,
+> >   	    !is_midr_in_range_list(has_vgic_v3))
+> >   		return false;
+> > +	if (system_capabilities_finalized() && is_protected_kvm_enabled())
+> > +		return cpus_have_final_cap(ARM64_HAS_ICH_HCR_EL2_TDIR);
 > 
-> -- 
-> Ville Syrjälä
-> Intel
+> Is it a worth adding a comment here ? Otherwise this looks very odd -
+> Returning the system state of a capability for a "hotplugged" CPU.
+> 
+> Otherwise
+> 
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+
+Tested-by: Vincent Donnefort <vdonnefort@google.com>
+
+> 
+> 
+> > +
+> >   	if (is_kernel_in_hyp_mode())
+> >   		res.a1 = read_sysreg_s(SYS_ICH_VTR_EL2);
+> >   	else
+> 
 
