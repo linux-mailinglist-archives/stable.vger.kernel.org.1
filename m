@@ -1,203 +1,237 @@
-Return-Path: <stable+bounces-224600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6F2DO2WgsGkwlQIAu9opvQ
-	(envelope-from <stable+bounces-224600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:51:17 +0100
+	id AFYrLqqjsGnQlQIAu9opvQ
+	(envelope-from <stable+bounces-224605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 00:05:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CCB25916C
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:51:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F6125925E
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 00:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CB6B319E7A7
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 22:50:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DEA730157C6
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 23:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C16D366824;
-	Tue, 10 Mar 2026 22:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4336436605E;
+	Tue, 10 Mar 2026 23:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kLePQKZr"
+	dkim=pass (2048-bit key) header.d=uni-hamburg.de header.i=@uni-hamburg.de header.b="iFdqJ/3m"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mxchg04.rrz.uni-hamburg.de (mxchg04.rrz.uni-hamburg.de [134.100.38.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284223537EC
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 22:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457A52DB780;
+	Tue, 10 Mar 2026 23:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.100.38.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773183046; cv=none; b=Blgiu1RzWKQgg0IoV5JipWJ/vm3fwjccpSE16auQk2GpojUZ4IcjXnfFnlIvBFMaRl3NGYPMZOMRQiyZd/bmpjjqTRHCGnz+yEfQ6fATrLzpJJjVl35S4UZZNVaLm+OICXCgBb1YMre9uXZuP+AqQqhkYErVd9bPfdkaHn+l21I=
+	t=1773183908; cv=none; b=TYLum68sc3meuc9gDUbPeeuSIjcMwTsENV9ySdexoQq6sIwmGCOOoNp2uoWO9yba5Axqeo+5op/2PONPwuB4P3bsE6L6dcsVRl/aw5XeUaxIqBzuMd9+IBdPpSJLhfdjiP9WtLvuB76idEHSKqbh+QdXETRl2PJffNWDNSLQl9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773183046; c=relaxed/simple;
-	bh=1PYGlGe6o5enDEtJxv7ZITtMqjuaLLBnX78P1ipbvd0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qd7RdXb2+KGSOrIPFprCvjHTjlcP3Im3FeUb9h0hT8cMhnEbOgBRpWczMG4bXYyMtbsl4Fol3KWE+QD2nvpR2KiB+DWcUjz87TnTKdCj0egQRoBHhfc3C91Q4KHK2BklCxr013n7gMRA+Fu2wpiRG/EeUcRqRBecmm+L9itDPM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kLePQKZr; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773183045; x=1804719045;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1PYGlGe6o5enDEtJxv7ZITtMqjuaLLBnX78P1ipbvd0=;
-  b=kLePQKZrixrBfNiCqX6RXklPSVHNbT9KLg9kSA3Hnon5ztS36nhh/3bI
-   tVfvWLA7IRIiqPC4BLFY3HHgPhcTzRcHmd+NA2leHdZeroHZCMZA5Gar2
-   FcTAQaRdsiY3ikep3RUC4sGeNZXWlEfrj1jV/Af2RLH1EqjVuP39nbAyj
-   u8D28vgUdXgkzHt5GIJpOIdqLRVeznLA5cHDtjNZbPHuNH/fE9otMV114
-   HDKVM1yR8rQWorbqJ+QilY0sgJZ1sxAWsKrwAEA9Nq/aZJtnt8flotKiB
-   KmtJgm0LCXX1MgNWXyopX1UJuVHGcw/UpchWgZJuxgoahftsdUyx/88uV
-   Q==;
-X-CSE-ConnectionGUID: V/LGiRpqQ8Wqx4l3FA6qAg==
-X-CSE-MsgGUID: iYNDVETtQ8WzAETnaMw2OA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="61817888"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="61817888"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 15:50:43 -0700
-X-CSE-ConnectionGUID: Py+mOid8QH6kgLJOqe57Cw==
-X-CSE-MsgGUID: 5cnMJ7znSyGSXv39ZbjeSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="220441009"
-Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
-  by orviesa007.jf.intel.com with ESMTP; 10 Mar 2026 15:50:42 -0700
-From: Zhanjun Dong <zhanjun.dong@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org,
-	Zhanjun Dong <zhanjun.dong@intel.com>
-Subject: [PATCH v9 7/7] drm/xe: Open-code GGTT MMIO access protection
-Date: Tue, 10 Mar 2026 18:50:39 -0400
-Message-Id: <20260310225039.1320161-8-zhanjun.dong@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260310225039.1320161-1-zhanjun.dong@intel.com>
-References: <20260310225039.1320161-1-zhanjun.dong@intel.com>
+	s=arc-20240116; t=1773183908; c=relaxed/simple;
+	bh=y7Xqpc/wuYWtWe48tqJ7Y9F+CA4BF+ERGQuTslHT+I0=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type; b=RxfiQBmfg3yIncg7kGTBLIBNRKEiuzx9GIyPafYhG3u7xSaVgqRYhX3AtV/hNXN5Itwh3vE80uLQEQkMKNMYWbs+/OV5rM4AIuoGR7fJW5hX1YOpgh4eXQ8dW9/9gp+E+cTnCHT5pXIAjj76ZlRhcIkAh8G2tdtpUDT1vcmip8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=uni-hamburg.de; spf=pass smtp.mailfrom=uni-hamburg.de; dkim=pass (2048-bit key) header.d=uni-hamburg.de header.i=@uni-hamburg.de header.b=iFdqJ/3m; arc=none smtp.client-ip=134.100.38.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=uni-hamburg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uni-hamburg.de
+Received: from mxchg04.rrz.uni-hamburg.de (mxchg04.rrz.uni-hamburg.de [134.100.38.114])
+	by mxchg04.rrz.uni-hamburg.de (Postfix) with ESMTPS id 4fVq4q3KK1zLlZr;
+	Tue, 10 Mar 2026 23:56:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uni-hamburg.de;
+	s=rrzs003; t=1773183403;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aKlgmgGXApqb89QvKp6ek8VSBUaqeTUHGbk9QK7a158=;
+	b=iFdqJ/3mIpvtYgdVZMORPjtCJLEC0jgKZ5iyxtOwMG4blmWlfn2iMDBESx0ih+yLh8WXvB
+	pZy1xvWod2Y3ZezDVxFliOl4AVCc/k/rCRkveACNQv59LiEmjHSeolSJwHaY7SrxuqftcB
+	BN+f3UUITk3+zG07DCxda7KtDx2inMx1vbGvU2vnFJ2ine2JGykbL0EodgYYpiNqaHaNQA
+	CyZlcqyW6TIpX9UOadEGjrQ1LNvtcApsdfx6pOcq87sajkxbMbTEm6TAz4TI8X/DgCh4in
+	KZSmbMERwPg8FcR5ckXCdK9BW2K3etOGpiD8lieex73+vRYt2vMsd5jqfrCxyA==
+Received: from exchange.uni-hamburg.de (EX-S-MR06.uni-hamburg.de [134.100.84.89])
+	by mxchg04.rrz.uni-hamburg.de (Postfix) with ESMTPS id 4fVq4q1dpPzLlZn;
+	Tue, 10 Mar 2026 23:56:43 +0100 (CET)
+Received: from plasteblaster (134.100.32.91) by EX-S-MR06.uni-hamburg.de
+ (134.100.84.89) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 10 Mar
+ 2026 23:56:42 +0100
+Date: Tue, 10 Mar 2026 23:56:42 +0100
+From: "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
+To: Steve French <sfrench@samba.org>
+CC: <linux-cifs@vger.kernel.org>, <regressions@lists.linux.dev>,
+	<stable@vger.kernel.org>
+Subject: [REGRESSION] failure to reconnect on SMB server restart with custom
+ TCP port (not 445): Host is down (at least since 6.6.95)
+Message-ID: <20260310235642.6d9798f4@plasteblaster>
+Organization: =?UTF-8?B?VW5pdmVyc2l0w6R0?= Hamburg
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25CCB25916C
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: EX-S-MR03.uni-hamburg.de (134.100.84.82) To
+ EX-S-MR06.uni-hamburg.de (134.100.84.89)
+X-Rspamd-UID: 45fadb
+X-Rspamd-UID: 40e953
+X-Rspamd-Queue-Id: 34F6125925E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	FROM_NAME_HAS_TITLE(1.00)[dr];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uni-hamburg.de,reject];
+	R_DKIM_ALLOW(-0.20)[uni-hamburg.de:s=rrzs003];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224605-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224600-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.orgis@uni-hamburg.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uni-hamburg.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uni-hamburg.de:dkim]
 X-Rspamd-Action: no action
 
-From: Matthew Brost <matthew.brost@intel.com>
+Dear Linux-CIFS maintainer(s),
 
-GGTT MMIO access is currently protected by hotplug (drm_dev_enter),
-which works correctly when the driver loads successfully and is later
-unbound or unloaded. However, if driver load fails, this protection is
-insufficient because drm_dev_unplug() is never called.
+I stumbled upon a regression in the Linux cifs/smb3 client when working
+with a smbd using a non-standard port. I am not the first to note this, see
 
-Additionally, devm release functions cannot guarantee that all BOs with
-GGTT mappings are destroyed before the GGTT MMIO region is removed, as
-some BOs may be freed asynchronously by worker threads.
+	https://bbs.archlinux.org/viewtopic.php?id=3D306712
 
-To address this, introduce an open-coded flag, protected by the GGTT
-lock, that guards GGTT MMIO access. The flag is cleared during the
-dev_fini_ggtt devm release function to ensure MMIO access is disabled
-once teardown begins.
+which is a report from mid last year, indicating the problem sometime
+after Linux 6.6.72. It is a very simple issue, where details of the
+kernel builds or mount setup don't seem to matter much: Older kernels
+reconnect to a SMB server that was restarted (old processes killed and
+replaced), newer kernels do not and just have a defunct mount.
 
-Cc: stable@vger.kernel.org
-Fixes: 919bb54e989c ("drm/xe: Fix missing runtime outer protection for ggtt_remove_node")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Zhanjun Dong <zhanjun.dong@intel.com>
----
- drivers/gpu/drm/xe/xe_ggtt.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+I reproduced this in our HPC cluster environment with such smb.conf on
+the server side
 
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index 0f2e3af49912..21071b64b09d 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -66,6 +66,9 @@
-  * give us the correct placement for free.
-  */
- 
-+#define XE_GGTT_FLAGS_64K	BIT(0)
-+#define XE_GGTT_FLAGS_ONLINE	BIT(1)
-+
- /**
-  * struct xe_ggtt_node - A node in GGTT.
-  *
-@@ -117,6 +120,8 @@ struct xe_ggtt {
- 	 * @flags: Flags for this GGTT
- 	 * Acceptable flags:
- 	 * - %XE_GGTT_FLAGS_64K - if PTE size is 64K. Otherwise, regular is 4K.
-+	 * - %XE_GGTT_FLAGS_ONLINE - is GGTT online, protected by ggtt->lock
-+	 *   after init
- 	 */
- 	unsigned int flags;
- 	/** @scratch: Internal object allocation used as a scratch page */
-@@ -367,6 +372,8 @@ static void dev_fini_ggtt(void *arg)
- {
- 	struct xe_ggtt *ggtt = arg;
- 
-+	scoped_guard(mutex, &ggtt->lock)
-+		ggtt->flags &= ~XE_GGTT_FLAGS_ONLINE;
- 	drain_workqueue(ggtt->wq);
- }
- 
-@@ -437,6 +444,7 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
- 	if (err)
- 		return err;
- 
-+	ggtt->flags |= XE_GGTT_FLAGS_ONLINE;
- 	return devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
- }
- ALLOW_ERROR_INJECTION(xe_ggtt_init_early, ERRNO); /* See xe_pci_probe() */
-@@ -465,13 +473,10 @@ static void ggtt_node_fini(struct xe_ggtt_node *node)
- static void ggtt_node_remove(struct xe_ggtt_node *node)
- {
- 	struct xe_ggtt *ggtt = node->ggtt;
--	struct xe_device *xe = tile_to_xe(ggtt->tile);
- 	bool bound;
--	int idx;
--
--	bound = drm_dev_enter(&xe->drm, &idx);
- 
- 	mutex_lock(&ggtt->lock);
-+	bound = ggtt->flags & XE_GGTT_FLAGS_ONLINE;
- 	if (bound)
- 		xe_ggtt_clear(ggtt, xe_ggtt_node_addr(node), xe_ggtt_node_size(node));
- 	drm_mm_remove_node(&node->base);
-@@ -484,8 +489,6 @@ static void ggtt_node_remove(struct xe_ggtt_node *node)
- 	if (node->invalidate_on_remove)
- 		xe_ggtt_invalidate(ggtt);
- 
--	drm_dev_exit(idx);
--
- free_node:
- 	ggtt_node_fini(node);
- }
--- 
-2.34.1
+[global]
+security =3D user
+map to guest =3D Bad Password
+server role =3D standalone server
+smb ports =3D 1445
 
+[public]
+path =3D /some/path
+guest ok =3D yes
+read only =3D yes
+
+and such a mount command on the client:
+
+mount -t smb3 -o port=3D1445,user=3Dguest,password=3Dfoo //server/public dir
+
+When I kill and re-start smbd on the server, older client kernels
+reconnect and continue to return listings and files from the share,
+while newer kernels give this:
+
+$ ls dir
+ls: cannot access 'dir': Host is down
+
+I also see that no smbd process is spawned for the client connection.
+The client simply seems not to try to talk to the server anymore. This
+apparently is only the case with the changed SMB port. With the default
+445, the same setup works. I once tested that with root running smbd or
+by forwarding port 445 to 1445 via socat on the server, things are back
+to normal. The share continues working, server processes are spawned
+and talked to by the client.
+
+Also, it seems that this only covers cases with actual network
+transfer. Mounting on the server from itself (localhost) seems to be
+fine on either port.
+
+I narrowed this down to these kernels working in the same system (which
+is a HPC node booting a Debian 12 image with our custom kernel built
+from vanilla kernel.org sources, barely changed):
+
+6.6.53: good
+6.6.78: good
+6.6.86: good
+
+Also, an Ubuntu client with 5.15.0-164-generic in a distinct setup,
+talking to a differing server, was also fine. So I assume clients
+reconnecting is baseline behaviour. I tested these kernel versions to
+have the regression:
+
+6.6.95: bad
+6.6.97: bad
+6.6.101: bad
+6.12.47: bad
+6.12.55: bad
+6.18.16: bad
+7.0.0-rc3: bad
+
+The last one is torvalds/linux.git as of today, commit
+1f318b96cc84d7c2ab792fcc0bfd42a7ca890681.
+
+So it looks like something backported into 6.6 series between 6.6.86
+and 6.6.95 broke the behaviour and this stayed with us up to the
+current RC. This matches the report in the Arch Linux forums. I tested
+by building kernels and booting real hardware =E2=80=A6 so this already
+took some time and effort. I can test a specific patch/version
+quite easily, but don't have a fully automatic bisecting setup.
+
+The issue should be obvious in any environment, though. It seems to be
+universal once you choose a custom port and have some real (or
+emulated?) network between client and server.
+
+Hopefully an easy fix for someone close to the code?
+
+
+Alrighty then,
+
+Thomas
+
+PS: $ grep -e SMB -e CIFS  .config |grep -i -v -e SMBUS -e SMBIOS
+CONFIG_RMI4_SMB=3Dm
+# CONFIG_CHARGER_SMB347 is not set
+CONFIG_CIFS=3Dm
+CONFIG_CIFS_STATS2=3Dy
+CONFIG_CIFS_ALLOW_INSECURE_LEGACY=3Dy
+CONFIG_CIFS_UPCALL=3Dy
+CONFIG_CIFS_XATTR=3Dy
+CONFIG_CIFS_POSIX=3Dy
+CONFIG_CIFS_DEBUG=3Dy
+# CONFIG_CIFS_DEBUG2 is not set
+# CONFIG_CIFS_DEBUG_DUMP_KEYS is not set
+CONFIG_CIFS_DFS_UPCALL=3Dy
+# CONFIG_CIFS_SWN_UPCALL is not set
+# CONFIG_CIFS_SMB_DIRECT is not set
+CONFIG_CIFS_FSCACHE=3Dy
+# CONFIG_CIFS_COMPRESSION is not set
+CONFIG_SMB_SERVER=3Dm
+# CONFIG_SMB_SERVER_SMBDIRECT is not set
+CONFIG_SMB_SERVER_CHECK_CAP_NET_ADMIN=3Dy
+# CONFIG_SMB_SERVER_KERBEROS5 is not set
+CONFIG_SMBFS=3Dm
+
+PPS: I am testing running Samba smbd as unprivileged user on a
+non-standard port to find a cheap/simple least-privilege way to
+re-export a custom FUSE fs to clients, read-only. Samba smbd doesn't
+really like that, but can be coerced, esp. in a mount namespace where
+the hardcoded paths it uses can be remapped. I could add more layers to
+map the port back to 445 or do something else entirely, but maybe this
+is a half-reasonable scenario why one would like to talk SMB on a
+different port.
+
+--=20
+Dr. Thomas Orgis
+HPC @ Universit=C3=A4t Hamburg
 
