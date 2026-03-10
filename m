@@ -1,263 +1,214 @@
-Return-Path: <stable+bounces-223759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-223760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH7NEU2ar2lbawIAu9opvQ
-	(envelope-from <stable+bounces-223759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:13:01 +0100
+	id +ARkIV2rr2kHbgIAu9opvQ
+	(envelope-from <stable+bounces-223760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 06:25:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B59245336
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:13:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BC1245752
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 06:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED88231AFF7F
-	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 04:09:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1F0C3019FFD
+	for <lists+stable@lfdr.de>; Tue, 10 Mar 2026 05:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A420D3D4121;
-	Tue, 10 Mar 2026 04:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB72336EC6;
+	Tue, 10 Mar 2026 05:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NSuhjOcr";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="g0Po3PHO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVJnME18"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30183D333C
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEB128468E;
+	Tue, 10 Mar 2026 05:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773115766; cv=none; b=s3/jSW80jCkPc2SUn8nu0naMM3nZg/ljRnTBifJhgUrGK/ANbZqCGAUNnT5ioxo34F7Zpj8XXs+nV7Ceg8CcQDZ6NdiWbnIfB/zWYuXQhWTejXL3267X3AJME8L3VqwcB1mhcxqA0+cv3KOAgelWRtORnrfh0EWTcaveYt1QtDM=
+	t=1773120341; cv=none; b=Orw65FWLbf//Vrb7Q5ZfLU3QSoFUiX/OO7gviQmzD57LxSAvNq4jb+FgtOK6tmH2/RGFzek5IFhhCox0idQqRw3Q+eh7D2ZF8VXRzO32nZ7tHch4x2Z6wVJeDINnIS+311yTJ7gdlDfOs7cBlW1KA2W9Ph/zbRYGK5qZU1OZVzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773115766; c=relaxed/simple;
-	bh=h2oKxNLijxlRhbdRVtX8BZAv0v6kEm7MVydl023ItP8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u/p97WETiPqSwKGVty/JcFPe/smx+4aNpLew4W5ndsNJjIFdN0MaTQohoOueFgmGbH3LVUXsVxwsFkGjC1Wo3atpaqPqktGpz19vpkjADE+gEq6uxSGmrO3sK0H8ofKrenlBQjdMgBDK4HesPJh6jW+D3ZcDr57AFBYcl5dvWUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NSuhjOcr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=g0Po3PHO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A2EPDI2460621
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Mpp/AuYmqB1cFf9TxqAzMz1PfHGCSXuKCzmcpuL4E/8=; b=NSuhjOcr50+VbsHu
-	JWHP7wE3J8O365RvV6BpbliBbkvOeR7pqvR0XNa9w7erip70or0GK4eGYlPZ25DV
-	CPosKxFdqCT95GcLR6810nLlWuH6SG/7pY8iX2e8l8EUp5eWOe03UxHSqKynSKQI
-	JSESs0BR1QU+XY/LPBC29EZ2vkOq/M2jjFWpRZ+uRg6ziP+KgZI6y9QcBCssO8sM
-	XFpglVTmp8Oi7LcO5hEXk3sZOI9iOA5PlUnjGc4x5Ej+PEWi9njhhloAkaY0ir/X
-	o4Ija1BPT7qdTUdn4oslCBONIY+dQXT4O6feXq0YMC2nQb0dnk//BWzJaHxlO1Y/
-	slTNGQ==
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4csyv1ag9y-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 10 Mar 2026 04:09:23 +0000 (GMT)
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-415e1ea16b4so75197714fac.1
-        for <stable@vger.kernel.org>; Mon, 09 Mar 2026 21:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773115762; x=1773720562; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mpp/AuYmqB1cFf9TxqAzMz1PfHGCSXuKCzmcpuL4E/8=;
-        b=g0Po3PHOOZ9Gb8a+l/ESTynhjVzVOz4xYtqqBHBvF6CBWZjyT74spdcWvZvIYh2DzV
-         /Iu0JwcuIE44F17isEevgiP6SeN3yCDMSIHV+NcGYmv4NOMGIrHxDCHlczc/RH5KLcso
-         l1eSd3szOg/gR1/aohtOaiuDuKtWLsMyaowiOAdQXHasw0+dHrH5qsWO5P1aYSLwQfpf
-         qcqJPNddXhxb5JAIV1+xoq696dZY85q3LA0pZoVUyS476pi0ZLSnMWKua083T4apTffB
-         XkzYVA2/eYVhfVH+jNRflBHk3vuNKKcNT/TpfVAyZfWEqIBS1zjdkBC22aHXQWH9fLnY
-         oXNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773115762; x=1773720562;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Mpp/AuYmqB1cFf9TxqAzMz1PfHGCSXuKCzmcpuL4E/8=;
-        b=O3tL0LrlaO4OdT7IiS/DKKWIVr/4BO15WjrWfIvcRa77dsIIoI1/Oc/f+KM2BguEPY
-         dyvqzM9v+Em/+1GoIoXl7GKnsUaAlgbPHCwOLeYtRx5N3n9XI0g2s+9L76Cj95d8LDyw
-         IxiYK5fnfQdapgly8Wo2zw3sUyWatYetE8YQkYWJqNUdWguiXZltSlfpV49VYdrys3Iu
-         hnTGWb5rZoPtjIUftnFgHCetPpIJiAnJoxQw7z/Fq7AWNzDDIXjzMKO9nsE5uI33hJlF
-         kuG5qc91J2wbCzhVIUISc+oFCZ5+MPMFg7Ngc6ONlr1Xkw1tEimuSUfgJn3X3Qfozf02
-         Me3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWJeIrlyMMewCWwQgmHefsAcoLkn6VFgBxakM14OLY4u31ExHlCJf1Iv5fRegJSEAkPZ1RADN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRWowTFuTCl7aCg+gkl4vk6bsZ90Q/Z1yfh7TW2pzPpcPjFfd/
-	IoJe+uHRXaIszaJMroKQMiffidcdHRfZcAFxXpHWVJzgOpBpGG/j6TP400jKyOamsbU//6RU7FS
-	P1aAxDWqwYnG5oFieda/04PbS9m3KnUj8qGzNO7Zh6MYMc9ULf8QPV40TGHA=
-X-Gm-Gg: ATEYQzxHPJn0RjylGpQHPJogwDEoC1lHD1vupRPFWLKxo9eFLyzloiehQIcZwGtDWxH
-	6MBksuvmeo6QkCl57yGdiTe2bURUoSt99El6N0gymP+vJT5v0l2+WJUlY/PMw89vdpSLexgaVo+
-	lrEt65J3dQCRaBSWiD72ecoNHNlsDHzVNfxHj0yWd3Y555ofmGkQT7p1vxLX5zP3ljngBx7d06P
-	fJE/PAo8lW37qa9i4NYNd0wJ1SIahSxfQXgWtCP4JmMtw1XgMeijN5GDDv0OpUCQ3b73kVEhvGW
-	wt//ZqZ8CR8RYX9+ztC5F+YhqO3Ik9f9Ccg7TcJz2bDPa5dwSRCAvaoDfWCAAyS0drXEkd+ycw9
-	5rUU962xrVPJemm/Xz+aggfA1xsRK4pEueSVJZaKi8xA=
-X-Received: by 2002:a05:6870:4e89:b0:417:1534:3c86 with SMTP id 586e51a60fabf-417153495bbmr5126136fac.15.1773115762281;
-        Mon, 09 Mar 2026 21:09:22 -0700 (PDT)
-X-Received: by 2002:a05:6870:4e89:b0:417:1534:3c86 with SMTP id 586e51a60fabf-417153495bbmr5126126fac.15.1773115761869;
-        Mon, 09 Mar 2026 21:09:21 -0700 (PDT)
-Received: from [192.168.86.59] ([104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41756e24c39sm1595685fac.20.2026.03.09.21.09.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 21:09:21 -0700 (PDT)
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Date: Mon, 09 Mar 2026 23:09:08 -0500
-Subject: [PATCH 7/7] slimbus: qcom-ngd-ctrl: Avoid ABBA on
- tx_lock/ctrl->lock
+	s=arc-20240116; t=1773120341; c=relaxed/simple;
+	bh=5I38SsuA26SHexDAcaLUC+zhqCpO76PO36SQrHpQVU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h9X1ni8+4vzpmERInOuYIGTAZe8yt6n3wTI42nPDL1efQMpVa+zhNUwL/a4gMZNyM7NrryDKPf4FWp4r/g+QmZ2vcH6IveqlasqTx31nsrtAjctSuc3jHnty+/7+UOFqBc+Smkwhedrr+OmelU6M9MOKwcQ2cqsbphNt7iggJbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVJnME18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F670C19423;
+	Tue, 10 Mar 2026 05:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773120341;
+	bh=5I38SsuA26SHexDAcaLUC+zhqCpO76PO36SQrHpQVU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DVJnME188ECxhV/zFHgqy6BkcgPFxqAA2HiMW28a7J+wxo6gUfu3mWDMwJZAFL3jY
+	 6ofYsPzwVCfphqAfEMXm+hRLHRB9tD0G3RzEDqriKbFHNlYzdJ6D59WxksdpCACxkE
+	 6mfOCbIs/NNgw3gIDyEeRGk32W2/PyP28dOL8+U+vJJ5d2Y/jj2N1ndvs5SRCS0IAk
+	 YnO9qXiqnEqwADE+wTkkwDEjxYyT4SmpzLUCbJzBKImAsLp1c4qvqPGWDKMHinyUxz
+	 XFe4cRNf5wTDR1xO3PDxjZNzmy2KaATbObOQUN5cYQiJIdOj6EEcz3UU+U777UBkMB
+	 JnI/xnRvZAsZw==
+Date: Tue, 10 Mar 2026 16:25:34 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Yuto Ohnuki <ytohnuki@amazon.com>, Carlos Maiolino <cem@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J . Wong" <darrick.wong@oracle.com>,
+	Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+652af2b3c5569c4ab63c@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] xfs: avoid dereferencing log items after push
+ callbacks
+Message-ID: <aa-rTmOyWSsiEaa7@dread>
+References: <20260308182804.33127-6-ytohnuki@amazon.com>
+ <20260308182804.33127-9-ytohnuki@amazon.com>
+ <20260309162710.GC6033@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-slim-ngd-dev-v1-7-5843e3ed62a3@oss.qualcomm.com>
-References: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
-In-Reply-To: <20260309-slim-ngd-dev-v1-0-5843e3ed62a3@oss.qualcomm.com>
-To: Srinivas Kandagatla <srini@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2713;
- i=bjorn.andersson@oss.qualcomm.com; h=from:subject:message-id;
- bh=h2oKxNLijxlRhbdRVtX8BZAv0v6kEm7MVydl023ItP8=;
- b=owEBgwJ8/ZANAwAKAQsfOT8Nma3FAcsmYgBpr5lpNWX7vFLIrpfa6+l2c2eP0Ku9eWvHQge+Z
- FG1Wu67ZPqJAkkEAAEKADMWIQQF3gPMXzXqTwlm1SULHzk/DZmtxQUCaa+ZaRUcYW5kZXJzc29u
- QGtlcm5lbC5vcmcACgkQCx85Pw2ZrcWjbxAAlaO0beJsT+uPbh5rqq3vZrOVofupsj6DRP8uD8Z
- XCZKje3vXw6NgoQG4a0DLhNLazfOyacrHarVcvdrvsGZvX/ZJGVTabNZ5QYVkXWrR5eOGRvOGM9
- Avw0oQ6oXo6hdhD/A7WupVSl6EItLRsM6wJ0k6YnmXsjz3qibNcH5Xl6otQOK7sHEEnmljCDM5Z
- mApKUEhD/QqVnZNcAqfPEfcm5zdCeEwNtjkGXm3xae9kHyfRzOl+pmgWyU4pfo8Mic6udemF+ku
- KSL0kmP/TBNCXInYYIkyUk3qYl2jIymHyY2gEQsjRqiHlvNC6X2iTkLZ8/jbU9N44c8TJPj+yfm
- 69o4tvekxQcVWe2ZepykzV1j+r94hnxefzeJeUUIJbowt27lka2u2J9SX/Yzi/GajJudKlgWzZ9
- Ufp/6lRANogpjkl9NpKG8YiWa+CCHKR91gym2ksCItPs5SBVGUHBm0Aq6ZTZHy5I6SECct6oCD6
- dW4BhgH6Vbb5nKeO3SeAT+ty4igkMjrdHS8ohc702PhWdNC7bVIk0BR3EDBm08vMpC6MPQemb2a
- BbAD3k/aV/NSiLhpBY1iTb/1Menkha/GUQaTjmnDj5ejlqXUmpBaUTHh87hKkhgZXsB+rr9CT5v
- 5d7fFRJ0F3gu3HXeJ4DJgmOekv8wMYNQJ3yTBjxIXFwE=
-X-Developer-Key: i=bjorn.andersson@oss.qualcomm.com; a=openpgp;
- fpr=05DE03CC5F35EA4F0966D5250B1F393F0D99ADC5
-X-Proofpoint-GUID: VuQK4rQY2fWV-c9GK-p4GXJmEAQS3fgI
-X-Proofpoint-ORIG-GUID: VuQK4rQY2fWV-c9GK-p4GXJmEAQS3fgI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDAzMSBTYWx0ZWRfXxzVB/vKt7sRk
- Ac5V+GM6Dm1WYtVqLfP+5hLvfA3W51726JIf/iy3Bu9b4LuYQCMyStUKlhaSGLxAccizf0LLnTm
- oU69zFZy/AJmZCVqggu7FyIu25miZfc61C73YgAjBl3PO3oY88rs5hgFZpKMZjhjGw8TkpDACdn
- jQd0jM+mZ0535+N8VA5KyQLsgCDhlbF9IIDEHMr3mU0Vspdo8bhvp1kPzQPPIH2O7J0hsRk+akw
- X//iwT6vqeJhEJRoaehnvmPzNHB7p2/4wHX390t/QnDKhy0mTkBTjj5UxSV0nSOmtfuJInXMZxE
- JNmu2tT/qEDmAusCM2aXVFwjl5cx+AcKZpG5nCxfHGbj3O5wC5PygGIN9W3FKMkQN+yG0S/2B9k
- 8t1WfutlRfX520h2ZOZzazDl0XzBi8nnRqN0REZ+Tj8fjedvLH+f4S0pv3Hgjx7MljIkagO5po8
- KeVdjmovg9Tv/fkh9PQ==
-X-Authority-Analysis: v=2.4 cv=Cuays34D c=1 sm=1 tr=0 ts=69af9973 cx=c_pps
- a=Z3eh007fzM5o9awBa1HkYQ==:117 a=DaeiM5VmU20ml6RIjrOvYw==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=YEP7kvCIQ0LacLc3HpEA:9 a=QEXdDO2ut3YA:10
- a=eBU8X_Hb5SQ8N-bgNfv4:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 spamscore=0 adultscore=0 priorityscore=1501
- phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100031
-X-Rspamd-Queue-Id: D8B59245336
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309162710.GC6033@frogsfrogsfrogs>
+X-Rspamd-Queue-Id: B1BC1245752
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TAGGED_FROM(0.00)[bounces-223760-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-223759-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[bjorn.andersson@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,652af2b3c5569c4ab63c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-During the SSR/PDR down notification the tx_lock is taken with the
-intent to provide synchronization with active DMA transfers.
+On Mon, Mar 09, 2026 at 09:27:10AM -0700, Darrick J. Wong wrote:
+> On Sun, Mar 08, 2026 at 06:28:08PM +0000, Yuto Ohnuki wrote:
+> > After xfsaild_push_item() calls iop_push(), the log item may have been
+> > freed if the AIL lock was dropped during the push. The tracepoints in
+> > the switch statement dereference the log item after iop_push() returns,
+> > which can result in a use-after-free.
+> 
+> How difficult would it be to add a refcount to xfs_log_item so that any
+> other code walking through the AIL's log item list can't accidentally
+> suffer from this UAF?  I keep seeing periodic log item UAF bugfixes on
+> the list, which (to me anyway) suggests we ought to think about a
+> struct(ural) fix to this problem.
+> 
+> I /think/ the answer to that is "sort of nasty" because of things like
+> xfs_dquot embedding its own log item.  The other log item types might
+> not be so bad because at least they're allocated separately.  However,
+> refcount_t accesses also aren't free.
 
-But during this period qcom_slim_ngd_down() is invoked, which ends up in
-slim_report_absent(), which takes the slim_controller lock. In multiple
-other codepaths these two locks are taken in the opposite order (i.e.
-slim_controller then tx_lock).
+It's nasty for many reasons. The biggest one is that the log item
+isn't valid as a stand-alone object. Once the owner item has been
+freed, any attempt to use the log item requires dereferencing back
+to the owner object, and now we have a different set of UAF
+problems.
 
-The result is a lockdep splat, and a possible deadlock:
+For example, we can't leave log items in the AIL after freeing the
+owner object because we have to write the owner object to disk to
+remove the log item from the AIL. The log item has to be removed
+from the AIL before we free the high level item the log item belongs
+to.
 
-  rprocctl/449 is trying to acquire lock:
-  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
+Hence the life time of a log item must always be a subset of the
+owner object. That is where log item reference counting becomes an
+issue - for it to work the log item has to hold a reference to the
+owner object.
 
-  but task is already holding lock:
-  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
+We already have log items that do this: the BLI is one example.
 
-  which lock already depends on the new lock.
+However, other UAF issues on log items come from using reference
+counts and the needing references and (potentially) locks on the
+owner object. Those complexities end up causing - you guessed it -
+UAF problems...
 
-  Possible unsafe locking scenario:
+For example: the BLI keeps a reference count for all accesses to the
+BLI *except* for the AIL reference, because the AIL can't keep
+active references to dirty high level objects.
 
-        CPU0                    CPU1
-        ----                    ----
-   lock(&ctrl->tx_lock);
-                                lock(&ctrl->lock);
-                                lock(&ctrl->tx_lock);
-   lock(&ctrl->lock);
+For example: releasing the last reference to some high level objects
+(e.g. inodes) can result in them being journalled, and hence the
+journalling subsystem now has to be able to track and process those
+dirty high level items without holding an active reference to them.
 
-The assumption is that the comment refers to the desire to not call
-qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
-But any such transaction is initiated and completed within a single
-qcom_slim_ngd_xfer_msg().
+For example: The BLI reference count/buffer locking model is all the
+complexity in freeing metadata extents (stale buffers) comes from.
+At transaction completion, the transaction reference to the BLI and
+the buffer lock is transferred to the CIL (the journal) and is only
+then released on completion of the journal IO. This is how we
+prevent a buffer from being reused whilst the transaction freeing
+underlying storage is in flight - the buffer needs to remain locked
+until the freeing transaction(s) is stable in the journal. This
+complexity is where all the UAF in the BLI unpinning operations come
+from.
 
-Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
-down, all child devices are notified that the slimbus is gone and the
-child devices are removed.
+Normally, the transaction reference and buffer lock are released
+when the transaction context is torn down after the commit
+completes. The problems with UAFs in this BLI code comes from the
+fact that stale, pinned buffers have been transferred to the CIL and
+the transaction no longer owns the BLI reference...
 
-Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
-deadlock.
+And then, of course, is the fact that the AIL cannot rely on log
+items with referenced owner objects.  Hence the high level items
+tracked in the AIL are, at times, tracking otherwise unreferenced
+items.
 
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
----
- drivers/slimbus/qcom-ngd-ctrl.c | 3 ---
- 1 file changed, 3 deletions(-)
+IOWs, we have problems with UAF w.r.t. buffers and BLIs because of
+the mess of the BLI reference counting model. And we have problems
+with ILI/inode life times because the ILI does not take references
+to the inode and it is assumed it is never freed until the inode
+itself is torn down. And neither buffers, inodes, BLIs nor ILIs are
+reference counted when they are on the AIL.
 
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 54a4c6ee1e71fe55794f09575979826d9aa5be9f..75d70de0909a8d17e2410d30f7811f32d5eebea3 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1471,15 +1471,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(struct qcom_slim_ngd_ctrl *ctrl,
- 	switch (action) {
- 	case QCOM_SSR_BEFORE_SHUTDOWN:
- 	case SERVREG_SERVICE_STATE_DOWN:
--		/* Make sure the last dma xfer is finished */
--		mutex_lock(&ctrl->tx_lock);
- 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
- 			pm_runtime_get_noresume(ctrl->ctrl.dev);
- 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
- 			qcom_slim_ngd_down(ctrl);
- 			qcom_slim_ngd_exit_dma(ctrl);
- 		}
--		mutex_unlock(&ctrl->tx_lock);
- 		break;
- 	case QCOM_SSR_AFTER_POWERUP:
- 	case SERVREG_SERVICE_STATE_UP:
+The impact of this is two-fold:
 
+1. it requires high level object reclaim to be aware of dirty items
+and to be able to skip over them; and
+2. unmount requires explicitly AIL pushing because the AIL
+might be the only remaining subsystem that tracks the unreferenced
+object that we need to reclaim before unmount can progress. This is
+especially true for shutdown filesystems.
+
+Ideally xfs_reclaim_inode() would not be trying to abort dirty
+inodes on shutdown. Historically speaking, this functionality has
+been necessary because there were times without other mechanisms to
+abort and clean dirty, unreferenced inodes and this would result in
+unount on shutdown filesystems hanging.
+
+I suspect those times are long since passed - all dirty inodes are
+tracked in the journal and unmount pushes all dirty objects - so
+maybe the lesson here is that we could be carrying historic code
+that worked around shutdown bugs that ino longer occur and so we no
+longer need...
+
+So, yeah, I agree that it would be be great to untangle all this
+mess, but my experience qwith trying to untangle it over the years
+is that the a can of worms it opens gets all tangled up in the
+ball of string I'm trying to untangle....
+
+-Dave.
 -- 
-2.51.0
-
+Dave Chinner
+dgc@kernel.org
 
