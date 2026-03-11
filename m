@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-224730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PHEDrSksWn4EAAAu9opvQ
-	(envelope-from <stable+bounces-224730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:21:56 +0100
+	id MBcTN/aksWn4EAAAu9opvQ
+	(envelope-from <stable+bounces-224731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:23:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78163267F2D
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4786C267F69
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41552302F3B3
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 17:17:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FF0B311C7F3
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 17:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA982E8B83;
-	Wed, 11 Mar 2026 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0BC30BB9B;
+	Wed, 11 Mar 2026 17:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XKHiZjT5"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Mb4G1kUp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D1B2E03F2
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D583009DA
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773249421; cv=none; b=mxr44VCLv+YaxM1zFdFy/TgO634K7rDn1kBLJrAF57MwPj2XdXNy6UXdaWxn40dGE5A+8VHdXE36ggRZWkbyMfMkuTArXLoKKCClx/+xrgtYlaZoaUUinIeHiGPVt678dal8cNE2Xms3aN0aWk3Pw6xOLXDWlWG+VTBl/aZR08U=
+	t=1773249471; cv=none; b=oqFjVymfy+1Pl521r6U3k7L5WCHk3QLXuP/WFJZ3XyX6SXp0+jUEhyoWuSJrgK/yQKvQFqRuXb9wz3acNkyiqoeNyCPZMx6qJyZO9Ov3NviTievfTvLYPCWt0KAiZ6nUyYgRJN5lu2VlYtMml9CDTe+DyrKnbktCMuLHXnniwz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773249421; c=relaxed/simple;
-	bh=ro7rnKOENepY5ihAVZw7cmOHfr5PszjlVPLoJaa1/JM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Th8WkSA/b5jNAayWbIOJWdeVgvbrgGu8QYxy4sLl8x/RaAFraQYc2cmTkTUbGCtoHq70p8irWgbRYUek/37vduTP8i6/xwPOMp7cBYKB3JVTnK8VYuEoh4g4d+5Amqc6x8xb/EPlqwgJM3zgex7o/EIygBkysZPJIw/BXHXtBx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XKHiZjT5; arc=none smtp.client-ip=205.220.165.32
+	s=arc-20240116; t=1773249471; c=relaxed/simple;
+	bh=9JT882A4qmgPgn36of6y81H/ZfvLd8ev3IqBQ6pxXhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u6xF2lECCbBkkerI0u2gKeU/JttOsI3xYQwvML7/29QVFEwtWyFmRxE8+79KN2CAKWJE7d8l1od5caRAmQn+eMgQTYTLFLrGS9PX9ilzZz+UdsGbc0NwZFlMg0sMNHmpeVSiaddcYcr676g/KBsFXnOwXE7MebBOtf7VCA3+V1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Mb4G1kUp; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BHGe552979090;
-	Wed, 11 Mar 2026 17:16:57 GMT
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BHHQU23507925;
+	Wed, 11 Mar 2026 17:17:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=yyJ9d53/8EQe8EMz
-	lsAt+jvZNpNXbWdw+r43q/xpVoE=; b=XKHiZjT5ql+usTqsiKoKa2aTPO0/+zra
-	rRDdKjejaWl7RjRdW23M+srCrPrTSKTZPWjdLQ518irizYJYda8F6MS8Cf3DUq08
-	1ESJn6X6ZefgeRMKfnThN21bTclYiJn0S4CVYPpJV9wUj+OWctARl2rNE4SAzJzT
-	UylNT+bBs51UvJmRpJAK0UHxJig1GclF1evXcNpk0QEuWXJjmDBInxTK+uNQWaLr
-	+980ZmTEjixuBTg17W5JicFlDC7ykOuW5W91pMhx/HfpbrFD/eXFBx8mixGe1UZl
-	kxmV00y1tt9rjiBGlMYA6K6RqX2hlgbYNzZlJIytSEPUSZ8ijR7zeg==
+	:mime-version:subject:to; s=corp-2025-04-25; bh=xiLvSsmycUJmvubv
+	pGei0JnUEGAgFu3QY8tCh90lqGk=; b=Mb4G1kUpql3GqCJzYIIC92LhzFFufvZs
+	f9BhIYSmy75SV7SmwipZW4lRrCWVZAu3CHdKfO28R+EIPzZTftBS/Cw7NGrhK1VL
+	H8z4F+Sp4jXCoaqTz/Vn3YP617b8ph6mtuPVjRkpPzNHoA5hRNooofNFNQm31Pv/
+	eOe4VTqeZYnqJ1GgEAFc8m/UqHDUpo/1RG5Cfa5LXL7WqAVAe77jTYiKljVHcw5S
+	p1hNUrTvr5DPGxWr+uJqGZECeN8Iv+WlasHZU6xgCnyBABjZM/G5vhqc1zTkCVW1
+	q+r8W1wdNLcxBWEwW7+YHZxlk44t9LE4Hu0esGF8RC5NCyBMCodiGA==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4csks2nhhn-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cu58x0utp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 17:16:56 +0000 (GMT)
+	Wed, 11 Mar 2026 17:17:43 +0000 (GMT)
 Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62BGi6Qb020307;
-	Wed, 11 Mar 2026 17:16:55 GMT
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62BG9C79020396;
+	Wed, 11 Mar 2026 17:17:43 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4craffv3vx-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4craffv4ku-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 17:16:55 +0000
+	Wed, 11 Mar 2026 17:17:43 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62BHFtD3001710;
-	Wed, 11 Mar 2026 17:16:55 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62BHDJFd034049;
+	Wed, 11 Mar 2026 17:17:42 GMT
 Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4craffv3vr-1;
-	Wed, 11 Mar 2026 17:16:54 +0000
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4craffv4kd-1;
+	Wed, 11 Mar 2026 17:17:42 +0000
 From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
 To: stable@vger.kernel.org
 Cc: Bjorn Helgaas <bhelgaas@google.com>,
         =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-Subject: [PATCH 6.1.y] PCI/ACPI: Restrict program_hpx_type2() to AER bits
-Date: Wed, 11 Mar 2026 18:16:29 +0100
-Message-ID: <20260311171629.343357-1-haakon.bugge@oracle.com>
+Subject: [PATCH 5.15.y] PCI/ACPI: Restrict program_hpx_type2() to AER bits
+Date: Wed, 11 Mar 2026 18:17:36 +0100
+Message-ID: <20260311171736.343422-1-haakon.bugge@oracle.com>
 X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -85,23 +85,23 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwa
  mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
  definitions=main-2603110146
-X-Proofpoint-ORIG-GUID: ffZe6l1-IRCcVgSzo0ArnAPRVkNc7Z2u
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE0NiBTYWx0ZWRfX2kDZewbE7rPH
- gULXhvkZZlq2hM9bwOMbP6j1NOIXBXOpB+PvwAbDvw+cZEf9SoFt2rbGDmvKrR0rhTKYQLVRjFy
- oCnCZpqSxpciDI5GXGNsPI3VdF9oJwc0efLQHMdyxX75JQNVc0xXY8kISJ70voMYX3SyWyCU8eV
- TZH6YOlgU3aWpiztxLe/ugmpVEJItTuP5Y6QUiBmeU4dmzuXnSw49bkQGwk12hU1nhH1OBtE+yz
- /ZEgZ5LWu4QxfFsQ7u1Wo+ZeG2kKPTFnAFIlxp0IGB4nae8kaU1yDU8ndizuDzOomX7baHhPk+o
- 41AS+gNuVTQ+REcNTUvr5ocWFhlIsUb9Shs/I+xINezA4wHCVFAdKOFAsdluxc1z0fVvZClxRRX
- yMjKHqh2uOpzKEs90UVGAdWV6RtdWwXCe7URXzOXUzwkWL2MfBaNdwEVkChEmRcdMHUHimmG0cI
- 1hny/yzRtWkVOikRxQSu9YlT7lMiO1BfIQx83gOE=
-X-Authority-Analysis: v=2.4 cv=S4vUAYsP c=1 sm=1 tr=0 ts=69b1a388 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE0NiBTYWx0ZWRfX8zI0MDevJ7Cy
+ lnzd0QGeK03M1LkXkBgBWQnSBM2cPkRCAtmNlkzwklHB586hP03IkD90wyD84S08WkKgNLnPVo6
+ u/ag7Q4fC2BthpvCoanG7m43a4GsRO7/iPZK0Os/1aj+3qxnzNL6dhGa7LTsbkrVVn8fSslhcl2
+ KwR4WclVbDp37i1TYsQejgeckTa95ryGGkqTVZhXpStpz2+tJL/noJYS+kS74mmP1tJCUiP6CfT
+ teCzN8cfS82eZ+gXZxxGs5/FmUbiPoAaPX5MLtZ6C5/W0fc3IB0sfY4GQhsB6iro+wiRgt5haUF
+ 3RVFchdFPHUEhzH1u0dj6KmBG4Na0YK+rPTaCRopu+LYTVmbcjwyVppRH1Na2JdkZf2zQqkih/d
+ t9lMVtpHnt8CYzr3ZR5lrwzfX+rhTIMM5/kQEgdR3R/ei+AlzoQAJj6lukheDosDzcYCfzLwa8/
+ HiqHisthGHN16P6nnA8iXpLUKxJl+J6RDywybj+A=
+X-Authority-Analysis: v=2.4 cv=f+RFxeyM c=1 sm=1 tr=0 ts=69b1a3b7 b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22 a=x0eKOSpe3m1H3M0S9YoZ:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22
  a=bC-a23v3AAAA:8 a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=SsKr03gcbRYbsVN0MpsA:9
  a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=FO4_E8m0qiDe52t0p3_H:22 cc=ntf
  awl=host:12270
-X-Proofpoint-GUID: ffZe6l1-IRCcVgSzo0ArnAPRVkNc7Z2u
+X-Proofpoint-GUID: BLbeiIf-chvvmb6uaiFiIEVKm7EFbdG7
+X-Proofpoint-ORIG-GUID: BLbeiIf-chvvmb6uaiFiIEVKm7EFbdG7
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -111,8 +111,8 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224730-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:dkim,oracle.com:email,oracle.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url];
+	TAGGED_FROM(0.00)[bounces-224731-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:dkim,oracle.com:email,oracle.com:mid,msgid.link:url];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -127,7 +127,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 78163267F2D
+X-Rspamd-Queue-Id: 4786C267F69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -194,10 +194,10 @@ Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
  3 files changed, 27 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 75938b67fd242..fe8a8ad7e6e40 100644
+index 268ca998443af..5e86038f2ea5f 100644
 --- a/drivers/pci/pci-acpi.c
 +++ b/drivers/pci/pci-acpi.c
-@@ -246,21 +246,6 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
+@@ -245,21 +245,6 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
  	return AE_OK;
  }
  
@@ -219,7 +219,7 @@ index 75938b67fd242..fe8a8ad7e6e40 100644
  /* _HPX PCI Express Setting Record (Type 2) */
  struct hpx_type2 {
  	u32 revision;
-@@ -286,6 +271,7 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+@@ -285,6 +270,7 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
  {
  	int pos;
  	u32 reg32;
@@ -227,7 +227,7 @@ index 75938b67fd242..fe8a8ad7e6e40 100644
  
  	if (!hpx)
  		return;
-@@ -293,6 +279,15 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+@@ -292,6 +278,15 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
  	if (!pci_is_pcie(dev))
  		return;
  
@@ -243,7 +243,7 @@ index 75938b67fd242..fe8a8ad7e6e40 100644
  	if (hpx->revision > 1) {
  		pci_warn(dev, "PCIe settings rev %d not supported\n",
  			 hpx->revision);
-@@ -300,33 +295,27 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+@@ -299,33 +294,27 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
  	}
  
  	/*
@@ -292,7 +292,7 @@ index 75938b67fd242..fe8a8ad7e6e40 100644
  
  	/* Find Advanced Error Reporting Enhanced Capability */
 diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index fc760fd3ad948..36d6b6c164b95 100644
+index d9d7a79e3563e..e1614c8dc04bb 100644
 --- a/drivers/pci/pci.h
 +++ b/drivers/pci/pci.h
 @@ -11,6 +11,9 @@
@@ -306,7 +306,7 @@ index fc760fd3ad948..36d6b6c164b95 100644
  extern bool pci_early_dump;
  
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index fe3a4a3cb46d4..4d15433ac1ae1 100644
+index a8bec1c3c769a..9b86df5b82359 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
 @@ -214,9 +214,6 @@ void pcie_ecrc_get_policy(char *str)
