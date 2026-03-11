@@ -1,83 +1,67 @@
-Return-Path: <stable+bounces-224669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNVqDLhKsWlCtAIAu9opvQ
-	(envelope-from <stable+bounces-224669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:58:00 +0100
+	id MDrJMB1JsWlCtAIAu9opvQ
+	(envelope-from <stable+bounces-224670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:51:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C91E262A6F
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:57:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFBE26290C
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B79832240D0
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:49:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A4ACC30065FC
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02903C555B;
-	Wed, 11 Mar 2026 10:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42583D3CE6;
+	Wed, 11 Mar 2026 10:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="V3a21pVu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9n9FCHM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F66F2EC0AE
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 10:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421F33D3001;
+	Wed, 11 Mar 2026 10:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773226187; cv=none; b=S7xw/Q9SBqVR0mQ5eZJJ38TTQ7sdpTmbfaasBSuyFkVKu8xoCRA1Wh1BjugOuGlPNBbqTJoEnHJ5CTlPk9Lnf+ea9227PmhdW+hrXtFpToy0OAit3IpKtp+sDHICQRr+AZ3pgrcjuDJagGDJP1WstXdLA4Hw3HxVIAkMQoraHRI=
+	t=1773226265; cv=none; b=hIQzU8sc+5f3DsBS1H0ZbcFfyJglUaGt/l3JH7RdSk3bF984fCudd/nAZu7w5pUedCW7H9flF8uu1H5ndtOeyXCZX0CgC9SXk6tDfSlSRnK3oueSLFOOs3KMJxRjr6N9YS1lhbweJ+E6DTS2faGaSSbfFJr8jZbhAfVPBTYrdEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773226187; c=relaxed/simple;
-	bh=khvPnFCLVUsPLSLX4B6oL+qklfdjM0m6etTNoHaJxZA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AZNBLNzUM/BL+jDNS7kme3bWoxGct2XEXfavCIIXnVzY6LV/JO4bu2Gfqe3Y0FjjG8BrxnJJ1yV9lSemwOxZPzaIO164x8hhUjPNQtjgIr3JJGPqEyXMTQMPnGOnYxMw7NnLN4Q1QCrOhYjCAEQSHBG6srx7FsDqdKe6EEhGC1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=V3a21pVu; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3591cc98871so6323720a91.3
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 03:49:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google; t=1773226185; x=1773830985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+01bG4ShJI7+j2R9rM6ycD3z2Zv6pTOBtZ3Q4caNO/o=;
-        b=V3a21pVuFi31rQa7oojZeueZVBNOBlMFTsM5W97Kj3MG1fWiYdk53YvskdEas1elMH
-         5169xTbU7ZfGWjEUw/aJoEJSZDil+IWJZagUHNaHWHhuDTJKjA2VB97yyKQZRJbhrAQD
-         VzKHSXSTbDYevtc7l+zxQY+sPKZoAYkWV5Z0I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773226185; x=1773830985;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+01bG4ShJI7+j2R9rM6ycD3z2Zv6pTOBtZ3Q4caNO/o=;
-        b=e2u98GWQlv1Y6IfokAAmFuRGeNxrBiqRsW/6WW4kn/Wjjk/0YmHaBrUvj47xIuvyRi
-         jvbqsOk80KGspovJ7VZp0utE7wS+NPgEv3WXDxJiPf2uK3V621T1Z1dBFpqa1Q7qrvhz
-         8a1dGiQSAmb0nJt+HCDQMU7MZN7lRJeIZYbDVZcEq/CMNtXe8uvv7T8e4vQCcOTAB1mj
-         EbxPeExdwjJz64thW3wAMi2nlur1oribGz/q0qzvtdj5Ti0hy5AVpW9bOGZrRrLVUfRE
-         zLDwQ5COKYJZCDpZF+UWpNh7ttqQPeEYRuczfvERX/kEZ9u5PZgPVYN9VS7NvEdrg8yH
-         LSdw==
-X-Gm-Message-State: AOJu0Yz27yQgeXouleb4h/1ddQskY0mWfs6pIEzAA/OETxqPvwQft0/X
-	dCXAShGzN/v52oNT50pJIWSkfZOUBCwxDqfShFe/lDZ7WE2Yl4aD/HjxrvUwBuxJcQ3P+6d+3DN
-	mneZ0
-X-Gm-Gg: ATEYQzzFo7Z1m+XMkZeyNxXs5MQGQKBdirpZSk/jiWPB2Soc0mSk9iwSRLiGAgbNFiu
-	wyzO/JfMd9EKvdlmT/UNtAVr1/V+yb64aNEUXnTwKGwPHLHw2UIcNzhoxJPStu0g7srC9nOOlDb
-	YXqp5mPfuA5iIdaPVDdsuQiWcTd3Q11dgSwgkadu2HrRzaS/0pHOOkJKkdFC5UEsOB4zlVoXewB
-	i5BdDsY8BbFJoWAPvK2W9SdlJFC3PXuLCnb4todAi6vVysXXSs2WouiUZnUMHRNuhryrf/LW91s
-	BuhJ+Tzg08pTRWmIifXWvQt2mpxZ4bw90R20WTub4wULgaJAh1w3/RZAeCOKILfU3ZPpf375/Af
-	5s62LPBgtm/x9LGJZl9/7EPYzAaZ6IW1yiklGRUjuBHAIfrvmR2oyJDddlQUbPn1szlr57XZGet
-	5mQDgNrm+Nj1z6EWS9pVulXK2ULtVjwWL8irV++mbV6g==
-X-Received: by 2002:a17:902:cf08:b0:2ae:7ee0:ab3 with SMTP id d9443c01a7336-2aeae8c1b72mr21926545ad.38.1773226185357;
-        Wed, 11 Mar 2026 03:49:45 -0700 (PDT)
-Received: from localhost.localdomain ([211.219.71.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae361a00sm20107155ad.76.2026.03.11.03.49.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 11 Mar 2026 03:49:44 -0700 (PDT)
-From: Taeyang Lee <0wn@theori.io>
-To: stable@vger.kernel.org
-Cc: Taeyang Lee <0wn@theori.io>
-Subject: [PATCH] KVM: VMX: fix null pointer dereference in vmx_guest_apic_has_interrupt()
-Date: Wed, 11 Mar 2026 19:49:06 +0900
-Message-Id: <20260311104905.18397-1-0wn@theori.io>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1773226265; c=relaxed/simple;
+	bh=MZON6RTe0+POhLMBN9IYZdEsh0baC1W9++LN5GUpjGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HJn9U+G7c0fEnZqPFmLvOuUscyMybZ79X1mnes0IriaSYf+v21p+i7cevoz1KaSu6Vc9T5dIWVznnYzaoLAe93yTU1xhXJ3z+HyiUaZd1HSJUQQdOE/2QxDUpFJ37Wz9QZfLRNYwWVjc/RPvqDVVqoGobFlY3V3cW/WlfTujMOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9n9FCHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB295C4CEF7;
+	Wed, 11 Mar 2026 10:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773226264;
+	bh=MZON6RTe0+POhLMBN9IYZdEsh0baC1W9++LN5GUpjGA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j9n9FCHMQCvtIGC2zj8VDkMnwbTYi+9rWZuqFXhYe+mgKLqk/f9AGJMQCqDezzzkD
+	 RZi7krplRUhzviV/8VI5A+pZGeJlyMAExGi3hzwT5pQ+xrBpGTFjdfc4NhVxF4rzEc
+	 VrNW6D2bCPVRkVa2Zbq0jvxuJbjCx1D0B8DKznONhyOB+Mk8B2D78epdQifupBrd1F
+	 dRonWG/0EnONefKB2+yIuNJ9YGpHdau9+iAeSjJ4F3Yr1cpoi55pJgwB09/xEfdt08
+	 XflO0qxo3VWrzPy9rxZlrdlPNfeu5l3e1G/D3ZsEujzSQKKt22xXjCz3GPUdZ+0DIS
+	 n67P7jTug1+cw==
+From: Benno Lossin <lossin@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@kloenk.dev>
+Cc: Tim Chirananthavat <theemathas@gmail.com>,
+	stable@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: pin-init: replace shadowed return token by `unsafe`-to-create token
+Date: Wed, 11 Mar 2026 11:50:49 +0100
+Message-ID: <20260311105056.1425041-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,89 +69,207 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C91E262A6F
+X-Rspamd-Queue-Id: 7CFBE26290C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[theori.io:s=google];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[theori.io];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224669-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,kloenk.dev];
+	TAGGED_FROM(0.00)[bounces-224670-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[0wn@theori.io,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[theori.io:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-vmx_guest_apic_has_interrupt() checks virtual_apic_map.gfn to determine
-if the map is valid, but kvm_vcpu_unmap() only clears hva and page
-without clearing gfn. This leaves the map in an inconsistent state where
-gfn appears valid but hva is NULL.
+We use a unit struct `__InitOk` in the closure generated by the
+initializer macros as the return value. We shadow it by creating a
+struct with the same name again inside of the closure, preventing early
+returns of `Ok` in the initializer (before all fields have been
+initialized).
 
-An L1 guest can exploit this by:
+In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
+this solution no longer works [1]. The shadowed struct can be named
+through type inference. In addition, there is an RFC proposing to add
+the feature of path inference to Rust, which would similarly allow [2]
 
-  1. Executing VMLAUNCH with a valid virtual APIC page, then triggering
-     a VM-exit. nested_vmx_vmexit() calls kvm_vcpu_unmap(), which sets
-     hva=NULL but leaves gfn stale.
+Thus remove the shadowed token and replace it with an `unsafe` to create
+token.
 
-  2. Executing VMLAUNCH with an unbacked virtual APIC page GPA while
-     setting CR8 load/store exiting. kvm_vcpu_map() fails without
-     modifying the map struct, and the special branch in
-     nested_get_vmcs12_pages() clears TPR_SHADOW without invalidating
-     the stale map. With guest_activity_state=HLT, the vCPU enters
-     the blocking path without a hardware VMLAUNCH.
+The reason we initially used the shadowing solution was because an
+alternative solution used a builder pattern. Gary writes [3]:
 
-  3. kvm_vcpu_has_events() calls vmx_guest_apic_has_interrupt(), which
-     passes the gfn != 0 check, reads hva (NULL), and dereferences
-     NULL + 0xA0 (APIC_PROCPRI).
+    In the early builder-pattern based InitOk, having a single InitOk
+    type for token is unsound because one can launder an InitOk token
+    used for one place to another initializer. I used a branded lifetime
+    solution, and then you figured out that using a shadowed type would
+    work better because nobody could construct it at all.
 
-This bug does not exist in mainline, where virtual_apic_map was replaced
-by gfn_to_pfn_cache in the "KVM: nVMX: Implement cache for L1 APIC
-pages" series by Fred Griffoul.
+The laundering issue does not apply to the approach we ended up with
+today.
 
-Add a NULL check on hva before dereferencing, consistent with
-vmx_complete_nested_posted_interrupt() which already performs this check.
+With this change, the example by Tim Chirananthavat in [1] no longer
+compiles and results in this error:
 
-Reported-by: Taeyang Lee <0wn@theori.io>
-Fixes: e6c67d8cf117 ("KVM: nVMX: Wake blocked vCPU in guest-mode if pending interrupt in virtual APICv")
+    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType {}
+       |                 ^^^^^^^^^^^^
+       |
+       = note: private field `0` that was not provided
+    help: you might have meant to use the `new` associated function
+       |
+    26 -                 InferredType {}
+    26 +                 InferredType::new()
+       |
+
+Applying the suggestion of using the `::new()` function, results in
+another expected error:
+
+    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType::new()
+       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+       |
+       = note: consult the function's documentation for information on how to avoid undefined behavior
+
+Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+Link: https://github.com/rust-lang/rust/issues/153535 [1]
+Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
+Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
+Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
 Cc: stable@vger.kernel.org
-Signed-off-by: Taeyang Lee <0wn@theori.io>
+Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 3 +++
- 1 file changed, 3 insertions(+)
+This is not yet a soundness issue, but could become one in the future
+when TAIT gets stabilized in a form that allows the problem described.
+---
+ rust/pin-init/internal/src/init.rs | 22 +++++++---------------
+ rust/pin-init/src/__internal.rs    | 28 ++++++++++++++++++++++++----
+ 2 files changed, 31 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index ebdc86030a7a..7bc9a029c1d8 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4078,6 +4078,9 @@ static bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
- 	rvi = vmx_get_rvi();
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 42936f915a07..cfae789d55ba 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -156,11 +156,6 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+     );
+     let field_check = make_field_check(&fields, init_kind, &path);
+     Ok(quote! {{
+-        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
+-        // type and shadow it later when we insert the arbitrary user code. That way there will be
+-        // no possibility of returning without `unsafe`.
+-        struct __InitOk;
+-
+         // Get the data about fields from the supplied type.
+         // SAFETY: TODO
+         let #data = unsafe {
+@@ -170,18 +165,15 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+             #path::#get_data()
+         };
+         // Ensure that `#data` really is of type `#data` and help with type inference:
+-        let init = ::pin_init::__internal::#data_trait::make_closure::<_, __InitOk, #error>(
++        let init = ::pin_init::__internal::#data_trait::make_closure::<_, #error>(
+             #data,
+             move |slot| {
+-                {
+-                    // Shadow the structure so it cannot be used to return early.
+-                    struct __InitOk;
+-                    #zeroable_check
+-                    #this
+-                    #init_fields
+-                    #field_check
+-                }
+-                Ok(__InitOk)
++                #zeroable_check
++                #this
++                #init_fields
++                #field_check
++                // SAFETY: we are the `init!` macro that is allowed to call this.
++                Ok(unsafe { ::pin_init::__internal::InitOk::new() })
+             }
+         );
+         let init = move |slot| -> ::core::result::Result<(), #error> {
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90f18e9a2912..90adbdc1893b 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -46,6 +46,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     }
+ }
  
- 	vapic_page = vmx->nested.virtual_apic_map.hva;
-+	if (!vapic_page)
-+		return false;
++/// Token type to signify successful initialization.
++///
++/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
++/// token type to prevent returning `Ok` from an initializer without initializing all fields.
++pub struct InitOk(());
 +
- 	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
++impl InitOk {
++    /// Creates a new token.
++    ///
++    /// # Safety
++    ///
++    /// This function may only be called from the `init!` macro in `../internal/src/init.rs`.
++    #[inline(always)]
++    pub unsafe fn new() -> Self {
++        Self(())
++    }
++}
++
+ /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
+ /// the pin projections within the initializers.
+ ///
+@@ -68,9 +86,10 @@ pub unsafe trait PinData: Copy {
+     type Datee: ?Sized + HasPinData;
  
- 	return ((rvi & 0xf0) > (vppr & 0xf0));
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
+@@ -98,9 +117,10 @@ pub unsafe trait InitData: Copy {
+     type Datee: ?Sized + HasInitData;
+ 
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
+
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
 -- 
-2.39.5 (Apple Git-154)
+2.53.0
 
 
