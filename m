@@ -1,231 +1,217 @@
-Return-Path: <stable+bounces-224676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id jjk9AIFVsWmGtwIAu9opvQ
-	(envelope-from <stable+bounces-224676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:44:01 +0100
+	id +HDJIm1YsWmGtwIAu9opvQ
+	(envelope-from <stable+bounces-224677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:56:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D9D2630B5
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:43:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AF62633CD
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53ACF301C58E
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:43:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B5E0300E259
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE543DC4CB;
-	Wed, 11 Mar 2026 11:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57F83DE42E;
+	Wed, 11 Mar 2026 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="Zgk7t/M3"
+	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="1sdouiJE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BB737700D;
-	Wed, 11 Mar 2026 11:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C113DD526
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 11:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773229432; cv=none; b=s1N6atohBVgZeKw4IGdCAhaii9fvJNhruacqpw7JiqPabSQiZI9GUr8aqafYahPmBGDhJnI3ixzqnEKQ+2tpKiORJntN8lHAsPcz1MSnnqjSQhKVPTycNylh19JxoPmnCUKXX6dACgoRmTTmES9hmf+ExXXcqkGNpfdDJo3AfqM=
+	t=1773230182; cv=none; b=iaXXgTgIQJfY3uPHHek44Y9ZJmkT4cI2NFdUE75tGe0vWwTGiKdSXF25MW98TS6NtlyeIpIoiv5DtTmGEEQFGnyXg+l8U4Xkn1tiZ/lRvlOE+QV4CWwB+FO6pw+iYPmaLVH8/quJ85DD6Rxp35O8mye1lvWbeHWc3kfVdGMGwJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773229432; c=relaxed/simple;
-	bh=DmiItKPQ9EHlZvu5av+MtnBOpWDzI1clnWp2NdKde3o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=riaB3LodaxuwVxGVBcRDABgCs6dMKwOhVwPW6q0sm+NyWc0huaVeR41oT7II7iuLAtHW+cKBQYlwHMW9F17PRTuJH/6JTxhxPsTOlX98rTrxsQb6GtwFLCck08DSBs3LxMtTzx5u8DYMTOsTy2oUGI4jt9IrOVi+ytbZ07MXR7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Zgk7t/M3; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 368f5fe5c;
-	Wed, 11 Mar 2026 19:43:38 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: slava@dubeyko.com
-Cc: glaubitz@physik.fu-berlin.de,
-	frank.li@vivo.com,
-	sougata@tuxera.com,
-	akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Wed, 11 Mar 2026 19:43:36 +0800
-Message-Id: <20260311114336.155482-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773230182; c=relaxed/simple;
+	bh=x5H+Ty35z/JQ0YvCd3YuUitbcY1C+rVXjfO5WNFbeIo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z+VvOWzNGpfn9LBSI7Z923H2q059ly6Ok1k4z4T6v12xFbuPSw9alBRklA+d5SKtJa5/tNVO+FvPcCzBBQJntDbobMXQr+9HR/nwu2zjGTyM+Gc+yAj1SwVjWfMhnrd83fwYVnKzDWhYrvXwaq3oSNDFXLsuox14xbxwe8dT1e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=1sdouiJE; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4853f2826f7so31063575e9.1
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 04:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flipper.net; s=google; t=1773230179; x=1773834979; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x1Cht8uRSf2FyMM2VofwaPUErjVTJDATYO+ETNMehnE=;
+        b=1sdouiJE1eKBSrVKSE48EIViGrek6TmeSJC6W+4e/TarbFJDlrdt4RaeIQOgIqFHlm
+         WzIustyfC6xg4ve8R1qYcWprncv2nXy6CF+uVT6s97hMfejyyofkuK0UnlQbiXo0NbgS
+         PG6Bjzwty4NUU+CwsjV/qrXchlgINrGgTyW3Kml/kjMRnKkX+ZnZEuxZ0MWnqvt2OpNB
+         R3G0XonVw75WMZeL48EdtuXlGKNWjlZZzSPIVBH0lM+X2HAxwBMeUH6Ism3ipzZhKJB6
+         rbmeRW/H3W2b/VeA2xV0KChZ4cQSdrm3LW4E0SVZzmY9JjU/JD3oskYuyrW9Y/Y4nlKx
+         vYaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773230179; x=1773834979;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x1Cht8uRSf2FyMM2VofwaPUErjVTJDATYO+ETNMehnE=;
+        b=RkvvTleHpJqroGd1UKRUC9KORpx73zSpoPZT+bVXGzC3G2N6IZhG0RHLz5rtyc0dZ/
+         Nk54Yyzo6FljEKcyNpRmRuIk/S4m4aXWE4f52yWa1EmbBX+UklVvU4y7zoGYKZEh8xo5
+         D6CllVsleYeyZAA11F0StxYQtZVmwoQ9eIyv2EEKrENxKp5EzT1SDz0AIoVv7Ij71pFS
+         x9CjaL/5pDbsNwvDcXBdoieraUqdy+KEwWO9slqCCr7yU80Xg69/+wmVZR9EDm/Nw0aM
+         3arT6/yqPmeAmCmgKr8kYEnNWDS+Cta295TTdzUYb2FeB9L9CRdIDQPKld0x4wXwuSo5
+         XgJg==
+X-Forwarded-Encrypted: i=1; AJvYcCWArEaXAN7Kyn6503Qq79FxkxpHYhdMjZwLlEmVP650gFrchiCjJqXd0GAh8eJZY8tOsAap1p8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZOs28TWktJorGQc2IAaByNLUuRnQkPYm4pinOJYnsnYUs0lvy
+	22DKL16FrTzTveaeAsIF6kt5L6f3Qt83ykcRYYvuk5ASy7ZZ+tF1/idWJtBChdHGiHs=
+X-Gm-Gg: ATEYQzxu7YPtRZXgYeiguKXgp1i1/LvLwAJGrhIitlflsi1LTyj5iWAEs8NNTsp5Avu
+	NaUIDXNuHQonho72RKUMEbENnVguwXfz4bR+RR5V1xb3XEM9qq/l62I/6y6wQ848g/jVfSiAyRn
+	QAc2URssedz7PzYxY5sOcYsz4EPLBaivPm2kvSRrlHCCNUW/3nS7Usjx8qEZfYcOkN4i6GyXqXP
+	8GDiLB3chQsbIPrVZssWXdwoERKdbtp4FmsSkvHAW4EPhB9JusV/LC1WdB0fdmPLwPgkMdIm27c
+	u7wnbeyB+oJ/kTwaxCskyYSy380fBk/nyZD2eNMk4jKqxuspWdhbY51BqGwgeAJkI0wvChIDMA0
+	hxZfQq3iMf9W+NoxJAh0guApqPLOFxxZ+CyCpDBXUzaDLXmfo52+3y97akKPsDuPBA9L3XD6HwI
+	KXj6Rv2nxd1ukvdLeJzE9OptsvECr4P/QN3x3l289nPCtxPVeOMA0Aa7klZHJgyHFpbTmVzQaY5
+	3UcuQ==
+X-Received: by 2002:a05:600c:314e:b0:485:3e00:9452 with SMTP id 5b1f17b1804b1-4854b10f5cbmr41854135e9.24.1773230179285;
+        Wed, 11 Mar 2026 04:56:19 -0700 (PDT)
+Received: from alchark-surface.localdomain (bba-86-98-192-109.alshamil.net.ae. [86.98.192.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854ad5416bsm39586485e9.1.2026.03.11.04.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 04:56:18 -0700 (PDT)
+From: Alexey Charkov <alchark@flipper.net>
+Subject: [PATCH v4 00/11] Add support for the TI BQ25792 battery charger
+Date: Wed, 11 Mar 2026 15:56:13 +0400
+Message-Id: <20260311-bq25792-v4-0-7213415d9eec@flipper.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9cdcb5a91603a1kunm8d9d6d9e1735
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZQ0tJVktLH0kZS0lLTx1PTFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg
-	++
-DKIM-Signature: a=rsa-sha256;
-	b=Zgk7t/M3OlDpQhb6fhI3rF9fNZ1jzyy/qlGD3INqr7nDPoZzf/J1w322bsBZNm3qtkTReot6hfbtSWQcb0GF7wY3UYBE3fcwBB/MIqIJKKOXNMgzMNL+0b5eATT/aAwvn2KwhmEu2W8SaQnPR8vEfsEnk+B7VNd7kV8Z9rx95ME=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=f78VzEoA9VVNkvocFaYeL3bbNDA+AApacm2I3szd6Ok=;
-	h=date:mime-version:subject:message-id:from;
-X-Rspamd-Queue-Id: F1D9D2630B5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF1YsWkC/2XOTQ6CMBCG4auQrq0ZZugIrryHccHPIE0MYEuIh
+ nB3CxswLL9JnzedlBdnxatrNCkno/W2a8NITpEqm7x9irZV2AoBGQhIF280lww1xIR5mXKacKX
+ C695JbT9r6f4Iu7F+6Nx3DY/xcj02xliDFhYjAESJSW/1y/a9uHMrg1oqI+4lbzJ8QLPJDCZZx
+ cL1UdJOxrBJChKwTgUJK6biX87z/AOmK6RgFAEAAA==
+X-Change-ID: 20260303-bq25792-0132ac86846d
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chris Morgan <macromorgan@hotmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Sebastian Reichel <sre@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-pm@vger.kernel.org, Alexey Charkov <alchark@flipper.net>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3497; i=alchark@flipper.net;
+ h=from:subject:message-id; bh=x5H+Ty35z/JQ0YvCd3YuUitbcY1C+rVXjfO5WNFbeIo=;
+ b=owGbwMvMwCW2adGNfoHIK0sZT6slMWRujEjqfM3wiP3Fxf09MWLbZrH+WfnldYrMpaIdvufUQ
+ xzmWLOqdExkYRDjYrAUU2SZ+22J7VQjvlm7PDy+wsxhZQIZIi3SwAAELAx8uYl5pUY6Rnqm2oZ6
+ hoY6xjpGDFycAjDVvayMDB3aJtejja8dttf36vbQkFqkfWN2hfTOqUUWWfvyjFj2BjD8r/8ZumV
+ Kh6tT7w+71oUfhM3W/DsvtfDlnO7/bI+2zDn0jBsA
+X-Developer-Key: i=alchark@flipper.net; a=openpgp;
+ fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
+X-Rspamd-Queue-Id: 12AF62633CD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
+	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224676-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-224677-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,hotmail.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[flipper.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[alchark@flipper.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[flipper.net:dkim,flipper.net:email,flipper.net:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+This adds support for the TI BQ25792 battery charger, which is similar in
+overall logic to the BQ25703A, but has a different register layout and
+slightly different lower-level programming logic.
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+The series is organized as follows:
+- Patch 1 adds the new variant to the existing DT binding, including the
+  changes in electrical characteristics
+- Patches 2-4 are minor cleanups to the existing BQ25703A OTG regulator
+  driver, slimming down the code and making it more reusable for the new
+  BQ25792 variant
+- Patch 5 is a logical fix to the BQ25703A clamping logic for VSYSMIN
+  (this is a standalone fix which can be applied independently and may be
+  backported to stable)
+- Patches 6-8 are slight refactoring of the existing BQ25703A charger
+  driver to make it more reusable for the new BQ25792 variant
+- Patch 9 adds platform data to distinguish between the two variants in
+  the parent MFD driver, and binds it to the new compatible string
+- Patches 10-11 add variant-specific code to support the new BQ25792
+  variant in the regulator part and the charger part respectively,
+  selected by the platform data added in patch 9
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
-
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
-
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
-
-After applying this patch, the warning no longer appears.
-
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
 ---
- fs/hfsplus/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v4:
+- Avoid additional data structures and pass 'type' within the existing
+  struct bq257xx_device instead (Lee Jones)
+- Move comments for new struct fields to the patches where those fields
+  are added (Sebastian Reichel)
+- Collect tags from Sebastian Reichel (thanks!)
+- Link to v3: https://lore.kernel.org/r/20260310-bq25792-v3-0-02f8e232d63b@flipper.net
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 7229a8ae89f9..f396fee19ab8 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+Changes in v3:
+- Move MFD cell definitions back out of the probe function (Lee Jones)
+- Collect tags from Mark Brown, Krzysztof Kozlowski and Chris Morgan (thanks!)
+- Enable ship FET functionality at init for BQ25792
+- Link to v2: https://lore.kernel.org/r/20260306-bq25792-v2-0-6595249d6e6f@flipper.net
+
+Changes in v2:
+- Fix an error in DT schema (thanks Rob's bot)
+- Ensure the broadest constraints for all variants remain in the common
+  part of the schema, per writing-schema doc (thanks Krzysztof)
+- Link to v1: https://lore.kernel.org/r/20260303-bq25792-v1-0-e6e5e0033458@flipper.net
+
+---
+Alexey Charkov (11):
+      dt-bindings: mfd: ti,bq25703a: Expand to include BQ25792
+      regulator: bq257xx: Remove reference to the parent MFD's dev
+      regulator: bq257xx: Drop the regulator_dev from the driver data
+      regulator: bq257xx: Make OTG enable GPIO really optional
+      power: supply: bq257xx: Fix VSYSMIN clamping logic
+      power: supply: bq257xx: Make the default current limit a per-chip attribute
+      power: supply: bq257xx: Consistently use indirect get/set helpers
+      power: supply: bq257xx: Add fields for 'charging' and 'overvoltage' states
+      mfd: bq257xx: Add BQ25792 support
+      regulator: bq257xx: Add support for BQ25792
+      power: supply: bq257xx: Add support for BQ25792
+
+ .../devicetree/bindings/mfd/ti,bq25703a.yaml       |  73 ++-
+ drivers/mfd/bq257xx.c                              |  54 ++-
+ drivers/power/supply/bq257xx_charger.c             | 534 ++++++++++++++++++++-
+ drivers/regulator/bq257xx-regulator.c              | 121 ++++-
+ include/linux/mfd/bq257xx.h                        | 412 ++++++++++++++++
+ 5 files changed, 1156 insertions(+), 38 deletions(-)
+---
+base-commit: 343f51842f4ed7143872f3aa116a214a5619a4b9
+change-id: 20260303-bq25792-0132ac86846d
+
+Best regards,
 -- 
-2.34.1
+Alexey Charkov <alchark@flipper.net>
 
 
