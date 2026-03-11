@@ -1,204 +1,177 @@
-Return-Path: <stable+bounces-224763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LZ3C3TasWlPFwAAu9opvQ
-	(envelope-from <stable+bounces-224763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:11:16 +0100
+	id QAnMK7basWlPFwAAu9opvQ
+	(envelope-from <stable+bounces-224764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:12:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD9526A4B2
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:11:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A822926A4E1
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0C5A315BF9D
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:09:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7AF60300BC8C
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9986D324716;
-	Wed, 11 Mar 2026 21:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41899324716;
+	Wed, 11 Mar 2026 21:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eYnw2Gme"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="OfiDuzRv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DFVbU4Vx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D349E35DA5F
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 21:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B23348463;
+	Wed, 11 Mar 2026 21:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773263369; cv=none; b=VH3oE8l5mrlI7NVeJ+bvM+wY8PHG8E/I8C0T3gbtdQNRixvGq0+Rj/+KZpnzqNcWjDk5K5SkHDU4tLdN6WFkw3ISmWVLo8xBWyujBaz3NvI1db2Hgc9vqVQwcbfMpzMOhVQVdRXAQQ/xARxzsl8ELfNeh8PqK7E+amjUx/myGm8=
+	t=1773263524; cv=none; b=TRLB3k7LPine5eYrjH2QK2aS1bKXfVrEKiCV4IaIKSO8BiLImDJdtBVqdw0d9ydsa/lRYTzj8ynggWsH/BzOJ7F519Tv17V1lqwUYhzHUgw3MNHjPaho5SiAHoT85xW44lo6IdOkf2Vi3pm2QE/Uz5p4i891eo4whL3P5q7Qzto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773263369; c=relaxed/simple;
-	bh=QRC2zBceQZAw9NVBvIU644ZzsneR1w+YSjwrraWS+AQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ndHsMzt+awtBq/C80pZO7hzgOG8l1xrX2LZ9ZF3ZUOtiBvrSA45udGlhhPBUQLjEpfDlD/oILSV0oauKdHCJOQv0UO13AiOXIlDImOZ+lSvhvhS1Qt+Ia7PF3/zAHGA6RXvoe4ffzmKomUEMwDSYOl+3rAtHVHk8pXKirjUrHdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eYnw2Gme; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48534237460so2711345e9.3
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 14:09:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773263365; x=1773868165; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UaaxnmPHTieCJFocp7VqZ1LoooxMAJJriEl5r9r2vlo=;
-        b=eYnw2GmenSzafT+VZhiiPjNLBAk66dlBBvdeEMzGDDbPW32tIku4tN9ogzvT0zAEww
-         kK5nywA32y0XHPhBTw1yB2+ClcxKB+Az+ypxRRgF3v2DsSzd6ka7CyxfH0fq/WqPonly
-         EpA0tfqZeaATbN7XTHQ/z8RfD157qtepS9tf7zrpryWmdpN1Nu5j7HqrUo0aRPdoDKUv
-         w7UxXNxEqoi3FOQyZvvV5iw3kChh/0NGhc3mhIenG4TmQVyq+5jGmdpaRSS3lUs0cET7
-         cn7EsnmmtVgFqbwt0dPTLClPkA3suoqEYedHJhMqioYp75j9sNA9zdGhfw1gUcOCnuSo
-         Z6kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773263365; x=1773868165;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UaaxnmPHTieCJFocp7VqZ1LoooxMAJJriEl5r9r2vlo=;
-        b=pNDz2EEhTfMFKDLm68DoiZ3wMa/dXpxPy34276NZdcJxyxupnE7aarZbSzCsCcSkYL
-         TzTAmQCRCAMI2/iK2s3wqnXmQpRc5em+t8cq9bj5DBW+t7FZo33eyfoertdB37FWQ5QA
-         tG2+Kecc2qB3qXe7Tury4MzGl+Qc/+L5Va0eFodB0dqpbWGVf3WvDobext32/ySLJv9+
-         4wKG0Q66FHnGIj0c6rioIl10nEZdkLdmBCWXC/unAEqRLJ5vQTIlLE5LFVuK8r57JC8s
-         Ic4WTDhNUDHDxdDxDuL1gXYqhj1aPffbwvA98aENXAwbE/4Zlhs1Oclq5SaFNqu7We0w
-         Ml1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVIum+MqF13st7UmUn+9cECWXwElcl3umlOZDywRpNwILC5V3Sw4V8f5xRn2z1A6ZVxPUT4sKM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIizwx6eqI+R91Wi8eVXW3SGD6gl3+a3xXo1waey77Mqkm1XNl
-	HoUM70DGq2iQ0cO9KOp41WviYDlYdcj/Z+/iFZM1B5NzDcGe2x0nGTjiKGV3u+DMKu0=
-X-Gm-Gg: ATEYQzyw/KVTMJni/nsA8v5tMTCgBgqVTIlsFZ9JhWu+W/QiQNGfcConAhOCOB1JxTn
-	Q1yFbT8dZqlr5Vvtp4NJc3GiO31OEzzCwiaoqOQC+DWl20GvhnVX6SfViLDyRo7SxuqQC2nohn7
-	PkGjGcfJZXY0Mrvgo4Wo4R259a/yxRrhM50V/xqKiw4higzrL2h6hGt8bst1qZvZWOIvV0BbInr
-	7PiesGR04nehTidSG5rXBs0YPFJJ0gnHRiu7+MjhVmvt+eVc+yuG8tC1ue9AfqYEjtSOMYRzmGM
-	pUcJjRZ5ORXyfOqdnBDR5MTLq11l0Mthl5jGahlOBYGl+mRYA554dwCpguBfeXSM/ubAn8K0MtE
-	IN/eARsAoTsq9lDHJllnNnUBEKTEXfNe4TKibYaugsSfG3G6PwaM0J54RcCDNrbwmdImA54dQnf
-	lTKOoUlkWvwiWi6L1QGxxbiNNEiTYgYhQJD/hFUIXnkKUUWvNGKQzxZbM=
-X-Received: by 2002:a05:600c:8b31:b0:485:3812:36da with SMTP id 5b1f17b1804b1-4854b0afc13mr69420255e9.9.1773263365105;
-        Wed, 11 Mar 2026 14:09:25 -0700 (PDT)
-Received: from precision.tail0b5424.ts.net ([2804:7f0:6402:b103:6a0a:3e1c:778a:5cc7])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be8aa73ba6sm3896702eec.25.2026.03.11.14.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 14:09:24 -0700 (PDT)
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: sfrench@samba.org
-Cc: pc@manguebit.org,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	ematsumiya@suse.de,
-	linux-cifs@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
-Subject: [PATCH v2] smb: client: fix iface port assignment in parse_server_interfaces
-Date: Wed, 11 Mar 2026 18:09:15 -0300
-Message-ID: <20260311210915.735288-1-henrique.carvalho@suse.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1773263524; c=relaxed/simple;
+	bh=Sj4zX/S23GPj1wyeuErmNsj4HmsDaVeLN12KuI5pa9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nfnQYnMlcGB7N2FdkaHXecKSHMBZEWOQQIXic2M4l9uxzDhq8UOYackynXTkDVOVruQu5vEfAyiiuH0jxCKE1OFdu+7DOwz7mCRLmUMoYvb3DQI+IQsUeGfazcXJIxEfWugHxdwyVMi+QjMn3vKKSzSRfYipY0cQSotlTqNWNv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=OfiDuzRv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DFVbU4Vx; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id B43E1EC0084;
+	Wed, 11 Mar 2026 17:12:00 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-04.internal (MEProxy); Wed, 11 Mar 2026 17:12:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773263520;
+	 x=1773349920; bh=2kLcxQ5uHtJF2LRuY58mGLZDxlGYrIiQDrP2UpeFq1Q=; b=
+	OfiDuzRvg8iU3ZxD80BNAY3FW+kfx+YCX91apdmhkA/BYCh5/7FYRFjTrM51ejGw
+	Fc6UH5nJzz1NXt1rPV9WZoprq9DHfc5SVqd5EuYJg9FVjE5/xYBMsGLshJtYl48M
+	/XJoLCjhgBmpOqqPi83sbSKF9aPwlpHR+OCMCyvxY5CRCS483rBnIIA2LOnGjdJr
+	UfW0YZpocexIRU4GPfTqK8n7Bk1NMbIUNr/GdTNC05qOY7uyHtWzDcOT4e7ManFC
+	89jy+F8+/fkSpAl/r3kZ3yy3XJSyoSp5zJrUi39VxHcNw8XRLDblO5EJPo80JF4W
+	JRc/LiDeySR+QphH/ltsWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773263520; x=
+	1773349920; bh=2kLcxQ5uHtJF2LRuY58mGLZDxlGYrIiQDrP2UpeFq1Q=; b=D
+	FVbU4VxwMeeVJFqW0lxHJ9fVPlGf1xRnxQv26V/y0R5I9AaJXbMEqbPcxWu4fcYj
+	n6y8DkxfIN/b6UPqTflEXg+/TBztOnXhH7OzBTY/3K6bl4L78YOXIjBA2OwZiqz0
+	+FNBPbYBVgHnyw+qJ1bGVQJQsyQdBx19bLp40xhGNHu/PPVoYOKZ4bSUu0XJrtZA
+	sfeFsmPxV8/AITRnKcDbrez2qyqdIj5MIkSF7OWMVCPS4cdfn2PoIHJ2hCecDZMc
+	jtKv2UkzZHE7QLChEqeq6Z+LJgGiHnp20f1PE/5lKcvhapIcpb5to9JuhG5xRaMq
+	6Ru3qG3dE9vbsixI2MOGg==
+X-ME-Sender: <xms:n9qxaeWlmitVyKf9PThQ1y8CIJVOalJUw-rMmOqiZccq4eoeAa6ogw>
+    <xme:n9qxaa8UD9HQstoTwTq8JINfYbgfSS5Tz-Yb35CSWb9zev9m7GQptuRe8kbDBGhC6
+    vkE-EYtUPDL6g2Cb8a6MxCY5WuL_ATDhXSuRz3LrbSJwwu-9yctQMs>
+X-ME-Received: <xmr:n9qxaTgWD-LnU1Sx7_c2wbCxOMm7px-y9WTJpdmaGrcQiv9I9-hBsWlf2Yd8n4ygyi6HvbocFPxEWPPaagtU3myDAA5uBg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeegleehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihf
+    ohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghttghhvghssehlihhsthhsrd
+    hlihhnuhigrdguvghvpdhrtghpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
+    grthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvght
+    pdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:n9qxaRV31Hd4XpHPjor1lqTDy5DSW934_HGY6DuRpLFW8uD6avbB7A>
+    <xmx:n9qxaXuW_oD9Wayc35WTgRTgxWXe6H0Si3aq64aqWTmqHVz1Sqebuw>
+    <xmx:n9qxaS88uLX4fDydIQGcprPs4UhHPGHWnJ0EfRURY1VmMp8BfzARwQ>
+    <xmx:n9qxaXt3_Wg8bXVU0Gc3b6AJUzJsCCjOQTfk--mfPXvHEhEBa6L09Q>
+    <xmx:oNqxaUfqvuJRVbWJ-rld3MbLu8xVg2-_fh_gmNXOz0DeWEQFboWyof1y>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Mar 2026 17:11:57 -0400 (EDT)
+Message-ID: <a03c5a90-880b-42f5-9f63-4dabb19ca369@pobox.com>
+Date: Wed, 11 Mar 2026 14:11:56 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/311] 6.19.7-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <cover.1773140654.git.sashal@kernel.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224763-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org,uni-hamburg.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-224764-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim,suse.com:email,suse.com:mid]
-X-Rspamd-Queue-Id: 7FD9526A4B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,pobox.com:dkim,pobox.com:email,pobox.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A822926A4E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-parse_server_interfaces() initializes interface socket addresses with
-CIFS_PORT. When the mount uses a non-default port this overwrites the
-configured destination port.
+On 3/10/26 04:05, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.19.7 release.
+> There are 311 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu Mar 12 11:04:16 AM UTC 2026.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/rawdiff/?id=linux-6.19.y&id2=v6.19.6
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr,
-causing reconnect attempts to use the wrong port after server interface
-updates.
+Tested on my amd64 DIY home NAS. Working well, no regressions observed.
 
-Use the existing port from server->dstaddr instead.
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Cc: stable@vger.kernel.org
-Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
----
-v2 -> v1:
-- read the port once from server->dstaddr before parsing iface entries
-  and considering *server* ss_family
-- update the commit message to describe the fix more clearly
-- adjust the Fixes tag to fe856be475f7 ("CIFS: parse and store info on iface queries"),
-  as the later commit only exposed the bug rather than introducing it
-
- fs/smb/client/smb2ops.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 7f2d3459cbf9..7a176088c877 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -628,6 +628,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 	struct smb_sockaddr_in6 *p6;
- 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
- 	struct cifs_server_iface tmp_iface;
-+	__be16 port;
- 	ssize_t bytes_left;
- 	size_t next = 0;
- 	int nb_iface = 0;
-@@ -662,6 +663,13 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 		goto out;
- 	}
- 
-+	if (ses->server->dstaddr.ss_family == AF_INET)
-+		port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
-+	else if (ses->server->dstaddr.ss_family == AF_INET6)
-+		port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
-+	else
-+		port = cpu_to_be16(CIFS_PORT);
-+
- 	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
- 		/* default to 1Gbps when link speed is unset */
-@@ -682,7 +690,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
- 
- 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
--			addr4->sin_port = cpu_to_be16(CIFS_PORT);
-+			addr4->sin_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
- 				 &addr4->sin_addr);
-@@ -696,7 +704,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
- 			addr6->sin6_flowinfo = 0;
- 			addr6->sin6_scope_id = 0;
--			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
-+			addr6->sin6_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
- 				 &addr6->sin6_addr);
 -- 
-2.53.0
-
+-Barry K. Nathan  <barryn@pobox.com>
 
