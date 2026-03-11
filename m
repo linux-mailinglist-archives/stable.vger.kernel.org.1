@@ -1,189 +1,202 @@
-Return-Path: <stable+bounces-224751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GyiOa3HsWnvFAAAu9opvQ
-	(envelope-from <stable+bounces-224751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:51:09 +0100
+	id kM49J8fKsWnvFAAAu9opvQ
+	(envelope-from <stable+bounces-224752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:04:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3F0269A06
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:51:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B14269C68
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4343A3047410
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:50:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1E3D300E4A7
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD4B361647;
-	Wed, 11 Mar 2026 19:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3E63859CB;
+	Wed, 11 Mar 2026 20:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="M+4Vwmul"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="SrZ3XgTj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD506299A8F;
-	Wed, 11 Mar 2026 19:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE483385529;
+	Wed, 11 Mar 2026 20:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773258616; cv=none; b=ENb5aevX4lWAbDHbvo0ZmtoHQdMCxp5QBawvo2ewh3TdWkfv0caUWiQBk6vds1wPxFiJox5h5f+UhZTWRVb/oC61J53/BeGj1v8EM4M0CrLXBUuOPSz+URf6X0tgpqN/AhAPH+3FtXKFTM16Xivpj31nY+39QtxtAijYFxlewC4=
+	t=1773259455; cv=none; b=dmRt2ozxXgUurUWfbeAZ9okQDeY8DKp0IM6LV5V6+BS8IRuTbcNXo7eKDde5hxIdy8eYxAZHdVarSTekLUc5UNV3XscGxEIDG3IDWnjcRaWfWRvsMsKbf9lu16h2Hgp0+9aJsaQBVNPpcSG9WLX74uH08DFJ4AI7xbSDj6ugRfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773258616; c=relaxed/simple;
-	bh=2AL7JTx/+1DwwQRRR6N/knmhizaCpKVWqkv9zjcIgoU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+NyfgCLQs/klDZdeDqa4o+lU/v3N54dluh6722T0F4W0vKz7MIEvuXvtYtwzya1xcDIO4ljH/ZcHwHml5nTcTvzP4sWdpR4AklMD65Qg9xwPhzJ3l3P5+dogr6QNDCJIlPEoU+DuEzcaCCW/BmSmDG7SeufXvhMO7bFbHGTmB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=M+4Vwmul; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BF4v3n1599036;
-	Wed, 11 Mar 2026 19:50:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ru/sdd
-	zbbVFP6SaLbKOPJ91WRvvDkw6EJkE0uSifBfc=; b=M+4VwmulVbzEjtdBxSjtXM
-	Aa3VVt5ywJlDNqRAsJOGI1ciBYEQf6QoYR07W0b+Z7UnsY3Lz33QsH0DnsanpYce
-	2sg3UkM+kL7vZg80b+RTnqjCVZhZ+Gr7JKW00wxMtFyW+hl5XzQrgzo/3tMW6PvK
-	1mdC6kwBVmjIryQSDtsQpSR+kAXCgyVGPJFVkCcOx0VrT4t98JM1PMtN4pcOkueq
-	lRjszpStqV+GCf56N5NF5Wihsx9DwE6/SLmVjs9euckVn09qvRUYsddACAD7eoNV
-	VLzjgIQ1VsC9ZZFK4q5dFV3kS+6VUHPElnVUHMY9YEC+hCdl0k1C+9JNkgv32bJw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcunh6kd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 19:50:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62BGXZ2d015573;
-	Wed, 11 Mar 2026 19:50:03 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4crybnexp5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 19:50:03 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62BJo14r31195870
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 19:50:01 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B6B45805C;
-	Wed, 11 Mar 2026 19:50:01 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46FC158062;
-	Wed, 11 Mar 2026 19:50:00 +0000 (GMT)
-Received: from [9.61.244.205] (unknown [9.61.244.205])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Mar 2026 19:50:00 +0000 (GMT)
-Message-ID: <420cec59-a62b-42b3-859d-707f286a49cd@linux.ibm.com>
-Date: Wed, 11 Mar 2026 12:49:59 -0700
+	s=arc-20240116; t=1773259455; c=relaxed/simple;
+	bh=7Xi69N/AXOUZmgCMjLEJs7QDMCYDbHH49HTjrURJ6Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MUAhzIQfvtNvCED//Hh0WMKjJK5twMzvleN/x04qfvs+fzBusAZib28+hG9/BMI1fIE5ql7kSyAFbn2D6wdpS3nZA9At5OkjHOLfgkJkApOloPmLlk6SVewORTTsLALATZ77u+kpKVMOimvhhSI6tD6DniiLQtsHPvnONAhxY9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=SrZ3XgTj; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GW+nwEhnmzKJAVbIBJCkffrj9cwki0Qu9yPZcqaW26g=; b=SrZ3XgTj/etd9BWN3GoZoifjCs
+	dKAI17bgng38siPzdsDhY2uXOk5ZzKSdxcvmhyfHhvTgdq/ql63yc3rv059NreOQcNK95/EPWmpC1
+	BIeZjt+pd5bFfygBvEMiKjlYAn5as4wyeHrgwGRvPTy2zAOVPfbyP5TMtaJ4rlD1xcxRcd6ZXF9CI
+	m3SUwOETLIuWG55abZb/mIvdgqYAcZBRIl7R8zP4Wix1WZLvFhPMOYu8QBD4fmiW2KyLRFu1oSxni
+	dribudWwB1gGVXaAm90VHOVRYztMW5I6WjKfop6k76m5hYFCQx8Rd/sBreGhGqSRNuR36aahElpOm
+	R+up090w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w0PmO-000000003Ch-2riR;
+	Wed, 11 Mar 2026 20:03:57 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 1EC24302EC2; Wed, 11 Mar 2026 21:03:40 +0100 (CET)
+Date: Wed, 11 Mar 2026 21:03:40 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
+	Falcon Thomas <thomas.falcon@intel.com>,
+	Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
+Subject: Re: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters
+ constraint apply
+Message-ID: <20260311200340.GV606826@noisy.programming.kicks-ass.net>
+References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
+ <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
+ <6e2e5d3e-0906-43af-8816-f9f812e7e0aa@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 6/9] s390/pci: Store PCI error information for
- passthrough devices
-To: Markus Elfring <Markus.Elfring@web.de>, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <helgaas@kernel.org>,
-        =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
-        Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>
-References: <20260302203325.3826-7-alifm@linux.ibm.com>
- <9e31dbbd-561c-4352-84ea-3ee0c9aec567@web.de>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <9e31dbbd-561c-4352-84ea-3ee0c9aec567@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: x-lB_WDonL2FRB5p5PtCNnTQZdEEyZG9
-X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69b1c76c cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=P-IC7800AAAA:8
- a=UqHa9KyugJsa2jffV6oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE2NSBTYWx0ZWRfXxc/7v8XqBdy4
- FTYhvYAprzpJAgBYHnY0uFjwI+xGzVgIYfMfmVsBKMHkSYooDy+RG/GmyBt9BkEhgsool8GyI02
- mtNNz2PZCHn/PpB3IWN+/cqnw1BNWhD3Sm/Nml2lmBLEy29oumugD7dm+CxSB+YXM4YoIQs3Uir
- s/77XBMLjnJbc4yWh1ZFLP+Z8sfAvOCnYVdxt3faHQTsAbJ9UPNxu4SZBpf3/SA8c44mrlpWNzW
- GYjtrXa/VAcSaIJVui3qvvSfOHuNFgx7J1VpGeTA9EHOXnN8Dx3t2vranlScYCMdO6IV1B/Usis
- aDN+JcCE3cXMjYsNNk8HfnB23O7k1QPISKNQUoWPJ0Il5nyv6ze9qKg8w4RxlxDCuMpMUK4EqMw
- dTYwX8hrlR0T2jjDwIqlCNVK8MolnKieZUVZM9DpTZLoeEsThh5BiocscK3QA8tFpPhKK0bbD8x
- pWcFWvSvPjMN2A/WmVQ==
-X-Proofpoint-ORIG-GUID: TMJBROuu6fX43RtEGraYPudlEVtyLEOL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110165
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6e2e5d3e-0906-43af-8816-f9f812e7e0aa@intel.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url];
-	TAGGED_FROM(0.00)[bounces-224751-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224752-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[web.de,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 8A3F0269A06
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,noisy.programming.kicks-ass.net:mid]
+X-Rspamd-Queue-Id: A5B14269C68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Mar 06, 2026 at 05:27:35PM -0800, Chen, Zide wrote:
+> 
+> 
+> On 2/27/2026 9:33 PM, Dapeng Mi wrote:
+> > When running the command:
+> > 'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+> > a "shift-out-of-bounds" warning is reported on CWF.
+> > 
+> > [ 5231.981423][   C17] UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+> > [ 5231.981428][   C17] shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+> > [ 5231.981436][   C17] CPU: 17 UID: 0 PID: 211871 Comm: sleep Tainted: G S      W           6.18.0-2025-12-09-intel-next-48166-g6cf574943ba3 #1 PREEMPT(none)
+> > [ 5231.981445][   C17] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+> > [ 5231.981447][   C17] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.IPC.3544.P98.2508260307 08/26/2025
+> > [ 5231.981449][   C17] Call Trace:
+> > [ 5231.981453][   C17]  <NMI>
+> > [ 5231.981455][   C17]  dump_stack_lvl+0x4b/0x70
+> > [ 5231.981463][   C17]  ubsan_epilogue+0x5/0x2b
+> > [ 5231.981468][   C17]  __ubsan_handle_shift_out_of_bounds.cold+0x61/0xe6
+> > [ 5231.981472][   C17]  ? __entry_text_end+0x158b/0x102259
+> > [ 5231.981475][   C17]  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+> > [ 5231.981480][   C17]  ? __task_pid_nr_ns+0x134/0x2a0
+> > [ 5231.981483][   C17]  ? __pfx_intel_pmu_lbr_counters_reorder.isra.0+0x10/0x10
+> > [ 5231.981486][   C17]  ? __pfx_perf_output_sample+0x10/0x10
+> > [ 5231.981489][   C17]  ? arch_perf_update_userpage+0x293/0x310
+> > [ 5231.981491][   C17]  ? __pfx_arch_perf_update_userpage+0x10/0x10
+> > [ 5231.981494][   C17]  ? local_clock_noinstr+0xd/0x100
+> > [ 5231.981498][   C17]  ? calc_timer_values+0x2cb/0x860
+> > [ 5231.981501][   C17]  ? perf_event_update_userpage+0x399/0x5b0
+> > [ 5231.981505][   C17]  ? __pfx_perf_event_update_userpage+0x10/0x10
+> > [ 5231.981508][   C17]  ? local_clock_noinstr+0xd/0x100
+> > [ 5231.981511][   C17]  ? __perf_event_account_interrupt+0x11c/0x540
+> > [ 5231.981514][   C17]  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+> > [ 5231.981518][   C17]  setup_arch_pebs_sample_data+0x114b/0x2400
+> > [ 5231.981522][   C17]  ? __pfx_x86_perf_event_set_period+0x10/0x10
+> > [ 5231.981526][   C17]  intel_pmu_drain_arch_pebs+0x64d/0xcc0
+> > [ 5231.981530][   C17]  ? __pfx_intel_pmu_drain_arch_pebs+0x10/0x10
+> > [ 5231.981534][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+> > [ 5231.981541][   C17]  ? intel_pmu_drain_bts_buffer+0xbf/0x6e0
+> > [ 5231.981545][   C17]  ? __pfx_intel_pmu_drain_bts_buffer+0x10/0x10
+> > [ 5231.981550][   C17]  handle_pmi_common+0x5c5/0xcb0
+> > [ 5231.981553][   C17]  ? __pfx_handle_pmi_common+0x10/0x10
+> > [ 5231.981556][   C17]  ? intel_idle+0x64/0xb0
+> > [ 5231.981560][   C17]  ? intel_bts_interrupt+0xe5/0x4c0
+> > [ 5231.981562][   C17]  ? __pfx_intel_bts_interrupt+0x10/0x10
+> > [ 5231.981565][   C17]  ? intel_pmu_lbr_filter+0x27f/0x910
+> > [ 5231.981568][   C17]  intel_pmu_handle_irq+0x2ed/0x600
+> > [ 5231.981571][   C17]  perf_event_nmi_handler+0x219/0x280
+> > [ 5231.981575][   C17]  ? __pfx_perf_event_nmi_handler+0x10/0x10
+> > [ 5231.981579][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+> > [ 5231.981582][   C17]  nmi_handle.part.0+0x11b/0x3a0
+> > [ 5231.981585][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+> > [ 5231.981588][   C17]  default_do_nmi+0x6b/0x180
+> > [ 5231.981591][   C17]  fred_exc_nmi+0x3e/0x80
+> > [ 5231.981594][   C17]  asm_fred_entrypoint_kernel+0x41/0x60
+> > [ 5231.981596][   C17] RIP: 0010:unwind_next_frame+0x11c5/0x1df0
+> > ......
 
-On 3/11/2026 12:30 PM, Markus Elfring wrote:
-> …
->> +++ b/arch/s390/pci/pci_event.c
-> …
->> +void zpci_cleanup_pending_errors(struct zpci_dev *zdev)
->> +{
-> …
->> +	mutex_lock(&zdev->pending_errs_lock);
->> +	pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
-> …
->> +	pci_dev_put(pdev);
->> +	mutex_unlock(&zdev->pending_errs_lock);
->> +}
-> …
->
-> Under which circumstances would you become interested to apply a statement
-> like “guard(mutex)(&zdev->pending_errs_lock);”?
-> https://elixir.bootlin.com/linux/v7.0-rc3/source/include/linux/mutex.h#L253
->
-> Regards,
-> Markus
+That trace could be reduced to:
 
-Hey Markus,
+  UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+  shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+  ......
+  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+  setup_arch_pebs_sample_data+0x114b/0x2400
 
-I wasn't aware of this pattern. I think the guard() statement can be 
-added here, will update in the next revision.
+Without loosing anything valuable.
 
-Thanks
 
-Farhan
+> > The warning occurs because the second "instructions:p" event, which
+> > involves branch counters sampling, is incorrectly programmed to fixed
+> > counter 0 instead of the general-purpose (GP) counters 0-3 that support
 
+So here you have 0-3, the normal 'range' notation, but then you go all
+funny and use ~ instead:
+
+> > branch counters sampling. Currently only GP counters 0~3 support branch
+> > counters sampling on CWF, any event involving branch counters sampling
+> > should be programed on GP counters 0~3.
+> > Since the counter index of fixed> counter 0 is 32, it leads to the "src" value in below code is right
+> > shifted 64 bits and trigger the "shift-out-of-bounds" warning.
+> > 
+> > cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
+> > 
+> > The root cause is the loss of the branch counters constraint for the
+> > last event in the branch counters sampling event group. This results in
+> > the second "instructions:p" event being programmed on fixed counter 0
+> > incorrectly instead of the appropriate GP counters 0~3.
+
+s/0~3/0-3/ ?
 
 
