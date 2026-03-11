@@ -1,119 +1,144 @@
-Return-Path: <stable+bounces-224740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id a/bvChSxsWmXEgAAu9opvQ
-	(envelope-from <stable+bounces-224740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:14:44 +0100
+	id mFSzGWixsWmXEgAAu9opvQ
+	(envelope-from <stable+bounces-224742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:16:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2050D268773
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:14:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B212687AE
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E91E93018E39
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:14:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2DA5C3022987
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A800F3E6DEE;
-	Wed, 11 Mar 2026 18:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF89E274FC2;
+	Wed, 11 Mar 2026 18:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dT8GM4+4"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YRmUOewu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688B3318BA8;
-	Wed, 11 Mar 2026 18:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4CD3E7156
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 18:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773252878; cv=none; b=AiKrNzGmzH2Lh/tJLVRTb1m9Kv25q1TwjTjIVD2deP5NY+jx8vGt/WMoku9d8jzpwuUiAAjZYFK56wpwY6mf9NoPGzbNRzuN3qZ/Xv83rIOlMosD6ppv3WQDVj8wYTLWVS/PIiiAyjO2jHL9Iewv5M55UI3JZfcb2kr9fbwGSwU=
+	t=1773252948; cv=none; b=Jj7LE43hpwQCHnlDOlBkFMv54OTT/IKZ8igMjDXDWUTmwdPBekN07vnuSbcMOav6fx43+TtHGhg+wMQcWmtLUlYnjkTcr3HGDukVGvq4gS4Ft9FEPt7x9QqP2Ef5L4kNB1VWuAhnIypiOHhlWbjPBPPv7mzHNVWtORsZFcn9yGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773252878; c=relaxed/simple;
-	bh=QazkRwUy3McErmvBQbClt/+sIlmmR2iEEOsG1w/764U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=uVPNyXv8FvQI8+bQi/UNqj2gDBFmgIx5bU7q8jF4Lw6ellfDtcVbn4s8Ryj073tZdKNEFPd3XW02FRbToPMKzDqNsTqaDwDFvrWU/8TkF/h+s7L++6qjZHVJGD5WWy5+7XAt/kKD31pean5Ug01nM5drDHzEU+hchCm0iPViqe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dT8GM4+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AA9C19421;
-	Wed, 11 Mar 2026 18:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773252878;
-	bh=QazkRwUy3McErmvBQbClt/+sIlmmR2iEEOsG1w/764U=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=dT8GM4+4s/eMO8EVG29pvt9CfjFNVbSrKob4NHDWn1MgR1/bnl9Buv6yJEKiG1XZB
-	 RzK5pNBXuwblgONHXT39MdiMJYWALLOmOUpI85ZEVmlfVzlwKGRInA1Sso30dI6YQY
-	 oskCbNi0hcsGLROStU/DunNRmSdyv3OIbV6tOu6mMDIzjBKVWhjhH1PttwpBFUW5tz
-	 CQxi2TFQ2etqfz7bQ7IlPflH3EAAEkDdb3Q1CqYSsAdIrwsYKpGkmYYIOca6MGhqxv
-	 he8i6qym5F89noH4xW/KptDTvpUMpKXv41t2KTv+VryE7KEmpKNa6g7bFq/rQrINx8
-	 vo/6mFaNLNCKg==
+	s=arc-20240116; t=1773252948; c=relaxed/simple;
+	bh=Jjq49ouwOstajWDDHsipi40+8r2DGwcxFw4hkhofWGU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=YY+qOv2fvQ+DMQiIGNOdHosbo99W+AcKfW062fFZHLowDGh/WeJuRzEoLsbKCSjbHQZ0+NmlBjG6d/s6e6Moy5fcagL8GL/iZmr+g3W5LQ7r2I0a6wiH9JOaR5TKb8gFPD4fyDcLEwT3WBclNJxpIIelAyyOdj+5dyh3WvRHJsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YRmUOewu; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773252935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jjq49ouwOstajWDDHsipi40+8r2DGwcxFw4hkhofWGU=;
+	b=YRmUOewu0aO319izp478Y0xTx7rGxwboIxXbrhev80N21WY8O3DvaGE9epGDrrLNs7li+F
+	WhBuL59DlXs0ZajuRcVMtcd9oTzASTPmzKWa8Wl8/x1K+qfm/+5yPjHZzKrJ3VxI0ARc7h
+	gL4aIP6QSdvrgtldxvJBfntRA77FeRo=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH] crypto: nx - fix memory leaks in
+ nx842_crypto_{alloc,free}_ctx
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <47dd8932-7347-4744-be8d-79106bc76f4b@app.fastmail.com>
+Date: Wed, 11 Mar 2026 19:15:00 +0100
+Cc: Haren Myneni <haren@us.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dan Streetman <ddstreet@ieee.org>,
+ stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Mar 2026 19:14:33 +0100
-Message-Id: <DH05OK4Z9XN8.2FT8K8GBNA6C8@kernel.org>
-Subject: Re: [PATCH] rust: pin-init: replace shadowed return token by
- `unsafe`-to-create token
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Fiona Behrens" <me@kloenk.dev>, "Tim Chirananthavat"
- <theemathas@gmail.com>, <stable@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260311105056.1425041-1-lossin@kernel.org>
- <DGZZ0XF0YYGN.1W5UIBXK16HL3@kernel.org>
-In-Reply-To: <DGZZ0XF0YYGN.1W5UIBXK16HL3@kernel.org>
+Message-Id: <2169F556-EB9F-449E-AD21-BAB1D34E81B7@linux.dev>
+References: <20260311150922.382941-3-thorsten.blum@linux.dev>
+ <47dd8932-7347-4744-be8d-79106bc76f4b@app.fastmail.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224740-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224742-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[garyguo.net,kernel.org,protonmail.com,google.com,umich.edu,kloenk.dev,gmail.com,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[us.ibm.com,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,gondor.apana.org.au,davemloft.net,ieee.org,vger.kernel.org,lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2050D268773
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
+X-Rspamd-Queue-Id: 87B212687AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed Mar 11, 2026 at 2:01 PM CET, Danilo Krummrich wrote:
-> On Wed Mar 11, 2026 at 11:50 AM CET, Benno Lossin wrote:
->> In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
->> this solution no longer works [1]. The shadowed struct can be named
->> through type inference. In addition, there is an RFC proposing to add
->> the feature of path inference to Rust, which would similarly allow [2]
->
-> NIT: I'm not sure if the sentence is supposed to end here, at least it mi=
-sses a
-> period.
+On 11. Mar 2026, at 16:16, Ard Biesheuvel wrote:
+> On Wed, 11 Mar 2026, at 16:09, Thorsten Blum wrote:
+>> The bounce buffers are allocated with __get_free_pages() using
+>> BOUNCE_BUFFER_ORDER (order 2 =3D 4 pages), but both the allocation =
+error
+>> path and nx842_crypto_free_ctx() release the buffers with =
+free_page().
+>> Use free_pages() with the matching order instead.
+>>=20
+>> Also, since the scomp conversion, nx842_crypto_alloc_ctx() allocates =
+the
+>> context separately, but nx842_crypto_free_ctx() never releases it. =
+Add
+>> the missing kfree(ctx) in nx842_crypto_free_ctx(), and reuse
+>> nx842_crypto_free_ctx() in the allocation error path.
+>>=20
+>> Fixes: ed70b479c2c0 ("crypto: nx - add hardware 842 crypto comp alg")
+>> Fixes: 980b5705f4e7 ("crypto: nx - Migrate to scomp API")
+>=20
+> Thanks for the fixes.
+>=20
+> Given that you are fixing two separate issues that were introduced ~10 =
+years apart, I think it would be better to split this up.
 
-Oh yeah, missed the period.
+Yes, good idea. I submitted them separately here:
 
-Cheers,
-Benno
+=
+https://lore.kernel.org/lkml/20260311155645.397083-4-thorsten.blum@linux.d=
+ev/
+
+Thanks,
+Thorsten
+
 
