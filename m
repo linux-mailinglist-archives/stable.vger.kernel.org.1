@@ -1,163 +1,164 @@
-Return-Path: <stable+bounces-224631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6G9MGjPQsGmLnQIAu9opvQ
-	(envelope-from <stable+bounces-224631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 03:15:15 +0100
+	id SOxLOQbRsGmLnQIAu9opvQ
+	(envelope-from <stable+bounces-224632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 03:18:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1339125AD09
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 03:15:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FEE25ADD0
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 03:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6101B306B3A7
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:14:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FC30305A204
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55A433E368;
-	Wed, 11 Mar 2026 02:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4752C15B5;
+	Wed, 11 Mar 2026 02:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tiJiX0x6"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SSh/KMpS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688D634678C;
-	Wed, 11 Mar 2026 02:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D1229C35A
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 02:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773195293; cv=none; b=nX2mDiboiLFH5y8k3ANgAO+hGOzWSYpAY8t3NQimKQHf+iTxWmYGI9oIzBFZ5rwDQ1Wjj6Dytl4fsLOKZ1dJJNuvynUHckOkYq8dJRvjoZZMZnGR6w5e9llvbVpUoenFTXR7t7BgU0geXdSK8qkU/PL51/r/MYjGl6TGmASOk1g=
+	t=1773195514; cv=none; b=n90aZFb0RKJJj0HB5mjoE5FetCh0j7CkQJrVvZwecXi7buMRZnV+7BuuZkd7RFgqd3shIZUYWCe5YPrC5J+YvWPmzu/GThlcfuQ43YtEfuH8SCW0gDVHMrzkJut2f5mmIHEwm65V3o0XeXcRmlFGRzmZI9Ptqx90+TtbwHy57rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773195293; c=relaxed/simple;
-	bh=jxd65I2ZWJMqH5CI7QZteHcF0fDlhB/fPBn5KcQ5inY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aP912d3CGmGO8ypUHXRAMYafyutgo2Pn3I6Ay0DVgdhHch+T3k9OrWOMgWS0K9WcX05vmUW/UW3fzxbUVm9/lrrlG/Un3baVCa43MTiN+KyhCaFCaMRZn/GXA2AOjIWjAqdqT5O/b468REs7wOouuziYbfdeW1JSGcliLZuGV0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tiJiX0x6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AGlAF9370491;
-	Wed, 11 Mar 2026 02:14:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=HsQuhb
-	4PDqGzYmjeDA4A7LQyti7aVQTEOByyf1irGk8=; b=tiJiX0x6jNHWUcXGF/ubZ/
-	XOBXuIQ1EH7IJHyeuR9dFOxXfKOwvqUpUvRxsCHXGKhVNMWrASa78EH7Gzbqr2tU
-	afgZsZhb+xnbsUAZAZhLaXQVKul2WBqI0X7nedwfK842gULwmxSAZTe/dAX2kPge
-	Eq2mfAti8eiNt8Rys5XRcUy5WI39hXJ4r7F1V8aaedrKqwlXsWsMIBUQmtBFMX6T
-	RQWn3PVTJ9fCSPZDXqajRMwgGqUOS1YYUpIRIb3l53PsngCIXu2smgAFqaO26/sj
-	F2KFjnrrdeb/X1tb9QUbOqfBYD57xCZP5c3W6u90d/NU1W9TWBc2YNcJkm01PCKQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crd1mnasv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 02:14:26 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62B1NJP9023013;
-	Wed, 11 Mar 2026 02:14:25 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ct8ng4kqn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 02:14:25 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62B2ENgC42139942
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 02:14:23 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7E0C2006C;
-	Wed, 11 Mar 2026 02:14:23 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B94E2006A;
-	Wed, 11 Mar 2026 02:14:21 +0000 (GMT)
-Received: from Linuxdev (unknown [9.43.124.195])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Mar 2026 02:14:20 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Nilay Shroff <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/pseries: Correct MSI allocation tracking
-Date: Wed, 11 Mar 2026 07:44:20 +0530
-Message-ID: <177319508349.269267.9488718055542693297.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260302003948.1452016-1-namcao@linutronix.de>
-References: <20260302003948.1452016-1-namcao@linutronix.de>
+	s=arc-20240116; t=1773195514; c=relaxed/simple;
+	bh=C64KbYJW+ftJBYI+Ni7BGoCwcOuELdDrOYXeUU/HaHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LlgJVEF0hcrJdZUdavaiIIECNZcSmStFrmoxyXdhWsDnhjGf1GeuyMlSXOkkeU00FE6mfsbThIMp8NdFsezGGrUIj6UfjYDFd1j+HXSt6I7JoJztjB72xZtLATrzM/36hXo9Z+hCC2KQMeDo4sjPNC4s52Tr5oBG6awP7yUXuws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SSh/KMpS; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-439b9b190easo6895648f8f.2
+        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 19:18:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1773195512; x=1773800312; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/s/1pmy/Fni8Cotjp/F4qQ5X9Gx9X8u9ReccvcLKD38=;
+        b=SSh/KMpSr5aGuzNeLay8MsjL1/Kh/Zq3QNe+4PL8Qg3vHsYFzFxQemIkAOoKq8VgYy
+         /A0NLnSk1bOL0yjIDzKimvQqR/dy4ugR0/a7nrKHOJYB5IHWd6FlbsR9TbPfhthb6bjT
+         OTAjlP4wAaFK5fJVm6zq0QqCt2aTurW71D3M2/e0f0ddaJyHFhAWuuyLSjJYaIc9zGjZ
+         Jd1RsZesKm0byDb29co9W6d2K5E0isWbKlwXtpml9jsdbXYZ8mzlkpaXE/QYKHB8/tlv
+         y9WR6EGHIZdkw4Qquw+0w8E04fa9RRRk7o6WDLReysYJLnfz7fh8T+ntfD/hp/CgbemR
+         Ufew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773195512; x=1773800312;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/s/1pmy/Fni8Cotjp/F4qQ5X9Gx9X8u9ReccvcLKD38=;
+        b=w+tZUTxXJyxNNxByym5U1iQKht7cA2p94QmaleHusd5LegBFEqlFdiMpKbW3x1K5o3
+         XmGZi4CGoKlwHKS6GTNRHz3VYMgocX7YIdcNYU/I1kYQA4s//RhpOcIpbTSkkfRcTUs9
+         1OiXWdIBotttgaDhXIjU9oLvf5uM6i2MhDlQhT6UPOOA/BbPRsQiJD5ps0NxdbmDpP7p
+         3QLzsbmLtEb07LYWStW75Ct09ZrzNC2AYhaikFjBKPc7zS9tu5Ii14lmNHZaFodfxGZE
+         8iFPWoyqM4aiYWxww4KwkjzhOWI3ScH1TDuy9PJDzj05FscbdAahXEqnMN7DD2G3S++W
+         dqug==
+X-Forwarded-Encrypted: i=1; AJvYcCXio0VVCghK1z4k/Ckv9LFic0N+sYmB0fg9wNWdDaL0NFRsmOR9LPRP1vjQYRfNrgO87/KxCjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIX+xbSVkDX+x3OoP0PRc3MThAUAaOubBwUcELR2N9ABTYAMn+
+	HKR2KjTXF7U1CCQXNWCPVeFtyMavTvHJEpgX1aR/KnfKjTOgaHBt8zo=
+X-Gm-Gg: ATEYQzyympgmV+WgMWgAJDeNq3FF/LQT7OZhdR+dgnxz8/yO8YLYeF2K7QIfhBATEpm
+	jXMXZPQVN5pFsqMAHctStsrgzFxcdQk+4Kskhhh5Vek84vgqDanShvMdiXIWA+8ST5ok1rEeoUC
+	TPJNLMSc6P/hkzlmcafx2MO4G8geJ6ee1+FCLtUeJ9z1Hx0jDVPWfQyod3hqKKWSNky36N4k8l8
+	OliFZi6HhVpEGK1SZZ6iwqOcioBa6Ks+umyyyGYrqCxMOY8IyGn0GHknMQF46COHhFCJMny7m+X
+	tqR31u4Sa85mY6usqzViYEF6ddiXijP/LFXfz5IbWcAytJ9c2jUpocPmzWl6RlpxNBi+2wZjdte
+	VkA+R4OkipwAhKuEfojDT/78q3RLgKflCqKm1BdYU3VNBO/V5IlFejjF7WxE4KZQp2UCcH73lP0
+	jIdjrBNjEkmPuJWVWSHw/bV2o943OH55aEBNBL6DCou4UcPM8BeRL600Bysb2rHsRneoUIwMk6q
+	ds=
+X-Received: by 2002:a05:6000:290b:b0:439:b8e7:8f75 with SMTP id ffacd0b85a97d-439f81f1651mr1663537f8f.3.1773195511809;
+        Tue, 10 Mar 2026 19:18:31 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057cc4.dip0.t-ipconnect.de. [91.5.124.196])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f818d4c8sm2852213f8f.7.2026.03.10.19.18.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 19:18:31 -0700 (PDT)
+Message-ID: <3a64e77d-d314-4f0d-b4ea-2e290809bf93@googlemail.com>
+Date: Wed, 11 Mar 2026 03:18:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 000/314] 6.18.17-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, patches@lists.linux.dev,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <cover.1773141554.git.sashal@kernel.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=ds3Wylg4 c=1 sm=1 tr=0 ts=69b0d002 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=NCz27aoiHFB_FWDnMMMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDAxNiBTYWx0ZWRfX8xQR/MhxUl8X
- cRO+I9wq+AgL6iGttPEcXW/VYWjeW+Qcty2v0nnXfLVvRyQthrs6P+23TwhJMw4xSOs09a5UYsZ
- 16f2UMUTPPg40hZ6NycN4TnWKXflNSk0eFpiFdhwK+e8+deE5kwykZhMn01e72F9eclyOMN77FX
- 6Su2nIg0y/uJ7vKkg7G4mEVUGRT5U7cHYtjNN5dGQ05ety3Bx46SNMRfBVRBpv9dRzH8vExfpZS
- 0WenaZ/9XoAzaWuzwaDKFANEOH1UOlNpr2R5S8zfFVIgqiK0D4+6jSPN7LxYjPTPPzalxTC2QO7
- hmOIEVrN2iRJDooiCnjFXTLMEnGu2JIR+drsuClSDJI3SiBcpCxNh46RD2e0dm3Mv/7dDVOFHtx
- w3ursakx99uzt8TEiVT3rowYQR0d/3k+0lFhXqsSES2HWBPk+uyq2uAb5n6q7JANRweC+qKazpI
- mq1IQDgMvkEH7k1dJYw==
-X-Proofpoint-GUID: WH0uVrNZ4EaGxjvD2lL8qIfBzZt8ePXc
-X-Proofpoint-ORIG-GUID: IKf5F4qSJQ-HRdcUSgYITaCLRcz1NFo0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_05,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110016
-X-Rspamd-Queue-Id: 1339125AD09
+X-Rspamd-Queue-Id: 84FEE25ADD0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224632-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224631-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[ellerman.id.au,gmail.com,kernel.org,linux.ibm.com,lists.ozlabs.org,vger.kernel.org,linutronix.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maddy@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.727];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:dkim,googlemail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mailvelope.com:url]
 X-Rspamd-Action: no action
 
-On Mon, 02 Mar 2026 01:39:48 +0100, Nam Cao wrote:
-> The per-device MSI allocation calculation in pseries_irq_domain_alloc()
-> is clearly wrong. It can still happen to work when nr_irqs is 1.
+Am 10.03.2026 um 12:19 schrieb Sasha Levin:
 > 
-> Correct it.
-> 
-> 
+> This is the start of the stable review cycle for the 6.18.17 release.
+> There are 314 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Applied to powerpc/fixes.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-[1/1] powerpc/pseries: Correct MSI allocation tracking
-      https://git.kernel.org/powerpc/c/35e4f2a17eb40288f9bcdb09549fa04a63a96279
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-cheers
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
