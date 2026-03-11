@@ -1,269 +1,261 @@
-Return-Path: <stable+bounces-224685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBr5G9tksWnsugIAu9opvQ
-	(envelope-from <stable+bounces-224685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:49:31 +0100
+	id aCClHUxlsWnsugIAu9opvQ
+	(envelope-from <stable+bounces-224686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:51:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB708263DAD
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:49:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ECA263E00
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A16C331CEAA1
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:46:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 996A33014694
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA0A23535E;
-	Wed, 11 Mar 2026 12:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368F6253F05;
+	Wed, 11 Mar 2026 12:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0cpWtUl"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Z/zFeNCm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022136.outbound.protection.outlook.com [52.101.101.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4361CD2C;
-	Wed, 11 Mar 2026 12:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773233168; cv=none; b=ngmJMj5hZafpfpzHJayi6jSVUXVQ6GmsKOMfn8NboKzQHcPDRn7UAc21Lmc+XGimM41QUAQL1ylwzDke04CdDqwBYUlNmUn0mPFTipr8/oC+gBGGmp4O3EnkFs9RdxH+q/ShsQu9KPG+b3B1x2h18wLc4cFNKJEPvz5y27nx0Os=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773233168; c=relaxed/simple;
-	bh=yZkRn5xU19FhUS6a/p33ihysyKruq0MZr0bpn51hKGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IeUZwVgtFTEqaBbkJ+UeLJ1vrEo9D7JnbHpKv8wgbuskVKdm4/7kFdOoQGkBt+Mh2hdOeq6ziyKxXRQ+Y+Nn78rsL5W0PGTpFx7zmV7MKBfen8Ey29PbbFmw2fwJ0fH1C5otJvahKLTl0MEaZBqJWB3KHnCeGl66at8mEJiThuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0cpWtUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C9C2BC9E;
-	Wed, 11 Mar 2026 12:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773233167;
-	bh=yZkRn5xU19FhUS6a/p33ihysyKruq0MZr0bpn51hKGM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G0cpWtUlpmdPuT5JeBtlsStbrGlvW7YDP++g40OkGuyh+yH+EKaenhJXKkjuFyKix
-	 aNy+WzG1U5trdVB75IsnbGWV1Lvmbu/y55k5bRMWLuhY+VzyojXRTGuR8Dz2G1FPlh
-	 ZGgegTUpAglPZjxgTlLq42GEnGbVmZeU+ywCYO+k=
-Date: Wed, 11 Mar 2026 13:46:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jimmy Hu <hhhuuu@google.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Dan Vacura <w36195@motorola.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	badhri@google.com
-Subject: Re: [PATCH v2] usb: gadget: f_uvc: fix NULL pointer dereference
- during unbind race
-Message-ID: <2026031109-supermom-treat-09b5@gregkh>
-References: <20260224083955.1375032-1-hhhuuu@google.com>
- <20260309053107.2591494-1-hhhuuu@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE7326B756;
+	Wed, 11 Mar 2026 12:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.136
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773233481; cv=fail; b=YMDAR3luKvCD/nRLGR3XWTygVEjvzSuZw4oKEda4J3iUG4CtokYv9rY0bBtKNrOCU9qlTVhhjvEmZDqgnsg5or3eAbCJR2wChliyfJHtvdVzaaicNz7Prxw9v3IG7cGV61OnH+R6c8w/lc1nOH6UXHeIWmTI1veE9TXabTdRRGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773233481; c=relaxed/simple;
+	bh=4b7GpyRX+ODq2tUMuS0IVSm4ky3yVsjkjPMjVK3ES44=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=VBp1fLI0dQAntgqGxMjO2f634M8SX+UVNOYHdBqEM91u4Rl9F8aqPV+iR6Mdp56kZNFMGreCipX3mzvFovSkeX9SXNmjq9qJOCrIrdlnwNEnUTxDoXH7VGFtGZEr/D6MvlU7vwf0t7VjFFraW6Lh3vM3SRLW5xQjqiBVoH9Mk/0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Z/zFeNCm; arc=fail smtp.client-ip=52.101.101.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xexBDu7L1fiQlVnOSx4dKUwCmgE95LWYF7FlGQJovGPNWh1xX9V7tZ0i6ZX3wM7sIa8LoaCECUDRme48K9uy86GpQHQBlHqzUgws16xg0qTcCxpNjfRkpOAChT/qDMuVJ3KZ0k2YdMdV/looUS9m2wijs9LaqFj9ljaW78nMQtd6jlU6T8DcD1U9ddCqH87WtPhIaAPtrDU4Lep13PkTnz/nAb5KwW0im+QjblVdGWX87ZMQyfKfV+PGPi/G1tRFyyHbg3VA8XRCqLJcWyEGQLPn+VKORPVQQPE65e8dUOLEnMAu0w4wtkODSQNx8rQw/3kIeG0sDy7/YJ5RPqLxrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wirAHAaiK55HwRjeiVGTKenArCZ+WuNEq72QIag/kpI=;
+ b=avj309wpLD//d2l1MLdkClz2A+006GekWu6cXsfeGaXpnMaoWMvn7f89WSInqyAvLw/rR3hvWwrE5uyHatEzw2VdrJL/lzGGOdvn+hoY0stMXdCETIWWwu+cZnnJ8PKbL4xVcB+8cGm1AkGeI6oSDRw1RMUtzfXQdR1NqStb6rSTIlJDSy05U2YhLJNQ2fUKmWx7KP9BYpdLbuCXqfXIDXdtu6uOFpYUlxibUF30Wsg99EiKNuxXhK6tRLqhC/DfpzhTdqRWBkpJxWWRfENjVLLG6//s+4Bgp5PUzBGagh5q8Rkyd0CEAARYz7wh9Uqc8R8QsnT+mnckixgYiDxVxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wirAHAaiK55HwRjeiVGTKenArCZ+WuNEq72QIag/kpI=;
+ b=Z/zFeNCmEvUdF8TIThhfIpGSltKY+2qAyvc8OFAdWf6sWpTvaQkaVvGDxi0H299M/hiaGPIYzrh1qmM71/Tyj5D5H7LzCChNRRSoEKOVy2vzxx96f52jnl2Ad6s1825VTuNb+9CX2pgCQLktGxgc3fKy3g0G+DqSOfzWmAf5Pgc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO4P265MB5995.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:29c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 12:51:15 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 12:51:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Mar 2026 12:51:12 +0000
+Message-Id: <DGZYSZBDNC6K.FG32N978X29A@garyguo.net>
+Cc: "Tim Chirananthavat" <theemathas@gmail.com>, <stable@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: pin-init: replace shadowed return token by
+ `unsafe`-to-create token
+From: "Gary Guo" <gary@garyguo.net>
+To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Fiona Behrens" <me@kloenk.dev>
+X-Mailer: aerc 0.21.0
+References: <20260311105056.1425041-1-lossin@kernel.org>
+In-Reply-To: <20260311105056.1425041-1-lossin@kernel.org>
+X-ClientProxiedBy: LO2P265CA0101.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:c::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309053107.2591494-1-hhhuuu@google.com>
-X-Rspamd-Queue-Id: DB708263DAD
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB5995:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b4a7e28-f6b0-48cb-22a2-08de7f6ce03a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|921020|22082099003|56012099003|18002099003|7142099003;
+X-Microsoft-Antispam-Message-Info:
+	yecECtaD7yD28r6MzelO3WamiSXJnWSKAnPD/oEirG8Ka04peOvAyGAC5YLqZbvzLMKt4c2JjUsjrZ3lY/kJyur4PEItc80i/3q9zmTeS3gh2r8yx7hIAxdX+dmhfVQMXSINLOqg0Rz6Sr9Oc1roa0Icj3KC6RZF3Ka1FG7z5E6/nQOlZE/ktgTJtKaooKq64Fi1vi4XlSemJfHntpkHCyjKVC5C5kWkSoJ3g0a6as/6fGpqATiXdVjm89vJtd5J0EASVp1C3bqXI0712kGWCVS2VP9sO6Zg+PDbc6S3lxbWuPyBxMM5+co/NnG5lUvbbEbYvNAK9AaiPlcKmoOV8IuP7vAOiuAZvjB6zNj5z3ARBOPLdCuAorM1ToiEF4Yl5n7QFiZ1Sb9fPgcWpican7ZCYItLLLYqzGqNjYYXyMwFodXC3TP87mrywjPyKQNO8oUYg3W6CbxJsCzdXUzmul0HhMBihjqsFIyQSPTZXcq04KliCHDdNehtmAIhglpCL0leWU/tHg5WdiRjWjXdIGgc2z8L0kWRacRC7z3xOpCoCHBc3EHfyCKIOU3Xmm7ZXkSoOVgDFx987xhjKsKJvh2gjmlLkHfz/E8D4LzORRCsnQ9cvBYmJmZ8NdjA5exazyDDrc6dLgpsfd2KTIRFe2Q9frEhayhbKo0RnjIx9l64M5CD2FZLCMcd0C3vvW6KVfEjRzHJgR6NGgZPXjcEnlgAvNmHY5q1BmJC3OkDxtI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(921020)(22082099003)(56012099003)(18002099003)(7142099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RDJhY2NKNmhMQ1gxSzFSblJWbXhQSkY4aDVXbDBmUTl1UGFRT0R0WnFWUUI0?=
+ =?utf-8?B?ZHRQSldwVXVXWlViUGVvNWF6VkljSi9VVjdySUUrdEovdmY4Z0lVZmY5NWNO?=
+ =?utf-8?B?bzJQcGNmYjRTVTl5WjFoWHNNMU05T25kMHVtaEozMkY1bHc4eXFxbTI1MjJa?=
+ =?utf-8?B?eFdqOS95ZDRLRUg0RWVuNkpEaldIc0V4WFRmZU5XeGJlWW5nU21RQ0tmQnAx?=
+ =?utf-8?B?OVkyMVlhNjB3eFVLVFBoZWtsaHR3U1doSWc4ZURQU0FpNWN3akhTemhFZHFZ?=
+ =?utf-8?B?MVNYdnZ2aVMzY3o5b1o1QmtOYk1DcU9rYUxJbXB4MXRNQ2hPWjZUSVI5WEdn?=
+ =?utf-8?B?MUxyZXBHa3BMcmN1Tlp2emRqRmtzaXZWUnljM2l1dllOZkYwTVk5NkVFNEpS?=
+ =?utf-8?B?T3EvcEtBSVV0RXVCWTE2MXcwbW5GaVlJcHBSR052VFFXNGpDTVdtaUdpTUhh?=
+ =?utf-8?B?cmJKeTNYUVVrdmN6THBjc2JOS2M4bjJpd3ptb3diaDd5alNScHBkV3AweEt3?=
+ =?utf-8?B?WU9SS0prTVU4SDRjRytCM3B0TlFiT1dCSnRBcHY1K3lZcWpjWFV1d2VBWHJo?=
+ =?utf-8?B?M0JlLzM2NFk4WDdTVUtDR2FKc3V2TjF4Um9ORm1FQ1pzNHNmaldVRE40dXhv?=
+ =?utf-8?B?c1d1d3ZuUGw5bHZXNzhXYjJ0NG81YnFidTgxbFJBbVhsTW84cHlRbk5RSXVG?=
+ =?utf-8?B?NHhueEtIR0NGUndBcjRIc1o5TlFuSzhkc0VxRHd2UzFMY0g2N3N6UktXeEF4?=
+ =?utf-8?B?QzIzSXJNdnY4WUhUbEE4NENMZG1hSy9MbEZEYTk0NVAzcnFGcEJKK2o5NWFO?=
+ =?utf-8?B?c2s0WDJibmI5MXZDY1JjY0FBanNwNE9PL2QxdXluVFFrNUpkaXF1cDBrTjU2?=
+ =?utf-8?B?d2dmYWdPU1hWVk0xbklnZmJjbDVEY05ncVBMdXZyYlkxQVJQRmU0elArcVlP?=
+ =?utf-8?B?VlNZVi93dWtsbHgyNTB6V0dtY3BPaTJncEpZSVlRd081UlV2WmZjMEcvVzJt?=
+ =?utf-8?B?R3VoQkc0V0UzNE16VHBZbGIzSEplZjFpV1MzMlM0ZGdrSTdFTUo3YVZCeFEz?=
+ =?utf-8?B?K2xENHZ6Q0F4MDBycmtQNGlTSkYxdUxaeXRuUkNZL2d6aVBHOWpIUUpoR2VI?=
+ =?utf-8?B?V05JclE2YUE1OVhOTGRubHFCVjlZYzBoNW0yZWxmTm9IZjNJdm10TDBEUENN?=
+ =?utf-8?B?WHpMazFZUVFPc29hMEJnZlFNU2JMUmd6QS9PL1Q1aktXQlIxc053djV1WEUr?=
+ =?utf-8?B?d2JtakhsTzFXSnBHZU9tQlNKNXhsMlVlaWQxZVpzekE0WDZNYWcxaFBTZG9O?=
+ =?utf-8?B?dVJwcStsektVNXZUMGl4ajFFeTcrcmQwL0RrZEdsR1I2M2s1Tno5VEtWVVk1?=
+ =?utf-8?B?SUEyVE1OS2pjRUd3VVRnV0RvSWdpNlU1Wk5LQU11NjRTQmEwMzBNNWZQUDJ5?=
+ =?utf-8?B?TEFtOWQrMC9GYzNVbW9uaDI1d1NuUmREWDN4cjlSMEcyMVRielZwbmJGd1g0?=
+ =?utf-8?B?bjlkRnZzTElKVG5mN2pQNjVrZExxeHA1a3FOcmFHMEk1R2E5V01DMU9KT3Ji?=
+ =?utf-8?B?RjZ6V1paUG5hcVRBYlBPQUFjdFRCSGV1Q3JSZUdaR2dkOEVPQUw3cUFOc09T?=
+ =?utf-8?B?M2k0YnZrSHRQelhOSjBiOHE2WEROdi9FWUlXNVYyMnhzYU1FUkRxVFJ3SWlk?=
+ =?utf-8?B?MVN4OVQ1ekFRRFV3bTRmME1QZU4zbDh6aTI2ODRDcHV4U2hCRzdUV0xuK0ZT?=
+ =?utf-8?B?Smd5TWxOVkpXdi92VHNUalQybWpkVUUrSURnSlFyM2xQK2xVWm5xL2E0ck56?=
+ =?utf-8?B?cVRlNEtUU2NqQlNmd1FsdVcxSHBJQ0w1K1hEUmdzUUNzU0wwTDRIOHUrVWtL?=
+ =?utf-8?B?NVdDMjdGcXZ1NmxrYm1oek5aNGV3alV2YW1xZ0tUTXVHNGh6UjNQWW4yTk1B?=
+ =?utf-8?B?K3BhZDV5YzZVREczM1FDcXRzU1FTWklPTDBkM3JYYWl0WW4ydEpRcTBqS3lC?=
+ =?utf-8?B?NWhYN2pxVlZHcnZLS3V0YUFnQ2lRTFUrV2VmbGhDb2xkYlhQbzJpeFVJMUxv?=
+ =?utf-8?B?cnV2VW1QWEFzdEpQaHB5WndNNVVUbXhqaVk2aGZiUFRDV1pCc2V5NG9FYWht?=
+ =?utf-8?B?TWpqVFZ5NTA1bG1lSFdaWUQ0UU1jdkxqcFFIeFE1YXBTOEZ1YkxLaFB2UFE2?=
+ =?utf-8?B?QW9BMldQaW1lZkNEL3FNTHgxMU5EL3hYa1Bhd1RCUkcxNXdSaE53UEdqVE9M?=
+ =?utf-8?B?SlVoSmlRVVpVYkdJcnZwbGNka21yV0RHWm81WTlvM2pySlZyZS9EYXhOcjJx?=
+ =?utf-8?B?akJGa3RoaGhGL25KQlBENWg3TWZxeld2TDdNd3YyRGJvWFVwblY1dz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b4a7e28-f6b0-48cb-22a2-08de7f6ce03a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 12:51:12.9894
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4II5PE91oAwHhRS/jgtoW9iuQ3PzOVuohSRntHTMJxubph25rIHhdGHIvteYJWRL0K4pj39tf+7pdrhBL9DvbQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB5995
+X-Rspamd-Queue-Id: E6ECA263E00
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224686-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,kloenk.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.982];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,harvard.edu:email,linuxfoundation.org:dkim]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[garyguo.net:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 01:31:07PM +0800, Jimmy Hu wrote:
-> Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
-> shutdown") introduced two stages of synchronization waits totaling 1500ms
-> in uvc_function_unbind() to prevent several types of kernel panics.
-> However, this timing-based approach is insufficient during power
-> management (PM) transitions.
-> 
-> When the PM subsystem starts freezing user space processes, the
-> wait_event_interruptible_timeout() is aborted early, which allows the
-> unbind thread to proceed and nullify the gadget pointer
-> (cdev->gadget = NULL):
-> 
-> [  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
-> [  814.178583][ T3173] PM: suspend entry (deep)
-> [  814.192487][ T3173] Freezing user space processes
-> [  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
-> 
-> When the PM subsystem resumes or aborts the suspend and tasks are
-> restarted, the V4L2 release path is executed and attempts to access the
-> already nullified gadget pointer, triggering a kernel panic:
-> 
-> [  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
-> [  814.386727][ T3173] Restarting tasks ...
-> [  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-> [  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
-> [  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
-> [  814.404078][ T4558] Call trace:
-> [  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
-> [  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
-> [  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
-> [  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
-> [  814.404095][ T4558]  v4l2_release+0xcc/0x130
-> 
-> This patch introduces the following safeguards:
-> 
-> 1. State Synchronization (flag + mutex)
-> Introduced a 'func_unbound' flag in struct uvc_device. This allows
-> uvc_function_disconnect() to safely skip accessing the nullified
-> cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
-> by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
-> instruction reordering or speculative loads.
-> 
-> 2. Lifecycle Management (kref)
-> Introduced kref to manage the struct uvc_device lifecycle. This prevents
-> Use-After-Free (UAF) by ensuring the structure is only freed after the
-> final reference, including the V4L2 release path, is dropped.
-> 
-> Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
-> Cc: <stable@vger.kernel.org>
-> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-> Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+On Wed Mar 11, 2026 at 10:50 AM GMT, Benno Lossin wrote:
+> We use a unit struct `__InitOk` in the closure generated by the
+> initializer macros as the return value. We shadow it by creating a
+> struct with the same name again inside of the closure, preventing early
+> returns of `Ok` in the initializer (before all fields have been
+> initialized).
+>=20
+> In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
+> this solution no longer works [1]. The shadowed struct can be named
+> through type inference. In addition, there is an RFC proposing to add
+> the feature of path inference to Rust, which would similarly allow [2]
+>=20
+> Thus remove the shadowed token and replace it with an `unsafe` to create
+> token.
+>=20
+> The reason we initially used the shadowing solution was because an
+> alternative solution used a builder pattern. Gary writes [3]:
+>=20
+>     In the early builder-pattern based InitOk, having a single InitOk
+>     type for token is unsound because one can launder an InitOk token
+>     used for one place to another initializer. I used a branded lifetime
+>     solution, and then you figured out that using a shadowed type would
+>     work better because nobody could construct it at all.
+>=20
+> The laundering issue does not apply to the approach we ended up with
+> today.
+>=20
+> With this change, the example by Tim Chirananthavat in [1] no longer
+> compiles and results in this error:
+>=20
+>     error: cannot construct `pin_init::__internal::InitOk` with struct li=
+teral syntax due to private fields
+>       --> src/main.rs:26:17
+>        |
+>     26 |                 InferredType {}
+>        |                 ^^^^^^^^^^^^
+>        |
+>        =3D note: private field `0` that was not provided
+>     help: you might have meant to use the `new` associated function
+>        |
+>     26 -                 InferredType {}
+>     26 +                 InferredType::new()
+>        |
+>=20
+> Applying the suggestion of using the `::new()` function, results in
+> another expected error:
+>=20
+>     error[E0133]: call to unsafe function `pin_init::__internal::InitOk::=
+new` is unsafe and requires unsafe block
+>       --> src/main.rs:26:17
+>        |
+>     26 |                 InferredType::new()
+>        |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+>        |
+>        =3D note: consult the function's documentation for information on =
+how to avoid undefined behavior
+>=20
+> Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+> Link: https://github.com/rust-lang/rust/issues/153535 [1]
+> Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373=
+ [2]
+> Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-401762=
+0804 [3]
+> Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
-> v1 -> v2:
-> - Renamed 'func_unbinding' to 'func_unbound' for clearer state semantics.
-> - Added a mutex (uvc->lock) to protect the 'func_unbound' flag and ensure
->   proper memory ordering, as suggested by Alan Stern.
-> - Integrated kref to manage the struct uvc_device lifecycle, allowing the 
->   removal of redundant buffer cleanup skip logic in uvc_v4l2_disable().
->   
-> v1: https://patchwork.kernel.org/project/linux-usb/patch/20260224083955.1375032-1-hhhuuu@google.com/
-> 
->  drivers/usb/gadget/function/f_uvc.c    | 27 +++++++++++++++++++++++++-
->  drivers/usb/gadget/function/uvc.h      |  4 ++++
->  drivers/usb/gadget/function/uvc_v4l2.c |  2 ++
->  3 files changed, 32 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-> index 494fdbc4e85b..485cd91770d5 100644
-> --- a/drivers/usb/gadget/function/f_uvc.c
-> +++ b/drivers/usb/gadget/function/f_uvc.c
-> @@ -413,8 +413,17 @@ uvc_function_disconnect(struct uvc_device *uvc)
->  {
->  	int ret;
->  
-> +	mutex_lock(&uvc->lock);
-> +	if (uvc->func_unbound) {
-> +		pr_info("uvc: unbound, skipping function deactivate\n");
+> This is not yet a soundness issue, but could become one in the future
+> when TAIT gets stabilized in a form that allows the problem described.
+> ---
+>  rust/pin-init/internal/src/init.rs | 22 +++++++---------------
+>  rust/pin-init/src/__internal.rs    | 28 ++++++++++++++++++++++++----
+>  2 files changed, 31 insertions(+), 19 deletions(-)
 
-When drivers work properly, they are quiet.  Also, why are you not using
-uvcg_info() here, this pr_info() gives no device specific information so
-you know what device this is happening to.
-
-
-
-> +		goto unlock;
-> +	}
-> +
->  	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
->  		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
-> +
-> +unlock:
-> +	mutex_unlock(&uvc->lock);
->  }
->  
->  /* --------------------------------------------------------------------------
-> @@ -659,6 +668,9 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
->  	int ret = -EINVAL;
->  
->  	uvcg_info(f, "%s()\n", __func__);
-> +	mutex_lock(&uvc->lock);
-> +	uvc->func_unbound = false;
-> +	mutex_unlock(&uvc->lock);
->  
->  	opts = fi_to_f_uvc_opts(f->fi);
->  	/* Sanity check the streaming endpoint module parameters. */
-> @@ -974,6 +986,13 @@ static struct usb_function_instance *uvc_alloc_inst(void)
->  	return &opts->func_inst;
->  }
->  
-> +void uvc_device_release(struct kref *kref)
-> +{
-> +	struct uvc_device *uvc = container_of(kref, struct uvc_device, kref);
-> +
-> +	kfree(uvc);
-> +}
-> +
->  static void uvc_free(struct usb_function *f)
->  {
->  	struct uvc_device *uvc = to_uvc(f);
-> @@ -982,7 +1001,7 @@ static void uvc_free(struct usb_function *f)
->  	if (!opts->header)
->  		config_item_put(&uvc->header->item);
->  	--opts->refcnt;
-> -	kfree(uvc);
-> +	kref_put(&uvc->kref, uvc_device_release);
->  }
->  
->  static void uvc_function_unbind(struct usb_configuration *c,
-> @@ -994,6 +1013,9 @@ static void uvc_function_unbind(struct usb_configuration *c,
->  	long wait_ret = 1;
->  
->  	uvcg_info(f, "%s()\n", __func__);
-> +	mutex_lock(&uvc->lock);
-> +	uvc->func_unbound = true;
-> +	mutex_unlock(&uvc->lock);
->  
->  	kthread_cancel_work_sync(&video->hw_submit);
->  
-> @@ -1046,8 +1068,11 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
->  	if (uvc == NULL)
->  		return ERR_PTR(-ENOMEM);
->  
-> +	kref_init(&uvc->kref);
-> +	mutex_init(&uvc->lock);
->  	mutex_init(&uvc->video.mutex);
->  	uvc->state = UVC_STATE_DISCONNECTED;
-> +	uvc->func_unbound = true;
->  	init_waitqueue_head(&uvc->func_connected_queue);
->  	opts = fi_to_f_uvc_opts(fi);
->  
-> diff --git a/drivers/usb/gadget/function/uvc.h b/drivers/usb/gadget/function/uvc.h
-> index 676419a04976..22b70f25607d 100644
-> --- a/drivers/usb/gadget/function/uvc.h
-> +++ b/drivers/usb/gadget/function/uvc.h
-> @@ -155,6 +155,9 @@ struct uvc_device {
->  	enum uvc_state state;
->  	struct usb_function func;
->  	struct uvc_video video;
-> +	struct kref kref;
-
-But there is already a device reference count in the vdev structure,
-right?  Are you now having 2 reference counts for the same device?
-That's going to cause a lot of problems.
-
-> +	struct mutex lock;
-
-Please document what this lock is locking.
-
-thanks,
-
-greg k-h
 
