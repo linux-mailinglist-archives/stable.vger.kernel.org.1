@@ -1,233 +1,261 @@
-Return-Path: <stable+bounces-224674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA52MwtPsWlCtAIAu9opvQ
-	(envelope-from <stable+bounces-224674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:16:27 +0100
+	id yLRxLzBPsWlCtAIAu9opvQ
+	(envelope-from <stable+bounces-224675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:17:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343F7262CE1
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:16:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9DC262CF7
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68C6D3072DB9
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:13:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D02430160D8
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9483D6CA7;
-	Wed, 11 Mar 2026 11:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFCB3DB654;
+	Wed, 11 Mar 2026 11:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OjJ1hyo8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdufyU/W"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4853D6CD7
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 11:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCFA3D34A0
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 11:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773227610; cv=none; b=UXWUXyOAaLnrZYgcJy3oLaQRq+mYJjlMXPDnGca3O3iVltIi+FllDzUSU3mEqis/EkM7IzM3WubtuIwCyOLam+60NHHR2kPbsm24uWaKxRzmbBLBniOv94GUZkpZ1OtfLJGEi34n6xI7cn4HUw2uIEbMWRqq0H7S/AzxFgzsBCE=
+	t=1773227818; cv=none; b=SZ/71MuRrhPAwzuJKzXFALftyJ0bI57gZiuRfjS7e3g2JMgJ8I/mGMUTyY2j/ANY0QC7PTB1DRfz3QZ4I16GIfSbXBJTHYdq1Dj/O7nDeUwzLLToRKiyx7Ejumqlg+Fr5VVC44WX4dsn8oYWrHgBxgHxk/DI7ujJX+w30mvmaQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773227610; c=relaxed/simple;
-	bh=4lX+kBPGqJ3QkimSYJuNi93y7EH2IixXEvvpadxc03o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UXqMjoXloiUvnbIetarA8HjdC8NLk/67kofvc8bw79zWOcuzglCGL6AYyclQ/jH9teLAYJpRpUrAPm8avDMNZlzcC3r3OIk4ynCQHH79Fs/rhbycgoRzC39D5mouiGcOHh/iQZYA4qaFeK+E3EyfdsVeBrt+RsZ1rwBLf944NAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OjJ1hyo8; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1773227818; c=relaxed/simple;
+	bh=XGc+lIXpLzI2z16a5YWNBgyGUBvdtMG5A/UDFPfkdCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fsy7iCKPJul7SwnB3YNaaXkuJK5ub8pYV7Dz5CEcreKjDIcmTi7QJpxb5M3hK9MIJYYndrlSxtybqjX5HishtBeOIlowF49MAN56Cn9aHIhJ3wsbYRwrbD4BvCYSwkFd3iQ/gvojuE1Jr+alPthQpGMU69o9XOEm+nR82zaZWks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdufyU/W; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so44855775e9.0
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 04:13:24 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2adbfab4501so63117865ad.2
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 04:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773227603; x=1773832403; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qnfnqQA087ph9rwVER4jOdXVQrVQv1Zi9ON3TBE4BwA=;
-        b=OjJ1hyo8Y5G/h08jF6fcpkZ/oUtq73oQ2VePvyE0nB61vPEBr/OxPycmCrWe8Qf8M/
-         RpJvLNph+gVHFZ72lnvHFj5wQiJMudZkGFiuvXe9It7U6H6+czYawu4BalY8qOsRFHPG
-         POeWRyvDR8uaqK7MpsFeZNFWLPFzqcdqaKYKMn5unOcp1RLdz9jeCqHjxo7aGcZzY018
-         wtLsIOaL4CZX/P14wspHteJV3ZEmBVpstKsl7W+O50RefN0dvwRtlk/RHvKh/ihpQeaI
-         oYH2pyW36OKypvh+SWOemCmLzyEPj6qhN29+q0P1Uo3R9SS4FbvPylZjMWE9eVuNPW1h
-         ASfA==
+        d=gmail.com; s=20230601; t=1773227814; x=1773832614; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MA1vNBIvj0q/vs+HsgjgV9EFaAZZQznWpheg8h1fwT4=;
+        b=GdufyU/WZGfonyXhK13ghoa4Rew5s+6x8pVpTJYZ+6KQASZQANtKJdZhB7fGz2UcNN
+         u64KZh9zYVmVBNcFUm68kygpo3ICOf6aaenaXPURRMUp7Dl7dMroev88yp5rpynG2tf3
+         ASzI2B2gASihyjIBURcsEOo+6tHGypr7ykmfuLplC0+qAyhPVk1I/r1R1HolcZJVGSVX
+         bghfARQBqeMu2WVBHrm4G0wxcnWTg0pMqQV4TYJ6/LNiBOcopWF/FWwgz6YIy0UjXA4X
+         XRNAsFx94JRGxlhSm9aEw1KH+QVHOTJUcP/BC83lsJ1zLTDBSCfKZcKG6TJIEbGmH3Y+
+         hKQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773227603; x=1773832403;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qnfnqQA087ph9rwVER4jOdXVQrVQv1Zi9ON3TBE4BwA=;
-        b=jip09km73LyCwcQn2BcFUV4gewEWRdeu4y0VkRVi97+pMwoKZK4/sFzeu3adiTDVt4
-         5h14+njKbhSMU9FF1Kd+MYBcJ3F2litNKEGy/pujyKQLJvyflHHAsl2WjqXX9BN28OGp
-         +T9g+fZoYC0JTUtWXDXp3h1dr8JzB2pQ4yuuWPrMUfW8qtWAhDocv2znLYnH8whZLL06
-         nsnf0cuYNDvf7kRMy0ARSZOIl7CNmJsseE+s3ierDjKHvdOguGoHa3iEvhBoolwYc5YJ
-         UzKvGvC+8sJt0qHvAB/Frn7LlQOoD2RcLstcPAonEdupg3MeQhFhX+N0UCLoJZjk1+Sl
-         ddsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUF3AayNegdz5h17tlpwL/KrM0SqcXeEwp40oOJgE5NoWYN97QHshQa1cOgY8iOLFzyOd5c6GI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4jqC/mXflAuSQ9Kqs8l/6wDen/mmKTjg8Wp2L5GpSRX4YUbTn
-	IckCFRIMLimqHhW8oDdlWH6kKx6PE0HAtLoeHHIXfzARg7b9babH5tML
-X-Gm-Gg: ATEYQzyw03v0gyzDM/iSwAQEKMk8rR0wBB6C5ZEnEuSpCJN8cMaBAsjrMat6q2mzGnu
-	pidhRdPHn5iP3fKetm9RtlKF9FQl3qFbsWpB4xTDwOuQAadQuye06vdBFyMm0MkVEACLTvICEF8
-	HKB6aD8WX4ifToIcLdNnB1axMJGKZsedL8ZEIol9tfa4EZv0oANQxKvfAiZBu6BozHK2M8cdYjI
-	GsyH5kpTZPC4a9nIxq3gwcLUj0PwldhSV2TNYmSU8KMi7YpEw4W39pKaNYbueXlLuIrxxg5VS8d
-	LGkx6JNSCoSci33wSeytuD7dl4nQDsGGqmxg7/DbInwKXEVjslUqujZ4mP0XIfGjrgityyVbij5
-	H+NoRigocLCikIqzmwTer/MT7wDWsse0NRdrSeJ5oapAwshW4DybkFj264MjOUSfWEAfw8qLqyX
-	eHDKtM05C6oGpyc4IGyO9mt1m+UXH1lbkX4hiPBGpT4avSTyIvKe0K3AR1NNMK8MJDVieSX5cuD
-	aAeTUWD3+EoG7HDLRBja6G0l1ukALbGQ5/lvsdCjEKgsNoGwK785tqOGg==
-X-Received: by 2002:a05:600c:154d:b0:485:3983:aba2 with SMTP id 5b1f17b1804b1-4854b109d15mr35244795e9.23.1773227603058;
-        Wed, 11 Mar 2026 04:13:23 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:bf9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854e67e8d6sm2339475e9.1.2026.03.11.04.13.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Mar 2026 04:13:22 -0700 (PDT)
-Message-ID: <39d1678f-7a7e-43d5-a92d-0b26b9bfd44e@gmail.com>
-Date: Wed, 11 Mar 2026 11:13:20 +0000
+        d=1e100.net; s=20230601; t=1773227814; x=1773832614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MA1vNBIvj0q/vs+HsgjgV9EFaAZZQznWpheg8h1fwT4=;
+        b=MNOug6V1s5tC0qFcRtdwgl+Y2KogkbRXtPau54kyKj5zI3ZY7V46O76DSF2G+81J2w
+         O64Kr/KnRXmeWHUfjHKc+wyjfB6L6MsWYwcUVeNnKGyEi9k0vg/CLgZELXKGyNvXjm7T
+         l5BZFWMZyEfO5KUi5WNPKCqHL/OyQs7asMuBfu7YV1w+bEd0W5abvVNjh1YPfZYMAebE
+         GDDdgYnzZ0S1cYi7evSuFiAybmU/N86TEiXGlUr17CmD3delvBSQ4uMRK8mJIHRzI5+P
+         MK2caPvRfqngmhhFClA57SsSoUYPHhrJoiWQ3TEDKZpIsqmjOjDOhQfHvtZENxdTs5e6
+         mc4w==
+X-Forwarded-Encrypted: i=1; AJvYcCW6RHo+r++ho+gjM4BIMAtDvkzcETkEYp+vVDxCIBRlAXlmKCPK0SRwa1HfJKkjvAbNS0jvBsM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywdbI0xS/SlMY+/ZbEiHTaLC2PLsx9Fhf18ziRFh43I0wlAG19
+	xtGHJw3D+7YIh/OCnv0DcZhfdbGab1kV9dXCJvykWnA4EJ3gWQLhNWvPr3tyK1GtNZjmaA==
+X-Gm-Gg: ATEYQzzeRpC6g8D/QeSAcfAs4jz2Mr/0NrJBoyUZ1IO+hUSuZoaHnae6Bon2D2Vgfn/
+	bclzFbX0ciFz0ZAnWmZlW5WY1c0/tklnf3r05vQ5WinjrvBgAFUMyt7J3CUtStjIv2IWAYo+Cjv
+	zx67benmU57eW2WzhxDDehWVBUxQkYwEkksIRFr06fd+pGyf2Uv1AEMy6PEqIPVrG5xRNz1n2n3
+	L4GdHeWFNocnOfraRAaOIhOzx/ayNmoZNCkQ99B86i245N05a+N5n3ocBgZNdYo12aGWHUDxzPq
+	k0e/QzzBbMvIKLVHLmAGJpTfBgGpblmZPpZl6bzBV15V6lD5oqneVWJ63b08IfT042uuxBNnYFR
+	EIHOOTlXdUVK9EweOdjuB98Uqh+sM7LjzRwsG+w2fN0mxcpAuxKIcl6fO9k/qBpOdZxNcOIZNjS
+	oREZn9i+Ul08uXvaUAvyjJqgDqsl5ZfaflRSqIPL5hZAC3n29MQanyqKOH6RQLmz/ERdtV7Q==
+X-Received: by 2002:a17:903:2bce:b0:2ae:44f4:1678 with SMTP id d9443c01a7336-2aeae9698d7mr22224785ad.57.1773227814088;
+        Wed, 11 Mar 2026 04:16:54 -0700 (PDT)
+Received: from kernel-fuzz.. ([138.199.21.245])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae247cbesm22377015ad.29.2026.03.11.04.16.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 04:16:53 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: dsterba@suse.com,
+	clm@fb.com,
+	wqu@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: reject root items with drop_progress and zero drop_level
+Date: Wed, 11 Mar 2026 19:16:32 +0800
+Message-ID: <20260311111632.2836293-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] io_uring: ensure ctx->rings is stable for task work
- flags manipulation
-To: Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org
-Cc: naup96721@gmail.com, stable@vger.kernel.org
-References: <20260310145521.68268-1-axboe@kernel.dk>
- <20260310145521.68268-2-axboe@kernel.dk>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20260310145521.68268-2-axboe@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 343F7262CE1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F9DC262CF7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224674-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224675-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 3/10/26 14:45, Jens Axboe wrote:
-> If DEFER_TASKRUN | SETUP_TASKRUN is used and task work is added while
-> the ring is being resized, it's possible for the OR'ing of
-> IORING_SQ_TASKRUN to happen in the small window of swapping into the
-> new rings and the old rings being freed.
-> 
-> Prevent this by adding a 2nd ->rings pointer, ->rings_rcu, which is
-> protected by RCU. The task work flags manipulation is inside RCU
-> already, and if the resize ring freeing is done post an RCU synchronize,
-> then there's no need to add locking to the fast path of task work
-> additions.
-> 
-> Note: this is only done for DEFER_TASKRUN, as that's the only setup mode
-> that supports ring resizing. If this ever changes, then they too need to
-> use the io_ctx_mark_taskrun() helper.
-> 
-> Link: https://lore.kernel.org/io-uring/20260309062759.482210-1-naup96721@gmail.com/
-> Cc: stable@vger.kernel.org
-> Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-> Reported-by: Hao-Yu Yang <naup96721@gmail.com>
-> Suggested-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> ---
->   include/linux/io_uring_types.h |  1 +
->   io_uring/io_uring.c            |  2 ++
->   io_uring/register.c            | 20 ++++++++++++++++++--
->   io_uring/tw.c                  | 24 ++++++++++++++++++++++--
->   4 files changed, 43 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
-> index 3e4a82a6f817..dd1420bfcb73 100644
-> --- a/include/linux/io_uring_types.h
-> +++ b/include/linux/io_uring_types.h
-> @@ -388,6 +388,7 @@ struct io_ring_ctx {
->   	 * regularly bounce b/w CPUs.
->   	 */
->   	struct {
-> +		struct io_rings	__rcu	*rings_rcu;
->   		struct llist_head	work_llist;
->   		struct llist_head	retry_llist;
->   		unsigned long		check_cq;
-> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-> index ccab8562d273..20fdc442e014 100644
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -2066,6 +2066,7 @@ static void io_rings_free(struct io_ring_ctx *ctx)
->   	io_free_region(ctx->user, &ctx->sq_region);
->   	io_free_region(ctx->user, &ctx->ring_region);
->   	ctx->rings = NULL;
-> +	RCU_INIT_POINTER(ctx->rings_rcu, NULL);
->   	ctx->sq_sqes = NULL;
->   }
->   
-> @@ -2703,6 +2704,7 @@ static __cold int io_allocate_scq_urings(struct io_ring_ctx *ctx,
->   	if (ret)
->   		return ret;
->   	ctx->rings = rings = io_region_get_ptr(&ctx->ring_region);
-> +	rcu_assign_pointer(ctx->rings_rcu, rings);
->   	if (!(ctx->flags & IORING_SETUP_NO_SQARRAY))
->   		ctx->sq_array = (u32 *)((char *)rings + rl->sq_array_offset);
->   
-> diff --git a/io_uring/register.c b/io_uring/register.c
-> index a839b22fd392..5f2985ba0879 100644
-> --- a/io_uring/register.c
-> +++ b/io_uring/register.c
-> @@ -487,6 +487,18 @@ static void io_register_free_rings(struct io_ring_ctx *ctx,
->   			 IORING_SETUP_CQE32 | IORING_SETUP_NO_MMAP | \
->   			 IORING_SETUP_CQE_MIXED | IORING_SETUP_SQE_MIXED)
->   
-> +static void io_resize_assign_rings(struct io_ring_ctx *ctx, struct io_rings *rings)
-> +{
-> +	/*
-> +	 * Just mark any flag we may have missed and that the application
-> +	 * should act on unconditionally. Worst case it'll be an extra
-> +	 * syscall.
-> +	 */
-> +	atomic_or(IORING_SQ_TASKRUN | IORING_SQ_NEED_WAKEUP, &rings->sq_flags);
-> +	ctx->rings = rings;
-> +	rcu_assign_pointer(ctx->rings_rcu, rings);
-> +}
-> +
->   static int io_register_resize_rings(struct io_ring_ctx *ctx, void __user *arg)
->   {
->   	struct io_ctx_config config;
-> @@ -579,6 +591,7 @@ static int io_register_resize_rings(struct io_ring_ctx *ctx, void __user *arg)
->   	spin_lock(&ctx->completion_lock);
->   	o.rings = ctx->rings;
->   	ctx->rings = NULL;
-> +	RCU_INIT_POINTER(ctx->rings_rcu, NULL);
->   	o.sq_sqes = ctx->sq_sqes;
->   	ctx->sq_sqes = NULL;
+[BUG]
+When recovering relocation at mount time, merge_reloc_root() and
+btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
+an impossible state: a non-zero drop_progress combined with a zero
+drop_level in a root_item, which can be triggered:
 
-Should be better to not have a transient null, and then there
-is no need to check for that in task_work. I.e. don't zero it
-and only assign the new value if you successfully created a
-new set of rings.
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/relocation.c:1545!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary) 
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
+RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
+Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
+Call Trace:
+ merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
+ btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ ...
+RIP: 0033:0x7f969c9a8fde
+Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
+---[ end trace 0000000000000000 ]---
 
+[CAUSE]
+A non-zero drop_progress.objectid means an interrupted
+btrfs_drop_snapshot() left a resume point on disk, and in that case
+drop_level must be greater than 0 because the checkpoint is only
+saved at internal node levels.
+
+Although this invariant is enforced when the kernel writes the root
+item, it is not validated when the root item is read back from disk.
+That allows on-disk corruption to provide an invalid state with
+drop_progress.objectid != 0 and drop_level == 0.
+
+When relocation recovery later processes such a root item,
+merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
+same invalid metadata can also trigger the corresponding BUG_ON() in
+btrfs_drop_snapshot().
+
+[FIX]
+Fix this by validating the root_item invariant in tree-checker when
+reading root items from disk: if drop_progress.objectid is non-zero,
+drop_level must also be non-zero. Reject such malformed metadata with
+-EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
+and triggers the BUG_ON.
+
+Also fix the related tree-checker error message to report
+"invalid root drop_level" instead of the misleading "invalid root level".
+
+The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime. After
+the fix, the same corruption is correctly rejected by tree-checker
+and the BUG_ON is no longer triggered.
+
+Fixes: 259ee7754b67 ("btrfs: tree-checker: Add ROOT_ITEM check")
+Cc: stable@vger.kernel.org # 5.3+
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+Reproduction (v6.18, x86_64, KASAN)
+===================================
+The PoC is relatively large, so it is provided separately through google drive:
+https://drive.google.com/drive/folders/1Rto3DUtjUTOg3bjFeH5G2Kl8Li6OuzsG
+
+To reproduce the issue:
+  1. Build the ublk helper program from the ublk codebase, which is
+	 used to provide the runtime corruption capability:
+	  g++ -std=c++20 -fcoroutines -O2 -o standalone_replay \
+      standalone_replay_btrfs.cpp targets/ublksrv_tgt.cpp \
+      -I. -Iinclude -Itargets/include \
+      -L./lib/.libs -lublksrv -luring -lpthread
+  2. Attach the crafted image through ublk:
+      ./standalone_replay add -t loop -f /path/to/image
+  3. Mount the image:
+	  mount -o loop /path/to/image /mnt
+This reliably reproduces the bug.
+---
+ fs/btrfs/tree-checker.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index dd274f67ad7f..a8c568b10432 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1256,10 +1256,27 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
+ 	}
+ 	if (unlikely(btrfs_root_drop_level(&ri) >= BTRFS_MAX_LEVEL)) {
+ 		generic_err(leaf, slot,
+-			    "invalid root level, have %u expect [0, %u]",
++			    "invalid root drop_level, have %u expect [0, %u]",
+ 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
+ 		return -EUCLEAN;
+ 	}
++	/*
++	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
++	 * interrupted and the resume point was recorded in drop_progress and
++	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
++	 * leaf level and drop_snapshot never saves a checkpoint there (it
++	 * only records checkpoints at internal node levels in DROP_REFERENCE
++	 * stage).  A zero drop_level combined with a non-zero drop_progress
++	 * objectid indicates on-disk corruption and would cause a BUG_ON in
++	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
++	 */
++	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
++		     btrfs_root_drop_level(&ri) == 0)) {
++		generic_err(leaf, slot,
++			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
++			    btrfs_disk_key_objectid(&ri.drop_progress));
++		return -EUCLEAN;
++	}
+ 
+ 	/* Flags check */
+ 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
 -- 
-Pavel Begunkov
+2.43.0
 
 
