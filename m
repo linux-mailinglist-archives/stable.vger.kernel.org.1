@@ -1,218 +1,222 @@
-Return-Path: <stable+bounces-224767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224768-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLSzF2besWm2GgAAu9opvQ
-	(envelope-from <stable+bounces-224767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:28:06 +0100
+	id qFDCMFDhsWm2GgAAu9opvQ
+	(envelope-from <stable+bounces-224768-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:40:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E0226A655
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:28:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB5A26A845
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 22:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 507C8307E84E
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:28:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1619D3043D5D
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD834EEF9;
-	Wed, 11 Mar 2026 21:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D354233D6EE;
+	Wed, 11 Mar 2026 21:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LgrzI6x+"
+	dkim=pass (1024-bit key) header.d=sch.bme.hu header.i=@sch.bme.hu header.b="qcRfQfyW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020128.outbound.protection.outlook.com [52.101.84.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C30532AAB5
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 21:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4474B175A73;
+	Wed, 11 Mar 2026 21:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.128
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773264482; cv=pass; b=dwYLOrlmV2l3RsgtnxFr2BwZFDw++oaG3clhPcvssSr/wKP2KHfK66px/AAqwK1wfssRH1MSJiFTcT6OlGWvNwd2hiZ/9ityVHKjf6vzIUgY520IYkwfBEACSB+jOEaxMc+++vdavIWgbBHGDhbYkZKKIj7EWOuQHoYirCEIEtY=
+	t=1773265227; cv=fail; b=CtvvQAlBeBdSMtznaZekshm+FdXsnun+rdLEjKDlw+v9BJIPvwusuudAcrygCxS0WB+1rD/nsg/SMJq2hEaOt2vuXIXFsBf9RIidg7e36wH0PqX3qD+recvmhwHpgwAIt0EPirtm4GMcvL2NFp6H+r78ty285ZqE21yeVWqjY+Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773264482; c=relaxed/simple;
-	bh=RmS7wYS8Jzhr/lMEOKbcBY/EHfzfw9Nb/Q+uINT0q/U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VWpZX7NQRjDcSQpfaH45KcLLOb+vh400fe1OIqfdo0b/Txm6FFqcLzfVSysPi6taP+P7GXiPQ05XbeC9eMumrlmmqz57nylv1yWNMKAonqY6AREQcvx+bWfBIQBZBuKsX0g3Ficezv+g2MkpsqvpDdXYogK0TJm9suDHXrT10Bc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LgrzI6x+; arc=pass smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4648447e29bso169360b6e.0
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 14:28:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773264480; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VrnHOhw5Aow0RMrf3N0gly0MyweGGAl5mu2bYEUSSlBxgE0GQHbQyJXwuTaxoolXzv
-         isGWfhsmZ7PdeIsaxaLZ8tafma2CBAidDVSRdsFu+EnxXxD9n38uzgPcvu2f/2XSuInU
-         JmuPFSx5qpAZToBHgNzRZG47ha3fEwuU8U8wT2LyOy5rooRQZuBH7aNoaKOUAkK+K9NN
-         Nh2ifaaMJm1sNfOg/PdmBS5JCtMvWOEPNhoXCgoTLOpG+9AVdA71oYtpe78Raat6q+LB
-         vPlQ54Lte37KCWyffwmy91FALIx3Wjd1tCBmgDV6BXnWwwpnbrVBt/IHgm+vq5557RLw
-         i5tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        fh=979N3qmwvc69vHPxVonw6hKxzSWV2OVR4ZEOOGVYIPk=;
-        b=SUPH+fCoKyNJ943yZ4S5xhi/Q+S8hmegppxAUADtu1qhdnRts+GyRxT0bFy19thVXC
-         p+dH7SheOm7C85V8wfgvGZ3yk8rb8/QqcnJGFkMnJAc56aZmEay4dYSMvmSn1RLkPZVb
-         5lZLgkZsfPzld92L2B5sYbUq9d7u6+/BjashSb7puJV5QFeSBKtfaadK0cRifj+TFcG2
-         WsWi2w3ogiv9rI6oQ2Jat0BzfPabQ4vvsQgCmz8NfLpi5KTcJgEl92sGGxb54peT9av5
-         YPP0mvv+o2YGAmoYATSCUKnl6G+FWQwAiRQv9u3ey8jRgUCwDh2sh7msQOX+fGCEcB2T
-         YvIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773264480; x=1773869280; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        b=LgrzI6x+GX1mRxy6psZsL2ps9BtK5Xm/DrWGSaCv9IOU4O6oma5dqpdM86lTzY1T78
-         n81Re8ZvTLDlVTjDHQRqNlE6Xext+JHVUVOjDXW7NlxVb2PYMGcqpUCHLXoZMt1pr/MX
-         Gy/AIiwbVI2q7hMUm0K22AaUMmo3DR7VGJsjNJJk7BuXM5G6AG+3vtS2MWJADf+X53fa
-         fgJ1nUjCqwUGRojQCd/BlYzYi++ZdeNd2rz0VzMVnhP0FifVn3LgzZUnI9eTQZZ/Ur6R
-         Rf1WfAa6ff8a7X3lN4xvqS3ItLVZLrGz9rd1Xkw3RqCT6dOFEfpGsHzGW1F0qxGz4o9A
-         bBaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773264480; x=1773869280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1AfpscOl23y0kgBvUSVae0SftirJC1B+VE/VgHXoA/E=;
-        b=pRK02wqkRf2+uf/2tDPiy6SeL+M01uF8wqJAqZDLz0lcjbIqIrnF3RjFhi1pl3fy/g
-         6u2aquDKeeemlC590W1I4j+/+gmYYfHxgBRZ1gNqiW4vvVltU4rnL7k1QMFCfAXIeCB0
-         S6TTgFqtIcj272z8PvOFuR8CceyatS6hSExedN/Z9a1nb5Mk0bGxm8l++8EE0bl4nRRM
-         FnnqgJCrIZnoiv6ruxaecJQ4cUzFfQZ0+fd7eRBMRuoDsZyWzUiVGk0886829VwbvRlC
-         iq1AQh76cwbtAI0MtgSn5Q8r6NllcCHcMCPXpI2hijgKwGzPaNXELeSvOSeHqT447y4g
-         iEpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoRiZ/iUkPcAqCxmqTlIjDw38mDmq9TcBh9PvaP9NioI3nj3I5qhMeYdeBaERHAUQIRYdrsik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfFdFAdWZb8QoZRb2LdgdcuEpCI21vctRcBFqd8uiB2OELcctJ
-	Fc491+E1ceK06bJnjMDGos+9X4b9uK0JSIZrqq0YHbM/FH8aFEPY9hgAluxgatSx6OPv+5irdM4
-	uEUBUJzplwg3Mgd+6b1V0uK8YftI4FEYbVLvIE1eK
-X-Gm-Gg: ATEYQzyIW5dqFRMr4iLWawpmYO5xaDPKyXgZjS+e2OVyji4J4ow/RycefudSW3E8tj6
-	s4uSLc9Rg1//eE9XlA9wD8/8SWbPUyQVJ/aaMzb5Zh4s9X0WndV06qvE1sqLhtC2LaRiKBabYlL
-	DZnedurUcPo/f4HA4jTRhdxSir+aWgpvpPmiConvhh18X5cdMhqiTk3rLe33rUbIQImnFo7BhIl
-	pQ/6KCYuEILNNjgFsqI1WB6XgDvnej6Ui60zQQeLrN7OWjZTfIXskkKGSrhBxBCKMjFowcBHiW9
-	KVMrgThGSCeKvHMXxDlh2RZbHUsGV4bb6CLlMDoOEpjV8aW2KpMNw1mrC9PVMKoNAGdFNXSZYG1
-	0gWIhnQ==
-X-Received: by 2002:a4a:ec43:0:b0:67b:b4b3:821e with SMTP id
- 006d021491bc7-67bc8a5a4c1mr2166715eaf.64.1773264479583; Wed, 11 Mar 2026
- 14:27:59 -0700 (PDT)
+	s=arc-20240116; t=1773265227; c=relaxed/simple;
+	bh=VnKYisqBM76if/82Vym9wtRSrDHy0JIjiCH7GTorVzA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nHCRHSBh0mmuzukYhwXRmCrsBVcK+za5LJ3HiQ0PoTryyQJu8KNXSrI0R/3oxXG2T6SnRE5myjm6B4MCwCNKdKN9jBlf52+9ic0jx7x0dt/vhS6WUzSfeG3ZbZs/8jP8/q6ei/ocAcsReTmgxapTdJif3f3SOL9QoZKCq7t8grw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sch.bme.hu; spf=pass smtp.mailfrom=sch.bme.hu; dkim=pass (1024-bit key) header.d=sch.bme.hu header.i=@sch.bme.hu header.b=qcRfQfyW; arc=fail smtp.client-ip=52.101.84.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sch.bme.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sch.bme.hu
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HvK3RQaL4KON/Jj9WjMurlqEm+U6rS2kj8ccPoJLzUWOP59oVignVCJ4B1TgrLPH6EPo3rR8T0wNBV3OfCQf28ZMP+x3Bws6wjAfpWGhGUJav4UBE7BrtkzFj01WTpUgkbWaYbFwUcScvipQv9mXupvgsDk2wPEQLGgWyBQDdTeJMk/d0NmUGfap5zz7PH4oYokWdrAih2xSv1aAeVjkf9LTD6cueewWuajdIPDf9ANLSq5YgPlcJfMSy5NwFIyk/TO7t37Gn7LuAzUSm39LTQZ/2y4Uu0SicuSQqIT5dGYizRpy/DAKohYyozGDsWm/dRSjSJbwnHbVf8b6s/gW9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g0g8zkHqqCzdQkUmC85QMQxEOz7dBw4UTWWeqdNq2cM=;
+ b=KPz9L3uQEw+baPiZitOJWSUfA29n5ct4POv3GuhTBHvpja7j6PqiA/CGBw/Ju4eArBFpZJgVmkhm23/byKkxYzpXqXu9BwxY9HoQEUgcbnnEEmKgUE6qC//McbCHwIiBy2YRQ+vdcUR0HU0Zl0h9o66tven76cb4g3rx5LSvrQD2+rjDBN3C4kEnolpKYswYhW0U/GJLFEycfdEMJDyRg45Phsk6xdlzozgtVoKNAxXUzITT+gXgoV4OzrvwijTba+ffO7H4CnuzQfN1KYkCCk5/3Kce7aNa1hwCpsETjc9X5bfru/EPj3gbNCeHbIjT5/6wGWwkj9tdkby245qzbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sch.bme.hu; dmarc=pass action=none header.from=sch.bme.hu;
+ dkim=pass header.d=sch.bme.hu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sch.bme.hu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g0g8zkHqqCzdQkUmC85QMQxEOz7dBw4UTWWeqdNq2cM=;
+ b=qcRfQfyWWIweuf8BIQFECXp0QhmRyRMJJV8iklqABV7DwgfCQ6qkh49JHzJ6D6KEbqjxjZlDazN36xqAeZj8cOHQuDegnTQXAmIhC3nTUHH2qQc5VO7I5zS94n66OrsZMvm36mTx/8XAExx0cBwMFL+kbklxK3EUzeR/OY4/nTk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sch.bme.hu;
+Received: from PR3PR04MB7260.eurprd04.prod.outlook.com (2603:10a6:102:8c::15)
+ by PA1PR04MB10913.eurprd04.prod.outlook.com (2603:10a6:102:484::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Wed, 11 Mar
+ 2026 21:40:21 +0000
+Received: from PR3PR04MB7260.eurprd04.prod.outlook.com
+ ([fe80::bc60:c1f6:2fb5:8cf8]) by PR3PR04MB7260.eurprd04.prod.outlook.com
+ ([fe80::bc60:c1f6:2fb5:8cf8%5]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 21:40:19 +0000
+Message-ID: <32f6793c-d728-451d-9e32-35d864fe0035@sch.bme.hu>
+Date: Wed, 11 Mar 2026 22:40:19 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] i2c: cp2615: fix serial string NULL-deref at probe
+To: Johan Hovold <johan@kernel.org>, linux-i2c@vger.kernel.org
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260309075016.25612-1-johan@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?QmVuY2UgQ3PDs2vDoXM=?= <bence98@sch.bme.hu>
+In-Reply-To: <20260309075016.25612-1-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM6P191CA0038.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:209:7f::15) To PR3PR04MB7260.eurprd04.prod.outlook.com
+ (2603:10a6:102:8c::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260216173716.2279847-1-nogikh@google.com> <CACT4Y+b1UZpV_i68cSP3XOBsr9EfbX+SAbXRdL3btmAnSvmMBA@mail.gmail.com>
-In-Reply-To: <CACT4Y+b1UZpV_i68cSP3XOBsr9EfbX+SAbXRdL3btmAnSvmMBA@mail.gmail.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Wed, 11 Mar 2026 21:27:48 +0000
-X-Gm-Features: AaiRm51S07yNuW3cPcrVSq28S7hXGinZghFBDdce6BA-XJE8j8KP7kq7NftJAfo
-Message-ID: <CANp29Y6xexyfGo0umf38JK=6k4Mg+EGRyDmVfuxyAgpX8FxE9Q@mail.gmail.com>
-Subject: Re: [PATCH] x86/kexec: Disable KCOV instrumentation after load_segments()
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR3PR04MB7260:EE_|PA1PR04MB10913:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59a1944c-6767-4a96-6d9d-08de7fb6caa6
+X-LD-Processed: 79f0ae63-ef51-49f5-9f51-78a3346e1507,ExtFwd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|41320700013|366016|786006|19092799006|10070799003|1800799024|56012099003|7053199007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dsUiVhoqBS3gqNCFjijCHIMzLWHRryhzOg7QrPeSlWGtyhNtIBp3gwZ4P+iDe8LPWTWCHsGLLwz2LrxSAgzlOHqXszRotc3mSLPsmvaYOQdJ0dM697FATuuFxfBKf3a+AW0R6ezHr2VHwwXi73kosKVHAbB/nOOJsEE8011iM0/YSOPPpzTKdTUQLqgvVa3sbNH3VqIN8MPqRr/XD8cdz6wZXx5hMukWCwJAaz4YUX/TkR/OrKZGAJGBu8JKwPZ7n/aCMvZa4EoWRi4WkNg6R8K2t9svWK1yqG4k61+1CqVrBK/4zYKmWo7p1KO/QRxRKpaodBE2DWRR6Ek3VWcc8au+lUyQoxAYCRpqtebkBcCGOxTPZsMeHv28j8aWR1vRkxu/2QhoeHHv187yAbbhQeCc8XVTQAKK6kTwSSq2yocKwXc0rBc/HneDG6SsWLxEr/q6jQqKc6svnrdShMc+2ujyHnUWgVNbzizyC63mBXR+ABhgP+ZRBdqYIF9Z/L2DMV3gNkORjl45hl/Ts6nx62FaY6Nj9B3AVNWO621+fGJfQ1GoAysGT1JzGwFDf2Dzx2tE3FKEm6XSQwDXOvJ7UMS9RvaRN/vLeTXrcRypIiYvpoqxyiXZupQuwqQGMp5Ra8hOmHtPa9vqxWGgl3DSGmlTCcOMvEZJpD1J4Ei6m1seSNUTkkMpcIowmdoiqyuEClI/5kv8iB6jLWoWn4Btz/BOch0aEietpdLEPcndTAQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3PR04MB7260.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(41320700013)(366016)(786006)(19092799006)(10070799003)(1800799024)(56012099003)(7053199007)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFZ0VXNDYkE1NU43dUVWZ3c4a1Zvb254V0RTbTMxUFNFSE1oY3B6RFR0MGJh?=
+ =?utf-8?B?MFFSb2ZtaGplaW91T0lWSExLRFpOQm1FS0VIWnVvVjE3TVo2eFE4TkY2YVhH?=
+ =?utf-8?B?UENoUkk1cnlOMmszM3l1enJjWUczT0xCQ2VNVU5iQi9abXlPUWlzd29WVnNE?=
+ =?utf-8?B?S3BHL2ovVHdnQ1JPN2RKL0FtbE9laW5YeWxXRXJ5QlZidis2QlIzclJiS0k2?=
+ =?utf-8?B?VDBRRlVFMjZYd2V6RVNCOXlkYU55Rm56ZzBYL3pxNWl0VjM2L0oxQ1JvKzBt?=
+ =?utf-8?B?YmlWNTBCbFJaVU9HUzFXendZZ0Z3cElBRjlPTmlpWjFlRTdtRnFRK2ErTW9R?=
+ =?utf-8?B?UTlsRVd6Ykp0RnJuS0Y5RjVzZ0toNG9RcVJIdDBNUjJibU9BY1dqNldMeWVs?=
+ =?utf-8?B?andKNlZoUU9LVXJoOHk2eU8ySUhWOVFGdDZINUFtKzZMUUNHbFdCU1hNWUlU?=
+ =?utf-8?B?Uy9zcEl4VnpLQTc1dERQWTcvTGlKNXdzdEZRNkZYQ1ZQU2o3ZFZIaDZPR01x?=
+ =?utf-8?B?b0kyeXZvSzRVUFpOdGtzNDNBdGhHczFzR1Q5QmxvN1NEcE8xZXhYRkh3YzFI?=
+ =?utf-8?B?TmswaDR5eGJLbnVnL1kxWWx1U2pxamtGdFJEYjBEQ3NxYzI0UzVpUkNOb2Zx?=
+ =?utf-8?B?WW1DSkF3NXlXNVcvNlZnWmtFY0NCcjF1bXdTaDJHQ1U1VGdNYlJTY2Y0QTFl?=
+ =?utf-8?B?TWdyZUxDYTVnbjFkNVMzOThuOE56VzhQZTVDaEtmVXdSUmtzQytJUDB4ZzRG?=
+ =?utf-8?B?TXR6T1FnTk96VndCVFVyUmFIbURoUElBWFZRU2lSOGlnaHBrRDQzUTBDUXFw?=
+ =?utf-8?B?dlZkR2kwYTIvL1BIZTZrdmUweFh2b1lpbFpyQmdlQ1Q1RmNramRLQmo4VFB1?=
+ =?utf-8?B?Q3FsWkhEWXVkZERsWEdPZFdiZGVZNEZiMkUvbkQrUWx1ZnZJYVpQaWxDWmhn?=
+ =?utf-8?B?MzJLczQrUWp6cTNwcCtMenJ1c0xHbWcxdExHcjFXbE1PWUJBNWxzWGkwOSs1?=
+ =?utf-8?B?ajNlR0EvSzV4emR6M1oyRHZnd1d3YUl4bkZvSE9wQXJKZE1XTmx3SWNCUnUr?=
+ =?utf-8?B?ckNwRGVYSEVNQXBKL0pic3hFUFN0TzJ4MGRscWd4b1NXM01MSXRQRU1RcTRz?=
+ =?utf-8?B?QTNUT1BMZmpzQ0NpWUtwOXYydkg3dnQ3ZGRVbS9KbVBRa1UwbEtNOExKamt6?=
+ =?utf-8?B?TXJDUXpnMURkTjlpZ25yRC95V2JvWm1kUjBheUhhTUpIbThMZUVZRkJIOXBx?=
+ =?utf-8?B?QW4zeERkSFZvczNPSnVSczB1eWhYUGwwdXo4Sy8yRUlrV1FBcE5ueElrUVhI?=
+ =?utf-8?B?UURIWE5weDh6Q2E3eDQzTU0zWm9ZQk1VVFFtQlFlQ2Y4T2hrT1RWR2hPNHd0?=
+ =?utf-8?B?b1pocHdsUzFRcHg5enVRVzV2eElDQ0ZYRW15UVZlUHdlQWIvK3NjcTFFZGhk?=
+ =?utf-8?B?Z2hLZlhFdVdvN2U4T3lFNnVkQlZ3VnprZUdZaTduRkpOWDdyK0ZlejZwZjJk?=
+ =?utf-8?B?dkpqNTRuMWhlOUFRTUxIcE1oSFV3enFhM2ZJdERueUlDcGV1dFIybU9saWZP?=
+ =?utf-8?B?WWhrSzl6Y2dBUkpvSkI4YkxhaExEMGxDQ1h3NGpReWxPa2JLSms3OXdSMW15?=
+ =?utf-8?B?bFlxSjVCa09lUC9RNHBaclNEd21DdWc0UlpXV0RjNWFyNnRlZHJMOWFsTnJY?=
+ =?utf-8?B?MHliWUFjWVJLTFdJRzhtWHJ3UnJjRDR0WURWVnpoMUhmSVZvcWpUZmlMWGJO?=
+ =?utf-8?B?T0lxVy9kZnkzNDd6ZFptVzV0eXZRK3JHK2NqaEk0RHlwY2RuQWI0ZGxBSHkx?=
+ =?utf-8?B?NWh3YVE2b0xjdkY2WS9YNHpOTTloQXduSFp0Umo1U3hQMHdFdE5WYVVtcm9o?=
+ =?utf-8?B?NG45Lyt2U0RGZG1KdStXT1J6cjYwZkZRdkNMcnJnTzlqUVlPaFF6WVIyNVpD?=
+ =?utf-8?B?dDJtM1JLUGJKV0FzMGx4WEVwSndMdEJ6ajNKZE1yUS9TQmd5L0pMbEdvYU8v?=
+ =?utf-8?B?b0JCMDdUcHBRTER5MmlCcUMzNDlYempXV1U5WEFuUzJqaVZFS0ZDdTR6Vlc0?=
+ =?utf-8?B?eXBNTVkvUG52eGRURWtrckRwRys5ZjFWUkU1UjVTaUVDdmhrbkp3eWRlZDQx?=
+ =?utf-8?B?enBjUTNVSUdWNis5ZUM3SUttb2RoL1dPeSt2UzBsd0J6ZGFmeGQ2TjlGUmFl?=
+ =?utf-8?B?UkF6T3dFenoxTWdOYlJUUVphQUt4a0ZVd1RiQ2xhcUZpMUxLV2JhOGtUV1Vx?=
+ =?utf-8?B?c08zS2k0SjBXdXVOcUtQZ2k0NVg0NHgvRUdET3lqVU5XaHJyS1pxbk43SkNk?=
+ =?utf-8?B?eFlPQkpKcE5XVU90SERFL2s3RHRZYnY5bmVvcHgvdlVLWXdsRzJUZVVETmV6?=
+ =?utf-8?Q?hJL2RhD/CdSAZ320ycs1m9xXhsZiVoJjOqqYrBsEyMgG4?=
+X-MS-Exchange-AntiSpam-MessageData-1: H6UpsNBeRrBy6Q==
+X-OriginatorOrg: sch.bme.hu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59a1944c-6767-4a96-6d9d-08de7fb6caa6
+X-MS-Exchange-CrossTenant-AuthSource: PR3PR04MB7260.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 21:40:19.5287
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 79f0ae63-ef51-49f5-9f51-78a3346e1507
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hgkxFoHb6hYBUjoKj+6jqg6vzlaUGtKgST4Hc06EPwmuSlVLzm6gfTtBe2zXKGArJuDyAVsnSC9m3abv7virEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10913
+X-Spamd-Result: default: False [0.55 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MIXED_CHARSET(0.71)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[bme.hu,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[sch.bme.hu:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224767-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224768-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nogikh@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[sch.bme.hu:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[bence98@sch.bme.hu,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B4E0226A655
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sch.bme.hu:dkim,sch.bme.hu:mid]
+X-Rspamd-Queue-Id: 1EB5A26A845
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-+Cc linux-mm
+Reviewed-by: Bence Csókás <bence98@sch.bme.hu>
 
-On Fri, Feb 27, 2026 at 2:26=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com> =
-wrote:
->
-> On Mon, 16 Feb 2026 at 18:37, Aleksandr Nogikh <nogikh@google.com> wrote:
-> >
-> > The load_segments() function changes segment registers, invalidating
-> > GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-> > enabled, any subsequent instrumented C code call (e.g.
-> > native_gdt_invalidate()) begins crashing the kernel in an
-> > endless loop.
-> >
-> > To reproduce the problem, it's sufficient to do kexec on a
-> > KCOV-instrumented kernel:
-> > $ kexec -l /boot/otherKernel
-> > $ kexec -e
-> >
-> > (additional problems arise when the kernel is booting into a crash
-> > kernel)
-> >
-> > Disabling instrumentation for the individual functions would be too
-> > fragile, so let's fix the bug by disabling KCOV instrumentation for
-> > the whole machine_kexec_64.c and physaddr.c.
-> >
-> > The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
-> > supported there.
-> >
-> > Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-> > Cc: stable@vger.kernel.org
->
-> Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
->
-> > ---
-> >  arch/x86/kernel/Makefile | 4 ++++
-> >  arch/x86/mm/Makefile     | 4 ++++
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> > index e9aeeeafad173..5703fa6027866 100644
-> > --- a/arch/x86/kernel/Makefile
-> > +++ b/arch/x86/kernel/Makefile
-> > @@ -43,6 +43,10 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o                 =
- :=3D n
-> >  KCOV_INSTRUMENT_unwind_orc.o                           :=3D n
-> >  KCOV_INSTRUMENT_unwind_frame.o                         :=3D n
-> >  KCOV_INSTRUMENT_unwind_guess.o                         :=3D n
-> > +# When a kexec kernel is loaded, calling load_segments() breaks all
-> > +# subsequent KCOV instrumentation until new kernel takes control.
-> > +# Keep KCOV instrumentation disabled to prevent kernel crashes.
-> > +KCOV_INSTRUMENT_machine_kexec_64.o                     :=3D n
-> >
-> >  CFLAGS_head32.o :=3D -fno-stack-protector
-> >  CFLAGS_head64.o :=3D -fno-stack-protector
-> > diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-> > index 5b9908f13dcfd..a678a38a40266 100644
-> > --- a/arch/x86/mm/Makefile
-> > +++ b/arch/x86/mm/Makefile
-> > @@ -4,6 +4,10 @@ KCOV_INSTRUMENT_tlb.o                  :=3D n
-> >  KCOV_INSTRUMENT_mem_encrypt.o          :=3D n
-> >  KCOV_INSTRUMENT_mem_encrypt_amd.o      :=3D n
-> >  KCOV_INSTRUMENT_pgprot.o               :=3D n
-> > +# When a kexec kernel is loaded, calling load_segments() breaks all
-> > +# subsequent KCOV instrumentation until new kernel takes control.
-> > +# Keep KCOV instrumentation disabled to prevent kernel crashes.
-> > +KCOV_INSTRUMENT_physaddr.o             :=3D n
-> >
-> >  KASAN_SANITIZE_mem_encrypt.o           :=3D n
-> >  KASAN_SANITIZE_mem_encrypt_amd.o       :=3D n
-> > --
-> > 2.53.0.273.g2a3d683680-goog
-> >
+On 3/9/26 08:50, Johan Hovold wrote:
+> The cp2615 driver uses the USB device serial string as the i2c adapter
+> name but does not make sure that the string exists.
+> 
+> Verify that the device has a serial number before accessing it to avoid
+> triggering a NULL-pointer dereference (e.g. with malicious devices).
+> 
+> Fixes: 4a7695429ead ("i2c: cp2615: add i2c driver for Silicon Labs' CP2615 Digital Audio Bridge")
+> Cc: stable@vger.kernel.org	# 5.13
+> Cc: Bence Csókás <bence98@sch.bme.hu>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>   drivers/i2c/busses/i2c-cp2615.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/i2c/busses/i2c-cp2615.c b/drivers/i2c/busses/i2c-cp2615.c
+> index c1dbf7961a02..951de6249834 100644
+> --- a/drivers/i2c/busses/i2c-cp2615.c
+> +++ b/drivers/i2c/busses/i2c-cp2615.c
+> @@ -297,6 +297,9 @@ cp2615_i2c_probe(struct usb_interface *usbif, const struct usb_device_id *id)
+>   	if (!adap)
+>   		return -ENOMEM;
+>   
+> +	if (!usbdev->serial)
+> +		return -EINVAL;
+> +
+>   	strscpy(adap->name, usbdev->serial, sizeof(adap->name));
+>   	adap->owner = THIS_MODULE;
+>   	adap->dev.parent = &usbif->dev;
+
+I didn't realize at the time I wrote this that `serial` can be NULL, I 
+was under the impression that the USB core would pass me an empty string 
+if there's no iSerial string descriptor (alas, it does not).
+AFAIK real CP2615s will always have a serial, so returning error should 
+not be a major problem. However, we could just as easily skip 
+`strscpy()` and go on with the probe with an empty name. But I'm fine 
+with either solution.
+
+Bence
 
