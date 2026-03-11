@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-224672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFBEN51MsWlCtAIAu9opvQ
-	(envelope-from <stable+bounces-224672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:06:05 +0100
+	id eKGVMuBMsWlCtAIAu9opvQ
+	(envelope-from <stable+bounces-224673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:07:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3809E262B98
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C089262BCD
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:07:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4851F31201E8
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:04:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF79B3171B3D
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 11:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27E73D7D7E;
-	Wed, 11 Mar 2026 11:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BBC3D666A;
+	Wed, 11 Mar 2026 11:04:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E05E3C0607;
-	Wed, 11 Mar 2026 11:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54F33D669A;
+	Wed, 11 Mar 2026 11:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773227044; cv=none; b=Wso8MDqFWa8REIs/f6G/UE4oaOCvIEbe/TLftqhilmOncM9rof2iaJ7BlPs5uRpoI8rdFRdvU6lNdJd8s2UF/S35WEfp9ureoUnNVzzXLBeAobMyegX4a/7e7GJK0S70P4gsXNXT5EaVQ84fTWAnb4xooaErO3UGX87qOtb96MI=
+	t=1773227051; cv=none; b=ukfosW+rthN8f9UDXTL2CsEV75lxh0bK6qkg7bpW6ikD4YW05Uxw0s4uU8jLj6p4UHCgDhZNJ99b6FfZxw4w5nHoyX8wdToLhbtFgQDR/Sn1wL3AKMjZQy92SZw13eoCYVDPtpkw59Fwzn7syJvC7yVJkzLSFyZCzaM42JVnTrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773227044; c=relaxed/simple;
-	bh=DiS/za7Xcx9BgyGTN/XlBOt/05ajBcBSWxbepSobKo8=;
+	s=arc-20240116; t=1773227051; c=relaxed/simple;
+	bh=dUS30z5mwiHKFQ3rO9Ro70hyG3QRgNKWXiRNvl5lVB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8rDeszfTyhXnqVtGtzVAD397hgQQxn0QPhbbdcegDFbUeIlOOgQt0ZdakmadhkqHbtKwE1Jd9Q9+WywUycGPxgJN9jth3ewUrdgxbw3qdKEdl3Oz0SA92ZtKIlEK2lqBRWfG8fW+J6fS9mkkR4SXQAk8M03fnHLvc1HhK9+ohM=
+	 MIME-Version; b=UvLoTTnysTcHnzPBmMOFsva+AdumGcMsYNReOIxZX2X7J3pJNA6HdgS0ISoVp8wdN2+iKUveox0nt9AUlZX2TEeEtz3+4mns3MVkpoAYrNOqu6HuXQtcnO3Dr8VtYVkkBkRMdwyqnBqpZ7aS/k7S4jkoejWGGVGuaclP7EfexJQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B34EA4333F;
-	Wed, 11 Mar 2026 11:03:53 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A2D24329A;
+	Wed, 11 Mar 2026 11:03:58 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: akpm@linux-foundation.org
 Cc: alexghiti@kernel.org,
@@ -63,11 +63,10 @@ Cc: alexghiti@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Alexandre Ghiti <alex@ghiti.fr>,
-	Bing Jiao <bingjiao@google.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after setting GFP_TRANSHUGE
-Date: Wed, 11 Mar 2026 12:02:42 +0100
-Message-ID: <20260311110314.237315-4-alex@ghiti.fr>
+Subject: [PATCH 4/4] mm: Fix demotion gfp by preserving initial gfp reclaim policy
+Date: Wed, 11 Mar 2026 12:02:43 +0100
+Message-ID: <20260311110314.237315-5-alex@ghiti.fr>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260311110314.237315-1-alex@ghiti.fr>
 References: <20260311110314.237315-1-alex@ghiti.fr>
@@ -79,11 +78,11 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefjeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhepledufffftefhjeefhfefueekveffheejtdeilefgkeejtdeugeefudfhieefgfdunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdeivddtmedutdgumegttdelvdemgedttdemmeehmeefrgeivgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedviedvtdemuddtugemtgdtledvmeegtddtmeemheemfegriegvpdhhvghloheprghlvgigghhhihhtihdqfhgvughorhgrqdfrhfegofekiedvrfdrthhhvghfrggtvggsohhokhdrtghomhdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhqihgupeeufeeggfetgeeffeefhfdpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeeftddprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigghhhihhtiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepk
- hgvrhhnvghlqdhtvggrmhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghkihhnohgsuhhmihhtrgesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeefjeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeeludffffethfejfefhfeeukeevffehjedtieelgfekjedtueegfeduhfeifefgudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedviedvtdemuddtugemtgdtledvmeegtddtmeemheemfegriegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdeivddtmedutdgumegttdelvdemgedttdemmeehmeefrgeivgdphhgvlhhopegrlhgvgihghhhithhiqdhfvgguohhrrgdqrffhgefokeeivdfrrdhthhgvfhgrtggvsghoohhkrdgtohhmpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpqhhiugepleetvdffvdegfedvleetpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepvdelpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrlhgvgihghhhithhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvghrnhgvlhdqthgvrghmsehmvghtrgdrtghom
+ hdprhgtphhtthhopegrkhhinhhosghumhhithgrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhm
 X-GND-State: clean
-X-Rspamd-Queue-Id: 3809E262B98
+X-Rspamd-Queue-Id: 2C089262BCD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -95,8 +94,8 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224672-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[30];
+	TAGGED_FROM(0.00)[bounces-224673-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[29];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[ghiti.fr];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -112,39 +111,51 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ghiti.fr:mid,ghiti.fr:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ghiti.fr:mid,ghiti.fr:email]
 X-Rspamd-Action: no action
 
-GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
-after, not before.
+When the src folio is a hugetlb page, htlb_modify_alloc_mask() will
+unconditionally enable reclaim. But we have to preserve initial gfp
+flags which, in the case of demotion, prevent direct reclaim.
 
-Reported-by: Bing Jiao <bingjiao@google.com>
-Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
-Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
+Reported-by: Gregory Price <gourry@gourry.net>
+Closes: https://lore.kernel.org/linux-mm/aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F/
+Fixes: 19fc7bed252c ("mm/migrate: introduce a standard migration target allocation function")
 Cc: stable@vger.kernel.org
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/migrate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 2c3d489ecf51..ee533a4d38db 100644
+index ee533a4d38db..d44a34d37007 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
- 	}
+@@ -2169,13 +2169,13 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ {
+ 	struct migration_target_control *mtc;
+-	gfp_t gfp_mask;
++	gfp_t gfp_mask, gfp_entry;
+ 	unsigned int order = 0;
+ 	int nid;
+ 	enum zone_type zidx;
  
- 	if (folio_test_large(src)) {
-+		gfp_mask |= GFP_TRANSHUGE;
- 		/*
- 		 * clear __GFP_RECLAIM to make the migration callback
- 		 * consistent with regular THP allocations.
- 		 */
- 		gfp_mask &= ~__GFP_RECLAIM;
--		gfp_mask |= GFP_TRANSHUGE;
- 		order = folio_order(src);
- 	}
- 	zidx = folio_zonenum(src);
+ 	mtc = (struct migration_target_control *)private;
+-	gfp_mask = mtc->gfp_mask;
++	gfp_mask = gfp_entry = mtc->gfp_mask;
+ 	nid = mtc->nid;
+ 	if (nid == NUMA_NO_NODE)
+ 		nid = folio_nid(src);
+@@ -2184,6 +2184,8 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ 		struct hstate *h = folio_hstate(src);
+ 
+ 		gfp_mask = htlb_modify_alloc_mask(h, gfp_mask);
++		gfp_mask = (gfp_mask & ~__GFP_RECLAIM) | (gfp_entry & __GFP_RECLAIM);
++
+ 		return alloc_hugetlb_folio_nodemask(h, nid,
+ 						mtc->nmask, gfp_mask,
+ 						htlb_allow_alloc_fallback(mtc->reason));
 -- 
 2.53.0
 
