@@ -1,107 +1,173 @@
-Return-Path: <stable+bounces-224746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOKbCfK4sWmxEwAAu9opvQ
-	(envelope-from <stable+bounces-224746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:48:18 +0100
+	id WCHCHge6sWmxEwAAu9opvQ
+	(envelope-from <stable+bounces-224747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:52:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259C3268DA2
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:48:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F18268E86
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 19:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AD6230209A7
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:47:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6A7E3029271
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F6D3EB808;
-	Wed, 11 Mar 2026 18:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F932346FA0;
+	Wed, 11 Mar 2026 18:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="vbnC+Vk3"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="p6buk0Lg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-244118.protonmail.ch (mail-244118.protonmail.ch [109.224.244.118])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5B33EAC93
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 18:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E539429405;
+	Wed, 11 Mar 2026 18:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254841; cv=none; b=notmN4JN42ODF9rkkEh1h9sdLFaKV9Abshn7nMz2zttHU+0tGRzBjX4ReG5mzgFyAVdV4FhhYJ+MXt6mus3HrfjkJ5tuylk5k4JeIQxtE6fRmpqdxboDS+prr8hKSq4LTTrMWdhRpnZheufDSrkem0WqulyxlWp3TJhr+9cCkEo=
+	t=1773255120; cv=none; b=R3oddz9Z18Soaepd4/9sUg1WO51nMGBcWtzvsd4n32z4IEhE2nrkdUiNuuuf4tVfpQC56QErwRbQS9p6jtxQ1nL5DNsLWzzaiFyIjaNm+sNhX5QBFLPD3l0AaQErwRc1ix17SYA9gJJTIgnZvyGg2jelINGtsKQD3/7Vf8CRQYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254841; c=relaxed/simple;
-	bh=Jl7leThxnp/lGPAmTErmrNimY7QkLMfU1aZqqvKoU40=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QplqQjbETtWA9t4HJRqfhOr8i+l/2zmjG/OII16trxQKNs/17bQtokF7cAhG3SOyEtrXOpHXvMUWQ5quPNtaY9O+lJqH+LwrlSFklIVlrfxgjQSwelt9fAccpVQhWMVsOjWBwQfWrkQNiKo9bvMCyV9xOlqfGi30NYRtu/SbY1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=vbnC+Vk3; arc=none smtp.client-ip=109.224.244.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1773254829; x=1773514029;
-	bh=Jl7leThxnp/lGPAmTErmrNimY7QkLMfU1aZqqvKoU40=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=vbnC+Vk3tCDm99skCrj6obm6wxp1HQZt8aS+bc1z+/aa69PTErRtp37kWoM/dpVVB
-	 7DTxpUUJUyhq9vyAbZlPRzCS3vI0y2P/MV9zlLr8w46e9aRzNmnXMFwy9GCZOvjopd
-	 G9k/kfyfCnpZfRwP7ppQRnZrQfqI1aAgG/2xw41rJF7kdoLJzMJEaI5x9Uvm/nQpnW
-	 E8ovvpErJJTYcUvpj4kJ7UkO78UYQwYZv9B9LsZugaII7tKsN5CDN6fVBOFHwra/7K
-	 3PQxI1OrJYbkTox3ccDj0Ix8wwKLpfh2y/oy+YcldZ9erwpd8v8vhUeoSrPYNXexNU
-	 dq2Sq47WAsbnQ==
-Date: Wed, 11 Mar 2026 18:47:05 +0000
-To: Simon Horman <horms@kernel.org>
-From: Paul Moses <p@1g4.org>
-Cc: edumazet@google.com, stable@vger.kernel.org, herbert@gondor.apana.org.au, linux-kernel@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, steffen.klassert@secunet.com, chopps@labn.net, netdev@vger.kernel.org, pabeni@redhat.com
-Subject: Re: [net] xfrm: iptfs: only publish mode_data after clone setup
-Message-ID: <gMKu-eP2Z17VRGWDt3UsswTDUTaUJjm9BDstYEsXaGoK7ZFwEFDiflQT85gbZ1IiVx2mjZ09xI6Mn72M23V-3oYTNL8nMgb112XEGMoXcJY=@1g4.org>
-In-Reply-To: <20260311171134.1134085-1-horms@kernel.org>
-References: <20260309173033.537743-1-p@1g4.org> <20260311171134.1134085-1-horms@kernel.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: ffd8969943b7fec8d286fa5d2d15212eda546b76
+	s=arc-20240116; t=1773255120; c=relaxed/simple;
+	bh=PwcZtP0WHqNaz48bDl9VTJD2CVjV/nRLjC3XExO0+tk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sJN8ndaegOxxYZu4fg/f6JB7WQTX5nYrxdBJ9iPjHIPxChOUkYqCHi9Ree9vOcs5/RA7BUZ5Xv66M7K/FWbiJEKqq2pMknJ9BQ45AkapsLnAvKUlccsCTu29pU9OvVUBcFWXbheThEr9m/z56fK51zVcBMWXfzddNTG52lYK3dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=p6buk0Lg; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BCb2FF1561657;
+	Wed, 11 Mar 2026 18:51:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mq3X7Q
+	mX8t2oW3YX9InUVhX62CwI5Y9QBx1rgaG/Q2w=; b=p6buk0LgDtaGb3N8f055vf
+	MGdYFqIj9g786wwBzUjEHhMMFYvWQkdyX2ANVl4Az9Pd2vNHGYbrzoZytXyQKqAK
+	iyaNOS/NSSqvSjrBYDLIBfYX/vfor0km5U3EqYOzTLCL6qnM5BUDbyRgdtm1ePCS
+	QOahQHYFO5k3E+SRqTC2Flo5ydA30OH8cU3RbNzQSTSXPVS1hC3tElyJj2BTKVGN
+	zTGKECCHaCUrPtVhPD87drpPBOsvnvFN0KzqNsRkng+0kUzkSHzcI7q1N9UYUXwO
+	J3WeebsEMf2h/7oM8naq5+LD4uJSuSh+0F8smFHt6Qx06Et6RaSR05vPxkN3OFzQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcvmhk2m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Mar 2026 18:51:50 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62BG47fn029356;
+	Wed, 11 Mar 2026 18:51:49 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4csp6uubkh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Mar 2026 18:51:49 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62BIplgr40501634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Mar 2026 18:51:48 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA40A5805B;
+	Wed, 11 Mar 2026 18:51:47 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81FFD5805C;
+	Wed, 11 Mar 2026 18:51:46 +0000 (GMT)
+Received: from [9.61.244.205] (unknown [9.61.244.205])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Mar 2026 18:51:46 +0000 (GMT)
+Message-ID: <c3abc18e-ebcc-4233-931d-c8f58ce04d28@linux.ibm.com>
+Date: Wed, 11 Mar 2026 11:51:44 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 4/9] PCI: Add additional checks for flr reset
+To: Benjamin Block <bblock@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
+        alex@shazbot.org, clg@redhat.com, stable@vger.kernel.org,
+        kbusch@kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com
+References: <20260302203325.3826-1-alifm@linux.ibm.com>
+ <20260302203325.3826-5-alifm@linux.ibm.com>
+ <20260311152407.GB2161595@p1gen4-pw042f0m>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260311152407.GB2161595@p1gen4-pw042f0m>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MLnCtPjEp6005SyXRGfNaqT0tbUxVybK
+X-Proofpoint-ORIG-GUID: MLnCtPjEp6005SyXRGfNaqT0tbUxVybK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE1NyBTYWx0ZWRfXxOn6pBw+rZtw
+ LJ6krFLDpjNzcmm0z6jndOMEKhDatvyEqq8BuHeWZLdD3mx6pGG+IFrBu9o4krb6SCwY765JX8T
+ 6pP7GNku50i2zDYfucuxO4ZbdCSzeT192GN+P9PVHfSJUATs1af/wwIHRiT80u3pCIXtF4pZVLH
+ ZlKqAjFWe266u4MvrX5BdlUifdF8pvite8x0Wu1tVCRjSwa6rIh7ZNSLAfZaRRiDx+rqZWJDbpX
+ gNJCpDFS9MjKfuKg12pWydf+CUUiz1rHfEJr6QEE0AnklzhavIL6OaqS4RYRgl4YiwO53NkLpJ0
+ 0pII6bjtCmzPLQCKGEGgLIaVjUSwPpDYgNWvNijubvaLL3GTMbAgbu4FfEcfdh2k8uYKJnUIPuZ
+ BQ9bFmtxtlo8BeW6O9IgdhPoIzsXTBV9QfKglt4Azv+cYbGcGrkfsySHAaNgkubA4h9min/cs4D
+ HKYFe7tUAvvJ6TA7cVA==
+X-Authority-Analysis: v=2.4 cv=B5q0EetM c=1 sm=1 tr=0 ts=69b1b9c6 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=mE1mmq-WpfiY_7YR16UA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110157
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224746-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[1g4.org:+];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-224747-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 259C3268DA2
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 29F18268E86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
->=20
-> > Fixes: 4b3faf610cc63 ("xfrm: iptfs: add new iptfs xfrm mode impl")
->=20
-> Should this Fixes tag point to 6be02e3e4f37 instead?
->=20
 
-Yes
+On 3/11/2026 8:24 AM, Benjamin Block wrote:
+> Hey Farhan,
+>
+> just noticed a small nitpick:
+>
+> On Mon, Mar 02, 2026 at 12:33:19PM -0800, Farhan Ali wrote:
+>> If a device is in an error state, then any reads of device registers can
+>> return error value. Add addtional checks to validate if a device is in an
+>                            ^^^^^^^^^
+>                            additional?
+>
+> In case you do an other version roll.
 
-Thanks,
-Paul
+Ah thank for catching that! Will fixup. I do plan on sending a new 
+version as there are some changes in pci/next that will conflict with 
+some of my changes.
+
+Thanks
+
+Farhan
+
+
 
