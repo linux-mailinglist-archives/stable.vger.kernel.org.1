@@ -1,162 +1,195 @@
-Return-Path: <stable+bounces-224757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FlJN2DUsWk2FgAAu9opvQ
-	(envelope-from <stable+bounces-224757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:45:20 +0100
+	id 2DFaAH3VsWk2FgAAu9opvQ
+	(envelope-from <stable+bounces-224758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:50:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E0626A211
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:45:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8871826A269
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDEC23024A4F
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:41:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79ADD31ECBD4
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8254E355F43;
-	Wed, 11 Mar 2026 20:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6082C21D8;
+	Wed, 11 Mar 2026 20:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pSdd5UAF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPou3S9b"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294DF375AA1;
-	Wed, 11 Mar 2026 20:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D56285C9D
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 20:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773261659; cv=none; b=R0zwoPr/XD9kaE/Uatw0FVckyZGPd6WnOBeKAGJR1aKzNcc2upKtzJU4tGqcCH1K03QNhIq+DfgoLOAns6RF6YPzJ3SxlDPjlNxV8gQmYkkZw3XheS44yyeC9LkrilWNKphulk6EUQjbvwUUftASOupZ8vLNaLbQGB4JYDZyBeo=
+	t=1773261988; cv=none; b=sdFnRFjBF4NG/pbbG9X1+/J95NIqAh8S5e8+Cw9r6jfiG4wjCpT1HCJw0AGxlRDHJOWMv3seDWSAhS591/VcBkD4l7KYfmm5tr4skNIVRlOYyZGOQa0WKmhGCKeXr+MJbEmrnlJZWa27lKovMQSh/E9WoRnsxlw9tmIAtpZRGqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773261659; c=relaxed/simple;
-	bh=pibyIUqXwyf04y7bytC1Pi+7ZXiisHRo3t/sg2L8l9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ufCQZuuuKzuHgJRM0vJSBY+v4fPwO4S53Qw/FbJT+XLNXN78Jpi3ukvMsexRaoKyxv4YTEkUmc/CIREBJVsULTKh+09kD7KKPJLPZOz8NBNFeu8r4TKd69TInJRCuIIb+xV0gX+Y9QLGdZ3ZYACqMiX1+h9F+VrtAcnNwmgtd4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pSdd5UAF; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=x5bZPYzyMxtK9zdY/OlIuLaRt8T0wYJhjNW2h89DXJk=; b=pSdd5UAFYIm3vy9aNEHKdNVDDg
-	KgXvupNasYG22s1DxfXV3BT3IwTAOYxGnVNxVM4cOctg07VLc7nRWSjd8TbbaLFgvaGqL64TdrIhs
-	DynEpIHIj/lKEQmZcEl4hfytZIaf5FGjn0V8qHGhOx8r+p2x9HGIkczAxQxr7TovP9/ByHXDOI6Ju
-	J0CIWcW3Cxpx5+NVv/CVpT/bWV28IwLtzaAX3srt1F3jURC6L2YMWVvkvptDdJlEXLSbPrRdNjeJQ
-	jAqz+SiepF+F0IgFbZ9a8OfbCr68/RzFReBtTLqRj984YUyELg+8irfhtTpJ35UhQegXa186LmeEx
-	B/infNqQ==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0QME-0000000AHEF-0N6V;
-	Wed, 11 Mar 2026 20:40:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5A7CA302EC2; Wed, 11 Mar 2026 21:40:35 +0100 (CET)
-Date: Wed, 11 Mar 2026 21:40:35 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Ian Rogers <irogers@google.com>
-Cc: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
-	Breno Leitao <leitao@debian.org>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] perf/x86: Move event pointer setup earlier in
- x86_pmu_enable()
-Message-ID: <20260311204035.GX606826@noisy.programming.kicks-ass.net>
-References: <20260310-perf-v2-1-4a3156fce43c@debian.org>
- <a0a1d8ab-85cd-411c-b8e2-9e7e2f7136fd@linux.intel.com>
- <CAP-5=fWAzaKNO0wmAA89ovJLFgxCWQ3khnyWFotnaSAGiugv+A@mail.gmail.com>
- <20260311173509.GR606826@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1773261988; c=relaxed/simple;
+	bh=XcZvcBRuKrbU8qn7VWZqJYcWSVxpS+i8a3E2p7HOhkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OzdncdsUlNGayEypHxbfJvCUVc9ZyNJE+j9DdDinvrxtnBhl4znLAHj8h58adu16ITSYVYhyknQAeAqZwMoZHHOPH3VtAG7qtpbkbTSA42hpD9RPeeD/TL97hN5KF/6kKVOdFlkm0ynUdw+0XbvHUUlBoLwqsZR863BSckY8BtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kPou3S9b; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a12c19affeso652403e87.1
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 13:46:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773261984; x=1773866784; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s9P+Ff12iogmg72x3GEhn1ZYf/TicLhf6XdQjN3H5kE=;
+        b=kPou3S9bq6DAH5pNc6fPexwr/EEdm0czflhruuU1aH6shTRjfAtPeOkt6gvcXHMmgQ
+         BeSBj1tyhvSWE68YANHBh7MrPXTSD6yHMdY3bdoPlErKD8pylx0dc14PrbxQigHzHaIX
+         c1JdG58f4zRnkUY3nqtql0gnAMCgWFyA8Ke1+PpdKwHyQiebA52O5YLyRHrmJxMzzMQJ
+         Hcc6GlPeYE3ExzDxDBeMwaROJkZ3sRU77V1z9E+T+9YTvlA7jDThfjsy6j4FTDPZ73pf
+         db4PKNbgWsnITlaGoiMVlspShozqbrY6amQUahD05vVpqg9+IU+BbTGUtHsZOiJezbQA
+         lc2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773261984; x=1773866784;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s9P+Ff12iogmg72x3GEhn1ZYf/TicLhf6XdQjN3H5kE=;
+        b=qxYybQG9OHySjFdjxQia3y8SilJ+iq6x7SMNTSvef7/G5PZHCiazK7iiKxmbvBs6BE
+         /jkNoJtMDd+G4UGTS1F3+s6L6zja+701DuTobmXRpuvEhCXKuJOjB/iY2u70soOFl9J3
+         GqSjrHcNSgAMv35GBx2bvXY3u8JLVtpALQIwgA4tSDH+ccOiCXoyNbFoMoazMcktLq/O
+         2w1McCM/QyGPOBoxi17YG6TKe4oRs3BptWIMXK0PSP0LEr0ORFEpHuDp13VByFKv+QvI
+         4jTwimyaGGEAPrpBqVs6PoZzSe5brt0Ij8K5cjRi3LZZ/LYnBZe2UjsfUamNbZTeNE/z
+         tZhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVyeqnPNhQKEAjH24J/tyavui7CtHv2abPGe9Yoj9dzkuv/0hSo+Y66v0tFlbgCljKjSi4IyE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhSaKCRS3fVTA8GqwnPdJ+F8lUt8mG/O5o2nRS/JVMZZ8oiRnX
+	Q2OqcpBOjbNmKacsNzD4jJ91F1/i0SUfuAJ2e4Uso8o2F2Xv/c2Y9rqdiV1lfLlB
+X-Gm-Gg: ATEYQzwCQD3BTGYC8WMxUGSgSYRwCaJCf5eqA1k3HoLnTvdXEtz3BAWzNMTpk/WwWsX
+	L3qNu4WbNtOrFfxWgkdrHBjWQcphVWYTvFLYgJ5MTd0EjjFD836HM17MV+2tfqRck2OAD+YMsTc
+	IsFGMVNVN9RXOP/2GSNigoP3fjjfX55zcnyodqxMxPvK4FHYQhRbDBsNVYiFJkHBJ903Rv6iyhO
+	Wf+ekgTvOkMbg88Vk+cK/GkCIeV5CMg/s8sdCKKbdjZHqOavFyP1AcEOC0jTdU10aQeRyb5QC31
+	clAeOUkmeU1V0V+kaK5+7LBZEqNVCyZwaUtRW7bXqd2s9V7k0fsB9ErLu1ERLOZTR+4wwwV/UbD
+	H4fB9ZMD9oevVsyhF5EG7Z/29IYS1XMmsIgnkSo/fr4mOhXEv1+mRG++N/gulkRt4qijJJLqn3+
+	IWI8xL
+X-Received: by 2002:a05:6512:39d4:b0:5a1:3d08:cfab with SMTP id 2adb3069b0e04-5a15a4da7camr370067e87.23.1773261983314;
+        Wed, 11 Mar 2026 13:46:23 -0700 (PDT)
+Received: from router-0001 ([2a01:4f9:3080:2e0f::2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a15602e749sm594670e87.34.2026.03.11.13.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 13:46:22 -0700 (PDT)
+From: Alex Dvoretsky <advoretsky@gmail.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	maciej.fijalkowski@intel.com,
+	aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	kurt@linutronix.de,
+	stable@vger.kernel.org,
+	Alex Dvoretsky <advoretsky@gmail.com>
+Subject: [PATCH net v2] igb: remove napi_synchronize() in igb_down()
+Date: Wed, 11 Mar 2026 21:45:15 +0100
+Message-ID: <20260311204620.15763-1-advoretsky@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <abEtQwISGizUXIwf@boxer>
+References: <abEtQwISGizUXIwf@boxer>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260311173509.GR606826@noisy.programming.kicks-ass.net>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224757-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,linutronix.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224758-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[advoretsky@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,infradead.org:email,noisy.programming.kicks-ass.net:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 63E0626A211
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8871826A269
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 06:35:09PM +0100, Peter Zijlstra wrote:
-> > Additionally, does this change leave the unthrottled event's hardware
-> > counter uninitialized?
-> 
-> Also yes.
+When an AF_XDP zero-copy application terminates abruptly (e.g., kill -9),
+the XSK buffer pool is destroyed but NAPI polling continues.
+igb_clean_rx_irq_zc() repeatedly returns the full budget, preventing
+napi_complete_done() from clearing NAPI_STATE_SCHED.
 
-Something like so on top of things I suppose.
+igb_down() calls napi_synchronize() before napi_disable() for each queue
+vector. napi_synchronize() spins waiting for NAPI_STATE_SCHED to clear,
+which never happens. igb_down() blocks indefinitely, the TX watchdog
+fires, and the TX queue remains permanently stalled.
 
+napi_disable() already handles this correctly: it sets NAPI_STATE_DISABLE.
+After a full-budget poll, __napi_poll() checks napi_disable_pending(). If
+set, it forces completion and clears NAPI_STATE_SCHED, breaking the loop
+that napi_synchronize() cannot.
+
+napi_synchronize() was added in commit 41f149a285da ("igb: Fix possible
+panic caused by Rx traffic arrival while interface is down").
+napi_disable() provides stronger guarantees: it prevents further
+scheduling and waits for any active poll to exit.
+Other Intel drivers (ixgbe, ice, i40e) use napi_disable() without a
+preceding napi_synchronize() in their down paths.
+
+Remove redundant napi_synchronize() call.
+
+Fixes: 2c6196013f84 ("igb: Add AF_XDP zero-copy Rx support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
 ---
-Subject: x86/perf: Make sure to program the counter value for stopped events on migration
-From: Peter Zijlstra <peterz@infradead.org>
-Date: Wed Mar 11 21:29:14 CET 2026
+Thanks for the suggestion, Maciej. I tested removing napi_synchronize()
+and it fixes the issue cleanly — napi_disable() handles the stuck poll
+via NAPI_STATE_DISABLE without needing any hot-path changes.
 
-Both Mi Dapeng and Ian Rogers noted that not everything that sets HES_STOPPED
-is required to EF_UPDATE. Specifically the 'step 1' loop of rescheduling
-explicitly does EF_UPDATE to ensure the counter value is read.
+v2:
+  - Replaced 3-patch series with single napi_synchronize() removal,
+    per Maciej Fijalkowski's suggestion. napi_disable() handles the
+    stuck NAPI poll via NAPI_STATE_DISABLE, making the __IGB_DOWN
+    checks in igb_clean_rx_irq_zc() and igb_tx_timeout(), and the
+    transition guards in igb_xdp_setup(), all unnecessary.
+  - Tested on Intel I210 (igb) with AF_XDP zero-copy: full E2E
+    traffic suite, graceful shutdown, and 5x kill-9 stress cycles.
+    Zero tx_timeout events.
 
-However, then 'step 2' simply leaves the new counter uninitialized when
-HES_STOPPED, even though, as noted above, the thing that stopped them might not
-be aware it needs to EF_RELOAD -- since it didn't EF_UPDATE on stop.
+ drivers/net/ethernet/intel/igb/igb_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-One such location that is affected is throttling, throttle does pmu->stop(, 0);
-and unthrottle does pmu->start(, 0); possibly restarting an uninitialized counter.
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 12e8e30d8a2d..a1b3c5e4f7d2 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -2203,7 +2203,6 @@ void igb_down(struct igb_adapter *adapter)
 
-Fixes: a4eaf7f14675 ("perf: Rework the PMU methods")
-Reported-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/x86/events/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ 	for (i = 0; i < adapter->num_q_vectors; i++) {
+ 		if (adapter->q_vector[i]) {
+-			napi_synchronize(&adapter->q_vector[i]->napi);
+ 			igb_set_queue_napi(adapter, i, NULL);
+ 			napi_disable(&adapter->q_vector[i]->napi);
+ 		}
+--
+2.51.0
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1374,8 +1374,10 @@ static void x86_pmu_enable(struct pmu *p
- 
- 			cpuc->events[hwc->idx] = event;
- 
--			if (hwc->state & PERF_HES_ARCH)
-+			if (hwc->state & PERF_HES_ARCH) {
-+				static_call(x86_pmu_set_period)(event);
- 				continue;
-+			}
- 
- 			/*
- 			 * if cpuc->enabled = 0, then no wrmsr as
 
