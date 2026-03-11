@@ -1,181 +1,148 @@
-Return-Path: <stable+bounces-224611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ID+BE63sGlvmQIAu9opvQ
-	(envelope-from <stable+bounces-224611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:29:02 +0100
+	id kLCXBLy7sGlXmgIAu9opvQ
+	(envelope-from <stable+bounces-224612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:47:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5F1259CB6
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:29:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8073B25A24C
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1E313028C3E
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 00:28:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCA9B307098B
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 00:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D8E35AC24;
-	Wed, 11 Mar 2026 00:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DB7364942;
+	Wed, 11 Mar 2026 00:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="Q44lxkV1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms.puri.sm (ms.puri.sm [135.181.196.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE25F35A937
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 00:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04BA366DB9
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 00:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.181.196.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773188918; cv=none; b=EjG7eAeC/QASOYnSUd116X4TJfIOhkygICmYFaCiMN/15vko9DH0fxSc3RwUSB7lWC3Ygvg2uF90wIcxLoJ51HklRRTQ+BuWLNarQ7HfUWk4nN3sG5tBolPFEDirWBfqezAVd7lk3Lk/tkrGDhewCfrQTyYD9+1Mon6JK8Ne/dw=
+	t=1773189861; cv=none; b=XH9KwlTS6E/9yZvH/CA6Vwg6gmSef1vYw8g55bFLLjjPizwVIeEJnvwta0fiuK1LZNEvoBx5mAEriU9glq94btBzJVpTrXqlRsC1HRc1I3ULfTbQzpdfDiUZyQEs72XVX6iQcyrU63VEIMSwhF3xdxeNmkDSkoaiXHnvJiNvobU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773188918; c=relaxed/simple;
-	bh=OkEIBxc3yBY6QPzdTqn2maD1OuzaedMvIydfn3q/lLI=;
+	s=arc-20240116; t=1773189861; c=relaxed/simple;
+	bh=bl7aXsWttulR8Cj9N7B+7S2072TKIJYXR4BxhG3BRmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMOU03rSxCVwJElZPCPLdfeNnY6pWBCC8E7APpH3war9mb0y9LlVoqjdhnzr+1iuy9XuDdFJBcph+IPSdXIXEyYaoLyJtDTNjTBHJOdA89y/ltF1DWP0Mdsrmfl++Xj8TqbUcg3hs5PfPqsV4+IZ9PxPOEpjI6HtMw1e9MIo5yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-4638e238094so6920804b6e.3
-        for <stable@vger.kernel.org>; Tue, 10 Mar 2026 17:28:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773188916; x=1773793716;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uV7lH3FIJA3CkRWr9ZibC3b+y2jhZmrH7643sTDjV0c=;
-        b=n+BoseZUKD6As4/hyVHCHVlqmZII4Bxg17K1FRe1w/Qx6GmyUO5qJC/P4r6Cj2Ts38
-         ZM9e1mkFoxRmO4eRq6sT6qFj53aTJbceXywBhSC85adeFstRljdeSqLRiXZ8k2blsTx9
-         KfDv0XODhRzp8TB0lP9h2c0zP1Yojjn/MnhR6S7y/OGf0K74y1UoWaBf7QJ43AssMiSL
-         wCLmFEdqT3yg2+o9PiNhg5ryYAI6rd8Yps7403PU/61R0MSSoHcsjj2b0MNPlQ9aNm/T
-         jwbmh0nqTiBoj6E07S1uvXCtbRJlCmVecG8Vl7vyUYok0g+XfQHjBJ0JaVATVh+gqVWT
-         J/Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCV9AuxyG0XeEtkpvBhAT/j30V7sjE4xKy/OivT5Sduw2KrcZxrRJx/AH7BGupHfJTsn2/rE9b4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG0tRNOS0FMOJJjQBYqezvguusHwW9KswBxngyOGvp2Npsrt98
-	CwxUvG2FAJe9kdBtMZANDiKm1uu37HCHHC2UBbXcTGhbL9XaC98bjE3p
-X-Gm-Gg: ATEYQzxUGbfZZ0PSXK55AQMa7xHTC14PFmmVPIGFHD9fAe+p+HDanrOUENHsW5huZ/e
-	LrA3pTGy1wQXF5xx5KkLPDl7VUQtvlnhDSzM6721Bv9eMowhYytOMECowCl2HnTASRtjlrJFW1g
-	V9I6GYZHSX5nCga/xXF5jXoqIUfA7/VsvjB7P3BUi3jzlY8hYFlxaUM+kxUiOkwBdlZyqunAlX7
-	DOco8RI4uI7XT8f5ESqIFgwdfPfl4uTrC9tl2sg+Nfo+OqtTbVtxPnh9uLnFZAQuP2ap77ssghK
-	3SIA1c3gWp6CHB0sjPMqHTAAINo/wzoH0u7pd69ykAvCOIOgcbduaVOdHUwT+yOr4UbEyteNFzX
-	oQk1fmfok2OnqMlmbKtoVXM0oIxLHp0bRsmFyaHj7IzqinBxm42+JNeR6w+UyJWzGaBYxIPs6gN
-	f6SnHKdDTEchwqE+T4vCehUAsiEvEnc4iniitNwpABV1sNAFs=
-X-Received: by 2002:a05:6808:178d:b0:45a:9068:642a with SMTP id 5614622812f47-46733506ea9mr429126b6e.35.1773188915884;
-        Tue, 10 Mar 2026 17:28:35 -0700 (PDT)
-Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e72b40asm516497fac.20.2026.03.10.17.28.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 17:28:35 -0700 (PDT)
-From: Sean Wang <sean.wang@kernel.org>
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
-Date: Tue, 10 Mar 2026 19:28:25 -0500
-Message-ID: <20260311002825.15502-2-sean.wang@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260311002825.15502-1-sean.wang@kernel.org>
-References: <20260311002825.15502-1-sean.wang@kernel.org>
+	 MIME-Version:Content-Type; b=qn0BHnJLZW0EOzrO0+Tpa97Mrjiu1CoAvb743K48GZNhHV4ziCfyLhz/roLEkPBnreElV/29JQeoxzntb+d2hLmLX8QCXwoAOVQ65yQVaWR/J/FRzCEnCvyT2j9IM/GOSIoVmqk2bkHcB828TMpiwYKtpoaPwEBbbMzWzwtY6Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=Q44lxkV1; arc=none smtp.client-ip=135.181.196.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=smtp2;
+	t=1773189409; bh=bl7aXsWttulR8Cj9N7B+7S2072TKIJYXR4BxhG3BRmQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q44lxkV1hFko2QSoGWhr/JHXJ0nCjUwA3bfWzm0kQRoGvtkeQjd7COfDT1p1BFhkK
+	 GURdpCccmsGxQ8UR7iRt/55CvabPG5XIDsF8s97Lu5ADAScDPyUuTRSelGSTnNS4Kl
+	 kknccI6z1uKNXtlDWpFD0LiRi85yTcqwfp2ElLKyhr/0JB0Nq2BpgwhTktiiJ6Pw29
+	 oZTmz4EZLx3RFs0F+qIVREECEWsVwqjyBN5aKXZIHo3ZX9aHX0TI6G4mOAkqHEfAYi
+	 q1ppK5FgdW7VBlodMw+j744Q1DITWPbx5Sn25nsfXJ09mJaMRjDBu5DwjnaXoVqd/Q
+	 AFkj6ePnf2I7g==
+Received: from pliszka.localnet (83.24.17.124.ipv4.supernova.orange.pl [83.24.17.124])
+	by ms.puri.sm (Postfix) with ESMTPSA id D61711F7B1;
+	Tue, 10 Mar 2026 17:36:48 -0700 (PDT)
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+To: patches@lists.linux.dev, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+Cc: Ming Qian <ming.qian@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject:
+ Re: [PATCH 6.18 085/314] media: verisilicon: Avoid G2 bus error while
+ decoding H.264 and HEVC
+Date: Wed, 11 Mar 2026 01:36:46 +0100
+Message-ID: <6892707.LvFx2qVVIh@pliszka>
+In-Reply-To:
+ <3b92b74f68817accc3efa8756ab3ee6bd91cefc6.1773141555.git.sashal@kernel.org>
+References:
+ <cover.1773141554.git.sashal@kernel.org>
+ <3b92b74f68817accc3efa8756ab3ee6bd91cefc6.1773141555.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F5F1259CB6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 8073B25A24C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[puri.sm,reject];
+	R_DKIM_ALLOW(-0.20)[puri.sm:s=smtp2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224611-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224612-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[puri.sm:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	FROM_NEQ_ENVFROM(0.00)[sebastian.krzyszkowiak@puri.sm,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email]
 X-Rspamd-Action: no action
 
-From: Sean Wang <sean.wang@mediatek.com>
+On wtorek, 10 marca 2026 12:15:44 czas =C5=9Brodkowoeuropejski standardowy =
+Sasha=20
+Levin wrote:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> [ Upstream commit e0203ddf9af7c8e170e1e99ce83b4dc07f0cd765 ]
+>=20
+> For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
+> g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
+> error and produce corrupted pictures, even potentially lead to system han=
+g.
+>=20
+> [  110.527986] hantro-vpu 38310000.video-codec: frame decode timed out.
+> [  110.583517] hantro-vpu 38310000.video-codec: bus error detected.
+>=20
+> Therefore, it is necessary to ensure that g1 and g2 operate alternately.
+> This allows for successful multi-instance decoding of H.264 and HEVC.
+>=20
+> To achieve this, g1 and g2 share the same v4l2_m2m_dev, and then the
+> v4l2_m2m_dev can handle the scheduling.
+>=20
+> Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Co-developed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/media/platform/verisilicon/hantro.h   |  2 +
+>  .../media/platform/verisilicon/hantro_drv.c   | 42 +++++++++++++++++--
+>  .../media/platform/verisilicon/imx8m_vpu_hw.c |  8 ++++
+>  3 files changed, 49 insertions(+), 3 deletions(-)
+>=20
 
-mt7925u uses different reset/status registers from mt7921u. Reusing the
-mt7921u register set causes the WFSYS reset to fail.
+This one introduces a regression that's being fixed in https://lore.kernel.=
+org/
+lkml/20260306031059.801-1-ming.qian@oss.nxp.com/T/, so they should probably=
+ be=20
+applied together once the fix lands.
 
-Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
-correct registers and fix mt7925u failing to initialize after a warm
-reboot.
-
-Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  4 ++++
- drivers/net/wireless/mediatek/mt76/mt792x_usb.c  | 13 ++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-index 7ddde9286861..d2a8b2b0df32 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-@@ -392,6 +392,10 @@
- #define MT_CBTOP_RGU_WF_SUBSYS_RST	MT_CBTOP_RGU(0x600)
- #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
- 
-+#define MT7925_CBTOP_RGU_WF_SUBSYS_RST	0x70028600
-+#define MT7925_WFSYS_INIT_DONE_ADDR	0x184c1604
-+#define MT7925_WFSYS_INIT_DONE		0x00001d1e
-+
- #define MT_HW_BOUND			0x70010020
- #define MT_HW_CHIPID			0x70010200
- #define MT_HW_REV			0x70010204
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index a92e872226cf..47827d1c5ccb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
- 	.need_status_sel = true,
- };
- 
-+static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
-+	.rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
-+	.done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
-+	.done_mask = U32_MAX,
-+	.done_val = MT7925_WFSYS_INIT_DONE,
-+	.delay_ms = 20,
-+	.need_status_sel = false,
-+};
-+
- int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
- {
- 	int err;
-@@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
- 
- int mt792xu_wfsys_reset(struct mt792x_dev *dev)
- {
--	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
-+	const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
-+						&mt7925_wfsys_desc :
-+						&mt7921_wfsys_desc;
- 	u32 val;
- 	int i;
- 
--- 
-2.43.0
 
 
