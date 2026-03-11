@@ -1,244 +1,237 @@
-Return-Path: <stable+bounces-224736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKP+IWirsWmzEQAAu9opvQ
-	(envelope-from <stable+bounces-224736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:50:32 +0100
+	id iEpkFCugsWn4EAAAu9opvQ
+	(envelope-from <stable+bounces-224726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:02:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015A52683FC
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:50:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223EC267A73
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 18:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C596B30338A7
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 17:50:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A8F833020519
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 17:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881163370F4;
-	Wed, 11 Mar 2026 17:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E093E2761;
+	Wed, 11 Mar 2026 17:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=juniper.net header.i=@juniper.net header.b="A2dteuFG";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=juniper.net header.i=@juniper.net header.b="KKkgdm7n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="auYcSsap"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00273201.pphosted.com (mx0b-00273201.pphosted.com [67.231.152.164])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58AD30EF8F;
-	Wed, 11 Mar 2026 17:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.164
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773251427; cv=fail; b=NP2O2bb03fvvbgTb8y9fPdXBuKay9lnFGYd//TvhbYyZ/YCWk3IJtW9Z8eNO4GwzkYo+biM9s0TZ2ler/AbbtcRkvn1RBcuKGx6Ne2z+k9tzPNLAxMUvo+xs/3NCrDjKAdWHC4WjWasxLWECgGlRZBBu2TLlkeIapr25IhsGEss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773251427; c=relaxed/simple;
-	bh=PwSKHdVVEpnKAyGaqnFY6xLQQ2TQ8XHeJ2cE6QfK0ew=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ebDF+S1TofE6J4qpOzc/S5JmnntzfIu57HXxfUjNZK0aoLqkpkYOV3r67DJUEAU+lOtN1Zvkh6cvt60dsr/Prr4bjHjda/AKQKPsbSzCufyuebIid53aTpGRFuynTu3cNDbCMc8jl5E+Nva+d831nIjswZGuxPhK179/P2DOCj0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=juniper.net; spf=pass smtp.mailfrom=juniper.net; dkim=pass (2048-bit key) header.d=juniper.net header.i=@juniper.net header.b=A2dteuFG; dkim=fail (0-bit key) header.d=juniper.net header.i=@juniper.net header.b=KKkgdm7n reason="key not found in DNS"; arc=fail smtp.client-ip=67.231.152.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=juniper.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=juniper.net
-Received: from pps.filterd (m0108163.ppops.net [127.0.0.1])
-	by mx0b-00273201.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62BGklEH2626649;
-	Wed, 11 Mar 2026 10:00:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=juniper.net; h=
-	cc:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS1017; bh=wwBr7ykGFVkRPEeyaeO8ez1/s96O3ZQ1e7KlSVRhsjw=; b=A2dt
-	euFGvi3Aobu2nt4ro90jbytGzh0TvpMwVAqwIBpIro4cesYfhzPx2UPXdVxNlmGQ
-	f2PnttH+sGA29/2WXE1Cn4rs+Dj/duyLyUn5Iu/pdGWCNFpeg5fwxyPnV1MXI2h5
-	MxNXBA2rdUWkb8zAaQoeeZ3hvf64YqpP2r4z9Ac+OujstA82jqcKyBN3CLoV3SD3
-	ktu2OJtg540aEPmL8fqTlJGvxpA/MH0BFXhgfuOu1IZGiA10NabpEQp+D8MFXr9z
-	0xxl5TaFMvllAj/C6CkUXxQYsVn/86RQqG28gjle5EjsW0dpHC+/e/pdGcXrX854
-	Ai3OpxweHFhzIWYDMQ==
-Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013041.outbound.protection.outlook.com [40.93.201.41])
-	by mx0b-00273201.pphosted.com (PPS) with ESMTPS id 4cu52djb9a-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 10:00:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UUH3oH8zUOC/PPb6lKdSqhU0p1iyi3Bsv45eDC8a1D+fn+PMQBRXPYlnAUE5TiO1xIiiS25fJEWS5PhwT5+07+YY02AtmP+Ar2sUfXx14UZmBfZBV0fmaI8pcBPpHOSeQflV6id+UMw3pJ+jdkGebTb8h0JOCTOccjxo0JeZGkSU1381n+id9xX0K0PQrMjY3YaSu6qGE/g79NK/KYrFvtg0V7I9VbysMHnkS2fW9i+/PC6ux6WJaYxENW44o+4cA1FUYJb2gtr1K7+QmuxKKN1So65ZeSJnAcgndJIeTD5kk64B10PehpHno9g6l/jEbyKBu9idd8Xc83q8GNJyxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wwBr7ykGFVkRPEeyaeO8ez1/s96O3ZQ1e7KlSVRhsjw=;
- b=rPvLHQ0HO3bIfOVJTJs6Hl0cwE+Q4OdcoIGiN+hatsLlWzck1fhnzynONWiJKDwuGO3q7tytPejF6mYu14e781QsrcsH1iUAgXEgG5tHtIRKQ4u0VMX0qwKv0IW4TlNSQZtdzCYl6Qin6Tmq2WO5xWwA5uAw0FRa1QJCNai9uyD9JqDznimNXI61aJ6QATre/lfn2R7wMpYD+efY21qjUVvD2RcHA0u1RBY0GCXs8IwzIWa1VaZTfvkoqysYiH1Plp6UdKoQLlZyraGSTpiqlldB1BkLr9vk6UJDcScBYwPyielI9Lzx87mAQnFd0N4XNt3+eDoKEKYDQDNjeLfH3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=juniper.net; dmarc=pass action=none header.from=juniper.net;
- dkim=pass header.d=juniper.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=juniper.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wwBr7ykGFVkRPEeyaeO8ez1/s96O3ZQ1e7KlSVRhsjw=;
- b=KKkgdm7n2yaeKVcuZnA3ISb5LOaGaGxcZ554V52Rj5rpZgDuJzKqyqIRgFTJmKThy9sXjDyDmiok4ZJtNh/SbqF+TzQxsjBVp6F87ITTB/AlCVfvCnVMd46GL2Y2fqi0EcwSq2sR88tDPIV7HV5HmytFPs30ZmXK9ldR2zzlD5k=
-Received: from PH0PR05MB9745.namprd05.prod.outlook.com (2603:10b6:510:283::11)
- by SJ0PR05MB9912.namprd05.prod.outlook.com (2603:10b6:a03:4ec::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
- 2026 17:00:46 +0000
-Received: from PH0PR05MB9745.namprd05.prod.outlook.com
- ([fe80::76d3:570:cbfb:f05c]) by PH0PR05MB9745.namprd05.prod.outlook.com
- ([fe80::76d3:570:cbfb:f05c%6]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
- 17:00:45 +0000
-From: Brian Mak <makb@juniper.net>
-To: Lee Jones <lee@kernel.org>,
-        Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>
-CC: Herve Codina <herve.codina@bootlin.com>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v2] mfd: core: Preserve OF node when ACPI handle is
- present
-Thread-Topic: [PATCH v2] mfd: core: Preserve OF node when ACPI handle is
- present
-Thread-Index: AQHcp3Gnu+SgoWRapU6tNIrs/eSZA7WhjgkAgAAP/gCABfG5AIAAEeQAgAIAnwA=
-Date: Wed, 11 Mar 2026 17:00:45 +0000
-Message-ID: <D6FA2D4C-EE9B-4B30-BE9D-A00F83D4C19F@juniper.net>
-References: <20260226224511.458065-1-makb@juniper.net>
- <20260306133806.GM183676@google.com> <aarmKE49wgbIblRb@ashevche-desk.local>
- <20260310092148.GE183676@google.com> <aa_xriW62F2j3Cpu@ashevche-desk.local>
-In-Reply-To: <aa_xriW62F2j3Cpu@ashevche-desk.local>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR05MB9745:EE_|SJ0PR05MB9912:EE_
-x-ms-office365-filtering-correlation-id: 6f720618-dfc1-4b84-b056-08de7f8fbc85
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info:
- C8Q+PyABKLrcng6ewngE3MqN9DDvhP5nTyBOB/zu6406T3ErrAD4rzr4gxVu9bIi9QNlJtkGktR2Ke7w6YkWB1g7AGHZkyibIqigwCXIYLsbJz5nmQlvVVQhnwnMOpWf/9kJxBk3D6WOgJQmj+yqycSHM4402O8nuc0AzpwKoD/i4VAYi4eri3CGONgzOJ60lbzSba5YiZ1xviabonZBKX+sVGu4sprMgZE4jw1Vgj+aD40BO5yuPn7Z72zaAWsMAaJQmDHbCjjMsc+mtj9o8EihyOaTZ/CTDmYQizg83H58mJdvQBB3Ftau/5qkgoPmJB6/EXLOgX7+EBeTixNv0FustUk28yJ7E6gVA1W7zSq71F8aP8Wn/lynnMnKjkgnX2cB/aE4GW7VYzrIkWzNPvzNHI59683esN2HpOUAL22fC7dZqVwgtx5C137ifbbINvPF0qjHIFpeReXVmfez6w1AfNRqy3K8z2vwZYQrNcPY6rVcWbR3RqbAeEuhgMdLcxsd6lqq0cS543nyqwltaH4Pw0msiQWFRIyBSSZfcyGgTaU/Mjvw2AagCoi960mHAjT5MMPwd+GqlYyPj1miKfmEn5DOUnU3HPvCRiLjMD0EwkoDyq5TRJY1gn+Rw3VEfPAvbVJk5I1SMwbaqNQ0e4xpYgoymt/Oga0oXU0nRfuKlMf1N7ZvrTYaqzArim/MZDCN5o2wj1rEtZS200gGvU1M/VdYQuUJOENSBQ8KpuTRoueMPGEjWkU1XZHxiXYBOiVG9TDpwUiYqMZVFalU/ezfazMRhfdpkivScAaR/Tg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR05MB9745.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mOvX30Ih16Sk+/HVfhq5juDYcHwYUiLaayYe7a+bF/0in0o/B14yNx84FSuh?=
- =?us-ascii?Q?bgpJVqJwjqTSdTsFbUct236vS3Mi8r/yW6PtPW7nofZ2SDYjWSF6JkuziiCy?=
- =?us-ascii?Q?DLy+lASHtyKrKb+lruq/2dSUNam/H4bozweNSNuy1WupNyNMJ+6fcEons8iM?=
- =?us-ascii?Q?Y2w/DaNVPBaKOJhb/v8Mf/iY5i/gNW1VbWwpD89bDf56YeJqWbFc6X0QRLDA?=
- =?us-ascii?Q?YNsYG3HmwfcHkjOJYZqZBRJdWjzF/+ysQ2ypeGjKzqwCGr0FWn3+v3+M+1pi?=
- =?us-ascii?Q?gMmJY+EU69yUcD/X4zI7YlNN1/gCJP6+l4a+RNcM64entZDltd5e+LkPTpvn?=
- =?us-ascii?Q?ZTFlW/AAQCFir006UVcusX2iYf5r2ZHpYQy9q86Z7itBFzwnYw96A2dNydv9?=
- =?us-ascii?Q?T+hMrC0OjgH5OvZEbEZn1ChGFpLg/QOfSKm6oly2kfI7ulYhqsfBthS5WJU0?=
- =?us-ascii?Q?jZATeN89u3XebbBz6XGrzWojdIVC8Tyh/ir874JnDosFx/fzGLUmLdiLZmXd?=
- =?us-ascii?Q?D5vNKK9vSMPWaU0zRG5YH2szLu3kx6x5ZtTlHdhG+dX1HX0Rccq/6fkB/Igr?=
- =?us-ascii?Q?F7BFndELfXHQpKAupzln4tJqu4XQwbPXSezr0eCWBeGQZyyVgjCCn1dw9pMT?=
- =?us-ascii?Q?dA+ZNHdlJU4M7y6xSzRuxcgwaqyP8qxcHg/DCgABQtwm9Bdvxdpgx4Az8vyk?=
- =?us-ascii?Q?YQ6LWfd50zCiKJYJ6/AqRxuPs2PCdo731R9CST7035niaKNpYg7ExDYR3TDB?=
- =?us-ascii?Q?MZI6gPzKVvsBCrL+1/Ha0Gz1XzZw63mivcYvkdWu/7XzoJrlkMR3VDC3PLi9?=
- =?us-ascii?Q?3ykkBnVAD4tN1ZvHfJPUQUUadmtZuwOGz4UCU/g2nShO/9JH+Xl9woK1kuQp?=
- =?us-ascii?Q?KADVBEUWmVUB2GXD7sg4Mhh9WIhjFe/lpwJqeajfGPCouEssSn2ouJewVRR2?=
- =?us-ascii?Q?jc7f6fRQktOOWya5fBOJBEyIMHA1LcQ+m5hXoSPFGHd3GFLUx8mntw5MYlqY?=
- =?us-ascii?Q?Aoi9JDCRYtZYmeh2h4hqpGYUvQ4uYGYb3JrrIYZ/otsUvyN1tCKiMWJfmNzP?=
- =?us-ascii?Q?K7ioJGmbIKpHBdfeQPIXXy2fXHjOwQwPUY2dGxVO15JTGQixTPzAOoklTi0B?=
- =?us-ascii?Q?fe2kdSLXhvXKMqVGRetv2jsTcTxi+PHQBxAduraQ29NQgQcQ5c3inAVffQhx?=
- =?us-ascii?Q?EbwAu1uFnGU4SRF56JhDOIhZ39AdnZOIn8A+xXMxwS7oJ5+dG7QEGnCwMb9H?=
- =?us-ascii?Q?uwxOKFZxbJ3L6YGYKBNf/KWO6YEU7eexPodR7QLmpq7qAgSJZ2rp3PG3D3eu?=
- =?us-ascii?Q?XZ8B6bXZj/C5Kpkl0DJs52AHNJmVsuCbYgpV4+xeZCpdQKUaZcOxt6fROb5s?=
- =?us-ascii?Q?Uv4rNtI5cLyfhCCXOeYZj46BfAkH5lPRpuGQjVPIiUufGnmX+anb4SlspRtG?=
- =?us-ascii?Q?v3BX3BGramrkUjQuMyqqajN35d1IhSliipx0Yb6U5erYf4YIboXfwYiuWimn?=
- =?us-ascii?Q?vo48s77tBDtOGU4ep7M4DKLPREE2UESZNX7w2K19N7W/Yv+K+lS4MeXxfku0?=
- =?us-ascii?Q?h+T2TyjXHaCBCp1emsjFpIuY2skpHSO4ml4B8sRJPM4dcDq07L13DYDaHrvV?=
- =?us-ascii?Q?w76OUIFizhKNFoVsjpCH0pv1X9n/HSSq2UaD2Hma3HhY0R2oMvJxVJUNvs/n?=
- =?us-ascii?Q?33cwBMx1aGH2tdAwbEctcKErpP8qkcVXarA1/yxGe6RIXZ3ec/bHOdqA1Qjp?=
- =?us-ascii?Q?jioe1npdEw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <5A2DFA8FBF61DE479F5D38300D85E890@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795FA2E11B0;
+	Wed, 11 Mar 2026 17:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773248548; cv=none; b=Ctv3WU8ohCu3xMQHwVyWD49UFYrhMwj+u35BtR0EXJscnwFI0GPmt8+kZ7cEnNYbiCQ4JugtDtGZ5IkNVv6wMaxm/xuytBlRTc6i3tjSny9pwnn04DqmdzT8hyyXoOW1La4r0ZbCoj/s2628rU4aIFXL4cAh2UOZtJTThSePqXA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773248548; c=relaxed/simple;
+	bh=qbQHUZHFrMSl9GZ0M449xWT2lv88BuJUsOUnExNCyK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=P1rjuNmhbq0wrpebwfbcwvWIeUK1QalB6g1pbT7IikWrsjs+LbUp6jLMro62313cWkPCckSaQqrXqfDSUoGlwUd0M2ueEpjcBkxwkpzCNkiq4I4GCOKfPXMq8+5ewg63XpaILUNgByVSrmwasZTnY8NcHnDaesOK5ffeED/SUUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=auYcSsap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD869C4CEF7;
+	Wed, 11 Mar 2026 17:02:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773248548;
+	bh=qbQHUZHFrMSl9GZ0M449xWT2lv88BuJUsOUnExNCyK4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=auYcSsapz8p65gnvMN/VpGSca+m0V47rs2fNjRxHOGbcOF7khTzKCshNZHWFukUEa
+	 bnXC+yfrXbKqbLhu68q0yQfhAyMWSCXNXNIBAKRaLjxFgWqWGJAvlEHVE71SrnEki3
+	 dKD9hbUZKlFZq0UVuNyj0aL4WApKHEHlTf0M8Ea7qH5r5ypeguDSCVP7fDO8XFkDzz
+	 KqLzUOMWPsO+YrDPq38kiCFHjNbZq9K/tQnyESpkcZj3YnLHqDfmRejiAWwWhB2AUQ
+	 D64NsEu8EfPzJunss4O8z5+fy5ezEJbruvUviqIng0ygosw3JnId/51TdCe9FKqRYj
+	 4x+0E9RndXZcA==
+Date: Wed, 11 Mar 2026 12:02:26 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: Jeremy Linton <jeremy.linton@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Kees Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Zheyun Shen <szy0127@sjtu.edu.cn>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Xin Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Wei Huang <wei.huang2@amd.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, wangzhou1@hisilicon.com,
+	wanghuiqiang@huawei.com, liuyonglong@huawei.com,
+	linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, stable@vger.kernel.org,
+	Wathsala Vithanage <wathsala.vithanage@arm.com>
+Subject: Re: [PATCH v5 2/2] PCI/TPH: Fix get cpu steer-tag fail on ARM64
+ platform
+Message-ID: <20260311170226.GA930029@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	t2uAiSPrT8uTCy0Uf2U65ZavUy1hkvYFgkzHsc3xwoSsc8ezfmiCIug15HUplo+MKnwKO2ITnJnSMza87XdDWQAvune99GSltXMnEVXpZDbsH36v26I23yeU3zhsJBKiy3kh3G9HtEiztAMA2uvKLQt2LTT6mSix91zLWIokCqSccJw9ddLYSRtrogCKU/J5ee6WXQerSDfoExVqdfkoCZ9Tf9sSIilA0NgjN225JnQGJD+iexGytzgUimQcZTqLWVVD0xyH3tEQcDlO3WyO3IwtX0IeYCt7M1gACNsf9NyPl7ja/at1zQtk/VyuviG6Va7UVW3LOctUAl7gTc3TXA==
-X-OriginatorOrg: juniper.net
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR05MB9745.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f720618-dfc1-4b84-b056-08de7f8fbc85
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2026 17:00:45.2600
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bea78b3c-4cdb-4130-854a-1d193232e5f4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: m1S3QygT4Z7675DWL440dVxy8Qs2fevaGiUBi6hpGrWkiG7X2ZmtE/q2RfrbYHMWb++3+OVFeS+9IbcVvbBbWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR05MB9912
-X-Proofpoint-ORIG-GUID: bnDm1O3h1PNUPK90Mi5jggwe2YcEXdaN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDE0MyBTYWx0ZWRfXyxMt0ndKyoVx
- 1J8nsGlzrpHRYfrQwqK6pI8QYTqTWkXgg4wheqTorQsXmTWIKpVWD3SeSD1yIpQdZHZkDNzfWFV
- zvQbXg6kvTz0g08tlxKCZxr1RJMTrezUoJfLOE7Zf32slHQv2fskdNQXe3/Fjq7a+UTBJffRsgH
- AvFHHnG30he+zYGj+l5QnH83RxFe9Pr/CJF/zk2Hcongkm0jcfIN/ASYIngkVkBnAFvd/mjFcY4
- XDjiKjpw5VGoHApwtX70O85BlcnEh6NNxDTLU03UQOwHZG4gRb748AdLMLbiMJjMT/Sr3K0jThh
- YH2OXB9L4IzW8KHK54E6UbHsrbQtTvYBiv3vPfiAIdjyUKQPeeQqY9V3gr+yMOYMG90fOmGGvFM
- p9iBzbxc5A2wll6WQQRE9Jn18ctyAXJOVj+fYOHWlQK0hybuEMgBRFwoAKlvUh4A3o1oLTE65K6
- nLImG+OGLEpS7b6LqsQ==
-X-Proofpoint-GUID: bnDm1O3h1PNUPK90Mi5jggwe2YcEXdaN
-X-Authority-Analysis: v=2.4 cv=Xob3+FF9 c=1 sm=1 tr=0 ts=69b19fc1 cx=c_pps
- a=7YeuQJ2t1o+NR7xo1DCA9A==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=rhJc5-LppCAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7vL3O5uBSuztJ3xaqtyr:22 a=kT44gYg0zFKYNBFEzlFE:22 a=QyXUC8HyAAAA:8
- a=zEbuT_0w3zmnzz-ZSFMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-11_02,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_notspam policy=outbound_spam
- score=0 spamscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 malwarescore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603110143
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[juniper.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[juniper.net:s=PPS1017];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ef9b529-839b-4cf0-a294-5b68fe8aa768@huawei.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224736-lists,stable=lfdr.de];
-	DKIM_MIXED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224726-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	R_DKIM_PERMFAIL(0.00)[juniper.net:s=selector1];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[juniper.net:+,juniper.net:~];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[makb@juniper.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[63];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 015A52683FC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 223EC267A73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mar 10, 2026, at 3:25 AM, Andy Shevchenko <andriy.shevchenko@linux.intel=
-.com> wrote:
+On Wed, Mar 11, 2026 at 11:00:02AM +0800, fengchengwen wrote:
+> On 3/11/2026 6:09 AM, Bjorn Helgaas wrote:
+> > On Tue, Mar 10, 2026 at 10:58:49AM -0500, Jeremy Linton wrote:
+> >> On 3/9/26 10:20 PM, Chengwen Feng wrote:
+> >>> pcie_tph_get_cpu_st() is broken on ARM64:
+> >>> 1. pcie_tph_get_cpu_st() passes cpu_uid to the PCI ACPI DSM method.
+> >>>     cpu_uid should be the ACPI Processor UID [1].
+> >>> 2. In BNXT, pcie_tph_get_cpu_st() is passed a cpu_uid obtained via
+> >>>     cpumask_first(irq->cpu_mask) - the logical CPU ID of a CPU core,
+> >>>     generated and managed by kernel (e.g., [0,255] for a system  with 256
+> >>>     logical CPU cores).
+> >>> 3. On ARM64 platforms, ACPI assigns Processor UID to cores listed in the
+> >>>     MADT table, and this UID may not match the kernel's logical CPU ID.
+> >>>     When this occurs, the mismatch results in the wrong CPU steer-tag.
+> >>> 4. On AMD x86 the logical CPU ID is identical to the ACPI Processor UID
+> >>>     so the mismatch is not seen.
+> > 
+> >>>   int pcie_tph_get_cpu_st(struct pci_dev *pdev, enum tph_mem_type mem_type,
+> >>> -			unsigned int cpu_uid, u16 *tag)
+> >>> +			unsigned int cpu, u16 *tag)
+> >>>   {
+> >>>   #ifdef CONFIG_ACPI
+> >>> +	u32 cpu_uid = acpi_get_cpu_acpi_id(cpu);
+> > 
+> > From AI review (gemini/gemini-3.1-pro-preview):
+> > 
+> >   Does this code need to validate that `cpu` is within bounds before
+> >   using it?  Before this change, the `cpu_uid` parameter was passed
+> >   opaquely to the ACPI firmware via `tph_invoke_dsm()`, which would
+> >   gracefully handle invalid values.
+> > 
+> >   Now, `cpu` is treated as a logical CPU index and passed to
+> >   `acpi_get_cpu_acpi_id(cpu)`. On architectures like arm64 and riscv,
+> >   `acpi_get_cpu_acpi_id()` uses `cpu` directly as an array index
+> >   (`&cpu_madt_gicc[cpu]` and `&cpu_madt_rintc[cpu]`). On x86, it uses
+> >   `per_cpu(x86_cpu_to_acpiid, cpu)`.
+> > 
+> >   If a caller passes an out-of-bounds `cpu` index (for example, if an
+> >   IRQ affinity mask is empty and `cpumask_first()` returns
+> >   `nr_cpu_ids`, or if userspace passes an arbitrary ID via
+> >   `mlx5_st_alloc_index()`), this will result in an out-of-bounds
+> >   memory read.
+> > 
+> >   Consider adding a bounds check:
+> > 
+> >     if (cpu >= nr_cpu_ids)
+> >       return -EINVAL;
+> > 
+> > I agree that this is an issue, and I think implementations of
+> > acpi_get_cpu_acpi_id() should validate their inputs.
+> > 
+> > I don't know if there's a value that can never be a valid ACPI CPU UID
+> > and could be used as an error value from acpi_get_cpu_acpi_id().  I do
+> > see a few mentions of a ~0 value meaning "all processors" (ACPI r6.6,
+> > sec 5.2.12.13).  
+> 
+> I only have the ACPI Specification Version 6.5, so I will use v6.5
+> as an example.
 
-> On Tue, Mar 10, 2026 at 09:21:48AM +0000, Lee Jones wrote:
->> On Fri, 06 Mar 2026, Andy Shevchenko wrote:
-> ...
->> If someone is going to do the work sometime in the near future, it can
->> stay as FIXME.  A few releases isn't going to offend anyone.  However,
->> if we're just going to sit on it and this is likely to be here for an
->> elongated period, it should be changed.
->=20
-> Then better to be just a NOTE:.
+https://uefi.org/sites/default/files/resources/ACPI_Spec_6.6.pdf
 
-Ok, should I raise a v3 patch, or can this just be changed when applied?
-I'm okay either way.
+> 	int acpi_get_cpu_uid(unsigned int cpu, u32 *uid) {
+> 		if (cpu >= nr_cpu_ids)
+> 			return -EINVAL;
+> 		*uid = xxx;
+> 		return 0;
+> 	}
 
-Thanks,
-Brian=
+This looks good to me.
+
+> Another issue: This commit also provides an implementation for the
+> x86 platform.  However, further code analysis revealed a potential
+> problem in the implementation:
+> 
+> The acpi_get_cpu_acpi_id() retrieves uid from x86_cpu_to_acpiid in
+> SMP, and x86_cpu_to_acpiid is set through the call chain:
+> acpi_parse_lapic() -> topology_register_apic() ->
+> topo_register_apic() -> topo_set_cpuids() -> x86_cpu_to_acpiid. It
+> appears to retrieve the "ACPI Processor UID" from ACPI Section
+> 5.2.12.2, but the problem is that this field is only one byte in
+> length, which may cause issues in huge-core systems.
+> 
+> Therefore, I suggest re-implementing the acpi_get_cpu_uid function
+> for the x86 platform. Either I provide a default implementation
+> (shown below), or x86 guys contribute to the implementation:
+> 
+> 	s64 acpi_get_cpu_uid(unsigned int cpu) {
+> 		if (cpu >= nr_cpu_ids)
+> 			return -EINVAL;
+> 		return cpu;
+> 	}
+
+I don't think this is your problem to solve, so don't worry about it.
+If you implement acpi_get_cpu_uid() to return the same values as
+cpu_acpi_id(), it's up to the x86 folks to deal with any one-byte ID
+issues.
+
+Bjorn
 
