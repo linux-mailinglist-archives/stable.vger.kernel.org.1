@@ -1,74 +1,75 @@
-Return-Path: <stable+bounces-224753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FSPGrTOsWmQFQAAu9opvQ
-	(envelope-from <stable+bounces-224753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:21:08 +0100
+	id wADcEtjPsWmQFQAAu9opvQ
+	(envelope-from <stable+bounces-224754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:26:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70B8269EB1
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:21:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0AE5269F52
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 965FC3016246
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:18:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A86293021992
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D273331230;
-	Wed, 11 Mar 2026 20:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE4D38D01D;
+	Wed, 11 Mar 2026 20:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BkQmcnXx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PnX6G8lM"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FA9310620;
-	Wed, 11 Mar 2026 20:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1064D2F8BEE;
+	Wed, 11 Mar 2026 20:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773260333; cv=none; b=SVqTPt+oMi+C0p60G2X0C4qT2JXoPIblIoR3V6tOeHnQTlt47e/Oa/WcEyan8ANULqaiVBbiesOH80fGeWG7NXVvxCpSYYfOa8GVIUTSghh7kAtLaCDDj368xuNq+Mdr7SN9N6JutDYvkbZknTMY5VUiCM98/eVRuO36wa0PC5k=
+	t=1773260755; cv=none; b=DYOWoMzIIvq2EjEzRMRh4S1H4aNnTvTXpyqQJSt7qR3cIzjjpBPU4ZQhKRKqRytNu4y0nuXLwj/UUQ+p9pDRYuM4CA/lxm8+FgHgQpl2wks6YffbNQnav+fIs4svWdxfDk7yDqrL1KXSOwqzPnmYgP5Tlxyf0yiD1C+8mYlOVf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773260333; c=relaxed/simple;
-	bh=id27drD3i1tIKPtuJmasqTA+MRdOQ14tdZnRcyd2bKI=;
+	s=arc-20240116; t=1773260755; c=relaxed/simple;
+	bh=NvaC1fFbBx9IUqO3UIQZiBuTUiy8td86hLAlj0aH1VE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L7le1Q/fgLNNllknzyTDjqeh73fvG3P4MVp8LVza9CmbFg29WbCa5Hn2h3KUbLRMiIldJVzv20y4sSAbbpEVpyeoIu2xfW8qXawyxnynALCp1YyFHEQL9nZIzMzPzhIbkGd7nzLXu2tz/jdWPQjCpv13B6feu/7ROS8EQnSSZjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BkQmcnXx; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=EcQTh7Kf3/pay1N8qJTn9d7r6CT2Jiy0Wg9T409UmbI=; b=BkQmcnXx4eh9Bq2DCZhjDpRbOZ
-	SEyixXVLzKXEaYSaURgqq2hp0jduuL1rtfUf7Q8ZGgbxQIM5+gyCJEjwow6h3QRuOU7C/AD/RoNuc
-	L9OBxIT/u7lWuTVOCTkcdcxUWkWNBAvMO/d/aDBWHkLUvWeDKT8CkyEihnEjzUbqTtUJYvjvw48fs
-	rnFysI6BBxGSIX4NMiYlH8Nn+44/7LitWeBKLGAlDEIFGH3d6TwG5PuuzdQrde56fcRbG8cjiymW7
-	osxdUo3GxEFc2pFyq2T94NucMwsc0Z9gpi8e5Vw/yZJ/FezUgwGbOffJWPglIuIbenj2XZPo8kXHL
-	CVJkAiwQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0Pyk-000000003hl-0kPi;
-	Wed, 11 Mar 2026 20:18:14 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 96D92302EC2; Wed, 11 Mar 2026 21:16:25 +0100 (CET)
-Date: Wed, 11 Mar 2026 21:16:25 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-Subject: Re: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters
- constraint apply
-Message-ID: <20260311201625.GW606826@noisy.programming.kicks-ass.net>
-References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
- <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zq9Yz+XBIZd2Wr2B8S60/4nKS/p84xIwuj86GKOTIwmd7yPhTyPw7G+HdNIaZFDvPEWYoJZxxRj5O9a2L4UbwoCzY6Z/lx4iT1DX68wgKIfLJqTfbrFIPT+Zh3WzxXA41pD9RA5MWrm42l6LzQUrflj9PssV3J3SYYZBMeO2bG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PnX6G8lM; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773260753; x=1804796753;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NvaC1fFbBx9IUqO3UIQZiBuTUiy8td86hLAlj0aH1VE=;
+  b=PnX6G8lMZYBU6dsnIRkDUd3b5QYQhHC5LYMcLjZkoylXrT/YbboyGpt4
+   NybjwhW8P7P4oH7wcfC7NyzmLg+Fyfr7ra4r3Qhwe1Duk0UT+r5FI83kn
+   ttYwkL2Nv14YIN2ioUZeV3kWgdd2RD5VG4X39ZSluiyXR0Zox3DBdPGZ+
+   cUTUmuQX246Ux/DAy1UGR2WSeZLb4Atc0upJZXRREaT9epUESznm6Jeo5
+   iD55IQGALyo8/MdUcakjOE70Bp6pdivnbKAzGYB2eJ6r+iHYjYNpiKTF7
+   1QsaxyXyO0l62+A3Wyg71+B0yu2EkFJXOB0qf1nTOeoFw+qIHZvdYdsD5
+   w==;
+X-CSE-ConnectionGUID: KkL7eLV7QRaDWUpWGeCc4g==
+X-CSE-MsgGUID: CveKDpkWTy6ug7G376fWVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="99810399"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="99810399"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 13:25:52 -0700
+X-CSE-ConnectionGUID: kSI054tHTXGshAWNH0vuTg==
+X-CSE-MsgGUID: nz0RxcL/SAiuSgy4J7qTPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="220540294"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.178])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 13:25:50 -0700
+Date: Wed, 11 Mar 2026 22:25:47 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Brian Mak <makb@juniper.net>
+Cc: Lee Jones <lee@kernel.org>, Herve Codina <herve.codina@bootlin.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mfd: core: Preserve OF node when ACPI handle is
+ present
+Message-ID: <abHPy8sQYWApqbmY@ashevche-desk.local>
+References: <20260311190225.22426-1-makb@juniper.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,88 +78,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260311190225.22426-1-makb@juniper.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224753-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224754-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:dkim,noisy.programming.kicks-ass.net:mid]
-X-Rspamd-Queue-Id: D70B8269EB1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B0AE5269F52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Feb 28, 2026 at 01:33:20PM +0800, Dapeng Mi wrote:
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 4768236c054b..4b042d71104f 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -4628,6 +4628,19 @@ static inline void intel_pmu_set_acr_caused_constr(struct perf_event *event,
->  		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
->  }
->  
-> +static inline int intel_set_branch_counter_constr(struct perf_event *event,
-> +						  int *num)
-> +{
-> +	if (branch_sample_call_stack(event))
-> +		return -EINVAL;
-> +	if (branch_sample_counters(event)) {
-> +		(*num)++;
-> +		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int intel_pmu_hw_config(struct perf_event *event)
->  {
->  	int ret = x86_pmu_hw_config(event);
-> @@ -4698,21 +4711,18 @@ static int intel_pmu_hw_config(struct perf_event *event)
->  		 * group, which requires the extra space to store the counters.
->  		 */
->  		leader = event->group_leader;
-> +		if (intel_set_branch_counter_constr(leader, &num))
->  			return -EINVAL;
->  		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
->  
->  		for_each_sibling_event(sibling, leader) {
-> +			if (intel_set_branch_counter_constr(sibling, &num))
-> +				return -EINVAL;
-> +		}
-> +
+On Wed, Mar 11, 2026 at 12:02:25PM -0700, Brian Mak wrote:
+> Switch device_set_node to set_primary_fwnode, so that the ACPI fwnode
+> does not overwrite the of_node with NULL.
+> 
+> This allows MFD children with both OF nodes and ACPI handles to have OF
+> nodes again.
 
-Do the new bit is this, right?
+Haven't I given a tag already?
 
-> +		if (event != leader) {
-> +			if (intel_set_branch_counter_constr(event, &num))
->  				return -EINVAL;
->  		}
+-- 
+With Best Regards,
+Andy Shevchenko
 
-The point being that for_each_sibling_event() will not have iterated the
-event because its not on the list yet?
 
-That wasn't really clear from the changelog and I think that deserves a
-comment as well.
-
-Let me go fix that.
 
