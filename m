@@ -1,141 +1,199 @@
-Return-Path: <stable+bounces-224659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OS5ND0xsWm0rwIAu9opvQ
-	(envelope-from <stable+bounces-224659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:09:17 +0100
+	id EMwKGRwysWm0rwIAu9opvQ
+	(envelope-from <stable+bounces-224660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:13:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C2226005A
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:09:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D5D260159
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72A5A3014913
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:09:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CD91300E256
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825EE3C3C12;
-	Wed, 11 Mar 2026 09:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1D3C5DB7;
+	Wed, 11 Mar 2026 09:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDkzIbLO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LF5uY5OZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A247B3C456C;
-	Wed, 11 Mar 2026 09:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CED3C1415
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 09:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773220139; cv=none; b=AiVDSUkVKGPM0+CPqXyc5Hdg//GIDTo4wDiisRswB72becX/Ad3Ebe/5dmV6JQY4vz1lJfSSGDp8br1YPox3q5Hyo9xgf3PJKqmdhuNrLFSTHZgEZDZnKS/q6bggYH55+TWc3rKndJuLA2rgQKb2YHaM1QhiG9ev6Axh7nzITwg=
+	t=1773220362; cv=none; b=tliZ0rOHL8/1I961CpKAdsd0cN+An5Mh1uHvDZYHPOeOz5XctEGS+V5VYwQTxs5LgxLLrtdf3h8PUhKqWSBna+5svL4IIbJk6pZTuuzmB+UjfPKNCMKmlmekrX76cEAFNN1HXQTfi5Ha9Hz609pVUUj0E3L7Z2z1weXS2mGp65A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773220139; c=relaxed/simple;
-	bh=QmMRcyr8cPQR0MBzpuW18tVPDlR+PLdqMUtnqfdQuWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lRgZ8BZ/r/qr41yN1J++6ywFfStoVCI8UcKbB/slmBK+HHogUlxnbbLUe/9nRiVPxlz/vokDh1OBVCbeqb0foOkYfo1Wwsry+ctoQfTqnX1fvfSnBAGN5sU/gTTKFD1ymTgFrgOog74P56vVtz0fIFjchfFiTCE07tJ+8SgpTzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDkzIbLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AA2C4CEF7;
-	Wed, 11 Mar 2026 09:08:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773220139;
-	bh=QmMRcyr8cPQR0MBzpuW18tVPDlR+PLdqMUtnqfdQuWA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bDkzIbLOOxTU/2T/UBRhLPy0pXrulO+dRfcILugrDDsVQTtavO5w9ullnZKuRSJ+4
-	 nJU1zZbiT0I4v2DLOyGIRsYWvd7Pb2ugJTywVjdA6yX2DsBosmonXQKENfgJjuG1wF
-	 0ROfCG8XQZ2N+YSvkBazdKezBWqrBlqcqR5bRD16O0bbshLEvalC2MKBblcQT+hw4s
-	 Usw/hO/sI3/Pc1f12XqYVEDlAaFFb2JQeKzTT84zs2ko4a9RqblE0dmLIZK+89/2HG
-	 T8Er3SV6AwI6ALySu5maZAL2YI2NeMj6tPPhID6S1ZCJMrW5KAZbd3MiDV8f5RUuER
-	 pErCINqf+m+Cg==
-Date: Wed, 11 Mar 2026 10:08:56 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Jyri Sarha <jyri.sarha@iki.fi>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>, 
-	Javier Martinez Canillas <javierm@redhat.com>, Aradhya Bhatia <a-bhatia1@ti.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Devarsh Thakkar <devarsht@ti.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] drm/tidss: Fix missing drm_bridge_attach() call
-Message-ID: <20260311-spirited-mighty-grouse-e0b1cb@houat>
-References: <20260311-tidss-minor-fixes-v1-0-ee5e6e14a566@ideasonboard.com>
- <20260311-tidss-minor-fixes-v1-2-ee5e6e14a566@ideasonboard.com>
+	s=arc-20240116; t=1773220362; c=relaxed/simple;
+	bh=IuJEJeZeAA0dtPdJGCR2Y6So5KmMJbEcKNQPLePgIVk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I5A9VjiX1ccZ9mSkA1J4RJscsVMoj5qW0XK9zaWXLMbGf4EXs5T3MGfdVgFlmkWYwfSwhzBEe0jckiA2/brReGkkmUziN2xtmRPbMQsm5eFlDPCs+5LQEj2CQT0KG4D6Ti71J26jknDNgDaLDjasYOpuZGNQM6wURqxDaxu2i0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LF5uY5OZ; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae502a1dd9so128551435ad.3
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 02:12:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773220354; x=1773825154; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CfExovoAn7o/levAKL1G/GcHLpVojQhg0czDHj9L5ow=;
+        b=LF5uY5OZctOYzLVhoMiE1XP6YQAez1/qTF8BV54ijBQQ9IYMmFWr2ZJuV3Rmw7mwh+
+         7/m9R6bhH2rbCVvMeCVP+HpMEw4PA/HAh6BVbgBA9lTLxnsTBjSFQmfUEe2WZaEtTYPY
+         xsL5cNPfZUNW/AakqiPO0RJ/cz8VKHQ0AZJQKIO5UrTEaRZeeKylrkfjFV0/vqjVO2np
+         zKpF40JHapezhjIbxooK45UwFVW+Tlb4nQApYAxN74ZniyA2O9O7RYHNRkc3f+JpGUjD
+         ptj1afAErakMZpfoahzIeeEpx1meQY3LhoXx4sFUwM4bbgWCpQgIMsbNuWii0LezIq8/
+         ZC1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773220354; x=1773825154;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CfExovoAn7o/levAKL1G/GcHLpVojQhg0czDHj9L5ow=;
+        b=PBEhAwsR0M0oEDaobc50NuNJyGRHGK8rZ3VmYGlQMa2gM43se4nY29GrsauBWsx2vR
+         zQNAssN6TQXeoS/qZbL+z23gheHqt7+W/0LaQWpuSmRNpeST9V/boUdtmtcYUQowoko/
+         F9VfC0DQbAY3ZBGtf3IA4Tk4gmrDaHU+v7FoGVD3AQbCofeTPiY7KvhEYAQEnFWkoxB6
+         KI42qm5/hFs3Yc25mj/k4dBKKJljnyIN7BkUM8MQleG95BkYLdY2QwNiY7V/9Rc3UMDC
+         UMcSF6QndrkCvAROV6GJjlq7EIIMcrJC3pwO2UeRYaqSYtb9VTioG6wUjXAum1ZyZmNr
+         y92A==
+X-Forwarded-Encrypted: i=1; AJvYcCXx+r4i7MwbtRFWxoOqZGY0lU+yIJjaipDM7az3ZFBikejL7+yHD/PdE5TkOtvK8g4dj8EWiwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcKiYKdb3+fpSgozKAnjRnVUiJblL1/hhCgS5nExtvA4AxFA29
+	UHaIkrgpYafQrkt4EDj2zSQOux5Nrm/4YWKwQ396/HkabYtzykIfZfLPYHz+g2p0f8NYhYoxXmk
+	e8/A03w==
+X-Received: from pfbbk8.prod.google.com ([2002:aa7:8308:0:b0:829:753a:73c1])
+ (user=khtsai job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a110:b0:398:9b42:69f7
+ with SMTP id adf61e73a8af0-398c60e40e9mr1761475637.39.1773220353942; Wed, 11
+ Mar 2026 02:12:33 -0700 (PDT)
+Date: Wed, 11 Mar 2026 17:12:15 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ozhc3zbwh5ezmexs"
-Content-Disposition: inline
-In-Reply-To: <20260311-tidss-minor-fixes-v1-2-ee5e6e14a566@ideasonboard.com>
-X-Rspamd-Queue-Id: E5C2226005A
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAO4xsWkC/x3MwQpAQBCH8VfRnE0ZIryKHLT7X+YytCspeXeb4
+ +/wfQ8lREWisXgo4tKku2VIWZDbFlvB6rOpruquakR4xbkhstfkdjO4k+0At30nfugb8SFQbo+ IoPf/neb3/QAKuI/CZwAAAA==
+X-Change-Id: 20260311-gether-disconnect-npe-5861d9831dff
+X-Developer-Key: i=khtsai@google.com; a=ed25519; pk=abA4Pw6dY2ZufSbSXW9mtp7xiv1AVPtgRhCFWJSEqLE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773220352; l=2489;
+ i=khtsai@google.com; s=20250916; h=from:subject:message-id;
+ bh=IuJEJeZeAA0dtPdJGCR2Y6So5KmMJbEcKNQPLePgIVk=; b=RULJ9mQMu2H/bZkTzSiCY3jQvdU2YAWixzuX8Ru1zDG+HqQwUttR/mnK7HLj9mn01Vabu+zY/
+ I3rYDCiho2GBChi++LgedTLhr40Ti6DPsaTCvVbuYvZucu927qnf03s
+X-Mailer: b4 0.14.3
+Message-ID: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
+Subject: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
+From: Kuen-Han Tsai <khtsai@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	David Brownell <dbrownell@users.sourceforge.net>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Kuen-Han Tsai <khtsai@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: E7D5D260159
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224659-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[iki.fi,linux.intel.com,suse.de,gmail.com,ffwll.ch,ravnborg.org,redhat.com,ti.com,lists.freedesktop.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mripard@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224660-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[khtsai@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
+A race condition between gether_disconnect() and eth_stop() leads to a
+NULL pointer dereference. Specifically, if eth_stop() is triggered
+concurrently while gether_disconnect() is tearing down the endpoints,
+eth_stop() attempts to access the cleared endpoint descriptor, causing
+the following NPE:
 
---ozhc3zbwh5ezmexs
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] drm/tidss: Fix missing drm_bridge_attach() call
-MIME-Version: 1.0
+  Unable to handle kernel NULL pointer dereference
+  Call trace:
+   __dwc3_gadget_ep_enable+0x60/0x788
+   dwc3_gadget_ep_enable+0x70/0xe4
+   usb_ep_enable+0x60/0x15c
+   eth_stop+0xb8/0x108
 
-On Wed, Mar 11, 2026 at 10:16:29AM +0200, Tomi Valkeinen wrote:
-> tidss encoder-bridge is not added with drm_bridge_add() call, which
-> leads to:
->=20
-> [drm] Missing drm_bridge_add() before attach
->=20
-> Add the missing call, using devm_drm_bridge_add() variant to get the
-> drm_bridge_remove() handled automatically.
+Because eth_stop() crashes while holding the dev->lock, the thread
+running gether_disconnect() fails to acquire the same lock and spins
+forever, resulting in a hardlockup:
 
-The patch itself is fine, but the commit title mentions a missing
-drm_bridge_attach() call when it should be drm_bridge_add()
+  Core - Debugging Information for Hardlockup core(7)
+  Call trace:
+   queued_spin_lock_slowpath+0x94/0x488
+   _raw_spin_lock+0x64/0x6c
+   gether_disconnect+0x19c/0x1e8
+   ncm_set_alt+0x68/0x1a0
+   composite_setup+0x6a0/0xc50
 
-With that fixed
-Acked-by: Maxime Ripard <mripard@kernel.org>
+The root cause is that the clearing of dev->port_usb in
+gether_disconnect() is delayed until the end of the function.
 
-Maxime
+Move the clearing of dev->port_usb to the very beginning of
+gether_disconnect() while holding dev->lock. This cuts off the link
+immediately, ensuring eth_stop() will see dev->port_usb as NULL and
+safely bail out.
 
---ozhc3zbwh5ezmexs
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+---
+ drivers/usb/gadget/function/u_ether.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index 338f6e2a85a9..2c970a0eafd9 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1246,6 +1246,11 @@ void gether_disconnect(struct gether *link)
+ 
+ 	DBG(dev, "%s\n", __func__);
+ 
++	spin_lock(&dev->lock);
++	dev->port_usb = NULL;
++	link->is_suspend = false;
++	spin_unlock(&dev->lock);
++
+ 	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
+ 
+@@ -1283,11 +1288,6 @@ void gether_disconnect(struct gether *link)
+ 	dev->header_len = 0;
+ 	dev->unwrap = NULL;
+ 	dev->wrap = NULL;
+-
+-	spin_lock(&dev->lock);
+-	dev->port_usb = NULL;
+-	link->is_suspend = false;
+-	spin_unlock(&dev->lock);
+ }
+ EXPORT_SYMBOL_GPL(gether_disconnect);
+ 
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCabExIwAKCRAnX84Zoj2+
-diJkAX9wcYxbDxiUoCf43yOD93OT3iBlQlTM5ZG8WHo/dzCTlLJe7MA+asG9K12l
-8Yi8/YgBgNY+UgM30pgZlDPZlgir/jIhxG2Du0rF/lLb0FS/IHpRB+wGVVVJhdiL
-dTTFPo6XfA==
-=KVb4
------END PGP SIGNATURE-----
+---
+base-commit: 1be3b77de4eb89af8ae2fd6610546be778e25589
+change-id: 20260311-gether-disconnect-npe-5861d9831dff
 
---ozhc3zbwh5ezmexs--
+Best regards,
+-- 
+Kuen-Han Tsai <khtsai@google.com>
+
 
