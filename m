@@ -1,177 +1,200 @@
-Return-Path: <stable+bounces-224652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOtWGkglsWkOrQIAu9opvQ
-	(envelope-from <stable+bounces-224652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:18:16 +0100
+	id gObKLUQosWkBrgIAu9opvQ
+	(envelope-from <stable+bounces-224654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:31:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D529025ED9F
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:18:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7EB25F59C
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D091305DA19
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 08:17:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3790300623D
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 08:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18433359A8C;
-	Wed, 11 Mar 2026 08:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4CF328B78;
+	Wed, 11 Mar 2026 08:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mt64nGmA"
+	dkim=pass (2048-bit key) header.d=uni-hamburg.de header.i=@uni-hamburg.de header.b="YUyZ1h+g"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mxchg03.rrz.uni-hamburg.de (mxchg03.rrz.uni-hamburg.de [134.100.38.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAF635A3A5;
-	Wed, 11 Mar 2026 08:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D07227EFFA;
+	Wed, 11 Mar 2026 08:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.100.38.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773217016; cv=none; b=p8OlNjSe/zIeAuNFaK6Y3LMn2GduTfI9+/9KYFAu8d4tyYjxowV709xc5xzibIYsbZCBX02rOHCqQ+K4HuQ2WJp4X6Kg4lcPg4zmSGjO6gbQlhTkR3mOiqCbcfhYdgrHIVy0Dujwd7t3FyyUA8MVsD+tKPnEIfSps19K58P902Y=
+	t=1773217612; cv=none; b=m+gEy98avTqFbr73CTPy341uR44pc5+aEQPL7CU1PuJb+PM7aiX/8J2Jg58GtUhzNXmocFVcZOrSBj/pGT0XzJ8OkWpVC72342sVxh5Q86VODeIyUha8ACR8fDBW0jLg4gx25aLELrUxFadabO2nRxFMY1hVUobuzrwovlM6FQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773217016; c=relaxed/simple;
-	bh=eQYvjKaHmHFpKWtxeve8uX4miV81ha81TaZeNuaTT20=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tpSxEAeIrC19fwm2tlCZSpw0EVs70QZHUL+D1ljrp8EdS9GtuKZCuIVx2X2nfiZhgmHWlRV/U4qiLGy2y0gphaiF2TPAGKj81jh2o7P64ZBHz3FmoInqcruqRFzvlZyro5YrAO027eNj3d503OcpLE8fqWt9qNImapGIJs/Wrl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mt64nGmA; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [127.0.1.1] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7A835981;
-	Wed, 11 Mar 2026 09:15:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773216942;
-	bh=eQYvjKaHmHFpKWtxeve8uX4miV81ha81TaZeNuaTT20=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mt64nGmAq7qwRKxkHix8nUgDCa0XP9dy35UtAWlkf4hn6rOwctkL0ZQDdqW24++gA
-	 VmXpxw7w6785zY+ZKh8OiLiQGltpgf8zLMWitvbKUaKWLJX0iN7YPxbqjnss1KjewF
-	 tjc8VskNIsfZDF5RXTFQp4IIEfRERQfGKS4dLSb0=
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Wed, 11 Mar 2026 10:16:29 +0200
-Subject: [PATCH 2/2] drm/tidss: Fix missing drm_bridge_attach() call
+	s=arc-20240116; t=1773217612; c=relaxed/simple;
+	bh=87dh4ypGH5WauOZ4U5TBhMhHARRH0EgR9IOZeLc2qrI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NPTd504FnRqHayOgzPEu4SKYCWegGa5gPXuLTupOGgzXvx2/mB93vyg7OlBk22t0SW0EhvM0PNDcH5GjgNNGFwep+WxXaLNRrRtUyLcbF6rYWcSS16DT7ash0TyO7+l7q4zTPEw+1t1oFrQtYhkBdgy7ZQY95v751Rh8djxm0HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=uni-hamburg.de; spf=pass smtp.mailfrom=uni-hamburg.de; dkim=pass (2048-bit key) header.d=uni-hamburg.de header.i=@uni-hamburg.de header.b=YUyZ1h+g; arc=none smtp.client-ip=134.100.38.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=uni-hamburg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uni-hamburg.de
+Received: from mxchg03.rrz.uni-hamburg.de (mxchg03.rrz.uni-hamburg.de [134.100.38.113])
+	by mxchg03.rrz.uni-hamburg.de (Postfix) with ESMTPS id 4fW3WC3tM3z2xG9;
+	Wed, 11 Mar 2026 09:16:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uni-hamburg.de;
+	s=rrzs003; t=1773217015;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xS35pK5GgtyG7mhh0Beq7I75ERnEZDRDHszQAMsxb60=;
+	b=YUyZ1h+gqonKOXd1FNX1u+LzTsBClClvwlEgJk3gCpRdakuYcwrI+ao4Ne72CmjoIZ/Lif
+	91+2XEeSkCr0xgxsqyOhA+LxIRH72jVsqSV18WxXcbyosPWTmOGYL239N3mNXPjthlVzeq
+	w3W6TgPJ3bg6eLhip8y0Y3YWyVk7aQD0TbXaJW+yDNnNN+b9a28kQQiTZO6rYEW5wKPefM
+	VKKDOdeYI2cDChTR5es3+lZWAAU98NoWFH/HtqkXnidJSQPas/GHXfnYnErMuSWyhFNqRy
+	rYMjZJ7p0NL4aErPQuQjX/WtVq7ftOaeglne3yNUJotaLI4Mo35CGl6XxKsZEQ==
+Received: from exchange.uni-hamburg.de (EX-S-MR06.uni-hamburg.de [134.100.84.89])
+	by mxchg03.rrz.uni-hamburg.de (Postfix) with ESMTPS id 4fW3WC2DFDz2xFP;
+	Wed, 11 Mar 2026 09:16:55 +0100 (CET)
+Received: from plasteblaster (80.187.125.159) by EX-S-MR06.uni-hamburg.de
+ (134.100.84.89) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 11 Mar
+ 2026 09:16:54 +0100
+Date: Wed, 11 Mar 2026 09:16:53 +0100
+From: "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+CC: Steve French <sfrench@samba.org>, <linux-cifs@vger.kernel.org>,
+	<regressions@lists.linux.dev>, <stable@vger.kernel.org>
+Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
+ custom TCP port (not 445): Host is down (at least since 6.6.95)
+Message-ID: <20260311091653.358b213a@plasteblaster>
+In-Reply-To: <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+References: <20260310235642.6d9798f4@plasteblaster>
+	<c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+Organization: =?UTF-8?B?VW5pdmVyc2l0w6R0?= Hamburg
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-tidss-minor-fixes-v1-2-ee5e6e14a566@ideasonboard.com>
-References: <20260311-tidss-minor-fixes-v1-0-ee5e6e14a566@ideasonboard.com>
-In-Reply-To: <20260311-tidss-minor-fixes-v1-0-ee5e6e14a566@ideasonboard.com>
-To: Jyri Sarha <jyri.sarha@iki.fi>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sam Ravnborg <sam@ravnborg.org>, 
- Javier Martinez Canillas <javierm@redhat.com>, 
- Aradhya Bhatia <a-bhatia1@ti.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Devarsh Thakkar <devarsht@ti.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2474;
- i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=eQYvjKaHmHFpKWtxeve8uX4miV81ha81TaZeNuaTT20=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBpsSTuP0LzIRg8wnIPlQRccTLJkgrM+DQPYMSSE
- WJ2AZE27OaJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCabEk7gAKCRD6PaqMvJYe
- 9ZzOD/9ec2ACKu9vUjzRo5JnTBGARKD00w8bD1UgBOmmcrZWcOof0G4Q9oLz4cq8/PNgzW19iH5
- tWqv854dy8/MICfcb1JcoBRFa+eBTlnRo13ew5PJ51MDvppNdt3Trnl+NXf66gTuM0wUBbajUMr
- JRDddl66Nl9SVZPd88b7Cm+0XPAYen9RH36o2pYS+yZN+m0+EScIarMnFplm81HKW/Qpb9NAdLj
- ekaKywTpHS9ZD3R3hxSAT+4aJ3xqPweGC3y+I4IbKUQ+gqKwpHBBCJaSdviBg1LX30Cu6EkUEUB
- zMruVRMuI3AZ1bNGIwLAdtEJOKJMf43eStZR9Y6f6nYig/svULJuI9YbSyW3/g3U0Bl81rGOQ4D
- pNGWpidVq76YOaT3WZc92CNMkhtC+uodBgrWNBR2trQ3Zbn/Qroi7gbOE0rlK7QhIewdUD4/27l
- 4OXTAXX3YVMElSqdvYukU4DObHs88JpGisF2RNTVZT39125Qn5XaTatr2cF1NB2EA8hC6Mf7bHd
- yw504BGQCQHBcM/c7p0Aa9HYfBEfcCDWZSt8Day12L5BAQYkYx5scP8YIJsHLzfhcd0r7M6Bbr3
- wDlmJouSWyP4yjdQV7WRjX9YvMcIot5fu3oLvJXImMWkMP7621vMF2WWuec/p3vOZLLN0Wk1zZC
- qVXovMQ4FBkrgsA==
-X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
- fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
-X-Rspamd-Queue-Id: D529025ED9F
+Content-Type: multipart/mixed; boundary="MP_/rLq1UnO+dcbv_b3D6w7UnRq"
+X-ClientProxiedBy: EX-S-MR01.uni-hamburg.de (134.100.84.80) To
+ EX-S-MR06.uni-hamburg.de (134.100.84.89)
+X-Rspamd-UID: 162d9f
+X-Rspamd-UID: 28ced5
+X-Rspamd-Queue-Id: BB7EB25F59C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	FROM_NAME_HAS_TITLE(1.00)[dr];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uni-hamburg.de,reject];
+	R_DKIM_ALLOW(-0.20)[uni-hamburg.de:s=rrzs003];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[iki.fi,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,ravnborg.org,redhat.com,ti.com];
+	HAS_ORG_HEADER(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	TAGGED_FROM(0.00)[bounces-224654-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224652-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tomi.valkeinen@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.orgis@uni-hamburg.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uni-hamburg.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,uni-hamburg.de:dkim,suse.com:email]
 X-Rspamd-Action: no action
 
-tidss encoder-bridge is not added with drm_bridge_add() call, which
-leads to:
+--MP_/rLq1UnO+dcbv_b3D6w7UnRq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-[drm] Missing drm_bridge_add() before attach
+Am Tue, 10 Mar 2026 23:06:24 -0300
+schrieb Henrique Carvalho <henrique.carvalho@suse.com>:
 
-Add the missing call, using devm_drm_bridge_add() variant to get the
-drm_bridge_remove() handled automatically.
+> My suspicion is that the regression was introduced by:
+>=20
+>     5713127da855 ("cifs: update dstaddr whenever channel iface is updated=
+")
+>=20
+> That change causes parse_server_interfaces() -- should this be running
+> without multichannel mount option? -- to overwrite the port stored in
+> server->dstaddr with CIFS_PORT.
+>=20
+> The attached patch preserves the existing port from server->dstaddr.
 
-The commit marked with the Fixes tag (from v6.6) is the commit that
-added the encoder bridge without drm_bridge_add(). However, this fix is
-not directly applicable there as devm_drm_bridge_alloc() was not used to
-alloc the bridge, so using devm version for drm_bridge_add() wouldn't be
-safe. Instead, drm_bridge_add() and drm_bridge_remove() would be needed
-there, but that would require new plumbing code as we don't have a
-separate cleanup function in the tidss_encoder.c, not in the tidss_kms.c
-from which the encoder is created.
+Splendit! This is the simple something that would've taken me long to
+find among all the ongoing changes in the SMB subsystem.
 
-Also, there has been no reported bugs caused by the missing
-drm_bridge_add(). The drm_bridge_add() initializes the bridge's
-hpd_mutex, but HPD is not used for the encoder bridge. drm_bridge_add()
-also adds the bridge to the global bridge_list, which is only used in
-of_drm_find_bridge(), and again that is not used for the encoder bridge.
+I just built a 6.6.129 kernel with the slightly adapted patch (as that
+is my production series right now before I jump to newer LTS) and can
+confirm that this fixes the issue.
 
-Thus, while the original commit is not right, there should be no bugs
-caused by it, and for the time being I'm not sending a patch for the
-stable kernels for the original commit.
+Do you need a confirmation with 7.0.0-rc3? I guess the picture is clear
+enough as-is. I've started a build and can give a short follow-up later.
 
-This fix applies on top of commit 66cdf05f8548 ("drm/tidss: encoder:
-convert to devm_drm_bridge_alloc()"), which changes the tidss_encoder.c
-to use the devm variant (added in v6.17). The warning print was added in
-v6.19, so applying this fix to v6.17+ gets rid of the warning for all
-kernel versions.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: <stable@vger.kernel.org> # v6.17+
-Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
----
- drivers/gpu/drm/tidss/tidss_encoder.c | 2 ++
- 1 file changed, 2 insertions(+)
+Alrighty then,
 
-diff --git a/drivers/gpu/drm/tidss/tidss_encoder.c b/drivers/gpu/drm/tidss/tidss_encoder.c
-index 81a04f767770..db467bbcdb77 100644
---- a/drivers/gpu/drm/tidss/tidss_encoder.c
-+++ b/drivers/gpu/drm/tidss/tidss_encoder.c
-@@ -106,6 +106,8 @@ int tidss_encoder_create(struct tidss_device *tidss,
- 	enc = &t_enc->encoder;
- 	enc->possible_crtcs = possible_crtcs;
+Thomas
+
+--=20
+Dr. Thomas Orgis
+HPC @ Universit=C3=A4t Hamburg
+
+--MP_/rLq1UnO+dcbv_b3D6w7UnRq
+Content-Type: text/x-patch
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="smb-nonstandard-port-fix-6.6.patch"
+
+--- linux-6.6.129/fs/smb/client/smb2ops.c.orig	2026-03-05 16:03:43.000000000 +0100
++++ linux-6.6.129/fs/smb/client/smb2ops.c	2026-03-11 08:25:05.244722103 +0100
+@@ -586,6 +586,7 @@
+ 	struct iface_info_ipv6 *p6;
+ 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
+ 	struct cifs_server_iface tmp_iface;
++	__be16 port;
+ 	ssize_t bytes_left;
+ 	size_t next = 0;
+ 	int nb_iface = 0;
+@@ -634,18 +635,20 @@
+ 		 * conversion explicit in case either one changes.
+ 		 */
+ 		case INTERNETWORK:
++			port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
+ 			addr4 = (struct sockaddr_in *)&tmp_iface.sockaddr;
+ 			p4 = (struct iface_info_ipv4 *)p->Buffer;
+ 			addr4->sin_family = AF_INET;
+ 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
  
-+	devm_drm_bridge_add(tidss->dev, &t_enc->bridge);
-+
- 	/* Attaching first bridge to the encoder */
- 	ret = drm_bridge_attach(enc, &t_enc->bridge, NULL,
- 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
+-			addr4->sin_port = cpu_to_be16(CIFS_PORT);
++			addr4->sin_port = port;
+ 
+ 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
+ 				 &addr4->sin_addr);
+ 			break;
+ 		case INTERNETWORKV6:
++			port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
+ 			addr6 =	(struct sockaddr_in6 *)&tmp_iface.sockaddr;
+ 			p6 = (struct iface_info_ipv6 *)p->Buffer;
+ 			addr6->sin6_family = AF_INET6;
+@@ -654,7 +657,7 @@
+ 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
+ 			addr6->sin6_flowinfo = 0;
+ 			addr6->sin6_scope_id = 0;
+-			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
++			addr6->sin6_port = port;
+ 
+ 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
+ 				 &addr6->sin6_addr);
 
--- 
-2.43.0
-
+--MP_/rLq1UnO+dcbv_b3D6w7UnRq--
 
