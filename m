@@ -1,112 +1,140 @@
-Return-Path: <stable+bounces-224662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCnKKgwzsWm0rwIAu9opvQ
-	(envelope-from <stable+bounces-224662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:17:00 +0100
+	id 4C75FbY0sWl9sQIAu9opvQ
+	(envelope-from <stable+bounces-224663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:24:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5508526023B
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:17:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B608E2604A9
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:24:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3372303E683
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:16:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 901A132BD6C5
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BC43BF671;
-	Wed, 11 Mar 2026 09:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8B13C7E14;
+	Wed, 11 Mar 2026 09:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="PyljCFGB"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ACeN22xS"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4198F3C5529;
-	Wed, 11 Mar 2026 09:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CADF3C6614;
+	Wed, 11 Mar 2026 09:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773220546; cv=none; b=lNcx4lXm7Fr9MFyz/fat1btfrsLTj0rYNCkmmujVksq13jjKZzTqFXYRaXH4+f3vTI+f/8tf0vC56Ywj88HNxBf2h5xtsx+n1AECEKsdPrKuUjBxlM5cRrSaDg27+Mce7+aKLNLvtJPXconx5dU3i8OeItgGnLE7mxm4eXvdJho=
+	t=1773220571; cv=none; b=sP7tXqszxMMyrNZT2vJDn6fv3EIAqRRra3LpCJO5P5tN7hb3jNPaOs9Ocw0St6oI0PFwt/a4CeNmDDdkCsO62Kfoca3vOUwCXSYep24gP8cy3wNGo3jstNIft/b7o2RRnhBFBdtfHDyPTP0amI1kRMGRlJwsPGF0OFP0gw2AH9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773220546; c=relaxed/simple;
-	bh=FK89pOaFAMnCdx1USHLPGPqlFLXxs2xhiM3WFS+Geic=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c2y3xBfKvYYui3sW6UkUIQVuhXiJlm9z0hkGMop1EGYNJ45C49peqr7DmN8B3oWI+j6mB6KlZlnjIAwGRfEBbygUlWgvdn4yB1g1v0V7RkqmbA9HZmONQhVG4PUPeiW0lfsjzezTn/xfrq2hUpHp7gPyxosY9186W26lzCVQ0/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=PyljCFGB; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1773220571; c=relaxed/simple;
+	bh=4faPiMBu2LVWJ/d96u1wtRgDGVe8ULLn9udNfe366vs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NqdWFHhNISFEIs5NmW3qiDBMy+NsxtNAZowruMmRCfVSSji07uMI6mUm5D5JaJhGfl2wa9N4Rsaa//ezUAF5T8U8ul5yAYzbLIbK4SUzOh33ZVbqYPEeqzwO5+i6pWS3WUECm5iS7qz3/lTEHTvzbsvyXcx6MFZHxtnk2uSfXBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ACeN22xS; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [127.0.1.1] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CFD1F981;
-	Wed, 11 Mar 2026 10:14:20 +0100 (CET)
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D62694B3;
+	Wed, 11 Mar 2026 10:14:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773220461;
-	bh=FK89pOaFAMnCdx1USHLPGPqlFLXxs2xhiM3WFS+Geic=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PyljCFGBEfaoDHTntkIC8krem8ZFFkY7kCs/7sYkE+8ai7+C+gEUYvP7UOdh6FL3p
-	 cfX4O48KY2UcFV/4fAWlArpMbYFezryOD/umf6JhyH5FI3n1X5t/shhUUKdA6KGYqH
-	 FS3FYSYRIJ0eP7cjilwkNsX5dDnv51wtAhXmrZqs=
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Wed, 11 Mar 2026 11:14:44 +0200
-Subject: [PATCH v2 2/2] drm/tidss: Fix missing drm_bridge_add() call
+	s=mail; t=1773220495;
+	bh=4faPiMBu2LVWJ/d96u1wtRgDGVe8ULLn9udNfe366vs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ACeN22xSDVqLj8nOoaNmZ0z6VRMiE67j0s38HoYAEMDkOMNu/2iz3hZdF+JAvyc8U
+	 WZRWWVhOx101L5hxW0WMy7zyibA7Tv/1HvKhA2GWlvhhY+z/uQHnKThR/6Og/nGAY3
+	 LhSX5qQgnQ7+4wDqI/6UksUByzBq4Bw+w6a1P6YI=
+Message-ID: <70e2b0e4-0b27-4fad-8dc0-c28e10c959ad@ideasonboard.com>
+Date: Wed, 11 Mar 2026 11:15:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drm/tidss: Fix missing drm_bridge_attach() call
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Jyri Sarha <jyri.sarha@iki.fi>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Aradhya Bhatia <a-bhatia1@ti.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Devarsh Thakkar <devarsht@ti.com>,
+ stable@vger.kernel.org
+References: <20260311-tidss-minor-fixes-v1-0-ee5e6e14a566@ideasonboard.com>
+ <20260311-tidss-minor-fixes-v1-2-ee5e6e14a566@ideasonboard.com>
+ <20260311-spirited-mighty-grouse-e0b1cb@houat>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Language: en-US
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20260311-spirited-mighty-grouse-e0b1cb@houat>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-tidss-minor-fixes-v2-2-cb4479784458@ideasonboard.com>
-References: <20260311-tidss-minor-fixes-v2-0-cb4479784458@ideasonboard.com>
-In-Reply-To: <20260311-tidss-minor-fixes-v2-0-cb4479784458@ideasonboard.com>
-To: Jyri Sarha <jyri.sarha@iki.fi>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sam Ravnborg <sam@ravnborg.org>, 
- Javier Martinez Canillas <javierm@redhat.com>, 
- Aradhya Bhatia <a-bhatia1@ti.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Devarsh Thakkar <devarsht@ti.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2518;
- i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=FK89pOaFAMnCdx1USHLPGPqlFLXxs2xhiM3WFS+Geic=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBpsTKta2KS2BnqNS/cahxVcpraq+OxMhz0502r0
- FQOP/KL1jWJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCabEyrQAKCRD6PaqMvJYe
- 9QlCD/9cijyL+ssoamfzXYS8YPdeEEX+jeJ+RV7Zgpkrkey4UPXWXUXTYHb/zBFsaD9hcpINoMI
- IB0viFjIf8kC6sXwcWjUqtdl9tAsCgU4DZi4R5wWW28SiIDAEcZxXMHeY1/LAc12dq2CsOGNowA
- 1Sq7VZxJ43LqSZaAm5wPg5/jIwJoIFwP07ey/AUXlOzPEoYViT2F2Osl8F/E+PSd2xEDfqE435A
- DUz58MwKVjaF6jGvl69Kf15qghUgR1O9CxAXgxRVfSWpoDKjSC6Xo9312q5n/vzHcKlymA61zzp
- pfhS7k2BrDhcsj0vPyf21z20IRJ/MlGSvdNAf/IhX/eUuHjftlEfEE80Hx/Z7dVIGJ67iYsbTg4
- pt0KfRqBs+CYDDMCpF7Gm2718HzTHeC1Q2ZA4l5qSaTeIv4k7DwAyOxUYr0RJMPsSBL9+eVAVDV
- aipG2v6gCfvvU8WXv7Rh7eT6U3d9rylIoJ+2BZKMPeALTBakUJpw+5/AYG+dAR06HGq3n0p1d2e
- bBCwCvZnZhcO9x2p91GBL1aRT/Jtg6+UnD8hZ6iObFwOocURDn+/maIpsxcEI4quxT3+YM1l+Mu
- mOs25y7hgMbKMm1LIDEBy6DXGIezNpMzAu4F+wimsJV0wIngU0z9nN0Lzz7cHER+Rf+Vwhr34HU
- 6TCj34AyH0ZPbSw==
-X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
- fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
-X-Rspamd-Queue-Id: 5508526023B
+X-Rspamd-Queue-Id: B608E2604A9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224663-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[iki.fi,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,ravnborg.org,redhat.com,ti.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224662-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[iki.fi,linux.intel.com,suse.de,gmail.com,ffwll.ch,ravnborg.org,redhat.com,ti.com,lists.freedesktop.org,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tomi.valkeinen@ideasonboard.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[ideasonboard.com:+];
@@ -114,65 +142,28 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-tidss encoder-bridge is not added with drm_bridge_add() call, which
-leads to:
+Hi,
 
-[drm] Missing drm_bridge_add() before attach
+On 11/03/2026 11:08, Maxime Ripard wrote:
+> On Wed, Mar 11, 2026 at 10:16:29AM +0200, Tomi Valkeinen wrote:
+>> tidss encoder-bridge is not added with drm_bridge_add() call, which
+>> leads to:
+>>
+>> [drm] Missing drm_bridge_add() before attach
+>>
+>> Add the missing call, using devm_drm_bridge_add() variant to get the
+>> drm_bridge_remove() handled automatically.
+> 
+> The patch itself is fine, but the commit title mentions a missing
+> drm_bridge_attach() call when it should be drm_bridge_add()
+> 
+> With that fixed
+> Acked-by: Maxime Ripard <mripard@kernel.org>
+Indeed. Fixed in v2. Thanks!
 
-Add the missing call, using devm_drm_bridge_add() variant to get the
-drm_bridge_remove() handled automatically.
-
-The commit marked with the Fixes tag (from v6.6) is the commit that
-added the encoder bridge without drm_bridge_add(). However, this fix is
-not directly applicable there as devm_drm_bridge_alloc() was not used to
-alloc the bridge, so using devm version for drm_bridge_add() wouldn't be
-safe. Instead, drm_bridge_add() and drm_bridge_remove() would be needed
-there, but that would require new plumbing code as we don't have a
-separate cleanup function in the tidss_encoder.c, not in the tidss_kms.c
-from which the encoder is created.
-
-Also, there has been no reported bugs caused by the missing
-drm_bridge_add(). The drm_bridge_add() initializes the bridge's
-hpd_mutex, but HPD is not used for the encoder bridge. drm_bridge_add()
-also adds the bridge to the global bridge_list, which is only used in
-of_drm_find_bridge(), and again that is not used for the encoder bridge.
-
-Thus, while the original commit is not right, there should be no bugs
-caused by it, and for the time being I'm not sending a patch for the
-stable kernels for the original commit.
-
-This fix applies on top of commit 66cdf05f8548 ("drm/tidss: encoder:
-convert to devm_drm_bridge_alloc()"), which changes the tidss_encoder.c
-to use the devm variant (added in v6.17). The warning print was added in
-v6.19, so applying this fix to v6.17+ gets rid of the warning for all
-kernel versions.
-
-Cc: stable@vger.kernel.org # v6.17+
-Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
----
- drivers/gpu/drm/tidss/tidss_encoder.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/tidss/tidss_encoder.c b/drivers/gpu/drm/tidss/tidss_encoder.c
-index 81a04f767770..db467bbcdb77 100644
---- a/drivers/gpu/drm/tidss/tidss_encoder.c
-+++ b/drivers/gpu/drm/tidss/tidss_encoder.c
-@@ -106,6 +106,8 @@ int tidss_encoder_create(struct tidss_device *tidss,
- 	enc = &t_enc->encoder;
- 	enc->possible_crtcs = possible_crtcs;
- 
-+	devm_drm_bridge_add(tidss->dev, &t_enc->bridge);
-+
- 	/* Attaching first bridge to the encoder */
- 	ret = drm_bridge_attach(enc, &t_enc->bridge, NULL,
- 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-
--- 
-2.43.0
+ Tomi
 
 
