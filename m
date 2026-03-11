@@ -1,156 +1,129 @@
-Return-Path: <stable+bounces-224759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VpN7NJjWsWnVFgAAu9opvQ
-	(envelope-from <stable+bounces-224759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:54:48 +0100
+	id MA5DEErUsWk2FgAAu9opvQ
+	(envelope-from <stable+bounces-224756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:44:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424B026A2D6
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:54:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A6426A1FA
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 21:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B47B30292D3
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:54:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 117953214668
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 20:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAA232ED34;
-	Wed, 11 Mar 2026 20:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D77375AA1;
+	Wed, 11 Mar 2026 20:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmaOAUwM"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368E313D539
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 20:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6328F355F43;
+	Wed, 11 Mar 2026 20:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773262486; cv=none; b=jkDOe8B+xjLIkrXS0FAIiPOxc7Ou+iknfW06huQInGSjtX1xWLt2UR3Mh+cOIPl0W03vVCfYWRTJu4daqsI4OCkisjQsZKJb6pMlsf0Zb80lFkOGMdjXp6Muu6V9V6dQObAJ246M1PWvJsaKWf9+WjXHZkLO5HWEPZl21PB8gvM=
+	t=1773261609; cv=none; b=iqduohFVvq/rp0lKNVeI0AuAAZHDsM/FmfyO6ehK8Dgy2AkmPRiezm5JBDZ6BNNJQAKwSQKvTIXiOnSf7JGNS0tnmV9Ewexu8h6TPB7WsDOq8DreYLtkaXaOalN1GOBFaSYzSzUxbIhM+PQAQEw3DsIjb8TzBcrqvSyHFpGBD3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773262486; c=relaxed/simple;
-	bh=GWQxadoQGqyRpFcbIAPD8wInrSPqPYew8gRqbK1h1KQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=inTSvLJ4qOWIQhLv8XMNYeaTrpBWXSVCalJdOVmtlfkBRO7VudjfwuZZthZYfulCjQdvwELl4cWYbNeJupgpzv25urHPJT1h+HXYN6Xx/9RursX1WcqpvHI8Z6uvr98c4xCD9x4Jz/Ct//ifDfN5+bmK8krqXhbZMCdLMqU6B9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.104] (213.87.153.130) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 11 Mar
- 2026 23:39:30 +0300
-Message-ID: <6fd6e18f-4979-4556-9dd2-cda6e703643a@omp.ru>
-Date: Wed, 11 Mar 2026 23:39:29 +0300
+	s=arc-20240116; t=1773261609; c=relaxed/simple;
+	bh=xjOXRjAw8P7R+jPLlL9/9ff6GKlKztkkP64eaUB2QH8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VqCI8c2t3xPdH7ppc0bjbPfN5TyjWx86R86uErdLGOY44fYWzErkjbJaJpSYUelCmQ1elQbcYKnfs3t0S9QEhjf4GDJqEnGKWwp5pgonj8BydHUDOwZg0AYFqrPqYAYXWJgNmqpKjCHbuWthceQXUR28JxFBVA1Xeq6IAJ8ciaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmaOAUwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E94DC4CEF7;
+	Wed, 11 Mar 2026 20:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773261609;
+	bh=xjOXRjAw8P7R+jPLlL9/9ff6GKlKztkkP64eaUB2QH8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cmaOAUwM23Fk+VBPzUZgQOvdmgjh8Ap3Oq3CpgmASX697KPuxcQwexXsbfaaqrFwJ
+	 Xy0Yidp/txT9P8FY/jKZKY70so3Iu0mVcTiIcGBh8YgPpqByBzBLxj89o8/WTRbesB
+	 acUOG0kxUupuOot66309IceeSZrWQajzHbs+7BdlXrSYoZJVmo7mb348C696M7G6z/
+	 wkqnKwBe2W3U83DCSVNEVkgjXKpJSS35875S33lU4Y9uI3dWHhx7SAFt3kxccF7q91
+	 i9um6ew2X6hFLPVtFuDT8Z7Vrkv5ppmgSa1ix5OaLv4c+JapzyzDVAqHito4f+psW2
+	 ddtKAUVEbcsAg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 400543808200;
+	Wed, 11 Mar 2026 20:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH RESEND 5.10.y] PCI: Check parent for NULL in
- of_pci_bus_release_domain_nr()
-To: <stable@vger.kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>
-Content-Language: en-US
-Organization: Open Mobile Platform
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 03/11/2026 20:24:35
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 201248 [Mar 11 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.20
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 88 0.3.88
- cf79c71dc438a5d750ce7f66bc9a19dbc08dac54
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_one_susp_tld}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;patch.msgid.link:7.1.1
-X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.153.130
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/11/2026 20:27:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 3/11/2026 5:36:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spamd-Result: default: False [-1.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/2] Bluetooth: L2CAP: Fix type confusion in
+ l2cap_ecred_reconf_rsp()
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <177326160505.3825078.5494696888868666095.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Mar 2026 20:40:05 +0000
+References: <20260310215947.35756-1-research@johannes-moeller.dev>
+In-Reply-To: <20260310215947.35756-1-research@johannes-moeller.dev>
+To: =?utf-8?q?Lukas_Johannes_M=C3=B6ller_=3Cresearch=40johannes-moeller=2Edev=3E?=@codeaurora.org
+Cc: linux-bluetooth@vger.kernel.org, luiz.dentz@gmail.com,
+ stable@vger.kernel.org
+X-Spamd-Result: default: False [0.04 / 15.00];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:-];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[omp.ru];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224759-lists,stable=lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	R_DKIM_REJECT(0.00)[kernel.org:s=k20201202];
+	TAGGED_FROM(0.00)[bounces-224756-lists,stable=lfdr.de,bluetooth];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.shtylyov@omp.ru,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.988];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.929];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auroraos.dev:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 424B026A2D6
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: B8A6426A1FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Hello:
 
-[ Upstream commit f7245901de8978d829f80b3d8e36ed9a8fd18049 ]
+This series was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-of_pci_bus_find_domain_nr() allows its parent parameter to be NULL but
-of_pci_bus_release_domain_nr() (that undoes its effect) doesn't -- that
-means it's going to blow up while calling of_get_pci_domain_nr() if the
-parent parameter indeed happens to be NULL.  Add the missing NULL check.
+On Tue, 10 Mar 2026 21:59:46 +0000 you wrote:
+> l2cap_ecred_reconf_rsp() casts the incoming data to struct
+> l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
+> result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
+> with result at offset 0).
+> 
+> This causes two problems:
+> 
+> [...]
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Here is the summary with links:
+  - [1/2] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+    (no matching commit)
+  - [2/2] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
+    https://git.kernel.org/bluetooth/bluetooth-next/c/4b0c8bb9885a
 
-Fixes: c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260127203944.28588-1-s.shtylyov@auroraos.dev
----
-Got the stable email wrong the first time, so resending...
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
- drivers/pci/pci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-stable/drivers/pci/pci.c
-===================================================================
---- linux-stable.orig/drivers/pci/pci.c
-+++ linux-stable/drivers/pci/pci.c
-@@ -6533,7 +6533,7 @@ static void of_pci_bus_release_domain_nr
- 		return;
- 
- 	/* Release domain from IDA where it was allocated. */
--	if (of_get_pci_domain_nr(parent->of_node) == bus->domain_nr)
-+	if (parent && of_get_pci_domain_nr(parent->of_node) == bus->domain_nr)
- 		ida_free(&pci_domain_nr_static_ida, bus->domain_nr);
- 	else
- 		ida_free(&pci_domain_nr_dynamic_ida, bus->domain_nr);
 
