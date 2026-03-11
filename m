@@ -1,199 +1,148 @@
-Return-Path: <stable+bounces-224660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMwKGRwysWm0rwIAu9opvQ
-	(envelope-from <stable+bounces-224660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:13:00 +0100
+	id sPpmL94zsWm0rwIAu9opvQ
+	(envelope-from <stable+bounces-224661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:20:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D5D260159
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:12:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8CE260367
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 10:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CD91300E256
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:12:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 922853190F14
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 09:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1D3C5DB7;
-	Wed, 11 Mar 2026 09:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3534C3B775C;
+	Wed, 11 Mar 2026 09:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LF5uY5OZ"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="udSpR/qX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CED3C1415
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 09:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD33C3B9DB0;
+	Wed, 11 Mar 2026 09:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773220362; cv=none; b=tliZ0rOHL8/1I961CpKAdsd0cN+An5Mh1uHvDZYHPOeOz5XctEGS+V5VYwQTxs5LgxLLrtdf3h8PUhKqWSBna+5svL4IIbJk6pZTuuzmB+UjfPKNCMKmlmekrX76cEAFNN1HXQTfi5Ha9Hz609pVUUj0E3L7Z2z1weXS2mGp65A=
+	t=1773220538; cv=none; b=jWstZRvf9TbMNTJkH6ZerE1hMRa9foOLvjf3Wab01FeE0DjalYEfUsSQZXvrDdpkukLB0JectTS2EbSWVG0ormErsmQYC+9id/sLr+fmrfn0W/jbAJ5pDFZ5NwGnLti/qTPHvdGwI7wyzjeEYF3Sf3tke614gO9nizV5zOIsIpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773220362; c=relaxed/simple;
-	bh=IuJEJeZeAA0dtPdJGCR2Y6So5KmMJbEcKNQPLePgIVk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I5A9VjiX1ccZ9mSkA1J4RJscsVMoj5qW0XK9zaWXLMbGf4EXs5T3MGfdVgFlmkWYwfSwhzBEe0jckiA2/brReGkkmUziN2xtmRPbMQsm5eFlDPCs+5LQEj2CQT0KG4D6Ti71J26jknDNgDaLDjasYOpuZGNQM6wURqxDaxu2i0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LF5uY5OZ; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae502a1dd9so128551435ad.3
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 02:12:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773220354; x=1773825154; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CfExovoAn7o/levAKL1G/GcHLpVojQhg0czDHj9L5ow=;
-        b=LF5uY5OZctOYzLVhoMiE1XP6YQAez1/qTF8BV54ijBQQ9IYMmFWr2ZJuV3Rmw7mwh+
-         7/m9R6bhH2rbCVvMeCVP+HpMEw4PA/HAh6BVbgBA9lTLxnsTBjSFQmfUEe2WZaEtTYPY
-         xsL5cNPfZUNW/AakqiPO0RJ/cz8VKHQ0AZJQKIO5UrTEaRZeeKylrkfjFV0/vqjVO2np
-         zKpF40JHapezhjIbxooK45UwFVW+Tlb4nQApYAxN74ZniyA2O9O7RYHNRkc3f+JpGUjD
-         ptj1afAErakMZpfoahzIeeEpx1meQY3LhoXx4sFUwM4bbgWCpQgIMsbNuWii0LezIq8/
-         ZC1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773220354; x=1773825154;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CfExovoAn7o/levAKL1G/GcHLpVojQhg0czDHj9L5ow=;
-        b=PBEhAwsR0M0oEDaobc50NuNJyGRHGK8rZ3VmYGlQMa2gM43se4nY29GrsauBWsx2vR
-         zQNAssN6TQXeoS/qZbL+z23gheHqt7+W/0LaQWpuSmRNpeST9V/boUdtmtcYUQowoko/
-         F9VfC0DQbAY3ZBGtf3IA4Tk4gmrDaHU+v7FoGVD3AQbCofeTPiY7KvhEYAQEnFWkoxB6
-         KI42qm5/hFs3Yc25mj/k4dBKKJljnyIN7BkUM8MQleG95BkYLdY2QwNiY7V/9Rc3UMDC
-         UMcSF6QndrkCvAROV6GJjlq7EIIMcrJC3pwO2UeRYaqSYtb9VTioG6wUjXAum1ZyZmNr
-         y92A==
-X-Forwarded-Encrypted: i=1; AJvYcCXx+r4i7MwbtRFWxoOqZGY0lU+yIJjaipDM7az3ZFBikejL7+yHD/PdE5TkOtvK8g4dj8EWiwI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcKiYKdb3+fpSgozKAnjRnVUiJblL1/hhCgS5nExtvA4AxFA29
-	UHaIkrgpYafQrkt4EDj2zSQOux5Nrm/4YWKwQ396/HkabYtzykIfZfLPYHz+g2p0f8NYhYoxXmk
-	e8/A03w==
-X-Received: from pfbbk8.prod.google.com ([2002:aa7:8308:0:b0:829:753a:73c1])
- (user=khtsai job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a110:b0:398:9b42:69f7
- with SMTP id adf61e73a8af0-398c60e40e9mr1761475637.39.1773220353942; Wed, 11
- Mar 2026 02:12:33 -0700 (PDT)
-Date: Wed, 11 Mar 2026 17:12:15 +0800
+	s=arc-20240116; t=1773220538; c=relaxed/simple;
+	bh=RUpHsS95XR7YAS15rMy/G/f8WEzjCYO4QqdO8kZrS+M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZoDNw3TL5w2CptSvbK+t79bVWCUqQQe+DV6HQyFxgc4At+sEp69qMZPWBVrgStAhWu2C1MPtMQHxljlB9MBHpWW/+DPpq71//Gba8CCdc8bqdtDSiggD/v6UsLw+f7IeQZYmP5drWp6882HaYzWe4xHs+3qeGSfxorRHJNgsi5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=udSpR/qX; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 25C5D4B3;
+	Wed, 11 Mar 2026 10:14:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773220459;
+	bh=RUpHsS95XR7YAS15rMy/G/f8WEzjCYO4QqdO8kZrS+M=;
+	h=From:Subject:Date:To:Cc:From;
+	b=udSpR/qX9/RihyLFYD0+cNFL/m2UpxTzsnXXwetK7xRbvneerNe5o+mHYg8hDvcST
+	 AdQFEATYhArM7fNZa8OP8h7kioXIVpDtq9o3GEHZXF3hqKzPInB24hid0cAgoTpcks
+	 wTvLAofkcw1Atm/TWnkQy5BWThJ/3XyK9Y8hzSSM=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH v2 0/2] drm/tidss: Two minor fixes
+Date: Wed, 11 Mar 2026 11:14:42 +0200
+Message-Id: <20260311-tidss-minor-fixes-v2-0-cb4479784458@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAO4xsWkC/x3MwQpAQBCH8VfRnE0ZIryKHLT7X+YytCspeXeb4
- +/wfQ8lREWisXgo4tKku2VIWZDbFlvB6rOpruquakR4xbkhstfkdjO4k+0At30nfugb8SFQbo+ IoPf/neb3/QAKuI/CZwAAAA==
-X-Change-Id: 20260311-gether-disconnect-npe-5861d9831dff
-X-Developer-Key: i=khtsai@google.com; a=ed25519; pk=abA4Pw6dY2ZufSbSXW9mtp7xiv1AVPtgRhCFWJSEqLE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773220352; l=2489;
- i=khtsai@google.com; s=20250916; h=from:subject:message-id;
- bh=IuJEJeZeAA0dtPdJGCR2Y6So5KmMJbEcKNQPLePgIVk=; b=RULJ9mQMu2H/bZkTzSiCY3jQvdU2YAWixzuX8Ru1zDG+HqQwUttR/mnK7HLj9mn01Vabu+zY/
- I3rYDCiho2GBChi++LgedTLhr40Ti6DPsaTCvVbuYvZucu927qnf03s
-X-Mailer: b4 0.14.3
-Message-ID: <20260311-gether-disconnect-npe-v1-1-454966adf7c7@google.com>
-Subject: [PATCH] usb: gadget: u_ether: Fix race between gether_disconnect and eth_stop
-From: Kuen-Han Tsai <khtsai@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	David Brownell <dbrownell@users.sourceforge.net>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Kuen-Han Tsai <khtsai@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: E7D5D260159
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIIysWkC/32NSw7CMAxEr1J5jVE+JEKsuEfVRWgc6kUTFFcVq
+ OrdCT0AyzejN7OBUGUSuHUbVFpZuOQG5tTBOIX8JOTYGIwyXlmtceEogjPnUjHxmwRHla7OBme
+ NT9C8V6WjaFo/NJ5YllI/x8Wqf+m/tVWjQiJHnvQlOO/vHClIyY8SajyPZYZh3/cvAVb7ELkAA
+ AA=
+X-Change-ID: 20260311-tidss-minor-fixes-c0f853a5326f
+To: Jyri Sarha <jyri.sarha@iki.fi>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Sam Ravnborg <sam@ravnborg.org>, 
+ Javier Martinez Canillas <javierm@redhat.com>, 
+ Aradhya Bhatia <a-bhatia1@ti.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Devarsh Thakkar <devarsht@ti.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-c25d1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=868;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=RUpHsS95XR7YAS15rMy/G/f8WEzjCYO4QqdO8kZrS+M=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBpsTKqmXfj01wpJ92elveam3QNcw5WTKCKhZNmN
+ GocCL85kbuJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCabEyqgAKCRD6PaqMvJYe
+ 9YyOD/45pqPfSFM+gBM+5qiGO3Xp1G8UW2zlM66ryjZ+vjp/bz4KYtEz5wDP4IljIYDKqJ921DF
+ V5Dbf0caIMI/MksAspDF5vbkdhhHUUvBX4oHWSpezXB59VPHtNPE7ksz3PeLF8xd4FoCXN2m1AI
+ KERPAgpErLPB84MAuqN5Aab6G04A+Zh3xAdEDACTzkJyhZl4tqMF5ceDEAFXyfeLEnEIcH1EU0E
+ 7wRQn7kO7QejMjXhZqUto2tLOefuvGwiIqxWhUK5o6EPZ/fncHXyUE0H1XiUHEgd2ICZ+tKP5XX
+ YEBa/VE6tzJhUToyYBGVGpAZriFH3FLIWaWYLTg9MiiNTBoCgPvxaqmISwOIRQHsTaTY/9nPZcJ
+ RbsJwjlb08KacjE1IhcesuHSXaLh07ILuyvWyqOOlDdc53iREz+ZaHjOj6M1dkmaBVxLRVHM0eY
+ SQU+9tqQT7M1FlR+Xp59+dOeFCU2qvfV9/1ZA7CrWqJAtdjykwAOgs7oKwkUjOIAZQBTS612UW9
+ ic1yHTvGOAQd5FUsScJY8NdwvkhrqaGCcB4zAHbhJFZVi7Xd1IHjgh/pzAV2a3TWVwJbXTkcr1W
+ n/yRKcDkpZMtz1/acrfR8PuTKWRa1MtkZLxWhUS6MqJ/DQqGMcvPP8w7hSrVbrlvb76dAiPg+/Y
+ y1Q1cv04QJZJ4lg==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
+X-Rspamd-Queue-Id: 2C8CE260367
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224660-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[iki.fi,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,ravnborg.org,redhat.com,ti.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224661-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[khtsai@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tomi.valkeinen@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-A race condition between gether_disconnect() and eth_stop() leads to a
-NULL pointer dereference. Specifically, if eth_stop() is triggered
-concurrently while gether_disconnect() is tearing down the endpoints,
-eth_stop() attempts to access the cleared endpoint descriptor, causing
-the following NPE:
+Two minor fixes. One to drop an extra drm_mode_config_reset() call,
+another to fix a "Missing drm_bridge_add() before attach" warning print.
 
-  Unable to handle kernel NULL pointer dereference
-  Call trace:
-   __dwc3_gadget_ep_enable+0x60/0x788
-   dwc3_gadget_ep_enable+0x70/0xe4
-   usb_ep_enable+0x60/0x15c
-   eth_stop+0xb8/0x108
-
-Because eth_stop() crashes while holding the dev->lock, the thread
-running gether_disconnect() fails to acquire the same lock and spins
-forever, resulting in a hardlockup:
-
-  Core - Debugging Information for Hardlockup core(7)
-  Call trace:
-   queued_spin_lock_slowpath+0x94/0x488
-   _raw_spin_lock+0x64/0x6c
-   gether_disconnect+0x19c/0x1e8
-   ncm_set_alt+0x68/0x1a0
-   composite_setup+0x6a0/0xc50
-
-The root cause is that the clearing of dev->port_usb in
-gether_disconnect() is delayed until the end of the function.
-
-Move the clearing of dev->port_usb to the very beginning of
-gether_disconnect() while holding dev->lock. This cuts off the link
-immediately, ensuring eth_stop() will see dev->port_usb as NULL and
-safely bail out.
-
-Fixes: 2b3d942c4878 ("usb ethernet gadget: split out network core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 ---
- drivers/usb/gadget/function/u_ether.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index 338f6e2a85a9..2c970a0eafd9 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -1246,6 +1246,11 @@ void gether_disconnect(struct gether *link)
- 
- 	DBG(dev, "%s\n", __func__);
- 
-+	spin_lock(&dev->lock);
-+	dev->port_usb = NULL;
-+	link->is_suspend = false;
-+	spin_unlock(&dev->lock);
-+
- 	netif_stop_queue(dev->net);
- 	netif_carrier_off(dev->net);
- 
-@@ -1283,11 +1288,6 @@ void gether_disconnect(struct gether *link)
- 	dev->header_len = 0;
- 	dev->unwrap = NULL;
- 	dev->wrap = NULL;
--
--	spin_lock(&dev->lock);
--	dev->port_usb = NULL;
--	link->is_suspend = false;
--	spin_unlock(&dev->lock);
- }
- EXPORT_SYMBOL_GPL(gether_disconnect);
- 
+Changes in v2:
+- Fix incorrect title for the second patch
+- Add Maxime's acks
+- Link to v1: https://lore.kernel.org/r/20260311-tidss-minor-fixes-v1-0-ee5e6e14a566@ideasonboard.com
 
 ---
-base-commit: 1be3b77de4eb89af8ae2fd6610546be778e25589
-change-id: 20260311-gether-disconnect-npe-5861d9831dff
+Tomi Valkeinen (2):
+      drm/tidss: Drop extra drm_mode_config_reset() call
+      drm/tidss: Fix missing drm_bridge_add() call
+
+ drivers/gpu/drm/tidss/tidss_encoder.c | 2 ++
+ drivers/gpu/drm/tidss/tidss_kms.c     | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260311-tidss-minor-fixes-c0f853a5326f
 
 Best regards,
 -- 
-Kuen-Han Tsai <khtsai@google.com>
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
 
