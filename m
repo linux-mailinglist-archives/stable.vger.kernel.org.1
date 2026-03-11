@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-224684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKwnM69gsWl/uQIAu9opvQ
-	(envelope-from <stable+bounces-224684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:31:43 +0100
+	id MBr5G9tksWnsugIAu9opvQ
+	(envelope-from <stable+bounces-224685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:49:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1C6263A1E
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:31:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB708263DAD
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 13:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB13C3031B12
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:31:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A16C331CEAA1
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 12:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015362D8DC4;
-	Wed, 11 Mar 2026 12:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA0A23535E;
+	Wed, 11 Mar 2026 12:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y334Cv2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0cpWtUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282EE19D89E;
-	Wed, 11 Mar 2026 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4361CD2C;
+	Wed, 11 Mar 2026 12:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773232296; cv=none; b=FupyYK/QfgI8fotAnwiPMpTVWz7Hmh6zRGkeQi6bGtonvPVKxMUVA+TemrMUreJzAsMrG4k50f68FQJDQLym9AIcKTi0dLWLgDfGs2AYdDr/oQThuApHwx7TrfjJxBOClTg6gQZypaZZV47j19kDS010Oj4JhlUCLK2fz+8t/8M=
+	t=1773233168; cv=none; b=ngmJMj5hZafpfpzHJayi6jSVUXVQ6GmsKOMfn8NboKzQHcPDRn7UAc21Lmc+XGimM41QUAQL1ylwzDke04CdDqwBYUlNmUn0mPFTipr8/oC+gBGGmp4O3EnkFs9RdxH+q/ShsQu9KPG+b3B1x2h18wLc4cFNKJEPvz5y27nx0Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773232296; c=relaxed/simple;
-	bh=8FO5JQyUdTtvjjiHusgWZwBFkP9+9Rfi0T2kj3nS7/k=;
+	s=arc-20240116; t=1773233168; c=relaxed/simple;
+	bh=yZkRn5xU19FhUS6a/p33ihysyKruq0MZr0bpn51hKGM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5a8rtOne5UR1W9naOlVUdnkjF1fKHm61ED2ztkbCHDEb8d/9xe7Q/nOFB+eyJPiX2MqwSfWJ/cdfG6nYbfhNSveIMip0QzWMphtoBEsSiX3eIgsy8tukTCLz+SY16wb0ecXD1I5uIR5xvsK4iCJR9FABNvqPnob83h7q+3AowA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y334Cv2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ED8C4CEF7;
-	Wed, 11 Mar 2026 12:31:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IeUZwVgtFTEqaBbkJ+UeLJ1vrEo9D7JnbHpKv8wgbuskVKdm4/7kFdOoQGkBt+Mh2hdOeq6ziyKxXRQ+Y+Nn78rsL5W0PGTpFx7zmV7MKBfen8Ey29PbbFmw2fwJ0fH1C5otJvahKLTl0MEaZBqJWB3KHnCeGl66at8mEJiThuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0cpWtUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C9C2BC9E;
+	Wed, 11 Mar 2026 12:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773232295;
-	bh=8FO5JQyUdTtvjjiHusgWZwBFkP9+9Rfi0T2kj3nS7/k=;
+	s=korg; t=1773233167;
+	bh=yZkRn5xU19FhUS6a/p33ihysyKruq0MZr0bpn51hKGM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y334Cv2pg/qqS247eo0chrhcWYxfmmxKEwRvJXdsJej3UYrDhxm1etLftQQ01pyQk
-	 ufUGIffxfbrDJFMGlqQfZjmy+IXxmpzKHT1Fl8sZSXs+AQLlWo6f7N/mo4YGCdlynq
-	 9TxuBcLEwaxQC030xBN1R6jujBnbV6JtykbFk7l8=
-Date: Wed, 11 Mar 2026 13:31:31 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Guan-Yu Lin <guanyulin@google.com>
-Cc: mathias.nyman@intel.com, perex@perex.cz, tiwai@suse.com,
-	quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de,
-	christophe.jaillet@wanadoo.fr, xiaopei01@kylinos.cn,
-	wesley.cheng@oss.qualcomm.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] ALSA: usb: qcom: manage offload device usage
-Message-ID: <2026031115-unboxed-spouse-1dcd@gregkh>
-References: <20260309022205.28136-1-guanyulin@google.com>
- <20260309022205.28136-3-guanyulin@google.com>
+	b=G0cpWtUlpmdPuT5JeBtlsStbrGlvW7YDP++g40OkGuyh+yH+EKaenhJXKkjuFyKix
+	 aNy+WzG1U5trdVB75IsnbGWV1Lvmbu/y55k5bRMWLuhY+VzyojXRTGuR8Dz2G1FPlh
+	 ZGgegTUpAglPZjxgTlLq42GEnGbVmZeU+ywCYO+k=
+Date: Wed, 11 Mar 2026 13:46:03 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jimmy Hu <hhhuuu@google.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Dan Vacura <w36195@motorola.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	badhri@google.com
+Subject: Re: [PATCH v2] usb: gadget: f_uvc: fix NULL pointer dereference
+ during unbind race
+Message-ID: <2026031109-supermom-treat-09b5@gregkh>
+References: <20260224083955.1375032-1-hhhuuu@google.com>
+ <20260309053107.2591494-1-hhhuuu@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,216 +62,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260309022205.28136-3-guanyulin@google.com>
-X-Rspamd-Queue-Id: 4F1C6263A1E
+In-Reply-To: <20260309053107.2591494-1-hhhuuu@google.com>
+X-Rspamd-Queue-Id: DB708263DAD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224684-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,perex.cz,suse.com,quicinc.com,kernel.org,arndb.de,wanadoo.fr,kylinos.cn,oss.qualcomm.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224685-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.938];
+	NEURAL_HAM(-0.00)[-0.982];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,harvard.edu:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 02:22:05AM +0000, Guan-Yu Lin wrote:
-> The Qualcomm USB audio offload driver currently does not report its offload
-> activity to the USB core. This prevents the USB core from properly tracking
-> active offload sessions, which could allow the device to auto-suspend while
-> audio offloading is in progress.
+On Mon, Mar 09, 2026 at 01:31:07PM +0800, Jimmy Hu wrote:
+> Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
+> shutdown") introduced two stages of synchronization waits totaling 1500ms
+> in uvc_function_unbind() to prevent several types of kernel panics.
+> However, this timing-based approach is insufficient during power
+> management (PM) transitions.
 > 
-> Integrate usb_offload_get() and usb_offload_put() calls into the offload
-> stream setup and teardown paths. Specifically, call usb_offload_get() when
-> initializing the event ring and usb_offload_put() when freeing it.
+> When the PM subsystem starts freezing user space processes, the
+> wait_event_interruptible_timeout() is aborted early, which allows the
+> unbind thread to proceed and nullify the gadget pointer
+> (cdev->gadget = NULL):
 > 
-> Since the updated usb_offload_get() and usb_offload_put() APIs require the
-> caller to hold the USB device lock, add the necessary device locking in
-> handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
-> requirement.
+> [  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
+> [  814.178583][ T3173] PM: suspend entry (deep)
+> [  814.192487][ T3173] Freezing user space processes
+> [  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-> Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
+> When the PM subsystem resumes or aborts the suspend and tasks are
+> restarted, the V4L2 release path is executed and attempts to access the
+> already nullified gadget pointer, triggering a kernel panic:
+> 
+> [  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
+> [  814.386727][ T3173] Restarting tasks ...
+> [  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
+> [  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
+> [  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
+> [  814.404078][ T4558] Call trace:
+> [  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
+> [  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
+> [  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
+> [  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
+> [  814.404095][ T4558]  v4l2_release+0xcc/0x130
+> 
+> This patch introduces the following safeguards:
+> 
+> 1. State Synchronization (flag + mutex)
+> Introduced a 'func_unbound' flag in struct uvc_device. This allows
+> uvc_function_disconnect() to safely skip accessing the nullified
+> cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
+> by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
+> instruction reordering or speculative loads.
+> 
+> 2. Lifecycle Management (kref)
+> Introduced kref to manage the struct uvc_device lifecycle. This prevents
+> Use-After-Free (UAF) by ensuring the structure is only freed after the
+> final reference, including the V4L2 release path, is dropped.
+> 
+> Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
+> Cc: <stable@vger.kernel.org>
+> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+> Signed-off-by: Jimmy Hu <hhhuuu@google.com>
 > ---
->  sound/usb/qcom/qc_audio_offload.c | 102 ++++++++++++++++++------------
->  1 file changed, 60 insertions(+), 42 deletions(-)
+> v1 -> v2:
+> - Renamed 'func_unbinding' to 'func_unbound' for clearer state semantics.
+> - Added a mutex (uvc->lock) to protect the 'func_unbound' flag and ensure
+>   proper memory ordering, as suggested by Alan Stern.
+> - Integrated kref to manage the struct uvc_device lifecycle, allowing the 
+>   removal of redundant buffer cleanup skip logic in uvc_v4l2_disable().
+>   
+> v1: https://patchwork.kernel.org/project/linux-usb/patch/20260224083955.1375032-1-hhhuuu@google.com/
 > 
-> diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
-> index cfb30a195364..1da243662327 100644
-> --- a/sound/usb/qcom/qc_audio_offload.c
-> +++ b/sound/usb/qcom/qc_audio_offload.c
-> @@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct uaudio_dev *dev)
->  		uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
->  				   PAGE_SIZE);
->  		xhci_sideband_remove_interrupter(uadev[dev->chip->card->number].sb);
-> +		usb_offload_put(dev->udev);
->  	}
+>  drivers/usb/gadget/function/f_uvc.c    | 27 +++++++++++++++++++++++++-
+>  drivers/usb/gadget/function/uvc.h      |  4 ++++
+>  drivers/usb/gadget/function/uvc_v4l2.c |  2 ++
+>  3 files changed, 32 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
+> index 494fdbc4e85b..485cd91770d5 100644
+> --- a/drivers/usb/gadget/function/f_uvc.c
+> +++ b/drivers/usb/gadget/function/f_uvc.c
+> @@ -413,8 +413,17 @@ uvc_function_disconnect(struct uvc_device *uvc)
+>  {
+>  	int ret;
+>  
+> +	mutex_lock(&uvc->lock);
+> +	if (uvc->func_unbound) {
+> +		pr_info("uvc: unbound, skipping function deactivate\n");
+
+When drivers work properly, they are quiet.  Also, why are you not using
+uvcg_info() here, this pr_info() gives no device specific information so
+you know what device this is happening to.
+
+
+
+> +		goto unlock;
+> +	}
+> +
+>  	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
+>  		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
+> +
+> +unlock:
+> +	mutex_unlock(&uvc->lock);
 >  }
 >  
-> @@ -750,6 +751,7 @@ static void qmi_stop_session(void)
->  	struct snd_usb_substream *subs;
->  	struct usb_host_endpoint *ep;
->  	struct snd_usb_audio *chip;
-> +	struct usb_device *udev;
->  	struct intf_info *info;
->  	int pcm_card_num;
->  	int if_idx;
-> @@ -791,8 +793,13 @@ static void qmi_stop_session(void)
->  			disable_audio_stream(subs);
->  		}
->  		atomic_set(&uadev[idx].in_use, 0);
-> -		guard(mutex)(&chip->mutex);
-> -		uaudio_dev_cleanup(&uadev[idx]);
-> +
-> +		udev = uadev[idx].udev;
-> +		if (udev) {
-> +			guard(device)(&udev->dev);
-> +			guard(mutex)(&chip->mutex);
-> +			uaudio_dev_cleanup(&uadev[idx]);
-
-Two locks?  For one structure?  Is this caller verifying that those
-locks are held?
-
-> +		}
->  	}
+>  /* --------------------------------------------------------------------------
+> @@ -659,6 +668,9 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
+>  	int ret = -EINVAL;
+>  
+>  	uvcg_info(f, "%s()\n", __func__);
+> +	mutex_lock(&uvc->lock);
+> +	uvc->func_unbound = false;
+> +	mutex_unlock(&uvc->lock);
+>  
+>  	opts = fi_to_f_uvc_opts(f->fi);
+>  	/* Sanity check the streaming endpoint module parameters. */
+> @@ -974,6 +986,13 @@ static struct usb_function_instance *uvc_alloc_inst(void)
+>  	return &opts->func_inst;
 >  }
 >  
-> @@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
->  	er_pa = 0;
->  
->  	/* event ring */
-> +	ret = usb_offload_get(subs->dev);
-> +	if (ret < 0)
-> +		goto exit;
-
-Where is the lock being held here?
-
-This pushing the lock for USB calls "higher" up the call chain is rough,
-and almost impossible to audit, given changes like this:
-
-> @@ -1597,50 +1612,53 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
->  
->  	uadev[pcm_card_num].ctrl_intf = chip->ctrl_intf;
->  
-> -	if (req_msg->enable) {
-> -		ret = enable_audio_stream(subs,
-> -					  map_pcm_format(req_msg->audio_format),
-> -					  req_msg->number_of_ch, req_msg->bit_rate,
-> -					  datainterval);
-> -
-> -		if (!ret)
-> -			ret = prepare_qmi_response(subs, req_msg, &resp,
-> -						   info_idx);
-> -		if (ret < 0) {
-> -			guard(mutex)(&chip->mutex);
-> -			subs->opened = 0;
-> -		}
-> -	} else {
-> -		info = &uadev[pcm_card_num].info[info_idx];
-> -		if (info->data_ep_pipe) {
-> -			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-> -					       info->data_ep_pipe);
-> -			if (ep) {
-> -				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-> -							    ep);
-> -				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-> -							      ep);
-> +	udev = subs->dev;
-> +	scoped_guard(device, &udev->dev) {
-> +		if (req_msg->enable) {
-> +			ret = enable_audio_stream(subs,
-> +						map_pcm_format(req_msg->audio_format),
-> +						req_msg->number_of_ch, req_msg->bit_rate,
-> +						datainterval);
+> +void uvc_device_release(struct kref *kref)
+> +{
+> +	struct uvc_device *uvc = container_of(kref, struct uvc_device, kref);
 > +
-> +			if (!ret)
-> +				ret = prepare_qmi_response(subs, req_msg, &resp,
-> +							info_idx);
-> +			if (ret < 0) {
-> +				guard(mutex)(&chip->mutex);
-> +				subs->opened = 0;
-> +			}
-> +		} else {
-> +			info = &uadev[pcm_card_num].info[info_idx];
-> +			if (info->data_ep_pipe) {
-> +				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-> +							info->data_ep_pipe);
-> +				if (ep) {
-> +					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-> +									ep);
-> +					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-> +									ep);
-> +				}
+> +	kfree(uvc);
+> +}
 > +
-> +				info->data_ep_pipe = 0;
->  			}
+>  static void uvc_free(struct usb_function *f)
+>  {
+>  	struct uvc_device *uvc = to_uvc(f);
+> @@ -982,7 +1001,7 @@ static void uvc_free(struct usb_function *f)
+>  	if (!opts->header)
+>  		config_item_put(&uvc->header->item);
+>  	--opts->refcnt;
+> -	kfree(uvc);
+> +	kref_put(&uvc->kref, uvc_device_release);
+>  }
 >  
-> -			info->data_ep_pipe = 0;
-> -		}
-> -
-> -		if (info->sync_ep_pipe) {
-> -			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-> -					       info->sync_ep_pipe);
-> -			if (ep) {
-> -				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-> -							    ep);
-> -				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-> -							      ep);
-> +			if (info->sync_ep_pipe) {
-> +				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-> +							info->sync_ep_pipe);
-> +				if (ep) {
-> +					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-> +									ep);
-> +					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-> +									ep);
-> +				}
-> +
-> +				info->sync_ep_pipe = 0;
->  			}
+>  static void uvc_function_unbind(struct usb_configuration *c,
+> @@ -994,6 +1013,9 @@ static void uvc_function_unbind(struct usb_configuration *c,
+>  	long wait_ret = 1;
 >  
-> -			info->sync_ep_pipe = 0;
-> +			disable_audio_stream(subs);
-> +			guard(mutex)(&chip->mutex);
-> +			subs->opened = 0;
->  		}
-> -
-> -		disable_audio_stream(subs);
-> -		guard(mutex)(&chip->mutex);
-> -		subs->opened = 0;
+>  	uvcg_info(f, "%s()\n", __func__);
+> +	mutex_lock(&uvc->lock);
+> +	uvc->func_unbound = true;
+> +	mutex_unlock(&uvc->lock);
+>  
+>  	kthread_cancel_work_sync(&video->hw_submit);
+>  
+> @@ -1046,8 +1068,11 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
+>  	if (uvc == NULL)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> +	kref_init(&uvc->kref);
+> +	mutex_init(&uvc->lock);
+>  	mutex_init(&uvc->video.mutex);
+>  	uvc->state = UVC_STATE_DISCONNECTED;
+> +	uvc->func_unbound = true;
+>  	init_waitqueue_head(&uvc->func_connected_queue);
+>  	opts = fi_to_f_uvc_opts(fi);
+>  
+> diff --git a/drivers/usb/gadget/function/uvc.h b/drivers/usb/gadget/function/uvc.h
+> index 676419a04976..22b70f25607d 100644
+> --- a/drivers/usb/gadget/function/uvc.h
+> +++ b/drivers/usb/gadget/function/uvc.h
+> @@ -155,6 +155,9 @@ struct uvc_device {
+>  	enum uvc_state state;
+>  	struct usb_function func;
+>  	struct uvc_video video;
+> +	struct kref kref;
 
-You have multiple levels of locks here, which is always a sign that
-something has gone really wrong.  This looks even more fragile and easy
-to get wrong than before.  Are you _SURE_ this is the only way to solve
-this?  The whole usb_offload_get() api seems more wrong to me than
-before (and I didn't like it even then...)
+But there is already a device reference count in the vdev structure,
+right?  Are you now having 2 reference counts for the same device?
+That's going to cause a lot of problems.
 
-In other words, this patch set feels rough, and adds more complexity
-overall, requiring a reviewer to "know" where locks are held and not
-held while before they did not.  That's a lot to push onto us for
-something that feels like is due to a broken hardware design?
+> +	struct mutex lock;
+
+Please document what this lock is locking.
 
 thanks,
 
