@@ -1,204 +1,230 @@
-Return-Path: <stable+bounces-224643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QM82AA0JsWnhpwIAu9opvQ
-	(envelope-from <stable+bounces-224643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 07:17:49 +0100
+	id cIfIIQUMsWldqAIAu9opvQ
+	(envelope-from <stable+bounces-224644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 07:30:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5743325CBDC
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 07:17:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7B925CD8F
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 07:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 887F4313FABD
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 06:17:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F14B31798C7
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 06:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11832EC0A4;
-	Wed, 11 Mar 2026 06:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206682EB0F;
+	Wed, 11 Mar 2026 06:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WdfUPqE2"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="oViB3+5p"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EABF1A6805;
-	Wed, 11 Mar 2026 06:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678EAA59
+	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 06:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773209864; cv=none; b=pIUgYgABg415V8fJ9qB/fUUPcNlD9R9YbXwuM3ozkfadSOmQPaM+sQAQN/dMySFxTApR4ORWRjpa32bAsSwVZtU7rbgqfKD5o3V9Gsi4MtWZ44XHP3lSPiPZR8SMAv2kaKI84NtXTJc3s6VoX0DShgkYLsY4m9GV4VmWItQMvOY=
+	t=1773210626; cv=none; b=HEtOm60k6irvqSANFEWJSePEBB1FxO+U5P0SEK+X9/ytORrjsXiEBi4nMBGj6c10MdYcjKSvp7tlPklCvn34/pIXlv+pCqMioseC0l7W2xIek4Psa27FhrqioeYb2upGz0XxAXzE/RybiRPYwi9eJ+OymiT/Ii78TC/hD7IcGls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773209864; c=relaxed/simple;
-	bh=y64Mh80p5X3MO1QUjCXAWOrQXqmOOP3HwN7I9HE04WY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pMZhmzN6H7xb4XFD8UfxynMmNDOnJnQLoTGtJjvg29SBv+IMYdGk4ZcX7YWKNlnn7z8ns+66OFf0BjSi3hGv3Y7RBfk2l6CQlQf/zYjfRiHkjy4KsDXncV1AWOE/JjIVJAdflKAaGwE46RFhAjcP+qUFoeOtsPH/mrUbnRSd7Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WdfUPqE2; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AHN4NH153178;
-	Wed, 11 Mar 2026 06:17:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=7F7of/pioiEzfSaxmZRMCX3Fg2mJoOP4EB0Z/kFfv
-	fc=; b=WdfUPqE23fcAEdtiEj9iapy3pSScU4VjAghhrcdwmt2X3SgVFXSkSEPxb
-	/VdlRUx5esipp+8IUMIRl4aUCLmX3jhaz/ikAy5y5yycHMc0YRD4UFd7B2VcCUPD
-	4/eZIrhw+SS+Raw0DHXxD4vMa1g5ZFFqEm2YIPXg2j5fkXbg8vkQbMkEV0xY+Ui/
-	NdqZTXn3v7YhyKEfkdR6FCNMuKj8DXh7CZ7jZLk0inEv24Fs38mt/amH4zn9ZrfT
-	fS0D5+DeiaGwfqL+L28rTB44DqTDo58lUGc366pfyUbfS9zgA5goUge1y8A1yh8H
-	/jt11qcdMv7nBz9kVPCmQ5LhAehbw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crd1mnywj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 06:17:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62B12Xvn015653;
-	Wed, 11 Mar 2026 06:17:31 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4crybncady-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Mar 2026 06:17:31 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62B6HR6N12255660
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Mar 2026 06:17:27 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 585B02005A;
-	Wed, 11 Mar 2026 06:17:27 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B30A42004E;
-	Wed, 11 Mar 2026 06:17:24 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.39.22.168])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Mar 2026 06:17:24 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
-Cc: sshegde@linux.ibm.com, chleroy@kernel.org, nysal@linux.ibm.com,
-        mkchauras@linux.ibm.com, rafael@kernel.org, daniel.lezcano@kernel.org,
-        christian.loehle@arm.com, mkchauras@gmail.com, npiggin@gmail.com,
-        linux-pm@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v2] cpuidle: powerpc: avoid double clear when breaking snooze
-Date: Wed, 11 Mar 2026 11:47:09 +0530
-Message-ID: <20260311061709.1230440-1-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1773210626; c=relaxed/simple;
+	bh=NODJ4LuIWGe3ldxttYy6nc99/ylGQnQADyH7UYSufoo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S2xMKxJLcOzYkdNnXxiz60JToZG8v+FtSNHL6Nyx3wZ4T+RqYpjS0WUp7Udzih4GdzX1yD4JcDXFcgzYpLgGyyJ/dW3EDgQnq1nRnXbnsDCclwO517FJeyU4CZTBs0qNqe7/wE4L09Bqn2GWIECGdJHTyuXm/M9MGCf4UPI8oLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=oViB3+5p; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773210615; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=BGRxTQz3bbCWd83NK2JDxvU/4ifWtTYyZfIixp/f1bQ=;
+	b=oViB3+5pytghVUFPFPLVXwF7hvjKZ9z0q7Iqy+6kL+QWoSTTR5+TDW4TAQRqRPavcGdsYlWV0D1TPAT1mP8f2wcnjiATiLeJyBWRcK6cRoS/SDu98exNC7znkT1Skl1vrUxq8rxIm3apnRsBFsev+94PL+KnnBOG8JEp71fk14s=
+Received: from 30.221.132.200(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X-iu1ha_1773210614 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 11 Mar 2026 14:30:15 +0800
+Message-ID: <c70a77a2-bc29-4767-b4c2-c5ba12dae04e@linux.alibaba.com>
+Date: Wed, 11 Mar 2026 14:30:14 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=ds3Wylg4 c=1 sm=1 tr=0 ts=69b108fc cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=cVrzkdVh9Pqr8fURmIoA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzExMDA0OSBTYWx0ZWRfX5OlTuLCxBycs
- bsoQQt2MYTPFxkbG+pgCJpHm6FfnYhFm7WQ2aE4LrjClRvwwvtcE+XTQJyLAieMDac4/2tqAJiH
- KLoVPhxvV5WcI/S2qBVPVyEIr5bvDC5oiDkcq6sJNZdpERMHxXib4rdDSwxWkz5z9jilH1Pdi+e
- Mf3XiBpkV4Ha+e6N3w2bc4ZtQHugpGFnM5+IaXqnjDQsZ6cHizwXJoVawQkxIIWOH2QaOwteQ/K
- 2LTKxDDvND7F5d4lNvU31db5x0DUv+6khf5TJMEjGxB7O4QWnyfYCV9yboD2QCG4w1M/06Obf9V
- fJ7rOJqJct2fNJAkTaEBvOePpWCirvJddfYO+9G7R3S0XRYz0hn/u3tKiq7F/f29cEywnjp/Jl0
- qEgxf1CjR+9BoXrOt6LlKs4b9PeQfDVxW3LJe1NjgEd6WXhIiF2lH0hE/gLVTZmP5hPlRyrplIz
- kbVhZoMlQm2qrbkir9w==
-X-Proofpoint-GUID: IwXrcu66crhxX1fWNSOJmNmD6fEejyAe
-X-Proofpoint-ORIG-GUID: KUkcok53n_Viifrr4RsG4gVX4qwPZMwN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-10_05,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 clxscore=1011 impostorscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603110049
-X-Rspamd-Queue-Id: 5743325CBDC
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12.y] erofs: fix inline data read failure for
+ ztailpacking pclusters
+To: Zhiguo Niu <zhiguo.niu@unisoc.com>, stable@vger.kernel.org
+Cc: niuzhiguo84@gmail.com, ke.wang@unisoc.com, Hao_hao.Wang@unisoc.com,
+ linux-erofs@lists.ozlabs.org
+References: <1773209614-1961-1-git-send-email-zhiguo.niu@unisoc.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <1773209614-1961-1-git-send-email-zhiguo.niu@unisoc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DB7B925CD8F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224643-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,arm.com,gmail.com,vger.kernel.org];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224644-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,unisoc.com,lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,unisoc.com:email]
 X-Rspamd-Action: no action
 
-snooze_loop is done often in any system which has fair bit of
-idle time. So it qualifies for even micro-optimizations. 
+Hi Zhiguo,
 
-When breaking the snooze due to timeout, TIF_POLLING_NRFLAG is cleared
-twice. Clearing the bit invokes atomics. Avoid double clear and thereby
-avoid one atomic write.
+On 2026/3/11 14:13, Zhiguo Niu wrote:
+> From: Gao Xiang <hsiangkao@linux.alibaba.com>
+> 
+> [ Upstream commit c134a40f86efb8d6b5a949ef70e06d5752209be5 ]
+> 
+> Compressed folios for ztailpacking pclusters must be valid before adding
+> these pclusters to I/O chains. Otherwise, z_erofs_decompress_pcluster()
+> may assume they are already valid and then trigger a NULL pointer
+> dereference.
+> 
+> It is somewhat hard to reproduce because the inline data is in the same
+> block as the tail of the compressed indexes, which are usually read just
+> before. However, it may still happen if a fatal signal arrives while
+> read_mapping_folio() is running, as shown below:
+> 
+>   erofs: (device dm-1): z_erofs_pcluster_begin: failed to get inline data -4
+>   Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+> 
+>   ...
+> 
+>   pc : z_erofs_decompress_queue+0x4c8/0xa14
+>   lr : z_erofs_decompress_queue+0x160/0xa14
+>   sp : ffffffc08b3eb3a0
+>   x29: ffffffc08b3eb570 x28: ffffffc08b3eb418 x27: 0000000000001000
+>   x26: ffffff8086ebdbb8 x25: ffffff8086ebdbb8 x24: 0000000000000001
+>   x23: 0000000000000008 x22: 00000000fffffffb x21: dead000000000700
+>   x20: 00000000000015e7 x19: ffffff808babb400 x18: ffffffc089edc098
+>   x17: 00000000c006287d x16: 00000000c006287d x15: 0000000000000004
+>   x14: ffffff80ba8f8000 x13: 0000000000000004 x12: 00000006589a77c9
+>   x11: 0000000000000015 x10: 0000000000000000 x9 : 0000000000000000
+>   x8 : 0000000000000000 x7 : 0000000000000000 x6 : 000000000000003f
+>   x5 : 0000000000000040 x4 : ffffffffffffffe0 x3 : 0000000000000020
+>   x2 : 0000000000000008 x1 : 0000000000000000 x0 : 0000000000000000
+>   Call trace:
+>    z_erofs_decompress_queue+0x4c8/0xa14
+>    z_erofs_runqueue+0x908/0x97c
+>    z_erofs_read_folio+0x128/0x228
+>    filemap_read_folio+0x68/0x128
+>    filemap_get_pages+0x44c/0x8b4
+>    filemap_read+0x12c/0x5b8
+>    generic_file_read_iter+0x4c/0x15c
+>    do_iter_readv_writev+0x188/0x1e0
+>    vfs_iter_read+0xac/0x1a4
+>    backing_file_read_iter+0x170/0x34c
+>    ovl_read_iter+0xf0/0x140
+>    vfs_read+0x28c/0x344
+>    ksys_read+0x80/0xf0
+>    __arm64_sys_read+0x24/0x34
+>    invoke_syscall+0x60/0x114
+>    el0_svc_common+0x88/0xe4
+>    do_el0_svc+0x24/0x30
+>    el0_svc+0x40/0xa8
+>    el0t_64_sync_handler+0x70/0xbc
+>    el0t_64_sync+0x1bc/0x1c0
+> 
+> Fix this by reading the inline data before allocating and adding
+> the pclusters to the I/O chains.
+> 
+> Fixes: cecf864d3d76 ("erofs: support inline data decompression")
+> Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+> Reviewed-and-tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+> ---
+>   fs/erofs/zdata.c | 21 +++++++++++----------
+>   1 file changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+> index 7116f20..0b3ca62 100644
+> --- a/fs/erofs/zdata.c
+> +++ b/fs/erofs/zdata.c
+> @@ -788,6 +788,7 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+>   	erofs_blk_t blknr = erofs_blknr(sb, map->m_pa);
+>   	struct z_erofs_pcluster *pcl = NULL;
+>   	int ret;
+> +	void *mptr = NULL;
 
-dev->poll_time_limit indicates whether the loop was broken due to
-timeout. Use that instead of defining a new variable.
+let's align with the upstream naming and ordering?
 
-Fixes: 7ded429152e8 ("cpuidle: powerpc: no memory barrier after break from idle")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
-v1->v2:
-- Added rwb tag - Thanks to Mukesh Kumar Chaurasiya
-- Added fixes tag
-v1: https://lore.kernel.org/all/20260310152811.1131119-1-sshegde@linux.ibm.com/
+	void *ptr = NULL;
+	int ret;
 
- drivers/cpuidle/cpuidle-powernv.c | 5 ++++-
- drivers/cpuidle/cpuidle-pseries.c | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+>   
+>   	DBG_BUGON(fe->pcl);
+>   	/* must be Z_EROFS_PCLUSTER_TAIL or pointed to previous pcluster */
+> @@ -807,6 +808,14 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+>   	} else if ((map->m_pa & ~PAGE_MASK) + map->m_plen > PAGE_SIZE) {
+>   		DBG_BUGON(1);
+>   		return -EFSCORRUPTED;
+> +	} else {
+> +		mptr = erofs_read_metabuf(&map->buf, sb, map->m_pa, EROFS_NO_KMAP);
+> +		if (IS_ERR(mptr)) {
+> +			ret = PTR_ERR(mptr);
+> +			erofs_err(sb, "failed to get inline data %d", ret);
 
-diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
-index 9ebedd972df0..b89e7111e7b8 100644
---- a/drivers/cpuidle/cpuidle-powernv.c
-+++ b/drivers/cpuidle/cpuidle-powernv.c
-@@ -95,7 +95,10 @@ static int snooze_loop(struct cpuidle_device *dev,
- 
- 	HMT_medium();
- 	ppc64_runlatch_on();
--	clear_thread_flag(TIF_POLLING_NRFLAG);
-+
-+	/* Avoid double clear when breaking */
-+	if (!dev->poll_time_limit)
-+		clear_thread_flag(TIF_POLLING_NRFLAG);
- 
- 	local_irq_disable();
- 
-diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
-index f68c65f1d023..864dd5d6e627 100644
---- a/drivers/cpuidle/cpuidle-pseries.c
-+++ b/drivers/cpuidle/cpuidle-pseries.c
-@@ -64,7 +64,10 @@ int snooze_loop(struct cpuidle_device *dev, struct cpuidle_driver *drv,
- 	}
- 
- 	HMT_medium();
--	clear_thread_flag(TIF_POLLING_NRFLAG);
-+
-+       /* Avoid double clear when breaking */
-+	if (!dev->poll_time_limit)
-+		clear_thread_flag(TIF_POLLING_NRFLAG);
- 
- 	raw_local_irq_disable();
- 
--- 
-2.43.0
+Could you retain the upstream error report? like:
+			erofs_err(sb, "failed to read inline data %pe @ pa %llu of nid %llu",
+				  mptr, map->m_pa, EROFS_I(fe->inode)->nid);
+
+Otherwise it looks good to me.
+
+When you send the next version, please send the patch
+to Greg as well.
+
+Thanks,
+Gao Xiang
+
+> +			return ret;
+> +		}
+> +		mptr = map->buf.page;
+>   	}
+>   
+>   	if (pcl) {
+> @@ -836,16 +845,8 @@ static int z_erofs_pcluster_begin(struct z_erofs_frontend *fe)
+>   		/* bind cache first when cached decompression is preferred */
+>   		z_erofs_bind_cache(fe);
+>   	} else {
+> -		void *mptr;
+> -
+> -		mptr = erofs_read_metabuf(&map->buf, sb, map->m_pa, EROFS_NO_KMAP);
+> -		if (IS_ERR(mptr)) {
+> -			ret = PTR_ERR(mptr);
+> -			erofs_err(sb, "failed to get inline data %d", ret);
+> -			return ret;
+> -		}
+> -		get_page(map->buf.page);
+> -		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, map->buf.page);
+> +		get_page((struct page *)mptr);
+> +		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, mptr);
+>   		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
+>   		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
+>   	}
 
 
