@@ -1,131 +1,135 @@
-Return-Path: <stable+bounces-224613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKpHIp++sGm4mgIAu9opvQ
-	(envelope-from <stable+bounces-224613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:00:15 +0100
+	id O9tEDg/AsGn9mgIAu9opvQ
+	(envelope-from <stable+bounces-224614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:06:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09C425A33E
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:00:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15FB25A3E4
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 02:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D16723092AF6
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:00:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F04930234C6
+	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 01:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC7F335066;
-	Wed, 11 Mar 2026 01:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D2E2820C6;
+	Wed, 11 Mar 2026 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+RfXlz9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0bJEiwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCB32AADA;
-	Wed, 11 Mar 2026 01:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FED13FEE;
+	Wed, 11 Mar 2026 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773190809; cv=none; b=H9B5pMgOp+aGRJrb6UeVLv+ApN3pQ+wRq2N6onnWXaJl1QLRxkODGk+8pjtICSZ1euKDI/5rKUgx2v0UugTQfrnSziifdmipoc/5M+LfQdyWfWhMzb7EmGQuDAR6Jw2i66A4ogDK2R/VnSN7Ky+OZlghiSSQDGTV6pZWCQILJNw=
+	t=1773191179; cv=none; b=siTI3ZVEJDVW5a+ffH5T9qpYIYDWQaCpMx+n1SSD9LG/7pySJ7kjE3hMmnOPEXcz6jrOctmNNKv641Ik3WhIxqtbfP46jdBM3lR3XJ+KxEhmimYvH5hkwydUSDFJel8ogEkuP5pikkYaEAdWJsfLQh8QCNEU6B+DJ90jsZYYrpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773190809; c=relaxed/simple;
-	bh=Z5B6QH233c7ShAwjJAPSRORyRHDnV4ce6JphQ9I4cIM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FyEYVXdXKEJWVAEyIA7ZIIgcUoqJJYuRFeTFI1VILTFYYVl2vA+3/dPwHEslanPyMz3gwzKE+c8kBY3kHKSnWxfrPKYNcC8KwsB0bNq+dkFFPF0JNjls2tLHt+9CLdnAUo8VMyozKFbDL7j/tGWA1FDUj98IDuWUGLdxUbGQk0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+RfXlz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B208C19423;
-	Wed, 11 Mar 2026 01:00:09 +0000 (UTC)
+	s=arc-20240116; t=1773191179; c=relaxed/simple;
+	bh=ARrlz+KIRjZXAraT6yJ6w96hl1xbWt2MvSsYA2ihbwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=djIjGcfJ3Grh4sk69qJLKbhlnidCG09fqXuyJV66NTDrlTHIAhBPGBQlGVclhx1c5plgZwPTKMM22jSUjSmgdB53Pj/8YlVS1q14GbEo4iJal5kCQ9LUK/qCbpm7GYN9TsxRBp2zzKpUeif+SjJJcY1FHhge2Ow5Z8gzI4KOE3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0bJEiwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A51BC19423;
+	Wed, 11 Mar 2026 01:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773190809;
-	bh=Z5B6QH233c7ShAwjJAPSRORyRHDnV4ce6JphQ9I4cIM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=X+RfXlz99bu2x2rIEapFCdCp7VVucqDZ5lHG8HcrHY4vHtEYKHN6YSK1WKNBaA0kI
-	 v0wgymfOhfgqZ9C9gqr/YEa/1Nc59jBGPBuT2IMUTEme77+/pdJaC1qbVDCz7re3i7
-	 Wlu4kgoarWhWLSB5IS6MMOg3j4/o8PriOiKIjh4seuUlDpdjM5mFvA9ufb8wf6fj6D
-	 dIdeeHDybZEl2iJUTV7gToMlfXBrBU648iXtLzqNYKG49Z+ZRA20igImqVCNNp61qp
-	 BzaAojXPGqbNlaCITxUj3iO6KmviD2oOIY2JtVRVW0GgVhTP8zfIU/NQEUs6wgyFGf
-	 5a0Yzu2Lb9j0g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FDF13808200;
-	Wed, 11 Mar 2026 01:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773191179;
+	bh=ARrlz+KIRjZXAraT6yJ6w96hl1xbWt2MvSsYA2ihbwY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V0bJEiwt9GBojhAsVHWNGqLDAS4YYEyDF8moxS3ud9M4BT9U7P7Q5fIupZ3wLnH6e
+	 fy/mnWUJnTjvJ0c+RKjoZX1yOSjNdFwSOD9f80Kdo1OvoEQM5i10ZwmG5IOQQtbNk8
+	 B3W0FRDBDF98T4rpoo0g35CaMbGBvggwJoNM0g3oWTiWipku2OcgnK3CF5CLo65wSm
+	 GCN29UNwqFy+9C0t+vnXdIvkPnbR5T1MkbT9QcTSA/Sm2qzSu7RZ3jeWUsOTvNez6Y
+	 u+Ok7HqYFmwmGlkw42lk3XGNIN3Ur09HQsjazNmzqMnGEhzaXPGr2TX62eOqRJEIZy
+	 S0geW+mk7kcxg==
+Date: Tue, 10 Mar 2026 21:06:17 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 000/311] 6.19.7-rc1 review
+Message-ID: <abDACatouF12XBX5@laps>
+References: <cover.1773140654.git.sashal@kernel.org>
+ <75302bf4-3f06-4e9a-8d05-1706d60f44c6@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: macb: Shuffle the tx ring before enabling tx
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177319080579.2986475.15435780023283245328.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Mar 2026 01:00:05 +0000
-References: <20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com>
-In-Reply-To: <20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com>
-To: Kevin Hao <haokexin@gmail.com>
-Cc: netdev@vger.kernel.org, quanyang.wang@windriver.com,
- stable@vger.kernel.org, nicolas.ferre@microchip.com,
- claudiu.beznea@tuxon.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@armlinux.org.uk
-X-Rspamd-Queue-Id: E09C425A33E
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <75302bf4-3f06-4e9a-8d05-1706d60f44c6@gmail.com>
+X-Rspamd-Queue-Id: A15FB25A3E4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-224613-lists,stable=lfdr.de,netdevbpf];
+	TAGGED_FROM(0.00)[bounces-224614-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Hello:
+On Tue, Mar 10, 2026 at 12:09:32PM -0700, Florian Fainelli wrote:
+>On 3/10/26 04:05, Sasha Levin wrote:
+>>
+>>This is the start of the stable review cycle for the 6.19.7 release.
+>>There are 311 patches in this series, all will be posted as a response
+>>to this one.  If anyone has any issues with these being applied, please
+>>let me know.
+>>
+>>Responses should be made by Thu Mar 12 11:04:16 AM UTC 2026.
+>>Anything received after that time might be too late.
+>>
+>>The whole patch series can be found in one patch at:
+>>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/rawdiff/?id=linux-6.19.y&id2=v6.19.6
+>>or in the git tree and branch at:
+>>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+>>and the diffstat can be found below.
+>>
+>>Thanks,
+>>Sasha
+>>
+>>-------------
+>perf fails to build the pmu-events for all of the freescale SoCs, I am 
+>not sure yet whether this is a build environment issue or a genuine 
+>perf build system failure:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Could you try building with a revert of b56111d7a464 ("perf jevents: Handle
+deleted JSONS in out of source builds") please?
 
-On Sat, 07 Mar 2026 15:08:54 +0800 you wrote:
-> Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
-> the rootfs may take an extended time to recover after a suspend.
-> Upon investigation, it was determined that the issue originates from a
-> problem in the macb driver.
-> 
-> According to the Zynq UltraScale TRM [1], when transmit is disabled,
-> the transmit buffer queue pointer resets to point to the address
-> specified by the transmit buffer queue base address register.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] net: macb: Shuffle the tx ring before enabling tx
-    https://git.kernel.org/netdev/net/c/881a0263d502
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha
 
