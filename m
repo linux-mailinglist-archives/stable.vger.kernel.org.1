@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-224944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFF0JbQes2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:44 +0100
+	id 4AoLFMAes2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BC7278A35
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3395278A49
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ADAD300B472
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:11:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 706C7302836E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A68346FB3;
-	Thu, 12 Mar 2026 20:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B9935A3B6;
+	Thu, 12 Mar 2026 20:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07OX4mlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJZaVZi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553BC3AEF29;
-	Thu, 12 Mar 2026 20:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0B43909AE;
+	Thu, 12 Mar 2026 20:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346304; cv=none; b=rKnD6/w/2UQtpdEMgNvjgJgYtkW1FMkQgCpl7nCIbxn+Scz/JnljwBRR2MhyL2uDL770uJnJJqUYg2yr5UJ4Rd4XuBpAvsVQ69HzbIfjo4NQG0jE6T7iQsnaAyT6kanWua8ifjJelVouA6Uacvzj3KtpFNJxg0EaXbLZC1pcMWo=
+	t=1773346488; cv=none; b=tVgJJyEZ/9iC7Yb3CZeAcpFhO8Dz7aA+vRVrbIxeV7Q1LofVXzj0b0z+J6KYSa2o1nMwxrGxCLucnp9hrGv96KhS8je/Tbyi1BhTBuoyFxVdQPWTCW2nN2g7q9tfWoHV6tKOH56Sak75QQiTKg+jFthET2pGZUUI2ZiERi//lRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346304; c=relaxed/simple;
-	bh=Gli7I3JwkAhVCSGZgI78g4Ff+UYROuVLej+Jvn/w/Us=;
+	s=arc-20240116; t=1773346488; c=relaxed/simple;
+	bh=JJMFpdeTMJe/eHsKFSFWJH4gxZYmVgZTdbjmlivxsao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEDj+MuR4IrrdcLyVaXWCn4otX57CBz7zBUWKlz5GkIR/xhd8LXOh5xhYVemNzgxoL3rUDY1rWGpIiRHi6ZnSkSCwLxj6HzMKFRJ2qKuGAyvFwGwhgLx0LGgzNWp17wCX0tD7tj+nfHQpcVU8yyWMVFGVqePDgK8omYOXYiXzlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07OX4mlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43ABCC4CEF7;
-	Thu, 12 Mar 2026 20:11:43 +0000 (UTC)
+	 MIME-Version; b=L9/8x8JAUQ2z9MKLhjEjbyFSJ2wxzH3734Z0+GvgcWcRzQXyBRdwyeyYwrdAfaOvpgV3LR9+vNCKgXNY+xllN+RGY1WxyT97MC1RQjQdYGf1oulmgFioLxwQZhRmrtA1IVKD1eQyWNfzVPe2unXgsoFLPgz+ERFwjbnZuJKI+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJZaVZi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0C2C4CEF7;
+	Thu, 12 Mar 2026 20:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346303;
-	bh=Gli7I3JwkAhVCSGZgI78g4Ff+UYROuVLej+Jvn/w/Us=;
+	s=korg; t=1773346487;
+	bh=JJMFpdeTMJe/eHsKFSFWJH4gxZYmVgZTdbjmlivxsao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07OX4mlmIPwWLDJh60TZ3y2fllYJF+W00b8NEVSAJqyeZFaL8We/VIc60YnGr1Hfz
-	 o43KyIZ+geElMeklFUUcIDzwmhD2d0Nahx6t895KflTKg6QXmkUbquhh1NWd/j79WL
-	 8Kc+xsXESi7xY7TrrzswtI5lni4oYGHC7KM+UC9I=
+	b=MJZaVZi2c13oz+gtXkGkMMV6jspFfRIHxpSQG2SnIWeyvrBLxELxcto1GJ4e3rX02
+	 Qgwj493wvDsVv34UQFGucO6HAk3MwdM/rFd3KMpidX6zkL/UO/Od3XNwYAz9omemMS
+	 qmdRHr4OZvB5d8X1f0hLQbOjjF0o64lXRAc5dJYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/265] ALSA: usb-audio: Remove VALIDATE_RATES quirk for Focusrite devices
-Date: Thu, 12 Mar 2026 21:06:38 +0100
-Message-ID: <20260312201018.566900903@linuxfoundation.org>
+Subject: [PATCH 6.12 012/265] x86/fred: Correct speculative safety in fred_extint()
+Date: Thu, 12 Mar 2026 21:06:39 +0100
+Message-ID: <20260312201018.610631591@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224944-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224988-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,b4.vu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E6BC7278A35
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,citrix.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email]
+X-Rspamd-Queue-Id: C3395278A49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,42 +99,55 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit a8cc55bf81a45772cad44c83ea7bb0e98431094a ]
+[ Upstream commit aa280a08e7d8fae58557acc345b36b3dc329d595 ]
 
-Remove QUIRK_FLAG_VALIDATE_RATES for Focusrite. With the previous
-commit, focusrite_valid_sample_rate() produces correct rate tables
-without USB probing.
+array_index_nospec() is no use if the result gets spilled to the stack, as
+it makes the believed safe-under-speculation value subject to memory
+predictions.
 
-QUIRK_FLAG_VALIDATE_RATES sends SET_CUR requests for each rate (~25ms
-each) and leaves the device at 192kHz. This is a problem because that
-rate: 1) disables the internal mixer, so outputs are silent until an
-application opens the PCM and sets a lower rate, and 2) the Air and
-Safe modes get disabled.
+For all practical purposes, this means array_index_nospec() must be used in
+the expression that accesses the array.
 
-Fixes: 5963e5262180 ("ALSA: usb-audio: Enable rate validation for Scarlett devices")
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/09b9c012024c998c4ca14bd876ef0dce0d0b6101.1771594828.git.g@b4.vu
+As the code currently stands, it's the wrong side of irqentry_enter(), and
+'index' is put into %ebp across the function call.
+
+Remove the index variable and reposition array_index_nospec(), so it's
+calculated immediately before the array access.
+
+Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260106131504.679932-1-andrew.cooper3@citrix.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/entry_fred.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 947467112409a..41752b8197463 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2408,7 +2408,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 	VENDOR_FLG(0x07fd, /* MOTU */
- 		   QUIRK_FLAG_VALIDATE_RATES),
- 	VENDOR_FLG(0x1235, /* Focusrite Novation */
--		   QUIRK_FLAG_VALIDATE_RATES),
-+		   0),
- 	VENDOR_FLG(0x1511, /* AURALiC */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x152a, /* Thesycon devices */
+diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
+index f004a4dc74c2d..563e439b743f2 100644
+--- a/arch/x86/entry/entry_fred.c
++++ b/arch/x86/entry/entry_fred.c
+@@ -159,8 +159,6 @@ void __init fred_complete_exception_setup(void)
+ static noinstr void fred_extint(struct pt_regs *regs)
+ {
+ 	unsigned int vector = regs->fred_ss.vector;
+-	unsigned int index = array_index_nospec(vector - FIRST_SYSTEM_VECTOR,
+-						NR_SYSTEM_VECTORS);
+ 
+ 	if (WARN_ON_ONCE(vector < FIRST_EXTERNAL_VECTOR))
+ 		return;
+@@ -169,7 +167,8 @@ static noinstr void fred_extint(struct pt_regs *regs)
+ 		irqentry_state_t state = irqentry_enter(regs);
+ 
+ 		instrumentation_begin();
+-		sysvec_table[index](regs);
++		sysvec_table[array_index_nospec(vector - FIRST_SYSTEM_VECTOR,
++						NR_SYSTEM_VECTORS)](regs);
+ 		instrumentation_end();
+ 		irqentry_exit(regs, state);
+ 	} else {
 -- 
 2.51.0
 
