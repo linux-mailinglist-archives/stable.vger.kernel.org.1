@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-225034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGLEMv8fs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:15 +0100
+	id yByRIAggs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CB6278CD2
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAE7278CEF
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D04053012EBB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:18:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFEA53009146
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648F23101A5;
-	Thu, 12 Mar 2026 20:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346C82BEFFD;
+	Thu, 12 Mar 2026 20:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyebXbFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSulVKdc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE292BCF7F;
-	Thu, 12 Mar 2026 20:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC77E1F9F70;
+	Thu, 12 Mar 2026 20:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346691; cv=none; b=P5jfCy2G69wNCsbEXvjp7MRTrhYmu2t4KORtKvadzpaKMMjUZCznGIButBPTYRC/+id+q6OPTAfi92arHivBMJiaNqDInnJ5iV5+qXqJumaIt7D4VZ0kx0WzWc9GSgPGIIlKwV1/NMYxymIDqO+1NWMvVkD5WPfjTmxYdeFTsOM=
+	t=1773346700; cv=none; b=ghMPfT7fNDKckRislYnNgzixBJmoK+aJ+A6p0T3elvDVyNcyB9MQBAGKe6V0ypmSndu3BCwsZB/Khvqk5ighP4sIA6oD5ebT1RuX83cCm9rvQlPWZFxnPbdpxGMwvtdXrlR8kWgKavizUsM9xc6ogUKCQf8bSerBJ2sV4FCMnL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346691; c=relaxed/simple;
-	bh=YNGbJfa87dTEZzRpGEjfRo5P5eNtVZDWrra3l2yu5v8=;
+	s=arc-20240116; t=1773346700; c=relaxed/simple;
+	bh=W03EoJd6lTazuM+h7LlHcPEx+9Jsx00arJeLeO2WUI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eftUr+0dlVf160FtVXp3Gs++5nLIg1i2ygwIiYSbrldR/TK7BU3cpNRZMP1I9xKO6ZiQNVxTp/BFcQ6lbr5P5ZdyXFUtzE87UjWrq4HuS8nWyZQY5oAjSaEctbuPjfCv61zOuIEBkDn8upSve1CIJ6Ij/rsi8nNKB8yhzJeWgVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyebXbFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF11C4CEF7;
-	Thu, 12 Mar 2026 20:18:10 +0000 (UTC)
+	 MIME-Version; b=eVOuLA+DvKeYAa/7szyu5xkBOhC4/faoh4DgpFCzx49Cy7PWRu2etzemeQ81mcAH/9NQjdUgC9xqOhW+IIyyKuoedhZ+reEjleX+JPO16wDD/603LjRX1ifrg6G/0ifXRuOfdgbebpuhpJCuaXREX0fxgqIqlzMr9/LFf6V3+RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSulVKdc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7F0C4CEF7;
+	Thu, 12 Mar 2026 20:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346691;
-	bh=YNGbJfa87dTEZzRpGEjfRo5P5eNtVZDWrra3l2yu5v8=;
+	s=korg; t=1773346699;
+	bh=W03EoJd6lTazuM+h7LlHcPEx+9Jsx00arJeLeO2WUI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyebXbFrN4UfCWlzYytOGrJ/s8lXgkHWKwZLrakvdUosdZ3jb0Q5hAVx3jhq8pge4
-	 QkFjKFAk7vPEcLpJ/zQ/Dya2IM2Gkf9Z0J1GZ24T3WvkvR7ZcZkSWWMfdq/PNmwbh3
-	 P54oVJY7Lg1QCQRbSw/7FyV8p17I4xdy0MZK+1I8=
+	b=WSulVKdcAO3WjarOCZnWolT2qSS+NpSnNLUTpfNGxGp0NQnJ2H52814WdOoMd0/mU
+	 8Z4F9HWh3fz9mZcES6dcTZWjGUe3PXXdeIJb3W/qLSXhQI4ugL1rQ2vjIAe3ih9jns
+	 5zjDmQFzDXIfM4/b9HbLvYuAlalaXuanIZfhR8l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/265] btrfs: get used bytes while holding lock at btrfs_reclaim_bgs_work()
-Date: Thu, 12 Mar 2026 21:08:08 +0100
-Message-ID: <20260312201021.877425350@linuxfoundation.org>
+Subject: [PATCH 6.12 102/265] btrfs: fix reclaimed bytes accounting after automatic block group reclaim
+Date: Thu, 12 Mar 2026 21:08:09 +0100
+Message-ID: <20260312201021.914107878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225034-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225036-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 49CB6278CD2
+X-Rspamd-Queue-Id: DAAE7278CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,18 +101,45 @@ X-Rspamd-Server: lfdr
 
 From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ba5d06440cae63edc4f49465baf78f1f43e55c77 ]
+[ Upstream commit 620768704326c9a71ea9c8324ffda8748d8d4f10 ]
 
-At btrfs_reclaim_bgs_work(), we are grabbing twice the used bytes counter
-of the block group while not holding the block group's spinlock. This can
-result in races, reported by KCSAN and similar tools, since a concurrent
-task can be updating that counter while at btrfs_update_block_group().
+We are considering the used bytes counter of a block group as the amount
+to update the space info's reclaim bytes counter after relocating the
+block group, but this value alone is often not enough. This is because we
+may have a reserved extent (or more) and in that case its size is
+reflected in the reserved counter of the block group - the size of the
+extent is only transferred from the reserved counter to the used counter
+of the block group when the delayed ref for the extent is run - typically
+when committing the transaction (or when flushing delayed refs due to
+ENOSPC on space reservation). Such call chain for data extents is:
 
-So avoid these races by grabbing the counter in a critical section
-delimited by the block group's spinlock after setting the block group to
-RO mode. This also avoids using two different values of the counter in
-case it changes in between each read. This silences KCSAN and is required
-for the next patch in the series too.
+   btrfs_run_delayed_refs_for_head()
+       run_one_delayed_ref()
+           run_delayed_data_ref()
+               alloc_reserved_file_extent()
+                   alloc_reserved_extent()
+                       btrfs_update_block_group()
+                          -> transfers the extent size from the reserved
+                             counter to the used counter
+
+For metadata extents:
+
+   btrfs_run_delayed_refs_for_head()
+       run_one_delayed_ref()
+           run_delayed_tree_ref()
+               alloc_reserved_tree_block()
+                   alloc_reserved_extent()
+                       btrfs_update_block_group()
+                           -> transfers the extent size from the reserved
+                              counter to the used counter
+
+Since relocation flushes delalloc, waits for ordered extent completion
+and commits the current transaction before doing the actual relocation
+work, the correct amount of reclaimed space is therefore the sum of the
+"used" and "reserved" counters of the block group before we call
+btrfs_relocate_chunk() at btrfs_reclaim_bgs_work().
+
+So fix this by taking the "reserved" counter into consideration.
 
 Fixes: 243192b67649 ("btrfs: report reclaim stats in sysfs")
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
@@ -121,62 +148,74 @@ Signed-off-by: David Sterba <dsterba@suse.com>
 Stable-dep-of: 19eff93dc738 ("btrfs: fix periodic reclaim condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ fs/btrfs/block-group.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 79daf6fac58f3..2316be6ee41db 100644
+index 2316be6ee41db..a29dc0a15d128 100644
 --- a/fs/btrfs/block-group.c
 +++ b/fs/btrfs/block-group.c
-@@ -1877,7 +1877,7 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 	list_sort(NULL, &fs_info->reclaim_bgs, reclaim_bgs_cmp);
+@@ -1878,6 +1878,7 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
  	while (!list_empty(&fs_info->reclaim_bgs)) {
  		u64 zone_unusable;
--		u64 reclaimed;
-+		u64 used;
+ 		u64 used;
++		u64 reserved;
  		int ret = 0;
  
  		bg = list_first_entry(&fs_info->reclaim_bgs,
-@@ -1973,19 +1973,30 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 		if (ret < 0)
+@@ -1974,21 +1975,32 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
  			goto next;
  
-+		/*
-+		 * Grab the used bytes counter while holding the block group's
-+		 * spinlock to prevent races with tasks concurrently updating it
-+		 * due to extent allocation and deallocation (running
-+		 * btrfs_update_block_group()) - we have set the block group to
-+		 * RO but that only prevents extent reservation, allocation
-+		 * happens after reservation.
-+		 */
-+		spin_lock(&bg->lock);
-+		used = bg->used;
-+		spin_unlock(&bg->lock);
-+
+ 		/*
+-		 * Grab the used bytes counter while holding the block group's
+-		 * spinlock to prevent races with tasks concurrently updating it
+-		 * due to extent allocation and deallocation (running
+-		 * btrfs_update_block_group()) - we have set the block group to
+-		 * RO but that only prevents extent reservation, allocation
+-		 * happens after reservation.
++		 * The amount of bytes reclaimed corresponds to the sum of the
++		 * "used" and "reserved" counters. We have set the block group
++		 * to RO above, which prevents reservations from happening but
++		 * we may have existing reservations for which allocation has
++		 * not yet been done - btrfs_update_block_group() was not yet
++		 * called, which is where we will transfer a reserved extent's
++		 * size from the "reserved" counter to the "used" counter - this
++		 * happens when running delayed references. When we relocate the
++		 * chunk below, relocation first flushes dellaloc, waits for
++		 * ordered extent completion (which is where we create delayed
++		 * references for data extents) and commits the current
++		 * transaction (which runs delayed references), and only after
++		 * it does the actual work to move extents out of the block
++		 * group. So the reported amount of reclaimed bytes is
++		 * effectively the sum of the 'used' and 'reserved' counters.
+ 		 */
+ 		spin_lock(&bg->lock);
+ 		used = bg->used;
++		reserved = bg->reserved;
+ 		spin_unlock(&bg->lock);
+ 
  		btrfs_info(fs_info,
- 			"reclaiming chunk %llu with %llu%% used %llu%% unusable",
+-			"reclaiming chunk %llu with %llu%% used %llu%% unusable",
++	"reclaiming chunk %llu with %llu%% used %llu%% reserved %llu%% unusable",
  				bg->start,
--				div64_u64(bg->used * 100, bg->length),
-+				div64_u64(used * 100, bg->length),
+ 				div64_u64(used * 100, bg->length),
++				div64_u64(reserved * 100, bg->length),
  				div64_u64(zone_unusable * 100, bg->length));
  		trace_btrfs_reclaim_block_group(bg);
--		reclaimed = bg->used;
  		ret = btrfs_relocate_chunk(fs_info, bg->start);
- 		if (ret) {
- 			btrfs_dec_block_group_ro(bg);
+@@ -1997,6 +2009,7 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
  			btrfs_err(fs_info, "error relocating chunk %llu",
  				  bg->start);
--			reclaimed = 0;
-+			used = 0;
+ 			used = 0;
++			reserved = 0;
  			spin_lock(&space_info->lock);
  			space_info->reclaim_errors++;
  			if (READ_ONCE(space_info->periodic_reclaim))
-@@ -1994,7 +2005,7 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 		}
+@@ -2006,6 +2019,7 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
  		spin_lock(&space_info->lock);
  		space_info->reclaim_count++;
--		space_info->reclaim_bytes += reclaimed;
-+		space_info->reclaim_bytes += used;
+ 		space_info->reclaim_bytes += used;
++		space_info->reclaim_bytes += reserved;
  		spin_unlock(&space_info->lock);
  
  next:
