@@ -1,629 +1,223 @@
-Return-Path: <stable+bounces-224908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Y320DF0Os2koSAAAu9opvQ
-	(envelope-from <stable+bounces-224908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:01 +0100
+	id UPoKI3ERs2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:18:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B905827772A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9F2277997
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB84D30266C0
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:04:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC4BC3047F8A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17563822AA;
-	Thu, 12 Mar 2026 19:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B1A401498;
+	Thu, 12 Mar 2026 19:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2i5wrP2"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0bPq7VJp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012061.outbound.protection.outlook.com [40.107.200.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854BF37DEA7
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 19:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773342296; cv=none; b=mGNSk1OjOxq+KRMwWsdhgmlU7PUpjwK3hS894a7wnfbaAGUd39W9R7hdy34Uct2vktFZn8tc/UV8N8TV4gNUOR16sZfKAmAgFTs9Kxthv9qxmypoF/RrS8+R7A9GzeNj1VaH+tZcGsHCNL9arc6nWOQECkEASzUBSZM4Mdbjt4c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773342296; c=relaxed/simple;
-	bh=kl49fH5hPekwXciUu9ulffHqnqByAL6W6gT7cGKtZM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gn1N/cvenYcI2l8tEnMg+hJTrOdGmm/zhOD/WYqdXloPyz2eJ3sLMUXw/LoHGaOQUWAZKQK0bzOJxfK2r2qRg1yLfEtup5OWxol64dKYXhFRCKwn80nuuJk0g573Bqp3rctD/S5j7WeVVJgbO5s4HPxStpe5F2RfUYFbbu+7iaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2i5wrP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B464C4CEF7;
-	Thu, 12 Mar 2026 19:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773342296;
-	bh=kl49fH5hPekwXciUu9ulffHqnqByAL6W6gT7cGKtZM4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2i5wrP22iVDYNe++xkMvF9b7YaocR8QeBA8CcY1Ts6oK1GWAUo8IT71edgnzIp/M
-	 d4UPzf4HnrNz09AhF7gO9i4YA59JbGmNmNhZSdY5PDYd0Omk2C6LSoODWRt2vh3VG7
-	 5Q4u2WC4vSuUjk+GPi6U0ZsbZDWsL+WAawvg+PVEJl71yDLp6Fid9lvsEqUDOTUNYc
-	 yWd1YIjT7g2c3KMH0x4UoONiSr46gwplhhCr2L2ZbmVqxVABg2UkgJZGOkToJ2rS6t
-	 Nw00jvfbz0yIm3TGtQx6Y7IaKp7zXT4wY9yYj4kKMMKVdZtgJwUC4MJSuPvbB733AR
-	 3S7AAbJKCfN9w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Paul Moses <p@1g4.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net/sched: act_gate: snapshot parameters with RCU on replace
-Date: Thu, 12 Mar 2026 15:04:53 -0400
-Message-ID: <20260312190453.1835804-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031253-steering-scorpion-b3c5@gregkh>
-References: <2026031253-steering-scorpion-b3c5@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0C13AC0FA
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 19:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773343018; cv=fail; b=MNZUwQMazR6irrmzHmnfOPTM5Q8+yHW6WZ7Qzz2CBD7mgTHR2wCWdxOcixDWo3g2hJtL9tV+USGWAfLQfaxgEVT/ZR1UkqCWd07y3M1oSEJrwHFOdLPGXe8GMMJNMpa6AMiGNqvj8Qr1Ouwq5/jkLKFuyPyJJVQVwSEjdiJti6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773343018; c=relaxed/simple;
+	bh=6Qd+4scd7iVU1vvBkLyjTIGzyhA/XCEoNqMqp1QNyXc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qZMhd5YvwP08lc6bOwQPB4fGSQuUnaZVtU39jPjrEjbj8x/451oRXKXUmT2T6n6/F35UmgG/3q2jChNdZklAcOXtqQ+J9hMMfe1V9jWvSfxBxdl2yw+48LqXLzRaaUTAefx0kMZ4HVS3g1gZCkwFSbCs6muvwp7zmI9v/xOBbaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0bPq7VJp; arc=fail smtp.client-ip=40.107.200.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BYIngAks5cZjY6DqTP4uBhsqt8h8c6jSmbU8hlAd3xzu84quWUWCaDOAvVwowefTpCSq7q5Wl4N4cNEvpkVHNXiFpAuzvTalRaypqGoZCH+OECZDyFyPB6+gwCiTebmKNvJpwPk7nIKLoZLCiktWTwwZ6Yw6eQ2kP7w4e7j8e5G66nvlDzAoqGRMhKND3cXvqLH7CERZumDjQnF8N1kJBWtS1bsfTRwXyBCI1I1mtuvM3+T1s5r7GOwhcq4k2szquWEQLEgPMWhUUasHQrjLbN475A/oFwA5gm624HncbJsIcgAMkw/bNhZNhuq35ucpz20Yrh0BG7YOzdOJm1iPWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7WapQeDT+VJdwv83LckyxkvPsh45S0rmW+g9fEbeUo8=;
+ b=DovNx+pTjLYSH/rW6MKgo74wZIe4t1QTpTO0922PEYZ9inV9b3KajSCO01/15msoR0tMqRRk+zfr472jEcN0og7UymVy3esyyXX1fODkpPgXOddD1m03YaQ0qJq3FNh1bivvqLrzW7hTGrq7ZBEzH+1llbe5/xe3VHnOE8If8S55DKo9POIcxlMMYZTNYo5FHVoNeyw4AwdfJt7bBtu12wgdyJhabvnuvQ4NRAiAiQfvB0PuzqMSMFWL64OCHWDNxfZt+YP9Xx81Anuvebqk+DdWpQzE4cu34xqw01yak2835683QNx4ls65F9JlewHRHyMYJIjbiiF6hMBMgQbykg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7WapQeDT+VJdwv83LckyxkvPsh45S0rmW+g9fEbeUo8=;
+ b=0bPq7VJpZBP2qDGh7nl1B24ICS1grocOgHZigj/iavGfFXjwNbT6VWhSMEEnWm0RhFyP+zSp6F5RNiulwpzlvLaSLzymq7sI90BZlZR94W+INye3OhlDy4RzdrLV4077k9KKFQsZ6e/5rd61cmH93I/4KUUtGqKAOYh0TK2QBlE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN9PR12MB5130.namprd12.prod.outlook.com (2603:10b6:408:137::9)
+ by DM6PR12MB4332.namprd12.prod.outlook.com (2603:10b6:5:21e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
+ 2026 19:16:54 +0000
+Received: from BN9PR12MB5130.namprd12.prod.outlook.com
+ ([fe80::e7a:4396:5bcb:2b5a]) by BN9PR12MB5130.namprd12.prod.outlook.com
+ ([fe80::e7a:4396:5bcb:2b5a%6]) with mapi id 15.20.9723.006; Thu, 12 Mar 2026
+ 19:16:53 +0000
+Message-ID: <fd5266c3-bf80-4265-8dee-d8e227f54d45@amd.com>
+Date: Thu, 12 Mar 2026 15:16:49 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] drm/colorop: Preserve bypass value in
+ duplicate_state()
+To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
+Cc: contact@emersion.fr, alex.hung@amd.com, daniels@collabora.com,
+ mwen@igalia.com, sebastian.wick@redhat.com, uma.shankar@intel.com,
+ ville.syrjala@linux.intel.com, maarten.lankhorst@linux.intel.com,
+ jani.nikula@intel.com, louis.chauvet@bootlin.com, stable@vger.kernel.org
+References: <20260310113238.3495981-1-chaitanya.kumar.borah@intel.com>
+ <20260310113238.3495981-2-chaitanya.kumar.borah@intel.com>
+Content-Language: en-US
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20260310113238.3495981-2-chaitanya.kumar.borah@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR01CA0128.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:1::28) To BN9PR12MB5130.namprd12.prod.outlook.com
+ (2603:10b6:408:137::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5130:EE_|DM6PR12MB4332:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42d80c71-e6e0-4a98-069e-08de806beb9d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	3bLahES3g+h7mn8m4WKfImisgswVqBtTcm7/212RIfSy8Hy7q8ndoTUprWdOaZhyFovCowUAGQuv1m4m4v+tjUP6aLPk40AHGLlD/u1xk/d4fxR8Znrn8G34ZPCb4CajNzDsP7lp82UaeDnO33Q8uTj5ZLKFccgxbw2psP1XQ25aXvTOOJf8eXZb60fkUtDs4E4TjT0tbdVGR1L9MWJVgrq3m4vvqMw1OZhlY4ytU+2XlanlsszqyJ2vVCfoZjpOuXQqz6EF/nYlNalRbVBxvvBKoBtGwR/CnFXRQ/ZCJinQvcPCBDiXZT7ar/ilUrLiWTNfrF6i/rdfc1P8Oe1FsYD/vW/z4rj3IRTxfxgj/oScgp7Jk+zl2UfSg3v6CUUUT6bTMBo4iQRJreDu6chqWRHDgsVwn2wIRMKcjTZDEKt3PBInD30hINvAnoqwC0tMkeL9f3o+dpDnmqOPN275m/onMsI2j12Xj3mWUw2qcdEWiwVOxVWMwRhLVFhvHS5nnfkOSRSYrWx4dnMwex9wdrrNiuQKT877LeeJMulbsj3dgUSfXgg1kg2NEEjgMR7wecR2lSoXmMetFBut7TsSUULkLrPjwB+tuKCaavcKOP91y5HFTG9q0a4r2wKTAT2bKLKDinw1K5DhBbm89/JAaTU6U5eWYnXTmIksOOz28E665q3aMr82XjjLjZILfr81ZPC6rKVmNbf+GwUcR3+pKY+mOuZFZCbpeDx2XORNCOk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b29Vc3AyWmR6a3MzVEMrQUt6TDdBL3Z1ME93N05xRytkMVMvb2FBbG9yejZ3?=
+ =?utf-8?B?NWZqcCtGYy9QYVM3bWtNbm95M3ZxODVWb3RRdEx0aDlpU2RBSE1BVFNaY1gr?=
+ =?utf-8?B?Q2FXRXVsV01vNmdUT0NKRTZhdElWS0JpSjFZYldEdnA2ZW5sRWZUQkpXTDI1?=
+ =?utf-8?B?c1dEMVlBam0zbjljNFZHVjVuS2Fwc2tsdHBOWFQycjNFQTJnZDAwemlVYTY5?=
+ =?utf-8?B?WUZiL3ExT09HUzYzcTUrN0JXQ3JsU09yM1lkU2FmcWt1c3BPcjdSUkVLWUpE?=
+ =?utf-8?B?QXBhcmdOMWdRSUdYSW93MGdzSVpHUmVHeE9sS0JWcURXMGRBNGZhQmVzcHV3?=
+ =?utf-8?B?NXIvQXVXcmlSeDJsZWJBWWdrWDIxeXRhUlZUclVHdVBHMFlQMkx3b0FPajQ1?=
+ =?utf-8?B?a3VXVmRUZXh1WGtMdFhwajNHL2tQdHQvY1dlT05CYmdjWFFGR1d3RWZZYTYr?=
+ =?utf-8?B?V0VwV1ozQXVqektacjVZOVlxV2YzTHArcDBhRnJuN0dtRENNQmVXQ29mVTl2?=
+ =?utf-8?B?V2R5Um1ZSWFsTkdieVZib2VpWXEzeXpJTXptTElaN1dMSjRUc1RCSTBlQXkr?=
+ =?utf-8?B?SWtHMnZ2dGRlVHdwQndGSFZyOW1Za1hHUktlUEtKTVlPZFBSNi9kV1BjUDV2?=
+ =?utf-8?B?aE1hSmJpZHBaQ2IyQmxweW9HVE1vZ3NhZ0h2ZHNwZng3L0tndzN0a1lBaURF?=
+ =?utf-8?B?eHVwZksrWVFjb2xLM0Z4SEtRZVA3aHFXd3FCZ2xDY00yREVyVERrOXFWRkg2?=
+ =?utf-8?B?NTcwUlpDVzhJUGI3TEIxV3pkUHNIaGpvMmN3LzN1WGxpMFpCRjh0OXJ3eDBL?=
+ =?utf-8?B?L3dNTThib0VISDUvZi9UZXppRTEzVGRRYndELzN1U3VnQmJGSnp1QXFBRStD?=
+ =?utf-8?B?VkFhNnRURDdCMlFFUjRSZWVvL05MSHVSdjRSbVc5NTBhVjh0bDhscmFiSUYy?=
+ =?utf-8?B?K1J0eStOaWViNWFBdGN2bmtYREk3RTlteFNNak1WUmdjZ2lwTUJpMDI2c3dZ?=
+ =?utf-8?B?dERjZENjQlpCbVBkT0JkYTlyMEZDUzgvMGphMEo0dGhvMm9MT3NnWVQrMnN4?=
+ =?utf-8?B?VUsrT205N2VMWE1tV01lSm95SSs0YlN4U0p0Zlp3STA3ZmQwVDdSUW4rVEJr?=
+ =?utf-8?B?cXQ3elo2Q3M5Q0cvN1JIM3pOdEtQY2Q5bHREVmJKRGhPTEZWa1NjTzdHb3Vq?=
+ =?utf-8?B?M1BBc0l2TC9BNkVXdDBtdlFkTXFNbjVlWGhaK25uUzFTSDVDeG1qM2Ryc2xw?=
+ =?utf-8?B?Zk9kbnJRa051Wjd3TDhDc2VXUk5VYUFhcUZvQWRzNCszYUNVZ0dkUWFsb3Av?=
+ =?utf-8?B?T3g0NnRNWGt4ZVVVWlNjTVBwZ010QXJKTWJ5SlRqMlFMc0xEeXJGNFBBam1k?=
+ =?utf-8?B?d0xGemdDbHRBcEozb3ViQ3U5MHpoNWY5dU51ZTQwdzJlNHFvOExpSWVVZ2dy?=
+ =?utf-8?B?VEozY0phdkNTYm1IWTByaFNkTmZWY3JxUFA4T2Z3WjMzbEpNa0JvWmxPd0FD?=
+ =?utf-8?B?NmR2ZTJPN1FlNjJ0bjE1UWo2SmE1ZmpzdDFRVGh5RllHemVWQUpHUlErK21I?=
+ =?utf-8?B?Q3JGeXM2aUNqc09ZbkhxK0d5WXRnT2Vyam5kZzdPRUJqbVIrMnpPZjhwSkhz?=
+ =?utf-8?B?aTI1UmIxdHNLcXppU3VXcmpmUlYyYk9XTHJrYXFNRkxSekxidyt3V1QzWWF6?=
+ =?utf-8?B?N3FwaVhhcWRUQnlvQ2txSFlUUVJ3RUVvOGNIdW9UcmM3TjhIeHlsWGhBUjNt?=
+ =?utf-8?B?VnBEd3BXMGd2TEZTRlEzK2pyYUxDTDJCcVNkVjVVVzRDUXVZK3RqWVdpSVNE?=
+ =?utf-8?B?a1JaS3B0aWNJcThRT2hnZ091SXNmSmpBbDJVdk9ZRS9vNCtOTE5DU2Qwckwz?=
+ =?utf-8?B?UHpaYXZwMWQyNnhSd0JNa2NKTHJGRHFVa3hnUXZvUTQ4ZXNRa2NCV2l2TW5P?=
+ =?utf-8?B?S043cENhSEtGbFlndUZKREVhazY3QjRTOEhrS1JodHJsVmNyMnFNYmxPc1hC?=
+ =?utf-8?B?Q0NuYWhyZnd1ZzdDbVlOc1o2TVBDSUNnRWFJQmNkVjJUcnc1OVdscDhJZG5P?=
+ =?utf-8?B?OVFhNDh4U1Nqd1ROQXJadThtRzNaZXJBbUlMSFgrV3A5cThveVRsVzVXTDZw?=
+ =?utf-8?B?a3ppbHBoRkRuRmR6NU12TDcwQkdZSnJ6MDFPV01pVWQwU1pHSlUwaDJycEY3?=
+ =?utf-8?B?aldITk0zRVQwK25zNVliVWpod2pHR1hiaDVPaUhsQmdjYklQOU8rdG5aQ1Uz?=
+ =?utf-8?B?eDd6RW92OFZLZ0JZd291QnhMMWUzY3R4cmwvbVE5ZTJaeWhHdkNVRFNUalRQ?=
+ =?utf-8?B?cU5YK0VpRzdMdkdwcWlLcGJWa0dTSms3dlVMWEszbVNLWW5OcElHQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42d80c71-e6e0-4a98-069e-08de806beb9d
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5130.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 19:16:53.7490
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EJGir0RU4lSsa8SCcTnlQWqKrlm1JsmnkZySv6dtEAjZToWcMhyLo/rMcY5dLzNte6aqD4kYOLTJv5VLTXxi6g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4332
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-224910-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224908-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[amd.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,act_gate_ops.net_id:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,1g4.org:email]
-X-Rspamd-Queue-Id: B905827772A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harry.wentland@amd.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:dkim,amd.com:email,amd.com:mid]
+X-Rspamd-Queue-Id: 2E9F2277997
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paul Moses <p@1g4.org>
+On 2026-03-10 07:32, Chaitanya Kumar Borah wrote:
+> __drm_atomic_helper_colorop_duplicate_state() unconditionally
+> sets state->bypass = true after copying the existing state.
+> 
+> This override causes the new atomic state to no longer reflect
+> the currently committed hardware state. Since the bypass property
+> directly controls whether the colorop is active in hardware,
+> resetting it to true can inadvertently disable an active colorop
+> during a subsequent commit, particularly for internal driver commits
+> where userspace does not touch the property.
+> 
+> Drop the unconditional assignment and preserve the duplicated
+> bypass value.
+> 
+> Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
+> Cc: <stable@vger.kernel.org> #v6.19+
+> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-[ Upstream commit 62413a9c3cb183afb9bb6e94dd68caf4e4145f4c ]
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-The gate action can be replaced while the hrtimer callback or dump path is
-walking the schedule list.
+Harry
 
-Convert the parameters to an RCU-protected snapshot and swap updates under
-tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omits
-the entry list, preserve the existing schedule so the effective state is
-unchanged.
-
-Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20260223150512.2251594-2-p@1g4.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ keep is_tcf_gate() and tcf_gate_index() + hrtimer_setup() => hrtimer_init() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/net/tc_act/tc_gate.h |  33 ++++-
- net/sched/act_gate.c         | 262 ++++++++++++++++++++++++-----------
- 2 files changed, 210 insertions(+), 85 deletions(-)
-
-diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
-index 8bc6be81a7adf..d9f91ec43a967 100644
---- a/include/net/tc_act/tc_gate.h
-+++ b/include/net/tc_act/tc_gate.h
-@@ -32,6 +32,7 @@ struct tcf_gate_params {
- 	s32			tcfg_clockid;
- 	size_t			num_entries;
- 	struct list_head	entries;
-+	struct rcu_head		rcu;
- };
- 
- #define GATE_ACT_GATE_OPEN	BIT(0)
-@@ -39,7 +40,7 @@ struct tcf_gate_params {
- 
- struct tcf_gate {
- 	struct tc_action	common;
--	struct tcf_gate_params	param;
-+	struct tcf_gate_params __rcu *param;
- 	u8			current_gate_status;
- 	ktime_t			current_close_time;
- 	u32			current_entry_octets;
-@@ -65,47 +66,65 @@ static inline u32 tcf_gate_index(const struct tc_action *a)
- 	return a->tcfa_index;
- }
- 
-+static inline struct tcf_gate_params *tcf_gate_params_locked(const struct tc_action *a)
-+{
-+	struct tcf_gate *gact = to_gate(a);
-+
-+	return rcu_dereference_protected(gact->param,
-+					 lockdep_is_held(&gact->tcf_lock));
-+}
-+
- static inline s32 tcf_gate_prio(const struct tc_action *a)
- {
-+	struct tcf_gate_params *p;
- 	s32 tcfg_prio;
- 
--	tcfg_prio = to_gate(a)->param.tcfg_priority;
-+	p = tcf_gate_params_locked(a);
-+	tcfg_prio = p->tcfg_priority;
- 
- 	return tcfg_prio;
- }
- 
- static inline u64 tcf_gate_basetime(const struct tc_action *a)
- {
-+	struct tcf_gate_params *p;
- 	u64 tcfg_basetime;
- 
--	tcfg_basetime = to_gate(a)->param.tcfg_basetime;
-+	p = tcf_gate_params_locked(a);
-+	tcfg_basetime = p->tcfg_basetime;
- 
- 	return tcfg_basetime;
- }
- 
- static inline u64 tcf_gate_cycletime(const struct tc_action *a)
- {
-+	struct tcf_gate_params *p;
- 	u64 tcfg_cycletime;
- 
--	tcfg_cycletime = to_gate(a)->param.tcfg_cycletime;
-+	p = tcf_gate_params_locked(a);
-+	tcfg_cycletime = p->tcfg_cycletime;
- 
- 	return tcfg_cycletime;
- }
- 
- static inline u64 tcf_gate_cycletimeext(const struct tc_action *a)
- {
-+	struct tcf_gate_params *p;
- 	u64 tcfg_cycletimeext;
- 
--	tcfg_cycletimeext = to_gate(a)->param.tcfg_cycletime_ext;
-+	p = tcf_gate_params_locked(a);
-+	tcfg_cycletimeext = p->tcfg_cycletime_ext;
- 
- 	return tcfg_cycletimeext;
- }
- 
- static inline u32 tcf_gate_num_entries(const struct tc_action *a)
- {
-+	struct tcf_gate_params *p;
- 	u32 num_entries;
- 
--	num_entries = to_gate(a)->param.num_entries;
-+	p = tcf_gate_params_locked(a);
-+	num_entries = p->num_entries;
- 
- 	return num_entries;
- }
-@@ -119,7 +138,7 @@ static inline struct action_gate_entry
- 	u32 num_entries;
- 	int i = 0;
- 
--	p = &to_gate(a)->param;
-+	p = tcf_gate_params_locked(a);
- 	num_entries = p->num_entries;
- 
- 	list_for_each_entry(entry, &p->entries, list)
-diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-index 12b8fdbd9df1f..4400e45b6bfef 100644
---- a/net/sched/act_gate.c
-+++ b/net/sched/act_gate.c
-@@ -31,9 +31,12 @@ static ktime_t gate_get_time(struct tcf_gate *gact)
- 	return KTIME_MAX;
- }
- 
--static void gate_get_start_time(struct tcf_gate *gact, ktime_t *start)
-+static void tcf_gate_params_free_rcu(struct rcu_head *head);
-+
-+static void gate_get_start_time(struct tcf_gate *gact,
-+				const struct tcf_gate_params *param,
-+				ktime_t *start)
- {
--	struct tcf_gate_params *param = &gact->param;
- 	ktime_t now, base, cycle;
- 	u64 n;
- 
-@@ -68,12 +71,14 @@ static enum hrtimer_restart gate_timer_func(struct hrtimer *timer)
- {
- 	struct tcf_gate *gact = container_of(timer, struct tcf_gate,
- 					     hitimer);
--	struct tcf_gate_params *p = &gact->param;
- 	struct tcfg_gate_entry *next;
-+	struct tcf_gate_params *p;
- 	ktime_t close_time, now;
- 
- 	spin_lock(&gact->tcf_lock);
- 
-+	p = rcu_dereference_protected(gact->param,
-+				      lockdep_is_held(&gact->tcf_lock));
- 	next = gact->next_entry;
- 
- 	/* cycle start, clear pending bit, clear total octets */
-@@ -226,6 +231,35 @@ static void release_entry_list(struct list_head *entries)
- 	}
- }
- 
-+static int tcf_gate_copy_entries(struct tcf_gate_params *dst,
-+				 const struct tcf_gate_params *src,
-+				 struct netlink_ext_ack *extack)
-+{
-+	struct tcfg_gate_entry *entry;
-+	int i = 0;
-+
-+	list_for_each_entry(entry, &src->entries, list) {
-+		struct tcfg_gate_entry *new;
-+
-+		new = kzalloc(sizeof(*new), GFP_ATOMIC);
-+		if (!new) {
-+			NL_SET_ERR_MSG(extack, "Not enough memory for entry");
-+			return -ENOMEM;
-+		}
-+
-+		new->index      = entry->index;
-+		new->gate_state = entry->gate_state;
-+		new->interval   = entry->interval;
-+		new->ipv        = entry->ipv;
-+		new->maxoctets  = entry->maxoctets;
-+		list_add_tail(&new->list, &dst->entries);
-+		i++;
-+	}
-+
-+	dst->num_entries = i;
-+	return 0;
-+}
-+
- static int parse_gate_list(struct nlattr *list_attr,
- 			   struct tcf_gate_params *sched,
- 			   struct netlink_ext_ack *extack)
-@@ -271,23 +305,42 @@ static int parse_gate_list(struct nlattr *list_attr,
- 	return err;
- }
- 
--static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
--			     enum tk_offsets tko, s32 clockid,
--			     bool do_init)
-+static bool gate_timer_needs_cancel(u64 basetime, u64 old_basetime,
-+				    enum tk_offsets tko,
-+				    enum tk_offsets old_tko,
-+				    s32 clockid, s32 old_clockid)
- {
--	if (!do_init) {
--		if (basetime == gact->param.tcfg_basetime &&
--		    tko == gact->tk_offset &&
--		    clockid == gact->param.tcfg_clockid)
--			return;
-+	return basetime != old_basetime ||
-+	       clockid != old_clockid ||
-+	       tko != old_tko;
-+}
- 
--		spin_unlock_bh(&gact->tcf_lock);
--		hrtimer_cancel(&gact->hitimer);
--		spin_lock_bh(&gact->tcf_lock);
-+static int gate_clock_resolve(s32 clockid, enum tk_offsets *tko,
-+			      struct netlink_ext_ack *extack)
-+{
-+	switch (clockid) {
-+	case CLOCK_REALTIME:
-+		*tko = TK_OFFS_REAL;
-+		return 0;
-+	case CLOCK_MONOTONIC:
-+		*tko = TK_OFFS_MAX;
-+		return 0;
-+	case CLOCK_BOOTTIME:
-+		*tko = TK_OFFS_BOOT;
-+		return 0;
-+	case CLOCK_TAI:
-+		*tko = TK_OFFS_TAI;
-+		return 0;
-+	default:
-+		NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
-+		return -EINVAL;
- 	}
--	gact->param.tcfg_basetime = basetime;
--	gact->param.tcfg_clockid = clockid;
--	gact->tk_offset = tko;
-+}
-+
-+static void gate_setup_timer(struct tcf_gate *gact, s32 clockid,
-+			     enum tk_offsets tko)
-+{
-+	WRITE_ONCE(gact->tk_offset, tko);
- 	hrtimer_init(&gact->hitimer, clockid, HRTIMER_MODE_ABS_SOFT);
- 	gact->hitimer.function = gate_timer_func;
- }
-@@ -298,15 +351,22 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 			 struct netlink_ext_ack *extack)
- {
- 	struct tc_action_net *tn = net_generic(net, act_gate_ops.net_id);
--	enum tk_offsets tk_offset = TK_OFFS_TAI;
-+	u64 cycletime = 0, basetime = 0, cycletime_ext = 0;
-+	struct tcf_gate_params *p = NULL, *old_p = NULL;
-+	enum tk_offsets old_tk_offset = TK_OFFS_TAI;
-+	const struct tcf_gate_params *cur_p = NULL;
- 	bool bind = flags & TCA_ACT_FLAGS_BIND;
- 	struct nlattr *tb[TCA_GATE_MAX + 1];
-+	enum tk_offsets tko = TK_OFFS_TAI;
- 	struct tcf_chain *goto_ch = NULL;
--	u64 cycletime = 0, basetime = 0;
--	struct tcf_gate_params *p;
-+	s32 timer_clockid = CLOCK_TAI;
-+	bool use_old_entries = false;
-+	s32 old_clockid = CLOCK_TAI;
-+	bool need_cancel = false;
- 	s32 clockid = CLOCK_TAI;
- 	struct tcf_gate *gact;
- 	struct tc_gate *parm;
-+	u64 old_basetime = 0;
- 	int ret = 0, err;
- 	u32 gflags = 0;
- 	s32 prio = -1;
-@@ -323,26 +383,8 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 	if (!tb[TCA_GATE_PARMS])
- 		return -EINVAL;
- 
--	if (tb[TCA_GATE_CLOCKID]) {
-+	if (tb[TCA_GATE_CLOCKID])
- 		clockid = nla_get_s32(tb[TCA_GATE_CLOCKID]);
--		switch (clockid) {
--		case CLOCK_REALTIME:
--			tk_offset = TK_OFFS_REAL;
--			break;
--		case CLOCK_MONOTONIC:
--			tk_offset = TK_OFFS_MAX;
--			break;
--		case CLOCK_BOOTTIME:
--			tk_offset = TK_OFFS_BOOT;
--			break;
--		case CLOCK_TAI:
--			tk_offset = TK_OFFS_TAI;
--			break;
--		default:
--			NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
--			return -EINVAL;
--		}
--	}
- 
- 	parm = nla_data(tb[TCA_GATE_PARMS]);
- 	index = parm->index;
-@@ -368,6 +410,60 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 		return -EEXIST;
- 	}
- 
-+	gact = to_gate(*a);
-+
-+	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
-+	if (err < 0)
-+		goto release_idr;
-+
-+	p = kzalloc(sizeof(*p), GFP_KERNEL);
-+	if (!p) {
-+		err = -ENOMEM;
-+		goto chain_put;
-+	}
-+	INIT_LIST_HEAD(&p->entries);
-+
-+	use_old_entries = !tb[TCA_GATE_ENTRY_LIST];
-+	if (!use_old_entries) {
-+		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
-+		if (err < 0)
-+			goto err_free;
-+		use_old_entries = !err;
-+	}
-+
-+	if (ret == ACT_P_CREATED && use_old_entries) {
-+		NL_SET_ERR_MSG(extack, "The entry list is empty");
-+		err = -EINVAL;
-+		goto err_free;
-+	}
-+
-+	if (ret != ACT_P_CREATED) {
-+		rcu_read_lock();
-+		cur_p = rcu_dereference(gact->param);
-+
-+		old_basetime  = cur_p->tcfg_basetime;
-+		old_clockid   = cur_p->tcfg_clockid;
-+		old_tk_offset = READ_ONCE(gact->tk_offset);
-+
-+		basetime      = old_basetime;
-+		cycletime_ext = cur_p->tcfg_cycletime_ext;
-+		prio          = cur_p->tcfg_priority;
-+		gflags        = cur_p->tcfg_flags;
-+
-+		if (!tb[TCA_GATE_CLOCKID])
-+			clockid = old_clockid;
-+
-+		err = 0;
-+		if (use_old_entries) {
-+			err = tcf_gate_copy_entries(p, cur_p, extack);
-+			if (!err && !tb[TCA_GATE_CYCLE_TIME])
-+				cycletime = cur_p->tcfg_cycletime;
-+		}
-+		rcu_read_unlock();
-+		if (err)
-+			goto err_free;
-+	}
-+
- 	if (tb[TCA_GATE_PRIORITY])
- 		prio = nla_get_s32(tb[TCA_GATE_PRIORITY]);
- 
-@@ -377,25 +473,26 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 	if (tb[TCA_GATE_FLAGS])
- 		gflags = nla_get_u32(tb[TCA_GATE_FLAGS]);
- 
--	gact = to_gate(*a);
--	if (ret == ACT_P_CREATED)
--		INIT_LIST_HEAD(&gact->param.entries);
-+	if (tb[TCA_GATE_CYCLE_TIME])
-+		cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
- 
--	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
--	if (err < 0)
--		goto release_idr;
-+	if (tb[TCA_GATE_CYCLE_TIME_EXT])
-+		cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
- 
--	spin_lock_bh(&gact->tcf_lock);
--	p = &gact->param;
-+	err = gate_clock_resolve(clockid, &tko, extack);
-+	if (err)
-+		goto err_free;
-+	timer_clockid = clockid;
- 
--	if (tb[TCA_GATE_CYCLE_TIME])
--		cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
-+	need_cancel = ret != ACT_P_CREATED &&
-+		      gate_timer_needs_cancel(basetime, old_basetime,
-+					      tko, old_tk_offset,
-+					      timer_clockid, old_clockid);
- 
--	if (tb[TCA_GATE_ENTRY_LIST]) {
--		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
--		if (err < 0)
--			goto chain_put;
--	}
-+	if (need_cancel)
-+		hrtimer_cancel(&gact->hitimer);
-+
-+	spin_lock_bh(&gact->tcf_lock);
- 
- 	if (!cycletime) {
- 		struct tcfg_gate_entry *entry;
-@@ -404,22 +501,20 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 		list_for_each_entry(entry, &p->entries, list)
- 			cycle = ktime_add_ns(cycle, entry->interval);
- 		cycletime = cycle;
--		if (!cycletime) {
--			err = -EINVAL;
--			goto chain_put;
--		}
- 	}
- 	p->tcfg_cycletime = cycletime;
-+	p->tcfg_cycletime_ext = cycletime_ext;
- 
--	if (tb[TCA_GATE_CYCLE_TIME_EXT])
--		p->tcfg_cycletime_ext =
--			nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
--
--	gate_setup_timer(gact, basetime, tk_offset, clockid,
--			 ret == ACT_P_CREATED);
-+	if (need_cancel || ret == ACT_P_CREATED)
-+		gate_setup_timer(gact, timer_clockid, tko);
- 	p->tcfg_priority = prio;
- 	p->tcfg_flags = gflags;
--	gate_get_start_time(gact, &start);
-+	p->tcfg_basetime = basetime;
-+	p->tcfg_clockid = timer_clockid;
-+	gate_get_start_time(gact, p, &start);
-+
-+	old_p = rcu_replace_pointer(gact->param, p,
-+				    lockdep_is_held(&gact->tcf_lock));
- 
- 	gact->current_close_time = start;
- 	gact->current_gate_status = GATE_ACT_GATE_OPEN | GATE_ACT_PENDING;
-@@ -436,11 +531,15 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
- 
-+	if (old_p)
-+		call_rcu(&old_p->rcu, tcf_gate_params_free_rcu);
-+
- 	return ret;
- 
-+err_free:
-+	release_entry_list(&p->entries);
-+	kfree(p);
- chain_put:
--	spin_unlock_bh(&gact->tcf_lock);
--
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
- release_idr:
-@@ -448,21 +547,29 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
- 	 * without taking tcf_lock.
- 	 */
- 	if (ret == ACT_P_CREATED)
--		gate_setup_timer(gact, gact->param.tcfg_basetime,
--				 gact->tk_offset, gact->param.tcfg_clockid,
--				 true);
-+		gate_setup_timer(gact, timer_clockid, tko);
-+
- 	tcf_idr_release(*a, bind);
- 	return err;
- }
- 
-+static void tcf_gate_params_free_rcu(struct rcu_head *head)
-+{
-+	struct tcf_gate_params *p = container_of(head, struct tcf_gate_params, rcu);
-+
-+	release_entry_list(&p->entries);
-+	kfree(p);
-+}
-+
- static void tcf_gate_cleanup(struct tc_action *a)
- {
- 	struct tcf_gate *gact = to_gate(a);
- 	struct tcf_gate_params *p;
- 
--	p = &gact->param;
- 	hrtimer_cancel(&gact->hitimer);
--	release_entry_list(&p->entries);
-+	p = rcu_dereference_protected(gact->param, 1);
-+	if (p)
-+		call_rcu(&p->rcu, tcf_gate_params_free_rcu);
- }
- 
- static int dumping_entry(struct sk_buff *skb,
-@@ -511,10 +618,9 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
- 	struct nlattr *entry_list;
- 	struct tcf_t t;
- 
--	spin_lock_bh(&gact->tcf_lock);
--	opt.action = gact->tcf_action;
--
--	p = &gact->param;
-+	rcu_read_lock();
-+	opt.action = READ_ONCE(gact->tcf_action);
-+	p = rcu_dereference(gact->param);
- 
- 	if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
- 		goto nla_put_failure;
-@@ -554,12 +660,12 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
- 	tcf_tm_dump(&t, &gact->tcf_tm);
- 	if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
- 		goto nla_put_failure;
--	spin_unlock_bh(&gact->tcf_lock);
-+	rcu_read_unlock();
- 
- 	return skb->len;
- 
- nla_put_failure:
--	spin_unlock_bh(&gact->tcf_lock);
-+	rcu_read_unlock();
- 	nlmsg_trim(skb, b);
- 	return -1;
- }
--- 
-2.51.0
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> ---
+>  drivers/gpu/drm/drm_colorop.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.c
+> index f421c623b3f0..e44a738c4c14 100644
+> --- a/drivers/gpu/drm/drm_colorop.c
+> +++ b/drivers/gpu/drm/drm_colorop.c
+> @@ -466,8 +466,6 @@ static void __drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colo
+>  
+>  	if (state->data)
+>  		drm_property_blob_get(state->data);
+> -
+> -	state->bypass = true;
+>  }
+>  
+>  struct drm_colorop_state *
 
 
