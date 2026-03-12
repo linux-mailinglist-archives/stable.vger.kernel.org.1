@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-225062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kH5OIgggs2mpSQAAu9opvQ
-	(envelope-from <stable+bounces-225062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:24 +0100
+	id kKkXHQMgs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DA4278CF0
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF293278CDA
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B846305EB96
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:20:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 323E530391CB
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B000A3491D6;
-	Thu, 12 Mar 2026 20:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E055A3659E7;
+	Thu, 12 Mar 2026 20:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDlHL/Gi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piLoL0o6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7273030DD3C;
-	Thu, 12 Mar 2026 20:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A479435DA6A;
+	Thu, 12 Mar 2026 20:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346806; cv=none; b=RV0mutLXcZNpGyanZMJHpHnd51cN668bJtGcMY0PACSelDo3EPCaeyDuK57B5dWBeU5PjHmL0ebv8CYkg1ZvhhbSkma0uJgnLwO6EW9ve5pFcIl7SOukaf6MW4czq7xHGRDqHa/P59qA9g9klUbYmZn/eHT3aUIx5ZDA6Wsm+BE=
+	t=1773346810; cv=none; b=sLgE7y/I7e1s0ffGgFuBkV3tD8CE2t/FYEscWZklw0hVHRczI/+Gpk8A9WE2LV8lZQ9Op3SAYVkZ2lADX3qN4PrkPK6filVL2dtb0njVBVlvv3ZsIWe+VL35Un8p7LU5LPhs+4wfShCCJLqafMeVkCNj4bcu/zK6ct91zuZ5jZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346806; c=relaxed/simple;
-	bh=NHK7CrtDOhgL4rslTTAsOhtU/DLr/t/HHKUJFr5esjc=;
+	s=arc-20240116; t=1773346810; c=relaxed/simple;
+	bh=bkYoyIbTvLeDba35loZZTmQ8q0bid7ytSDmL7W6Iemo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMpLoulC8y1V10M4jyiCfxDlHzNvaPdyh0SV3L0MJeKLRGFNBWDLlVIGokptdT47mtYQvH8LLWVrLLx7nkeLUKikBGUuXI+g4u1f9WEl+4gEF8c8X/E96ldsAPZEwNaGTSn3ko4t4KxLDUiOrO8uiMsO3cTdSLCMqSFeGN85ths=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDlHL/Gi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C83C4CEF7;
-	Thu, 12 Mar 2026 20:20:05 +0000 (UTC)
+	 MIME-Version; b=tQvLqn601yk6aoiQSi8UtBusbiQ3bZfwvA+nKUFsd19CVyKVpVm/LuGS5NQz/2kWep+Di6IcUNBeAP+Vqve2lCKo8vNfPjDS8Di83Iq+VhrmCSOs5I9F7LBoXBdtS13FFhyy0L7sUTcuX/h2i87RaFFqKZPllEszoYvT2ZC/rVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piLoL0o6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFA7C4CEF7;
+	Thu, 12 Mar 2026 20:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346806;
-	bh=NHK7CrtDOhgL4rslTTAsOhtU/DLr/t/HHKUJFr5esjc=;
+	s=korg; t=1773346810;
+	bh=bkYoyIbTvLeDba35loZZTmQ8q0bid7ytSDmL7W6Iemo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDlHL/Gi06sYZqFQ0HkQMSKetuB4LqZVDbhyKQMbi2PzRIP46Og5GXjJddbknQ+z+
-	 XI7NyHyydqUD3swsJuoyliYGrqcPQ1tJLInq45SXw6THwGUKrwycvbJl1zgst06bUs
-	 OlAltuPjU4Gudzo6gKOI6guvPialKEhq470nq4D0=
+	b=piLoL0o6dxuXbWee/4TcXbOPf089stOZhQ58qew3uMtuyq+7gKkGHzaY/QhaGd+Gg
+	 hCeHn4dP1D7/CtDutJ0boqjf119GXMeOwUY3MWr0KQHE9CuHkwf9KxW4KN2BKS67hx
+	 dejdLuCGHn5Hlj2zgoXNiHrVR+hrET7nFMOEoNwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 129/265] nfc: pn533: properly drop the usb interface reference on disconnect
-Date: Thu, 12 Mar 2026 21:08:36 +0100
-Message-ID: <20260312201022.910249983@linuxfoundation.org>
+Subject: [PATCH 6.12 130/265] net: usb: kaweth: validate USB endpoints
+Date: Thu, 12 Mar 2026 21:08:37 +0100
+Message-ID: <20260312201022.946686135@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225062-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225063-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: F3DA4278CF0
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EF293278CDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,34 +101,53 @@ X-Rspamd-Server: lfdr
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 12133a483dfa832241fbbf09321109a0ea8a520e upstream.
+commit 4b063c002ca759d1b299988ee23f564c9609c875 upstream.
 
-When the device is disconnected from the driver, there is a "dangling"
-reference count on the usb interface that was grabbed in the probe
-callback.  Fix this up by properly dropping the reference after we are
-done with it.
+The kaweth driver should validate that the device it is probing has the
+proper number and types of USB endpoints it is expecting before it binds
+to it.  If a malicious device were to not have the same urbs the driver
+will crash later on when it blindly accesses these endpoints.
 
 Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: c46ee38620a2 ("NFC: pn533: add NXP pn533 nfc device driver")
-Link: https://patch.msgid.link/2026022329-flashing-ought-7573@gregkh
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/2026022305-substance-virtual-c728@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/kaweth.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/nfc/pn533/usb.c
-+++ b/drivers/nfc/pn533/usb.c
-@@ -628,6 +628,7 @@ static void pn533_usb_disconnect(struct
- 	usb_free_urb(phy->out_urb);
- 	usb_free_urb(phy->ack_urb);
- 	kfree(phy->ack_buffer);
-+	usb_put_dev(phy->udev);
+--- a/drivers/net/usb/kaweth.c
++++ b/drivers/net/usb/kaweth.c
+@@ -883,6 +883,13 @@ static int kaweth_probe(
+ 	const eth_addr_t bcast_addr = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+ 	int result = 0;
+ 	int rv = -EIO;
++	static const u8 bulk_ep_addr[] = {
++		1 | USB_DIR_IN,
++		2 | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		3 | USB_DIR_IN,
++		0};
  
- 	nfc_info(&interface->dev, "NXP PN533 NFC device disconnected\n");
- }
+ 	dev_dbg(dev,
+ 		"Kawasaki Device Probe (Device number:%d): 0x%4.4x:0x%4.4x:0x%4.4x\n",
+@@ -896,6 +903,12 @@ static int kaweth_probe(
+ 		(int)udev->descriptor.bLength,
+ 		(int)udev->descriptor.bDescriptorType);
+ 
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(intf, int_ep_addr)) {
++		dev_err(dev, "couldn't find required endpoints\n");
++		return -ENODEV;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(*kaweth));
+ 	if (!netdev)
+ 		return -ENOMEM;
 
 
 
