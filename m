@@ -1,308 +1,628 @@
-Return-Path: <stable+bounces-224900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGa/EMz6smmLRAAAu9opvQ
-	(envelope-from <stable+bounces-224900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:41:32 +0100
+	id MG8AFRb7smmLRAAAu9opvQ
+	(envelope-from <stable+bounces-224901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:42:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43AD276ABF
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:41:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F1A276AF9
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2F5D3114926
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:36:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4BA631B54F2
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F69E3FE356;
-	Thu, 12 Mar 2026 17:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB0E3FE357;
+	Thu, 12 Mar 2026 17:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QPFdjy8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjWUb6J2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748C717A2EA;
-	Thu, 12 Mar 2026 17:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.158.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337015; cv=fail; b=EHg2mclF+uxBqb0SngvCaeKGnDcVSxZpyHTm30K51rXhzcNHHrAJpLhUQKAp8/1v1/dG2ED4syXJSF6ybziieWzGqzRYVWUkiSZCSm8tN1ori/hMrBh5T7Nwja9EKMSeMGyA4Xm5XFoOGo8Tj5L8aynz9y0u5xiYCRBH+8EPxxw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337015; c=relaxed/simple;
-	bh=W5QJ395rlwVMKHCPsYu3FlQECnb/+oGOyzpNWNrBZ1g=;
-	h=From:To:CC:Date:Message-ID:References:In-Reply-To:Content-Type:
-	 MIME-Version:Subject; b=um0NgGKMvinGStVbXg6B2oASON1zb9rjqmI9FFLz+U2TmN6J5s0GhjDnaZm1h59u4oKCeASWzxViTLrs85DSLgBCHiRaZbt5uM3bLI27vD6ZDWXuUPN8xQkQYiV/HYp3gun+M5ch43zkp6UMZ63S6UOuIVaNEUFVvnNEKIYmsj8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QPFdjy8K; arc=fail smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62CEWMss2301819;
-	Thu, 12 Mar 2026 17:36:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	pp1; bh=W5QJ395rlwVMKHCPsYu3FlQECnb/+oGOyzpNWNrBZ1g=; b=QPFdjy8K
-	aKAsN5Kp4wUjdSaISqA1qOr7/AM1PTVv2Uaz0j1ZA0nOnLVuDUc/OBAQMd64wcB3
-	+x/2DFtKcvD0FJejaLFrfoQ4DIijT1O6DB6OqLPo+mmXFx+iOBNIms2pOf09dkwF
-	CSCOWi3TfJYYJTo0O+qt6AchuToJCJi7CwC85BXBWFAPYRB9dSXHMY+EaR84MpUF
-	t1Tx0LZCvAp9iDNsmgV3Xpf5yKVeK+ne9z71rwaWR5Lmv0mfVvwuFELccMZWZmN6
-	AzM56GfVa9iDnOPHmn4l5rtGi1f86Td8DOr9aj4u2YJe1uzxuE7xtC8JnS3njl1G
-	adRwxgY8gyZAUg==
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012047.outbound.protection.outlook.com [52.101.53.47])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cuh95uwbh-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 12 Mar 2026 17:36:42 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gekq0awF/3a6hLzC0I7l98YLLUjwHOcBsSsk3TG8OrfInYsz6c7fW1R+NCtnbTMiSqdwEHrkeSksOnWvFx3DHT2GTBAbdIB9ZnFcFjdDgWPM7xrsHQ99kvsr03xS63x42g36O3QLLCKCBXhH4cBJNysudFevJyfiEecd644I/1bzjex27ChzWfKBc0yvpWxkaGYazhr0dKpF4jbnee2cJLTwzbTX0rBXMfpMF5CjemPVEYttNSOdJUN3+sPoEccwXI7QLnR/HRFXbTy0QV7lYd2ZdzZOtqMXpuAsPNXBk/WqzYkeQ+i6IBlDItV98mydycSroK6rm6OTFst5aT9/+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W5QJ395rlwVMKHCPsYu3FlQECnb/+oGOyzpNWNrBZ1g=;
- b=XokklqE6yeYEHXpSOjldel/GFDWzIcG88KBRcvjMMjDBHhQpOXh7tYWczpLx3HMyY0/qaXTxsNSWNHYapbsP4erF/aPwWXVTQ9ALOQlmq/cUi99lV13fthoQO/nFheu1nznXckI9ExznpyzO4FntHQK/2Ux8UqnNdih6oAnya49o5LmCbIwT9/1fTKAHeu4+Y9xYqCUl/RpAkdUuKPJqgpQZTiU23cnsPH94neMd6IaEgxhHckSls1MHJgYrALY7J2TLcqpA4zkDG4KbOMXCRlNZE0C6/+1HU1WOn0Md3IOxQLKLHyvrn5YLMKe52Mzl/xm/qNk59qRWFd8QWz0DVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ibm.com; dmarc=pass action=none header.from=ibm.com; dkim=pass
- header.d=ibm.com; arc=none
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com (2603:10b6:806:338::8)
- by CH3PR15MB5514.namprd15.prod.outlook.com (2603:10b6:610:143::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Thu, 12 Mar
- 2026 17:36:39 +0000
-Received: from SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539]) by SA1PR15MB5819.namprd15.prod.outlook.com
- ([fe80::920c:d2ba:5432:b539%7]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 17:36:38 +0000
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-To: "zilin@seu.edu.cn" <zilin@seu.edu.cn>
-CC: "jianhao.xu@seu.edu.cn" <jianhao.xu@seu.edu.cn>,
-        "sougata@tuxera.com"
-	<sougata@tuxera.com>,
-        "frank.li@vivo.com" <frank.li@vivo.com>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "slava@dubeyko.com" <slava@dubeyko.com>,
-        "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "glaubitz@physik.fu-berlin.de"
-	<glaubitz@physik.fu-berlin.de>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Thread-Topic: [EXTERNAL] Re:  [PATCH] hfsplus: fix held lock freed on
- hfsplus_fill_super()
-Thread-Index: AQHcscZlUtL+PntFI0i7djFUt62CeLWrKgGA
-Date: Thu, 12 Mar 2026 17:36:38 +0000
-Message-ID: <77a8534a8b7922a1c0cf85f68fd8bda2bd7a61dc.camel@ibm.com>
-References: <afab59a14da6ee4dd23d8ef85301ccff451b87cb.camel@ibm.com>
-	 <20260312021728.446944-1-zilin@seu.edu.cn>
-In-Reply-To: <20260312021728.446944-1-zilin@seu.edu.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR15MB5819:EE_|CH3PR15MB5514:EE_
-x-ms-office365-filtering-correlation-id: 2df89e4d-4e38-44fa-9128-08de805dea78
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|18002099003|22082099003|56012099003|38070700021;
-x-microsoft-antispam-message-info:
- bNqRCgwn91klzJUROUEjXZ9hlu4ZBOTJh3WxR4VMq9H7jjgt1+8BiB2DeEvPVdYlB248pJPWzHtYlvT0T1AA/E4Zr7JjQXQRjuTj1D87LiFn7KfobMrvmYUA1dTZGlO1hNlEvdc39hNWijcOb17E92U8AuhzmvN0h0Ke/mOjZzTNK1fW80AjwYDYro5DIKu01unpDpEXCjzdqG+Zq6InSzlPkXoaTnxvX0BYqVgjFCZh0bdUM4Tqj8PpoOV3Dw8tFzXHunK+ODnQw0HcSk7PvQ/dEW+MUfJMlbC2PNHJK+wk5T9HF5+Jt2sKlBwUKYlvB5aVyijVw131kI7CKklDUo1udcdIzUJh85pCHQ0Zti7KcjFnlDs6N4zJ1CwpfxkBEbC7z9j43Abp5hVu/q3JaARCimYmL1hw+do18je9j1O+6P0/jI04Cvl76h/PXTfrvf+AS+9qcq0uO/Fj1H0muJIY4TEGFObBZTni77fbIBXTRUCsegTQJtgMEMmFXK5WeOUUcx/P0MCkRkD+VIJv4CI9WRprmtg5tYKn/txWeXXvzH3lTj30BWoabj4GBwZU+yXGQCm2FrdagL+6Sdokz9OBz/rLsH3WIZ35p1JCa2OIuDAPw0m4SMg8XlmCucDqrLg22INUn4U1TXiDYPYyLJnUzdnRjkZ/oS8sy+pY1iBu52eXxLJ/b+xfEfsATXAPeheP8QhKVm4xceVvtjTcYtrwWhF33bAxznkEuBdo+V3KZ+SKWhH1uE5EnsiU87sNk9c+d+bQie4uvdphDpASUJbtouYCRbUw7qTq8VwR0BI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR15MB5819.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(18002099003)(22082099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?aDQwZ3M5VUs5WkhsbUw2Vzg5THlFbmIxVTF4VTNQeFM4b2dxZUoxdXRaNmpZ?=
- =?utf-8?B?MHV2aHIvYk9hbmt2eDBPRjMyNXQyVHhhNjRUeVI2TnYrU0ZtUDhIZEgxVW9X?=
- =?utf-8?B?UnNjc0VZVzNtVDBxbklKVmxvT2c5UWtZQmR4cVJicTZyampNSEoxc3FVTllr?=
- =?utf-8?B?SUQ0bmZPL0IvWUtVUldrSi9oSkJSRDZTYnBTUndEcnJtelk3Z1lua3hqUGZm?=
- =?utf-8?B?bTlrai9rT1loRkNNc2VZNmhReGtjQ20wL0lOcG81TGxaTUd1OUEwcmNWbnNX?=
- =?utf-8?B?VVpORDgxM1R0eVNJUmFpNG1WMm9Rb3Y2RGVkZjdjSzhYZHlFV2pwd0xnWWY3?=
- =?utf-8?B?azFwNmVSZ1NhOUxNWGZjNUt1cmVHT3pCbDg4UVhaWkhVMXRMU1FQcUtkaU1j?=
- =?utf-8?B?UEl6b1B4WmlNLzkxdnRuR1o4KzZ4NG9KaTBLNk9YV0NwbEhLZy8rRWtCRkJH?=
- =?utf-8?B?YTNRQXJDSXZGcHB3MEtmOVl1emd0cG54QmJBekMvZE94VG4vK0syRE9aM1ZJ?=
- =?utf-8?B?Yjg3K05kczMzZXVQSjdkbk5XWEJKakRNMzdhZDZTVk9hc3Y4Y2hPUHgxWmZu?=
- =?utf-8?B?ckRQblpKbWFRZ2pjaDlYYkw1Q004YlJFQ21sVDFyNHltM0pVQm5QcVZubE1G?=
- =?utf-8?B?R09MTFloc0FhT3M3bWd2OEc3RUxYSFBqWW5oUUU3ZitwTVcrRWtXcXZzaDc5?=
- =?utf-8?B?dk5Xdm5rM2tTR2g4OFZzWWtVR0xyNnMrSTFkVFNJZng1ZmgvMGVuNUlhMnBu?=
- =?utf-8?B?cW5kWGx6R1FsS2J0dEg3VXIzYWNFd3g5NFF3MHExUVZXTU5ud0xNQ0pYMldz?=
- =?utf-8?B?bCs5SFdLdHNzaWczMUx6UGJhK2FURVQraE5oMEt3Y1BMaUZNejNIeUdMMFds?=
- =?utf-8?B?bEZJc2NtREZabWlrakhpNjJaSW0rcGlBSnp3Y3g2U1pjQ1RDMUVZbU95Mkkz?=
- =?utf-8?B?NysyRUN3K2piMVVoYW4xZUJJTkdmQU9MT1lraDBGT3N5bFBHaG5YemI2RUhm?=
- =?utf-8?B?cjQ3Z2RBZDkxRnZFbmMxblJOU2Zpbk9sLzBQNVpBZmRQRmlOZFFJNWl1VGRl?=
- =?utf-8?B?TWNjL0t4MFVZR1JBalFXRTRyRjFNelk3N292SkRwOUNIWnRibGYyNHVRTHN2?=
- =?utf-8?B?cEhLbkMwYm9qMmJIcGIzM09lZTk3R0J2TSt1VVBuUWI3YUxpSno4bVpFVE5I?=
- =?utf-8?B?eTB3M0RaQnAyMDhTa1pRZ3NyZjRaRVZFNWVsYmlzQmsrcVlZZlZlZUY0bCs0?=
- =?utf-8?B?by9OUEZqc2RuWFE5UEVjUENKWkxpZGlMYzg5MGpYMjJsUXdINnVOVy9GZFJ4?=
- =?utf-8?B?UHFnYWhyMTMxWVpVSHdmcFhhbHVHRzNUb2xjWWVKUllJTU1sa1BmS1V6ZzlY?=
- =?utf-8?B?RkR1WnlpN0grNHZFMmtLM2hSRitZV05FU3JEMEpRT3pxbG0vMkxSa2VSMmUr?=
- =?utf-8?B?WDFCYzVqMVVqanZ0QmR3SllONm4ycmkyemhXQ0w4bVlpcUF3OEVLNEIvU1RG?=
- =?utf-8?B?WXNyVlhZbWZjMFpwQjdUT3pMYU16NzJKUTdmV0pYRjIrY3owaUtrVXhKY0tQ?=
- =?utf-8?B?UXVocnF4VXQ2YVFScnIyWktWcEZpZzZQWWFFZ29wbnFFaGNyS2FwMFNxVnc0?=
- =?utf-8?B?MGJFUzNVajVGdWR2TjE5UlNPa200WUV6NDVtVFBBdHZkYXVYQkx4elM1TWdM?=
- =?utf-8?B?dHB1cmRjNjJ3MEhWbXd4SVAwcFFOdnA2NnFlbE50eTZKYmQ3YlFWYy83YWZZ?=
- =?utf-8?B?TjZ6c2ZXajJPYzFIRjVRakZNZU1DYmxGOWxDb1N6ZitONzNNbCtRSm9hMTgz?=
- =?utf-8?B?N2Fxb3c0emtjWVFxRCtoTWV4ZCszcm1hMUlwZVBINm5SNDBxNnFlY2I3UmFJ?=
- =?utf-8?B?bFRvWnFtaHVnaVNYNnBHb1hocEQyWjA2aWRRa1NwMzJtSU5ZZm5iMDNwUE9i?=
- =?utf-8?B?bHg0cnE0K0pERThRV2NVYk9aZTkyYjBZb01QMXpiVW1kbFE4ajYvMGRXWjlW?=
- =?utf-8?B?SmtpWUlIUEtjUEUwMmowdGJnTHRicnhmNnRSUUltanJpVGp0VURjT0dCUTlQ?=
- =?utf-8?B?dXZLRDJQVjU5SUNWYk5OdXEwQVlxNkRzNVZYYkdlSTJkM0plWm9pdjgyNTBP?=
- =?utf-8?B?L2xTbGJmbTVzY3RPOWlHOTdDaGhqWU5yVEpRVXBST0p5YmhCZmtJeXMwMWFY?=
- =?utf-8?B?RkJERFpvM28vMlVOWmltUEF4akdzU0h0Njl6ekxyVzJCa0tjeENVT1pTNXUw?=
- =?utf-8?B?WFRCSEdranAzUXhLMXFrSHJUL0RteStoTnJ0Smp4NHI4WElWOTNJMktWK0VE?=
- =?utf-8?B?L1NiR1VZamhMVjFNTXB4UDVuRnRZYTN6MExqamhRNjFnazNtc2lYM09vaGo3?=
- =?utf-8?Q?ywIZvcCkqLgoXOhsYJwKaGYqYs6bzSuqtJN8W?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <07A597030E7496439F025FDDE20C6335@namprd15.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3A43F6603
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773337060; cv=none; b=COnHWs7udzY2K4/zEdZy2f2It2QEBRopyXJ7eZmm5blRx0P2z7mNUfvz1qw/WWRftjaDyWCzgk2SXzJxL8KSkZ4K3pgkSwv5fv1Qr0sp4PIEzU6lavjjh8VXiJyzYC1ohAGF+NUwq8j0pztSo8agMMgljNqwCy8zoDbTStzrPbo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773337060; c=relaxed/simple;
+	bh=BLW4eqerHMsWje/FhpTOQF3ONzPUaPIybAyK/hcxRl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mzXnYIvx4NCM0fCSk8kCGAw5Pq7aJcdSIFN2Xnm5x0RF3onpVQ/j7i2nvZj9PWFrivqsapROcPGcWccJ8i34VPB+hwtGG6sXN3+7T7oMlpdpfof3znhHXaPr44WvUiwD1PBZU/sp+TWAcC7yA6uWqgMsvp5j3HEUTFwcOns6b8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjWUb6J2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C948EC4CEF7;
+	Thu, 12 Mar 2026 17:37:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773337059;
+	bh=BLW4eqerHMsWje/FhpTOQF3ONzPUaPIybAyK/hcxRl8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IjWUb6J2gkcUZBiV8N+iDHSv0GgARg3isApu0pzDxRXlqZAacnRP/f+95OrAt5Zfq
+	 qKouB+ZY7U7V71vQ8hFikDCV7X8y6jrkoV5y6WMUQHn0S6OpAQwIfcXX9iDjhbNDCa
+	 rLROLtidZA8Jkm+qGthLr5qSKTsT7CJq36pD8IIBygIz9OM9nG9UvdCVfEy2LzLbVY
+	 T3d1x/6fD8+kdR3EnyNOycc8hvk8fmDWPhCSCQquNA7z4c1PT7hF78fsaWR/2EogG7
+	 6sG0dtB31ifo+uA9ngBs3VvwmCsoDziim6SRhk3jnmeOfNrAeCvpwnMv8tjbq+Q+6j
+	 h4cEXw+vCHrrQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Paul Moses <p@1g4.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] net/sched: act_gate: snapshot parameters with RCU on replace
+Date: Thu, 12 Mar 2026 13:37:37 -0400
+Message-ID: <20260312173737.1806819-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031252-gigolo-petticoat-6e53@gregkh>
+References: <2026031252-gigolo-petticoat-6e53@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	dRlfQEwZ8iiZnm1Sbj3gfw1RcmDUUq8ZFHZIgJAmOXtkckI7l2rGulHfvsRrtdd1cuq9jMKmAOkW9ctS1a0ZezAyYBZQLMRZwvb50FnPBWUVVV5EY9OwZ06ZRwaWDSuxtQzAcg4G9iJBbG062PjB+Nudn1NEnTgXYqTYNrkzDMDeYwZIktsBk7X9IeaHiV9iZT/DMo4l5rc6X8EvYfGgw4FcyJbbF+pPtymioEjxoLNW3kLdsjkVYSy6ZBTrPt3+x1k7VRs/2pGOtZhxKijE/aFDtZTWfGGsJHEVQie1UhhLFiXnlSb9mMAvVMyUhY5Gt3u3DlruSIeEo3N2QD74cg==
-X-OriginatorOrg: ibm.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR15MB5819.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2df89e4d-4e38-44fa-9128-08de805dea78
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2026 17:36:38.6834
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: fcf67057-50c9-4ad4-98f3-ffca64add9e9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VTMqlGEDxCJQE2+i2sf2pog4szVx2v9ek/Er24nRVaC3zr+2mXi20GyU/mjfY6KW1uskiCcAoCicgBirFYsr0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR15MB5514
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEyMDE0MSBTYWx0ZWRfX6wifz0Q3hpI4
- cYml1cmybCzO2jXjVMOVcnXA59Jn3LqSWpNRpAC/nGsVEnAtBhSNLp3QyAHBU9S/8j2+enQoZSC
- zXs4J4xzVeXJaLgikYbLesmq/J0NsyvFPmF8SSQTFfFcCdRMNS/TKOCyq+ObIGSugXsUouI2W0s
- C4R7leN+ZjrOds/KIzzIOfxxwI1v55XGPcM3bStbV8i1MAaBQCxk4TUs7YxjSqwhHpFHuqzHzgs
- XcJMPkjytGGan8ESppHb9iP5Dqv51sg0zAC9yHDbehTdctjESRkLw4Pz5d/RSeEI0d6YtyjuiNE
- c4kRZJlQPZip8WTvsfUk3S5PuAJMDEy+fyUrVj4n0Du5HKZyXC783uEar4SmyH4X4+svwzZpJ/I
- SgMlXpdXyCQ8RYWZ7OOwyLmvEol+xVjAhNKghVg57ZvD25gvapP4oPrlAICqJBS0h/kD6R3fx3M
- PVEH4zsoA11RS4RTEXg==
-X-Authority-Analysis: v=2.4 cv=FowIPmrq c=1 sm=1 tr=0 ts=69b2f9aa cx=c_pps
- a=NwWuzY5ekLRC++Nx77IK4w==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=wCmvBT1CAAAA:8 a=A_CSCt3RQoQpL3P2VUsA:9
- a=QEXdDO2ut3YA:10 a=6z96SAwNL0f8klobD5od:22
-X-Proofpoint-GUID: IgvjJjFJVdQOQu_TCaQS4nsDPtSJ2ABa
-X-Proofpoint-ORIG-GUID: IgvjJjFJVdQOQu_TCaQS4nsDPtSJ2ABa
-Subject: RE:  [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-12_02,2026-03-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603120141
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_EQ_ADDR_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224900-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224901-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Slava.Dubeyko@ibm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A43AD276ABF
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A4F1A276AF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-T24gVGh1LCAyMDI2LTAzLTEyIGF0IDEwOjE3ICswODAwLCBaaWxpbiBHdWFuIHdyb3RlOg0KPiBP
-biBXZWQsIE1hciAxMSwgMjAyNiBhdCAwOToxNzo1OVBNICswMDAwLCBWaWFjaGVzbGF2IER1YmV5
-a28gd3JvdGU6DQo+ID4gT24gV2VkLCAyMDI2LTAzLTExIGF0IDE5OjQzICswODAwLCBaaWxpbiBH
-dWFuIHdyb3RlOg0KPiA+ID4gIGZzL2hmc3BsdXMvc3VwZXIuYyB8IDQgKysrLQ0KPiA+ID4gIDEg
-ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPiA+IA0KPiA+
-ID4gZGlmZiAtLWdpdCBhL2ZzL2hmc3BsdXMvc3VwZXIuYyBiL2ZzL2hmc3BsdXMvc3VwZXIuYw0K
-PiA+ID4gaW5kZXggNzIyOWE4YWU4OWY5Li5mMzk2ZmVlMTlhYjggMTAwNjQ0DQo+ID4gPiAtLS0g
-YS9mcy9oZnNwbHVzL3N1cGVyLmMNCj4gPiA+ICsrKyBiL2ZzL2hmc3BsdXMvc3VwZXIuYw0KPiA+
-ID4gQEAgLTU2OSw4ICs1NjksMTAgQEAgc3RhdGljIGludCBoZnNwbHVzX2ZpbGxfc3VwZXIoc3Ry
-dWN0IHN1cGVyX2Jsb2NrICpzYiwgc3RydWN0IGZzX2NvbnRleHQgKmZjKQ0KPiA+ID4gIAlpZiAo
-ZXJyKQ0KPiA+ID4gIAkJZ290byBvdXRfcHV0X3Jvb3Q7DQo+ID4gPiAgCWVyciA9IGhmc3BsdXNf
-Y2F0X2J1aWxkX2tleShzYiwgZmQuc2VhcmNoX2tleSwgSEZTUExVU19ST09UX0NOSUQsICZzdHIp
-Ow0KPiA+ID4gLQlpZiAodW5saWtlbHkoZXJyIDwgMCkpDQo+ID4gPiArCWlmICh1bmxpa2VseShl
-cnIgPCAwKSkgew0KPiA+ID4gKwkJaGZzX2ZpbmRfZXhpdCgmZmQpOw0KPiA+ID4gIAkJZ290byBv
-dXRfcHV0X3Jvb3Q7DQo+ID4gPiArCX0NCj4gPiA+ICAJaWYgKCFoZnNfYnJlY19yZWFkKCZmZCwg
-JmVudHJ5LCBzaXplb2YoZW50cnkpKSkgew0KPiA+ID4gIAkJaGZzX2ZpbmRfZXhpdCgmZmQpOw0K
-PiA+ID4gIAkJaWYgKGVudHJ5LnR5cGUgIT0gY3B1X3RvX2JlMTYoSEZTUExVU19GT0xERVIpKSB7
-DQo+ID4gDQo+ID4gTWFrZXMgc2Vuc2UuDQo+ID4gDQo+ID4gUmV2aWV3ZWQtYnk6IFZpYWNoZXNs
-YXYgRHViZXlrbyA8c2xhdmFAZHViZXlrby5jb20+DQo+ID4gDQo+ID4gRnJhbmtseSBzcGVha2lu
-ZywgSSB0aGluaywgcG90ZW50aWFsbHksIHdlIGNhbiBpbnRyb2R1Y2Ugc3RhdGljIGlubGluZSBm
-dW5jdGlvbg0KPiA+IGZvciB0aGlzIGNvZGU6DQo+ID4gDQo+ID4gCXN0ci5sZW4gPSBzaXplb2Yo
-SEZTUF9ISURERU5ESVJfTkFNRSkgLSAxOw0KPiA+IAlzdHIubmFtZSA9IEhGU1BfSElEREVORElS
-X05BTUU7DQo+ID4gCWVyciA9IGhmc19maW5kX2luaXQoc2JpLT5jYXRfdHJlZSwgJmZkKTsNCj4g
-PiAJaWYgKGVycikNCj4gPiAJCWdvdG8gb3V0X3B1dF9yb290Ow0KPiA+IAllcnIgPSBoZnNwbHVz
-X2NhdF9idWlsZF9rZXkoc2IsIGZkLnNlYXJjaF9rZXksIEhGU1BMVVNfUk9PVF9DTklELA0KPiA+
-ICZzdHIpOw0KPiA+IAlpZiAodW5saWtlbHkoZXJyIDwgMCkpDQo+ID4gCQlnb3RvIG91dF9wdXRf
-cm9vdDsNCj4gPiAJaWYgKCFoZnNfYnJlY19yZWFkKCZmZCwgJmVudHJ5LCBzaXplb2YoZW50cnkp
-KSkgew0KPiA+IAkJaGZzX2ZpbmRfZXhpdCgmZmQpOw0KPiA+IAkJaWYgKGVudHJ5LnR5cGUgIT0g
-Y3B1X3RvX2JlMTYoSEZTUExVU19GT0xERVIpKSB7DQo+ID4gCQkJZXJyID0gLUVJTzsNCj4gPiAJ
-CQlnb3RvIG91dF9wdXRfcm9vdDsNCj4gPiAJCX0NCj4gPiAJCWlub2RlID0gaGZzcGx1c19pZ2V0
-KHNiLCBiZTMyX3RvX2NwdShlbnRyeS5mb2xkZXIuaWQpKTsNCj4gPiAJCWlmIChJU19FUlIoaW5v
-ZGUpKSB7DQo+ID4gCQkJZXJyID0gUFRSX0VSUihpbm9kZSk7DQo+ID4gCQkJZ290byBvdXRfcHV0
-X3Jvb3Q7DQo+ID4gCQl9DQo+ID4gCQlzYmktPmhpZGRlbl9kaXIgPSBpbm9kZTsNCj4gPiAJfSBl
-bHNlDQo+ID4gCQloZnNfZmluZF9leGl0KCZmZCk7DQo+ID4gDQo+ID4gQmVjYXVzZSwgaGlkaW5n
-IHRoaXMgY29kZSBpbnRvIHNtYWxsIGZ1bmN0aW9uIHdpbGwgcHJvdmlkZSBvcHBvcnR1bml0eSB0
-byBjYWxsDQo+ID4gaGZzX2ZpbmRfZXhpdCgpIGluIG9uZSBwbGFjZSBvbmx5IChhcyBmb3Igbm9y
-bWFsIGFzIGZvciBlcnJvbmVvdXMgZmxvdykuDQo+ID4gDQo+ID4gV2hhdCBkbyB5b3UgdGhpbms/
-DQo+ID4gDQo+ID4gVGhhbmtzLA0KPiA+IFNsYXZhLg0KPiANCj4gVGhhbmtzIGZvciB0aGUgZmVl
-ZGJhY2ssIFNsYXZhLg0KPiANCj4gV2hpbGUgSSBzZWUgdGhlIG1lcml0IGluIHJlZmFjdG9yaW5n
-IHRoaXMgaW50byBhIGhlbHBlciB0byBjZW50cmFsaXplIHRoZSANCj4gY2xlYW51cCwgSeKAmW0g
-Y29uY2VybmVkIHRoYXQgZG9pbmcgc28gd291bGRu4oCZdCBhY3R1YWxseSBhY2hpZXZlIGEgc2lu
-Z2xlIA0KPiBoZnNfZmluZF9leGl0KCkgY2FsbCB3aXRob3V0IGNvbXByb21pc2luZyB0aGUgcmVz
-b3VyY2UgbGlmZWN5Y2xlLg0KPiANCj4gSW4gdGhlIGN1cnJlbnQgbG9naWMsIHdlIG5lZWQgdG8g
-Y2FsbCBoZnNfZmluZF9leGl0KCZmZCkgYXMgZWFybHkgYXMgDQo+IHBvc3NpYmxl4oCUc3BlY2lm
-aWNhbGx5IGJlZm9yZSBlbnRlcmluZyBoZnNwbHVzX2lnZXQoKSwgd2hpY2ggbWlnaHQgaW52b2x2
-ZSANCj4gZnVydGhlciBJL08gb3Igc2xlZXBpbmcuIElmIHdlIHdlcmUgdG8gdXNlIGEgc2luZ2xl
-LWV4aXQgZ290byBwYXR0ZXJuIGluIGEgDQo+IGhlbHBlciBmdW5jdGlvbiwgd2Ugd291bGQgZW5k
-IHVwIGhvbGRpbmcgdGhlIHNlYXJjaCBkYXRhIGFuZCBpdHMgDQo+IGFzc29jaWF0ZWQgYnVmZmVy
-cy9sb2NrcyBsb25nZXIgdGhhbiBuZWNlc3NhcnkuIFRvIG1haW50YWluIHRoZSBjdXJyZW50IA0K
-PiBlYXJseS1yZWxlYXNlIGJlaGF2aW9yLCB3ZSB3b3VsZCBzdGlsbCBiZSBmb3JjZWQgdG8gc3By
-aW5rbGUgbXVsdGlwbGUgDQo+IGhmc19maW5kX2V4aXQoKSBjYWxscyBhY3Jvc3MgZGlmZmVyZW50
-IGJyYW5jaGVzIHdpdGhpbiB0aGF0IGhlbHBlciBhbnl3YXksIA0KPiB3aGljaCBkZWZlYXRzIHRo
-ZSBwdXJwb3NlIG9mIHRoZSByZWZhY3RvcmluZy4NCj4gDQo+IEdpdmVuIHRoYXQgdGhpcyBpcyBh
-IHN0cmFpZ2h0Zm9yd2FyZCBmaXggZm9yIGEgc3BlY2lmaWMgbGVhaywgSSBiZWxpZXZlIA0KPiBr
-ZWVwaW5nIHRoZSBsb2dpYyBpbmxpbmUgcHJlc2VydmVzIHRoZSBvcHRpbWFsIHJlc291cmNlIHJl
-bGVhc2UgdGltaW5nIA0KPiB3aXRob3V0IGFkZGluZyB1bm5lY2Vzc2FyeSBhYnN0cmFjdGlvbi4N
-Cj4gDQoNCkkgbWVhbiByZWFsbHkgc2ltcGxlIHNvbHV0aW9uOg0KDQpzdGF0aWMgaW5saW5lDQpp
-bnQgaGZzcGx1c19nZXRfaGlkZGVuX2Rpcl9lbnRyeShzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiLA0K
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGZzcGx1c19jYXRfZW50cnkgKmVudHJ5
-KQ0Kew0KICAgIGludCBlcnIgPSAwOw0KDQoJc3RyLmxlbiA9IHNpemVvZihIRlNQX0hJRERFTkRJ
-Ul9OQU1FKSAtIDE7DQoJc3RyLm5hbWUgPSBIRlNQX0hJRERFTkRJUl9OQU1FOw0KCWVyciA9IGhm
-c19maW5kX2luaXQoc2JpLT5jYXRfdHJlZSwgJmZkKTsNCglpZiAoZXJyKQ0KCQlnb3RvIGZpbmlz
-aF9sb2dpYzsNCg0KCWVyciA9IGhmc3BsdXNfY2F0X2J1aWxkX2tleShzYiwgZmQuc2VhcmNoX2tl
-eSwgSEZTUExVU19ST09UX0NOSUQsDQomc3RyKTsNCglpZiAodW5saWtlbHkoZXJyIDwgMCkpDQoJ
-CWdvdG8gZnJlZV9mZDsNCg0KICAgICAgICBlcnIgPSBoZnNfYnJlY19yZWFkKCZmZCwgZW50cnks
-IHNpemVvZigqZW50cnkpKTsNCg0KZnJlZV9mZDoNCiAgICAgaGZzX2ZpbmRfZXhpdCgmZmQpOw0K
-ZmluaXNoX2xvZ2ljOg0KICAgICByZXR1cm4gZXJyOw0KfQ0KDQpzdGF0aWMgaW50IGhmc3BsdXNf
-ZmlsbF9zdXBlcihzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiLCBzdHJ1Y3QgZnNfY29udGV4dCAqZmMp
-DQp7DQogIDxza2lwcGVkPg0KDQogIGVyciA9IGhmc3BsdXNfZ2V0X2hpZGRlbl9kaXJfZW50cnko
-c2IsICZlbnRyeSk7DQogIGlmIChlcnIpDQogICAgICBnb3RvIHByb2Nlc3NfZXJyb3I7DQoNCgkJ
-aWYgKGVudHJ5LnR5cGUgIT0gY3B1X3RvX2JlMTYoSEZTUExVU19GT0xERVIpKSB7DQoJCQllcnIg
-PSAtRUlPOw0KCQkJZ290byBmaW5pc2hfbG9naWM7DQoJCX0NCgkJaW5vZGUgPSBoZnNwbHVzX2ln
-ZXQoc2IsIGJlMzJfdG9fY3B1KGVudHJ5LmZvbGRlci5pZCkpOw0KCQlpZiAoSVNfRVJSKGlub2Rl
-KSkgew0KCQkJZXJyID0gUFRSX0VSUihpbm9kZSk7DQoJCQlnb3RvIGZpbmlzaF9sb2dpYzsNCgkJ
-fQ0KCQlzYmktPmhpZGRlbl9kaXIgPSBpbm9kZTsNCg0KICA8c2tpcHBlZD4NCn0NCg0KRG9lcyBp
-dCBtYWtlcyBzZW5zZSB0byB5b3U/DQoNClRoYW5rcywNClNsYXZhLg0K
+From: Paul Moses <p@1g4.org>
+
+[ Upstream commit 62413a9c3cb183afb9bb6e94dd68caf4e4145f4c ]
+
+The gate action can be replaced while the hrtimer callback or dump path is
+walking the schedule list.
+
+Convert the parameters to an RCU-protected snapshot and swap updates under
+tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omits
+the entry list, preserve the existing schedule so the effective state is
+unchanged.
+
+Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20260223150512.2251594-2-p@1g4.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ hrtimer_setup() => hrtimer_init() + keep is_tcf_gate() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/tc_act/tc_gate.h |  33 ++++-
+ net/sched/act_gate.c         | 262 ++++++++++++++++++++++++-----------
+ 2 files changed, 210 insertions(+), 85 deletions(-)
+
+diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
+index c8fa11ebb3978..c7650f7de0ff8 100644
+--- a/include/net/tc_act/tc_gate.h
++++ b/include/net/tc_act/tc_gate.h
+@@ -32,6 +32,7 @@ struct tcf_gate_params {
+ 	s32			tcfg_clockid;
+ 	size_t			num_entries;
+ 	struct list_head	entries;
++	struct rcu_head		rcu;
+ };
+ 
+ #define GATE_ACT_GATE_OPEN	BIT(0)
+@@ -39,7 +40,7 @@ struct tcf_gate_params {
+ 
+ struct tcf_gate {
+ 	struct tc_action	common;
+-	struct tcf_gate_params	param;
++	struct tcf_gate_params __rcu *param;
+ 	u8			current_gate_status;
+ 	ktime_t			current_close_time;
+ 	u32			current_entry_octets;
+@@ -60,47 +61,65 @@ static inline bool is_tcf_gate(const struct tc_action *a)
+ 	return false;
+ }
+ 
++static inline struct tcf_gate_params *tcf_gate_params_locked(const struct tc_action *a)
++{
++	struct tcf_gate *gact = to_gate(a);
++
++	return rcu_dereference_protected(gact->param,
++					 lockdep_is_held(&gact->tcf_lock));
++}
++
+ static inline s32 tcf_gate_prio(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	s32 tcfg_prio;
+ 
+-	tcfg_prio = to_gate(a)->param.tcfg_priority;
++	p = tcf_gate_params_locked(a);
++	tcfg_prio = p->tcfg_priority;
+ 
+ 	return tcfg_prio;
+ }
+ 
+ static inline u64 tcf_gate_basetime(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_basetime;
+ 
+-	tcfg_basetime = to_gate(a)->param.tcfg_basetime;
++	p = tcf_gate_params_locked(a);
++	tcfg_basetime = p->tcfg_basetime;
+ 
+ 	return tcfg_basetime;
+ }
+ 
+ static inline u64 tcf_gate_cycletime(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_cycletime;
+ 
+-	tcfg_cycletime = to_gate(a)->param.tcfg_cycletime;
++	p = tcf_gate_params_locked(a);
++	tcfg_cycletime = p->tcfg_cycletime;
+ 
+ 	return tcfg_cycletime;
+ }
+ 
+ static inline u64 tcf_gate_cycletimeext(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_cycletimeext;
+ 
+-	tcfg_cycletimeext = to_gate(a)->param.tcfg_cycletime_ext;
++	p = tcf_gate_params_locked(a);
++	tcfg_cycletimeext = p->tcfg_cycletime_ext;
+ 
+ 	return tcfg_cycletimeext;
+ }
+ 
+ static inline u32 tcf_gate_num_entries(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u32 num_entries;
+ 
+-	num_entries = to_gate(a)->param.num_entries;
++	p = tcf_gate_params_locked(a);
++	num_entries = p->num_entries;
+ 
+ 	return num_entries;
+ }
+@@ -114,7 +133,7 @@ static inline struct action_gate_entry
+ 	u32 num_entries;
+ 	int i = 0;
+ 
+-	p = &to_gate(a)->param;
++	p = tcf_gate_params_locked(a);
+ 	num_entries = p->num_entries;
+ 
+ 	list_for_each_entry(entry, &p->entries, list)
+diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+index 1dd74125398a0..58cae012a4391 100644
+--- a/net/sched/act_gate.c
++++ b/net/sched/act_gate.c
+@@ -32,9 +32,12 @@ static ktime_t gate_get_time(struct tcf_gate *gact)
+ 	return KTIME_MAX;
+ }
+ 
+-static void gate_get_start_time(struct tcf_gate *gact, ktime_t *start)
++static void tcf_gate_params_free_rcu(struct rcu_head *head);
++
++static void gate_get_start_time(struct tcf_gate *gact,
++				const struct tcf_gate_params *param,
++				ktime_t *start)
+ {
+-	struct tcf_gate_params *param = &gact->param;
+ 	ktime_t now, base, cycle;
+ 	u64 n;
+ 
+@@ -69,12 +72,14 @@ static enum hrtimer_restart gate_timer_func(struct hrtimer *timer)
+ {
+ 	struct tcf_gate *gact = container_of(timer, struct tcf_gate,
+ 					     hitimer);
+-	struct tcf_gate_params *p = &gact->param;
+ 	struct tcfg_gate_entry *next;
++	struct tcf_gate_params *p;
+ 	ktime_t close_time, now;
+ 
+ 	spin_lock(&gact->tcf_lock);
+ 
++	p = rcu_dereference_protected(gact->param,
++				      lockdep_is_held(&gact->tcf_lock));
+ 	next = gact->next_entry;
+ 
+ 	/* cycle start, clear pending bit, clear total octets */
+@@ -230,6 +235,35 @@ static void release_entry_list(struct list_head *entries)
+ 	}
+ }
+ 
++static int tcf_gate_copy_entries(struct tcf_gate_params *dst,
++				 const struct tcf_gate_params *src,
++				 struct netlink_ext_ack *extack)
++{
++	struct tcfg_gate_entry *entry;
++	int i = 0;
++
++	list_for_each_entry(entry, &src->entries, list) {
++		struct tcfg_gate_entry *new;
++
++		new = kzalloc(sizeof(*new), GFP_ATOMIC);
++		if (!new) {
++			NL_SET_ERR_MSG(extack, "Not enough memory for entry");
++			return -ENOMEM;
++		}
++
++		new->index      = entry->index;
++		new->gate_state = entry->gate_state;
++		new->interval   = entry->interval;
++		new->ipv        = entry->ipv;
++		new->maxoctets  = entry->maxoctets;
++		list_add_tail(&new->list, &dst->entries);
++		i++;
++	}
++
++	dst->num_entries = i;
++	return 0;
++}
++
+ static int parse_gate_list(struct nlattr *list_attr,
+ 			   struct tcf_gate_params *sched,
+ 			   struct netlink_ext_ack *extack)
+@@ -275,23 +309,42 @@ static int parse_gate_list(struct nlattr *list_attr,
+ 	return err;
+ }
+ 
+-static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
+-			     enum tk_offsets tko, s32 clockid,
+-			     bool do_init)
++static bool gate_timer_needs_cancel(u64 basetime, u64 old_basetime,
++				    enum tk_offsets tko,
++				    enum tk_offsets old_tko,
++				    s32 clockid, s32 old_clockid)
+ {
+-	if (!do_init) {
+-		if (basetime == gact->param.tcfg_basetime &&
+-		    tko == gact->tk_offset &&
+-		    clockid == gact->param.tcfg_clockid)
+-			return;
++	return basetime != old_basetime ||
++	       clockid != old_clockid ||
++	       tko != old_tko;
++}
+ 
+-		spin_unlock_bh(&gact->tcf_lock);
+-		hrtimer_cancel(&gact->hitimer);
+-		spin_lock_bh(&gact->tcf_lock);
++static int gate_clock_resolve(s32 clockid, enum tk_offsets *tko,
++			      struct netlink_ext_ack *extack)
++{
++	switch (clockid) {
++	case CLOCK_REALTIME:
++		*tko = TK_OFFS_REAL;
++		return 0;
++	case CLOCK_MONOTONIC:
++		*tko = TK_OFFS_MAX;
++		return 0;
++	case CLOCK_BOOTTIME:
++		*tko = TK_OFFS_BOOT;
++		return 0;
++	case CLOCK_TAI:
++		*tko = TK_OFFS_TAI;
++		return 0;
++	default:
++		NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
++		return -EINVAL;
+ 	}
+-	gact->param.tcfg_basetime = basetime;
+-	gact->param.tcfg_clockid = clockid;
+-	gact->tk_offset = tko;
++}
++
++static void gate_setup_timer(struct tcf_gate *gact, s32 clockid,
++			     enum tk_offsets tko)
++{
++	WRITE_ONCE(gact->tk_offset, tko);
+ 	hrtimer_init(&gact->hitimer, clockid, HRTIMER_MODE_ABS_SOFT);
+ 	gact->hitimer.function = gate_timer_func;
+ }
+@@ -302,15 +355,22 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 			 struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_net *tn = net_generic(net, act_gate_ops.net_id);
+-	enum tk_offsets tk_offset = TK_OFFS_TAI;
++	u64 cycletime = 0, basetime = 0, cycletime_ext = 0;
++	struct tcf_gate_params *p = NULL, *old_p = NULL;
++	enum tk_offsets old_tk_offset = TK_OFFS_TAI;
++	const struct tcf_gate_params *cur_p = NULL;
+ 	bool bind = flags & TCA_ACT_FLAGS_BIND;
+ 	struct nlattr *tb[TCA_GATE_MAX + 1];
++	enum tk_offsets tko = TK_OFFS_TAI;
+ 	struct tcf_chain *goto_ch = NULL;
+-	u64 cycletime = 0, basetime = 0;
+-	struct tcf_gate_params *p;
++	s32 timer_clockid = CLOCK_TAI;
++	bool use_old_entries = false;
++	s32 old_clockid = CLOCK_TAI;
++	bool need_cancel = false;
+ 	s32 clockid = CLOCK_TAI;
+ 	struct tcf_gate *gact;
+ 	struct tc_gate *parm;
++	u64 old_basetime = 0;
+ 	int ret = 0, err;
+ 	u32 gflags = 0;
+ 	s32 prio = -1;
+@@ -327,26 +387,8 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (!tb[TCA_GATE_PARMS])
+ 		return -EINVAL;
+ 
+-	if (tb[TCA_GATE_CLOCKID]) {
++	if (tb[TCA_GATE_CLOCKID])
+ 		clockid = nla_get_s32(tb[TCA_GATE_CLOCKID]);
+-		switch (clockid) {
+-		case CLOCK_REALTIME:
+-			tk_offset = TK_OFFS_REAL;
+-			break;
+-		case CLOCK_MONOTONIC:
+-			tk_offset = TK_OFFS_MAX;
+-			break;
+-		case CLOCK_BOOTTIME:
+-			tk_offset = TK_OFFS_BOOT;
+-			break;
+-		case CLOCK_TAI:
+-			tk_offset = TK_OFFS_TAI;
+-			break;
+-		default:
+-			NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+-			return -EINVAL;
+-		}
+-	}
+ 
+ 	parm = nla_data(tb[TCA_GATE_PARMS]);
+ 	index = parm->index;
+@@ -372,6 +414,60 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 		return -EEXIST;
+ 	}
+ 
++	gact = to_gate(*a);
++
++	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
++	if (err < 0)
++		goto release_idr;
++
++	p = kzalloc(sizeof(*p), GFP_KERNEL);
++	if (!p) {
++		err = -ENOMEM;
++		goto chain_put;
++	}
++	INIT_LIST_HEAD(&p->entries);
++
++	use_old_entries = !tb[TCA_GATE_ENTRY_LIST];
++	if (!use_old_entries) {
++		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
++		if (err < 0)
++			goto err_free;
++		use_old_entries = !err;
++	}
++
++	if (ret == ACT_P_CREATED && use_old_entries) {
++		NL_SET_ERR_MSG(extack, "The entry list is empty");
++		err = -EINVAL;
++		goto err_free;
++	}
++
++	if (ret != ACT_P_CREATED) {
++		rcu_read_lock();
++		cur_p = rcu_dereference(gact->param);
++
++		old_basetime  = cur_p->tcfg_basetime;
++		old_clockid   = cur_p->tcfg_clockid;
++		old_tk_offset = READ_ONCE(gact->tk_offset);
++
++		basetime      = old_basetime;
++		cycletime_ext = cur_p->tcfg_cycletime_ext;
++		prio          = cur_p->tcfg_priority;
++		gflags        = cur_p->tcfg_flags;
++
++		if (!tb[TCA_GATE_CLOCKID])
++			clockid = old_clockid;
++
++		err = 0;
++		if (use_old_entries) {
++			err = tcf_gate_copy_entries(p, cur_p, extack);
++			if (!err && !tb[TCA_GATE_CYCLE_TIME])
++				cycletime = cur_p->tcfg_cycletime;
++		}
++		rcu_read_unlock();
++		if (err)
++			goto err_free;
++	}
++
+ 	if (tb[TCA_GATE_PRIORITY])
+ 		prio = nla_get_s32(tb[TCA_GATE_PRIORITY]);
+ 
+@@ -381,25 +477,26 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (tb[TCA_GATE_FLAGS])
+ 		gflags = nla_get_u32(tb[TCA_GATE_FLAGS]);
+ 
+-	gact = to_gate(*a);
+-	if (ret == ACT_P_CREATED)
+-		INIT_LIST_HEAD(&gact->param.entries);
++	if (tb[TCA_GATE_CYCLE_TIME])
++		cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
+ 
+-	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+-	if (err < 0)
+-		goto release_idr;
++	if (tb[TCA_GATE_CYCLE_TIME_EXT])
++		cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+ 
+-	spin_lock_bh(&gact->tcf_lock);
+-	p = &gact->param;
++	err = gate_clock_resolve(clockid, &tko, extack);
++	if (err)
++		goto err_free;
++	timer_clockid = clockid;
+ 
+-	if (tb[TCA_GATE_CYCLE_TIME])
+-		cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
++	need_cancel = ret != ACT_P_CREATED &&
++		      gate_timer_needs_cancel(basetime, old_basetime,
++					      tko, old_tk_offset,
++					      timer_clockid, old_clockid);
+ 
+-	if (tb[TCA_GATE_ENTRY_LIST]) {
+-		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
+-		if (err < 0)
+-			goto chain_put;
+-	}
++	if (need_cancel)
++		hrtimer_cancel(&gact->hitimer);
++
++	spin_lock_bh(&gact->tcf_lock);
+ 
+ 	if (!cycletime) {
+ 		struct tcfg_gate_entry *entry;
+@@ -408,22 +505,20 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 		list_for_each_entry(entry, &p->entries, list)
+ 			cycle = ktime_add_ns(cycle, entry->interval);
+ 		cycletime = cycle;
+-		if (!cycletime) {
+-			err = -EINVAL;
+-			goto chain_put;
+-		}
+ 	}
+ 	p->tcfg_cycletime = cycletime;
++	p->tcfg_cycletime_ext = cycletime_ext;
+ 
+-	if (tb[TCA_GATE_CYCLE_TIME_EXT])
+-		p->tcfg_cycletime_ext =
+-			nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+-
+-	gate_setup_timer(gact, basetime, tk_offset, clockid,
+-			 ret == ACT_P_CREATED);
++	if (need_cancel || ret == ACT_P_CREATED)
++		gate_setup_timer(gact, timer_clockid, tko);
+ 	p->tcfg_priority = prio;
+ 	p->tcfg_flags = gflags;
+-	gate_get_start_time(gact, &start);
++	p->tcfg_basetime = basetime;
++	p->tcfg_clockid = timer_clockid;
++	gate_get_start_time(gact, p, &start);
++
++	old_p = rcu_replace_pointer(gact->param, p,
++				    lockdep_is_held(&gact->tcf_lock));
+ 
+ 	gact->current_close_time = start;
+ 	gact->current_gate_status = GATE_ACT_GATE_OPEN | GATE_ACT_PENDING;
+@@ -440,11 +535,15 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ 
++	if (old_p)
++		call_rcu(&old_p->rcu, tcf_gate_params_free_rcu);
++
+ 	return ret;
+ 
++err_free:
++	release_entry_list(&p->entries);
++	kfree(p);
+ chain_put:
+-	spin_unlock_bh(&gact->tcf_lock);
+-
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ release_idr:
+@@ -452,21 +551,29 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	 * without taking tcf_lock.
+ 	 */
+ 	if (ret == ACT_P_CREATED)
+-		gate_setup_timer(gact, gact->param.tcfg_basetime,
+-				 gact->tk_offset, gact->param.tcfg_clockid,
+-				 true);
++		gate_setup_timer(gact, timer_clockid, tko);
++
+ 	tcf_idr_release(*a, bind);
+ 	return err;
+ }
+ 
++static void tcf_gate_params_free_rcu(struct rcu_head *head)
++{
++	struct tcf_gate_params *p = container_of(head, struct tcf_gate_params, rcu);
++
++	release_entry_list(&p->entries);
++	kfree(p);
++}
++
+ static void tcf_gate_cleanup(struct tc_action *a)
+ {
+ 	struct tcf_gate *gact = to_gate(a);
+ 	struct tcf_gate_params *p;
+ 
+-	p = &gact->param;
+ 	hrtimer_cancel(&gact->hitimer);
+-	release_entry_list(&p->entries);
++	p = rcu_dereference_protected(gact->param, 1);
++	if (p)
++		call_rcu(&p->rcu, tcf_gate_params_free_rcu);
+ }
+ 
+ static int dumping_entry(struct sk_buff *skb,
+@@ -515,10 +622,9 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+ 	struct nlattr *entry_list;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&gact->tcf_lock);
+-	opt.action = gact->tcf_action;
+-
+-	p = &gact->param;
++	rcu_read_lock();
++	opt.action = READ_ONCE(gact->tcf_action);
++	p = rcu_dereference(gact->param);
+ 
+ 	if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -558,12 +664,12 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+ 	tcf_tm_dump(&t, &gact->tcf_tm);
+ 	if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&gact->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&gact->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
+-- 
+2.51.0
+
 
