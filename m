@@ -1,286 +1,156 @@
-Return-Path: <stable+bounces-225216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIyDLtAss2ksSwAAu9opvQ
-	(envelope-from <stable+bounces-225216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 22:14:56 +0100
+	id YLFfEV0ts2ksSwAAu9opvQ
+	(envelope-from <stable+bounces-225217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 22:17:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC43279D6E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 22:14:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9B7279DE5
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 22:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26F893023A8F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 948D330F0E73
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E7D38B131;
-	Thu, 12 Mar 2026 21:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5801F3AB289;
+	Thu, 12 Mar 2026 21:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OhudFM3C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DOOEWv6w"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011066.outbound.protection.outlook.com [52.101.62.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0C3C3450
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 21:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773350074; cv=fail; b=BzbwaoS+48nSwvykYrsbNn31U3Bvre+8l6Eh/dcj0KAsWQvqNvaHVHvwHBP69ns60Pc5HKha3JgpnchXRPlcGeszr5Rkr37UldZzeDjIfD/tCzk35wMr+nm67NLqKHOvVU25AI70eyjCRK4dbQdA5L1bzf1MlkUFUDDUiLlR5pc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773350074; c=relaxed/simple;
-	bh=BCuekBzLh4fOtKxMuAkKSFDlky6o/qdlfFnKycisPAI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=d8zzlDlN9hcKtWmP6dywODh46ryMwc5nlakyCmEF5dsNNS7vOtPxROK2OvoXozKqbXe0bPzucPPo9EBPnMXddHvgC07XWII6e5VkOp5T3JVbTSMPv2tz7X/lYJo6Ltmk11f3ewF9Oq0rkTdqECb1Y4m8P3A21FB7k+LcRWelDf4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OhudFM3C; arc=fail smtp.client-ip=52.101.62.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b7j2gXwFNYQCZhVuU8WyC9VEAjWUuGGSy0LKlCWc9QPXhFNC4wRQ7NUUwwiZKt6Ilng3Nvjo5Px3MWK4nhNfDlX5wkAi2G9LVpGana5tfnyxwslj+tfmX9ieekZqT4OC4yje5DjgvSwifGLSK8HHIsfBAptQeSDxhoAN3EdWbXH1KHaHpbJFHBQMwCpkZNkMMsp7VgUdrMtxN2EvCwwp3/KZ3fowU22yzxkA4kJzYzvdJTxgcp+LaLvlMl/z5RVSKpSqctmWt1WdMMpZ6gzw29UpHWo/ilbvO5/FCZU4bWf6RH4yh+BH/nKjfEd8tGpJN75o6artJ0mrcLaywBcfpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o8Rio0BOEwIErcLOfMSEX1Y1QOfuaFsDpAhCViRqW+o=;
- b=hub/cHDM9Xm7Wj3v3tfSGWHM12Fk1wtxKnxr2gxZN4GEXAxqwZ4RGDORrKUjBRrvYu+o1t/iLMEwSoaJ7h7NHlhXLLxcVfZnTrqfPlR0cr5g5K5cUiXMXV3fE3tewLIn5m4jT9B/jcyXhc2+6d41Tnwu4O40ZpneLrC167Yv+dpfEj8+F/Xw+qSe8W9mGJ4+gL77hQRLGO2J59A9A9GXDOXhzmixIzmaz+nVvcPH5MjQwlVdlh8R3FMto2Ud60LxRVv63o2k0IUQZoHw9GudppgOJN3WR7DS9jVMgbkzA3vfdF2z8CY2RW0ocveOCs5n4eCJcsTZ53KJkCanNpeezw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o8Rio0BOEwIErcLOfMSEX1Y1QOfuaFsDpAhCViRqW+o=;
- b=OhudFM3C99ybFsVyx+VmgenG3mT00PFQwXFGQNsJ7HSnQhvvTUFWLYxo2C1lUB6etUITK1zeb20rFz3UxA7mLk8WM/4YQDgdlWP7VQ1CJJ+F29DRi8G4+SKl62alJfHLL29fMmtamJ4+5mqGfGGXA4VWO2ldhN8yXJR+j5LUrbk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by PH0PR12MB7077.namprd12.prod.outlook.com (2603:10b6:510:21d::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.6; Thu, 12 Mar
- 2026 21:14:27 +0000
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8%6]) with mapi id 15.20.9723.004; Thu, 12 Mar 2026
- 21:14:27 +0000
-Message-ID: <ef24d3dc-28f8-4ca9-848a-c480337aac04@amd.com>
-Date: Thu, 12 Mar 2026 15:14:24 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/colorop: Fix blob property reference tracking in
- state lifecycle
-To: Harry Wentland <harry.wentland@amd.com>, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org
-Cc: Simon Ser <contact@emersion.fr>, Daniel Stone <daniels@collabora.com>,
- Melissa Wen <mwen@igalia.com>, Sebastian Wick <sebastian.wick@redhat.com>,
- Uma Shankar <uma.shankar@intel.com>,
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- stable@vger.kernel.org
-References: <20260312204145.829714-1-harry.wentland@amd.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20260312204145.829714-1-harry.wentland@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0117.namprd03.prod.outlook.com
- (2603:10b6:303:b7::32) To DM4PR12MB8476.namprd12.prod.outlook.com
- (2603:10b6:8:17e::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1BC38B131
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 21:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773350096; cv=none; b=dOqiX7bg0M1dyuNqzrM3rkhRDmFo/WQS9Fp7WSCKQ+64pBhIxL2mDHUvKiuJ7SYjh+wdlii0UtN3OJtR/crQbbSDHEn+5gE2d4rPDT68GRf98Y9ydWGdgEqpOCFp2KnVsbgCZkJQ1wVsQz1HZMv3wJNr6+YV/bI7RdmmxXUDEAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773350096; c=relaxed/simple;
+	bh=X3MdWL87ZzxZkXkkruu29q57p5D+vJjyl1/uv2cRCpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D+BSMsCg39IGWi1Q6clvH7CIMXgt01eGBiRJ/AeOhshjNI7REgUvA5hA0CUYtnHATM403biLD9j1Ozh9HOWkgazP20tSWeiA9vhtG7/SIR5cKlfsdOdvY3mWW4l62SEexIUhP8kwjzVmGZl0yqOiT7IaA6qoWTnAmocGY4C4VYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DOOEWv6w; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8cd81963e73so159447085a.2
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 14:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773350093; x=1773954893; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QKhF79fkv9q8iYiNyqivBtEgraUUrd0jdUKOsg5fKR8=;
+        b=DOOEWv6wgtOPa3X8woPqxL6tIO6P87dOgn7mUpdD0im7Cyp5i9oL5zAuQQZgk4u1Pu
+         m8JB+5N622MMLhn1h5nG+ro5/Vc6SAhALkrdF01NbQ+5UXKXIS9gRLtu9IV5gGmRmpgy
+         A9Uu//FhGdq4jh0i80xftEBtLqHGWCxCp0ttXdaYCHzRCLh49O1vIUAkmaQZH/tjd5pE
+         SZna2wBvyP8c0rvlxK4hfBc3PF76PrDvVexg6NekeCmhf7b0JZJeWiehVj6/3VnNPN/z
+         TBG56JmEm5mohAgXr8bGN49/TB5nszRd+8iuxy6RIxeremT9Raufb5mQzBJ/s0Ukibzg
+         LN5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773350093; x=1773954893;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QKhF79fkv9q8iYiNyqivBtEgraUUrd0jdUKOsg5fKR8=;
+        b=S7Dbr9/m0chwoN81T1Va+FJ0zTHL3EwIOL/DVzF6xDGHBS9u15Z9g84KbhU/+sFa8r
+         MYbc5Ai3MtxKgSO4ejVyvwKHhYzhtcZQB7ng/Hc8Jri4yWrOzwnCdJleYlDPvR1vJnoo
+         GAwum/IZizJsVT5zf/WNhkFnTXMdnxZfybC06NC96xr5Ca4xLxna2hp1mQmjzmI+Np/x
+         8QBKogNDnCJukvP50YcFJdq8RjL4jWJ9LcwkqZXbTYlK52M5DkXiLrb6bDycKKcAu+ZC
+         Gyr9wq7seNvFBIXSZnx4X5/ouKOXV4AIMsKIqrBLOgGaaQ9zzTi1OwrLDn6zjHIpm+3n
+         /IWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnIlYqUBKfodcAJ8hZovuCc0d1s5T91+jF13m9mFkJ/LW1uYrACN3lSxf3ivgnT9oi9dglMDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkbZl1FQNd4dc5cTxUATbzOW2n1MNgym69EOijUkBNoMTsS5MU
+	2tkh5C7OZL+qcXCp1h7L3nVvNJ+XN72T6Z76zZirDfei3uWVPj6gjggP
+X-Gm-Gg: ATEYQzzKSerJxG0NWYdMGx7fo1Xs+IgtjtVHLNFH9HnoWLH0sYz88iqzIRc4+ln4Ck8
+	8EcbDfM1pp+f9q1787NgqyYVZ6BZpGfVSJ7iOI5g3IBHSmDVPaxflMZWcb0afoQa1RoTNrZnfa5
+	lfIMSKJTzNxET6jiI3h98yp98OdLx3QsvZhdWLCdPpqhtHLmICrCowyoIRApPqu3R2NOfhWJqRa
+	idj9JAT+6/Pnnb5OArajI9EHy0u/C2uUqZqpkkmfvh3Q7n3dqajruehWDXxewG5sMyIVE+zBeqH
+	Evbot4e5UHNHte/YpdX4IhvR2LhZ/mBoBo5bD65eiFPQqs9N+K6EhP8rovror59V1km647xhvY6
+	damy3YoRlwVux96Be3VuqXxTXUotN51LranDjdluBJXReJJSqE0t2Vi6eamOwNTP8zWiUcDndcE
+	SXYXf+U8dOLIuLLPxx9RU8qp7JZyqqA70RhXYQsb4HCapab6XQDQpKWAFgZ9CHo4XknLKj3jB0N
+	XdkUzFnqR3JzLpaCVWb
+X-Received: by 2002:a05:620a:45a5:b0:8cd:7d57:d613 with SMTP id af79cd13be357-8cdb5b8d73emr185570585a.55.1773350093009;
+        Thu, 12 Mar 2026 14:14:53 -0700 (PDT)
+Received: from localhost.localdomain ([129.170.197.126])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda2151db2sm401089985a.44.2026.03.12.14.14.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 14:14:52 -0700 (PDT)
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Nathan Rebello <nathan.c.rebello@gmail.com>,
+	linux-usb@vger.kernel.org,
+	heikki.krogerus@linux.intel.com,
+	kyungtae.kim@dartmouth.edu,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: typec: ucsi: validate connector number in ucsi_connector_change()
+Date: Thu, 12 Mar 2026 17:14:36 -0400
+Message-ID: <20260312211437.433-1-nathan.c.rebello@gmail.com>
+X-Mailer: git-send-email 2.43.0.windows.1
+In-Reply-To: <2026031238-richly-tattle-eab8@gregkh>
+References: <20260312060815.55-1-nathan.c.rebello@gmail.com> <2026031238-richly-tattle-eab8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|PH0PR12MB7077:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8716470-f6fe-45e9-3a94-08de807c57d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	u6Dl/T0THSkQ8kyThYwdX3POncjAQMd5WzEagrEBAlntSMBWsBhdb/dlQ21IyS6MhHy5cGuuzfILZ5iHP0pofPbJVlVM0HM3XxKxE8XVJIxlGJsbj/whANQkwT0EF8Ye4wjUH/OoJBM1aDLaKUx91KxghTC935Is7bla7jqP/+XHlJBFcuiwzAkW7T2tT5jFfMfrU5HrjOApWmbXY4Swh4/+P4ogu7Wt7zHMNf0naXzfZEq+Cmdna/hsLcy6im/gFiMYCooJ7i5449tlOzaGRbpav98FXcTHuGXblYRbhidlLesGn6DvmdOZCfzi4Dc/2qI6KnGXcBicJodBfQrjIYOi6iCwEQSBOK1UYZ9InV58cDhGcbm16BicTyrUlYJnGbK+34T/9jupws1S9i4WFRldL4E15rH8S8pX8EvuSaRgbOG6nzans90K4lvEBjljjXAd7ckHcW30+lE0SW1Tv0tctbuSJIPQ6SMyaC3qdTcugnZaDzPZJ70uHcQvcD6fidSlcnlSl/+aAM+ebfXmw1wlDsh5A2kpv946B+WDHmuLFdSN1AZ1aRTyPg01aL0F41F9yZFjrIT+MpYBOhg+DPRtOH0FY3b/0Q95FON1EJ/SuXzQKcgWr1VeA9/bAOrOCaM7Ct4SiAzZAVkP7qZCJVDRKbzbgiW2QyYwGCtxTJYBiw7J+napOJw2Shn4kzAalDNtuEp3KyBEC1l2wgxQVrVI+nKgxIDFKAL6yUU+9m8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB8476.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ckRwaDUxVWQwa1lOWmluR2pDMnZIaGFhWndWeUUzb3FLc2hiMXhMc05iVUpP?=
- =?utf-8?B?RmlaeGJ0d1VtOWhPaDNFejVzY083Smh4bW4yODdqcVFTQjlWR21TTnIyRjFN?=
- =?utf-8?B?a2xCamp1ZU8wTWlLMGQ5cUszZUh0bGtsNjhEMnRYc1NhM08vRmtMRTNjSlVB?=
- =?utf-8?B?bkJwSmNQbDdLbVJqUTd6NmIvdEF5T2hyT3hyZ1ZXSTF4UnVBSEJsaWxIMmJ0?=
- =?utf-8?B?eFRkU0o4eXhJelVRbkcxY2FaeGNyMEMxVXUyZ1M4cXVab081Q2FhZjNybEVl?=
- =?utf-8?B?VGJQeWE4K3lqckVQNHpVdWFpN3ZaTnUvcnRWcllsZlpOamxadTJSN0cwY0Mw?=
- =?utf-8?B?NjNWbGNpVjc2VUI2b1lUR3poWGVBNEgvRWNCMXdQdjVyZmltOSt2bjJFTnZH?=
- =?utf-8?B?ZElwdi9nbVpidFVTdS82bW9ZTU9IeElXUHRuRG51TFU2NHBqa2hpTjE0RkFS?=
- =?utf-8?B?OTBWbEJ3elhWQlJpekhpWkk4UDN5RVpUTHA0TGliMUJsZldQcm8yY2ZCUm5O?=
- =?utf-8?B?OFlkbk1td2EyM1U3VlpZK0FSNlI1OUEydmhEWnlMNGZNSUNqRE5ER3YrUFhp?=
- =?utf-8?B?bGxSUncxTWpRVkh2UGVjYzNRTERLTXRzUU92TGNpVjdpd3ZYRG1NKzAzdllm?=
- =?utf-8?B?azRRbkZ6aGx4QXU5MzFPQ01idjRRbHBMN0ZjNVBxaGF0TDZmblFYOFFLd2FT?=
- =?utf-8?B?a3F5NGVvd1dqdWMxTTIwZWtkZEE0WWpKS091eit1SFZTemtuSXBsSW9rZHVS?=
- =?utf-8?B?QlE2Z1NnNkNuRXBlUWhMdEkzVnp0QVZVdGp4TUZ2R0JCSktsN2pPV3M2TnVT?=
- =?utf-8?B?Y2hHRW5SbEZNY0NaZ08wcnM2UjgxdWNqOFNSOS9sRjZyYWUwb0szNWdvczdl?=
- =?utf-8?B?aW1xUDZIN2h4UmdwZ0Jrd0xvNGszNXhxRFQySzhYVTZSL09FZzJZVmE4Ung2?=
- =?utf-8?B?dFdoQWl2WU1kRFdYdms2RCt5aDczejVaYkt4clpRcnJNRGhKeHh2dzVxTEdC?=
- =?utf-8?B?amEzQ1k0dGduSnlRMlliTGZzQjI0cEJhWnlCbndYazB2L2U0eUM0YVBtemti?=
- =?utf-8?B?WXZPSTh3RUdSUHdIeEtxK051S09pR1cvT2pHZ1U2Rko1azhBb2lqUnpTR1la?=
- =?utf-8?B?WVVtZjFDSUw4dDBDSWo3aUtCVTB3VWpQS0tjeUVlTEJSY3lEcmxxeUJPNVo3?=
- =?utf-8?B?ekF1MlhNMXF6SjBMQ1hDMzUvZVFreTYyem51LzdwUG1rS1ZQNWY0cURsa1Zi?=
- =?utf-8?B?VTRxQkp2Z2lySnZmQmxySjYwdjlpN1k4dk5BVWpRbjFxdVdSTENPSnB6M2U0?=
- =?utf-8?B?WjJ4ZWN6MklxZG5zblhrdDZiN1lKcFVCOWdiekR6UEdhZnd0aFRUMUFPbnpN?=
- =?utf-8?B?ZkFTWFJYN0pybnpRYTdjK2NJQ3JUOHpSNUlJL3ZkSndNci9tMEUwbUdwN1Nq?=
- =?utf-8?B?Q0RKWVVZTDJKMzgxajV2UEdlSnBDV2pGNnhQL3JpUDBuL05oOWdyWlpHT0ZV?=
- =?utf-8?B?bUh0OXJNd2kzcE1DOEE0Yk4weldnUGgzTHhiZW1wdFB5NmgydkRuUmlTbFEv?=
- =?utf-8?B?UzJlMDJ3WkZvd3U2V1dzNGxycXVySmp1SjE3dk1uWHRCZUFwcFFVK1NIL0g5?=
- =?utf-8?B?aHNuU3pMMktvWHFNRUxnemFJREFoVXdYOUVQeFhyTUErTHFSNkJwL1NqOFRu?=
- =?utf-8?B?eU1xY0JzSlkrNzd2RjRzWWoxVDlZb3BXVEtRcU5mZ3kxRjI0TXZMekNyVGNM?=
- =?utf-8?B?eG1lVjlpN24zblVpYm40QWtRWDkzT2FNTHgyMmRKOGduWnNkc2R6R1FkYmp2?=
- =?utf-8?B?cGpjaVBGUWxIcE9na05ld0RtWkYwZ1FqczlESjFnT0p2WVExYVJScFlRWTNz?=
- =?utf-8?B?d3F3NXdOMEg2N0hrL28yU05BbXp2VnFweGRDY3lOM3RaM3JKNGJTNEVZZmNx?=
- =?utf-8?B?K1RQUWFpUUtaNTQxSWo5SWI2bVYrMEcxUEMvSVFsV3YrK3hTTjhRQmFPQ2Vw?=
- =?utf-8?B?M0FQT3hRazlrNUpxdXN1cG9YcUxRa0I2dzlYcThDVHdNVWJYa2F4SkgwS1NO?=
- =?utf-8?B?RG1haFFoWnZiSkMyQnBwL2pLbEk3Zi9udmtCeUpLaElBYVNUNkhxWHp0RVk0?=
- =?utf-8?B?M041NWxzWm03SUhrTnRFaktYUUhuMVdZbTB6S3FxZmlFUlIzMnFnSzBZSytl?=
- =?utf-8?B?b2xkY2szNDNWa1BNNENobkVsWDZ4UngwVFR1UWdrdXVMNEppeFlnVi9qT3pU?=
- =?utf-8?B?dWZVb1dyMmV5UnFrSkhOUzhBbHo1RlMxekVLdDdrSWUzWnc4OHJzZGhmSUZq?=
- =?utf-8?B?bFhJNUxNNjQwak5sRzJsYm1jWWlROXhXdEhHNDAwUkZEUis3NzRkQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8716470-f6fe-45e9-3a94-08de807c57d2
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 21:14:27.1888
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: naIiMOVjTF/G1fDP+nJ3a+y2hA1gASryZLcSM9SjIv33MF23snH4HHNFHTKM6UFbGor2UaLAZAe0opHdBMJRYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7077
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,linux.intel.com,dartmouth.edu];
+	TAGGED_FROM(0.00)[bounces-225217-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225216-lists,stable=lfdr.de];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.hung@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+]
-X-Rspamd-Queue-Id: DCC43279D6E
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: BF9B7279DE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+On Thu, 12 Mar 2026 at 07:25:54 +0100, Greg KH wrote:
+> Shouldn't we "fail" something here?  If this device is sending broken
+> data, we don't want the caller to just assume this succeeded, right?
+>
+> Shouldn't stuff like this be checked in a single call after read_cci()
+> is called?  The other calls to ucsi_connector_change() are not operating
+> on a "new" descriptor value from what I can tell, but I might have
+> missed a code path somewhere.
 
-On 3/12/26 14:41, Harry Wentland wrote:
-> The colorop state blob property handling had memory leaks during state
-> duplication, destruction, and reset operations. The implementation
-> failed to follow the established pattern from drm_crtc's handling of
-> DEGAMMA/GAMMA blob properties.
-> 
-> Issues fixed:
-> - drm_colorop_atomic_destroy_state() was freeing state memory without
->    releasing the blob reference, causing a leak
-> - drm_colorop_reset() was directly freeing old state with kfree()
->    instead of properly destroying it, leaking blob references
-> - drm_colorop_cleanup() had duplicate blob cleanup code
-> 
-> Changes:
-> - Add __drm_atomic_helper_colorop_destroy_state() helper to properly
->    release blob references before freeing state memory
-> - Update drm_colorop_atomic_destroy_state() to call the helper
-> - Fix drm_colorop_reset() to use drm_colorop_atomic_destroy_state()
->    for proper cleanup of old state
-> - Simplify drm_colorop_cleanup() to use the common destruction path
-> 
-> This matches the well-tested pattern used by drm_crtc since 2016 and
-> ensures proper reference counting throughout the state lifecycle.
-> 
-> Co-developed by Claude Sonnet 4.5.
-> 
-> Fixes: cfc27680ee20 ("drm/colorop: Introduce new drm_colorop mode object")
-> Cc: Simon Ser <contact@emersion.fr>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Daniel Stone <daniels@collabora.com>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Sebastian Wick <sebastian.wick@redhat.com>
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> Cc: <stable@vger.kernel.org> #v6.19+
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> ---
->   drivers/gpu/drm/drm_colorop.c | 26 +++++++++++++++++++-------
->   1 file changed, 19 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.c
-> index f421c623b3f0..647cf881f413 100644
-> --- a/drivers/gpu/drm/drm_colorop.c
-> +++ b/drivers/gpu/drm/drm_colorop.c
-> @@ -171,12 +171,8 @@ void drm_colorop_cleanup(struct drm_colorop *colorop)
->   	list_del(&colorop->head);
->   	config->num_colorop--;
->   
-> -	if (colorop->state && colorop->state->data) {
-> -		drm_property_blob_put(colorop->state->data);
-> -		colorop->state->data = NULL;
-> -	}
-> -
-> -	kfree(colorop->state);
-> +	if (colorop->state)
-> +		drm_colorop_atomic_destroy_state(colorop, colorop->state);
->   }
->   EXPORT_SYMBOL(drm_colorop_cleanup);
->   
-> @@ -485,9 +481,23 @@ drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colorop)
->   	return state;
->   }
->   
-> +/**
-> + * __drm_atomic_helper_colorop_destroy_state - release colorop state
-> + * @state: colorop state object to release
-> + *
-> + * Releases all resources stored in the colorop state without actually freeing
-> + * the memory of the colorop state. This is useful for drivers that subclass the
-> + * colorop state.
-> + */
-> +static void __drm_atomic_helper_colorop_destroy_state(struct drm_colorop_state *state)
-> +{
-> +	drm_property_blob_put(state->data);
-> +}
-> +
->   void drm_colorop_atomic_destroy_state(struct drm_colorop *colorop,
->   				      struct drm_colorop_state *state)
->   {
-> +	__drm_atomic_helper_colorop_destroy_state(state);
->   	kfree(state);
->   }
->   
-> @@ -538,7 +548,9 @@ static void __drm_colorop_reset(struct drm_colorop *colorop,
->   
->   void drm_colorop_reset(struct drm_colorop *colorop)
->   {
-> -	kfree(colorop->state);
-> +	if (colorop->state)
-> +		drm_colorop_atomic_destroy_state(colorop, colorop->state);
-> +
->   	colorop->state = kzalloc_obj(*colorop->state);
->   
->   	if (colorop->state)
+Agreed. v4 moves the check into ucsi_notify_common(), which is the
+single point where CCI is parsed after it arrives from hardware.  If the
+connector number is out of range, we log dev_err and never call
+ucsi_connector_change() -- the bogus data does not propagate.
 
+ucsi_notify_common() returns void since it is an interrupt notification
+path with no caller to propagate an error to, so rejecting the event
+with dev_err is the failure mode here.
+
+The other two call sites are not a concern as you noted:
+ucsi_register() could be routed through ucsi_notify_common() in a
+follow-up if desired, and ucsi_yoga_c630 hardcodes connector 1.
+
+Nathan Rebello
 
