@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-225124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2M8ILPkgs2m5SQAAu9opvQ
-	(envelope-from <stable+bounces-225124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:24:25 +0100
+	id 8E+VEfogs2mpSQAAu9opvQ
+	(envelope-from <stable+bounces-225125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:24:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A79278F8A
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD2F278F8B
 	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:24:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB7C1303EF9E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:24:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1D9F0301DEC4
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7DF35A3BA;
-	Thu, 12 Mar 2026 20:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D694E372EF6;
+	Thu, 12 Mar 2026 20:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2PgS8zM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvusAYfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D360D2D2491;
-	Thu, 12 Mar 2026 20:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A75B2D0606;
+	Thu, 12 Mar 2026 20:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347058; cv=none; b=tXHT5HqOQqNbeTi+aPHgIgxcYWsQPZtMsW0/Vs0MaeSyZnceOaOsJ5CzS5FEu1JHPCPalLcO9DB5ok+WKp59i+GYu5cjlkDyYJhMr/4SAfEVJmasZMO9R6UQ+Pm9+BvyeZTd49ceFCvN/wRabhi1edFu0FTmkvheorm70xNHs9Y=
+	t=1773347062; cv=none; b=F/as7FKja+CEKfSVmtNEZmGxW4kwUQuH86uaDRVagcolNCFeb+pwNSmgT2I4ZC2brE7E+s9tqq0C7n0wQm+TEfbu+hIzsTDrFvsH60rtTKm+HT9emOPmD8LpuEgcSwtiyeT0Cb7kVDaThHKz0Rhh846+WPLytoxcbRy1o1Cu/s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347058; c=relaxed/simple;
-	bh=KFi48kEwteZPwmhQ4Uengo2srzQTvrfKCetsJXWrN18=;
+	s=arc-20240116; t=1773347062; c=relaxed/simple;
+	bh=7KJIHrKWCBCCUL1vgbufvxbxCljDA16IcRI7UDkbsII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgruiJ5W2jAmixo1wJl3mANI57YvjvbMGBEG1nhZ4eVfZb/LiG5uRp/xgiiFgx+1uJKVGNbZ+h8DXrPMzE8BDlQuXgOxIZwYjAuQ/32xWou0TjD/bEge68F6u3o61gD8IXD0PJV01qATkzB9Vlu97cFW6LW2smVMOGsO2H4xWQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2PgS8zM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3FBC4CEF7;
-	Thu, 12 Mar 2026 20:24:17 +0000 (UTC)
+	 MIME-Version; b=LLOnAfGUW7JtZoXGTYfEIPKlPF0/SEB5FtxjeoMwQUCzxu4E5mBse/e+cH8svD3jZaCIWRiKE/nxS8I/B/t7JD9vF93Aw2Kn3w6tU/XXFfbgA5/0SQ4j6A6+baZhdKFKAFCg1fNBmNUq6jDz4Mto4+9YCI483QNuEvsXIOEb22c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvusAYfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7CEC4CEF7;
+	Thu, 12 Mar 2026 20:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347058;
-	bh=KFi48kEwteZPwmhQ4Uengo2srzQTvrfKCetsJXWrN18=;
+	s=korg; t=1773347062;
+	bh=7KJIHrKWCBCCUL1vgbufvxbxCljDA16IcRI7UDkbsII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2PgS8zMql5cSxN0pyZsPCcp+a0m3QQOEBwucISQ0Q5IbqA13KM5Qn0z32TIr134M
-	 I9Sulozqt8NkTCtKVb0DQ9Xj17GNncQu7go1zObZ/ALpr2Fi0ChdGsTFTHj7fTmRP8
-	 VBxiXC7rtoSwOtuO/B9koQHc+hc21T6VwzENOzyk=
+	b=nvusAYfT2w5pN/CFES20xmKNfeqlsFAurtGeTIG4w5f5QwIf6cZeZd0rGPc/i7kJC
+	 +LPco0YnenF5QYLR/gVxVMEOWgKymns2mOcOO1Cpy+xmQ0En4QmPC483gJdWasEXMS
+	 UjQemlJJksCo99FiOP6oJWv9kPCXleyXKJIK6olM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 159/265] smb: client: Dont log plaintext credentials in cifs_set_cifscreds
-Date: Thu, 12 Mar 2026 21:09:06 +0100
-Message-ID: <20260312201024.015474963@linuxfoundation.org>
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 160/265] scsi: core: Fix refcount leak for tagset_refcnt
+Date: Thu, 12 Mar 2026 21:09:07 +0100
+Message-ID: <20260312201024.051904618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,30 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225125-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225124-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,manguebit.org:email]
-X-Rspamd-Queue-Id: 31A79278F8A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
+X-Rspamd-Queue-Id: ABD2F278F8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,34 +100,49 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit 2f37dc436d4e61ff7ae0b0353cf91b8c10396e4d upstream.
+commit 1ac22c8eae81366101597d48360718dff9b9d980 upstream.
 
-When debug logging is enabled, cifs_set_cifscreds() logs the key
-payload and exposes the plaintext username and password. Remove the
-debug log to avoid exposing credentials.
+This leak will cause a hang when tearing down the SCSI host. For example,
+iscsid hangs with the following call trace:
 
-Fixes: 8a8798a5ff90 ("cifs: fetch credentials out of keyring for non-krb5 auth multiuser mounts")
+[130120.652718] scsi_alloc_sdev: Allocation failure during SCSI scanning, some SCSI devices might not be configured
+
+PID: 2528     TASK: ffff9d0408974e00  CPU: 3    COMMAND: "iscsid"
+ #0 [ffffb5b9c134b9e0] __schedule at ffffffff860657d4
+ #1 [ffffb5b9c134ba28] schedule at ffffffff86065c6f
+ #2 [ffffb5b9c134ba40] schedule_timeout at ffffffff86069fb0
+ #3 [ffffb5b9c134bab0] __wait_for_common at ffffffff8606674f
+ #4 [ffffb5b9c134bb10] scsi_remove_host at ffffffff85bfe84b
+ #5 [ffffb5b9c134bb30] iscsi_sw_tcp_session_destroy at ffffffffc03031c4 [iscsi_tcp]
+ #6 [ffffb5b9c134bb48] iscsi_if_recv_msg at ffffffffc0292692 [scsi_transport_iscsi]
+ #7 [ffffb5b9c134bb98] iscsi_if_rx at ffffffffc02929c2 [scsi_transport_iscsi]
+ #8 [ffffb5b9c134bbf0] netlink_unicast at ffffffff85e551d6
+ #9 [ffffb5b9c134bc38] netlink_sendmsg at ffffffff85e554ef
+
+Fixes: 8fe4ce5836e9 ("scsi: core: Fix a use-after-free")
 Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223232728.93350-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/scsi_scan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2197,7 +2197,6 @@ cifs_set_cifscreds(struct smb3_fs_contex
- 	/* find first : in payload */
- 	payload = upayload->data;
- 	delim = strnchr(payload, upayload->datalen, ':');
--	cifs_dbg(FYI, "payload=%s\n", payload);
- 	if (!delim) {
- 		cifs_dbg(FYI, "Unable to find ':' in payload (datalen=%d)\n",
- 			 upayload->datalen);
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -354,6 +354,7 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * since we use this queue depth most of times.
+ 	 */
+ 	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
++		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+ 		put_device(&starget->dev);
+ 		kfree(sdev);
+ 		goto out;
 
 
 
