@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-225209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CITSKFoks2nlSgAAu9opvQ
-	(envelope-from <stable+bounces-225209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:50 +0100
+	id 6AyDHkMks2nlSgAAu9opvQ
+	(envelope-from <stable+bounces-225200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0430E27963A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D712D27960E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6A4532B08DF
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:30:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C646632A7844
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD553B0AD0;
-	Thu, 12 Mar 2026 20:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969C038A285;
+	Thu, 12 Mar 2026 20:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIPTicvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGYdLzmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BD73AF66F;
-	Thu, 12 Mar 2026 20:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C2033A9CF;
+	Thu, 12 Mar 2026 20:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347369; cv=none; b=a5MPRFMqRuE17ISi5dON30qYERRm7yEIX1Q6RkJtt0jJo3R8687xPQBPzYLSV02nm+JIZARkvrtqnGMZkRjsWeFn87Oow4L715kvokibwjzSKFsCmdvr8E35oOhRaVCtQdlsahgHfdt3xOYTcIx9GYI1IdXJeVQkd3RpSe53FfI=
+	t=1773347332; cv=none; b=FCmf1RwXRvTRpzP6LQ+VEpnXuEBjwKI9HjP+UDCWjl+cjaD/9hbSDhs4dLQu0NwXI8tr29Ps+gTws4UbUJM8J5UPlkzSv87adMVS2YLCnphcN0LAFRK2or+xxwK6+/7eAFQ4vHdpcBiFp6EXeOtSHsjfuACljeEr8tAvXa04s+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347369; c=relaxed/simple;
-	bh=ED29GbfCSctyJUw2XEa9pvOEb11nQpt9wyujCuE2+tI=;
+	s=arc-20240116; t=1773347332; c=relaxed/simple;
+	bh=BJhHt+dyswVlePrmqWZhTrlgpL5W+GGZt2ddlMfBtO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukwmpMJo4axSV0JeyXwcRzBO2WC0pSDsqQGoyeETSNdbNGIT2lzJHXB4u/G5RwTStlpVs9Omb3auNcOe8qCaRN77KShH8zY1DT871enOPwk4TdmyDqFDUxAgVQb5P/LWHOiRtWfrGJVOGvH2rqHGCvIogu9cMB+r59mSrO4Afuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIPTicvR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A6CC4CEF7;
-	Thu, 12 Mar 2026 20:29:28 +0000 (UTC)
+	 MIME-Version; b=Xont4ZPsw1HWAakWa8Db5PRBJQjYe3Ed1HnXAxTpzMh8TFJA3QT4/ckgQWXD8i9OumA+swWxQNG47LaG1rU9PjFlKct0V7anOWMnSeBXI/ySvFiGx94WCw6Zy0Aig33MGuCoGzy0Fueu01YGBYNqd4VxXnxEkafJ9p/PI3BOJ3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGYdLzmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F9C4CEF7;
+	Thu, 12 Mar 2026 20:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347368;
-	bh=ED29GbfCSctyJUw2XEa9pvOEb11nQpt9wyujCuE2+tI=;
+	s=korg; t=1773347332;
+	bh=BJhHt+dyswVlePrmqWZhTrlgpL5W+GGZt2ddlMfBtO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIPTicvR3ASMFU5WWDFlCOotxj+nra3yg8IPfZXHoBTS+mmwL9a13axgEaTKqZfE6
-	 hT9MDwApNBp+CPFYAfhB1vxq4lL7No4QKr/WDx8NIV9yqgTww60B/auKcP5qJuSlad
-	 MOjK3RQYq1zeUC9SIhq1izDL81+fSm/CuTKL4gwc=
+	b=EGYdLzmYOz1Sxaz0TPKx2Nc3Szeh1JoGeiiPBd/kurG+On0c2/lW/IBxx+F0njncl
+	 dGLOK3TgDWbno6QakP1CzdHZ/gZHAt0c1EGIf8FYvs7otFcVzKekgtrj1/vWeaiuOB
+	 G6TzZFa5+DG8Zz3OUBjM/mqj+Krb1Obuvo2rJm1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Georgia Garcia <georgia.garcia@canonical.com>,
 	Cengiz Can <cengiz.can@canonical.com>,
 	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.12 256/265] apparmor: Fix double free of ns_name in aa_replace_profiles()
-Date: Thu, 12 Mar 2026 21:10:43 +0100
-Message-ID: <20260312201027.594218839@linuxfoundation.org>
+Subject: [PATCH 6.12 257/265] apparmor: fix unprivileged local user can do privileged policy management
+Date: Thu, 12 Mar 2026 21:10:44 +0100
+Message-ID: <20260312201027.631677933@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225200-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0430E27963A
+X-Rspamd-Queue-Id: D712D27960E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,26 +103,31 @@ X-Rspamd-Server: lfdr
 
 From: John Johansen <john.johansen@canonical.com>
 
-commit 5df0c44e8f5f619d3beb871207aded7c78414502 upstream.
+commit 6601e13e82841879406bf9f369032656f441a425 upstream.
 
-if ns_name is NULL after
-1071         error = aa_unpack(udata, &lh, &ns_name);
+An unprivileged local user can load, replace, and remove profiles by
+opening the apparmorfs interfaces, via a confused deputy attack, by
+passing the opened fd to a privileged process, and getting the
+privileged process to write to the interface.
 
-and if ent->ns_name contains an ns_name in
-1089                 } else if (ent->ns_name) {
+This does require a privileged target that can be manipulated to do
+the write for the unprivileged process, but once such access is
+achieved full policy management is possible and all the possible
+implications that implies: removing confinement, DoS of system or
+target applications by denying all execution, by-passing the
+unprivileged user namespace restriction, to exploiting kernel bugs for
+a local privilege escalation.
 
-then ns_name is assigned the ent->ns_name
-1095                         ns_name = ent->ns_name;
+The policy management interface can not have its permissions simply
+changed from 0666 to 0600 because non-root processes need to be able
+to load policy to different policy namespaces.
 
-however ent->ns_name is freed at
-1262                 aa_load_ent_free(ent);
+Instead ensure the task writing the interface has privileges that
+are a subset of the task that opened the interface. This is already
+done via policy for confined processes, but unconfined can delegate
+access to the opened fd, by-passing the usual policy check.
 
-and then again when freeing ns_name at
-1270         kfree(ns_name);
-
-Fix this by NULLing out ent->ns_name after it is transferred to ns_name
-
-Fixes: 145a0ef21c8e9 ("apparmor: fix blob compression when ns is forced on a policy load")
+Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
 Reported-by: Qualys Security Advisory <qsa@qualys.com>
 Tested-by: Salvatore Bonaccorso <carnil@debian.org>
 Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
@@ -130,19 +135,149 @@ Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/apparmor/apparmorfs.c     |   16 +++++++++-------
+ security/apparmor/include/policy.h |    2 +-
+ security/apparmor/policy.c         |   34 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 43 insertions(+), 9 deletions(-)
 
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -412,7 +412,8 @@ static struct aa_loaddata *aa_simple_wri
+ }
+ 
+ static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
+-			     loff_t *pos, struct aa_ns *ns)
++			     loff_t *pos, struct aa_ns *ns,
++			     const struct cred *ocred)
+ {
+ 	struct aa_loaddata *data;
+ 	struct aa_label *label;
+@@ -423,7 +424,7 @@ static ssize_t policy_update(u32 mask, c
+ 	/* high level check about policy management - fine grained in
+ 	 * below after unpack
+ 	 */
+-	error = aa_may_manage_policy(current_cred(), label, ns, mask);
++	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
+ 	if (error)
+ 		goto end_section;
+ 
+@@ -444,7 +445,8 @@ static ssize_t profile_load(struct file
+ 			    loff_t *pos)
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+-	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
++	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
++				  f->f_cred);
+ 
+ 	aa_put_ns(ns);
+ 
+@@ -462,7 +464,7 @@ static ssize_t profile_replace(struct fi
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+ 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
+-				  buf, size, pos, ns);
++				  buf, size, pos, ns, f->f_cred);
+ 	aa_put_ns(ns);
+ 
+ 	return error;
+@@ -487,7 +489,7 @@ static ssize_t profile_remove(struct fil
+ 	 * below after unpack
+ 	 */
+ 	error = aa_may_manage_policy(current_cred(), label, ns,
+-				     AA_MAY_REMOVE_POLICY);
++				     f->f_cred, AA_MAY_REMOVE_POLICY);
+ 	if (error)
+ 		goto out;
+ 
+@@ -1813,7 +1815,7 @@ static int ns_mkdir_op(struct mnt_idmap
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(current_cred(), label, NULL,
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
+ 				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+@@ -1863,7 +1865,7 @@ static int ns_rmdir_op(struct inode *dir
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(current_cred(), label, NULL,
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
+ 				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+--- a/security/apparmor/include/policy.h
++++ b/security/apparmor/include/policy.h
+@@ -393,7 +393,7 @@ bool aa_policy_admin_capable(const struc
+ 			     struct aa_label *label, struct aa_ns *ns);
+ int aa_may_manage_policy(const struct cred *subj_cred,
+ 			 struct aa_label *label, struct aa_ns *ns,
+-			 u32 mask);
++			 const struct cred *ocred, u32 mask);
+ bool aa_current_policy_view_capable(struct aa_ns *ns);
+ bool aa_current_policy_admin_capable(struct aa_ns *ns);
+ 
 --- a/security/apparmor/policy.c
 +++ b/security/apparmor/policy.c
-@@ -1118,6 +1118,7 @@ ssize_t aa_replace_profiles(struct aa_ns
- 				goto fail;
- 			}
- 			ns_name = ent->ns_name;
-+			ent->ns_name = NULL;
- 		} else
- 			count++;
- 	}
+@@ -894,17 +894,44 @@ bool aa_current_policy_admin_capable(str
+ 	return res;
+ }
+ 
++static bool is_subset_of_obj_privilege(const struct cred *cred,
++				       struct aa_label *label,
++				       const struct cred *ocred)
++{
++	if (cred == ocred)
++		return true;
++
++	if (!aa_label_is_subset(label, cred_label(ocred)))
++		return false;
++	/* don't allow crossing userns for now */
++	if (cred->user_ns != ocred->user_ns)
++		return false;
++	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
++		return false;
++	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
++		return false;
++	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
++		return false;
++	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
++		return false;
++	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
++		return false;
++	return true;
++}
++
++
+ /**
+  * aa_may_manage_policy - can the current task manage policy
+  * @subj_cred: subjects cred
+  * @label: label to check if it can manage policy
+  * @ns: namespace being managed by @label (may be NULL if @label's ns)
++ * @ocred: object cred if request is coming from an open object
+  * @mask: contains the policy manipulation operation being done
+  *
+  * Returns: 0 if the task is allowed to manipulate policy else error
+  */
+ int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
+-			 struct aa_ns *ns, u32 mask)
++			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
+ {
+ 	const char *op;
+ 
+@@ -920,6 +947,11 @@ int aa_may_manage_policy(const struct cr
+ 		return audit_policy(label, op, NULL, NULL, "policy_locked",
+ 				    -EACCES);
+ 
++	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
++		return audit_policy(label, op, NULL, NULL,
++				    "not privileged for target profile",
++				    -EACCES);
++
+ 	if (!aa_policy_admin_capable(subj_cred, label, ns))
+ 		return audit_policy(label, op, NULL, NULL, "not policy admin",
+ 				    -EACCES);
 
 
 
