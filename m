@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-224780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id vcW+CQcbsmnjIgAAu9opvQ
-	(envelope-from <stable+bounces-224780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:46:47 +0100
+	id yCzWG7YesmlwIwAAu9opvQ
+	(envelope-from <stable+bounces-224781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:02:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756AD26BFE8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:46:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94B926C0F1
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D07E306160B
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:46:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B56493021D2C
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866E73750DE;
-	Thu, 12 Mar 2026 01:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A797C34750A;
+	Thu, 12 Mar 2026 02:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fxjyI7vS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BZPgc2Fn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EC12820C6;
-	Thu, 12 Mar 2026 01:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1613B45039;
+	Thu, 12 Mar 2026 02:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773279993; cv=none; b=FttIf1AGQ7jNEnc24Cp9HKNMs9++U4Kuc0+EHwP5f+5sHExhRWp5jPSFLvNtQNEgSiXRMIOS32DHVT64qnohDx9YX59GK0HDJApf1lDn4cK0qFbKFCnPejHgztedLQvkbG0JRVakLrU9lLrZIiDGudDQFI0UQsCNnoZiX7aEux8=
+	t=1773280947; cv=none; b=TTJSXpfs2xyF7htjg5jgeX6Y5fZAoG2Dx/AP/UeHhZNk5NGlWic3HGBGrBXio/j1GCAFtyWvjwYwfrrsrA2T1QT2MIh674Q51fkYkAiS0ZJl49mO1d8l5FH+EAbuqlCS3Tpb7m0N0iuAXoP8MYA0VvP7Ms8cgXS+tXOLZ1gfFuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773279993; c=relaxed/simple;
-	bh=YVMTsCpUknRm8seB/lZR+5bmbilX60hT8sRjcsOU0DY=;
+	s=arc-20240116; t=1773280947; c=relaxed/simple;
+	bh=M8le9hNO0YwwcjywIwQignBdb2RqR6+jbV4mLbCKk0k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fUnnWXKcJi/D2vTmmUHMsKylxa9W2LIT+huVWyGWZ2eHA/No16sDRN+Rq7dUf9N7nkKuj08AF58RMJDWw8KWcJpB0hkDA4EwTU481aq1VPG0MmLJNDUhYqZLQug13b9exYx5yazWkRgBmpmburKy0SLH32hdwH9dbiWIMTmAyt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fxjyI7vS; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=uKH7ghYoe3ryueVOVr017LWihp6Tzt72N3xwSHswtocmOD/jVgY6A9pyWh4oH8SClWzmoZQYxX/3YcZoqY7P6D0qNBL9+TAOv2MQcpYK6zhC/nBtfBTHmQYMgQWivipnoCsx28xLy6xs5iHPZKLxC5YI5ogD5sIMKmqHDuzEAPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BZPgc2Fn; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773279992; x=1804815992;
+  t=1773280946; x=1804816946;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=YVMTsCpUknRm8seB/lZR+5bmbilX60hT8sRjcsOU0DY=;
-  b=fxjyI7vSdukD0yMzdrhdX+St39JQ3rJM7AZpRR7XMM0+h4LSIxNVM6UM
-   OKo+Xdk37lGZ2fkESkJraTzWudGFn5zank+UP2TgwTiwU0iW8PY4iPSbE
-   m1oKwkjTymW2gpyYgYnJX6pEVK/s7j0Xd0QKAifp0gyIeUNhdjqXt1IOs
-   SL9TBDVl926nNCIAs5DrJ7HDrO5nbdVXRq7zXRP0Lgvl0SZe5NhcfNqHI
-   Keg6e7hFa6o2o0MmcNEbvhXUV+McBKlldZTAcjY4ZuwinEzHoj+HinuNt
-   2MQibUrdAgeVS18RN4M8LR1hQ2i5egmPD8vB94S6PCyJsCq+W3cnUjl7r
+  bh=M8le9hNO0YwwcjywIwQignBdb2RqR6+jbV4mLbCKk0k=;
+  b=BZPgc2FnrljTy0rDVqQK6kiMriqs3P3rGrLkfIQx+Qfa2ijKDNF/25sS
+   TecrJIbvJ2pxWBi8YLL5yVYpwejvqkFZniU3JoVYllrr8xn4dl66lPFZC
+   7yrRKli58QZHQc4o9taW9WKcaOHZlT9OZcjSAxHC3m1Kl/51/8NWCnoqc
+   R8Gnz6gH5RYJtRCoRglvcyiOkcl/kc5WP01uuHUmB8PoHJC4f4rQ1BiRN
+   NbEb89ERi9dZnsFDp3Zyxi3iIU8k47Kglik/orM9DPWCB7r0dxrwv6VnU
+   v+L5Ou5Z+OMzdhGR42+f8RGPY9KPPSho9cOZJeFIkmS7yjmfhfepoUdA9
    w==;
-X-CSE-ConnectionGUID: +PpOrGh+Tjm+wglwQnYSHg==
-X-CSE-MsgGUID: 4Wja1aU4Sl241OOyNSfn0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="76973742"
+X-CSE-ConnectionGUID: WdbUznw3QEmfnidm114KIA==
+X-CSE-MsgGUID: 8oyrJkPqSPWDYiMEPvrcdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="85451434"
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="76973742"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 18:46:31 -0700
-X-CSE-ConnectionGUID: kpLvnhOkQIWjTWz0ibo3tA==
-X-CSE-MsgGUID: wrNx/MB9Rmmc1SsGSpzISA==
+   d="scan'208";a="85451434"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:02:25 -0700
+X-CSE-ConnectionGUID: G1E+37ZSR6mTo+KMwXttcg==
+X-CSE-MsgGUID: ecd6+WcSTEKDGGupllc/bg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="251158990"
+   d="scan'208";a="220842502"
 Received: from unknown (HELO [10.238.3.214]) ([10.238.3.214])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 18:46:25 -0700
-Message-ID: <9b39df21-c35a-42b0-9e1f-ad7aec6a636c@linux.intel.com>
-Date: Thu, 12 Mar 2026 09:46:23 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:02:21 -0700
+Message-ID: <b7eedb9a-ecfa-4f9d-9c73-b20dc2a5e217@linux.intel.com>
+Date: Thu, 12 Mar 2026 10:02:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,39 +70,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] perf/x86: Move event pointer setup earlier in
- x86_pmu_enable()
-To: Peter Zijlstra <peterz@infradead.org>, Ian Rogers <irogers@google.com>
-Cc: Breno Leitao <leitao@debian.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+Subject: Re: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters
+ constraint apply
+To: Peter Zijlstra <peterz@infradead.org>, "Chen, Zide" <zide.chen@intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
- James Clark <james.clark@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, stable@vger.kernel.org
-References: <20260310-perf-v2-1-4a3156fce43c@debian.org>
- <a0a1d8ab-85cd-411c-b8e2-9e7e2f7136fd@linux.intel.com>
- <CAP-5=fWAzaKNO0wmAA89ovJLFgxCWQ3khnyWFotnaSAGiugv+A@mail.gmail.com>
- <20260311173509.GR606826@noisy.programming.kicks-ass.net>
+ Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
+ Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
+References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
+ <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
+ <6e2e5d3e-0906-43af-8816-f9f812e7e0aa@intel.com>
+ <20260311200340.GV606826@noisy.programming.kicks-ass.net>
 Content-Language: en-US
 From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260311173509.GR606826@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260311200340.GV606826@noisy.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-224780-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-224781-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
@@ -111,71 +109,115 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: 756AD26BFE8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,linux.intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B94B926C0F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On 3/12/2026 1:35 AM, Peter Zijlstra wrote:
-> On Wed, Mar 11, 2026 at 09:37:08AM -0700, Ian Rogers wrote:
->
->> Fwiw, an AI review was saying something similar to me. 
-> How do you guys get this AI stuff to say anything sensible at all about
-> the code? Every time I try, it is telling me the most abject nonsense.
-> I've wasted hours of my life trying to guide it to known bugs, in vain.
-
-Base on my experience, the quality of AI generated comments are impacted by
-2 factors, one is the AI model, the other is prompt.
-
-Currently I use Github copilot (Claude model) to do some AI reviews. Claude
-seems to be the best model for reviewing. Although most of AI review
-comments are not 100% accurate, it indeed can point out some potential
-issues or gave some clue about the issues. 
-
-About the Prompt, there is a project
-https://github.com/masoncl/review-prompts which gathers the review prompt
-for Linux kernel. I learnt a lot prompts from it. 
-
-
->
->> I wonder if the
->> issue with NMI storms exists already via another path:
+On 3/12/2026 4:03 AM, Peter Zijlstra wrote:
+> On Fri, Mar 06, 2026 at 05:27:35PM -0800, Chen, Zide wrote:
 >>
->> By populating cpuc->events[idx] here, even for events that skip
->> x86_pmu_start() due to the PERF_HES_ARCH check, can this lead to PEBS
->> data corruption?
->>
->> For Intel PEBS, intel_pmu_pebs_late_setup() iterates over cpuc->event_list
->> and enables PEBS_DATA_CFG for this counter index regardless of its stopped
->> state. If the PMU hardware generates PEBS records for this uninitialized
->> counter, or if there are leftover PEBS records from the counter's previous
->> occupant (since x86_pmu_stop() does not drain the PEBS buffer),
->> intel_perf_event_update_pmc() will now find a non-NULL event pointer.
->> Will it incorrectly process these leftover records and attribute them
->> to the stopped event?
-> Yes.
+>> On 2/27/2026 9:33 PM, Dapeng Mi wrote:
+>>> When running the command:
+>>> 'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+>>> a "shift-out-of-bounds" warning is reported on CWF.
+>>>
+>>> [ 5231.981423][   C17] UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+>>> [ 5231.981428][   C17] shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+>>> [ 5231.981436][   C17] CPU: 17 UID: 0 PID: 211871 Comm: sleep Tainted: G S      W           6.18.0-2025-12-09-intel-next-48166-g6cf574943ba3 #1 PREEMPT(none)
+>>> [ 5231.981445][   C17] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+>>> [ 5231.981447][   C17] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.IPC.3544.P98.2508260307 08/26/2025
+>>> [ 5231.981449][   C17] Call Trace:
+>>> [ 5231.981453][   C17]  <NMI>
+>>> [ 5231.981455][   C17]  dump_stack_lvl+0x4b/0x70
+>>> [ 5231.981463][   C17]  ubsan_epilogue+0x5/0x2b
+>>> [ 5231.981468][   C17]  __ubsan_handle_shift_out_of_bounds.cold+0x61/0xe6
+>>> [ 5231.981472][   C17]  ? __entry_text_end+0x158b/0x102259
+>>> [ 5231.981475][   C17]  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+>>> [ 5231.981480][   C17]  ? __task_pid_nr_ns+0x134/0x2a0
+>>> [ 5231.981483][   C17]  ? __pfx_intel_pmu_lbr_counters_reorder.isra.0+0x10/0x10
+>>> [ 5231.981486][   C17]  ? __pfx_perf_output_sample+0x10/0x10
+>>> [ 5231.981489][   C17]  ? arch_perf_update_userpage+0x293/0x310
+>>> [ 5231.981491][   C17]  ? __pfx_arch_perf_update_userpage+0x10/0x10
+>>> [ 5231.981494][   C17]  ? local_clock_noinstr+0xd/0x100
+>>> [ 5231.981498][   C17]  ? calc_timer_values+0x2cb/0x860
+>>> [ 5231.981501][   C17]  ? perf_event_update_userpage+0x399/0x5b0
+>>> [ 5231.981505][   C17]  ? __pfx_perf_event_update_userpage+0x10/0x10
+>>> [ 5231.981508][   C17]  ? local_clock_noinstr+0xd/0x100
+>>> [ 5231.981511][   C17]  ? __perf_event_account_interrupt+0x11c/0x540
+>>> [ 5231.981514][   C17]  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+>>> [ 5231.981518][   C17]  setup_arch_pebs_sample_data+0x114b/0x2400
+>>> [ 5231.981522][   C17]  ? __pfx_x86_perf_event_set_period+0x10/0x10
+>>> [ 5231.981526][   C17]  intel_pmu_drain_arch_pebs+0x64d/0xcc0
+>>> [ 5231.981530][   C17]  ? __pfx_intel_pmu_drain_arch_pebs+0x10/0x10
+>>> [ 5231.981534][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+>>> [ 5231.981541][   C17]  ? intel_pmu_drain_bts_buffer+0xbf/0x6e0
+>>> [ 5231.981545][   C17]  ? __pfx_intel_pmu_drain_bts_buffer+0x10/0x10
+>>> [ 5231.981550][   C17]  handle_pmi_common+0x5c5/0xcb0
+>>> [ 5231.981553][   C17]  ? __pfx_handle_pmi_common+0x10/0x10
+>>> [ 5231.981556][   C17]  ? intel_idle+0x64/0xb0
+>>> [ 5231.981560][   C17]  ? intel_bts_interrupt+0xe5/0x4c0
+>>> [ 5231.981562][   C17]  ? __pfx_intel_bts_interrupt+0x10/0x10
+>>> [ 5231.981565][   C17]  ? intel_pmu_lbr_filter+0x27f/0x910
+>>> [ 5231.981568][   C17]  intel_pmu_handle_irq+0x2ed/0x600
+>>> [ 5231.981571][   C17]  perf_event_nmi_handler+0x219/0x280
+>>> [ 5231.981575][   C17]  ? __pfx_perf_event_nmi_handler+0x10/0x10
+>>> [ 5231.981579][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+>>> [ 5231.981582][   C17]  nmi_handle.part.0+0x11b/0x3a0
+>>> [ 5231.981585][   C17]  ? unwind_next_frame+0x11c5/0x1df0
+>>> [ 5231.981588][   C17]  default_do_nmi+0x6b/0x180
+>>> [ 5231.981591][   C17]  fred_exc_nmi+0x3e/0x80
+>>> [ 5231.981594][   C17]  asm_fred_entrypoint_kernel+0x41/0x60
+>>> [ 5231.981596][   C17] RIP: 0010:unwind_next_frame+0x11c5/0x1df0
+>>> ......
+> That trace could be reduced to:
 >
->> Additionally, does this change leave the unthrottled event's hardware
->> counter uninitialized?
-> Also yes.
+>   UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+>   shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+>   ......
+>   intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+>   intel_pmu_lbr_save_brstack+0xc0/0x4c0
+>   setup_arch_pebs_sample_data+0x114b/0x2400
 >
->> When x86_pmu_enable() moves a throttled event to a new counter, it sets
->> PERF_HES_ARCH and skips calling x86_pmu_start(event, PERF_EF_RELOAD).
->> Later, when the timer tick unthrottles the event, it calls
->> perf_event_unthrottle(), which invokes event->pmu->start(event, 0).
->> In x86_pmu_start(), because flags == 0 (lacking PERF_EF_RELOAD),
->> x86_pmu_set_period() is skipped. Will the newly assigned hardware counter
->> be enabled without being programmed with the event's period, potentially
->> causing it to start from a garbage value and leading to incorrect sampling
->> intervals or NMI storms?
-> Don't think you can get NMI storms this way. If the PMI trips, we'll do
-> set_period and that should fix it up.
+> Without loosing anything valuable.
+
+Sure.
+
+
 >
-> So just wrong counting.
+>
+>>> The warning occurs because the second "instructions:p" event, which
+>>> involves branch counters sampling, is incorrectly programmed to fixed
+>>> counter 0 instead of the general-purpose (GP) counters 0-3 that support
+> So here you have 0-3, the normal 'range' notation, but then you go all
+> funny and use ~ instead:
+
+😂
+
+
+>
+>>> branch counters sampling. Currently only GP counters 0~3 support branch
+>>> counters sampling on CWF, any event involving branch counters sampling
+>>> should be programed on GP counters 0~3.
+>>> Since the counter index of fixed> counter 0 is 32, it leads to the "src" value in below code is right
+>>> shifted 64 bits and trigger the "shift-out-of-bounds" warning.
+>>>
+>>> cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
+>>>
+>>> The root cause is the loss of the branch counters constraint for the
+>>> last event in the branch counters sampling event group. This results in
+>>> the second "instructions:p" event being programmed on fixed counter 0
+>>> incorrectly instead of the appropriate GP counters 0~3.
+> s/0~3/0-3/ ?
+
+Sure.
+
+
+>
 
