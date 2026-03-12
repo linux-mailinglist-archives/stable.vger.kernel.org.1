@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-225035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC6GAQQgs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:20 +0100
+	id EPurKlUgs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:21:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580B7278CDB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:20:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F47278DC0
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07AA4300FEEF
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:18:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1E1F31747D7
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81A72BEFFD;
-	Thu, 12 Mar 2026 20:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E4A312815;
+	Thu, 12 Mar 2026 20:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1Q2LxBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TFRR8WD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA041F9F70;
-	Thu, 12 Mar 2026 20:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C48296BCF;
+	Thu, 12 Mar 2026 20:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346695; cv=none; b=OJakBh0+zJuUKyziX17MIlKJcoKxxIMVk/o/pvndV590PPCI+E6Tn87pJLXQNAeK2Xif/H693G1YVr6YyiMzFmFhrSEhPXagMQO71sN+SQpRssT5PB7jYylCQvsQQQx2X3SZKw6pE9Ll0EzORoOkOLCvhvOJSzri2F9T4xAh0CY=
+	t=1773346740; cv=none; b=BF8r8NU7Q4VSuzLRm6Qqhxo4r6RIgHnJg1MNiZORd2DQEmqJatmBaf5KpPr25I4Wr4t+E0StuZIGxu0SQU55f7qyge5gZShZ6worHji6koafasCN/DXGw8F+juDPYPa+5B1hL6LPYCU94ITmu2dRbXybKIjBqb+qspcOAdhBHbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346695; c=relaxed/simple;
-	bh=sepHpV/1aTI13tM2P6Vxwf3ulyxrhznEOaZeVRx9E/A=;
+	s=arc-20240116; t=1773346740; c=relaxed/simple;
+	bh=r9VFQjYbQ9vQfcmJQ3bxpU/F1detlCUyrz8NkiqOtJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T/G44NpCXFxpTrd8jcT7/Ocm6XbS6hVm4oEyG2MuaxQ33dC51BbbDmo6tdAK6bcC/lp/gE2YJ9MbjMN6fhQO2AvAgLTHCzsTU85B0SsfifXB2uvjdVdihbob9ei4wTTYCcInrBZRJkGVzUF+eIgKobMiFn8sdYu0TVmC1QfKLtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1Q2LxBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBD4C4CEF7;
-	Thu, 12 Mar 2026 20:18:14 +0000 (UTC)
+	 MIME-Version; b=YVnntQxuTTZMhyxKlhRpuOFe3W7MbkrIjDUVfuQ32HVIo6k4pqlYF9GiXzj2QU+3v/uXl/2MV+66zjeIAL4YkXIkVMHzHwFsXSZ+FRPBcC0Yc+ZcuYYs+ZdlPFTJ3+JeGFV1XP4mWdE1L+l9vgJM5FtIlhZ3BelKQwS6B9bssTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TFRR8WD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E902AC4CEF7;
+	Thu, 12 Mar 2026 20:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346695;
-	bh=sepHpV/1aTI13tM2P6Vxwf3ulyxrhznEOaZeVRx9E/A=;
+	s=korg; t=1773346740;
+	bh=r9VFQjYbQ9vQfcmJQ3bxpU/F1detlCUyrz8NkiqOtJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1Q2LxBnn9nQfz6Yw5MF1AgBRRSPTq14CdDkhXIO6XQsqgotl/gGUPsQm3dtmmBge
-	 jo4lnMRRctHWPnyPte+dXEhBdMMP8GfarVKjuDhjhAv+OzJl7UE5Z47JunYpBadPJd
-	 MF7W6nXFEabiUYLhc1UzilXSJFdv0TlPPNFoFk4k=
+	b=2TFRR8WD9seOkib6z0l0eXyvR9mcKKa67NAEAZP7hUTqAI40GihO8tyrvYCzL+8sx
+	 B+tFP3DX6c8XwOl1kmOteOsMIibHnhHmABCX/CzhoFxiTrTQ2jNKKKEtno4//AJdZr
+	 i7oAczZk5EuvnSZqUrRGAZ38oQiNVqlmPAXGdtgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Andrew Powers-Holmes <aholmes@omnom.net>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/265] iommu/vt-d: Skip dev-iotlb flush for inaccessible PCIe device without scalable mode
-Date: Thu, 12 Mar 2026 21:07:51 +0100
-Message-ID: <20260312201021.253967071@linuxfoundation.org>
+Subject: [PATCH 6.12 085/265] arm64: dts: rockchip: Fix rk356x PCIe range mappings
+Date: Thu, 12 Mar 2026 21:07:52 +0100
+Message-ID: <20260312201021.289522602@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -64,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225035-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225046-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,bytedance.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 580B7278CDB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:email,msgid.link:url,fe260000:email,sntech.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,fe270000:email,fe280000:email]
+X-Rspamd-Queue-Id: 36F47278DC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,136 +100,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 42662d19839f34735b718129ea200e3734b07e50 ]
+[ Upstream commit f63ea193a404481f080ca2958f73e9f364682db9 ]
 
-PCIe endpoints with ATS enabled and passed through to userspace
-(e.g., QEMU, DPDK) can hard-lock the host when their link drops,
-either by surprise removal or by a link fault.
+The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
+that there is no same address allocated from normal system memory. Otherwise
+it's broken if the same address assigned to the EP for DMA purpose.Fix it to
+sync with the vendor BSP.
 
-Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
-request when device is disconnected") adds pci_dev_is_disconnected()
-to devtlb_invalidation_with_pasid() so ATS invalidation is skipped
-only when the device is being safely removed, but it applies only
-when Intel IOMMU scalable mode is enabled.
-
-With scalable mode disabled or unsupported, a system hard-lock
-occurs when a PCIe endpoint's link drops because the Intel IOMMU
-waits indefinitely for an ATS invalidation that cannot complete.
-
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- __context_flush_dev_iotlb.part.0
- domain_context_clear_one_cb
- pci_for_each_dma_alias
- device_block_translation
- blocking_domain_attach_dev
- iommu_deinit_device
- __iommu_group_remove_device
- iommu_release_device
- iommu_bus_notifier
- blocking_notifier_call_chain
- bus_notify
- device_del
- pci_remove_bus_device
- pci_stop_and_remove_bus_device
- pciehp_unconfigure_device
- pciehp_disable_slot
- pciehp_handle_presence_or_link_change
- pciehp_ist
-
-Commit 81e921fd3216 ("iommu/vt-d: Fix NULL domain on device release")
-adds intel_pasid_teardown_sm_context() to intel_iommu_release_device(),
-which calls qi_flush_dev_iotlb() and can also hard-lock the system
-when a PCIe endpoint's link drops.
-
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- __context_flush_dev_iotlb.part.0
- intel_context_flush_no_pasid
- device_pasid_table_teardown
- pci_pasid_table_teardown
- pci_for_each_dma_alias
- intel_pasid_teardown_sm_context
- intel_iommu_release_device
- iommu_deinit_device
- __iommu_group_remove_device
- iommu_release_device
- iommu_bus_notifier
- blocking_notifier_call_chain
- bus_notify
- device_del
- pci_remove_bus_device
- pci_stop_and_remove_bus_device
- pciehp_unconfigure_device
- pciehp_disable_slot
- pciehp_handle_presence_or_link_change
- pciehp_ist
-
-Sometimes the endpoint loses connection without a link-down event
-(e.g., due to a link fault); killing the process (virsh destroy)
-then hard-locks the host.
-
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- __context_flush_dev_iotlb.part.0
- domain_context_clear_one_cb
- pci_for_each_dma_alias
- device_block_translation
- blocking_domain_attach_dev
- __iommu_attach_device
- __iommu_device_set_domain
- __iommu_group_set_domain_internal
- iommu_detach_group
- vfio_iommu_type1_detach_group
- vfio_group_detach_container
- vfio_group_fops_release
- __fput
-
-pci_dev_is_disconnected() only covers safe-removal paths;
-pci_device_is_present() tests accessibility by reading
-vendor/device IDs and internally calls pci_dev_is_disconnected().
-On a ConnectX-5 (8 GT/s, x2) this costs ~70 µs.
-
-Since __context_flush_dev_iotlb() is only called on
-{attach,release}_dev paths (not hot), add pci_device_is_present()
-there to skip inaccessible devices and avoid the hard-lock.
-
-Fixes: 37764b952e1b ("iommu/vt-d: Global devTLB flush when present context entry changed")
-Fixes: 81e921fd3216 ("iommu/vt-d: Fix NULL domain on device release")
+Fixes: 568a67e742df ("arm64: dts: rockchip: Fix rk356x PCIe register and range mappings")
+Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Link: https://lore.kernel.org/r/20251211035946.2071-2-guojinhui.liam@bytedance.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Cc: Andrew Powers-Holmes <aholmes@omnom.net>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/1767600929-195341-1-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/pasid.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi | 4 ++--
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 90fdfa5f7d1d6..3d1d43675bf22 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -867,6 +867,14 @@ static void __context_flush_dev_iotlb(struct device_domain_info *info)
- 	if (!info->ats_enabled)
- 		return;
- 
-+	/*
-+	 * Skip dev-IOTLB flush for inaccessible PCIe devices to prevent the
-+	 * Intel IOMMU from waiting indefinitely for an ATS invalidation that
-+	 * cannot complete.
-+	 */
-+	if (!pci_device_is_present(to_pci_dev(info->dev)))
-+		return;
-+
- 	qi_flush_dev_iotlb(info->iommu, PCI_DEVID(info->bus, info->devfn),
- 			   info->pfsid, info->ats_qdep, 0, MAX_AGAW_PFN_WIDTH);
- 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+index 6fd67ae271174..0d16f74949b6a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -97,7 +97,7 @@ pcie3x1: pcie@fe270000 {
+ 		      <0x0 0xf2000000 0x0 0x00100000>;
+ 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x40000000 0x3 0x40000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X1_POWERUP>;
+ 		reset-names = "pipe";
+@@ -150,7 +150,7 @@ pcie3x2: pcie@fe280000 {
+ 		      <0x0 0xf0000000 0x0 0x00100000>;
+ 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x80000000 0x3 0x80000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X2_POWERUP>;
+ 		reset-names = "pipe";
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+index bc0f57a26c2ff..32ccc57555545 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -1045,7 +1045,7 @@ pcie2x1: pcie@fe260000 {
+ 		power-domains = <&power RK3568_PD_PIPE>;
+ 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
+ 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
+-			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
++			 <0x03000000 0x3 0x00000000 0x3 0x00000000 0x0 0x40000000>;
+ 		resets = <&cru SRST_PCIE20_POWERUP>;
+ 		reset-names = "pipe";
+ 		#address-cells = <3>;
 -- 
 2.51.0
 
