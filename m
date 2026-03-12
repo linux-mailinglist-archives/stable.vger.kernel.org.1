@@ -1,251 +1,175 @@
-Return-Path: <stable+bounces-224771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHfoJW8AsmkvHwAAu9opvQ
-	(envelope-from <stable+bounces-224771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:53:19 +0100
+	id gK1yHr8CsmmHHwAAu9opvQ
+	(envelope-from <stable+bounces-224772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:03:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F014A26B785
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:53:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DDD26B839
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC1693050A11
-	for <lists+stable@lfdr.de>; Wed, 11 Mar 2026 23:52:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D2453015158
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290C5286D57;
-	Wed, 11 Mar 2026 23:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12784224D6;
+	Thu, 12 Mar 2026 00:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOX1nlE7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bI9Q2bL6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3141376BE1
-	for <stable@vger.kernel.org>; Wed, 11 Mar 2026 23:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E82A932
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 00:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773273127; cv=pass; b=OySv/r8BMXRC7ptmNITzuVuvwoqm2yC7j4DwX6fklwDTnvfxSLH1zodrukJUazyKah4OE7k89uPJ0QV7BQwnpOJwJ86NJm2NY9LpTQsm7WmS6jEVmIwKABsZJJBVMAL4mcgL4UNK69DZyh9JpYMTm8Nbut730Lb8jcRzbRtHQ5E=
+	t=1773273782; cv=pass; b=n7ffI5QUSUoXhExkku58P9OR7y/WyNae4lHu4Koc1Sn7jC9MDNXr7h9RFvX0vG1DEiZU6kmbJZBn9aA51NxgKI4ZjBm1PtYKOrS2/OlRm/kVEEQXodC64TMAI3mTChG/Wk2UCbW2ZLiStLeM82JAnkuLhicAJ4kOdeG+e+zudJM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773273127; c=relaxed/simple;
-	bh=aIkffOjGqTfw8EYv0ooqwQA2XrSIDdmpDM/eDv2AoHk=;
+	s=arc-20240116; t=1773273782; c=relaxed/simple;
+	bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qn0bAcu9dKMHGEZau+fRZlJJlbVwsPc+hCU45Oa41/f94CKIDsIJcu8nRZMMAiCw+IusLVXkgFjUb0dpakIfDSlwHLMS0FSpGBuHPJK8VMh1a3kTdEtIntpp2dDsdXcsF1Ftle1jCg5Vz7JmSrGv6den/34fFkK9AcnQdK7NVug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOX1nlE7; arc=pass smtp.client-ip=209.85.219.51
+	 To:Cc:Content-Type; b=crbjL/9xEVXmPGZjwHUl7dzi+KJPCBEovmpoQQyRb0QGMU0g6cqbJcO7n6wuQueZ32qShq8UlaqrPeIJM85i0i6/kIl/gGfbYrEnJotNiCQOpP4a4kEMJluz7B0hgUhlDv9YrTZxtI42Yishwik/edhj1AWVgfan04uk9Uh2fao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bI9Q2bL6; arc=pass smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-89a018cbbf8so20441846d6.0
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 16:52:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773273125; cv=none;
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6631e0edcf1so524740a12.1
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:03:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773273780; cv=none;
         d=google.com; s=arc-20240605;
-        b=g69Z3F7dm2uCmFDcxrdXgeaxQ9d4LFd9jde6Pk5aAuPifBo2kpJ28PfpdAcCiJFb0e
-         k1qo/3CNIsjZw6JVV24X8FqGLZ0T/fuAynxUlMvcrm5Bz1uQzTt+W0tSzda34olQsJaj
-         1thoJLkWKvUQ+pBXTvhhwqT8abEEyEeBFeK8RINpxZoN6vTz0cuUpzGCdOYVVRtQe4sD
-         O8eZ/mSdQbCft2FugTuv86b1EOOYJTT34B71ftTG4j5/o9N2r5fdcMA1IojGs7VCgYPh
-         ZgSFd9RWYGt7dnA2FOk8OPd9tOppGUfJU9JOMjzSkNYSmvVQOiPfqBi0lzShBPFkfJ8R
-         5ZmQ==
+        b=AVyiBENYYspcKspXAzIyPJULn9UOC+YTMoYYBjQ6xiywwGQH+JS+2oqy3KPU0fzFLR
+         vl58/Y5ygjjS2VK/E3TUK3HeFOn6EzZUiM4qdeZtFplmATdKz5JCQYRhyRsP8MWtDxzA
+         6pAGn+BKxoRmPplSIEIen2mfRkO4LHSQ7Mvm8mVoUZA9ueS+4PBG7EexeENRQh9RE2vO
+         SjE0g5u0wE8TMxOmnKHVGfNhKrTF6nUoxCagodPcj1kCanp3IDTcilW3Jx8bsUlqT8Lw
+         cJPx2X6qguE4XZpRZVhbET1kni4N7xWDgZ+aPKoKP2RoWLlCkmppeBME6NjxtPdSpb7P
+         ezvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=aak02bl+tOxupaPAiu+YapXXnDf1p18gRXzhDpE7U48=;
-        fh=Lp1KAiNa9F0deXZnP+oidkIpv5qqIQaIO9R1YuIIy8Y=;
-        b=JBTCb8KbwO57DUrdpGkUnfepTDFZqeidij/Nf24+Twy+hzerahM3JxWXlg11YTwfOK
-         pfkJWbt+LjHUur6DGCKZAlKcGN3pomTk4DoPyBcjCZhcdnaLz4qcHnDW6OA6dDXllPvB
-         aeTPxm86pidluj2uU5EuOUDbtpIvQid8UucXUqfEI463+mYHwtv68ddEka44uw4LiXsb
-         CVzwf4I2CQvzDJ5zl0txRZ3qeSjtj/fzkYhlTlDdmFqownEBjkp44Q3cMTASRXPyldcy
-         bdipU7x4pq2mB6c2XQiVQJu/hcrsNTrWvKfbNbP4R2y2v31owZQvXKzUmR78/kfTNZJ2
-         8RDg==;
+        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
+        fh=ltUr4CntRUG9C0u7d/PzIKEHzL6I7p6vaqZvmEqHAog=;
+        b=MxHMz1HpBxxGNiuQp4QLyrxaOsL5FO9LS3oII2zeF6ovjBJRi2o238NvA6a6fYWaqa
+         GxALejDlSUOzQJZrwWAmnROVdWp04iphWbskOKX4AqXhjwgtlkotxNFj3+tKY8L1mt6t
+         j2M9WuKFlmaQcpaReT+f3+VoE7DzHbU/BgIQWWx5VCZKjNCL3bIIKqVJy9ZQ3VUNFe5V
+         IutfQf7q9rD8ko5/NjgAWVwUvpAD80UPXZ9mWNJ6zPSUdH0Xs+0M+bism1BUI4csX9nh
+         LLxtpw9Mx0N+o9KxVagu/ladsTfrEvpQpHbwFAc/+jlnOAxE7OSdHvxqvaZiAph4E3vW
+         wCww==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773273125; x=1773877925; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773273780; x=1773878580; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aak02bl+tOxupaPAiu+YapXXnDf1p18gRXzhDpE7U48=;
-        b=SOX1nlE7kL75LYKij7m7KC2G7WWBxuG6wUIQrhxHEk9+9iVB+VE9jjsVBJDGlB6PYn
-         X5NHPQ+DIjUQ1WJ2rhS2u1AxkqDO8riy/mXjafSo8hibc6gEUQlvXxqm5Msvf0H4zyMg
-         b1e0fBKDEEwFHOcxSTNjVF1KeDwOpBdgtRbMFv9E6CKFAJE1TmkCOkKp/zryEr7Gu1OH
-         KQZ1vGpARLOlHl4An7/sMKZlNzInIWDVv79r9QxgJNEINAie/gWTJ1/wlvFRrGpin80o
-         uWM/HFvYdXuUmxWwT2bGTS+QSqwQhqsfoSFxOBCzGxqfVolrAi8CFneDXWBDGYqm/hEF
-         t1BA==
+        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
+        b=bI9Q2bL6t0IntIdPjcIXuu9eD/cl/ICISs0iUmGOCldworcV7ae9WeQ+CRMN5dqpm2
+         WlfDPSAlXUV4WTzCIG2LNOWOkrsic6uDLLX56xuEHMY1T7+4HUjnlcpHOusA2tT1PoVu
+         JXmPLfcMBYr+Q6fEEzdUv9OntRbzvLxegU7l9loRntfiYXRGje5HC9Pu0n8J3y3EQbgv
+         8Crvy7Tq9fqneh4rXTf85GOb5cXw9l5EoBKvn8ETd0VIwHh7aAMb5IXt+WPo4nS9XVZy
+         swhb+D7D5oTHWV4NONtojBxDrjKo+gBtYvCac1UjwOTNrpC/gULV7qqMcIsNCms0t/Pb
+         CLaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773273125; x=1773877925;
+        d=1e100.net; s=20230601; t=1773273780; x=1773878580;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=aak02bl+tOxupaPAiu+YapXXnDf1p18gRXzhDpE7U48=;
-        b=CijzxIKWkeYWmHqMgH/p6kGyOA0IGywLNiYeUbriMVOuy00jgmI4GDR3iaSmYYKVwU
-         rzJyVEFA0z30o0YW/cvpzwoSIO5YLXcTUBl0KmXCbQgDdnmJKjDEdX1ET7/0Jw7LQ3LA
-         NWdo/SfArFi9KS/5Dh7HelxMi/yUw/N5S8PrRj8OaEjhwWZOHC8ksW44X8sMUhrWzOEu
-         FPZn8YKLj7fAmNZZR0f+1D2Z1Es7IYf/OS8wffsn3VCdnz8/LSqhv0Q6YCnLV5SEu2k+
-         WvECB7D2srpNwt+/VUPFsU/XpLnrXJWmLEAJYpnZzOXq3pavGnHZt6F7G/kLa/Rk+Yii
-         pdzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQAJ33X1d/RiO8MR01vejMyck+zPIRaIyltinO8JingcrYq48yv1koafWtWsN1+acExUv0oUM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrMgG1GdCoLGB/U65Muj0yuzBH8ClTKeuMJPs1gm2bLNiw0V27
-	1MLqs38N0Trj0ExZrCU4Kc/9K/MFwUIcbHr9Qod3YxfnANj3alNHWozqDyD7Xjt6malNW4ejfzT
-	CLW6H5hkOXJpbdk7Mmki3tixdSiLog/Y=
-X-Gm-Gg: ATEYQzwoZMbQqudJVNiOPtDg8JIozxl+spjT05Oo503LYFUCG+N4kwMzeuf456xffTF
-	UJuChCM6us7EoJafI03yKSHLT9iQIKMFH2kFDZMeeY8LkT0Su8A8a42rEYMrlQrxDjDCGNLFsHa
-	8uAvdeXCv20TnH2KX3ObV/dCoOSdFI//Qd/cUaFcWMwXx6STP/VIpzEf2LYUEbmS5QH2zioH7NX
-	h/AEuM0E5abyMjOsnG59L0EUVXg8xrUr2YsLi5in29rSr2F7pjRJr1wpoynH/QpcHJf90edfcRh
-	zDCCIoBDbG2FOJMNiy0my48j5pcUSlr8vpjXdaqyq7nt/xbqs0/aVSGmJlZv53v8aYyGI2qpvEG
-	89XTL27s2BSzexeA2kUMDTvFEltXMrxqZSTHsUabW3abiJ2xHJSKfenoUIFYlQwhXlpfLq5eVRa
-	eO4RnwtGG4a28rf/Zr3c9z
-X-Received: by 2002:a05:6214:19c9:b0:89a:77b:837e with SMTP id
- 6a1803df08f44-89a729d8f3emr26275396d6.6.1773273125385; Wed, 11 Mar 2026
- 16:52:05 -0700 (PDT)
+        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
+        b=am11cQCWV3Shz2XXTwQn2V+aVnPI6rd98wppDh20DLzPxlaSx6jWm7/2WQCX9IcdHa
+         XL9PIHZGxJ3+ITTVQdjlXt0AWTl2GvZpRtLn0/9qoe9MH0ClvQ6JGFguKHsShsSRCvE+
+         z1e5jev0DBxP7Oq9kmPxa34iPfqqf/K9iIQ3Zlj8y7UGzxmZ3HbKN1SYJUfIV/JEZH7h
+         mWSVe5CKWF6YQSg/vjW40vA6+zth3soU3pM96nZLdBxYVChrZdIpjtN9WORFpyOxuDlU
+         7y99M/Ar1fuEu1T33j6eB2D/QzAOpa9AnGr9nIJcYVcGI8cpXktdonUS50HZ9m3EAODh
+         yw3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVbhEv1Ep6nsyvKA2C/GwJG8KyIFXEUzUtvtc8vXqw54ooHyS8doUlphZkvDWY38lNb9B1ydaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgeZYAyFejNPcmhklnMvVvBxTaIUjczCXK91n0quj9ZApHBaTN
+	AeaLfjZ64ebyaXQrkN0yZEasIdcJD4aCBt5G/Gzv7+B4B1njtQp5sNwWcJ3R8wNpVIQaU4Ej02N
+	+WiK5CFjG7MiBEUEJ3xXURnJH4mDKyOY=
+X-Gm-Gg: ATEYQzwJsOuiJfNFZcjMt1rWT4+UlHysUp0YmLVyRs4b3Ny1Wu9+ry0PftZDG2lVKkU
+	0OiQOBhRG9j+wFCpB5ZkjJ4vIgMAZFfvpw+1A62Ad0yQqw7vEVUUXsmlcIt3EjDrGYfyM9TpTKg
+	1xqTyLxrNJFrqRAl1wTvLiwDoedK8b8qp/+UGyqfiG/bIbKK4ClSk8Do6+p1kHO+7Hd+E1ZiYdX
+	cBClu6sKvueweLTZMFfPsAOu1PQCTfTBvR5RWm3jpnDm178Ce5CEY2zjMLOcpOvjXSTpWYBiek/
+	lBmt1Gu0GcYaw25JPQlQcud/olYcY5YnE0HZImG0BDGB1jVb5F2y9sPYZtQ2Xa4IwQ==
+X-Received: by 2002:a17:907:d644:b0:b90:35c8:d01b with SMTP id
+ a640c23a62f3a-b972e2c211dmr240675866b.36.1773273779420; Wed, 11 Mar 2026
+ 17:02:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311231723.751558-1-henrique.carvalho@suse.com>
-In-Reply-To: <20260311231723.751558-1-henrique.carvalho@suse.com>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 11 Mar 2026 18:51:53 -0500
-X-Gm-Features: AaiRm52w23mPBC3G4ypnbWAzbkKeH8taEUOrvVOe6GbIGt5Bj-pX_iL9f9xwLwU
-Message-ID: <CAH2r5mtsdSJBZ=b5ABm=Gq4sfakb7ZXrx0N7AF0_1TTkVqn6Zg@mail.gmail.com>
-Subject: Re: [PATCH v3] smb: client: fix iface port assignment in parse_server_interfaces
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
-	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
-	ematsumiya@suse.de, linux-cifs@vger.kernel.org, stable@vger.kernel.org, 
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>
+References: <20260311111632.2836293-1-gality369@gmail.com> <849ac4be-b10d-4eb7-892f-4b9ee2ef5cb2@gmx.com>
+In-Reply-To: <849ac4be-b10d-4eb7-892f-4b9ee2ef5cb2@gmx.com>
+From: ZhengYuan Huang <gality369@gmail.com>
+Date: Thu, 12 Mar 2026 08:02:47 +0800
+X-Gm-Features: AaiRm52HrIoULi8oRrw_KZxsuZhl503rFFhskRvicKXqoTqsxrnZiCjbkUhRSGc
+Message-ID: <CAOmEq9WDrM=0_KbFohSxgrpMxuin8hNaro9YsY8HgVASOf4KaA@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: reject root items with drop_progress and zero drop_level
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: dsterba@suse.com, clm@fb.com, wqu@suse.com, linux-btrfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, r33s3n6@gmail.com, 
+	zzzccc427@gmail.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224771-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org,uni-hamburg.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224772-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.com];
+	FREEMAIL_CC(0.00)[suse.com,fb.com,vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,uni-hamburg.de:email,suse.de:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: F014A26B785
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.com:email]
+X-Rspamd-Queue-Id: 84DDD26B839
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-updated in cifs-2.6.git for-next
+On Thu, Mar 12, 2026 at 5:08=E2=80=AFAM Qu Wenruo <quwenruo.btrfs@gmx.com> =
+wrote:
+> > [FIX]
+> > Fix this by validating the root_item invariant in tree-checker when
+> > reading root items from disk: if drop_progress.objectid is non-zero,
+> > drop_level must also be non-zero. Reject such malformed metadata with
+> > -EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
+> > and triggers the BUG_ON.
+> >
+> > Also fix the related tree-checker error message to report
+> > "invalid root drop_level" instead of the misleading "invalid root level=
+".
+>
+> The only "fix" part I can see is the fix of the message from drop_level.
+>
+> If you really want to do that, please send out a fix dedicated for that
+> single line.
+>
+> Otherwise you're adding a new check. Please do not mix fix and new check
+> into one patch.
 
-On Wed, Mar 11, 2026 at 6:17=E2=80=AFPM Henrique Carvalho
-<henrique.carvalho@suse.com> wrote:
->
-> parse_server_interfaces() initializes interface socket addresses with
-> CIFS_PORT. When the mount uses a non-default port this overwrites the
-> configured destination port.
->
-> Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr=
-,
-> causing reconnect attempts to use the wrong port after server interface
-> updates.
->
-> Use the existing port from server->dstaddr instead.
->
-> Cc: stable@vger.kernel.org
-> Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-> Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-> Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-> Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-> ---
-> v2 -> v3:
-> - add spin_lock around server->dstaddr access
-> v1 -> v2:
-> - read the port once from server->dstaddr before parsing iface entries
->   and considering *server* ss_family
-> - update the commit message to describe the fix more clearly
-> - adjust the Fixes tag to fe856be475f7 ("CIFS: parse and store info on if=
-ace queries"),
->   as the later commit only exposed the bug rather than introducing it
->
->
->  fs/smb/client/smb2ops.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-> index 7f2d3459cbf9..612057318de2 100644
-> --- a/fs/smb/client/smb2ops.c
-> +++ b/fs/smb/client/smb2ops.c
-> @@ -628,6 +628,7 @@ parse_server_interfaces(struct network_interface_info=
-_ioctl_rsp *buf,
->         struct smb_sockaddr_in6 *p6;
->         struct cifs_server_iface *info =3D NULL, *iface =3D NULL, *niface=
- =3D NULL;
->         struct cifs_server_iface tmp_iface;
-> +       __be16 port;
->         ssize_t bytes_left;
->         size_t next =3D 0;
->         int nb_iface =3D 0;
-> @@ -662,6 +663,15 @@ parse_server_interfaces(struct network_interface_inf=
-o_ioctl_rsp *buf,
->                 goto out;
->         }
->
-> +       spin_lock(&ses->server->srv_lock);
-> +       if (ses->server->dstaddr.ss_family =3D=3D AF_INET)
-> +               port =3D ((struct sockaddr_in *)&ses->server->dstaddr)->s=
-in_port;
-> +       else if (ses->server->dstaddr.ss_family =3D=3D AF_INET6)
-> +               port =3D ((struct sockaddr_in6 *)&ses->server->dstaddr)->=
-sin6_port;
-> +       else
-> +               port =3D cpu_to_be16(CIFS_PORT);
-> +       spin_unlock(&ses->server->srv_lock);
-> +
->         while (bytes_left >=3D (ssize_t)sizeof(*p)) {
->                 memset(&tmp_iface, 0, sizeof(tmp_iface));
->                 /* default to 1Gbps when link speed is unset */
-> @@ -682,7 +692,7 @@ parse_server_interfaces(struct network_interface_info=
-_ioctl_rsp *buf,
->                         memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
->
->                         /* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore the=
-se */
-> -                       addr4->sin_port =3D cpu_to_be16(CIFS_PORT);
-> +                       addr4->sin_port =3D port;
->
->                         cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
->                                  &addr4->sin_addr);
-> @@ -696,7 +706,7 @@ parse_server_interfaces(struct network_interface_info=
-_ioctl_rsp *buf,
->                         /* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore the=
-se */
->                         addr6->sin6_flowinfo =3D 0;
->                         addr6->sin6_scope_id =3D 0;
-> -                       addr6->sin6_port =3D cpu_to_be16(CIFS_PORT);
-> +                       addr6->sin6_port =3D port;
->
->                         cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
->                                  &addr6->sin6_addr);
-> --
-> 2.53.0
->
->
+Thanks for the feedback.
+I'll split the message fix and the new validation check into separate
+patches and resend them.
 
-
---=20
 Thanks,
-
-Steve
+ZhengYuan Huang
 
