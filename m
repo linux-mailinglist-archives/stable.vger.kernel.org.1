@@ -1,240 +1,230 @@
-Return-Path: <stable+bounces-224773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IFWKJwFsmnXHwAAu9opvQ
-	(envelope-from <stable+bounces-224773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:24 +0100
+	id 4KLqN5MFsmnXHwAAu9opvQ
+	(envelope-from <stable+bounces-224774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8FE26B8DB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A41326B8D4
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 004A0310BD70
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:14:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13222302A1B6
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D13282F07;
-	Thu, 12 Mar 2026 00:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD5A309F1B;
+	Thu, 12 Mar 2026 00:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4rGmvrl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0N+x/xI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8C282F00
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 00:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773274493; cv=none; b=GHv5houEm74VYpFUEsx40HVknMBrAqByAme+HJUtwY42+bE5FS3Y+iI+Db+BsnTtxfqXH0I7sNZR13kDIUa12Zctt2MLeF/x6RZR/V5z+eXiFLopgdEfTfrclFCUZnvD4GvyM2RvyBLCep/cywq8bbO6LAO3sxn5gLY+kuNoNMg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773274493; c=relaxed/simple;
-	bh=VU9hS4DshrqjC9KyJtG7jj7YVnllYQOO9wjLpFxgylA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C0CAcoIKy/7amSCfTfG50vGwajJ1T6hhFLEDEmaIvdBJDX0qwFciEy/47U6CULGnA8P6WzNdThWhvZJO3fD3nkF7WSaCtinuYKCm6UgN3u9PER1I9gCjZGBnbVecYQH90fJTi7tQlusnOIeuT/0qNsh9ZmNMvyVuRTtsFr9aqXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4rGmvrl; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B363C3090C4
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 00:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773274513; cv=pass; b=YR9/GYtfTrET9u8jncFzjs7hps3Eof3Cfxp30AK6BElr9/u0opH3Z0x9dkENIDekVCbICV/l6eeRsNrU5zPpeSxCBQJa2sxabauckdoxmfBY5urEDsG305TcuzngkyuwgSNdHB4zptH/GIiyR3Y//4pNXfL8Fjt5ExUXsxe3pW8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773274513; c=relaxed/simple;
+	bh=6/itMLCFfyLvJoeA9cy22RHpmFM4fQuJ59IcW2RTNl4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ahTMsEeQJ6xhtZZPqAhNn54y7ybI4F2I8OPgDj4KtpJg6+O8CyiPVX7PVbKW2ErasBIxtm37WbQlHcxI2bcay0zzrakXvwybWklz+EJgRD7WS76BWe6YIYje1QxG0Rv7+8x2QOypNukpj7vRD0b7GU+HwxFcEW1BEq0r3SkeHfw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0N+x/xI; arc=pass smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae505619baso3315585ad.2
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:14:51 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so570566a12.1
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:15:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773274510; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FpfBtBNYwFZVM3aAPUoNQ77DsxFF8kVWicyKnbLJcm3a7I47AYvdvJXgBwVbN+YD4w
+         RsZhjYYpygzzXdqlCt57xpmmTvG+GAa3DHB/60PzQUX8SMhYhHPPMcIHCX8A/hMfzskZ
+         E5l5xRUxXY6ShCNVKIhShtN90fSRrMYf/IFjpvdSUXk/FN+7lR6PO2RFhE0wLvYopQ15
+         mZyU+23b5xvXZha/nDHBTote5R+tjPWnn7FX4wUTv9Un0U0C4Bt0jQoyXGTIab6pSEQ4
+         sW2ghdDETwtuT+Hqf8n8oQdd64VVNuTr859wLFY+X9yFsbL6k+MEosyUhtamn4F17WAe
+         9CdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pbDxkeMXFgFuSfzV6w0UsHl8/LPcKe8YhwEDSHSsljs=;
+        fh=e6Xn4NO97Xw7/hFmPRNNiAW1gXd9efH9sIFg2xGB7+s=;
+        b=i8QdC2WVXy1z8x3AoVBQOB05Gm4+R24foe4GbyXNyq77GWtbwylB5rvYp35+eKCYAg
+         M+6BAa4oTTu3h0nm7N4KWgTUReS39fMnvk7nz9ptBQkZjx5FgNAG/b5VEuRZxuZYRKQy
+         C5nyRKB7k9w4QSNwR5Pi0Ybj7eEgi1PzASDqyeBLAf6jMG/iloKO0CATB5+2tP60fvOP
+         0MPQtXwu3UwTmgKIQIoSNOzpe5S7YuaZco1gjAki0FIFucbEOpm+1lt//pDnLSBJ6LAk
+         +3xji3dFqgow7FO98MMXWEMSRY5znxLX+Mb0uz066F3R+jlnokbl5hTCm/m5Ob6XGWFV
+         6noA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773274491; x=1773879291; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KGcYYewbh7c7rM4xdHWS6lIG0/xScOPJj7plS5pDbyU=;
-        b=e4rGmvrl93bdeF5oLhBinfUWAL/b3rcPQCtTBSFIcOzxxfKDBxT45bmFCoplzdWG2F
-         8L4sEUG7dLIRpyDFOhi5/ozMYyIFLnj1MV0tHblvmtJrmdv0mU22E4FK14QTGsBc5USG
-         JbT4Wynsqxer8t826NexplNlLt2S7rC6z6Jc1dHrWygrVLHzEouC4P6zD0/oMhqs0PQi
-         kvaHrOPFbFmt3aAtTMMkmT70ulsmYdTc0Og2IHfeUG3IKgcaG08h8SPme2R9g4LNSRs8
-         TO4+4AG6TFU2pBgKhGuAl+5ilgqtDCQ08RWQdgHHX3WQfpmdpZr42zs3vXMQK0lv1zz8
-         4LMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773274491; x=1773879291;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773274510; x=1773879310; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KGcYYewbh7c7rM4xdHWS6lIG0/xScOPJj7plS5pDbyU=;
-        b=YKc/Z1meF8zS3dfny9zZV/gMIagkL0VI+23NInx9m5QefdzN6oD4mIba/KwOR6xPvA
-         CHDX9WTvf255bbE5vrJ7SG6gv4DNSQhpemtA83abraDdkEq4EcMDJnmWCFDvguZbYmnI
-         K7uL6Hxwom5H4OQo60HwJNacQAdCIlEcTfRQ3wSQDhNKfoHyjqi0yFUgCHaNxdWpg2Zt
-         8Jpud7Xnmt0Fqg31PJQwQw8K6zBuELlviVr7d25IblQzWxDil+/t4rSZmr4MVu6uZA6O
-         /gq5Aom/J1hCRsPKrxW3U5BA2yxYHLrKGeNkfe9Kuyv0IPZ6u62Eo+3T+fnLyppcvMik
-         1QAA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5b65HoHwLlVYSlrxtarI9lzNjRziG5zaOx5gEzoGLoTKUhSH6Gk3BLYdcd0E3KPMBDiD49kQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyliJTRqLIcY6e+KrrMjKo1OQipUL2qUguMId2oweYG1B8Wz7e3
-	mwX5n6O4d5OPQQBfonDyGZChGbbp8MYDueoNTOl395rizZWvjMmVK/sD
-X-Gm-Gg: ATEYQzxH3OPXAaisda0UswcKTpvrD1Z4Xb5CvMJC89oe0zj2bjpn1yqu2Brj5mvs8uo
-	GaY5VgHbvxiZi8/mVjOl3MbSoHygWMeRk854EkoHEJRTLuqRuPbyGdEjD6EzZU06Obl0SuPYrNa
-	wcimj8djydSbefMMFv4vIeWrANueBwzRwcwlKnaQ+UXxGkxqUJJhDyv+5HBSaUrbAuDalCfSxlM
-	QJMu80mZC9sfVn7v/k3aW76aVXB1WRx5mWU17o+u/RQr+fNMvmd4wJPiQDBrIR7AV55s63TZt6i
-	jo9UxrXJUlD75kWH7G894nC23dSBGA93vN/Y35wEBm+xsNSsesR9hB7n/jn8IIP43P8wKlkkjq8
-	xszTMyZ5GhX7Et/BvXemG8go9qsrqtbD8SBv+9tLzYc2BaDQ2/A85v++0kknQIHSdAy2zF2yQqu
-	/iAjx92LbM15CfaJHLxE6cKcZoK7d3JGLXD3x7C7GnaYjWgAOHlY9p4swyHA8auJN0Obi0OQ==
-X-Received: by 2002:a17:903:8c4:b0:2ae:4dce:7e92 with SMTP id d9443c01a7336-2aeae7cb944mr44962445ad.14.1773274491119;
-        Wed, 11 Mar 2026 17:14:51 -0700 (PDT)
-Received: from kernel-fuzz.. ([138.199.21.245])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae35f0dbsm34835275ad.69.2026.03.11.17.14.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 17:14:50 -0700 (PDT)
-From: ZhengYuan Huang <gality369@gmail.com>
-To: dsterba@suse.com,
-	clm@fb.com,
-	wqu@suse.com
-Cc: linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	zzzccc427@gmail.com,
-	ZhengYuan Huang <gality369@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] btrfs: reject root items with drop_progress and zero drop_level
-Date: Thu, 12 Mar 2026 08:14:43 +0800
-Message-ID: <20260312001443.3011961-1-gality369@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=pbDxkeMXFgFuSfzV6w0UsHl8/LPcKe8YhwEDSHSsljs=;
+        b=d0N+x/xI7jNXbvlXlndVml3xlssmPKFdOwIFUKKX8tra0DYDy62dh9oYazJVFlKx2i
+         tLn1bHuf6IDvnhGaXUglVzlf04eqvRJeRSAiTtBPBDRLDnA7dgRTPlDHO/vaY0kkcXr4
+         2qtuS5pTRjLoQYf0mF27Nqk2doAB57nrsd/x5eF/Kvib1j5m0lcq8EVi1g4nb+yKINJa
+         EuiVDAU/8I+kUK+lx6Jka1QD0thYSfJmsPw+WELj5Bt2MwgYXteXUCxYhUWD4Vi9vox0
+         +q4df3Vl0qlV2kC/7pEdX0VimR3Uqdp3w/9anJgrS3fMkqUCdaGXaPX8tl+cYcwM6iNs
+         HVyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773274510; x=1773879310;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pbDxkeMXFgFuSfzV6w0UsHl8/LPcKe8YhwEDSHSsljs=;
+        b=M/2ZpwvIsBWQClsVh6IxyuH4GO1MizhxwKRlpdhRZv/r9n/HlqaGmyg3a0wZr/22zK
+         Mw3KErwBDLnurX6nBz5cEaS1oh/J6BKtPnB72VGQt2vL7Rmj3WCgqhQc6BqSHzUifyP4
+         xhTLOUKzLs0Sk48/7fV/Z3tULCSabiDz3l2FnUygejzJ5XtAhiFQZMxX+wWGZVEG7+mk
+         MsHxyzfPKIUn7FDmz7waVWv4yb+mXNDAAtcxcOZvI1z8B2y4gUS9dxpVphFP/fpFBSGK
+         PoLEGq0VkRutyZXNKKJRNyg2l1xw04PL5fpEVAU5uN8NBYObLM/7LfmTfbmun/zO9WW+
+         hFgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVsjVhLxCmOmRApOku3UJN1J7kNuwqksIy9xiM0tZOmnkUzoJmYMRVD3slEwXqXjf0aANg0tw8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy9KiCaszergyuzvsWnHEbyCvkLMr+vFssF5osxPJ8oeN8IU2T
+	TV4k+i68dpvMcsfsliABtWN4ZeIf7rZlz2uPhu9mEeeeQdgYpcRbi1+mJnmGEKZUdMvCTA/a17X
+	qwsx8vGfxWQyOdG/7AtVFnfin6GddOSQ=
+X-Gm-Gg: ATEYQzzdYYTJC8o+nIDNhgOftix7WQr5mOvcaI4d9+hieS4GBZd0yUSxjwVzxvsacvi
+	gjnEFPiqwclzfeSBrvTRsgPFtE3gZ9Aw7lQ8e1lGBDjYFLztQaLYurR6xjNBdwbYEVGo5Zz5CrI
+	qjBAshYEZQ2gzhkUNxfbfqt4/8MnCXEdMyJBrRz2GNXEk/92vD3nxPVvTfcvRCQRATwubIzOxZ9
+	wd+QGhlerNNkgOgV6C8HR37V2mjY/CR5kFvZ2Y/m+PCARzU0dkk6zEt6XwlGVUkNweoXBWq07cD
+	ueJOfbTR6NzMuWwb
+X-Received: by 2002:a05:6402:5109:b0:660:f98d:227f with SMTP id
+ 4fb4d7f45d1cf-66319ee21aemr2290781a12.28.1773274509925; Wed, 11 Mar 2026
+ 17:15:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260310235642.6d9798f4@plasteblaster> <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+In-Reply-To: <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Thu, 12 Mar 2026 05:44:58 +0530
+X-Gm-Features: AaiRm50oWdiNjT1ebRKWHilt31EW_fjU4bk5ELRtpIJIFmb-N6WXXm4YQx0WL0s
+Message-ID: <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com>
+Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
+ custom TCP port (not 445): Host is down (at least since 6.6.95)
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, Steve French <sfrench@samba.org>, 
+	linux-cifs@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-224773-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-224774-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0E8FE26B8DB
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,archlinux.org:url]
+X-Rspamd-Queue-Id: 5A41326B8D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[BUG]
-When recovering relocation at mount time, merge_reloc_root() and
-btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
-an impossible state: a non-zero drop_progress combined with a zero
-drop_level in a root_item, which can be triggered:
+On Wed, Mar 11, 2026 at 7:37=E2=80=AFAM Henrique Carvalho
+<henrique.carvalho@suse.com> wrote:
+>
+> On Tue, Mar 10, 2026 at 11:56:42PM +0100, Dr. Thomas Orgis wrote:
+> > Dear Linux-CIFS maintainer(s),
+> >
+> > I stumbled upon a regression in the Linux cifs/smb3 client when working
+> > with a smbd using a non-standard port. I am not the first to note this,=
+ see
+> >
+> >       https://bbs.archlinux.org/viewtopic.php?id=3D306712
+> >
+> > which is a report from mid last year, indicating the problem sometime
+> > after Linux 6.6.72. It is a very simple issue, where details of the
+> > kernel builds or mount setup don't seem to matter much: Older kernels
+> > reconnect to a SMB server that was restarted (old processes killed and
+> > replaced), newer kernels do not and just have a defunct mount.
+> >
+> > I reproduced this in our HPC cluster environment with such smb.conf on
+> > the server side
+> >
+> > [global]
+> > security =3D user
+> > map to guest =3D Bad Password
+> > server role =3D standalone server
+> > smb ports =3D 1445
+> >
+> > [public]
+> > path =3D /some/path
+> > guest ok =3D yes
+> > read only =3D yes
+> >
+> > and such a mount command on the client:
+> >
+> > mount -t smb3 -o port=3D1445,user=3Dguest,password=3Dfoo //server/publi=
+c dir
+> >
+> > When I kill and re-start smbd on the server, older client kernels
+> > reconnect and continue to return listings and files from the share,
+> > while newer kernels give this:
+> >
+>
+> My suspicion is that the regression was introduced by:
+>
+>     5713127da855 ("cifs: update dstaddr whenever channel iface is updated=
+")
+>
+> That change causes parse_server_interfaces() -- should this be running
+> without multichannel mount option? -- to overwrite the port stored in
+> server->dstaddr with CIFS_PORT.
+>
+> The attached patch preserves the existing port from server->dstaddr.
+>
+> Note that I have not yet tested this patch or confirmed the regression
+> with a bisect. If you can't, I will try to do that tomorrow.
+>
+> --
+> Henrique
+> SUSE Labs
 
-------------[ cut here ]------------
-kernel BUG at fs/btrfs/relocation.c:1545!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary) 
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
-RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
-Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
-Call Trace:
- merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
- btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
- btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
- open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
- btrfs_fill_super fs/btrfs/super.c:987 [inline]
- btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
- btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
- btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
- vfs_get_tree+0x9a/0x370 fs/super.c:1758
- fc_mount fs/namespace.c:1199 [inline]
- do_new_mount_fc fs/namespace.c:3642 [inline]
- do_new_mount fs/namespace.c:3718 [inline]
- path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
- do_mount fs/namespace.c:4041 [inline]
- __do_sys_mount fs/namespace.c:4229 [inline]
- __se_sys_mount fs/namespace.c:4206 [inline]
- __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
- ...
-RIP: 0033:0x7f969c9a8fde
-Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
----[ end trace 0000000000000000 ]---
+Hi Henrique,
 
-[CAUSE]
-A non-zero drop_progress.objectid means an interrupted
-btrfs_drop_snapshot() left a resume point on disk, and in that case
-drop_level must be greater than 0 because the checkpoint is only
-saved at internal node levels.
+AFAIK, the ignoring of port from the results was by design and part of
+the original code back in 2018:
+CIFS: parse and store info on iface queries
 
-Although this invariant is enforced when the kernel writes the root
-item, it is not validated when the root item is read back from disk.
-That allows on-disk corruption to provide an invalid state with
-drop_progress.objectid != 0 and drop_level == 0.
+Also, the comment in the code just above says why this is so.
+[MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these
 
-When relocation recovery later processes such a root item,
-merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
-same invalid metadata can also trigger the corresponding BUG_ON() in
-btrfs_drop_snapshot().
+I checked this section and it says:
+Port (2 bytes): This field MUST NOT be used and MUST be reserved. The
+server SHOULD set this field to zero, and the client MUST ignore it on
+receipt.
 
-[FIX]
-Fix this by validating the root_item invariant in tree-checker when
-reading root items from disk: if drop_progress.objectid is non-zero,
-drop_level must also be non-zero. Reject such malformed metadata with
--EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
-and triggers the BUG_ON.
+Based on the conversations here, it looks like smbd ignores this.
 
-The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
-metadata fuzzing tool that corrupts btrfs metadata at runtime. After
-the fix, the same corruption is correctly rejected by tree-checker
-and the BUG_ON is no longer triggered.
+I think the right fix would be to make sure that
+cifs_chan_update_iface gets called only for secondary channels. That
+way, it will not get called for single channel scenarios.
 
-Fixes: 259ee7754b67 ("btrfs: tree-checker: Add ROOT_ITEM check")
-Cc: stable@vger.kernel.org # 5.3+
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
----
-[CHANGELOG]
-v2:
-- Split out the error message fix from the previous patch, as requested
-  during review.
----
- fs/btrfs/tree-checker.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index dd274f67ad7f..1e052c3303b3 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1260,6 +1260,23 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
- 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
- 		return -EUCLEAN;
- 	}
-+	/*
-+	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
-+	 * interrupted and the resume point was recorded in drop_progress and
-+	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
-+	 * leaf level and drop_snapshot never saves a checkpoint there (it
-+	 * only records checkpoints at internal node levels in DROP_REFERENCE
-+	 * stage).  A zero drop_level combined with a non-zero drop_progress
-+	 * objectid indicates on-disk corruption and would cause a BUG_ON in
-+	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
-+	 */
-+	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
-+		     btrfs_root_drop_level(&ri) == 0)) {
-+		generic_err(leaf, slot,
-+			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
-+			    btrfs_disk_key_objectid(&ri.drop_progress));
-+		return -EUCLEAN;
-+	}
- 
- 	/* Flags check */
- 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
--- 
-2.43.0
-
+--=20
+Regards,
+Shyam
 
