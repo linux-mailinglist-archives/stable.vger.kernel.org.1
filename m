@@ -1,227 +1,173 @@
-Return-Path: <stable+bounces-224800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NbMKH5Fsmk5KwAAu9opvQ
-	(envelope-from <stable+bounces-224800-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 05:47:58 +0100
+	id +GxkLApWsmlvLwAAu9opvQ
+	(envelope-from <stable+bounces-224801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 06:58:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C61226D363
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 05:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 143EC26D742
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 06:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CED733144FB4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 04:46:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA1773068088
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 05:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0951E37474B;
-	Thu, 12 Mar 2026 04:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4D7317172;
+	Thu, 12 Mar 2026 05:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZMr0c7d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gX8Wu11H"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE20282F12;
-	Thu, 12 Mar 2026 04:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9558D305E1F
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 05:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773290778; cv=none; b=TQvj5cfEWUglnh2U23IMoDSXCkN9JdmsZX5egfi9nOzJ2DNyCzVk71vEBmMCuAmtxbe5kfZMN5Cf3qGr+gFLO7J06ZI3yFu0ly1TNJ25zwpnWrMYC0lqpyNOA0/l9ypUkplfzGt6donZ/mWb3RgInT13m5wBueOO3D5NTWfe3Xk=
+	t=1773295110; cv=none; b=qOnMscKb2Up3D8tFgE//rjLE2fi4ovL2vrskjEyRsCM4aN5as3ZAa/sMfMz5iu4KvRTXVwxzQaDnLU8ISIL3aIv+v16LlERoHnK7bcc+8rOYj9YgS2NCaDXdvyxE4gWxHz4pLlzvvBUYYWZrKmyUB1NGJBswPqVhgdwc+RWqJ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773290778; c=relaxed/simple;
-	bh=Y8sYqXr6CpMwHt6m1Bersm2ioQl2Rd4JvM6VRDgUawM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uJLF55dQQ9eR7tF2s2g03T6Y4ld80p8q8EZuYMApPUSH5t07froNd0/4nS3LDBduoNbziuMXRilOgs06B3yfihCI9uveFtLQFFm3ZYPj9Ku/tPt/ZE6DlkBoLFahitwaKqntA5h0wRAyMjzpuVGhAaxmJZtpeqPzvN5JIK64vMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZMr0c7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8AC4CEF7;
-	Thu, 12 Mar 2026 04:46:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773290778;
-	bh=Y8sYqXr6CpMwHt6m1Bersm2ioQl2Rd4JvM6VRDgUawM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cZMr0c7dPCrNqrSuGTTE09iOKEStVLZbd3Nv9VUwXj3K0Gw4DzZy3gjZg7av7NWXg
-	 ulUgwVU53aodD7a2eom7rPWo9+mwRsmlT1w8hyqshZh/7mvArGXcuE5AfN56g+eThx
-	 6kYaFrsbcxsyr/LhJX928PVr3TtgxDEZL0GJkv9fb2g6E8KiclU+6wT6hdMWotGvjO
-	 1OYOi9VK90pNb7UUl7Pr8E0hP7KHa19P4rx6jj7kYx7S6H77DLntbE3XvS1bVXGwEJ
-	 xxmFUYiiptWSIGwhzzUfwF5SU10hhX5LUtjh4Q03CVLjhO3HMazRkiqOsx7nkw0Xn1
-	 F25el4w66jaEA==
-Date: Thu, 12 Mar 2026 04:46:16 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: mhklinux@outlook.com
-Cc: drawat.floss@gmail.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
-	ryasuoka@redhat.com, jfalempe@redhat.com,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] Drivers: hv: vmbus: Provide option to skip VMBus
- unload on panic
-Message-ID: <20260312044616.GC3771304@liuwe-devbox-debian-v2.local>
-References: <20260217182335.265585-1-mhklkml@zohomail.com>
+	s=arc-20240116; t=1773295110; c=relaxed/simple;
+	bh=zppz/2A/YSmq/tJ/PgfROQN4F/stKqn6p3g1ccDsrb0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A97qRkYkE9TYa72flw2luk3ycSNsXIo9mxiJPOysg0fN9FAkQKtMQH47FxIRPeSz98JjCumTE0c1mJaAYUenfw4PVFKaUvvWhJsaAyzMBW9/lBVY5LCx6oh/6br/q//4o5PnVWJFnp5yqLV0kUhgp7XV9wN1Je/C7kdnEK7wmoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gX8Wu11H; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50934b8ab60so17967431cf.0
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 22:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773295109; x=1773899909; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KvBDaTCURXHdnYEa2b3r1ntui5dSdoJ+7To4kAlDmi8=;
+        b=gX8Wu11HY0t+dzPphLUIvuDABjddTj57Xdl2Ib77Dh890vu+0R1ntvyoEwX3pnWuAW
+         ELgguK0So0GTpehlGviEnSqtsYT8QZEu2C//wu2ONUe38iRFCdAGRky1RCVTcFTfDM+U
+         mb5W/fAwc9mKleX/Ribw2FHiD5uAcTgOe/FsidXQne2gz/fO52NNGc+QhF5xVjTd+lmE
+         Zw/1qgVQcqv4BRzUPYPlaw5N1rc0lF9KeDJNLD5OctA+CJic8k15b4tbUBqL1gLzHYrC
+         y5RfWQszCBU+ImGPvxWIMn5cLbHw1/bDkYKhaqjosMRdJk2c1/6u/iPCaJ+9paIBYUXb
+         mIBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773295109; x=1773899909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KvBDaTCURXHdnYEa2b3r1ntui5dSdoJ+7To4kAlDmi8=;
+        b=hz4SIlSZQb30+77iIAvzAJsAh17NEPsTvGKpPzDhJlgVMAQFvjZ6l88+hgTVtTj+m8
+         GdPn5i72CYiqybzDv5igwKWwbj6avuFgY2wFgyh/Xs5Ekxl+VsvEbSSMzSo5Jpp9ItTG
+         yo6a92tXNAPlj+u1AvDXipEKUlZi+FIZhHUVSyTcFaeMmGglUBbdHlLLXBVggZx57+se
+         xNGMh3vIVNO1QIVJU5DPd+mQP5VG52MjrIUubx36waj29Z/C+Wyv1j9Wkw8a8o8b6bop
+         LK7JSUHwMBXg6GCkzos182woQiQ67VqVO7736qWqAV+jbwnlo+NWeCOQO1hDkmjw3rcP
+         YyVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOB9quQLPontuqlgeU5gBntSpdeKCawF3Mz1DED/TxyRBVRO7H6P8xxCPOnlW0+jMvzbCq1dw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwBU8GaWI9n8r3ZL2GTyl0Y9B9I0lDGc+ujSTneTslv2TN8gbH
+	haMPV4eKAPlwI61Af3kOcEeKePwC6g+GEtuniKpJqdtf+3Lv9EFy7K+4
+X-Gm-Gg: ATEYQzw3E1TBKff2XVbpRm8WUQq1vzUKCMDCSwyF1iGnnlN0nFq+hj5hwwVpy8wnKDe
+	sq4F5MSae8dvrBlyL/MwsF8UrHvJ4j/9FnusvbH2DhvYR000CBL2b23c3KNXdIYCLpq6lNjpuEZ
+	UFFzno9tAEBrh3IyyMve4pZES4D/iB3M/XUdTz41vcIios+0Z/ov5EeUd9LSsX8iv+s2Pafygbc
+	x7KS9F0GPKXANk3VoBzqj6ei3g8tLA5YUhQl4xibZpb7Txa2yg3X6Tf2z/s7DFNAB6b5VPCQ9TN
+	ckW5Qc1bmNqOQOni59v7/r6O7ePfdlXEiDlcbTc++wTNHKCSC+fS6q2fSessbk5hoWLsbF43M15
+	uC3Mxz9TtFG/QiclUcHzGwPheKB2TT/JFk/zP8P55aNZxTrlnGqmRLOMPbGSfsM05Eht+K5B4zj
+	z3xoyboqRtJK3SgiuIo3H3xBUP3qrpKoTBIEJhUUSr8C98PrAKP+eHgrQ+3P+VxW8Y85iVEI/Lv
+	ikVwffrV7S+DEhBDRhy
+X-Received: by 2002:a05:6214:2126:b0:899:a586:2923 with SMTP id 6a1803df08f44-89a72a8d05dmr32299826d6.28.1773295108590;
+        Wed, 11 Mar 2026 22:58:28 -0700 (PDT)
+Received: from localhost.localdomain ([129.170.197.113])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65cfec56sm28890926d6.39.2026.03.11.22.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 22:58:27 -0700 (PDT)
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	heikki.krogerus@linux.intel.com,
+	kyungtae.kim@dartmouth.edu,
+	stable@vger.kernel.org,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH v2] usb: typec: ucsi: validate connector number in ucsi_connector_change()
+Date: Thu, 12 Mar 2026 01:58:15 -0400
+Message-ID: <20260312055815.310-1-nathan.c.rebello@gmail.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260217182335.265585-1-mhklkml@zohomail.com>
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224800-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,microsoft.com,redhat.com,lists.freedesktop.org,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,dartmouth.edu,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224801-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wei.liu@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[nathancrebello@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,liuwe-devbox-debian-v2.local:mid]
-X-Rspamd-Queue-Id: 4C61226D363
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 143EC26D742
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dexuan and Long, can you share your thoughts on this patch?
+ucsi_connector_change() uses the connector number from the CCI as an
+index into the connector array without first verifying it falls within
+the valid range. The connector number is extracted from the CCI register
+via UCSI_CCI_CONNECTOR(), which returns a 7-bit value (0-127), but the
+connector array is typically only 2-4 entries.
 
-On Tue, Feb 17, 2026 at 10:23:34AM -0800, Michael Kelley wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
-> 
-> Currently, VMBus code initiates a VMBus unload in the panic path so
-> that if a kdump kernel is loaded, it can start fresh in setting up its
-> own VMBus connection. However, a driver for the VMBus virtual frame
-> buffer may need to flush dirty portions of the frame buffer back to
-> the Hyper-V host so that panic information is visible in the graphics
-> console. To support such flushing, provide exported functions for the
-> frame buffer driver to specify that the VMBus unload should not be
-> done by the VMBus driver, and to initiate the VMBus unload itself.
-> Together these allow a frame buffer driver to delay the VMBus unload
-> until after it has completed the flush.
-> 
-> Ideally, the VMBus driver could use its own panic-path callback to do
-> the unload after all frame buffer drivers have finished. But DRM frame
-> buffer drivers use the kmsg dump callback, and there are no callbacks
-> after that in the panic path. Hence this somewhat messy approach to
-> properly sequencing the frame buffer flush and the VMBus unload.
-> 
-> Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
-> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-> ---
-> Changes in v2: None
-> 
->  drivers/hv/channel_mgmt.c |  1 +
->  drivers/hv/hyperv_vmbus.h |  1 -
->  drivers/hv/vmbus_drv.c    | 25 ++++++++++++++++++-------
->  include/linux/hyperv.h    |  3 +++
->  4 files changed, 22 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-> index 74fed2c073d4..5de83676dbad 100644
-> --- a/drivers/hv/channel_mgmt.c
-> +++ b/drivers/hv/channel_mgmt.c
-> @@ -944,6 +944,7 @@ void vmbus_initiate_unload(bool crash)
->  	else
->  		vmbus_wait_for_unload();
->  }
-> +EXPORT_SYMBOL_GPL(vmbus_initiate_unload);
->  
->  static void vmbus_setup_channel_state(struct vmbus_channel *channel,
->  				      struct vmbus_channel_offer_channel *offer)
-> diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-> index cdbc5f5c3215..5d3944fc93ae 100644
-> --- a/drivers/hv/hyperv_vmbus.h
-> +++ b/drivers/hv/hyperv_vmbus.h
-> @@ -440,7 +440,6 @@ void hv_vss_deinit(void);
->  int hv_vss_pre_suspend(void);
->  int hv_vss_pre_resume(void);
->  void hv_vss_onchannelcallback(void *context);
-> -void vmbus_initiate_unload(bool crash);
->  
->  static inline void hv_poll_channel(struct vmbus_channel *channel,
->  				   void (*cb)(void *))
-> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-> index 6785ad63a9cb..97dfa529d250 100644
-> --- a/drivers/hv/vmbus_drv.c
-> +++ b/drivers/hv/vmbus_drv.c
-> @@ -69,19 +69,29 @@ bool vmbus_is_confidential(void)
->  }
->  EXPORT_SYMBOL_GPL(vmbus_is_confidential);
->  
-> +static bool skip_vmbus_unload;
-> +
-> +/*
-> + * Allow a VMBus framebuffer driver to specify that in the case of a panic,
-> + * it will do the VMbus unload operation once it has flushed any dirty
-> + * portions of the framebuffer to the Hyper-V host.
-> + */
-> +void vmbus_set_skip_unload(bool skip)
-> +{
-> +	skip_vmbus_unload = skip;
-> +}
-> +EXPORT_SYMBOL_GPL(vmbus_set_skip_unload);
-> +
->  /*
->   * The panic notifier below is responsible solely for unloading the
->   * vmbus connection, which is necessary in a panic event.
-> - *
-> - * Notice an intrincate relation of this notifier with Hyper-V
-> - * framebuffer panic notifier exists - we need vmbus connection alive
-> - * there in order to succeed, so we need to order both with each other
-> - * [see hvfb_on_panic()] - this is done using notifiers' priorities.
->   */
->  static int hv_panic_vmbus_unload(struct notifier_block *nb, unsigned long val,
->  			      void *args)
->  {
-> -	vmbus_initiate_unload(true);
-> +	if (!skip_vmbus_unload)
-> +		vmbus_initiate_unload(true);
-> +
->  	return NOTIFY_DONE;
->  }
->  static struct notifier_block hyperv_panic_vmbus_unload_block = {
-> @@ -2848,7 +2858,8 @@ static void hv_crash_handler(struct pt_regs *regs)
->  {
->  	int cpu;
->  
-> -	vmbus_initiate_unload(true);
-> +	if (!skip_vmbus_unload)
-> +		vmbus_initiate_unload(true);
->  	/*
->  	 * In crash handler we can't schedule synic cleanup for all CPUs,
->  	 * doing the cleanup for current CPU only. This should be sufficient
-> diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-> index dfc516c1c719..b0502a336eb3 100644
-> --- a/include/linux/hyperv.h
-> +++ b/include/linux/hyperv.h
-> @@ -1334,6 +1334,9 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
->  			bool fb_overlap_ok);
->  void vmbus_free_mmio(resource_size_t start, resource_size_t size);
->  
-> +void vmbus_initiate_unload(bool crash);
-> +void vmbus_set_skip_unload(bool skip);
-> +
->  /*
->   * GUID definitions of various offer types - services offered to the guest.
->   */
-> -- 
-> 2.25.1
-> 
+A malicious or malfunctioning device could report an out-of-range
+connector number, causing an out-of-bounds array access.
+
+Add a bounds check in ucsi_connector_change() itself, before the array
+dereference, as it is the single function through which all connector
+change events flow.
+
+Fixes: bdc62f2bae8f ("usb: typec: ucsi: Simplified registration and I/O API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+---
+ drivers/usb/typec/ucsi/ucsi.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index a7b388dc7fa0..b4f630154aba 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1345,7 +1345,14 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+  */
+ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
+ {
+-	struct ucsi_connector *con = &ucsi->connector[num - 1];
++	struct ucsi_connector *con;
++
++	if (num < 1 || num > ucsi->cap.num_connectors) {
++		dev_warn(ucsi->dev, "bogus connector change event: connector %u\n", num);
++		return;
++	}
++
++	con = &ucsi->connector[num - 1];
+ 
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+ 		dev_dbg(ucsi->dev, "Early connector change event\n");
+-- 
+2.43.0.windows.1
+
 
