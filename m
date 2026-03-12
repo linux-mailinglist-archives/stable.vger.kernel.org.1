@@ -1,147 +1,271 @@
-Return-Path: <stable+bounces-224880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPL9JwjcsmlMQQAAu9opvQ
-	(envelope-from <stable+bounces-224880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:30:16 +0100
+	id OLV+KuvesmncQQAAu9opvQ
+	(envelope-from <stable+bounces-224881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:42:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34EC52747D4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:30:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B48274BFC
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7C37329528E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:25:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E67B0300A525
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BF23C8719;
-	Thu, 12 Mar 2026 15:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F673D1707;
+	Thu, 12 Mar 2026 15:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLbRxazJ"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA4018027
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773329092; cv=none; b=YuaHkVzFZ82T/FR7/8imaSUduckaGdrKOTIzCrM3c1FtO2udB24eqMDTJy4d/PMXKJDX36OQU+kuz/DzGROhdMS3Ui0JaNnO3MDzcsF93VO/QrZssUQGZDnXL+BCxheh05CqQZxNmfar0PdjQWmQAg6dcSpMs5Rp4iLnJ9dhprM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773329092; c=relaxed/simple;
-	bh=gAhoZZtaU0dLQM0X7vjE0h9pHAa9S+Tp5bClV1KsDUU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T+5WOhYhfra36PtsQDmu11D0zQiLCqqPmCLci1srhYx85OMGG/X/Y1qFmUa0FykOPw7YfNbvg3HujcG/XS0F8R/9YJHqmXilVXGuNW2qHP1ep/7HGpZKUJb++7MEV/jFwFKIAG/m4tUQIR8ZZtiMA3eMgS/oXE581bXLqE3+GZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1w0htl-0004bz-BF; Thu, 12 Mar 2026 16:24:29 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1w0htj-0052iJ-0c;
-	Thu, 12 Mar 2026 16:24:28 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1w0htk-00000000Cdx-1r4T;
-	Thu, 12 Mar 2026 16:24:28 +0100
-Message-ID: <37f389274e5c0e33c0e8fad8ffed0237b0127b07.camel@pengutronix.de>
-Subject: Re: [PATCH v8 4/5] reset: rzv2h-usb2phy: Keep PHY clock enabled for
- entire device lifetime
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, 
-	tomm.merciai@gmail.com, peda@axentia.se
-Cc: linux-renesas-soc@vger.kernel.org, biju.das.jz@bp.renesas.com, Fabrizio
- Castro <fabrizio.castro.jz@renesas.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>,  Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,  Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Josua Mayer
- <josua@solid-run.com>, Arnd Bergmann <arnd@arndb.de>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Thu, 12 Mar 2026 16:24:28 +0100
-In-Reply-To: <6584aed8dc4fddb28c2184c83b92b4f3b419bc31.1773319566.git.tommaso.merciai.xr@bp.renesas.com>
-References: <cover.1773319566.git.tommaso.merciai.xr@bp.renesas.com>
-	 <6584aed8dc4fddb28c2184c83b92b4f3b419bc31.1773319566.git.tommaso.merciai.xr@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC22C3C7DF4
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773330045; cv=pass; b=MN9VaCBq3xJmHaNDlt2jXfuv6nQxf0GWA6hGkcS5BnUBO+j84a8pI8x/ujWI3IZ2ePzqpgVizCULY8PPA1nJK0bBxIiY8JXmGsxwPNglDtJfG+uOq1arCU2J15268y1c73AdwfjfErpDnr7ioKJPLFqQPYoIXh0joHnvZZ0bq4I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773330045; c=relaxed/simple;
+	bh=9U79XuSEDogMsEE6qxccDeqtvH3bBahfO34fvcv/Lvg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S0XfvHPBhqDvgamWbJamVGTPMdggkvqgB60TFDgfLuJQdaVVjbbhSZiqWyXWcdZbhfhv8QvL0mVeRSBIkza1vBAWwOFDwp8ASoCxJOsJrYRksrBfrFr7jxEqYbmqvqHrMXiKTKUfBv4s8GRh7Xiv0Vvv6A6SA7eLFn9YTIbEFOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLbRxazJ; arc=pass smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89a1347051aso4398506d6.2
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 08:40:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773330043; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VPO+kMzPKe6oSbjRPFkj9k5ap1F7deBObVYpK3OcWSKuS5RlehviWCCdZyETp5dK5/
+         tGnZwAWIaVLvgC5r1dU8T+JC/OtqlYUkkLOUTT0Mbw0uecNS/WAZNmS3fHFoiDyp1Or6
+         KkIyR34ZTqkmEcIbZE0JWsrl6BNcj7mNlWz3tRk4H9vetFirfVfdHva3GI9fDKXiiEZe
+         T0M1VrG2sGtCdSLaqvcomHgWC0sKsu5P688Xh/8rjm0JoEDzzuaw+up6RUO0AgSEaaoy
+         qkE2LYZzQajdN5r6BsvzWgemcd/UGCI2avifx6vFhLOQbe+xwuWb3DlSPBBTqAD9nhTW
+         I1og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
+        fh=3dXTq+dtyvgkwKakuJYG01hV6gROdkiuFzyl7FgvUcM=;
+        b=TFvCh2ZhegeCqneTdU0Q1za+tY19D8VmmhJqEFc1J1Z/BEe3ktfmVcJaH+wPPw3eFc
+         LuvsdGCwxF4lmt8dAhzmK6lAuLMOmTHu3Ui3F3I4XgwgFdQHyUMGWhwR+t30cDuhxZN8
+         VIl3DKTUg9Uf5IhEfGbtwWg+4F7oXjs7i/pgaMSykLwTegoqbF1WfDS6x9RG7O2BjTnr
+         QR7Pwxj+87kTDlJXfSAIR1Z8wPdwBbB08yQaYK0D1+fS+pVlTxpwOkORTInAHzKcsejZ
+         UhOjDC8rpvvq3duyWwkZv1lJxfYH2Oq6kIslk0aCxMdGmpeOHTKLwy2X/MzI0tL4Sgrf
+         IXxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773330043; x=1773934843; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
+        b=FLbRxazJIzPZEV2sEZx9zrboFDwIn+alCWs5hskbczBtnRLe/otMlpIQowj+KltuzF
+         dwUgUcaKyd71ghZv2xyO826u6NaTDLhL6g692D9sn40GRpRbWf4wxY1u0PYC6r9Ik4Ry
+         PL4W/U1BRT4K9uf8AlbU3gXXgChiy81qi+81n+UZ4aDPM1gSsyaXSLC2SG7x89IQzJfM
+         nDhckLHdULcBqGfdsC2Gy7+vslG/RbVkPU+GYhAx8+NS7nbyur/Z+wukqB/lP87FQ1hH
+         xtYVq56q89qXqRAFw4xLuvrXf9l5XzAMxxcMAo5S3Cdi28+zM1w7WebovbE84O8OdspQ
+         NZ/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773330043; x=1773934843;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
+        b=Oj1CTbiMXGcFuNeHoafYGqWQ2eBL3vior3Uqw7p2o6xpvk62aw0amqXMotqgTzI6Gz
+         Q/SV3wmLozB5izGfwmFOifb4cfzi+qNrKHc9Pu7SQAUrQkI0taBZqSnv/8i4n+kdlv+k
+         PkNJ1pSy0zm4x5FAGGUXlRvFqeKLdzBXYDejXnxIC3tLS48x8sGpmLx8OTvegj9pyHDe
+         Z5saJZ/dKzFbSslwVY6QLi3SjseWCYytoW3SOEu77QjP7cgkr70QGj6r3phMK4RHbuED
+         cKA6EHdAvZ8Juj1nvNwF9EsMQwwVYCRtjZVjzo8FzRL2jR21kfQBpOtdJuW5JEO/6WQJ
+         5+sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXouDmqY0I3ZmFg5AS2AHg9f04I9+O4XvHX3986Xgk4cAE8t3kePQRqOZ5LpziQ5GWwgATo+gw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwAWG54OhHPD07ibWSXGrL6YenmLGWdKYUuXENqAf/pY6yWb/9
+	9rGsRYNJCf5onGysMIfZ/qrcF7pFjfWNxLdN1ARnI4zFHYf5FtZuqUQz/gA/iTl8VW9gZ3qkkYA
+	VtySBuHINO/YpaR0Lywmsd6GL7pNl+E0=
+X-Gm-Gg: ATEYQzwnonGeJHb6vDJzDRz0Ec2p6H0LEwcbbnFY+qJJSbRzJ06qE3dg0R049RSiQiM
+	y0+y2up3zkOGC1F5Rsq1ImytueNrksqhWxYSV0nPP5DQuigvsxHBmzTuuzBdFnx6BjQQdSVg1IN
+	VQ6vbXFN6yVfUaT6oOioQgrukIalO22oSHO22y1G+B1k215xaqA1Cp2R32qoKkddqQCOGPvsjio
+	YOLa8OtJOqNMNnuMJPNUFISiKftT6VtJsp7cCtS/y51f8RryEsByI2vEIOED6rxsqeDRyhrmm94
+	EygJ8MG6xPXMChac8S9Nyn4B3Ovq8/HrWm45newcGM+spYtzxX4moB682RdcQwUYdQz8P/ufJux
+	/JdpjBtY/Dy96Filn22W5hXYBa1QTrwGF5SyeTdVfOt86hG8K4NQx3iSQpbyn673MVyipvKXxSm
+	dTMjvpdMeAMD4yp4p58Zj09A==
+X-Received: by 2002:ad4:5ca2:0:b0:899:fd80:f79f with SMTP id
+ 6a1803df08f44-89a81dde5abmr2633836d6.23.1773330042750; Thu, 12 Mar 2026
+ 08:40:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+References: <20260310235642.6d9798f4@plasteblaster> <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+ <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com> <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
+In-Reply-To: <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 12 Mar 2026 10:40:30 -0500
+X-Gm-Features: AaiRm52ah7-n07dCG73FeRnFD_pUuk-pLBG0LIJHG-WBVhN-iBaM9Rrd33zCEk0
+Message-ID: <CAH2r5msUyFejEbDafcWzSf5oLE3pJCdreaQTm2dxbqfmGtqCRQ@mail.gmail.com>
+Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
+ custom TCP port (not 445): Host is down (at least since 6.6.95)
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: Shyam Prasad N <nspmangalore@gmail.com>, 
+	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, Steve French <sfrench@samba.org>, 
+	linux-cifs@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224880-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	FREEMAIL_TO(0.00)[bp.renesas.com,gmail.com,axentia.se];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,bp.renesas.com,renesas.com,kernel.org,glider.be,gmail.com,linaro.org,linuxfoundation.org,solid-run.com,arndb.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224881-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,uni-hamburg.de,samba.org,vger.kernel.org,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p.zabel@pengutronix.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.993];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email,pengutronix.de:email,pengutronix.de:mid]
-X-Rspamd-Queue-Id: 34EC52747D4
+	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,archlinux.org:url,suse.com:email]
+X-Rspamd-Queue-Id: 27B48274BFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Do, 2026-03-12 at 15:50 +0100, Tommaso Merciai wrote:
-> The driver was disabling the USB2 PHY clock immediately after register
-> initialization in probe() and after each reset operation. This left the
-> PHY unclocked even though it must remain active for USB functionality.
->=20
-> The behavior appeared to work only when another driver
-> (e.g., USB controller) had already enabled the clock, making operation
-> unreliable and hardware-dependent. In configurations where this driver
-> is the sole clock user, USB functionality would fail.
->=20
-> Fix this by:
-> - Enabling the clock once in probe() via pm_runtime_resume_and_get()
-> - Removing all pm_runtime_put() calls from assert/deassert/status
-> - Registering a devm cleanup action to release the clock at removal
-> - Removed rzv2h_usbphy_assert_helper() and its call in
->   rzv2h_usb2phy_reset_probe()
->=20
-> This ensures the PHY clock remains enabled for the entire device lifetime=
-,
-> preventing instability and aligning with hardware requirements.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: e3911d7f865b ("reset: Add USB2PHY port reset driver for Renesas RZ=
-/V2H(P)")
-> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+On Thu, Mar 12, 2026 at 10:10=E2=80=AFAM Henrique Carvalho
+<henrique.carvalho@suse.com> wrote:
+>
+> On Thu, Mar 12, 2026 at 05:44:58AM +0530, Shyam Prasad N wrote:
+> > On Wed, Mar 11, 2026 at 7:37=E2=80=AFAM Henrique Carvalho
+> > <henrique.carvalho@suse.com> wrote:
+> > >
+> > > On Tue, Mar 10, 2026 at 11:56:42PM +0100, Dr. Thomas Orgis wrote:
+> > > > Dear Linux-CIFS maintainer(s),
+> > > >
+> > > > I stumbled upon a regression in the Linux cifs/smb3 client when wor=
+king
+> > > > with a smbd using a non-standard port. I am not the first to note t=
+his, see
+> > > >
+> > > >       https://bbs.archlinux.org/viewtopic.php?id=3D306712
+> > > >
+> > > > which is a report from mid last year, indicating the problem someti=
+me
+> > > > after Linux 6.6.72. It is a very simple issue, where details of the
+> > > > kernel builds or mount setup don't seem to matter much: Older kerne=
+ls
+> > > > reconnect to a SMB server that was restarted (old processes killed =
+and
+> > > > replaced), newer kernels do not and just have a defunct mount.
+> > > >
+> > > > I reproduced this in our HPC cluster environment with such smb.conf=
+ on
+> > > > the server side
+> > > >
+> > > > [global]
+> > > > security =3D user
+> > > > map to guest =3D Bad Password
+> > > > server role =3D standalone server
+> > > > smb ports =3D 1445
+> > > >
+> > > > [public]
+> > > > path =3D /some/path
+> > > > guest ok =3D yes
+> > > > read only =3D yes
+> > > >
+> > > > and such a mount command on the client:
+> > > >
+> > > > mount -t smb3 -o port=3D1445,user=3Dguest,password=3Dfoo //server/p=
+ublic dir
+> > > >
+> > > > When I kill and re-start smbd on the server, older client kernels
+> > > > reconnect and continue to return listings and files from the share,
+> > > > while newer kernels give this:
+> > > >
+> > >
+> > > My suspicion is that the regression was introduced by:
+> > >
+> > >     5713127da855 ("cifs: update dstaddr whenever channel iface is upd=
+ated")
+> > >
+> > > That change causes parse_server_interfaces() -- should this be runnin=
+g
+> > > without multichannel mount option? -- to overwrite the port stored in
+> > > server->dstaddr with CIFS_PORT.
+> > >
+> > > The attached patch preserves the existing port from server->dstaddr.
+> > >
+> > > Note that I have not yet tested this patch or confirmed the regressio=
+n
+> > > with a bisect. If you can't, I will try to do that tomorrow.
+> > >
+> > > --
+> > > Henrique
+> > > SUSE Labs
+> >
+> > Hi Henrique,
+> >
+> > AFAIK, the ignoring of port from the results was by design and part of
+> > the original code back in 2018:
+> > CIFS: parse and store info on iface queries
+> >
+> > Also, the comment in the code just above says why this is so.
+> > [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these
+> >
+> > I checked this section and it says:
+> > Port (2 bytes): This field MUST NOT be used and MUST be reserved. The
+> > server SHOULD set this field to zero, and the client MUST ignore it on
+> > receipt.
+> >
+> > Based on the conversations here, it looks like smbd ignores this.
+> >
+> > I think the right fix would be to make sure that
+> > cifs_chan_update_iface gets called only for secondary channels. That
+> > way, it will not get called for single channel scenarios.
+>
+> Sure, I read the comment in the code and the MS-SMB2 protocol. The
+> protocol states that "client MUST ignore [Port] on receipt". Since we
+> are not using p->Port, I don't see how this is a protocol violation.
 
-Given the Cc: stable tag I assume I can apply this first, independently
-of the other patches?
+Agree. Looks harmless
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+> We're using the port that was selected on mount and copied over to
+> server->dstaddr, so that when server->dstaddr is overwridden,
+> server->dstaddr keeps the user selected port.
+>
+> Now, even if we only fix that for primary channels, the secondary
+> channels will still get the wrong port when they are overwridden, no? So
+> I don't see how that fixes the issue.
+>
+> Apologies if I'm missing something.
+>
+> Best regards,
+>
+> --
+> Henrique
+> SUSE Labs
+>
 
-regards
-Philipp
+
+--=20
+Thanks,
+
+Steve
 
