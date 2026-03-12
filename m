@@ -1,237 +1,191 @@
-Return-Path: <stable+bounces-224883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ1xD67ismmWQgAAu9opvQ
-	(envelope-from <stable+bounces-224883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:58:38 +0100
+	id +D+AM3DksmkcQwAAu9opvQ
+	(envelope-from <stable+bounces-224884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:06:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B652750B6
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:58:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719A12752D1
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55CAF324E186
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:53:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD625300C33C
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4624D374171;
-	Thu, 12 Mar 2026 15:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57003CF694;
+	Thu, 12 Mar 2026 16:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bjk2LRgw"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rbLc8vZ/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF9135B651;
-	Thu, 12 Mar 2026 15:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88338757E
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 16:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773330747; cv=none; b=Rped4syx3/Bg0KXCcQpClxKq0fAUv6FzzCtpeKS0XbxtUQQ5PUxYE6OLaEJ+fUqe9CRYLH8EStzHDT9hjQGuFodsAu8KLyUjpvZcAXjgjs5SZ+uTcbc9ewBWRHkz2K33XdMqM0Er8EO0u+y5yKIxkvOGJPozcjqNgqFAWpk+XxI=
+	t=1773331325; cv=none; b=n4whQmGjQ+Xr94q9GjmIyJd1S+9aF/UPLOO3747XLeK+cX2fSFEP3VxRqBEhsp+v2jsRZYfQ87w/jMzQW8JPOj+FnVGdWvl5x/3TXjRflRHE/9b80CyiCpRC6aXf1nOcfaz2ocRVTEab/6VkqfE+bURmEV2wTpoQlsW/qDygdI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773330747; c=relaxed/simple;
-	bh=gMmde2pTAnMM3kpKmwV4MbbmGIN9MPit4jJoBeyFyyw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iUyR28KyxwhuqMuKYhEXcCumyXvtA3Hf/teXqfHZTWWOPzxeR7vC4CGDAGNnEnbvKom/Huf/bawgtGkDy0YzWyQ3Af+kT2Lh4oOEr1olZ4ufks+jQoRtvdf9Yh/9XQEWFUBp6D6vau7Py605FgSZmSUa4e/cg4eTfa+n2RzMOLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bjk2LRgw; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773330744; x=1804866744;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gMmde2pTAnMM3kpKmwV4MbbmGIN9MPit4jJoBeyFyyw=;
-  b=bjk2LRgw6RYwTI21m0S7gnu4CGWssQSZ2rxvRU2HLOAX4ZHeBOJloB6g
-   l3xF36wh42vXQgzBzsecKLf7WG+nq10Isy7hAN4ZrN+H0so9Ewsao2QF6
-   VkgqoIOLg030Vb7p/xTkmJUS60kRkH/kgvGZ4Od+Hf8Yjnw8TMu+J0oWU
-   CCX6ceeM3hns3RxOQJo3Y2SPlWBu3D/g4WNQOHSGIbBeC5uPbxI1S7Ohv
-   2Ob7tho37rLrG3rtpoZO8mBvp+VBYsrYtPxl80MQuY+o77nvpFFRW7e8e
-   /qZSG7fWN3NIuIzQgEa7RDWYsmpybFojVJy0JVuQT6eX0aoGsk0mKB2hd
-   Q==;
-X-CSE-ConnectionGUID: 72q6fz3tRq+JEmW+cu4qOQ==
-X-CSE-MsgGUID: CeuZD3VfRjiWoBOdE35tAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="62002476"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="62002476"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:52:23 -0700
-X-CSE-ConnectionGUID: 5TwKcQXfRaGyUWJxFxtPTA==
-X-CSE-MsgGUID: p65BddDAQJO3Qoz1kXxlNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="251356200"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:52:23 -0700
-Message-ID: <03a03ec8-4309-42ac-a13d-2fcc8396d547@intel.com>
-Date: Thu, 12 Mar 2026 08:52:37 -0700
+	s=arc-20240116; t=1773331325; c=relaxed/simple;
+	bh=Pk6i8yoSLmvjbHvV1MTtVmz1qPYslpyIivwjKzVBn8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nJwMHcK0KpdrY9BL6UfkWo+L7JiYZx+Sm3QRxhQuie/i5NBIMOsY4D/jjnWAE/znjkmwdxhluCKmYQng/TZlUe5BZqov45XEQf+vXyTktLykGloWJU87ZTc4o0w1rMdHaD3r6wjf6urLJ0QQ6ltem5B2/886bSYr+ckVYPxh8sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rbLc8vZ/; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-794719afcd4so11947377b3.1
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 09:02:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1773331323; x=1773936123; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qy73+iGNGeECV0rQjpRLn6tiSFKzdH9itGL02lldZDY=;
+        b=rbLc8vZ/FcDkhvwgG62p7BH84BmsDhlouJqv20KeeVZXwAdbkr/BR4+NMeooweOoZn
+         TMHrT+ReYzyZB6sqN+Re28uCz+O0R8VqZLVFDQflZdcniwQkJoM9S3oxXsTN1y4Naeeh
+         Ky2lxze5YixfoJIlJUyCz3JOfH5lJeTDpRh+eLD92jhJULina3EpzBhpS+eYiPLq/xvw
+         d3hOoZiIVGZg1pLCunZQPDWQTej/UiTWIvLUni8TpQn7pqWDX7xr5jskr36FR+fkmJz/
+         PRWvItN7ZPaOrgJC5JQd9s3wXET+13MrJLPVN218S+mjcrfoJ9YuW5abbphmVmPhWhbe
+         P3Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773331323; x=1773936123;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qy73+iGNGeECV0rQjpRLn6tiSFKzdH9itGL02lldZDY=;
+        b=lhoeNbTiXFqUmZutR5hR5MqK0k7ofGXIZEzQIyZaNI8ZLLzbQx0xgo70OP7dOb7Bst
+         5bFcTIzWH8Yd5xpESmQ4NV9G4n494phPKuwUqC2QJVaxU3jfpSeUs+Uyhf6hchXseC4J
+         CdZajTI6Iro7U0erLoF23abzdFpCtP4q/jgP3mahLUvFj8CtqPIDTfKSuaBtJUGnDh/l
+         p8WPRjePWrwJhetmGKAB7lx72rG+bThYxDKGVGhoKoXTOuKI9lTFo4bQSfUFNUHjdr0u
+         pNjXy5Czcf0PZTFbrENaCBqLGixenAyg9TqWB8HJ1SI1HbZ6lqPro1bW18H6JthEBOok
+         uZCw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0Yb+dCtliGDe4Kh8tc2i+PdGV7Bw0xLaRYo57i3csd1JgDFAX8WYyAl+4OyHTp+bpYWvRJAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjnc5ICRR53YCHO/P8vPZ7CMEsHYlxfh18/Zv5otb29Rf6LzRq
+	aE6HLye8WQesdO2IMQc8lF2Fh8znfpJsMCBoxQpSQS3gZJDI6k27W9XmwYgF5XD25iQ=
+X-Gm-Gg: ATEYQzwEDeUkp2QuywU1hUF9xttdJDiaGAe+WUjJ4BKvOjT20pMnRM0FXQHLLoPgDXU
+	io+0M73xbVfX+xiub52HgekpYnuTJ9BML2H3qy4eUsYkQ0rmS6gvDj48t2kB40oX+Opg9WavGpv
+	nzSc5t8fM4ocGTrdwxaBpMhkpD32C5vxkLoqYw92MycCFfQOiYuaUcRcZKwI4D77jm/AofFmxdE
+	3rBfxsTXMcQXVA5oDU/+AJuhYLktPK9cVRXX1U2VkOgZzvD828/6JF3yLDkX1HlGZU8xu+i6w4B
+	WG8U07HTVuMF+yN/aeUi7Afm+3b08u/mqXUi2Axmwu5CuHkEQK7kY8O+xqw11/wfAhRn8SLgBq1
+	zD4j46UCpnHdy9wDrQxA2+DH34UxDW6nNp1Dy2kVTTydNjkgmtqFtZfbXVDEzFINbmwW78VlGK+
+	/Clw+KXCDBUONflDFRCB8/PXNSNT2AcgPclq1VKg7WXAX5/fMERLU0hG+Wwa5Y1vKrL36E9kxe5
+	6gn8rwpOA==
+X-Received: by 2002:a05:690c:6389:b0:796:45d4:9e2d with SMTP id 00721157ae682-79a1c1dce28mr556267b3.53.1773331321722;
+        Thu, 12 Mar 2026 09:02:01 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65d2160asm37260386d6.52.2026.03.12.09.02.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 09:02:01 -0700 (PDT)
+Date: Thu, 12 Mar 2026 12:01:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
+	alexghiti@kernel.org, kernel-team@meta.com, akinobu.mita@gmail.com,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, apopple@nvidia.com,
+	byungchul@sk.com, joshua.hahnjy@gmail.com, matthew.brost@intel.com,
+	rakie.kim@sk.com, ying.huang@linux.alibaba.com, ziy@nvidia.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Bing Jiao <bingjiao@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after
+ setting GFP_TRANSHUGE
+Message-ID: <abLjdSC1DOIyTnPa@gourry-fedora-PF4VCD3F>
+References: <20260311110314.237315-1-alex@ghiti.fr>
+ <20260311110314.237315-4-alex@ghiti.fr>
+ <abGsagHIieEobFbB@cmpxchg.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-To: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>, me@ziyao.cc
-Cc: andrew.cooper3@citrix.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
- stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org, lukelin@viacpu.com,
- "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>, cooperyan@zhaoxin.com,
- benjaminpan@viatech.com, QiyuanWang@zhaoxin.com, HerryYang@zhaoxin.com,
- "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-References: <20260228173704.62460-1-me@ziyao.cc>
- <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
- <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
- <b16bda4b-c7cb-4e7f-ac71-57c0032c6633@zhaoxin.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <b16bda4b-c7cb-4e7f-ac71-57c0032c6633@zhaoxin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abGsagHIieEobFbB@cmpxchg.org>
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-224883-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-224884-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[gourry.net];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_CC(0.00)[ghiti.fr,linux-foundation.org,kernel.org,meta.com,gmail.com,oracle.com,google.com,suse.com,bytedance.com,linux.dev,nvidia.com,sk.com,intel.com,linux.alibaba.com,kvack.org,vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gourry.net:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A2B652750B6
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gourry.net:dkim,ghiti.fr:email]
+X-Rspamd-Queue-Id: 719A12752D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/11/26 19:14, Tony W Wang-oc wrote:
+On Wed, Mar 11, 2026 at 01:54:50PM -0400, Johannes Weiner wrote:
+> On Wed, Mar 11, 2026 at 12:02:42PM +0100, Alexandre Ghiti wrote:
+> > GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
+> > after, not before.
+> > 
+> > Reported-by: Bing Jiao <bingjiao@google.com>
+> > Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
+> > Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> > ---
+> >  mm/migrate.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index 2c3d489ecf51..ee533a4d38db 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+> > @@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+> >  	}
+> >  
+> >  	if (folio_test_large(src)) {
+> > +		gfp_mask |= GFP_TRANSHUGE;
+> >  		/*
+> >  		 * clear __GFP_RECLAIM to make the migration callback
+> >  		 * consistent with regular THP allocations.
+> >  		 */
+> >  		gfp_mask &= ~__GFP_RECLAIM;
+> > -		gfp_mask |= GFP_TRANSHUGE;
 > 
+> I don't think this is right.
 > 
-> +       if (c->x86 == 6 && c->x86_model == 15 && c->x86_stepping >= 14) {
-> +               native_rdmsr(0x1232, dummy, chip_pf);
-> +               chip_pf = (chip_pf >> 15) & 0x7;
-> +               c->microcode = intel_get_microcode_revision();
-> +
-> +               if ((chip_pf == 0 && c->microcode < 0x20e) ||
-> +                       (chip_pf == 1 && c->microcode < 0x208)) {
-> +                       pr_warn_once("CPU has broken FSGSBASE support;
-> clear FSGSBASE feature\n");
-> +                       setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> +               }
-> +       }
+> The Fixes: did it this way to disable kswapd for THP allocations,
+> while still allowing the customary direct reclaim. Maybe a better
+> comment would have been: /* GFP_TRANSHUGE has its own reclaim policy */
+> 
 
-So, I'm sorry but that's not really consistent how we're doing things
-these days.
+The bigger issue how many times we see this particular flag getting
+masked and apparently added back in at multiple layers. We saw two
+or three paths (some unreachable) that can twiddle RECLAIM flags in
+the stack for demotion (which is in reclaim already, so do the flags
+matter?).
 
-The model needs a symbolic name.
+It makes it difficult to reason about what the GFP flags actually
+are at any given point.
 
-The MSR you're reading is completely undocumented and unnamed.
+But yeah I wasn't sure to make of this code, it could be as you
+suggested just a bad comment.
 
-"chip_pf" is nonsensical and unexplained.
-
-Code is duplicated across the centaur and zhaoxin files.
-
-Once you have all of that fixed, you should have a simple:
-
-#define CENTAUR_MODEL_FOO VFM_MAKE(X86_VENDOR_CENTAUR, 6, 15)
-#define ZHAOXIN_MODEL_BAR VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 25)
-
-in a central header, plus:
-
-struct x86_cpu_id *naughty_list[] = {
-	X86_MATCH_VFM_STEPS(CENTAUR_MODEL_FOO,       14, MAX_STEP, 0),
-	X86_MATCH_VFM_STEPS(ZHAOXIN_MODEL_BAR, MIN_STEP,        3, 0),
-	{}
-};
-
-void check_fsgsbase_bugs()
-{
-	u32 fixed_ucode;
-
-	if (!cpu_feature_enabled(X86_FEATURE_FSGSBASE))
-		return;
-
-	c = x86_match_cpu(naughty_list);
-	if (!c)
-		return;
-
-	chip_pf = ...
-	if (chip_pf == 0)
-		fixed_ucode = 0x20e;
-	if (chip_pf == 1)
-		fixed_ucode = 0x208;
-
-	if (intel_get_microcode_revision() >= fixed_ucode)
-		return;
-
-	pr_warn_once("Broken FSGSBASE support, clearing feature\n");
-	setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-}
-
-Then check_fsgsbase_bugs() can pretty much be called anywhere. It can
-even be in generic code.
-
-We are also getting some new matching fields in 'x86_cpu_id'. I suspect
-'chip_pf' can be stored in there where Intel has the platform_id right
-now. But you don't have to do that now.
-
-Could you please go this route rather than copy-and-pasted chunks of
-code sprinkled with a healthy dose of magic numbers?
+~Gregory
 
