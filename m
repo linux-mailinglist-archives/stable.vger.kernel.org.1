@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-224975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IIOAEEfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:05 +0100
+	id 2PYLIKwes2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9C5278B5F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE6D278A17
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC54318FDEB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2126D301C900
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E501402435;
-	Thu, 12 Mar 2026 20:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A54401A3F;
+	Thu, 12 Mar 2026 20:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cff1vgiy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQ0ws5vk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4372402427;
-	Thu, 12 Mar 2026 20:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD053F1655;
+	Thu, 12 Mar 2026 20:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346432; cv=none; b=U1qNftsZweCsIWoThoS67Q1wPwgQw41peWVAhw5oeoQX5fzO9gOwaWTUPFNo7vp1r6ldID3M4n/oqUyVazQYvSxdCcJVRZe20EtxPNdVUJL64VzMwAh4aZ7Lm0XsMueApZ9TP6bSsNlzRnbF5JDHmx4+tcUN6cKY4U4ZOFMT6hU=
+	t=1773346442; cv=none; b=qxZyhqkMqauMtRGHR6OJ77BlhT7DvQc93swouqLM5cAKFf1+BGul0Yp8QFNff5e9OJjadpDYw/JhAs7NK65b2qGmpdHr3+50J7VZEEJjXjWr/Pxkl/wIxYa17nA9JgR0gBc4yB+ANrHoc/7R3cx5qoTwiWx1unH1MK3WV+ysypw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346432; c=relaxed/simple;
-	bh=hblLlWonxvaS6hKp5S7vcD9XkFlTGHZt064OwX/0GtY=;
+	s=arc-20240116; t=1773346442; c=relaxed/simple;
+	bh=nJeU29KLwW+SVg4ksDz51Uhb8Ij9QO+QplOe28cQLqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bf/C3KYUu+Ou+r8JIrHNJGFGDvwrg6EvhPdXW41HA8m4Eo0J5kKX8E74WGaeo0NxV+GOskTLERLRvIUAfcxTE2mR/oSUor+2cu+4/OWXEg5Mj9cbKHbmnLldE/5HPSNXybTjsDzkmqayjsGNCBxFlT4G4qZhZbX13kFU0wcmzZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cff1vgiy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FC0C4CEF7;
-	Thu, 12 Mar 2026 20:13:51 +0000 (UTC)
+	 MIME-Version; b=udozjhJsGxI7Hx6mY+DtDoG//0hRksPSFBLnlBPbK9PqQPnED3f2us7KR7SPblqVpy7iCNWuDgbCTMPZhkyZj6NyaLqH5rUoLeK9PEskxybpnJ4SZHnG1Mjg/CmlNIimbyOlBQ+/Y4rg06PF/QiIRiOhG66EdiKniA1qBDKad68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQ0ws5vk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F64C4CEF7;
+	Thu, 12 Mar 2026 20:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346432;
-	bh=hblLlWonxvaS6hKp5S7vcD9XkFlTGHZt064OwX/0GtY=;
+	s=korg; t=1773346441;
+	bh=nJeU29KLwW+SVg4ksDz51Uhb8Ij9QO+QplOe28cQLqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cff1vgiyj2En7YrBD4gBM/klXvyP5M4rZ7jJArwzkvay6d6lte4sAciW7rciBoWsH
-	 WFAgdB2cQIFJpZTI1otHAaH02rlPJLqjhSlJAFdU7XGamhjlWOS+8lm9iO1x+I+Bgd
-	 g2II+0SfLZOU2YsDXYT9t5M5v83AlnPRW3xakrxg=
+	b=UQ0ws5vkx/eOpI2UnfXWOpF2xBVf6Ui5nB9UhuEhzyKBVInFf0izT0ZiC5wXsueBm
+	 SeN2ExpjzLDauRbBdwvMk1cQnrCIFQRcVwv+9kUbicpfvi4GvxtNSLNjBVXEccRPAs
+	 tfP+jOKUTLSV7Jumqjl8OWxp5XZ2iWoOTcKBxWl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/265] x86/acpi/boot: Correct acpi_is_processor_usable() check again
-Date: Thu, 12 Mar 2026 21:07:08 +0100
-Message-ID: <20260312201019.680351643@linuxfoundation.org>
+Subject: [PATCH 6.12 042/265] memory: mtk-smi: fix device leaks on common probe
+Date: Thu, 12 Mar 2026 21:07:09 +0100
+Message-ID: <20260312201019.716775165@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -67,36 +66,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-224975-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,alien8.de,kernel.org,linux.intel.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224977-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[mediatek.com:query timed out];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,alien8.de:email]
-X-Rspamd-Queue-Id: 5A9C5278B5F
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 3CE6D278A17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,131 +103,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit adbf61cc47cb72b102682e690ad323e1eda652c2 ]
+[ Upstream commit 6cfa038bddd710f544076ea2ef7792fc82fbedd6 ]
 
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
+Make sure to drop the reference taken when looking up the SMI device
+during common probe on late probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
-
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
-
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=0" it is expected that the OS will completely ignore these
-entries.
-
-However, QEMU will do the same (include entries with "Enabled=0") for
-the purpose of allowing CPU hotplug within the guest.
-
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-  [ mingo: Removed misapplied -stable tag. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
-Cc: stable@vger.kernel.org
+Fixes: 47404757702e ("memory: mtk-smi: Add device link for smi-sub-common")
+Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
+Cc: stable@vger.kernel.org	# 5.16: 038ae37c510f
+Cc: stable@vger.kernel.org	# 5.16
+Cc: Yong Wu <yong.wu@mediatek.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251121164624.13685-2-johan@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ drivers/memory/mtk-smi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 63adda8a143f9..a1acff7782dbb 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
- 
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force = 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
- 
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
- 
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
+diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+index 2bc034dff691b..1bce32bed9a1f 100644
+--- a/drivers/memory/mtk-smi.c
++++ b/drivers/memory/mtk-smi.c
+@@ -564,6 +564,7 @@ static int mtk_smi_larb_probe(struct platform_device *pdev)
+ err_pm_disable:
+ 	pm_runtime_disable(dev);
+ 	device_link_remove(dev, larb->smi_common_dev);
++	put_device(larb->smi_common_dev);
+ 	return ret;
  }
  
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index b2e313ea17bf6..03d3e1f1a407c 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
+@@ -799,6 +800,7 @@ static void mtk_smi_common_remove(struct platform_device *pdev)
+ 	if (common->plat->type == MTK_SMI_GEN2_SUB_COMM)
+ 		device_link_remove(&pdev->dev, common->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
++	put_device(common->smi_common_dev);
+ }
  
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/smp.h>
-@@ -239,20 +238,6 @@ static __init void topo_register_apic(u32 apic_id, u32 acpi_id, bool present)
- 		cpuid_to_apicid[cpu] = apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid = topo_apicid(apic_id, TOPO_PKG_DOMAIN);
--
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
- 	}
- 
+ static int __maybe_unused mtk_smi_common_resume(struct device *dev)
 -- 
 2.51.0
 
