@@ -1,145 +1,239 @@
-Return-Path: <stable+bounces-224849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wI9cEg2msmnwOQAAu9opvQ
-	(envelope-from <stable+bounces-224849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 12:39:57 +0100
+	id MFnJApuosmnwOQAAu9opvQ
+	(envelope-from <stable+bounces-224850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 12:50:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FA62711EC
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 12:39:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 780AF2714A2
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 12:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81635301A7F8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:39:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0EF83059AE4
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E74327C18;
-	Thu, 12 Mar 2026 11:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751D934A3D6;
+	Thu, 12 Mar 2026 11:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="s60zAnIR"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LPcsoVbo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021112.outbound.protection.outlook.com [52.101.95.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB2E3314C2;
-	Thu, 12 Mar 2026 11:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773315567; cv=none; b=IGrVx2sOFOLvy5bIVs90kc7MHIrB2KdQv5rDLXeiB8r0Uh4rAps2B1X/DGP9aMsVBWBOJvdhEPpy02jOReYZwPIiAHqGZDEp1GU1ZS6AYvA15wozAWJChbV+OnHgGLehW27s2PHAqRdmATAZytu4NQwqZZCRKftYGFOE3XJ+bDs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773315567; c=relaxed/simple;
-	bh=kyZAMKw4V1o9gGmNIRpZixDA50Qf3DiNCsfDJ1vw41k=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kV8j0kRSwuJazZzqMjd+suQ1pnhwH3v6GK/S6F0vJ/Mq3bTJ08STjkPI4D1/aEb7bhIGWod9NlO8CFFYqcj9yU/7Ydn2uZc9k/YqLAZwF/KVo/gbLstIdfrz25BzRTlxWS7rfGsd84Jpqi+xJMeQ+EmM9t7sKYG62hylDP9SaSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=s60zAnIR; arc=none smtp.client-ip=185.70.43.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1773315554; x=1773574754;
-	bh=kyZAMKw4V1o9gGmNIRpZixDA50Qf3DiNCsfDJ1vw41k=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=s60zAnIRfLkomsTfxSWfxjdMVXkSFN3Uk1KNb3rOFLIrAU2N0CRmR1VhcU7pwq9/u
-	 XG3mv9GcXLImNR+iZDZBZZ4pL1aZgam9eYchlwObdUc04XE6zUzpoUInp0jgDOo+VT
-	 tVoOPlQWoQ9NyMV+y4PUMILWgHnO0tyvsrQV4lrJmxGYIuYKznZ0fYQyk5Eb52nngO
-	 mENI6DSeY3kyCA29OGpV4nX14Xy3Sz+cUKVZ1pTEJhTHtWjx0t8sv+sMGiNkRoUYbC
-	 t2/x2Jgik4bG2xXvsWl0heBBJpZiIWCFpLp1chlAsGHDLRXNmYaTYcEOVRbHK9iNRj
-	 FFEGWXSRzTQ8Q==
-Date: Thu, 12 Mar 2026 11:39:09 +0000
-To: netdev@vger.kernel.org
-From: Paul Moses <p@1g4.org>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, chopps@labn.net, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
-Subject: [PATCH net v2] xfrm: iptfs: only publish mode_data after clone setup
-Message-ID: <20260312113843.2883169-1-p@1g4.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: ff4493f192468e5adf684ad20129db110499d72e
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2FE35BDD7;
+	Thu, 12 Mar 2026 11:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773316121; cv=fail; b=Jl1qw26HLxQztQD8IIKWTZ1XTiJZdYRPveHd32dR0ojWS+ixotupB1MBIn9IWBCrgs0tSzBMXjEtheAD29ZeC/4HjTkjwjJZ/1cfRMznTLBYPErjebNKjKxSa3a3fF30/6VROp3OZxXkQXeqM57Wbj/NxZtVZ7lglJd4ZH+jD6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773316121; c=relaxed/simple;
+	bh=T1asWYIDPYxQeHvYnKVEcrMo/gjy21ePCVPdJKBC56E=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=BtP6h79qJ9GxkboWs+rmaA+W9Ngi57r2YbWzeVKn9aWaXMs0NAzsWR5q/zyZGp1RoivI2ZWYivq79cx7kSoMC6TiYSRC65ASkxlhMTM06jGDlnq9l382Kt6WFgplTHlsES7b98xzXMXWPiOXfsKlVzJvM6s4ZNyfTXpSCm0D0kQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LPcsoVbo; arc=fail smtp.client-ip=52.101.95.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NGHRImF11dha7kiWX2wGV4tNQQvHnFfepbFYwaEIEsM+I5D+duVCd5HFDofPeob93DrP7FPO5BitxyhFO6G4XNvCo+8XOeVwjwEQn5XkllYqG2WcjKHrDadyxpd8TvxKxL1rmYCQTzY9AIm/UN9edM+HdrUfi0ZLKvWSgtq3UuE/fqI+gXpj3aTb1L4buHPUPiUbdLMHasYMJ6JD6NBoPBCQhCYdF0O7humELpEQhEv0ZEQSv6wlYN99lmxvmdoKLhi0A99tt1L5nAu2LdSw4/TSXkprAOXzCnDJK+oJKyW9EXp1U310Pne9ZvaAsOdetrVy22BGMevZV13EjOEQKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GtaQ5J2SIpE+nU5i+4FxrjlL2weoA9jzjGYH5Vukuxg=;
+ b=kZXYLNGB4mTSRsTPd+wVDxlxuccinIUO43WV9LBwa8CW0s4xawaOLSXaBRo0B+qVUaq/ztq33HPDcYeVhVX396yruoG5KGlHACvy3ZYAN0k6Ch3wAW7uq49h2HB9ZX98UbKMCU6G2Y/oR2RGPjYdsdE7+6p5Ajx2EoP3K0jVUwfpPW9g1ZlUcHDA96ahQWqa8TFWxXnldKhvSL3GmoO5/ZgJhXAX++m8RF7V3J4TpOeZFNvhhSx5Wppc2QxyL0xok8filO1toEkKa93bNEQjbrzierfWeG2WmEOKaBbJLXvIfEzLxIsbSsMVVh52b99Qcq/HOI0qtze4GmU+P/lwKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GtaQ5J2SIpE+nU5i+4FxrjlL2weoA9jzjGYH5Vukuxg=;
+ b=LPcsoVbo6n7jqo77Q/jS/ySZdChA3ij43e+yQKqa6rBGs96ewdsk50WyI+faaB0wdw5N8av51rA377BHH0IIUeCYW9Bj2+U2lltnJBi/J7kbA+aDRvHIBPBO6tnzFuo5ODb/fLdit3/KbkdY2htYNKISmIMMAiDO8PeOJ0D1sS0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB6974.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:200::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
+ 2026 11:48:35 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.013; Thu, 12 Mar 2026
+ 11:48:35 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Mar 2026 11:48:34 +0000
+Message-Id: <DH0S3KTG8HEP.AE781DX20P4F@garyguo.net>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] rust: kbuild: allow `unused_features`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260312111014.74198-1-ojeda@kernel.org>
+In-Reply-To: <20260312111014.74198-1-ojeda@kernel.org>
+X-ClientProxiedBy: LO4P123CA0192.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a4::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6974:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0eead55c-25d0-4165-64c2-08de802d4b0a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	SSoTFRTS+tOeqv3UoOXHpCuMpDunGcLU96Z9ywstUZfu3BeASun+iTPhO90H3/46fBW68B0GtL/n7NQiynEcDddQWGkTwpJwn5ATlOGg265P1aM4Bk+2cdGK3We2vmMv9JcjCNYPSJcKUfcJuE7qTns4HklxNi1BQ47y3TKQeKYSoV6hO+oyXADjTzJeVWCyRlY4KRXE1pIJK1lqd+SztOAnLv64kJHNITA2irPPvk0dnMSZzlSdBQ6rUN8OBZZxj3X+vlnV+YFrNNyiU2gaCwORxR9kTW59V1KUd7UMxc+kuMSyE+81HXcePv3eFD2KjlKcZtZen/bFFYVNxEhgGF1XVLqQnADUEyLu6XAd2NjZ3hiQM78/epVhqxlTekxyJmmS+Fn52xKJud0r0evAm05OPTfmnYnbxHuXaL9BuX+F1fp1+UDI+7bdZvIgrvkN48i9XBMpEGH08bGdkQctkWB3Vm26rQszQXQI6mOgGCUNDJ7OKc9bq3hZs7mpTEiMYleciWfOX8du5wnwsKR0Lh3rqCymb1MX6fz6ILKKzlbJ0ebGKYwTBmrSMSRvVBNG8uB4p5mU52cm6KR98t0EiZKYPfd9YirNxq/Xi9Iij21KcOSVSjOefEHxaFMFtkbzEVH+op/189s1CQH4N3gVbVpODF14pnnwNGYODNrVyl4YOouaBEvuk3uNYeZXB0Kq
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aXREcHRWMmNEVWYyc0lBaXlLZW1lSWJXRWN0MjBwYldsdE05b3hrNkdFb0pM?=
+ =?utf-8?B?Y0Z2Q243N1RGMmhrLzRtYXlzVmEvNFhPdG1OWlZXamNMdSsvdXNldGdXWWtF?=
+ =?utf-8?B?cWlrZGJnRDZqKzdUNzRnWm9GVkJ2VHl6SU9Mc1kxR1p0WmsyeU9JT29WeXdR?=
+ =?utf-8?B?UjgyRXEwNUwxRFNLYjBFaTI4RzNFMUFiRWhXZDN0bXlTeExEZmgwV1NKNGFl?=
+ =?utf-8?B?bE85YUJ2Qm9rWWNWcnJwbjh3OVRoWWt2QWtXc1NDVEo5M09LaG00VW10THc4?=
+ =?utf-8?B?SkJCNWx1a1ZPM0xkUGllcmFoWGZOeHdGM3pBcUQ1SlpoTFJRSGhiMjJXUWNY?=
+ =?utf-8?B?ekFvdW80YS9rKzVUN2gzYWpXdlE5c284WWJLSGM0cWdsZDNvQWs0YWxQSXN1?=
+ =?utf-8?B?MTJGVmQrSzAycFVoVzViMS9sK3JndWsvY0lhNXc3dVVPUENhUTB2VTFyNEt3?=
+ =?utf-8?B?ZG9GM0lWUGhUYWlRd0NtanNrdkdrYmtGekx3eFlNc2pTN0tER2R1MkNIYVFS?=
+ =?utf-8?B?dkt3bERrM0ovaUdCMkx0a3k5aW1KaDI1SVFvcm9iWk10R3dGYnlYbmk4b3Zp?=
+ =?utf-8?B?ZlBpd0RMOXU3anp6MVdTVS9vODdWRHpodGtDREhva3l2TzhuQkM0RWJHSmtZ?=
+ =?utf-8?B?U01NRlJXS0xYa3RiNFhOWWRFVUhJUlZQTDNjdjlKVW8rQm5UcmY5bFZub3F0?=
+ =?utf-8?B?NlpoSGhqWk0vVDZLbkxxNmhBdVFIQ0E5U0lJMXZvRTh2VTBCYnRaL1ZWdlhB?=
+ =?utf-8?B?Mmk1ZDArZmlNMmg0aGFsbm5KUUdSNzhnSTA1eXhjZ2d5Tmt5TGpHOS8wdmUv?=
+ =?utf-8?B?NDVJZjJqa2VpMWhYZUNjVnJ4cFBLVXhuTmJqL1FWUlRQOEk3V0JwOFlqcEMv?=
+ =?utf-8?B?b0QyOEk4Y2JsODVuNVN6bldyK1F3MW5XNEpHOVJwSnlVN3IwSmpaa1gwR3RQ?=
+ =?utf-8?B?Y21FOU85bThlTnhSdW9rTHdkMXRwT1NiNnJNd1d5MXhibXRtbitRckZkR3ZQ?=
+ =?utf-8?B?Q0RxUkhCRFNBbUFkbGlNYWRPMW9mcHJQS2Q4NTVzYTh2Z2EzbnhIT0RhNWdI?=
+ =?utf-8?B?UU9SbjNoNEtVWVlYODIvK3ZBVFVJZkdBTXJJcHJ0UGtPd3NzcmdjUllZQjk0?=
+ =?utf-8?B?dDhoUkUwRUNPRFUySUJlejRBOUpjbldES0p6WW4zMUhqMEtTSXk5c3A3dFY2?=
+ =?utf-8?B?aWU1NklKR1hnaWZIVUxrcEFMYVk3cjZnMTMzek1EcEZqQnRDMHlSSTFLNlhk?=
+ =?utf-8?B?bU1OODQ5NGp3ZllKNllLUElpRHoxZ1RWWUEwSUtuOVIzSG9tdlNwa3JCR3Nl?=
+ =?utf-8?B?SlhaSVF6Y0lZeEFmclMvQ1VDakFTeDNhSlk3QktINzAydFhHWUgxMXNOWnZ3?=
+ =?utf-8?B?UUN3RnFneFBPSFFKdjQzS0NNRTE1c0F5TTMxaVR6ZzFFL0lXMlgzamtZTjhG?=
+ =?utf-8?B?c09nSjVOMEJQdFUzTENFTk9SeHAveGhmbXdnekVKa1NLdTM1Y0tGVnAvbHJY?=
+ =?utf-8?B?VXJvRTR3SFRRcWJ2b0JDMTJERDRZeElaNUFuQXNYSUxCWEUyU0VubW5rdVJV?=
+ =?utf-8?B?YVBtUW1Bd2Frb1NLRXJzT0lhYXFYSVJQV1d0ZjJLR3VMWjJncytGaVVBMzNX?=
+ =?utf-8?B?TEVpOU1FTmxGc2MxMXk4ZWNaLzNSc0ltODZpbHI5dXRBeDdZeHJMZFY0ckFK?=
+ =?utf-8?B?VkxxczlyWkFkYnBQS3dIV3ZrcEVWSU0yVzE4bXVNWjhOMHBBOWJmd0JXOVN3?=
+ =?utf-8?B?N1djdTlyYTY4bTVqMC90TGNYd2FvcEs5bVhVTEw1OFNzMmhJSnR0akRBNmZU?=
+ =?utf-8?B?a1hvaHJ1NG9GUDBEMjBKd3FrMW1ENzRINldrQ1ZQRzlvUjVLaDVpNHdIS0NG?=
+ =?utf-8?B?NFcrTzBCSnNZQzdTdEZ4QnVhRHBMVmRneXAzcVRoVUErcTQySFduUTFkOEhr?=
+ =?utf-8?B?cklkRjJOV1J3WnU2UFI5THNWem1heXpMdkZIUnVrRzhVQTUycHltb0k2R0ZV?=
+ =?utf-8?B?ZWtxdm5DcVB3bUg3RkNETlpPNTdZMDIwaE5YYnhqdG5EK1VQaE9WQXZWazV2?=
+ =?utf-8?B?Rm9sa3BEdnJQeXRrWXJIeFkzV2Jpc243UUNsM1F2eUlpbk5GZ2pFWWhDTVR1?=
+ =?utf-8?B?NURzaDR2WWpaNWFCM3ZiUEtDVmxpTFhKbmIyYjViZnB4MHkwWFhsMVBxcWpq?=
+ =?utf-8?B?Z25FOFlXT1NzRjlzZDFiWUVtTkVnTjEwNWNWdkMwSEZ6UDJTWU1zcmlEWjFH?=
+ =?utf-8?B?SnJUbTg2TnNrcFNyWFZqRkI0TkFiVFJBQXBDTDBic05JMXBabW00UEs5TWlK?=
+ =?utf-8?B?ZytWdzJNcTh0cnV2SjNuYjl1ZzZFYVFoQVVSRHFKNkdnemdZTnlSdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0eead55c-25d0-4165-64c2-08de802d4b0a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 11:48:35.5251
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wbMPJwC4M8zjrOJ0rrErN4DS6KK/73Gw0mfvzxK3vSlP2Zre1xMgjCujpIbDTq272LoENaQppKmCKAHsbWfrZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6974
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224849-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-224850-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[garyguo.net:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 31FA62711EC
+X-Rspamd-Queue-Id: 780AF2714A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iptfs_clone_state() stores x->mode_data before allocating the reorder
-window. If that allocation fails, the code frees the cloned state and
-returns -ENOMEM, leaving x->mode_data pointing at freed memory.
+On Thu Mar 12, 2026 at 11:10 AM GMT, Miguel Ojeda wrote:
+> Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
+> `rustc` introduces the new lint `unused_features` [1], which warns [2]:
+>=20
+>     warning: feature `used_with_arg` is declared but not used
+>      --> <crate attribute>:1:93
+>       |
+>     1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,o=
+ffset_of_nested,raw_ref_op,used_with_arg)]
+>       |                                                                  =
+                           ^^^^^^^^^^^^^
+>       |
+>       =3D note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on=
+ by default
+>=20
+> The original goal of using `-Zcrate-attr` automatically was that there
+> is a consistent set of features enabled and managed globally for all
+> Rust kernel code (modulo exceptions like the `rust/` crated).
+>=20
+> While we could require crates to enable features manually (even if we
+> still keep the `-Zallow-features=3D` list, i.e. removing the `-Zcrate-att=
+r`
+> list), it is not really worth making all developers worry about it just
+> for a new lint.
+>=20
+> The features are expected to eventually become stable anyway (most alread=
+y
+> did), and thus having to remove features in every file that may use them
+> is not worth it either.
+>=20
+> Thus just allow the new lint globally.
+>=20
+> The lint actually existed for a long time, which is why `rustc` does
+> not complain about an unknown lint in the stable versions we support,
+> but it was "disabled" years ago [3], and now it was made to work again.
+>=20
+> For extra context, the new implementation of the lint has already been
+> improved to avoid linting about features that became stable thanks to
+> Benno's report and the ensuing discussion [4] [5], but while that helps,
+> it is still the case that we may have features enabled that are not used
+> for one reason or another in a particular crate.
+>=20
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://github.com/rust-lang/rust/pull/152164 [1]
+> Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
+> Link: https://github.com/rust-lang/rust/issues/44232 [3]
+> Link: https://github.com/rust-lang/rust/issues/153523 [4]
+> Link: https://github.com/rust-lang/rust/pull/153610 [5]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-The xfrm clone unwind later runs destroy_state() through x->mode_data,
-so the failed clone path tears down IPTFS state that clone_state()
-already freed.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Keep the cloned IPTFS state private until all allocations succeed so
-failed clones leave x->mode_data unset. The destroy path already
-handles a NULL mode_data pointer.
-
-Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
----
-Changes in v2:
-- Fix Fixes tag to point to 6be02e3e4f37
-
- net/xfrm/xfrm_iptfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 050a82101ca51..4d7a925f59b7c 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2653,9 +2653,6 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
-ruct xfrm_state *orig)
- =09if (!xtfs)
- =09=09return -ENOMEM;
-=20
--=09x->mode_data =3D xtfs;
--=09xtfs->x =3D x;
--
- =09xtfs->ra_newskb =3D NULL;
- =09if (xtfs->cfg.reorder_win_size) {
- =09=09xtfs->w_saved =3D kzalloc_objs(*xtfs->w_saved,
-@@ -2666,6 +2663,9 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
-ruct xfrm_state *orig)
- =09=09}
- =09}
-=20
-+=09x->mode_data =3D xtfs;
-+=09xtfs->x =3D x;
-+
- =09return 0;
- }
-=20
---=20
-2.53.GIT
-
+> ---
+>  Makefile | 1 +
+>  1 file changed, 1 insertion(+)
 
 
