@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-225057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBd3D+kfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:53 +0100
+	id GM6lMmMfs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CCF278CA6
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD16278BAF
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F65A303609C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45DCB301BECB
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779AA344DB5;
-	Thu, 12 Mar 2026 20:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9B02BEFFD;
+	Thu, 12 Mar 2026 20:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKZ7vRdM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsilSX3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3381A0712;
-	Thu, 12 Mar 2026 20:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB871F9F70;
+	Thu, 12 Mar 2026 20:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346787; cv=none; b=MVnm4kNZSc+C7yaqmOE1k8kRUxlwOrjmzz3NxZ3hHOMtvvpAC/Id82OcgYC2yq19bhppsDA5Yq63B70gFHJDaOHB2+n+LQ4utfVDD6/U3PN/JoLHvkn1o4gxAZNEUgZqzsRDbilW1us0ny4a3QSbuLDhJKrknrhOChnS+3jho58=
+	t=1773346655; cv=none; b=t0ad9uZh9/XCOw7YfbyQg2Gp0aZKJm55SpsDmlSaI3sbyEu+HBFi0Z2EoKiqt/PsdH8xCwlPeBd5rlEI2/VZmKkZZeUitSfrgUlUYhK6pzJ9QPKyNXQ9ruIQpmHO3nZutSsD36UZ9SbJa9/aUwY//x3584rqiFDdJE598ORhJxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346787; c=relaxed/simple;
-	bh=Xci5gTDU/3n/9esrcpbUshRpGSQHXEjPxYDcVeu05zE=;
+	s=arc-20240116; t=1773346655; c=relaxed/simple;
+	bh=831aHmP6TQ940U43avw1sp+fND8j8YgLDepCvh0pVLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzLzRzxZumqpw9RbzjxEhQGOtnzbxxY5XbG9A6KsTlBMfxtoptbwdmv0JX0oThCPxqi8k0h+wRtx7anmgD6DTpGDQ6FBpB2PwJ6LBFgM7zgjTmxZpr5YXWnw3qgFWLe+bChVNJvy2dFrEgW0KqAkoe62/Cd4FRQK9yIk8J/HOyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKZ7vRdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD79C4CEF7;
-	Thu, 12 Mar 2026 20:19:46 +0000 (UTC)
+	 MIME-Version; b=N6wnYy42cso3CbdAli2PcEGTqMGs12RgALRCUqIzGOPAciV0WTUtAo8aj0doS7LWYXukOVakydIxil17faViDKbo2Bk4OzFxZws2+3CKj0Bkc6tf2sbgSSi0N/dkNGsmkhSzn/fJpXYjGyY6N5MOAetUPmbgPXLM6Mndobh6DyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsilSX3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A8AC4CEF7;
+	Thu, 12 Mar 2026 20:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346787;
-	bh=Xci5gTDU/3n/9esrcpbUshRpGSQHXEjPxYDcVeu05zE=;
+	s=korg; t=1773346655;
+	bh=831aHmP6TQ940U43avw1sp+fND8j8YgLDepCvh0pVLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKZ7vRdMyjsYNppRWjbOH/xzB0MpftmDMw3KKeB9y2eqZiJQ4KsnR8ctydylYDysq
-	 RzqhAZMu/2Lc80X/mkk2xnP7Nvj2tP3DeJZCrcI2en32+gKbIiXrZ54Q374na+oXps
-	 IrjfN8WroBhPft17Q1tlKLVjJ9gCn0dXvQWFWe48=
+	b=GsilSX3wl9F7fVR1IdNUPwk6AsVekqfl4053CbZsf0VJ3MX/JcERI1fYwVp4VSH2P
+	 s1qNFR6AMtDSElDDpwQXDkvCQEe5CxN/QGb8HfX7I29kriySTs/9RiA0H3dAeQzIRi
+	 1EgoTnb5AlxMOBt3L7MNMfeG8JzNPaY+UNlKN3N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Tushar Sugandhi <tusharsu@linux.microsoft.com>,
 	Eric Biederman <ebiederm@xmission.com>,
 	Baoquan He <bhe@redhat.com>,
 	Vivek Goyal <vgoyal@redhat.com>,
 	Dave Young <dyoung@redhat.com>,
-	Tushar Sugandhi <tusharsu@linux.microsoft.com>,
 	Steven Chen <chenste@linux.microsoft.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
 	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH 6.12 091/265] kexec: define functions to map and unmap segments
-Date: Thu, 12 Mar 2026 21:07:58 +0100
-Message-ID: <20260312201021.510948654@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 092/265] ima: kexec: define functions to copy IMA log at soft boot
+Date: Thu, 12 Mar 2026 21:07:59 +0100
+Message-ID: <20260312201021.549837900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225057-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225025-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xmission.com:email]
-X-Rspamd-Queue-Id: C1CCF278CA6
+X-Rspamd-Queue-Id: 4CD16278BAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -107,123 +107,128 @@ X-Rspamd-Server: lfdr
 
 From: Steven Chen <chenste@linux.microsoft.com>
 
-[ Upstream commit 0091d9241ea24c5275be4a3e5a032862fd9de9ec ]
+[ Upstream commit f18e502db673c75f762d47101dafcf58f30e2733 ]
 
-Implement kimage_map_segment() to enable IMA to map the measurement log
-list to the kimage structure during the kexec 'load' stage. This function
-gathers the source pages within the specified address range, and maps them
-to a contiguous virtual address range.
+The IMA log is currently copied to the new kernel during kexec 'load'
+using ima_dump_measurement_list(). However, the log copied at kexec
+'load' may result in loss of IMA measurements that only occurred after
+kexec "load'. Setup the needed infrastructure to move the IMA log copy
+from kexec 'load' to 'execute'.
 
-This is a preparation for later usage.
+Define a new IMA hook ima_update_kexec_buffer() as a stub function.
+It will be used to call ima_dump_measurement_list() during kexec 'execute'.
 
-Implement kimage_unmap_segment() for unmapping segments using vunmap().
+Implement ima_kexec_post_load() function to be invoked after the new
+Kernel image has been loaded for kexec. ima_kexec_post_load() maps the
+IMA buffer to a segment in the newly loaded Kernel.  It also registers
+the reboot notifier_block to trigger ima_update_kexec_buffer() at
+kexec 'execute'.
 
+Set the priority of register_reboot_notifier to INT_MIN to ensure that the
+IMA log copy operation will happen at the end of the operation chain, so
+that all the IMA measurement records extended into the TPM are copied
+
+Co-developed-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
+Signed-off-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
 Cc: Eric Biederman <ebiederm@xmission.com>
 Cc: Baoquan He <bhe@redhat.com>
 Cc: Vivek Goyal <vgoyal@redhat.com>
 Cc: Dave Young <dyoung@redhat.com>
-Co-developed-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
-Signed-off-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
 Signed-off-by: Steven Chen <chenste@linux.microsoft.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Acked-by: Baoquan He <bhe@redhat.com>
 Tested-by: Stefan Berger <stefanb@linux.ibm.com> # ppc64/kvm
 Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Stable-dep-of: 10d1c75ed438 ("ima: verify the previous kernel's IMA buffer lies in addressable RAM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kexec.h |  6 +++++
- kernel/kexec_core.c   | 54 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 60 insertions(+)
+ include/linux/ima.h                |  3 ++
+ security/integrity/ima/ima_kexec.c | 47 ++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index f0e9f8eda7a3c..7d6b12f8b8d05 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -467,13 +467,19 @@ extern bool kexec_file_dbg_print;
- #define kexec_dprintk(fmt, arg...) \
-         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 0bae61a15b60b..8e29cb4e6a01d 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -32,6 +32,9 @@ static inline void ima_appraise_parse_cmdline(void) {}
  
-+extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
-+extern void kimage_unmap_segment(void *buffer);
- #else /* !CONFIG_KEXEC_CORE */
- struct pt_regs;
- struct task_struct;
-+struct kimage;
- static inline void __crash_kexec(struct pt_regs *regs) { }
- static inline void crash_kexec(struct pt_regs *regs) { }
- static inline int kexec_should_crash(struct task_struct *p) { return 0; }
- static inline int kexec_crash_loaded(void) { return 0; }
-+static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
-+{ return NULL; }
-+static inline void kimage_unmap_segment(void *buffer) { }
- #define kexec_in_progress false
- #endif /* CONFIG_KEXEC_CORE */
+ #ifdef CONFIG_IMA_KEXEC
+ extern void ima_add_kexec_buffer(struct kimage *image);
++extern void ima_kexec_post_load(struct kimage *image);
++#else
++static inline void ima_kexec_post_load(struct kimage *image) {}
+ #endif
  
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index c0caa14880c3b..6c15cd5b9cae5 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -867,6 +867,60 @@ int kimage_load_segment(struct kimage *image,
- 	return result;
+ #else
+diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
+index b12ac3619b8fd..a22eeac9320aa 100644
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -12,10 +12,14 @@
+ #include <linux/kexec.h>
+ #include <linux/of.h>
+ #include <linux/ima.h>
++#include <linux/reboot.h>
++#include <asm/page.h>
+ #include "ima.h"
+ 
+ #ifdef CONFIG_IMA_KEXEC
++static bool ima_kexec_update_registered;
+ static struct seq_file ima_kexec_file;
++static void *ima_kexec_buffer;
+ 
+ static void ima_free_kexec_file_buf(struct seq_file *sf)
+ {
+@@ -159,6 +163,49 @@ void ima_add_kexec_buffer(struct kimage *image)
+ 	kexec_dprintk("kexec measurement buffer for the loaded kernel at 0x%lx.\n",
+ 		      kbuf.mem);
  }
++
++/*
++ * Called during kexec execute so that IMA can update the measurement list.
++ */
++static int ima_update_kexec_buffer(struct notifier_block *self,
++				   unsigned long action, void *data)
++{
++	return NOTIFY_OK;
++}
++
++static struct notifier_block update_buffer_nb = {
++	.notifier_call = ima_update_kexec_buffer,
++	.priority = INT_MIN
++};
++
++/*
++ * Create a mapping for the source pages that contain the IMA buffer
++ * so we can update it later.
++ */
++void ima_kexec_post_load(struct kimage *image)
++{
++	if (ima_kexec_buffer) {
++		kimage_unmap_segment(ima_kexec_buffer);
++		ima_kexec_buffer = NULL;
++	}
++
++	if (!image->ima_buffer_addr)
++		return;
++
++	ima_kexec_buffer = kimage_map_segment(image,
++					      image->ima_buffer_addr,
++					      image->ima_buffer_size);
++	if (!ima_kexec_buffer) {
++		pr_err("Could not map measurements buffer.\n");
++		return;
++	}
++
++	if (!ima_kexec_update_registered) {
++		register_reboot_notifier(&update_buffer_nb);
++		ima_kexec_update_registered = true;
++	}
++}
++
+ #endif /* IMA_KEXEC */
  
-+void *kimage_map_segment(struct kimage *image,
-+			 unsigned long addr, unsigned long size)
-+{
-+	unsigned long src_page_addr, dest_page_addr = 0;
-+	unsigned long eaddr = addr + size;
-+	kimage_entry_t *ptr, entry;
-+	struct page **src_pages;
-+	unsigned int npages;
-+	void *vaddr = NULL;
-+	int i;
-+
-+	/*
-+	 * Collect the source pages and map them in a contiguous VA range.
-+	 */
-+	npages = PFN_UP(eaddr) - PFN_DOWN(addr);
-+	src_pages = kmalloc_array(npages, sizeof(*src_pages), GFP_KERNEL);
-+	if (!src_pages) {
-+		pr_err("Could not allocate ima pages array.\n");
-+		return NULL;
-+	}
-+
-+	i = 0;
-+	for_each_kimage_entry(image, ptr, entry) {
-+		if (entry & IND_DESTINATION) {
-+			dest_page_addr = entry & PAGE_MASK;
-+		} else if (entry & IND_SOURCE) {
-+			if (dest_page_addr >= addr && dest_page_addr < eaddr) {
-+				src_page_addr = entry & PAGE_MASK;
-+				src_pages[i++] =
-+					virt_to_page(__va(src_page_addr));
-+				if (i == npages)
-+					break;
-+				dest_page_addr += PAGE_SIZE;
-+			}
-+		}
-+	}
-+
-+	/* Sanity check. */
-+	WARN_ON(i < npages);
-+
-+	vaddr = vmap(src_pages, npages, VM_MAP, PAGE_KERNEL);
-+	kfree(src_pages);
-+
-+	if (!vaddr)
-+		pr_err("Could not map ima buffer.\n");
-+
-+	return vaddr;
-+}
-+
-+void kimage_unmap_segment(void *segment_buffer)
-+{
-+	vunmap(segment_buffer);
-+}
-+
- struct kexec_load_limit {
- 	/* Mutex protects the limit count. */
- 	struct mutex mutex;
+ /*
 -- 
 2.51.0
 
