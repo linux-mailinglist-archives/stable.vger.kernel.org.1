@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-225023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFVVLFsfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:31 +0100
+	id aDE0HpMfs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:18:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD81278BA1
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1748D278C1E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 34BE6302087C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1758301CFA2
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A26829E11D;
-	Thu, 12 Mar 2026 20:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D4540242E;
+	Thu, 12 Mar 2026 20:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR3pdLU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy7ouIig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23A41F9F70;
-	Thu, 12 Mar 2026 20:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56F4402427;
+	Thu, 12 Mar 2026 20:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346647; cv=none; b=G+CnyQFuvobkIx1NTU2O1ZDFcatMWT0dJsnTITYInMcr0cSKWQChVw8k81kp03MIL5cCWs+mE1aVUdCjeIVCeHODP73UJsxN/8pu6MOwkWnMWKTJgAMoS0baLir6L+nuOETYhnjiFbXPKDaDLSnI40tbM3hvBzONKEzzG2aDE+U=
+	t=1773346492; cv=none; b=uONUqw/TbS5o2diNOfJo84E7d5wEeei8+M58ptCMa38mir1usib0i4POOgZPwb6eObWazBG+1tN0LqPwhFifIzGkSQHA1D5GhTBgUfoiR8JL1HbP1jPDCtDlFoeK0F+peP3O1NQIgM4qqvf3r1Ia8BBeZIGSuWbJ3hlndFUq8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346647; c=relaxed/simple;
-	bh=FPsntWZEgwpNU8YTZYqUFROCJxHOhp+Kx9zB2MxTYEw=;
+	s=arc-20240116; t=1773346492; c=relaxed/simple;
+	bh=1P8MHm4KlDsVRrKQL60+pEkkQW7T3nsA+Bc4KJQ5Dfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avSg7aJ2vzanuELBInDK4fhl/nCvYyYbF4UtyRodFoV482hGOz9+36rwZ/bnCciva2kYSTUbpJbRivB1GSHVszg5bqjOjOGFpZarw436CqyKHWBWmu7UKu677qVgtf/Cj5U75XK17qtinyJHSpAw5d5FBXxfmbR0POaiMNdygYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR3pdLU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641A5C4CEF7;
-	Thu, 12 Mar 2026 20:17:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N8GVVCLhwfZD1NhSkNqFmMa4/6Y2G0rwupUMFT9bIMm7dSYqyYd0gzaazwrPfHIKrNXmPVaGexkn9hPGYPqcmUnV5ymupSAKWffhA+kw/ZM+g2vPArCTBqmlU8HgO0/6ytlsZtfIUiQ3jmFuRLuJhUZx+3BIyG4A267/t5CGI2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy7ouIig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DD3C4CEF7;
+	Thu, 12 Mar 2026 20:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346646;
-	bh=FPsntWZEgwpNU8YTZYqUFROCJxHOhp+Kx9zB2MxTYEw=;
+	s=korg; t=1773346491;
+	bh=1P8MHm4KlDsVRrKQL60+pEkkQW7T3nsA+Bc4KJQ5Dfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xR3pdLU0k16UphEUSqxFMYX3fXUevlXw5Yz4q0MvsyOsUjAKZgFovGI4bktm3vbDV
-	 Qm3ZmNMTXshdGp5Sw9a47WVXLf3r/DlT0Z5JR2AWbrWw2RVe4yv0agUfCnLK3rtQaY
-	 LWF0bRE+sMeKE9vCImFYnsmHLfg7rTMs+2LgHNl4=
+	b=qy7ouIigZZPEPn9zHCzreAiwtTM9mtJf54M7gRZhkLpNFOlWy8ADpNQjsrYww+Clf
+	 WhUu6eCkC/mkf7q29gRXh760iee3cD0xgOBPiMsx0lI0JM1r9cDXTg/bcCijYR2udh
+	 ztB1YC/EAiz2eY2WOiIB2VTKQBfozMAY77/pxQE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/265] Revert "PCI: qcom: Dont wait for link if we can detect Link Up"
-Date: Thu, 12 Mar 2026 21:07:14 +0100
-Message-ID: <20260312201019.902601808@linuxfoundation.org>
+Subject: [PATCH 6.12 048/265] resource: Add resource set range and size helpers
+Date: Thu, 12 Mar 2026 21:07:15 +0100
+Message-ID: <20260312201019.938329966@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -64,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225023-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-224989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,rock-chips.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3AD81278BA1
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 1748D278C1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,85 +100,79 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit e9ce5b3804436301ab343bc14203a4c14b336d1b ]
+[ Upstream commit 9fb6fef0fb49124291837af1da5028f79d53f98e ]
 
-This reverts commit 36971d6c5a9a134c15760ae9fd13c6d5f9a36abb.
+Setting the end address for a resource with a given size lacks a helper and
+is therefore coded manually unlike the getter side which has a helper for
+resource size calculation. Also, almost all callsites that calculate the
+end address for a resource also set the start address right before it like
+this:
 
-While this fake hotplugging was a nice idea, it has shown that this feature
-does not handle PCIe switches correctly:
-pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
-pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
-pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
-pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
-pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
-pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
-pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
-pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
-pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
-pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
-pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
-pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
-pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
+  res->start = start_addr;
+  res->end = res->start + size - 1;
 
-During the initial scan, PCI core doesn't see the switch and since the Root
-Port is not hot plug capable, the secondary bus number gets assigned as the
-subordinate bus number. This means, the PCI core assumes that only one bus
-will appear behind the Root Port since the Root Port is not hot plug
-capable.
+Add resource_set_range(res, start_addr, size) that sets the start address
+and calculates the end address to simplify this often repeated fragment.
 
-This works perfectly fine for PCIe endpoints connected to the Root Port,
-since they don't extend the bus. However, if a PCIe switch is connected,
-then there is a problem when the downstream busses starts showing up and
-the PCI core doesn't extend the subordinate bus number and bridge resources
-after initial scan during boot.
+Also add resource_set_size() for the cases where setting the start address
+of the resource is not necessary but mention in its kerneldoc that
+resource_set_range() is preferred when setting both addresses.
 
-The long term plan is to migrate this driver to the upcoming pwrctrl APIs
-that are supposed to handle this problem elegantly.
-
-Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251222064207.3246632-11-cassel@kernel.org
+Link: https://lore.kernel.org/r/20240614100606.15830-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 11721c45a826 ("PCI: Use resource_set_range() that correctly sets ->end")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ include/linux/ioport.h | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 0205c18d95a01..5d27cd149f512 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1696,10 +1696,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, pcie);
- 
--	irq = platform_get_irq_byname_optional(pdev, "global");
--	if (irq > 0)
--		pp->use_linkup_irq = true;
--
- 	ret = dw_pcie_host_init(pp);
- 	if (ret) {
- 		dev_err(dev, "cannot initialize host\n");
-@@ -1713,6 +1709,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
- 		goto err_host_deinit;
- 	}
- 
-+	irq = platform_get_irq_byname_optional(pdev, "global");
- 	if (irq > 0) {
- 		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
- 						qcom_pcie_global_irq_thread,
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 6e9fb667a1c5a..5385349f0b8a6 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -249,6 +249,38 @@ struct resource *lookup_resource(struct resource *root, resource_size_t start);
+ int adjust_resource(struct resource *res, resource_size_t start,
+ 		    resource_size_t size);
+ resource_size_t resource_alignment(struct resource *res);
++
++/**
++ * resource_set_size - Calculate resource end address from size and start
++ * @res: Resource descriptor
++ * @size: Size of the resource
++ *
++ * Calculate the end address for @res based on @size.
++ *
++ * Note: The start address of @res must be set when calling this function.
++ * Prefer resource_set_range() if setting both the start address and @size.
++ */
++static inline void resource_set_size(struct resource *res, resource_size_t size)
++{
++	res->end = res->start + size - 1;
++}
++
++/**
++ * resource_set_range - Set resource start and end addresses
++ * @res: Resource descriptor
++ * @start: Start address for the resource
++ * @size: Size of the resource
++ *
++ * Set @res start address and calculate the end address based on @size.
++ */
++static inline void resource_set_range(struct resource *res,
++				      resource_size_t start,
++				      resource_size_t size)
++{
++	res->start = start;
++	resource_set_size(res, size);
++}
++
+ static inline resource_size_t resource_size(const struct resource *res)
+ {
+ 	return res->end - res->start + 1;
 -- 
 2.51.0
 
