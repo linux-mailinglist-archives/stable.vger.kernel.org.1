@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-225182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIJAHcghs2m5SQAAu9opvQ
-	(envelope-from <stable+bounces-225182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:52 +0100
+	id 2Hk7GO0hs2m5SQAAu9opvQ
+	(envelope-from <stable+bounces-225183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:28:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703CF27917C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62102791D8
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 83DBB301E730
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:27:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2304D31685D3
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203A3372EF6;
-	Thu, 12 Mar 2026 20:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025B63845BB;
+	Thu, 12 Mar 2026 20:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brQBO3iA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEtXvNHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DB43242AC;
-	Thu, 12 Mar 2026 20:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99E13815F4;
+	Thu, 12 Mar 2026 20:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347266; cv=none; b=Kn3o+K8+o8Xv8KpSrF1FuG0ufMBd4bZsaDgJBJu5OuTAvSDBNYN1fyPsFdcMx8bS+pBBRcyeQ0pKQvc2tVp9/NMFLJJRwB6THdCyqcpxDlrtvOci5yhsl5YZkdt/R6k0wazcuuKiW63zUi35Ax6T14CS9bTUOcyQLpGVJ+fqeMA=
+	t=1773347270; cv=none; b=CD7yfi5lKmYWJaVuhLbdSYntflFfzklBVVAIfXFzP07qARBh5/BiRUVvUv0i/+P8+i65yx7qQ9v9hoRBuFFAEfdts0jOyfU/ggxN9hArxIe37Cyi86s9C8hyAzgDr+2QViJYqQJm0AuW3Rxtqmrq1jQkBM1FGbVOSF0NNJyzi08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347266; c=relaxed/simple;
-	bh=yd7vG2vxTxdk6i35GKqO+OkY2LhwlRYAWtW7Scnp0mg=;
+	s=arc-20240116; t=1773347270; c=relaxed/simple;
+	bh=oUAB3NcqHf8W1TVlpT7YQOvfW97sMTuYsw+dOSLgxnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8ueagscgTd47ai1FKQkqpKM3xvmKMptGOaSAPOTu+1HkkDZ+PE4Ciy4vbnKEDiqgi+u9tU9+stwPtgqEN90U+mGTDy1Cpdaxuv5/HqPCpupd0ZJ6MNxo7q3x09A21ts0BkQ9FMGydMuZxWjbxiU+rXZAG+cTayoCpx+KKefxMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brQBO3iA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFDEC4CEF7;
-	Thu, 12 Mar 2026 20:27:46 +0000 (UTC)
+	 MIME-Version; b=RAGnrB2nyrFoclewPjXf4NaQmhwGQNllGvyZaZoC0AQ1LKJCU3dG3qLW1g/o76ceYF9/Dcd4EmEGkTazFc45leTyjfeKgQe3RAJ6ADeXXqesAKaEWOvalxw014g11Y9VBwVgLJxque4jS01qeaOWBCoVCJXOPM2PXRxTnD2/mZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEtXvNHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011AFC4CEF7;
+	Thu, 12 Mar 2026 20:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347266;
-	bh=yd7vG2vxTxdk6i35GKqO+OkY2LhwlRYAWtW7Scnp0mg=;
+	s=korg; t=1773347270;
+	bh=oUAB3NcqHf8W1TVlpT7YQOvfW97sMTuYsw+dOSLgxnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brQBO3iAC7W829Jrz6PfyGBxXYvmaML6g/cQjTvQ6AfSGOcUQD0h7VoZYJR5r44K8
-	 0NvH2XlzJGxewrLmZc1jgWZ9PXRXGrPpnbKsCcJOd0aaUQAF3qYW2hnLQo/Zey498R
-	 BNu4/78FwJ+VQpZ+TSxiX+gyq9NEMYjmCBbBcvV8=
+	b=yEtXvNHjttNu5JHviOpIPdNt0GGxXDubKV5U3xW/qpNYqRAsTM2bjsFUtNVnem1jS
+	 f6efwV3hxwiDCz8KXkoLGKa+HSlWKRsR3A2arEzkP3a0Yc1k2j6EYPXSZywfRUC4hk
+	 P0XHBBCIbdeiQFgoWTKRaa5dAjk59nAARnsWYpJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <wuyifan50@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/265] selftest/arm64: Fix sve2p1_sigill() to hwcap test
-Date: Thu, 12 Mar 2026 21:10:34 +0100
-Message-ID: <20260312201027.260880820@linuxfoundation.org>
+Subject: [PATCH 6.12 248/265] tracing: Add NULL pointer check to trigger_data_free()
+Date: Thu, 12 Mar 2026 21:10:35 +0100
+Message-ID: <20260312201027.296856742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -69,30 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,efficios.com,goodmis.org,roeck-us.net];
+	TAGGED_FROM(0.00)[bounces-225183-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225182-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
-X-Rspamd-Queue-Id: 703CF27917C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,goodmis.org:email,efficios.com:email]
+X-Rspamd-Queue-Id: B62102791D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,42 +103,49 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Yifan Wu <wuyifan50@huawei.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit d87c828daa7ead9763416f75cc416496969cf1dc ]
+[ Upstream commit 457965c13f0837a289c9164b842d0860133f6274 ]
 
-The FEAT_SVE2p1 is indicated by ID_AA64ZFR0_EL1.SVEver. However,
-the BFADD requires the FEAT_SVE_B16B16, which is indicated by
-ID_AA64ZFR0_EL1.B16B16. This could cause the test to incorrectly
-fail on a CPU that supports FEAT_SVE2.1 but not FEAT_SVE_B16B16.
+If trigger_data_alloc() fails and returns NULL, event_hist_trigger_parse()
+jumps to the out_free error path. While kfree() safely handles a NULL
+pointer, trigger_data_free() does not. This causes a NULL pointer
+dereference in trigger_data_free() when evaluating
+data->cmd_ops->set_filter.
 
-LD1Q Gather load quadwords which is decoded from SVE encodings and
-implied by FEAT_SVE2p1.
+Fix the problem by adding a NULL pointer check to trigger_data_free().
 
-Fixes: c5195b027d29 ("kselftest/arm64: Add SVE 2.1 to hwcap test")
-Signed-off-by: Yifan Wu <wuyifan50@huawei.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
+
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://patch.msgid.link/20260305193339.2810953-1-linux@roeck-us.net
+Fixes: 0550069cc25f ("tracing: Properly process error handling in event_hist_trigger_parse()")
+Assisted-by: Gemini:gemini-3.1-pro
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/abi/hwcap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_trigger.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
-index 265654ec48b9f..097bd51e14ca2 100644
---- a/tools/testing/selftests/arm64/abi/hwcap.c
-+++ b/tools/testing/selftests/arm64/abi/hwcap.c
-@@ -349,8 +349,8 @@ static void sve2_sigill(void)
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index d5dbda9b0e4b0..1e4e699c25478 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -19,6 +19,9 @@ static DEFINE_MUTEX(trigger_cmd_mutex);
  
- static void sve2p1_sigill(void)
+ void trigger_data_free(struct event_trigger_data *data)
  {
--	/* BFADD Z0.H, Z0.H, Z0.H */
--	asm volatile(".inst 0x65000000" : : : "z0");
-+	/* LD1Q {Z0.Q}, P0/Z, [Z0.D, X0] */
-+	asm volatile(".inst 0xC400A000" : : : "z0");
- }
++	if (!data)
++		return;
++
+ 	if (data->cmd_ops->set_filter)
+ 		data->cmd_ops->set_filter(NULL, data, NULL);
  
- static void sveaes_sigill(void)
 -- 
 2.51.0
 
