@@ -1,235 +1,177 @@
-Return-Path: <stable+bounces-224911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMsCEnQTs2mDSAAAu9opvQ
-	(envelope-from <stable+bounces-224911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:26:44 +0100
+	id UBY7NmQbs2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:00:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F2E277E06
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:26:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43945278678
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F9F23047616
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:19:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2B743156890
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA918405AD6;
-	Thu, 12 Mar 2026 19:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804993BFE4B;
+	Thu, 12 Mar 2026 19:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0uiaRnvE"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fGx99qZe"
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011032.outbound.protection.outlook.com [40.107.208.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A49405ACC
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 19:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773343044; cv=fail; b=V8rxW7krgJ9TuF4mOv3rvpeQLB/2BnwECE5eYWHqEk4fMdZpkwsn+mkjTAm0PeluEYzW++HDqL/HAMUpYx6Vx03Rtvvz+A0YZ3eJJtUewyjB1cUoLEOIZNAJVR810CB2F17UQJObs21sUJxa3KaL7QXHbY5cG34sDqLf6L23HEY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773343044; c=relaxed/simple;
-	bh=HcphyDqcMWE0Dp5IWRXTrkmmZSyp71fVKoRVTNoEFXs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ViOu+8a6mMDgAOyjR9tEcsJVW7asrEtiHyldlcwCZ7ugcDfB2fOIpkgYopA6+27fq03t3S1tUnDaIWUYzcHJ6GbtsXcQ/5Q140NNBn5iDmrNUPXPxZxBSfdmBYzFbA5UqP61/1AFK+bDYbbt/4FqmSQyZIjkY3DmG0A/GuD8GSg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0uiaRnvE; arc=fail smtp.client-ip=40.107.208.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ff9vlpvfwxDdU5cVPfSY14mkbab2SZ7EuhCGQrqF3lusc10Z+z/6EUvvM71A9HRJtl83HLZQDvQFhQjC04NRxnf9KrT6pSVXojL2xWf6K3sVdRvwF9tKtwXh/hBr3fQO90JeXBk6QdXIZZnF+z/Z7yPnA7KP6mQMeXCI1IPfikYfXzru3DhUR+rUudC9tfhGHM6KKLfotp64tkOcKTYFxVf0GrWOwnvn4bIizmY7locXTH1+c4FmV3kqxEU8k/BmkF8EX+akwQqgMz2xdQID5vtcfPuUFhuj1nfklI5tnJcPINp5YHYoqYQt2zKLljWIuj+lESvYIE+jcRYp2JlX8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vPqbiaYN68WSKHSXnoaNTB/+8U8d8+DFCPgPdKjRVcA=;
- b=AKvwKu7Ug5vTMFnujfFdsjxVR1VTpAXfK0b2k0eOlPEuy6WASyRr1VVdWGRC3x6ySS8I8BK4gfnYkoRyYjB+SvgLlWN8c400GdB9RWZu8XVzelgjXL/2UelNTsws8XOdArdm9mP1QtenhQgvHkGjH3AHf14Ha4uGyE4SHMZWGBx3oDS31LE2eERDUXD8eoZl5GkzWZ9fW5aLYBNawFAH0cgrWNVhUp6VNuLSfD0qu46/0SHcsX8VGUsbSaNA4TRKrn5SdiQUU+gr+du52G9BD1oLgFS/Gr5fBZiwUHf+LQiMh9VdPeYmrUogfaOFp8kltQcvrlV2AkzFWYhETlAZIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vPqbiaYN68WSKHSXnoaNTB/+8U8d8+DFCPgPdKjRVcA=;
- b=0uiaRnvEVPIBBuWT5mci0IBXWzRQRncb5HRdAsOtIyC24E9+aNuONSqvNzZdYZK5y4z2zK6+siqpk2reXbegMnwxZqi8/LIigcg5kDwMCBNc2tvJAPnEgxgMil1Ud8xu6XCB2Wyjp0/tlWtl4KmhZzQXzUeVlR+VtD8zLRoCEnM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN9PR12MB5130.namprd12.prod.outlook.com (2603:10b6:408:137::9)
- by DM6PR12MB4332.namprd12.prod.outlook.com (2603:10b6:5:21e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Thu, 12 Mar
- 2026 19:17:20 +0000
-Received: from BN9PR12MB5130.namprd12.prod.outlook.com
- ([fe80::e7a:4396:5bcb:2b5a]) by BN9PR12MB5130.namprd12.prod.outlook.com
- ([fe80::e7a:4396:5bcb:2b5a%6]) with mapi id 15.20.9723.006; Thu, 12 Mar 2026
- 19:17:20 +0000
-Message-ID: <148df44d-2456-40e3-8be6-f98b89b7ee4d@amd.com>
-Date: Thu, 12 Mar 2026 15:17:15 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/atomic: Add affected colorops with affected
- planes
-To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: contact@emersion.fr, alex.hung@amd.com, daniels@collabora.com,
- mwen@igalia.com, sebastian.wick@redhat.com, uma.shankar@intel.com,
- ville.syrjala@linux.intel.com, maarten.lankhorst@linux.intel.com,
- jani.nikula@intel.com, louis.chauvet@bootlin.com, stable@vger.kernel.org
-References: <20260310113238.3495981-1-chaitanya.kumar.borah@intel.com>
- <20260310113238.3495981-3-chaitanya.kumar.borah@intel.com>
-Content-Language: en-US
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20260310113238.3495981-3-chaitanya.kumar.borah@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR01CA0137.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:1::37) To BN9PR12MB5130.namprd12.prod.outlook.com
- (2603:10b6:408:137::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E823B0AC1
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 19:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773345539; cv=none; b=jt83knoNq9i2RHZinKLE4rhZdeWbyYOrZGTDL9+iNZoHeEJdPrzCaCIYMaBv2o65Gi/n4hJGb4ISzC6RKrL3X3gUs96janciJkzFfsV+KGvb0OIxV7nS19Y09AIxsiarSXxBLHYc05/RWdNyMBwJkpXtJjbHWik+6pmoGPYGL2k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773345539; c=relaxed/simple;
+	bh=RY963B+uqTjMp7UVFZuiwEqIxn4cJaaQeDCKxuMpfzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JSYNh7Dmmlno1S1pEfVRLrB3vWofBSAqDN1evUOYSmZWhTqWiAlyvm/D4k8kkvjLEayjPJXlOK6FFGrNNAmn3EMcmBKQdsAk3XvWcWcBNIowKlKJwhG7rQcMQBvrEJ3I+PVt4HHNnb1DElDOIBcgu3CpTEK/PVmtdeC5nNFSnQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fGx99qZe; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4853aec185aso12659755e9.1
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 12:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773345535; x=1773950335; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MIAskK+ZNtzz1SwxyEcF/wj8vxB/luVLoRjKKyPZhTk=;
+        b=fGx99qZewKXukzKKfUidwe0vteY3e84Pf3rZQYtlGSMbg5QKXqr5U9rzXM3Lk61D7V
+         oh6y6i2n3FKatw1OtJ5HgZy9gsDyOiQXcJoRe0wy1dFc10GlwzJ9t41SF671R0TfOZLi
+         XWLdndrot2+bhXIOnSdxLww3ouJCNGEZ724IkwxP2LzKH7T97gNbIseYw0Jhxk6rllw/
+         XeM2ZEVFWvmC39qJK2d5wDALaATFLMujvgkxZd6OIfb9t9UWpd+Gq4qtNRi15rPp5204
+         cCyw3fWxQ+k9Wl5CAmrC+vxXWKaTm9Gm2MryJHddIzlBHKIQVg/WTZIn9wdd923apvMJ
+         s3tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773345535; x=1773950335;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MIAskK+ZNtzz1SwxyEcF/wj8vxB/luVLoRjKKyPZhTk=;
+        b=P7rWLFyAo1nm6i97hSjM2qvt4SCuXpCaex33nSffVACziXA3tbxbpOpipX2IzGwwef
+         X7Urwta079GII+SiV2PCJPNH3OnrHgnisjY9jVue9hhhSUHFp2l4fZk4YW9Dn42E0UEH
+         Np7RtLAY3LclDUDjEaz9+DsxGdPTAHMQU5sYDWVB7DRW2ldVBOedz0ppbq18P5yM/VqF
+         bUb7bS/StW2Za97LgGuZm37nQJI8niRRyx8jAv8WRURHk7O9d5nPXbfCVrKkd+kAL8tc
+         Uv3RfoHLMbMjEvOUXZhwkLiR+afkEDK5Cus4zHC74vosPPRgPUXbcmlc/K4lwbp19/Pp
+         liZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZUFj/Z9IH5gVH0ZU4v3AToriXFBysY8AVJCX+59Hu85m2aA5+naLCEjMgGzL6EfhSFQoisAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdi2PWJDuoKUpqMdz91cYzy8aj4eQf7nwMSC2slih+pLR8xF9N
+	mhioB2pg/e3dosvmxCYnFPCDniz7aGmBGT/woUjma/J12lviLzZbVyGb3DgKKzUcCXs=
+X-Gm-Gg: ATEYQzxCDLv0ygodgbZOpGRig5aZTn+pbo+22RRyTuAhOAI8qnozJw3c55jxg90nKqr
+	fANPfQTkj62VkURaYl1Ji3gpC2totZJMWyY8uouUDe1dmdbn15XrdtuXFC4s3scDCdYjJvNL+fG
+	9KHGcavs+1uGHKuWy10zjxE3vk6eXTD1DxW9DwQySDp4z+It+wQb2EShWnWTJ5xzI3Yo8VOsImK
+	3rf3YZ8MpI5JPYFcKePzMVarrHczwxDUetPk+23o5lI0CIKgIaW0NzTSNFHW/3py9Y4Di2UHqc/
+	BUHyMpVd/FqE9gcJzu7hGIR01bnIA350dEGsphSvivSZGzQg2ecMKv7/Ra1r2G4agTONiA5grum
+	yi8YCnPhWvlU4RYIk2cOl11IUJ6aWr7CyxD2RsCrNvhHicPpbyMk4kngWc9HVZMPPi37UK3lAYv
+	to0Scno/mFGYImKQduVZ2+zBIgo/fz8zOktlmCN49pdscakACIDocLjAM=
+X-Received: by 2002:a05:600c:c8d:b0:47e:e2ec:9947 with SMTP id 5b1f17b1804b1-4855671052dmr9527745e9.33.1773345534851;
+        Thu, 12 Mar 2026 12:58:54 -0700 (PDT)
+Received: from precision.tail0b5424.ts.net ([2804:7f0:6402:b103:6a0a:3e1c:778a:5cc7])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be8aa96fdcsm7899078eec.30.2026.03.12.12.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 12:58:53 -0700 (PDT)
+Date: Thu, 12 Mar 2026 16:58:49 -0300
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: nspmangalore@gmail.com
+Cc: linux-cifs@vger.kernel.org, smfrench@gmail.com, pc@manguebit.com, 
+	bharathsm@microsoft.com, dhowells@redhat.com, Shyam Prasad N <sprasad@microsoft.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cifs: open files should not hold ref on superblock
+Message-ID: <u4s57pxvrttksfxe5evylucarfoyiv3ut32d45nvfafsgmxtog@72x2iew66wrt>
+References: <20260304124629.1616108-1-sprasad@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5130:EE_|DM6PR12MB4332:EE_
-X-MS-Office365-Filtering-Correlation-Id: e517aa02-6844-4677-0b89-08de806bfbab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	PoHiZFdqzQtMFH/9V6wvOCK+ov7nQ+9r16nTmZvbOCrxQSJ2m/r/iKnibHLpMqXEaitFOce8spB8UXb3+HhkdMLd8MdmiAZZdrB54aaJLvat3ogDDPH/lCUnhl+PsAncPTRCQBCmvJjjRAEMsZua5ukUfT+LW7v7LXXWhKUx6iaVzOxH4CgZ0ktgM3UPECDSgN1/MriB41k+CstIc0VEufsYbjeLCoPThRmN4eyfGyJ/RifDU9jBuuIUQmteCmXCvt05qd1xiOx9wocd8Bc3ukNIXZbcVhcXILdVom0dfsT1ujbqAaAbWJTsbwVp0IqiaNxnkei/5skB6LEKFKUXqqgJ/HmmnkwVtrdBu82jwK8UhQv06DDjP1gJd39ttHFiDKIPXnGMuOrSEIUe9Jl/e7iAH2PPAy/i0WZgnH6S0h0lakN5TQXf2HseBKadQUZDTcDGQcxuzYgRUmXYUnl6KcnJ4Ym8eTH297KgjWdDsjSHn89YUV/t1fWPnDDSd0LjjKr9i/JqrUjF255X48GYJGWcl0IWeFSBecGFz6UqIagrNFkhAyyyAAt1H6tyuv7mZa2c1aUbYDMw8ftdSvUJ0qszPT6FNV7aV3yILdrsb2FggMvLYlTbMhIodYJVBgLOyf/B3cPsxO652bJWcEVZyqhSbX17bA2MBy4Pt8H8QlchLlx6c8rfB5wz2DePh2ck3vvxui1IsNWYdzs5udK39RI1kiYfDdC8utUIH/lH0XI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z3lrNnQ1bFpRTWpuUmR5UjRscldWNzFPUHpJNjNhYmZOVFVUd0RpOUIzSmZL?=
- =?utf-8?B?QnhQZUtPL2Nyay80RmhPSmN6WWxvSng4UDFhalV2ZGRlN1ExY3g1N3M2d1h3?=
- =?utf-8?B?RTBlZCtSUHhDdThvVFhIeklaVmcvbGZVcXJCZlllZ1NJSEdLVnd0V1hTYTRO?=
- =?utf-8?B?b28wTnlqQW1uTGc4cFF5aURScVAvMTNrKythZ25nSVNmZTFLZkJTWGE2Ni9W?=
- =?utf-8?B?ZWxEeFdjTVVNMW1OYjdFWXpjUlpCV1dYM0NRMjZubE1pd1ExL0hlNnFTRElz?=
- =?utf-8?B?eDdXV1o0TEtrSlUxYWdROTNVRDZIWmc1cDZOK1pkbG8zK3VvWWFBd0hiaEtR?=
- =?utf-8?B?OUg2WHlxK2h3ZVpDS3NsVHZIblloM2w4dE56UG0rb1hOVzlweUcvMVJYM05Y?=
- =?utf-8?B?SEFhT1RUR0h4NnBlcHJNbTJZc09MQUQvdnk0M2lQQmhnMk11UGs4SklVZER5?=
- =?utf-8?B?dHlRRFJhUUphU0E1dXZoLzRWSERhRjkvaHYvZlViNXE0eXV2V09Fa2pQSWZW?=
- =?utf-8?B?RCttT09sQXJhQklIYVZVTGF3enpCdUdYN1RTSDN0aDVCS3BrazZxRk4vUEt3?=
- =?utf-8?B?R0pvWEFZQytJbzJlZDZteWZnVnNmZUZ3N25nZE1wdEI2SUwzSW91NGM5T3oz?=
- =?utf-8?B?U2tlVjJHRXY2VnhGTEJRQ2I3VWhxSGFFTjZielozY1A0MERUT2F6MUlodHd5?=
- =?utf-8?B?aDFabWlVL05lTTFhQ3kzUzVyRUZCQ1B2QWFPOWdIZ3daOXBWYnRadmJIUnVn?=
- =?utf-8?B?RTNQNGllTnpFbFdYTGdtYUFQSWdkMnhVa3F1UkJSN2hWY0NpWWFrZ1dPR0hi?=
- =?utf-8?B?cmY0Q3ZVdlBZcHdDRDMvS3ZMajNuYlJyNGUxREwyVUorTHEwVEpiRDRUYVNC?=
- =?utf-8?B?bC9qd3JDNHRocEQwSFNqMERJbXg0Tjgxd3VlUUZub3NIdThScUJVSEFyOUY3?=
- =?utf-8?B?aVVtY3ZjS3ZQZUhVWUdGRjM1bjVDaUZiWXlwODkyN3UzRDNCTlRxY2VBQVNY?=
- =?utf-8?B?R3FVYStIRXppZ0RnVHNXRkxheWFMUTh5R0lmOTJkM08rb2hsTWlpd1pBQVE2?=
- =?utf-8?B?ZlVFWkNlQk82QkRFOHg3Y1V1UDI4SElYNldUN3pWdE8yeVZlb3ZGYVlCUEFW?=
- =?utf-8?B?K3NiQU44czV6cGJINmtBeXFndTl1Z3VVcGZSdHp6RWM1UGliaGh3aXhNL0Vp?=
- =?utf-8?B?czVCcmlHdnpUWjhZalpOaFJFUUFZT2hmOWx0YWtwRGtZYmxhTWZPbnJ1OU5v?=
- =?utf-8?B?ZEk5Z0dacTg5UC9rMjJjL1FldVRTS2VVOVpIQzN3TlJNWEtqOS8xSCtFS1lN?=
- =?utf-8?B?cGczRzkyRjVuMFVQamdWRkRoN3YvTy84YzVjYnErQTNIKzBLc0NZTHFVdU4v?=
- =?utf-8?B?cjBKMHNLRDNGZndRQjFONXBUbkN2S1lJS0lOQ0wvN2IvaUIvWkRacStnaHZX?=
- =?utf-8?B?T1NFSDR4Sm9OUmV0Zy9Vd3cvNUxSTEYvWUU3d0cyL05QZ2QyVDJZMUFTU05v?=
- =?utf-8?B?Z1NGbnBCa0Z4ZFArNGVrRTc2NmFrMUxwNEk4TFRXZFpERjFFSnR1c1JQcHFi?=
- =?utf-8?B?THZqZC9ibjh1RUFOeS9zT2ZvMjBRWXhveWV1Mi93TEMwUW5sVXgyT1hKV3NR?=
- =?utf-8?B?WTJIT3BOSEM0N3NCYis2ZlphbUtWK0pyKy8xWm9JT2hzMlVLNGliYks2UmNE?=
- =?utf-8?B?T0NIMmhXOUZXSUpuVmNVQitGVCtqNUN2cHNncE1wYVNYc0JPRkZBdkZzd2NI?=
- =?utf-8?B?R1dCbFlBcjlHcTlLeFh3WDZnSEhNR01ET1o3TjVHR1ZjbDhZTnVYSnN0N1l2?=
- =?utf-8?B?cSt5YmpyL3h6STBmb0Y2MDkxOVBVVnUyTHM2azBHb0Urc212aEUxQkZoL0Mv?=
- =?utf-8?B?ZnlhSFFKeDByUzhIemQ0OFRHenhTRG94Um9QeE9LUEtBeURFamJZckR6VTAv?=
- =?utf-8?B?MUIzb3B6WGx3d2dWdXZUWDhzbk11cjNYRUU2UmlvdVlETmJMbFpaWlhkaWpi?=
- =?utf-8?B?UFpnUThWcmVIRW5GM0dEWjFhNENiTXRKUVMwWFpFMDAzc3l3aTVHRitaL3NQ?=
- =?utf-8?B?QkhKRTV2UElpSXNJSFJYdlo4UU9uZzdsS3VlTnd0TTJOSjEyazRaQnd0eTRw?=
- =?utf-8?B?bi9sUGhGWUE5UTVRYlpkU1RMeG1ZVlFQSTIrTHR6YlFFdFh3S284SWRTMkhi?=
- =?utf-8?B?eTYrYjRzQnRkRWNMc29oTGZrKzlsaUt0V2szYmN2VkV4YXhTTlEwRjBENEhn?=
- =?utf-8?B?NzNmaEc3SncwV1htWHRBay9UTU9TRWJIOFdhZUNtb1pKcnFHRTZVd1kzOFY5?=
- =?utf-8?B?QWJrV2RWM0owZmQySXZnVFNReW5jaHU0V3NvWFJKNHBwaVhTVzdJQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e517aa02-6844-4677-0b89-08de806bfbab
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5130.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 19:17:20.7019
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OHyZZvAPuTrWrNfm89BWgyem+SfBVhazht5mF/3BJDrsNWi+ZKmcCjLbr9Wk9xQozmvmxloLdwC2zg79L3HKIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4332
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304124629.1616108-1-sprasad@microsoft.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224911-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224912-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,manguebit.com,microsoft.com,redhat.com];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry.wentland@amd.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,amd.com:dkim,amd.com:email,amd.com:mid]
-X-Rspamd-Queue-Id: 43F2E277E06
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim]
+X-Rspamd-Queue-Id: 43945278678
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 2026-03-10 07:32, Chaitanya Kumar Borah wrote:
-> When drm_atomic_add_affected_planes() adds a plane to the atomic
-> state, the associated colorops are not guaranteed to be included.
-> This can leave colorop state out of the transaction when planes
-> are pulled in implicitly (eg. during modeset or internal commits).
+On Wed, Mar 04, 2026 at 06:15:53PM +0530, nspmangalore@gmail.com wrote:
+> From: Shyam Prasad N <sprasad@microsoft.com>
 > 
-> Also add affected colorops when adding affected planes to keep
-> plane and color pipeline state consistent within the atomic
-> transaction.
+> Today whenever we deal with a file, in addition to holding
+> a reference on the dentry, we also get a reference on the
+> superblock. This happens in two cases:
+> 1. when a new cinode is allocated
+> 2. when an oplock break is being processed
 > 
-> v2: Add affected colorops only when a pipeline is enabled
+> The reasoning for holding the superblock ref was to make sure
+> that when umount happens, if there are users of inodes and
+> dentries, it does not try to clean them up and wait for the
+> last ref to superblock to be dropped by last of such users.
 > 
-> Fixes: 2afc3184f3b3 ("drm/plane: Add COLOR PIPELINE property")
-> Cc: <stable@vger.kernel.org> #v6.19+
-> Reviewed-by: Uma Shankar <uma.shankar@intel.com> #v1
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-
-Harry
-
-> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> But the side effect of doing that is that umount silently drops
+> a ref on the superblock and we could have deferred closes and
+> lease breaks still holding these refs.
+> 
+> Ideally, we should ensure that all of these users of inodes and
+> dentries are cleaned up at the time of umount, which is what this
+> code is doing.
+> 
+> This code change allows these code paths to use a ref on the
+> dentry (and hence the inode). That way, umount is
+> ensured to clean up SMB client resources when it's the last
+> ref on the superblock (For ex: when same objects are shared).
+> 
+> The code change also moves the call to close all the files in
+> deferred close list to the umount code path. It also waits for
+> oplock_break workers to be flushed before calling
+> kill_anon_super (which eventually frees up those objects).
+> 
+> Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+> Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 > ---
->  drivers/gpu/drm/drm_atomic.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
-> index 04925166df98..dd9f27cfe991 100644
-> --- a/drivers/gpu/drm/drm_atomic.c
-> +++ b/drivers/gpu/drm/drm_atomic.c
-> @@ -1587,6 +1587,7 @@ drm_atomic_add_affected_planes(struct drm_atomic_state *state,
->  	const struct drm_crtc_state *old_crtc_state =
->  		drm_atomic_get_old_crtc_state(state, crtc);
->  	struct drm_plane *plane;
-> +	int ret;
->  
->  	WARN_ON(!drm_atomic_get_new_crtc_state(state, crtc));
->  
-> @@ -1600,6 +1601,12 @@ drm_atomic_add_affected_planes(struct drm_atomic_state *state,
->  
->  		if (IS_ERR(plane_state))
->  			return PTR_ERR(plane_state);
-> +
-> +		if (plane_state->color_pipeline) {
-> +			ret = drm_atomic_add_affected_colorops(state, plane);
-> +			if (ret)
-> +				return ret;
-> +		}
->  	}
->  	return 0;
->  }
 
+Hi Shyam,
+
+So the side effect of the previous code is that the umount hangs until
+all the files are closed?
+
+Thanks,
+
+-- 
+Henrique
+SUSE Labs
 
