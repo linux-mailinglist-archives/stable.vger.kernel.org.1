@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-224965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDLwMFwes2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:16 +0100
+	id aFAOIEkfs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDE22789B8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8441278B6E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37AEC301D971
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9053531987D6
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684F6401A26;
-	Thu, 12 Mar 2026 20:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46426402430;
+	Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmd3oBwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6LE3Ytn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB1C396582;
-	Thu, 12 Mar 2026 20:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048173F1655;
+	Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346392; cv=none; b=R3mv+MiWtXejMBqpOB/2rGxoVAssXKT/lWtsxBJdL3AABWk6axuRkVKowgJIYWxKWn8QOymDf7iz0Ahy9thNdx3VCJLS4PVUGr4px7f1Z4VpOzirBQltgnrwAFbANXKCKFJ90+m7JzVs6PGiMkxwey9OR2UeVx7U4dNofEOnvc8=
+	t=1773346437; cv=none; b=svc+RH1D3k/3Ho86IKcHB3XteFV7Gat3g2TjpAI9/CIGZvgasyCH/xLnf0BqGcYAEP9wgoZDpzEDkpcKYx6dr5ufzt9erX1+0fU+wrHrdeZa+keqff7JvFSkcvu0T8uNhpOzAXCZMs8E0h1MbmU7EVAFtgj0sreyyasptrHp1XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346392; c=relaxed/simple;
-	bh=JfX5ViT/E0csCibTlVhk1xajQ8nq48c62sRc3Rw9vgM=;
+	s=arc-20240116; t=1773346437; c=relaxed/simple;
+	bh=dg5Qoi3vprZdV+4fJ9o+QX7OlEWXU9g1qW7014JlWmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNrOjbXBYhbEkvHHYuStR7C1xf8KwK6rG/iEf5GZp0n6pQK7Q+7q2wjsPZOceViPIIRbBckceZCH74hlO3bktC819CUv38zbpmu/MUdaaZOuvf2uXMZahY3eJic5RA0OVgkQtgS52gfxo8fyj3m0ZziGzHUxQfkXD4x6CK8d26I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmd3oBwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A37BC4CEF7;
-	Thu, 12 Mar 2026 20:13:11 +0000 (UTC)
+	 MIME-Version; b=KzoGTnn5G20RKW2Oeho4aLEoCuQ/iLkNwHjS+0wgBkrttQaoF7G5GsQow5Le6h6mgs/eIsYgg676I6OGRiNpQI6iPLiXSQzV+hAt3Ueq0Q99uIchP5qCXzfw8djZOr/MMWHbS/1JR9bWqRUS02PeDRQEHdXnx5nh6Z/iE5eJSYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6LE3Ytn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EE1C4CEF7;
+	Thu, 12 Mar 2026 20:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346392;
-	bh=JfX5ViT/E0csCibTlVhk1xajQ8nq48c62sRc3Rw9vgM=;
+	s=korg; t=1773346436;
+	bh=dg5Qoi3vprZdV+4fJ9o+QX7OlEWXU9g1qW7014JlWmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmd3oBwFoHfkI6qEPrr9SWhPbDexE/FNSFoDQhQ+vqEQHZyL+93XjwwqmRJtbt/is
-	 q64+mwN4uVzgullxjjPyzZCOecZzajRU6ORmka4FYZQ3rtCR22THUJOroKOndRxYWu
-	 OHg2J+29wqJciT3jW07fS4KVwXU2OM0LAOCveBpo=
+	b=O6LE3Ytnoe3I64FJHaFS5JWyBupVFOLVNpxUX6NO1ThSjaASfO36z7I4itFhs6V6I
+	 tuiXMGGEOgxdl2VueGpUuf5BfEr3JIx/ECB/is04OUi1ZMBdKPUvKVJ4dDfwqZfMUm
+	 LCsnblhAHz8a3wgUs1VXiFQpSC1ph6WfhGXp0ATI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Shubhang Kaushik <shubhang@os.amperecomputing.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/265] sched/fair: Fix lag clamp
-Date: Thu, 12 Mar 2026 21:06:41 +0100
-Message-ID: <20260312201018.688522524@linuxfoundation.org>
+Subject: [PATCH 6.12 015/265] rseq: Clarify rseq registration rseq_size bound check comment
+Date: Thu, 12 Mar 2026 21:06:42 +0100
+Message-ID: <20260312201018.724862116@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -70,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224965-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-224976-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,amperecomputing.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 3FDE22789B8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,efficios.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email]
+X-Rspamd-Queue-Id: E8441278B6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,133 +99,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit 6e3c0a4e1ad1e0455b7880fad02b3ee179f56c09 ]
+[ Upstream commit 26d43a90be81fc90e26688a51d3ec83188602731 ]
 
-Vincent reported that he was seeing undue lag clamping in a mixed
-slice workload. Implement the max_slice tracking as per the todo
-comment.
+The rseq registration validates that the rseq_size argument is greater
+or equal to 32 (the original rseq size), but the comment associated with
+this check does not clearly state this.
 
-Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
-Reported-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Clarify the comment to that effect.
+
+Fixes: ee3e3ac05c26 ("rseq: Introduce extensible rseq ABI")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Shubhang Kaushik <shubhang@os.amperecomputing.com>
-Link: https://patch.msgid.link/20250422101628.GA33555@noisy.programming.kicks-ass.net
+Link: https://patch.msgid.link/20260220200642.1317826-2-mathieu.desnoyers@efficios.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h |  1 +
- kernel/sched/fair.c   | 39 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 36 insertions(+), 4 deletions(-)
+ kernel/rseq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index af143d3af85fa..9b722cf6ceb45 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -545,6 +545,7 @@ struct sched_entity {
- 	u64				deadline;
- 	u64				min_vruntime;
- 	u64				min_slice;
-+	u64				max_slice;
- 
- 	struct list_head		group_node;
- 	unsigned char			on_rq;
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index bdb17a3b83f3d..4ffa0fdb61aa3 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -673,6 +673,8 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
- 	return cfs_rq->zero_vruntime + avg;
- }
- 
-+static inline u64 cfs_rq_max_slice(struct cfs_rq *cfs_rq);
-+
- /*
-  * lag_i = S - s_i = w_i * (V - v_i)
-  *
-@@ -686,17 +688,16 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
-  * EEVDF gives the following limit for a steady state system:
-  *
-  *   -r_max < lag < max(r_max, q)
-- *
-- * XXX could add max_slice to the augmented data to track this.
-  */
- static void update_entity_lag(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
-+	u64 max_slice = cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
- 	s64 vlag, limit;
- 
- 	SCHED_WARN_ON(!se->on_rq);
- 
- 	vlag = avg_vruntime(cfs_rq) - se->vruntime;
--	limit = calc_delta_fair(max_t(u64, 2*se->slice, TICK_NSEC), se);
-+	limit = calc_delta_fair(max_slice, se);
- 
- 	se->vlag = clamp(vlag, -limit, limit);
- }
-@@ -764,6 +765,21 @@ static inline u64 cfs_rq_min_slice(struct cfs_rq *cfs_rq)
- 	return min_slice;
- }
- 
-+static inline u64 cfs_rq_max_slice(struct cfs_rq *cfs_rq)
-+{
-+	struct sched_entity *root = __pick_root_entity(cfs_rq);
-+	struct sched_entity *curr = cfs_rq->curr;
-+	u64 max_slice = 0ULL;
-+
-+	if (curr && curr->on_rq)
-+		max_slice = curr->slice;
-+
-+	if (root)
-+		max_slice = max(max_slice, root->max_slice);
-+
-+	return max_slice;
-+}
-+
- static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
- {
- 	return entity_before(__node_2_se(a), __node_2_se(b));
-@@ -789,6 +805,15 @@ static inline void __min_slice_update(struct sched_entity *se, struct rb_node *n
- 	}
- }
- 
-+static inline void __max_slice_update(struct sched_entity *se, struct rb_node *node)
-+{
-+	if (node) {
-+		struct sched_entity *rse = __node_2_se(node);
-+		if (rse->max_slice > se->max_slice)
-+			se->max_slice = rse->max_slice;
-+	}
-+}
-+
- /*
-  * se->min_vruntime = min(se->vruntime, {left,right}->min_vruntime)
-  */
-@@ -796,6 +821,7 @@ static inline bool min_vruntime_update(struct sched_entity *se, bool exit)
- {
- 	u64 old_min_vruntime = se->min_vruntime;
- 	u64 old_min_slice = se->min_slice;
-+	u64 old_max_slice = se->max_slice;
- 	struct rb_node *node = &se->run_node;
- 
- 	se->min_vruntime = se->vruntime;
-@@ -806,8 +832,13 @@ static inline bool min_vruntime_update(struct sched_entity *se, bool exit)
- 	__min_slice_update(se, node->rb_right);
- 	__min_slice_update(se, node->rb_left);
- 
-+	se->max_slice = se->slice;
-+	__max_slice_update(se, node->rb_right);
-+	__max_slice_update(se, node->rb_left);
-+
- 	return se->min_vruntime == old_min_vruntime &&
--	       se->min_slice == old_min_slice;
-+	       se->min_slice == old_min_slice &&
-+	       se->max_slice == old_max_slice;
- }
- 
- RB_DECLARE_CALLBACKS(static, min_vruntime_cb, struct sched_entity,
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 810005f927d7c..e6ee81dd1e457 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -432,8 +432,9 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
+ 	 * auxiliary vector AT_RSEQ_ALIGN. If rseq_len is the original rseq
+ 	 * size, the required alignment is the original struct rseq alignment.
+ 	 *
+-	 * In order to be valid, rseq_len is either the original rseq size, or
+-	 * large enough to contain all supported fields, as communicated to
++	 * The rseq_len is required to be greater or equal to the original rseq
++	 * size. In order to be valid, rseq_len is either the original rseq size,
++	 * or large enough to contain all supported fields, as communicated to
+ 	 * user-space through the ELF auxiliary vector AT_RSEQ_FEATURE_SIZE.
+ 	 */
+ 	if (rseq_len < ORIG_RSEQ_SIZE ||
 -- 
 2.51.0
 
