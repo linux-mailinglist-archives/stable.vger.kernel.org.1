@@ -1,125 +1,110 @@
-Return-Path: <stable+bounces-225190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ7kIkois2m5SQAAu9opvQ
-	(envelope-from <stable+bounces-225190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:30:02 +0100
+	id mCCfAl0ms2kMSwAAu9opvQ
+	(envelope-from <stable+bounces-225211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:47:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254B92792B9
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:30:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8999C2798A7
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBD89304CA58
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:29:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5AA31DAC06
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B33B3B6BE0;
-	Thu, 12 Mar 2026 20:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nq4y7Zep"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2673803D2;
+	Thu, 12 Mar 2026 20:41:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248B3B6369;
-	Thu, 12 Mar 2026 20:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10AE1F03D7;
+	Thu, 12 Mar 2026 20:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347296; cv=none; b=eoiJ9f/Wh4vu8SVwikqiwWCXUDdveWW4ZpLh3/DsKBZ1FSGlIutNUzL9VkT3Dth1kch8XZA2hsWgGRf0fyy/O7RJZXyR8orrfqQNwRcL2ggKkZFKgyumvJd5021M1FP//8ROY9BNed2Nr/FRqelTAlG2HqS/USiGZZY6wZTX45Q=
+	t=1773348104; cv=none; b=lxyp/TUi7ZJoVkAUVfHS9NQGmh9ZQBydr6+W+MoAFQH9ai4gu19R7TNmudtAJ0KMMaaQlkirDIa/rVQrj3Bf4svpqENz3yXOVIhEklYpTzT5+nnQpkQVpHn12lekHZlSrWCQj5O5eKV1eiyLQEnWSx84ep58VI1SQUO0im/WWR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347296; c=relaxed/simple;
-	bh=F1ll/FqUQ2tBY/aU1M1YNQdY1uvLBts236CWd2tZ/dU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WInDbxCDzBexXBKMJkmQq7a6VSdfe6CZDx888yyRW5A8KImHP/No05NT4vpNrO7bhWDjvDf2l5GBKD1jy+pdy+NnKrF5lIZNxL9InR7sSbJT7W68BJeOqExJXsfaAHFKVL5SwuwxNeyfqerC5zQSKq10ttbYsgkQqseT4BHoX/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nq4y7Zep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7C2C2BCAF;
-	Thu, 12 Mar 2026 20:28:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773347296;
-	bh=F1ll/FqUQ2tBY/aU1M1YNQdY1uvLBts236CWd2tZ/dU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nq4y7ZepCqNXHjc2V8+H8UJBcHlJUQokqqnSzUUXCPn/WMTFvJ5ycRiKPizw+4NDu
-	 HmfR3Fg7rqC1jhttW+nv3LyRXARmgNYYbrAmiiJveM/AeSrDQ40RkfF03LKRjHOZrH
-	 VfqSOaRvS6klDqFvyXQd389uUD0I21VElvhAgxEn2C0bph6taxBpJwRn6jb7lmJQ35
-	 DchIczFOSBMJCr8mnWp+QjJYNIag8MnyZ2qvmCezTyXrUohfQl4xEUrdZAviwAlkly
-	 i4RatSZRtx4hGcWmAkNWSUNie5dB0Z+cBB6M39fB95TB5lTai+KhjV/A1P2LTsd8Dl
-	 XgxePqAFIvSbQ==
-Date: Fri, 13 Mar 2026 07:28:11 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Morduan Zang <zhangdandan@uniontech.com>, cem@kernel.org,
-	zhanjun@uniontech.com, hch@lst.de, dchinner@redhat.com,
-	stable@vger.kernel.org, linux-xfs@vger.kernel.org,
+	s=arc-20240116; t=1773348104; c=relaxed/simple;
+	bh=cik9Mzs4jXYWPScQS/eA+kHakdxcMmj7/XzWZ69GXCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iIV+75dMFjM9Ch4Y9UYBKZtD+zJVqXUMtBfhGM49mTwdu2oXdXSTkcqirk2k4ipFu3gGhBP5wxUiEtN4vCMr0GJ5uBwEkjSsXhiCXVfeHkirmIyd+TdZ6aChMVNQjIP1vJk/4z4WgS7CjQFnQf0a90BTbnQyBui/P/w1ZOECL6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	syzbot+d78ace33ad4ee69329d5@syzkaller.appspotmail.com
-Subject: Re: [PATCH] xfs: use GFP_NOFS in __xfs_trans_alloc
-Message-ID: <abMh2395Dkbrdgy0@dread>
-References: <24B50BB66059E3C8+20260312072214.475115-1-zhangdandan@uniontech.com>
- <20260312142601.GI1770774@frogsfrogsfrogs>
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 6.12 000/265] 6.12.77-rc1 review
+Date: Thu, 12 Mar 2026 20:41:20 +0000
+Message-ID: <20260312204124.2193-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+References: <20260312201018.128816016@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312142601.GI1770774@frogsfrogsfrogs>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225190-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225211-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[librecast.net];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d78ace33ad4ee69329d5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 254B92792B9
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[librecast.net:email,librecast.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8999C2798A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 07:26:01AM -0700, Darrick J. Wong wrote:
-> On Thu, Mar 12, 2026 at 03:22:14PM +0800, Morduan Zang wrote:
-> > __xfs_trans_alloc() allocates the transaction structure before
-> > xfs_trans_set_context() establishes the nofs context. If memory reclaim
-> > enters XFS through xfs_vn_sync_lazytime(), this GFP_KERNEL allocation can
-> > trigger a warning from the reclaim path.
-> > 
-> > Use GFP_NOFS for the transaction allocation to avoid filesystem reclaim
-> > recursion before the nofs context is set.
-> 
-> Why doesn't filesystem reclaim itself set PF_MEMALLOC_NOFS for us?
+# Librecast Test Results
 
-Because kswapd based memory reclaim runs in GFP_KERNEL
-memory allocation context. i.e. we're not in a recursion path here
-potentially holding other filesystem resources that we could
-deadlock on.
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-i.e. GFP_NOFS allocations are used to stop -direct reclaim- from
-recursing back into filesystem reclaim - it does not (and should
-not) stop kswapd from being able to reclaim filesystem objects.
+CPU/kernel: Linux auntie 6.12.77-rc1-g92f326b98fe0 #1 SMP PREEMPT_DYNAMIC Thu Mar 12 20:36:04 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
