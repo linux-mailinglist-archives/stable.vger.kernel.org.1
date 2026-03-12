@@ -1,192 +1,116 @@
-Return-Path: <stable+bounces-224907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPaCL4wHs2kMRwAAu9opvQ
-	(envelope-from <stable+bounces-224907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:35:56 +0100
+	id 8HUYCZsQs2k9SAAAu9opvQ
+	(envelope-from <stable+bounces-224909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C98277307
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 786092777DE
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F313C3061765
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:35:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30121314D707
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 19:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692573FCB1E;
-	Thu, 12 Mar 2026 18:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ov8RMgFD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B705540148F;
+	Thu, 12 Mar 2026 19:13:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.auroraos.dev (unknown [95.181.193.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C01E351C39
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 18:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DEA3DBD70
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 19:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773340553; cv=none; b=QJwtartEa6X/oFwx2NmXZU0zbgbycOT/RUTsj6nXUrpyv1YjFKTKtDusVfB8QunrKuRBj9AIQsEHUyoMLGNzw5xSMAj3q1f3SQNYIAz5vvAFouthBeQaq3SKAGtxOMcUqscKc26ANxPa5F8yROef0Z8HiAOMcO7gQy6kEhhUgZs=
+	t=1773342789; cv=none; b=SdmTR7kBvJg6qfozSkldZ4TCFkTzzWjbw86UNTe+3f4xrlf59El2be6mGPxGGHGOmrrFtjX8bYV+jZgiu31ctijl8qALRZuuamG+ZgwT47eXv9JEZK4aCYDGQjuTO78Vy8F2NnHzSB4T1kfBrgFJLlErce3eZjPMIZ1O1b8Iqlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773340553; c=relaxed/simple;
-	bh=sSMVdopdFED0cDsOwwGPaU3TLSS2hd18CMseo5liuPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwanBBdFpBhg0kwAsuQ1K+WBMy7/OVAu6RcxwkLuf0RsrMznGP7E7zZh/+ZJUyn6n85bytFpQBvIQRZ3w0bHpcMS5XdaYmSiCo8fjxwCk7UHRyszZWeaWnAB6UC0Zf/HGAGagRGtof8HSt+PB53yg1cJnXKRdY3DDppMHD2d7Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ov8RMgFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C882C4CEF7;
-	Thu, 12 Mar 2026 18:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773340552;
-	bh=sSMVdopdFED0cDsOwwGPaU3TLSS2hd18CMseo5liuPM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ov8RMgFDBYEv5vIHHWkSM8vDtlD4G9uAqq4HJscrkmZFdg1EBZW3e26UEvLPSyC+c
-	 FwFb1IDeww1grPbfvnuLfMIlhTosWe+kJdc/dw8of2/GxXsGefP1Jz7EgXVGJwf1ye
-	 unV/HAEtVKlwdLCAMRn+pEDUoYNEnzEbQXoEQRrlfH+jKOto0jMHPpB8jBDGQo1upC
-	 eC7CKRMgeeca+eefezCLTg4TlreXv2egiUY8QpfUdPTvU2Edcj4ij6BbxxPknaovRw
-	 E2F84uegE3B5Dy+wUjMk4zn++S5IDMgzn0tzG4HZiXT3n8muq0Bl6jZwe2UcGm2qoI
-	 On9JmN3ITAaDg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Victor Nogueira <victor@mojatatu.com>,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
-Date: Thu, 12 Mar 2026 14:35:50 -0400
-Message-ID: <20260312183550.1823006-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031222-subway-snowy-9a66@gregkh>
-References: <2026031222-subway-snowy-9a66@gregkh>
+	s=arc-20240116; t=1773342789; c=relaxed/simple;
+	bh=pg79LItd5J+5rQO75ArLdRkXPIJcXCoVNJgbJpsIi6Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=ceWhP+Un7y4PAlkYZb14HNFnRS3/vFqJKxEmklwPNB+eLBRQ7DzICcTwnFXTuervtr14LpL1QGpNTfL2lNfySuPkZanwwjJJ6zKeyBI144j/rRh4QU4ZZ3Z2LPUp3ZK4tVX9OS8ZSg0sX2zS4j2AL0+Zh0tz2mqZWVe0bX++13s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
+Received: from [192.168.2.104] (213.87.133.121) by exch16.corp.auroraos.dev
+ (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Thu, 12 Mar
+ 2026 21:57:52 +0300
+Message-ID: <d6c7280b-6aa5-465f-ac5b-04fb9c592610@auroraos.dev>
+Date: Thu, 12 Mar 2026 21:57:52 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 5.10.y] PCI: Check parent for NULL in
+ of_pci_bus_release_domain_nr()
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+To: <stable@vger.kernel.org>
+CC: Bjorn Helgaas <bhelgaas@google.com>
+References: <6fd6e18f-4979-4556-9dd2-cda6e703643a@omp.ru>
+Content-Language: en-US
+In-Reply-To: <6fd6e18f-4979-4556-9dd2-cda6e703643a@omp.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
+ exch16.corp.auroraos.dev (10.189.209.38)
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[auroraos.dev : SPF not aligned (relaxed), No valid DKIM,quarantine,sampled_out];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224907-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dance:url,msgid.link:url];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 46C98277307
+	NEURAL_HAM(-0.00)[-0.981];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[s.shtylyov@auroraos.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224909-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 786092777DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Victor Nogueira <victor@mojatatu.com>
+On 3/11/26 11:39 PM, Sergey Shtylyov wrote:
 
-[ Upstream commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 ]
+> From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+> 
+> [ Upstream commit f7245901de8978d829f80b3d8e36ed9a8fd18049 ]
+> 
+> of_pci_bus_find_domain_nr() allows its parent parameter to be NULL but
+> of_pci_bus_release_domain_nr() (that undoes its effect) doesn't -- that
+> means it's going to blow up while calling of_get_pci_domain_nr() if the
+> parent parameter indeed happens to be NULL.  Add the missing NULL check.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with the Svace static
+> analysis tool.
+> 
+> Fixes: c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Link: https://patch.msgid.link/20260127203944.28588-1-s.shtylyov@auroraos.dev
 
-As Paolo said earlier [1]:
+   I decided to not waste my time on sending the full series of the backports
+for this commit. According to https://kernel.dance/#c14f7ccc9f5d, the offending
+commit has been backported as far as 5.10.y -- backporting this commit should be
+a no-brainer for the stable team... :-)
 
-"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
-the current skb being held by the defragmentation engine. As reported by
-GangMin Kim, if such packet is that may cause a UaF when the defrag engine
-later on tries to tuch again such packet."
+[...]
 
-act_ct was never meant to be used in the egress path, however some users
-are attaching it to egress today [2]. Attempting to reach a middle
-ground, we noticed that, while most qdiscs are not handling
-TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
-address the issue by only allowing act_ct to bind to clsact/ingress
-qdiscs and shared blocks. That way it's still possible to attach act_ct to
-egress (albeit only with clsact).
-
-[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
-[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
-
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
-CC: stable@vger.kernel.org
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adjusted flag bit position and dropped TCA_ACT_FLAGS_AT_INGRESS ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/net/act_api.h | 1 +
- net/sched/act_ct.c    | 6 ++++++
- net/sched/cls_api.c   | 7 +++++++
- 3 files changed, 14 insertions(+)
-
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index 5cd184ae91cc6..8172e22c8ee65 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -65,6 +65,7 @@ struct tc_action {
- #define TCA_ACT_FLAGS_BIND	(1U << (TCA_ACT_FLAGS_USER_BITS + 1))
- #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
- #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
-+#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
- 
- /* Update lastuse only if needed, to avoid dirtying a cache line.
-  * We use a temp variable to avoid fetching jiffies twice.
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index d50977ef83c67..171ebf4594793 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1273,6 +1273,12 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
- 		return -EINVAL;
- 	}
- 
-+	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
- 	if (err < 0)
- 		return err;
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index a5864ddfb8902..3b12c3534b1b3 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -1934,6 +1934,11 @@ static void tfilter_put(struct tcf_proto *tp, void *fh)
- 		tp->ops->put(tp, fh);
- }
- 
-+static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
-+{
-+	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
-+}
-+
- static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 			  struct netlink_ext_ack *extack)
- {
-@@ -2128,6 +2133,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 		flags |= TCA_ACT_FLAGS_REPLACE;
- 	if (!rtnl_held)
- 		flags |= TCA_ACT_FLAGS_NO_RTNL;
-+	if (is_ingress_or_clsact(block, q))
-+		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
- 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
- 			      flags, extack);
- 	if (err == 0) {
--- 
-2.51.0
+MBR, Sergey
 
 
