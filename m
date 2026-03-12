@@ -1,193 +1,298 @@
-Return-Path: <stable+bounces-224895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMlMJIz1smmLRAAAu9opvQ
-	(envelope-from <stable+bounces-224895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:08 +0100
+	id 2LZWOLv2smmLRAAAu9opvQ
+	(envelope-from <stable+bounces-224896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:24:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349832767F4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AE0276868
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7C4A300CA3A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:19:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 187263024406
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5610938F640;
-	Thu, 12 Mar 2026 17:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330531C8634;
+	Thu, 12 Mar 2026 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpMUaC3S"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l/OA37Z5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FC53F8E0A
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773335941; cv=none; b=nxotLOWqSZ4JDuv9UJtggU5fWOMbAGkvcjEozdcbi95KMURrH2h02XC8O0XBGAB1kTaZj9YOW9drZqsxcYx4YWw0/xM6D6JU8mY0Zqmr/pkmJOFHiy+FcY+9AsojuOAPXrDAXnto9yPu323bApIutrrWdjnkktq0ZtJtDAPM0eI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773335941; c=relaxed/simple;
-	bh=A6cR3a/LScsEz9M4C5FzhbZluICGa05JTzfZNMjKloc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pny8v5YmWZHbCXMLpauqLE32nUEivJAoJ8T8RmkrSuI63eKcCt7w6rmFaDfn4eV3OqRXpG3SdIBPkAZOkN9WrJXySWUcjTx0JFf1poWaB/3Ll2VSv0D72xnmalhLi9p85UBK3dprTsS6b2T0i8XaiLDTSTGQbdJfYJGBqGjAsrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpMUaC3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE3BC19424;
-	Thu, 12 Mar 2026 17:19:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773335941;
-	bh=A6cR3a/LScsEz9M4C5FzhbZluICGa05JTzfZNMjKloc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpMUaC3SvTyamJo8biu8gEMX16iBg1J7wOouqp7ks4R/P1TkGMZoN+K4uffFsLy8l
-	 EnYB5Beu3VCTY/ljfc3O90StcHo3UZF8pcgOZL45GVli+k851YU2kvwR3rdviMA7Th
-	 RlmkS+DhIb9auHSnWJpOot9QOXy398tGQau+BgGSXcHUg1wv6ah7diWFrT95QNKYxu
-	 0yPp49CXkgFW3AiahIAc8XDI3JWPyvOGbALzc1ndfKZJ4E/A3NOrp41fhWhwU1UPvZ
-	 TINpvbLdv0J1anayIBx1ejzMDlKkTra+AoSi6ze51wxLpsUIl7/fyJgGvBnE68aLNY
-	 7dOtIB0URgbtQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Victor Nogueira <victor@mojatatu.com>,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
-Date: Thu, 12 Mar 2026 13:18:57 -0400
-Message-ID: <20260312171857.1797148-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260312171857.1797148-1-sashal@kernel.org>
-References: <2026031221-tissue-upgrade-f4d3@gregkh>
- <20260312171857.1797148-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE93859F2
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773336244; cv=pass; b=ctGVV8F3Lo8j1uK3Y7+PqEwq6HkdTL5PhAmd+VxtdMkEjLaScEmeAJosSEh+i0BgSnzotPkYitJo0bVCOpoZ/WkfFZJCaKTiVvTO1x1UT/BhsNAf8vXkZGfUd+C6zFEPHWVuo7CC3GSDtfIVXBto6dqvCiSU+A4pRmRRC1hf9CY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773336244; c=relaxed/simple;
+	bh=cs9NydnZlUj2ytjzvPGe3kpN6J9plhpBN0pmEXhJkR0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C448mU3aKLwxNyC2+6VLljIvcWSqRQ5v6lW0RmgqlTm0yDGqZXv6bNAwDKDOBE21qmQ3USh/A9bQ62tp/WC+Lt1Z/gyEtua0tZGkvy3WMBFwAHbTqvLcsa5txJiyXzocGMuMUE8FUlrZKzli9QZ48LU6vfmgg8vsds6/JwUs9/g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l/OA37Z5; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50906a98ffeso35321cf.0
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 10:24:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773336242; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CZ6+HAgev1NqioPXI8bSv5Ai3bJlxxJxBvNDJ13P6nUcGYSR8qAbhP5bTz5LsICEad
+         6hsZTf3PWyJrGWqYAK98VcVR7gV98lJqHHP5PHYhDNkpzbGfMrhM3ma5Pwdng2HZn+NJ
+         Zu3I/W6f2EW5T2rVqvMk75JWROmtrs7zB4Fh3rqh+thdSr+6ROpQlwo8+ToTZddQjLlZ
+         TPd8TXNJ0KTTBF8AwXLajeIGuZpFPOXYNO/0rCdJKsU6KavdWXHZtnNQfLGJ0D/uULVw
+         cWiUK7NeH/Rnd3SQm9+0tBxT4NXx84YkbXapnDs0LPtGXCnlMiSEmXwhmWSf04V/yVSV
+         FB+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=drMga890hBoz1tXxKNjKqbtUxogSlXx8qnX/9lqYuDg=;
+        fh=72ALynuYos1i6Uw5ODa6xve/Gx7P+mjJwPSuYbKXi3M=;
+        b=Ke/Y+iEN/elQdID3b/JF6ksZeD9M5TeLfZZEOqayrmreL9s0MdR7KxOEnD3MVFDpUx
+         ZlzXwdr85i+FPQ5P6+blHreCdVAWRY3y+L0F/jhyCMiYg/GEXNBbbteUxZVTY+Akik4O
+         UuG7MWCaIu4G4tvxS9jdGiwFW8qVNyPvph0Sf0E5O5bnpRfCmZSM3JFU0DhZpnpKNTjX
+         +XhHwEyrduH+E8Vm8kHBMZKp+iCf4KcINeBEGpX7g8xXYKV3qWG8STQko6HuVEIafcYY
+         oNXAjnWW/CcnpILrrOP5Rf72QE2KpuuT1xWxDk0Z2mBT6f0i0YobPBjbLUytqxRJfIcI
+         Pe1g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773336242; x=1773941042; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=drMga890hBoz1tXxKNjKqbtUxogSlXx8qnX/9lqYuDg=;
+        b=l/OA37Z5jrji/icRRqDj70IWIFhcMD+xVvpkIY37afq/KXC3iiAMhB0Fxl6oZZ6Hqg
+         kJgoK/oiMjC3rZFvhu7Bh8vd4wRsUimppVoKUkFhukcc2yJtx/ziN7EYKDgsEju+Izzr
+         VwPlCWDxl0iSoRZIS0gVBIu0k5zW5ojB+Oxi3o4bfCFCCdPkAb79cNEy20SL6hSrbd61
+         sW6dCo07iIUKyvVOmS5ld8Z+62aHiY/M6fbD88QtFNwiJIj7scBJ7yJjwb6HzhHku1q+
+         RDCuQ3HK6OzhX3oYMqXYXxQoxTgFFQHaZgczyHmd5qObJ+LBZ3IDMsp+1HLn9oPzhfV9
+         kslg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773336242; x=1773941042;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=drMga890hBoz1tXxKNjKqbtUxogSlXx8qnX/9lqYuDg=;
+        b=qkkQf4Y6b6PDu3B1SBddoSCKxsMNR4so4/aYL6Mz3jUK29mUx9VgEqXPxf2Kc90X6D
+         mKSNXP8cvMsWCzJ/RXAmYSWF2s333QWUwl9csCbtAoX/APG4WJBN2+XYX0hPjb1LKyrb
+         kBXW/qfUZSoUFODbs9ARx+sVXN12pfbWE3AtBWyxfUChJKc3uvoPZYuOjGdtElQdQf4r
+         SwoDYSwKkZ4UcLCUZEQEovQFeq+d1IfasTfnuMrwOcAMA68GyyTHNMnyljVidNPtbkZ4
+         Cu5hBkxYIMx2Ol8KgOtulJUHwFbsrKqQePjadPYoK3C78pBYjWJA6SXrOgtsmNFowxuw
+         zErw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTb88LvSArHHzVvmPsZHv0T/re/fJtogSFERUICiP9doZMxnYfVZ4wiO9+2XgPVY8Bt0XbLQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3uLouAXXFjkZE8r1RlXVhQ0el9xJsPGmL4J7J50piwnZjD6/M
+	r2srBD43PE1hiH0HgN52ouxy8X+IQXxdPNLPsj9MIpTe9KoxidDksiXBJF7IyNRMJilYIn4Re0F
+	CErn3/UJ1x+hpenkAMn22uOqJTA4t3ew68YNDLXEU
+X-Gm-Gg: ATEYQzxz02mPL16EJm47w9JD9tNJUU19j6EHLarlACvkpOzeuc5UyhfuGu8SNqN3nIn
+	wtaYsURyg8Aru/3Bjg6hQtcgKEot5V9OtnGbeKMEwEh4UYsbvk7HlLUJdk3JuERpsMnH/1D7d3E
+	PD+I8dprkI1yETF8N5TcLddqhAJRfXkqxBGF23YAaoAlr8uL48OQ5JyzwHpXfvxjeaTep+QgX94
+	O+32nzlBAlOkqM0zdBZv7Hr5+/9OV1sqT/baLw6s2fooEKqNBAr8IhMkfPJ91Mp5vq3pbPmnIkD
+	b9NJk0kC
+X-Received: by 2002:a05:622a:354:b0:4f3:54eb:f26e with SMTP id
+ d75a77b69052e-509585b04d0mr230561cf.1.1773336240812; Thu, 12 Mar 2026
+ 10:24:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <20260309022205.28136-1-guanyulin@google.com> <20260309022205.28136-2-guanyulin@google.com>
+ <2026031134-uncover-siamese-cdf9@gregkh>
+In-Reply-To: <2026031134-uncover-siamese-cdf9@gregkh>
+From: Guan-Yu Lin <guanyulin@google.com>
+Date: Thu, 12 Mar 2026 10:23:48 -0700
+X-Gm-Features: AaiRm506FY_oJhi6wIWrihwWospchNxvGjcFGure-VJM-x4nJE6EzoeYpJH_Y7A
+Message-ID: <CAOuDEK2jBncFtBFmn0h6fg519ErDC1tvLjpsUua2iWean9h4RA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] usb: offload: move device locking to callers in offload.c
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: mathias.nyman@intel.com, perex@perex.cz, tiwai@suse.com, 
+	quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
+	christophe.jaillet@wanadoo.fr, xiaopei01@kylinos.cn, 
+	wesley.cheng@oss.qualcomm.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
+	stable@vger.kernel.org, Hailong Liu <hailong.liu@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224895-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224896-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,perex.cz,suse.com,quicinc.com,kernel.org,arndb.de,wanadoo.fr,kylinos.cn,oss.qualcomm.com,vger.kernel.org,oppo.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,mojatatu.com:email]
-X-Rspamd-Queue-Id: 349832767F4
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: E9AE0276868
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Victor Nogueira <victor@mojatatu.com>
+On Wed, Mar 11, 2026 at 5:26=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Mon, Mar 09, 2026 at 02:22:04AM +0000, Guan-Yu Lin wrote:
+> > Update usb_offload_get() and usb_offload_put() to require that the
+> > caller holds the USB device lock. Remove the internal call to
+> > usb_lock_device() and add device_lock_assert() to ensure synchronizatio=
+n
+> > is handled by the caller. These functions continue to manage the
+> > device's power state via autoresume/autosuspend and update the
+> > offload_usage counter.
+> >
+> > Additionally, decouple the xHCI sideband interrupter lifecycle from the
+> > offload usage counter by removing the calls to usb_offload_get() and
+> > usb_offload_put() from the interrupter creation and removal paths. This
+> > allows interrupters to be managed independently of the device's offload
+> > activity status.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
+> > Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
+> > Tested-by: Hailong Liu <hailong.liu@oppo.com>
+> > ---
+> >  drivers/usb/core/offload.c       | 34 +++++++++++---------------------
+> >  drivers/usb/host/xhci-sideband.c | 14 +------------
+> >  2 files changed, 13 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/drivers/usb/core/offload.c b/drivers/usb/core/offload.c
+> > index 7c699f1b8d2b..e13a4c21d61b 100644
+> > --- a/drivers/usb/core/offload.c
+> > +++ b/drivers/usb/core/offload.c
+> > @@ -20,6 +20,7 @@
+> >   * enabled on this usb_device; that is, another entity is actively han=
+dling USB
+> >   * transfers. This information allows the USB driver to adjust its pow=
+er
+> >   * management policy based on offload activity.
+> > + * The caller must hold @udev's device lock.
+>
+> Ok, but:
+>
+> >   *
+> >   * Return: 0 on success. A negative error code otherwise.
+> >   */
+> > @@ -27,31 +28,25 @@ int usb_offload_get(struct usb_device *udev)
+>
+> Why are you not using the __must_hold() definition here?
+>
 
-[ Upstream commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 ]
+Thanks for the suggestion, __must_hold() will be added in the next version.
 
-As Paolo said earlier [1]:
+> >  {
+> >       int ret;
+> >
+> > -     usb_lock_device(udev);
+> > -     if (udev->state =3D=3D USB_STATE_NOTATTACHED) {
+> > -             usb_unlock_device(udev);
+> > +     device_lock_assert(&udev->dev);
+>
+> That's going to splat at runtime, not compile time, which is when you
+> really want to check for this, right?
+>
+> And I thought all of the locking was messy before, and you cleaned it up
+> to be nicer here, why go back to the "old" way?  Having a caller be
+> forced to have a lock held is ripe for problems...
+>
 
-"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
-the current skb being held by the defragmentation engine. As reported by
-GangMin Kim, if such packet is that may cause a UaF when the defrag engine
-later on tries to tuch again such packet."
+The challenge is that the USB stack automatically holds the lock
+during the hardware/software USB connection change. But USB locks are
+not held when we create/remove xhci sideband interrupters. Hence, we
+need to manipulate the locks by ourselves to distinguish between these
+2 usecases. What's your suggestion on this sceneario? Do you have
+other options in mind?
 
-act_ct was never meant to be used in the egress path, however some users
-are attaching it to egress today [2]. Attempting to reach a middle
-ground, we noticed that, while most qdiscs are not handling
-TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
-address the issue by only allowing act_ct to bind to clsact/ingress
-qdiscs and shared blocks. That way it's still possible to attach act_ct to
-egress (albeit only with clsact).
+> You also are not changing any callers to usb_offload_get() in this
+> patch, so does this leave the kernel tree in a broken state?  If not,
+> why not?  If so, that's not ok :(
+>
 
-[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
-[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+The current upstream implementation triggers deadlocks in some cases.
+This patch simply disassociates the offload counter manipulation from
+sideband interrupt creation to address the deadlock. After applying
+the patch, the offload counter won't update until the next patch in
+this series is applied. Is this considered a broken state? Should I
+squash the two commits into one, or keep them as they were?
 
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
-CC: stable@vger.kernel.org
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/net/act_api.h | 1 +
- net/sched/act_ct.c    | 6 ++++++
- net/sched/cls_api.c   | 7 +++++++
- 3 files changed, 14 insertions(+)
+>
+> > +
+> > +     if (udev->state =3D=3D USB_STATE_NOTATTACHED)
+> >               return -ENODEV;
+> > -     }
+> >
+> >       if (udev->state =3D=3D USB_STATE_SUSPENDED ||
+> > -                udev->offload_at_suspend) {
+> > -             usb_unlock_device(udev);
+> > +         udev->offload_at_suspend)
+>
+> Can't that really all be on one line?
+>
 
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index c94ea1a306e0d..8d4fff1f82de3 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -68,6 +68,7 @@ struct tc_action {
- #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
- #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
- #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
-+#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
- 
- /* Update lastuse only if needed, to avoid dirtying a cache line.
-  * We use a temp variable to avoid fetching jiffies twice.
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 9594dbc32165f..75a8fba9fa57a 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1440,6 +1440,12 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
- 		return -EINVAL;
- 	}
- 
-+	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
- 	if (err < 0)
- 		return err;
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 5aef802d17c75..5071c41bc864b 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -1998,6 +1998,11 @@ static bool is_qdisc_ingress(__u32 classid)
- 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
- }
- 
-+static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
-+{
-+	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
-+}
-+
- static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 			  struct netlink_ext_ack *extack)
- {
-@@ -2191,6 +2196,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 		flags |= TCA_ACT_FLAGS_NO_RTNL;
- 	if (is_qdisc_ingress(parent))
- 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
-+	if (is_ingress_or_clsact(block, q))
-+		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
- 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
- 			      flags, extack);
- 	if (err == 0) {
--- 
-2.51.0
+Sure, Let me change it to one line.
 
+> >               return -EBUSY;
+> > -     }
+> >
+> >       /*
+> >        * offload_usage could only be modified when the device is active=
+, since
+> >        * it will alter the suspend flow of the device.
+> >        */
+> >       ret =3D usb_autoresume_device(udev);
+> > -     if (ret < 0) {
+> > -             usb_unlock_device(udev);
+> > +     if (ret < 0)
+> >               return ret;
+> > -     }
+> >
+> >       udev->offload_usage++;
+> >       usb_autosuspend_device(udev);
+> > -     usb_unlock_device(udev);
+> >
+> >       return ret;
+> >  }
+> > @@ -64,6 +59,7 @@ EXPORT_SYMBOL_GPL(usb_offload_get);
+> >   * The inverse operation of usb_offload_get, which drops the offload_u=
+sage of
+> >   * a USB device. This information allows the USB driver to adjust its =
+power
+> >   * management policy based on offload activity.
+> > + * The caller must hold @udev's device lock.
+> >   *
+> >   * Return: 0 on success. A negative error code otherwise.
+> >   */
+> > @@ -71,33 +67,27 @@ int usb_offload_put(struct usb_device *udev)
+>
+> Again, use __must_hold() here, to catch build time issues.
+>
+> And again, I don't see any code changes to reflect this new requirement
+> :(
+>
+> thanks,
+>
+> greg k-h
+
+Thanks for the suggestion, The __must_hold() macro will be adaped in
+the next version.
+
+Regards,
+Guan-Yu
 
