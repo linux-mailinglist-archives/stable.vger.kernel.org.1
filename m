@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-225198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHynCEMks2nlSgAAu9opvQ
-	(envelope-from <stable+bounces-225198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:27 +0100
+	id 8FdeE4chs2m5SQAAu9opvQ
+	(envelope-from <stable+bounces-225165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:26:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7265027960D
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:38:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B38279102
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7A4532A7111
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:30:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43BD33037895
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F90378D80;
-	Thu, 12 Mar 2026 20:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6CD35A3BA;
+	Thu, 12 Mar 2026 20:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMJ+0dLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXeaPhh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70D622A4E9;
-	Thu, 12 Mar 2026 20:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB5D26F288;
+	Thu, 12 Mar 2026 20:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347324; cv=none; b=P6QCrgtNE3x2N7f/XQJK9Qz+XqES9TXw2lUhXEPdI+X1uNGjGaT3neToOs/pIPA663Ct1pofGfBwxm5ZiJoyt3YQUJ13L3iFIa6BJUT4DRxGQx1VYB0XabNbnPcrznmwWmjyNaren4xKXfNv17pdizfkn40TLQu4esfTEplKMu8=
+	t=1773347202; cv=none; b=fYgVVOYk/y3kLWo+RSfu6t5oM4czL7YA5GprOJAgiS1DWx8f3bNuT58acUhCPuPxYp1QXknjYxIkscE9ODCqNiykSw+u41lOHxCnbQt1UkzqC6Ql3MIKf9hP2nlWJriZ/CQhyX9nsd+7KAma1eRB+ugOR+gffwT+XRfxF9LOf24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347324; c=relaxed/simple;
-	bh=L+IifelT9seTVgmAkCBSOS17JppBXUgu8wC+1eYamOs=;
+	s=arc-20240116; t=1773347202; c=relaxed/simple;
+	bh=8EymlOYxP8uar9+21ZvA8YOXfAsP9qDEag5d16ik+tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhfBU0SyEugvkfnczaqZIZPfJioZ1dDUIc+8T172rbcAECZl9WS2lT2KZaP9QcvZq6QaGl8zuXUX2LJT8H5qPjBePW3t7hMPz2ETBUp4DMfni07LFSPOjIEb/1mj7aPpc/kZ1lUmJVHIPP2HFgjr/tTdvtSR7kGG7iOx1TxjACk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMJ+0dLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02780C2BC86;
-	Thu, 12 Mar 2026 20:28:43 +0000 (UTC)
+	 MIME-Version; b=EEBA53kb+dXlx5U0/VSN+gFqE91Vubv9tuqjVCfptFGyv3EPAa7uYSdkVXn2Dl5TnmWL9/lZcHMEHRYfbuw0yLuFBz8MGk1N9EXnTheKJNWE9/tRHJawD80tfkfY9Hw06DDEr/Tb+ViblU479nN/yvNcLvEGSpvHxBYWwh97vzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXeaPhh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B56C4CEF7;
+	Thu, 12 Mar 2026 20:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347324;
-	bh=L+IifelT9seTVgmAkCBSOS17JppBXUgu8wC+1eYamOs=;
+	s=korg; t=1773347202;
+	bh=8EymlOYxP8uar9+21ZvA8YOXfAsP9qDEag5d16ik+tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMJ+0dLH08dD0jWGzdnoIOSR/KWWtHlrnRH4KYMsiuzlIvkNUcB2hpe0fCfveMHKu
-	 Xu689ZwIiRuW12UrYSaVWgyyI7tfvR+ZG8U8TsK7i1AnBfFSsUj1wjnMAIY8y1htr6
-	 E0OL/vLIQD3z0BjKOhHEq/zyvUP7sL2z3CaAQNZ8=
+	b=yXeaPhh6lxEE//mh1qKChhAdlJYbP2VJAJPzLwFl2a8Nm/cY2ElkzGc9bIW853UAa
+	 GnXtyamKPpthSX3f5dlpa+TMeLPx8grVcxKQK2GiC8DYQcNZSD2NN4uuu1JKAsDjB0
+	 rUnqOP72iXplZuDSl+WCFPf8EYf1fNatIdIZrPu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Joe Damato <joe@dama.to>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/265] nfc: nci: clear NCI_DATA_EXCHANGE before calling completion callback
-Date: Thu, 12 Mar 2026 21:10:18 +0100
-Message-ID: <20260312201026.673377005@linuxfoundation.org>
+Subject: [PATCH 6.12 232/265] nfc: rawsock: cancel tx_work before socket teardown
+Date: Thu, 12 Mar 2026 21:10:19 +0100
+Message-ID: <20260312201026.710400351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225198-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225165-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,dama.to:email,msgid.link:url]
-X-Rspamd-Queue-Id: 7265027960D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,dama.to:email]
+X-Rspamd-Queue-Id: A6B38279102
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,71 +101,51 @@ X-Rspamd-Server: lfdr
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 0efdc02f4f6d52f8ca5d5889560f325a836ce0a8 ]
+[ Upstream commit d793458c45df2aed498d7f74145eab7ee22d25aa ]
 
-Move clear_bit(NCI_DATA_EXCHANGE) before invoking the data exchange
-callback in nci_data_exchange_complete().
+In rawsock_release(), cancel any pending tx_work and purge the write
+queue before orphaning the socket.  rawsock_tx_work runs on the system
+workqueue and calls nfc_data_exchange which dereferences the NCI
+device.  Without synchronization, tx_work can race with socket and
+device teardown when a process is killed (e.g. by SIGKILL), leading
+to use-after-free or leaked references.
 
-The callback (e.g. rawsock_data_exchange_complete) may immediately
-schedule another data exchange via schedule_work(tx_work).  On a
-multi-CPU system, tx_work can run and reach nci_transceive() before
-the current nci_data_exchange_complete() clears the flag, causing
-test_and_set_bit(NCI_DATA_EXCHANGE) to return -EBUSY and the new
-transfer to fail.
+Set SEND_SHUTDOWN first so that if tx_work is already running it will
+see the flag and skip transmitting, then use cancel_work_sync to wait
+for any in-progress execution to finish, and finally purge any
+remaining queued skbs.
 
-This causes intermittent flakes in nci/nci_dev in NIPA:
-
-  # #  RUN           NCI.NCI1_0.t4t_tag_read ...
-  # # t4t_tag_read: Test terminated by timeout
-  # #          FAIL  NCI.NCI1_0.t4t_tag_read
-  # not ok 3 NCI.NCI1_0.t4t_tag_read
-
-Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
+Fixes: 23b7869c0fd0 ("NFC: add the NFC socket raw protocol")
 Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-5-kuba@kernel.org
+Link: https://patch.msgid.link/20260303162346.2071888-6-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/data.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/nfc/rawsock.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
-index 3d36ea5701f02..7a3fb2a397a1e 100644
---- a/net/nfc/nci/data.c
-+++ b/net/nfc/nci/data.c
-@@ -33,7 +33,8 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 	conn_info = nci_get_conn_info_by_conn_id(ndev, conn_id);
- 	if (!conn_info) {
- 		kfree_skb(skb);
--		goto exit;
-+		clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
-+		return;
- 	}
+diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
+index 5125392bb68eb..028b4daafaf83 100644
+--- a/net/nfc/rawsock.c
++++ b/net/nfc/rawsock.c
+@@ -67,6 +67,17 @@ static int rawsock_release(struct socket *sock)
+ 	if (sock->type == SOCK_RAW)
+ 		nfc_sock_unlink(&raw_sk_list, sk);
  
- 	cb = conn_info->data_exchange_cb;
-@@ -45,6 +46,12 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 	del_timer_sync(&ndev->data_timer);
- 	clear_bit(NCI_DATA_EXCHANGE_TO, &ndev->flags);
- 
-+	/* Mark the exchange as done before calling the callback.
-+	 * The callback (e.g. rawsock_data_exchange_complete) may
-+	 * want to immediately queue another data exchange.
-+	 */
-+	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++	if (sk->sk_state == TCP_ESTABLISHED) {
++		/* Prevent rawsock_tx_work from starting new transmits and
++		 * wait for any in-progress work to finish.  This must happen
++		 * before the socket is orphaned to avoid a race where
++		 * rawsock_tx_work runs after the NCI device has been freed.
++		 */
++		sk->sk_shutdown |= SEND_SHUTDOWN;
++		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
++		rawsock_write_queue_purge(sk);
++	}
 +
- 	if (cb) {
- 		/* forward skb to nfc core */
- 		cb(cb_context, skb, err);
-@@ -54,9 +61,6 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
- 		/* no waiting callback, free skb */
- 		kfree_skb(skb);
- 	}
--
--exit:
--	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
- }
+ 	sock_orphan(sk);
+ 	sock_put(sk);
  
- /* ----------------- NCI TX Data ----------------- */
 -- 
 2.51.0
 
