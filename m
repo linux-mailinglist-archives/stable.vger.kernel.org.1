@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-224987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePgOEo0fs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:18:21 +0100
+	id eKXvFTQes2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:12:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A742D278C0E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:18:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F608278976
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C72A300B043
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 386A43028675
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE9F401A28;
-	Thu, 12 Mar 2026 20:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3416401A26;
+	Thu, 12 Mar 2026 20:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkTQCgc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgTJ5nZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711BB35A3B6;
-	Thu, 12 Mar 2026 20:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2B3402434;
+	Thu, 12 Mar 2026 20:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346483; cv=none; b=TidiA0FfdckUcq2l50Inr5vi4k+OeqLbwsWk9Y3BJnfXLoh7ozuRuZ+m/ggbQd572Qmuaw5f6JY6zif75F9Zmd982+U4fl3mrxMgtKk4vG867FuMDZS/nmPUkfeU8scJDre6V8I9Ng00oDnaMaaCtY3DPsi1m4wvwFKtdp8fxvQ=
+	t=1773346351; cv=none; b=NLrQr8FqWOq/eigbFLoQIisxHL28bVuCi68WyysUy7hnIXTnWbHVpSDaCtfJm5LUDtEmbEoFeCKD7Bm7HgKM+AOsIhW/xOvBoYKMspVWi5jRTNyCLSk/NBp+jXZUyNYgyMbvbXXsgEviesG7KHSd60I3LWgx3vpsqnrIZEJ7Bbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346483; c=relaxed/simple;
-	bh=9q3AXUbUJaQGVnf4C5Iq/QH7uIDrBpSPscAWdUx9duE=;
+	s=arc-20240116; t=1773346351; c=relaxed/simple;
+	bh=mVSo9BeD4Z2WI3AeStJuOSfNIDmhn/xoxEsyi8yqWvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/AcWTb0lc4sHqBtqoVlb5n/ji7fhrtzHX/ooBB5aiBhnGjJTFxkG8pJLJ4NqNIB9CuC1TIDR8EqnbcJfXEVV0w0hGradCPtpLXRXFQ7aC+u+RXIPS2haGGeuzyozn012sH6oGqWKkCs7hBcvfxqoE2e4y2Z1rEQWGY3004Rr7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkTQCgc6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B673C4CEF7;
-	Thu, 12 Mar 2026 20:14:42 +0000 (UTC)
+	 MIME-Version; b=PDjqTk3mzX1U5MidlMsQ4M1ZdXol742TXABwQD1ITdI88P2fWjb8Bd4ZvhivjESedpong+HAIx4T/lenFnFFH6YuYE4/mqTyAQi1TOIHmJI93i4aa5CLcFNdcmVxr4X4psvLKDNd9JeBTV2iQVTDtD4DGkXVmqyXTo9kDc18H+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgTJ5nZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906A2C4CEF7;
+	Thu, 12 Mar 2026 20:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346483;
-	bh=9q3AXUbUJaQGVnf4C5Iq/QH7uIDrBpSPscAWdUx9duE=;
+	s=korg; t=1773346351;
+	bh=mVSo9BeD4Z2WI3AeStJuOSfNIDmhn/xoxEsyi8yqWvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkTQCgc6aF4UmIGZ5cmMyKv0BigN2aRQul76oSql0TPQTJ7Mlg0YwH9z4hTHKt2/T
-	 6bU4lWV3ZBpgisR9AwaY3NhBYsX45SSTJf5M2k/6V6ArFeGwYArXJBzRvytQEdqNt2
-	 8WNfVqREx/JDvfOA7ZN42Vx4PfLV4Ts/0xooyLLo=
+	b=QgTJ5nZW4hhbCSjmJ3PVkrlLu2QSk5Q0XAu8EV8YX9v+lYqpNEIKKuXS08umCx3Gi
+	 KOmVcrbUnx2f5IMf/n8RN73Abyf0plAgQIob3BSSRzQBPIhVPdNrckpiZLgiCvE6G5
+	 M/WvafVi8DqdUOpIsWhfg6h/+AepKi4LUJ1+pde4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/265] s390/idle: Fix cpu idle exit cpu time accounting
-Date: Thu, 12 Mar 2026 21:06:48 +0100
-Message-ID: <20260312201018.947318504@linuxfoundation.org>
+Subject: [PATCH 6.12 022/265] s390/vtime: Fix virtual timer forwarding
+Date: Thu, 12 Mar 2026 21:06:49 +0100
+Message-ID: <20260312201018.983362490@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224987-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224955-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: A742D278C0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9F608278976
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,147 +102,72 @@ X-Rspamd-Server: lfdr
 
 From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 0d785e2c324c90662baa4fe07a0d02233ff92824 ]
+[ Upstream commit dbc0fb35679ed5d0adecf7d02137ac2c77244b3b ]
 
-With the conversion to generic entry [1] cpu idle exit cpu time accounting
-was converted from assembly to C. This introduced an reversed order of cpu
-time accounting.
+Since delayed accounting of system time [1] the virtual timer is
+forwarded by do_account_vtime() but also vtime_account_kernel(),
+vtime_account_softirq(), and vtime_account_hardirq(). This leads
+to double accounting of system, guest, softirq, and hardirq time.
 
-On cpu idle exit the current accounting happens with the following call
-chain:
+Remove accounting from the vtime_account*() family to restore old behavior.
 
--> do_io_irq()/do_ext_irq()
- -> irq_enter_rcu()
-  -> account_hardirq_enter()
-   -> vtime_account_irq()
-    -> vtime_account_kernel()
+There is only one user of the vtimer interface, which might explain
+why nobody noticed this so far.
 
-vtime_account_kernel() accounts the passed cpu time since last_update_timer
-as system time, and updates last_update_timer to the current cpu timer
-value.
-
-However the subsequent call of
-
- -> account_idle_time_irq()
-
-will incorrectly subtract passed cpu time from timer_idle_enter to the
-updated last_update_timer value from system_timer. Then last_update_timer
-is updated to a sys_enter_timer, which means that last_update_timer goes
-back in time.
-
-Subsequently account_hardirq_exit() will account too much cpu time as
-hardirq time. The sum of all accounted cpu times is still correct, however
-some cpu time which was previously accounted as system time is now
-accounted as hardirq time, plus there is the oddity that last_update_timer
-goes back in time.
-
-Restore previous behavior by extracting cpu time accounting code from
-account_idle_time_irq() into a new update_timer_idle() function and call it
-before irq_enter_rcu().
-
-Fixes: 56e62a737028 ("s390: convert to generic entry") [1]
+Fixes: b7394a5f4ce9 ("sched/cputime, s390: Implement delayed accounting of system time") [1]
 Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/idle.h |  1 +
- arch/s390/kernel/idle.c      | 13 +++++++++----
- arch/s390/kernel/irq.c       | 10 ++++++++--
- 3 files changed, 18 insertions(+), 6 deletions(-)
+ arch/s390/kernel/vtime.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/arch/s390/include/asm/idle.h b/arch/s390/include/asm/idle.h
-index 09f763b9eb40a..133059d9a949c 100644
---- a/arch/s390/include/asm/idle.h
-+++ b/arch/s390/include/asm/idle.h
-@@ -23,5 +23,6 @@ extern struct device_attribute dev_attr_idle_count;
- extern struct device_attribute dev_attr_idle_time_us;
+diff --git a/arch/s390/kernel/vtime.c b/arch/s390/kernel/vtime.c
+index 234a0ba305108..122d30b104401 100644
+--- a/arch/s390/kernel/vtime.c
++++ b/arch/s390/kernel/vtime.c
+@@ -225,10 +225,6 @@ static u64 vtime_delta(void)
+ 	return timer - lc->last_update_timer;
+ }
  
- void psw_idle(struct s390_idle_data *data, unsigned long psw_mask);
-+void update_timer_idle(void);
- 
- #endif /* _S390_IDLE_H */
-diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-index 39cb8d0ae3480..0f9e53f0a0686 100644
---- a/arch/s390/kernel/idle.c
-+++ b/arch/s390/kernel/idle.c
-@@ -21,11 +21,10 @@
- 
- static DEFINE_PER_CPU(struct s390_idle_data, s390_idle);
- 
--void account_idle_time_irq(void)
-+void update_timer_idle(void)
+-/*
+- * Update process times based on virtual cpu times stored by entry.S
+- * to the lowcore fields user_timer, system_timer & steal_clock.
+- */
+ void vtime_account_kernel(struct task_struct *tsk)
  {
- 	struct s390_idle_data *idle = this_cpu_ptr(&s390_idle);
  	struct lowcore *lc = get_lowcore();
--	unsigned long idle_time;
- 	u64 cycles_new[8];
- 	int i;
- 
-@@ -35,13 +34,19 @@ void account_idle_time_irq(void)
- 			this_cpu_add(mt_cycles[i], cycles_new[i] - idle->mt_cycles_enter[i]);
- 	}
- 
--	idle_time = lc->int_clock - idle->clock_idle_enter;
+@@ -238,27 +234,17 @@ void vtime_account_kernel(struct task_struct *tsk)
+ 		lc->guest_timer += delta;
+ 	else
+ 		lc->system_timer += delta;
 -
- 	lc->steal_timer += idle->clock_idle_enter - lc->last_update_clock;
- 	lc->last_update_clock = lc->int_clock;
+-	virt_timer_forward(delta);
+ }
+ EXPORT_SYMBOL_GPL(vtime_account_kernel);
  
- 	lc->system_timer += lc->last_update_timer - idle->timer_idle_enter;
- 	lc->last_update_timer = lc->sys_enter_timer;
-+}
-+
-+void account_idle_time_irq(void)
-+{
-+	struct s390_idle_data *idle = this_cpu_ptr(&s390_idle);
-+	unsigned long idle_time;
-+
-+	idle_time = get_lowcore()->int_clock - idle->clock_idle_enter;
+ void vtime_account_softirq(struct task_struct *tsk)
+ {
+-	u64 delta = vtime_delta();
+-
+-	get_lowcore()->softirq_timer += delta;
+-
+-	virt_timer_forward(delta);
++	get_lowcore()->softirq_timer += vtime_delta();
+ }
  
- 	/* Account time spent with enabled wait psw loaded as idle time. */
- 	WRITE_ONCE(idle->idle_time, READ_ONCE(idle->idle_time) + idle_time);
-diff --git a/arch/s390/kernel/irq.c b/arch/s390/kernel/irq.c
-index 2639a3d12736a..1fe941dc86c32 100644
---- a/arch/s390/kernel/irq.c
-+++ b/arch/s390/kernel/irq.c
-@@ -140,6 +140,10 @@ void noinstr do_io_irq(struct pt_regs *regs)
- 	struct pt_regs *old_regs = set_irq_regs(regs);
- 	bool from_idle;
+ void vtime_account_hardirq(struct task_struct *tsk)
+ {
+-	u64 delta = vtime_delta();
+-
+-	get_lowcore()->hardirq_timer += delta;
+-
+-	virt_timer_forward(delta);
++	get_lowcore()->hardirq_timer += vtime_delta();
+ }
  
-+	from_idle = test_and_clear_cpu_flag(CIF_ENABLED_WAIT);
-+	if (from_idle)
-+		update_timer_idle();
-+
- 	irq_enter_rcu();
- 
- 	if (user_mode(regs)) {
-@@ -148,7 +152,6 @@ void noinstr do_io_irq(struct pt_regs *regs)
- 			current->thread.last_break = regs->last_break;
- 	}
- 
--	from_idle = test_and_clear_cpu_flag(CIF_ENABLED_WAIT);
- 	if (from_idle)
- 		account_idle_time_irq();
- 
-@@ -176,6 +179,10 @@ void noinstr do_ext_irq(struct pt_regs *regs)
- 	struct pt_regs *old_regs = set_irq_regs(regs);
- 	bool from_idle;
- 
-+	from_idle = test_and_clear_cpu_flag(CIF_ENABLED_WAIT);
-+	if (from_idle)
-+		update_timer_idle();
-+
- 	irq_enter_rcu();
- 
- 	if (user_mode(regs)) {
-@@ -188,7 +195,6 @@ void noinstr do_ext_irq(struct pt_regs *regs)
- 	regs->int_parm = get_lowcore()->ext_params;
- 	regs->int_parm_long = get_lowcore()->ext_params2;
- 
--	from_idle = test_and_clear_cpu_flag(CIF_ENABLED_WAIT);
- 	if (from_idle)
- 		account_idle_time_irq();
- 
+ /*
 -- 
 2.51.0
 
