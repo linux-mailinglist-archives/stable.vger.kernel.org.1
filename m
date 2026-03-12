@@ -1,187 +1,166 @@
-Return-Path: <stable+bounces-224788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BlEINwlsmnlIwAAu9opvQ
-	(envelope-from <stable+bounces-224788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:33:00 +0100
+	id EBGYCqUismnlIwAAu9opvQ
+	(envelope-from <stable+bounces-224786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:19:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A462F26C40E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:32:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C9626C27E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 48C313013195
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:32:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D92F3051A82
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A7B37C90B;
-	Thu, 12 Mar 2026 02:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="hEVVg/7h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8AD31F982;
+	Thu, 12 Mar 2026 02:19:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471C033D507;
-	Thu, 12 Mar 2026 02:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457571A680F
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773282770; cv=none; b=o0F/itEu646CSJlRO6lNqns/7Q4CrST/AS3JqfCYdhHA48WHj3A+tJTCEEKqcfJkHS2t31pE2Vx6Eh1ScI/AugTT10kaVK6O5Oov+/s3okBt0qXJrHwOGoZHaKIr5M1VqPfH+kcX9VJaN4UhqDPqZlNsRZC4ohvciylfXf/hADo=
+	t=1773281954; cv=none; b=J1g5bFr/aN84wEvq/bxyG4NkjIG140Ybg9syNo97/uzcg4072YHUa7Sw4bkqb/t5fZvdjVy9mzTfhwnATiObyMfT+2jnt12NC6uUSAXZ/6ABuKEzBE/pIYI5m7HcevZzXXHS2XPiBLll9Fd1vcxpV1j5etJNCEAxg6++6dxMquw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773282770; c=relaxed/simple;
-	bh=k+Ne3ped2Jd9193BfFYKMJGxDHiSxuC2PFR2Oy+SPIs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f0rJ22OR6yaYwY+6KB8LtfUJno9VkqpT4Sx+QJQWzrtj8RwqN34g90xn7Q63v9gSwwIfNtvce/2g6RRNLomCN2HFKynbpC0UN7WfjWQ1cCMm4nutUIsDFMLUz5Ugr1FSs8XGgv+rcL9EoElKnC9R1pNsruEvaBCr/Vp7l83Thho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=hEVVg/7h; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 36a2432cc;
-	Thu, 12 Mar 2026 10:17:27 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: slava.dubeyko@ibm.com
-Cc: akpm@linux-foundation.org,
-	frank.li@vivo.com,
-	glaubitz@physik.fu-berlin.de,
-	jianhao.xu@seu.edu.cn,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	slava@dubeyko.com,
-	sougata@tuxera.com,
-	stable@vger.kernel.org,
-	zilin@seu.edu.cn
-Subject: Re:  [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Thu, 12 Mar 2026 10:17:28 +0800
-Message-Id: <20260312021728.446944-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <afab59a14da6ee4dd23d8ef85301ccff451b87cb.camel@ibm.com>
-References: <afab59a14da6ee4dd23d8ef85301ccff451b87cb.camel@ibm.com>
+	s=arc-20240116; t=1773281954; c=relaxed/simple;
+	bh=y+40TWpBQ2zOxGY+nsk1kvKXHJo/yz5hLRfwRDOlt7g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YzmFa/rYpH0GMMamG9P6USgSm/+7P8GDr9gkt0yNIMMyeecFFOAekHQnZmSP0p52WMc/pYjVkqx/ZTUHHmbb1myDIfnmwjQj0yQeeKhTUd46lv9IZ4IURIuoVzNNdPGo06bcilXDM5wozBB12KSfcP8iIhJtZZdsqZ7D8GKyNYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1773281949-1eb14e06ec0c440001-OJig3u
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id Ao9zuXIpI4CvRof1; Thu, 12 Mar 2026 10:19:09 +0800 (CST)
+X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+Received: from [10.32.64.22] ([10.32.64.22] [10.32.64.22])
+	by zhaoxin.com (f222c4) with ESMTP5ec05cd12c134825a730b52d4c57502c
+	Thu, 12 Mar 2026 10:19:04 +0800
+X-Eyou-Smtpauth: tonywwangoc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.22
+X-Eyou-EnvelopeSender: TonyWWang-oc@zhaoxin.com
+Message-ID: <8176878c-970a-48e3-b237-2c57ed39f7a5@zhaoxin.com>
+Date: Thu, 12 Mar 2026 10:18:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
+ C4600
+To: ludloff@gmail.com
+X-ASG-Orig-Subj: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
+ C4600
+Cc: me@ziyao.cc, andrew.cooper3@citrix.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
+ mingo@redhat.com, stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org,
+ lukelin@viacpu.com, "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>,
+ cooperyan@zhaoxin.com, benjaminpan@viatech.com, QiyuanWang@zhaoxin.com,
+ HerryYang@zhaoxin.com, "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
+References: <CAKSQd8WpwYV0rxd7soKDqcv09Oxx1sUZPTHf+b_5hqgbxHcLLA@mail.gmail.com>
+Content-Language: en-US
+From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <CAKSQd8WpwYV0rxd7soKDqcv09Oxx1sUZPTHf+b_5hqgbxHcLLA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9cdfd5a6c403a1kunm1d5e9d55263e6
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTx4eVkhDGBlLSRkdSUgaSlYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUJCSU5LVUpLS1VKQktCWQ
-	Y+
-DKIM-Signature: a=rsa-sha256;
-	b=hEVVg/7hHKsmjDBlvoKj1IWBEYYDqitEBzUJfYF8sg6jCeRjTMCkWcyCZkX/zM76qq2AB/smLRY0AWeSoEGxXmPICbFY4U1cqwfyNgJzvad1FVx/dJRqNEW1dQxwvHOg3bvx4I52SoaecNctl2/35gG+y+odbhHaSwp5428YwEQ=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=Ujvh4SDEcmnNJUUfXaquApesA8XXZa3dzQCOsqyLgOE=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Eyou-Sender: <tonywwangoc@zhaoxin.com>
+X-Vid: 0bc6c7cd8a2ebb3ddea73d59766eff8f00@zhaoxin.com
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1773281949
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1541
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155726
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224788-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224786-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[zhaoxin.com];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,seu.edu.cn:dkim,seu.edu.cn:mid,dubeyko.com:email]
-X-Rspamd-Queue-Id: A462F26C40E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[TonyWWang-oc@zhaoxin.com,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.951];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zhaoxin.com:mid]
+X-Rspamd-Queue-Id: 80C9626C27E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 09:17:59PM +0000, Viacheslav Dubeyko wrote:
-> On Wed, 2026-03-11 at 19:43 +0800, Zilin Guan wrote:
-> >  fs/hfsplus/super.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-> > index 7229a8ae89f9..f396fee19ab8 100644
-> > --- a/fs/hfsplus/super.c
-> > +++ b/fs/hfsplus/super.c
-> > @@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
-> >  	if (err)
-> >  		goto out_put_root;
-> >  	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
-> > -	if (unlikely(err < 0))
-> > +	if (unlikely(err < 0)) {
-> > +		hfs_find_exit(&fd);
-> >  		goto out_put_root;
-> > +	}
-> >  	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-> >  		hfs_find_exit(&fd);
-> >  		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
-> 
-> Makes sense.
-> 
-> Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-> 
-> Frankly speaking, I think, potentially, we can introduce static inline function
-> for this code:
-> 
-> 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
-> 	str.name = HFSP_HIDDENDIR_NAME;
-> 	err = hfs_find_init(sbi->cat_tree, &fd);
-> 	if (err)
-> 		goto out_put_root;
-> 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID,
-> &str);
-> 	if (unlikely(err < 0))
-> 		goto out_put_root;
-> 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-> 		hfs_find_exit(&fd);
-> 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
-> 			err = -EIO;
-> 			goto out_put_root;
-> 		}
-> 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
-> 		if (IS_ERR(inode)) {
-> 			err = PTR_ERR(inode);
-> 			goto out_put_root;
-> 		}
-> 		sbi->hidden_dir = inode;
-> 	} else
-> 		hfs_find_exit(&fd);
-> 
-> Because, hiding this code into small function will provide opportunity to call
-> hfs_find_exit() in one place only (as for normal as for erroneous flow).
-> 
-> What do you think?
-> 
-> Thanks,
-> Slava.
 
-Thanks for the feedback, Slava.
 
-While I see the merit in refactoring this into a helper to centralize the 
-cleanup, I’m concerned that doing so wouldn’t actually achieve a single 
-hfs_find_exit() call without compromising the resource lifecycle.
+On 2026/3/6 04:26, Christian Ludloff wrote:
+> 
+> 
+> Tony,
+> 
+> can you confirm whether F=6 M=1F is affected or not?
+> (Supposedly that's ZX-D... but the F in the model does
+> make me wonder/ask.)
+> 
+This bug existed only in certain early ucode revisions of the ZX-C/ZX-C+ 
+series CPUs, and is not present in the ZX-D.
 
-In the current logic, we need to call hfs_find_exit(&fd) as early as 
-possible—specifically before entering hfsplus_iget(), which might involve 
-further I/O or sleeping. If we were to use a single-exit goto pattern in a 
-helper function, we would end up holding the search data and its 
-associated buffers/locks longer than necessary. To maintain the current 
-early-release behavior, we would still be forced to sprinkle multiple 
-hfs_find_exit() calls across different branches within that helper anyway, 
-which defeats the purpose of the refactoring.
+> Presumably the 6FE and 10690 microcodes which are
+> out in the wild do not fix the bug, correct?
+> 
+> 000006fe_00000000_20110809_8f396f73
+> 000006fe_00000000_20110809_8f397072
+> 000006fe_00000001_20160525_7214d1e1
+> 000006fe_00000001_20170109_25646399
+> 000006fe_00000001_20180726_6e07329b
+> 000006fe_00000001_20180726_6e1e984b
+> 
+> 00010690_00000000_20110809_259878a5
+> 00010690_00000001_20160525_3c34fc1a
+> 00010690_00000001_20170109_a8b24dc2
+> 00010690_00000001_20180726_0c55f25d
+> 00010690_00000001_20180726_41faefde
+>
+No, The four patches with the display date of 20180726 should not have 
+this bug.
 
-Given that this is a straightforward fix for a specific leak, I believe 
-keeping the logic inline preserves the optimal resource release timing 
-without adding unnecessary abstraction.
+> As for making the code conditional for Centaur/Zhaoxin,
+> stepping E seems to be when FSGSBASE arrived – and
+> while there are CPUID dumps for 6FE that say VIA Eden
+> it is possible that they too have the bug.
+> 
+Sorry, VIA Eden is too old, we haven't been able to find actual hardware 
+to confirm this.
 
-Best regards,
-Zilin
+> As for making the code conditional for Zhaoxin models in
+> the string, that would require more than just C4600 – the
+> collection of known dumps includes others.
+> 
+Yes, ZX-C/ZX-C+ series CPUs have other strings.
+
+Sincerely!
+TonyWWang-oc
+> --
+> C.
 
