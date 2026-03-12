@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-225081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPh3MXogs2mpSQAAu9opvQ
-	(envelope-from <stable+bounces-225081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:18 +0100
+	id EIhiKIIgs2mpSQAAu9opvQ
+	(envelope-from <stable+bounces-225087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AC8278E40
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B76278E58
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D21F0307EFF3
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:21:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB81C3020657
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA04355F44;
-	Thu, 12 Mar 2026 20:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F78935DA6A;
+	Thu, 12 Mar 2026 20:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdgHk7oF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YndbJjFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56F1344DB5;
-	Thu, 12 Mar 2026 20:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23457310620;
+	Thu, 12 Mar 2026 20:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346869; cv=none; b=QTtRS5RsWhWSTFbL1U3wQwop7JoVCx0Ej/nXBA4fEUEm6bW9RGcQ6BgONmtZpPrCF19M0R2yvxbcYSNx1VKGz1ZkNxXPfKROQ8q6RrDj9hPiws7hDePD9HflRTqa5Zn/D06AtKKvSSh8lFmHWM8OsYiKIrf8w0u2dfjHyLqS9dI=
+	t=1773346894; cv=none; b=DQPZP4Qv9wHpit4VpaFe9HLX/E1SjQwcylNVRoVMbIAtpei/y16lk+liDzgCUsDe9T1/Id/xy49fap6+lzwW99WZTmqDybQfW4zTOt/oa6EkZQa5MNttpT+6hJp/3DMPgq/nLQDAFLvIcqR1yqog0PtITSgPiWCmEeVOVpWgGBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346869; c=relaxed/simple;
-	bh=B5vuYVB214vlIyuXA9+X42BH+pKvrvY3UNMfNE6N9wY=;
+	s=arc-20240116; t=1773346894; c=relaxed/simple;
+	bh=9KILnywb1EL2d7Jrj/xMeCPcL90bmglkqAXjfxXiFMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3A4rjPToiI00jB6MFN3MTe4q5c5GuGu/noQi4Y05t0Y2QqtspfCrWoPY0pvJTMrCMazcJMWVygSzyd+FTl96kptiUZeyslp+Iwm9pXbziBle9ZC7V0Wk3TAnqAPX7clAM6fux3uKRDMhlzaHj8WBpJDdy1P2ZQhDAs6P3CwkNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdgHk7oF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04457C4CEF7;
-	Thu, 12 Mar 2026 20:21:08 +0000 (UTC)
+	 MIME-Version; b=mdyx4AomiODQTub2tKTl8pb9tVGfxxFTzrVLOa335ACxvIb30j3wqV7jhfpVUCzZTbOFZuOnDM3EqMkokBarxHkE2xjNBWPE5QrAbV45pqb6SsmHh5pidfY2t/5lb3BDdm/DrmK7/T3aBqBLGxQpVq6ebGq/1yl0Kj9ZLjL4+4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YndbJjFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AB6C4CEF7;
+	Thu, 12 Mar 2026 20:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346869;
-	bh=B5vuYVB214vlIyuXA9+X42BH+pKvrvY3UNMfNE6N9wY=;
+	s=korg; t=1773346894;
+	bh=9KILnywb1EL2d7Jrj/xMeCPcL90bmglkqAXjfxXiFMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdgHk7oFIjkT0J5GkNrA4mCb5/KFhcV2ppxhfSX6+x8gQ3GATw/+3a+hgMGSUXDXZ
-	 t/cxsiQkDFYTBX+CBza1SbJHItQUR4PI0Fq9E3ceL++eeN0V8tbJMjz7cJ8+hWu+rf
-	 o/ZdIq96qhMXAtBf8/crOb9tkvOE+izyc74btkPs=
+	b=YndbJjFeFhBnLTg5ivz3SZ+4R/nkGA+1vhYn8dW0U8MTPTG6q5JF2jVkU3fCDLKHZ
+	 JoZt21990bt5e053sYnuMkYoQ0w38iZbrWmMnXM/w/PsS8FlZqPkakFWYPi7gdRr3X
+	 QR+SkqWdBOBL/0e736h+vjvEBN+h+BOm2bYsDglw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/265] LoongArch: Handle percpu handler address for ORC unwinder
-Date: Thu, 12 Mar 2026 21:08:27 +0100
-Message-ID: <20260312201022.576760383@linuxfoundation.org>
+Subject: [PATCH 6.12 121/265] LoongArch: Remove some extern variables in source files
+Date: Thu, 12 Mar 2026 21:08:28 +0100
+Message-ID: <20260312201022.615317119@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225081-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225087-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email]
-X-Rspamd-Queue-Id: 57AC8278E40
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email]
+X-Rspamd-Queue-Id: C5B76278E58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,86 +101,63 @@ X-Rspamd-Server: lfdr
 
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 055c7e75190e0be43037bd663a3f6aced194416e ]
+[ Upstream commit 0e6f596d6ac635e80bb265d587b2287ef8fa1cd6 ]
 
-After commit 4cd641a79e69 ("LoongArch: Remove unnecessary checks for ORC
-unwinder"), the system can not boot normally under some configs (such as
-enable KASAN), there are many error messages "cannot find unwind pc".
-
-The kernel boots normally with the defconfig, so no problem found out at
-the first time. Here is one way to reproduce:
-
-  cd linux
-  make mrproper defconfig -j"$(nproc)"
-  scripts/config -e KASAN
-  make olddefconfig all -j"$(nproc)"
-  sudo make modules_install
-  sudo make install
-  sudo reboot
-
-The address that can not unwind is not a valid kernel address which is
-between "pcpu_handlers[cpu]" and "pcpu_handlers[cpu] + vec_sz" due to
-the code of eentry was copied to the new area of pcpu_handlers[cpu] in
-setup_tlb_handler(), handle this special case to get the valid address
-to unwind normally.
+There are declarations of the variable "eentry", "pcpu_handlers[]" and
+"exception_handlers[]" in asm/setup.h, the source files already include
+this header file directly or indirectly, so no need to declare them in
+the source files, just remove the code.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/setup.h |  3 +++
- arch/loongarch/kernel/unwind_orc.c | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+)
+ arch/loongarch/kernel/unwind_orc.c      | 2 --
+ arch/loongarch/kernel/unwind_prologue.c | 4 ----
+ arch/loongarch/mm/tlb.c                 | 1 -
+ 3 files changed, 7 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
-index 3c2fb16b11b64..f81375e5e89c0 100644
---- a/arch/loongarch/include/asm/setup.h
-+++ b/arch/loongarch/include/asm/setup.h
-@@ -7,6 +7,7 @@
- #define _LOONGARCH_SETUP_H
- 
- #include <linux/types.h>
-+#include <linux/threads.h>
- #include <asm/sections.h>
- #include <uapi/asm/setup.h>
- 
-@@ -14,6 +15,8 @@
- 
- extern unsigned long eentry;
- extern unsigned long tlbrentry;
-+extern unsigned long pcpu_handlers[NR_CPUS];
-+extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
- extern char init_command_line[COMMAND_LINE_SIZE];
- extern void tlb_init(int cpu);
- extern void cpu_cache_init(void);
 diff --git a/arch/loongarch/kernel/unwind_orc.c b/arch/loongarch/kernel/unwind_orc.c
-index 4924d1ecc4579..9512fa4fff0f9 100644
+index 9512fa4fff0f9..e8b95f1bc5786 100644
 --- a/arch/loongarch/kernel/unwind_orc.c
 +++ b/arch/loongarch/kernel/unwind_orc.c
-@@ -359,6 +359,22 @@ static inline unsigned long bt_address(unsigned long ra)
- {
- 	extern unsigned long eentry;
+@@ -357,8 +357,6 @@ static bool is_entry_func(unsigned long addr)
  
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
-+	int cpu;
-+	int vec_sz = sizeof(exception_handlers);
-+
-+	for_each_possible_cpu(cpu) {
-+		if (!pcpu_handlers[cpu])
-+			continue;
-+
-+		if (ra >= pcpu_handlers[cpu] &&
-+		    ra < pcpu_handlers[cpu] + vec_sz) {
-+			ra = ra + eentry - pcpu_handlers[cpu];
-+			break;
-+		}
-+	}
-+#endif
-+
- 	if (ra >= eentry && ra < eentry +  EXCCODE_INT_END * VECSIZE) {
- 		unsigned long func;
- 		unsigned long type = (ra - eentry) / VECSIZE;
+ static inline unsigned long bt_address(unsigned long ra)
+ {
+-	extern unsigned long eentry;
+-
+ #if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
+ 	int cpu;
+ 	int vec_sz = sizeof(exception_handlers);
+diff --git a/arch/loongarch/kernel/unwind_prologue.c b/arch/loongarch/kernel/unwind_prologue.c
+index c9ee6892d81c7..d4c42dc67134c 100644
+--- a/arch/loongarch/kernel/unwind_prologue.c
++++ b/arch/loongarch/kernel/unwind_prologue.c
+@@ -22,10 +22,6 @@ extern const int unwind_hint_lasx;
+ extern const int unwind_hint_lbt;
+ extern const int unwind_hint_ri;
+ extern const int unwind_hint_watch;
+-extern unsigned long eentry;
+-#ifdef CONFIG_NUMA
+-extern unsigned long pcpu_handlers[NR_CPUS];
+-#endif
+ 
+ static inline bool scan_handlers(unsigned long entry_offset)
+ {
+diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
+index f46c15d6e7eae..24add95ecb65e 100644
+--- a/arch/loongarch/mm/tlb.c
++++ b/arch/loongarch/mm/tlb.c
+@@ -260,7 +260,6 @@ static void output_pgtable_bits_defines(void)
+ #ifdef CONFIG_NUMA
+ unsigned long pcpu_handlers[NR_CPUS];
+ #endif
+-extern long exception_handlers[VECSIZE * 128 / sizeof(long)];
+ 
+ static void setup_tlb_handler(int cpu)
+ {
 -- 
 2.51.0
 
