@@ -1,213 +1,229 @@
-Return-Path: <stable+bounces-224875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGDTASzXsmlDQAAAu9opvQ
-	(envelope-from <stable+bounces-224875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:09:32 +0100
+	id eOC/CnzXsmlDQAAAu9opvQ
+	(envelope-from <stable+bounces-224876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:10:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F2D273F32
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:09:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96719273F7E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0BA33122411
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:02:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D612F306EE32
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743433B4EBF;
-	Thu, 12 Mar 2026 15:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD9B38B142;
+	Thu, 12 Mar 2026 15:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JC6mbzvR"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZbmXXtkx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D78738DD3
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774C439936F
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773327737; cv=none; b=ZkJLdSIUFzU0FthWi81goIWN0EMgAXVa2ITTsoaEhsVpDGqEASbfIJqitUFMO2OmgWuSl65cfSLO87YbDY1eJ+sFmuQN7+eFVyYE+uufrBOWvwFNK/T4dGYxBGuWMp5fpDtZzibKsU0WA6mKWi+0/CqFi7znB6qHtM9jcq/t/ak=
+	t=1773327793; cv=none; b=PNn+gzc1EZL5z8LFRClEUU8VUy1ykUMzKcm0mIbBisYQ20cLSclpkncvPsdcXOK0oPiLZrIXJqCyGiLAN3IdPU8gbFJOKDHEXE18OvgbyzdsX9XH4t+EJeAr8cQdomInlwh5PBAMn7tUlhKkSejitgV6r7znpTRBp/V+pgrkvMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773327737; c=relaxed/simple;
-	bh=01sBkHjeAPiYutS3v+l7TJD810lgmSflHg7oHic580w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XEjBK/+QjMLvfvXenh3Z44kryAbZkR7qDS+iXh4rlRta1LOApzEpJMvadFV4PCw6JJMCud88ZIyuBCSpMtf0ETiQky3Mxuzp0IqBmbS/ZjBpwMUToePcduBi/e2dGP19Jl697rU9lSOu3G7eVJXJnWHhJi4qquFgmZImPeezgbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JC6mbzvR; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773327735; x=1804863735;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=01sBkHjeAPiYutS3v+l7TJD810lgmSflHg7oHic580w=;
-  b=JC6mbzvRVrpnvzmw8EfhURBvfDTjhK/3MLs8X3lri65VOGrxS/CLL4XD
-   3UGC/6MOc3NO9JodD7ktP7UQvlmhbvwdvn0eUI/Hi0G3eaG3wjqOiTGVd
-   3k8P0ckbOZYMftdsEt+XmXj2jXLQRWIOpx7N85lZToYzq6JE8fx40Qcce
-   UbOY69zVJWZranx+VbNsxOoSTBqWPT9BEBD76a8jpAo8+aW6LzCbVm56R
-   HM3sENvBDwUjpIxqY6qePmHGUvzORl9cxdgraryKP6FSI/6RmEhUpmlkO
-   bX+40cSUih4kKysNxPYA29ozYGqXzYyeHd3yejQJNgWPQop2DveYSt+Cz
-   Q==;
-X-CSE-ConnectionGUID: Y7PlWRGaQnySxiJoCE4cMQ==
-X-CSE-MsgGUID: 9/ikB53cQS2/KhYaGgrTHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="74506097"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="74506097"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:02:14 -0700
-X-CSE-ConnectionGUID: taB2XLLgQg6P1O04nB+GtQ==
-X-CSE-MsgGUID: BF+AWqT1RZWxrKRkdRn1Cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="224990310"
-Received: from gaggeryt-mobl.sc.intel.com ([172.25.65.89])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 08:01:53 -0700
-From: gaggery.tsai@intel.com
-To: linux-drivers-review-request@eclists.intel.com
-Cc: pierre-louis.bossart@linux.dev,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	stable@vger.kernel.org,
-	TsaiGaggery <gaggery.tsai@intel.com>
-Subject: [PATCH] ASoC: SOF: Intel: hda: Fix NULL pointer dereference on SoundWire IRQ during removal
-Date: Thu, 12 Mar 2026 08:00:05 -0700
-Message-ID: <20260312150005.2069660-1-gaggery.tsai@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773327793; c=relaxed/simple;
+	bh=gLc30Z+9vOBzkAprgy+ZzWzCvuoZOmSPjY+GSFBC7K4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SsADpAcR50lQL6ESSak918Dw+TsnwKJO+4Xjyclr1gvzyDQYqB2PqSA8Wu7Acwn2xBGXXOzNFbQuPdy56YEGYxwwYBfRmjQAIcmsSgZLQG8hz9fZIyrsuSckVrOw8QC4fUNTS57Y/iP/uxvWefzu7s1kWrgAbrP4AsCKtmdJJes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZbmXXtkx; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38a870c777dso1354871fa.2
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 08:03:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773327789; x=1773932589; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=w3Z0IgmvA6IrttCl9VcQbxLY4PbNB0saZqQGQHabijM=;
+        b=ZbmXXtkx0zu/uKz4QxZUYM5VmcUOiuiqm1bHbP2YDmIJQprq+AUc/BeQb3s4o9HFQ8
+         JG9h5dtNj0DmKHymAtPLr0LTbTJszdwCfoJnhUES84CI2581A7n/EWGIA4xaPu3KKapx
+         2IX39i37J1O7Xz3PdWiQWBgF38yqJt6T9iPU/Z6rPi1rzyh/cb1kH1D82qxao1gHAFtD
+         dWNgjPyEKCMfw+rz5acVIR/nuHF3nplmA2O+BchMnaoLu3fRnDHux4FIokHrlmK1Ccam
+         EiVr2LHgLXuwEoCHeL4Re5nqkKT8THRJvrr9TybSOHSiepIZqz61/4ij8HznG17eHiv4
+         4ntw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773327789; x=1773932589;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w3Z0IgmvA6IrttCl9VcQbxLY4PbNB0saZqQGQHabijM=;
+        b=FrBrnsOz2HZnz4JUIBIjuOKVA//LupFGs3Jr8MrbYv8rC3wVOGCddaJNjxyqvC0Ae6
+         8NEgJvEGOWw5sfvLsU3mJaCKGE+c1akxUPzyVBmYQcnV6hFmDrHdT5L08grV0eReGMHH
+         ZOklz1STt81cYKnc6YHBlAMdO3CmwrlLBaigUDbqD4xA1lRKhzqQIi1askCMgIcftwv0
+         HSbXiyFmH1dv3JF9Sp+a83gGARoGhE1hPiUwWhN3hHqxxjhO0ez/COEBd3CHjBz+uSOD
+         Jj6oCQ76YCeZDxsm5fIXlQAZar35PpI+khJmHLfRJUdXt3G5ztyeMHCzP5zaXK6/f2vN
+         kOHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk5jy1R78OZt6jsgrhsIM5YqgCJ0svL60C7uNQ3eaTjFeB7jHSe2rUcQ0gdgpXIGUvrhsMuuI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmZ4B2ylcnLErMs9nOkiIS09w3u+S8Y8UwlFoZxNukSzlptoQQ
+	IlLVLA48wqfHUdrhezhe2bzJeCsJ3B8GCeh9kX7x277/W9zGtxFj9LpsOYptniVOlO4=
+X-Gm-Gg: ATEYQzz6hywRdWSawz53CiBEVdynySxGEqGqKuBv9BnlljroJGwm/fFLz6hIuyht78v
+	zmcblQfBPXLk6gsKrEIXD0+/vVMRp9Y9RCyYK4xhSmW+64srj+ZIKHztcN1pbhxnlG6deGydFQi
+	XRh73u74t3jj9sfDD3OYnn2I+H5UEyx6CcNJEDf/dMGrE2DZxDy9TrOQX02tIci+tXmCfk38Ur3
+	GsjsRTxg41apUC4pWkooQ2w6jM8qyW8Oew1oEM9H5mHJF2f3u2z2OcjJX5JLVlfWOJKB75TRRsA
+	9YVi84ii7apkZevNvTvC11Qz+Udgx+tXebw2WlWtXik7dv6n6XIYWyNo0CMq9XfgxqvU/WrX0z/
+	4omg3SBoqTqRH/bNdOspKywoeEXh0l7vUhDJab++NxqaIfoO+8BWTvmSGxUDDbxp6zRp7XpsWGd
+	PNXPncUAxZFRZBhpz/5GIXagNYKtBZav61YsYQq0N0cSpBO10vA/mGVZc=
+X-Received: by 2002:a05:651c:2102:b0:38a:45f8:6270 with SMTP id 38308e7fff4ca-38a67e1aa9cmr23403431fa.21.1773327787720;
+        Thu, 12 Mar 2026 08:03:07 -0700 (PDT)
+Received: from precision.tail0b5424.ts.net ([2804:7f0:6402:b103:6a0a:3e1c:778a:5cc7])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be8aa7492dsm6507324eec.29.2026.03.12.08.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 08:03:06 -0700 (PDT)
+Date: Thu, 12 Mar 2026 12:03:01 -0300
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: Shyam Prasad N <nspmangalore@gmail.com>
+Cc: "Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, 
+	Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
+ custom TCP port (not 445): Host is down (at least since 6.6.95)
+Message-ID: <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
+References: <20260310235642.6d9798f4@plasteblaster>
+ <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
+ <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224875-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224876-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gaggery.tsai@intel.com,stable@vger.kernel.org]
-X-Rspamd-Queue-Id: 64F2D273F32
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 96719273F7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: TsaiGaggery <gaggery.tsai@intel.com>
+On Thu, Mar 12, 2026 at 05:44:58AM +0530, Shyam Prasad N wrote:
+> On Wed, Mar 11, 2026 at 7:37 AM Henrique Carvalho
+> <henrique.carvalho@suse.com> wrote:
+> >
+> > On Tue, Mar 10, 2026 at 11:56:42PM +0100, Dr. Thomas Orgis wrote:
+> > > Dear Linux-CIFS maintainer(s),
+> > >
+> > > I stumbled upon a regression in the Linux cifs/smb3 client when working
+> > > with a smbd using a non-standard port. I am not the first to note this, see
+> > >
+> > >       https://bbs.archlinux.org/viewtopic.php?id=306712
+> > >
+> > > which is a report from mid last year, indicating the problem sometime
+> > > after Linux 6.6.72. It is a very simple issue, where details of the
+> > > kernel builds or mount setup don't seem to matter much: Older kernels
+> > > reconnect to a SMB server that was restarted (old processes killed and
+> > > replaced), newer kernels do not and just have a defunct mount.
+> > >
+> > > I reproduced this in our HPC cluster environment with such smb.conf on
+> > > the server side
+> > >
+> > > [global]
+> > > security = user
+> > > map to guest = Bad Password
+> > > server role = standalone server
+> > > smb ports = 1445
+> > >
+> > > [public]
+> > > path = /some/path
+> > > guest ok = yes
+> > > read only = yes
+> > >
+> > > and such a mount command on the client:
+> > >
+> > > mount -t smb3 -o port=1445,user=guest,password=foo //server/public dir
+> > >
+> > > When I kill and re-start smbd on the server, older client kernels
+> > > reconnect and continue to return listings and files from the share,
+> > > while newer kernels give this:
+> > >
+> >
+> > My suspicion is that the regression was introduced by:
+> >
+> >     5713127da855 ("cifs: update dstaddr whenever channel iface is updated")
+> >
+> > That change causes parse_server_interfaces() -- should this be running
+> > without multichannel mount option? -- to overwrite the port stored in
+> > server->dstaddr with CIFS_PORT.
+> >
+> > The attached patch preserves the existing port from server->dstaddr.
+> >
+> > Note that I have not yet tested this patch or confirmed the regression
+> > with a bisect. If you can't, I will try to do that tomorrow.
+> >
+> > --
+> > Henrique
+> > SUSE Labs
+> 
+> Hi Henrique,
+> 
+> AFAIK, the ignoring of port from the results was by design and part of
+> the original code back in 2018:
+> CIFS: parse and store info on iface queries
+> 
+> Also, the comment in the code just above says why this is so.
+> [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these
+> 
+> I checked this section and it says:
+> Port (2 bytes): This field MUST NOT be used and MUST be reserved. The
+> server SHOULD set this field to zero, and the client MUST ignore it on
+> receipt.
+> 
+> Based on the conversations here, it looks like smbd ignores this.
+> 
+> I think the right fix would be to make sure that
+> cifs_chan_update_iface gets called only for secondary channels. That
+> way, it will not get called for single channel scenarios.
 
-hda_sdw_exit() sets hdev->sdw to NULL after calling sdw_intel_exit(),
-but the shared IPC IRQ handler is not freed until much later in
-hda_dsp_remove(). If a SoundWire interrupt fires in this window, the
-IRQ thread calls hda_dsp_sdw_thread() -> sdw_intel_thread() with a
-NULL context pointer or with link->cdns already freed, causing a NULL
-pointer dereference:
+Sure, I read the comment in the code and the MS-SMB2 protocol. The
+protocol states that "client MUST ignore [Port] on receipt". Since we
+are not using p->Port, I don'se see how this is a protocol violation.
 
-  BUG: kernel NULL pointer dereference, address: 00000000000003d0
-  RIP: 0010:sdw_cdns_irq+0x9/0x2b0 [soundwire_cadence]
-  Call Trace:
-   sdw_intel_thread+0x2d/0x50 [soundwire_intel]
-   hda_dsp_interrupt_thread+0x99/0x3a0 [snd_sof_intel_hda_generic]
-   irq_thread_fn+0x25/0x60
+We're using the port that was selected on mount and copied over to
+server->dstaddr, so that when server->dstaddr is overwridden,
+server->dstaddr keeps the user selected port.
 
-The race window is between hda_sdw_exit() tearing down SoundWire
-links and free_irq() in hda_dsp_remove(). During sdw_intel_exit() ->
-sdw_intel_cleanup(), each link's auxiliary device is unregistered,
-which clears link->cdns. Meanwhile the IRQ thread can still fire and
-iterate the link list, calling sdw_cdns_irq() with a NULL cdns.
+Now, even if we only fix that for primary channels, the secondary
+channels will still get the wrong port when they are overwridden, no? So
+I don't see how that fixes the issue.
 
-Fix this in three ways:
+Apologies if I'm missing something.
 
-  1. In hda_sdw_exit(), disable SoundWire interrupts at the hardware
-     level (hda_sdw_int_enable) and call synchronize_irq() BEFORE
-     tearing down the SoundWire context, preventing new IRQ threads
-     from entering the SoundWire path.
+Best regards,
 
-  2. Add a NULL guard for link->cdns in sdw_intel_thread() to handle
-     the case where the IRQ thread races with individual link
-     removal during sdw_intel_cleanup().
-
-  3. Add a NULL guard in hda_dsp_sdw_thread() as defense-in-depth
-     for the case where hdev->sdw is already NULL.
-
-Tested on Intel Panther Lake with SoundWire codecs by manually
-unbinding the SOF PCI device while audio was active.
-
-Fixes: 722ba5f1f530 ("ASoC: SOF: Intel: hda: merge IPC, stream and SoundWire interrupt handlers")
-Cc: stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
-Cc: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Gaggery Tsai <gaggery.tsai@intel.com>
----
- drivers/soundwire/intel_init.c |  6 ++++--
- sound/soc/sof/intel/hda.c      | 11 +++++++++--
- 2 files changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/soundwire/intel_init.c b/drivers/soundwire/intel_init.c
-index ad48d67fa935..e093a29f1590 100644
---- a/drivers/soundwire/intel_init.c
-+++ b/drivers/soundwire/intel_init.c
-@@ -145,8 +145,10 @@ irqreturn_t sdw_intel_thread(int irq, void *dev_id)
- 	struct sdw_intel_ctx *ctx = dev_id;
- 	struct sdw_intel_link_res *link;
- 
--	list_for_each_entry(link, &ctx->link_list, list)
--		sdw_cdns_irq(irq, link->cdns);
-+	list_for_each_entry(link, &ctx->link_list, list) {
-+		if (link->cdns)
-+			sdw_cdns_irq(irq, link->cdns);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index c0cc7d3ce526..02a0e354414e 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -256,12 +256,17 @@ static int hda_sdw_exit(struct snd_sof_dev *sdev)
- 
- 	hdev = sdev->pdata->hw_pdata;
- 
-+	/* Disable SoundWire IRQ at the hardware level first to prevent
-+	 * the IRQ handler from accessing hdev->sdw after it is freed.
-+	 * synchronize_irq() ensures any in-flight handler has completed.
-+	 */
-+	hda_sdw_int_enable(sdev, false);
-+	synchronize_irq(sdev->ipc_irq);
-+
- 	if (hdev->sdw)
- 		sdw_intel_exit(hdev->sdw);
- 	hdev->sdw = NULL;
- 
--	hda_sdw_int_enable(sdev, false);
--
- 	return 0;
- }
- 
-@@ -309,6 +314,8 @@ static bool hda_dsp_check_sdw_irq(struct snd_sof_dev *sdev)
- 
- static irqreturn_t hda_dsp_sdw_thread(int irq, void *context)
- {
-+	if (!context)
-+		return IRQ_HANDLED;
- 	return sdw_intel_thread(irq, context);
- }
- 
 -- 
-2.43.0
-
+Henrique
+SUSE Labs
 
