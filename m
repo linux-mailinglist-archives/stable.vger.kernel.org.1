@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-224932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOq8NDkds2mDSAAAu9opvQ
-	(envelope-from <stable+bounces-224932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:25 +0100
+	id aHSENdIcs2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:06:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DFC27884A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438722787B0
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B107A31BC9D7
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 083E8303182F
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203B9401A29;
-	Thu, 12 Mar 2026 20:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3882C17A0;
+	Thu, 12 Mar 2026 20:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/D8nCf1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hjflp6fT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87582C032C;
-	Thu, 12 Mar 2026 20:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F383AC0CD;
+	Thu, 12 Mar 2026 20:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345919; cv=none; b=rh/ORWqcthWTn8wl/T6myAlTvVWDPspQN2r4hOfOSgoJx6Jt5Ty/+IjTg8r0vkMfN9M2s8oeBd9E4+4a6qkzBtyhGeXtiGXvrlUxVYrxR1Ivz8mJyOQrlvrkalg9W67l1RNvYJ0rynef9Rl+MdgHF5nS5dPEWiK4W51NnoCKBHI=
+	t=1773345853; cv=none; b=agEQsj48gi3q9sRyfMoMTGzcEUoUdsI9cifeAsdGSq/YWngl8XZzK3VlfszTebOpFkW4c9VcZXFuJJ+HIc+RlA6i+16U96uLOVpAfIZ5+9Aa7Ly1qN/spAlqZMGLTrZ6M8Wh4aZ+KgoknR/0zdLFqhT6n/7zItN0BdQ4i3uEclo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345919; c=relaxed/simple;
-	bh=1W6jvotX7QuGyYzSNhsPeifKeH3BzqFrYTerkQvDzME=;
+	s=arc-20240116; t=1773345853; c=relaxed/simple;
+	bh=NfuKDMD39XQRq33/f+KLeQdgxKJVHC3mS3v56TYaRuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVjZmT+s6mDNdpAV2tknoE4DAcAaOTHhuPX2/KftWM9rK85X9QWfBJa+Jf2Mugjj8/hfCNg0E9w6c5xt5XoZrtgBXY16qwhUbu2XYSTcCfG5ZaIfHsbaCOqT+aEm67hL5t/VSje2zoBDAnYFFtm/5/d4WzgrNg56sTwNvvZUavA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/D8nCf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A90C19425;
-	Thu, 12 Mar 2026 20:05:18 +0000 (UTC)
+	 MIME-Version; b=Q46ThJQ8BgaDkWe1s4ij3jmp0Ge4rcnGUSQOM791bL7j7EdEyNuN2wyajK++/3dxteI2SIv3zb0dxTZqUC4K5DICb684tyrR2ZaKNF5CzLsEJP653GMY7H1iixwEmVdRsHAdfOxuglj9dG+x5te7LTS2p2D+ofDY1m1xRaP+gJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hjflp6fT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE54C4CEF7;
+	Thu, 12 Mar 2026 20:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773345919;
-	bh=1W6jvotX7QuGyYzSNhsPeifKeH3BzqFrYTerkQvDzME=;
+	s=korg; t=1773345853;
+	bh=NfuKDMD39XQRq33/f+KLeQdgxKJVHC3mS3v56TYaRuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/D8nCf14dfdjqxOacj5qUAoEyUtHMFgz/MapALEMr+fdPf5oXQD+SuYYYOQzWm5L
-	 S7BvRP2bL8aGvhdc+i5AsFbDYOzZo/dEO74RAcWKZOghZRWVpG6TNAZuPEUfJyvsg5
-	 2kZyetPg/XeLE0eXQmCWugew8xiC00DKS/tB0rTM=
+	b=Hjflp6fTCkfvYAv6uh2u/+g27CVnkoo0GablJRMH8BOGXHp5OncVbDj9emBgCr/Vc
+	 CKRWgLY4Z9OYm0AxAEtiYf0R2YiPaVOG3JgFQ6BXRVg1J1Mq/Tkfb5OJCmVgk94VIP
+	 wyOBrcX5yN3q+j9uFxBNovq0T/B+jr0H51GIig/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 02/13] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.19 11/13] apparmor: fix differential encoding verification
 Date: Thu, 12 Mar 2026 21:03:43 +0100
-Message-ID: <20260312200326.338141533@linuxfoundation.org>
+Message-ID: <20260312200322.085947747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260312200326.246396673@linuxfoundation.org>
-References: <20260312200326.246396673@linuxfoundation.org>
+In-Reply-To: <20260312200321.671986598@linuxfoundation.org>
+References: <20260312200321.671986598@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +66,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-224932-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224916-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 67DFC27884A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualys.com:email]
+X-Rspamd-Queue-Id: 438722787B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 upstream.
+commit 39440b137546a3aa383cfdabc605fb73811b6093 upstream.
 
-As Paolo said earlier [1]:
+Differential encoding allows loops to be created if it is abused. To
+prevent this the unpack should verify that a diff-encode chain
+terminates.
 
-"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
-the current skb being held by the defragmentation engine. As reported by
-GangMin Kim, if such packet is that may cause a UaF when the defrag engine
-later on tries to tuch again such packet."
+Unfortunately the differential encode verification had two bugs.
 
-act_ct was never meant to be used in the egress path, however some users
-are attaching it to egress today [2]. Attempting to reach a middle
-ground, we noticed that, while most qdiscs are not handling
-TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
-address the issue by only allowing act_ct to bind to clsact/ingress
-qdiscs and shared blocks. That way it's still possible to attach act_ct to
-egress (albeit only with clsact).
+1. it conflated states that had gone through check and already been
+   marked, with states that were currently being checked and marked.
+   This means that loops in the current chain being verified are treated
+   as a chain that has already been verified.
 
-[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
-[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+2. the order bailout on already checked states compared current chain
+   check iterators j,k instead of using the outer loop iterator i.
+   Meaning a step backwards in states in the current chain verification
+   was being mistaken for moving to an already verified state.
 
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
-CC: stable@vger.kernel.org
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Move to a double mark scheme where already verified states get a
+different mark, than the current chain being kept. This enables us
+to also drop the backwards verification check that was the cause of
+the second error as any already verified state is already marked.
+
+Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/act_api.h |    1 +
- net/sched/act_ct.c    |    6 ++++++
- net/sched/cls_api.c   |    7 +++++++
- 3 files changed, 14 insertions(+)
+ security/apparmor/include/match.h |    1 +
+ security/apparmor/match.c         |   23 +++++++++++++++++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -70,6 +70,7 @@ struct tc_action {
- #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
- #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
- #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
-+#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
+--- a/security/apparmor/include/match.h
++++ b/security/apparmor/include/match.h
+@@ -185,6 +185,7 @@ static inline void aa_put_dfa(struct aa_
+ #define MATCH_FLAG_DIFF_ENCODE 0x80000000
+ #define MARK_DIFF_ENCODE 0x40000000
+ #define MATCH_FLAG_OOB_TRANSITION 0x20000000
++#define MARK_DIFF_ENCODE_VERIFIED 0x10000000
+ #define MATCH_FLAGS_MASK 0xff000000
+ #define MATCH_FLAGS_VALID (MATCH_FLAG_DIFF_ENCODE | MATCH_FLAG_OOB_TRANSITION)
+ #define MATCH_FLAGS_INVALID (MATCH_FLAGS_MASK & ~MATCH_FLAGS_VALID)
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -202,16 +202,31 @@ static int verify_dfa(struct aa_dfa *dfa
+ 		size_t j, k;
  
- /* Update lastuse only if needed, to avoid dirtying a cache line.
-  * We use a temp variable to avoid fetching jiffies twice.
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1358,6 +1358,12 @@ static int tcf_ct_init(struct net *net,
- 		return -EINVAL;
+ 		for (j = i;
+-		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
+-		     !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE);
++		     ((BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
++		      !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE_VERIFIED));
+ 		     j = k) {
++			if (BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE)
++				/* loop in current chain */
++				goto out;
+ 			k = DEFAULT_TABLE(dfa)[j];
+ 			if (j == k)
++				/* self loop */
+ 				goto out;
+-			if (k < j)
+-				break;		/* already verified */
+ 			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE;
+ 		}
++		/* move mark to verified */
++		for (j = i;
++		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE);
++		     j = k) {
++			k = DEFAULT_TABLE(dfa)[j];
++			if (j < i)
++				/* jumps to state/chain that has been
++				 * verified
++				 */
++				break;
++			BASE_TABLE(dfa)[j] &= ~MARK_DIFF_ENCODE;
++			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE_VERIFIED;
++		}
  	}
+ 	error = 0;
  
-+	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
- 	if (err < 0)
- 		return err;
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2228,6 +2228,11 @@ static bool is_qdisc_ingress(__u32 class
- 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
- }
- 
-+static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
-+{
-+	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
-+}
-+
- static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 			  struct netlink_ext_ack *extack)
- {
-@@ -2420,6 +2425,8 @@ replay:
- 		flags |= TCA_ACT_FLAGS_NO_RTNL;
- 	if (is_qdisc_ingress(parent))
- 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
-+	if (is_ingress_or_clsact(block, q))
-+		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
- 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
- 			      flags, extack);
- 	if (err == 0) {
 
 
 
