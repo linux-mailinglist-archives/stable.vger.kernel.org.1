@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-225094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLfELnAgs2mpSQAAu9opvQ
-	(envelope-from <stable+bounces-225094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:08 +0100
+	id oG/WLf4gs2m5SQAAu9opvQ
+	(envelope-from <stable+bounces-225104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:24:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55968278E0E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:22:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEDE278F98
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68C89301D0F1
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:22:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CD263196C58
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1878635DA6A;
-	Thu, 12 Mar 2026 20:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249F7368950;
+	Thu, 12 Mar 2026 20:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyZ7EXyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhbQ6S2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD3491D6;
-	Thu, 12 Mar 2026 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D961B36DA15;
+	Thu, 12 Mar 2026 20:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346922; cv=none; b=u+Bx+q5gaQ/oYDROO2nwq//zOJIN3X6+SjIvjzsPrpix7XhxNhl08Twf4rgoQlZrocOYBZzmuiOcxOpiI4Vk+02BS9af7IjXQXYBrDS3NeYxE6aGTAQdRmwBwS1lkdI/IoK5L4ydxTTuylDdnxSioc4hyAD/CRNWElVWSRLickM=
+	t=1773346976; cv=none; b=sZMlL+ahE8SJssL4w86xLl7c2F6wf18dB4mAgtAfUAAkd87nJSVKOLfQVW/7XbotqYTLMk/mzdNFrJmjhH3QkywaHVdRzHf9cViMoIKZrJ/O3q9ShmUq2apU/GG5k38rLHNCg/wQeo4pt4lABFjsWTMcnm3CbS7QBHbVbDT7n3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346922; c=relaxed/simple;
-	bh=u3IwKFE6qnIsRiCGu24gqvQKiqAz4iXpKrAc0YgEUdM=;
+	s=arc-20240116; t=1773346976; c=relaxed/simple;
+	bh=covFiQlum5DT21STtsr8hqqPEv7XfrREZ+/qexrbbAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8y8IeCVkZr+CVs+2mn6SP0jcvxHWyyy1M1+QEMtdzZd42ULt7N0tigW2Yjb/dGA8CGXZeoQyuS9lQR23S1jGAIW7E27o+1RHHktZ+SJmDMoR2VooNeQX+0bIWW0nbn748yZbEOxYdegdfxwcdZyVgfb3SuVPkUEMGmuLf2dwRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyZ7EXyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E673C4CEF7;
-	Thu, 12 Mar 2026 20:22:01 +0000 (UTC)
+	 MIME-Version; b=RElD0roKnootEXh9ajn9AAviHaBQAKNh2V/CX6mLY4GASBk0qmj6RrwOPSgeVbTtRy2k0msR4OaDYjfbndevN52X+YMUKyqL47n2XevXCP7XUFS8mpihuikypcK58/QRsLttJSLs5bTYMatZzgbvnhqa0Pbq8AyYrnaTZ653SAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhbQ6S2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0208CC4CEF7;
+	Thu, 12 Mar 2026 20:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346922;
-	bh=u3IwKFE6qnIsRiCGu24gqvQKiqAz4iXpKrAc0YgEUdM=;
+	s=korg; t=1773346976;
+	bh=covFiQlum5DT21STtsr8hqqPEv7XfrREZ+/qexrbbAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyZ7EXyLWOHeVXrmw6K0ghDBvu8Aem39GiV2FdxOlMLk9KKnWPPiRWv73xJO+8z60
-	 m9zPDjlW/GOr4tHFtDKpe8kLtZm3og5gs05Olyfpb3tyrB/TXy13zc35ApA1FccAiz
-	 D9FIZVYcaHCNON9XzjqVsEpoutCX4RpKVM0DdJCQ=
+	b=vhbQ6S2oRi8FZBlOpQE1pGK/mj3j+NFhlpq0Gr1mLj3DixSPdeILYUowtBLM23v1B
+	 67sTGX9w17A9r7mNIpfFvVg2IfOnlcCbuWIxjeYRdtoKr2Aadaqa/XCGt1BN4eTcXZ
+	 QnEY5V5l701uK0VYEhTMKwhV30638rc5JVUAWZDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 153/265] scsi: target: Fix recursive locking in __configfs_open_file()
-Date: Thu, 12 Mar 2026 21:09:00 +0100
-Message-ID: <20260312201023.790745504@linuxfoundation.org>
+	syzbot+a9747fe1c35a5b115d3f@syzkaller.appspotmail.com,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 154/265] Squashfs: check metadata block offset is within range
+Date: Thu, 12 Mar 2026 21:09:01 +0100
+Message-ID: <20260312201023.826700348@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -71,30 +71,29 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-225094-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225104-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,yadro.com,oracle.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email,yadro.com:email]
-X-Rspamd-Queue-Id: 55968278E0E
+	TAGGED_RCPT(0.00)[stable,a9747fe1c35a5b115d3f];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,squashfs.org.uk:email]
+X-Rspamd-Queue-Id: 0CEDE278F98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,93 +101,47 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Prithvi Tambewagh <activprithvi@gmail.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit 14d4ac19d1895397532eec407433c5d74d9da53b upstream.
+commit fdb24a820a5832ec4532273282cbd4f22c291a0d upstream.
 
-In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
-function is called, which, here, is target_core_item_dbroot_store().  This
-function called filp_open(), following which these functions were called
-(in reverse order), according to the call trace:
+Syzkaller reports a "general protection fault in squashfs_copy_data"
 
-  down_read
-  __configfs_open_file
-  do_dentry_open
-  vfs_open
-  do_open
-  path_openat
-  do_filp_open
-  file_open_name
-  filp_open
-  target_core_item_dbroot_store
-  flush_write_buffer
-  configfs_write_iter
+This is ultimately caused by a corrupted index look-up table, which
+produces a negative metadata block offset.
 
-target_core_item_dbroot_store() tries to validate the new file path by
-trying to open the file path provided to it; however, in this case, the bug
-report shows:
+This is subsequently passed to squashfs_copy_data (via
+squashfs_read_metadata) where the negative offset causes an out of bounds
+access.
 
-db_root: not a directory: /sys/kernel/config/target/dbroot
+The fix is to check that the offset is within range in
+squashfs_read_metadata.  This will trap this and other cases.
 
-indicating that the same configfs file was tried to be opened, on which it
-is currently working on. Thus, it is trying to acquire frag_sem semaphore
-of the same file of which it already holds the semaphore obtained in
-flush_write_buffer(), leading to acquiring the semaphore in a nested manner
-and a possibility of recursive locking.
-
-Fix this by modifying target_core_item_dbroot_store() to use kern_path()
-instead of filp_open() to avoid opening the file using filesystem-specific
-function __configfs_open_file(), and further modifying it to make this fix
-compatible.
-
-Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
-Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://patch.msgid.link/20260216062002.61937-1-activprithvi@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lkml.kernel.org/r/20260217050955.138351-1-phillip@squashfs.org.uk
+Fixes: f400e12656ab ("Squashfs: cache operations")
+Reported-by: syzbot+a9747fe1c35a5b115d3f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/699234e2.a70a0220.2c38d7.00e2.GAE@google.com/
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ fs/squashfs/cache.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_s
- 					const char *page, size_t count)
- {
- 	ssize_t read_bytes;
--	struct file *fp;
- 	ssize_t r = -EINVAL;
-+	struct path path = {};
+--- a/fs/squashfs/cache.c
++++ b/fs/squashfs/cache.c
+@@ -340,6 +340,9 @@ int squashfs_read_metadata(struct super_
+ 	if (unlikely(length < 0))
+ 		return -EIO;
  
- 	mutex_lock(&target_devices_lock);
- 	if (target_devices) {
-@@ -131,17 +131,14 @@ static ssize_t target_core_item_dbroot_s
- 		db_root_stage[read_bytes - 1] = '\0';
- 
- 	/* validate new db root before accepting it */
--	fp = filp_open(db_root_stage, O_RDONLY, 0);
--	if (IS_ERR(fp)) {
-+	r = kern_path(db_root_stage, LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
-+	if (r) {
- 		pr_err("db_root: cannot open: %s\n", db_root_stage);
-+		if (r == -ENOTDIR)
-+			pr_err("db_root: not a directory: %s\n", db_root_stage);
- 		goto unlock;
- 	}
--	if (!S_ISDIR(file_inode(fp)->i_mode)) {
--		filp_close(fp, NULL);
--		pr_err("db_root: not a directory: %s\n", db_root_stage);
--		goto unlock;
--	}
--	filp_close(fp, NULL);
-+	path_put(&path);
- 
- 	strncpy(db_root, db_root_stage, read_bytes);
- 	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
++	if (unlikely(*offset < 0 || *offset >= SQUASHFS_METADATA_SIZE))
++		return -EIO;
++
+ 	while (length) {
+ 		entry = squashfs_cache_get(sb, msblk->block_cache, *block, 0);
+ 		if (entry->error) {
 
 
 
