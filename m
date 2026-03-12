@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-225048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DtVONQfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:32 +0100
+	id oGcwO2Ags2mpSQAAu9opvQ
+	(envelope-from <stable+bounces-225049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:21:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36395278C6F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA19278DDC
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C4053042948
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54E47317D393
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCDB32143F;
-	Thu, 12 Mar 2026 20:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84747332917;
+	Thu, 12 Mar 2026 20:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyeiTedB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQmIiNHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305E8296BCF;
-	Thu, 12 Mar 2026 20:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446C231E840;
+	Thu, 12 Mar 2026 20:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346750; cv=none; b=fmdgKtuxDzpjnCJkFimn/6tQ7R0ZXgtVzrTVDYP7vDGsh2kmXFYL17i1hAzU47YwELhw68azcG4Y8CKTvRPypKihb7HsZdfilmgSPYRtIfDc9HHU9UcIUqsd8jZMCWzM0TgwCBCtSElGufYzqGPPQYza0/ZB+TeIBpaluMqyYys=
+	t=1773346754; cv=none; b=OjRozd4aCfNeyoOt0BWxaEXk4oXXRGn3qtSMCqEqy9P0rRnzumTQBsdJ9MA7sh9EEGMBUWLue2ix65gaMB9moxi93az9ejHmM5PNyaxmNGQINU2eZkG5DHF177P0sQiW/mHOxqMMxZ6Q2z4NBjJ3IO9G6McSK7z7mk8A3Bitpp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346750; c=relaxed/simple;
-	bh=9BKmaPkcvpsjYNk3twfiSDJ7CfNM9FVceuWwPcDtbg0=;
+	s=arc-20240116; t=1773346754; c=relaxed/simple;
+	bh=o8+S1h+8Fk0uaaMUzQaldUrMh9AcQvRGhKhSq2/nAg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0twCkjtiVd+FnD80AZW9dDCsd7L1JABSpOj6/HU9qSczJiPJPu76iZKQYsyOr9jzXStCh2txnJBcCh80zz+uMN/bauL505GGvpz+LESuYMlMYrnDSGOYg9N3oXG82AMSKf8U3XpcYga4JBuWwAQEJeUPZZ5p3IgHpw7CKbM6dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyeiTedB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A4AC4CEF7;
-	Thu, 12 Mar 2026 20:19:09 +0000 (UTC)
+	 MIME-Version; b=Y9Pc7zEl+3J3Cyo6UhVeF2VXpyp/6OquVCTmIv4dXHEG9CioZqkl5xE2wlEro8gYPMOLpMZmUzriE6cFnvgTIw3fZUh/gY2ELXEoU3wGsTasuRfXGsMtsadBJS2tvDvvSA1R7JvC0meTG/2HrQAg1LM9GpIQ3f3lLIkRyXlpq3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQmIiNHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BC7C4CEF7;
+	Thu, 12 Mar 2026 20:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346750;
-	bh=9BKmaPkcvpsjYNk3twfiSDJ7CfNM9FVceuWwPcDtbg0=;
+	s=korg; t=1773346753;
+	bh=o8+S1h+8Fk0uaaMUzQaldUrMh9AcQvRGhKhSq2/nAg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UyeiTedB5c0g4tQf2sSREKjit3rYTZvA6VlKfYrXg1BFaV0CZoUslyBYTrCMoNn2w
-	 awcvRn8vSZsz5kw3EF5OevtEMYOdru+NpQCaLJIAthlfOC62ppCmglXuYPNoENh9Qf
-	 FAwf8tukIuGorqZrf1RtovNcsmmhE9ZvixuDyUwQ=
+	b=LQmIiNHiUkrx51Nz4jwpTOwIgJ7j3jRTuwY8lnUPytPG6wpHViR+miIir14WiiLjj
+	 N7p3N7ByhoxobJuLlg0g8591RNdyqKmpxetP1rGsNwJphF6xi58Pzuj2op9/U2wPFq
+	 xAGfFLJ39/hEljaI2epd35FYJh0rdG3y2pARWPb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cal Peake <cp@absolutedigital.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/265] drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()
-Date: Thu, 12 Mar 2026 21:08:20 +0100
-Message-ID: <20260312201022.320156415@linuxfoundation.org>
+Subject: [PATCH 6.12 114/265] ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+Date: Thu, 12 Mar 2026 21:08:21 +0100
+Message-ID: <20260312201022.357808106@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -69,30 +67,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225048-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225049-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 36395278C6F
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5FA19278DDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,65 +98,35 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f7afda7fcd169a9168695247d07ad94cf7b9798f ]
+[ Upstream commit 1585cf83e98db32463e5d54161b06a5f01fe9976 ]
 
-The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
-disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
-returns true. However, this causes hangs during normal module unload
-(rmmod amdgpu).
+It was reported that we need the same quirk for HP ZBook Studio G4
+(SSID 103c:826b) as other HP models to make the mute-LED working.
 
-The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
-for all removal scenarios, not just surprise disconnects. This was done
-intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
-messages are not actually sent to psp when amdgpu is uninstalled"") to
-fix IGT PCI software unplug test failures. As a result,
-drm_dev_is_unplugged() returns true even during normal module unload,
-triggering the early KFD cleanup inappropriately.
-
-The correct check should distinguish between:
-- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
-  returns true
-- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
-
-Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
-the early cleanup only happens during true hardware disconnect events.
-
-Cc: stable@vger.kernel.org
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
-Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/64d78753-b9ff-4c64-8920-64d8d31cd20c@gmail.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221002
+Link: https://patch.msgid.link/20260207131324.2428030-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index cab75f5c9f2fd..361184355e232 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4648,7 +4648,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
- 	 * amdgpu_amdkfd_suspend()
- 	 */
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_amdkfd_device_fini_sw(adev);
- 
- 	amdgpu_device_ip_fini_early(adev);
-@@ -4660,7 +4660,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 
- 	amdgpu_gart_dummy_page_fini(adev);
- 
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_device_unmap_mmio(adev);
- 
- }
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 482e801a496a1..9dc11d922612b 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1081,6 +1081,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x826b, "HP ZBook Studio G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 -- 
 2.51.0
 
