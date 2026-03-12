@@ -1,191 +1,640 @@
-Return-Path: <stable+bounces-224884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +D+AM3DksmkcQwAAu9opvQ
-	(envelope-from <stable+bounces-224884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:06:08 +0100
+	id 0MV1A8XlsmktQwAAu9opvQ
+	(envelope-from <stable+bounces-224885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:11:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719A12752D1
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:06:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880BC275471
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD625300C33C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:02:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D859E300F58E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57003CF694;
-	Thu, 12 Mar 2026 16:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0C73B4E9B;
+	Thu, 12 Mar 2026 16:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rbLc8vZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGNxfDTe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88338757E
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 16:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FFB3F54DE
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 16:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773331325; cv=none; b=n4whQmGjQ+Xr94q9GjmIyJd1S+9aF/UPLOO3747XLeK+cX2fSFEP3VxRqBEhsp+v2jsRZYfQ87w/jMzQW8JPOj+FnVGdWvl5x/3TXjRflRHE/9b80CyiCpRC6aXf1nOcfaz2ocRVTEab/6VkqfE+bURmEV2wTpoQlsW/qDygdI0=
+	t=1773331857; cv=none; b=mHt8s1qIEevAHxbxZryjW+blITTqppxino8brTl4mVjrJ/r2lphkJl1FKbR/RNLhC8XzOfHwQT+w99gdQLPXfYHQB83uqDb4SL4naaRMYsdPg+Dv/fvDnrfBEMWTNVRAxcCZBgrlmfV/JVKxMPNiF1Hh4Pt2JX9UbEeHI+m+BjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773331325; c=relaxed/simple;
-	bh=Pk6i8yoSLmvjbHvV1MTtVmz1qPYslpyIivwjKzVBn8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nJwMHcK0KpdrY9BL6UfkWo+L7JiYZx+Sm3QRxhQuie/i5NBIMOsY4D/jjnWAE/znjkmwdxhluCKmYQng/TZlUe5BZqov45XEQf+vXyTktLykGloWJU87ZTc4o0w1rMdHaD3r6wjf6urLJ0QQ6ltem5B2/886bSYr+ckVYPxh8sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rbLc8vZ/; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-794719afcd4so11947377b3.1
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 09:02:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773331323; x=1773936123; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qy73+iGNGeECV0rQjpRLn6tiSFKzdH9itGL02lldZDY=;
-        b=rbLc8vZ/FcDkhvwgG62p7BH84BmsDhlouJqv20KeeVZXwAdbkr/BR4+NMeooweOoZn
-         TMHrT+ReYzyZB6sqN+Re28uCz+O0R8VqZLVFDQflZdcniwQkJoM9S3oxXsTN1y4Naeeh
-         Ky2lxze5YixfoJIlJUyCz3JOfH5lJeTDpRh+eLD92jhJULina3EpzBhpS+eYiPLq/xvw
-         d3hOoZiIVGZg1pLCunZQPDWQTej/UiTWIvLUni8TpQn7pqWDX7xr5jskr36FR+fkmJz/
-         PRWvItN7ZPaOrgJC5JQd9s3wXET+13MrJLPVN218S+mjcrfoJ9YuW5abbphmVmPhWhbe
-         P3Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773331323; x=1773936123;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qy73+iGNGeECV0rQjpRLn6tiSFKzdH9itGL02lldZDY=;
-        b=lhoeNbTiXFqUmZutR5hR5MqK0k7ofGXIZEzQIyZaNI8ZLLzbQx0xgo70OP7dOb7Bst
-         5bFcTIzWH8Yd5xpESmQ4NV9G4n494phPKuwUqC2QJVaxU3jfpSeUs+Uyhf6hchXseC4J
-         CdZajTI6Iro7U0erLoF23abzdFpCtP4q/jgP3mahLUvFj8CtqPIDTfKSuaBtJUGnDh/l
-         p8WPRjePWrwJhetmGKAB7lx72rG+bThYxDKGVGhoKoXTOuKI9lTFo4bQSfUFNUHjdr0u
-         pNjXy5Czcf0PZTFbrENaCBqLGixenAyg9TqWB8HJ1SI1HbZ6lqPro1bW18H6JthEBOok
-         uZCw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0Yb+dCtliGDe4Kh8tc2i+PdGV7Bw0xLaRYo57i3csd1JgDFAX8WYyAl+4OyHTp+bpYWvRJAE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyjnc5ICRR53YCHO/P8vPZ7CMEsHYlxfh18/Zv5otb29Rf6LzRq
-	aE6HLye8WQesdO2IMQc8lF2Fh8znfpJsMCBoxQpSQS3gZJDI6k27W9XmwYgF5XD25iQ=
-X-Gm-Gg: ATEYQzwEDeUkp2QuywU1hUF9xttdJDiaGAe+WUjJ4BKvOjT20pMnRM0FXQHLLoPgDXU
-	io+0M73xbVfX+xiub52HgekpYnuTJ9BML2H3qy4eUsYkQ0rmS6gvDj48t2kB40oX+Opg9WavGpv
-	nzSc5t8fM4ocGTrdwxaBpMhkpD32C5vxkLoqYw92MycCFfQOiYuaUcRcZKwI4D77jm/AofFmxdE
-	3rBfxsTXMcQXVA5oDU/+AJuhYLktPK9cVRXX1U2VkOgZzvD828/6JF3yLDkX1HlGZU8xu+i6w4B
-	WG8U07HTVuMF+yN/aeUi7Afm+3b08u/mqXUi2Axmwu5CuHkEQK7kY8O+xqw11/wfAhRn8SLgBq1
-	zD4j46UCpnHdy9wDrQxA2+DH34UxDW6nNp1Dy2kVTTydNjkgmtqFtZfbXVDEzFINbmwW78VlGK+
-	/Clw+KXCDBUONflDFRCB8/PXNSNT2AcgPclq1VKg7WXAX5/fMERLU0hG+Wwa5Y1vKrL36E9kxe5
-	6gn8rwpOA==
-X-Received: by 2002:a05:690c:6389:b0:796:45d4:9e2d with SMTP id 00721157ae682-79a1c1dce28mr556267b3.53.1773331321722;
-        Thu, 12 Mar 2026 09:02:01 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65d2160asm37260386d6.52.2026.03.12.09.02.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 09:02:01 -0700 (PDT)
-Date: Thu, 12 Mar 2026 12:01:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
-	alexghiti@kernel.org, kernel-team@meta.com, akinobu.mita@gmail.com,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, apopple@nvidia.com,
-	byungchul@sk.com, joshua.hahnjy@gmail.com, matthew.brost@intel.com,
-	rakie.kim@sk.com, ying.huang@linux.alibaba.com, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Bing Jiao <bingjiao@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after
- setting GFP_TRANSHUGE
-Message-ID: <abLjdSC1DOIyTnPa@gourry-fedora-PF4VCD3F>
-References: <20260311110314.237315-1-alex@ghiti.fr>
- <20260311110314.237315-4-alex@ghiti.fr>
- <abGsagHIieEobFbB@cmpxchg.org>
+	s=arc-20240116; t=1773331857; c=relaxed/simple;
+	bh=4XKiB1MT4UfjIYQfh+ycZus8GxIDlwCy2I51E4IgfBY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BZOUUqmm6roOZATwJ403Do8vIjtvk/dqBUC+/6oc5zIsrhdN6u2tQQvzIf3lvoECiBR471TmAujxreSPWo/BqaRATmaNpf5b85Vu2lQcEgSTrtg6oN46iFlD02lDX22jh6rgMyNg+pcOAlcU2Rsp2sfoQaJuIZY81r5MK+bn5bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGNxfDTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BADAC4CEF7;
+	Thu, 12 Mar 2026 16:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773331857;
+	bh=4XKiB1MT4UfjIYQfh+ycZus8GxIDlwCy2I51E4IgfBY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=kGNxfDTeFgOk1ERadJJeSi7ML9ZyEoxQXYqdc8ZK6gz6HZWW/buaKPhMswqmr5O3X
+	 WybnAmWjurPE3GOJuTGwLes9bvLQjZ08uZgjW4yROWtCsjwZuEcksHevEgJHyEVwRc
+	 qvhtCnJuLPE2Ry11alOob/AyYp9bCH2gvsbaEIDk=
+Subject: FAILED: patch "[PATCH] net/sched: act_gate: snapshot parameters with RCU on replace" failed to apply to 6.12-stable tree
+To: p@1g4.org,jhs@mojatatu.com,kuba@kernel.org,victor@mojatatu.com,vladimir.oltean@nxp.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 12 Mar 2026 17:10:52 +0100
+Message-ID: <2026031252-gigolo-petticoat-6e53@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abGsagHIieEobFbB@cmpxchg.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-224885-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224884-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[gourry.net];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FREEMAIL_CC(0.00)[ghiti.fr,linux-foundation.org,kernel.org,meta.com,gmail.com,oracle.com,google.com,suse.com,bytedance.com,linux.dev,nvidia.com,sk.com,intel.com,linux.alibaba.com,kvack.org,vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gourry.net:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gourry.net:dkim,ghiti.fr:email]
-X-Rspamd-Queue-Id: 719A12752D1
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 880BC275471
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 01:54:50PM -0400, Johannes Weiner wrote:
-> On Wed, Mar 11, 2026 at 12:02:42PM +0100, Alexandre Ghiti wrote:
-> > GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
-> > after, not before.
-> > 
-> > Reported-by: Bing Jiao <bingjiao@google.com>
-> > Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
-> > Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
-> >  mm/migrate.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index 2c3d489ecf51..ee533a4d38db 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
-> >  	}
-> >  
-> >  	if (folio_test_large(src)) {
-> > +		gfp_mask |= GFP_TRANSHUGE;
-> >  		/*
-> >  		 * clear __GFP_RECLAIM to make the migration callback
-> >  		 * consistent with regular THP allocations.
-> >  		 */
-> >  		gfp_mask &= ~__GFP_RECLAIM;
-> > -		gfp_mask |= GFP_TRANSHUGE;
-> 
-> I don't think this is right.
-> 
-> The Fixes: did it this way to disable kswapd for THP allocations,
-> while still allowing the customary direct reclaim. Maybe a better
-> comment would have been: /* GFP_TRANSHUGE has its own reclaim policy */
-> 
 
-The bigger issue how many times we see this particular flag getting
-masked and apparently added back in at multiple layers. We saw two
-or three paths (some unreachable) that can twiddle RECLAIM flags in
-the stack for demotion (which is in reclaim already, so do the flags
-matter?).
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-It makes it difficult to reason about what the GFP flags actually
-are at any given point.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-But yeah I wasn't sure to make of this code, it could be as you
-suggested just a bad comment.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 62413a9c3cb183afb9bb6e94dd68caf4e4145f4c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031252-gigolo-petticoat-6e53@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-~Gregory
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 62413a9c3cb183afb9bb6e94dd68caf4e4145f4c Mon Sep 17 00:00:00 2001
+From: Paul Moses <p@1g4.org>
+Date: Mon, 23 Feb 2026 15:05:44 +0000
+Subject: [PATCH] net/sched: act_gate: snapshot parameters with RCU on replace
+
+The gate action can be replaced while the hrtimer callback or dump path is
+walking the schedule list.
+
+Convert the parameters to an RCU-protected snapshot and swap updates under
+tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omits
+the entry list, preserve the existing schedule so the effective state is
+unchanged.
+
+Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20260223150512.2251594-2-p@1g4.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
+index b147a3bb1a46..e0fded18e18c 100644
+--- a/include/net/tc_act/tc_gate.h
++++ b/include/net/tc_act/tc_gate.h
+@@ -32,6 +32,7 @@ struct tcf_gate_params {
+ 	s32			tcfg_clockid;
+ 	size_t			num_entries;
+ 	struct list_head	entries;
++	struct rcu_head		rcu;
+ };
+ 
+ #define GATE_ACT_GATE_OPEN	BIT(0)
+@@ -39,7 +40,7 @@ struct tcf_gate_params {
+ 
+ struct tcf_gate {
+ 	struct tc_action	common;
+-	struct tcf_gate_params	param;
++	struct tcf_gate_params __rcu *param;
+ 	u8			current_gate_status;
+ 	ktime_t			current_close_time;
+ 	u32			current_entry_octets;
+@@ -51,47 +52,65 @@ struct tcf_gate {
+ 
+ #define to_gate(a) ((struct tcf_gate *)a)
+ 
++static inline struct tcf_gate_params *tcf_gate_params_locked(const struct tc_action *a)
++{
++	struct tcf_gate *gact = to_gate(a);
++
++	return rcu_dereference_protected(gact->param,
++					 lockdep_is_held(&gact->tcf_lock));
++}
++
+ static inline s32 tcf_gate_prio(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	s32 tcfg_prio;
+ 
+-	tcfg_prio = to_gate(a)->param.tcfg_priority;
++	p = tcf_gate_params_locked(a);
++	tcfg_prio = p->tcfg_priority;
+ 
+ 	return tcfg_prio;
+ }
+ 
+ static inline u64 tcf_gate_basetime(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_basetime;
+ 
+-	tcfg_basetime = to_gate(a)->param.tcfg_basetime;
++	p = tcf_gate_params_locked(a);
++	tcfg_basetime = p->tcfg_basetime;
+ 
+ 	return tcfg_basetime;
+ }
+ 
+ static inline u64 tcf_gate_cycletime(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_cycletime;
+ 
+-	tcfg_cycletime = to_gate(a)->param.tcfg_cycletime;
++	p = tcf_gate_params_locked(a);
++	tcfg_cycletime = p->tcfg_cycletime;
+ 
+ 	return tcfg_cycletime;
+ }
+ 
+ static inline u64 tcf_gate_cycletimeext(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u64 tcfg_cycletimeext;
+ 
+-	tcfg_cycletimeext = to_gate(a)->param.tcfg_cycletime_ext;
++	p = tcf_gate_params_locked(a);
++	tcfg_cycletimeext = p->tcfg_cycletime_ext;
+ 
+ 	return tcfg_cycletimeext;
+ }
+ 
+ static inline u32 tcf_gate_num_entries(const struct tc_action *a)
+ {
++	struct tcf_gate_params *p;
+ 	u32 num_entries;
+ 
+-	num_entries = to_gate(a)->param.num_entries;
++	p = tcf_gate_params_locked(a);
++	num_entries = p->num_entries;
+ 
+ 	return num_entries;
+ }
+@@ -105,7 +124,7 @@ static inline struct action_gate_entry
+ 	u32 num_entries;
+ 	int i = 0;
+ 
+-	p = &to_gate(a)->param;
++	p = tcf_gate_params_locked(a);
+ 	num_entries = p->num_entries;
+ 
+ 	list_for_each_entry(entry, &p->entries, list)
+diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+index 686eaed81b81..fdbfcaa3e2ab 100644
+--- a/net/sched/act_gate.c
++++ b/net/sched/act_gate.c
+@@ -32,9 +32,12 @@ static ktime_t gate_get_time(struct tcf_gate *gact)
+ 	return KTIME_MAX;
+ }
+ 
+-static void gate_get_start_time(struct tcf_gate *gact, ktime_t *start)
++static void tcf_gate_params_free_rcu(struct rcu_head *head);
++
++static void gate_get_start_time(struct tcf_gate *gact,
++				const struct tcf_gate_params *param,
++				ktime_t *start)
+ {
+-	struct tcf_gate_params *param = &gact->param;
+ 	ktime_t now, base, cycle;
+ 	u64 n;
+ 
+@@ -69,12 +72,14 @@ static enum hrtimer_restart gate_timer_func(struct hrtimer *timer)
+ {
+ 	struct tcf_gate *gact = container_of(timer, struct tcf_gate,
+ 					     hitimer);
+-	struct tcf_gate_params *p = &gact->param;
+ 	struct tcfg_gate_entry *next;
++	struct tcf_gate_params *p;
+ 	ktime_t close_time, now;
+ 
+ 	spin_lock(&gact->tcf_lock);
+ 
++	p = rcu_dereference_protected(gact->param,
++				      lockdep_is_held(&gact->tcf_lock));
+ 	next = gact->next_entry;
+ 
+ 	/* cycle start, clear pending bit, clear total octets */
+@@ -225,6 +230,35 @@ static void release_entry_list(struct list_head *entries)
+ 	}
+ }
+ 
++static int tcf_gate_copy_entries(struct tcf_gate_params *dst,
++				 const struct tcf_gate_params *src,
++				 struct netlink_ext_ack *extack)
++{
++	struct tcfg_gate_entry *entry;
++	int i = 0;
++
++	list_for_each_entry(entry, &src->entries, list) {
++		struct tcfg_gate_entry *new;
++
++		new = kzalloc(sizeof(*new), GFP_ATOMIC);
++		if (!new) {
++			NL_SET_ERR_MSG(extack, "Not enough memory for entry");
++			return -ENOMEM;
++		}
++
++		new->index      = entry->index;
++		new->gate_state = entry->gate_state;
++		new->interval   = entry->interval;
++		new->ipv        = entry->ipv;
++		new->maxoctets  = entry->maxoctets;
++		list_add_tail(&new->list, &dst->entries);
++		i++;
++	}
++
++	dst->num_entries = i;
++	return 0;
++}
++
+ static int parse_gate_list(struct nlattr *list_attr,
+ 			   struct tcf_gate_params *sched,
+ 			   struct netlink_ext_ack *extack)
+@@ -270,24 +304,44 @@ static int parse_gate_list(struct nlattr *list_attr,
+ 	return err;
+ }
+ 
+-static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
+-			     enum tk_offsets tko, s32 clockid,
+-			     bool do_init)
++static bool gate_timer_needs_cancel(u64 basetime, u64 old_basetime,
++				    enum tk_offsets tko,
++				    enum tk_offsets old_tko,
++				    s32 clockid, s32 old_clockid)
+ {
+-	if (!do_init) {
+-		if (basetime == gact->param.tcfg_basetime &&
+-		    tko == gact->tk_offset &&
+-		    clockid == gact->param.tcfg_clockid)
+-			return;
++	return basetime != old_basetime ||
++	       clockid != old_clockid ||
++	       tko != old_tko;
++}
+ 
+-		spin_unlock_bh(&gact->tcf_lock);
+-		hrtimer_cancel(&gact->hitimer);
+-		spin_lock_bh(&gact->tcf_lock);
++static int gate_clock_resolve(s32 clockid, enum tk_offsets *tko,
++			      struct netlink_ext_ack *extack)
++{
++	switch (clockid) {
++	case CLOCK_REALTIME:
++		*tko = TK_OFFS_REAL;
++		return 0;
++	case CLOCK_MONOTONIC:
++		*tko = TK_OFFS_MAX;
++		return 0;
++	case CLOCK_BOOTTIME:
++		*tko = TK_OFFS_BOOT;
++		return 0;
++	case CLOCK_TAI:
++		*tko = TK_OFFS_TAI;
++		return 0;
++	default:
++		NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
++		return -EINVAL;
+ 	}
+-	gact->param.tcfg_basetime = basetime;
+-	gact->param.tcfg_clockid = clockid;
+-	gact->tk_offset = tko;
+-	hrtimer_setup(&gact->hitimer, gate_timer_func, clockid, HRTIMER_MODE_ABS_SOFT);
++}
++
++static void gate_setup_timer(struct tcf_gate *gact, s32 clockid,
++			     enum tk_offsets tko)
++{
++	WRITE_ONCE(gact->tk_offset, tko);
++	hrtimer_setup(&gact->hitimer, gate_timer_func, clockid,
++		      HRTIMER_MODE_ABS_SOFT);
+ }
+ 
+ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+@@ -296,15 +350,22 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 			 struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_net *tn = net_generic(net, act_gate_ops.net_id);
+-	enum tk_offsets tk_offset = TK_OFFS_TAI;
++	u64 cycletime = 0, basetime = 0, cycletime_ext = 0;
++	struct tcf_gate_params *p = NULL, *old_p = NULL;
++	enum tk_offsets old_tk_offset = TK_OFFS_TAI;
++	const struct tcf_gate_params *cur_p = NULL;
+ 	bool bind = flags & TCA_ACT_FLAGS_BIND;
+ 	struct nlattr *tb[TCA_GATE_MAX + 1];
++	enum tk_offsets tko = TK_OFFS_TAI;
+ 	struct tcf_chain *goto_ch = NULL;
+-	u64 cycletime = 0, basetime = 0;
+-	struct tcf_gate_params *p;
++	s32 timer_clockid = CLOCK_TAI;
++	bool use_old_entries = false;
++	s32 old_clockid = CLOCK_TAI;
++	bool need_cancel = false;
+ 	s32 clockid = CLOCK_TAI;
+ 	struct tcf_gate *gact;
+ 	struct tc_gate *parm;
++	u64 old_basetime = 0;
+ 	int ret = 0, err;
+ 	u32 gflags = 0;
+ 	s32 prio = -1;
+@@ -321,26 +382,8 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (!tb[TCA_GATE_PARMS])
+ 		return -EINVAL;
+ 
+-	if (tb[TCA_GATE_CLOCKID]) {
++	if (tb[TCA_GATE_CLOCKID])
+ 		clockid = nla_get_s32(tb[TCA_GATE_CLOCKID]);
+-		switch (clockid) {
+-		case CLOCK_REALTIME:
+-			tk_offset = TK_OFFS_REAL;
+-			break;
+-		case CLOCK_MONOTONIC:
+-			tk_offset = TK_OFFS_MAX;
+-			break;
+-		case CLOCK_BOOTTIME:
+-			tk_offset = TK_OFFS_BOOT;
+-			break;
+-		case CLOCK_TAI:
+-			tk_offset = TK_OFFS_TAI;
+-			break;
+-		default:
+-			NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+-			return -EINVAL;
+-		}
+-	}
+ 
+ 	parm = nla_data(tb[TCA_GATE_PARMS]);
+ 	index = parm->index;
+@@ -366,6 +409,60 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 		return -EEXIST;
+ 	}
+ 
++	gact = to_gate(*a);
++
++	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
++	if (err < 0)
++		goto release_idr;
++
++	p = kzalloc(sizeof(*p), GFP_KERNEL);
++	if (!p) {
++		err = -ENOMEM;
++		goto chain_put;
++	}
++	INIT_LIST_HEAD(&p->entries);
++
++	use_old_entries = !tb[TCA_GATE_ENTRY_LIST];
++	if (!use_old_entries) {
++		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
++		if (err < 0)
++			goto err_free;
++		use_old_entries = !err;
++	}
++
++	if (ret == ACT_P_CREATED && use_old_entries) {
++		NL_SET_ERR_MSG(extack, "The entry list is empty");
++		err = -EINVAL;
++		goto err_free;
++	}
++
++	if (ret != ACT_P_CREATED) {
++		rcu_read_lock();
++		cur_p = rcu_dereference(gact->param);
++
++		old_basetime  = cur_p->tcfg_basetime;
++		old_clockid   = cur_p->tcfg_clockid;
++		old_tk_offset = READ_ONCE(gact->tk_offset);
++
++		basetime      = old_basetime;
++		cycletime_ext = cur_p->tcfg_cycletime_ext;
++		prio          = cur_p->tcfg_priority;
++		gflags        = cur_p->tcfg_flags;
++
++		if (!tb[TCA_GATE_CLOCKID])
++			clockid = old_clockid;
++
++		err = 0;
++		if (use_old_entries) {
++			err = tcf_gate_copy_entries(p, cur_p, extack);
++			if (!err && !tb[TCA_GATE_CYCLE_TIME])
++				cycletime = cur_p->tcfg_cycletime;
++		}
++		rcu_read_unlock();
++		if (err)
++			goto err_free;
++	}
++
+ 	if (tb[TCA_GATE_PRIORITY])
+ 		prio = nla_get_s32(tb[TCA_GATE_PRIORITY]);
+ 
+@@ -375,25 +472,26 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (tb[TCA_GATE_FLAGS])
+ 		gflags = nla_get_u32(tb[TCA_GATE_FLAGS]);
+ 
+-	gact = to_gate(*a);
+-	if (ret == ACT_P_CREATED)
+-		INIT_LIST_HEAD(&gact->param.entries);
+-
+-	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+-	if (err < 0)
+-		goto release_idr;
+-
+-	spin_lock_bh(&gact->tcf_lock);
+-	p = &gact->param;
+-
+ 	if (tb[TCA_GATE_CYCLE_TIME])
+ 		cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
+ 
+-	if (tb[TCA_GATE_ENTRY_LIST]) {
+-		err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
+-		if (err < 0)
+-			goto chain_put;
+-	}
++	if (tb[TCA_GATE_CYCLE_TIME_EXT])
++		cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
++
++	err = gate_clock_resolve(clockid, &tko, extack);
++	if (err)
++		goto err_free;
++	timer_clockid = clockid;
++
++	need_cancel = ret != ACT_P_CREATED &&
++		      gate_timer_needs_cancel(basetime, old_basetime,
++					      tko, old_tk_offset,
++					      timer_clockid, old_clockid);
++
++	if (need_cancel)
++		hrtimer_cancel(&gact->hitimer);
++
++	spin_lock_bh(&gact->tcf_lock);
+ 
+ 	if (!cycletime) {
+ 		struct tcfg_gate_entry *entry;
+@@ -402,22 +500,20 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 		list_for_each_entry(entry, &p->entries, list)
+ 			cycle = ktime_add_ns(cycle, entry->interval);
+ 		cycletime = cycle;
+-		if (!cycletime) {
+-			err = -EINVAL;
+-			goto chain_put;
+-		}
+ 	}
+ 	p->tcfg_cycletime = cycletime;
++	p->tcfg_cycletime_ext = cycletime_ext;
+ 
+-	if (tb[TCA_GATE_CYCLE_TIME_EXT])
+-		p->tcfg_cycletime_ext =
+-			nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+-
+-	gate_setup_timer(gact, basetime, tk_offset, clockid,
+-			 ret == ACT_P_CREATED);
++	if (need_cancel || ret == ACT_P_CREATED)
++		gate_setup_timer(gact, timer_clockid, tko);
+ 	p->tcfg_priority = prio;
+ 	p->tcfg_flags = gflags;
+-	gate_get_start_time(gact, &start);
++	p->tcfg_basetime = basetime;
++	p->tcfg_clockid = timer_clockid;
++	gate_get_start_time(gact, p, &start);
++
++	old_p = rcu_replace_pointer(gact->param, p,
++				    lockdep_is_held(&gact->tcf_lock));
+ 
+ 	gact->current_close_time = start;
+ 	gact->current_gate_status = GATE_ACT_GATE_OPEN | GATE_ACT_PENDING;
+@@ -434,11 +530,15 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ 
++	if (old_p)
++		call_rcu(&old_p->rcu, tcf_gate_params_free_rcu);
++
+ 	return ret;
+ 
++err_free:
++	release_entry_list(&p->entries);
++	kfree(p);
+ chain_put:
+-	spin_unlock_bh(&gact->tcf_lock);
+-
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ release_idr:
+@@ -446,21 +546,29 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+ 	 * without taking tcf_lock.
+ 	 */
+ 	if (ret == ACT_P_CREATED)
+-		gate_setup_timer(gact, gact->param.tcfg_basetime,
+-				 gact->tk_offset, gact->param.tcfg_clockid,
+-				 true);
++		gate_setup_timer(gact, timer_clockid, tko);
++
+ 	tcf_idr_release(*a, bind);
+ 	return err;
+ }
+ 
++static void tcf_gate_params_free_rcu(struct rcu_head *head)
++{
++	struct tcf_gate_params *p = container_of(head, struct tcf_gate_params, rcu);
++
++	release_entry_list(&p->entries);
++	kfree(p);
++}
++
+ static void tcf_gate_cleanup(struct tc_action *a)
+ {
+ 	struct tcf_gate *gact = to_gate(a);
+ 	struct tcf_gate_params *p;
+ 
+-	p = &gact->param;
+ 	hrtimer_cancel(&gact->hitimer);
+-	release_entry_list(&p->entries);
++	p = rcu_dereference_protected(gact->param, 1);
++	if (p)
++		call_rcu(&p->rcu, tcf_gate_params_free_rcu);
+ }
+ 
+ static int dumping_entry(struct sk_buff *skb,
+@@ -509,10 +617,9 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+ 	struct nlattr *entry_list;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&gact->tcf_lock);
+-	opt.action = gact->tcf_action;
+-
+-	p = &gact->param;
++	rcu_read_lock();
++	opt.action = READ_ONCE(gact->tcf_action);
++	p = rcu_dereference(gact->param);
+ 
+ 	if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -552,12 +659,12 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+ 	tcf_tm_dump(&t, &gact->tcf_tm);
+ 	if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&gact->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&gact->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
+
 
