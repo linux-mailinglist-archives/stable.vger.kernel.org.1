@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-224976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFAOIEkfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:13 +0100
+	id aE+DEKwes2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8441278B6E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCDD278A18
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9053531987D6
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0962E302E853
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46426402430;
-	Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD51240242B;
+	Thu, 12 Mar 2026 20:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6LE3Ytn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2js9vQnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048173F1655;
-	Thu, 12 Mar 2026 20:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C8D3F1655;
+	Thu, 12 Mar 2026 20:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346437; cv=none; b=svc+RH1D3k/3Ho86IKcHB3XteFV7Gat3g2TjpAI9/CIGZvgasyCH/xLnf0BqGcYAEP9wgoZDpzEDkpcKYx6dr5ufzt9erX1+0fU+wrHrdeZa+keqff7JvFSkcvu0T8uNhpOzAXCZMs8E0h1MbmU7EVAFtgj0sreyyasptrHp1XI=
+	t=1773346461; cv=none; b=QMQJ70octmdutr/eBrnyIugelKZ+1achzRQY6KlGEtM+A3feRyUZeL9HW18Z/s5oMPIN2ErArY3fqQZMfit8mnoKMUXLfC1Fd+s4BFVPyvG2bXH+Oy5Ml9WoofYg2alASYB5HM/BICJ79ImZHmBFJpbzy9JQYGcZjdX5xWYrBLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346437; c=relaxed/simple;
-	bh=dg5Qoi3vprZdV+4fJ9o+QX7OlEWXU9g1qW7014JlWmw=;
+	s=arc-20240116; t=1773346461; c=relaxed/simple;
+	bh=4KpcjnF6ElP/ys7PrTUNcLXXnzNSSDMi+8KPZLSDDa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzoGTnn5G20RKW2Oeho4aLEoCuQ/iLkNwHjS+0wgBkrttQaoF7G5GsQow5Le6h6mgs/eIsYgg676I6OGRiNpQI6iPLiXSQzV+hAt3Ueq0Q99uIchP5qCXzfw8djZOr/MMWHbS/1JR9bWqRUS02PeDRQEHdXnx5nh6Z/iE5eJSYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6LE3Ytn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EE1C4CEF7;
-	Thu, 12 Mar 2026 20:13:55 +0000 (UTC)
+	 MIME-Version; b=Fqvwqe1tz8hnudVaIEk+t6P5yTS2GOr4kCnhGTz/cYBDbU4G+wLYuAcPeLOHNd38ijS6Djd8Zsi0aKPXT4gQ6l3UBdeF8UD460mQWdrCuVDRrEPa/wP0NKUaLDWv11nHzfCtX65Q0eu5LBlFcaHPFvzgsL7RBUHXNIgeB6TLLYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2js9vQnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960E2C4CEF7;
+	Thu, 12 Mar 2026 20:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346436;
-	bh=dg5Qoi3vprZdV+4fJ9o+QX7OlEWXU9g1qW7014JlWmw=;
+	s=korg; t=1773346461;
+	bh=4KpcjnF6ElP/ys7PrTUNcLXXnzNSSDMi+8KPZLSDDa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6LE3Ytnoe3I64FJHaFS5JWyBupVFOLVNpxUX6NO1ThSjaASfO36z7I4itFhs6V6I
-	 tuiXMGGEOgxdl2VueGpUuf5BfEr3JIx/ECB/is04OUi1ZMBdKPUvKVJ4dDfwqZfMUm
-	 LCsnblhAHz8a3wgUs1VXiFQpSC1ph6WfhGXp0ATI=
+	b=2js9vQnkQ7w4fWTCfAgHplytLLwofsvpazAhZz7FBhGe4Hk/nE3J7weUqLEusSGcO
+	 Zkr6YpZnSI7SthwtwJouC0CKqu6DxBLAOJwhji/1gacUNvfkbWLEUnF/CygsMtxRpk
+	 bPhxtR7z6QlgVxq1SX2o6pBDCGSKo8DmpQ0ZT5jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/265] rseq: Clarify rseq registration rseq_size bound check comment
-Date: Thu, 12 Mar 2026 21:06:42 +0100
-Message-ID: <20260312201018.724862116@linuxfoundation.org>
+Subject: [PATCH 6.12 016/265] cgroup/cpuset: Fix incorrect use of cpuset_update_tasks_cpumask() in update_cpumasks_hier()
+Date: Thu, 12 Mar 2026 21:06:43 +0100
+Message-ID: <20260312201018.762242379@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-224976-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224982-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,efficios.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email]
-X-Rspamd-Queue-Id: E8441278B6E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9FCDD278A18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,41 +99,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 26d43a90be81fc90e26688a51d3ec83188602731 ]
+[ Upstream commit 68230aac8b9aad243626fbaf3ca170012c17fec5 ]
 
-The rseq registration validates that the rseq_size argument is greater
-or equal to 32 (the original rseq size), but the comment associated with
-this check does not clearly state this.
+Commit e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for v2")
+incorrectly changed the 2nd parameter of cpuset_update_tasks_cpumask()
+from tmp->new_cpus to cp->effective_cpus. This second parameter is just
+a temporary cpumask for internal use. The cpuset_update_tasks_cpumask()
+function was originally called update_tasks_cpumask() before commit
+381b53c3b549 ("cgroup/cpuset: rename functions shared between v1
+and v2").
 
-Clarify the comment to that effect.
+This mistake can incorrectly change the effective_cpus of the
+cpuset when it is the top_cpuset or in arm64 architecture where
+task_cpu_possible_mask() may differ from cpu_possible_mask.  So far
+top_cpuset hasn't been passed to update_cpumasks_hier() yet, but arm64
+arch can still be impacted. Fix it by reverting the incorrect change.
 
-Fixes: ee3e3ac05c26 ("rseq: Introduce extensible rseq ABI")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260220200642.1317826-2-mathieu.desnoyers@efficios.com
+Fixes: e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for v2")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rseq.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index 810005f927d7c..e6ee81dd1e457 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -432,8 +432,9 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 	 * auxiliary vector AT_RSEQ_ALIGN. If rseq_len is the original rseq
- 	 * size, the required alignment is the original struct rseq alignment.
- 	 *
--	 * In order to be valid, rseq_len is either the original rseq size, or
--	 * large enough to contain all supported fields, as communicated to
-+	 * The rseq_len is required to be greater or equal to the original rseq
-+	 * size. In order to be valid, rseq_len is either the original rseq size,
-+	 * or large enough to contain all supported fields, as communicated to
- 	 * user-space through the ELF auxiliary vector AT_RSEQ_FEATURE_SIZE.
- 	 */
- 	if (rseq_len < ORIG_RSEQ_SIZE ||
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 1b93eb7b29c58..77b07548c3027 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2126,7 +2126,7 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+ 		WARN_ON(!is_in_v2_mode() &&
+ 			!cpumask_equal(cp->cpus_allowed, cp->effective_cpus));
+ 
+-		cpuset_update_tasks_cpumask(cp, cp->effective_cpus);
++		cpuset_update_tasks_cpumask(cp, tmp->new_cpus);
+ 
+ 		/*
+ 		 * On default hierarchy, inherit the CS_SCHED_LOAD_BALANCE
 -- 
 2.51.0
 
