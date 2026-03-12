@@ -1,109 +1,142 @@
-Return-Path: <stable+bounces-224859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCNkIra5smmvPAAAu9opvQ
-	(envelope-from <stable+bounces-224859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:03:50 +0100
+	id 6G1wG1HDsmmvPAAAu9opvQ
+	(envelope-from <stable+bounces-224863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:44:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311EE272359
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:03:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4289272D31
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43EAA3019FFC
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:03:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD7133150582
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FE93C5528;
-	Thu, 12 Mar 2026 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994E03C13F9;
+	Thu, 12 Mar 2026 13:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/lZCdRk"
+	dkim=pass (1024-bit key) header.d=ac2.se header.i=@ac2.se header.b="Pju2dU3R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.acc.umu.se (mail.acc.umu.se [130.239.18.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8491A52F8B;
-	Thu, 12 Mar 2026 13:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4623B776A
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 13:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.239.18.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773320614; cv=none; b=CbvKNeE2xjJgbmkqo0xIGvSmN7/KW0cNIksFzqq6w997Nb4xEnL5U5lNSi54D4DvTeR9xDIqNECBy5W/QvvaSd8atF0VGExt+iG4VpFoVkVad0mW1+rUrZGyq0xlOb8MwWIoIT5QXJfxG2P54w7OlT+oWDF0j7EwqKIP7AxTfKY=
+	t=1773322874; cv=none; b=Y8CBajK7bGcE6EsYHKERFf0xGClY2wDM9RvHKvU5tjRqRMYRSX0ONjmK5QQJqIGzQaLTjb6MSV0X2vNJ+/ccB0IhnICY7pLYTi/xte2HCKAT1A8vMxIaVHodbxR+dEWi/AQbKsFaFeEXyLysN1NmE1Ibuzo4vyPJlaU3l7Wtnus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773320614; c=relaxed/simple;
-	bh=G/GvL49Z4wjmBDZ0WLQju4xrr5nQMe5GTTgsCS9txOM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=opmk9SAKDIwGot0Jt3s1TjuNo3f3igXyOGntcFjWyNJLMN8nMl+gZhdi/hrjhykStB6PkWkTl3wSUrokHSqWEQs389Yz+6cQIzLxvC5GCjjPB7rLLG9OLLtfdg2NobZzF9C5B8t+5q9vdnOg08miLaTFAjnQ+etZ11e5qSeZq4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/lZCdRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08CFC4CEF7;
-	Thu, 12 Mar 2026 13:03:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773320614;
-	bh=G/GvL49Z4wjmBDZ0WLQju4xrr5nQMe5GTTgsCS9txOM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=M/lZCdRk4LUk4OXpeYyXZ71PPnscUaHz9LdHooQxPDhW39JsRELHIS4OgbAKxUuxH
-	 iYQpHsR0NP/8ygsagz+j3hq5f6YYqnjF2YI3mXPIJ067uRghhSIMIi1VApV2/m/tu6
-	 cc5/gWfEv1qv25knQH/65ydMnsWDK6JZygpBcjhRz1aovmMuiVdfl6xZnbE5DxDBBi
-	 tzB7JN0tMyJz+bLX3WudQ64om3Xo/bVi9tVCo2t/BwGbM1eftYG4IcKySyHGyvOpSY
-	 mn12SHehBTPyG1O+/4kC643Gq+1a5KNUy+u0ykkp+iXWXtnbp3fn+sC3ZKxPsc/m2s
-	 gPsasc7cJh1Hw==
-Date: Thu, 12 Mar 2026 14:03:31 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Aditya Garg <gargaditya08@live.com>
-cc: Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] HID: appletb-kbd: add .resume method in PM
-In-Reply-To: <MAUPR01MB115468D46765D7DF8C2882B4CB86CA@MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM>
-Message-ID: <qn346258-8p42-38r5-86r8-8n1r87204319@xreary.bet>
-References: <MAUPR01MB115468D46765D7DF8C2882B4CB86CA@MAUPR01MB11546.INDPRD01.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1773322874; c=relaxed/simple;
+	bh=Ndn3/sS9hKibGeS+MjXJBSXMdLr3jWey2xTeGHrf3r8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m959hlYa/QkKLWs/EiNA0wmjQ5tHDHS6tSvdFNorZp8vTriRRUzsbHuSejd83FM5bse7VXeGkczz/zJogAIZaNhPFKth6EXUN+7QGRCUs2mpjHzVeo+y31asGceocwHu+1LCFg92F5/yVrupKQmFo2qv8lUFwzDlMQB+lyFEtFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ac2.se; spf=pass smtp.mailfrom=accum.se; dkim=pass (1024-bit key) header.d=ac2.se header.i=@ac2.se header.b=Pju2dU3R; arc=none smtp.client-ip=130.239.18.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ac2.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=accum.se
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by amavisd-new (Postfix) with ESMTP id 38A2A44B91;
+	Thu, 12 Mar 2026 14:32:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ac2.se; s=default;
+	t=1773322331; bh=Ndn3/sS9hKibGeS+MjXJBSXMdLr3jWey2xTeGHrf3r8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Pju2dU3R0maVncdhRePZk0YFYYLTsykBczZb/vOfVPHxs94AbqTT0I21x2ZtCqY2h
+	 ffopMO5bSQi/UPxit3oxN9fX1TLcWrURAFKVjNBa9yNNQI3U99+4oqeeiumR44hkuX
+	 zqTikLrPe6lEUj/b0szHPfhLStwpn5JzjsIGsBkQ=
+Received: from suiko.ac2.se (suiko.ac2.se [130.239.18.162])
+	by mail.acc.umu.se (Postfix) with ESMTP id 99D0B44B90;
+	Thu, 12 Mar 2026 14:32:10 +0100 (CET)
+Received: by suiko.ac2.se (Postfix, from userid 24471)
+	id 8E69442B4B; Thu, 12 Mar 2026 14:32:10 +0100 (CET)
+From: Anton Lundin <glance@ac2.se>
+To: keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Anton Lundin <glance@ac2.se>,
+	stable@vger.kernel.org
+Subject: [PATCH] sign-file: use KBUILD_SIGN_PIN in provider mode
+Date: Thu, 12 Mar 2026 14:31:39 +0100
+Message-ID: <20260312133139.3168334-1-glance@ac2.se>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ac2.se,none];
+	R_DKIM_ALLOW(-0.20)[ac2.se:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[live.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224859-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224863-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[glance@ac2.se,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ac2.se:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,live.com:email,xreary.bet:mid]
-X-Rspamd-Queue-Id: 311EE272359
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ac2.se:dkim,ac2.se:email,ac2.se:mid]
+X-Rspamd-Queue-Id: E4289272D31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 17 Feb 2026, Aditya Garg wrote:
+This adds support for the documented KBUILD_SIGN_PIN functionality to
+sign-file when built with USE_PKCS11_PROVIDER.
 
-> Upon resuming from suspend, the Touch Bar driver was missing a resume
-> method in order to restore the original mode the Touch Bar was on before
-> suspending. It is the same as the reset_resume method.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Anton Lundin <glance@ac2.se>
+Fixes: 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3")
+Cc: stable@vger.kernel.org
+---
+ scripts/sign-file.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Now in hid.git#for-7.0/upstream-fixes, thanks.
-
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 73fbefd2e540..9ac89fea9d73 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -32,6 +32,7 @@
+ # define USE_PKCS11_PROVIDER
+ # include <openssl/provider.h>
+ # include <openssl/store.h>
++# include <openssl/ui.h>
+ #else
+ # if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
+ #  define USE_PKCS11_ENGINE
+@@ -90,13 +91,16 @@ static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
+ 	EVP_PKEY *private_key = NULL;
+ #ifdef USE_PKCS11_PROVIDER
+ 	OSSL_STORE_CTX *store;
++	UI_METHOD *ui_method = NULL;
+ 
+ 	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
+ 		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
+ 	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
+ 		ERR(1, "OSSL_PROVIDER_try_load(default)");
+ 
+-	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
++	if (key_pass)
++		ui_method = UI_UTIL_wrap_read_pem_callback(pem_pw_cb, 0);
++	store = OSSL_STORE_open(private_key_name, ui_method, NULL, NULL, NULL);
+ 	ERR(!store, "OSSL_STORE_open");
+ 
+ 	while (!OSSL_STORE_eof(store)) {
 -- 
-Jiri Kosina
-SUSE Labs
+2.47.3
 
 
