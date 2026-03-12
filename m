@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-225018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCa7BD4fs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:02 +0100
+	id ODRzJUMfs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1F3278B58
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D16278B66
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B2D403014431
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 740C73012532
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206681F9F70;
-	Thu, 12 Mar 2026 20:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D882737EE;
+	Thu, 12 Mar 2026 20:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV1l76Vj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxFE9Tjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60421E7660;
-	Thu, 12 Mar 2026 20:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DD4287268;
+	Thu, 12 Mar 2026 20:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346618; cv=none; b=TArOFfRgsvbVM2YhhrOZJ1/pLXiUIM+sac1J2wOWt8bNftwiq8GglkP7aGNdRNr+E9oD59OjyjYglpj4jRxfWUVvJO/PKpnfTX+g4bvM73Rao9Xeg/TUTH9umVqck4v6yaqiwBEcrFy9jtHm91JrR8z9I2b24JuXiHzIOWh4DE0=
+	t=1773346623; cv=none; b=O0Q80YIVzE2D4IJpmm7bhNWETvGLECBiuaRXioPnIiYm14v4DJ4z3WI1+8wV8e6SS1Mck1w+t8sx2H1XIUqUrM6bnrHj02vg+AawAU6k9zdC4mDwwp9Nq/rz8RzwQjyLvZBca9ecqXxDcZNqBkj9qrTRr6IYYC7pZKC5TL5cRLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346618; c=relaxed/simple;
-	bh=P3V94OlwnrZFkOPzPWtNPbRM8BOnO25icPJtwNCrt8A=;
+	s=arc-20240116; t=1773346623; c=relaxed/simple;
+	bh=/PJj0/QfjU8hUxhDK/+dQQZSkxPiiyobGwOfJtkOvM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGddvTP1CS1skQFIa2Xlo3bh0D36KIiM+oG7tRVzmhAM5NnWOQv/IlIZmLrRDNwo7DjRSobKsf5JCGnsxCv17NAW+N9Yis0VFV1MTqjwWitmN1FKopeCXHuoaTYTyCiWZ0V8ZKL7+wU0BjV5yJ5cKiIA6yS928gAYbb1b08HpZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV1l76Vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C5C4CEF7;
-	Thu, 12 Mar 2026 20:16:57 +0000 (UTC)
+	 MIME-Version; b=CZUH5iPiNYeulxFXF7QjQM/mSka9AJfQZhYtNgXGQSKWy4m38ZKR6v8G76gbBY4ylRJkbQ/WLGWndcKB9BfmkZsz/yyRv3TvBSD9Vp9Yv0ih5JnliQErHPkn1aEQgTpenDf0+7kpwLpECMZfw/w3clltqCvQOqGK0sAQQ+0piWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxFE9Tjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D715C4CEF7;
+	Thu, 12 Mar 2026 20:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346618;
-	bh=P3V94OlwnrZFkOPzPWtNPbRM8BOnO25icPJtwNCrt8A=;
+	s=korg; t=1773346622;
+	bh=/PJj0/QfjU8hUxhDK/+dQQZSkxPiiyobGwOfJtkOvM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cV1l76VjI/3DO0kqr05xjWIHUfsV9k6jMNgOLvUZiq8ULkjQ+nkdnZlgj+1uviYB7
-	 quEIQJkPtJbm7RA+eynCplA22gQnQ3opT0cG1b6FenUv8YRGVmaVRRSFCtitUxPMkt
-	 xnzjoARfsSl1vgrghYE/jiEDYI9PNlnDR8AdZGoU=
+	b=PxFE9Tjg+8Ez5FO1mGqvRfCXE+iWRFUMqVTXpvs4CpOcr1TObG95VyzzV+dCvAzFN
+	 atCNpFR1Z4/Iygu4Ps8/swiV3P77dGHFUibhs7AeLNGqPnF1GsMrhL5eyoEwzwJXPi
+	 7rDzuz542VfMmrUEVsFs1fvQTkfFmdtZlTc6WB6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Fend <matthias.fend@emfend.at>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Neil Sun <neil.sun@lcfuturecenter.com>,
+	Naomi Huang <naomi.huang@lcfuturecenter.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/265] media: dw9714: add support for powerdown pin
-Date: Thu, 12 Mar 2026 21:07:19 +0100
-Message-ID: <20260312201020.087233944@linuxfoundation.org>
+Subject: [PATCH 6.12 053/265] media: dw9714: Fix powerup sequence
+Date: Thu, 12 Mar 2026 21:07:20 +0100
+Message-ID: <20260312201020.123062192@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -65,35 +68,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,emfend.at,linux.intel.com,xs4all.nl,kernel.org];
-	TAGGED_FROM(0.00)[bounces-225018-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225019-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xs4all.nl:email]
-X-Rspamd-Queue-Id: BB1F3278B58
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lcfuturecenter.com:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,chromium.org:email,arducam.com:url]
+X-Rspamd-Queue-Id: 31D16278B66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,91 +104,54 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 03dca1842421b068d6a65b8ae16e2191882c7753 ]
+[ Upstream commit 401aec35ac7bd04b4018a519257b945abb88e26c ]
 
-Add support for the powerdown pin (xSD), which can be used to put the VCM
-driver into power down mode. This is useful, for example, if the VCM
-driver's power supply cannot be controlled. The use of the powerdown pin is
-optional.
+We have experienced seen multiple I2C errors while doing stress test on
+the module:
 
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+dw9714 i2c-PRP0001:01: dw9714_vcm_resume I2C failure: -5
+dw9714 i2c-PRP0001:01: I2C write fail
+
+Inspecting the powerup sequence we found that it does not match the
+documentation at:
+https://blog.arducam.com/downloads/DW9714A-DONGWOON(Autofocus_motor_manual).pdf
+
+"""
+(2) DW9714A requires waiting time of 12ms after power on. During this
+waiting time, the offset calibration of internal amplifier is
+operating for minimization of output offset current .
+"""
+
+This patch increases the powerup delay to follow the documentation.
+
+Fixes: 9d00ccabfbb5 ("media: i2c: dw9714: Fix occasional probe errors")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Tested-by: Neil Sun <neil.sun@lcfuturecenter.com>
+Reported-by: Naomi Huang <naomi.huang@lcfuturecenter.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Stable-dep-of: 401aec35ac7b ("media: dw9714: Fix powerup sequence")
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/Kconfig  |  2 +-
- drivers/media/i2c/dw9714.c | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/media/i2c/dw9714.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
-index 5cb596f38de33..4703071352541 100644
---- a/drivers/media/i2c/Kconfig
-+++ b/drivers/media/i2c/Kconfig
-@@ -748,7 +748,7 @@ config VIDEO_AK7375
- 
- config VIDEO_DW9714
- 	tristate "DW9714 lens voice coil support"
--	depends on I2C && VIDEO_DEV
-+	depends on GPIOLIB && I2C && VIDEO_DEV
- 	select MEDIA_CONTROLLER
- 	select VIDEO_V4L2_SUBDEV_API
- 	select V4L2_ASYNC
 diff --git a/drivers/media/i2c/dw9714.c b/drivers/media/i2c/dw9714.c
-index 37572cd0c104b..e69dd3e14b844 100644
+index e69dd3e14b844..8fee13e9b3a0b 100644
 --- a/drivers/media/i2c/dw9714.c
 +++ b/drivers/media/i2c/dw9714.c
-@@ -2,6 +2,7 @@
- // Copyright (c) 2015--2017 Intel Corporation.
+@@ -149,7 +149,7 @@ static int dw9714_power_up(struct dw9714_device *dw9714_dev)
  
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
-@@ -38,6 +39,7 @@ struct dw9714_device {
- 	struct v4l2_subdev sd;
- 	u16 current_val;
- 	struct regulator *vcc;
-+	struct gpio_desc *powerdown_gpio;
- };
+ 	gpiod_set_value_cansleep(dw9714_dev->powerdown_gpio, 0);
  
- static inline struct dw9714_device *to_dw9714_vcm(struct v4l2_ctrl *ctrl)
-@@ -145,6 +147,8 @@ static int dw9714_power_up(struct dw9714_device *dw9714_dev)
- 	if (ret)
- 		return ret;
- 
-+	gpiod_set_value_cansleep(dw9714_dev->powerdown_gpio, 0);
-+
- 	usleep_range(1000, 2000);
+-	usleep_range(1000, 2000);
++	usleep_range(12000, 14000);
  
  	return 0;
-@@ -152,6 +156,8 @@ static int dw9714_power_up(struct dw9714_device *dw9714_dev)
- 
- static int dw9714_power_down(struct dw9714_device *dw9714_dev)
- {
-+	gpiod_set_value_cansleep(dw9714_dev->powerdown_gpio, 1);
-+
- 	return regulator_disable(dw9714_dev->vcc);
  }
- 
-@@ -169,6 +175,14 @@ static int dw9714_probe(struct i2c_client *client)
- 	if (IS_ERR(dw9714_dev->vcc))
- 		return PTR_ERR(dw9714_dev->vcc);
- 
-+	dw9714_dev->powerdown_gpio = devm_gpiod_get_optional(&client->dev,
-+							     "powerdown",
-+							     GPIOD_OUT_HIGH);
-+	if (IS_ERR(dw9714_dev->powerdown_gpio))
-+		return dev_err_probe(&client->dev,
-+				     PTR_ERR(dw9714_dev->powerdown_gpio),
-+				     "could not get powerdown gpio\n");
-+
- 	rval = dw9714_power_up(dw9714_dev);
- 	if (rval)
- 		return dev_err_probe(&client->dev, rval,
 -- 
 2.51.0
 
