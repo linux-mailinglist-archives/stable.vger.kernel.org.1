@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-224915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKUADNAcs2mDSAAAu9opvQ
-	(envelope-from <stable+bounces-224915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:06:40 +0100
+	id YOq8NDkds2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9582787A9
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DFC27884A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 305D8312B7EF
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:04:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B107A31BC9D7
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679EC401A1F;
-	Thu, 12 Mar 2026 20:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203B9401A29;
+	Thu, 12 Mar 2026 20:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J92Nx5YR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/D8nCf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4D82C17A0;
-	Thu, 12 Mar 2026 20:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87582C032C;
+	Thu, 12 Mar 2026 20:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345848; cv=none; b=tZsImd+ov3jkKZYdoqhpTky5GMPIjLaG0EXp0qLJJhc6p5au59jgBPlKJxCdG3A0kSsycRjyNDwD6I9tu64CfSFS9DwQFx1IX3rIyzN6G09z0AR2MREIHCUW8cPAAS/lRlQs8N5BdJQNxuGdQPTxyBmIlQCVGDzc9YMKlj+U7Hk=
+	t=1773345919; cv=none; b=rh/ORWqcthWTn8wl/T6myAlTvVWDPspQN2r4hOfOSgoJx6Jt5Ty/+IjTg8r0vkMfN9M2s8oeBd9E4+4a6qkzBtyhGeXtiGXvrlUxVYrxR1Ivz8mJyOQrlvrkalg9W67l1RNvYJ0rynef9Rl+MdgHF5nS5dPEWiK4W51NnoCKBHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345848; c=relaxed/simple;
-	bh=HXWVuKchCOj74HRFcP5cE5SAyeMBPWCl6wOzIidMBXc=;
+	s=arc-20240116; t=1773345919; c=relaxed/simple;
+	bh=1W6jvotX7QuGyYzSNhsPeifKeH3BzqFrYTerkQvDzME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4R030s5n4cLp50PoC1EQu0lM8XRXybgt/PZ6d7FTQNqEVG5fD8EMpAvRXqRLJh91FRoVz1koeHtGFyWYT6KZK3MGWt7BDZSLVMmpwtuoZEU6seQKlJy/IbwkUrzCqykpQAGYM05zQiKlRB/L0ztBtfnRHqXBxWFN+xjKKnBOQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J92Nx5YR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19188C4CEF7;
-	Thu, 12 Mar 2026 20:04:06 +0000 (UTC)
+	 MIME-Version; b=uVjZmT+s6mDNdpAV2tknoE4DAcAaOTHhuPX2/KftWM9rK85X9QWfBJa+Jf2Mugjj8/hfCNg0E9w6c5xt5XoZrtgBXY16qwhUbu2XYSTcCfG5ZaIfHsbaCOqT+aEm67hL5t/VSje2zoBDAnYFFtm/5/d4WzgrNg56sTwNvvZUavA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/D8nCf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A90C19425;
+	Thu, 12 Mar 2026 20:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773345847;
-	bh=HXWVuKchCOj74HRFcP5cE5SAyeMBPWCl6wOzIidMBXc=;
+	s=korg; t=1773345919;
+	bh=1W6jvotX7QuGyYzSNhsPeifKeH3BzqFrYTerkQvDzME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J92Nx5YRW1/QiPt2KOJeVaRfDYKawYMZF3JsNW/QS1/kFabnd/UkwnJbyRPXSL7uO
-	 IFSg5yaM1XABghxEf5ncrdBNEmxLplBxc2sv1VZsR7ZnpDJPrIKkdzqwPqa9ncluxG
-	 kzPA2i1nt3dijTGqn5D9TzJdHhOQvBmGLysNdDqw=
+	b=s/D8nCf14dfdjqxOacj5qUAoEyUtHMFgz/MapALEMr+fdPf5oXQD+SuYYYOQzWm5L
+	 S7BvRP2bL8aGvhdc+i5AsFbDYOzZo/dEO74RAcWKZOghZRWVpG6TNAZuPEUfJyvsg5
+	 2kZyetPg/XeLE0eXQmCWugew8xiC00DKS/tB0rTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.19 10/13] apparmor: fix unprivileged local user can do privileged policy management
-Date: Thu, 12 Mar 2026 21:03:42 +0100
-Message-ID: <20260312200322.050323410@linuxfoundation.org>
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 02/13] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
+Date: Thu, 12 Mar 2026 21:03:43 +0100
+Message-ID: <20260312200326.338141533@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260312200321.671986598@linuxfoundation.org>
-References: <20260312200321.671986598@linuxfoundation.org>
+In-Reply-To: <20260312200326.246396673@linuxfoundation.org>
+References: <20260312200326.246396673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,218 +65,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224915-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-224932-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualys.com:email]
-X-Rspamd-Queue-Id: 8B9582787A9
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 67DFC27884A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 6601e13e82841879406bf9f369032656f441a425 upstream.
+commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 upstream.
 
-An unprivileged local user can load, replace, and remove profiles by
-opening the apparmorfs interfaces, via a confused deputy attack, by
-passing the opened fd to a privileged process, and getting the
-privileged process to write to the interface.
+As Paolo said earlier [1]:
 
-This does require a privileged target that can be manipulated to do
-the write for the unprivileged process, but once such access is
-achieved full policy management is possible and all the possible
-implications that implies: removing confinement, DoS of system or
-target applications by denying all execution, by-passing the
-unprivileged user namespace restriction, to exploiting kernel bugs for
-a local privilege escalation.
+"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
+the current skb being held by the defragmentation engine. As reported by
+GangMin Kim, if such packet is that may cause a UaF when the defrag engine
+later on tries to tuch again such packet."
 
-The policy management interface can not have its permissions simply
-changed from 0666 to 0600 because non-root processes need to be able
-to load policy to different policy namespaces.
+act_ct was never meant to be used in the egress path, however some users
+are attaching it to egress today [2]. Attempting to reach a middle
+ground, we noticed that, while most qdiscs are not handling
+TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
+address the issue by only allowing act_ct to bind to clsact/ingress
+qdiscs and shared blocks. That way it's still possible to attach act_ct to
+egress (albeit only with clsact).
 
-Instead ensure the task writing the interface has privileges that
-are a subset of the task that opened the interface. This is already
-done via policy for confined processes, but unconfined can delegate
-access to the opened fd, by-passing the usual policy check.
+[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
+[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
 
-Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+CC: stable@vger.kernel.org
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/apparmorfs.c     |   16 +++++++++-------
- security/apparmor/include/policy.h |    2 +-
- security/apparmor/policy.c         |   34 +++++++++++++++++++++++++++++++++-
- 3 files changed, 43 insertions(+), 9 deletions(-)
+ include/net/act_api.h |    1 +
+ net/sched/act_ct.c    |    6 ++++++
+ net/sched/cls_api.c   |    7 +++++++
+ 3 files changed, 14 insertions(+)
 
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -417,7 +417,8 @@ static struct aa_loaddata *aa_simple_wri
- }
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -70,6 +70,7 @@ struct tc_action {
+ #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
+ #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
+ #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
++#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
  
- static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
--			     loff_t *pos, struct aa_ns *ns)
-+			     loff_t *pos, struct aa_ns *ns,
-+			     const struct cred *ocred)
- {
- 	struct aa_loaddata *data;
- 	struct aa_label *label;
-@@ -428,7 +429,7 @@ static ssize_t policy_update(u32 mask, c
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(current_cred(), label, ns, mask);
-+	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
- 	if (error)
- 		goto end_section;
+ /* Update lastuse only if needed, to avoid dirtying a cache line.
+  * We use a temp variable to avoid fetching jiffies twice.
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1358,6 +1358,12 @@ static int tcf_ct_init(struct net *net,
+ 		return -EINVAL;
+ 	}
  
-@@ -449,7 +450,8 @@ static ssize_t profile_load(struct file
- 			    loff_t *pos)
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
--	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
-+	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
-+				  f->f_cred);
- 
- 	aa_put_ns(ns);
- 
-@@ -467,7 +469,7 @@ static ssize_t profile_replace(struct fi
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
- 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
--				  buf, size, pos, ns);
-+				  buf, size, pos, ns, f->f_cred);
- 	aa_put_ns(ns);
- 
- 	return error;
-@@ -492,7 +494,7 @@ static ssize_t profile_remove(struct fil
- 	 * below after unpack
- 	 */
- 	error = aa_may_manage_policy(current_cred(), label, ns,
--				     AA_MAY_REMOVE_POLICY);
-+				     f->f_cred, AA_MAY_REMOVE_POLICY);
- 	if (error)
- 		goto out;
- 
-@@ -1826,7 +1828,7 @@ static struct dentry *ns_mkdir_op(struct
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(current_cred(), label, NULL,
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
- 				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
-@@ -1876,7 +1878,7 @@ static int ns_rmdir_op(struct inode *dir
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(current_cred(), label, NULL,
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
- 				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
---- a/security/apparmor/include/policy.h
-+++ b/security/apparmor/include/policy.h
-@@ -419,7 +419,7 @@ bool aa_policy_admin_capable(const struc
- 			     struct aa_label *label, struct aa_ns *ns);
- int aa_may_manage_policy(const struct cred *subj_cred,
- 			 struct aa_label *label, struct aa_ns *ns,
--			 u32 mask);
-+			 const struct cred *ocred, u32 mask);
- bool aa_current_policy_view_capable(struct aa_ns *ns);
- bool aa_current_policy_admin_capable(struct aa_ns *ns);
- 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -925,17 +925,44 @@ bool aa_current_policy_admin_capable(str
- 	return res;
- }
- 
-+static bool is_subset_of_obj_privilege(const struct cred *cred,
-+				       struct aa_label *label,
-+				       const struct cred *ocred)
-+{
-+	if (cred == ocred)
-+		return true;
++	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
++		return -EOPNOTSUPP;
++	}
 +
-+	if (!aa_label_is_subset(label, cred_label(ocred)))
-+		return false;
-+	/* don't allow crossing userns for now */
-+	if (cred->user_ns != ocred->user_ns)
-+		return false;
-+	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
-+		return false;
-+	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
-+		return false;
-+	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
-+		return false;
-+	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
-+		return false;
-+	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
-+		return false;
-+	return true;
+ 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
+ 	if (err < 0)
+ 		return err;
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2228,6 +2228,11 @@ static bool is_qdisc_ingress(__u32 class
+ 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
+ }
+ 
++static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
++{
++	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
 +}
 +
-+
- /**
-  * aa_may_manage_policy - can the current task manage policy
-  * @subj_cred: subjects cred
-  * @label: label to check if it can manage policy
-  * @ns: namespace being managed by @label (may be NULL if @label's ns)
-+ * @ocred: object cred if request is coming from an open object
-  * @mask: contains the policy manipulation operation being done
-  *
-  * Returns: 0 if the task is allowed to manipulate policy else error
-  */
- int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
--			 struct aa_ns *ns, u32 mask)
-+			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
+ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 			  struct netlink_ext_ack *extack)
  {
- 	const char *op;
- 
-@@ -951,6 +978,11 @@ int aa_may_manage_policy(const struct cr
- 		return audit_policy(label, op, NULL, NULL, "policy_locked",
- 				    -EACCES);
- 
-+	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
-+		return audit_policy(label, op, NULL, NULL,
-+				    "not privileged for target profile",
-+				    -EACCES);
-+
- 	if (!aa_policy_admin_capable(subj_cred, label, ns))
- 		return audit_policy(label, op, NULL, NULL, "not policy admin",
- 				    -EACCES);
+@@ -2420,6 +2425,8 @@ replay:
+ 		flags |= TCA_ACT_FLAGS_NO_RTNL;
+ 	if (is_qdisc_ingress(parent))
+ 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
++	if (is_ingress_or_clsact(block, q))
++		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
+ 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
+ 			      flags, extack);
+ 	if (err == 0) {
 
 
 
