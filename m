@@ -1,179 +1,125 @@
-Return-Path: <stable+bounces-225169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EdVDpUhs2kNSgAAu9opvQ
-	(envelope-from <stable+bounces-225169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:01 +0100
+	id AJ7kIkois2m5SQAAu9opvQ
+	(envelope-from <stable+bounces-225190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:30:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94E227911E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254B92792B9
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AC6D3037468
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:26:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBD89304CA58
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B1935A3BA;
-	Thu, 12 Mar 2026 20:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B33B3B6BE0;
+	Thu, 12 Mar 2026 20:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPPOO+Gl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nq4y7Zep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EFD26F288;
-	Thu, 12 Mar 2026 20:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248B3B6369;
+	Thu, 12 Mar 2026 20:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347217; cv=none; b=BiPee1zFF59MvhaVLNreODGkVVk02IzOJ/J7IqRSeoqkwFRht5yMF1oDxzxry8yNAwncvX+yC8U5k4wTmqRQJMPTikuDxUO63Wgynx2Xt2vpLdjuqEPnyXdNb3hXINdxV+WK8e/zf0dc2sjgsmk8OGftDy5qzMGBPz1oxiOZFbU=
+	t=1773347296; cv=none; b=eoiJ9f/Wh4vu8SVwikqiwWCXUDdveWW4ZpLh3/DsKBZ1FSGlIutNUzL9VkT3Dth1kch8XZA2hsWgGRf0fyy/O7RJZXyR8orrfqQNwRcL2ggKkZFKgyumvJd5021M1FP//8ROY9BNed2Nr/FRqelTAlG2HqS/USiGZZY6wZTX45Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347217; c=relaxed/simple;
-	bh=EXbdlvcAEISRCTIj/fRp7LcdZGk6RNLgJWmXSu4/v+U=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lg3AKBWUPbM0smSnXuNewKa2WFf9GNKWzU+gEHG4uB+mWXN1HcaKVj42oxQi3Oi8XO72iGczeNO4r5SBWkDI3h8H+4c/67jlxNfMDHAt3rdx8FpKALY+4ZO5xgR2GOHT+RITOL0csKsQJ4h+We05Vu/VwLLez8V5nc1MYZUu0IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPPOO+Gl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FAAC4CEF7;
-	Thu, 12 Mar 2026 20:26:57 +0000 (UTC)
+	s=arc-20240116; t=1773347296; c=relaxed/simple;
+	bh=F1ll/FqUQ2tBY/aU1M1YNQdY1uvLBts236CWd2tZ/dU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WInDbxCDzBexXBKMJkmQq7a6VSdfe6CZDx888yyRW5A8KImHP/No05NT4vpNrO7bhWDjvDf2l5GBKD1jy+pdy+NnKrF5lIZNxL9InR7sSbJT7W68BJeOqExJXsfaAHFKVL5SwuwxNeyfqerC5zQSKq10ttbYsgkQqseT4BHoX/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nq4y7Zep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7C2C2BCAF;
+	Thu, 12 Mar 2026 20:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773347217;
-	bh=EXbdlvcAEISRCTIj/fRp7LcdZGk6RNLgJWmXSu4/v+U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YPPOO+Gl7JEobJqZojaZw/xyWvAOKIVlq/AMlB4DbeN/evH35Tho6EpDnLGo66ajR
-	 OWhfF6Swhaq38cM/YRShqZb7pYq0ozRELIU0CLoETJRSgDSGL8FmGNVvwrd063VfWB
-	 jo3EJWoMMlkRJKLK1vOGXTY4o84EkMH9JqhCH6QmvvFwvVYS3xF/6k3wMkYeGkapuJ
-	 Ab4LYRx3+r352mvS7juwf7nFwEhQBDcXM7TS9g3Hke+wn8wM8kLOqoLVCnTEBsuCuZ
-	 ozNkx1CPFlLNjP4ySW1PHVmoHAO3QcMWK0JZY7mvjgAQDldXRohSziKSsHdgPgkhH5
-	 s45Ya9/HYmjXg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1w0mcR-00000001Q1l-1Hrl;
-	Thu, 12 Mar 2026 20:26:55 +0000
-Date: Thu, 12 Mar 2026 20:26:54 +0000
-Message-ID: <87tsukdca9.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 004/265] KVM: arm64: Advertise support for FEAT_SCTLR2
-In-Reply-To: <20260312201018.304349696@linuxfoundation.org>
-References: <20260312201018.128816016@linuxfoundation.org>
-	<20260312201018.304349696@linuxfoundation.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1773347296;
+	bh=F1ll/FqUQ2tBY/aU1M1YNQdY1uvLBts236CWd2tZ/dU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nq4y7ZepCqNXHjc2V8+H8UJBcHlJUQokqqnSzUUXCPn/WMTFvJ5ycRiKPizw+4NDu
+	 HmfR3Fg7rqC1jhttW+nv3LyRXARmgNYYbrAmiiJveM/AeSrDQ40RkfF03LKRjHOZrH
+	 VfqSOaRvS6klDqFvyXQd389uUD0I21VElvhAgxEn2C0bph6taxBpJwRn6jb7lmJQ35
+	 DchIczFOSBMJCr8mnWp+QjJYNIag8MnyZ2qvmCezTyXrUohfQl4xEUrdZAviwAlkly
+	 i4RatSZRtx4hGcWmAkNWSUNie5dB0Z+cBB6M39fB95TB5lTai+KhjV/A1P2LTsd8Dl
+	 XgxePqAFIvSbQ==
+Date: Fri, 13 Mar 2026 07:28:11 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Morduan Zang <zhangdandan@uniontech.com>, cem@kernel.org,
+	zhanjun@uniontech.com, hch@lst.de, dchinner@redhat.com,
+	stable@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+d78ace33ad4ee69329d5@syzkaller.appspotmail.com
+Subject: Re: [PATCH] xfs: use GFP_NOFS in __xfs_trans_alloc
+Message-ID: <abMh2395Dkbrdgy0@dread>
+References: <24B50BB66059E3C8+20260312072214.475115-1-zhangdandan@uniontech.com>
+ <20260312142601.GI1770774@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, stable@vger.kernel.org, patches@lists.linux.dev, oliver.upton@linux.dev, sashal@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312142601.GI1770774@frogsfrogsfrogs>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225190-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dgc@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linux.dev:email]
-X-Rspamd-Queue-Id: C94E227911E
+	TAGGED_RCPT(0.00)[stable,d78ace33ad4ee69329d5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 254B92792B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 12 Mar 2026 20:06:31 +0000,
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Thu, Mar 12, 2026 at 07:26:01AM -0700, Darrick J. Wong wrote:
+> On Thu, Mar 12, 2026 at 03:22:14PM +0800, Morduan Zang wrote:
+> > __xfs_trans_alloc() allocates the transaction structure before
+> > xfs_trans_set_context() establishes the nofs context. If memory reclaim
+> > enters XFS through xfs_vn_sync_lazytime(), this GFP_KERNEL allocation can
+> > trigger a warning from the reclaim path.
+> > 
+> > Use GFP_NOFS for the transaction allocation to avoid filesystem reclaim
+> > recursion before the nofs context is set.
 > 
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> Why doesn't filesystem reclaim itself set PF_MEMALLOC_NOFS for us?
 
-I already objected to this nonsense [1]. This is actively creating a
-security hole. Please drop this patch.
+Because kswapd based memory reclaim runs in GFP_KERNEL
+memory allocation context. i.e. we're not in a recursion path here
+potentially holding other filesystem resources that we could
+deadlock on.
 
-If you can't drop this single patch and resolve the trivial conflict,
-please drop *all* KVM/arm64 patches.
+i.e. GFP_NOFS allocations are used to stop -direct reclaim- from
+recursing back into filesystem reclaim - it does not (and should
+not) stop kswapd from being able to reclaim filesystem objects.
 
-Thanks,
-
-	M.
-
-[1] https://lore.kernel.org/r/87zf4jd1xs.wl-maz@kernel.org
-
->
-> ------------------
-> 
-> From: Oliver Upton <oliver.upton@linux.dev>
-> 
-> [ Upstream commit 075c2dc7367e7e80d83adae8db597e48ceb7ba94 ]
-> 
-> Everything is in place to handle the additional state for SCTLR2_ELx,
-> which is all that FEAT_SCTLR2 implies.
-> 
-> Reviewed-by: Marc Zyngier <maz@kernel.org>
-> Link: https://lore.kernel.org/r/20250708172532.1699409-22-oliver.upton@linux.dev
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> Stable-dep-of: f66857bafd4f ("KVM: arm64: Hide S1POE from guests when not supported by the host")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/arm64/kvm/sys_regs.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-> index 5c09c788aaa61..784603a355487 100644
-> --- a/arch/arm64/kvm/sys_regs.c
-> +++ b/arch/arm64/kvm/sys_regs.c
-> @@ -1559,8 +1559,10 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
->  		val &= ~ID_AA64MMFR2_EL1_CCIDX_MASK;
->  		break;
->  	case SYS_ID_AA64MMFR3_EL1:
-> -		val &= ID_AA64MMFR3_EL1_TCRX | ID_AA64MMFR3_EL1_S1POE |
-> -			ID_AA64MMFR3_EL1_S1PIE;
-> +		val &= ID_AA64MMFR3_EL1_TCRX |
-> +		       ID_AA64MMFR3_EL1_SCTLRX |
-> +		       ID_AA64MMFR3_EL1_S1POE |
-> +		       ID_AA64MMFR3_EL1_S1PIE;
->  		break;
->  	case SYS_ID_MMFR4_EL1:
->  		val &= ~ARM64_FEATURE_MASK(ID_MMFR4_EL1_CCIDX);
-> @@ -2521,6 +2523,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
->  					ID_AA64MMFR2_EL1_NV |
->  					ID_AA64MMFR2_EL1_CCIDX)),
->  	ID_WRITABLE(ID_AA64MMFR3_EL1, (ID_AA64MMFR3_EL1_TCRX	|
-> +				       ID_AA64MMFR3_EL1_SCTLRX	|
->  				       ID_AA64MMFR3_EL1_S1PIE   |
->  				       ID_AA64MMFR3_EL1_S1POE)),
->  	ID_SANITISED(ID_AA64MMFR4_EL1),
-> -- 
-> 2.51.0
-> 
-> 
-> 
-> 
-
+-Dave.
 -- 
-Jazz isn't dead. It just smells funny.
+Dave Chinner
+dgc@kernel.org
 
