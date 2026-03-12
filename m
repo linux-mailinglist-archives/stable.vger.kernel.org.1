@@ -1,175 +1,240 @@
-Return-Path: <stable+bounces-224772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gK1yHr8CsmmHHwAAu9opvQ
-	(envelope-from <stable+bounces-224772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:03:11 +0100
+	id 8IFWKJwFsmnXHwAAu9opvQ
+	(envelope-from <stable+bounces-224773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DDD26B839
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:03:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8FE26B8DB
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 01:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6D2453015158
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:03:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 004A0310BD70
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 00:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12784224D6;
-	Thu, 12 Mar 2026 00:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D13282F07;
+	Thu, 12 Mar 2026 00:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bI9Q2bL6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4rGmvrl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E82A932
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 00:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773273782; cv=pass; b=n7ffI5QUSUoXhExkku58P9OR7y/WyNae4lHu4Koc1Sn7jC9MDNXr7h9RFvX0vG1DEiZU6kmbJZBn9aA51NxgKI4ZjBm1PtYKOrS2/OlRm/kVEEQXodC64TMAI3mTChG/Wk2UCbW2ZLiStLeM82JAnkuLhicAJ4kOdeG+e+zudJM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773273782; c=relaxed/simple;
-	bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=crbjL/9xEVXmPGZjwHUl7dzi+KJPCBEovmpoQQyRb0QGMU0g6cqbJcO7n6wuQueZ32qShq8UlaqrPeIJM85i0i6/kIl/gGfbYrEnJotNiCQOpP4a4kEMJluz7B0hgUhlDv9YrTZxtI42Yishwik/edhj1AWVgfan04uk9Uh2fao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bI9Q2bL6; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8C282F00
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 00:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773274493; cv=none; b=GHv5houEm74VYpFUEsx40HVknMBrAqByAme+HJUtwY42+bE5FS3Y+iI+Db+BsnTtxfqXH0I7sNZR13kDIUa12Zctt2MLeF/x6RZR/V5z+eXiFLopgdEfTfrclFCUZnvD4GvyM2RvyBLCep/cywq8bbO6LAO3sxn5gLY+kuNoNMg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773274493; c=relaxed/simple;
+	bh=VU9hS4DshrqjC9KyJtG7jj7YVnllYQOO9wjLpFxgylA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C0CAcoIKy/7amSCfTfG50vGwajJ1T6hhFLEDEmaIvdBJDX0qwFciEy/47U6CULGnA8P6WzNdThWhvZJO3fD3nkF7WSaCtinuYKCm6UgN3u9PER1I9gCjZGBnbVecYQH90fJTi7tQlusnOIeuT/0qNsh9ZmNMvyVuRTtsFr9aqXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4rGmvrl; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6631e0edcf1so524740a12.1
-        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:03:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773273780; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AVyiBENYYspcKspXAzIyPJULn9UOC+YTMoYYBjQ6xiywwGQH+JS+2oqy3KPU0fzFLR
-         vl58/Y5ygjjS2VK/E3TUK3HeFOn6EzZUiM4qdeZtFplmATdKz5JCQYRhyRsP8MWtDxzA
-         6pAGn+BKxoRmPplSIEIen2mfRkO4LHSQ7Mvm8mVoUZA9ueS+4PBG7EexeENRQh9RE2vO
-         SjE0g5u0wE8TMxOmnKHVGfNhKrTF6nUoxCagodPcj1kCanp3IDTcilW3Jx8bsUlqT8Lw
-         cJPx2X6qguE4XZpRZVhbET1kni4N7xWDgZ+aPKoKP2RoWLlCkmppeBME6NjxtPdSpb7P
-         ezvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
-        fh=ltUr4CntRUG9C0u7d/PzIKEHzL6I7p6vaqZvmEqHAog=;
-        b=MxHMz1HpBxxGNiuQp4QLyrxaOsL5FO9LS3oII2zeF6ovjBJRi2o238NvA6a6fYWaqa
-         GxALejDlSUOzQJZrwWAmnROVdWp04iphWbskOKX4AqXhjwgtlkotxNFj3+tKY8L1mt6t
-         j2M9WuKFlmaQcpaReT+f3+VoE7DzHbU/BgIQWWx5VCZKjNCL3bIIKqVJy9ZQ3VUNFe5V
-         IutfQf7q9rD8ko5/NjgAWVwUvpAD80UPXZ9mWNJ6zPSUdH0Xs+0M+bism1BUI4csX9nh
-         LLxtpw9Mx0N+o9KxVagu/ladsTfrEvpQpHbwFAc/+jlnOAxE7OSdHvxqvaZiAph4E3vW
-         wCww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ae505619baso3315585ad.2
+        for <stable@vger.kernel.org>; Wed, 11 Mar 2026 17:14:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773273780; x=1773878580; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
-        b=bI9Q2bL6t0IntIdPjcIXuu9eD/cl/ICISs0iUmGOCldworcV7ae9WeQ+CRMN5dqpm2
-         WlfDPSAlXUV4WTzCIG2LNOWOkrsic6uDLLX56xuEHMY1T7+4HUjnlcpHOusA2tT1PoVu
-         JXmPLfcMBYr+Q6fEEzdUv9OntRbzvLxegU7l9loRntfiYXRGje5HC9Pu0n8J3y3EQbgv
-         8Crvy7Tq9fqneh4rXTf85GOb5cXw9l5EoBKvn8ETd0VIwHh7aAMb5IXt+WPo4nS9XVZy
-         swhb+D7D5oTHWV4NONtojBxDrjKo+gBtYvCac1UjwOTNrpC/gULV7qqMcIsNCms0t/Pb
-         CLaQ==
+        d=gmail.com; s=20230601; t=1773274491; x=1773879291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KGcYYewbh7c7rM4xdHWS6lIG0/xScOPJj7plS5pDbyU=;
+        b=e4rGmvrl93bdeF5oLhBinfUWAL/b3rcPQCtTBSFIcOzxxfKDBxT45bmFCoplzdWG2F
+         8L4sEUG7dLIRpyDFOhi5/ozMYyIFLnj1MV0tHblvmtJrmdv0mU22E4FK14QTGsBc5USG
+         JbT4Wynsqxer8t826NexplNlLt2S7rC6z6Jc1dHrWygrVLHzEouC4P6zD0/oMhqs0PQi
+         kvaHrOPFbFmt3aAtTMMkmT70ulsmYdTc0Og2IHfeUG3IKgcaG08h8SPme2R9g4LNSRs8
+         TO4+4AG6TFU2pBgKhGuAl+5ilgqtDCQ08RWQdgHHX3WQfpmdpZr42zs3vXMQK0lv1zz8
+         4LMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773273780; x=1773878580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FTOaeeyG93FEF2oIGgYoaY5uDWfRBHcPgEq0TxAsTUk=;
-        b=am11cQCWV3Shz2XXTwQn2V+aVnPI6rd98wppDh20DLzPxlaSx6jWm7/2WQCX9IcdHa
-         XL9PIHZGxJ3+ITTVQdjlXt0AWTl2GvZpRtLn0/9qoe9MH0ClvQ6JGFguKHsShsSRCvE+
-         z1e5jev0DBxP7Oq9kmPxa34iPfqqf/K9iIQ3Zlj8y7UGzxmZ3HbKN1SYJUfIV/JEZH7h
-         mWSVe5CKWF6YQSg/vjW40vA6+zth3soU3pM96nZLdBxYVChrZdIpjtN9WORFpyOxuDlU
-         7y99M/Ar1fuEu1T33j6eB2D/QzAOpa9AnGr9nIJcYVcGI8cpXktdonUS50HZ9m3EAODh
-         yw3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVbhEv1Ep6nsyvKA2C/GwJG8KyIFXEUzUtvtc8vXqw54ooHyS8doUlphZkvDWY38lNb9B1ydaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgeZYAyFejNPcmhklnMvVvBxTaIUjczCXK91n0quj9ZApHBaTN
-	AeaLfjZ64ebyaXQrkN0yZEasIdcJD4aCBt5G/Gzv7+B4B1njtQp5sNwWcJ3R8wNpVIQaU4Ej02N
-	+WiK5CFjG7MiBEUEJ3xXURnJH4mDKyOY=
-X-Gm-Gg: ATEYQzwJsOuiJfNFZcjMt1rWT4+UlHysUp0YmLVyRs4b3Ny1Wu9+ry0PftZDG2lVKkU
-	0OiQOBhRG9j+wFCpB5ZkjJ4vIgMAZFfvpw+1A62Ad0yQqw7vEVUUXsmlcIt3EjDrGYfyM9TpTKg
-	1xqTyLxrNJFrqRAl1wTvLiwDoedK8b8qp/+UGyqfiG/bIbKK4ClSk8Do6+p1kHO+7Hd+E1ZiYdX
-	cBClu6sKvueweLTZMFfPsAOu1PQCTfTBvR5RWm3jpnDm178Ce5CEY2zjMLOcpOvjXSTpWYBiek/
-	lBmt1Gu0GcYaw25JPQlQcud/olYcY5YnE0HZImG0BDGB1jVb5F2y9sPYZtQ2Xa4IwQ==
-X-Received: by 2002:a17:907:d644:b0:b90:35c8:d01b with SMTP id
- a640c23a62f3a-b972e2c211dmr240675866b.36.1773273779420; Wed, 11 Mar 2026
- 17:02:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773274491; x=1773879291;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KGcYYewbh7c7rM4xdHWS6lIG0/xScOPJj7plS5pDbyU=;
+        b=YKc/Z1meF8zS3dfny9zZV/gMIagkL0VI+23NInx9m5QefdzN6oD4mIba/KwOR6xPvA
+         CHDX9WTvf255bbE5vrJ7SG6gv4DNSQhpemtA83abraDdkEq4EcMDJnmWCFDvguZbYmnI
+         K7uL6Hxwom5H4OQo60HwJNacQAdCIlEcTfRQ3wSQDhNKfoHyjqi0yFUgCHaNxdWpg2Zt
+         8Jpud7Xnmt0Fqg31PJQwQw8K6zBuELlviVr7d25IblQzWxDil+/t4rSZmr4MVu6uZA6O
+         /gq5Aom/J1hCRsPKrxW3U5BA2yxYHLrKGeNkfe9Kuyv0IPZ6u62Eo+3T+fnLyppcvMik
+         1QAA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5b65HoHwLlVYSlrxtarI9lzNjRziG5zaOx5gEzoGLoTKUhSH6Gk3BLYdcd0E3KPMBDiD49kQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyliJTRqLIcY6e+KrrMjKo1OQipUL2qUguMId2oweYG1B8Wz7e3
+	mwX5n6O4d5OPQQBfonDyGZChGbbp8MYDueoNTOl395rizZWvjMmVK/sD
+X-Gm-Gg: ATEYQzxH3OPXAaisda0UswcKTpvrD1Z4Xb5CvMJC89oe0zj2bjpn1yqu2Brj5mvs8uo
+	GaY5VgHbvxiZi8/mVjOl3MbSoHygWMeRk854EkoHEJRTLuqRuPbyGdEjD6EzZU06Obl0SuPYrNa
+	wcimj8djydSbefMMFv4vIeWrANueBwzRwcwlKnaQ+UXxGkxqUJJhDyv+5HBSaUrbAuDalCfSxlM
+	QJMu80mZC9sfVn7v/k3aW76aVXB1WRx5mWU17o+u/RQr+fNMvmd4wJPiQDBrIR7AV55s63TZt6i
+	jo9UxrXJUlD75kWH7G894nC23dSBGA93vN/Y35wEBm+xsNSsesR9hB7n/jn8IIP43P8wKlkkjq8
+	xszTMyZ5GhX7Et/BvXemG8go9qsrqtbD8SBv+9tLzYc2BaDQ2/A85v++0kknQIHSdAy2zF2yQqu
+	/iAjx92LbM15CfaJHLxE6cKcZoK7d3JGLXD3x7C7GnaYjWgAOHlY9p4swyHA8auJN0Obi0OQ==
+X-Received: by 2002:a17:903:8c4:b0:2ae:4dce:7e92 with SMTP id d9443c01a7336-2aeae7cb944mr44962445ad.14.1773274491119;
+        Wed, 11 Mar 2026 17:14:51 -0700 (PDT)
+Received: from kernel-fuzz.. ([138.199.21.245])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae35f0dbsm34835275ad.69.2026.03.11.17.14.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 17:14:50 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: dsterba@suse.com,
+	clm@fb.com,
+	wqu@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] btrfs: reject root items with drop_progress and zero drop_level
+Date: Thu, 12 Mar 2026 08:14:43 +0800
+Message-ID: <20260312001443.3011961-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311111632.2836293-1-gality369@gmail.com> <849ac4be-b10d-4eb7-892f-4b9ee2ef5cb2@gmx.com>
-In-Reply-To: <849ac4be-b10d-4eb7-892f-4b9ee2ef5cb2@gmx.com>
-From: ZhengYuan Huang <gality369@gmail.com>
-Date: Thu, 12 Mar 2026 08:02:47 +0800
-X-Gm-Features: AaiRm52HrIoULi8oRrw_KZxsuZhl503rFFhskRvicKXqoTqsxrnZiCjbkUhRSGc
-Message-ID: <CAOmEq9WDrM=0_KbFohSxgrpMxuin8hNaro9YsY8HgVASOf4KaA@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: reject root items with drop_progress and zero drop_level
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: dsterba@suse.com, clm@fb.com, wqu@suse.com, linux-btrfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, r33s3n6@gmail.com, 
-	zzzccc427@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224772-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.com];
-	FREEMAIL_CC(0.00)[suse.com,fb.com,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224773-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.com:email]
-X-Rspamd-Queue-Id: 84DDD26B839
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0E8FE26B8DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 5:08=E2=80=AFAM Qu Wenruo <quwenruo.btrfs@gmx.com> =
-wrote:
-> > [FIX]
-> > Fix this by validating the root_item invariant in tree-checker when
-> > reading root items from disk: if drop_progress.objectid is non-zero,
-> > drop_level must also be non-zero. Reject such malformed metadata with
-> > -EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
-> > and triggers the BUG_ON.
-> >
-> > Also fix the related tree-checker error message to report
-> > "invalid root drop_level" instead of the misleading "invalid root level=
-".
->
-> The only "fix" part I can see is the fix of the message from drop_level.
->
-> If you really want to do that, please send out a fix dedicated for that
-> single line.
->
-> Otherwise you're adding a new check. Please do not mix fix and new check
-> into one patch.
+[BUG]
+When recovering relocation at mount time, merge_reloc_root() and
+btrfs_drop_snapshot() both use BUG_ON(level == 0) to guard against
+an impossible state: a non-zero drop_progress combined with a zero
+drop_level in a root_item, which can be triggered:
 
-Thanks for the feedback.
-I'll split the message fix and the new validation check into separate
-patches and resend them.
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/relocation.c:1545!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 283 ... Tainted: 6.18.0+ #16 PREEMPT(voluntary) 
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Ubuntu 24.04 PC v2, BIOS 1.16.3-debian-1.16.3-2
+RIP: 0010:merge_reloc_root+0x1266/0x1650 fs/btrfs/relocation.c:1545
+Code: ffff0000 00004589 d7e9acfa ffffe8a1 79bafebe 02000000
+Call Trace:
+ merge_reloc_roots+0x295/0x890 fs/btrfs/relocation.c:1861
+ btrfs_recover_relocation+0xd6e/0x11d0 fs/btrfs/relocation.c:4195
+ btrfs_start_pre_rw_mount+0xa4d/0x1810 fs/btrfs/disk-io.c:3130
+ open_ctree+0x5824/0x5fe0 fs/btrfs/disk-io.c:3640
+ btrfs_fill_super fs/btrfs/super.c:987 [inline]
+ btrfs_get_tree_super fs/btrfs/super.c:1951 [inline]
+ btrfs_get_tree_subvol fs/btrfs/super.c:2094 [inline]
+ btrfs_get_tree+0x111c/0x2190 fs/btrfs/super.c:2128
+ vfs_get_tree+0x9a/0x370 fs/super.c:1758
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3642 [inline]
+ do_new_mount fs/namespace.c:3718 [inline]
+ path_mount+0x5b8/0x1ea0 fs/namespace.c:4028
+ do_mount fs/namespace.c:4041 [inline]
+ __do_sys_mount fs/namespace.c:4229 [inline]
+ __se_sys_mount fs/namespace.c:4206 [inline]
+ __x64_sys_mount+0x282/0x320 fs/namespace.c:4206
+ ...
+RIP: 0033:0x7f969c9a8fde
+Code: 0f1f4000 48c7c2b0 fffffff7 d8648902 b8ffffff ffc3660f
+---[ end trace 0000000000000000 ]---
 
-Thanks,
-ZhengYuan Huang
+[CAUSE]
+A non-zero drop_progress.objectid means an interrupted
+btrfs_drop_snapshot() left a resume point on disk, and in that case
+drop_level must be greater than 0 because the checkpoint is only
+saved at internal node levels.
+
+Although this invariant is enforced when the kernel writes the root
+item, it is not validated when the root item is read back from disk.
+That allows on-disk corruption to provide an invalid state with
+drop_progress.objectid != 0 and drop_level == 0.
+
+When relocation recovery later processes such a root item,
+merge_reloc_root() reads drop_level and hits BUG_ON(level == 0). The
+same invalid metadata can also trigger the corresponding BUG_ON() in
+btrfs_drop_snapshot().
+
+[FIX]
+Fix this by validating the root_item invariant in tree-checker when
+reading root items from disk: if drop_progress.objectid is non-zero,
+drop_level must also be non-zero. Reject such malformed metadata with
+-EUCLEAN before it reaches merge_reloc_root() or btrfs_drop_snapshot()
+and triggers the BUG_ON.
+
+The bug is reproducible on 7.0.0-rc2-next-20260310 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime. After
+the fix, the same corruption is correctly rejected by tree-checker
+and the BUG_ON is no longer triggered.
+
+Fixes: 259ee7754b67 ("btrfs: tree-checker: Add ROOT_ITEM check")
+Cc: stable@vger.kernel.org # 5.3+
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+[CHANGELOG]
+v2:
+- Split out the error message fix from the previous patch, as requested
+  during review.
+---
+ fs/btrfs/tree-checker.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index dd274f67ad7f..1e052c3303b3 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1260,6 +1260,23 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
+ 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
+ 		return -EUCLEAN;
+ 	}
++	/*
++	 * If drop_progress.objectid is non-zero, a btrfs_drop_snapshot() was
++	 * interrupted and the resume point was recorded in drop_progress and
++	 * drop_level.  In that case drop_level must be >= 1: level 0 is the
++	 * leaf level and drop_snapshot never saves a checkpoint there (it
++	 * only records checkpoints at internal node levels in DROP_REFERENCE
++	 * stage).  A zero drop_level combined with a non-zero drop_progress
++	 * objectid indicates on-disk corruption and would cause a BUG_ON in
++	 * merge_reloc_root() and btrfs_drop_snapshot() at mount time.
++	 */
++	if (unlikely(btrfs_disk_key_objectid(&ri.drop_progress) != 0 &&
++		     btrfs_root_drop_level(&ri) == 0)) {
++		generic_err(leaf, slot,
++			    "invalid root drop_level 0 with non-zero drop_progress objectid %llu",
++			    btrfs_disk_key_objectid(&ri.drop_progress));
++		return -EUCLEAN;
++	}
+ 
+ 	/* Flags check */
+ 	if (unlikely(btrfs_root_flags(&ri) & ~valid_root_flags)) {
+-- 
+2.43.0
+
 
