@@ -1,286 +1,307 @@
-Return-Path: <stable+bounces-224824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJU7E09/smkcNAAAu9opvQ
-	(envelope-from <stable+bounces-224824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:54:39 +0100
+	id EAqPJDqBsmm6NAAAu9opvQ
+	(envelope-from <stable+bounces-224826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:02:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6CC26F373
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:54:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678E926F531
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:02:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0337302F92C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 08:53:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F33E31909B6
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 08:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2300038B7B8;
-	Thu, 12 Mar 2026 08:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7282138AC94;
+	Thu, 12 Mar 2026 08:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AGs3Ujd8"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="aGkXHi1t"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5493D38CFF6;
-	Thu, 12 Mar 2026 08:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773305621; cv=fail; b=pyy0+4n4h0t3zVwLI+15WDKkPuKt0xitwvMtcGDFaiV4LQCPK4PTLowaV7tzC0C1VHOH4uIwDXXll2nWWfdWVO2z8r5FT/Y/N1B5T1h73Cy257DT10MjBPVKirlhYrmKjgcQ7IWLFV5lgP9x4aQcZJoSfm18EwYYDWUJHyc1fAI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773305621; c=relaxed/simple;
-	bh=BgX4lmXMzYtJcH8n7mTmC2FLpYNhtpTSVxh2iEJ7Azw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SlSy5N/kY7AKsYQcdc0Sss65Ucyh7GyVPuyx524s/g8to51abYGAtEwI6JOCDq9ppHb28lDOKKTqr8VfeXC7sDowWyuIt58+6gu2XEmbYZ7VsWABREfeK0zpGsJUiaGAgyobxOjnT5Xtq/ZhkPD66E4/jRjWWaSM7/xUfPm15MI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AGs3Ujd8; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773305621; x=1804841621;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=BgX4lmXMzYtJcH8n7mTmC2FLpYNhtpTSVxh2iEJ7Azw=;
-  b=AGs3Ujd8gZLoGrRoEX6gJ79oKO6N8ZDHZYirfJtHnhMDw60yAb9jNFjn
-   /VM2V1Pjx3yV2NlJ+LMaMGNyiv1htb9BEWhK0pK0OaVc0q+zeO2rubnlE
-   RJf1N9EX9EyyNgDjCmk8Gys4ni3aY1PA/4UNAS40EzGT81vVVqfQHhW5s
-   V/B3pYgPKztc/ktGwuNvLhNkH6v9yT9E+lw99VQvgeCcIMSD6dAgUJx+c
-   Qzcani+EGQ9lsu7tbSUXd2YB0qZMlPyJkMPMUKhJrJqa/wRuNO4ey7i0F
-   FRQoSKbluJ26PCFeqlMvXvusqoCWVaRC3uaK2ab44jBfT4II8GdkXLCU5
-   A==;
-X-CSE-ConnectionGUID: AJic8ixJS222qF0VhyYGqg==
-X-CSE-MsgGUID: DdXL6lB3T6+vqbykg61fWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="77993317"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="77993317"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 01:53:40 -0700
-X-CSE-ConnectionGUID: S25m8jvARa2ivdXuRxH6dg==
-X-CSE-MsgGUID: pKir4z8aSYilcM1crONO2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="246170947"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 01:53:39 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 01:53:38 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 12 Mar 2026 01:53:38 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.25) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 12 Mar 2026 01:53:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Az8MXYG+CEqLa2LymbkgysmMA3hOb5yKefJYv1QDiJTGnJSeg/9lHV4rYqI7PbuJrq9tNrNbzmmYZZEU4EPoIwIrPMreIK/0bkBV7XUXKh9jZp7BHh64KsHl3hpg2sVuiJ9RXlRQuvPY3ml7ZiPu9yT9yGvu6QQA9rDZ52BApmyXRPQqF0jZt1CvGCK7pG8a/Vp8fkhje25uDGaowoHYZKfZu9XvLKXGBG02ccfK0skRY4IqFTQ+3viEu50xnqYP4JUtWXxwlrpFnxXq4vZHfH02WPBMYa8b9dNak8+Rt4dulwg4RI22O/MZqYvuWcCu8GWGMBi5Ce16VIuta8gQsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BgX4lmXMzYtJcH8n7mTmC2FLpYNhtpTSVxh2iEJ7Azw=;
- b=S3Ot5kMIrbC/Jif0dmF7TOhWpoMJwXFydAVADYSFqEq1ffPphftSZzCcLbYCdN9sa/vSLQTnI0qhqp/aaAUdAkDsgX7gr4NdDKKwuTWgsqgM/jr36qByu69PvMhRVifSVxVoOv2b/LHRdLaXkfNVcftLvRiIEyxkt0RHRPahEQwdcFRradkM+7it9A4AyLzup3auuFpQ0ZLz/nIaKJ5IWTxwA/eZ+uTDsjP6r+jnEgtNobHRan9x+/F4irXBpvepy0BxO+wrFl8V81eN5jWGuCVZtGPUm960MevzVEvGLzTWHHP8fTCSsyemLngTu8zuB2oy7l2rI0GKFQfYEJxYjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::31) by SN7PR11MB6945.namprd11.prod.outlook.com
- (2603:10b6:806:2a8::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
- 2026 08:53:31 +0000
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::21b1:45ac:9e09:c86]) by DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::21b1:45ac:9e09:c86%7]) with mapi id 15.20.9723.000; Thu, 12 Mar 2026
- 08:53:31 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Alex Dvoretsky <advoretsky@gmail.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Fijalkowski, Maciej"
-	<maciej.fijalkowski@intel.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "kurt@linutronix.de" <kurt@linutronix.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH net v2] igb: remove napi_synchronize() in igb_down()
-Thread-Topic: [PATCH net v2] igb: remove napi_synchronize() in igb_down()
-Thread-Index: AQHcsZgqDmh09etGQ02x5ViiFuSQJbWql8yw
-Date: Thu, 12 Mar 2026 08:53:30 +0000
-Message-ID: <DS4PPF7551E65520F55DBD20987BCAE3C6FE544A@DS4PPF7551E6552.namprd11.prod.outlook.com>
-References: <abEtQwISGizUXIwf@boxer>
- <20260311204620.15763-1-advoretsky@gmail.com>
-In-Reply-To: <20260311204620.15763-1-advoretsky@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPF7551E6552:EE_|SN7PR11MB6945:EE_
-x-ms-office365-filtering-correlation-id: 51a23dd4-e234-4aae-7334-08de8014d5fb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|22082099003|18002099003|56012099003|38070700021;
-x-microsoft-antispam-message-info: hccuOVexvN/6+kbYYAGJND0qvmK8Ti2HNSBpyqFIJmjVZCbB9kd+G9tHevgWs75ryIBBRxbvNIjqLBQ6w54AVUyWuq4/KfHFwntx8DdbsUTGr0bQLPb+RZxKVxY4GDNt0DWjGveR7AOj4zlYG2jaLZ2tzpNzCIcdGz0M8HIhKex7r3z3AHRC1qzgKFgnjxAwLWxe4tLlLGGyCsP/0tbfonYRNsD6TzuKZTTgM24bcXYCYGkaOhsRVP3G0S0WhAOXOsmytcMN762bJNRZz6xRvKv1MlSnNSJBDJ4lFHNKVFI5ywDenvujm/+Lqau+btV/OveWSY0u4DwFPeDVV935+9LZUuYFt5FDbo88Bca6/xcbOOu8cBdy0+64yEEMdi1X1f2E6P+kAtlhER5QVfwhuswwECqVRILn5OplJIa/KWbqN4L7r9gwc03NC00RldTPqOlF/FB2J/Qz25L6Tj9dSBeEq1RJXKWdtBpIu1Hq9s0ewhm04E/FzEAK/t6gYRZQtzwNyqZWWbPEzTuuJ5ZuX9CFy+3I78MnRAb4J25GbcNb5sYa9lNqww5+RKkHPDOsNI7cD/NvDVgwF2/EH8w7WuXW0dRX4IKsxfzsXN49JygU8byj7g1uyhZwZR76iO6QkWZ3/qeVXexPOPFJpeNchUHCoMByeP6rqH7cOh8KV19N9QrtCllNjjdcDV8ti7WzyJKU3iKU/tgKr4qc/cyNIiDHedAO9/n6U9Ew1qcGDGUb/s38XKsCavnbNEGxg0MQKeLpntKDiPN3wVpBsHoTzX/1nzjQzIW5TqqFoEF0/x0=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF7551E6552.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?V2dDSTZ6UlAwNUFMQ2wxWk5HZ3REM212dHphR3NiZ0grcml2MDEyS2xvWjNy?=
- =?utf-8?B?S1dEMzE4VC80WFU3MmhPY3NsSGs2alo1Y1VDOUFPYmQvbkFTSGV1NkoweXEx?=
- =?utf-8?B?NXBLV1AyYmVFWStrNjdxRFlxbHlrQWd4NGNMNWlvOS9MNkZZbGRDaFBqTzJl?=
- =?utf-8?B?ekVWWlNuUVRHN0hVZDQzY2NkNk9iL3d6WlF2eW1LRVJzMjJGeTVGS0xsZVpk?=
- =?utf-8?B?MnY2WmlUYzVLUDR3YlN3SlZZZFF3bEFublBDOE9lUnpkZ1AwMDZ3eHAreFFJ?=
- =?utf-8?B?SytvemRTNkdSV0thaTNCVkdadHBTelBJWm5URS9abUZHOE1YMVFTbC9YRmcw?=
- =?utf-8?B?dVUvV1FnMzNBNmsvblZPOXF5RXRJdFhMRmdNcjI5Z2k2QitSMWNKTjVtdVFj?=
- =?utf-8?B?WEw2cTFKd0wyb0lWS3pMK3NFWTRRNWJZSGhmeURmcGRDTms1Wit6VHBEWEIr?=
- =?utf-8?B?OHF5THQraUxIMmJzaFVLTjRZZHBSQm1DeWg0SXA1dmowcCtpWjJsL0VnUVlq?=
- =?utf-8?B?REVLb291dWV4K1d4eHJXUVNPejUzU1NkUm9RaTVIMEpydU9pVmtEN25Bek14?=
- =?utf-8?B?TnZkMWtkaVVMd0Rlck9VUElIVXhjekJYeEo1dzhrY0pSdndQb3ZiWFhCWFpF?=
- =?utf-8?B?bmlPZUlpWUdHNmViMWtsR1VSUjBlM2xBOEt3Nk5sT1Vtd3hoZDAzbVpNK0c0?=
- =?utf-8?B?K2dTU21ObVNCYTRvNGtpbURwUThuSG4yaTZ4Nk9McFI5YUg0MjFFNXV0Mys1?=
- =?utf-8?B?Vll5ZFd0bm4xa1o3OTJDVnhIYnI3RGVhVGlhcnZFa0NKQkZkRWp3Mkx2Ulht?=
- =?utf-8?B?THFJWitHSDFqWWc4dHpyL3NhT0tyRmM0RVBjbmxMY2ZMckRqMnh4TUtYZEdl?=
- =?utf-8?B?Q05oK0dkUDNsOWVVWVk1Z2tGT0JmQ2xjRzNUVVlCZ09wVE54Qk4wcWNMcmNN?=
- =?utf-8?B?VXhWckpOLzc5TEFJeUhHQWtUbThLZmZWKytQMXhBS013N0VkZytaZDZBa3hi?=
- =?utf-8?B?NmVpRHNtLzJGaE5zTWxPYnB1UktmR3lyZStNd2V1K2VzZjI0c29GQlBvYXlL?=
- =?utf-8?B?cVhYT2F1MkNnZmJ1bFdxUzMyZjhKNm5QbS9uOWs4UVozUWd6Tkx3aFZqek1a?=
- =?utf-8?B?SGtZTTBzOWJGRHBQazNkSVRZR2FBaE9SN2pEMEZRbHhGejdyU1dzVFgzWUpM?=
- =?utf-8?B?ZjVuZ2lnV2JZV3pieUdZR3BxMkpxMDBCWDg0c2tVbXBvdFlvczJRY2d6TlNT?=
- =?utf-8?B?dXp4eE8xZXVNRGdYRk84NUxaN0pGbEFMdnRWeUo1b3QwWXRCR3N3bGd0YzdC?=
- =?utf-8?B?MjFWVEI4ZTlUMkxZNlNQUGhseUJxZGo4T3pHcEozU1lSY29SNGpjNmNtdHR5?=
- =?utf-8?B?RUF6T2pvRENVWS9qZDVESE5lRG1LMzFRc0dWTk1lWEkwNFh3blVqcWhqc0lC?=
- =?utf-8?B?UUJFb2JubjByMUVPc0hYZWg3M3JrVy9XWk1BQ3JCR1FtWjN5b2w2T1Y0RUxz?=
- =?utf-8?B?OTdyWlZyQzEwd0hGTzAwYjRTL0syTmFiTkQxZVhxZ2lCMk1QZFJlRzZ6eW85?=
- =?utf-8?B?UlRjUjBSSGx3UE9tSXZybzlOTkNIcFFCdDR2SUYxdGtoa2V0WTN2c0hKbVRk?=
- =?utf-8?B?cUt6T1cycnZlbERVaXN4bUJFK01UL1dUNlArYWExVDAyRzBhc0N5MTZMa0Rl?=
- =?utf-8?B?cEpKdkhmdlhlaTFNdnlmUHZUOXNYSVF5UkQrYjVjZzhORCtlRW83ZzRydnRB?=
- =?utf-8?B?NFhrNzl5L2lxNWZISGc2eXk5aGR2Zk1ZOHdnL08rRHJXNHJybTRCRVFWa2Nm?=
- =?utf-8?B?ZWtBQWZCTUx5UlRubVFoQ3RCMDVvWVJpSThzcXFqdHQxakVNQnJjT3ZHQjAx?=
- =?utf-8?B?YXYxbzd1MmdoOHY1WTREYlg4TEhJVlBSNks0VTRwdVI2SjdsYWNtM0QxVURw?=
- =?utf-8?B?MDdXSnFGK0FueWVQMjQyK1RSOEJMRnNCa25EaU9nZjhjRm1hZWlabENYNTJB?=
- =?utf-8?B?WjcxblNKNzJZZHFIUXQyZXplV1QxUS9NTUZwRGZEcFVjSmRhK1laa2dWeElS?=
- =?utf-8?B?NmZQZk9MNjcxS092WmJxdEY0ZmxnbklHR0R5aFRyZ0QwTC8zbTBPSm9DaHVo?=
- =?utf-8?B?TWZaZjMvNGVHeW14QWplNzBEOXdqYnRQenB5TWxjeXExdkdiWitYVnlya0hL?=
- =?utf-8?B?R1lsU0x4YVBoc1krNGxETEt2dm5rRU1KODRFNmdiTGUwbWswUmIyTjJKcy9X?=
- =?utf-8?B?ZHRqbEFhbyszZXorcGsrdklXSUs2YlA4M3FMVDhtV2VIVlVseVF2VDZVcld1?=
- =?utf-8?B?QjV6QjFYQ0ZiSTltWlhRSGordFIxYkYrbys0akx6YTBLYVkrRC95ckxacFBy?=
- =?utf-8?Q?o+i64ygWVej0S2jM=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC1B2868A9;
+	Thu, 12 Mar 2026 08:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773305801; cv=none; b=HDMGuzaNMlsNxjmNXowFVFcvEw6Qr/Y3LvBPZ7dMuANTAWJHxYF8sk09zqqVdR9glOnX59i8DloTjd1as0zbcu8LvNg55gIXr5qV1GvboPF+ZfuydDFzYxqG7V+JbKJHcCrQc/zOwnskmaQpt+UCrJLJx2OKXHH5JG/KchE8XXo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773305801; c=relaxed/simple;
+	bh=udAADNla+gD5Kg7TNNkEjGVgcZhIt9VleXGFPsnbd1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ewBlAodNWd9DitDCu2agKxiKQ1nJQeK0hDM6ObTQJP+etnLoyUz4mkLNig318xAfMzeuC0omrjdn2/MJv3Pp+vtjsQjI2KoVwWdh0r8qEi6Ei66T2DfNdb2wPxbFAhnvTXB/V6yAlbecFW+RPy8AOirvRIuF8K1Z6sW0UpDGml8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=aGkXHi1t; arc=none smtp.client-ip=188.68.63.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fWhKl1x7bz3yl1;
+	Thu, 12 Mar 2026 09:55:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1773305755;
+	bh=udAADNla+gD5Kg7TNNkEjGVgcZhIt9VleXGFPsnbd1E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aGkXHi1tlw5rw4xnlTBGIkPAht7Z2SbsUnoN1gjmGTWD2b67dmovA2Kzl3bvcKIyw
+	 kxwYRwskG+iLRhNieECEFgbTpoK1c2W2/YhcGAdeBZR78SQ7wZjpyBWxGa5TvbqGSh
+	 P5MoxS4z8lAXt9nj9gRF8lU/jUoHO3Ql+eXDmzwpSJqych4+MZizZ6tZjiPh8y6Xp8
+	 +Ot42dlDwrZHrOA8Da37V3FrLqptq8kdbcOfH9DoDcVIhKkqn0qQ/U1lh2hniSt1Aw
+	 jkBhtN17EuBz0+QV7nMsJTfQpXMtg1jJV2gZZwKBacvRfRJ5xA5aiHlHB/JyITb4G8
+	 kKeUfFnDZ4V6A==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fWhKl1BM8z3yfx;
+	Thu, 12 Mar 2026 09:55:55 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fWhKk3dHwz8svH;
+	Thu, 12 Mar 2026 09:55:54 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 8A99D61790;
+	Thu, 12 Mar 2026 09:55:53 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
+Date: Thu, 12 Mar 2026 09:55:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: twM9U+rgsOS2Me1NItqo++wYHcJq5ogARygMZ0UwWti14DbqX3c+rWzLRkPZo6/owI3yrrO6sbJeKaFvBJdZ38iWRIGPlBkSWcPUyOIV1UtMdS9tmi2hMXRTbSTbrQT6ARSel5WzbIQ/EkD2n5J1mCzVwqpodjCiHqMihQzmH0ccNhIuqWmZffhNsbAzxxlaf5ywUxlGkQ/9rJG406+I/kbHHvWEuc4/rsr8kPv64rPGQ1VAFljzwNikbInn5cwIQLJ2bAxk1q+OnJkNsNVbO0mueduU5pEFZzkw3Mz7a/dptIl8p5srzNfs/s36id2tEwwGNl/r/a7wYO+Dyrq8ag==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF7551E6552.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51a23dd4-e234-4aae-7334-08de8014d5fb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2026 08:53:31.0592
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1/OxHVe4gdulzk7bfGgZJwHuqimip56SDrmkRycC8mzu2gKaFU5V1ORHsdlYCt5hmLiarbBoDouokIdtudkkPaA1KxshqyrchYM3064K1+o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6945
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No
+ locks available
+To: NeilBrown <neil@brown.name>, Jeff Layton <jlayton@kernel.org>
+Cc: 1128861@bugs.debian.org, Tj <tj.iam.tj@proton.me>,
+ linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>,
+ stable@vger.kernel.org
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+ <177266540127.7472.3460090956713656639@noble.neil.brown.name>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+X-Enigmail-Draft-Status: N11222
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <177266540127.7472.3460090956713656639@noble.neil.brown.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <177330575393.3930331.13341792167684566239@mxe9fb.netcup.net>
+X-NC-CID: URiz7v8X2Yjl7b8Z2nfSBppfzzGFbIqUAbGcAHeTkCEdl1WsA3E=
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224824-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,lists.osuosl.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,osuosl.org:email,linutronix.de:email,DS4PPF7551E6552.namprd11.prod.outlook.com:mid];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224826-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[leemhuis.info];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aleksandr.loktionov@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MAILSPIKE_FAIL(0.00)[2600:3c0a:e001:db::12fc:5321:query timed out];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 6D6CC26F373
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 678E926F531
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQWxleCBEdm9yZXRza3kg
-PGFkdm9yZXRza3lAZ21haWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIE1hcmNoIDExLCAyMDI2
-IDk6NDUgUE0NCj4gVG86IGludGVsLXdpcmVkLWxhbkBsaXN0cy5vc3Vvc2wub3JnDQo+IENjOiBu
-ZXRkZXZAdmdlci5rZXJuZWwub3JnOyBGaWphbGtvd3NraSwgTWFjaWVqDQo+IDxtYWNpZWouZmlq
-YWxrb3dza2lAaW50ZWwuY29tPjsgTG9rdGlvbm92LCBBbGVrc2FuZHINCj4gPGFsZWtzYW5kci5s
-b2t0aW9ub3ZAaW50ZWwuY29tPjsgTmd1eWVuLCBBbnRob255IEwNCj4gPGFudGhvbnkubC5uZ3V5
-ZW5AaW50ZWwuY29tPjsgS2l0c3plbCwgUHJ6ZW15c2xhdw0KPiA8cHJ6ZW15c2xhdy5raXRzemVs
-QGludGVsLmNvbT47IGt1cnRAbGludXRyb25peC5kZTsNCj4gc3RhYmxlQHZnZXIua2VybmVsLm9y
-ZzsgQWxleCBEdm9yZXRza3kgPGFkdm9yZXRza3lAZ21haWwuY29tPg0KPiBTdWJqZWN0OiBbUEFU
-Q0ggbmV0IHYyXSBpZ2I6IHJlbW92ZSBuYXBpX3N5bmNocm9uaXplKCkgaW4gaWdiX2Rvd24oKQ0K
-PiANCj4gV2hlbiBhbiBBRl9YRFAgemVyby1jb3B5IGFwcGxpY2F0aW9uIHRlcm1pbmF0ZXMgYWJy
-dXB0bHkgKGUuZy4sIGtpbGwgLQ0KPiA5KSwgdGhlIFhTSyBidWZmZXIgcG9vbCBpcyBkZXN0cm95
-ZWQgYnV0IE5BUEkgcG9sbGluZyBjb250aW51ZXMuDQo+IGlnYl9jbGVhbl9yeF9pcnFfemMoKSBy
-ZXBlYXRlZGx5IHJldHVybnMgdGhlIGZ1bGwgYnVkZ2V0LCBwcmV2ZW50aW5nDQo+IG5hcGlfY29t
-cGxldGVfZG9uZSgpIGZyb20gY2xlYXJpbmcgTkFQSV9TVEFURV9TQ0hFRC4NCj4gDQo+IGlnYl9k
-b3duKCkgY2FsbHMgbmFwaV9zeW5jaHJvbml6ZSgpIGJlZm9yZSBuYXBpX2Rpc2FibGUoKSBmb3Ig
-ZWFjaA0KPiBxdWV1ZSB2ZWN0b3IuIG5hcGlfc3luY2hyb25pemUoKSBzcGlucyB3YWl0aW5nIGZv
-ciBOQVBJX1NUQVRFX1NDSEVEIHRvDQo+IGNsZWFyLCB3aGljaCBuZXZlciBoYXBwZW5zLiBpZ2Jf
-ZG93bigpIGJsb2NrcyBpbmRlZmluaXRlbHksIHRoZSBUWA0KPiB3YXRjaGRvZyBmaXJlcywgYW5k
-IHRoZSBUWCBxdWV1ZSByZW1haW5zIHBlcm1hbmVudGx5IHN0YWxsZWQuDQo+IA0KPiBuYXBpX2Rp
-c2FibGUoKSBhbHJlYWR5IGhhbmRsZXMgdGhpcyBjb3JyZWN0bHk6IGl0IHNldHMNCj4gTkFQSV9T
-VEFURV9ESVNBQkxFLg0KPiBBZnRlciBhIGZ1bGwtYnVkZ2V0IHBvbGwsIF9fbmFwaV9wb2xsKCkg
-Y2hlY2tzIG5hcGlfZGlzYWJsZV9wZW5kaW5nKCkuDQo+IElmIHNldCwgaXQgZm9yY2VzIGNvbXBs
-ZXRpb24gYW5kIGNsZWFycyBOQVBJX1NUQVRFX1NDSEVELCBicmVha2luZyB0aGUNCj4gbG9vcCB0
-aGF0IG5hcGlfc3luY2hyb25pemUoKSBjYW5ub3QuDQo+IA0KPiBuYXBpX3N5bmNocm9uaXplKCkg
-d2FzIGFkZGVkIGluIGNvbW1pdCA0MWYxNDlhMjg1ZGEgKCJpZ2I6IEZpeA0KPiBwb3NzaWJsZSBw
-YW5pYyBjYXVzZWQgYnkgUnggdHJhZmZpYyBhcnJpdmFsIHdoaWxlIGludGVyZmFjZSBpcyBkb3du
-IikuDQo+IG5hcGlfZGlzYWJsZSgpIHByb3ZpZGVzIHN0cm9uZ2VyIGd1YXJhbnRlZXM6IGl0IHBy
-ZXZlbnRzIGZ1cnRoZXINCj4gc2NoZWR1bGluZyBhbmQgd2FpdHMgZm9yIGFueSBhY3RpdmUgcG9s
-bCB0byBleGl0Lg0KPiBPdGhlciBJbnRlbCBkcml2ZXJzIChpeGdiZSwgaWNlLCBpNDBlKSB1c2Ug
-bmFwaV9kaXNhYmxlKCkgd2l0aG91dCBhDQo+IHByZWNlZGluZyBuYXBpX3N5bmNocm9uaXplKCkg
-aW4gdGhlaXIgZG93biBwYXRocy4NCj4gDQo+IFJlbW92ZSByZWR1bmRhbnQgbmFwaV9zeW5jaHJv
-bml6ZSgpIGNhbGwuDQo+IA0KPiBGaXhlczogMmM2MTk2MDEzZjg0ICgiaWdiOiBBZGQgQUZfWERQ
-IHplcm8tY29weSBSeCBzdXBwb3J0IikNCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4g
-U2lnbmVkLW9mZi1ieTogQWxleCBEdm9yZXRza3kgPGFkdm9yZXRza3lAZ21haWwuY29tPg0KPiAt
-LS0NCj4gVGhhbmtzIGZvciB0aGUgc3VnZ2VzdGlvbiwgTWFjaWVqLiBJIHRlc3RlZCByZW1vdmlu
-Zw0KPiBuYXBpX3N5bmNocm9uaXplKCkgYW5kIGl0IGZpeGVzIHRoZSBpc3N1ZSBjbGVhbmx5IOKA
-lCBuYXBpX2Rpc2FibGUoKQ0KPiBoYW5kbGVzIHRoZSBzdHVjayBwb2xsIHZpYSBOQVBJX1NUQVRF
-X0RJU0FCTEUgd2l0aG91dCBuZWVkaW5nIGFueSBob3QtDQo+IHBhdGggY2hhbmdlcy4NCj4gDQo+
-IHYyOg0KPiAgIC0gUmVwbGFjZWQgMy1wYXRjaCBzZXJpZXMgd2l0aCBzaW5nbGUgbmFwaV9zeW5j
-aHJvbml6ZSgpIHJlbW92YWwsDQo+ICAgICBwZXIgTWFjaWVqIEZpamFsa293c2tpJ3Mgc3VnZ2Vz
-dGlvbi4gbmFwaV9kaXNhYmxlKCkgaGFuZGxlcyB0aGUNCj4gICAgIHN0dWNrIE5BUEkgcG9sbCB2
-aWEgTkFQSV9TVEFURV9ESVNBQkxFLCBtYWtpbmcgdGhlIF9fSUdCX0RPV04NCj4gICAgIGNoZWNr
-cyBpbiBpZ2JfY2xlYW5fcnhfaXJxX3pjKCkgYW5kIGlnYl90eF90aW1lb3V0KCksIGFuZCB0aGUN
-Cj4gICAgIHRyYW5zaXRpb24gZ3VhcmRzIGluIGlnYl94ZHBfc2V0dXAoKSwgYWxsIHVubmVjZXNz
-YXJ5Lg0KPiAgIC0gVGVzdGVkIG9uIEludGVsIEkyMTAgKGlnYikgd2l0aCBBRl9YRFAgemVyby1j
-b3B5OiBmdWxsIEUyRQ0KPiAgICAgdHJhZmZpYyBzdWl0ZSwgZ3JhY2VmdWwgc2h1dGRvd24sIGFu
-ZCA1eCBraWxsLTkgc3RyZXNzIGN5Y2xlcy4NCj4gICAgIFplcm8gdHhfdGltZW91dCBldmVudHMu
-DQo+IA0KPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWdiL2lnYl9tYWluLmMgfCAxIC0N
-Cj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWdiL2lnYl9tYWluLmMNCj4gYi9kcml2ZXJzL25ldC9l
-dGhlcm5ldC9pbnRlbC9pZ2IvaWdiX21haW4uYw0KPiBpbmRleCAxMmU4ZTMwZDhhMmQuLmExYjNj
-NWU0ZjdkMiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWdiL2ln
-Yl9tYWluLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWdiL2lnYl9tYWlu
-LmMNCj4gQEAgLTIyMDMsNyArMjIwMyw2IEBAIHZvaWQgaWdiX2Rvd24oc3RydWN0IGlnYl9hZGFw
-dGVyICphZGFwdGVyKQ0KPiANCj4gIAlmb3IgKGkgPSAwOyBpIDwgYWRhcHRlci0+bnVtX3FfdmVj
-dG9yczsgaSsrKSB7DQo+ICAJCWlmIChhZGFwdGVyLT5xX3ZlY3RvcltpXSkgew0KPiAtCQkJbmFw
-aV9zeW5jaHJvbml6ZSgmYWRhcHRlci0+cV92ZWN0b3JbaV0tPm5hcGkpOw0KPiAgCQkJaWdiX3Nl
-dF9xdWV1ZV9uYXBpKGFkYXB0ZXIsIGksIE5VTEwpOw0KPiAgCQkJbmFwaV9kaXNhYmxlKCZhZGFw
-dGVyLT5xX3ZlY3RvcltpXS0+bmFwaSk7DQpPay4gQnV0IEnigJlkIHN3YXAgdGhlIHR3byByZW1h
-aW5pbmcgY2FsbHMgc28gd2UgZG9u4oCZdCBtb2RpZnkgYW55IHBlcuKAkXF1ZXVlIE5BUEkgcGx1
-bWJpbmcgd2hpbGUgdGhlIHBvbGwgY291bGQgc3RpbGwgYmUgcnVubmluZy4NCldoYXQgZG8geW91
-IHRoaW5rPw0KDQotICAgICAgIGlnYl9zZXRfcXVldWVfbmFwaShhZGFwdGVyLCBpLCBOVUxMKTsN
-Ci0gICAgICAgbmFwaV9kaXNhYmxlKCZhZGFwdGVyLT5xX3ZlY3RvcltpXS0+bmFwaSk7DQorICAg
-ICAgIG5hcGlfZGlzYWJsZSgmYWRhcHRlci0+cV92ZWN0b3JbaV0tPm5hcGkpOw0KKyAgICAgICBp
-Z2Jfc2V0X3F1ZXVlX25hcGkoYWRhcHRlciwgaSwgTlVMTCk7DQoNClJldmlld2VkLWJ5OiBBbGVr
-c2FuZHIgTG9rdGlvbm92IDxhbGVrc2FuZHIubG9rdGlvbm92QGludGVsLmNvbT4NCg0KPiAgCQl9
-DQo+IC0tDQo+IDIuNTEuMA0KDQo=
+On 3/5/26 00:03, NeilBrown wrote:
+> On Tue, 24 Feb 2026, Tj wrote:
+>> Upstream commit 4cc9b9f2bf4dfe13fe573 "nfsd: refine and rename 
+>> NFSD_MAY_LOCK" and
+>>   stable v6.12.54 commit 18744bc56b0ec  (re)moves checks from 
+>> fs/nfsd/vfs.c::nfsd_permission().
+>>
+>>   This causes NFS clients to see
+>>
+>> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+>> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
+>>
+>> Keeping the check in nfsd_permission() whilst also copying it to 
+>> fs/nfsd/nfsfh.c::__fh_verify() resolves the issue.
+>>
+>> This was discovered on the Debian openQA infrastructure server when 
+>> upgrading kernel from v6.12.48 to later v6.12.y where worker hosts (with 
+>> any earlier or later kernel version) pass NFSv3 mounted ISO images to 
+>> qemu-system-x86_64 and it reports:
+
+Neil, thx for the explanation.
+
+Jeff, do you have any opinion on what Neil suggested (see quote below).
+
+But as Neil mentioned, it's a regression, so it must be handled some
+way. And it looks like this stalled. Given that the commit in that
+caused this is somewhat old, I wonder:
+
+Is that something we expect other people to run into?
+
+If yes, I'd say Linus expects us to fix this.
+
+And if not: is there something the Debian openQA infra (a) can and (b)
+is willing to do to work around this regression cleanly (by upgrading
+Qemu or something like that maybe)? Then we maybe can leave things as
+they are[1].
+
+Ciao, Thorsten
+
+[1] see the hand-holding aspect mention in
+https://www.kernel.org/doc/html/next/process/handling-regressions.html#on-exceptions-to-the-no-regressions-rule
+
+>> !!! : qemu-system-x86_64: -device 
+>> scsi-cd,id=cd0-device,drive=cd0-overlay0,serial=cd0: Failed to get 
+>> "consistent read" lock: No locks available
+>> QEMU: Is another process using the image 
+>> [/var/lib/openqa/pool/2/20260223-1-debian-testing-amd64-netinst.iso]?
+>>
+>> A simple reproducer with the server using:
+>>
+>> # cat /etc/exports.d/test.exports
+>> /srv/NAS/test 
+>> fdff::/64(fsid=0,rw,no_root_squash,sync,no_subtree_check,auth_nlm)
+>>
+>> and clients using:
+>>
+>> # mount -t nfs [fdff::2]:/srv/NAS/test /srv/NAS/test -o 
+>> proto=tcp6,ro,fsc,soft
+> 
+> Linux has two quite different sorts of locks - flock and fcntl.
+> flocks lock the whole file, shared or exclusive.
+> fcntl can lock any byte-range (including the whole file), shared or
+> exclusive.  flock and fcntl locks don't conflict.
+> 
+> exclusive flock locks only require read access to the file
+> exclusive fcntl locks require write access to the file.
+> 
+> The NLM protocol only supports one type of byte-range lock.  It is
+> natural to map fcntl locks onto NLM locks.  The early Linux NFS
+> implementation handled flock locks entirely locally so different clients
+> didn't conflict.  This could be confusing but was widely documented and
+> understood.
+> Some years ago Linux NFS was enhanced to handle flock locks like
+> whole-file fcntl locks.  This means that clients with flock locks would
+> conflict (maybe good) but that flock locks and fcntl locks would now
+> conflict (maybe bad).
+> You can still get the old behaviour with "-o local_lock=flock".
+> 
+> So if you open a file on NFS read-only and attempt an exclusive flock,
+> that will be sent to the server as a full-range fcntl lock which should
+> require write access.  If the server finds you don't have write access -
+> you lose.
+> 
+> It would seems to make sense to tell qemu that the device is read-only. 
+> Then it will hopefully only request a shared lock.  Can you try that?
+> 
+> Note that even before my patch, if the filesystem was exported read-only
+> or mounted read-only on the server, then exclusive flock locks would
+> fail.
+> 
+> I think that the current behaviour is correct, however I do understand
+> that it is a regression and maybe that justifies incorrect behaviour.
+> Maybe Jeff, as locking maintainer, would be willing to do something like
+> 
+> diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+> index dd0214dcb695..6c674fc51bab 100644
+> --- a/fs/lockd/svcsubs.c
+> +++ b/fs/lockd/svcsubs.c
+> @@ -73,6 +73,14 @@ static inline unsigned int file_hash(struct nfs_fh *f)
+>  
+>  int lock_to_openmode(struct file_lock *lock)
+>  {
+> +	/*
+> +	 * flock only requires READ access and to support
+> +	 * clients which send flock locks via NLM we
+> +	 * report O_RDONLY for full-file locks.
+> +	 */
+> +	if (lock->fl_start == 0 &&
+> +	    lock->fl_end == NLM4_OFFSET_MAX)
+> +		return O_RDONLY;
+>  	return lock_is_write(lock) ? O_WRONLY : O_RDONLY;
+>  }
+>  
+> 
+> But I wouldn't encourage him to.
+> 
+> NeilBrown
+> 
+> 
+>>
+>> will trigger the error as shown above:
+>>
+>> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
+>> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
+>>
+>> A simple test program calling fcntl() with the same arguments QEMU uses 
+>> also fails in the same way.
+>>
+>> $ ./nfs3_range_lock_test 
+>> /srv/NAS/test/debian-13.3.0-amd64-netinst.{iso,overlay}
+>> Opened base file: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+>> Opened overlay file: /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+>> Attempting lock at 4 on /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
+>> fcntl(fd, F_GETLK, &fl) failed on base: No locks available
+>> Attempting lock at 8 on /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
+>> fcntl(fd, F_GETLK, &fl) failed on overlay: No locks available
+>>
+>>
+>>
+>>
+> 
+
 
