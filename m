@@ -1,267 +1,187 @@
-Return-Path: <stable+bounces-224785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OkbA80hsmnlIwAAu9opvQ
-	(envelope-from <stable+bounces-224785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:15:41 +0100
+	id 8BlEINwlsmnlIwAAu9opvQ
+	(envelope-from <stable+bounces-224788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:33:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DA226C211
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:15:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A462F26C40E
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A6B830C7AA8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:15:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 48C313013195
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992713242AC;
-	Thu, 12 Mar 2026 02:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A7B37C90B;
+	Thu, 12 Mar 2026 02:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="hEVVg/7h"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C45375F85
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471C033D507;
+	Thu, 12 Mar 2026 02:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773281704; cv=none; b=Gu3c+elVXhMqKyyNWIKfMmVHsetsvdEMSgStwXahOfIgq02gYqbXR1FpVIurv8hToflLPj7fOhMpha9JfdMB/2z6PR9XC/Pa3cNf/uO/y4JRQNxbVzMmDVEJSOZJVWfsh4wXfRbxCg7ioGeob2cZPhZBMFvXEPor7Gxoz8tRoVw=
+	t=1773282770; cv=none; b=o0F/itEu646CSJlRO6lNqns/7Q4CrST/AS3JqfCYdhHA48WHj3A+tJTCEEKqcfJkHS2t31pE2Vx6Eh1ScI/AugTT10kaVK6O5Oov+/s3okBt0qXJrHwOGoZHaKIr5M1VqPfH+kcX9VJaN4UhqDPqZlNsRZC4ohvciylfXf/hADo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773281704; c=relaxed/simple;
-	bh=hWLE1foGDhPuL7SACKce2uJT/0S+Y+y3LVG4rH5Fd5w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PvMJb1DjSbhkG6ifzrgiNDj16wGihHHtG+lD0zN2kVv42Q8hWypr3lnxMco7yc6AQbFpXZMZBhJ/93Sawa7TXyn4SALS7l1+StVJ8DNynQIv4gv2S19wLumbH9KyY+g67RaLz3BxDeeLrPLPSsdWY47zta2kR1sVyacW/8gm2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1773281697-1eb14e06ea0c400001-OJig3u
-Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id FSQrvMgZXvjVPtK5; Thu, 12 Mar 2026 10:14:57 +0800 (CST)
-X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
-Received: from [10.32.64.22] ([10.32.64.22] [10.32.64.22])
-	by zhaoxin.com (f222c4) with ESMTPc3cedf1044455b563afe98fbe008502c
-	Thu, 12 Mar 2026 10:14:52 +0800
-X-Eyou-Smtpauth: tonywwangoc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.22
-X-Eyou-EnvelopeSender: TonyWWang-oc@zhaoxin.com
-Message-ID: <b16bda4b-c7cb-4e7f-ac71-57c0032c6633@zhaoxin.com>
-Date: Thu, 12 Mar 2026 10:14:27 +0800
+	s=arc-20240116; t=1773282770; c=relaxed/simple;
+	bh=k+Ne3ped2Jd9193BfFYKMJGxDHiSxuC2PFR2Oy+SPIs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f0rJ22OR6yaYwY+6KB8LtfUJno9VkqpT4Sx+QJQWzrtj8RwqN34g90xn7Q63v9gSwwIfNtvce/2g6RRNLomCN2HFKynbpC0UN7WfjWQ1cCMm4nutUIsDFMLUz5Ugr1FSs8XGgv+rcL9EoElKnC9R1pNsruEvaBCr/Vp7l83Thho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=hEVVg/7h; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 36a2432cc;
+	Thu, 12 Mar 2026 10:17:27 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: slava.dubeyko@ibm.com
+Cc: akpm@linux-foundation.org,
+	frank.li@vivo.com,
+	glaubitz@physik.fu-berlin.de,
+	jianhao.xu@seu.edu.cn,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	slava@dubeyko.com,
+	sougata@tuxera.com,
+	stable@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: Re:  [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
+Date: Thu, 12 Mar 2026 10:17:28 +0800
+Message-Id: <20260312021728.446944-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <afab59a14da6ee4dd23d8ef85301ccff451b87cb.camel@ibm.com>
+References: <afab59a14da6ee4dd23d8ef85301ccff451b87cb.camel@ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-To: Dave Hansen <dave.hansen@intel.com>, me@ziyao.cc
-X-ASG-Orig-Subj: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-Cc: andrew.cooper3@citrix.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
- stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org, lukelin@viacpu.com,
- "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>, cooperyan@zhaoxin.com,
- benjaminpan@viatech.com, QiyuanWang@zhaoxin.com, HerryYang@zhaoxin.com,
- "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-References: <20260228173704.62460-1-me@ziyao.cc>
- <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
- <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
-Content-Language: en-US
-From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-In-Reply-To: <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <tonywwangoc@zhaoxin.com>
-X-Vid: 59a046b3c32c34b50b4d5a27a426929600@zhaoxin.com
-X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
-X-Barracuda-Start-Time: 1773281697
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5106
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155726
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-HM-Tid: 0a9cdfd5a6c403a1kunm1d5e9d55263e6
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTx4eVkhDGBlLSRkdSUgaSlYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUJCSU5LVUpLS1VKQktCWQ
+	Y+
+DKIM-Signature: a=rsa-sha256;
+	b=hEVVg/7hHKsmjDBlvoKj1IWBEYYDqitEBzUJfYF8sg6jCeRjTMCkWcyCZkX/zM76qq2AB/smLRY0AWeSoEGxXmPICbFY4U1cqwfyNgJzvad1FVx/dJRqNEW1dQxwvHOg3bvx4I52SoaecNctl2/35gG+y+odbhHaSwp5428YwEQ=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=Ujvh4SDEcmnNJUUfXaquApesA8XXZa3dzQCOsqyLgOE=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224785-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[zhaoxin.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-224788-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[TonyWWang-oc@zhaoxin.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.953];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 65DA226C211
+	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,seu.edu.cn:dkim,seu.edu.cn:mid,dubeyko.com:email]
+X-Rspamd-Queue-Id: A462F26C40E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Dave/Andrew/David/Yaozi,
-
-Sorry for the late reply.
-
-First of all, this bug was present in certain early ucode patches for 
-ZX-C/ZX-C+ series CPUs; however, it has since been resolved in 
-subsequent updates to the ZX-C/ZX-C+ ucode patch.
-
-According to available documentation, the VIA Eden platform supports 
-FSGSBASE; however, this CPU is too old, and we haven't been able to 
-locate actual hardware to test whether it was affected by this bug.
-
-It is recommended that, in addition to the existing FMS-based detection, 
-a supplementary check be implemented to identify the specific ucode 
-patch revisions associated with ZX-C/ZX-C+ that are known to exhibit 
-this bug.
-
-Due to differences in ucode matching rules on Zhaoxin platforms, 
-existing kernel function interfaces cannot be used, so the patch code 
-has been placed in a vendor-specific file. The specific patching 
-approach can be as follows:
-
---- a/arch/x86/kernel/cpu/centaur.c
-+++ b/arch/x86/kernel/cpu/centaur.c
-@@ -8,6 +8,7 @@
-  #include <asm/e820/api.h>
-  #include <asm/mtrr.h>
-  #include <asm/msr.h>
-+#include <asm/microcode.h>
-
-  #include "cpu.h"
-
-@@ -110,6 +111,8 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
-
-  static void init_centaur(struct cpuinfo_x86 *c)
-  {
-+       u32 chip_pf, dummy;
-+
-  #ifdef CONFIG_X86_32
-         char *name;
-         u32  fcr_set = 0;
-@@ -201,6 +204,18 @@ static void init_centaur(struct cpuinfo_x86 *c)
-         set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
-  #endif
-
-+       if (c->x86 == 6 && c->x86_model == 15 && c->x86_stepping >= 14) {
-+               native_rdmsr(0x1232, dummy, chip_pf);
-+               chip_pf = (chip_pf >> 15) & 0x7;
-+               c->microcode = intel_get_microcode_revision();
-+
-+               if ((chip_pf == 0 && c->microcode < 0x20e) ||
-+                       (chip_pf == 1 && c->microcode < 0x208)) {
-+                       pr_warn_once("CPU has broken FSGSBASE support; 
-clear FSGSBASE feature\n");
-+                       setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-+               }
-+       }
-+
-         init_ia32_feat_ctl(c);
-  }
-
-diff --git a/arch/x86/kernel/cpu/zhaoxin.c b/arch/x86/kernel/cpu/zhaoxin.c
-index 031379b7d4fa..0a0525320502 100644
---- a/arch/x86/kernel/cpu/zhaoxin.c
-+++ b/arch/x86/kernel/cpu/zhaoxin.c
-@@ -5,6 +5,7 @@
-  #include <asm/cpu.h>
-  #include <asm/cpufeature.h>
-  #include <asm/msr.h>
-+#include <asm/microcode.h>
-
-  #include "cpu.h"
-
-@@ -68,6 +69,8 @@ static void early_init_zhaoxin(struct cpuinfo_x86 *c)
-
-  static void init_zhaoxin(struct cpuinfo_x86 *c)
-  {
-+       u32 chip_pf, dummy;
-+
-         early_init_zhaoxin(c);
-         init_intel_cacheinfo(c);
-
-@@ -89,6 +92,18 @@ static void init_zhaoxin(struct cpuinfo_x86 *c)
-         set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
-  #endif
-
-+       if (c->x86 == 6 && c->x86_model == 25 && c->x86_stepping <= 3) {
-+               native_rdmsr(0x1232, dummy, chip_pf);
-+               chip_pf = (chip_pf >> 15) & 0x7;
-+               c->microcode = intel_get_microcode_revision();
-+
-+               if ((chip_pf == 0 && c->microcode < 0x20e) ||
-+                       (chip_pf == 1 && c->microcode < 0x208)) {
-+                       pr_warn_once("CPU has broken FSGSBASE support; 
-clear FSGSBASE feature\n");
-+                       setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-+               }
-+       }
-+
-         init_ia32_feat_ctl(c);
-  }
-
-
-Sincerely!
-TonyWWang-oc
-
-On 2026/3/6 00:20, Dave Hansen wrote:
+On Wed, Mar 11, 2026 at 09:17:59PM +0000, Viacheslav Dubeyko wrote:
+> On Wed, 2026-03-11 at 19:43 +0800, Zilin Guan wrote:
+> >  fs/hfsplus/super.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+> > index 7229a8ae89f9..f396fee19ab8 100644
+> > --- a/fs/hfsplus/super.c
+> > +++ b/fs/hfsplus/super.c
+> > @@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+> >  	if (err)
+> >  		goto out_put_root;
+> >  	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+> > -	if (unlikely(err < 0))
+> > +	if (unlikely(err < 0)) {
+> > +		hfs_find_exit(&fd);
+> >  		goto out_put_root;
+> > +	}
+> >  	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
+> >  		hfs_find_exit(&fd);
+> >  		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 > 
+> Makes sense.
 > 
-> [这封邮件来自外部发件人 谨防风险]
+> Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
 > 
-> On 3/5/26 01:03, Tony W Wang-oc wrote:
->> --- a/arch/x86/kernel/cpu/zhaoxin.c
->> +++ b/arch/x86/kernel/cpu/zhaoxin.c
->> @@ -89,6 +89,11 @@ static void init_zhaoxin(struct cpuinfo_x86 *c)
->>          set_cpu_cap(c, X86_FEATURE_LFENCE_RDTSC);
->>   #endif
->>
->> +       if (c->x86 == 6 && c->x86_model == 25 && c->x86_stepping <= 3) {
->> +               pr_warn_once("CPU has broken FSGSBASE support; clear
->> FSGSBASE feature\n");
->> +               setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
->> +       }
->> +
+> Frankly speaking, I think, potentially, we can introduce static inline function
+> for this code:
 > 
-> Folks, we have vendor-generic infrastructure to handle these today. You
-> don't need to hack copied and pasted code across vendor-specific files.
-> You just need some "VFM" defines for the models:
+> 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
+> 	str.name = HFSP_HIDDENDIR_NAME;
+> 	err = hfs_find_init(sbi->cat_tree, &fd);
+> 	if (err)
+> 		goto out_put_root;
+> 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID,
+> &str);
+> 	if (unlikely(err < 0))
+> 		goto out_put_root;
+> 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
+> 		hfs_find_exit(&fd);
+> 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+> 			err = -EIO;
+> 			goto out_put_root;
+> 		}
+> 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
+> 		if (IS_ERR(inode)) {
+> 			err = PTR_ERR(inode);
+> 			goto out_put_root;
+> 		}
+> 		sbi->hidden_dir = inode;
+> 	} else
+> 		hfs_find_exit(&fd);
 > 
-> #define Z_MODEL_HERE    VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 26)
-> #define C_MODEL_HERE    VFM_MAKE(X86_VENDOR_ZHAOXIN, ...)
+> Because, hiding this code into small function will provide opportunity to call
+> hfs_find_exit() in one place only (as for normal as for erroneous flow).
 > 
-> a table:
+> What do you think?
 > 
-> static const struct x86_cpu_id bum_fsgsbase[] __initconst = {
->          X86_MATCH_VFM_STEPS(Z_MODEL_HERE, X86_STEP_MIN, 0x3, 1),
->          X86_MATCH_VFM_STEPS(C_MODEL_HERE, ..., 1),
-> };
-> 
-> and this code:
-> 
->          if (x86_match_cpu(bum_fsgsbase))
->                  setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-> 
-> That code happens _once_. You can even call it from vendor-independent code.
-> 
-> If you get fixed microcode that can also be extended to store a fixed
-> microcode version (although we're moving away from doing this on Intel).
-> 
-> Just please give the models some semi-sane model name.
+> Thanks,
+> Slava.
+
+Thanks for the feedback, Slava.
+
+While I see the merit in refactoring this into a helper to centralize the 
+cleanup, I’m concerned that doing so wouldn’t actually achieve a single 
+hfs_find_exit() call without compromising the resource lifecycle.
+
+In the current logic, we need to call hfs_find_exit(&fd) as early as 
+possible—specifically before entering hfsplus_iget(), which might involve 
+further I/O or sleeping. If we were to use a single-exit goto pattern in a 
+helper function, we would end up holding the search data and its 
+associated buffers/locks longer than necessary. To maintain the current 
+early-release behavior, we would still be forced to sprinkle multiple 
+hfs_find_exit() calls across different branches within that helper anyway, 
+which defeats the purpose of the refactoring.
+
+Given that this is a straightforward fix for a specific leak, I believe 
+keeping the logic inline preserves the optimal resource release timing 
+without adding unnecessary abstraction.
+
+Best regards,
+Zilin
 
