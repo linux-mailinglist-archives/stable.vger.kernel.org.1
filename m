@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-224942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFrFK/sds2mDSAAAu9opvQ
-	(envelope-from <stable+bounces-224942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:11:39 +0100
+	id 4LabEwces2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:11:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB9327891B
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:11:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CD3278939
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85272301681F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:11:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D0293012B74
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656E3401A06;
-	Thu, 12 Mar 2026 20:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DE33FFAB5;
+	Thu, 12 Mar 2026 20:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NHX/CCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK2UbOQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FDB3AEF29;
-	Thu, 12 Mar 2026 20:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA0438C423;
+	Thu, 12 Mar 2026 20:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346296; cv=none; b=IAERgGvPaoUdEhbZ+SLDfEo7ygHrjXclAP63Nq1XNkAhysGmwUHnjsY7Q8ZnaHl6RcrwQZ2ytMHGCEJydiLgwcnqpGIi3Ftyz6CvJyzw84pdmwF3mCVB2emvWTeb3w0Rb9e9I5N44/o2uSxBDGYLnmYuGhnFObSG9RTl71FvbSc=
+	t=1773346308; cv=none; b=KVfN64CY83fqlJ8a/XpeDrK6rmNuyBPv2g72LCvSBmaP/QjmipgF2O1zeg8pKpQ7HHGq7JYn3mMNdBA1tTm8X3dCX24nDDWpMPoPmCNnoULzkquE9ahRHCP1+9onsgojxKu2aiqLGrkY/0rCrxQ1QCx6maPIL4K+e9LJ1gl4rP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346296; c=relaxed/simple;
-	bh=g/E4AxlAIFmCbDHDPr0asc74yXi3BaUFmRjiNPlfcQM=;
+	s=arc-20240116; t=1773346308; c=relaxed/simple;
+	bh=lZGLq/RRVHkFpqwsfF4Qltw8XpRzcMpDX2uztGwBjcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1s6e4xXW2PrYP2txQKwZQ4spdfH7cAfnC2PNpZPXZFp1OWNlvSpXdrZMCfugUEFgFi8o/8pha5cV/a6aPXkfZykg1CpPb6UwZ/5ruU+gyOZCUlFtgoCJ+L6BeSATkT4JorNOObZAZduUmVw3WX7EylxKfrGlv54Zeb9i0XOPmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NHX/CCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE22C4CEF7;
-	Thu, 12 Mar 2026 20:11:34 +0000 (UTC)
+	 MIME-Version; b=H6yrBuZXDXTxxZOWplDHOcha/wBjSKUFFi9/5WQZYMSN10nJwwIftxSSSXQ0z12zK/+KuGm0WHazWHIZ2cKS+GJXv50T4VTMjViTA43jdt1Ez1tgiTTUKCkwynpT3dn0bL3If+Qaesbnp4xXsg9XMxUs+OwwU72cYpf103Dwyww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK2UbOQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD899C4CEF7;
+	Thu, 12 Mar 2026 20:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346295;
-	bh=g/E4AxlAIFmCbDHDPr0asc74yXi3BaUFmRjiNPlfcQM=;
+	s=korg; t=1773346308;
+	bh=lZGLq/RRVHkFpqwsfF4Qltw8XpRzcMpDX2uztGwBjcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NHX/CCxBO0L4RdK1pH5UHF2n4/O3GH5Gfo2zu8gKn51OEbFhkIDm0M50syK95zCQ
-	 87ep/VbXdl6HinAFfgopcUW+1BN7b6kod8Ma54lFd2IcxZxJN+CQYCtzxwU0ostaPk
-	 5MQW5rxJlUap42IXfORUKH655G6d/4MiW59+NxrQ=
+	b=GK2UbOQBxvyQ4FM6sjjIbiSe96iG0XvqWoTo29xHCkWiT/Qd3oN48VfxhCcYBiaD+
+	 Q1/O8C8GUMvlF5/Jo2+ZaFAYJS0kaNYp1dvs24Fg6MUjmSj+RGS8Z5KfLoOJuTGZnR
+	 58QzfccYKJg+UM4DwdKFhH9cr6qEaZxPYOeoTku0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brad Spengler <brad.spengler@opensrcsec.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
 	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/265] drm/vmwgfx: Fix invalid kref_put callback in vmw_bo_dirty_release
-Date: Thu, 12 Mar 2026 21:06:28 +0100
-Message-ID: <20260312201018.188395027@linuxfoundation.org>
+Subject: [PATCH 6.12 002/265] drm/vmwgfx: Return the correct value in vmw_translate_ptr functions
+Date: Thu, 12 Mar 2026 21:06:29 +0100
+Message-ID: <20260312201018.224936188@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -69,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-224945-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224942-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,opensrcsec.com:email]
-X-Rspamd-Queue-Id: 8BB9327891B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email]
+X-Rspamd-Queue-Id: E4CD3278939
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,59 +101,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Brad Spengler <brad.spengler@opensrcsec.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 211ecfaaef186ee5230a77d054cdec7fbfc6724a ]
+[ Upstream commit 5023ca80f9589295cb60735016e39fc5cc714243 ]
 
-The kref_put() call uses (void *)kvfree as the release callback, which
-is incorrect. kref_put() expects a function with signature
-void (*release)(struct kref *), but kvfree has signature
-void (*)(const void *). Calling through an incompatible function pointer
-is undefined behavior.
+Before the referenced fixes these functions used a lookup function that
+returned a pointer. This was changed to another lookup function that
+returned an error code with the pointer becoming an out parameter.
 
-The code only worked by accident because ref_count is the first member
-of vmw_bo_dirty, making the kref pointer equal to the struct pointer.
+The error path when the lookup failed was not changed to reflect this
+change and the code continued to return the PTR_ERR of the now
+uninitialized pointer. This could cause the vmw_translate_ptr functions
+to return success when they actually failed causing further uninitialized
+and OOB accesses.
 
-Fix this by adding a proper release callback that uses container_of()
-to retrieve the containing structure before freeing.
-
-Fixes: c1962742ffff ("drm/vmwgfx: Use kref in vmw_bo_dirty")
-Signed-off-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Fixes: a309c7194e8a ("drm/vmwgfx: Remove rcu locks from user resources")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Ian Forbes <ian.forbes@broadcom.com>
-Link: https://patch.msgid.link/20260107171236.3573118-1-zack.rusin@broadcom.com
+Link: https://patch.msgid.link/20260113175357.129285-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-index de2498749e276..5bb710824d72f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-@@ -274,6 +274,13 @@ int vmw_bo_dirty_add(struct vmw_bo *vbo)
- 	return ret;
- }
- 
-+static void vmw_bo_dirty_free(struct kref *kref)
-+{
-+	struct vmw_bo_dirty *dirty = container_of(kref, struct vmw_bo_dirty, ref_count);
-+
-+	kvfree(dirty);
-+}
-+
- /**
-  * vmw_bo_dirty_release - Release a dirty-tracking user from a buffer object
-  * @vbo: The buffer object
-@@ -288,7 +295,7 @@ void vmw_bo_dirty_release(struct vmw_bo *vbo)
- {
- 	struct vmw_bo_dirty *dirty = vbo->dirty;
- 
--	if (dirty && kref_put(&dirty->ref_count, (void *)kvfree))
-+	if (dirty && kref_put(&dirty->ref_count, vmw_bo_dirty_free))
- 		vbo->dirty = NULL;
- }
- 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 0c1bd3acf3598..6b921db2dcd23 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1161,7 +1161,7 @@ static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
+ 	ret = vmw_user_bo_lookup(sw_context->filp, handle, &vmw_bo);
+ 	if (ret != 0) {
+ 		drm_dbg(&dev_priv->drm, "Could not find or use MOB buffer.\n");
+-		return PTR_ERR(vmw_bo);
++		return ret;
+ 	}
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_MOB, VMW_BO_DOMAIN_MOB);
+ 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
+@@ -1217,7 +1217,7 @@ static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
+ 	ret = vmw_user_bo_lookup(sw_context->filp, handle, &vmw_bo);
+ 	if (ret != 0) {
+ 		drm_dbg(&dev_priv->drm, "Could not find or use GMR region.\n");
+-		return PTR_ERR(vmw_bo);
++		return ret;
+ 	}
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM,
+ 			     VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM);
 -- 
 2.51.0
 
