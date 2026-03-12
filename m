@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-225011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJiWMSAfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:32 +0100
+	id UGbVKDofs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB2D278B20
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B9278B51
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7370330254D4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:16:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 396673023DAB
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB36D32143F;
-	Thu, 12 Mar 2026 20:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBA2314B6A;
+	Thu, 12 Mar 2026 20:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIztHAod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK7JZj1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295F4317142;
-	Thu, 12 Mar 2026 20:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBEF26F288;
+	Thu, 12 Mar 2026 20:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346589; cv=none; b=HHxtEb++CFtGmKD2K90au5AEc5+pWVz7lpF/yhp+xhu5vT84vYURS1yWlL16W4jIi3jtwqvziA2o3E43BCVCD0hwJt+kOty8oHAdZV1J6nJV808VsMl/KD3/mGL7iQIwfB1b4/527TeLDvvJFGxRqzHX0FwdkcVxeTdcaslrQaw=
+	t=1773346614; cv=none; b=q1Fb1gEhGeOYst8SsIPHVEDcN9nGGUZNFH/03jNA8tRIfZ5+b9IGQiy4hCiQIhvS1MImWMPqEuqS3SzEaRTgP2vHNlcsjuHP2nXJOnRya8+YvcQ03DKuJ/RMwRsBD8wivBFw7/dGtN+KHLDjHZz+gPTC+f5WcAxvFTb2GAvIEew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346589; c=relaxed/simple;
-	bh=5cP0N/Lh0rm8HmjjnVyr4gt+EW4AsB8rM6sDiP14YKA=;
+	s=arc-20240116; t=1773346614; c=relaxed/simple;
+	bh=1G3FmwlZ+BjPEheHVoShfOuRjrzyWXpwnrMTKLONtU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQCdfnQGwlh4j0KcACbrILjrnytMscj5HXKUWQ/r6Loy3EnyEQ7D/CSI4eL5AdC0hrnMVVTk4pfBdJ8W3Toj23pDVMrqMFc/QyHuPjdPNZjxZPwkruWZxnAuMm82SiTCLlssLFyxcjPPPz475KIkN7/vcTNMeNmGNryeiM7xljA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIztHAod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD50C4CEF7;
-	Thu, 12 Mar 2026 20:16:27 +0000 (UTC)
+	 MIME-Version; b=A+N1VfRQhyLEwFcmyJEwlz1FTxeZdSV4zrevLeN3547XQS7oz/DFyWIc30QyRLBUOvraeHYmRq03KCNcprXY+UUyoQz0oMy9WJ9V3tV81XizhKGqBkEaCuaIJVF4oSkKtTwLpcqWCT1k0UWqgUdoYr/DPaaDQUowdaXckE3WzhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK7JZj1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B38FC4CEF7;
+	Thu, 12 Mar 2026 20:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346588;
-	bh=5cP0N/Lh0rm8HmjjnVyr4gt+EW4AsB8rM6sDiP14YKA=;
+	s=korg; t=1773346614;
+	bh=1G3FmwlZ+BjPEheHVoShfOuRjrzyWXpwnrMTKLONtU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIztHAodufJx/lKHVIZVJHPgjyWeKKI6D5SVt+rYL8sOghOztXtuJhTCSfvX8XEl5
-	 yAuOdfxgPPR/yRP+dOI7K/8VysHluAmyOmo9lH0qPt+7ZUhoYB923W7cubwH9ggFRx
-	 EO/NSGeW3DdwzXpLDuSJZSyE9t8GssHY7glQuVnE=
+	b=VK7JZj1j3c+68g4MJx7jPmdifACgMGPnpCzUeCa7paZANJSOqWzyJV7438+JY+pHH
+	 oyToen8JxKTpFrxqngaUMNi1XbSB0xNRXjVbvl+OG67gVaLflHcRzQdKmpBlkyAfFx
+	 7nRilmJqcFAyPqp8zjhWHTa3Y07TSSjERUzo8Ugo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/265] media: tegra-video: Fix memory leak in __tegra_channel_try_format()
-Date: Thu, 12 Mar 2026 21:07:17 +0100
-Message-ID: <20260312201020.012448311@linuxfoundation.org>
+Subject: [PATCH 6.12 051/265] media: dw9714: move power sequences to dedicated functions
+Date: Thu, 12 Mar 2026 21:07:18 +0100
+Message-ID: <20260312201020.050682589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -64,35 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225011-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,emfend.at,linux.intel.com,xs4all.nl,kernel.org];
+	TAGGED_FROM(0.00)[bounces-225017-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1AB2D278B20
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xs4all.nl:email]
+X-Rspamd-Queue-Id: 1C5B9278B51
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,75 +101,118 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Matthias Fend <matthias.fend@emfend.at>
 
-[ Upstream commit 43e5302d22334f1183dec3e0d5d8007eefe2817c ]
+[ Upstream commit 1eefe42e9de503e422a9c925eebdbd215ee28966 ]
 
-The state object allocated by __v4l2_subdev_state_alloc() must be freed
-with __v4l2_subdev_state_free() when it is no longer needed.
+Move the power-up and power-down sequences to their own functions. This is
+a preparation for the upcoming powerdown pin support.
 
-In __tegra_channel_try_format(), two error paths return directly after
-v4l2_subdev_call() fails, without freeing the allocated 'sd_state'
-object. This violates the requirement and causes a memory leak.
-
-Fix this by introducing a cleanup label and using goto statements in the
-error paths to ensure that __v4l2_subdev_state_free() is always called
-before the function returns.
-
-Fixes: 56f64b82356b7 ("media: tegra-video: Use zero crop settings if subdev has no get_selection")
-Fixes: 1ebaeb09830f3 ("media: tegra-video: Add support for external sensor capture")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: 401aec35ac7b ("media: dw9714: Fix powerup sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/tegra-video/vi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/media/i2c/dw9714.c | 44 +++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/staging/media/tegra-video/vi.c b/drivers/staging/media/tegra-video/vi.c
-index 57a856a21e901..463410349d07e 100644
---- a/drivers/staging/media/tegra-video/vi.c
-+++ b/drivers/staging/media/tegra-video/vi.c
-@@ -440,7 +440,7 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
- 		.target = V4L2_SEL_TGT_CROP_BOUNDS,
- 	};
- 	struct v4l2_rect *try_crop;
--	int ret;
-+	int ret = 0;
- 
- 	subdev = tegra_channel_get_remote_source_subdev(chan);
- 	if (!subdev)
-@@ -484,8 +484,10 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
- 		} else {
- 			ret = v4l2_subdev_call(subdev, pad, get_selection,
- 					       NULL, &sdsel);
--			if (ret)
--				return -EINVAL;
-+			if (ret) {
-+				ret = -EINVAL;
-+				goto out_free;
-+			}
- 
- 			try_crop->width = sdsel.r.width;
- 			try_crop->height = sdsel.r.height;
-@@ -497,14 +499,15 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
- 
- 	ret = v4l2_subdev_call(subdev, pad, set_fmt, sd_state, &fmt);
- 	if (ret < 0)
--		return ret;
-+		goto out_free;
- 
- 	v4l2_fill_pix_format(pix, &fmt.format);
- 	chan->vi->ops->vi_fmt_align(pix, fmtinfo->bpp);
- 
-+out_free:
- 	__v4l2_subdev_state_free(sd_state);
- 
--	return 0;
-+	return ret;
+diff --git a/drivers/media/i2c/dw9714.c b/drivers/media/i2c/dw9714.c
+index 2ddd7daa79e28..37572cd0c104b 100644
+--- a/drivers/media/i2c/dw9714.c
++++ b/drivers/media/i2c/dw9714.c
+@@ -137,6 +137,24 @@ static int dw9714_init_controls(struct dw9714_device *dev_vcm)
+ 	return hdl->error;
  }
  
- static int tegra_channel_try_format(struct file *file, void *fh,
++static int dw9714_power_up(struct dw9714_device *dw9714_dev)
++{
++	int ret;
++
++	ret = regulator_enable(dw9714_dev->vcc);
++	if (ret)
++		return ret;
++
++	usleep_range(1000, 2000);
++
++	return 0;
++}
++
++static int dw9714_power_down(struct dw9714_device *dw9714_dev)
++{
++	return regulator_disable(dw9714_dev->vcc);
++}
++
+ static int dw9714_probe(struct i2c_client *client)
+ {
+ 	struct dw9714_device *dw9714_dev;
+@@ -151,13 +169,10 @@ static int dw9714_probe(struct i2c_client *client)
+ 	if (IS_ERR(dw9714_dev->vcc))
+ 		return PTR_ERR(dw9714_dev->vcc);
+ 
+-	rval = regulator_enable(dw9714_dev->vcc);
+-	if (rval < 0) {
+-		dev_err(&client->dev, "failed to enable vcc: %d\n", rval);
+-		return rval;
+-	}
+-
+-	usleep_range(1000, 2000);
++	rval = dw9714_power_up(dw9714_dev);
++	if (rval)
++		return dev_err_probe(&client->dev, rval,
++				     "failed to power up: %d\n", rval);
+ 
+ 	v4l2_i2c_subdev_init(&dw9714_dev->sd, client, &dw9714_ops);
+ 	dw9714_dev->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
+@@ -185,7 +200,7 @@ static int dw9714_probe(struct i2c_client *client)
+ 	return 0;
+ 
+ err_cleanup:
+-	regulator_disable(dw9714_dev->vcc);
++	dw9714_power_down(dw9714_dev);
+ 	v4l2_ctrl_handler_free(&dw9714_dev->ctrls_vcm);
+ 	media_entity_cleanup(&dw9714_dev->sd.entity);
+ 
+@@ -200,10 +215,10 @@ static void dw9714_remove(struct i2c_client *client)
+ 
+ 	pm_runtime_disable(&client->dev);
+ 	if (!pm_runtime_status_suspended(&client->dev)) {
+-		ret = regulator_disable(dw9714_dev->vcc);
++		ret = dw9714_power_down(dw9714_dev);
+ 		if (ret) {
+ 			dev_err(&client->dev,
+-				"Failed to disable vcc: %d\n", ret);
++				"Failed to power down: %d\n", ret);
+ 		}
+ 	}
+ 	pm_runtime_set_suspended(&client->dev);
+@@ -234,9 +249,9 @@ static int __maybe_unused dw9714_vcm_suspend(struct device *dev)
+ 		usleep_range(DW9714_CTRL_DELAY_US, DW9714_CTRL_DELAY_US + 10);
+ 	}
+ 
+-	ret = regulator_disable(dw9714_dev->vcc);
++	ret = dw9714_power_down(dw9714_dev);
+ 	if (ret)
+-		dev_err(dev, "Failed to disable vcc: %d\n", ret);
++		dev_err(dev, "Failed to power down: %d\n", ret);
+ 
+ 	return ret;
+ }
+@@ -257,12 +272,11 @@ static int  __maybe_unused dw9714_vcm_resume(struct device *dev)
+ 	if (pm_runtime_suspended(&client->dev))
+ 		return 0;
+ 
+-	ret = regulator_enable(dw9714_dev->vcc);
++	ret = dw9714_power_up(dw9714_dev);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable vcc: %d\n", ret);
++		dev_err(dev, "Failed to power up: %d\n", ret);
+ 		return ret;
+ 	}
+-	usleep_range(1000, 2000);
+ 
+ 	for (val = dw9714_dev->current_val % DW9714_CTRL_STEPS;
+ 	     val < dw9714_dev->current_val + DW9714_CTRL_STEPS - 1;
 -- 
 2.51.0
 
