@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-224934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC/mNlQds2mDSAAAu9opvQ
-	(envelope-from <stable+bounces-224934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:52 +0100
+	id OPzgMGMds2mDSAAAu9opvQ
+	(envelope-from <stable+bounces-224935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:09:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4FA27886E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:08:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3421927887D
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C03A631D25C4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DAF031D4C47
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44523401A3E;
-	Thu, 12 Mar 2026 20:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F2D2C17A0;
+	Thu, 12 Mar 2026 20:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGWRGEHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2wnM5fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEC401A2B;
-	Thu, 12 Mar 2026 20:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A24401A29;
+	Thu, 12 Mar 2026 20:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773345928; cv=none; b=IyMYJ5aEqg6dmFMSEctDe+gucI8P1Cd2gzxoPZ3GYSk6zARxTdqVGQCdeOKSU5BXs9FpJi2bFO2AOqcIn5GVMfatR47iUVdtQQBZI7q2C6K3rTzaLMt1CiREk8w2p9Htk4zhPVOfmAFT81YSNjIeGp304rZfLNI0QdRuI8+nr+g=
+	t=1773345931; cv=none; b=eLE1h2lShBsYoO6bGN4vMLTyMJZ57zIIX8Z6PI6hFJ7RCDC86n3gRsLiR5VJ4KlCQervEgSUQnuuN/k2JAuRkAGSriR0PdY0WkOXxnAFfYfDSYwmUXoZOvcdh+57fL9TzYHaIAhue8+oWi/ztwduUp9a558DGdt47kzmx/RdgPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773345928; c=relaxed/simple;
-	bh=jcU8SYnwHZnGQCG1W/XeIPF1V+r+onyS9393KuBPT7E=;
+	s=arc-20240116; t=1773345931; c=relaxed/simple;
+	bh=mv+xTpqjAG9pcIO+00ucmj3N71KJpXvueJQ6SCQCRo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcw1XsfGnevdevFBIcNMJlFCRKeVi7ihNytWNIRMZzqXjA/PtxJsdNCwY0xyF0MgLuCfkq5v/VDyPiNV/4cU3x3HgsQf2vK1in2TvDaLnfEezTLAaIRKKtwHFOaY7epcyQFSE2J2VbdzluW7PGUzqKd5CYrw5wu/w9i1qUeQOAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGWRGEHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D34C19425;
-	Thu, 12 Mar 2026 20:05:27 +0000 (UTC)
+	 MIME-Version; b=G243P7d1M76cO6XkYx8wY4k4SXXGLpuymy1e80oh1YZraZucpO2OK+eyXkprTmFYRwiPufJv6SDSUt7ELU+0+ezC34HIBsRK2CrOxjejh/Absp+hDMSUe1QpktqO993Q1Qii+RgPQfQOp5SD4DFvKOtJHhvbl9y4WAoa5a6OrzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2wnM5fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3752C19425;
+	Thu, 12 Mar 2026 20:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773345927;
-	bh=jcU8SYnwHZnGQCG1W/XeIPF1V+r+onyS9393KuBPT7E=;
+	s=korg; t=1773345931;
+	bh=mv+xTpqjAG9pcIO+00ucmj3N71KJpXvueJQ6SCQCRo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGWRGEHbnFEAXNmk8aPTLhkn33IUPjhzIrGOttnHAqEQOT26T/vI05BSnyi9l9E7k
-	 LOPORZ1YG+7xeI0a3FLtxxyaLJcRLL0he+MNPC68SqqxoTnfIS7F7BUMnxAJ5pyhS5
-	 4bDm0ne/HtO19oIWRW/XhVPK5xOrcomb4ZBpAph0=
+	b=Y2wnM5fjf+DP/G1OikkNnFmKq9xACZTt9EL2XaRKRhQxRCAePrOB2XDMZ2IxeP/2u
+	 eLxaf0IVp0myRADzK4g9hY2NdDR+DruNrSGFbffOLFkErP4V4kt9rd0PSasGcbkyo7
+	 F2rzbVAn9GwplhlP3oZHP6ubCmAay8MBpeBFedYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Cengiz Can <cengiz.can@canonical.com>,
 	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
 	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.18 04/13] apparmor: fix memory leak in verify_header
-Date: Thu, 12 Mar 2026 21:03:45 +0100
-Message-ID: <20260312200326.409481409@linuxfoundation.org>
+Subject: [PATCH 6.18 05/13] apparmor: replace recursive profile removal with iterative approach
+Date: Thu, 12 Mar 2026 21:03:46 +0100
+Message-ID: <20260312200326.444366074@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312200326.246396673@linuxfoundation.org>
 References: <20260312200326.246396673@linuxfoundation.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224934-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email,canonical.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F4FA27886E
+X-Rspamd-Queue-Id: 3421927887D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,18 +104,24 @@ X-Rspamd-Server: lfdr
 
 From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 
-commit e38c55d9f834e5b848bfed0f5c586aaf45acb825 upstream.
+commit ab09264660f9de5d05d1ef4e225aa447c63a8747 upstream.
 
-The function sets `*ns = NULL` on every call, leaking the namespace
-string allocated in previous iterations when multiple profiles are
-unpacked. This also breaks namespace consistency checking since *ns
-is always NULL when the comparison is made.
+The profile removal code uses recursion when removing nested profiles,
+which can lead to kernel stack exhaustion and system crashes.
 
-Remove the incorrect assignment.
-The caller (aa_unpack) initializes *ns to NULL once before the loop,
-which is sufficient.
+Reproducer:
+  $ pf='a'; for ((i=0; i<1024; i++)); do
+      echo -e "profile $pf { \n }" | apparmor_parser -K -a;
+      pf="$pf//x";
+  done
+  $ echo -n a > /sys/kernel/security/apparmor/.remove
 
-Fixes: dd51c8485763 ("apparmor: provide base for multiple profiles to be replaced at once")
+Replace the recursive __aa_profile_list_release() approach with an
+iterative approach in __remove_profile(). The function repeatedly
+finds and removes leaf profiles until the entire subtree is removed,
+maintaining the same removal semantic without recursion.
+
+Fixes: c88d4c7b049e ("AppArmor: core policy routines")
 Reported-by: Qualys Security Advisory <qsa@qualys.com>
 Tested-by: Salvatore Bonaccorso <carnil@debian.org>
 Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
@@ -124,19 +130,58 @@ Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack.c |    1 -
- 1 file changed, 1 deletion(-)
+ security/apparmor/policy.c |   30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -1177,7 +1177,6 @@ static int verify_header(struct aa_ext *
- {
- 	int error = -EPROTONOSUPPORT;
- 	const char *name = NULL;
--	*ns = NULL;
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -183,19 +183,43 @@ static void __list_remove_profile(struct
+ }
  
- 	/* get the interface version */
- 	if (!aa_unpack_u32(e, &e->version, "version")) {
+ /**
+- * __remove_profile - remove old profile, and children
+- * @profile: profile to be replaced  (NOT NULL)
++ * __remove_profile - remove profile, and children
++ * @profile: profile to be removed  (NOT NULL)
+  *
+  * Requires: namespace list lock be held, or list not be shared
+  */
+ static void __remove_profile(struct aa_profile *profile)
+ {
++	struct aa_profile *curr, *to_remove;
++
+ 	AA_BUG(!profile);
+ 	AA_BUG(!profile->ns);
+ 	AA_BUG(!mutex_is_locked(&profile->ns->lock));
+ 
+ 	/* release any children lists first */
+-	__aa_profile_list_release(&profile->base.profiles);
++	if (!list_empty(&profile->base.profiles)) {
++		curr = list_first_entry(&profile->base.profiles, struct aa_profile, base.list);
++
++		while (curr != profile) {
++
++			while (!list_empty(&curr->base.profiles))
++				curr = list_first_entry(&curr->base.profiles,
++							struct aa_profile, base.list);
++
++			to_remove = curr;
++			if (!list_is_last(&to_remove->base.list,
++					  &aa_deref_parent(curr)->base.profiles))
++				curr = list_next_entry(to_remove, base.list);
++			else
++				curr = aa_deref_parent(curr);
++
++			/* released by free_profile */
++			aa_label_remove(&to_remove->label);
++			__aafs_profile_rmdir(to_remove);
++			__list_remove_profile(to_remove);
++		}
++	}
++
+ 	/* released by free_profile */
+ 	aa_label_remove(&profile->label);
+ 	__aafs_profile_rmdir(profile);
 
 
 
