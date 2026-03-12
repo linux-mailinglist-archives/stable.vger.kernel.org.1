@@ -1,49 +1,68 @@
-Return-Path: <stable+bounces-224786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBGYCqUismnlIwAAu9opvQ
-	(envelope-from <stable+bounces-224786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:19:17 +0100
+	id yBeJHlwmsmnlIwAAu9opvQ
+	(envelope-from <stable+bounces-224787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:35:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C9626C27E
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:19:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF40F26C48A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D92F3051A82
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:19:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 238323062490
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8AD31F982;
-	Thu, 12 Mar 2026 02:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C89437C90B;
+	Thu, 12 Mar 2026 02:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMW8UVtA"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457571A680F
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982EB37B3EF;
+	Thu, 12 Mar 2026 02:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773281954; cv=none; b=J1g5bFr/aN84wEvq/bxyG4NkjIG140Ybg9syNo97/uzcg4072YHUa7Sw4bkqb/t5fZvdjVy9mzTfhwnATiObyMfT+2jnt12NC6uUSAXZ/6ABuKEzBE/pIYI5m7HcevZzXXHS2XPiBLll9Fd1vcxpV1j5etJNCEAxg6++6dxMquw=
+	t=1773282696; cv=none; b=jbKmxyabG0Fz9jjLbbOdRes+jwk3PXk4XdSAD0lppESQkFI0u+0OPZlWmmhlDJd0++e4TWRSVacvJ68ASjLJQS2b7clsXlCZivggietiTKKSi+B5XpmU9tu9iXCH21oX/Q+5qum+0Uk9tvlddL1ztMmtPRS2A5aS9GfOXHmZLuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773281954; c=relaxed/simple;
-	bh=y+40TWpBQ2zOxGY+nsk1kvKXHJo/yz5hLRfwRDOlt7g=;
+	s=arc-20240116; t=1773282696; c=relaxed/simple;
+	bh=BH0BfbtEayS2qwyJivYzLS+tdTpV+Bg/Yk1xARQ+QVw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YzmFa/rYpH0GMMamG9P6USgSm/+7P8GDr9gkt0yNIMMyeecFFOAekHQnZmSP0p52WMc/pYjVkqx/ZTUHHmbb1myDIfnmwjQj0yQeeKhTUd46lv9IZ4IURIuoVzNNdPGo06bcilXDM5wozBB12KSfcP8iIhJtZZdsqZ7D8GKyNYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1773281949-1eb14e06ec0c440001-OJig3u
-Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id Ao9zuXIpI4CvRof1; Thu, 12 Mar 2026 10:19:09 +0800 (CST)
-X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
-Received: from [10.32.64.22] ([10.32.64.22] [10.32.64.22])
-	by zhaoxin.com (f222c4) with ESMTP5ec05cd12c134825a730b52d4c57502c
-	Thu, 12 Mar 2026 10:19:04 +0800
-X-Eyou-Smtpauth: tonywwangoc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.22
-X-Eyou-EnvelopeSender: TonyWWang-oc@zhaoxin.com
-Message-ID: <8176878c-970a-48e3-b237-2c57ed39f7a5@zhaoxin.com>
-Date: Thu, 12 Mar 2026 10:18:38 +0800
+	 In-Reply-To:Content-Type; b=R10IqWoYb63W46SocW5BQrVHQRjhvUWKVxsJnjjNmz+KVYjcaORcZyvz15Ak8TWtam8rsHiz+YupOOozZY4xyP3v1+ABI/PtfhuExXz/WBui2XJiLtaI9wUbjn239cVgwdKamF8GggYmqQAWChfgsByxMk2oNcqmhhTqU7+87UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMW8UVtA; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773282695; x=1804818695;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BH0BfbtEayS2qwyJivYzLS+tdTpV+Bg/Yk1xARQ+QVw=;
+  b=WMW8UVtA+E+Mg6TnPK/bIyBeeRshhz73NuiVJ1lWfSTGV0kp+7CKV+NA
+   psDm/oIHA9A1v5jQhrzAQkjo7WmkUYWwVdEID5+6jK2FiRJ7Tky2E8aTX
+   acuaNRa13yMGTPCI/k8W42yV3GbAxG6Uo2f7yt9nD8lk+wuoeIW2zn8P5
+   vZwfyt4boskiNikAmPYmlRaLhGTEdtO4497O0ShvIcdmtcCJIAor+ZOZi
+   01j3Z7aiDwSDVbO/7gohCyXIrlIDStVehmsVt89Ov1CnpEfbLv7NAAfSp
+   7xO27J9yWao5UTl1Yl9r/Dmqzj6tmdT98vcj9bfhtVOPGcL06sWoE6cko
+   w==;
+X-CSE-ConnectionGUID: LbbzYRMrQ6+zsXX8CcRy3g==
+X-CSE-MsgGUID: YJu2nrbnRTKNjsBxTA12sA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74243964"
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="74243964"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:31:34 -0700
+X-CSE-ConnectionGUID: Rsi25q53S0m6lWzPN2efEw==
+X-CSE-MsgGUID: 2itRWNZCRmK9cotUwazeWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
+   d="scan'208";a="215796144"
+Received: from unknown (HELO [10.238.3.214]) ([10.238.3.214])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:31:30 -0700
+Message-ID: <0a720411-0b24-42eb-9897-856b1175aa82@linux.intel.com>
+Date: Thu, 12 Mar 2026 10:31:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,116 +70,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-To: ludloff@gmail.com
-X-ASG-Orig-Subj: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-Cc: me@ziyao.cc, andrew.cooper3@citrix.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, linux-kernel@vger.kernel.org,
- mingo@redhat.com, stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org,
- lukelin@viacpu.com, "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>,
- cooperyan@zhaoxin.com, benjaminpan@viatech.com, QiyuanWang@zhaoxin.com,
- HerryYang@zhaoxin.com, "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-References: <CAKSQd8WpwYV0rxd7soKDqcv09Oxx1sUZPTHf+b_5hqgbxHcLLA@mail.gmail.com>
+Subject: Re: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters
+ constraint apply
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>,
+ stable@vger.kernel.org
+References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
+ <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
+ <20260311201625.GW606826@noisy.programming.kicks-ass.net>
 Content-Language: en-US
-From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-In-Reply-To: <CAKSQd8WpwYV0rxd7soKDqcv09Oxx1sUZPTHf+b_5hqgbxHcLLA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260311201625.GW606826@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <tonywwangoc@zhaoxin.com>
-X-Vid: 0bc6c7cd8a2ebb3ddea73d59766eff8f00@zhaoxin.com
-X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
-X-Barracuda-Start-Time: 1773281949
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1541
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155726
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224786-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[zhaoxin.com];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-224787-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[TonyWWang-oc@zhaoxin.com,stable@vger.kernel.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.951];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zhaoxin.com:mid]
-X-Rspamd-Queue-Id: 80C9626C27E
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: DF40F26C48A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
+On 3/12/2026 4:16 AM, Peter Zijlstra wrote:
+> On Sat, Feb 28, 2026 at 01:33:20PM +0800, Dapeng Mi wrote:
+>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+>> index 4768236c054b..4b042d71104f 100644
+>> --- a/arch/x86/events/intel/core.c
+>> +++ b/arch/x86/events/intel/core.c
+>> @@ -4628,6 +4628,19 @@ static inline void intel_pmu_set_acr_caused_constr(struct perf_event *event,
+>>  		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
+>>  }
+>>  
+>> +static inline int intel_set_branch_counter_constr(struct perf_event *event,
+>> +						  int *num)
+>> +{
+>> +	if (branch_sample_call_stack(event))
+>> +		return -EINVAL;
+>> +	if (branch_sample_counters(event)) {
+>> +		(*num)++;
+>> +		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  static int intel_pmu_hw_config(struct perf_event *event)
+>>  {
+>>  	int ret = x86_pmu_hw_config(event);
+>> @@ -4698,21 +4711,18 @@ static int intel_pmu_hw_config(struct perf_event *event)
+>>  		 * group, which requires the extra space to store the counters.
+>>  		 */
+>>  		leader = event->group_leader;
+>> +		if (intel_set_branch_counter_constr(leader, &num))
+>>  			return -EINVAL;
+>>  		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
+>>  
+>>  		for_each_sibling_event(sibling, leader) {
+>> +			if (intel_set_branch_counter_constr(sibling, &num))
+>> +				return -EINVAL;
+>> +		}
+>> +
+> Do the new bit is this, right?
 
-On 2026/3/6 04:26, Christian Ludloff wrote:
-> 
-> 
-> Tony,
-> 
-> can you confirm whether F=6 M=1F is affected or not?
-> (Supposedly that's ZX-D... but the F in the model does
-> make me wonder/ask.)
-> 
-This bug existed only in certain early ucode revisions of the ZX-C/ZX-C+ 
-series CPUs, and is not present in the ZX-D.
+Actually not, the key change is the below one. The last event in the group
+is not applied the branch counter constraint.
 
-> Presumably the 6FE and 10690 microcodes which are
-> out in the wild do not fix the bug, correct?
-> 
-> 000006fe_00000000_20110809_8f396f73
-> 000006fe_00000000_20110809_8f397072
-> 000006fe_00000001_20160525_7214d1e1
-> 000006fe_00000001_20170109_25646399
-> 000006fe_00000001_20180726_6e07329b
-> 000006fe_00000001_20180726_6e1e984b
-> 
-> 00010690_00000000_20110809_259878a5
-> 00010690_00000001_20160525_3c34fc1a
-> 00010690_00000001_20170109_a8b24dc2
-> 00010690_00000001_20180726_0c55f25d
-> 00010690_00000001_20180726_41faefde
+Assume we have a event group {cycles,instructions,branches}. When the 3rd
+event "branches" is created and the function intel_pmu_hw_config() is
+called for the "branches" event to check the config.  The event leader is
+"cycles" and the sibling event has only the "instructions" event at that
+time since the 3rd event "branches" is in creation and still not added into
+the sibling_list. So for_each_sibling_event() can't really iterate the
+"branches" event.
+
+
 >
-No, The four patches with the display date of 20180726 should not have 
-this bug.
+>> +		if (event != leader) {
+>> +			if (intel_set_branch_counter_constr(event, &num))
+>>  				return -EINVAL;
+>>  		}
+> The point being that for_each_sibling_event() will not have iterated the
+> event because its not on the list yet?
 
-> As for making the code conditional for Centaur/Zhaoxin,
-> stepping E seems to be when FSGSBASE arrived – and
-> while there are CPUID dumps for 6FE that say VIA Eden
-> it is possible that they too have the bug.
-> 
-Sorry, VIA Eden is too old, we haven't been able to find actual hardware 
-to confirm this.
+Yes. 
 
-> As for making the code conditional for Zhaoxin models in
-> the string, that would require more than just C4600 – the
-> collection of known dumps includes others.
-> 
-Yes, ZX-C/ZX-C+ series CPUs have other strings.
 
-Sincerely!
-TonyWWang-oc
-> --
-> C.
+>
+> That wasn't really clear from the changelog and I think that deserves a
+> comment as well.
+
+Sure. I would add comment and enhance the changelog to make it clearer. Thanks.
+
+
+>
+> Let me go fix that.
 
