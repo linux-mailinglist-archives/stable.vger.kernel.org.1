@@ -1,271 +1,211 @@
-Return-Path: <stable+bounces-224881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLV+KuvesmncQQAAu9opvQ
-	(envelope-from <stable+bounces-224881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:42:35 +0100
+	id ANq8J5bfsmncQQAAu9opvQ
+	(envelope-from <stable+bounces-224882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:45:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B48274BFC
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:42:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A46274CDA
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 16:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E67B0300A525
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:40:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B95A530B4F84
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 15:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F673D1707;
-	Thu, 12 Mar 2026 15:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4AD3B775E;
+	Thu, 12 Mar 2026 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLbRxazJ"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nMiNRzpq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC22C3C7DF4
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773330045; cv=pass; b=MN9VaCBq3xJmHaNDlt2jXfuv6nQxf0GWA6hGkcS5BnUBO+j84a8pI8x/ujWI3IZ2ePzqpgVizCULY8PPA1nJK0bBxIiY8JXmGsxwPNglDtJfG+uOq1arCU2J15268y1c73AdwfjfErpDnr7ioKJPLFqQPYoIXh0joHnvZZ0bq4I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773330045; c=relaxed/simple;
-	bh=9U79XuSEDogMsEE6qxccDeqtvH3bBahfO34fvcv/Lvg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S0XfvHPBhqDvgamWbJamVGTPMdggkvqgB60TFDgfLuJQdaVVjbbhSZiqWyXWcdZbhfhv8QvL0mVeRSBIkza1vBAWwOFDwp8ASoCxJOsJrYRksrBfrFr7jxEqYbmqvqHrMXiKTKUfBv4s8GRh7Xiv0Vvv6A6SA7eLFn9YTIbEFOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLbRxazJ; arc=pass smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89a1347051aso4398506d6.2
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 08:40:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773330043; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VPO+kMzPKe6oSbjRPFkj9k5ap1F7deBObVYpK3OcWSKuS5RlehviWCCdZyETp5dK5/
-         tGnZwAWIaVLvgC5r1dU8T+JC/OtqlYUkkLOUTT0Mbw0uecNS/WAZNmS3fHFoiDyp1Or6
-         KkIyR34ZTqkmEcIbZE0JWsrl6BNcj7mNlWz3tRk4H9vetFirfVfdHva3GI9fDKXiiEZe
-         T0M1VrG2sGtCdSLaqvcomHgWC0sKsu5P688Xh/8rjm0JoEDzzuaw+up6RUO0AgSEaaoy
-         qkE2LYZzQajdN5r6BsvzWgemcd/UGCI2avifx6vFhLOQbe+xwuWb3DlSPBBTqAD9nhTW
-         I1og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
-        fh=3dXTq+dtyvgkwKakuJYG01hV6gROdkiuFzyl7FgvUcM=;
-        b=TFvCh2ZhegeCqneTdU0Q1za+tY19D8VmmhJqEFc1J1Z/BEe3ktfmVcJaH+wPPw3eFc
-         LuvsdGCwxF4lmt8dAhzmK6lAuLMOmTHu3Ui3F3I4XgwgFdQHyUMGWhwR+t30cDuhxZN8
-         VIl3DKTUg9Uf5IhEfGbtwWg+4F7oXjs7i/pgaMSykLwTegoqbF1WfDS6x9RG7O2BjTnr
-         QR7Pwxj+87kTDlJXfSAIR1Z8wPdwBbB08yQaYK0D1+fS+pVlTxpwOkORTInAHzKcsejZ
-         UhOjDC8rpvvq3duyWwkZv1lJxfYH2Oq6kIslk0aCxMdGmpeOHTKLwy2X/MzI0tL4Sgrf
-         IXxw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53926373C07
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 15:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773330150; cv=none; b=iQXbUg552rSCBRNfnuJeODvSLpeBQxtsbVQ5JxFD5FS7zTbJlixubkQegitHwAzC9IuHBhBvt5817K4vyuhuVr0HW1qk8WIlTHu/kzVhabmkXf5ccbs6zAeCRZ9zzy5L5wsZkpEKGx5L5j+vfs7V75NxazdUktE+PHy6tVDD3fw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773330150; c=relaxed/simple;
+	bh=4PzX/2BcEMYN6bus1PXJ1eWTdsO2FXz36Sheli+4r/8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RDLhOVAfKPtrsit51KSxbppG6hblCsQo0Jwz2DfaXPrRwQVJJE34SOmXhA+OqUw+AKnvITDa6su1pG3uHOK/pPGyXbfCbx3Y5jrtw0FqrgJuQ1tcdVXrvfyl+v9Pn4drqmOaXqfK+m5kmszatPwGVJtOxn2NAYHytK4PsargrlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=nMiNRzpq; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439bcec8613so964835f8f.3
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 08:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773330043; x=1773934843; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
-        b=FLbRxazJIzPZEV2sEZx9zrboFDwIn+alCWs5hskbczBtnRLe/otMlpIQowj+KltuzF
-         dwUgUcaKyd71ghZv2xyO826u6NaTDLhL6g692D9sn40GRpRbWf4wxY1u0PYC6r9Ik4Ry
-         PL4W/U1BRT4K9uf8AlbU3gXXgChiy81qi+81n+UZ4aDPM1gSsyaXSLC2SG7x89IQzJfM
-         nDhckLHdULcBqGfdsC2Gy7+vslG/RbVkPU+GYhAx8+NS7nbyur/Z+wukqB/lP87FQ1hH
-         xtYVq56q89qXqRAFw4xLuvrXf9l5XzAMxxcMAo5S3Cdi28+zM1w7WebovbE84O8OdspQ
-         NZ/A==
+        d=googlemail.com; s=20230601; t=1773330148; x=1773934948; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XIFxCq7ikd000RdSw5JxwXtTNKqwm1bQP1nyQMPePDA=;
+        b=nMiNRzpq2p+rrHQqIp0JMOM+lsSzwPzmD9bh1X/ZP/A6xCy3DyTtlJlm6AXp2nF35h
+         KsHbg8J6ronKlwpjSEtKTgch46wv7yVVsxokS7XP5Q8gLPR0IV6YC39Uf4wgzlZrzMtb
+         wLfo1yy6g3I3uhPCIuvEJWIB/ErvSinvDjpptSFGT9jSgB/9XM5O5D6OJ6SZtHmRDKxI
+         Y9ceRHJsZtPSNI29XfP49Ous2ZXtrjiRwvSEswcAdGYybL8Z8GKxN5il/aegNYKi1/c+
+         ds9N9XWEpv9XNA0j3dvl6Dikgl8tE2e8iu//t4DjVfesdJuRKqR484dGLxDbL0yw9rBi
+         n2QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773330043; x=1773934843;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pTMqddxceH06ae4/6PYanD/2oexQ8xHGkM95DOK/9Sw=;
-        b=Oj1CTbiMXGcFuNeHoafYGqWQ2eBL3vior3Uqw7p2o6xpvk62aw0amqXMotqgTzI6Gz
-         Q/SV3wmLozB5izGfwmFOifb4cfzi+qNrKHc9Pu7SQAUrQkI0taBZqSnv/8i4n+kdlv+k
-         PkNJ1pSy0zm4x5FAGGUXlRvFqeKLdzBXYDejXnxIC3tLS48x8sGpmLx8OTvegj9pyHDe
-         Z5saJZ/dKzFbSslwVY6QLi3SjseWCYytoW3SOEu77QjP7cgkr70QGj6r3phMK4RHbuED
-         cKA6EHdAvZ8Juj1nvNwF9EsMQwwVYCRtjZVjzo8FzRL2jR21kfQBpOtdJuW5JEO/6WQJ
-         5+sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXouDmqY0I3ZmFg5AS2AHg9f04I9+O4XvHX3986Xgk4cAE8t3kePQRqOZ5LpziQ5GWwgATo+gw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwAWG54OhHPD07ibWSXGrL6YenmLGWdKYUuXENqAf/pY6yWb/9
-	9rGsRYNJCf5onGysMIfZ/qrcF7pFjfWNxLdN1ARnI4zFHYf5FtZuqUQz/gA/iTl8VW9gZ3qkkYA
-	VtySBuHINO/YpaR0Lywmsd6GL7pNl+E0=
-X-Gm-Gg: ATEYQzwnonGeJHb6vDJzDRz0Ec2p6H0LEwcbbnFY+qJJSbRzJ06qE3dg0R049RSiQiM
-	y0+y2up3zkOGC1F5Rsq1ImytueNrksqhWxYSV0nPP5DQuigvsxHBmzTuuzBdFnx6BjQQdSVg1IN
-	VQ6vbXFN6yVfUaT6oOioQgrukIalO22oSHO22y1G+B1k215xaqA1Cp2R32qoKkddqQCOGPvsjio
-	YOLa8OtJOqNMNnuMJPNUFISiKftT6VtJsp7cCtS/y51f8RryEsByI2vEIOED6rxsqeDRyhrmm94
-	EygJ8MG6xPXMChac8S9Nyn4B3Ovq8/HrWm45newcGM+spYtzxX4moB682RdcQwUYdQz8P/ufJux
-	/JdpjBtY/Dy96Filn22W5hXYBa1QTrwGF5SyeTdVfOt86hG8K4NQx3iSQpbyn673MVyipvKXxSm
-	dTMjvpdMeAMD4yp4p58Zj09A==
-X-Received: by 2002:ad4:5ca2:0:b0:899:fd80:f79f with SMTP id
- 6a1803df08f44-89a81dde5abmr2633836d6.23.1773330042750; Thu, 12 Mar 2026
- 08:40:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773330148; x=1773934948;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XIFxCq7ikd000RdSw5JxwXtTNKqwm1bQP1nyQMPePDA=;
+        b=hLl6Uv8ghV1b6B8vVadLnbjFoCiI9yZOauA8FmAflsmGtxrxJ8bfrj7f6rnbIMgO9f
+         lkpciNl2YJu49RRwbA8moLAZDishX8EuBKMUWOpO7whQUs/TTOGa7OwqYimSyfCtYg7J
+         gKvbva2yc+8iuez8q/EK02WaWbBZAb91QA+jJ9+e5WhD9kMYR+8TqyhFMQJhugfSn22S
+         goT9Mvh0Xq/ic/4X3/ciVkfHZfCSIYyp+xu/wQZ2ANYYxsk85JfEdYqcQo3b29rHwGU2
+         O6VOSRyLqGVlU4VB+FaUlNRIeEdFrmLaKmTz9MXK9vJDKNB1Ipwjze6yveNlh07DzabV
+         nxrg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/6vmhEn27Hv18fDvxEcZ7SnmMh1WhcvIurwgMlO5Zv4fTp7LCLqdkR4EqAUmyI9xma8goHIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS9W8Af0cWvGihHoFzcMTrxUZEQSRkTYMRODhsWCAsN9pGcXaP
+	eEZqK7iucLtKTQA4rVe556gqLxco3hVPQvHgtbPwzniaVO4p+S6nNoK7
+X-Gm-Gg: ATEYQzxiCCc6U2pSvLH+4bxcrWc17uoLAUyhYMDqFLisd9izEfvArm+Th1ZWC9G5qYP
+	5jhlPczHDuos+Ul9bahQwJYTLsXMwE14Uh0QFPBBeA2Gdc1jU6llQ+pm2iQpP5YarzNx0GaLHrT
+	RLP3L9his6bRAybV8hrjbM0IRU4IbIpfkOZ/ViVjDObRd4Qhw8z/F9SXfW2D8qJ7poQpyhPHCm3
+	HOBgUC0xXxTri2NUZP7ZKErFj0IlDAmhHmnbZxFCXJcSE0paT7IeceiilbxoxMtahEez1PQ0UuG
+	tUi6rLTQY7OZtrls1nHvr/n1wm5towJSYavdMdhBUpvo2H2qlYAn/ojMBTjBpjGznRIIDRrn+Na
+	vceFwpSMY2K8BpU/QyLaJe/NYQoxu1uGaGHUc6hFxK4PxM/9/6nnn66pI0A0aMb8tVRUiAlFTh0
+	toNX3tM+Wq+k8yD8y+Tk4cE4UExLJOet6nWRJF88y62D/gmQ==
+X-Received: by 2002:a05:600c:4710:b0:485:34b3:858a with SMTP id 5b1f17b1804b1-4854b0bb3bbmr113297805e9.11.1773330147379;
+        Thu, 12 Mar 2026 08:42:27 -0700 (PDT)
+Received: from ccde1gl2920.devint.net.sap ([130.214.226.57])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541acea11sm269359615e9.7.2026.03.12.08.42.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 08:42:26 -0700 (PDT)
+From: Marc Buerg <buermarc@googlemail.com>
+Date: Thu, 12 Mar 2026 16:42:19 +0100
+Subject: [PATCH] sysctl: fix uninitialized variable in proc_do_large_bitmap
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310235642.6d9798f4@plasteblaster> <c66p7dr6vlujvnwczbnrmqx7monkdgdnm4rwewm76aibn7jza3@d3uik74dei72>
- <CANT5p=q2Lv4pSvEm5EWcM73b7NZsbt1kYEFJtjaAZRS6Gz_OjQ@mail.gmail.com> <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
-In-Reply-To: <42utcrhajix2x3feckj7ap373osq65sgfz6ximnaj4rasszret@ymhf44ddz2wh>
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 12 Mar 2026 10:40:30 -0500
-X-Gm-Features: AaiRm52ah7-n07dCG73FeRnFD_pUuk-pLBG0LIJHG-WBVhN-iBaM9Rrd33zCEk0
-Message-ID: <CAH2r5msUyFejEbDafcWzSf5oLE3pJCdreaQTm2dxbqfmGtqCRQ@mail.gmail.com>
-Subject: Re: [REGRESSION] failure to reconnect on SMB server restart with
- custom TCP port (not 445): Host is down (at least since 6.6.95)
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Shyam Prasad N <nspmangalore@gmail.com>, 
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>, Steve French <sfrench@samba.org>, 
-	linux-cifs@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260312-fix-uninitialized-variable-in-proc_do_large_bitmap-v1-1-35ad2dddaf21@googlemail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQqDMBAAvyJ77kISWw/9SilhTVa7kCayUSkV/
+ 97Q48Awc0BlFa5w7w5Q3qVKyQ3spYPwojwzSmwMzrjB9NbhJB/csmRZhZJ8OeJOKjSmZmZctAQ
+ fi0+kM/tR1jct2Jsw8HSlYMMNWnhRbpX/9PE8zx+xyS/5hAAAAA==
+X-Change-ID: 20260312-fix-uninitialized-variable-in-proc_do_large_bitmap-30c6ef4ac1c5
+To: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ stable@vger.kernel.org, Elias Oezcan <elias.rw2@gmail.com>, 
+ Marc Buerg <buermarc@googlemail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773330146; l=3076;
+ i=buermarc@googlemail.com; s=20260312; h=from:subject:message-id;
+ bh=4PzX/2BcEMYN6bus1PXJ1eWTdsO2FXz36Sheli+4r/8=;
+ b=jREgJ67/0Ad7cnev4wVPe9MLshX0zf4fyPwS70dVonHWj6g5mIcCY8ZALOllSiTbgn0rr78kb
+ pg+WIR0Gz3ADvkLbbdYNsGbJBy/7Ooaxa/zP/RBy1RjSlqvb0yznUrQ
+X-Developer-Key: i=buermarc@googlemail.com; a=ed25519;
+ pk=kBZIEGh9yNUzqCz87kygF7XqwPxTWvwm4+HUrOuckyM=
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224881-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,uni-hamburg.de,samba.org,vger.kernel.org,lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,googlemail.com];
+	TAGGED_FROM(0.00)[bounces-224882-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[buermarc@googlemail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,archlinux.org:url,suse.com:email]
-X-Rspamd-Queue-Id: 27B48274BFC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid]
+X-Rspamd-Queue-Id: 16A46274CDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 10:10=E2=80=AFAM Henrique Carvalho
-<henrique.carvalho@suse.com> wrote:
->
-> On Thu, Mar 12, 2026 at 05:44:58AM +0530, Shyam Prasad N wrote:
-> > On Wed, Mar 11, 2026 at 7:37=E2=80=AFAM Henrique Carvalho
-> > <henrique.carvalho@suse.com> wrote:
-> > >
-> > > On Tue, Mar 10, 2026 at 11:56:42PM +0100, Dr. Thomas Orgis wrote:
-> > > > Dear Linux-CIFS maintainer(s),
-> > > >
-> > > > I stumbled upon a regression in the Linux cifs/smb3 client when wor=
-king
-> > > > with a smbd using a non-standard port. I am not the first to note t=
-his, see
-> > > >
-> > > >       https://bbs.archlinux.org/viewtopic.php?id=3D306712
-> > > >
-> > > > which is a report from mid last year, indicating the problem someti=
-me
-> > > > after Linux 6.6.72. It is a very simple issue, where details of the
-> > > > kernel builds or mount setup don't seem to matter much: Older kerne=
-ls
-> > > > reconnect to a SMB server that was restarted (old processes killed =
-and
-> > > > replaced), newer kernels do not and just have a defunct mount.
-> > > >
-> > > > I reproduced this in our HPC cluster environment with such smb.conf=
- on
-> > > > the server side
-> > > >
-> > > > [global]
-> > > > security =3D user
-> > > > map to guest =3D Bad Password
-> > > > server role =3D standalone server
-> > > > smb ports =3D 1445
-> > > >
-> > > > [public]
-> > > > path =3D /some/path
-> > > > guest ok =3D yes
-> > > > read only =3D yes
-> > > >
-> > > > and such a mount command on the client:
-> > > >
-> > > > mount -t smb3 -o port=3D1445,user=3Dguest,password=3Dfoo //server/p=
-ublic dir
-> > > >
-> > > > When I kill and re-start smbd on the server, older client kernels
-> > > > reconnect and continue to return listings and files from the share,
-> > > > while newer kernels give this:
-> > > >
-> > >
-> > > My suspicion is that the regression was introduced by:
-> > >
-> > >     5713127da855 ("cifs: update dstaddr whenever channel iface is upd=
-ated")
-> > >
-> > > That change causes parse_server_interfaces() -- should this be runnin=
-g
-> > > without multichannel mount option? -- to overwrite the port stored in
-> > > server->dstaddr with CIFS_PORT.
-> > >
-> > > The attached patch preserves the existing port from server->dstaddr.
-> > >
-> > > Note that I have not yet tested this patch or confirmed the regressio=
-n
-> > > with a bisect. If you can't, I will try to do that tomorrow.
-> > >
-> > > --
-> > > Henrique
-> > > SUSE Labs
-> >
-> > Hi Henrique,
-> >
-> > AFAIK, the ignoring of port from the results was by design and part of
-> > the original code back in 2018:
-> > CIFS: parse and store info on iface queries
-> >
-> > Also, the comment in the code just above says why this is so.
-> > [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these
-> >
-> > I checked this section and it says:
-> > Port (2 bytes): This field MUST NOT be used and MUST be reserved. The
-> > server SHOULD set this field to zero, and the client MUST ignore it on
-> > receipt.
-> >
-> > Based on the conversations here, it looks like smbd ignores this.
-> >
-> > I think the right fix would be to make sure that
-> > cifs_chan_update_iface gets called only for secondary channels. That
-> > way, it will not get called for single channel scenarios.
->
-> Sure, I read the comment in the code and the MS-SMB2 protocol. The
-> protocol states that "client MUST ignore [Port] on receipt". Since we
-> are not using p->Port, I don't see how this is a protocol violation.
+proc_do_large_bitmap() does not initialize variable c, which is expected
+to be set to a trailing character by proc_get_long().
 
-Agree. Looks harmless
+However, proc_get_long() only sets c when the input buffer contains a
+trailing character after the parsed value.
 
-> We're using the port that was selected on mount and copied over to
-> server->dstaddr, so that when server->dstaddr is overwridden,
-> server->dstaddr keeps the user selected port.
->
-> Now, even if we only fix that for primary channels, the secondary
-> channels will still get the wrong port when they are overwridden, no? So
-> I don't see how that fixes the issue.
->
-> Apologies if I'm missing something.
->
-> Best regards,
->
-> --
-> Henrique
-> SUSE Labs
->
+If c is not initialized it may happen to contain a '-'. If this is the
+case proc_do_large_bitmap() expects to be able to parse a second part of
+the input buffer. If there is no second part an unjustified -EINVAL will
+be returned.
 
+Initialize c to 0 to prevent returning -EINVAL on valid input.
 
---=20
-Thanks,
+---
+When writing to /proc/sys/net/ipv4/ip_local_reserved_ports it is
+possible to receive an -EINVAL for a valid value.
 
-Steve
+This happens due to an uninitialized variable in the
+proc_do_large_bitmap() function, namely char c. To trigger this behavior
+the variable has to contain the later explicitly checked '-' char by
+chance.
+
+In proc_do_large_bitmap() it is expected that the variable might be
+filled by the proc_get_long() function with the trailing character of
+the given input. But only if a trailing character exists within the
+passed size of the buffer.
+
+The proc_get_long() function can set c if the length of the parsed long
+is smaller than the given size of the buffer containing the user input.
+This is not the case if the buffer only contains the port value (e.g.
+"123") and sets the size exactly to that (3). Meaning if there is no
+trailing character, c will not be set.
+
+If no trailing character is present we still do a c == '-' check. If the
+uninitialized variable contains this char the function continues
+parsing. It will now set err to -EINVAL in the next proc_get_long()
+call, as there is nothing more to parse.
+
+Initializing c to 0 will solve the problem.
+
+The problem will only arise sporadically, as the variable must contain
+'-' by chance. On the affected system CONFIG_INIT_STACK_NONE=y was
+enabled. Further, when enabling eBPF tracing to dump contents of the
+stack the issue disappears, which would fit the current explanation as a
+root cause for the observed behavior.
+
+Fixes: 9f977fb7ae9d ("sysctl: add proc_do_large_bitmap")
+Signed-off-by: Marc Buerg <buermarc@googlemail.com>
+---
+ kernel/sysctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 9d3a666ffde1..c9efb17cc255 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -1118,7 +1118,7 @@ int proc_do_large_bitmap(const struct ctl_table *table, int dir,
+ 	unsigned long bitmap_len = table->maxlen;
+ 	unsigned long *bitmap = *(unsigned long **) table->data;
+ 	unsigned long *tmp_bitmap = NULL;
+-	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c;
++	char tr_a[] = { '-', ',', '\n' }, tr_b[] = { ',', '\n', 0 }, c = 0;
+ 
+ 	if (!bitmap || !bitmap_len || !left || (*ppos && SYSCTL_KERN_TO_USER(dir))) {
+ 		*lenp = 0;
+
+---
+base-commit: 80234b5ab240f52fa45d201e899e207b9265ef91
+change-id: 20260312-fix-uninitialized-variable-in-proc_do_large_bitmap-30c6ef4ac1c5
+
+Best regards,
+-- 
+Marc Buerg <buermarc@googlemail.com>
+
 
