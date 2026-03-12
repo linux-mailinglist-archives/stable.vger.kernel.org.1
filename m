@@ -1,77 +1,93 @@
-Return-Path: <stable+bounces-224837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKCIF7SUsmnONgAAu9opvQ
-	(envelope-from <stable+bounces-224837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:25:56 +0100
+	id 4OixB2qUsmnONgAAu9opvQ
+	(envelope-from <stable+bounces-224836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:24:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5EE270531
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DFD270512
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C501301A388
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:25:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B80D93136CAE
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8266A3B3881;
-	Thu, 12 Mar 2026 10:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC963BA240;
+	Thu, 12 Mar 2026 10:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="M+mVsCDZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QT0n3ZmA"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105BB38C2C4;
-	Thu, 12 Mar 2026 10:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F0037DEB5
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 10:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773311152; cv=none; b=l1aQoFx1ZBP8Jh8ZUGJC0Br34hSSyUI6YOUc+0vvfeSGaxa4SyXmXdCWekWiG1dbJlnh0fS9JvXmNYL2i7avP5UGU3j7JWSwtFocuVXI8Vk0QGQJKttTDUdH6tiQbAxuQWVJnB0IFRbEPhLwBSXH30GaPIXX39T6zVeYZGQyHP4=
+	t=1773310964; cv=none; b=Mb+/l2MuDAQVLzAds+RW/v0jOuSEUyt4IjDngLI203TVVb4qUMUoNQzdpm+63d5Xqgtrr0+Zg9pTOvuMFaX1MgFp2REd+Fjyh7hdjDkbPcP71NBzyfA/t7iaGDxBYh6oDFP0WWPff5+mOC0ty2gqLOI5dyPqroyaN7Srg+TGh2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773311152; c=relaxed/simple;
-	bh=5c6kltoaIYrGaQQqLAIXqa46h4YeizlMjKPgM5N5Ok8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VMAijgjFn2su/JnD7ixGXaIstKpugD1GP50eo9YJKSXN60KhSbrlBClTLlN5emQk51rgI+e/M89MuJjtucXXB/cvCU3s/StpUljN8jxReDFBvt1XRoGVf8Ii22xeoz+2xQaZA3gJ6a8qw6izuZ+reNqY4N8tl/fEynI4cpPmTX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=M+mVsCDZ; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1773310511;
-	bh=G1CyQ/mocH7WPh0/s6x4rnakt10ep4qnnieMy3Za2f0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=M+mVsCDZDzXmcYblDXRSprr+Nc3lcEEaUBkqd5onudJIQpmfX7qh0Fl18On1Lyf3D
-	 uPyojNIzXKuwqaCtEhCoxVZS+N+P9btutE0L7MNPPSuoShedP7isiAnMczGIvlnRbd
-	 nRch68dlPCuw8SNWfXJfrCmJEDoD7JsHYW9j2ssM=
-Received: from stargazer (unknown [IPv6:240e:456:1100:1754:2b3e:2be1:70e3:c09e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 6173D1A3EFD;
-	Thu, 12 Mar 2026 06:15:04 -0400 (EDT)
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Jinyang He <hejinyang@loongson.cn>
-Cc: WANG Rui <wangrui@loongson.cn>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Zixing Liu <liushuyu@aosc.io>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	stable@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Hanlu Li <lihanlu@loongson.cn>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	loongarch@lists.linux.dev,
+	s=arc-20240116; t=1773310964; c=relaxed/simple;
+	bh=UQ8eTy3O54/yQDmZQ53filNsXiiPrqRjxEEESeSEOsU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fTKfQlE06TijZxaawVHZhCh0vEuXGyakAXIXs2kk2razTSVid9qCUuL3MqGA/drinji2uQsLg/DjxLsQiAKP4JdyD9pQxf0NR3Axvt9hkAsV0hQZoIyi+wrEcztJIbPUXFkUaWYseRKINIQT9nYtDy2vAZ33Y7wAfxrrK0HGzrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QT0n3ZmA; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso7549825ad.0
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 03:22:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773310961; x=1773915761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qJUHIhc2weYpVFeAG0o1aQbqOU671Mp2foYGXrmt/ak=;
+        b=QT0n3ZmAZcT+ovwZyvEmGBL5ftbwIkm9oYx2AAXImc/F01O4hqqhlm+OaG5ywWmrOr
+         vx1JoO/6AniXKXL9N35QW2S8N3CDPaDLpou+ce62dRCCOeC56dWF1FVcSqIw9BIll9mB
+         OgliTpTcedjvm1WgT1IFlzlQCXMubqsrLHfOYKQtyDuRWExnBJ0wT3iDvfGTGbbvDtjm
+         bA8FuwUmV8yVCZdVjoOiCPnuWw81zgE+qGShFDNfC84JG3F0HDFOr2Jm2xmBbGJeq5AF
+         1PD/gJOIn9pe2783sgoAaFcmlqUTU00KwooVBKCWhUHxURAo4VajYVUPPM9nBMsmwo6k
+         KRyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773310961; x=1773915761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qJUHIhc2weYpVFeAG0o1aQbqOU671Mp2foYGXrmt/ak=;
+        b=iTpdeIvetuCR34r/xEA/9cMA8IF+BUV3SuBdThuAZCtX2WFXBGG553dcLaUqbaxsdC
+         hDuVQAnD76axOLwyOtYzNTwouGkEQO75aPSyE09w+pgZiUMg7jdoT2XHPgI62itH4t+F
+         Qd4BGgifzpUl+LoCM1eGqY1NGCnjAbFZsfTOg6L7ZiUL9tCSKlF2DloDzbwmZD9k8ASG
+         wc8+oU5oGLLjVhdgc1cEn6LppTwa4gsDmdzs4MUNRKpDnJBPlnb8R4JHme1j+clr9ICX
+         /6T8BY+IzB60cU5t1opdNBc4lPWqGiWeGrJvPSrey5dzN5TONWfXrMuOLmo7DNS+i6b8
+         Xo+A==
+X-Forwarded-Encrypted: i=1; AJvYcCV3XC8FXqMfjsuQ4SIL9xDlgkxuxERrYIpCQmXYrNqkl8uwnuL8wxlMkCEqexabJ8z5KacYxT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKlJNoHTZIGFUrvVa0aiXwaw5ZixBDbFFGPPcl8CybXbkfO9mC
+	6GB12UjZx7Yv3gb3TZrudVSDuaFvPshC3mkDFsjB91Uttho8crc2hHpF
+X-Gm-Gg: ATEYQzzOXCgFe/jNwrKLwfRSKwDh9/ADZjbphANbXtZVuwO1UsoxcWMkRtTndaWunVl
+	YA9Nvq/VeXoZyhM+RSI8wEYJHwS2YggSc7ow4dtdID2+7ddyYb9E8XHPbdGwzbzK1/9NUL82HFI
+	H/Lwl3kJ27DaKRE5FLIpd0LPTRK8RCfiU3m0pGxhvbHr2o3Fofu3u3fbgc4mbp3CcaMMdGaLRai
+	0yw1ZWNTg7odoo8Msm3gc5Wu0yY2QxBSLTkAJqf0bQwGfCDd8YuOZWmBvgzq5wxUHEzWJ26m5e2
+	4p7tXltLiDIHOM7Q+2IOpQZtvcBwiB43j5pXJDyCVrzF9/ywzqLBu+nnGsUGzydpzWvhfua/fHI
+	Rbdlwt4zcD5QFpbGewvgOZ0YlHe16Vs38wpE/Vg5OTini+Q5CmvxlB0+pdNdkJQOa4vqKqGk2Et
+	coV+mGz9MeW/WVoRV860FcYE74UaXGeMgiMwU2Qtdkk5qFsAI0zjRqTZsxgENL7hK4NqpT3bU=
+X-Received: by 2002:a17:903:37c4:b0:2ae:7f85:33d1 with SMTP id d9443c01a7336-2aeba2e60d8mr28067915ad.0.1773310961125;
+        Thu, 12 Mar 2026 03:22:41 -0700 (PDT)
+Received: from kernel-fuzz.. ([103.172.183.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae260ea3sm52828275ad.39.2026.03.12.03.22.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 03:22:40 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: dsterba@suse.com,
+	clm@fb.com
+Cc: linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v4] LoongArch: vDSO: Emit GNU_EH_FRAME correctly
-Date: Thu, 12 Mar 2026 18:14:40 +0800
-Message-ID: <20260312101440.772081-1-xry111@xry111.site>
-X-Mailer: git-send-email 2.53.0
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: reject root with mismatched level between root_item and node header
+Date: Thu, 12 Mar 2026 18:22:29 +0800
+Message-ID: <20260312102229.220570-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,265 +95,177 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[loongson.cn,aosc.io,zytor.com,vger.kernel.org,infradead.org,gmail.com,kernel.org,flygoat.com,uniontech.com,lists.linux.dev,xry111.site];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-224837-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224836-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[xry111.site:+];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xry111.site:dkim,xry111.site:email,xry111.site:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gnu.org:url]
-X-Rspamd-Queue-Id: AC5EE270531
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A8DFD270512
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-With -fno-asynchronous-unwind-tables and --no-eh-frame-hdr (the default
-of the linker), the GNU_EH_FRAME segment (specified by vdso.lds.S) is
-empty.  This is not valid, as the current DWARF specification mandates
-the first byte of the EH frame to be the version number 1.  It causes
-some unwinders to complain, for example the ClickHouse query profiler
-spams the log with messages:
+[BUG]
+A KASAN null-ptr-deref is triggered when running balance on a filesystem
+with a corrupted root item:
 
-    clickhouse-server[365854]: libunwind: unsupported .eh_frame_hdr
-    version: 127 at 7ffffffb0000
+  KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+  CPU: 1 UID: 0 PID: 347 ... Tainted: G OE  6.18.0+ #17 PREEMPT(voluntary)
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: QEMU Ubuntu 24.04 BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  RIP: 0010:get_eb_folio_index fs/btrfs/extent_io.h:180 [inline]
+  RIP: 0010:btrfs_get_64+0x91/0x590 fs/btrfs/accessors.c:117
+  Code: 400400f3 f3f36548 8b056324 31054889
+  Call Trace:
+   btrfs_key_blockptr fs/btrfs/accessors.h:368 [inline]
+   btrfs_node_blockptr fs/btrfs/accessors.h:380 [inline]
+   handle_indirect_tree_backref fs/btrfs/backref.c:3324 [inline]
+   btrfs_backref_add_tree_node+0x7a5/0x26a0 fs/btrfs/backref.c:3538
+   build_backref_tree+0x11c/0xb00 fs/btrfs/relocation.c:437
+   relocate_tree_blocks+0x583/0x1a30 fs/btrfs/relocation.c:2649
+   relocate_block_group+0x521/0xf60 fs/btrfs/relocation.c:3584
+   btrfs_relocate_block_group+0x4d8/0xde0 fs/btrfs/relocation.c:3984
+   btrfs_relocate_chunk+0x133/0x620 fs/btrfs/volumes.c:3451
+   __btrfs_balance fs/btrfs/volumes.c:4227 [inline]
+   btrfs_balance+0x1e8b/0x42b0 fs/btrfs/volumes.c:4604
+   btrfs_ioctl_balance fs/btrfs/ioctl.c:3577 [inline]
+   btrfs_ioctl+0x25cf/0x5b90 fs/btrfs/ioctl.c:5313
+   ...
+  RIP: 0033:0x7bbaa73a75ad
+  Code: ffc3662e 0f1f8400 00000000 90f30f1e fa4889f8
 
-Here "127" is just the byte located at the p_vaddr (0, i.e. the
-beginning of the vDSO) of the empty GNU_EH_FRAME segment.
-Cross-checking with /proc/365854/maps has also proven 7ffffffb0000 is
-the start of vDSO in the process VM image.
+The bug is reproducible on 7.0.0-rc2-next-20260311 with our dynamic
+metadata fuzzing tool that corrupts btrfs metadata at runtime.
 
-In LoongArch the -fno-asynchronous-unwind-tables option seems just a
-MIPS legacy, and MIPS only uses this option to satisfy the MIPS-specific
-"genvdso" program, per the commit cfd75c2db17e ("MIPS: VDSO: Explicitly
-use -fno-asynchronous-unwind-tables").  IIRC it indicates some inherent
-limitation of the MIPS ELF ABI and has nothing to do with LoongArch.  So
-we can simply flip it over to -fasynchronous-unwind-tables and pass
---eh-frame-hdr for linking the vDSO, allowing the profilers to unwind the
-stack for statistics even if the sample point is taken when the PC is in
-the vDSO.
+[CAUSE]
+The corruption consists of a single corrupted field in a root tree leaf:
+the btrfs_root_item for the affected tree has its .level field set to 1,
+while the actual root block on disk has header.level = 0. The root block
+itself is completely intact; only the field value stored inside the root
+tree leaf is wrong. The existing tree-checker validation in
+check_root_item() accepts this because it only verifies that
+root_item.level < BTRFS_MAX_LEVEL, and does not cross-check the value
+against the root block's own header.
 
-However simply adjusting the options above would exploit an issue: when
-the libgcc unwinder saw the invalid GNU_EH_FRAME segment, it silently
-falled back to a machine-specific routine to match the code pattern of
-rt_sigreturn and extract the registers saved in the sigframe if the code
-pattern is matched.  As unwinding from signal handlers is vital for
-libgcc to support pthread cancellation etc., the fall-back routine had
-been silently keeping the LoongArch Linux systems functioning since
-Linux 5.19.  But when we start to emit GNU_EH_FRAME with the correct
-format, fall-back routine will no longer be used and libgcc will fail
-to unwind the sigframe, and unwinding from signal handlers will no
-longer work, causing dozens of glibc test failures.  To make it possible
-to unwind from signal handlers again, it's necessary to code the unwind
-info in __vdso_rt_sigreturn via .cfi_* directives.
+The inconsistency becomes dangerous when balance calls
+relocate_tree_blocks() to move a level-0 block belonging to that tree.
+relocate_tree_blocks() has two sequential phases that together set the
+trap:
 
-The offsets in the .cfi_* directives depend on the layout of struct
-sigframe, notably the offset of sigcontect in the sigframe.  To use the
-offset in the assembly file, factor out struct sigframe into a header to
-allow asm-offsets.c to output the offset for assembly.
+Phase 1 -- get_tree_block_key(): reads the root block to retrieve its first
+key before building the backref tree. The check level passed to
+read_tree_block() here comes from the EXTENT_ITEM in the extent tree, which
+correctly records level 0. The disk I/O completes,
+btrfs_validate_extent_buffer() sees found_level(0) == check->level(0), and
+marks the extent_buffer EXTENT_BUFFER_UPTODATE.
 
-To work around a long-term issue in the libgcc unwinder (the pc is
-unconditionally substracted by 1: doing so is technically incorrect for
-a signal frame), a nop instruction is included with the two real
-instructions in __vdso_rt_sigreturn in the same FDE PC range.  The same
-hack has been used on x86 for a long time.
+Phase 2 -- build_backref_tree() calls handle_indirect_tree_backref(), which
+calls btrfs_get_fs_root() to open the affected tree. Inside
+read_tree_root_path(), level is set from btrfs_root_level(&root->root_item),
+yielding the corrupted value 1. read_tree_block() is then called with
+check.level = 1 for the same bytenr. Because EXTENT_BUFFER_UPTODATE is
+already set from Phase 1, read_extent_buffer_pages_nowait() returns
+immediately via the cache fast path, skipping
+btrfs_validate_extent_buffer() entirely. read_tree_root_path() has no
+cross-check between btrfs_header_level(root->node) and the level read from
+root_item, so it silently builds a btrfs_root with root_item.level = 1 and
+commit_root whose btrfs_header_level() is 0 and installs it in the
+fs_roots radix tree.
 
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Back in handle_indirect_tree_backref(), btrfs_root_level(&root->root_item)
+returns 1, which does not equal cur->level(0), so the tree-root early-exit
+is skipped and path->lowest_level is set to 1.
+btrfs_search_slot_get_root() starts at commit_root (level 0), records it in
+p->nodes[0], and returns immediately because it is already a leaf --
+p->nodes[1] is never assigned and retains its kzalloc-zeroed NULL value.
+eb = path->nodes[1] = NULL is then passed directly to
+btrfs_node_blockptr(), which calls btrfs_get_64() and then
+get_eb_folio_index(), where eb->folio_shift is dereferenced through the
+NULL pointer, causing the crash.
+
+Note that the subsequent for() loop in handle_indirect_tree_backref()
+already checks for a NULL path->nodes[level] correctly; the initial
+blockptr comparison just above it was never given the same guard.
+
+[FIX]
+Catch the inconsistency in read_tree_root_path(), right after read_tree_block()
+returns root->node and the generation and owner checks have passed. At that
+point level = btrfs_root_level(&root->root_item) is already known, so
+comparing it against btrfs_header_level(root->node) costs nothing. If they
+differ, emit a btrfs_crit() message and return -EUCLEAN to prevent the
+inconsistent btrfs_root object from being installed in the radix-tree cache
+and reaching any caller. read_tree_root_path() is the only place that sees
+both root_item.level and the actual root node simultaneously, making it the
+correct and minimal location for this cross-block consistency check.
+Returning -EUCLEAN is consistent with the existing owner-mismatch check
+directly above and with the general btrfs policy of converting detectable
+corruption into -EUCLEAN rather than crashing later.
+
+After the fix, btrfs detects the level mismatch at root load time and
+fails with -EUCLEAN instead of crashing later in
+handle_indirect_tree_backref().
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
 ---
+ fs/btrfs/disk-io.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Changes from [v3]:
-- Move SYM_SIGFUNC_* into include guard.
-- Retain ".section .text".
-
-Changes from [v2] to v3:
-- Wrap .cfi_* for signal trampoline in SYM_SIGFUNC_START.
-- Remove comment lines in sigframe.h not so meaningful.
-
-Changes from [v1] to v2:
-- Use DWARF column 0 instead of the libgcc-specific column 72.
-- Style change to sigframe.h.
-
-[v3]: https://lore.kernel.org/20260303083248.567185-1-xry111@xry111.site
-[v2]: https://lore.kernel.org/20260227072031.581229-1-xry111@xry111.site
-[v1]: https://lore.kernel.org/20260225104607.3803060-1-xry111@xry111.site
-
- arch/loongarch/include/asm/linkage.h  | 34 +++++++++++++++++++++++++++
- arch/loongarch/include/asm/sigframe.h |  9 +++++++
- arch/loongarch/kernel/asm-offsets.c   |  2 ++
- arch/loongarch/kernel/signal.c        |  6 +----
- arch/loongarch/vdso/Makefile          |  4 ++--
- arch/loongarch/vdso/sigreturn.S       |  8 +++----
- 6 files changed, 51 insertions(+), 12 deletions(-)
- create mode 100644 arch/loongarch/include/asm/sigframe.h
-
-diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
-index e2eca1a25b4e..9f10de85b3f6 100644
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -41,4 +41,38 @@
- 	.cfi_endproc;					\
- 	SYM_END(name, SYM_T_NONE)
- 
-+/*
-+ * This is for the signal handler trampoline, which is used as the return
-+ * address of the signal handlers in userspace instead of called normally.
-+ * The long standing libgcc bug https://gcc.gnu.org/PR124050 requires a
-+ * nop between .cfi_startproc and the actual address of the trampoline, so
-+ * we cannot simply use SYM_FUNC_START.
-+ *
-+ * This wrapper also contains all the .cfi_* directives for recovering
-+ * the content of the GPRs and the "return address" (where the rt_sigreturn
-+ * syscall will jump to), assuming there is a struct rt_sigframe (where
-+ * a struct sigcontext containing those information we need to recover) at
-+ * $sp.  The "DWARF for the LoongArch(TM) Architecture" manual states
-+ * column 0 is for $zero, but it does not make too much sense to
-+ * save/restore the hardware zero register.  Repurpose this column here
-+ * for the return address (here it's not the content of $ra we cannot use
-+ * the default column 3).
-+ */
-+#define SYM_SIGFUNC_START(name)				\
-+	.cfi_startproc;					\
-+	.cfi_signal_frame;				\
-+	.cfi_def_cfa 3, RT_SIGFRAME_SC;			\
-+	.cfi_return_column 0;				\
-+	.cfi_offset 0, SC_PC;				\
-+	.irp	num, 1, 2, 3, 4, 5, 6, 7, 8, 		\
-+		     9, 10, 11, 12, 13, 14, 15, 16,	\
-+		     17, 18, 19, 20, 21, 22, 23, 24,	\
-+		     25, 26, 27, 28, 29, 30, 31;	\
-+	.cfi_offset \num, SC_REGS + \num * SZREG;	\
-+	.endr;						\
-+	nop;						\
-+	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
-+
-+#define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
-+
- #endif
-diff --git a/arch/loongarch/include/asm/sigframe.h b/arch/loongarch/include/asm/sigframe.h
-new file mode 100644
-index 000000000000..109298b8d7e0
---- /dev/null
-+++ b/arch/loongarch/include/asm/sigframe.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+#include <asm/siginfo.h>
-+#include <asm/ucontext.h>
-+
-+struct rt_sigframe {
-+	struct siginfo rs_info;
-+	struct ucontext rs_uctx;
-+};
-diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
-index 3017c7157600..2cc953f113ac 100644
---- a/arch/loongarch/kernel/asm-offsets.c
-+++ b/arch/loongarch/kernel/asm-offsets.c
-@@ -16,6 +16,7 @@
- #include <asm/ptrace.h>
- #include <asm/processor.h>
- #include <asm/ftrace.h>
-+#include <asm/sigframe.h>
- #include <vdso/datapage.h>
- 
- static void __used output_ptreg_defines(void)
-@@ -220,6 +221,7 @@ static void __used output_sc_defines(void)
- 	COMMENT("Linux sigcontext offsets.");
- 	OFFSET(SC_REGS, sigcontext, sc_regs);
- 	OFFSET(SC_PC, sigcontext, sc_pc);
-+	OFFSET(RT_SIGFRAME_SC, rt_sigframe, rs_uctx.uc_mcontext);
- 	BLANK();
- }
- 
-diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index c9f7ca778364..e297d54ea638 100644
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -37,6 +37,7 @@
- #include <asm/lbt.h>
- #include <asm/ucontext.h>
- #include <asm/vdso.h>
-+#include <asm/sigframe.h>
- 
- #ifdef DEBUG_SIG
- #  define DEBUGP(fmt, args...) printk("%s: " fmt, __func__, ##args)
-@@ -51,11 +52,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--struct rt_sigframe {
--	struct siginfo rs_info;
--	struct ucontext rs_uctx;
--};
--
- struct _ctx_layout {
- 	struct sctx_info *addr;
- 	unsigned int size;
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 520f1513f07d..294c16b9517f 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -26,7 +26,7 @@ cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
- 	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
--	$(call cc-option, -fno-asynchronous-unwind-tables) \
-+	$(call cc-option, -fasynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
- aflags-vdso := $(ccflags-vdso) \
- 	-D__ASSEMBLY__ -Wa,-gdwarf-2
-@@ -41,7 +41,7 @@ endif
- 
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id --eh-frame-hdr -T
- 
- #
- # Shared build commands.
-diff --git a/arch/loongarch/vdso/sigreturn.S b/arch/loongarch/vdso/sigreturn.S
-index 9cb3c58fad03..a876dbdc458a 100644
---- a/arch/loongarch/vdso/sigreturn.S
-+++ b/arch/loongarch/vdso/sigreturn.S
-@@ -12,13 +12,11 @@
- 
- #include <asm/regdef.h>
- #include <asm/asm.h>
-+#include <asm/asm-offsets.h>
- 
- 	.section	.text
--	.cfi_sections	.debug_frame
--
--SYM_FUNC_START(__vdso_rt_sigreturn)
- 
-+SYM_SIGFUNC_START(__vdso_rt_sigreturn)
- 	li.w	a7, __NR_rt_sigreturn
- 	syscall	0
--
--SYM_FUNC_END(__vdso_rt_sigreturn)
-+SYM_SIGFUNC_END(__vdso_rt_sigreturn)
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 900e462d8ea1..06a8689cbf62 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1067,6 +1067,26 @@ static struct btrfs_root *read_tree_root_path(struct btrfs_root *tree_root,
+ 		ret = -EUCLEAN;
+ 		goto fail;
+ 	}
++	/*
++	 * Verify that the root node's on-disk level matches root_item.level.
++	 * These can diverge when the root item in the root tree was corrupted
++	 * (e.g. a bit flip changing level) while the actual tree block is
++	 * already cached in memory at its real level. In that case
++	 * read_tree_block() returns the cached buffer without re-running
++	 * btrfs_validate_extent_buffer(), silently bypassing the level check.
++	 * The mismatch would later cause a null-ptr-deref in backref walking
++	 * (handle_indirect_tree_backref) when the commit root's real height is
++	 * lower than what root_item.level claims.
++	 */
++	if (unlikely(btrfs_header_level(root->node) != level)) {
++		btrfs_crit(fs_info,
++           "root=%llu block=%llu, root item level mismatch: "
++           "root_item.level=%d block.level=%u",
++           btrfs_root_id(root), root->node->start,
++           level, btrfs_header_level(root->node));
++		ret = -EUCLEAN;
++		goto fail;
++	}
+ 	root->commit_root = btrfs_root_node(root);
+ 	return root;
+ fail:
 -- 
-2.53.0
+2.43.0
 
 
