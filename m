@@ -1,307 +1,218 @@
-Return-Path: <stable+bounces-224826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAqPJDqBsmm6NAAAu9opvQ
-	(envelope-from <stable+bounces-224826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:02:50 +0100
+	id gMZUCmx/sml2NAAAu9opvQ
+	(envelope-from <stable+bounces-224825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:55:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678E926F531
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:02:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C008A26F3A9
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F33E31909B6
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 08:56:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 309A8301D0F6
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 08:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7282138AC94;
-	Thu, 12 Mar 2026 08:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E6838AC8F;
+	Thu, 12 Mar 2026 08:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="aGkXHi1t"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="To79ECfu"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.162])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013022.outbound.protection.outlook.com [40.107.159.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC1B2868A9;
-	Thu, 12 Mar 2026 08:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.162
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773305801; cv=none; b=HDMGuzaNMlsNxjmNXowFVFcvEw6Qr/Y3LvBPZ7dMuANTAWJHxYF8sk09zqqVdR9glOnX59i8DloTjd1as0zbcu8LvNg55gIXr5qV1GvboPF+ZfuydDFzYxqG7V+JbKJHcCrQc/zOwnskmaQpt+UCrJLJx2OKXHH5JG/KchE8XXo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773305801; c=relaxed/simple;
-	bh=udAADNla+gD5Kg7TNNkEjGVgcZhIt9VleXGFPsnbd1E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ewBlAodNWd9DitDCu2agKxiKQ1nJQeK0hDM6ObTQJP+etnLoyUz4mkLNig318xAfMzeuC0omrjdn2/MJv3Pp+vtjsQjI2KoVwWdh0r8qEi6Ei66T2DfNdb2wPxbFAhnvTXB/V6yAlbecFW+RPy8AOirvRIuF8K1Z6sW0UpDGml8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=aGkXHi1t; arc=none smtp.client-ip=188.68.63.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-8201.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fWhKl1x7bz3yl1;
-	Thu, 12 Mar 2026 09:55:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1773305755;
-	bh=udAADNla+gD5Kg7TNNkEjGVgcZhIt9VleXGFPsnbd1E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aGkXHi1tlw5rw4xnlTBGIkPAht7Z2SbsUnoN1gjmGTWD2b67dmovA2Kzl3bvcKIyw
-	 kxwYRwskG+iLRhNieECEFgbTpoK1c2W2/YhcGAdeBZR78SQ7wZjpyBWxGa5TvbqGSh
-	 P5MoxS4z8lAXt9nj9gRF8lU/jUoHO3Ql+eXDmzwpSJqych4+MZizZ6tZjiPh8y6Xp8
-	 +Ot42dlDwrZHrOA8Da37V3FrLqptq8kdbcOfH9DoDcVIhKkqn0qQ/U1lh2hniSt1Aw
-	 jkBhtN17EuBz0+QV7nMsJTfQpXMtg1jJV2gZZwKBacvRfRJ5xA5aiHlHB/JyITb4G8
-	 kKeUfFnDZ4V6A==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8201.netcup.net (Postfix) with ESMTPS id 4fWhKl1BM8z3yfx;
-	Thu, 12 Mar 2026 09:55:55 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fWhKk3dHwz8svH;
-	Thu, 12 Mar 2026 09:55:54 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 8A99D61790;
-	Thu, 12 Mar 2026 09:55:53 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <6ba41798-9c69-44f5-9a4e-09336c75a4b9@leemhuis.info>
-Date: Thu, 12 Mar 2026 09:55:52 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719BF38AC87;
+	Thu, 12 Mar 2026 08:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773305705; cv=fail; b=WzK5dC/+vl50FdeY41Mo7ZFlKkiJHQ96WwZSGY7AQm4Z+ueeXa4oogAVagGQALojppPcxiwdGXDg6Owmq/kEnmFGVdNSYAJc2oMUND2jUnc+0iyt8CL/44THIkkuugvi9rMPG7sjSqfajIsiQX5/8khZuDjz8NFZhRD0UssEK+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773305705; c=relaxed/simple;
+	bh=3XEBbCb9OieLRQFXyFnGiUhcK/OCRhGmflI/lBToLls=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XF62cBRRdINRrJTVaRAHqNXXDHg7bKtBjqcuhCGXOGuiiAteiLs/GK+if+qfkWOWO7xhQ/VBSvO4dA8f6WAK9BSjOoIcPGjY0nXADbvOvj3cuuXLtJWZFiYmLN4ernxIh+47i1oe5bfS7jhx2OtXfJCCxwxmuRTf67ZcpCrMO8o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=To79ECfu; arc=fail smtp.client-ip=40.107.159.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gzeTy/pGqANj7dSUnaue6aIsSfKx0JzmtWScVfXRKeG6wHSNfsfuR/5ufYQU7NUDg0OnRPPLRo63mS9dNK87ZzlIWQ1efY8zVr/s8BHpFlBuR12Cym98niCcRC7Wf3ot+esPW7pw1SH8NPNKfJgD+entBplv6X+vU73oVRPdYkBpBBqTLVYvS8pyqes4twuyW4HE+4gsKMiv/CXvBu7+OB5EnIieV+582EAAdG8gMVMEQZZLes4H64o86j++NZj6NBF5iMAVCXvFuNSVgASoOMcHdwKXw5YLsyQE3Oc6PywkCQaGqgsGfoTYxpSNWSZnSUax+uE7hRQaMWPGaDs47w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3XEBbCb9OieLRQFXyFnGiUhcK/OCRhGmflI/lBToLls=;
+ b=Yi1IahF1uDiNrQMYWXDVs+7Ez2ePLMxkEtxQt12tvXzZgIPjLPbBmTWXXfp8w3o4JGPhLvGYxAGh/73LIpOeI9M1OXNfhNXGsRB9cXWxsUa6iIv5Z+QLDGuGDJfw71H2b+1FAuvF+lc2S4Wud0pscTzmPb6p4uzJWpL6TmAObObcD0NTKsM7va6wYOJzU/HSZicK6OGptMm+Kp/KG8eJyuo0oy4hleKoNp2MJh6t/Is5msgGs7Fp/tUeDf9SNsWtD7Hhlw0caEoICoYouAunIZhQvpOWAsVOfoA5xr/FZ0Sk8LiMW2azmndwsNHNY5oKhLxTGNuqhlYcNchJ86TD6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3XEBbCb9OieLRQFXyFnGiUhcK/OCRhGmflI/lBToLls=;
+ b=To79ECfuPdPoQq3MCtJ8GU7CdbS+WQLl+ki+tizD/3h0ffWHQ78fj9tkT9ZMPAOW2xaYc+Rz2xoBE7Ul6JVfo9SGsKIeLDrd8e6SeZh2m8Ckk7qCm882KUoiwpReS0KR10LDUPnejHqDpF8a3t9Sv/2w0zTjt1VyHiGXgj0qjnMkZTaoXcvqkZugTEdizkJ0VUA+Dvn7WB1Tsej6lnw9A+XSSnpjabVXEyjn3Qo9eu0CtsMcia9iPAOiKXDP0P6CPxHte8EZrRkIcV8VkNDS6draxpIBSYMZBE412pkszlAws/tXZZ+5UZlAGtqa8/ygd7PHrpP597NhIHfEoG0iEg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
+ by GVUPR04MB12196.eurprd04.prod.outlook.com (2603:10a6:150:33b::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
+ 2026 08:54:54 +0000
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
+ 08:54:58 +0000
+Message-ID: <603a09c7-1b08-4d49-92a0-58e6c1b9a003@oss.nxp.com>
+Date: Thu, 12 Mar 2026 10:58:01 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pmdomain: imx: Fix i.MX8MP VC8000E power up sequence
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Jacky Bai <ping.bai@nxp.com>, Frank Li <frank.li@nxp.com>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+References: <20260228-imx8mp-vc8000e-pm-v2-1-fd255a0d5958@nxp.com>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260228-imx8mp-vc8000e-pm-v2-1-fd255a0d5958@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FRYP281CA0016.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::26)
+ To AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No
- locks available
-To: NeilBrown <neil@brown.name>, Jeff Layton <jlayton@kernel.org>
-Cc: 1128861@bugs.debian.org, Tj <tj.iam.tj@proton.me>,
- linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>,
- stable@vger.kernel.org
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
- <177266540127.7472.3460090956713656639@noble.neil.brown.name>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-X-Enigmail-Draft-Status: N11222
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <177266540127.7472.3460090956713656639@noble.neil.brown.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <177330575393.3930331.13341792167684566239@mxe9fb.netcup.net>
-X-NC-CID: URiz7v8X2Yjl7b8Z2nfSBppfzzGFbIqUAbGcAHeTkCEdl1WsA3E=
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|GVUPR04MB12196:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84a7b9b3-807b-4903-8776-08de801509ed
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	uOsjoPeixQaFc7jc+GN6Rm8PohKFA3U6Yp3N8wGPxnA5BBvE75q0ZSgK0vhkSog4RKQmmv8LNtikNC7SZyfO6WhgTAHN+qOgxBrei+U4+ER+krlF15lg7uwk8+yCQcaiXOaSftVRDsLcNJi6bIXSINZKhaYLYlf28SRwnFJwJZwBI8iv5bXyun3l8BYP3xrHKAv9qtJ/Hok7wkfJRTNF/UdaTtgsjsOIsp4yaWveUOEEUWL+bXTm26Ks7qchRT8DbZoRRvN+FnkTkEmZzpkFyRoVvmE23gg1IRi18HVjzCvAStk7Bq9vuwZz9UFNPX/RVX56LS3Sc2v6/LkMNNwhqA4OB1JDb9fW+cc9IYh5mUTpHydZKLoqblDHsVBNGB1qb7a2eCb9DBG/7xeHR7cn3LEfBnpQHhN7NUJFVFNdNfeheGRbs9YrGCjkiyjihHO7C18DdkM+HGEIXAMKFFB7680URpfL2Pdy2M6s9uB2YMhYz/n9JIm4xxbDuA2N7pWD72c7rELcRUSvClfsdyNc/na+f6qMasYwlXDHzP9Y5twH8Pu9/zxU3zdRJ+MovoS/kYKQSq42X5qIU3/gPYtHwut1zKimi61e/oljuC5VD5fjhC8fPlDeoiSnfmnPEO0zLxiUBSLnH03HEWC/IoYcGshiVSL7UU4RTaT/sd9XuGgHHZu7tA45X41LnottWKM98S32/wzuqChPRyCA2tW8TIy94l9RgUO0XF4/hi6iOBgC36ALScOAkI6DaEbzGqsc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1Y2cXJBNzRMVXVBSUFWb3NORVZsWTZsRlhWbHo3ZzZVTWEyQ29YamNOYUVZ?=
+ =?utf-8?B?OU5DcUVXUG92TUVSQ3Byd2xYNUI4T1pnbTZjZUxtOUZwbUJZUFJvQ3F5UWts?=
+ =?utf-8?B?TXUyWnpFN0VSWEpES2hkSGZnZ0d1VTV2RWZFWHVNenQxOWVXcy9tVFJoYTB1?=
+ =?utf-8?B?WkowdGo0cDNWQStJTjczUEpleGoxM3FSVUREcGt6UHVhZWRmMHBBdVk0dXI0?=
+ =?utf-8?B?aitlZ09uR3JOK01YekhRelRYT2FmTnJtMVRPMWFYVnhjL1UxZ2VWOXNVNUNl?=
+ =?utf-8?B?Q0QvazNqRFVjZ1dZUzQ4clU0bzZrMVcrUkgrR3lubko4ajQybXF0SlVKK2VT?=
+ =?utf-8?B?M25RUE10YmMyU01sa2Q3aGtXZ1NFYzVRK1kveFRnZXdyUGowTE94N1RHd2xt?=
+ =?utf-8?B?UDVCQU10R0xhVzVyRGlVZlFaQXlzUHNNOGU5S2kwK3E2bmN4VVpZZGtxeXM1?=
+ =?utf-8?B?RGdNZ0ZMUU51TTlpbVhnWHR5YUczVGxJbkVTM2FYTWhwd0d6Ymk0ZDNhQ2oy?=
+ =?utf-8?B?dUQrRk5leEZRcDVZTGp1bjNlRjRsTVRFSlhrY2JqSFhSRjVBRm1yQTZXTFky?=
+ =?utf-8?B?c2YwWG1jTDh0VXh6NTFiU2w3d0tiODBuM01qN2lqMG1qSUtva25WRTZ2Z1Mr?=
+ =?utf-8?B?azRwOTZYZzB5SmMvcGFzOUpudndNZEdxcWJ3S3RveWc2aGVFem5tblVpQUNz?=
+ =?utf-8?B?NXorOVAvcUhsM0ljSXkxK04rN1JDenNmZCs5TzIvdUlsSGpTSHhvTkhEalpK?=
+ =?utf-8?B?SjdnR0dTZ2ZWaHA3UHgwaUR2bkFtVzNtYm5JMDc2SHU0aTFvYWQ4YzZNSlJG?=
+ =?utf-8?B?ZWt3bFFqaW1JYzMza1crNzMwaDcyVGtlckpLQy90bzA4R3pjQm5Rc29YWXhs?=
+ =?utf-8?B?Ky9NaXFjVGJXRnNrZmJJZWVvMFFuNmJvVkg0dlhJcTdZZUdkU203OGhLNURK?=
+ =?utf-8?B?R0dPd0Y2RWJWY0N0RWh6Z0daQ0ZjTDZvUU1Tc01mNVArb0d6aytLeGwyYXBT?=
+ =?utf-8?B?TkFjeW0rUHA5QVdUU2NlOEE4akNlaVk3MW9NVHlFcmp6ZFp5MUVJbGUxY3FF?=
+ =?utf-8?B?SFQvZ1NIdUZ5WklkcjN3V2kycFdTNTRpbnZEaGtXaTNyVk02ZVJML09MRFdD?=
+ =?utf-8?B?TmJQTVNkU0R0eGxmK3owbGlFbCtxUjkyeFlFanhGcFFyWmRMelVnbU5WRWZX?=
+ =?utf-8?B?a3h6TE1mOUVoeFdUbkhqZnRvUFg5enRxbWRQRXZzeW05RHdxWGhVVnN3RjUr?=
+ =?utf-8?B?dXFCQlBFSkNPNlhNVWdUemxlaTFrYWFkYmlFVnVpWUxMTks1VDZEVVBwYktT?=
+ =?utf-8?B?SXpaMnNpdGhwdXdvN2xuTk8va2MyS0RRQStzOXRwRmN2TEFJK2I4RWovM3dI?=
+ =?utf-8?B?THFhaC82a3VCMTVzN2VYbVNFRnB2ZHVLT3p4RFRBM0hoeGRVT0wwbElMTHIz?=
+ =?utf-8?B?ZXl5aWszeUczMkM0dXRsY2JiVk9hNi9JQVdESnQ5VWk4OC9mK213dEg0Mity?=
+ =?utf-8?B?SEt5NUIzbk95WjhFQUtVTjhNYTMvTDdKL2hidmJ1NzlYaHI0Vy8rYjZ3RkJI?=
+ =?utf-8?B?bWIyZlMrb3ZUTG5wVklCUVdWd1BhekVTNTJnazhleDIxTmxTVHRqL1pEN1BZ?=
+ =?utf-8?B?ZVQ1ZENWbzFZZFNpbENCWGxzajJxYjlVa0pGOGJWTStMdWVuVEN6dnorS3lV?=
+ =?utf-8?B?N0pLc2NMcHdmVUxHMlNCQ2JDYmJ2OUIvTXpYaHFsZ1Rtd2VrY0FXR1JJdXJJ?=
+ =?utf-8?B?OXZCd01JcDZSZmg2SEMvaHBEMHNSenE0eTBVRW96RE83QWVNZ0hOSnA4OGgy?=
+ =?utf-8?B?Z0pLMWZEK0RiMC85aG5HU2VDaXpaQjl3ZGhHNUpLYm9tV0xhSThla2ZKMW9h?=
+ =?utf-8?B?eENPQ2tEenZUc2M1WUlTZjJBRkF5TEk1bUE2enlwRjNVa3Zqcjh1c2ptd1Fk?=
+ =?utf-8?B?ZlNVOFhkb05BNzlPd2JKMlNqeHdsb0tvcDRhM3dRcHM4UG9xaHE3citBdFAy?=
+ =?utf-8?B?bGFzNHBqeENhZjVDMXlSSGpqd3dLZUNqblkydStJeTNxemdrcWVlNjkxeG13?=
+ =?utf-8?B?VFZJT3lWSmkyNlZ3cjBWWER1WTdHYTl4WDRPcExJSFp1Yis3RzdBMHhCRCsv?=
+ =?utf-8?B?czZvb3N1WCtSYWdOWER6WkdYT1JkNVJvUTI4bkwwN09yVzNaOUI0M3J1UXdo?=
+ =?utf-8?B?RzNvUG1lMEs3VXJKWVI2SDU1NjZ6OWFHU3p4VXhwaEEvYnRYYmFlZFQ2T2lr?=
+ =?utf-8?B?bmtFRkNFNWUxK0xhV3RhcTJndEg5bUZuWkFsYStyVXdQRnl4cXYxdHNwZ1VC?=
+ =?utf-8?B?aUI2MDhkSFNDdTNpZkhtMUwzaHZBc1d5VVRCWDhhMTc5WHpsaGJOUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84a7b9b3-807b-4903-8776-08de801509ed
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 08:54:58.7111
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tzBeK38NBP9maxR7w1uJY3k1vpscMKYj5UJ+ghxFbX0FTKATBbcuhfvAQE9SqFpbjcUYBGWFRjFs7cZIdz09Kg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVUPR04MB12196
+X-Spamd-Result: default: False [0.44 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224826-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[oss.nxp.com:server fail,sto.lore.kernel.org:server fail,nxp.com:server fail,NXP1.onmicrosoft.com:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[oss.nxp.com,linaro.org,pengutronix.de,gmail.com,nxp.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224825-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[leemhuis.info];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MAILSPIKE_FAIL(0.00)[2600:3c0a:e001:db::12fc:5321:query timed out];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel.baluta@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 678E926F531
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.nxp.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C008A26F3A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/5/26 00:03, NeilBrown wrote:
-> On Tue, 24 Feb 2026, Tj wrote:
->> Upstream commit 4cc9b9f2bf4dfe13fe573 "nfsd: refine and rename 
->> NFSD_MAY_LOCK" and
->>   stable v6.12.54 commit 18744bc56b0ec  (re)moves checks from 
->> fs/nfsd/vfs.c::nfsd_permission().
->>
->>   This causes NFS clients to see
->>
->> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
->> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
->>
->> Keeping the check in nfsd_permission() whilst also copying it to 
->> fs/nfsd/nfsfh.c::__fh_verify() resolves the issue.
->>
->> This was discovered on the Debian openQA infrastructure server when 
->> upgrading kernel from v6.12.48 to later v6.12.y where worker hosts (with 
->> any earlier or later kernel version) pass NFSv3 mounted ISO images to 
->> qemu-system-x86_64 and it reports:
+On 2/28/26 03:12, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Per errata[1]:
+> ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMIX
+> power up/down cycling.
+> Description: VC8000E reset de-assertion edge and AXI clock may have a
+> timing issue.
+> Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
+> both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
+> VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
+> de-asserted by HW)
+>
+> Add a bool variable is_errata_err050531 in
+> 'struct imx8m_blk_ctrl_domain_data' to represent whether the workaround
+> is needed. If is_errata_err050531 is true, first clear the clk before
+> powering up gpc, then enable the clk after powering up gpc.
+>
+> While at here, using imx8mm_vpu_power_notifier() is wrong, as it ungates
+> the VPU clocks to provide the ADB clock, which is necessary on i.MX8MM,
+> but on i.MX8MP there is a separate gate (bit 3) for the NoC. So add
+> imx8mp_vpu_power_notifier() for i.MX8MP.
+>
+> [1] https://www.nxp.com/webapp/Download?colCode=IMX8MP_1P33A
+>
+Peng,
 
-Neil, thx for the explanation.
+Is using imx8mm_vpu_power_notifier wrong no matter on the errata? If so, I think you should fix
 
-Jeff, do you have any opinion on what Neil suggested (see quote below).
+that problem first, e.g create a separate patch that fixes the notifier and then add support for the errata. In the future, if the chips with the errata are deprecated we could only revert that given patch. thanks,
 
-But as Neil mentioned, it's a regression, so it must be handled some
-way. And it looks like this stalled. Given that the commit in that
-caused this is somewhat old, I wonder:
-
-Is that something we expect other people to run into?
-
-If yes, I'd say Linus expects us to fix this.
-
-And if not: is there something the Debian openQA infra (a) can and (b)
-is willing to do to work around this regression cleanly (by upgrading
-Qemu or something like that maybe)? Then we maybe can leave things as
-they are[1].
-
-Ciao, Thorsten
-
-[1] see the hand-holding aspect mention in
-https://www.kernel.org/doc/html/next/process/handling-regressions.html#on-exceptions-to-the-no-regressions-rule
-
->> !!! : qemu-system-x86_64: -device 
->> scsi-cd,id=cd0-device,drive=cd0-overlay0,serial=cd0: Failed to get 
->> "consistent read" lock: No locks available
->> QEMU: Is another process using the image 
->> [/var/lib/openqa/pool/2/20260223-1-debian-testing-amd64-netinst.iso]?
->>
->> A simple reproducer with the server using:
->>
->> # cat /etc/exports.d/test.exports
->> /srv/NAS/test 
->> fdff::/64(fsid=0,rw,no_root_squash,sync,no_subtree_check,auth_nlm)
->>
->> and clients using:
->>
->> # mount -t nfs [fdff::2]:/srv/NAS/test /srv/NAS/test -o 
->> proto=tcp6,ro,fsc,soft
-> 
-> Linux has two quite different sorts of locks - flock and fcntl.
-> flocks lock the whole file, shared or exclusive.
-> fcntl can lock any byte-range (including the whole file), shared or
-> exclusive.  flock and fcntl locks don't conflict.
-> 
-> exclusive flock locks only require read access to the file
-> exclusive fcntl locks require write access to the file.
-> 
-> The NLM protocol only supports one type of byte-range lock.  It is
-> natural to map fcntl locks onto NLM locks.  The early Linux NFS
-> implementation handled flock locks entirely locally so different clients
-> didn't conflict.  This could be confusing but was widely documented and
-> understood.
-> Some years ago Linux NFS was enhanced to handle flock locks like
-> whole-file fcntl locks.  This means that clients with flock locks would
-> conflict (maybe good) but that flock locks and fcntl locks would now
-> conflict (maybe bad).
-> You can still get the old behaviour with "-o local_lock=flock".
-> 
-> So if you open a file on NFS read-only and attempt an exclusive flock,
-> that will be sent to the server as a full-range fcntl lock which should
-> require write access.  If the server finds you don't have write access -
-> you lose.
-> 
-> It would seems to make sense to tell qemu that the device is read-only. 
-> Then it will hopefully only request a shared lock.  Can you try that?
-> 
-> Note that even before my patch, if the filesystem was exported read-only
-> or mounted read-only on the server, then exclusive flock locks would
-> fail.
-> 
-> I think that the current behaviour is correct, however I do understand
-> that it is a regression and maybe that justifies incorrect behaviour.
-> Maybe Jeff, as locking maintainer, would be willing to do something like
-> 
-> diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-> index dd0214dcb695..6c674fc51bab 100644
-> --- a/fs/lockd/svcsubs.c
-> +++ b/fs/lockd/svcsubs.c
-> @@ -73,6 +73,14 @@ static inline unsigned int file_hash(struct nfs_fh *f)
->  
->  int lock_to_openmode(struct file_lock *lock)
->  {
-> +	/*
-> +	 * flock only requires READ access and to support
-> +	 * clients which send flock locks via NLM we
-> +	 * report O_RDONLY for full-file locks.
-> +	 */
-> +	if (lock->fl_start == 0 &&
-> +	    lock->fl_end == NLM4_OFFSET_MAX)
-> +		return O_RDONLY;
->  	return lock_is_write(lock) ? O_WRONLY : O_RDONLY;
->  }
->  
-> 
-> But I wouldn't encourage him to.
-> 
-> NeilBrown
-> 
-> 
->>
->> will trigger the error as shown above:
->>
->> $ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
->> flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
->>
->> A simple test program calling fcntl() with the same arguments QEMU uses 
->> also fails in the same way.
->>
->> $ ./nfs3_range_lock_test 
->> /srv/NAS/test/debian-13.3.0-amd64-netinst.{iso,overlay}
->> Opened base file: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
->> Opened overlay file: /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
->> Attempting lock at 4 on /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
->> fcntl(fd, F_GETLK, &fl) failed on base: No locks available
->> Attempting lock at 8 on /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
->> fcntl(fd, F_GETLK, &fl) failed on overlay: No locks available
->>
->>
->>
->>
-> 
+Daniel.
 
 
