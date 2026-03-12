@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-225176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNDMMLEhs2m5SQAAu9opvQ
-	(envelope-from <stable+bounces-225176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:29 +0100
+	id oD8bDw0is2m5SQAAu9opvQ
+	(envelope-from <stable+bounces-225187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:29:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC96279150
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:27:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A10A279211
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC771301F5C8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:27:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CDA753049318
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36938318EE1;
-	Thu, 12 Mar 2026 20:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DDB3750C1;
+	Thu, 12 Mar 2026 20:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ug/UNAyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boXYSmTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE2D3242AC;
-	Thu, 12 Mar 2026 20:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B3E38734D;
+	Thu, 12 Mar 2026 20:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347243; cv=none; b=Bzusy5Jvoe4hW/JlSyIBmXKfJLc9LxBcdoO4Uz3EJQp3RgzGW32oVuNQhiw49jfBrA0N9GYytt5o71fm4RhzDDFGaxStkWWGzFpTBagJCWdOr6XWbpZYN+d1064PdIp6yBHanG3gof0KxuCKeJE+bZWwm1nzbGdl7IC24wrxNoo=
+	t=1773347288; cv=none; b=qNIsJyoiT5Zx4WLOm3TgS/kVv3hCFPli2EHhtmjYG/19I59CZZO6P0I4JJ/xnPV8wDQYg3Pi7qivBZOmekGC6rCSvGdopc5/p9Bkz6O2yU8QIRrMJ6y4Tcv9H4cpvVhfMWfMfy6BlQdQjpEPsBUpjnPyTFtRBdyionKFcEF2TGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347243; c=relaxed/simple;
-	bh=K5ILxdVg2iS/PUs26BsLE3gUxhBQ8k3OPen8D8XAmXA=;
+	s=arc-20240116; t=1773347288; c=relaxed/simple;
+	bh=3KG3gz7nesUdUPRQSzARX+O4p2KlvyfC0HIcPjbEVxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkTI9qBLGQfUM+/M8q6kWu5hQymXSWH0PRCyT7gH1+/okaI1s+S94BYzeNVBBggEaxEosxdCrPozrdWshXgGJUUA2G/AL+Nu0gwmAbNCAYbmvJ1M+GyYGKVQPgav0QZuKjtJu7RzsA64oUTzcE2Pcew5yO1nQkEZyE8v5pWjadA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug/UNAyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04962C4CEF7;
-	Thu, 12 Mar 2026 20:27:21 +0000 (UTC)
+	 MIME-Version; b=dtvFFoVhuCeOpuKgHzEYDUdpudlLxsaIdxJzxzoE/nsotRN35xkzHPok+mqEi+JIOogCBD7ohJ9MdI7tM1ZxhfYmUq5mMpMMV+8aEMFcTGErgOpZz8O6hWHnv6VUtmCHjLygFY2mGQTZJ9VhHbCHT9xTvlcdCDu7in+qx215pnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boXYSmTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCB8C2BC86;
+	Thu, 12 Mar 2026 20:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347242;
-	bh=K5ILxdVg2iS/PUs26BsLE3gUxhBQ8k3OPen8D8XAmXA=;
+	s=korg; t=1773347285;
+	bh=3KG3gz7nesUdUPRQSzARX+O4p2KlvyfC0HIcPjbEVxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ug/UNAyG8rc5MZUP3WYtytVf0ZpWX64ZN4WSqAg6f1rNGFHXZLWtFGZg1QXA38r4M
-	 TkURj+rO96Qye6IHKde5zybpi1O+DCU+RH1PvFo1aDcJRGGoFXFzMZ19hTnZe2WJv/
-	 ilvz7rSYuUuP6QrtmQe362mlzSc75zEFTb13/y3A=
+	b=boXYSmTpwh3ZupiyFP5OFMC+kZVUXS/WFjQMX2dMj8aISrvxE7zG0xSUwZv8aOvq0
+	 zLPTrcnCNesWnSmbWGKSPFtcHmL/z2llr70XmJx0KrHZmmW6wey+hdKoOuqoxODslj
+	 mgRs0nPmICN5fC3gq85ojhhnmpl6b0XOefJEWaNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/265] nvme: fix memory allocation in nvme_pr_read_keys()
-Date: Thu, 12 Mar 2026 21:10:11 +0100
-Message-ID: <20260312201026.417079103@linuxfoundation.org>
+Subject: [PATCH 6.12 225/265] hwmon: (max6639) : Configure based on DT property
+Date: Thu, 12 Mar 2026 21:10:12 +0100
+Message-ID: <20260312201026.453533701@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -73,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225176-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225187-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,purdue.edu:email,lst.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sung-woo.kim:email]
-X-Rspamd-Queue-Id: CCC96279150
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0A10A279211
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,106 +99,168 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Naresh Solanki <naresh.solanki@9elements.com>
 
-[ Upstream commit c3320153769f05fd7fe9d840cb555dd3080ae424 ]
+[ Upstream commit 7506ebcd662b868780774d191a7c024c18c557a8 ]
 
-nvme_pr_read_keys() takes num_keys from userspace and uses it to
-calculate the allocation size for rse via struct_size(). The upper
-limit is PR_KEYS_MAX (64K).
+Remove platform data & initialize with defaults
+configuration & overwrite based on DT properties.
 
-A malicious or buggy userspace can pass a large num_keys value that
-results in a 4MB allocation attempt at most, causing a warning in
-the page allocator when the order exceeds MAX_PAGE_ORDER.
-
-To fix this, use kvzalloc() instead of kzalloc().
-
-This bug has the same reasoning and fix with the patch below:
-https://lore.kernel.org/linux-block/20251212013510.3576091-1-kartikey406@gmail.com/
-
-Warning log:
-WARNING: mm/page_alloc.c:5216 at __alloc_frozen_pages_noprof+0x5aa/0x2300 mm/page_alloc.c:5216, CPU#1: syz-executor117/272
-Modules linked in:
-CPU: 1 UID: 0 PID: 272 Comm: syz-executor117 Not tainted 6.19.0 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:__alloc_frozen_pages_noprof+0x5aa/0x2300 mm/page_alloc.c:5216
-Code: ff 83 bd a8 fe ff ff 0a 0f 86 69 fb ff ff 0f b6 1d f9 f9 c4 04 80 fb 01 0f 87 3b 76 30 ff 83 e3 01 75 09 c6 05 e4 f9 c4 04 01 <0f> 0b 48 c7 85 70 fe ff ff 00 00 00 00 e9 8f fd ff ff 31 c0 e9 0d
-RSP: 0018:ffffc90000fcf450 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffff920001f9ea0
-RDX: 0000000000000000 RSI: 000000000000000b RDI: 0000000000040dc0
-RBP: ffffc90000fcf648 R08: ffff88800b6c3380 R09: 0000000000000001
-R10: ffffc90000fcf840 R11: ffff88807ffad280 R12: 0000000000000000
-R13: 0000000000040dc0 R14: 0000000000000001 R15: ffffc90000fcf620
-FS:  0000555565db33c0(0000) GS:ffff8880be26c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000002000000c CR3: 0000000003b72000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x236/0x4d0 mm/mempolicy.c:2486
- alloc_frozen_pages_noprof+0x149/0x180 mm/mempolicy.c:2557
- ___kmalloc_large_node+0x10c/0x140 mm/slub.c:5598
- __kmalloc_large_node_noprof+0x25/0xc0 mm/slub.c:5629
- __do_kmalloc_node mm/slub.c:5645 [inline]
- __kmalloc_noprof+0x483/0x6f0 mm/slub.c:5669
- kmalloc_noprof include/linux/slab.h:961 [inline]
- kzalloc_noprof include/linux/slab.h:1094 [inline]
- nvme_pr_read_keys+0x8f/0x4c0 drivers/nvme/host/pr.c:245
- blkdev_pr_read_keys block/ioctl.c:456 [inline]
- blkdev_common_ioctl+0x1b71/0x29b0 block/ioctl.c:730
- blkdev_ioctl+0x299/0x700 block/ioctl.c:786
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x1bf/0x220 fs/ioctl.c:583
- x64_sys_call+0x1280/0x21b0 mnt/fuzznvme_1/fuzznvme/linux-build/v6.19/./arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x71/0x330 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fb893d3108d
-Code: 28 c3 e8 46 1e 00 00 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff61f2f38 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffff61f3138 RCX: 00007fb893d3108d
-RDX: 0000000020000040 RSI: 00000000c01070ce RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 00007ffff61f3138
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffff61f3128 R14: 00007fb893dae530 R15: 0000000000000001
- </TASK>
-
-Fixes: 5fd96a4e15de (nvme: Add pr_ops read_keys support)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+Message-ID: <20241007090426.811736-1-naresh.solanki@9elements.com>
+[groeck: Dropped some unnecessary empty lines]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 170a4b21f49b ("hwmon: (max6639) fix inverted polarity")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/max6639.c               | 83 +++++++++++++++++++--------
+ include/linux/platform_data/max6639.h | 15 -----
+ 2 files changed, 60 insertions(+), 38 deletions(-)
+ delete mode 100644 include/linux/platform_data/max6639.h
 
-diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
-index d330916a3199d..e1d07f824b13c 100644
---- a/drivers/nvme/host/pr.c
-+++ b/drivers/nvme/host/pr.c
-@@ -214,7 +214,7 @@ static int nvme_pr_read_keys(struct block_device *bdev,
- 	if (rse_len > U32_MAX)
- 		return -EINVAL;
+diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
+index c955b0f3a8d31..32b4d54b20766 100644
+--- a/drivers/hwmon/max6639.c
++++ b/drivers/hwmon/max6639.c
+@@ -19,7 +19,6 @@
+ #include <linux/hwmon-sysfs.h>
+ #include <linux/err.h>
+ #include <linux/mutex.h>
+-#include <linux/platform_data/max6639.h>
+ #include <linux/regmap.h>
+ #include <linux/util_macros.h>
  
--	rse = kzalloc(rse_len, GFP_KERNEL);
-+	rse = kvzalloc(rse_len, GFP_KERNEL);
- 	if (!rse)
- 		return -ENOMEM;
- 
-@@ -239,7 +239,7 @@ static int nvme_pr_read_keys(struct block_device *bdev,
- 	}
- 
- free_rse:
--	kfree(rse);
-+	kvfree(rse);
- 	return ret;
+@@ -531,14 +530,49 @@ static int rpm_range_to_reg(int range)
+ 	return 1; /* default: 4000 RPM */
  }
  
++static int max6639_probe_child_from_dt(struct i2c_client *client,
++				       struct device_node *child,
++				       struct max6639_data *data)
++
++{
++	struct device *dev = &client->dev;
++	u32 i;
++	int err, val;
++
++	err = of_property_read_u32(child, "reg", &i);
++	if (err) {
++		dev_err(dev, "missing reg property of %pOFn\n", child);
++		return err;
++	}
++
++	if (i > 1) {
++		dev_err(dev, "Invalid fan index reg %d\n", i);
++		return -EINVAL;
++	}
++
++	err = of_property_read_u32(child, "pulses-per-revolution", &val);
++	if (!err) {
++		if (val < 1 || val > 5) {
++			dev_err(dev, "invalid pulses-per-revolution %d of %pOFn\n", val, child);
++			return -EINVAL;
++		}
++		data->ppr[i] = val;
++	}
++
++	err = of_property_read_u32(child, "max-rpm", &val);
++	if (!err)
++		data->rpm_range[i] = rpm_range_to_reg(val);
++
++	return 0;
++}
++
+ static int max6639_init_client(struct i2c_client *client,
+ 			       struct max6639_data *data)
+ {
+-	struct max6639_platform_data *max6639_info =
+-		dev_get_platdata(&client->dev);
+-	int i;
+-	int rpm_range = 1; /* default: 4000 RPM */
+-	int err, ppr;
++	struct device *dev = &client->dev;
++	const struct device_node *np = dev->of_node;
++	struct device_node *child;
++	int i, err;
+ 
+ 	/* Reset chip to default values, see below for GCONFIG setup */
+ 	err = regmap_write(data->regmap, MAX6639_REG_GCONFIG, MAX6639_GCONFIG_POR);
+@@ -546,21 +580,29 @@ static int max6639_init_client(struct i2c_client *client,
+ 		return err;
+ 
+ 	/* Fans pulse per revolution is 2 by default */
+-	if (max6639_info && max6639_info->ppr > 0 &&
+-			max6639_info->ppr < 5)
+-		ppr = max6639_info->ppr;
+-	else
+-		ppr = 2;
++	data->ppr[0] = 2;
++	data->ppr[1] = 2;
++
++	/* default: 4000 RPM */
++	data->rpm_range[0] = 1;
++	data->rpm_range[1] = 1;
+ 
+-	data->ppr[0] = ppr;
+-	data->ppr[1] = ppr;
++	for_each_child_of_node(np, child) {
++		if (strcmp(child->name, "fan"))
++			continue;
+ 
+-	if (max6639_info)
+-		rpm_range = rpm_range_to_reg(max6639_info->rpm_range);
+-	data->rpm_range[0] = rpm_range;
+-	data->rpm_range[1] = rpm_range;
++		err = max6639_probe_child_from_dt(client, child, data);
++		if (err) {
++			of_node_put(child);
++			return err;
++		}
++	}
+ 
+ 	for (i = 0; i < MAX6639_NUM_CHANNELS; i++) {
++		err = regmap_set_bits(data->regmap, MAX6639_REG_OUTPUT_MASK, BIT(1 - i));
++		if (err)
++			return err;
++
+ 		/* Set Fan pulse per revolution */
+ 		err = max6639_set_ppr(data, i, data->ppr[i]);
+ 		if (err)
+@@ -573,12 +615,7 @@ static int max6639_init_client(struct i2c_client *client,
+ 			return err;
+ 
+ 		/* Fans PWM polarity high by default */
+-		if (max6639_info) {
+-			if (max6639_info->pwm_polarity == 0)
+-				err = regmap_write(data->regmap, MAX6639_REG_FAN_CONFIG2a(i), 0x00);
+-			else
+-				err = regmap_write(data->regmap, MAX6639_REG_FAN_CONFIG2a(i), 0x02);
+-		}
++		err = regmap_write(data->regmap, MAX6639_REG_FAN_CONFIG2a(i), 0x00);
+ 		if (err)
+ 			return err;
+ 
+diff --git a/include/linux/platform_data/max6639.h b/include/linux/platform_data/max6639.h
+deleted file mode 100644
+index 65bfdb4fdc157..0000000000000
+--- a/include/linux/platform_data/max6639.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _LINUX_MAX6639_H
+-#define _LINUX_MAX6639_H
+-
+-#include <linux/types.h>
+-
+-/* platform data for the MAX6639 temperature sensor and fan control */
+-
+-struct max6639_platform_data {
+-	bool pwm_polarity;	/* Polarity low (0) or high (1, default) */
+-	int ppr;		/* Pulses per rotation 1..4 (default == 2) */
+-	int rpm_range;		/* 2000, 4000 (default), 8000 or 16000 */
+-};
+-
+-#endif /* _LINUX_MAX6639_H */
 -- 
 2.51.0
 
