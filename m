@@ -1,174 +1,167 @@
-Return-Path: <stable+bounces-224861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YECXMZTCsmmvPAAAu9opvQ
-	(envelope-from <stable+bounces-224861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:41:40 +0100
+	id 8JzSHeHCsmmvPAAAu9opvQ
+	(envelope-from <stable+bounces-224862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:42:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528D4272C66
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:41:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E98D5272CAF
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 114FF306BE2A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:36:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07407318FDF8
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648C737703C;
-	Thu, 12 Mar 2026 13:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AF13C2794;
+	Thu, 12 Mar 2026 13:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwMy5Yox"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="X899G301"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2548834A3D2;
-	Thu, 12 Mar 2026 13:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2DD3B776A
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 13:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773322592; cv=none; b=qE28X5BmMsd0tijLPJwzUPMZKZBHJ62Xhymmg6jRkP6ymW2g2FAzuxbOYfLaNItWmKKpOfdOKxEmnDevldOcA1C0qsLNqIdCrIk+VEAyM4CuC12fosNmQglc6m+QNYAarJSbOtTxeTewryxPh2UqiF2SUp/7UIJAIkUmoTMX6aI=
+	t=1773322829; cv=none; b=dctF7DHE7/RqHbuJeP/E+pRcLhje99DbFwGM50JYMWf9D5T1ugPIOAj49DgtPf6rDYznQHE/vakwNHbrwhWMPo0eAvrfSr62Ym3KvNrt0UXFH/zwshVB8R5e7N9yS9rxWrc78xruqgckwCBHtCNUS8FVe8Zc4tMUDdTc+uUyxCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773322592; c=relaxed/simple;
-	bh=EE1NLUQ/36yNz5rQaSP/p0vEnES/aW8yt8Zzw8dXDAo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=OYoPbgo0tW1uvlWR6uTkXkE+Nnf61zLfGDwjuHwDkOnJ6wUSSaYnW52vGLVVuF6q/bfgzN3fR2ZDCcGU3tB18g4kQBLAv6pPz5eqmk0VnROJrWnNxjYbdwFS4jl5Voqje2jrEEmlVyn0OSqpaFCH0zN9DcO1DrPix245XcX/fSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwMy5Yox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F70C4CEF7;
-	Thu, 12 Mar 2026 13:36:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773322591;
-	bh=EE1NLUQ/36yNz5rQaSP/p0vEnES/aW8yt8Zzw8dXDAo=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=JwMy5YoxqhDi96+Wz9mljpxWCfpMsSpdcGNrh4Ql85uSPzFKGY+5MG0TdtpwlaSpN
-	 bTrA7kguiaDAkn/oTI1FTfx0veZP43z+FBQ9QF9esRl4oxByotQ63CdUJJfsBwpLzl
-	 bV9ZOFEj+xmce4de/K58klPqRInJF3z+8YOSa4YG0DfJ+OCX9wAgc05ZJpf7q/gcsq
-	 h2VUQS+eMPmPmf3n7r0yeuvaeIjHPidYQEAymjlRBKjNO5PMYiVuF1kdHbMu71mt8e
-	 Sx5+bOTF09VN9NYijuw06Jtp5UrAU0vk1ccl6BnupAmUvwUojep6KzcFzgz1PqbOSN
-	 c8mKt8RSZ+TUQ==
+	s=arc-20240116; t=1773322829; c=relaxed/simple;
+	bh=rAsG53T7VzeVL8MPN/j4EPmItrg7aAE61kEiWgrhL/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fu2WXfn3+wUItKfj2BPKKFHW9CADB51jmFruH+Gwdh4qL+MMtCqs9ktvBDeDX2MehVTtXIG80xok4pIIbFsGKww6JWqYD1c2dantRYBZCPi1nnxaVu2RPsHvuTDMEh0ZG7iUeYEw+CJGl8aSzX5Q8qK6j/J0/YjX5YQEwVyeYdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=X899G301; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-89a0ece9f14so11927766d6.3
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 06:40:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1773322827; x=1773927627; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WYBFQ99Inco1AF/xc7g0EJHr1Nl8OM4ewTd8eM5kz8A=;
+        b=X899G301L0wDKc7JaG+sR67CjJIRM4FkdzbEfi0+4Rq79t7Ld/vGoOoaMI0K9nGj1E
+         PVz25daU36xXdkPxa+So+zkv2Bnw4RqoFWI8Dyvpqq/6GiFIlDzY8QGyI2NfL1icGeOK
+         sDxks6d6ZvrXhcRlJ1zxGBaNkrDqs/M+qmDVTl5BC8FKD3TPvBJgCZOQNN4XCTp2jl56
+         jaLwVxX+nkQ+QAoJi99VQRHV/mT4gQ45X0gNB7MXtk9EdFIbTQSs0OIxVNZx0RshuxKs
+         e2rQcSiUw5O4RCv5ewlVAvcRpnK0X7g99tIpi3HiexJ2ApMaF1aVv5uWeMG9rQbRxGIa
+         Jj8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773322827; x=1773927627;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WYBFQ99Inco1AF/xc7g0EJHr1Nl8OM4ewTd8eM5kz8A=;
+        b=RoRdIU2fNt7bG+bTFxB1OXdFKwmapEwnUZ+h0FsZK385G3iBsShbt0aEXlDgOnRXF1
+         O7NSpjbFbfX2FB0UUJGshL7AsTtYrPdu7C6AsS9WBIaA3eL/S+nqIG/EDuNVv0HTW3aI
+         7x1UEuwGJbb0erSiLCLjpDKyt0l44R+Edo1p592uADjjkRDjvPegXh3DaA8MbLwfhXaL
+         iKEaTLVRCTs0s9Hk08Yuwj+/ghLakokhdBTu78aLHv8gVZD2BJU5deV2NCTL2Qlzw8oA
+         PUom/1ETlXddbfY0gXHoNOe9dCbItrvk7qawp50+XpcWlq3hIbMbw1VCeeBxD8hG7g8i
+         WGaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXemMKdP7lhyDRVX/5ck7bzbQTGICcsiIPTk0QTIntfxrFcdNUPnAeZybLdTFrP0LrKzsD5g0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfMnzFcicKgG0uxS9lJnhoOXNuNe8bVKRll8NpMoavunVxJqpg
+	DyhgLUES0yEjUAhQLVUVJ0/KEp94Th+oEBWdXMs/RjBdI0W8DVAvAAV6MTPOb47NdxA=
+X-Gm-Gg: ATEYQzyaOAqpZC82o2DDVyg+sRD0Vby6Iz/g6xlQ8tzBWLFvGfHUDQJDTuhZjpD8VPD
+	M1iCLv6X4F2ajoh0xDDInVp92ybvpw1uH+TSI+cU9KeZ6mluFG/FDunYjZwYD/9Fk25RsxEZ9fJ
+	cz6s1ZaAt5/c7KZGZanaNYUs/UXv8j0UfLhZNErLvt1FcfBqledBviMKOM95EEPFqK30JJ2wQWA
+	hNynk1lBYtl7NAOBOcS3//bcmhFjVdG47EegYLY0JwTi+XDOa5OuiE/+HoUK5mn+W7qwcYD/3As
+	H9UGDfPbkc6VPdml7mcU2BxQxn6b7M4dlzUlVhksBAQSx8Klsfch4XnrBhVO+Id3fDwpRX83ytj
+	3zEpNsPnTx5fyVHRoKlWIyCh1oslB3mUicxOkK75qmHEIjmlaZYVt5Pd+Wfos3tuuuDkALdIk7J
+	USYMRlNWv54PgPASGIkSpRFCZj3bDsSkY4r1rh1iS+ik4d1y6zMEU4dXu4SJjYqUiWrONyI8oMA
+	8TnqVd9B2O5Z/DFoD4=
+X-Received: by 2002:a05:6214:258a:b0:899:f741:5aea with SMTP id 6a1803df08f44-89a669c0189mr90996506d6.8.1773322826949;
+        Thu, 12 Mar 2026 06:40:26 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bed85bsm34252386d6.17.2026.03.12.06.40.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 06:40:25 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0gH3-00000006fil-1PUY;
+	Thu, 12 Mar 2026 10:40:25 -0300
+Date: Thu, 12 Mar 2026 10:40:25 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: joro@8bytes.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] amd/iommu: do not split domain flushes when flushing the
+ entire range
+Message-ID: <20260312134025.GJ1469476@ziepe.ca>
+References: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Mar 2026 14:36:27 +0100
-Message-Id: <DH0UE67MHS8S.2XO3XB3V39K6Z@kernel.org>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] rust: kbuild: allow `unused_features`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260312111014.74198-1-ojeda@kernel.org>
-In-Reply-To: <20260312111014.74198-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224862-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	DMARC_NA(0.00)[ziepe.ca];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lossin@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 528D4272C66
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ziepe.ca:dkim,ziepe.ca:mid]
+X-Rspamd-Queue-Id: E98D5272CAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu Mar 12, 2026 at 12:10 PM CET, Miguel Ojeda wrote:
-> Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
-> `rustc` introduces the new lint `unused_features` [1], which warns [2]:
->
->     warning: feature `used_with_arg` is declared but not used
->      --> <crate attribute>:1:93
->       |
->     1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,o=
-ffset_of_nested,raw_ref_op,used_with_arg)]
->       |                                                                  =
-                           ^^^^^^^^^^^^^
->       |
->       =3D note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on=
- by default
->
-> The original goal of using `-Zcrate-attr` automatically was that there
-> is a consistent set of features enabled and managed globally for all
-> Rust kernel code (modulo exceptions like the `rust/` crated).
->
-> While we could require crates to enable features manually (even if we
-> still keep the `-Zallow-features=3D` list, i.e. removing the `-Zcrate-att=
-r`
-> list), it is not really worth making all developers worry about it just
-> for a new lint.
->
-> The features are expected to eventually become stable anyway (most alread=
-y
-> did), and thus having to remove features in every file that may use them
-> is not worth it either.
->
-> Thus just allow the new lint globally.
->
-> The lint actually existed for a long time, which is why `rustc` does
-> not complain about an unknown lint in the stable versions we support,
-> but it was "disabled" years ago [3], and now it was made to work again.
->
-> For extra context, the new implementation of the lint has already been
-> improved to avoid linting about features that became stable thanks to
-> Benno's report and the ensuing discussion [4] [5], but while that helps,
-> it is still the case that we may have features enabled that are not used
-> for one reason or another in a particular crate.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Link: https://github.com/rust-lang/rust/pull/152164 [1]
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
-> Link: https://github.com/rust-lang/rust/issues/44232 [3]
-> Link: https://github.com/rust-lang/rust/issues/153523 [4]
-> Link: https://github.com/rust-lang/rust/pull/153610 [5]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, Mar 04, 2026 at 04:30:03PM -0500, Josef Bacik wrote:
+> We are hitting the following soft lockup in production on v6.6 and
+> v6.12, but the bug exists in all versions
+> 
+> watchdog: BUG: soft lockup - CPU#24 stuck for 31s! [tokio-runtime-w:1274919]
+> CPU: 24 PID: 1274919 Comm: tokio-runtime-w Not tainted 6.6.105+ #1
+> Hardware name: Google Google Compute Engine/Google Comput Engine, BIOS Google 10/25/2025
+> RIP: 0010:__raw_spin_unlock_irqrestore+0x21/0x30
+> Call Trace:
+>  <TASK>
+>  amd_iommu_attach_device+0x69/0x450
+>  __iommu_device_set_domain+0x7b/0x190
+>  __iommu_group_set_core_domain+0x61/0xd0
+>  iommu_detatch_group+0x27/0x40
+>  vfio_iommu_type1_detach_group+0x157/0x780 [vfio_iommu_type1]
+>  vfio_group_detach_container+0x59/0x160 [vfio]
+>  vfio_group_fops_release+0x4d/0x90 [vfio]
+>  __fput+0x95/0x2a0
+>  task_work_run+0x93/0xc0
+>  do_exit+0x321/0x950
+>  do_group_exit+0x7f/0xa0
+>  get_signal_0x77d/0x780
+>  </TASK>
+> 
+> This occurs because we're a VM and we're splitting up the size
+> CMD_INV_IOMMU_ALL_PAGES_ADDRESS we get from
+> amd_iommu_domain_flush_tlb_pde() into a bunch of smaller flushes. 
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+This function doesn't exist in the upstream kernel anymore, and the
+new code doesn't generate CMD_INV_IOMMU_ALL_PAGES_ADDRESS flushes at
+all, AFAIK.
 
-> ---
->  Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Makefile b/Makefile
-> index 73a39592f112..587345f16c97 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -476,6 +476,7 @@ KBUILD_USERLDFLAGS :=3D $(USERLDFLAGS)
->  export rust_common_flags :=3D --edition=3D2021 \
->  			    -Zbinary_dep_depinfo=3Dy \
->  			    -Astable_features \
-> +			    -Aunused_features \
->  			    -Dnon_ascii_idents \
->  			    -Dunsafe_op_in_unsafe_fn \
->  			    -Wmissing_docs \
->
-> base-commit: 487f9b3dc6e507a982f1b984aa6bfbd9dc4b0567
+Your patch makes sense, but it needs to go to stable only somehow.
 
+Jason
 
