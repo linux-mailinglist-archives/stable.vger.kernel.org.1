@@ -1,98 +1,97 @@
-Return-Path: <stable+bounces-224831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FRPCQiGsml4NQAAu9opvQ
-	(envelope-from <stable+bounces-224831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:23:20 +0100
+	id SE97JDmGsml4NQAAu9opvQ
+	(envelope-from <stable+bounces-224832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:24:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5560B26F7BB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:23:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F8126F7E1
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1125B3059FFE
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:23:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9F6030C843B
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 09:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACBB3AF65F;
-	Thu, 12 Mar 2026 09:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DAB3B585C;
+	Thu, 12 Mar 2026 09:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NIje6bnK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eniJemST"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E264538B135
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 09:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9E23AF672
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 09:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307397; cv=none; b=MM9L2PNWWauvpnqeD4B9G8YjMh/Wj6XE179OJiiW4+AbQ3mMNMCHHrrBDHpTGgkLZ2F6CDJCCYZFBAM97NQKespsVYeqMaHgzaMZJr5gZHjiedGDHILz4jb+Cihf8fb24tUbJpaxFEn5A0O9rMSOFRgAr667CsWcfGP1sqBCriM=
+	t=1773307399; cv=none; b=mpT5IwiVLhaF7f1p/SXynZXPANfoNBq5d/lKnlqI4mlvmI3zD0OBByhMivAcUgNSSvMGcBxD0J7rAS3S2KoRCQ1CABYKEMoStklCp4oRTliw5ajmeSozS5DuKq56uDcywNcjB9RwAOej49naFuyWciKpZjrthRpvVFXkKJvtcZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773307397; c=relaxed/simple;
-	bh=pz+QK4kxfSdwEbArT7hXzuxcGTfKgY7syMJ6RBjmujs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Z6GTMtihfo3QDbpbqsyUK1JBGiCNUV9gRCyAITmegjuFmv7Vh91ouiHFch8dQK/aG9tK7MxQSVNBxHb6TcDyGpLJqezjM2WZ1PVxFO/9ZqJM+3Bc9SvQ24fuAQk2niz0+tUXUqIO8KM2uL6oWJMdx+I/AgMRybtLMn599gz4jI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NIje6bnK; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1773307399; c=relaxed/simple;
+	bh=HGRaRGYIp/2I1VCTP2/AvId3YATUkkj6n4gXWOYzK4A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PgIKHxWcTHPmg02BCWH3QolkYW80+VvtHf7FnCxPd2z725PcS9Blwtur1BmOWYfEQRlTCCN3y6SZN+Jzywa8K3LLajNF1ri7AUDjftrxhD8lovwhCVu3Gs8ibIzxiTlqSdIWx2zeS/k9Ds1zGU4zQ0AKQ7kdRVqeEx+eOoNbZ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eniJemST; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4853b0af42aso9841655e9.0
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:23:15 -0700 (PDT)
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-663262142c0so626636a12.2
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773307394; x=1773912194; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Z5l0POW7ods92+Es4vxjYOIQBNcIz63tv3MO7mCRKzc=;
-        b=NIje6bnKVko/Q5pbVGbY/b7AwIUdgEho7s1Tqy7GvGBr9xR8GC/Y5DjUQoLp8Qyavw
-         +EJBBfOYPkTZrFy144vy+TPjwcNkb+Xjr6U23Tk2huhAXchFY+YyoiK8vVkJPOVGKhMO
-         NsmlCfm37QocLFro3UKuNSCZIvuSFzevmHS47y/132hxHWU8ZhPs7+shXBpg1egtLrd/
-         fMPBjhqL0zvHaGSv+suzNdkJZ/Nnh1UJrP7jvyhjf5430zz8P3QIaq02V3yYeOPIEDYK
-         WUYDC/ZfqMyRPtFqP5gobTjq8ZEzt73Bcp0Xt8MS2OX4E8UvKrP57qHUnIyri/UiMl2o
-         WOow==
+        d=google.com; s=20230601; t=1773307396; x=1773912196; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0tQd8FbPi346llSLS3fx1+p0t2zeeyNV0n8zJlO0zs=;
+        b=eniJemST2Gsmooqqc7041e53b5huuLXPL4hpRcrysLW4+f/fgI17dgx0srlWkfkmrd
+         wzI3M8ZuzyhZCcgNbup4rzfL1nb6nO+kolYYvVTWD0QWHestWSf16ga9BQWKdp0x7REO
+         TdyfbiYe+c0KrPH7kKgOMssRO5Ajft3b4yVZM9NpLvyPnNPUfVwMR+VgT4UpbMasMXa6
+         F48lIHbYhltj+GZSliY+XAU2Yer5Op6Hz5UsksQeigu2c4kQPDDK871q+PwscJAyVgHB
+         Niv3QUvS/1V0hXFn5Cj9cmkp3efTR/TPywnFlozOlH8EJgAceOETSDwssnCWe5hzNcH5
+         daJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773307394; x=1773912194;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z5l0POW7ods92+Es4vxjYOIQBNcIz63tv3MO7mCRKzc=;
-        b=NKAxJBoiaavGpSfqrZTycruwp3jurGRQAKmL/Sc4PPGDzPNb3fUc0f8eKBaZeKmSRz
-         ZwnME4DVEnYq+Nppsu/ua9J7l0UHYOQNESEAU75mdkL+LM04Jc17eCRUO77rrnsr87st
-         IlRpsH5crBdZhIt2qclb8wVyK+wkzsUGU/uJuMyRDteBnyHLcTUNSnHI4viVJlB7USlZ
-         aJJiixG47tJXE0a/3lZ2TugiG5pdKIdhR3qXCsmnyQ4hGkro0zWmSSV/t9ByUPgp0lhe
-         NZIUCQKPxaRkNf5smSH+k83f5hK1383Ssf7TtuIC/cIO3ppI0P7K/BDA8X3Vh2/gZDWy
-         eLbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvqnuQnPf82RQnF1xhoDI7BYq3BxYtYBlFxcPaycPyuHvIU/1QHTS+XlV3Pwip9phHD8knkPs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv8x9TN0lwcOvFUiOVfTuYBAxnotgonb2Usal1LbiBf32eiRLT
-	9SZ+GKa/TjKTGJsOzArnsD74pNmaUAPQ0hgYeqv9sUtI7yvf2FNL+JcmNiv0lbu2q+2HJOH+m0g
-	I5GrHUK2yHQOlfL3vFQ==
-X-Received: from wmee13.prod.google.com ([2002:a05:600c:218d:b0:47e:e922:b080])
+        d=1e100.net; s=20230601; t=1773307396; x=1773912196;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0tQd8FbPi346llSLS3fx1+p0t2zeeyNV0n8zJlO0zs=;
+        b=a3HJWOY4XMhcqNIP0xEQXWmubvWwF1sAh29lG1/vTZhPAGDznsKVhd9OD/y1wTFoIz
+         S/RCbXnEDysKz0soPYaXtsSzF10n5FuU1mLajs40Xj6ydp+W7+792fpsImFRCBE3v5m/
+         Fc18U4EkwnPh4x5QZ/L8nSddbedSfLxFYn7dTjNHU41KVkH2sefOX97U+AnLFlUHCEZQ
+         NlzJ2CvzqIDRiQ81HcW4ZDguQ7S7WocUsY2sZr+K5KlnxViSk6QYQH5e4U9Q9FlpFkod
+         ig00NEKy7N6WgUIrDnFOHiOn9AnB3IJrS7ZIjPunXzuTLVq0YQyO+ipR9+UHMIDOl5PQ
+         wZDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWyzBepFfLZ0YTv0z6d+aWzo/sVSACPOCj4rurx2JPf9v1u7NTyrk7fBDYzE68VaQAbZj9oAKw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzjqjQCltyC9Z41xSQ2MpkjaS9/lQo70KGIlN4UhHI2EBWMa/w
+	whF9KVYBRavJwF4BJbk4nYoJfHtDGp9vxXodfchA9usr6fmnhyqZ9crE9xGwemAYA3X24FgX+7N
+	+TOU/u6D10f63RxuRLw==
+X-Received: from edsr1.prod.google.com ([2002:aa7:da01:0:b0:660:a402:c93b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4710:b0:485:3471:cffb with SMTP id 5b1f17b1804b1-4854b0bfdf0mr97949495e9.15.1773307393959;
- Thu, 12 Mar 2026 02:23:13 -0700 (PDT)
-Date: Thu, 12 Mar 2026 09:23:01 +0000
+ 2002:a05:6402:3552:b0:662:ac65:19e1 with SMTP id 4fb4d7f45d1cf-66319bc7dc5mr3072407a12.12.1773307395717;
+ Thu, 12 Mar 2026 02:23:15 -0700 (PDT)
+Date: Thu, 12 Mar 2026 09:23:02 +0000
+In-Reply-To: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPWFsmkC/33QywrCMBAF0F+RrI1k8jDVlf8hLtp00ga1selDR
- frvpr5ALC7vwJzhzo00GBw2ZD27kYC9a5yvYpDzGTFlWhVIXR4z4YwrJgGoCZi2SM8+7OsOO6Q
- 5UwJUYnQqMxLXTgGtuzzI7S7m0jWtD9fHhR7G6R+sBwrU6jxDbQGZspvC++KAC+OPZNR6/hEAQ EwInDKaZFJxrQFWmfkRxFtYMs71hCBGQecIQlidyNWXMDwrBqy7+Kz21XMY7kdbH8xKAQAA
-X-Change-Id: 20250411-create-workqueue-d053158c7a4b
+References: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1516; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=pz+QK4kxfSdwEbArT7hXzuxcGTfKgY7syMJ6RBjmujs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpsoX7sVc+5dfeKTxD79I5FaiH/jXI7I/LfHvhg
- RQ5DRJ3IZqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCabKF+wAKCRAEWL7uWMY5
- RlmtD/9BOySqzW4chGh+Mn1vEn+x9GVreG3tyOrlOz+KFGDhyW7EKXDhB7T8q1td/FKtg3sFyrT
- b10PULyxLi3s8C6nQxTOulFmImgvKQ21aEs4fRUut7+yf7Bc/xjbH894qnQxJdw/cR4fpXGAwO8
- pXitI7rKl9Xfc6yKe9zPiDJNYL0mO3OHfQ+QC8wbmH2R0PhinWsAI1+Eh7D9ZafMypRoSl+YT0e
- yqO1EhxlRqGbObIrqbnjFVE8Qg/VdNW/pV92V/TuanlohM4b9LdywNG9v7sNjdLORxm6NX/EmJh
- 8ABXFi2uyVXt9h7Vpin8atjXuxC/ob4f9jsORDK19HcwSEImsMEAP44p6flxfLr+/tQErOyxqqw
- 91WR/WtaUisEixvo67UWPkIvi+buGyG5o1CJBNZqxqIYnA1lnJvdEREgKvWDwH5Tc9oNulFy8ko
- zaYU8Vsps8ldFPBs/Faa+hB218DILz54Z4MpOVSTpg0JNMAy81p5D3SE1JxLy2t0HhD9zaXPd2h
- lqkEMe9mxwCjMKytqTCojxxsfDqxlbXeMJddHVFUNT0aZSAmc+l+IKHJ4C+Q2aSQB0sweO2uJmK
- ll48PUtSHZx2Fi0k0lEngZR0BobhB9Qj6JUw8XHpRyWgWE30G98GfCjtw4p4Bp/6NjswLWbBqI5 OfsIrfcYY1aGFIg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1759; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=HGRaRGYIp/2I1VCTP2/AvId3YATUkkj6n4gXWOYzK4A=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpsoYA0cmDxCYMoHbbLy2sfHV5bUhhXB6n5BYTs
+ mh0uOrhrLmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCabKGAAAKCRAEWL7uWMY5
+ RjrsEACqk+IzvK1DPpswLCFP86Y69YbF8A/IaxxZ1r/SHlssFKn6BWjIO1fkaSbN63iqosgZsLd
+ DHrmnuRegh1mEFjpQV4rL1GwUGtjja2A1+dZwbFrQLIAqfD95ZbDsCktBFRKlZFX8+qYObi+sjq
+ wMgxpSad4Y9S4zInE76l0FMTkpLLB0oVYms3nysnpeALtcmfNwfy2FfcYVXUcwVX7/R7Tc/S8jf
+ DHwG9ivrVB/UNwSa+alahlMhfdhy8HcJ1DgstbV94+ktLB5rdHjuZPhGPvjbNJStfyX1IzHt+u9
+ 0Cc+beAZ+UPQG6i5c862V6KrtnNZo+Vw0VhU+vnH0EUPc4FELdZHXSYlxg116BWLa3sC6GCGEAf
+ TW8uFtcIr3/RI/kCqxzQDwY8V1f+A83PVMxdJNCGZg+T/JAOLxvEjXyCJnfncd5b7yLeu2DWb2z
+ 3fcTX2FH9xAgJcjF92vXN/zbbMVtY0MpQW2hp3NBD0wHfQLu2zWw/1LA1E50a+2w1pGZdMB+U3n
+ k1liSerLDb1+dv7BtqxNqxqMRy/+h4aChYHn+3Ci2FnDBZrixrdL6U5TiIMIf+RBwMlZx7n1i8I
+ 16Xw+2q13GpvS6VQe1tK0CzyvKcz5AV1toUtw6f1yO2uMvEQysreXRQriGqhygnvSq9Npi6T1zQ g6IXLDMPrNHjPSw==
 X-Mailer: b4 0.14.3
-Message-ID: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
-Subject: [PATCH v4 0/3] Creation of workqueues in Rust
+Message-ID: <20260312-create-workqueue-v4-1-ea39c351c38f@google.com>
+Subject: [PATCH v4 1/3] rust: workqueue: restrict delayed work to global wqs
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
 Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -108,20 +107,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224831-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224832-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,garyguo.net,protonmail.com,kernel.org,umich.edu,collabora.com,nvidia.com,vger.kernel.org,google.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
@@ -130,50 +129,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5560B26F7BB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: E2F8126F7E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-GPU drivers often need to create their own workqueues for various
-reasons. Add the ability to do so.
+When a workqueue is shut down, delayed work that is pending but not
+scheduled does not get properly cleaned up, so it's not safe to use
+`enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+restricted `enqueue_delayed` to static queues.
 
+This may be fixed in the future by an approach along the lines of [1].
+
+Cc: stable@vger.kernel.org
+Fixes: 7c098cd5eaae ("workqueue: rust: add delayed work items")
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20250423-destroy-workqueue-flush-v1-1-3d74820780a5@google.com [1]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v4:
-- Add link to delayed work fix.
-- Redo workqueue creation to prevent invalid configurations.
-- Introduce a directory as workqueue.rs was getting really large.
-- Link to v3: https://lore.kernel.org/r/20260227-create-workqueue-v3-0-87de133f7849@google.com
+ rust/kernel/workqueue.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- Switch to builder pattern.
-- Drop BH workqueues for now.
-- Mark delayed wq change as fix.
-- Link to v2: https://lore.kernel.org/r/20251113-create-workqueue-v2-0-8b45277119bc@google.com
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 706e833e9702..1acd113c04ee 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -296,8 +296,15 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+     ///
+     /// This may fail if the work item is already enqueued in a workqueue.
+     ///
++    /// This is only valid for global workqueues (with static lifetimes) because those are the only
++    /// ones that outlive all possible delayed work items.
++    ///
+     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+-    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
++    pub fn enqueue_delayed<W, const ID: u64>(
++        &'static self,
++        w: W,
++        delay: Jiffies,
++    ) -> W::EnqueueOutput
+     where
+         W: RawDelayedWorkItem<ID> + Send + 'static,
+     {
 
-Changes in v2:
-- Redo how flagging works.
-- Restrict delayed work to not be usable on custom workqueues.
-- Link to v1: https://lore.kernel.org/r/20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com
-
----
-Alice Ryhl (3):
-      rust: workqueue: restrict delayed work to global wqs
-      rust: workqueue: create workqueue subdirectory
-      rust: workqueue: add creation of workqueues
-
- MAINTAINERS                                    |   1 +
- rust/helpers/workqueue.c                       |   7 +
- rust/kernel/workqueue/builder.rs               | 380 +++++++++++++++++++++++++
- rust/kernel/{workqueue.rs => workqueue/mod.rs} |  53 +++-
- 4 files changed, 437 insertions(+), 4 deletions(-)
----
-base-commit: df9c51269a5e2a6fbca2884a756a4011a5e78748
-change-id: 20250411-create-workqueue-d053158c7a4b
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.473.g4a7958ca14-goog
 
 
