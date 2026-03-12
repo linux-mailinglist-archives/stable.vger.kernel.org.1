@@ -1,142 +1,147 @@
-Return-Path: <stable+bounces-224898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOTeFa/3smmLRAAAu9opvQ
-	(envelope-from <stable+bounces-224898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:28:15 +0100
+	id 4Ew0Ncz4smmLRAAAu9opvQ
+	(envelope-from <stable+bounces-224899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:33:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507702768D3
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:28:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F08427693D
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 55A1B3026058
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:28:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D21FC30219FB
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5553C3434;
-	Thu, 12 Mar 2026 17:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329A53D3494;
+	Thu, 12 Mar 2026 17:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfBnM8IG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="if1dvv2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E3837B03B
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C2638422D;
+	Thu, 12 Mar 2026 17:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773336488; cv=none; b=RxVz1nJ3oMMUkoGbmqE6580Kt0zkcOFZzhPJTBAhUVuUyfu0rcMYGFp0CqKxrHWs+CCsGgTWjMeXHSmSgQ+BdmAcjKMb7/nb/+qr0TMrG1/nv49dUkH1Je8P0/wN1njiX+hUwWT4+daK/nRpz2hWa3UdIVDcoNtmO9ec/W4LbFk=
+	t=1773336778; cv=none; b=VIHP7GWb3zaaJ2GaRA6Ryp+MNh5XZTTHjq1ghxVgFJyaRiphdxNjcx0fvgir0xK7fXlUIhEMbPWAcTuqyZcSZPJ0OeiuCpX8RLmZESga/y58op5L3QPrx7tpi8ShadVitdYq8G4V2PcAtMkEJJDKyMhgnHa2hmLB8tIXPna8j9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773336488; c=relaxed/simple;
-	bh=r4N/H3iHwmT0NdlM6rxKsF1IU1ZtLVPCrOohIaM2NoY=;
+	s=arc-20240116; t=1773336778; c=relaxed/simple;
+	bh=6OZupW+8nCENOIwIlE2yxZg29RsbpuXi1ug0crETM6M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z4ECFnuP4v8ZN60GvAtM548M+QVh+9+8VoOGO9AC304w0DugGHgLp0U6IapKeX+yuDUXeDPdnQmF2z75ClTdHj89C6NRs9I14GncnzBbyAO7LIRgK01QXEKZFx6Tt7RzKcxXXc8enWZIsttt2p46Z8lsIv0hl32ZL0Pfl+zwri0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfBnM8IG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593D3C4CEF7;
-	Thu, 12 Mar 2026 17:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773336487;
-	bh=r4N/H3iHwmT0NdlM6rxKsF1IU1ZtLVPCrOohIaM2NoY=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=s5Gad1/YvQx2VWMEdWleLUS3jP8eWNBJvu8ja/VOalDiVviyomwYpKIJ3HJUmWwzpbkvZ7GR+A/BSspK2L9R7JxtXFNKulO2+Oby9ywno/H7S0SlAOG69884d/j4iFlufbmAPModKl8tIwNEGeXpQtneiLXQFlxK4bEnhWsI/UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=if1dvv2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF47C4CEF7;
+	Thu, 12 Mar 2026 17:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773336777;
+	bh=6OZupW+8nCENOIwIlE2yxZg29RsbpuXi1ug0crETM6M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jfBnM8IGE4tDTcOhsuBbbDJ3+2VLJbEgOwiJ7QwQL5du2zfP8ybfi16ajbxhC986Q
-	 +X4IvjJmqdRB651v33g7o0BPL+jHQrYgbaHv2k3ouJoO/rQuAMH7Bwmo+Mmx08HKLY
-	 ttB0Lp7s9uH98snnf7PA0gM6F0+s0/cRVGDoOygI=
-Date: Thu, 12 Mar 2026 18:28:02 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.1.y 2/2] net/sched: Only allow act_ct to bind to
- clsact/ingress qdiscs and shared blocks
-Message-ID: <2026031237-blurred-tricolor-b266@gregkh>
-References: <2026031221-tissue-upgrade-f4d3@gregkh>
- <20260312171857.1797148-1-sashal@kernel.org>
- <20260312171857.1797148-2-sashal@kernel.org>
+	b=if1dvv2IVdmGYizlvi2zGkJ6M4QxH28nxsTzCwb4ugwEeOYw5pkkfHcBhrGIl3CFk
+	 nsSv7rTmTbtt8ylDPmq3DgdfLl4Zvq38rCmV/fUfV+oNj6x31dqxRvGvRH+SI4BOPH
+	 Byhr+oW2cMCGYNia9KIqcvHwnh2Ji2NcufUXJuyf5txaV8sIj92njqyUb/t50Kf++T
+	 XgyH9GB6XP2+oUxciBV7FPM9Ozwbkc8qLlGl98J9OqV+D5xD3nRaZPezI2GBDP9hLB
+	 C5HBLXk/Kfha6o/vsgwnA/MvGgy79tmVuuL+kI8ZxvdEUV6wCEXKBtEWwJJeF3RnTB
+	 Lt3nwZ2mMtmkA==
+Date: Thu, 12 Mar 2026 17:32:53 +0000
+From: Mark Brown <broonie@kernel.org>
+To: gaggery.tsai@intel.com
+Cc: linux-sound@vger.kernel.org, ckeepax@opensource.cirrus.com,
+	mstrozek@opensource.cirrus.com, yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ASoC: SDCA: Fix NULL pointer dereference in
+ sdca_jack_process()
+Message-ID: <ef001910-611a-40b4-b7b6-c5dc7d784701@sirena.org.uk>
+References: <20260310183829.2907805-1-gaggery.tsai@intel.com>
+ <20260312143218.2008222-1-gaggery.tsai@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0Vas4UN21RkwjNkw"
 Content-Disposition: inline
-In-Reply-To: <20260312171857.1797148-2-sashal@kernel.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <20260312143218.2008222-1-gaggery.tsai@intel.com>
+X-Cookie: He who hesitates is last.
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224898-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-224899-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 507702768D3
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sirena.org.uk:mid,intel.com:email]
+X-Rspamd-Queue-Id: 7F08427693D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 01:18:57PM -0400, Sasha Levin wrote:
-> From: Victor Nogueira <victor@mojatatu.com>
-> 
-> [ Upstream commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 ]
-> 
-> As Paolo said earlier [1]:
-> 
-> "Since the blamed commit below, classify can return TC_ACT_CONSUMED while
-> the current skb being held by the defragmentation engine. As reported by
-> GangMin Kim, if such packet is that may cause a UaF when the defrag engine
-> later on tries to tuch again such packet."
-> 
-> act_ct was never meant to be used in the egress path, however some users
-> are attaching it to egress today [2]. Attempting to reach a middle
-> ground, we noticed that, while most qdiscs are not handling
-> TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
-> address the issue by only allowing act_ct to bind to clsact/ingress
-> qdiscs and shared blocks. That way it's still possible to attach act_ct to
-> egress (albeit only with clsact).
-> 
-> [1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
-> [2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
-> 
-> Reported-by: GangMin Kim <km.kim1503@gmail.com>
-> Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  include/net/act_api.h | 1 +
->  net/sched/act_ct.c    | 6 ++++++
->  net/sched/cls_api.c   | 7 +++++++
->  3 files changed, 14 insertions(+)
 
-Ah, it was some trivial fuzz, I've just taken this and not patch 1/2 as
-that is a new feature not needed here.
+--0Vas4UN21RkwjNkw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thanks,
+On Thu, Mar 12, 2026 at 07:32:18AM -0700, gaggery.tsai@intel.com wrote:
 
-greg k-h
+> sdca_jack_process() unconditionally dereferences component->card and
+> card->snd_card at the top of the function. This causes a NULL pointer
+> dereference when the SDCA IRQ handler fires after the ASoC card has
+> been torn down.
+
+Please don't send new patches in reply to old patches or serieses, this
+makes it harder for both people and tools to understand what is going
+on - it can bury things in mailboxes and make it difficult to keep track
+of what current patches are, both for the new patches and the old ones.
+
+> +static void class_function_component_remove(struct snd_soc_component *component)
+> +{
+> +	struct class_function_drv *drv = snd_soc_component_get_drvdata(component);
+> +	struct sdca_class_drv *core = drv->core;
+> +
+> +	sdca_irq_disable(drv->function, core->irq_info);
+> +}
+
+This is an ASoC level remove so the driver itself is never unbound but
+I'm not seeing anything that undoes this disable so an ASoC level rebind
+will leave the interrupt disabled.  Do we need to start off with the
+interrupt disabled and only enable it during bind so we can have the
+bind/unbind be symmetric?
+
+--0Vas4UN21RkwjNkw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmy+MQACgkQJNaLcl1U
+h9DCAwf+ONMW8/5VxjsKw7Nl6Bha6fc8e+m1Ewb+sp0QFFs50sZ0tochtu7uuFA7
+Vg4Kp0Cz1vzniruRLyOcmuo+JhXLV4Q4BhAfYvdCS6LACYsT17/s6wHBr2oW/Cgl
+SIsxJkLvZ3vc3Rfhwrbed15hKj8mFyyrUjJ9tez0/hH6w7yb5MvNf1TTRPrW98OM
+oNFaZZSG7PAjuHtX+Haf7o7L+W0uNxxFW0W5qwUULIhh8hjamTzyjcAFcHjWAooc
+XEvm+Dlq+Jk5t1tCRBDktnLhkNpTMUfZyOAVWFgd/eqv2sL5ljsT4z4ZWjtIw11r
+b6lwOzB+bguQ78dQXYBKDn+xBDKlPQ==
+=3z5r
+-----END PGP SIGNATURE-----
+
+--0Vas4UN21RkwjNkw--
 
