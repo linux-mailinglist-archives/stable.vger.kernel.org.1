@@ -1,167 +1,204 @@
-Return-Path: <stable+bounces-224862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JzSHeHCsmmvPAAAu9opvQ
-	(envelope-from <stable+bounces-224862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:42:57 +0100
+	id oJ5UMKLGsmmvPAAAu9opvQ
+	(envelope-from <stable+bounces-224864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:58:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98D5272CAF
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:42:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B58273012
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 14:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07407318FDF8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B36B5304003A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 13:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AF13C2794;
-	Thu, 12 Mar 2026 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD08351C24;
+	Thu, 12 Mar 2026 13:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="X899G301"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iYDlmXdg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2DD3B776A
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 13:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA7D2D837C
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 13:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773322829; cv=none; b=dctF7DHE7/RqHbuJeP/E+pRcLhje99DbFwGM50JYMWf9D5T1ugPIOAj49DgtPf6rDYznQHE/vakwNHbrwhWMPo0eAvrfSr62Ym3KvNrt0UXFH/zwshVB8R5e7N9yS9rxWrc78xruqgckwCBHtCNUS8FVe8Zc4tMUDdTc+uUyxCA=
+	t=1773323584; cv=none; b=fzIwwQpX8fzMQZBpVb/+fH8JqZLo73TF8NA16fOn3m+aFcS+UXmwSpBdaN/qce8eaaCkL/I0X955mci4L1SosIsJifmaqakLKsf3kDxjYxoubP6ieIfJWVXg/JBZExRAyzuGbCLcP/1SwqdnkI8/z2/lwL6Cnbr/hG4r7Esm4xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773322829; c=relaxed/simple;
-	bh=rAsG53T7VzeVL8MPN/j4EPmItrg7aAE61kEiWgrhL/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fu2WXfn3+wUItKfj2BPKKFHW9CADB51jmFruH+Gwdh4qL+MMtCqs9ktvBDeDX2MehVTtXIG80xok4pIIbFsGKww6JWqYD1c2dantRYBZCPi1nnxaVu2RPsHvuTDMEh0ZG7iUeYEw+CJGl8aSzX5Q8qK6j/J0/YjX5YQEwVyeYdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=X899G301; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-89a0ece9f14so11927766d6.3
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 06:40:27 -0700 (PDT)
+	s=arc-20240116; t=1773323584; c=relaxed/simple;
+	bh=faGQyXQIEexLrthjMYjIHjLk24UDy8P/kcRREOrNBbI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JcJCZoGzQdi4WMLy2+f41EXDm/k1bBmI32jYCKvB+7ZFQis75t5ynIbT6SxWyMw0SEJH+vso8+iC8DlCxeouPackkvIThpxq816iMC4c+5Jwix2wF6KuvxdBq+WBTOrJulxB3AA+FifnpJx5WTPG7pYCTpVFf/0h2REeZjsLi+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iYDlmXdg; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a12cd0bcd8so1296650e87.3
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 06:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1773322827; x=1773927627; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WYBFQ99Inco1AF/xc7g0EJHr1Nl8OM4ewTd8eM5kz8A=;
-        b=X899G301L0wDKc7JaG+sR67CjJIRM4FkdzbEfi0+4Rq79t7Ld/vGoOoaMI0K9nGj1E
-         PVz25daU36xXdkPxa+So+zkv2Bnw4RqoFWI8Dyvpqq/6GiFIlDzY8QGyI2NfL1icGeOK
-         sDxks6d6ZvrXhcRlJ1zxGBaNkrDqs/M+qmDVTl5BC8FKD3TPvBJgCZOQNN4XCTp2jl56
-         jaLwVxX+nkQ+QAoJi99VQRHV/mT4gQ45X0gNB7MXtk9EdFIbTQSs0OIxVNZx0RshuxKs
-         e2rQcSiUw5O4RCv5ewlVAvcRpnK0X7g99tIpi3HiexJ2ApMaF1aVv5uWeMG9rQbRxGIa
-         Jj8A==
+        d=gmail.com; s=20230601; t=1773323579; x=1773928379; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cLa3hjm81+l0iihx+Vd/908jpbxZZUZC18PWTXWrhu0=;
+        b=iYDlmXdgN8G30SXRuDdtsayoPCU7SCx+mU24f62X+yRkoa8/QlGzs7do3OTHwjuG+7
+         Qad7t6Z+vJwH+bOW8E5bnbdGa91HgaRxF3ZFnHuv5/DPug/DX9kf+AG5rAxqcsOC1YNP
+         W0Uy0JKVpneoUrf9HDuk21CT487bt1DrrGHRJXwtRalNv4V5fOhm6XOTkiilAx2VF5+b
+         2Nur+58cX2giHwK7LqqJBrzCS+DbhN+ws1HoQU3ujG1SFy0m5dM55Lxc7QT+uec16Arr
+         qBx8bMabGMbZXlOxqAuCxj7Pnwqkk+QIY9uKahzymSqqxf5xs0qGeG2VwBF4XHksINpw
+         IC9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773322827; x=1773927627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WYBFQ99Inco1AF/xc7g0EJHr1Nl8OM4ewTd8eM5kz8A=;
-        b=RoRdIU2fNt7bG+bTFxB1OXdFKwmapEwnUZ+h0FsZK385G3iBsShbt0aEXlDgOnRXF1
-         O7NSpjbFbfX2FB0UUJGshL7AsTtYrPdu7C6AsS9WBIaA3eL/S+nqIG/EDuNVv0HTW3aI
-         7x1UEuwGJbb0erSiLCLjpDKyt0l44R+Edo1p592uADjjkRDjvPegXh3DaA8MbLwfhXaL
-         iKEaTLVRCTs0s9Hk08Yuwj+/ghLakokhdBTu78aLHv8gVZD2BJU5deV2NCTL2Qlzw8oA
-         PUom/1ETlXddbfY0gXHoNOe9dCbItrvk7qawp50+XpcWlq3hIbMbw1VCeeBxD8hG7g8i
-         WGaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXemMKdP7lhyDRVX/5ck7bzbQTGICcsiIPTk0QTIntfxrFcdNUPnAeZybLdTFrP0LrKzsD5g0Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfMnzFcicKgG0uxS9lJnhoOXNuNe8bVKRll8NpMoavunVxJqpg
-	DyhgLUES0yEjUAhQLVUVJ0/KEp94Th+oEBWdXMs/RjBdI0W8DVAvAAV6MTPOb47NdxA=
-X-Gm-Gg: ATEYQzyaOAqpZC82o2DDVyg+sRD0Vby6Iz/g6xlQ8tzBWLFvGfHUDQJDTuhZjpD8VPD
-	M1iCLv6X4F2ajoh0xDDInVp92ybvpw1uH+TSI+cU9KeZ6mluFG/FDunYjZwYD/9Fk25RsxEZ9fJ
-	cz6s1ZaAt5/c7KZGZanaNYUs/UXv8j0UfLhZNErLvt1FcfBqledBviMKOM95EEPFqK30JJ2wQWA
-	hNynk1lBYtl7NAOBOcS3//bcmhFjVdG47EegYLY0JwTi+XDOa5OuiE/+HoUK5mn+W7qwcYD/3As
-	H9UGDfPbkc6VPdml7mcU2BxQxn6b7M4dlzUlVhksBAQSx8Klsfch4XnrBhVO+Id3fDwpRX83ytj
-	3zEpNsPnTx5fyVHRoKlWIyCh1oslB3mUicxOkK75qmHEIjmlaZYVt5Pd+Wfos3tuuuDkALdIk7J
-	USYMRlNWv54PgPASGIkSpRFCZj3bDsSkY4r1rh1iS+ik4d1y6zMEU4dXu4SJjYqUiWrONyI8oMA
-	8TnqVd9B2O5Z/DFoD4=
-X-Received: by 2002:a05:6214:258a:b0:899:f741:5aea with SMTP id 6a1803df08f44-89a669c0189mr90996506d6.8.1773322826949;
-        Thu, 12 Mar 2026 06:40:26 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bed85bsm34252386d6.17.2026.03.12.06.40.25
+        d=1e100.net; s=20230601; t=1773323579; x=1773928379;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cLa3hjm81+l0iihx+Vd/908jpbxZZUZC18PWTXWrhu0=;
+        b=iM63x96rPYQo/eTvZA+hIZvGuLwBPqxh42V/PrD6Me6grgP0tvaYqxGrWsjayGX+sz
+         ParPFu1VYh7XwpIV2YDKgPIyr1zwpq21AM/z9oEXBSXNRYt4SLPqvCydKLXN8DMm9W6b
+         vYPdeNrEeEfbKFPWh/9etH2PlZ1my4n7CeUd6Zec0DJAfi1pa5SyuO1cJYp1G0NptwfC
+         RrYrlMr+2A/QnoVDUMncPc9tIoZeEXREcYQMpZqO4sHMk17zO9Zf0r27Ox3vY8/7+lC0
+         aRlFbtch+vVsxJp8UkfsABeHzeWRnRON4VMyGogmdlX3Z584y3O8hSsNNxhqro9HRvug
+         TIdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCViGauJWsAuhQ8Fhg6fpRdZpphxQgVxuDeDGKyjhT0N69Xxe3o/0ZD3K5HHaRny1G6INp6BqUQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK3TKWIl7xY3iqsM0jxULf72d8P5WWp/7WqICdE3OhYnVCOAkX
+	herLubwyUcr231746D6F7DI8zo9P1myn9J7ogiBULN+3uLH1iHs1TH3r
+X-Gm-Gg: ATEYQzzZkTadlmRIWO/GUkBEHAUZR8ENHYLT210Qn+syxCRh+N7OvJLf0LFtZBNlMqy
+	AJ3b7OWl5iGDy4aIbmQn+l9t/cFAbm1EFQEwkuC+YMZ8GE2168NWeP7KYlaHtShJa2Ax+THUmDy
+	VBs18jEXntufc5TEJPi/1tX7DFvJ73P6tYvu97mnQTIGEpsxhezv4D+UTjNFtwHq7R7jy7AR/k6
+	SCdtHapWBWjJhMLgFOJf2KdEk1TkyhQeHyc86MF0Zyifg7LcDg41gOveVURYEuypRLVzY1sSKRV
+	H0ZJzx+j12iRuYzqXty79CPEdgsKDIgl9fljZkBFxQxiDMiyALX3a4RMq6r4hWdkO5qhkaxB8iO
+	7srEKGXRhoen9OXMpoEWPXX+Decgv/66L/uIKYiUQcgBRvcBAWuz5qhqWe8vwhdQYorQPhpFD+z
+	aDnrYx
+X-Received: by 2002:a05:6512:1441:10b0:5a1:34d2:b6db with SMTP id 2adb3069b0e04-5a156bb980dmr1557195e87.1.1773323579188;
+        Thu, 12 Mar 2026 06:52:59 -0700 (PDT)
+Received: from router-0001 ([2a01:4f9:3080:2e0f::2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a156033a29sm954117e87.37.2026.03.12.06.52.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 06:40:25 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w0gH3-00000006fil-1PUY;
-	Thu, 12 Mar 2026 10:40:25 -0300
-Date: Thu, 12 Mar 2026 10:40:25 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: joro@8bytes.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] amd/iommu: do not split domain flushes when flushing the
- entire range
-Message-ID: <20260312134025.GJ1469476@ziepe.ca>
-References: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
+        Thu, 12 Mar 2026 06:52:58 -0700 (PDT)
+From: Alex Dvoretsky <advoretsky@gmail.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	maciej.fijalkowski@intel.com,
+	aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	kurt@linutronix.de,
+	stable@vger.kernel.org,
+	Alex Dvoretsky <advoretsky@gmail.com>
+Subject: [PATCH net v3] igb: remove napi_synchronize() in igb_down()
+Date: Thu, 12 Mar 2026 14:52:55 +0100
+Message-ID: <20260312135257.71610-1-advoretsky@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <DS4PPF7551E65520F55DBD20987BCAE3C6FE544A@DS4PPF7551E6552.namprd11.prod.outlook.com>
+References: <DS4PPF7551E65520F55DBD20987BCAE3C6FE544A@DS4PPF7551E6552.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad8652c5e9f8aeee05e2103f4987589cdd4a3fd0.1772659768.git.josef@toxicpanda.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224862-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	DMARC_NA(0.00)[ziepe.ca];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,linutronix.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-224864-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[advoretsky@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ziepe.ca:dkim,ziepe.ca:mid]
-X-Rspamd-Queue-Id: E98D5272CAF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 79B58273012
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 04, 2026 at 04:30:03PM -0500, Josef Bacik wrote:
-> We are hitting the following soft lockup in production on v6.6 and
-> v6.12, but the bug exists in all versions
-> 
-> watchdog: BUG: soft lockup - CPU#24 stuck for 31s! [tokio-runtime-w:1274919]
-> CPU: 24 PID: 1274919 Comm: tokio-runtime-w Not tainted 6.6.105+ #1
-> Hardware name: Google Google Compute Engine/Google Comput Engine, BIOS Google 10/25/2025
-> RIP: 0010:__raw_spin_unlock_irqrestore+0x21/0x30
-> Call Trace:
->  <TASK>
->  amd_iommu_attach_device+0x69/0x450
->  __iommu_device_set_domain+0x7b/0x190
->  __iommu_group_set_core_domain+0x61/0xd0
->  iommu_detatch_group+0x27/0x40
->  vfio_iommu_type1_detach_group+0x157/0x780 [vfio_iommu_type1]
->  vfio_group_detach_container+0x59/0x160 [vfio]
->  vfio_group_fops_release+0x4d/0x90 [vfio]
->  __fput+0x95/0x2a0
->  task_work_run+0x93/0xc0
->  do_exit+0x321/0x950
->  do_group_exit+0x7f/0xa0
->  get_signal_0x77d/0x780
->  </TASK>
-> 
-> This occurs because we're a VM and we're splitting up the size
-> CMD_INV_IOMMU_ALL_PAGES_ADDRESS we get from
-> amd_iommu_domain_flush_tlb_pde() into a bunch of smaller flushes. 
+When an AF_XDP zero-copy application terminates abruptly (e.g., kill -9),
+the XSK buffer pool is destroyed but NAPI polling continues.
+igb_clean_rx_irq_zc() repeatedly returns the full budget, preventing
+napi_complete_done() from clearing NAPI_STATE_SCHED.
 
-This function doesn't exist in the upstream kernel anymore, and the
-new code doesn't generate CMD_INV_IOMMU_ALL_PAGES_ADDRESS flushes at
-all, AFAIK.
+igb_down() calls napi_synchronize() before napi_disable() for each queue
+vector. napi_synchronize() spins waiting for NAPI_STATE_SCHED to clear,
+which never happens. igb_down() blocks indefinitely, the TX watchdog
+fires, and the TX queue remains permanently stalled.
 
-Your patch makes sense, but it needs to go to stable only somehow.
+napi_disable() already handles this correctly: it sets NAPI_STATE_DISABLE.
+After a full-budget poll, __napi_poll() checks napi_disable_pending(). If
+set, it forces completion and clears NAPI_STATE_SCHED, breaking the loop
+that napi_synchronize() cannot.
 
-Jason
+napi_synchronize() was added in commit 41f149a285da ("igb: Fix possible
+panic caused by Rx traffic arrival while interface is down").
+napi_disable() provides stronger guarantees: it prevents further
+scheduling and waits for any active poll to exit.
+Other Intel drivers (ixgbe, ice, i40e) use napi_disable() without a
+preceding napi_synchronize() in their down paths.
+
+Remove redundant napi_synchronize() call and reorder napi_disable()
+before igb_set_queue_napi() so the queue-to-NAPI mapping is only
+cleared after polling has fully stopped.
+
+Fixes: 2c6196013f84 ("igb: Add AF_XDP zero-copy Rx support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
+---
+Agreed, that looks cleaner — no reason to touch the NAPI plumbing while
+the poll could still be running.
+
+v3:
+  - Reorder napi_disable() before igb_set_queue_napi() per Aleksandr
+    Loktionov's suggestion.
+
+v2:
+  - Replaced 3-patch series with single napi_synchronize() removal,
+    per Maciej Fijalkowski's suggestion. napi_disable() handles the
+    stuck NAPI poll via NAPI_STATE_DISABLE, making the __IGB_DOWN
+    checks in igb_clean_rx_irq_zc() and igb_tx_timeout(), and the
+    transition guards in igb_xdp_setup(), all unnecessary.
+  - Tested on Intel I210 (igb) with AF_XDP zero-copy: full E2E
+    traffic suite, graceful shutdown, and 5x kill-9 stress cycles.
+    Zero tx_timeout events.
+
+ drivers/net/ethernet/intel/igb/igb_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 7c41e32256fa..0793842cb937 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -2203,9 +2203,8 @@ void igb_down(struct igb_adapter *adapter)
+ 
+ 	for (i = 0; i < adapter->num_q_vectors; i++) {
+ 		if (adapter->q_vector[i]) {
+-			napi_synchronize(&adapter->q_vector[i]->napi);
+-			igb_set_queue_napi(adapter, i, NULL);
+ 			napi_disable(&adapter->q_vector[i]->napi);
++			igb_set_queue_napi(adapter, i, NULL);
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
