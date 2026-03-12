@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-225016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKfLAjUfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:53 +0100
+	id 4MoTN+4fs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EE8278B3C
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:16:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E027E278CB4
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 714E6301474F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:16:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E0F323012AA1
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1178287268;
-	Thu, 12 Mar 2026 20:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539DD30DD3C;
+	Thu, 12 Mar 2026 20:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpvFkJQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfOrIFFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B861F9F70;
-	Thu, 12 Mar 2026 20:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EAF1A0712;
+	Thu, 12 Mar 2026 20:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346610; cv=none; b=Sow79F4y9QuCNQ8JzBdzSmyNXmxmq+KzfEjh0iY5vgJdzBq9oaEv4GgLZBziNh5zZ3ii4pFO0LhxwH11CwFw/Kw7WB8LqFUUduL0WCKzbC9pEqluHnzkI9JcoCde+xvcFPUOf1GZB+PCLOdAZ4I6BC24poG0hg9x48yKnmrdH5k=
+	t=1773346791; cv=none; b=WU4FJl58+tdfrwTb4d1gdxY2LyMWevKBxQySIRpRd01L6aK/km47ZxFjYW8xHKccxe/jZ/a6YCTXO+DXFVZD03y6ZJBWgZkqnyQkh1EatiHG4TYVGp5E+Mm3IrXZzheScnbkEQLOjXRAxZJzSNEN1L2+qpaAaikN1fnI0XPnAOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346610; c=relaxed/simple;
-	bh=AX3pyyaF4D43LSmWH0z7apXNNIXW+yw9+QEY/2CFLI4=;
+	s=arc-20240116; t=1773346791; c=relaxed/simple;
+	bh=U9ErQx5Kjz589gWP1aH9WvvdDq+fcD4Knk/Aq+NhclM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H92s1jwGaeYy8lmMqIG6uiKHAvh5G0rIkSovttf71FXhtjCDIdCFBkIPBWcwS9LTqOwHb4A5oVdKVc1S2l54GfeszWyeGI3gzRdA6Xr8ks4oZARdDJX5JhsNz4jDeYbZ1y24NMwZc9S3KccfnMIUz1wayICUYRSd9UUJHtwIskY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpvFkJQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFADFC4CEF7;
-	Thu, 12 Mar 2026 20:16:49 +0000 (UTC)
+	 MIME-Version; b=F3rI25HtMDySKvGJGzzAt+SArUh8O2PVMI3rCxGt2v8qsDiI4VB0wmeqjUWIjGQZ5LQYi9RB5vma7Hfp1uPg+4wO+AS5pQaFptKZ04AWSDE8fY4fiLy+huvyQPjLOBOhECUQh83etAzLmlmm0z++BoTIZuGZGN7qOP79/jnEKeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfOrIFFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F1C4CEF7;
+	Thu, 12 Mar 2026 20:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346610;
-	bh=AX3pyyaF4D43LSmWH0z7apXNNIXW+yw9+QEY/2CFLI4=;
+	s=korg; t=1773346791;
+	bh=U9ErQx5Kjz589gWP1aH9WvvdDq+fcD4Knk/Aq+NhclM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpvFkJQmjPa1qF7hl2wZS+RwgXuD+Oq2DlHSghO2YE66Ah0puD6opgiWU/5LG/aGM
-	 6SGiT3K8mrwlgMBt4Yz936jSs5IFb/s0raBtqtKQ5cfOCH8rey6h72gJL2RrY7GMd9
-	 hOq2Vnjg2qjzAiVOi2FVmofGhKSNy5BWIcHty8LM=
+	b=UfOrIFFMsXmsZFXRtjJHeauFwFWSvT8kjq2CrQfgJLrnNCNQMDIzOjMVscnFgHqNI
+	 3v57Ms3gz8ty49+QUsr+Cjih682MxiLusOyDGuNzJFXgb1RMJaVRqMfQKXESkzjFTZ
+	 XLWdhS4khrSTkcrMIO0KMCWoOAv4LPfSHxfOMbW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Tejun Heo <tj@kernel.org>,
 	Marco Crivellari <marco.crivellari@suse.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/265] workqueue: Add system_percpu_wq and system_dfl_wq
-Date: Thu, 12 Mar 2026 21:07:48 +0100
-Message-ID: <20260312201021.146310007@linuxfoundation.org>
+Subject: [PATCH 6.12 082/265] Input: synaptics_i2c - replace use of system_wq with system_dfl_wq
+Date: Thu, 12 Mar 2026 21:07:49 +0100
+Message-ID: <20260312201021.182449047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -64,34 +65,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225016-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225058-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 77EE8278B3C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: E027E278CB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,117 +104,75 @@ X-Rspamd-Server: lfdr
 
 From: Marco Crivellari <marco.crivellari@suse.com>
 
-[ Upstream commit 128ea9f6ccfb6960293ae4212f4f97165e42222d ]
+[ Upstream commit b3ee88e27798f0e8dd3a81867804d693da74d57d ]
 
-Currently, if a user enqueue a work item using schedule_delayed_work() the
+Currently if a user enqueues a work item using schedule_delayed_work() the
 used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
 WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
 schedule_work() that is using system_wq and queue_work(), that makes use
 again of WORK_CPU_UNBOUND.
 
-This lack of consistentcy cannot be addressed without refactoring the API.
+This lack of consistency cannot be addressed without refactoring the API.
 
-system_wq is a per-CPU worqueue, yet nothing in its name tells about that
-CPU affinity constraint, which is very often not required by users. Make it
-clear by adding a system_percpu_wq.
+This patch continues the effort to refactor worqueue APIs, which has begun
+with the change introducing new workqueues and a new alloc_workqueue flag:
 
-system_unbound_wq should be the default workqueue so as not to enforce
-locality constraints for random work whenever it's not required.
+commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
-Adding system_dfl_wq to encourage its use when unbound work should be used.
+This specific workload do not benefit from a per-cpu workqueue, so use
+the default unbound workqueue (system_dfl_wq) instead.
 
 Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Link: https://patch.msgid.link/20251106141955.218911-4-marco.crivellari@suse.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Stable-dep-of: 870c2e7cd881 ("Input: synaptics_i2c - guard polling restart in resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h |  8 +++++---
- kernel/workqueue.c        | 13 +++++++++----
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/input/mouse/synaptics_i2c.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-index 59c2695e12e76..23642bb1a103c 100644
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -427,7 +427,7 @@ enum wq_consts {
- /*
-  * System-wide workqueues which are always present.
-  *
-- * system_wq is the one used by schedule[_delayed]_work[_on]().
-+ * system_percpu_wq is the one used by schedule[_delayed]_work[_on]().
-  * Multi-CPU multi-threaded.  There are users which expect relatively
-  * short queue flush time.  Don't queue works which can run for too
-  * long.
-@@ -438,7 +438,7 @@ enum wq_consts {
-  * system_long_wq is similar to system_wq but may host long running
-  * works.  Queue flushing might take relatively long.
-  *
-- * system_unbound_wq is unbound workqueue.  Workers are not bound to
-+ * system_dfl_wq is unbound workqueue.  Workers are not bound to
-  * any specific CPU, not concurrency managed, and all queued works are
-  * executed immediately as long as max_active limit is not reached and
-  * resources are available.
-@@ -455,10 +455,12 @@ enum wq_consts {
-  * system_bh[_highpri]_wq are convenience interface to softirq. BH work items
-  * are executed in the queueing CPU's BH context in the queueing order.
-  */
--extern struct workqueue_struct *system_wq;
-+extern struct workqueue_struct *system_wq; /* use system_percpu_wq, this will be removed */
-+extern struct workqueue_struct *system_percpu_wq;
- extern struct workqueue_struct *system_highpri_wq;
- extern struct workqueue_struct *system_long_wq;
- extern struct workqueue_struct *system_unbound_wq;
-+extern struct workqueue_struct *system_dfl_wq;
- extern struct workqueue_struct *system_freezable_wq;
- extern struct workqueue_struct *system_power_efficient_wq;
- extern struct workqueue_struct *system_freezable_power_efficient_wq;
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 9f7f7244bdc8e..3840d7ce9cda0 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -508,12 +508,16 @@ static struct kthread_worker *pwq_release_worker __ro_after_init;
+diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
+index a0d707e47d932..c8ddfff2605ff 100644
+--- a/drivers/input/mouse/synaptics_i2c.c
++++ b/drivers/input/mouse/synaptics_i2c.c
+@@ -372,7 +372,7 @@ static irqreturn_t synaptics_i2c_irq(int irq, void *dev_id)
+ {
+ 	struct synaptics_i2c *touch = dev_id;
  
- struct workqueue_struct *system_wq __ro_after_init;
- EXPORT_SYMBOL(system_wq);
-+struct workqueue_struct *system_percpu_wq __ro_after_init;
-+EXPORT_SYMBOL(system_percpu_wq);
- struct workqueue_struct *system_highpri_wq __ro_after_init;
- EXPORT_SYMBOL_GPL(system_highpri_wq);
- struct workqueue_struct *system_long_wq __ro_after_init;
- EXPORT_SYMBOL_GPL(system_long_wq);
- struct workqueue_struct *system_unbound_wq __ro_after_init;
- EXPORT_SYMBOL_GPL(system_unbound_wq);
-+struct workqueue_struct *system_dfl_wq __ro_after_init;
-+EXPORT_SYMBOL_GPL(system_dfl_wq);
- struct workqueue_struct *system_freezable_wq __ro_after_init;
- EXPORT_SYMBOL_GPL(system_freezable_wq);
- struct workqueue_struct *system_power_efficient_wq __ro_after_init;
-@@ -7848,10 +7852,11 @@ void __init workqueue_init_early(void)
- 	}
+-	mod_delayed_work(system_wq, &touch->dwork, 0);
++	mod_delayed_work(system_dfl_wq, &touch->dwork, 0);
  
- 	system_wq = alloc_workqueue("events", 0, 0);
-+	system_percpu_wq = alloc_workqueue("events", 0, 0);
- 	system_highpri_wq = alloc_workqueue("events_highpri", WQ_HIGHPRI, 0);
- 	system_long_wq = alloc_workqueue("events_long", 0, 0);
--	system_unbound_wq = alloc_workqueue("events_unbound", WQ_UNBOUND,
--					    WQ_MAX_ACTIVE);
-+	system_unbound_wq = alloc_workqueue("events_unbound", WQ_UNBOUND, WQ_MAX_ACTIVE);
-+	system_dfl_wq = alloc_workqueue("events_unbound", WQ_UNBOUND, WQ_MAX_ACTIVE);
- 	system_freezable_wq = alloc_workqueue("events_freezable",
- 					      WQ_FREEZABLE, 0);
- 	system_power_efficient_wq = alloc_workqueue("events_power_efficient",
-@@ -7862,8 +7867,8 @@ void __init workqueue_init_early(void)
- 	system_bh_wq = alloc_workqueue("events_bh", WQ_BH, 0);
- 	system_bh_highpri_wq = alloc_workqueue("events_bh_highpri",
- 					       WQ_BH | WQ_HIGHPRI, 0);
--	BUG_ON(!system_wq || !system_highpri_wq || !system_long_wq ||
--	       !system_unbound_wq || !system_freezable_wq ||
-+	BUG_ON(!system_wq || !system_percpu_wq|| !system_highpri_wq || !system_long_wq ||
-+	       !system_unbound_wq || !system_freezable_wq || !system_dfl_wq ||
- 	       !system_power_efficient_wq ||
- 	       !system_freezable_power_efficient_wq ||
- 	       !system_bh_wq || !system_bh_highpri_wq);
+ 	return IRQ_HANDLED;
+ }
+@@ -448,7 +448,7 @@ static void synaptics_i2c_work_handler(struct work_struct *work)
+ 	 * We poll the device once in THREAD_IRQ_SLEEP_SECS and
+ 	 * if error is detected, we try to reset and reconfigure the touchpad.
+ 	 */
+-	mod_delayed_work(system_wq, &touch->dwork, delay);
++	mod_delayed_work(system_dfl_wq, &touch->dwork, delay);
+ }
+ 
+ static int synaptics_i2c_open(struct input_dev *input)
+@@ -461,7 +461,7 @@ static int synaptics_i2c_open(struct input_dev *input)
+ 		return ret;
+ 
+ 	if (polling_req)
+-		mod_delayed_work(system_wq, &touch->dwork,
++		mod_delayed_work(system_dfl_wq, &touch->dwork,
+ 				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+ 
+ 	return 0;
+@@ -620,7 +620,7 @@ static int synaptics_i2c_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	mod_delayed_work(system_wq, &touch->dwork,
++	mod_delayed_work(system_dfl_wq, &touch->dwork,
+ 				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+ 
+ 	return 0;
 -- 
 2.51.0
 
