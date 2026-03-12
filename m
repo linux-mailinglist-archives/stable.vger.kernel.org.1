@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-225058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MoTN+4fs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-225058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:58 +0100
+	id 2IlXBV4fs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E027E278CB4
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:19:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B64C278BA8
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E0F323012AA1
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:19:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9817A3023D82
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539DD30DD3C;
-	Thu, 12 Mar 2026 20:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A5629E11D;
+	Thu, 12 Mar 2026 20:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfOrIFFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAtrefky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EAF1A0712;
-	Thu, 12 Mar 2026 20:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7DC1F9F70;
+	Thu, 12 Mar 2026 20:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346791; cv=none; b=WU4FJl58+tdfrwTb4d1gdxY2LyMWevKBxQySIRpRd01L6aK/km47ZxFjYW8xHKccxe/jZ/a6YCTXO+DXFVZD03y6ZJBWgZkqnyQkh1EatiHG4TYVGp5E+Mm3IrXZzheScnbkEQLOjXRAxZJzSNEN1L2+qpaAaikN1fnI0XPnAOE=
+	t=1773346650; cv=none; b=VdlAPr9YCLIAOQ5lD1yRk4REDTdkV75ozO0HIOa5fwzGp275XisqCm5YANpG5cnd11eb1l7LASrdLSXAiwa2q7bxj5ghph56uPE/FiWOCXuZSdFvx4SdtOxa8hNetM3fPhr5bUYhXzw96/yj/2GTgZUizC1MkILGIWspbkoTGn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346791; c=relaxed/simple;
-	bh=U9ErQx5Kjz589gWP1aH9WvvdDq+fcD4Knk/Aq+NhclM=;
+	s=arc-20240116; t=1773346650; c=relaxed/simple;
+	bh=dZ2+J8K9+S1GoSswDVte8a4T4p0sH76CcBZWgvKv/B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3rI25HtMDySKvGJGzzAt+SArUh8O2PVMI3rCxGt2v8qsDiI4VB0wmeqjUWIjGQZ5LQYi9RB5vma7Hfp1uPg+4wO+AS5pQaFptKZ04AWSDE8fY4fiLy+huvyQPjLOBOhECUQh83etAzLmlmm0z++BoTIZuGZGN7qOP79/jnEKeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfOrIFFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F1C4CEF7;
-	Thu, 12 Mar 2026 20:19:50 +0000 (UTC)
+	 MIME-Version; b=DFCch0w4rGJZcJjF6h20Az66B4D3cEx0lqQxDd8Jh1CcTg7TY8duhQyOjbyeMz63jMnuEZe91Z7MXGOGvBaClt+0AxC3wnXkF46SJcxeQpaHDrGuh8Vu5NaqL8d4VhDHnRgpCVN5sW5jBOjryN+UacnefNygxFC4WPVU5T03D1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAtrefky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42082C4CEF7;
+	Thu, 12 Mar 2026 20:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346791;
-	bh=U9ErQx5Kjz589gWP1aH9WvvdDq+fcD4Knk/Aq+NhclM=;
+	s=korg; t=1773346650;
+	bh=dZ2+J8K9+S1GoSswDVte8a4T4p0sH76CcBZWgvKv/B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfOrIFFMsXmsZFXRtjJHeauFwFWSvT8kjq2CrQfgJLrnNCNQMDIzOjMVscnFgHqNI
-	 3v57Ms3gz8ty49+QUsr+Cjih682MxiLusOyDGuNzJFXgb1RMJaVRqMfQKXESkzjFTZ
-	 XLWdhS4khrSTkcrMIO0KMCWoOAv4LPfSHxfOMbW8=
+	b=tAtrefky7Y8Sg3vnwKeYOw1xR0QiHI+mEUmJT70/UJbr28D0DGDSpgUd8v/4PZs2p
+	 BJTHPTdKh9wpbdMKoNsMH7XrXi/IPj1QAnVCR5BfR/AlVooF0X7OEw2crK9gzEPE/P
+	 OTDYNHpYgp8Ctmc2/okVLDpLBBMIZje+Pz8+o9dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Marco Crivellari <marco.crivellari@suse.com>,
+	Minseong Kim <ii4gsp@gmail.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/265] Input: synaptics_i2c - replace use of system_wq with system_dfl_wq
-Date: Thu, 12 Mar 2026 21:07:49 +0100
-Message-ID: <20260312201021.182449047@linuxfoundation.org>
+Subject: [PATCH 6.12 083/265] Input: synaptics_i2c - guard polling restart in resume
+Date: Thu, 12 Mar 2026 21:07:50 +0100
+Message-ID: <20260312201021.218257971@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -68,33 +67,33 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-225058-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225024-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: E027E278CB4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B64C278BA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,77 +101,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Marco Crivellari <marco.crivellari@suse.com>
+From: Minseong Kim <ii4gsp@gmail.com>
 
-[ Upstream commit b3ee88e27798f0e8dd3a81867804d693da74d57d ]
+[ Upstream commit 870c2e7cd881d7a10abb91f2b38135622d9f9f65 ]
 
-Currently if a user enqueues a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
+synaptics_i2c_resume() restarts delayed work unconditionally, even when
+the input device is not opened. Guard the polling restart by taking the
+input device mutex and checking input_device_enabled() before re-queuing
+the delayed work.
 
-This lack of consistency cannot be addressed without refactoring the API.
-
-This patch continues the effort to refactor worqueue APIs, which has begun
-with the change introducing new workqueues and a new alloc_workqueue flag:
-
-commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
-commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
-
-This specific workload do not benefit from a per-cpu workqueue, so use
-the default unbound workqueue (system_dfl_wq) instead.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Link: https://patch.msgid.link/20251106141955.218911-4-marco.crivellari@suse.com
+Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
+Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260121063738.799967-1-ii4gsp@gmail.com
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: 870c2e7cd881 ("Input: synaptics_i2c - guard polling restart in resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics_i2c.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/input/mouse/synaptics_i2c.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
-index a0d707e47d932..c8ddfff2605ff 100644
+index c8ddfff2605ff..29da66af36d74 100644
 --- a/drivers/input/mouse/synaptics_i2c.c
 +++ b/drivers/input/mouse/synaptics_i2c.c
-@@ -372,7 +372,7 @@ static irqreturn_t synaptics_i2c_irq(int irq, void *dev_id)
- {
- 	struct synaptics_i2c *touch = dev_id;
+@@ -615,13 +615,16 @@ static int synaptics_i2c_resume(struct device *dev)
+ 	int ret;
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct synaptics_i2c *touch = i2c_get_clientdata(client);
++	struct input_dev *input = touch->input;
  
--	mod_delayed_work(system_wq, &touch->dwork, 0);
-+	mod_delayed_work(system_dfl_wq, &touch->dwork, 0);
- 
- 	return IRQ_HANDLED;
- }
-@@ -448,7 +448,7 @@ static void synaptics_i2c_work_handler(struct work_struct *work)
- 	 * We poll the device once in THREAD_IRQ_SLEEP_SECS and
- 	 * if error is detected, we try to reset and reconfigure the touchpad.
- 	 */
--	mod_delayed_work(system_wq, &touch->dwork, delay);
-+	mod_delayed_work(system_dfl_wq, &touch->dwork, delay);
- }
- 
- static int synaptics_i2c_open(struct input_dev *input)
-@@ -461,7 +461,7 @@ static int synaptics_i2c_open(struct input_dev *input)
- 		return ret;
- 
- 	if (polling_req)
--		mod_delayed_work(system_wq, &touch->dwork,
-+		mod_delayed_work(system_dfl_wq, &touch->dwork,
- 				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
- 
- 	return 0;
-@@ -620,7 +620,7 @@ static int synaptics_i2c_resume(struct device *dev)
+ 	ret = synaptics_i2c_reset_config(client);
  	if (ret)
  		return ret;
  
--	mod_delayed_work(system_wq, &touch->dwork,
-+	mod_delayed_work(system_dfl_wq, &touch->dwork,
- 				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+-	mod_delayed_work(system_dfl_wq, &touch->dwork,
+-				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
++	guard(mutex)(&input->mutex);
++	if (input_device_enabled(input))
++		mod_delayed_work(system_dfl_wq, &touch->dwork,
++				 msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
  
  	return 0;
+ }
 -- 
 2.51.0
 
