@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-225206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CzgAsMjs2mASgAAu9opvQ
-	(envelope-from <stable+bounces-225206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:36:19 +0100
+	id QLP+F0Yjs2mASgAAu9opvQ
+	(envelope-from <stable+bounces-225207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:34:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AC027951F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:36:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976E727946B
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AF72321BEF5
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:30:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B76BC3068204
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5DA37DE88;
-	Thu, 12 Mar 2026 20:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF54137DE84;
+	Thu, 12 Mar 2026 20:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyKElg36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvuSS1jq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9EB2F1FED;
-	Thu, 12 Mar 2026 20:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F59373BE0;
+	Thu, 12 Mar 2026 20:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347357; cv=none; b=dHZZHkfouOlnJWsA1MgnvJhajXthvnihoyHiqc05sb3ROFM+l4VNCsewYSV0TB1tXT28QwCMI4QWhyQ7seegU2IlqUmFM9OCBAiujFysmVGGiUEUclp4FBdwM251K34iJt29cB6wCpByXiJqklEbxUiqwLw11mmzT5KLD3MRlkY=
+	t=1773347360; cv=none; b=fhxp0tgoVZvqzrcT+KVpMWTIJk4X1/13IbbhFMqJHTnUsDTFmnONL0Stpht6IO7GiQUllD2hDypTTC2InwaaAQCevh7egQbQ3imNdP9zC1Q/oZWtMKAGFExOcwrInRiBuCB4vCDVSzhZSNA4z4sR+kKULx48BLZvKx5yqyDI4T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347357; c=relaxed/simple;
-	bh=KXZtLDFNEeic1/ccQV3AtwcQfqqsv5pa2cFOHCrTfzM=;
+	s=arc-20240116; t=1773347360; c=relaxed/simple;
+	bh=iZ8IEbV+gWNjLYXrvZB0rHfem8YAop3PEA3jcZRPyOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDsNDIgZoF8F3mjS3GjSE7qv60/VrBzhYfT05HT5T8sVlUZzOBEM1v1hpsFQ0tIce9LZix4K0gSaYL+EjvDrWJtElJgU3y0ILdgEmic4NjGqYB2EMhtkHXPvaDpRkyL6S8r2dFdcjx2phPaknA0C4cao5Va2b5BtGontagJHPcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyKElg36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F95C4CEF7;
-	Thu, 12 Mar 2026 20:29:16 +0000 (UTC)
+	 MIME-Version; b=tlP18Ir9owsjbRC62ZobRV2vlngu/HOoTxrGME627LZJZTTma61jhgLrh1ggLzUyRfVQ8aBk7DS6H9L0U3UUIm63WMwykt44kbYW6l3wCjr1t0bDuCq0nJ8VXqqFE2a/mq5ireZLOeZmKe5bf3JDnLXGi8MUe+MFDVIT3G8VfXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvuSS1jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22FBC4CEF7;
+	Thu, 12 Mar 2026 20:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347356;
-	bh=KXZtLDFNEeic1/ccQV3AtwcQfqqsv5pa2cFOHCrTfzM=;
+	s=korg; t=1773347360;
+	bh=iZ8IEbV+gWNjLYXrvZB0rHfem8YAop3PEA3jcZRPyOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RyKElg36ec+YgoGO+vmrVzMP/wSuET0AQNrycqeRwGiMrexKHkqDy8eM+cfL4VC3P
-	 ounI/MngudQb+Ji58NTsWutSL2bQKUPIA07J/zfSp0m4IJ8JUrA185Y1DfiU14hWOv
-	 zRcIjued5x6ONX8LQRvMl6lRomd2XlYLMQMMlL9g=
+	b=wvuSS1jqlMvSJBdW0QBgsurcMbP7U36lxEn2i0jAEYKa4TASOKoyuOF+OmNhGozmo
+	 QFjyez5hNrMx3Apm0tamqs2XoSL1i5EWhN+RmRWj6nvx6KKWZlXRwy2534bUjVXWX8
+	 VBlEa5CffWVf1krLFWSCT3HQZ/Iawbm9+reF4VFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1f77b8ca15336fff21ff@syzkaller.appspotmail.com,
+	syzbot+bcaf842a1e8ead8dfb89@syzkaller.appspotmail.com,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.12 263/265] ata: libata-eh: correctly handle deferred qc timeouts
-Date: Thu, 12 Mar 2026 21:10:50 +0100
-Message-ID: <20260312201027.850997470@linuxfoundation.org>
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.12 264/265] ata: libata: cancel pending work after clearing deferred_qc
+Date: Thu, 12 Mar 2026 21:10:51 +0100
+Message-ID: <20260312201027.890051962@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -71,12 +71,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-225206-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225207-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -84,16 +84,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,1f77b8ca15336fff21ff];
+	TAGGED_RCPT(0.00)[stable,bcaf842a1e8ead8dfb89];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 87AC027951F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 976E727946B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,85 +101,85 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit eddb98ad9364b4e778768785d46cfab04ce52100 upstream.
+commit aac9b27f7c1f2b2cf7f50a9ca633ecbbcaf22af9 upstream.
 
-A deferred qc may timeout while waiting for the device queue to drain
-to be submitted. In such case, since the qc is not active,
-ata_scsi_cmd_error_handler() ends up calling scsi_eh_finish_cmd(),
-which frees the qc. But as the port deferred_qc field still references
-this finished/freed qc, the deferred qc work may eventually attempt to
-call ata_qc_issue() against this invalid qc, leading to errors such as
-reported by UBSAN (syzbot run):
+Syzbot reported a WARN_ON() in ata_scsi_deferred_qc_work(), caused by
+ap->ops->qc_defer() returning non-zero before issuing the deferred qc.
 
-UBSAN: shift-out-of-bounds in drivers/ata/libata-core.c:5166:24
-shift exponent 4210818301 is too large for 64-bit type 'long long unsigned int'
-...
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
- __ubsan_handle_shift_out_of_bounds+0x279/0x2a0 lib/ubsan.c:494
- ata_qc_issue.cold+0x38/0x9f drivers/ata/libata-core.c:5166
- ata_scsi_deferred_qc_work+0x154/0x1f0 drivers/ata/libata-scsi.c:1679
- process_one_work+0x9d7/0x1920 kernel/workqueue.c:3275
- process_scheduled_works kernel/workqueue.c:3358 [inline]
- worker_thread+0x5da/0xe40 kernel/workqueue.c:3439
- kthread+0x370/0x450 kernel/kthread.c:467
- ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+ata_scsi_schedule_deferred_qc() is called during each command completion.
+This function will check if there is a deferred QC, and if
+ap->ops->qc_defer() returns zero, meaning that it is possible to queue the
+deferred qc at this time (without being deferred), then it will queue the
+work which will issue the deferred qc.
 
-Fix this by checking if the qc of a timed out SCSI command is a deferred
-one, and in such case, clear the port deferred_qc field and finish the
-SCSI command with DID_TIME_OUT.
+Once the work get to run, which can potentially be a very long time after
+the work was scheduled, there is a WARN_ON() if ap->ops->qc_defer() returns
+non-zero.
 
-Reported-by: syzbot+1f77b8ca15336fff21ff@syzkaller.appspotmail.com
+While we hold the ap->lock both when assigning and clearing deferred_qc,
+and the work itself holds the ap->lock, the code currently does not cancel
+the work after clearing the deferred qc.
+
+This means that the following scenario can happen:
+1) One or several NCQ commands are queued.
+2) A non-NCQ command is queued, gets stored in ap->deferred_qc.
+3) Last NCQ command gets completed, work is queued to issue the deferred
+   qc.
+4) Timeout or error happens, ap->deferred_qc is cleared. The queued work is
+   currently NOT canceled.
+5) Port is reset.
+6) One or several NCQ commands are queued.
+7) A non-NCQ command is queued, gets stored in ap->deferred_qc.
+8) Work is finally run. Yet at this time, there is still NCQ commands in
+   flight.
+
+The work in 8) really belongs to the non-NCQ command in 2), not to the
+non-NCQ command in 7). The reason why the work is executed when it is not
+supposed to, is because it was never canceled when ap->deferred_qc was
+cleared in 4). Thus, ensure that we always cancel the work after clearing
+ap->deferred_qc.
+
+Another potential fix would have been to let ata_scsi_deferred_qc_work() do
+nothing if ap->ops->qc_defer() returns non-zero. However, canceling the
+work when clearing ap->deferred_qc seems slightly more logical, as we hold
+the ap->lock when clearing ap->deferred_qc, so we know that the work cannot
+be holding the lock. (The function could be waiting for the lock, but that
+is okay since it will do nothing if ap->deferred_qc is not set.)
+
+Reported-by: syzbot+bcaf842a1e8ead8dfb89@syzkaller.appspotmail.com
 Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Fixes: eddb98ad9364 ("ata: libata-eh: correctly handle deferred qc timeouts")
 Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-eh.c |   22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ drivers/ata/libata-eh.c   |    1 +
+ drivers/ata/libata-scsi.c |    1 +
+ 2 files changed, 2 insertions(+)
 
 --- a/drivers/ata/libata-eh.c
 +++ b/drivers/ata/libata-eh.c
-@@ -642,12 +642,28 @@ void ata_scsi_cmd_error_handler(struct S
- 		set_host_byte(scmd, DID_OK);
+@@ -661,6 +661,7 @@ void ata_scsi_cmd_error_handler(struct S
+ 			 */
+ 			WARN_ON_ONCE(qc->flags & ATA_QCFLAG_ACTIVE);
+ 			ap->deferred_qc = NULL;
++			cancel_work(&ap->deferred_qc_work);
+ 			set_host_byte(scmd, DID_TIME_OUT);
+ 			scsi_eh_finish_cmd(scmd, &ap->eh_done_q);
+ 		} else if (i < ATA_MAX_QUEUE) {
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1712,6 +1712,7 @@ void ata_scsi_requeue_deferred_qc(struct
  
- 		ata_qc_for_each_raw(ap, qc, i) {
--			if (qc->flags & ATA_QCFLAG_ACTIVE &&
--			    qc->scsicmd == scmd)
-+			if (qc->scsicmd != scmd)
-+				continue;
-+			if ((qc->flags & ATA_QCFLAG_ACTIVE) ||
-+			    qc == ap->deferred_qc)
- 				break;
- 		}
- 
--		if (i < ATA_MAX_QUEUE) {
-+		if (qc == ap->deferred_qc) {
-+			/*
-+			 * This is a deferred command that timed out while
-+			 * waiting for the command queue to drain. Since the qc
-+			 * is not active yet (deferred_qc is still set, so the
-+			 * deferred qc work has not issued the command yet),
-+			 * simply signal the timeout by finishing the SCSI
-+			 * command and clear the deferred qc to prevent the
-+			 * deferred qc work from issuing this qc.
-+			 */
-+			WARN_ON_ONCE(qc->flags & ATA_QCFLAG_ACTIVE);
-+			ap->deferred_qc = NULL;
-+			set_host_byte(scmd, DID_TIME_OUT);
-+			scsi_eh_finish_cmd(scmd, &ap->eh_done_q);
-+		} else if (i < ATA_MAX_QUEUE) {
- 			/* the scmd has an associated qc */
- 			if (!(qc->flags & ATA_QCFLAG_EH)) {
- 				/* which hasn't failed yet, timeout */
+ 	scmd = qc->scsicmd;
+ 	ap->deferred_qc = NULL;
++	cancel_work(&ap->deferred_qc_work);
+ 	ata_qc_free(qc);
+ 	scmd->result = (DID_SOFT_ERROR << 16);
+ 	scsi_done(scmd);
 
 
 
