@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-224894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILdQD5f1smmLRAAAu9opvQ
-	(envelope-from <stable+bounces-224894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:19 +0100
+	id IMlMJIz1smmLRAAAu9opvQ
+	(envelope-from <stable+bounces-224895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142662767FB
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349832767F4
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 18:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B61D830288D0
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:19:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C7C4A300CA3A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 17:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A787D3F8812;
-	Thu, 12 Mar 2026 17:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5610938F640;
+	Thu, 12 Mar 2026 17:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iD0blfAP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpMUaC3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A743F23BF
-	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FC53F8E0A
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 17:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773335941; cv=none; b=lQYBLQkowZFzyNQK1y0+H3KZF37QYADFtwEmroulWH5NsubQVwTP2P1iiBmlNT4dNETHk2r2SYH0BnENCHI46VlUeHAWN81FrHYa/5rvd2H/kbmyntPdF/RDzzed2hroBHidA+J3uP0VPwZ1gfIYtUzBt72UOweNNzItxQuAj38=
+	t=1773335941; cv=none; b=nxotLOWqSZ4JDuv9UJtggU5fWOMbAGkvcjEozdcbi95KMURrH2h02XC8O0XBGAB1kTaZj9YOW9drZqsxcYx4YWw0/xM6D6JU8mY0Zqmr/pkmJOFHiy+FcY+9AsojuOAPXrDAXnto9yPu323bApIutrrWdjnkktq0ZtJtDAPM0eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773335941; c=relaxed/simple;
-	bh=Pl+lTUHgba4xv+BG23OAMj+FnMWojheP3CPohpDfcKI=;
+	bh=A6cR3a/LScsEz9M4C5FzhbZluICGa05JTzfZNMjKloc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3Go8I6Glz1E8JoZiGWue1CFZx1GQ0OgG+cYTDI7QCQF7v8EXq6NFzDXSxsQoK3nPhpfKYMtndXC9YRvyy0NbQVNepr/++EBlKnhWjjTY9S27XFQLRLSS50HOnjBq4GuTy19oiaxc1r9uwHCsuTsU0KXeg0a6sR7KpUBxHgRAo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iD0blfAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E68C4CEF7;
-	Thu, 12 Mar 2026 17:18:59 +0000 (UTC)
+	 MIME-Version; b=pny8v5YmWZHbCXMLpauqLE32nUEivJAoJ8T8RmkrSuI63eKcCt7w6rmFaDfn4eV3OqRXpG3SdIBPkAZOkN9WrJXySWUcjTx0JFf1poWaB/3Ll2VSv0D72xnmalhLi9p85UBK3dprTsS6b2T0i8XaiLDTSTGQbdJfYJGBqGjAsrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpMUaC3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE3BC19424;
+	Thu, 12 Mar 2026 17:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773335940;
-	bh=Pl+lTUHgba4xv+BG23OAMj+FnMWojheP3CPohpDfcKI=;
+	s=k20201202; t=1773335941;
+	bh=A6cR3a/LScsEz9M4C5FzhbZluICGa05JTzfZNMjKloc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iD0blfAP6rFs9ungMOPqsP0+hX0TCn3CyYOjBZ8cF/AC2JIQnzzvYsuj6JDI38yMz
-	 AxCn0J4Lbv81o+xpgcaIQfX8QnMU7iKddLmv4pwIeimT4kcHZ+xbp7b0CudNer4e7j
-	 31yDgRLx16nDdZa5uA2hQq22QftJRu5K8rbiLeZugMuZMUXfjJNtaf3TrSH6Yl9tsJ
-	 J65THyhXQGxC90Dig8yXq927orWpvozi/UiU5tpQSApgBqfkTCiWOavCCEE1jXXNhB
-	 kWhOT1phpQ5W0RiZ7waFqyaelmgI/hKXFfNfHoUG/Yb3arLiR4mzwUrgtt9iBXxEJ3
-	 q+fjM7MTLswEw==
+	b=TpMUaC3SvTyamJo8biu8gEMX16iBg1J7wOouqp7ks4R/P1TkGMZoN+K4uffFsLy8l
+	 EnYB5Beu3VCTY/ljfc3O90StcHo3UZF8pcgOZL45GVli+k851YU2kvwR3rdviMA7Th
+	 RlmkS+DhIb9auHSnWJpOot9QOXy398tGQau+BgGSXcHUg1wv6ah7diWFrT95QNKYxu
+	 0yPp49CXkgFW3AiahIAc8XDI3JWPyvOGbALzc1ndfKZJ4E/A3NOrp41fhWhwU1UPvZ
+	 TINpvbLdv0J1anayIBx1ejzMDlKkTra+AoSi6ze51wxLpsUIl7/fyJgGvBnE68aLNY
+	 7dOtIB0URgbtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Amritha Nambiar <amritha.nambiar@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Victor Nogueira <victor@mojatatu.com>,
+	GangMin Kim <km.kim1503@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] act_skbedit: skbedit queue mapping for receive queue
-Date: Thu, 12 Mar 2026 13:18:56 -0400
-Message-ID: <20260312171857.1797148-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
+Date: Thu, 12 Mar 2026 13:18:57 -0400
+Message-ID: <20260312171857.1797148-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031221-tissue-upgrade-f4d3@gregkh>
+In-Reply-To: <20260312171857.1797148-1-sashal@kernel.org>
 References: <2026031221-tissue-upgrade-f4d3@gregkh>
+ <20260312171857.1797148-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,19 +70,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224894-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224895-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,185 +91,99 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
-X-Rspamd-Queue-Id: 142662767FB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,mojatatu.com:email]
+X-Rspamd-Queue-Id: 349832767F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Amritha Nambiar <amritha.nambiar@intel.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 4a6a676f8c16ec17d2f8d69ce3b5d680277ed0d2 ]
+[ Upstream commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 ]
 
-Add support for skbedit queue mapping action on receive
-side. This is supported only in hardware, so the skip_sw
-flag is enforced. This enables offloading filters for
-receive queue selection in the hardware using the
-skbedit action. Traffic arrives on the Rx queue requested
-in the skbedit action parameter. A new tc action flag
-TCA_ACT_FLAGS_AT_INGRESS is introduced to identify the
-traffic direction the action queue_mapping is requested
-on during filter addition. This is used to disallow
-offloading the skbedit queue mapping action on transmit
-side.
+As Paolo said earlier [1]:
 
-Example:
-$tc filter add dev $IFACE ingress protocol ip flower dst_ip $DST_IP\
- action skbedit queue_mapping $rxq_id skip_sw
+"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
+the current skb being held by the defragmentation engine. As reported by
+GangMin Kim, if such packet is that may cause a UaF when the defrag engine
+later on tries to tuch again such packet."
 
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Amritha Nambiar <amritha.nambiar@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 11cb63b0d1a0 ("net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks")
+act_ct was never meant to be used in the egress path, however some users
+are attaching it to egress today [2]. Attempting to reach a middle
+ground, we noticed that, while most qdiscs are not handling
+TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
+address the issue by only allowing act_ct to bind to clsact/ingress
+qdiscs and shared blocks. That way it's still possible to attach act_ct to
+egress (albeit only with clsact).
+
+[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
+[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+CC: stable@vger.kernel.org
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/act_api.h           |  1 +
- include/net/flow_offload.h      |  2 ++
- include/net/tc_act/tc_skbedit.h | 29 +++++++++++++++++++++++++++++
- net/sched/act_skbedit.c         | 14 ++++++++++++--
- net/sched/cls_api.c             |  7 +++++++
- 5 files changed, 51 insertions(+), 2 deletions(-)
+ include/net/act_api.h | 1 +
+ net/sched/act_ct.c    | 6 ++++++
+ net/sched/cls_api.c   | 7 +++++++
+ 3 files changed, 14 insertions(+)
 
 diff --git a/include/net/act_api.h b/include/net/act_api.h
-index 61f2ceb3939ee..c94ea1a306e0d 100644
+index c94ea1a306e0d..8d4fff1f82de3 100644
 --- a/include/net/act_api.h
 +++ b/include/net/act_api.h
-@@ -67,6 +67,7 @@ struct tc_action {
- #define TCA_ACT_FLAGS_BIND	(1U << (TCA_ACT_FLAGS_USER_BITS + 1))
+@@ -68,6 +68,7 @@ struct tc_action {
  #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
  #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
-+#define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
+ #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
++#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
  
  /* Update lastuse only if needed, to avoid dirtying a cache line.
   * We use a temp variable to avoid fetching jiffies twice.
-diff --git a/include/net/flow_offload.h b/include/net/flow_offload.h
-index e343f9f8363e3..7a60bc6d72c92 100644
---- a/include/net/flow_offload.h
-+++ b/include/net/flow_offload.h
-@@ -155,6 +155,7 @@ enum flow_action_id {
- 	FLOW_ACTION_MARK,
- 	FLOW_ACTION_PTYPE,
- 	FLOW_ACTION_PRIORITY,
-+	FLOW_ACTION_RX_QUEUE_MAPPING,
- 	FLOW_ACTION_WAKE,
- 	FLOW_ACTION_QUEUE,
- 	FLOW_ACTION_SAMPLE,
-@@ -247,6 +248,7 @@ struct flow_action_entry {
- 		u32			csum_flags;	/* FLOW_ACTION_CSUM */
- 		u32			mark;		/* FLOW_ACTION_MARK */
- 		u16                     ptype;          /* FLOW_ACTION_PTYPE */
-+		u16			rx_queue;	/* FLOW_ACTION_RX_QUEUE_MAPPING */
- 		u32			priority;	/* FLOW_ACTION_PRIORITY */
- 		struct {				/* FLOW_ACTION_QUEUE */
- 			u32		ctx;
-diff --git a/include/net/tc_act/tc_skbedit.h b/include/net/tc_act/tc_skbedit.h
-index dc1079f28e13e..9649600fb3dcc 100644
---- a/include/net/tc_act/tc_skbedit.h
-+++ b/include/net/tc_act/tc_skbedit.h
-@@ -95,12 +95,41 @@ static inline u32 tcf_skbedit_priority(const struct tc_action *a)
- 	return priority;
- }
- 
-+static inline u16 tcf_skbedit_rx_queue_mapping(const struct tc_action *a)
-+{
-+	u16 rx_queue;
-+
-+	rcu_read_lock();
-+	rx_queue = rcu_dereference(to_skbedit(a)->params)->queue_mapping;
-+	rcu_read_unlock();
-+
-+	return rx_queue;
-+}
-+
- /* Return true iff action is queue_mapping */
- static inline bool is_tcf_skbedit_queue_mapping(const struct tc_action *a)
- {
- 	return is_tcf_skbedit_with_flag(a, SKBEDIT_F_QUEUE_MAPPING);
- }
- 
-+/* Return true if action is on ingress traffic */
-+static inline bool is_tcf_skbedit_ingress(u32 flags)
-+{
-+	return flags & TCA_ACT_FLAGS_AT_INGRESS;
-+}
-+
-+static inline bool is_tcf_skbedit_tx_queue_mapping(const struct tc_action *a)
-+{
-+	return is_tcf_skbedit_queue_mapping(a) &&
-+	       !is_tcf_skbedit_ingress(a->tcfa_flags);
-+}
-+
-+static inline bool is_tcf_skbedit_rx_queue_mapping(const struct tc_action *a)
-+{
-+	return is_tcf_skbedit_queue_mapping(a) &&
-+	       is_tcf_skbedit_ingress(a->tcfa_flags);
-+}
-+
- /* Return true iff action is inheritdsfield */
- static inline bool is_tcf_skbedit_inheritdsfield(const struct tc_action *a)
- {
-diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
-index 0fcf40a5d1e31..12050a626487a 100644
---- a/net/sched/act_skbedit.c
-+++ b/net/sched/act_skbedit.c
-@@ -148,6 +148,11 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 9594dbc32165f..75a8fba9fa57a 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1440,6 +1440,12 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
+ 		return -EINVAL;
  	}
  
- 	if (tb[TCA_SKBEDIT_QUEUE_MAPPING] != NULL) {
-+		if (is_tcf_skbedit_ingress(act_flags) &&
-+		    !(act_flags & TCA_ACT_FLAGS_SKIP_SW)) {
-+			NL_SET_ERR_MSG_MOD(extack, "\"queue_mapping\" option on receive side is hardware only, use skip_sw");
-+			return -EOPNOTSUPP;
-+		}
- 		flags |= SKBEDIT_F_QUEUE_MAPPING;
- 		queue_mapping = nla_data(tb[TCA_SKBEDIT_QUEUE_MAPPING]);
- 	}
-@@ -378,9 +383,12 @@ static int tcf_skbedit_offload_act_setup(struct tc_action *act, void *entry_data
- 		} else if (is_tcf_skbedit_priority(act)) {
- 			entry->id = FLOW_ACTION_PRIORITY;
- 			entry->priority = tcf_skbedit_priority(act);
--		} else if (is_tcf_skbedit_queue_mapping(act)) {
--			NL_SET_ERR_MSG_MOD(extack, "Offload not supported when \"queue_mapping\" option is used");
-+		} else if (is_tcf_skbedit_tx_queue_mapping(act)) {
-+			NL_SET_ERR_MSG_MOD(extack, "Offload not supported when \"queue_mapping\" option is used on transmit side");
- 			return -EOPNOTSUPP;
-+		} else if (is_tcf_skbedit_rx_queue_mapping(act)) {
-+			entry->id = FLOW_ACTION_RX_QUEUE_MAPPING;
-+			entry->rx_queue = tcf_skbedit_rx_queue_mapping(act);
- 		} else if (is_tcf_skbedit_inheritdsfield(act)) {
- 			NL_SET_ERR_MSG_MOD(extack, "Offload not supported when \"inheritdsfield\" option is used");
- 			return -EOPNOTSUPP;
-@@ -398,6 +406,8 @@ static int tcf_skbedit_offload_act_setup(struct tc_action *act, void *entry_data
- 			fl_action->id = FLOW_ACTION_PTYPE;
- 		else if (is_tcf_skbedit_priority(act))
- 			fl_action->id = FLOW_ACTION_PRIORITY;
-+		else if (is_tcf_skbedit_rx_queue_mapping(act))
-+			fl_action->id = FLOW_ACTION_RX_QUEUE_MAPPING;
- 		else
- 			return -EOPNOTSUPP;
- 	}
++	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
++		return -EOPNOTSUPP;
++	}
++
+ 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
+ 	if (err < 0)
+ 		return err;
 diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 89da596be1b86..5aef802d17c75 100644
+index 5aef802d17c75..5071c41bc864b 100644
 --- a/net/sched/cls_api.c
 +++ b/net/sched/cls_api.c
-@@ -1993,6 +1993,11 @@ static void tfilter_put(struct tcf_proto *tp, void *fh)
- 		tp->ops->put(tp, fh);
+@@ -1998,6 +1998,11 @@ static bool is_qdisc_ingress(__u32 classid)
+ 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
  }
  
-+static bool is_qdisc_ingress(__u32 classid)
++static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
 +{
-+	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
++	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
 +}
 +
  static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
  			  struct netlink_ext_ack *extack)
  {
-@@ -2184,6 +2189,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 		flags |= TCA_ACT_FLAGS_REPLACE;
- 	if (!rtnl_held)
+@@ -2191,6 +2196,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
  		flags |= TCA_ACT_FLAGS_NO_RTNL;
-+	if (is_qdisc_ingress(parent))
-+		flags |= TCA_ACT_FLAGS_AT_INGRESS;
+ 	if (is_qdisc_ingress(parent))
+ 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
++	if (is_ingress_or_clsact(block, q))
++		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
  	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
  			      flags, extack);
  	if (err == 0) {
