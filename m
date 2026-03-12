@@ -1,230 +1,261 @@
-Return-Path: <stable+bounces-224833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNI4L8OOsmlINgAAu9opvQ
-	(envelope-from <stable+bounces-224833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:00:35 +0100
+	id CHU9IpKPsmlINgAAu9opvQ
+	(envelope-from <stable+bounces-224834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:04:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8CD226FF2A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:00:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E097626FF4A
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72D0030048C3
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:00:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 453B8304E70F
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F49B3BD63B;
-	Thu, 12 Mar 2026 10:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F413845DF;
+	Thu, 12 Mar 2026 10:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z0FeMx+4"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Fn0//Wt8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from MEUPR01CU001.outbound.protection.outlook.com (mail-australiasoutheastazolkn19010014.outbound.protection.outlook.com [52.103.73.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3C03B2FE8;
-	Thu, 12 Mar 2026 10:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773309631; cv=none; b=sGq2bRDSQTrWnN8JJxy7Og9Dh8XSxGh5LvV2PIZI+fzTqCYRtI+PH5s/zzUAuMyGfolx548vk2hPbuk0XUN0ZNB53XhzBo4HS3AVutZNuY6WDpp52zN2VJ3Mb3DgkQoDfGHE4yVzvDNnzidgCqahNZyBe93AA1J2S7lZepZi1Iw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773309631; c=relaxed/simple;
-	bh=c5a9ZD92LOVUYLj0ycsN0wfbUiCK9f+lUGBp7OMHHlM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BB1jcjkbLBjdN2Uf9/qXxFTIgWg+LbOfwE4p4rWuFaCQSEsJfsvljjjpihEvxvYnp20vYzDaHA+XV/CaVV8s0FxhazaD86kOtV+ezZZ2zfvhJCS7N3mK3ZQAx58UiBAGgnDkjB92TBL5R2nZyyF2MBloh+sVFRWthu0nMZkDd4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z0FeMx+4; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773309630; x=1804845630;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=c5a9ZD92LOVUYLj0ycsN0wfbUiCK9f+lUGBp7OMHHlM=;
-  b=Z0FeMx+4OBcE3By56ayYbMbzZyOTWMIie93MREfDS0xn6GyO1PLoaumn
-   Cafn5uoA8GmfAkW6SOk2QizwV7TylVd7QZrfGrUsxzYygxnHdh6fzshFC
-   veN8+3vWjjC9qv5s67yVooL5tBeYc/JD5ZQ69jFDiXKLxPdfM1ppzn7SF
-   or6vIrRyAAjNcJC9B9moTU8Aj1nk7sHuGuHzDlR6IujVMbI/sB6u9USlI
-   hA6wznZ4WrxPhxbVkSNMl173TH1n6DCeRtvhCuCU3bWTTdYbM7yZzUHxX
-   9Hr+CzHAOXg++O0mHD7xGAn/x6rWf+jFoafWf8GaoUkj37XfS3oeOPmGF
-   Q==;
-X-CSE-ConnectionGUID: aqH1JkR+RdOhTm1cvxOdIA==
-X-CSE-MsgGUID: u1QWBY6JRbyON0XJ5GeeCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="77006538"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="77006538"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 03:00:29 -0700
-X-CSE-ConnectionGUID: LNRKgkUJTpOfTviq15UrPQ==
-X-CSE-MsgGUID: e0VoEWI1SRy85I+WO+E3Kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; 
-   d="scan'208";a="258676692"
-Received: from khuang2-desk.gar.corp.intel.com ([10.124.222.152])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2026 03:00:24 -0700
-From: Kai Huang <kai.huang@intel.com>
-To: dave.hansen@linux.intel.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	kas@kernel.org
-Cc: rick.p.edgecombe@intel.com,
-	tglx@kernel.org,
-	bp@alien8.de,
-	mingo@redhat.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	linux-kernel@vger.kernel.org,
-	Kai Huang <kai.huang@intel.com>,
-	stable@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH v2] x86/virt/tdx: Fix lockdep assertion failure in cache flush for kexec
-Date: Thu, 12 Mar 2026 23:00:09 +1300
-Message-ID: <20260312100009.924136-1-kai.huang@intel.com>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC90A355803;
+	Thu, 12 Mar 2026 10:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.73.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773309838; cv=fail; b=r25TFv+gqMS5oZmyG5PG6+QPdkAAy7y8PoAflwGzkDoWjEUn8MKl8wiTmZzQVhgvidTa8mjsjubY9HsB5nR5yKoLj7Gh+L/gpj2WEwRcYPd5C3s500XvdqsGryDpIouxOjEsHL/dZY7C75DF0gZUu0cMPI8WTrKk84Fqo8RJaCY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773309838; c=relaxed/simple;
+	bh=IbXkzBUG5vpY+0T7JOy1olvZ1QOOwLg83oR3qW70JTE=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=JlR7ThtrGMMPZrqv0KpOuyAGjfdbcCGpdcsVClapPojsoqp/wwXOkJbpqP6OMUqlQf2UusHoH52KAdMDHAQgQEjhagnbSrU4zG+cPnv4fim0ruj5j/rTjNooq31EClV2L+xG6AC14EQcR+PwQUgUlrrQgHHUVatqdyiG3VnUns8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Fn0//Wt8; arc=fail smtp.client-ip=52.103.73.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MKYyCIPcBBAvyP+Vox5vbJdrHxQEco7UOpjKAwbXI+rXc7wZQ5ydOLopXJboARX1+9U6R7rZNvfhGuxaLItWNsAeippwBWyS7QhtunjD0UOdd0QVjuDbX3ebhlJuHh9WXb6Wnbtoe/LZEuwlkBwW6LM4MOwtcaSnxRnu8wuPaITjVXyHHUXA/NbFjlsWFkKaX6ZVLDTegUBavt6t80oCeCNbBAgnbNVvDXtiXz/8LgrmRNP1H+q4CWmqqU9Nm6QcBZOVOIC16P2c2LryBHMP7NL4caGXjPacwn2JC0ReaR0gLcEONjpAmArRV0ZfvDfv3cpgGxAaVkkVj5WlNb1Lig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R7vHXOjaBRtt697QGrlYiVi0QETF41nLiV01ZpKkhCY=;
+ b=dsf0YcQafkjA4QIgWeRhCuid6e3xxiofF+1mpPJQ1oUqRHCKucWwXXPoposp1Ulavt/eYs6IdmLvEcPWPS81wT+3NF0xAN0G/4WOt1y6j96/LpgsnnALsz2VLrtPu9o9R7Q862bvX4QOAmWVor65p1oxPMjZQ4ix1Cv7gXV7ToHGSlR0FXv79ChF6Y3maqVPs1bMU0DYIzEsdJG7OgCV7pXNWsMQEsjJp1eI+7cIwsz11PwW3NRzMmG1JNRJNBc3dyV6HZUKFpLBf1ZZ+UeHqWEvjMHRt1UBaTRbq8gXRLZjtUziC/1H3g7LzFf0V7bePyybPUtWIwrOd9SNO8tSHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R7vHXOjaBRtt697QGrlYiVi0QETF41nLiV01ZpKkhCY=;
+ b=Fn0//Wt8sy5rE2X9PZt75NIt8teM3X5EjojqWoCoce+RNKr/ESLXC8cnlAGxlEyqGA+NxB/7voShcvA4ENKaZWfdDMNB1tWJtCRtrpDr7DHryYT1dytRbJz1aEtussFVBQ3a2ksaMTEDJDCuIlOGa0N+sHWAEnECAJ+ayKliPZFbx4qvqaLGQI2MPFmef2LWvJ4l6T/tXl1JYlUTMhX8k7Liso7vPQmhR9HPb8s2LEZfZx9PX+FEWS7zsEjkAAww5VxqyZ9B4+G8jeii4Rr+YruckrowvnYJYfyDUI516P2RuNn8NpiRPP2hvhlE1MoquTL2eJkKjuVkhrnn9MvnbQ==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SYZPR01MB7705.ausprd01.prod.outlook.com (2603:10c6:10:176::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
+ 2026 10:03:52 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9700.013; Thu, 12 Mar 2026
+ 10:03:52 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Thu, 12 Mar 2026 18:03:24 +0800
+Subject: [PATCH] ocfs2/dlm: validate message payload length in query
+ handlers
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB7881890B57945C79BC03F31EAF44A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY0Mj3bTMitRi3WQLgzRTs7QkMwMzSyWg2oKiVLAEUGl0bG0tAKHVn5d
+ XAAAA
+X-Change-ID: 20260312-fixes-c80f56fb6069
+To: Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+ Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Sunil Mushran <sunil.mushran@oracle.com>
+Cc: ocfs2-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2025;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=IbXkzBUG5vpY+0T7JOy1olvZ1QOOwLg83oR3qW70JTE=;
+ b=owGbwMvMwCVW+MIioLvvgwPjabUkhsxN/fV+dTVvFDee+bN/w0O/6IcNjqfrQ4V41klMkNBOE
+ Oq6qZzRUcrCIMbFICumyHK84NI3C98tult8tiTDzGFlAhnCwMUpABOp6mT4n7ksZePhxN40vTl1
+ Su3XzM//Lniw2O6lbleNUADfh42brzD80wgUjrCfb2c4R2TahImV+71kbQSXO09+cdKuIsbD8gA
+ 7HwA=
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-ClientProxiedBy: TYCP286CA0203.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:385::16) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260312-fixes-v1-1-e0a1939ad4bb@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SYZPR01MB7705:EE_
+X-MS-Office365-Filtering-Correlation-Id: 698a1467-0c28-44a8-d5a5-08de801ea819
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|8060799015|6090799003|19110799012|23021999003|41001999006|15080799012|461199028|5062599005|5072599009|22091999003|24121999003|8022599003|12121999013|3412199025|440099028|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cEUwUkN1UVBLbGYrQnczSmQzRU5sM090QTROcUY2RllTYXVqb0JNVUF1RGxU?=
+ =?utf-8?B?dXQxMU9CQ1lSTVV5VVg5cHFGZWphS2ZMV20vUVpDOUJVa1JLekRiaUlsOFU1?=
+ =?utf-8?B?Kys1Z2FzZEFPYW9Hbi9qMk85bkRwOVZ3WHl6M2huaXJ3V1RyQ1VTVnVlb2RK?=
+ =?utf-8?B?TVY5M0R1UHdEV2czUHE5RDlGQlk1K1lOTWFuakl6UWNZVHJWUGQvajRCMWNr?=
+ =?utf-8?B?bFFrSndxd0V6R1JwZVNLNWZlN3h4cS9HZmhaSGZ3UnJCeVlBNmlkUldvRmFn?=
+ =?utf-8?B?VFUzcmhuY1NidkFSY1NJL1R0czJ1N2FXaHlyZkp4djlVcjlOM3NPYnF0Y0Rq?=
+ =?utf-8?B?WE9zRCsxSVFoUktqdWFSWkJzUVF3U3NXTFd2Qk1sVE4rN3BBRXNRQUtvRGNN?=
+ =?utf-8?B?UllCeXV4b1ZHeHJyVlJ5dUZ2ck5LMjkwUHpqQkIrRCt2TFNkZ3BvUGN0TlNw?=
+ =?utf-8?B?d25aZnFJcU5KUlZwd2dsL08wWFROU1EvQ2hHZ29KbGRMY1RxS1hwdEtBSXVQ?=
+ =?utf-8?B?RHdmZkZwNGIraDBUbXNhMU5pOXhrZFdFczVsWmdCZkpZKzBzc1VjMHZia0Fn?=
+ =?utf-8?B?YlFldmQwTVdFdGtxaWkvYlpVZTJlR2h1RFpVQS9NTE9FNGdVTzFWZHY4RlhL?=
+ =?utf-8?B?cVdHMHFWQVNSYXBtTUVPejhxTXJrUll0ZFhmZTZEditEV3ltYlNPelN1aWIr?=
+ =?utf-8?B?OWJKaGljemFiNHdualdyTUJvbE9pY0E3ZmpJbnBURk85VkhsMy80YWpWNm9o?=
+ =?utf-8?B?NU9ONS9JN0FrQnR4dmI5bVlLUTdUeFlOcW5OcWFoNVdGdERyNGxmYVhKV0NB?=
+ =?utf-8?B?ajg5cEpKVWZsRmNlcmFtNWdQaG9EVmQ0cHc0WGhyWGVWMWZudmNjMnFET3Ru?=
+ =?utf-8?B?Vm1SRHh0VE5lY0w4MVdUM3JJZ2hnUW5aTHcxaEdHdWtBZlhSMDh3bEtMeWJY?=
+ =?utf-8?B?ellSOHE1Zy9DcWo2NXNFTVNteEs3YnB5dnJmc3VtVnRwSklUOGtCd1QvU25Y?=
+ =?utf-8?B?c25RbVBWdmV0VDFPODRJaUNSMWNNQmNCRGhXRnVFUTBzTWFyQ0xRSTBObUY1?=
+ =?utf-8?B?Qks4SnN0NWh1NzFGSk5UbHMreG1lK3Nwc3NWblRWOUkwb3NzVmUxOTVpSDdC?=
+ =?utf-8?B?d0IrYndYSm42U0dYMWgyV2FRbkFpNzFIelpGdUpVc2JORUhtSGZmTFNoTzZ6?=
+ =?utf-8?B?d09MWFBJaXVyVFpQdXhHampqRFBUS05WcVpZL3Y3MXpac1lwcmRBU0xZbTJ5?=
+ =?utf-8?B?cHdRbk11RTlQSUJKNmhieDhadVFqdmFLS2dEM2I1QjkzOHhvU3FxVmlUV1FR?=
+ =?utf-8?B?RXRNTjN4UEdycGFXalMyRHczTjZBVnVuUFM5VlRnNHZjU2dDVkRUT015akJJ?=
+ =?utf-8?B?WWl3ZERLMnUvSTBJUmNXcWJhOGR2Y1FOSGUrcWJXWVFrRTNXRkNVaWJJOEJD?=
+ =?utf-8?B?VjZkRFVtVkFjNm5VUGNTR0NZeElLYUd5UnA0cnBRPT0=?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UEllN0xzQ1VxSENQTU54cWFpb2lEREJlS1RzWU5mK1ZSZ3hhTENLcDQ3c2hM?=
+ =?utf-8?B?VUNuanRNbXllNTEvbm5LV2hJOTloMDFVNlRpMjdHZUpveXFwNGpydzFBbGJP?=
+ =?utf-8?B?VWI1R3UwdTczY3pMQXlrM1IxRXh1cXdBVlFYUWpEdDVLaGtzUHlhSjNQUFdS?=
+ =?utf-8?B?S0ticlc0cDd2eUprcUp0dVJ0NUJPbnozQjFkdmVKeklROE01UWVYNG1rZ2ky?=
+ =?utf-8?B?Y0pmbmxkRFNoeUF5bmZJRFpCZ1RHQ3c2WUJoSUJQVEZIVHoxclNIUUk1clhQ?=
+ =?utf-8?B?QVR2WHNxeHByY0x4Sk9PSGp3c2pqMU53YkJxdkZvTFJ4cVJKNU5ScUpIeW1I?=
+ =?utf-8?B?c3B3UFVVdE16YWZadDRTdVZOaE5weFN3OWVMcW5pSUczeXVNaXZSQnc3VEUy?=
+ =?utf-8?B?dnN5cmhUV3BPWHk2NGp2VkdzTm4xdWRjeGVIMUMzNmIyU1ZTSTZkL1hwaUJy?=
+ =?utf-8?B?NmNjOXpIaTRJaGRFWDJDWDRaaCtjbkNvcWJ4RVhWVUZ4M2RGNVdTU09lYUxn?=
+ =?utf-8?B?RG5NNUR4Y1E4YWVtN0dRaFNOb2dZRlYvRHhqaGRNN0Y5S1V2YkhYZC9PMnV5?=
+ =?utf-8?B?WU9SR0ViVGNvQlpjUzFZOFB5Um1tUE1Jekg2Q3lCZU5GcVI2MU8yUGlyT2dv?=
+ =?utf-8?B?ZmxUYVh3bVEzbVRtMmJBMGpTWm53a3RCMUgyMUROd0FVZGVyaEVWZm81eWQx?=
+ =?utf-8?B?WXMxdmZKTVNLR1BuejZxZUZVSVl6ekxKd05qckNlc0hSeFpDamFTMmhqNjFp?=
+ =?utf-8?B?UXN5c1lRUU5rN0RwUW55djRKVmdtQ3lXN3RmbTZENFh6NFJZOG8vZndnTGtk?=
+ =?utf-8?B?L0k0NkZ2M3FyZnVwbWFCVy9BcS9XQ0VSUlJIRU9mMm52aHhaS0FsNnNHS2dz?=
+ =?utf-8?B?MEc3eTRBTDltZW94alV2RFdQSEpwbHhha05IZUV6cGpGSkxlTzNaR2xFOFVm?=
+ =?utf-8?B?Mjc4YTZtRVpFd085cG9ESDJVQWF3anZYTG02VHV0ekZLNE1YOWtHc2w2SzNs?=
+ =?utf-8?B?bVFpMFVtQlZSVyt1QjNqaHU1UCsySWZwZWgxakN0U3dJSFJmakFBMjVzM0Jl?=
+ =?utf-8?B?WHpKeW9JRlJ3Q09HQ1JQVlZDbmh2NFZBUUpWQWZIQkVwaEJDcm9hb3hBOEVZ?=
+ =?utf-8?B?eGd6R0hrNkw0MnBwTmJsY29KSXJwbVdNK3BJUzVKb0I4MC9Rc0ZScWR3YVhW?=
+ =?utf-8?B?MDU3NUdxM0dKTFJIUVgwVXZTTnBBUFdHWENwWnd3K0tRVXNqTHIrRUJYa21T?=
+ =?utf-8?B?YUlnY1E4MVc2enhvRjg5RW13bTVaWkNVdFVpWXB5bHZLNTEwL1dwT3c0emc5?=
+ =?utf-8?B?WC9sWXQ2S2RCQUlNUkp3MUpqNmg4S1ErVllhWmkyc0UycXoxeFJDa2xkUzda?=
+ =?utf-8?B?THlDWkZlVkxjV3dxUStBcFpqV1hubHprT3R1VWozdjBNUU9EbWs5eDB2emkr?=
+ =?utf-8?B?NU9ZUHVwRXZMb29kajlSVjRtVmppOHB5ZVc3YUR6YkFUNHJBNEJVN2cxYzRL?=
+ =?utf-8?B?WW1pZm85dWxyWkMyTzUyRm9rRjZaaFVzVE1sWndXYVB1azl1SmZnYXNrN1pU?=
+ =?utf-8?B?cW4zTUdDVzBiZWp3T1hVckZxQkJScUpsSllRUmsyQmlyOEhMTDRvN2tuZ1FE?=
+ =?utf-8?B?MTM2Y3UxdU5QN05jUWlIWnVnSzNKR0EwUDJvZFJHSWd1ZEl1a2FLUkFVMjNU?=
+ =?utf-8?B?UmZIdTdPWFYxOWM5QjIra3NVL3hMYVdESm15U280bHFvY2hFcjRjbkpDNFFo?=
+ =?utf-8?B?WC81Z2JLSnQwKzJJdUl5WWdWRDJ4MnljYi9SOVdSTyt4ODYrVkY4TzVVMjlm?=
+ =?utf-8?B?djVZNU9oMFIzaDZTM0tzNHMxZ0RPc0ptRWdXZ0xsVVBhb3lTVXhzamhpVHNu?=
+ =?utf-8?B?Yi9TZUtyN21meWpQa2ppc0plTVppclBGcUdsK2pxTkpqK3c9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 698a1467-0c28-44a8-d5a5-08de801ea819
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:03:52.1364
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYZPR01MB7705
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-224833-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,outlook.com];
+	TAGGED_FROM(0.00)[bounces-224834-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kai.huang@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,intel.com:dkim,intel.com:email,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D8CD226FF2A
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:email,SYBPR01MB7881.ausprd01.prod.outlook.com:mid]
+X-Rspamd-Queue-Id: E097626FF4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-TDX can leave the cache in an incoherent state for the memory it uses.
-During kexec the kernel does a WBINVD for each CPU before memory gets
-reused in the second kernel.
+dlm_query_region_handler() and dlm_query_nodeinfo_handler() cast
+msg->buf to their respective structure pointers without validating
+that the received message length is sufficient. The o2net transport
+layer only enforces a maximum payload length, not a minimum, so a
+truncated message passes the network check and reaches the handler.
 
-There were two considerations for where this WBINVD should happen.  In
-order to handle cases where the cache might get into an incoherent state
-while the kexec is in the initial stages, it is needed to do this later
-in the kexec path, when the kexecing CPU stops all remote CPUs.  However,
-the later kexec process is sensitive to existing races.  So to avoid
-perturbing that operation, it is better to do it earlier.
+This causes out-of-bounds reads from the receive page buffer when
+accessing structure fields beyond the actual payload, leading to
+operations on stale or uninitialized data.
 
-The existing solution is to track the need for the kexec time WBINVD
-generically (i.e., not just for TDX) in a per-cpu var.  The late
-invocation only happens if the earlier TDX specific logic in
-tdx_cpu_flush_cache_for_kexec() didn’t take care of the work.  This
-earlier WBINVD logic was built into KVM’s existing syscore ops shutdown()
-handler, which is called earlier in the kexec path.
+Fix by validating that len covers the full expected structure size
+before accessing any payload fields.
 
-However, this accidentally added it to KVM’s unload path as well (also
-the "error path" when bringing up TDX during KVM module load), which
-uses the same internal functions.  This makes some sense too, though,
-because if KVM is getting unloaded, TDX cache affecting operations will
-likely cease.  So it is a good point to do the work before KVM is
-unloaded and won't have a chance to handle the shutdown operation in the
-future.
-
-Unfortunately this KVM unload invocation triggers a lockdep warning in
-tdx_cpu_flush_cache_for_kexec():
-
-  IS_ENABLED(CONFIG_PREEMPT_COUNT) && __lockdep_enabled && (preempt_count() == 0 && this_cpu_read(hardirqs_enabled))
-  WARNING: arch/x86/virt/vmx/tdx/tdx.c:1875 at tdx_cpu_flush_cache_for_kexec+0x36/0x60, CPU#0: cpuhp/0/22
-  ...
-  Call Trace:
-   <TASK>
-   vt_disable_virtualization_cpu+0x1c/0x30 [kvm_intel]
-   kvm_arch_disable_virtualization_cpu+0x12/0x80 [kvm]
-   kvm_offline_cpu+0x24/0x40 [kvm]
-   cpuhp_invoke_callback+0x1b0/0x740
-   ...
-
-Since tdx_cpu_flush_cache_for_kexec() is doing WBINVD on a specific CPU,
-it has an assert for preemption being disabled.  This works fine for the
-kexec time invocation, but the KVM unload path calls this as part of a
-CPUHP callback for which, despite always executing on the target CPU,
-preemption is not disabled.
-
-It might be better to add the earlier invocation logic to a dedicated
-arch/x86 TDX syscore shutdown() handler, but to make the fix more
-backport friendly just adjust the lockdep assert in the
-tdx_cpu_flush_cache_for_kexec().
-
-The real requirement is tdx_cpu_flush_cache_for_kexec() must be done on
-the same CPU.  It's OK that it can be preempted in the middle as long as
-it won't be rescheduled to another CPU.
-
-Remove the too strong lockdep_assert_preemption_disabled(), and change
-this_cpu_{read|write}() to __this_cpu_{read|write}() which provide the
-more proper check (when CONFIG_DEBUG_PREEMPT is true), which checks all
-conditions that the context cannot be moved to another CPU to run in the
-middle.
-
-Fixes: 61221d07e815 ("KVM/TDX: Explicitly do WBINVD when no more TDX SEAMCALLs")
 Cc: stable@vger.kernel.org
-Reported-by: Vishal Verma <vishal.l.verma@intel.com>
-Tested-by: Vishal Verma <vishal.l.verma@intel.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Kai Huang <kai.huang@intel.com>
+Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
+Fixes: 18cfdf1b1a8e ("ocfs2/dlm: Add message DLM_QUERY_NODEINFO")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
+ fs/ocfs2/dlm/dlmdomain.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-v1 -> v2:
- - Collect tags - Thanks Nikolay, Rick and Sean!.
- - Add the actual lockdep warn splat - Rick, Sean
-
-v1: https://lore.kernel.org/lkml/20260302102226.7459-1-kai.huang@intel.com/
-
----
- arch/x86/virt/vmx/tdx/tdx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 8b8e165a2001..6f6be1df4b78 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1872,9 +1872,7 @@ EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
- #ifdef CONFIG_KEXEC_CORE
- void tdx_cpu_flush_cache_for_kexec(void)
- {
--	lockdep_assert_preemption_disabled();
--
--	if (!this_cpu_read(cache_state_incoherent))
-+	if (!__this_cpu_read(cache_state_incoherent))
- 		return;
+diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
+index 70ca79e4bdc3..07aef9ae8cbe 100644
+--- a/fs/ocfs2/dlm/dlmdomain.c
++++ b/fs/ocfs2/dlm/dlmdomain.c
+@@ -1100,6 +1100,9 @@ static int dlm_query_region_handler(struct o2net_msg *msg, u32 len,
+ 	char *local = NULL;
+ 	int status = 0;
  
- 	/*
-@@ -1883,7 +1881,7 @@ void tdx_cpu_flush_cache_for_kexec(void)
- 	 * there should be no more SEAMCALLs on this CPU.
- 	 */
- 	wbinvd();
--	this_cpu_write(cache_state_incoherent, false);
-+	__this_cpu_write(cache_state_incoherent, false);
- }
- EXPORT_SYMBOL_FOR_KVM(tdx_cpu_flush_cache_for_kexec);
- #endif
++	if (len < sizeof(struct o2net_msg) + sizeof(struct dlm_query_region))
++		return -EINVAL;
++
+ 	qr = (struct dlm_query_region *) msg->buf;
+ 
+ 	mlog(0, "Node %u queries hb regions on domain %s\n", qr->qr_node,
+@@ -1276,6 +1279,9 @@ static int dlm_query_nodeinfo_handler(struct o2net_msg *msg, u32 len,
+ 	struct dlm_ctxt *dlm = NULL;
+ 	int status = -EINVAL;
+ 
++	if (len < sizeof(struct o2net_msg) + sizeof(struct dlm_query_nodeinfo))
++		return -EINVAL;
++
+ 	qn = (struct dlm_query_nodeinfo *) msg->buf;
+ 
+ 	mlog(0, "Node %u queries nodes on domain %s\n", qn->qn_nodenum,
 
-base-commit: 0f409eaea53e49932cf92a761de66345c9a4b4be
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20260312-fixes-c80f56fb6069
+
+Best regards,
 -- 
-2.53.0
+Junrui Luo <moonafterrain@outlook.com>
 
 
