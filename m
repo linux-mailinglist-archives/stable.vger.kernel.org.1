@@ -1,196 +1,185 @@
-Return-Path: <stable+bounces-224787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBeJHlwmsmnlIwAAu9opvQ
-	(envelope-from <stable+bounces-224787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:35:08 +0100
+	id ENemFzknsmnlIwAAu9opvQ
+	(envelope-from <stable+bounces-224789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:38:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF40F26C48A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:35:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B1526C507
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 238323062490
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:31:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 233D930116B7
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C89437C90B;
-	Thu, 12 Mar 2026 02:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CEA37C919;
+	Thu, 12 Mar 2026 02:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMW8UVtA"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iIjU37XB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982EB37B3EF;
-	Thu, 12 Mar 2026 02:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279C337C91D
+	for <stable@vger.kernel.org>; Thu, 12 Mar 2026 02:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773282696; cv=none; b=jbKmxyabG0Fz9jjLbbOdRes+jwk3PXk4XdSAD0lppESQkFI0u+0OPZlWmmhlDJd0++e4TWRSVacvJ68ASjLJQS2b7clsXlCZivggietiTKKSi+B5XpmU9tu9iXCH21oX/Q+5qum+0Uk9tvlddL1ztMmtPRS2A5aS9GfOXHmZLuw=
+	t=1773283121; cv=none; b=KIjcSjKWJCrOZr6jawbpp7gH8qtDcR/foYyF0Be0TVaDzo6gio1g75/NyX8I7Mape8JCURc/hlqRX39Rb00U3m+V9Y3lUnXkgbJ4LD/mlK3aua9OaNEDPjgVMZ2yyfnZeUe6V4qZPrVZnJvjSVxhfacgUylyE86OpMFr1FzIcNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773282696; c=relaxed/simple;
-	bh=BH0BfbtEayS2qwyJivYzLS+tdTpV+Bg/Yk1xARQ+QVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R10IqWoYb63W46SocW5BQrVHQRjhvUWKVxsJnjjNmz+KVYjcaORcZyvz15Ak8TWtam8rsHiz+YupOOozZY4xyP3v1+ABI/PtfhuExXz/WBui2XJiLtaI9wUbjn239cVgwdKamF8GggYmqQAWChfgsByxMk2oNcqmhhTqU7+87UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMW8UVtA; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773282695; x=1804818695;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BH0BfbtEayS2qwyJivYzLS+tdTpV+Bg/Yk1xARQ+QVw=;
-  b=WMW8UVtA+E+Mg6TnPK/bIyBeeRshhz73NuiVJ1lWfSTGV0kp+7CKV+NA
-   psDm/oIHA9A1v5jQhrzAQkjo7WmkUYWwVdEID5+6jK2FiRJ7Tky2E8aTX
-   acuaNRa13yMGTPCI/k8W42yV3GbAxG6Uo2f7yt9nD8lk+wuoeIW2zn8P5
-   vZwfyt4boskiNikAmPYmlRaLhGTEdtO4497O0ShvIcdmtcCJIAor+ZOZi
-   01j3Z7aiDwSDVbO/7gohCyXIrlIDStVehmsVt89Ov1CnpEfbLv7NAAfSp
-   7xO27J9yWao5UTl1Yl9r/Dmqzj6tmdT98vcj9bfhtVOPGcL06sWoE6cko
-   w==;
-X-CSE-ConnectionGUID: LbbzYRMrQ6+zsXX8CcRy3g==
-X-CSE-MsgGUID: YJu2nrbnRTKNjsBxTA12sA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74243964"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="74243964"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:31:34 -0700
-X-CSE-ConnectionGUID: Rsi25q53S0m6lWzPN2efEw==
-X-CSE-MsgGUID: 2itRWNZCRmK9cotUwazeWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; 
-   d="scan'208";a="215796144"
-Received: from unknown (HELO [10.238.3.214]) ([10.238.3.214])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 19:31:30 -0700
-Message-ID: <0a720411-0b24-42eb-9897-856b1175aa82@linux.intel.com>
-Date: Thu, 12 Mar 2026 10:31:28 +0800
+	s=arc-20240116; t=1773283121; c=relaxed/simple;
+	bh=ASu9LId5PB3uir9qI8OvtYBXBkct6NQOCJ52a+ECzkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H80TA2ssT4LHUQDLClqz+947MnkZmlw/V3yjoKac6iIfLBwMKdff/JY7mg7vM84Vju17MOQ/XrGMqV1zpK89u0Ij5B1LmgtshTnC7tOpiLAO+G11Z5Y3IyhVj0QMBg0gbnz/EQPiHwMOXrI5sVtROgcwxJXX8a4zZekIz0EQMfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iIjU37XB; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=4Q
+	6+Cf75Jbfxr8y3niXpUrqxJGZ/pvz/KOLqaQb4JMk=; b=iIjU37XB9CZ/Sxbbiw
+	dQikq5/TT+dyW4kFbENVExAFM8+c49IaIiB62Ch1x46L1AsOgt1Kkuthi/AsFwE0
+	Q7yAjxEH2NG63BGHH8O6xafKBcsu7o70pKx47feiNClbjlckHNesR33zGKZJIVhz
+	iGnHW5tiBMfKDUTVEs0ckBN38=
+Received: from localhost.net (unknown [])
+	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgC33a8cJ7JpaVaNAg--.48576S2;
+	Thu, 12 Mar 2026 10:38:21 +0800 (CST)
+From: xietangxin <xietangxin@yeah.net>
+To: xietangxin@h-partners.com
+Cc: xietangxin <xietangxin@yeah.net>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+Date: Thu, 12 Mar 2026 10:38:15 +0800
+Message-ID: <20260312023815.15329-1-xietangxin@yeah.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND Patch 2/2] perf/x86/intel: Add missing branch counters
- constraint apply
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>,
- stable@vger.kernel.org
-References: <20260228053320.140406-1-dapeng1.mi@linux.intel.com>
- <20260228053320.140406-2-dapeng1.mi@linux.intel.com>
- <20260311201625.GW606826@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260311201625.GW606826@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-CM-TRANSID:Ms8vCgC33a8cJ7JpaVaNAg--.48576S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArW3XF43AFy5Jw1kArW3GFg_yoW5CFWfpF
+	4YyrW5Xr4vqr17Aa93Xw4kWry8Zan5Jw13Grs0gw13u398CFy5Kr1I9ryjqFWDCFs5Z347
+	ZrsYvr1UKrZ0vFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbF4iUUUUU=
+X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiIh3XDGmyJx24wQAA38
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[yeah.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[yeah.net:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-224787-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-224789-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[yeah.net,vger.kernel.org];
+	DKIM_TRACE(0.00)[yeah.net:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[xietangxin@yeah.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[yeah.net];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: DF40F26C48A
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yeah.net:dkim,yeah.net:email,yeah.net:mid]
+X-Rspamd-Queue-Id: 63B1526C507
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
+and the device's IFF_XMIT_DST_RELEASE flag is cleared
+(e.g., during the configuration of tc route filter rules).
 
-On 3/12/2026 4:16 AM, Peter Zijlstra wrote:
-> On Sat, Feb 28, 2026 at 01:33:20PM +0800, Dapeng Mi wrote:
->> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->> index 4768236c054b..4b042d71104f 100644
->> --- a/arch/x86/events/intel/core.c
->> +++ b/arch/x86/events/intel/core.c
->> @@ -4628,6 +4628,19 @@ static inline void intel_pmu_set_acr_caused_constr(struct perf_event *event,
->>  		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
->>  }
->>  
->> +static inline int intel_set_branch_counter_constr(struct perf_event *event,
->> +						  int *num)
->> +{
->> +	if (branch_sample_call_stack(event))
->> +		return -EINVAL;
->> +	if (branch_sample_counters(event)) {
->> +		(*num)++;
->> +		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  static int intel_pmu_hw_config(struct perf_event *event)
->>  {
->>  	int ret = x86_pmu_hw_config(event);
->> @@ -4698,21 +4711,18 @@ static int intel_pmu_hw_config(struct perf_event *event)
->>  		 * group, which requires the extra space to store the counters.
->>  		 */
->>  		leader = event->group_leader;
->> +		if (intel_set_branch_counter_constr(leader, &num))
->>  			return -EINVAL;
->>  		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
->>  
->>  		for_each_sibling_event(sibling, leader) {
->> +			if (intel_set_branch_counter_constr(sibling, &num))
->> +				return -EINVAL;
->> +		}
->> +
-> Do the new bit is this, right?
+When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
+expects the driver to hold the reference to skb->dst until the packet
+is fully transmitted and freed. In virtio_net with napi_tx=N,
+skbs may remain in the virtio transmit ring for an extended period.
 
-Actually not, the key change is the below one. The last event in the group
-is not applied the branch counter constraint.
+If the network namespace is destroyed while these skbs are still pending,
+the corresponding dst_ops structure has freed. When a subsequent packet
+is transmitted, free_old_xmit() is triggered to clean up old skbs.
+It then calls dst_release() on the skb associated with the stale dst_entry.
+Since the dst_ops (referenced by the dst_entry) has already been freed,
+a UAF kernel paging request occurs.
 
-Assume we have a event group {cycles,instructions,branches}. When the 3rd
-event "branches" is created and the function intel_pmu_hw_config() is
-called for the "branches" event to check the config.  The event leader is
-"cycles" and the sibling event has only the "instructions" event at that
-time since the 3rd event "branches" is in creation and still not added into
-the sibling_list. So for_each_sibling_event() can't really iterate the
-"branches" event.
+fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
+the dst reference before the skb is queued in virtio_net.
 
+Call Trace:
+ Unable to handle kernel paging request at virtual address ffff80007e150000
+ CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
+  ...
+  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
+  dst_release+0xe0/0x110  net/core/dst.c:177
+  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
+  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
+  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
+  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
+  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
+  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
+  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
+  ...
 
->
->> +		if (event != leader) {
->> +			if (intel_set_branch_counter_constr(event, &num))
->>  				return -EINVAL;
->>  		}
-> The point being that for_each_sibling_event() will not have iterated the
-> event because its not on the list yet?
+Reproduction Steps:
+NETDEV="enp3s0"
 
-Yes. 
+config_qdisc_route_filter() {
+    tc qdisc del dev $NETDEV root
+    tc qdisc add dev $NETDEV root handle 1: prio
+    tc filter add dev $NETDEV parent 1:0 \
+	protocol ip prio 100 route to 100 flowid 1:1
+    ip route add 192.168.1.100/32 dev $NETDEV realm 100
+}
 
+test_ns() {
+    ip netns add testns
+    ip link set $NETDEV netns testns
+    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
+    ip netns exec testns ping -c 1 10.0.32.1
+    ip netns del testns
+}
 
->
-> That wasn't really clear from the changelog and I think that deserves a
-> comment as well.
+config_qdisc_route_filter
 
-Sure. I would add comment and enhance the changelog to make it clearer. Thanks.
+test_ns
+sleep 2
+test_ns
 
+Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
+Cc: stable@vger.kernel.org
+Signed-off-by: xietangxin <xietangxin@yeah.net>
+---
+changes in v2:
+- add cc stable and fix tag
 
->
-> Let me go fix that.
+v1:https://lore.kernel.org/all/20260307035110.7121-1-xietangxin@yeah.net/
+---
+---
+ drivers/net/virtio_net.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 72d6a9c6a..5b13a61b3 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3351,6 +3351,7 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	/* Don't wait up for transmitted skbs to be freed. */
+ 	if (!use_napi) {
+ 		skb_orphan(skb);
++		skb_dst_drop(skb);
+ 		nf_reset_ct(skb);
+ 	}
+ 
+-- 
+2.43.0
+
 
