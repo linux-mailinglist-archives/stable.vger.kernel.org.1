@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-224970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SG/gNXMes2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:39 +0100
+	id cJj/BnIes2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-224971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCC72789F8
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86CE2789E3
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40BCB3010711
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 367AC301463C
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6621401A26;
-	Thu, 12 Mar 2026 20:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAC5402430;
+	Thu, 12 Mar 2026 20:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ar95w1rO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGB3ewlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0803FF8AD;
-	Thu, 12 Mar 2026 20:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFE2401A06;
+	Thu, 12 Mar 2026 20:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346412; cv=none; b=cFixffbHOKhJVg7E4t5PguNv051vLLqoEbBacEiUJrWOezqMhqGuv7XIbNOaFaOCuEQAnsag3bTsbFXn7Iz0Bww7Ne7N/jEk2OEP4XpHWX7Yko63NgLP7eBv0hCbPqGZLfrhHKRiY7WRSdC42+Hv1eiL0i5WTxbjiXFCWKiH1es=
+	t=1773346416; cv=none; b=ZrLMNZgxugULwaLWgNGEem+F0yWsAUzEaCctk8QwVZjJPw41mnrEkpq7iTlWcozUCBaf9A/4Fl7KWsn9kQD79JaTXHGqb3ZPekoY1Jlxeqw1r0x3Ob/tSPBZIMJ/Tmf18PEDzWJStbNaCrsopXEhLbfjYANwLlTksmGkigzYMTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346412; c=relaxed/simple;
-	bh=TNql/o7tcAMLHDE3aJPCbvDrXhYIHETAh87pGFnvcM8=;
+	s=arc-20240116; t=1773346416; c=relaxed/simple;
+	bh=FW1FfyjN0FiVx2jqt4SaopeLo2ais/d06ij3o6NL8UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJTqNwNluwh6Rp2FGkMSb9ML49ixLt57rubivkMAjEkRDufFbxVAxDb5X/48mdBqyfExe3l5PCuFG43MPyQmfP7QQJW93kFS490V3LXO/k/i09O6WO/wrvICZ46szBEXwPu7w8vRJ80CHfjRSk1BPJp/QaqaC80WN4wDqlP+d+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ar95w1rO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02370C4CEF7;
-	Thu, 12 Mar 2026 20:13:31 +0000 (UTC)
+	 MIME-Version; b=JFsEznC/TKCMuMF/hYejy6/HpmR7gcARFGiLjpHmJYD6JTIsc8Li4lFWm8+VWhbFmXKDETzD+Wpb44yIYvgBZrp2k9VMrZzHyoCJSDGL41PxnejCKf59hHtMRLVKvEX0EKobhwh0F+hvqFhPNrgcZeP8h/Jrs4ZAvG0nsZaIX3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGB3ewlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E246C2BC86;
+	Thu, 12 Mar 2026 20:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346412;
-	bh=TNql/o7tcAMLHDE3aJPCbvDrXhYIHETAh87pGFnvcM8=;
+	s=korg; t=1773346416;
+	bh=FW1FfyjN0FiVx2jqt4SaopeLo2ais/d06ij3o6NL8UI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ar95w1rOOojFT6aJ2t5V/ewStgb6u0WamOt67DiZf9QK0tH0kL2aIpU9oorfWY7j2
-	 D4Pb1Mzg52Z0c3zeu8pBafGkZbos+Cwa+DRVu3G8wvs3JqlGbYy8h0emKun6qFEXYg
-	 uNTWhUVGiuccdzcjPkDfQseD3d3+nIUBm2r9IZsY=
+	b=lGB3ewlTGv0gzeBxdFSYIrXJaDTxEahvssbsPa8Sei4XJF28uX2jl68a8BY7soUBW
+	 qhFiHRGIHyNfSj0/0WLcQ0cYVulPb9KhaFrc5Apcdw1XIbWwTllvEw2H9KmWLvKuTL
+	 GkhsqMUZMtihHMev0RCnplOoo8Jg9tP6zpxFI/ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
 	Mark Harmstone <mark@harmstone.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/265] btrfs: print correct subvol num if active swapfile prevents deletion
-Date: Thu, 12 Mar 2026 21:07:03 +0100
-Message-ID: <20260312201019.495599683@linuxfoundation.org>
+Subject: [PATCH 6.12 037/265] btrfs: fix compat mask in error messages in btrfs_check_features()
+Date: Thu, 12 Mar 2026 21:07:04 +0100
+Message-ID: <20260312201019.533630615@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-224970-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-224971-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,harmstone.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: 1DCC72789F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,harmstone.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C86CE2789E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,36 +102,55 @@ X-Rspamd-Server: lfdr
 
 From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit 1c7e9111f4e6d6d42bc47759c9af1ef91f03ac2c ]
+[ Upstream commit 587bb33b10bda645a1028c1737ad3992b3d7cf61 ]
 
-Fix the error message in btrfs_delete_subvolume() if we can't delete a
-subvolume because it has an active swapfile: we were printing the number
-of the parent rather than the target.
+Commit d7f67ac9a928 ("btrfs: relax block-group-tree feature dependency
+checks") introduced a regression when it comes to handling unsupported
+incompat or compat_ro flags. Beforehand we only printed the flags that
+we didn't recognize, afterwards we printed them all, which is less
+useful. Fix the error handling so it behaves like it used to.
 
-Fixes: 60021bd754c6 ("btrfs: prevent subvol with swapfile from being deleted")
+Fixes: d7f67ac9a928 ("btrfs: relax block-group-tree feature dependency checks")
 Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: Mark Harmstone <mark@harmstone.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/disk-io.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index b1d9595762ef6..09ebe5acbe439 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4629,7 +4629,7 @@ int btrfs_delete_subvolume(struct btrfs_inode *dir, struct dentry *dentry)
- 		spin_unlock(&dest->root_item_lock);
- 		btrfs_warn(fs_info,
- 			   "attempt to delete subvolume %llu with active swapfile",
--			   btrfs_root_id(root));
-+			   btrfs_root_id(dest));
- 		ret = -EPERM;
- 		goto out_up_write;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 034cd7b1d0f5f..fa4d22f6f29d7 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3119,7 +3119,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	if (incompat & ~BTRFS_FEATURE_INCOMPAT_SUPP) {
+ 		btrfs_err(fs_info,
+ 		"cannot mount because of unknown incompat features (0x%llx)",
+-		    incompat);
++		    incompat & ~BTRFS_FEATURE_INCOMPAT_SUPP);
+ 		return -EINVAL;
  	}
+ 
+@@ -3151,7 +3151,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	if (compat_ro_unsupp && is_rw_mount) {
+ 		btrfs_err(fs_info,
+ 	"cannot mount read-write because of unknown compat_ro features (0x%llx)",
+-		       compat_ro);
++		       compat_ro_unsupp);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3164,7 +3164,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	    !btrfs_test_opt(fs_info, NOLOGREPLAY)) {
+ 		btrfs_err(fs_info,
+ "cannot replay dirty log with unsupported compat_ro features (0x%llx), try rescue=nologreplay",
+-			  compat_ro);
++			  compat_ro_unsupp);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
