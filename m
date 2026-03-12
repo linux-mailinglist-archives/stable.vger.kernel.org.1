@@ -1,261 +1,129 @@
-Return-Path: <stable+bounces-224834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHU9IpKPsmlINgAAu9opvQ
-	(envelope-from <stable+bounces-224834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:04:02 +0100
+	id OKfHOpeRsml5NgAAu9opvQ
+	(envelope-from <stable+bounces-224835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:12:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E097626FF4A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:04:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BAC27027F
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 11:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 453B8304E70F
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:03:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73915314C20D
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 10:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F413845DF;
-	Thu, 12 Mar 2026 10:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441D33BED31;
+	Thu, 12 Mar 2026 10:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Fn0//Wt8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n56DtOJR"
 X-Original-To: stable@vger.kernel.org
-Received: from MEUPR01CU001.outbound.protection.outlook.com (mail-australiasoutheastazolkn19010014.outbound.protection.outlook.com [52.103.73.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC90A355803;
-	Thu, 12 Mar 2026 10:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.73.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773309838; cv=fail; b=r25TFv+gqMS5oZmyG5PG6+QPdkAAy7y8PoAflwGzkDoWjEUn8MKl8wiTmZzQVhgvidTa8mjsjubY9HsB5nR5yKoLj7Gh+L/gpj2WEwRcYPd5C3s500XvdqsGryDpIouxOjEsHL/dZY7C75DF0gZUu0cMPI8WTrKk84Fqo8RJaCY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773309838; c=relaxed/simple;
-	bh=IbXkzBUG5vpY+0T7JOy1olvZ1QOOwLg83oR3qW70JTE=;
-	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=JlR7ThtrGMMPZrqv0KpOuyAGjfdbcCGpdcsVClapPojsoqp/wwXOkJbpqP6OMUqlQf2UusHoH52KAdMDHAQgQEjhagnbSrU4zG+cPnv4fim0ruj5j/rTjNooq31EClV2L+xG6AC14EQcR+PwQUgUlrrQgHHUVatqdyiG3VnUns8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Fn0//Wt8; arc=fail smtp.client-ip=52.103.73.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MKYyCIPcBBAvyP+Vox5vbJdrHxQEco7UOpjKAwbXI+rXc7wZQ5ydOLopXJboARX1+9U6R7rZNvfhGuxaLItWNsAeippwBWyS7QhtunjD0UOdd0QVjuDbX3ebhlJuHh9WXb6Wnbtoe/LZEuwlkBwW6LM4MOwtcaSnxRnu8wuPaITjVXyHHUXA/NbFjlsWFkKaX6ZVLDTegUBavt6t80oCeCNbBAgnbNVvDXtiXz/8LgrmRNP1H+q4CWmqqU9Nm6QcBZOVOIC16P2c2LryBHMP7NL4caGXjPacwn2JC0ReaR0gLcEONjpAmArRV0ZfvDfv3cpgGxAaVkkVj5WlNb1Lig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R7vHXOjaBRtt697QGrlYiVi0QETF41nLiV01ZpKkhCY=;
- b=dsf0YcQafkjA4QIgWeRhCuid6e3xxiofF+1mpPJQ1oUqRHCKucWwXXPoposp1Ulavt/eYs6IdmLvEcPWPS81wT+3NF0xAN0G/4WOt1y6j96/LpgsnnALsz2VLrtPu9o9R7Q862bvX4QOAmWVor65p1oxPMjZQ4ix1Cv7gXV7ToHGSlR0FXv79ChF6Y3maqVPs1bMU0DYIzEsdJG7OgCV7pXNWsMQEsjJp1eI+7cIwsz11PwW3NRzMmG1JNRJNBc3dyV6HZUKFpLBf1ZZ+UeHqWEvjMHRt1UBaTRbq8gXRLZjtUziC/1H3g7LzFf0V7bePyybPUtWIwrOd9SNO8tSHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R7vHXOjaBRtt697QGrlYiVi0QETF41nLiV01ZpKkhCY=;
- b=Fn0//Wt8sy5rE2X9PZt75NIt8teM3X5EjojqWoCoce+RNKr/ESLXC8cnlAGxlEyqGA+NxB/7voShcvA4ENKaZWfdDMNB1tWJtCRtrpDr7DHryYT1dytRbJz1aEtussFVBQ3a2ksaMTEDJDCuIlOGa0N+sHWAEnECAJ+ayKliPZFbx4qvqaLGQI2MPFmef2LWvJ4l6T/tXl1JYlUTMhX8k7Liso7vPQmhR9HPb8s2LEZfZx9PX+FEWS7zsEjkAAww5VxqyZ9B4+G8jeii4Rr+YruckrowvnYJYfyDUI516P2RuNn8NpiRPP2hvhlE1MoquTL2eJkKjuVkhrnn9MvnbQ==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by SYZPR01MB7705.ausprd01.prod.outlook.com (2603:10c6:10:176::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
- 2026 10:03:52 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9700.013; Thu, 12 Mar 2026
- 10:03:52 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Thu, 12 Mar 2026 18:03:24 +0800
-Subject: [PATCH] ocfs2/dlm: validate message payload length in query
- handlers
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID:
- <SYBPR01MB7881890B57945C79BC03F31EAF44A@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDY0Mj3bTMitRi3WQLgzRTs7QkMwMzSyWg2oKiVLAEUGl0bG0tAKHVn5d
- XAAAA
-X-Change-ID: 20260312-fixes-c80f56fb6069
-To: Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
- Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Sunil Mushran <sunil.mushran@oracle.com>
-Cc: ocfs2-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
- Junrui Luo <moonafterrain@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2025;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=IbXkzBUG5vpY+0T7JOy1olvZ1QOOwLg83oR3qW70JTE=;
- b=owGbwMvMwCVW+MIioLvvgwPjabUkhsxN/fV+dTVvFDee+bN/w0O/6IcNjqfrQ4V41klMkNBOE
- Oq6qZzRUcrCIMbFICumyHK84NI3C98tult8tiTDzGFlAhnCwMUpABOp6mT4n7ksZePhxN40vTl1
- Su3XzM//Lniw2O6lbleNUADfh42brzD80wgUjrCfb2c4R2TahImV+71kbQSXO09+cdKuIsbD8gA
- 7HwA=
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-X-ClientProxiedBy: TYCP286CA0203.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:385::16) To SYBPR01MB7881.ausprd01.prod.outlook.com
- (2603:10c6:10:1b0::5)
-X-Microsoft-Original-Message-ID:
- <20260312-fixes-v1-1-e0a1939ad4bb@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D283BE151;
+	Thu, 12 Mar 2026 10:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773310011; cv=none; b=VfprJZpxqDxlBhH09SNJCqHA5ZUdbTlo14DowBws5aTpGfgyZpP9d8JLvR0v9yxxqMibZ9rgR57ba6FaaGTpG8NS1G/aofD/j0740uBgcQSPhil1TtUR47eppWOCLXB4Ksuux1g4Cc4lEtkLQof8B8Uqlx323D44JQy2ubQ6TcQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773310011; c=relaxed/simple;
+	bh=ig08MQfGmiZ30wv+QHeTuTjV9DP7WANS0SB5wgLfghw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PVdUJKe0c7quPhrMbFZICxtOEz5hZ5LkKFM1/xXSxL7d56JhQ3W0ncV8bIAtBZVztvf0CSIvQNz/97kDbCPocD+pSOkGbo0j1x/43XsI1qv3/xAbiPNbk6SgHrSvCUzBg2xxa7U+YogNFhHUOk/0z9LVVlid3VkRtHTRlzCoCTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n56DtOJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F76C4CEF7;
+	Thu, 12 Mar 2026 10:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773310010;
+	bh=ig08MQfGmiZ30wv+QHeTuTjV9DP7WANS0SB5wgLfghw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n56DtOJRRTVspn3kUvvfLAgF5zqsneMu92fpX/osjlLLl2IFC3bDNW0LeSLS1V5jz
+	 oVmU26DS9ghymR5PlMKbvHJ42wgNfXL8D2/w0W1OZIKb1pHacv9hP1W3K3OkODktMl
+	 aHXhkgs3yBM7LO6zQPU2sc6ts2sQSIqkUU6GVLsmyxgHtz0+6yhrX4CtWoAd/nyfkh
+	 33r3vIYE0uLJ8V/6cnfPJAqjB8v88s9BJMaaxAHzfcJjW8nnxI3bk2QjMD5C1167X0
+	 MKST7J4wJMFcocGB+OM9NjKerj0Sh3pcmn0J7l1D0yIqgH9v9WXdKKx/US+eWqk7Rj
+	 Z7wdYou/LtKZg==
+Date: Thu, 12 Mar 2026 06:06:49 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/314] 6.18.17-rc1 review
+Message-ID: <abKQOUd0Uv4WTcYN@laps>
+References: <cover.1773141554.git.sashal@kernel.org>
+ <xbjybmha7fdnnm5gn6p6jyppf4ud2r72rfabvej6egg545ozsu@a4qj43d3iu36>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SYZPR01MB7705:EE_
-X-MS-Office365-Filtering-Correlation-Id: 698a1467-0c28-44a8-d5a5-08de801ea819
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|6090799003|19110799012|23021999003|41001999006|15080799012|461199028|5062599005|5072599009|22091999003|24121999003|8022599003|12121999013|3412199025|440099028|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cEUwUkN1UVBLbGYrQnczSmQzRU5sM090QTROcUY2RllTYXVqb0JNVUF1RGxU?=
- =?utf-8?B?dXQxMU9CQ1lSTVV5VVg5cHFGZWphS2ZMV20vUVpDOUJVa1JLekRiaUlsOFU1?=
- =?utf-8?B?Kys1Z2FzZEFPYW9Hbi9qMk85bkRwOVZ3WHl6M2huaXJ3V1RyQ1VTVnVlb2RK?=
- =?utf-8?B?TVY5M0R1UHdEV2czUHE5RDlGQlk1K1lOTWFuakl6UWNZVHJWUGQvajRCMWNr?=
- =?utf-8?B?bFFrSndxd0V6R1JwZVNLNWZlN3h4cS9HZmhaSGZ3UnJCeVlBNmlkUldvRmFn?=
- =?utf-8?B?VFUzcmhuY1NidkFSY1NJL1R0czJ1N2FXaHlyZkp4djlVcjlOM3NPYnF0Y0Rq?=
- =?utf-8?B?WE9zRCsxSVFoUktqdWFSWkJzUVF3U3NXTFd2Qk1sVE4rN3BBRXNRQUtvRGNN?=
- =?utf-8?B?UllCeXV4b1ZHeHJyVlJ5dUZ2ck5LMjkwUHpqQkIrRCt2TFNkZ3BvUGN0TlNw?=
- =?utf-8?B?d25aZnFJcU5KUlZwd2dsL08wWFROU1EvQ2hHZ29KbGRMY1RxS1hwdEtBSXVQ?=
- =?utf-8?B?RHdmZkZwNGIraDBUbXNhMU5pOXhrZFdFczVsWmdCZkpZKzBzc1VjMHZia0Fn?=
- =?utf-8?B?YlFldmQwTVdFdGtxaWkvYlpVZTJlR2h1RFpVQS9NTE9FNGdVTzFWZHY4RlhL?=
- =?utf-8?B?cVdHMHFWQVNSYXBtTUVPejhxTXJrUll0ZFhmZTZEditEV3ltYlNPelN1aWIr?=
- =?utf-8?B?OWJKaGljemFiNHdualdyTUJvbE9pY0E3ZmpJbnBURk85VkhsMy80YWpWNm9o?=
- =?utf-8?B?NU9ONS9JN0FrQnR4dmI5bVlLUTdUeFlOcW5OcWFoNVdGdERyNGxmYVhKV0NB?=
- =?utf-8?B?ajg5cEpKVWZsRmNlcmFtNWdQaG9EVmQ0cHc0WGhyWGVWMWZudmNjMnFET3Ru?=
- =?utf-8?B?Vm1SRHh0VE5lY0w4MVdUM3JJZ2hnUW5aTHcxaEdHdWtBZlhSMDh3bEtMeWJY?=
- =?utf-8?B?ellSOHE1Zy9DcWo2NXNFTVNteEs3YnB5dnJmc3VtVnRwSklUOGtCd1QvU25Y?=
- =?utf-8?B?c25RbVBWdmV0VDFPODRJaUNSMWNNQmNCRGhXRnVFUTBzTWFyQ0xRSTBObUY1?=
- =?utf-8?B?Qks4SnN0NWh1NzFGSk5UbHMreG1lK3Nwc3NWblRWOUkwb3NzVmUxOTVpSDdC?=
- =?utf-8?B?d0IrYndYSm42U0dYMWgyV2FRbkFpNzFIelpGdUpVc2JORUhtSGZmTFNoTzZ6?=
- =?utf-8?B?d09MWFBJaXVyVFpQdXhHampqRFBUS05WcVpZL3Y3MXpac1lwcmRBU0xZbTJ5?=
- =?utf-8?B?cHdRbk11RTlQSUJKNmhieDhadVFqdmFLS2dEM2I1QjkzOHhvU3FxVmlUV1FR?=
- =?utf-8?B?RXRNTjN4UEdycGFXalMyRHczTjZBVnVuUFM5VlRnNHZjU2dDVkRUT015akJJ?=
- =?utf-8?B?WWl3ZERLMnUvSTBJUmNXcWJhOGR2Y1FOSGUrcWJXWVFrRTNXRkNVaWJJOEJD?=
- =?utf-8?B?VjZkRFVtVkFjNm5VUGNTR0NZeElLYUd5UnA0cnBRPT0=?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UEllN0xzQ1VxSENQTU54cWFpb2lEREJlS1RzWU5mK1ZSZ3hhTENLcDQ3c2hM?=
- =?utf-8?B?VUNuanRNbXllNTEvbm5LV2hJOTloMDFVNlRpMjdHZUpveXFwNGpydzFBbGJP?=
- =?utf-8?B?VWI1R3UwdTczY3pMQXlrM1IxRXh1cXdBVlFYUWpEdDVLaGtzUHlhSjNQUFdS?=
- =?utf-8?B?S0ticlc0cDd2eUprcUp0dVJ0NUJPbnozQjFkdmVKeklROE01UWVYNG1rZ2ky?=
- =?utf-8?B?Y0pmbmxkRFNoeUF5bmZJRFpCZ1RHQ3c2WUJoSUJQVEZIVHoxclNIUUk1clhQ?=
- =?utf-8?B?QVR2WHNxeHByY0x4Sk9PSGp3c2pqMU53YkJxdkZvTFJ4cVJKNU5ScUpIeW1I?=
- =?utf-8?B?c3B3UFVVdE16YWZadDRTdVZOaE5weFN3OWVMcW5pSUczeXVNaXZSQnc3VEUy?=
- =?utf-8?B?dnN5cmhUV3BPWHk2NGp2VkdzTm4xdWRjeGVIMUMzNmIyU1ZTSTZkL1hwaUJy?=
- =?utf-8?B?NmNjOXpIaTRJaGRFWDJDWDRaaCtjbkNvcWJ4RVhWVUZ4M2RGNVdTU09lYUxn?=
- =?utf-8?B?RG5NNUR4Y1E4YWVtN0dRaFNOb2dZRlYvRHhqaGRNN0Y5S1V2YkhYZC9PMnV5?=
- =?utf-8?B?WU9SR0ViVGNvQlpjUzFZOFB5Um1tUE1Jekg2Q3lCZU5GcVI2MU8yUGlyT2dv?=
- =?utf-8?B?ZmxUYVh3bVEzbVRtMmJBMGpTWm53a3RCMUgyMUROd0FVZGVyaEVWZm81eWQx?=
- =?utf-8?B?WXMxdmZKTVNLR1BuejZxZUZVSVl6ekxKd05qckNlc0hSeFpDamFTMmhqNjFp?=
- =?utf-8?B?UXN5c1lRUU5rN0RwUW55djRKVmdtQ3lXN3RmbTZENFh6NFJZOG8vZndnTGtk?=
- =?utf-8?B?L0k0NkZ2M3FyZnVwbWFCVy9BcS9XQ0VSUlJIRU9mMm52aHhaS0FsNnNHS2dz?=
- =?utf-8?B?MEc3eTRBTDltZW94alV2RFdQSEpwbHhha05IZUV6cGpGSkxlTzNaR2xFOFVm?=
- =?utf-8?B?Mjc4YTZtRVpFd085cG9ESDJVQWF3anZYTG02VHV0ekZLNE1YOWtHc2w2SzNs?=
- =?utf-8?B?bVFpMFVtQlZSVyt1QjNqaHU1UCsySWZwZWgxakN0U3dJSFJmakFBMjVzM0Jl?=
- =?utf-8?B?WHpKeW9JRlJ3Q09HQ1JQVlZDbmh2NFZBUUpWQWZIQkVwaEJDcm9hb3hBOEVZ?=
- =?utf-8?B?eGd6R0hrNkw0MnBwTmJsY29KSXJwbVdNK3BJUzVKb0I4MC9Rc0ZScWR3YVhW?=
- =?utf-8?B?MDU3NUdxM0dKTFJIUVgwVXZTTnBBUFdHWENwWnd3K0tRVXNqTHIrRUJYa21T?=
- =?utf-8?B?YUlnY1E4MVc2enhvRjg5RW13bTVaWkNVdFVpWXB5bHZLNTEwL1dwT3c0emc5?=
- =?utf-8?B?WC9sWXQ2S2RCQUlNUkp3MUpqNmg4S1ErVllhWmkyc0UycXoxeFJDa2xkUzda?=
- =?utf-8?B?THlDWkZlVkxjV3dxUStBcFpqV1hubHprT3R1VWozdjBNUU9EbWs5eDB2emkr?=
- =?utf-8?B?NU9ZUHVwRXZMb29kajlSVjRtVmppOHB5ZVc3YUR6YkFUNHJBNEJVN2cxYzRL?=
- =?utf-8?B?WW1pZm85dWxyWkMyTzUyRm9rRjZaaFVzVE1sWndXYVB1azl1SmZnYXNrN1pU?=
- =?utf-8?B?cW4zTUdDVzBiZWp3T1hVckZxQkJScUpsSllRUmsyQmlyOEhMTDRvN2tuZ1FE?=
- =?utf-8?B?MTM2Y3UxdU5QN05jUWlIWnVnSzNKR0EwUDJvZFJHSWd1ZEl1a2FLUkFVMjNU?=
- =?utf-8?B?UmZIdTdPWFYxOWM5QjIra3NVL3hMYVdESm15U280bHFvY2hFcjRjbkpDNFFo?=
- =?utf-8?B?WC81Z2JLSnQwKzJJdUl5WWdWRDJ4MnljYi9SOVdSTyt4ODYrVkY4TzVVMjlm?=
- =?utf-8?B?djVZNU9oMFIzaDZTM0tzNHMxZ0RPc0ptRWdXZ0xsVVBhb3lTVXhzamhpVHNu?=
- =?utf-8?B?Yi9TZUtyN21meWpQa2ppc0plTVppclBGcUdsK2pxTkpqK3c9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 698a1467-0c28-44a8-d5a5-08de801ea819
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:03:52.1364
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYZPR01MB7705
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <xbjybmha7fdnnm5gn6p6jyppf4ud2r72rfabvej6egg545ozsu@a4qj43d3iu36>
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,outlook.com];
-	TAGGED_FROM(0.00)[bounces-224834-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-224835-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:email,SYBPR01MB7881.ausprd01.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: E097626FF4A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 76BAC27027F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-dlm_query_region_handler() and dlm_query_nodeinfo_handler() cast
-msg->buf to their respective structure pointers without validating
-that the received message length is sufficient. The o2net transport
-layer only enforces a maximum payload length, not a minimum, so a
-truncated message passes the network check and reaches the handler.
+On Thu, Mar 12, 2026 at 02:35:11PM +0800, Shung-Hsi Yu wrote:
+>Hi Sasha,
+>
+>On Tue, Mar 10, 2026 at 07:19:29AM -0400, Sasha Levin wrote:
+>>
+>> This is the start of the stable review cycle for the 6.18.17 release.
+>> There are 314 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>
+>BPF selftest is failing due to backported commit efc11a667878 ("bpf:
+>Improve bounds when tnum has a single possible value"). The fix is
+>commit 024cea2d647e ("selftests/bpf: Avoid simplification of crafted
+>bounds test"). Can you pick that up for both 6.18 and 6.19?
 
-This causes out-of-bounds reads from the receive page buffer when
-accessing structure fields beyond the actual payload, leading to
-operations on stale or uninitialized data.
+Will do.
 
-Fix by validating that len covers the full expected structure size
-before accessing any payload fields.
+>FWIW this failure does not point to actual issue of the codebase, just
+>that the selftest's expectation not aligning with the kernel.
 
-Cc: stable@vger.kernel.org
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Fixes: 18cfdf1b1a8e ("ocfs2/dlm: Add message DLM_QUERY_NODEINFO")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
----
- fs/ocfs2/dlm/dlmdomain.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Great!
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index 70ca79e4bdc3..07aef9ae8cbe 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -1100,6 +1100,9 @@ static int dlm_query_region_handler(struct o2net_msg *msg, u32 len,
- 	char *local = NULL;
- 	int status = 0;
- 
-+	if (len < sizeof(struct o2net_msg) + sizeof(struct dlm_query_region))
-+		return -EINVAL;
-+
- 	qr = (struct dlm_query_region *) msg->buf;
- 
- 	mlog(0, "Node %u queries hb regions on domain %s\n", qr->qr_node,
-@@ -1276,6 +1279,9 @@ static int dlm_query_nodeinfo_handler(struct o2net_msg *msg, u32 len,
- 	struct dlm_ctxt *dlm = NULL;
- 	int status = -EINVAL;
- 
-+	if (len < sizeof(struct o2net_msg) + sizeof(struct dlm_query_nodeinfo))
-+		return -EINVAL;
-+
- 	qn = (struct dlm_query_nodeinfo *) msg->buf;
- 
- 	mlog(0, "Node %u queries nodes on domain %s\n", qn->qn_nodenum,
-
----
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-change-id: 20260312-fixes-c80f56fb6069
-
-Best regards,
 -- 
-Junrui Luo <moonafterrain@outlook.com>
-
+Thanks,
+Sasha
 
