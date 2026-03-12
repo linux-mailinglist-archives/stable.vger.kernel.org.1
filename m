@@ -1,195 +1,232 @@
-Return-Path: <stable+bounces-224793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-224794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Ix9Lk0rsmleJQAAu9opvQ
-	(envelope-from <stable+bounces-224793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:56:13 +0100
+	id iIV6J9ousmmzJQAAu9opvQ
+	(envelope-from <stable+bounces-224794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 04:11:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB4626C808
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:56:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5722F26CAAF
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 04:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD1E53042084
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 02:55:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D1F5305DD2D
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 03:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2218381B15;
-	Thu, 12 Mar 2026 02:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E05386553;
+	Thu, 12 Mar 2026 03:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Fn7ECnfm"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="YJVdqDz6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013026.outbound.protection.outlook.com [52.101.72.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31BC261B9C;
-	Thu, 12 Mar 2026 02:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773284157; cv=none; b=hl32Zjc44snTOuXPZxfGQE1Dhe6e4aeaNUk8BAJg6UTkVZovYDFORONwOMWOwJgtEFMviX5M+PDop582ug+iH50eHAL7cKdlrySaPyg2a/pWbb68oE1g0uhNPBOZDZN21sV8mhdwDEQV9vb+BQ80g/TIbA9esbKTv1pGAGVz/ZA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773284157; c=relaxed/simple;
-	bh=Sj2VafoHdghFpP7ZB8Sh+tcZLjL2iv1MRtN2nGUsvqw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PpEOYVedLuL5v8t/QVAoqrbsh3BxrkMfrH6Rv7bJ/WhbDn0OoZ88lw+Qczwu0c+PfzTU2mTZlPaNdt985i2ZbgVwijb6Wn9REmf2QTmrqgaLHT7frDUrSvNowrJjoM7ERpExMk87CSRSI7uJodWC9NKoHp3FaXzQeFlr77KfeZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Fn7ECnfm; arc=none smtp.client-ip=1.95.21.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=d1
-	OVm4u4vH8CiwTDihtBaUsbRQCL/Ky+yu0LSJVg9j8=; b=Fn7ECnfmVm+fQluGQz
-	Gw/qdCilTmAMVL8ix5ZxYBGrpHZy1mhqknMhZVGcbfOLkXRVPNvxgyDm3qrahUal
-	z/USE6fLtGYsbB8IxfwXSCs3hF/vX/zqYys7SwJ6iCSzpenZRUYgJzlw7SHlUCpa
-	dII5iZijK8TaZJ646VH2vgLPc=
-Received: from localhost.net (unknown [])
-	by gzsmtp3 (Coremail) with UTF8SMTPA id M88vCgBHv3gJK7JpMEd7Ag--.41375S2;
-	Thu, 12 Mar 2026 10:55:06 +0800 (CST)
-From: xietangxin <xietangxin@yeah.net>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	xietangxin <xietangxin@yeah.net>
-Subject: [PATCH net v2] virtio_net: Fix UAF on dst_ops when IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
-Date: Thu, 12 Mar 2026 10:54:06 +0800
-Message-ID: <20260312025406.15641-1-xietangxin@yeah.net>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42BC383C75;
+	Thu, 12 Mar 2026 03:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773285043; cv=fail; b=Qb2ZkABn3uysnw4ZsH9WhGc3w3md0AOVonL9kjc5Jw3jA9hEqvv2BkH4mZggYL3pAeXOzwJeI2RZ2M1K1GIxaVBTB/UK0WHe+HpvPd8vIIviq8aZJD+G50DpgDmgdxO9cAxwbz3hb+UF/S8UVbjcwC+xmAG57hDdVfe73v3IF1I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773285043; c=relaxed/simple;
+	bh=r3GG/uEHoENedJ0g5zMwMzONpx7LP/XyIqQSeHxnCRU=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=hqNk5heiyCaKRKYaSTiI1Nt3BYKg8W0axL1m7Gj7Aplf2f2++gXZ3jCiI4xfuAdm9uisRfPD8H2rLeC4dd5MKq1HkFayz+WXWhLm4EHfDhd0CcIfg04ONyDfx7yOe5lvoAsUunRSf1rBOFA0lAT3tpAvsvBIaehjG/eZtYeRkQA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=YJVdqDz6; arc=fail smtp.client-ip=52.101.72.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tNoqMcY1lyHo0vOnjCU9RU/Yd0DqdKPK+/Qe3hK+MQl6WDTU58QGLjyw/ZcJDzaQO/kV2BRa1WrGtmtON6lmNuP8Zu77e7Od5zViFgBOsow6J9wRi+r+unvUWv3OgZ1J2ZFOfcCL9ZZJNA1wditDczWDjN77OfmLODlw7kxuw9/ceT8NtOYt3nbSQUd0vGaFkrKnRAniPNbokrw3ZGQkA+427oA8bJIj8TmFPNNybgbjzjfNQBzwmaG/MHe7ZIsZYtvNC1fxE8j7P9RY4e0qTC5vtWZuhBylHQcgBhMZQHH0ASeNpHgImkPtsu01zrIoXE/dNt9YWhyIx0BgajAPoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bZ7NSpD2qJ0pndiK0rJ+ajfAaEvvxvPyVX4xQv6WneA=;
+ b=hjG9q0FSKWed53e8Hg5Jgo894O5X4fKsgu92nR6cV6irIGv0JJIsLcGOBjJnU0Zw07M3mTTrPjqSKibu43/8s+w1f4UD7/L1D4uqXAeQxNCMhmZOYypfSEcFdKCIZCowF6yKquJSUpHWn9WD/hZBY8QiCyQce2srDkQou3qihdCPg3wg7pCmfdER8DOf9EPxX8r8kY54wBnGZL5hiyS6nLyYRUQVUdHoaBVTtayhHvWHCzKcMbvf4F5HvGMxKATxcoE8zkLffA8vUifu1Fh4TzQzLiY+pgorlEpsAOOjvXntGSDn10rjS64XS2/rqClbZg6Yo0kciD8AZyUJKh2jig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bZ7NSpD2qJ0pndiK0rJ+ajfAaEvvxvPyVX4xQv6WneA=;
+ b=YJVdqDz62OZpJVtFCWXjQEfPWk8KmoT+YTeEBKKsc2yt2qEpB8v3q2VKfDEgqcRJVOROqYwClLqifZg3xtjHTxEOyY8bSxoEG1kCwugUOCSF2StDBgCZIx08lviBhmHEkc5aAtKPdd4dN5DQgUDnaCDnni5NhcWzKEA6X+rtMsrIvjxvYL8O2o8HD6BTQGy3QrklYne45bbw8mGv4+1wwqBkSxzrde0jn+xnMXo2PO+c8KR3q2q4QzdXTAdd97wRBaeVMFRvq37lB6atE0wlZeyg2WUb+Ndj7yx68BAyqvbQfc00C05Ws8OJkamfL0/Sntxf1er9ofaz5AV32+8EQQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by FRZPR04MB12395.eurprd04.prod.outlook.com (2603:10a6:d10:1cc::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.15; Thu, 12 Mar
+ 2026 03:10:36 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%4]) with mapi id 15.20.9678.016; Thu, 12 Mar 2026
+ 03:10:36 +0000
+From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: [PATCH v2 0/2] media: nxp: imx8-isi: Fix single frame capture and
+ optimize buffer usage
+Date: Thu, 12 Mar 2026 11:12:33 +0800
+Message-Id: <20260312-isi_min_buffers-v2-0-d5ea1c79ad81@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACEvsmkC/2WNwQqDMBBEf0X23JRkDaHpqf9RRDSudQ9GSdpgk
+ fx7U6GnHt8w82aHSIEpwrXaIVDiyIsvgKcK3NT5BwkeCgNKNLJWUpRGO7Nv+9c4UohC99rKTqF
+ GrKGs1kAjb4fx3hSeOD6X8D4OkvqmP5f6cyUlpHAWrR0MXToyN7+tZ7fM0OScP1RlI7KsAAAA
+X-Change-ID: 20260310-isi_min_buffers-4b490a124223
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Stefan Riedmueller <s.riedmueller@phytec.de>, 
+ Jacopo Mondi <jacopo@jmondi.org>, Christian Hemp <c.hemp@phytec.de>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Alexi Birlinger <alexi.birlinger@nxp.com>, 
+ Dong Aisheng <aisheng.dong@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773285164; l=1300;
+ i=guoniu.zhou@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=r3GG/uEHoENedJ0g5zMwMzONpx7LP/XyIqQSeHxnCRU=;
+ b=FaqIqlUl4RJSMCL7J0GwTwhcjQ9XHeDe94sAVsJpJQgvhu4eec2jzkHIiWLaETvRGiyN4595r
+ 00rfHjanz1mCE4mt5hOL6m7a9T8klftLoSXOVII1FAkBeuzPxFAAIwx
+X-Developer-Key: i=guoniu.zhou@nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: MA5P287CA0231.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b1::7) To AS8PR04MB9080.eurprd04.prod.outlook.com
+ (2603:10a6:20b:447::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:M88vCgBHv3gJK7JpMEd7Ag--.41375S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArW3XF43AFy5Jw1kArW3GFg_yoW5CFW5pF
-	4YyrW5Xr4vqry7Aa93Xw4kWry8Zan5J343Grs0gw13u398CFy5Kr1I934jqFWDCFs5Z347
-	ZrsYvr1UKrZ0vFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8Ma8UUUUU=
-X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiNwvTCGmyKwvClgAA3I
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[yeah.net,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[yeah.net:s=s110527];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|FRZPR04MB12395:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7565a37c-8781-4962-bee5-08de7fe4ee7b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|52116014|7416014|38350700014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ u4sfyzo09ByFjRGVcsXkfBWXXhRVmuFDQm9NFw5eHStPSX9BTfVIUSfgMvvdabdB5JoDLO9MLDrs76NQnjoWCKcatN5m+4tctbY1Bd5H3/Yah0jKKjVNUqlzVJu5EESD1PS2p44F3akBcdLA8kv/4sIiNXqPr8fYA4ytjDZqxeMzV6jikNN4Ona7XSNNe56XCGf5PLW5c/2VpqNbzdL3PS0afI8erFHaLcMywCukp93K+bmGJ+wXRELKY3l+j1zqGXKebWcRJ5cGcLwfRdMGzLczCFG8yx9/RD6axJkLvMddpXDo9O8jVp934ss7fBSD0kjA8bA3f3phswzE5/AARnb4DA6p3I4M+VoT/ClYSwffdBwSWwuF47JjyBIKfPFu/PHnIBPPZVxcRhqR7QXtA9Xdj7Qv2CXXpjzMODNsqEkzTcpDVPRUF4S8mNguoK7fZGu88TT3H9jpBV6hDPG7qCVNNmFKuMoWXapBg313qrRWqwawQf2ilBaYR04hxcUYjS1U/RfD2Lv0OHiINb/vnlxJvbAgodboIwAaBd5FJ1Yk2/hAylsc7pVlhiOi+IZIXNNwPpHO0wmjBZpL6t0bgSAdsPWaAy1FYSmZ0evZ95+Ug+wsedDI20JItvWS64ql/YID9bkjAgDdwkFbugAAJKoh9DQUrYhB3o1ISLe3LRpZJZyrdrXV+GJuiFXnK+SrMlQTtbJAopk487aKHekQ4G/CezjdH08vHTbz7uoAe1Z2C65hLL9ZayJQ13C5w4qvFTRWZk7k71sEEDf8m4aQQi0BdeN6xwVgBtMQfqi6BJs=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(52116014)(7416014)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?cFk4RTNZbjdRSDhWdENUU2ZmUDdmY2F6SkRYNHEvMDdSbS90d0E5Y2VqbXE2?=
+ =?utf-8?B?RGROY0NmeE4zOC82OHJaQ002ZndjcVNtaDZmQmNEREk5NWpkQisvWWo1eE1S?=
+ =?utf-8?B?OEtoWkVCdjZuTmZUa25ITENWeXRyZWdZdFRIblQ3OUhWdmJPbHAydUJlYW40?=
+ =?utf-8?B?NUZZZnRwR3VnTFpTUkVxN21NdEFkRENENkVCN0VQdzEyYTlkem5vVDhHYk1S?=
+ =?utf-8?B?Qmw4L0VLcThNZFdvZkFtMDM2dXY3RmoycXJob0F5TWxjK0QrdHhHYlFMNWhp?=
+ =?utf-8?B?bEQ3VUlJQ2hlS1hMZ0ZGSE01dVBsOUFDc05tYksxemRkRTRBZTMrN1UzZzln?=
+ =?utf-8?B?STVHcHpPbzNQeDQ5VzlZRExsckxUOTdqc2FnemJQNGZtWFZpRVBIZXAxQ3pm?=
+ =?utf-8?B?QkVhREczWE5DTDhxYkcrZTl5MVVwQ3pvWWVFVWZUU3RmUVgxWHpjRzhncnVQ?=
+ =?utf-8?B?Q09LQk5pLzdTSG9aTmZ4YzBEZEtQcXJGeUdhL1l4ODNpRlR6cmo1SkNrSUNh?=
+ =?utf-8?B?OHR6UjA1ZVkzT0h6YVFzODdZcC9aTklpODFVeTRRRENSLzdOQnpqa1BKOWxk?=
+ =?utf-8?B?bFZJWVkweWNhQUNKcXYxSmdiUE9XcEVNdHUzeFJ6d0s1OEVTdFpwMFZZNDFU?=
+ =?utf-8?B?ZENvUWFWcnA0R094eE9nTHM5LzVsdkNxanBEb2x3c2NIRGpkZVRaOUxVNE9M?=
+ =?utf-8?B?YWNRQThhWW4zY2xscU9Xc2lvY0xBRnpKZVBEUGRCSjRwOE5rR1ZaTm5WSTIx?=
+ =?utf-8?B?MFFWMXRwZjRmSzFnMHZSMU52b3hVOTBiOTFJOENnVzdEYWpIZjRFWENFOVFP?=
+ =?utf-8?B?SnJ5OXcySXJPY2tkM1RXUHV6K2lVYitCaWFzTGJESmVQbExobGpWNldTZEZk?=
+ =?utf-8?B?NFVuZlJyNFVGRXdvNWxGb1ltTlA4bkxZd0Rta2tJTE01ZlcyWlN2dzhObDd2?=
+ =?utf-8?B?U0UvU3dQTUppYWkxZ2d6NUI1S3IxTGxoZlkycytwc2wwYS9WT3M5MHdrMzNZ?=
+ =?utf-8?B?K0J6NHNpUUpJdzN1cUtUWmtCQVdqTVZDZy9VNWNWa2E2NEgrc1JwZ3Z6MDQv?=
+ =?utf-8?B?WXAyVjZUN01McHFZeVdKSVliR3luZGhPZG1qWndabkxIanJIMkh6Ui9CenpQ?=
+ =?utf-8?B?bjdWTjBFdkFQSTJxY284eDJUeEo4aUJDMDlPdk5zbWVsRFMrQldOME9mTDFL?=
+ =?utf-8?B?aG9tbVFNQk1sMjFKWmpId3FZejN0K05vSnp1VlRBT3pJQkUzODFNOERLZW9r?=
+ =?utf-8?B?ZzdZL21TSEdpSWNlci9pb1dHaW14UDVEOTg2OVpObXFuek5IVERjOVZiUjhi?=
+ =?utf-8?B?NTRGVkFuTTR5RE1hOHFwbkljcDhndkZMdmwvL1JFNVh6NkhTd3BNSWZSZzVw?=
+ =?utf-8?B?R3FDYmEzMzBLWnZNbzlMeDBVK3BCZ3JFSmtWdnZrb3ZNbmRpQ01yd0hDQnRK?=
+ =?utf-8?B?V1owQ0Y0azlMQ25QazlsWm5odHl2aHpnQ3lWbnNPMTdjbXJFL0lXcjdoZUVu?=
+ =?utf-8?B?SGt1QzZLRzhrZzE1S0VOREh0ZEdUU09iL1RRRkxTRjRneWZZWTFyUVJyUlJF?=
+ =?utf-8?B?L2E1OXcxRTdNMTNRNTM0ak5Fcno5cWlEdEhTeFFIZ3AxVGl6VjN0UVNURVpZ?=
+ =?utf-8?B?UnZ1SUhSZVdXNllWcFJLMzlTOWF3cUNrc0RKMDVBVG01Ylk1SFRwNElLU1pH?=
+ =?utf-8?B?L0M2Q2tKY1d5YlhwMHYwUmdqSHBtbEROOU8zUkVpYW5Oa280U1JnV0g5ZDlR?=
+ =?utf-8?B?Y2RkOEhuRVRxTWw3eHFJL2FnTUh0ZXZXdGtZVk5NQ3UrK1dseUR6dXNHMWsv?=
+ =?utf-8?B?L1F4NDl3Wmc5MGp2eFJJdnVQalRla2FHWEVyMTBGWlhIU2J4RmkrTHdtOHpp?=
+ =?utf-8?B?bEZMMzVCQkp0YnowMUJSeS9TTEpPaHJXWmN1NmNSMEVCdWt4c3VCVW9pcU94?=
+ =?utf-8?B?QjRwc0NpdU00SzU0enBpeDdZRlBvU0xVZkJoU01LMHFIS2ZtOXArOEtXVjJo?=
+ =?utf-8?B?M1U0WFREMUd2ckVQd2pNOFg2Q2FscGF5Y05kU0xtSWt2RHZSeWxRMGRKT1Vv?=
+ =?utf-8?B?ZVdzL1E1WmxQdjF5QVI4M1BHcWlFSW4zVUVZdjNXbEdBZ2lNeHd6OGpGZTNH?=
+ =?utf-8?B?TXVhSGthbjBZOXVGcngrYW5UaXBLZkpxMEorZXpKTWF4QXJidmo1ekdnR3lX?=
+ =?utf-8?B?UjhScWRpeGl5S3QyU05EOVpwUmRvOHVsNHFORjN4ZDlDbkNsNkFWeURUbVlL?=
+ =?utf-8?B?YllsT0NsM3J2OEhnc2EvUkgxTFBHMzFkSlE2eE5NTDlVRHg2NVY1Q3dPTXIx?=
+ =?utf-8?B?MUsxb0RaaitONlVub1BTaTJtajQ0bVVvQTdxMUtLUWVUaFBVTUprZz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7565a37c-8781-4962-bee5-08de7fe4ee7b
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 03:10:36.5312
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QlbvO34gYzICHpdbX3qSgSCfUL2jz69dZ8K6HZIMMEjqi7YvHm4TiF3MddguTAu8+an62JpXtuHhWVMSscUPYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRZPR04MB12395
+X-Spamd-Result: default: False [0.44 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224793-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[yeah.net];
+	FREEMAIL_TO(0.00)[ideasonboard.com,kernel.org,nxp.com,pengutronix.de,gmail.com,phytec.de,jmondi.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-224794-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[yeah.net:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xietangxin@yeah.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,yeah.net];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yeah.net:dkim,yeah.net:email,yeah.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2EB4626C808
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guoniu.zhou@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5722F26CAAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A UAF issue occurs when the virtio_net driver is configured with napi_tx=N
-and the device's IFF_XMIT_DST_RELEASE flag is cleared
-(e.g., during the configuration of tc route filter rules).
+This series fixes a hang issue when capturing single frames and improves
+buffer utilization by prioritizing user buffers over discard buffers.
 
-When IFF_XMIT_DST_RELEASE is removed from the net_device, the network stack
-expects the driver to hold the reference to skb->dst until the packet
-is fully transmitted and freed. In virtio_net with napi_tx=N,
-skbs may remain in the virtio transmit ring for an extended period.
+Patch 1 reduces min_queued_buffers to allow streaming with a single buffer,
+fixing hangs in applications like libcamera's cam tool.
 
-If the network namespace is destroyed while these skbs are still pending,
-the corresponding dst_ops structure has freed. When a subsequent packet
-is transmitted, free_old_xmit() is triggered to clean up old skbs.
-It then calls dst_release() on the skb associated with the stale dst_entry.
-Since the dst_ops (referenced by the dst_entry) has already been freed,
-a UAF kernel paging request occurs.
+Patch 2 changes the buffer selection logic to use pending user buffers first,
+minimizing unnecessary frame drops at stream start.
 
-fix it by adds skb_dst_drop(skb) in start_xmit to explicitly release
-the dst reference before the skb is queued in virtio_net.
-
-Call Trace:
- Unable to handle kernel paging request at virtual address ffff80007e150000
- CPU: 2 UID: 0 PID: 6236 Comm: ping Kdump: loaded Not tainted 7.0.0-rc1+ #6 PREEMPT
-  ...
-  percpu_counter_add_batch+0x3c/0x158 lib/percpu_counter.c:98 (P)
-  dst_release+0xe0/0x110  net/core/dst.c:177
-  skb_release_head_state+0xe8/0x108 net/core/skbuff.c:1177
-  sk_skb_reason_drop+0x54/0x2d8 net/core/skbuff.c:1255
-  dev_kfree_skb_any_reason+0x64/0x78 net/core/dev.c:3469
-  napi_consume_skb+0x1c4/0x3a0 net/core/skbuff.c:1527
-  __free_old_xmit+0x164/0x230  drivers/net/virtio_net.c:611 [virtio_net]
-  free_old_xmit drivers/net/virtio_net.c:1081 [virtio_net]
-  start_xmit+0x7c/0x530 drivers/net/virtio_net.c:3329 [virtio_net]
-  ...
-
-Reproduction Steps:
-NETDEV="enp3s0"
-
-config_qdisc_route_filter() {
-    tc qdisc del dev $NETDEV root
-    tc qdisc add dev $NETDEV root handle 1: prio
-    tc filter add dev $NETDEV parent 1:0 \
-	protocol ip prio 100 route to 100 flowid 1:1
-    ip route add 192.168.1.100/32 dev $NETDEV realm 100
-}
-
-test_ns() {
-    ip netns add testns
-    ip link set $NETDEV netns testns
-    ip netns exec testns ifconfig $NETDEV  10.0.32.46/24
-    ip netns exec testns ping -c 1 10.0.32.1
-    ip netns del testns
-}
-
-config_qdisc_route_filter
-
-test_ns
-sleep 2
-test_ns
-
-Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: xietangxin <xietangxin@yeah.net>
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 ---
-change in v2: add cc stable and fix tag
+Changes in v2:
+- Add fix tag
+- Replace "This ensures" with "ensure"
+- Reduce min_queued_buffers from 2 to 0 suggested by Jacopo Mondi
+- Put example from commit message to comment in driver suggested by Frank
+- Detailed changes can be found in each patch's changelog
+- Link to v1: https://lore.kernel.org/r/20260311-isi_min_buffers-v1-0-c9299d6e8ae6@nxp.com
 
-v1: https://lore.kernel.org/all/20260307035110.7121-1-xietangxin@yeah.net/
 ---
- drivers/net/virtio_net.c | 1 +
- 1 file changed, 1 insertion(+)
+Guoniu Zhou (2):
+      media: nxp: imx8-isi: Reduce minimum queued buffers from 2 to 0
+      media: nxp: imx8-isi: Prioritize pending buffers over discard buffers
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 72d6a9c6a..5b13a61b3 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3351,6 +3351,7 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	/* Don't wait up for transmitted skbs to be freed. */
- 	if (!use_napi) {
- 		skb_orphan(skb);
-+		skb_dst_drop(skb);
- 		nf_reset_ct(skb);
- 	}
- 
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260310-isi_min_buffers-4b490a124223
+
+Best regards,
 -- 
-2.43.0
+Guoniu Zhou <guoniu.zhou@nxp.com>
 
 
