@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-224981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEPmEFkfs2l/SQAAu9opvQ
-	(envelope-from <stable+bounces-224981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:29 +0100
+	id sFVVLFsfs2l/SQAAu9opvQ
+	(envelope-from <stable+bounces-225023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2D6278B9A
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD81278BA1
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 21:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C0D1313A9F0
-	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:14:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34BE6302087C
+	for <lists+stable@lfdr.de>; Thu, 12 Mar 2026 20:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF123FFABE;
-	Thu, 12 Mar 2026 20:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A26829E11D;
+	Thu, 12 Mar 2026 20:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0Lt61BQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR3pdLU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F84F35A3B6;
-	Thu, 12 Mar 2026 20:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23A41F9F70;
+	Thu, 12 Mar 2026 20:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773346457; cv=none; b=SXS2fwylbj225vDoHqEyuxLco6DdwAFtWSX2bEAuposkhFrhrqAK39g1Mzia+ufcT63a7C3+ZaHN+/KCgp0fqAxGN5zUbPHnAoVbEPVJh7nPJHmGRGuJz5QNCX+/WQ2OcVinenm25pV/+FN/ZxXi9W9K+ALiGlZcPYfpFyXkjK8=
+	t=1773346647; cv=none; b=G+CnyQFuvobkIx1NTU2O1ZDFcatMWT0dJsnTITYInMcr0cSKWQChVw8k81kp03MIL5cCWs+mE1aVUdCjeIVCeHODP73UJsxN/8pu6MOwkWnMWKTJgAMoS0baLir6L+nuOETYhnjiFbXPKDaDLSnI40tbM3hvBzONKEzzG2aDE+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773346457; c=relaxed/simple;
-	bh=ZZOioaStvFHkxyfEkFAsTd2s4E0hGRPTsrOmr0RDY5k=;
+	s=arc-20240116; t=1773346647; c=relaxed/simple;
+	bh=FPsntWZEgwpNU8YTZYqUFROCJxHOhp+Kx9zB2MxTYEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P+MmIc4OjzL9t/yFJqY82KoK80vothaajbB4FFuE/zSkwPicyodlbzhkvgmVHhrQ/6TShcdZVePp06smEjlWgP/Xhznmurhg1TTKoeRvL05c+O1d1rbSgfBtqAtJh6cXiWxj6XOTejcJQNUy146Ko6FeEHyApZ4x1MDMrOI/usg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0Lt61BQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF00C4CEF7;
-	Thu, 12 Mar 2026 20:14:16 +0000 (UTC)
+	 MIME-Version; b=avSg7aJ2vzanuELBInDK4fhl/nCvYyYbF4UtyRodFoV482hGOz9+36rwZ/bnCciva2kYSTUbpJbRivB1GSHVszg5bqjOjOGFpZarw436CqyKHWBWmu7UKu677qVgtf/Cj5U75XK17qtinyJHSpAw5d5FBXxfmbR0POaiMNdygYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR3pdLU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641A5C4CEF7;
+	Thu, 12 Mar 2026 20:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773346457;
-	bh=ZZOioaStvFHkxyfEkFAsTd2s4E0hGRPTsrOmr0RDY5k=;
+	s=korg; t=1773346646;
+	bh=FPsntWZEgwpNU8YTZYqUFROCJxHOhp+Kx9zB2MxTYEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x0Lt61BQ3TXy4lPl+32M5sLbPNWfOncrADRk0oSlcfXO5XohtmcnUP3PYOdt/Cb6d
-	 6xG1RZRdrApdFudVJ7JS3uahizxJPhz8KCB2vQWXo/pRFcT1DmLb2Q3+huOKoFtkiL
-	 R/f3SJNvr39U5IwlYXH40mkGXbAO3dHmtSj2jojI=
+	b=xR3pdLU0k16UphEUSqxFMYX3fXUevlXw5Yz4q0MvsyOsUjAKZgFovGI4bktm3vbDV
+	 Qm3ZmNMTXshdGp5Sw9a47WVXLf3r/DlT0Z5JR2AWbrWw2RVe4yv0agUfCnLK3rtQaY
+	 LWF0bRE+sMeKE9vCImFYnsmHLfg7rTMs+2LgHNl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/265] PCI: qcom: Dont wait for link if we can detect Link Up
-Date: Thu, 12 Mar 2026 21:07:13 +0100
-Message-ID: <20260312201019.866430679@linuxfoundation.org>
+Subject: [PATCH 6.12 047/265] Revert "PCI: qcom: Dont wait for link if we can detect Link Up"
+Date: Thu, 12 Mar 2026 21:07:14 +0100
+Message-ID: <20260312201019.902601808@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
 References: <20260312201018.128816016@linuxfoundation.org>
@@ -66,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-224981-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225023-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,quicinc.com:email]
-X-Rspamd-Queue-Id: 9D2D6278B9A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,rock-chips.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3AD81278BA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,49 +100,82 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 36971d6c5a9a134c15760ae9fd13c6d5f9a36abb ]
+[ Upstream commit e9ce5b3804436301ab343bc14203a4c14b336d1b ]
 
-If we have a 'global' IRQ for Link Up events, we need not wait for the
-link to be up during PCI initialization, which reduces startup time.
+This reverts commit 36971d6c5a9a134c15760ae9fd13c6d5f9a36abb.
 
-Check for 'global' IRQ, and if present, set 'use_linkup_irq',
-so dw_pcie_host_init() doesn't wait for the link to come up.
+While this fake hotplugging was a nice idea, it has shown that this feature
+does not handle PCIe switches correctly:
+pci_bus 0004:43: busn_res: can not insert [bus 43-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:43: busn_res: [bus 43-41] end is updated to 43
+pci_bus 0004:43: busn_res: can not insert [bus 43] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:00.0: devices behind bridge are unusable because [bus 43] cannot be assigned for them
+pci_bus 0004:44: busn_res: can not insert [bus 44-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:44: busn_res: [bus 44-41] end is updated to 44
+pci_bus 0004:44: busn_res: can not insert [bus 44] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:02.0: devices behind bridge are unusable because [bus 44] cannot be assigned for them
+pci_bus 0004:45: busn_res: can not insert [bus 45-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:45: busn_res: [bus 45-41] end is updated to 45
+pci_bus 0004:45: busn_res: can not insert [bus 45] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:06.0: devices behind bridge are unusable because [bus 45] cannot be assigned for them
+pci_bus 0004:46: busn_res: can not insert [bus 46-41] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci_bus 0004:46: busn_res: [bus 46-41] end is updated to 46
+pci_bus 0004:46: busn_res: can not insert [bus 46] under [bus 42-41] (conflicts with (null) [bus 42-41])
+pci 0004:42:0e.0: devices behind bridge are unusable because [bus 46] cannot be assigned for them
+pci_bus 0004:42: busn_res: [bus 42-41] end is updated to 46
+pci_bus 0004:42: busn_res: can not insert [bus 42-46] under [bus 41] (conflicts with (null) [bus 41])
+pci 0004:41:00.0: devices behind bridge are unusable because [bus 42-46] cannot be assigned for them
+pcieport 0004:40:00.0: bridge has subordinate 41 but max busn 46
 
-Link: https://lore.kernel.org/r/20241123-remove_wait2-v5-2-b5f9e6b794c2@quicinc.com
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: e9ce5b380443 ("Revert "PCI: qcom: Don't wait for link if we can detect Link Up"")
+During the initial scan, PCI core doesn't see the switch and since the Root
+Port is not hot plug capable, the secondary bus number gets assigned as the
+subordinate bus number. This means, the PCI core assumes that only one bus
+will appear behind the Root Port since the Root Port is not hot plug
+capable.
+
+This works perfectly fine for PCIe endpoints connected to the Root Port,
+since they don't extend the bus. However, if a PCIe switch is connected,
+then there is a problem when the downstream busses starts showing up and
+the PCI core doesn't extend the subordinate bus number and bridge resources
+after initial scan during boot.
+
+The long term plan is to migrate this driver to the upcoming pwrctrl APIs
+that are supposed to handle this problem elegantly.
+
+Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251222064207.3246632-11-cassel@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 5d27cd149f512..0205c18d95a01 100644
+index 0205c18d95a01..5d27cd149f512 100644
 --- a/drivers/pci/controller/dwc/pcie-qcom.c
 +++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1696,6 +1696,10 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+@@ -1696,10 +1696,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
  
  	platform_set_drvdata(pdev, pcie);
  
-+	irq = platform_get_irq_byname_optional(pdev, "global");
-+	if (irq > 0)
-+		pp->use_linkup_irq = true;
-+
+-	irq = platform_get_irq_byname_optional(pdev, "global");
+-	if (irq > 0)
+-		pp->use_linkup_irq = true;
+-
  	ret = dw_pcie_host_init(pp);
  	if (ret) {
  		dev_err(dev, "cannot initialize host\n");
-@@ -1709,7 +1713,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+@@ -1713,6 +1709,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
  		goto err_host_deinit;
  	}
  
--	irq = platform_get_irq_byname_optional(pdev, "global");
++	irq = platform_get_irq_byname_optional(pdev, "global");
  	if (irq > 0) {
  		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
  						qcom_pcie_global_irq_thread,
