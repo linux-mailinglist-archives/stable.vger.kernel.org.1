@@ -1,198 +1,174 @@
-Return-Path: <stable+bounces-225242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ZrErBBONs2klYAAAu9opvQ
-	(envelope-from <stable+bounces-225242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:05:39 +0100
+	id 0GbzAkeNs2klYAAAu9opvQ
+	(envelope-from <stable+bounces-225243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:06:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C4527D3AA
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:05:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE9D27D3B9
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 843B73077E79
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:05:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F8643081BFF
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744E123182D;
-	Fri, 13 Mar 2026 04:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F802417D9;
+	Fri, 13 Mar 2026 04:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="L3SkIJ8H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hldKoajK"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D452126F3B;
-	Fri, 13 Mar 2026 04:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603BE126F3B
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 04:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773374734; cv=none; b=SmhefdVV78S5D2JhbM+erCPahk/EEbJ2J1qG4eUD9QXR/chh1pFY/oCO1w7CzjtHsF8C5HldWUYHxWtf7I8ZOwtUEaWqkG6IU9QYoB8cz86UX34UwqgJ24kXj4PnXpjtX8vXWVUMvgrWG8XA3K/qxTWFOovijLTH47NnozfuBsY=
+	t=1773374786; cv=none; b=ERUA07Gml5nwh5abSgP3LFdEzn422o9MUhTBu7rfwc9WtQU8m/NCp416iOcPQf5kVzMDvOWKs6fEIcRAsLzbZah9GEdSTPiLns4HY5kowrJfgcicWB0Di79HXBj9W1Yza6wXeAa2sbKc7N3Lal4U+gBaQjgMYodYTW5daegOz7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773374734; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gvr03+m+J6IsC8XTLiOdPDu6KOOlRTA8C+ZWM3cNIG5GZ/DYkgE4RNJXnLbXJcbsk9JZFgp782wZrTUnY3bPfSTlwMbXAQguxqg4nPY8GLz+X9m+Tps+USqpDMM19aDWWuQD+rh7pdK1ucvPDrWCS2pfvZD0xDh7Pt587aZBafY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=L3SkIJ8H; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1773374697; x=1773979497; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=L3SkIJ8HQ256r/ccaXOBY3pSdtr6nCCCEacjy98KmfTqRqx7be9yYhxdz6PvXFkL
-	 78hO2Wga8EZvet0Qw9fZQ6TXuT7sBze6/MQPtzCCBPe4okaKa0t2AJCLNvKIiImFp
-	 IER+DLtwBwcskgOyTJMB4e+4vH5ZguGubTQY+AbbCj0SOU26KK6ZIYHE3VsGxqiGm
-	 F7ZLBzUw5WsNTRu1zjDVs61kbWxihWweBe19jYnQKcyvLiFBX4gE96eZB0RxOazau
-	 dx0YVswA/81FDNnhiQAd/Rw1f8HNdoCVm2Oc1UARCrgxrBcRtvF7H3+tTSS1J2RZi
-	 rxt2+y2Jyjx7HD9Yxg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MBUmD-1vubAM0d6V-00CCrt; Fri, 13
- Mar 2026 05:04:57 +0100
-Message-ID: <44dd5e80-ae04-46a9-8913-255b888dbab6@gmx.de>
-Date: Fri, 13 Mar 2026 05:04:55 +0100
+	s=arc-20240116; t=1773374786; c=relaxed/simple;
+	bh=Ccb7/rrFkWTefSKTgc4VB5t8QmMBzWsjuDWfEug+R5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WB+le/CnrtMZoRlXsUp3wTPrQnnUhlYhMOxp6pei6bcTJ4GVtQMe42xwZoiktR7yv97CjVE9Y5CvYQhd/GXpEF0SYWBMbSaNdhXs6H7KPl2zKI4bip4BMiSj5GI/lle429nYpmHqyID271CK956xNqkRhMX3MXGalLl/qB9cpJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hldKoajK; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-823c56765fdso1002388b3a.1
+        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 21:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773374785; x=1773979585; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MZbSvC8sAuSPUZNbLT6g7eFzZMKiQ1pz/Tp17o9W3DA=;
+        b=hldKoajKAFz4kdwRadE2N05T34zqqC+fbwO0fZf0UjP1eXPJTSEpyFzFzJ+hOkD1S7
+         ucHwOLG6Tt+Cy6Hp+iMRhyhj/tNiTi6kaQFPMh2hUIMd/5T4dA2XR/HikyuUOil2cjUH
+         c5FzenoPLOPIjK9gB7hu2UBCDSBJZtu5LaxA6YFPfFcGt2hJCsPc/Zyg9GwArG2+Ygla
+         GxrIpkDcXBcOQgRlQl3XMDlTKGjscvUu4OxcUTWnoi2gRdHNOP+5zFRBsryNTb+Q041z
+         Q3LEEDKpePFOd/0AcJNDHhi1c2oaQpye71i/PF/FowAQrtUvaoGJbW/p8XVlrO7z0ZX6
+         ICjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773374785; x=1773979585;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MZbSvC8sAuSPUZNbLT6g7eFzZMKiQ1pz/Tp17o9W3DA=;
+        b=EAjaOdjk8hXEr3VUa06qqJUL/6tL91FqeD1KcnLAe1Z4c8eCHpoxr7rnPSc5rLB/FA
+         zCqkM60+dSz9gZ1vi2xtiZpX8l34eiw6L8bWsUwpVEyYl05ueASHZ9DXlnGTBBp2jJrk
+         vmIkz189RB0x4q88frBXBQpx/H3l3niC1tRJ9t2574zVCrOuhgW53oIQ0O/KVrTMKLr+
+         Pyit9x4uXWuj08p6/6wWIwyK9XG90gDLGS4LupGLmhHpnnaHc57BoL2hj1/Yxz2T7xyB
+         jygOeUohkLbAuxNJDBDSMAEZHq7yIxsh0L2u7s1PXOEpnM422m8Gk9fhhXuh6NrRhtLH
+         Y+Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCXduaZxwZxc00WaCXSwo7FMrZtxwGZLcy0Cn9yEswA0z4Tvc/kvazPItkPuCnRnSsMukJO/nDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi0jotzlte6mXEQa3S2nnr4x9NRONLT6cBomX6ZjbTd99DDI/9
+	sjGeAPK4oxMmdCz8yfbkbpW1kjViKC9pCYzxCcJdckZ5sbbuUbtsx+Jk
+X-Gm-Gg: ATEYQzx0rHK+EnKfqE4mqJ8xyCRBBdyrQzKPBG1wmvmYKvr7eOZ69Do5wMJNBYTnSMT
+	n5jI8IM3ZP3ibEuMgvNgs3Y1Zi7r2ILYxwpnauh1J6XZHQtxp6/7DcxRpzL5B/0YD2lTe9cSGTk
+	hgy1T3GWUrcaCZf13BxizStHQkMlTGQwZpHIRkkXZPmknaix4AhN0SiHt9fBCIvxG026ZQbtZB9
+	fFwb2H8hMD9bzoTjicUb3kpNgRTfF/iKWOMLUe92gbxwWmnQxotlq/BkUOUhcvPtPSGAAIviIVQ
+	TqL3HuAC67fv1+WpqaGQUsNfsFQr+O95/6L1DhZLNIvalrKToLtxIjMIcZp5RkmvL2RLTMTEqqe
+	+c+EFEAQ3Xcl9jTIqKw0D8f9eW9T4kwV9gpXGQ8tGNOczkgbNqH57MWLimfoXlwxxUHlklVCRhE
+	t5RffSpx7XnHTfoB2OPMqm
+X-Received: by 2002:a05:6a00:7084:b0:824:a7bb:e8fc with SMTP id d2e1a72fcca58-82a1983fc2dmr1224093b3a.24.1773374784697;
+        Thu, 12 Mar 2026 21:06:24 -0700 (PDT)
+Received: from lgs.. ([223.80.110.53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07384b27sm4523373b3a.53.2026.03.12.21.06.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 21:06:24 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Kiseok Jo <kiseok.jo@irondevice.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ASoC: sma1307: fix double free of devm_kzalloc() memory
+Date: Fri, 13 Mar 2026 12:06:11 +0800
+Message-ID: <20260313040611.391479-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 00/13] 6.19.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260312200321.671986598@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260312200321.671986598@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:MVkPFa+gI8+c1GZCmvX3uSEmyTGQVM2NYOHm07uRgUKXO9GIERO
- QReXk2CSX7a7hM2AUwsUdh72Lgv1iOR+YRBFDyFeV1GApvnEvop/Oi6XKXjrKPWgjIB6K5D
- a+nFLOeFiC06C9m1gjHuRSafOovsn+CE7IVJqv8PiGgjYZPxPSUxWgyrf3zWgkCro+iGGcE
- acIai+1roCkcadRpLbXAQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ti0iUlzASqs=;I0v1l8pGCYSPPyR0D/3PQvyGkJJ
- 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
- dDmsOmEA=
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225242-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225243-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[irondevice.com,gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:dkim,gmx.de:email,gmx.de:mid]
-X-Rspamd-Queue-Id: 54C4527D3AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7AE9D27D3B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+A previous change added NULL checks and cleanup for allocation
+failures in sma1307_setting_loaded().
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+However, the cleanup for mode_set entries is wrong. Those entries are
+allocated with devm_kzalloc(), so they are device-managed resources and
+must not be freed with kfree(). Manually freeing them in the error path
+can lead to a double free when devres later releases the same memory.
 
-Thanks
+Drop the manual kfree() loop and let devres handle the cleanup.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Fixes: 0ec6bd16705fe ("ASoC: sma1307: Add NULL check in sma1307_setting_loaded()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v2:
+  - Replace kfree() with devm_kfree() for mode_set[] error cleanup.
+  - Clear released mode_set[] pointers after devm_kfree().
+
+ sound/soc/codecs/sma1307.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/codecs/sma1307.c b/sound/soc/codecs/sma1307.c
+index 4bb59e5c0891..5850bf6e71ca 100644
+--- a/sound/soc/codecs/sma1307.c
++++ b/sound/soc/codecs/sma1307.c
+@@ -1759,8 +1759,10 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+ 				   sma1307->set.mode_size * 2 * sizeof(int),
+ 				   GFP_KERNEL);
+ 		if (!sma1307->set.mode_set[i]) {
+-			for (int j = 0; j < i; j++)
+-				kfree(sma1307->set.mode_set[j]);
++			for (int j = 0; j < i; j++) {
++				devm_kfree(sma1307->dev, sma1307->set.mode_set[j]);
++				sma1307->set.mode_set[j] = NULL;
++			}
+ 			sma1307->set.status = false;
+ 			return;
+ 		}
+-- 
+2.43.0
+
 
