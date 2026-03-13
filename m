@@ -1,132 +1,176 @@
-Return-Path: <stable+bounces-225260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJitIp6/s2lHagAAu9opvQ
-	(envelope-from <stable+bounces-225260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:41:18 +0100
+	id QPSKLIPFs2lAawAAu9opvQ
+	(envelope-from <stable+bounces-225261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:06:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6008B27EE1E
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:41:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E1E27F4B4
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6539301E737
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 07:41:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DACB0309D0BF
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAD5370D5F;
-	Fri, 13 Mar 2026 07:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMDEaqNq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8151136F438;
+	Fri, 13 Mar 2026 08:03:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6201936F40D;
-	Fri, 13 Mar 2026 07:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D388351C30
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 08:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773387649; cv=none; b=dkBk/FqgIYvrblhbanv6ntv1QAdRtc9MBK9xo8oQulnVL6hfLuYNolbpUYMpLpLojZdwp9Pv8yz3MpJD1lzca1UO67Ef1wXITdbJdh3DI4nekvEx+U4bXFjn1+dbpvyWPo7x658UQfY9Q86d7ne6pX91GUutAkDMQu4nwJlWwYk=
+	t=1773388996; cv=none; b=T0BUXmgXY5+ivzpR75rsuaSyWcvDITWvaEPKX5ZFZw9RL+qSEIInN2lUSooy8fLSyyaY4GaEefvzK6IYD0pgFaLCLVUH7fmGsc7REzeDW7FTDS9+YbSELQtkIIkl7XjoMiHLa0RAYvzebDXrK+CNrM0BpwnIYa3NYswYmglP2nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773387649; c=relaxed/simple;
-	bh=0sZQ+czOgztMPQpfgVSOWELt/G9sQl4X0UukyDA+KrE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dnUz+1N7DuEvyLBYvRzWdsyyHdI3slMoNeIvyTVNwEn8zVVqcuQBQ6HosWDKp+KUd+Gi3MF9jVuGHm7ucwt/WVNIhkeWrAmL1rsdnF4a9v3Mwj3pa1DWEWDSOWWf0cgRlBtq/sfP3kv+OCTul/O3p7+YwRqAvUAWLOIDrhUM+PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMDEaqNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C05C19424;
-	Fri, 13 Mar 2026 07:40:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773387649;
-	bh=0sZQ+czOgztMPQpfgVSOWELt/G9sQl4X0UukyDA+KrE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mMDEaqNqcbeb7LsNYR1fljQ9hsHvrABePqn29O/qMQtQsagL07q9FOsvtr2nUxc8i
-	 TqPmZ5UZiouwC4pKUwRzu1G2kWkvOUGtb9b5kAWjJvlOIcwpu29FZMQ7v2Pp1eysgB
-	 cB/o8TZ2vL2lg7tv+eT+hB3I2o0UwlEDbvKbafvDFpgXjLSfhkljvLgmgGpLVrCPX2
-	 3F3VhSEUIQ4CxPk+u9Q5t4F/vOCf7H7lSKBjYGgIiZiH8jVpLpF8CY63hLDzqKLW9L
-	 +cKYgf2b9D0bgc3uFcMLYB1KSZqLVuTmEaK52LCJZ45n4hJPP39hHc8Rad+kR9aFRf
-	 Ky9qHIRsPrMNw==
-From: Benjamin Tissoires <bentiss@kernel.org>
-Date: Fri, 13 Mar 2026 08:40:25 +0100
-Subject: [PATCH 2/4] HID: bpf: prevent buffer overflow in hid_hw_request
+	s=arc-20240116; t=1773388996; c=relaxed/simple;
+	bh=pNhBiBnGlsup2xZ7gmRzMFRIGL8CZdq7C81+s6XAZm4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WlKi9HdsN3UQMqkZgjkxBV7j4IGQpMaSt5Tugh41LEhhkFoZ1NJoYlwBB/BquHkXn+chuwGlnAqdnpFV3lJztb1zDwrve9CWSvteKi7YV1jbec6xN4YFstV3QiNFNzQ85nrFiXwjpYweZNXbNjntgJ8Q2x3lRmD/puVlP6uEyNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1773388987-1eb14e06ea0ffb0001-OJig3u
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id 31EK1NL8U9RBNbeI; Fri, 13 Mar 2026 16:03:07 +0800 (CST)
+X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+Received: from desktop-a4i8d8t.zhaoxin.com (desktop-a4i8d8t.zhaoxin.com [10.32.65.156])
+	by zhaoxin.com (f222c4) with ESMTPf8480048f9d7ab25467bd880f05d502d
+	Fri, 13 Mar 2026 16:03:06 +0800
+X-Eyou-Smtpauth: AlanSong-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.65.156
+X-Eyou-EnvelopeSender: AlanSong-oc@zhaoxin.com
+From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
+To: herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	ebiggers@kernel.org,
+	Jason@zx2c4.com,
+	ardb@kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Cc: CobeChen@zhaoxin.com,
+	TonyWWang-oc@zhaoxin.com,
+	YunShen@zhaoxin.com,
+	GeorgeXue@zhaoxin.com,
+	LeoLiu@zhaoxin.com,
+	HansHu@zhaoxin.com,
+	AlanSong-oc <AlanSong-oc@zhaoxin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/2] crypto: padlock-sha - Disable for Zhaoxin processor
+Date: Fri, 13 Mar 2026 16:01:49 +0800
+X-ASG-Orig-Subj: [PATCH v4 1/2] crypto: padlock-sha - Disable for Zhaoxin processor
+Message-Id: <20260313080150.9393-2-AlanSong-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260313080150.9393-1-AlanSong-oc@zhaoxin.com>
+References: <20260313080150.9393-1-AlanSong-oc@zhaoxin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260313-wip-bpf-fixes-v1-2-74b860315060@kernel.org>
-References: <20260313-wip-bpf-fixes-v1-0-74b860315060@kernel.org>
-In-Reply-To: <20260313-wip-bpf-fixes-v1-0-74b860315060@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Benjamin Tissoires <bentiss@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773387643; l=951;
- i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
- bh=0sZQ+czOgztMPQpfgVSOWELt/G9sQl4X0UukyDA+KrE=;
- b=hJIXco5EJPmc7XEmh3QD0+/IMn1m5GYxsQJIOSLAaLCIRcJf+EfCExqFwkxE8k00QryldA3s6
- h02fajwfwIIBYqWR3gHaFzk57Wbh2mpKwGmurlwc2Let9zunxUaV6to
-X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
- pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Eyou-Sender: <alansong-oc@zhaoxin.com>
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1773388987
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2511
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.62
+X-Barracuda-Spam-Status: No, SCORE=-1.62 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=BSF_SC0_SA085b
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155781
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.40 BSF_SC0_SA085b         Custom Rule SA085b
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225260-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[zhaoxin.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-225261-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.917];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6008B27EE1E
+	FROM_NEQ_ENVFROM(0.00)[AlanSong-oc@zhaoxin.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zhaoxin.com:email,zhaoxin.com:mid,linux-hardware.org:url]
+X-Rspamd-Queue-Id: 68E1E27F4B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-right now the returned value is considered to be always valid. However,
-when playing with HID-BPF, the return value can be arbitrary big,
-because it's the return value of dispatch_hid_bpf_raw_requests(), which
-calls the struct_ops and we have no guarantees that the value makes
-sense.
+For Zhaoxin processors, the XSHA1 instruction requires the total memory
+allocated at %rdi register must be 32 bytes, while the XSHA1 and
+XSHA256 instruction doesn't perform any operation when %ecx is zero.
 
+Due to these requirements, the current padlock-sha driver does not work
+correctly with Zhaoxin processors. It cannot pass the self-tests and
+therefore does not activate the driver on Zhaoxin processors. This issue
+has been reported in Debian [1]. The self-tests fail with the
+following messages [2]:
+
+alg: shash: sha1-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
+alg: self-tests for sha1 using sha1-padlock-nano failed (rc=-22)
+------------[ cut here ]------------
+
+alg: shash: sha256-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
+alg: self-tests for sha256 using sha256-padlock-nano failed (rc=-22)
+------------[ cut here ]------------
+
+Disable the padlock-sha driver on Zhaoxin processors with the CPU family
+0x07 and newer. Following the suggestion in [3], add support for the PHE
+extensions to lib/crypto. Only XSHA256 support for SHA-256 is included,
+since SHA-1 has been cryptographically broken, as recommended in [4].
+
+[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1103397
+[2] https://linux-hardware.org/?probe=271fabb7a4&log=dmesg
+[3] https://lore.kernel.org/linux-crypto/aUI4CGp6kK7mxgEr@gondor.apana.org.au/
+[4] https://lore.kernel.org/linux-crypto/20260116071513.12134-1-AlanSong-oc@zhaoxin.com/T/#m49436c4849dd64454b3554c105197ef9c61db23e
+
+Fixes: 63dc06cd12f9 ("crypto: padlock-sha - Use API partial block handling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: AlanSong-oc <AlanSong-oc@zhaoxin.com>
 ---
- drivers/hid/bpf/hid_bpf_dispatch.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/padlock-sha.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hid/bpf/hid_bpf_dispatch.c b/drivers/hid/bpf/hid_bpf_dispatch.c
-index f3d15994ca1e..50c7b45c59e3 100644
---- a/drivers/hid/bpf/hid_bpf_dispatch.c
-+++ b/drivers/hid/bpf/hid_bpf_dispatch.c
-@@ -444,6 +444,8 @@ hid_bpf_hw_request(struct hid_bpf_ctx *ctx, __u8 *buf, size_t buf__sz,
- 					      (u64)(long)ctx,
- 					      true); /* prevent infinite recursions */
+diff --git a/drivers/crypto/padlock-sha.c b/drivers/crypto/padlock-sha.c
+index 329f60ad4..9214bbfc8 100644
+--- a/drivers/crypto/padlock-sha.c
++++ b/drivers/crypto/padlock-sha.c
+@@ -332,6 +332,13 @@ static int __init padlock_init(void)
+ 	if (!x86_match_cpu(padlock_sha_ids) || !boot_cpu_has(X86_FEATURE_PHE_EN))
+ 		return -ENODEV;
  
-+	if (ret > size)
-+		ret = size;
- 	if (ret > 0)
- 		memcpy(buf, dma_data, ret);
- 
-
++	/*
++	 * Skip family 0x07 and newer used by Zhaoxin processors,
++	 * as the driver's self-tests fail on these CPUs.
++	 */
++	if (c->x86 >= 0x07)
++		return -ENODEV;
++
+ 	/* Register the newly added algorithm module if on *
+ 	* VIA Nano processor, or else just do as before */
+ 	if (c->x86_model < 0x0f) {
 -- 
-2.52.0
+2.34.1
 
 
