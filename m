@@ -1,113 +1,86 @@
-Return-Path: <stable+bounces-225378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SECIA7VctGklmQAAu9opvQ
-	(envelope-from <stable+bounces-225378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 19:51:33 +0100
+	id gDoqB2NitGmhmwAAu9opvQ
+	(envelope-from <stable+bounces-225379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 20:15:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AE1288F81
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 19:51:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181E2892AC
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 20:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC5573085BA0
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 18:49:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D56313015B73
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 19:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4473CCFC5;
-	Fri, 13 Mar 2026 18:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B697316199;
+	Fri, 13 Mar 2026 19:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HNzL14dL"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ajGc8ptl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012028.outbound.protection.outlook.com [52.101.66.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120F4305962
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 18:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3269C1E1A3B;
+	Fri, 13 Mar 2026 19:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773427749; cv=fail; b=gqOGC4Iixbc+L3e5+dNIgnXK/1YbQ/q0CacUiRLaS8zHgFv3yXJnwnI53jZIwFqw24l8IS8JjpjQWQsQKc5zzMkUhVKSiY9JC/jzfLuuoXSgemuWBxIHwdcLFG7Xkp0rzt4PU94FhMSIiaFnyhV7RUMjVdansbOBI4MU5g7uChc=
+	t=1773429343; cv=fail; b=nDLH08O1AsUbT8aHsBX+m5wriV97Xs5obJ4OUCfg1pwtGOYVivk1H66LPv/TnfFjEFIvYsw1ndf+87AfC68suwM23YbD8KvDM0bcxqDNGIZRQwOZzTt52FArrNt73ZTU4350amC2mot47hixiFLCegTs4G40WquqJlqQbgVLOmM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773427749; c=relaxed/simple;
-	bh=CYA5CKgKcgOYE+GYgZPAZ8iMbkP8tG6vaHBEwJgm+WE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=slLjlogNuZcPCOFjB6/OQ2FY5ZVMBs3lSqricKvwCNjsGaVHF1I/xSf4FEP7g8OtPNzAITJofxtvJC9vRwAYda+ZmcioD/ME48PxqbGVmp2zCb+n5ttNUBgB2WzP2vRgqdpzPb47wnfzWvKaeiWqQEGhSlBWTfIIci+sGoUbcaA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HNzL14dL; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773427748; x=1804963748;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=CYA5CKgKcgOYE+GYgZPAZ8iMbkP8tG6vaHBEwJgm+WE=;
-  b=HNzL14dL6w8K77/VlcfjGlfBCAfMn+Wcbqpo039NVtv3c1TkkBJ2SKS/
-   E68/y4GzpHNpLwwTKfJFA5eF/geCZ0yUaaYrwW1HAaiAQ3jXAiXtucYGm
-   v6AVBJPeQQP2oBU2BP2mYEnKi9yGl1Ktll6jUOLNkRwLKL2APWNcG/GsH
-   NJ6bVf/WtkfIMJCJmvka1bTGRrE02VlVRc39I9IVJL5iqk0VTZJNxQJPU
-   sB+krAWSdiRtRekT0ETNfPfjQ4zY/OdlREeeEOp4WmvGBlhSGt+YaQohO
-   sdca8E622j/pBWLE01T4aIIG10d2fx0VAI8NNXLPWQaXMGC5Gh1FZy67V
-   Q==;
-X-CSE-ConnectionGUID: +JGei8jsRq+AZkUzUUMYNg==
-X-CSE-MsgGUID: G8Gsxg/+QpymSfPO5d6iiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11728"; a="74241978"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="74241978"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 11:49:07 -0700
-X-CSE-ConnectionGUID: jVysZQP8T+2O2zAs6eVbcw==
-X-CSE-MsgGUID: jhNBb7zzQdi1DVf+n5HPHw==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 11:49:07 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 13 Mar 2026 11:49:06 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 13 Mar 2026 11:49:06 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.1) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 13 Mar 2026 11:49:06 -0700
+	s=arc-20240116; t=1773429343; c=relaxed/simple;
+	bh=L4OeqVQpMBX26P//v/qYIu64ZRDaO0K/e1NHyEWVf6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gzwAjQV+90r5g7twATclgDUYcYtATL0N4RduNS9RlgZ3Me6wH7VJWzn3/FGzl3YnqPKXSHO44RfzNOls8+8jyZ992EIDYNrOMlhrKZ4hqLF+ekNhk+L58Pc5MqzG3GBLmTOh+cVjQZgWVKUoJjwZFCroXgeLhhIUAehJKSJjTaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ajGc8ptl; arc=fail smtp.client-ip=52.101.66.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c/ubVEo5o2uXWw0qhQ04WK7Q2AqxnbDEZgX+0ykxQbXJdpRA64ozEQw8Pc0jDqIR8Uo2Z2OeKoAFsYTr6mTujuhvyyw62IN8NhsnDwVUjghg6MToR3GUsbPESiI16NZsMgbAOr1RiA1X5GHNananGCMjD77gJn68o1cJXd7mY38+LHggxDHRo3OG9o3crmRj3OtbBmk+k/y2NttSUlR+S/fyh7/ywyN6eKq59wlKn4LkEe82upcVEiWbgvn6KxRTtcmW1R2OtOe/F+FzZAmEcQ1RC3H+p6KR2oKkNENeGXfDV1Akj78Dj2tOQvXZhwgHrumjsFKXubHUlweVhyYb1w==
+ b=QVdl2HKsGZm37mlnWvCZnMWfQc66TyzdwUdYmQFCo8iM4pvM4mwLNz+hApVBzogGAkuXT3XJ+w1QoHtP0cAPMIvkSWVvXmAV9sAKC03ulZeV4QyIBv3gDsM/Rdc6GjBzzGJa3Wuuk2At4uaez5tZQCn3uixqU1G2t+NuXK5sZyb/lxLHkuGAAYsVb+khZNoNA+zExMwq9hs07juSVigEVKO4/y4JaimT+tqxJdQYrJvsI2YZP0Vv/YqOEAYLyihEGx93+lS+MShT49aObGHtWK8xwefjVel1Vly9x2Ng0dp09Nw2EVqjrk6O19GQtlUxDn23623jrVLMDLIk3REVYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9lb61FqVuN165v2HPhPd6GNc391LfGZv1BelshOxouQ=;
- b=CIgbBNG1x+MMV4S5sDFivbPNe21QigvMNA7aPx5TVZVONiZr8RGw/7EVyYmil3UBcB1ruXvwExIaXExn1KkFn4fhzrgywJ7vfp9k3kDkqUwM8pTFCmv/Xd2f2AjLtdkC/iLEJGRVa5yioKHVZxowPJvRyCNkfQrjgvYQl6KGP5jQnpue8Ff8ovRaQl3l3aiP9xuBEB22tzesqDvIOVnVMKy1YoG/LVoCIz4WK+6lFJeN6YY4u3qaBHUp4+Sz9KTu3Z2wGTMe1BCK3W/UYXQkxdbFkobJ22f4yiR84DjQ4xGdQ2FzIW7/6d5KUAknMTfTm4hhh9sDOO1TcfvCedLvqA==
+ bh=62oBump2hLSd5lCNp9Vecu034CeS+sWSsJ00+M24orw=;
+ b=C2HuRHOVUQ8Ih0NSKZAg3olmH8wzOs1X79Y4hQv0BgjwEzbVLJKIgiC2jQF+7k8aqVJgX7xafUOFz51X29BBdGozUebylSMJENByJyamNVMiaA88++LAYD5NAr74QVV4O3s5uLC0Gg5zQLn6xxIGB1xTu6vjGEuj5zXnC90OTwQEoX2iLpmjVDkhiwbfnpXpH2aTTXGRNQby4uXUaeZr9EBvxnj7PRbzk7FKT27fmUYlqZNx9+2535M+Gh6LTJrCHCB830fJw1sDG8cvT+EKFDv/J8BtXLyyfXguwwjdQprUS4ykdJNrgB4y86Y06C99bM3ARJTKUFDQh1oOwJwrUA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=62oBump2hLSd5lCNp9Vecu034CeS+sWSsJ00+M24orw=;
+ b=ajGc8ptlCJmF2DV0nnQdjEnpezmQlskYclQxVzVgoWvL/etNxQwI9cuCHzU3R/sIHx2k/q+EbgDaPnpHcziZBpml9xeeH1I0xyHIWl1jffb8lpK67NZ9Ik35bcFOMTiJ9zqtflahBD+HDUGefgYRA3PreX7RXVoITlniaGfdh6IJdKVwJio96mesyO2zY3hISqewiVlVpPPGqINo+swxvhXZ1HCR8fP1adf3yZPqo8aeYks/HiDbf1jSj6bEt3y9IlG3SzP75I9Nj+7tSBtmQZ+qkC22hkTyBPUCUeTsiTFCjTLpOtTk7Vvl60Dhba54jfuMb1fu2jRU3rDF4m/1mw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ0PR11MB5087.namprd11.prod.outlook.com (2603:10b6:a03:2ad::22) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DUZPR04MB9821.eurprd04.prod.outlook.com (2603:10a6:10:4b1::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
- 2026 18:49:04 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9723.008; Fri, 13 Mar 2026
- 18:49:04 +0000
-Date: Fri, 13 Mar 2026 11:49:02 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: "Dong, Zhanjun" <zhanjun.dong@intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v9 3/7] drm/xe: Trigger queue cleanup if not in wedged
- mode 2
-Message-ID: <abRcHpXsfB/YVC3e@lstrano-desk.jf.intel.com>
-References: <20260310225039.1320161-1-zhanjun.dong@intel.com>
- <20260310225039.1320161-4-zhanjun.dong@intel.com>
- <e9979dfc-eaab-413e-963f-a50985018e18@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.17; Fri, 13 Mar
+ 2026 19:15:37 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9700.010; Fri, 13 Mar 2026
+ 19:15:35 +0000
+Date: Fri, 13 Mar 2026 15:15:32 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Carlos Song <carlos.song@nxp.com>,
+	Mikhail Anikin <mikhail.anikin@solid-run.com>,
+	Yazan Shhady <yazan.shhady@solid-run.com>,
+	Rabeeh Khoury <rabeeh@solid-run.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 01/10] arm64: dts: lx2160a-cex7/lx2162a-sr-som: fix
+ usd-cd & gpio pinmux
+Message-ID: <abRiVBgaYg72avcX@lizhi-Precision-Tower-5810>
+References: <20260313-lx2160-sd-cd-v4-0-aabcf230fbff@solid-run.com>
+ <20260313-lx2160-sd-cd-v4-1-aabcf230fbff@solid-run.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e9979dfc-eaab-413e-963f-a50985018e18@intel.com>
-X-ClientProxiedBy: MW4PR04CA0360.namprd04.prod.outlook.com
- (2603:10b6:303:8a::35) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+In-Reply-To: <20260313-lx2160-sd-cd-v4-1-aabcf230fbff@solid-run.com>
+X-ClientProxiedBy: SA0PR11CA0128.namprd11.prod.outlook.com
+ (2603:10b6:806:131::13) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,161 +88,310 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB5087:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8c8aa14-fb76-4f3d-abc9-08de8131331c
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DUZPR04MB9821:EE_
+X-MS-Office365-Filtering-Correlation-Id: ddb978bb-9628-4299-7438-08de8134e773
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info: pADhhbsZUUJMM1yzwFewNLFzxkNH1kixOrQ3/GjYcV3FaDtOAQl/F0iq9jnsJ8eop+36nxLhmftQSZf8GA7AcAnaeTupPNNIPxCYyMMlkU3nQjJ2asX4KPDztQSH9x2RqrM2x2LgSGGdH/RcaqGaMKAunLL0tHqwKH/8ZS1PEA4smiVUFwNdGhGYIKR6N1PJZv5lnMKkD/esF/DvPV71Qu8oVn9tuE3jihu7xOU/55fmjgU+1bOtqsI4CSxz0+zYv8sisR4dDUAhIWFhtT/xb/S6308ojbWsq7QXvMOaoBTSSVFEGMR1wjkKce21x6pvQPdskdKPtjaeXkRkZH86VnjvlhlO8UgyavbIK5gqajqpRDA7RxYIYjueDEzEELwacETseEm+mzgb2Dk8HDCel7xWfx2rno5JDHua6lM01U4d4BinG8J7TyraJrLqSY2x8tVsTHT7uw0W0H026GXrLtz39YaESLM7YHQqKLjZYj853asknjPUM/4Wcx6y8gooW6ml060Kt9rY6hKkLAMy8jzGy7V5BbdsAzUs2kjq14ydUtwdjFkKaWAwil44QmNflDlnJlKCNUQ86ehHvV4fPRcoMNC6V24zXyFVM+b2Uaq26wu5S4f47QP9pwzhhnNmKKdsMFJOa6miZBuUHsJ3qDtUwLhNDgJyQ44tWxeub5RfZ/rQ4x2rVQQS5vYHitb93S7W42lsl8Tk/7l2GUlLZQVyCQdUi4mt+lTQnqvCD3k=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|52116014|376014|7416014|19092799006|1800799024|38350700014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+ t0sX67aX6C80pUIpSuRPRNnXUbZCm7s3OrBBjLjgKXW9zgj1U4/lVnqezh5p1JOh3g+Z0OgCai4dJLZaIQgJQRHldKbTcC+WfaEh9CtoG3v/Ds4twIm9jjQOkQJOBLZ+dtB6HBnWkc4XVtGENeDJA9amRh7DlC5/rla+xEg3SEf62ISjbcRqMotoiS236Ia3KSHpYUBoQ9nUR1iYWMgU1WwP2XOfkHGmHV9H2cn+ifLh7XPGFiWkCO30rYCfA2pHqseJQaINbUZCuBSWEnGq9BZbGE/ca3hnn8nbmqwK6oFb3R+aDEM8K3xTa/agxJlzls00vdo7fNQdPnXbgJVb30XK6wQY0xoCsOvpJvDHYgC1YFj43nwOLcZ4VxWVKXp5Sss6doY3xLRhoJg7cDE3/JPO3orRJFYF24Cgr+yj2sEvNH+Jq68+7KsqcwA/9Wdp6av+VmFFl/a21lmd9zq752EijC0lJpzirl4dVBHDqxxPvtZ8GDFMEugSeY0dC7yVR7/cNIz2r/UapE6FgZMR7ZrPaUKn+PpRkmPq0yjer8GmBFP6PEPfIaWxcNGzWRi6i4inMIMFTd/nxlrYOP0tiKGzxqYSiT3g8r6aAks6zfsdG7lEBX5t7+SrH5UsGtCB7re3hTJCbJFpTDRk/kNqhPFQm+/2bAUZIk0eptZ0KA4r9aU+8SWaGHXlUNPKprLJnp45jD/0lIRiof84CSsV8aB3MDZ9hbLki+zl1o0WD24+3U9BZqumdgX+mNNkLK0SlBvCvLJjLbTBexPf4wZRLHGOvZckcU3OFgdqUHk9qGY=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(19092799006)(1800799024)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rMZKewjQXw2jLBCHwFD8GzuiO6TDc4VTDHu61SORrRcEIj5wgsqHOlCRZjoK?=
- =?us-ascii?Q?9RsSV49TNVz939hhPcvS3yWUbaGMTPSVlz4dbesThjkyDJoPr+p3RE4R+xA/?=
- =?us-ascii?Q?s11oKDlTdqwXZMj/cKfpwOKlyc93GJzRJ6XUihAMDXdZ2UXdsOuy2M10JOh1?=
- =?us-ascii?Q?CMrM/mel3mF37yQd05BCrAWkbmtY0Fn2NtrzUi7OkIj3BMhkQgg0/RQTO0dR?=
- =?us-ascii?Q?0u1LMfohV8i1POsh7h2Ce6GUFbZvjS4PLJJxIaswiNLKBIkeM01o/ub8/uvy?=
- =?us-ascii?Q?cWcIleDz0bYAYby28d+gtFP1LmkboHTOwKY0o63PmEU2EkjB7nOF7L0Hmgsk?=
- =?us-ascii?Q?Q8P7PnTllIgeuLMP+nFBuzYH9kXl6NQh7zGy2n+3DfW7sZ3N4xc2o0zZUAM/?=
- =?us-ascii?Q?bD7EU7kBf5KB6G8BE2FtR3ubWMUyBzu8aZUsyE8Eb+zydXLrZDsWN1wx2tiz?=
- =?us-ascii?Q?wRE8mECMx88EY92TbeRGAkdJO5CJAmlH8yCBp85UZ6x+TVrlTBMXcz6R09gT?=
- =?us-ascii?Q?qW9lEW+DbNMGwloYr0dpPALCtMrs0ncgzmCFmFGJml72l7qr85W/0yj1dnig?=
- =?us-ascii?Q?Or6nj984Pd8aq95b6dhLi1BH2/9UhtdAC5J646LykU0xjeiUMORhWZy72cA+?=
- =?us-ascii?Q?eZeTqgz65pIrX0+B4xXoH201Z4EPpKkkhw/QF8bAISLIaC3ghS8a12I8MGL9?=
- =?us-ascii?Q?/txbJ4afy5rJa3zncllRxst9MS1QuMMEFQR78vLfa9qVjo41UH9OIO3pvdWy?=
- =?us-ascii?Q?V6Ppl6CcefV5YIePYYtd99aRyu4WUPK9Kk4p0oCeNPC5hNNLaFxbpF01dKIQ?=
- =?us-ascii?Q?JGPRMtj+rTfrNCAieh2UE1XyrAIB0Qn8RkPJwuzeOTCHAdCTeVAjBYu6tD5c?=
- =?us-ascii?Q?P2q3epfQs0hmLzKpyjRm0C3zV/s0AE0r/GkjaHPudfyICyizojl3P6wPFntU?=
- =?us-ascii?Q?iLSQtfUeEgTMPW3d1qBiM67v6V/e0Ry1fILrc5Btci+hvmKGOseVw0qWG6Zp?=
- =?us-ascii?Q?jLCAEf6PCEOD+G3SVMgeG2WvGXBh60VQDN4kj2aLtXVgj4OpOQEuS3lrrt6f?=
- =?us-ascii?Q?9YqYbw2npU89OqSobBkKt3OBrQzh+MUhIOQKxbt9cLBg6SDKni5BgC+p7nv1?=
- =?us-ascii?Q?2H1DzcXApjKuC1mqeI7WuQI8kWtcnhFjZLW9P5jzmzff0hK98L+vUy0f0Mlj?=
- =?us-ascii?Q?2MuA3MPQE6FVuJKzjTkUUerhKYjeBM91VbnxyBmtUFzuJ5qgg0LZ4eGW/KQ5?=
- =?us-ascii?Q?6NaePuo0inNb4j+SEJIL+YdwWvkUYIWZER+18gNMMcUEBsZDT0+4V3u4h8ke?=
- =?us-ascii?Q?XJHUzaP80HYYg3NmtXTkrq2UEbgxSGdoRgdPwm3x9cs9JaCCVLZ0I8gTddfE?=
- =?us-ascii?Q?as6s3UHPg4KIls2KLw2WVn88djkRUnm+Hgo4V4XL4ZtG7upInnyAMqJNO4ZA?=
- =?us-ascii?Q?CVtjqhYfurtrGi/A/g8pxO2QdpoWZUL2FNcZCE8Bdz8cy+6bmR0TO3hP+Hvy?=
- =?us-ascii?Q?1Aqvnu6sRnVKzvX03YFTU6o/EUW3U3ug+c524pEEFzzX3Dcd7JE2BO4jtNOR?=
- =?us-ascii?Q?orXgVyntM+CTTjGnasemli47KTv3sUq7hpp4JkfJzDQU4OkJakw9vIQxvGEs?=
- =?us-ascii?Q?5BRBJqprQmyGt+MM9et1elL3RFgouo0RTVIlmuBTmhJjbK9XVcgGPcer6YGH?=
- =?us-ascii?Q?efQwGQpjfagAUxKc+hLE9w0TpUu0Hm1wUZQ9F+XgIqDAmtpW2dXvEWscKUG+?=
- =?us-ascii?Q?jH9fLxYL2v5UCYmtej+RuT/h8ndzwbE=3D?=
-X-Exchange-RoutingPolicyChecked: u82r7/fC/BhSeO2MPOYPfpxDiwSv16NdxQWIlcIjCpq4d58yNOFpTg1prwYCia9qlbH/8Ao+bPYi+WylX3bZFnroWNxWA1PEYwl+aWtWyVvXM4z8Xnpn/URaocPv3g0vnDpGf7D8svmV/DSRQtmG+JIlWcoCJsIxPxLvDnFcq2lYdCxtOlkUFP9g4d26Fc2fBkl/j7sHQKySnRTakYX7iGG2QUBc1x0XcH8B/+iHyOfWG0lhNkfcyXJosmHNHTLpfL64PnoodKH9iB7mpsPtVvnjZcmJOGJJhnLcWbosoKpNL7V+QUmWF2GTpUkwjtujBo4ZBgyk+n9BryvdcffOyw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8c8aa14-fb76-4f3d-abc9-08de8131331c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?qFDLr8mghAqRUDgZD2krzlqGTpK8h0U3Yu8Ejpy7Y+PzpAgmen6u1JUG8xHJ?=
+ =?us-ascii?Q?DbIJ3zvjPMSBgBf7AI44Ce1ID3GSciqCj5pq9T7v1vva/1k67R3C/V5Xlf41?=
+ =?us-ascii?Q?XXug6SX5+i1ywp2fw++hecMhX5NjaZPe5EB+ppdfWhEQslvbbOQ/CISy2Hrq?=
+ =?us-ascii?Q?aTjs8harDJ/yj+3+p5ITZGDX8BD6JjbXjpCcYVRFtp7dm4jhos0oCsRZnvrr?=
+ =?us-ascii?Q?n976AbNqHeC6RQnrCzkvliNSmCW97nDabdzEM/p6qD0MuYZTP4GcwM7JeBwZ?=
+ =?us-ascii?Q?tK0Sdn00Cf6mYaHEaDIrFwgE6sB4eGTkjWT1uP+Ztyzd1Nc/Iy5/6Rx95QbI?=
+ =?us-ascii?Q?xA+iF7cEoEVN8ItquVDom1uq/JKdEt6bTkK0Mza44b8C5KxlRqU+E5rm+G0t?=
+ =?us-ascii?Q?vpFONDaGjDuPXNV11vRReQ0egEItR/k9wGfrpzJIZLl+vypKCAt6ABXsT6fX?=
+ =?us-ascii?Q?1v+dKxkFWkY1i+WysOn18ZvZzxMIzovy7C9hrj4ofAxVGX3cClRH8w0+wEPN?=
+ =?us-ascii?Q?6VWYui0V1fzhD/+X4jW9jlWgwooKb93+HbkPMG3BAY84QpINxLrwH5a8kYrE?=
+ =?us-ascii?Q?M/Bg4/55OuPsirfMBWVdkdxx/Gyr46a6bkv5Nd7RX0FxLWX88034mjH/y0sC?=
+ =?us-ascii?Q?hYOprBUMesH6VppQzAXv0CRT4/6MUMLoSxZh3gOix9zHcOpQbj0P8V4QTHzT?=
+ =?us-ascii?Q?DP/ElEMCcm4IMUDCBdUCOkJVeJBJB2Ue9rGap95XeA3Pn7lO0bTglBT6b8GW?=
+ =?us-ascii?Q?b2lbxES0fUGUt9GNqdWrORsbUrMCM0o8ELoh6FumwNCCPMS+pZ/n6DVg2ehV?=
+ =?us-ascii?Q?6hQNAkS8CTrw3tDEPY8r8ZGU/gkhKsGgBjkPUaJpSC+CvYjjv8vb66ATc6/c?=
+ =?us-ascii?Q?tLzrH4U+xcEkjwYcjiLZYzCoYgt6DxIRxFiPQ3kriFWH+aw/CTpE184FGiQ6?=
+ =?us-ascii?Q?HQvgRukhRs4mdFRFB0JMxfRwaH05qT81dWx7efFfAOEVanuTBMK+uxGwsXsk?=
+ =?us-ascii?Q?ndhDGlM0iFkS94eJOsFBHbovLSMs/UCpq/1AGFchlw65k8hPPsSfpQCCil7Q?=
+ =?us-ascii?Q?/u0rbuY/0MQvw3BqgGgpBMWEh6R6gkkAJxfCQFyhOHaya5EfcNxgw8LHBKSf?=
+ =?us-ascii?Q?NQT2+EYOeyzP98DO3PCNnGW92j7j4ccL/8HzaWKMKcKdFSfDWTKOlEBulBED?=
+ =?us-ascii?Q?UravUDOdzrxEUFK+wXRhGAA/hu0ngd66ZvC39K8GoTAh7fw1HDKZVgLBhwOE?=
+ =?us-ascii?Q?25TjOz5pXyFBgdXFTCoz3t9l1bZoIgHk22tDudsXSVKjpWZRQQubid0b+Vom?=
+ =?us-ascii?Q?CNqH+I6gFmN5TvSMW8ClDYfz31EMkuohWOYLSSY8kAFGC+vIzM2gaX+BzlVn?=
+ =?us-ascii?Q?TB8d3truLNwufzJPFmovTnVIypIiq05Y5/64kyI+HmFexdibNpUDAjYqdCHi?=
+ =?us-ascii?Q?GW0kkZstlUvJz3Sb8hpwJC6SQIrp2aOmbRbLAPrrbboxPghpG31fF/iHxnKr?=
+ =?us-ascii?Q?OAlN48Hld2reuGOJRjWFw8wcEI2pfOSm7HDJob56iJFE0xUTR1Kgaq0bb4I5?=
+ =?us-ascii?Q?sS+2oELMvadEX4osaNACJZTfm+aJQ7zG9xJKOqkXF+W3bDlXJB0JPs/Jp/4o?=
+ =?us-ascii?Q?+OKf/LeYvMwOj87SSS7ihgj9Jxgryy2Xs93e8yuaoeiZcE4JlEbG5Xe4HgiA?=
+ =?us-ascii?Q?xQ3/NFKFNq1WlgXy5EQgUGlzrXbqaHLpcMQtYR+A6kKsveX6vCEUQB29qDQN?=
+ =?us-ascii?Q?yrbrrFw99Q=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddb978bb-9628-4299-7438-08de8134e773
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 18:49:04.6018
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 19:15:35.6896
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MD+vU9nf0D+0n5UcSr80xEb058nO0Piw4Hrg+8WXqAK6oyuLGXzuwA8MxoiPNeu5C8T4/mXIvCI2a4lGkzrWKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5087
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7zG8I4/9EdCzInJVF+OmO871SiEDivDrV0uLKe4Ntja29bWAGsDOZLMM0SZI79Suh3JpAxqDp0dPVS7hYxo4fg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9821
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225378-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lstrano-desk.jf.intel.com:mid];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225379-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.brost@intel.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	DBL_PROHIBIT(0.00)[0.0.0.15:email,0.0.0.51:email];
+	TAGGED_RCPT(0.00)[stable,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 75AE1288F81
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,nxp.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8181E2892AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 11, 2026 at 12:33:54PM -0400, Dong, Zhanjun wrote:
-> 
-> 
-> On 2026-03-10 6:50 p.m., Zhanjun Dong wrote:
-> > The intent of wedging a device is to allow queues to continue running
-> > only in wedged mode 2. In other modes, queues should initiate cleanup
-> > and signal all remaining fences. Fix xe_guc_submit_wedge to correctly
-> > clean up queues when wedge mode != 2.
-> > 
-> > Fixes: 7dbe8af13c18 ("drm/xe: Wedge the entire device")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > ---
-> >   drivers/gpu/drm/xe/xe_guc_submit.c | 35 +++++++++++++++++++-----------
-> >   1 file changed, 22 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-> > index 8afd424b27fb..cb32053d57ec 100644
-> > --- a/drivers/gpu/drm/xe/xe_guc_submit.c
-> > +++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-> > @@ -1319,6 +1319,7 @@ static void disable_scheduling_deregister(struct xe_guc *guc,
-> >    */
-> >   void xe_guc_submit_wedge(struct xe_guc *guc)
-> >   {
-> > +	struct xe_device *xe = guc_to_xe(guc);
-> >   	struct xe_gt *gt = guc_to_gt(guc);
-> >   	struct xe_exec_queue *q;
-> >   	unsigned long index;
-> > @@ -1333,20 +1334,28 @@ void xe_guc_submit_wedge(struct xe_guc *guc)
-> >   	if (!guc->submission_state.initialized)
-> >   		return;
-> > -	err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
-> > -				       guc_submit_wedged_fini, guc);
-> > -	if (err) {
-> > -		xe_gt_err(gt, "Failed to register clean-up in wedged.mode=%s; "
-> > -			  "Although device is wedged.\n",
-> > -			  xe_wedged_mode_to_string(XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET));
-> > -		return;
-> > -	}
-> > +	if (xe->wedged.mode == 2) {
-> > +		err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
-> > +					       guc_submit_wedged_fini, guc);
-> > +		if (err) {
-> > +			xe_gt_err(gt, "Failed to register clean-up on wedged.mode=2; "
-> > +				  "Although device is wedged.\n");
-> > +			return;
-> > +		}
-> > -	mutex_lock(&guc->submission_state.lock);
-> > -	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
-> > -		if (xe_exec_queue_get_unless_zero(q))
-> > -			set_exec_queue_wedged(q);
-> > -	mutex_unlock(&guc->submission_state.lock);
-> > +		mutex_lock(&guc->submission_state.lock);
-> > +		xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
-> > +			if (xe_exec_queue_get_unless_zero(q))
-> > +				set_exec_queue_wedged(q);
-> > +		mutex_unlock(&guc->submission_state.lock);
-> > +	} else {
-> > +		/* Forcefully kill any remaining exec queues, signal fences */
-> Q: Shall we do VF bypass here?
-> 
+On Fri, Mar 13, 2026 at 03:20:42PM +0100, Josua Mayer wrote:
+> Commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to
+> support bus recovery") introduced pinmux nodes for lx2160 i2c
+> interfaces, allowing runtime change between i2c and gpio functions
+> implementing bus recovery.
+>
+> This has caused unintended side-effects on SolidRun boards where the
+> first application of a pinmux node cleared all bits in a 32-bit word,
+> corrupting the configuration previously set by bootloader.
+>
+> The LX2160 SoC is configured at power-on from RCW (Reset
+> Configuration Word) typically located in the first 4k of boot media.
+> This blob configures various clock rates and pin functions.
+> The pinmux for i2c specifically is part of configuration words RCWSR12,
+> RCWSR13 and RCWSR14 size 32 bit each.
+> These values are accessible at read-only addresses 0x01e0012c following.
+>
+> For runtime (re-)configuration the SoC has a dynamic configuration area
+> where alternative settings can be applied. The counterparts of
+> RCWSR[12-14] can be overridden at 0x70010012c following.
+>
+> The commit in question used this area to switch i2c pins between i2c and
+> gpio function at runtime using the pinctrl-single driver - which reads a
+> 32-bit value, makes particular changes by bitmask and writes back the
+> new value.
+>
+> SolidRun have observed that if the dynamic configuration is read first
+> (before a write), it reads as zero regardless the initial values set by
+> RCW. After the first write consecutive reads reflect the written value.
+>
+> Because multiple pins are configured from a single 32-bit value, this
+> causes unintentional change of all bits (except those for i2c) being set
+> to zero when the pinctrl driver applies the first configuration.
+>
+> See below a short list of which functions RCWSR12 alone controls:
+>
+> LX2162-CF RCWSR12: 0b0000100000000000 0000000000000110
+> IIC2_PMUX              |||   |||   || |   |||   |||XXX : I2C/GPIO/CD-WP
+> IIC3_PMUX              |||   |||   || |   |||   XXX    : I2C/GPIO/CAN/EVT
+> IIC4_PMUX              |||   |||   || |   |||XXX|||    : I2C/GPIO/CAN/EVT
+> IIC5_PMUX              |||   |||   || |   XXX   |||    : I2C/GPIO/SDHC-CLK
+> IIC6_PMUX              |||   |||   || |XXX|||   |||    : I2C/GPIO/SDHC-CLK
+> XSPI1_A_DATA74_PMUX    |||   |||   XX X   |||   |||    : XSPI/GPIO
+> XSPI1_A_DATA30_PMUX    |||   |||XXX|| |   |||   |||    : XSPI/GPIO
+> XSPI1_A_BASE_PMUX      |||   XXX   || |   |||   |||    : XSPI/GPIO
+> SDHC1_BASE_PMUX        |||XXX|||   || |   |||   |||    : SDHC/GPIO/SPI
+> SDHC1_DIR_PMUX         XXX   |||   || |   |||   |||    : SDHC/GPIO/SPI
+> RESERVED             XX|||   |||   || |   |||   |||    :
 
-Same answer as last patch - no.
+List two IIC2_PMUX and SDHC1_DIR_PMUX should be enough.
 
-Matt
+>
+> On LX2162A Clearfog the initial (and intended) value is 0x08000006 -
+> enabling card-detect on IIC2_PMUX and control GPIOs on SDHC1_DIR_PMUX.
+> Everything else is intentional zero (enabling I2C & XSPI).
+>
+> By reading zero from dynamic configuration area, the commit in question
+> changes IIC2_PMUX to value 0 (I2C function), and SDHC1_DIR_PMUX to 0
+> (SDHC data direction function) - breaking card-detect and led gpios.
+>
+> This issue should affect any board based on LX2160 SoC that is using the
+> same or earlier versions of NXP bootloader as SolidRun have tested, in
+> particular: LSDK-21.08 and LS-5.15.71-2.2.0.
+>
+> Whether NXP added some extra initialisation in the bootloader on later
+> releases was not investigated. However bootloader upgrade should not be
+> necessary to run a newer Linux kernel.
+>
+> To work around this issue it is possible to explicitly define ALL pins
+> controlled by any 32-bit value so that gradually after processing all
+> pinctrl nodes the correct value is reached on all bits.
+>
+> This is a large task that should be done carefully on a per-board basis
+> and not globally through the SoC dtsi.
+> Therefore reverting the commit in question altogether was considered,
+> but received pushback in review with the argument that bus recovery was
+> important.
+>
+> Instead add pinmux nodes for all fields of rcwsr12 as used by affected
+> SolidRun LX2160A Clearfog-CX & Honeycomb, and LX2162A Clearfog boards.
 
-> Regards,
-> Zhanjun Dong
-> > +		guc_submit_reset_prepare(guc);
-> > +		xe_guc_submit_stop(guc);
-> > +		xe_guc_softreset(guc);
-> > +		xe_uc_fw_sanitize(&guc->fw);
-> > +		xe_guc_submit_pause_abort(guc);
-> > +	}
-> >   }
-> >   static bool guc_submit_hint_wedged(struct xe_guc *guc)
-> 
+Thanks you very much. This way is the good. But commit message to too long
+
+Basically the default value of overwrite MUX is 0, which have not reflact
+hardware real status, which set by RCW. so update some field of mux impact
+other peripherial.
+
+Frank
+
+>
+> Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> ---
+>  .../arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi |  7 +++++++
+>  .../dts/freescale/fsl-lx2160a-clearfog-itx.dtsi    |  2 ++
+>  arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     | 24 ++++++++++++++++++++++
+>  .../boot/dts/freescale/fsl-lx2162a-clearfog.dts    |  2 ++
+>  .../boot/dts/freescale/fsl-lx2162a-sr-som.dtsi     |  7 +++++++
+>  5 files changed, 42 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
+> index eec2cd6c6d32a..7f6e39e27ce5c 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
+> @@ -162,6 +162,8 @@ rtc@51 {
+>  };
+>
+>  &fspi {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
+>  	status = "okay";
+>
+>  	flash@0 {
+> @@ -177,6 +179,11 @@ flash@0 {
+>  	};
+>  };
+>
+> +&pinmux_i2crv {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&gpio0_14_12_pins>;
+> +};
+> +
+>  &usb0 {
+>  	status = "okay";
+>  };
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
+> index af6258b2fe826..580ee9b3026e3 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
+> @@ -89,6 +89,8 @@ &emdio2 {
+>  };
+>
+>  &esdhc0 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
+>  	sd-uhs-sdr104;
+>  	sd-uhs-sdr50;
+>  	sd-uhs-sdr25;
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> index 853b01452813a..af74e77efabc5 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+> @@ -1721,6 +1721,10 @@ i2c1_scl_gpio: i2c1-scl-gpio-pins {
+>  				pinctrl-single,bits = <0x0 0x1 0x7>;
+>  			};
+>
+> +			esdhc0_cd_wp_pins: iic2-sdhc-pins {
+> +				pinctrl-single,bits = <0x0 0x6 0x7>;
+> +			};
+> +
+>  			i2c2_scl: i2c2-scl-pins {
+>  				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
+>  			};
+> @@ -1753,6 +1757,26 @@ i2c5_scl_gpio: i2c5-scl-gpio-pins {
+>  				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
+>  			};
+>
+> +			fspi_data74_pins: xspi1-data74-pins {
+> +				pinctrl-single,bits = <0x0 0x0 (0x7 << 15)>;
+> +			};
+> +
+> +			fspi_data30_pins: xspi1-data30-pins {
+> +				pinctrl-single,bits = <0x0 0x0 (0x7 << 18)>;
+> +			};
+> +
+> +			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
+> +				pinctrl-single,bits = <0x0 0x0 (0x7 << 21)>;
+> +			};
+> +
+> +			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
+> +				pinctrl-single,bits = <0x0 0x0 (0x7 << 24)>;
+> +			};
+> +
+> +			gpio0_14_12_pins: sdhc1-dir-gpio-pins {
+> +				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
+> +			};
+> +
+>  			i2c6_scl: i2c6-scl-pins {
+>  				pinctrl-single,bits = <0x4 0x2 0x7>;
+>  			};
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
+> index eafef8718a0fe..8920326a06735 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
+> @@ -223,6 +223,8 @@ ethernet_phy8: ethernet-phy@15 {
+>  };
+>
+>  &esdhc0 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
+>  	sd-uhs-sdr104;
+>  	sd-uhs-sdr50;
+>  	sd-uhs-sdr25;
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
+> index e914291e63a1a..e1344942eaaee 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
+> @@ -30,6 +30,8 @@ &esdhc1 {
+>  };
+>
+>  &fspi {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
+>  	status = "okay";
+>
+>  	flash@0 {
+> @@ -80,3 +82,8 @@ rtc@6f {
+>  		reg = <0x6f>;
+>  	};
+>  };
+> +
+> +&pinmux_i2crv {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&gpio0_14_12_pins>;
+> +};
+>
+> --
+> 2.51.0
+>
 
