@@ -1,214 +1,224 @@
-Return-Path: <stable+bounces-225264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAO7MuzFs2kqawAAu9opvQ
-	(envelope-from <stable+bounces-225264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:08:12 +0100
+	id 6H0JCUTGs2kqawAAu9opvQ
+	(envelope-from <stable+bounces-225265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:09:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9279C27F52B
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9807A27F568
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A387F3010BB6
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:07:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0343305329F
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069B736604A;
-	Fri, 13 Mar 2026 08:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B42364EBE;
+	Fri, 13 Mar 2026 08:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="y0IuLOD+"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="MOcAQW5L"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163F7370D73
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 08:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B637370D5F;
+	Fri, 13 Mar 2026 08:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773389274; cv=none; b=H7UigLk0Ff7aL9tD75Da/NMYQp9/0Thtg/hv188PBP9yBVgZHCTaSMwyUTDO6vFkGCpzAG6sqMcA+SmBvU7YozBwzbBZt1FAWr2WvLYQ8fsLb8k6nBwPoRbtFiw3k1Bq1Tns2tsZV71EoZ/7+bRbH6EhA5PChH8AyLGLMMJ4jaU=
+	t=1773389346; cv=none; b=EF/oIsK3UkxPUrhWQ7TN2XTpeVFzLNbVLXrhjBsP8ak2aJFBnmaHaEEZXacSx3QONFRbap4hjB+FUFbIQbj1VXBw4BfsBy5U5eVhKrWq8qQJVz2VfVLxxmxnm0nhaWAd8L0v7iiu1sYySDN4LfHMhXGItbr5MfYhQL8EHG6aBA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773389274; c=relaxed/simple;
-	bh=+O1Gnzo/mk9QyPu3GofOBNkxrV7AJ7kC1feydHQhK+I=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=dm7qFWxKbBflbSqwDBfOivYYV+yDUrOhRRMBmvGiMAzkQKucs95/jRl5Gp1f5MyMNnGHZugfLFI92PtqN+ttXcmw+FYJC/Ev2orXwsl3Utml9uuwNMa6d7uduM9Kdmxvy4As3X27DEsxd1T+6FIJOzeQDgD7qVbcqzrZymwEWpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=y0IuLOD+; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=y0IuLOD+/ZeqPk57XHoB2IS/9GkWdQVI0itXO+Lrm14X2Vbw7kXgrXvcHH2BtO2UrOEZVCrNxw0Ju
-	 U3tIwx+Puv8IhnddwBGXpJot4fdoK3VqdWZieBDyBYxd1MMHmtrXHtR2E7ugNpjMxg9u7uX+cvor3L
-	 4y3oN22QSs7kUc/g=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[117.129.7.78])
-	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f69b3c5ca082-e3aef;
-	Fri, 13 Mar 2026 16:07:40 +0800 (CST)
-X-RM-TRANSID:2f2f69b3c5ca082-e3aef
-From: Rajani Kantha <681739313@139.com>
-To: alexander.sverdlin@siemens.com,
-	vladimir.oltean@nxp.com,
-	pabeni@redhat.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.1.y] net: dsa: improve shutdown sequence
-Date: Fri, 13 Mar 2026 16:07:32 +0800
-Message-Id: <20260313080732.1743-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1773389346; c=relaxed/simple;
+	bh=E0DSyunzKE+vLHImQYGoAaCZP7tJD/aLiJNV4Zz/UK0=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=BTiVGVwfTlpIVbxB69Bt2e7fEGce0oWq+CC6oQnt5F/q12vUxgvYZUxTTv7rbCDhLrqo/pVX7lE3xLTFUNFnuw4oPv2gTTtr0GVSWP6tOCoxgGI3m4oVZi+qHFpcdpAIULkmuJIBjEt6soheeVpA04EN8aYzHReJIwrbSGoqqd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=MOcAQW5L; arc=none smtp.client-ip=203.205.221.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1773389335; bh=0rRofAcuvyyFT+Z9Vu/JFJM8UfveyJzPopuRHncNVqo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MOcAQW5L+bT26gQOHeQ/Q/hMCeWqlBmm2wBUhpM8S4TPGyxpfM08t2kym3jTJcqMZ
+	 HV0P9UBzO0UVvyAcaxaTIzhKuIRXtW8Bcs+EF4wIlwxB/nLoc4jThIXvpDeiVCbpYe
+	 +Ow7APr8tdfz3pYUJ+qS7b9ZdzhJvrzMthSQyyBE=
+Received: from June.localdomain ([123.121.145.35])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 22E0321C; Fri, 13 Mar 2026 16:08:46 +0800
+X-QQ-mid: xmsmtpt1773389327tefqgdrc7
+Message-ID: <tencent_1C471D4ACC7A042EF8835483068406994905@qq.com>
+X-QQ-XMAILINFO: NVJ0hJNx7N5SraLkdMg6AosCMNyk94uH2NWE+Nq+VHRmOYSCnROcrzA+6chxnJ
+	 EZUtOfe16MwWBDDBQlwCNru1g6Dxi0+Dfn+k1LZQWKCnodU31rPq3EqjpJ3HYxVKgoxe1iW60mQf
+	 vLPhWfrBzuY1epmbsUQIAX0t8YSLjXKnm/IXqeSmCQVDCkOuSHRA1ILSdM9brushm6rMgZOvDIKN
+	 kmUVu+sTSpRW9c2+YGsrNkBrj2KUx4ZXT6rLutf3fYzSiNLEdjOhaI4CnVXzrSp0xNNlquwtGo7D
+	 titbiwWob98CUIxDArHhr5VLmKx9M9+vw2IhTzmB+b/xKdOHqRi9q1HVgoqfOwnohEDE0iUzES09
+	 OVRIZTsRPY3BL9w/MhACaeA/QZsH9YH2nJ7LBiWpuLKikY2fgPL5AdVPl6oUdPfBH7A+WFcqmW1Z
+	 Rl4OxIT3JPl3sVGXCdXswmKCJH2fnUIJnAYAjVfruXdfITZDVwVj0AW/faKHC1as/u+swCzNugzW
+	 l56PRrigagBjKb+pMIgRxV3lmpTC83eJIGRcj7lBFaobwYzEfDG26gzcsC9291brn7Bl4wxVaxVZ
+	 86u47AyyfTJIpE3pEmY6L6QXspeXHTmJShSWhtb/fwLQQTTWfEiPbp416VkxsCR2k6P3nSScYxDS
+	 GEZBb1qU5PF7i0Dq/grQY0YLm2T+rI3A2TLg3PeWtN1Eg3YzWsst0ED1DkDrMNF0uNfe8NZH/0WN
+	 2tMHXa3TStJ0qvIwRUqZCkp709bgmmn6JgNBq2Nk2tJEdvTp4t0wrydTa/41+BJSnMcYWT0XlJO8
+	 +ZVdfhpF7a169nUUEe4wOEHwNOzWe5iUpbw5q8AjKx6N+upBrzBeM2kHJL4JpgmTN8dho6QOa1Ho
+	 LXQ+ltq8WIe7VlJd8Tcz4XvaS/JTzfEbwYHakjQ8eXUFuS4AUApF9N0k2L4KU7ROV8dVzEgVG1t4
+	 J9Dk5BFtGvByjcrqEkXXwzUT1KIrspCteldLxdBdgmpgmpEpXUdz9OFxj2DY1bSDsHdVmBdiH7Cg
+	 iQQzajDuKpou8Rudlhg5LyJtfFt5QdDvxyzO+2HmhSmopNIJMhbkJecqk4RZcPlx0ghy8TyA==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Wang Jun <1742789905@qq.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Wang Jun <1742789905@qq.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH v4] media: saa7164: add ioremap return checks and cleanups
+Date: Fri, 13 Mar 2026 16:08:45 +0800
+X-OQ-MSGID: <20260313080845.169663-2-1742789905@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260313080845.169663-1-1742789905@qq.com>
+References: <a44adff7-60fd-4fca-85f4-0c69a035ec69@web.de>
+ <20260313080845.169663-1-1742789905@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225264-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-225265-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,qq.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	NEURAL_SPAM(0.00)[0.756];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9279C27F52B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9807A27F568
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Add checks for ioremap return values in saa7164_dev_setup(). If
+ioremap for BAR0 or BAR2 fails, release the already allocated PCI
+memory regions, remove the device from the global list, decrement
+the device count, and return -ENODEV.
 
-[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
+This prevents potential null pointer dereferences and ensures proper
+cleanup on memory mapping failures.
 
-Alexander Sverdlin presents 2 problems during shutdown with the
-lan9303 driver. One is specific to lan9303 and the other just happens
-to reproduce there.
-
-The first problem is that lan9303 is unique among DSA drivers in that it
-calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
-not remove):
-
-phy_state_machine()
--> ...
-   -> dsa_user_phy_read()
-      -> ds->ops->phy_read()
-         -> lan9303_phy_read()
-            -> chip->ops->phy_read()
-               -> lan9303_mdio_phy_read()
-                  -> dev_get_drvdata()
-
-But we never stop the phy_state_machine(), so it may continue to run
-after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
-to set drvdata to NULL to suppress the remove() method that may come
-afterwards. But in this case it will result in an NPD.
-
-The second problem is that the way in which we set
-dp->master->dsa_ptr = NULL; is concurrent with receive packet
-processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
-but afterwards, rather than continuing to use that non-NULL value,
-dev->dsa_ptr is dereferenced again and again without NULL checks:
-dsa_master_find_slave() and many other places. In between dereferences,
-there is no locking to ensure that what was valid once continues to be
-valid.
-
-Both problems have the common aspect that closing the master interface
-solves them.
-
-In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
-event in dsa_slave_netdevice_event() which closes slave ports as well.
-dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
-the phylink state machine, and ds->ops->phy_read() will thus no longer
-call into the driver after this point.
-
-In the second case, dev_close(master) should do this, as per
-Documentation/networking/driver.rst:
-
-| Quiescence
-| ----------
-|
-| After the ndo_stop routine has been called, the hardware must
-| not receive or transmit any data.  All in flight packets must
-| be aborted. If necessary, poll or wait for completion of
-| any reset commands.
-
-So it should be sufficient to ensure that later, when we zeroize
-master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
-on this master.
-
-The addition of the netif_device_detach() function is to ensure that
-ioctls, rtnetlinks and ethtool requests on the slave ports no longer
-propagate down to the driver - we're no longer prepared to handle them.
-
-The race condition actually did not exist when commit 0650bf52b31f
-("net: dsa: be compatible with masters which unregister on shutdown")
-first introduced dsa_switch_shutdown(). It was created later, when we
-stopped unregistering the slave interfaces from a bad spot, and we just
-replaced that sequence with a racy zeroization of master->dsa_ptr
-(one which doesn't ensure that the interfaces aren't up).
-
-Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
-Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
-Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Modification: dsa.c -> dsa2.c to line up the source path in kernel 6.1
-Using dp->master and dp->slave instead of dp->conduit and dp->user ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wang Jun <1742789905@qq.com>
 ---
- net/dsa/dsa2.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/pci/saa7164/saa7164-core.c | 47 ++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
-index 668699d7b0b7..415e856ba0ac 100644
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1829,6 +1829,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
- void dsa_switch_shutdown(struct dsa_switch *ds)
+diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
+index 74406d5ea0a5..47b0594042c6 100644
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_dev *dev)
+ 	return -EBUSY;
+ }
+ 
++static void release_resources(struct saa7164_dev *dev)
++{
++	release_mem_region(pci_resource_start(dev->pci, 0),
++		pci_resource_len(dev->pci, 0));
++
++	release_mem_region(pci_resource_start(dev->pci, 2),
++		pci_resource_len(dev->pci, 2));
++}
++
+ static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
  {
- 	struct net_device *master, *slave_dev;
-+	LIST_HEAD(close_list);
- 	struct dsa_port *dp;
+ 	struct saa7164_port *port = NULL;
+@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
  
- 	mutex_lock(&dsa2_mutex);
-@@ -1838,10 +1839,16 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+ 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
  
- 	rtnl_lock();
+-	mutex_lock(&devlist);
+-	list_add_tail(&dev->devlist, &saa7164_devlist);
+-	mutex_unlock(&devlist);
++	scoped_guard(mutex, &devlist) {
++		list_add_tail(&dev->devlist, &saa7164_devlist);
++	}
  
-+	dsa_switch_for_each_cpu_port(dp, ds)
-+		list_add(&dp->master->close_list, &close_list);
-+
-+	dev_close_many(&close_list, true);
-+
- 	dsa_switch_for_each_user_port(dp, ds) {
- 		master = dsa_port_to_master(dp);
- 		slave_dev = dp->slave;
- 
-+		netif_device_detach(slave_dev);
- 		netdev_upper_dev_unlink(master, slave_dev);
+ 	/* board config */
+ 	dev->board = UNSET;
+@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
  	}
  
+ 	/* PCI/e allocations */
+-	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
+-			     pci_resource_len(dev->pci, 0));
++	dev->immio = pci_ioremap_bar(dev->pci_dev, 0);
++	if (!dev->immio) {
++		dev_err(&dev->pci_dev->dev, "Failed to remap MMIO BAR 0\n");
++		goto err_ioremap_bar0;
++	}
+ 
+-	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
+-			     pci_resource_len(dev->pci, 2));
++	dev->lmmio = pci_ioremap_bar(dev->pci_dev, 2);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci_dev->dev, "Failed to remap MMIO BAR 2\n");
++		goto err_ioremap_bar2;
++	}
+ 
+ 	dev->bmmio = (u8 __iomem *)dev->lmmio;
+ 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
+@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	saa7164_pci_quirks(dev);
+ 
+ 	return 0;
++
++err_ioremap_bar2:
++	iounmap(dev->lmmio);
++err_ioremap_bar0:
++	release_resources(dev);
++
++	scoped_guard(mutex, &devlist) {
++		list_del(&dev->devlist);
++	}
++	saa7164_devcount--;
++
++	return	-ENODEV;
+ }
+ 
+ static void saa7164_dev_unregister(struct saa7164_dev *dev)
+ {
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-	release_mem_region(pci_resource_start(dev->pci, 0),
+-		pci_resource_len(dev->pci, 0));
+-
+-	release_mem_region(pci_resource_start(dev->pci, 2),
+-		pci_resource_len(dev->pci, 2));
++	release_resources(dev);
+ 
+ 	if (!atomic_dec_and_test(&dev->refcount))
+ 		return;
 -- 
-2.17.1
-
+2.43.0
 
 
