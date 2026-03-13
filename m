@@ -1,165 +1,206 @@
-Return-Path: <stable+bounces-225348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AE4iDQs5tGl3jAAAu9opvQ
-	(envelope-from <stable+bounces-225348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:19:23 +0100
+	id CBAtJHI4tGnTiwAAu9opvQ
+	(envelope-from <stable+bounces-225349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:16:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90020286DA1
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:19:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF63286D18
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8505301C5A7
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:16:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C98FE30098BF
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA2937F8D7;
-	Fri, 13 Mar 2026 16:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86DA3C5520;
+	Fri, 13 Mar 2026 16:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="icIkI1ID"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7683C3459
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 16:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773418579; cv=none; b=Ux3LBtNjoOoaxj3bSo4JPFTtxGQZ2Qz3tgOZTR4YYJ0x8oPR+D4sQFFlTW2ZAl+1gr6A87NoSBxLqpEM6Ap4IwFNJoHwtg/8qScKtasxiTqkzbvZOFILCknEeI54huzoUT0+UOQMPxfbs5GGU8w9B3FwvUZkpNf2rB2E0nOzvZw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773418579; c=relaxed/simple;
-	bh=xpb+sAZZFW4cZzQqktbvtQyTfq7nsxB6lk9Mqo8D8Mc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pphrnD2jMPLX9aZqvvF/BQ8H02YRPNdPyR02hoHE2vbVu8QJJ8LjqMaqMyC/vOXGyjoT+D0k08fHMDHzUeZuZ9JAl5nP74bGEiImQ8Kgz/LBSW6BrQP4B6a+bBB/IgQq5x4SThOoK3A/bTP/8PGmmHl5yoKTEFdN4kq0ynrAM3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B102176A;
-	Fri, 13 Mar 2026 09:16:11 -0700 (PDT)
-Received: from [10.57.18.169] (unknown [10.57.18.169])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9780F3F7BD;
-	Fri, 13 Mar 2026 09:16:16 -0700 (PDT)
-Message-ID: <10f5de0b-1fdc-4867-8ccb-e9362fc553fe@arm.com>
-Date: Fri, 13 Mar 2026 16:16:15 +0000
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012030.outbound.protection.outlook.com [52.101.53.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990AB20299B;
+	Fri, 13 Mar 2026 16:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773418606; cv=fail; b=uaPbwGhpM3KXg5G3GKEgxYwdz5/EXEehhv5eHWFLEXo0FzzwWIYJRPAkWsEESgAku7LW4pQ7J3TFx0WypvJ9DQIG7S/eHkz+gKg11aTbcCw6evlaSl6dEK6pMcVwq7zIuojZa2KAo9Qq2Iq73UbtQc8Gyj/+Clg9MTe0XdEYGOU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773418606; c=relaxed/simple;
+	bh=aMNQe5L2HMP4wakwKYjRIMta8dBbxT3mWJB1NAc5ATk=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=irC5wS1V9W0fEx6WJ66IKPsuLw9SbCZiZ8tYWKyTO47C0MUl0eGuCNGrU2DXxSt7mAasDq6Iz1OcqzCyMfmJMhpMG3X3VrmFpx/9Ie1tCuEFde6kxZhX1zzCnqWB9/MxxbRIbnM+aBZYGSEdKpAgk73KLDA+fQsB8CijySZw5/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=icIkI1ID; arc=fail smtp.client-ip=52.101.53.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zQKpZry7ujo9mlfSn9nw3GqN/mZ8MV/BYlWCP8svQFprECRS9tLriTyw09LMu7c1//2Jbi/NZCJeMOTeu4yWUCL2SQzmKUCbBSbjIH11wdcRteNcSGBmWWmTVwUUhkyq9tWqygURJLqhvNwQTgbju5IbLMNDYIxb5LBnBTJ4pVFzKTAC5901yNlpl4dWjuwPHdnrxI4AzWrskKjRFsVGDzm8x3cyapQnqdTTKCJa9niGB02GBF/n1isWq0l5wrjkodFHh/3AuIGNwg4L4DCcrM/Mc7r+SebFibuvD0ZoDpoLJzS8qvJaHtLYtH1+QaITk9D4JLOTxfzSbSDDcuMB0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BQfLEJ0a/giyJHmeQ1cwQsORHDgP/Lv2c7ZUQ/oiLuM=;
+ b=nXPr8XSO55E2Mo+jm1DB3EgWZW4gUYOO8SStLC9jkrKux0bvL8xRS1JuA29r8iMGo/30cVOzqV4q48bL3AS3oJKDmeSVncGbM0lsN9ailjWY7i4JIiwMA0pDVe8IcuJs1Fbh/ZU84WfjUP9WTafXRBbCH0q7caD4rIXZZCWSpBRgYWIMROkiDhgr1hE56rdO7F7eJv2MFy1mi7qW3aDI2kaKOJV7F4Z3beoLuqFiSlcAYRGRvvXLahJUyqZONNEnN5aGdMTvostiGUE69VpAZhdzRLDHTTJhm4uPKSwtnsfR05agoOkiBIr+N08nM7MdjFTreEwuqXM5b3hP4VZbEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BQfLEJ0a/giyJHmeQ1cwQsORHDgP/Lv2c7ZUQ/oiLuM=;
+ b=icIkI1IDNPpWjYOnTlm5MmbBdNtOyZII0U5XrJkiIFessLXcW0wwrr1dbGC5kWuBxnJgso9mBWWeO5BqfYV6SnGf94EqCbvGvgHzOvL2b1CgySlB96fOkrLGSbhXT5sCb6st6B4LE/amQVDPmZ7FWtKCSHNnh3eouTHzio4hkbmxsq8Xf9C4yz939LvUp98CZkX5rbSYw8bEpSc78Z+q9d3yY9tGMY9vh7uG4Ok6ClKXHwmXf6PtzYjbmQc/WORhcF5YUW7fO5AltVGN02m4U+sKjyqiciE/n8+ozKx0+Hoe+N/ELv3Y/BK2KJaWZzudUjUaMWR0dfrTvtmQmW/4iQ==
+Received: from BY5PR13CA0020.namprd13.prod.outlook.com (2603:10b6:a03:180::33)
+ by BY5PR12MB4194.namprd12.prod.outlook.com (2603:10b6:a03:210::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
+ 2026 16:16:37 +0000
+Received: from SJ1PEPF00001CDE.namprd05.prod.outlook.com
+ (2603:10b6:a03:180:cafe::78) by BY5PR13CA0020.outlook.office365.com
+ (2603:10b6:a03:180::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9700.15 via Frontend Transport; Fri,
+ 13 Mar 2026 16:16:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF00001CDE.mail.protection.outlook.com (10.167.242.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Fri, 13 Mar 2026 16:16:36 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 13 Mar
+ 2026 09:16:17 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 13 Mar
+ 2026 09:16:16 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 13 Mar 2026 09:16:16 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@nabladev.com>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12 000/265] 6.12.77-rc1 review
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+References: <20260312201018.128816016@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: arm64: Discard PC update state on vcpu reset
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>, Oliver Upton <oupton@kernel.org>,
- Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
-References: <20260312140850.822968-1-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260312140850.822968-1-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Message-ID: <bddb3680-e01d-4eb6-b6b3-c7852ad1297e@rnnvmail202.nvidia.com>
+Date: Fri, 13 Mar 2026 09:16:16 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDE:EE_|BY5PR12MB4194:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba362311-4735-4975-1405-08de811be6cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	zTkgX07k78b4j6PK+J0GHgxpl2+lbsiq4CHXNApdkITBdgqE0XlGhkYJmJzwZFMTmpK3Tb5C3eusVusAyG9pr755daiZAR0lEYSpfQT5vxfrw05+KBTZClgLtObz7ZGg9SLdhEp03m+YbXbTkdBuMcZQv3c4Fi0OmppNT8D8/l14x/CL+CQrzKWgTLYF0kYgIxIMoyhXWVewjVDyeBTDdkKH1GDt8mlFlirgk0LZffRjp3HPBHTm7b1FL8OesqJLvtXU3pLOMbQKa5jlg5y7zzEfn02p73SKBiHsrmrkiAbGi/mkq+toPx07AEZdxX4t9YU/3TyUyiS55amwGZqcB2vg/DhxVDHNh8ltTj24ujK+t3I6HDKo/m3Zts+l1pVpgaaWgepmUeFvGgafFuAs2rXRhCR5oisoetSYtEygVdADk7vJSo8/KZuj0pSs1gJtgbkPqOztQGWoJCFJeUuYzV8ceCIEwV8YdzpfxHkvPfRwdBIZod+mhswXF3/bXvkwgq6Kd4l6i2PwpJPUfJRsXQrVwFrZdSahmoHjMtbTbjU1qdz/v4khjSU8vnct/2aAJ9NY7E9QuaKWAH1j+oDl92fK4B0C/y4PThRVG49ApV5sU/oqyy43CesRnsa9pF/0G+EQ/kiSSJwgYjnX7L7+u8kwd5cjkvdX97MZUazZenvEZfm/XXHu5MkStm/6FjUxsth8hD9sf9iNSzWm4zs7LSb9mZIRMU4W2HCz83fEJOK5RCGgit+ejMmvV265mdOc0MVQqop0UQMJtHVDdf+zAQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	3HgP4Hcu3wilfVNKdUasCg9oxSNCCTcCOBDDConTvpul9EMGEjxwSi3iYX8OpQJLbtvfBU8YP26bL2bkM5vJnHVH0wzDXNal8zjvPMluGTaQPVRMGzv7kHK28n0IDAVZOTQR4slxlU8UYkLgzu7IC2BZ509R+/aUUphgTi4/MPu8pisD3iL5y1GrP0TXW+evwNASxzhSvdtITmq/JDvv7TYjpdRceXF0ss4UhBH1md152wk0B1Fr6pEvpI4d0f4lXPOZrn2p83wwXoUnSKVCX32XusQwoFDfj6IIBKSV0DwrKLB+d+oXRvihI7+5spOH97SoMA+dAZIXjfo3cLnfE3eB6bcIqCQP5cty49uPEBtzfO3StcasgB5+Y6W8zt012eBtAUGzyzKgcTo5LpH7uj5355DahCbmQdBE1Daph2wEuNV3xg3yuWi8S13Jp1Ub
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 16:16:36.9219
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba362311-4735-4975-1405-08de811be6cd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CDE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4194
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225348-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[suzuki.poulose@arm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225349-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,Nvidia.com:dkim,boot.py:url,rnnvmail202.nvidia.com:mid];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.962];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,arm.com:mid]
-X-Rspamd-Queue-Id: 90020286DA1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: EDF63286D18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 12/03/2026 14:08, Marc Zyngier wrote:
-> Our vcpu reset suffers from a particularly interesting flaw, as it
-> does not correctly deal with state that will have an effect on the
-> execution flow out of reset.
+On Thu, 12 Mar 2026 21:06:27 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.77 release.
+> There are 265 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Take the following completely random example, never seen in the wild
-> and that never resulted in a couple of sleepless nights: /s
+> Responses should be made by Fri, 13 Mar 2026 20:09:29 +0000.
+> Anything received after that time might be too late.
 > 
-> - vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.77-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 > 
-> - SMC being a trapped instruction (as opposed to HVC which is always
->    normally executed), we annotate the vcpu as needing to skip the
->    next instruction, which is the SMC itself
+> thanks,
 > 
-> - vcpu-A is now safely off
-> 
-> - vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
-> 
-> - vcpu-A gets reset, get the new PC, and is sent on its merry way
-> 
-> - right at the point of entering the guest, we notice that a PC
->    increment is pending (remember the earlier SMC?)
-> 
-> - vcpu-A skips its first instruction...
-> 
-> What could possibly go wrong?
-> 
-> Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
-> is extremely significant, as it indicates whether the CPU is booting
-> or resuming. Having skipped that instruction, nothing makes any sense
-> anymore, and CPU hotplugging fails.
-> 
-> This is all caused by the decoupling of PC update from the handling
-> of an exception that triggers such update, making it non-obvious
-> what affects what when.
-> 
-> Fix this train wreck by discarding all the PC-affecting state on
-> vcpu reset.
-> 
-> Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->   arch/arm64/kvm/reset.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-> index 959532422d3a3..b963fd975aaca 100644
-> --- a/arch/arm64/kvm/reset.c
-> +++ b/arch/arm64/kvm/reset.c
-> @@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
->   			kvm_vcpu_set_be(vcpu);
->   
->   		*vcpu_pc(vcpu) = target_pc;
-> +
-> +		/*
-> +		 * We may come from a state where either a PC update was
-> +		 * pending (SMC call resulting in PC being increpented to
-> +		 * skip the SMC) or a pending exception. Make sure we get
-> +		 * rid of all that, as this cannot be valid out of reset.
-> +		 *
-> +		 * Note that clearing the exception mask also clears PC
-> +		 * updates, but that's an implementation detail, and we
-> +		 * really want to make it explicit.
-> +		 */
-> +		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
-> +		vcpu_clear_flag(vcpu, EXCEPT_MASK);
-> +		vcpu_clear_flag(vcpu, INCREMENT_PC);
->   		vcpu_set_reg(vcpu, 0, reset_state.r0);
->   	}
+> greg k-h
 
-Wow! Thats it finally !! Glad you found the root cause.
+Failures detected for Tegra ...
+
+Test results for stable-v6.12:
+    11 builds:	11 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    133 tests:	132 pass, 1 fail
+
+Linux version:	6.12.77-rc1-g92f326b98fe0
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra234-p3737-0000+p3701-0000, tegra30-cardhu-a04
+
+Test failures:	tegra194-p2972-0000: boot.py
 
 
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
+Jon
 
