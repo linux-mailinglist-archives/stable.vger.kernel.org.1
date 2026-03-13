@@ -1,176 +1,168 @@
-Return-Path: <stable+bounces-225261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPSKLIPFs2lAawAAu9opvQ
-	(envelope-from <stable+bounces-225261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:06:27 +0100
+	id 2IS+LzvFs2mEagAAu9opvQ
+	(envelope-from <stable+bounces-225262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:05:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E1E27F4B4
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:06:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD727F37A
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DACB0309D0BF
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:03:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A575B300B9E5
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8151136F438;
-	Fri, 13 Mar 2026 08:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C394D3161A3;
+	Fri, 13 Mar 2026 08:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="B0rHviys";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tiGHJU1Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D388351C30
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 08:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4A825A35A;
+	Fri, 13 Mar 2026 08:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773388996; cv=none; b=T0BUXmgXY5+ivzpR75rsuaSyWcvDITWvaEPKX5ZFZw9RL+qSEIInN2lUSooy8fLSyyaY4GaEefvzK6IYD0pgFaLCLVUH7fmGsc7REzeDW7FTDS9+YbSELQtkIIkl7XjoMiHLa0RAYvzebDXrK+CNrM0BpwnIYa3NYswYmglP2nw=
+	t=1773389112; cv=none; b=mnhhIBe8iDOK+R1M1FSxgCWIfhcW1dq5VEAuAwRkH55ZjiWVdyER82Xn2WMQHIhXnQ6wYwndVv3DUo1u/WFfOIhzvkUGjinY9qp/2eT2xuT4P2a97Jjrt7++qFb2SQqH2hUSg1901PJh1KShV0AENNhT16zX64IJbIEwuAVgxbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773388996; c=relaxed/simple;
-	bh=pNhBiBnGlsup2xZ7gmRzMFRIGL8CZdq7C81+s6XAZm4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WlKi9HdsN3UQMqkZgjkxBV7j4IGQpMaSt5Tugh41LEhhkFoZ1NJoYlwBB/BquHkXn+chuwGlnAqdnpFV3lJztb1zDwrve9CWSvteKi7YV1jbec6xN4YFstV3QiNFNzQ85nrFiXwjpYweZNXbNjntgJ8Q2x3lRmD/puVlP6uEyNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1773388987-1eb14e06ea0ffb0001-OJig3u
-Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id 31EK1NL8U9RBNbeI; Fri, 13 Mar 2026 16:03:07 +0800 (CST)
-X-Barracuda-Envelope-From: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
-Received: from desktop-a4i8d8t.zhaoxin.com (desktop-a4i8d8t.zhaoxin.com [10.32.65.156])
-	by zhaoxin.com (f222c4) with ESMTPf8480048f9d7ab25467bd880f05d502d
-	Fri, 13 Mar 2026 16:03:06 +0800
-X-Eyou-Smtpauth: AlanSong-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.32.65.156
-X-Eyou-EnvelopeSender: AlanSong-oc@zhaoxin.com
-From: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-To: herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	ebiggers@kernel.org,
-	Jason@zx2c4.com,
-	ardb@kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: CobeChen@zhaoxin.com,
-	TonyWWang-oc@zhaoxin.com,
-	YunShen@zhaoxin.com,
-	GeorgeXue@zhaoxin.com,
-	LeoLiu@zhaoxin.com,
-	HansHu@zhaoxin.com,
-	AlanSong-oc <AlanSong-oc@zhaoxin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/2] crypto: padlock-sha - Disable for Zhaoxin processor
-Date: Fri, 13 Mar 2026 16:01:49 +0800
-X-ASG-Orig-Subj: [PATCH v4 1/2] crypto: padlock-sha - Disable for Zhaoxin processor
-Message-Id: <20260313080150.9393-2-AlanSong-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260313080150.9393-1-AlanSong-oc@zhaoxin.com>
-References: <20260313080150.9393-1-AlanSong-oc@zhaoxin.com>
+	s=arc-20240116; t=1773389112; c=relaxed/simple;
+	bh=wqErozLvvgWWmkLVt6qgXKa9A3uBCc8KacAL1eRrX7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HHcznYbIYsAlNxoT5VzeyZ3um7sORCVRNR4OtE05C+c5cSkAUX4YXsmY5IO7TPENA04tLrADX6yUrWNaHHRz/TvwqGKUlL3w3iwlNGlEPkI9mmChajDhakwJDfiH4VaxROgYbzPFiXDaXMkc8/jYz3ch0t55vALWhtBd+eyFSSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=B0rHviys; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tiGHJU1Q; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 542997A01A4;
+	Fri, 13 Mar 2026 04:05:09 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-08.internal (MEProxy); Fri, 13 Mar 2026 04:05:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773389109;
+	 x=1773475509; bh=OhYcmieEv+FE8vEFiY/PmfbU95BqiZFGrB6FxP1Df+8=; b=
+	B0rHviyszSzXKV4CqvgUk89h6QVt/Fn+x7aUfEuOA9+qtaMdb08bv9RAHY26se/O
+	BYlXmiMf8fz3t+Usn7N0rp55LzLAJyPYLE2RbIE8MIMC3UF75K5x+lnhKKIGsmfq
+	HZGPlPD297q6vCQHsangFsQXDf7DcqfCSdADf7C7H4dYwRDH3FZGHsh0g7tuqqb8
+	itZRDMETY+Zdf8bwuuT2mMjWu77mphmrpXClEmS1RTH5hhE1o0jmez5sKRW3+f02
+	s2viwgUutrK7dN04kHDShRkdW3vR0Itrsp8PEAvlgysUL/kSfeJ0pOW2wHW/E0iJ
+	NTmdBVtEULYtD7JDdkwtqQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773389109; x=
+	1773475509; bh=OhYcmieEv+FE8vEFiY/PmfbU95BqiZFGrB6FxP1Df+8=; b=t
+	iGHJU1QEl2szCuN0eGxxp9lURLNv9hMUK75g+r6sb/0Rwo9F1cqkW5GByCFx5fGp
+	obZktNOBPLEf3AXyNSkvSPLm/kiV0BThSWPtPamBaD8kNGBWA+xkklmXqsFXg0ws
+	wF0X090bqwqIJJtX+qGImpc0/h2p5ga7YvG2TvSl7iVxTiziBtTnZhUVvr6tFVMC
+	NVOwMshEGKoJ1tfrSOOJS7BbKuPdjvSGYr4K4MNX/10pKLS7IwUyhc3FxFnB/14T
+	Z+TZd2AntRKvZz4rQBd4p6c7M8DId+MSHAxJaR4b/4CjuPNbYp0EYdxLYmBy63vg
+	/WxT1pXUJnhXDMoGH2Hnw==
+X-ME-Sender: <xms:NMWzaQqW_zoyFzK7l4jRL6BVKyujcfygoN6WbEuXRrgNwkvxWiVUIQ>
+    <xme:NMWzaXCS5obQ_uw2ECHsiqSc7VY-8i1LpOshtTsyzuWVGSCQ-WXGEpM9vSrpzIPI0
+    1MmTlKgvFEsvpYnmw3XZrYJ6s3oP1-q7Xexi2Y6F8noE21HUGZI7w>
+X-ME-Received: <xmr:NMWzaWUHtzXd_fm-CR69dgmfNkyoeAgI1_J-Ln29Y7rxv1EQapzcidst2n6A-rP919IToK4G-yfL51hkxNBGBIDuNcVPTg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeeludefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeetkeelheeuhfegueevveefheehheehgeehveehjeehfeduheejudff
+    geefueffjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpegsrghrrhihnhesphhosghogidrtghomhdpnhgspghrtghpthhtohepvddupdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehrvgesfieirhiirdhnvghtpdhrtghpthhtoh
+    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
+    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
+    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
+    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
+    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:NMWzaT6VgFT0FQJ8c3EWVTyz18-yhCVO6ip3ItURlX_Wmc7nExzviw>
+    <xmx:NMWzafBDLHV1QLPMoHJeWollETlMydIEx9sRxUmv3xOvUsdki8vrNw>
+    <xmx:NMWzaQA13hTWEwVpn4xBj1rzJqrxWwWTz2e2eNrLWSwITG6el2WAHQ>
+    <xmx:NMWzaXguYKglV8vUkl1VtpKi4Iykd3G7SwhV-pQfTiMUvVQk-9OVQQ>
+    <xmx:NcWzaTf226_aVsyne-P-0tVA_ericZQxyuE8klKfKZ3XgmfeNDtpMmQ3>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Mar 2026 04:05:05 -0400 (EDT)
+Message-ID: <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
+Date: Fri, 13 Mar 2026 01:05:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <alansong-oc@zhaoxin.com>
-X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
-X-Barracuda-Start-Time: 1773388987
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2511
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -1.62
-X-Barracuda-Spam-Status: No, SCORE=-1.62 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=BSF_SC0_SA085b
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155781
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.40 BSF_SC0_SA085b         Custom Rule SA085b
-X-Spamd-Result: default: False [0.04 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: freeze during boot regression Re: [PATCH 6.12 000/265]
+ 6.12.77-rc1 review
+To: Ron Economos <re@w6rz.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260312201018.128816016@linuxfoundation.org>
+ <b4f58774-18d4-4a32-9c85-603f9e2c98fc@pobox.com>
+ <ee851013-fec8-47f8-9863-392f17e54474@pobox.com>
+ <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DMARC_NA(0.00)[zhaoxin.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-225261-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-225262-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.917];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[AlanSong-oc@zhaoxin.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zhaoxin.com:email,zhaoxin.com:mid,linux-hardware.org:url]
-X-Rspamd-Queue-Id: 68E1E27F4B4
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: 6BDD727F37A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-For Zhaoxin processors, the XSHA1 instruction requires the total memory
-allocated at %rdi register must be 32 bytes, while the XSHA1 and
-XSHA256 instruction doesn't perform any operation when %ecx is zero.
+On 3/12/26 23:10, Ron Economos wrote:
+> Probably those sched/fair patches.
 
-Due to these requirements, the current padlock-sha driver does not work
-correctly with Zhaoxin processors. It cannot pass the self-tests and
-therefore does not activate the driver on Zhaoxin processors. This issue
-has been reported in Debian [1]. The self-tests fail with the
-following messages [2]:
+Yes, after bisecting it turned out to be
+sched-fair-fix-eevdf-entity-placement-bug-causing-sc.patch
 
-alg: shash: sha1-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
-alg: self-tests for sha1 using sha1-padlock-nano failed (rc=-22)
-------------[ cut here ]------------
+Taking 6.12.77-rc1 and reverting both of the sched-fair patches
+results in a working kernel that boots consistently (which I am
+using now to send this email).
 
-alg: shash: sha256-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
-alg: self-tests for sha256 using sha256-padlock-nano failed (rc=-22)
-------------[ cut here ]------------
-
-Disable the padlock-sha driver on Zhaoxin processors with the CPU family
-0x07 and newer. Following the suggestion in [3], add support for the PHE
-extensions to lib/crypto. Only XSHA256 support for SHA-256 is included,
-since SHA-1 has been cryptographically broken, as recommended in [4].
-
-[1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1103397
-[2] https://linux-hardware.org/?probe=271fabb7a4&log=dmesg
-[3] https://lore.kernel.org/linux-crypto/aUI4CGp6kK7mxgEr@gondor.apana.org.au/
-[4] https://lore.kernel.org/linux-crypto/20260116071513.12134-1-AlanSong-oc@zhaoxin.com/T/#m49436c4849dd64454b3554c105197ef9c61db23e
-
-Fixes: 63dc06cd12f9 ("crypto: padlock-sha - Use API partial block handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: AlanSong-oc <AlanSong-oc@zhaoxin.com>
----
- drivers/crypto/padlock-sha.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/crypto/padlock-sha.c b/drivers/crypto/padlock-sha.c
-index 329f60ad4..9214bbfc8 100644
---- a/drivers/crypto/padlock-sha.c
-+++ b/drivers/crypto/padlock-sha.c
-@@ -332,6 +332,13 @@ static int __init padlock_init(void)
- 	if (!x86_match_cpu(padlock_sha_ids) || !boot_cpu_has(X86_FEATURE_PHE_EN))
- 		return -ENODEV;
- 
-+	/*
-+	 * Skip family 0x07 and newer used by Zhaoxin processors,
-+	 * as the driver's self-tests fail on these CPUs.
-+	 */
-+	if (c->x86 >= 0x07)
-+		return -ENODEV;
-+
- 	/* Register the newly added algorithm module if on *
- 	* VIA Nano processor, or else just do as before */
- 	if (c->x86_model < 0x0f) {
 -- 
-2.34.1
-
+-Barry K. Nathan  <barryn@pobox.com>
 
