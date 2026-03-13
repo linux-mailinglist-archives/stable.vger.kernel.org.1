@@ -1,163 +1,227 @@
-Return-Path: <stable+bounces-225270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iD1ACdzas2mzbgAAu9opvQ
-	(envelope-from <stable+bounces-225270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 10:37:32 +0100
+	id +OrTFg3cs2mzbgAAu9opvQ
+	(envelope-from <stable+bounces-225271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 10:42:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07D12809BF
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 10:37:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D402280AB0
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 10:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 31058301344A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:37:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8826307F3AC
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522CD37CD5D;
-	Fri, 13 Mar 2026 09:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274A4388E68;
+	Fri, 13 Mar 2026 09:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="z9LUrJeE"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="r6jKkqrh"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F22375ADE
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 09:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18DA38737A
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 09:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773394648; cv=none; b=j65AeeUFBIs7v/7q6TCSfUXyrM89xcIdeiT+FLarTwG/4DLn6k6q3z1/hXp9qo7nn+XTZfyU1hwvvJx2zNBjyx1CYDAtL0ajl7VBbG6vuUMNpCbQUOZRNLVxYrBjHrAkGt0yAzUziJ4Jxe/vW0wjizCvMgnYAh89BcziSeU8m2c=
+	t=1773394924; cv=none; b=GmojRYFN+zPtOOtJgxCxYh82Wb+zN2tunX7CS4a3v3eG+b2DLpRbBVAFloLF3LzbCOQhaMD2iyerXqhPZoIAnm8IV7i9OrNHTWz2SozIL9c5k5tLFM36Ds9saOpQVPA5409VF2ymZE5/eOHerE02pSlW8s9LqNyEb4as1au2ycU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773394648; c=relaxed/simple;
-	bh=8XVdrRwFFMeC9dFJaqM8oPsrui61kco+m1XcAVtxLXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MyDPcF+oNgk2VsHl/hYJZW5T4SDg6EHq1bB1iXdY+c/CtdSFoKHgYXy3r0Tx6fR+6rm0xwwA/wRl8gVOJNIlf15DVYPPSuq6ACjXBpW9bInkb0jwJzN/JKL6I6LDFr8Mb4FUYZmaV7M9RPxsuiADf0dL/aLb7Sz/I1qv2Vf7yGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=z9LUrJeE; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
-	by cmsmtp with ESMTPS
-	id 0vZ5wFnZ9VCBN0yxMwD6y4; Fri, 13 Mar 2026 09:37:20 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 0yxLwVT8nN3K10yxLw5oCK; Fri, 13 Mar 2026 09:37:19 +0000
-X-Authority-Analysis: v=2.4 cv=UdRRSLSN c=1 sm=1 tr=0 ts=69b3dacf
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10
- a=EGTM6zHwoJqTM8vi98cA:9 a=QEXdDO2ut3YA:10 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JC5kbKYzzY9hREHoxnstOrWsoE8p9+xtS+3usyPFrGg=; b=z9LUrJeEHd/Nz1y/fzNOhBcTCl
-	v+qpghkfpxBZ98zeKEuASYZmI/SvJXa7FWeJlLxIFhJahEgYEHM6MOBK4wVvRswtlwh+g15FH/Vg+
-	w9W3gXOZcaTjFEnUTuBYmnZEp3eyIq7nbytLpsM0ce/EuRysahj/sa4xgvUaFk0LKzaUDcBQYWhRh
-	8zGfa7g05hEJd2cFpxNQ1xiekyXLqObYBwi6U3+WrF4rt1izALZJDVDWFXIKzc3v9Ohc+eHCK8Tao
-	B6FiuUFpRRUL/SbxYm6eknO3I+pCBjJcFGU/8LAU+pu79GBGuaLNUEHjnHK+/ro2P8ecMPk2VkQH0
-	UaQVlMZw==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:56878 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1w0yxK-00000000Rcz-2Kpo;
-	Fri, 13 Mar 2026 03:37:18 -0600
-Message-ID: <88e4edea-f204-4f06-b898-2995237fc823@w6rz.net>
-Date: Fri, 13 Mar 2026 02:37:16 -0700
+	s=arc-20240116; t=1773394924; c=relaxed/simple;
+	bh=OaTLQkJJL2S9FQXOdAlEIL18pnCS+HXe5A08PN8IPkE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cUmFtixmD2HnqNsX7qCF48nSkUgWIk/dfmjLPhBgYYGYT5wKhRAaDUgeM2+bQc/GYPbAqfGAlUZrV7FGEPBAtTlzM0RIQBf2dlWZw/BYqnTaKr7nK2kHLqom4QL408v9Z/VIEmt7GkdxpTDSEHbJzDl3R3JCwRiUv6vhVva0+/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=r6jKkqrh; arc=none smtp.client-ip=218.30.114.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773394918;
+	bh=ZhEIvHhe/4wfjng7dFZk+vU3XoIbtghh/IWTasII56Y=;
+	h=From:Subject:Date:Message-Id;
+	b=r6jKkqrhDqb+YftvErwj0d6l+HFY4oax2J3bIkvRn8NntZFvW11mw6IvO3lsOrATG
+	 Vy7Tl3mJ2dsFw0wvE81aXRkadbbk4O1Txo8ZZPlkdDSYmQUGN27Bc0CmHgrdxvG4sq
+	 UrTWUs4CXRQZIA5maixovwBEtaqvB2wiZ1ZzB9I0=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.23) with ESMTP
+	id 69B3DBDF00000DD7; Fri, 13 Mar 2026 17:41:53 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 7398828912926
+X-SMAIL-UIID: 2011A78379284B68BFFFF5891AFD4327-20260313-174153-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Lang Yu <Lang.Yu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 6.1.y] drm/amdgpu: unmap and remove csa_va properly
+Date: Fri, 13 Mar 2026 17:41:50 +0800
+Message-Id: <20260313094150.291659-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: freeze during boot regression Re: [PATCH 6.12 000/265]
- 6.12.77-rc1 review
-To: "Barry K. Nathan" <barryn@pobox.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260312201018.128816016@linuxfoundation.org>
- <b4f58774-18d4-4a32-9c85-603f9e2c98fc@pobox.com>
- <ee851013-fec8-47f8-9863-392f17e54474@pobox.com>
- <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
- <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1w0yxK-00000000Rcz-2Kpo
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:56878
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNulRSrXcUUiFmh/LoF7JFxYzQcrABpLNU4YlYYN/JEuNssxjoVYtuPRzcpKwLl0mX4hZAPSb6SGSXthyCzpUS2KSituLAF6YVcR66YXEoJHKZb6yCdx
- TDYT2HMKVKc/oG+iY+/OeHw/z7WHSoB0H3IqXWSo0W2tuKcIwlbKfAWFKoBkzJRZ+8S0FDQJJ8J95A==
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225270-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,sina.com];
+	TAGGED_FROM(0.00)[bounces-225271-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.896];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C07D12809BF
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,csa_tv.bo:url]
+X-Rspamd-Queue-Id: 3D402280AB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/13/26 01:05, Barry K. Nathan wrote:
-> On 3/12/26 23:10, Ron Economos wrote:
->> Probably those sched/fair patches.
->
-> Yes, after bisecting it turned out to be
-> sched-fair-fix-eevdf-entity-placement-bug-causing-sc.patch
->
-> Taking 6.12.77-rc1 and reverting both of the sched-fair patches
-> results in a working kernel that boots consistently (which I am
-> using now to send this email). 
+From: Lang Yu <Lang.Yu@amd.com>
 
-Confirmed on RISC-V. Reverting "sched/fair: Fix lag clamp" commit b547745a2c78fd1cc1fdc6a0d1b05c884c05cec2 and "sched/fair: Fix 
-EEVDF entity placement bug causing scheduling lag" commit f9891a33ba67ce40e5a17023d2f3a5e2b7d72ffd resolves the issue.
+[ Upstream commit 5daff15cd013422bc6d1efcfe82b586800025384 ]
+
+Root PD BO should be reserved before unmap and remove
+a bo_va from VM otherwise lockdep will complain.
+
+v2: check fpriv->csa_va is not NULL instead of amdgpu_mcbp (christian)
+
+[14616.936827] WARNING: CPU: 6 PID: 1711 at drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c:1762 amdgpu_vm_bo_del+0x399/0x3f0 [amdgpu]
+[14616.937096] Call Trace:
+[14616.937097]  <TASK>
+[14616.937102]  amdgpu_driver_postclose_kms+0x249/0x2f0 [amdgpu]
+[14616.937187]  drm_file_free+0x1d6/0x300 [drm]
+[14616.937207]  drm_close_helper.isra.0+0x62/0x70 [drm]
+[14616.937220]  drm_release+0x5e/0x100 [drm]
+[14616.937234]  __fput+0x9f/0x280
+[14616.937239]  ____fput+0xe/0x20
+[14616.937241]  task_work_run+0x61/0x90
+[14616.937246]  exit_to_user_mode_prepare+0x215/0x220
+[14616.937251]  syscall_exit_to_user_mode+0x2a/0x60
+[14616.937254]  do_syscall_64+0x48/0x90
+[14616.937257]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ The context change is due to the commit 8a1fbb4a5ec2
+("drm/amdgpu: Disable MCBP from soc21 for SRIOV")
+in v6.2 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 38 +++++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h |  3 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 10 +++----
+ 3 files changed, 46 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index c6d4d41c4393..23d054526e7c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -106,3 +106,41 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	ttm_eu_backoff_reservation(&ticket, &list);
+ 	return 0;
+ }
++
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr)
++{
++	struct ww_acquire_ctx ticket;
++	struct list_head list;
++	struct amdgpu_bo_list_entry pd;
++	struct ttm_validate_buffer csa_tv;
++	int r;
++
++	INIT_LIST_HEAD(&list);
++	INIT_LIST_HEAD(&csa_tv.head);
++	csa_tv.bo = &bo->tbo;
++	csa_tv.num_shared = 1;
++
++	list_add(&csa_tv.head, &list);
++	amdgpu_vm_get_pd_bo(vm, &list, &pd);
++
++	r = ttm_eu_reserve_buffers(&ticket, &list, true, NULL);
++	if (r) {
++		DRM_ERROR("failed to reserve CSA,PD BOs: err=%d\n", r);
++		return r;
++	}
++
++	r = amdgpu_vm_bo_unmap(adev, bo_va, csa_addr);
++	if (r) {
++		DRM_ERROR("failed to do bo_unmap on static CSA, err=%d\n", r);
++		ttm_eu_backoff_reservation(&ticket, &list);
++		return r;
++	}
++
++	amdgpu_vm_bo_del(adev, bo_va);
++
++	ttm_eu_backoff_reservation(&ticket, &list);
++
++	return 0;
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+index 524b4437a021..7dfc1f2012eb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+@@ -34,6 +34,9 @@ int amdgpu_allocate_static_csa(struct amdgpu_device *adev, struct amdgpu_bo **bo
+ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 			  struct amdgpu_bo *bo, struct amdgpu_bo_va **bo_va,
+ 			  uint64_t csa_addr, uint32_t size);
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr);
+ void amdgpu_free_static_csa(struct amdgpu_bo **bo);
+ 
+ #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 345ccd721d74..5382e1906a5e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -1244,12 +1244,12 @@ void amdgpu_driver_postclose_kms(struct drm_device *dev,
+ 	if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_VCE) != NULL)
+ 		amdgpu_vce_free_handles(adev, file_priv);
+ 
+-	if (amdgpu_mcbp || amdgpu_sriov_vf(adev)) {
+-		/* TODO: how to handle reserve failure */
+-		BUG_ON(amdgpu_bo_reserve(adev->virt.csa_obj, true));
+-		amdgpu_vm_bo_del(adev, fpriv->csa_va);
++	if (fpriv->csa_va) {
++		uint64_t csa_addr = amdgpu_csa_vaddr(adev) & AMDGPU_GMC_HOLE_MASK;
++
++		WARN_ON(amdgpu_unmap_static_csa(adev, &fpriv->vm, adev->virt.csa_obj,
++						fpriv->csa_va, csa_addr));
+ 		fpriv->csa_va = NULL;
+-		amdgpu_bo_unreserve(adev->virt.csa_obj);
+ 	}
+ 
+ 	pasid = fpriv->vm.pasid;
+-- 
+2.34.1
 
 
