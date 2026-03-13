@@ -1,214 +1,198 @@
-Return-Path: <stable+bounces-225228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPkHOTZxs2kEWQAAu9opvQ
-	(envelope-from <stable+bounces-225228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:06:46 +0100
+	id YFTXCsp0s2mwWgAAu9opvQ
+	(envelope-from <stable+bounces-225229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:22:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630ED27C7BA
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:06:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2909F27CA7A
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 837303074107
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 02:06:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D4783026BF4
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 02:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4CA33B6C9;
-	Fri, 13 Mar 2026 02:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD3133F5B6;
+	Fri, 13 Mar 2026 02:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="AdBuCQX3";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="oLOchP9m"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="k2FbFqJD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF52E2D8DC4
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 02:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AE8227B94;
+	Fri, 13 Mar 2026 02:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773367601; cv=none; b=lSh8w1JwanrelWMiOQK64SVu6iQHA0yEObuWTDEjLL756Q6XclZ9wFppRz05KB4a8y6nIfy7lE29DuJDZkit7x9L9a8lhT/ZkSI36HOduZOfpUby3oaivyYenAnsy28JmH7Mdyp9SFnxMW/UvAg6H9oSkRXGcw4twSeO61s+B8g=
+	t=1773368516; cv=none; b=KXLAxii3OpOBP3TOj4PRVL+N5QHy4pJr8u+OCCMIShF8NLV/BqVXPcpIb6NwzoN7d4r6GKgxpfR+GEpCN+CWC3S1KuywTwZrWaqNvwn22HtrhE3VjjcGYs3I2O8ojuWnTMlRF3b2mhKrh/WK+BGxRh2Bc6D4bx0shDIKLmTZsUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773367601; c=relaxed/simple;
-	bh=vh/P8kbp1hWf10ZVMwrraSQAU4dPg5iPOhKjlEjT3to=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ud7XQ81doTOH25loeWr5uNTNHKRw4sOo0Z4xWX3zqAgEm+Oc0dNL733YtpfglsFFIr0wSgO4BQT3aprePpSNB6YOsDmfH5UH/o0iuhx4vz3TYlSlpmT2WdhvzWckbMJqKSVxEDDHyNRqCVYj5BwpCFzBKcDAmzrB5a6V8sAEspE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=AdBuCQX3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=oLOchP9m; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EDB065CB7A;
-	Fri, 13 Mar 2026 02:06:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1773367598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUCfbMNY8lnlMMklEtXNnM/VK2+0Q4m/fHVOJoiHfqk=;
-	b=AdBuCQX30SuFJSF/lIC+VU5vQRhBg9sMzwCDJdwmzC4d6a+XVd2HnVNUmMeD2FBfbQtp2v
-	VNJEcPRz1uy4MxyUH6whTbXM9nznA95b/AhV/MXpFZ3ojSGdugRGYHT+ZzZW23eokK5Onu
-	rK8Q0IJaXIZ/GOgZpg6g6HYPswC3TM0=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=oLOchP9m
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1773367597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUCfbMNY8lnlMMklEtXNnM/VK2+0Q4m/fHVOJoiHfqk=;
-	b=oLOchP9mXT3c6bjLpqtPOhTAPXfCy8mdvvTWYpiKtruWxG39263KrG2zHM6Pf2DbDlqLeR
-	FIY1pXh7JWxa0C+mSS7nhuBuDxHiX3QendUre4GN1ONBv8qOCf+hJgooqIHzMacTzWWOqX
-	Koa0o8T/oNj0Q825rnSvPDIwUcyFmTA=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECD59402A0;
-	Fri, 13 Mar 2026 02:06:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iZoyKyxxs2n2QQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Fri, 13 Mar 2026 02:06:36 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: zlib: handle page aligned compressed size correctly
-Date: Fri, 13 Mar 2026 12:36:19 +1030
-Message-ID: <e4b8b53446f543b8e0ee08ab78537e76174995a3.1773367428.git.wqu@suse.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1773368516; c=relaxed/simple;
+	bh=C8FH3g7QQHs/jbvPrgWRUijURB3c8zk5RpSybl32ieg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i3yeqaj4kCaqogpevAHIF6hm6YnsBCqvD1p0dZcrUev9LTWVIIC06D0uh//hkr4ApuQhAh0Hq1Alj9NGSQ3hdS/PcTjPuzOWBTJUoseWG1CwMaciGLD0YEL4iS3bAdgz8jw2ZUe/I2z2rMj4/hydg3ZzAbuCkLhkUvG2XjCBTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=k2FbFqJD; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2rcpAa1TtZWLDIvssxD1LEn5AvFd7LlqWNSfVu4tX3w=;
+	b=k2FbFqJDheDFD8ZQ1TIKD7MLAMU7NtAmyzZS79wyrByImlG/9Oz+7Ht/PCD+SNciSCiVeFaBq
+	3VV/zPoCsVqgcC+m0j9DJ69/4Lo6oVqnv6AFub2EAZnQ3hPUkQ+J/R+M/YieceCx1b3KO4HESDm
+	4ZRimNSFXHPkX5qqZZQWUsU=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fX7QX0pcgzpTJ7;
+	Fri, 13 Mar 2026 10:16:36 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9A98E2022B;
+	Fri, 13 Mar 2026 10:21:50 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 13 Mar 2026 10:21:49 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>, Sohil
+ Mehta <sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Robin Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>,
+	Besar Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei
+ Huang <wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, <kees@kernel.org>,
+	<punit.agrawal@oss.qualcomm.com>, <guohanjun@huawei.com>,
+	<suzuki.poulose@arm.com>, <ryan.roberts@arm.com>, <chenl311@chinatelecom.cn>,
+	<masahiroy@kernel.org>, <wangyuquan1236@phytium.com.cn>,
+	<anshuman.khandual@arm.com>, <heinrich.schuchardt@canonical.com>,
+	<Eric.VanTassell@amd.com>, <jonathan.cameron@huawei.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <fengchengwen@huawei.com>,
+	<linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<loongarch@lists.linux.dev>, <linux-riscv@lists.infradead.org>,
+	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
+	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v7 0/3] Fix get cpu steer-tag fail on ARM64 platform
+Date: Fri, 13 Mar 2026 10:21:41 +0800
+Message-ID: <20260313022144.40942-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225229-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225228-lists,stable=lfdr.de];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 630ED27C7BA
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_GT_50(0.00)[54];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:dkim,huawei.com:mid]
+X-Rspamd-Queue-Id: 2909F27CA7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[BUG]
-Since commit 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio()
-helper"), there are some reports about different crashes in zlib
-compression path. One of the symptoms is list corruption like the
-following:
+This patchset fixes the failure of CPU steer tag retrieval on ARM64
+platforms. The series is structured as follows:
 
-  list_del corruption. next->prev should be fffffbb340204a08, but was ffff8d6517cb7de0. (next=fffffbb3402d62c8)
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:65!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 1 UID: 0 PID: 21436 Comm: kworker/u16:7 Not tainted 7.0.0-rc2-jcg+ #1 PREEMPT
-  Hardware name: LENOVO 10VGS02P00/3130, BIOS M1XKT57A 02/10/2022
-  Workqueue: btrfs-delalloc btrfs_work_helper [btrfs]
-  RIP: 0010:__list_del_entry_valid_or_report+0xec/0xf0
-  Call Trace:
-   <TASK>
-   btrfs_alloc_compr_folio+0xae/0xc0 [btrfs]
-   zlib_compress_bio+0x39d/0x6a0 [btrfs]
-   btrfs_compress_bio+0x2e3/0x3d0 [btrfs]
-   compress_file_range+0x2b0/0x660 [btrfs]
-   btrfs_work_helper+0xdb/0x3e0 [btrfs]
-   process_one_work+0x192/0x3d0
-   worker_thread+0x19a/0x310
-   kthread+0xdf/0x120
-   ret_from_fork+0x22e/0x310
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+1. First commit: Refactor the ACPI Processor UID retrieval interface
+   (no functional changes when input valid) to align naming conventions
+   across arm64/riscv/loongarch architectures;
+2. Second commit: Implement acpi_get_cpu_uid() for the x86 platform to
+   complete the unified ACPI Processor UID interface across all
+   ACPI-enabled architectures;
+3. Third commit: Implement the core fix for the CPU steer tag retrieval
+   logic on ARM64 (the root cause of the retrieval failure).
 
-Other symptoms include VM_BUG_ON() during folio_put().
+The refactor and x86 implementation lay the groundwork for the unified
+ACPI interface required by the ARM64 steer tag fix, ensuring consistent
+CPU UID retrieval across architectures before addressing the functional
+bug.
 
-Meanwhile zstd/lzo doesn't seem to have the same problem.
-
-[CAUSE]
-During zlib_compress_bio() every time the output buffer is full, we
-queue the full folio into the compressed bio, and allocate a new folio
-as the output folio.
-
-After the input has finished, we loop through zlib_deflate() with
-Z_FINISH to flush all output.
-
-And when that is done, we still need to check if the last folio has any
-content, and if so we still need to queue that part into the compressed
-bio.
-
-The problem is in the final folio handling, if the final folio is full
-(for x86_64 the folio size is 4K), the length to queue is calculated by
-
-  u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
-
-But since total_out is 4K aligned, the resulted @cur_len will be 0, then
-we hit the bio_add_folio(), which has a quirk that if bio_add_folio()
-got an length 0, it will still queue the folio into the bio, but return
-false.
-
-In that case we go to out: tag, which calls btrfs_free_compr_folio() to
-release @out_folio, which may put the out folio into the btrfs global
-pool list.
-
-On the other hand, that @out_folio is already added to the
-compressed bio, and will later be released again by
-cleanup_compressed_bio(), which results double release.
-
-And if this time we still need to put the folio into the btrfs global
-pool list, it will result a list corruption because it's already in the
-list.
-
-[FIX]
-Instead of offset_inside_folio(), directly use the difference between
-strm.total_out and bi_size.
-So that if the last folio is completely full, we can still properly
-queue the full folio other than queueing zero byte.
-
-Fixes: 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio() helper")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- fs/btrfs/zlib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v7:
+- Refine first commit which address Jonathan's reviews
+- Fix x86 implement bug (not consider INVALID-ID) which address Peter's
+  review
+- Fix CI error of x86 implement by moving function to acpi/boot.c
 
-diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
-index 1a5093525e32..147c92a4dd04 100644
---- a/fs/btrfs/zlib.c
-+++ b/fs/btrfs/zlib.c
-@@ -308,7 +308,9 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
- 	}
- 	/* Queue the remaining part of the folio. */
- 	if (workspace->strm.total_out > bio->bi_iter.bi_size) {
--		u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
-+		const u32 cur_len = workspace->strm.total_out - bio->bi_iter.bi_size;
-+
-+		ASSERT(cur_len <= folio_size(out_folio));
- 
- 		if (!bio_add_folio(bio, out_folio, cur_len, 0)) {
- 			ret = -E2BIG;
+Changes in v6:
+- Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_uid()
+- Split x86's modify as one commit
+
+Changes in v5:
+- Refine commit-log of commit 2/2
+- Replace cpu_acpi_id() by acpi_get_cpu_acpi_id() on x86
+
+Changes in v4:
+- Split the rename into a separate commit.
+
+Changes in v3:
+- Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_acpi_id() other
+  than add one new API.
+
+Changes in v2:
+- Add ECN _DSM reference doc name and its URL.
+- Separate implement acpi_get_cpu_acpi_id() in each arch which supports
+  ACPI.
+- Refine commit-log
+
+Chengwen Feng (3):
+  ACPI: Refactor get_acpi_id_for_cpu() to acpi_get_cpu_uid() on non-x86
+  x86: Implement acpi_get_cpu_uid()
+  PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+
+ Documentation/PCI/tph.rst          |  4 +--
+ arch/arm64/include/asm/acpi.h      | 16 +---------
+ arch/arm64/kernel/acpi.c           | 16 ++++++++++
+ arch/arm64/kernel/acpi_numa.c      | 14 +++++++++
+ arch/loongarch/include/asm/acpi.h  |  5 ---
+ arch/loongarch/kernel/acpi.c       |  9 ++++++
+ arch/riscv/include/asm/acpi.h      |  4 ---
+ arch/riscv/kernel/acpi.c           | 16 ++++++++++
+ arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+ arch/x86/include/asm/cpu.h         |  1 -
+ arch/x86/include/asm/smp.h         |  1 -
+ arch/x86/kernel/acpi/boot.c        | 20 ++++++++++++
+ arch/x86/xen/enlighten_hvm.c       |  5 +--
+ drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+ drivers/acpi/riscv/rhct.c          |  7 ++++-
+ drivers/pci/tph.c                  | 16 +++++++---
+ drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+ include/linux/acpi.h               | 11 +++++++
+ include/linux/pci-tph.h            |  4 +--
+ 19 files changed, 158 insertions(+), 56 deletions(-)
+
 -- 
-2.53.0
+2.17.1
 
 
