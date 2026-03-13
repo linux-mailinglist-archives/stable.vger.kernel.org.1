@@ -1,132 +1,165 @@
-Return-Path: <stable+bounces-225340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGYeGnA2tGnTiwAAu9opvQ
-	(envelope-from <stable+bounces-225340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:08:16 +0100
+	id QILMOSA4tGnTiwAAu9opvQ
+	(envelope-from <stable+bounces-225341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:15:28 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FA4286AED
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:08:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116E0286CCE
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6ADE30166D4
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:02:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75F72315208C
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E993B6342;
-	Fri, 13 Mar 2026 16:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E283C3C1C;
+	Fri, 13 Mar 2026 16:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw7w7Y0S"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="D81dyjpc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27D93B47DF;
-	Fri, 13 Mar 2026 16:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A7F2153D8;
+	Fri, 13 Mar 2026 16:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773417773; cv=none; b=QpzKL9kO+kw87MCc66PdKpTNEt3iplZ29v75TqbwBd44/3bMaXtSSrjLOndzkU6CFxXGPYwtgeRfvsRsOxcWEkh1EKnDf4kXb+JPqENTRr9LgbK79+Sn1t6/wW17EuibqB5ColysreEKQdz/GsIzGWFBzzr41St2yVPku+xaSC8=
+	t=1773418074; cv=none; b=bfJdLDYUp1yz5NLs0wHKUu1deVuPRZr0VJH3bp3u1XXRN+Ys6nt4aTqXXI0/Cc4y1k76xbTuo4nosLL8JnwHlNiL44G2tyAvLTggbFGIrN6WTPLb/sLcTciEtljSIkSKnJHbJCmwMXJ2Xe9RMOEc/XgFdrddNbzL+0oiLiSFE8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773417773; c=relaxed/simple;
-	bh=TdUCTd/WUOBMkc+IsUcewmwCKvcHQbdZ/rkwLaTqrt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vs75cXCqfX+AIOS274xdpEmLX0C9sYPqmSW8wVfLjb8j6GA49zKdtHcawrz1po/crn0cOIh1ULi7KWYmWuuppRFgdI0RINXxSbzZyZW4BVDvpc9RIh97r7/GOrzaySVGoahvnLD0ZQhVIqxkn4dwn0Aw2muc6ylq2QSiIByd2vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw7w7Y0S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07B6C19421;
-	Fri, 13 Mar 2026 16:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773417772;
-	bh=TdUCTd/WUOBMkc+IsUcewmwCKvcHQbdZ/rkwLaTqrt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bw7w7Y0SphHNkvfzFnUILtVa3xLB06aOSaGIY81+15y81qNYW4Ys+WOOgxks1FVTt
-	 5uGehplLhyrwk4zhzlRuE0yDo3O9JvFpgN4p1lB/n7PTOnrccQgEoMJLAIvhDgCr7J
-	 DNtmzhMYo45BhsNgTgZUatZ/yAvrnR5J/gTkR7og=
-Date: Fri, 13 Mar 2026 17:02:48 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	MPTCP Linux <mptcp@lists.linux.dev>
-Subject: Re: [PATCH 6.12 162/265] selftests: mptcp: join: check removing
- signal+subflow endp
-Message-ID: <2026031328-subpar-scruffy-b4b8@gregkh>
-References: <20260312201018.128816016@linuxfoundation.org>
- <20260312201024.124696392@linuxfoundation.org>
- <0fe5137d-9b80-4afe-a7d8-cb38a3118070@kernel.org>
+	s=arc-20240116; t=1773418074; c=relaxed/simple;
+	bh=sKc7wymN8ddHQKZHzBiSzy32Einw2qz8y0P3gg8Kyw4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OljLPq0jMvmPN796tdGOb8eGiDNQwUx8cPeqn5QvpRsTIkGt/+H7HWZ4ppljXKyk7PUsmBdFtbx6e5vJsaabSormOztOKxgwJv+SV+PzRrDXni3ZV/bC0migXTvkCyMb4/8bkOpWxehLbX8lYu/6T4Q1Gwg2JBsfZYVLQ3wOfqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=D81dyjpc; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.0.43] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net [86.13.91.161])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 24E38D0;
+	Fri, 13 Mar 2026 17:06:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773418001;
+	bh=sKc7wymN8ddHQKZHzBiSzy32Einw2qz8y0P3gg8Kyw4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D81dyjpcaIj/OGdKzTmn0hnyiO2HmRLfmGppkdpRzwymc7tvxQvjjO+amTOEcCJxd
+	 8KeDdMgzySMZ7Zy8bQ1KPlyTtEhG/fqo+GzUBB1CRB18MUMGrPNh3pGf/vnezOgvka
+	 OvJ4gauXQjmP4C3+QUBEGJxesoPoa3IHHcNBsNR4=
+Message-ID: <75c4cacf-9f52-4904-9cf6-44425fabaea1@ideasonboard.com>
+Date: Fri, 13 Mar 2026 16:07:47 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0fe5137d-9b80-4afe-a7d8-cb38a3118070@kernel.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] media: rzv2h-ivc: Write AXIRX_PIXFMT once
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+ =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?=
+ <barnabas.pocze+renesas@ideasonboard.com>, stable@vger.kernel.org
+References: <20260313-mali-ivc-fixes-v7-0-v1-0-cb0714cd1279@ideasonboard.com>
+ <20260313-mali-ivc-fixes-v7-0-v1-3-cb0714cd1279@ideasonboard.com>
+Content-Language: en-US
+From: Dan Scally <dan.scally@ideasonboard.com>
+In-Reply-To: <20260313-mali-ivc-fixes-v7-0-v1-3-cb0714cd1279@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225340-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225341-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.982];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D4FA4286AED
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 116E0286CCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 13, 2026 at 10:54:07AM +0100, Matthieu Baerts wrote:
-> Hi Greg,
-> 
-> On 12/03/2026 21:09, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> > 
-> > commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
-> > 
-> > This validates the previous commit: endpoints with both the signal and
-> > subflow flags should always be marked as used even if it was not
-> > possible to create new subflows due to the MPTCP PM limits.
-> 
-> FYI, this patch adds a new subtest in the MPTCP selftests to validate
-> that the upstream parent commit -- 579a752464a6 ("mptcp: pm: in-kernel:
-> always mark signal+subflow endp as used") -- fixes a warning. Except
-> that this commit had a conflict and is currently not in v6.12. Sasha
-> sent a version without the conflict (BTW, thank you for that!):
-> 
->   https://lore.kernel.org/20260309153846.1288656-1-sashal@kernel.org
-> 
-> I guess that's probably fine like that because the issue exposed by this
-> new test is not new, and it will be fixed by the missing patch soon I
-> suppose. Probably no need to modify this RC, and the fix can wait the
-> next version, but I prefer to send this message just in case people hit
-> the issue.
+Hi Jacopo (and Barnabás)
 
-Thanks for the info, I'll queue up that other patch for the next round
-of stable releases, sorry I didn't get to it at this point in time.
+On 13/03/2026 11:13, Jacopo Mondi wrote:
+> From: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+> 
+> The documentation prescribes that invalid formats should not be set,
+> so do a single write to ensure that both the CLFMT and DTYPE fields
+> are set to valid values.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+> Signed-off-by: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> ---
+>   drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c | 8 ++++----
+>   drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h       | 7 ++++---
+>   2 files changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> index bfe5b0c7045e..d894a880c33f 100644
+> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> @@ -215,10 +215,10 @@ static void rzv2h_ivc_format_configure(struct rzv2h_ivc *ivc)
+>   
+>   	/* Currently only CRU packed pixel formats are supported */
+>   	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_PXFMT,
+> -			RZV2H_IVC_INPUT_FMT_CRU_PACKED);
+> -
+> -	rzv2h_ivc_update_bits(ivc, RZV2H_IVC_REG_AXIRX_PXFMT,
+> -			      RZV2H_IVC_PXFMT_DTYPE, fmt->dtype);
+> +			FIELD_PREP(RZV2H_IVC_AXIRX_PXFMT_FIELD_DTYPE,
+> +				   fmt->dtype) |
+> +			FIELD_PREP(RZV2H_IVC_AXIRX_PXFMT_FIELD_CLFMT,
+> +				   RZV2H_IVC_CLFMT_CRU_PACKED));
 
-greg k-h
+TIL of FIELD_PREP(), I like that! Maybe #include <linux/bitfield.h> though?
+
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+
+>   
+>   	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_HSIZE, pix->width);
+>   	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_VSIZE, pix->height);
+> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
+> index 4ef44c8b4656..54c70de31c1e 100644
+> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
+> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
+> @@ -24,9 +24,10 @@
+>   #define RZV2H_IVC_ONE_EXPOSURE				0x00
+>   #define RZV2H_IVC_TWO_EXPOSURE				0x01
+>   #define RZV2H_IVC_REG_AXIRX_PXFMT			0x0004
+> -#define RZV2H_IVC_INPUT_FMT_MIPI			(0 << 16)
+> -#define RZV2H_IVC_INPUT_FMT_CRU_PACKED			BIT(16)
+> -#define RZV2H_IVC_PXFMT_DTYPE				GENMASK(7, 0)
+> +#define RZV2H_IVC_AXIRX_PXFMT_FIELD_CLFMT		GENMASK(17, 16)
+> +#define RZV2H_IVC_CLFMT_MIPI				0
+> +#define RZV2H_IVC_CLFMT_CRU_PACKED			1
+> +#define RZV2H_IVC_AXIRX_PXFMT_FIELD_DTYPE		GENMASK(7, 0)
+>   #define RZV2H_IVC_REG_AXIRX_SADDL_P0			0x0010
+>   #define RZV2H_IVC_REG_AXIRX_SADDH_P0			0x0014
+>   #define RZV2H_IVC_REG_AXIRX_SADDL_P1			0x0018
+> 
+
 
