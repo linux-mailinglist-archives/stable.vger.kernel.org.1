@@ -1,157 +1,178 @@
-Return-Path: <stable+bounces-225313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDAaCIMWtGlkgwAAu9opvQ
-	(envelope-from <stable+bounces-225313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:03 +0100
+	id cERSOrIWtGlkgwAAu9opvQ
+	(envelope-from <stable+bounces-225314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7682B28443A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C7284467
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E035431CA480
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:49:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F4CC320C95A
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4EF37F8C8;
-	Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E387397E93;
+	Fri, 13 Mar 2026 13:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWz1Qzl4"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64B7385539;
-	Fri, 13 Mar 2026 13:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352973976B6;
+	Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773409789; cv=none; b=NjDGi3KPCcimA6L4XOor0UVH+aRMe3hEH6EdN4Lu8JClYwQe6ypyU6y6xNybi/ocV4IKjHUqqCJKvtBIpS7iGEF8WBriKkYT7Rc3hWsYjbP4GJZFBxMJoHPQHLgm5/bohBt4+e12hr0aCQzVxQO2BZq/xRbw1zVpEs3Dk0xXW+Y=
+	t=1773409790; cv=none; b=t/VYfLl1QHuWQRxEQZw8D0HO7zsow9tjUOh0Y+Fh1OfhMN1QpqX2VhNsAfPMighWHwVLGXF0tJcJM0jbfJgbcOjx/3E0P+NUVzXm70sB5thHY11/hgYa9whPtZ8a/Ms5MovEYpl6VxjyAbvqqGTTVlnriagqn0laRhh0PGO+bNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773409789; c=relaxed/simple;
-	bh=R/RzDa8ggoa84nzwGaugZlESyMtuWsihWmZpw7DVq54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T7iqsCZr222N/t8HhBagddkQLNuSPCiaVryqV/XFEgkbtuPTN9ndOUTe/aQg7sxrQfZa/lcIcEYYMME7jVhsO9/qU8GY3SMNCPcbp6i62KUONwB+kvObJnm8zhO/kMSE44yJNfbVUqUaQnzT2WhXPQ6HNWtVaEELVOx1YmUlUDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 906A93E97C;
-	Fri, 13 Mar 2026 13:49:40 +0000 (UTC)
-Message-ID: <3020ec8a-5ff9-4816-ad3c-f81dd4513e1a@ghiti.fr>
-Date: Fri, 13 Mar 2026 14:49:39 +0100
+	s=arc-20240116; t=1773409790; c=relaxed/simple;
+	bh=t9ivlOfBBXOXqvNL3l77+EjcZmEMBN+3jdHwaM2lnvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+ZMNzA0V45lEkzz7MnY9HNbT7m5hDoM4rd+h++9IJST73ukc/yh+3ag//9Bqj9IhKyoElaqis+IbKv6ORtlHOXg0m/KwJXbhcmgEm8na0eaBhJaNxAvZANKkr/30HakTobaJnvwH0koqMAo6Uabm9szsqac4S8S/U406dy63AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWz1Qzl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AD2C2BCC6;
+	Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773409789;
+	bh=t9ivlOfBBXOXqvNL3l77+EjcZmEMBN+3jdHwaM2lnvw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nWz1Qzl4WqrK6ZtgHHPr6gEsoWt+ZazIcI7+DnFxSG0zw4WjUFtL0c7Hxtjq82W2z
+	 2EUWw09XB+TNVYESMKlrnC8Ap1JhJENNb9YMYwnatGpYvDOxd3uEYhP6cAaSRA9z7Y
+	 CsbIh4pvSqTqrjp6XXbgwB5lIkfksYLlkczY2AUc=
+Date: Fri, 13 Mar 2026 14:49:45 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: Ron Economos <re@w6rz.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com, Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: freeze during boot regression Re: [PATCH 6.12 000/265]
+ 6.12.77-rc1 review
+Message-ID: <2026031314-civic-sandlot-7a67@gregkh>
+References: <20260312201018.128816016@linuxfoundation.org>
+ <b4f58774-18d4-4a32-9c85-603f9e2c98fc@pobox.com>
+ <ee851013-fec8-47f8-9863-392f17e54474@pobox.com>
+ <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
+ <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
+ <88e4edea-f204-4f06-b898-2995237fc823@w6rz.net>
+ <d87a1702-6906-475c-afd7-9b4b25bfd48c@pobox.com>
+ <71d1fa5b-e6bb-4289-bd8d-445aeddcb9d8@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: Fix demotion gfp by clearing GFP_RECLAIM after
- setting GFP_TRANSHUGE
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, alexghiti@kernel.org, kernel-team@meta.com,
- akinobu.mita@gmail.com, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, zhengqi.arch@bytedance.com,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, gourry@gourry.net, apopple@nvidia.com, byungchul@sk.com,
- joshua.hahnjy@gmail.com, matthew.brost@intel.com, rakie.kim@sk.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Bing Jiao <bingjiao@google.com>,
- stable@vger.kernel.org
-References: <20260311110314.237315-1-alex@ghiti.fr>
- <20260311110314.237315-4-alex@ghiti.fr> <abGsagHIieEobFbB@cmpxchg.org>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <abGsagHIieEobFbB@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeelkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpefhhfdutdevgeelgeegfeeltdduhfduledvteduhfegffffiefggfektefhjedujeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedufeekrdduleelrdeirddvfeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudefkedrudelledriedrvdefkedphhgvlhhopegluddtrddugedurdeitddrkedtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhqihgupeeltdeiteelfefgleejvedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopedvledprhgtphhtthhopehhrghnnhgvshestghmphigtghhghdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigghhhihhtiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesmhgvthgrrdgtohhmpdhrtghpt
- hhtoheprghkihhnohgsuhhmihhtrgesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrgh
-X-GND-State: clean
-X-GND-Score: -100
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <71d1fa5b-e6bb-4289-bd8d-445aeddcb9d8@pobox.com>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225313-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[ghiti.fr];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,meta.com,gmail.com,oracle.com,google.com,suse.com,bytedance.com,linux.dev,gourry.net,nvidia.com,sk.com,intel.com,linux.alibaba.com,kvack.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225314-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_CC(0.00)[w6rz.net,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,dolcini.it];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex@ghiti.fr,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ghiti.fr:email,ghiti.fr:mid]
-X-Rspamd-Queue-Id: 7682B28443A
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 517C7284467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Johannes,
+On Fri, Mar 13, 2026 at 06:38:25AM -0700, Barry K. Nathan wrote:
+> On 3/13/26 03:53, Barry K. Nathan wrote:
+> [snip]
+> > On 3/13/26 02:37, Ron Economos wrote:
+> > > On 3/13/26 01:05, Barry K. Nathan wrote:
+> > > > On 3/12/26 23:10, Ron Economos wrote:
+> > > > > Probably those sched/fair patches.
+> > > > 
+> > > > Yes, after bisecting it turned out to be
+> > > > sched-fair-fix-eevdf-entity-placement-bug-causing-sc.patch
+> > > > 
+> > > > Taking 6.12.77-rc1 and reverting both of the sched-fair patches
+> > > > results in a working kernel that boots consistently (which I am
+> > > > using now to send this email).
+> > > 
+> > > Confirmed on RISC-V. Reverting "sched/fair: Fix lag clamp" commit b547745a2c78fd1cc1fdc6a0d1b05c884c05cec2 and "sched/fair: Fix EEVDF entity placement bug causing scheduling lag" commit f9891a33ba67ce40e5a17023d2f3a5e2b7d72ffd resolves the issue.
+> > 
+> > After looking into it a bit more, I found two upstream commits that
+> > should fix this issue without reverting the two sched/fair patches
+> > (either of the two commits alone should fix it if I understand
+> > the bug and the code correctly):
+> > 
+> > 
+> > commit 4423af84b29794a9bd2bd07188d8e71083e54c61
+> > sched/fair: optimize the PLACE_LAG when se->vlag is zero
+> > 
+> > commit c70fc32f44431bb30f9025ce753ba8be25acbba3
+> > sched/fair: Adhere to place_entity() constraints
+> > 
+> > 
+> > I think c70fc32f4443 is theoretically the proper fix, while
+> > 4423af84b297 is a performance optimization that just happens to also
+> > fix the bug.
+> > 
+> > 4423af84b297 turned out to be the easier backport; the upstream patch
+> > applies to 6.12.77-rc1 with an offset but no fuzz or conflicts. So I
+> > tried 6.12.77-rc1 + 4423af84b297, and just as with reverting the two
+> > sched/fair patches, it eliminates the boot freeze in my testing. It's
+> > what I'm running now as I write and send this email.
+> > 
+> > Next, I think I'll try doing a backport of c70fc32f4443 (I think it
+> > should be easy enough), and I'll try testing 6.12.77-rc1 +
+> > c70fc32f4443 (probably both with and without 4423af84b297).
+> > Maybe 4423af84b297 on its own is enough though.
+> 
+> I originally wrote a much longer email, but I'll try to keep this concise.
+> 
+> I was able to backport c70fc32f4443 successfully, and the backport does
+> fix the reboot freezes (with or without 4423af84b297). However,
+> backporting that commit convinced me that it's too risky; I'm particularly
+> worried it could make future sched/fair backports more difficult. And once
+> 4423af84b297 is applied, I think c70fc32f4443 ends up being a fix for a
+> theoretical bug.
+> 
+> So, even though c70fc32f4443 is the commit that was cc'd to stable@, I
+> believe 4423af84b297 is a better (safer, less risky) way to go.
+> 
+> 
+> In summary, I believe the two best ways to fix this regression are:
+> 1. Backport 4423af84b297, or
+> 2. Revert the two sched/fair patches.
 
-On 3/11/26 18:54, Johannes Weiner wrote:
-> On Wed, Mar 11, 2026 at 12:02:42PM +0100, Alexandre Ghiti wrote:
->> GFP_TRANSHUGE sets __GFP_DIRECT_RECLAIM so we must clear GFP_RECLAIM
->> after, not before.
->>
->> Reported-by: Bing Jiao <bingjiao@google.com>
->> Closes: https://lore.kernel.org/linux-mm/aXlKOxGGI9zne8sl@google.com/
->> Fixes: 9933a0c8a539 ("mm/migrate: clear __GFP_RECLAIM to make the migration callback consistent with regular THP allocations")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->>   mm/migrate.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index 2c3d489ecf51..ee533a4d38db 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -2190,12 +2190,12 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
->>   	}
->>   
->>   	if (folio_test_large(src)) {
->> +		gfp_mask |= GFP_TRANSHUGE;
->>   		/*
->>   		 * clear __GFP_RECLAIM to make the migration callback
->>   		 * consistent with regular THP allocations.
->>   		 */
->>   		gfp_mask &= ~__GFP_RECLAIM;
->> -		gfp_mask |= GFP_TRANSHUGE;
-> I don't think this is right.
->
-> The Fixes: did it this way to disable kswapd for THP allocations,
-> while still allowing the customary direct reclaim. Maybe a better
-> comment would have been: /* GFP_TRANSHUGE has its own reclaim policy */
->
-> After your fix, direct reclaim isn't allowed either, which makes the
-> request unnecessarily wimpy.
->
-> The Closes: refers to reclaim that should be avoided during demotion.
-> But if this path is taken during demotion it will already not recurse
-> into direct reclaim due to PF_MEMALLOC.
->
-> So I don't see a bug in the existing code. But maybe the comment could
-> be clearer.
+I'll go drop these for now, and if they should come back in the future,
+someone can send all of the needed ones at once.
 
+thanks so much for the testing and figuring it all out!
 
-Makes sense, I had not understood the comment indeed. I'll drop this fix 
-in the next version then.
-
-Thanks,
-
-Alex
-
+greg k-h
 
