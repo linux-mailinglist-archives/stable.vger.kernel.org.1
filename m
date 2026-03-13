@@ -1,200 +1,115 @@
-Return-Path: <stable+bounces-225338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uALeOSs2tGn4igAAu9opvQ
-	(envelope-from <stable+bounces-225338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:07:07 +0100
+	id QEjwBHQ2tGnTiwAAu9opvQ
+	(envelope-from <stable+bounces-225339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:08:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92365286AA5
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:07:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9383F286AF5
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1803311DC2B
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:01:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89B4F3039839
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7459E3BE164;
-	Fri, 13 Mar 2026 16:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5E41A681C;
+	Fri, 13 Mar 2026 16:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wOcB4oKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHH/r9pD"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EAE3BD25E;
-	Fri, 13 Mar 2026 16:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D181DF248;
+	Fri, 13 Mar 2026 16:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773417688; cv=none; b=HOOA5Gyp103O/uTvuX31Ab4yDHAf2U7ZvIpOV05qmfOYEk8nBDlgP40gYP24nrp9l4mAAYjke1UhIMS4lIrSG/FKbmLlVW5CvDKrVP09JssDB1bezF9QmYkWGIDc6SIBMIEpo4QR2TwHBdJ3OBFB5ROD3qsEyGnGmT7DHKcaGh4=
+	t=1773417731; cv=none; b=hFaHBWE7XCg+bbPSiRmkj2AFMofjClCHBh0SO0GjuTMDRziW75zK1beITuWykZRC7pxg2zAqaaaKSw/qbfUJUWoolcVxQlHklEJE4erBCQX/L+3hSjiojaGFnu3w85+wpV8A45+c2xFxUo+iMs8Wvb4ZihcpNvad+ul+Qn9lmhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773417688; c=relaxed/simple;
-	bh=SopbJpuXGNqT79D3hh1W7Dwm7h74yJEcJ7bvCVTQUTk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hFcPbqK+hebkDi8h46PFtgajgEUFs7t/K9OVyfEjyxTgqgP+At7OPeZGvvWCchSvrgqxagOFlV4UD5QNiLHlAqRuymveBO+XvcSJyX39G5lC3ZKw6YuKuLHSnGm1bKBwjg8LcNhIahQmV5Hbgd/cRzkKHI7XpOyKZhKjhYCEMR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wOcB4oKM; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.0.43] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net [86.13.91.161])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AB41A5A5;
-	Fri, 13 Mar 2026 17:00:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773417616;
-	bh=SopbJpuXGNqT79D3hh1W7Dwm7h74yJEcJ7bvCVTQUTk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=wOcB4oKMG/XtgutGRDvZR3HERwpDuLpsQ6OloKQUIqmLjupOFxiBY2AYQlN8l7Gxh
-	 2c10HIhKrJWB20y+4TOYadyQlovYuuKT3AFempuOoIox5Z9iG7CdztgHQc2gpeJE74
-	 LibvnBXXeeRy+6Rit/YvMoAeP0KasLNr40hTHkJ8=
-Message-ID: <9e9077dc-aa7f-4365-ad03-9edddd563488@ideasonboard.com>
-Date: Fri, 13 Mar 2026 16:01:21 +0000
+	s=arc-20240116; t=1773417731; c=relaxed/simple;
+	bh=0SnqGWUTPHdASg+pEp4IE3MUWjnn5ereWTFmJ1KFvv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BKSLHOhzKnDhiNx+olqcvuUk6dcdx8PgaBoBFwyZlbb2eTUYXBqXivHSgmhUiopPhXF4t7DCI+atsQ51trjtvleCd8IAQmuIg277UksfPG/l0LBdoq2ks2tfh4QTO71U6xq+wWK4AxcEP337NzLb6/AN7iJs7yJ35uf4CoEE2K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHH/r9pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F825C19421;
+	Fri, 13 Mar 2026 16:02:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773417731;
+	bh=0SnqGWUTPHdASg+pEp4IE3MUWjnn5ereWTFmJ1KFvv0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rHH/r9pD0O0zp0yo5FE/1g0fP9oEB87GfGwnUF1hzb/vx1Y15Y9Ii3nmdvlGg+IKK
+	 x9YtuNWt3Iw38UVWMYm1IgYyWV01ZSXaBdfWBbNkw2xaD91G4GCw5/VFTi1rdSxixg
+	 7rSKj17glbVY5Rzcgi8iwxddXy8m2WqOtq47GT78=
+Date: Fri, 13 Mar 2026 17:02:05 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 004/265] KVM: arm64: Advertise support for
+ FEAT_SCTLR2
+Message-ID: <2026031343-unaudited-tapioca-1005@gregkh>
+References: <20260312201018.128816016@linuxfoundation.org>
+ <20260312201018.304349696@linuxfoundation.org>
+ <87tsukdca9.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] media: mali-c55: Fully reset the ISP configuration
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Anthony McGivern <anthony.mcgivern@arm.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Nayden Kanchev <Nayden.Kanchev@arm.com>,
- Konstantin Babin <Konstantin.Babin@arm.com>,
- =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260313-mali-c55-fixes-v7-0-v2-0-885c07961f30@ideasonboard.com>
- <20260313-mali-c55-fixes-v7-0-v2-3-885c07961f30@ideasonboard.com>
-Content-Language: en-US
-From: Dan Scally <dan.scally@ideasonboard.com>
-In-Reply-To: <20260313-mali-c55-fixes-v7-0-v2-3-885c07961f30@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tsukdca9.wl-maz@kernel.org>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225338-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225339-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92365286AA5
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 9383F286AF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Jacopo
-
-On 13/03/2026 14:53, Jacopo Mondi wrote:
-> The Mali C55 driver uses an auto-suspend delay of 2000 milli-seconds.
+On Thu, Mar 12, 2026 at 08:26:54PM +0000, Marc Zyngier wrote:
+> On Thu, 12 Mar 2026 20:06:31 +0000,
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > 
+> > 6.12-stable review patch.  If anyone has any objections, please let me know.
 > 
-> As the delay is quite large, it is certainly possible that two
-> consecutive calls to enable_streams() do not go through a suspend of the
-> peripheral, meaning we cannot rely on POW register values for the ISP
-> configuration.
+> I already objected to this nonsense [1]. This is actively creating a
+> security hole. Please drop this patch.
 > 
-> To prevent a streaming session to be initialized with settings from the
-> previous one, reset the full ISP configuration to know state disabling or
-> bypassing all the ISP blocks the driver supports.
+> If you can't drop this single patch and resolve the trivial conflict,
+> please drop *all* KVM/arm64 patches.
 
-Oh that's annoying - good spot...perhaps the auto-suspend delay should be reduced too, though I 
-think this change is prudent anyway:
+I've dropped this and resolved the conflict, sorry about that, I thought
+it had already been done.
 
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+thanks for the review,
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
-> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> ---
->   .../media/platform/arm/mali-c55/mali-c55-params.c  | 50 ++++++++++++++++++++++
->   1 file changed, 50 insertions(+)
-> 
-> diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-params.c b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> index c84a6047a570..773e5b6a2b7e 100644
-> --- a/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> +++ b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> @@ -781,6 +781,43 @@ void mali_c55_params_init_isp_config(struct mali_c55 *mali_c55,
->   				 MALI_C55_REG_BYPASS_3_SQUARE_BE,
->   				 MALI_C55_REG_BYPASS_3_SQUARE_BE);
->   
-> +	/* Bypass the sensor offset correction (BLS) module */
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BYPASS_3,
-> +		MALI_C55_REG_BYPASS_3_SENSOR_OFFSET_PRE_SH,
-> +		MALI_C55_REG_BYPASS_3_SENSOR_OFFSET_PRE_SH);
-> +
-> +	/* Configure 1x digital gain. */
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_DIGITAL_GAIN,
-> +				 MALI_C55_DIGITAL_GAIN_MASK, 256);
-> +
-> +	/* Set all AWB gains to 1x. at both AWB configuration points*/
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS1,
-> +				 MALI_C55_AWB_GAIN00_MASK, 256);
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS1,
-> +				 MALI_C55_AWB_GAIN01_MASK,
-> +				 MALI_C55_AWB_GAIN01(256));
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS2,
-> +				 MALI_C55_AWB_GAIN10_MASK, 256);
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS2,
-> +				 MALI_C55_AWB_GAIN11_MASK,
-> +				 MALI_C55_AWB_GAIN11(256));
-> +
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS1_AEXP,
-> +				 MALI_C55_AWB_GAIN00_MASK, 256);
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS1_AEXP,
-> +				 MALI_C55_AWB_GAIN01_MASK,
-> +				 MALI_C55_AWB_GAIN01(256));
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS2_AEXP,
-> +				 MALI_C55_AWB_GAIN10_MASK, 256);
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_AWB_GAINS2_AEXP,
-> +				 MALI_C55_AWB_GAIN11_MASK,
-> +				 MALI_C55_AWB_GAIN11(256));
-> +
-> +	/* Bypass mesh shading corrections (LSC). */
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_MESH_SHADING_CONFIG,
-> +				 MALI_C55_MESH_SHADING_ENABLE_MASK,
-> +				 false);
-> +
->   	/* Bypass the temper module */
->   	mali_c55_ctx_write(mali_c55, MALI_C55_REG_BYPASS_2,
->   			   MALI_C55_REG_BYPASS_2_TEMPER);
-> @@ -802,6 +839,19 @@ void mali_c55_params_init_isp_config(struct mali_c55 *mali_c55,
->   
->   	/* Disable the colour correction matrix */
->   	mali_c55_ctx_write(mali_c55, MALI_C55_REG_CCM_ENABLE, 0);
-> +
-> +	/* Disable AWB stats. */
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_METERING_CONFIG,
-> +				 MALI_C55_AWB_DISABLE_MASK,
-> +				 MALI_C55_AWB_DISABLE_MASK);
-> +
-> +	/* Disable auto-exposure 1024-bin histograms at both tap points. */
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_METERING_CONFIG,
-> +				 MALI_C55_AEXP_HIST_DISABLE_MASK,
-> +				 MALI_C55_AEXP_HIST_DISABLE);
-> +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_METERING_CONFIG,
-> +				 MALI_C55_AEXP_IHIST_DISABLE_MASK,
-> +				 MALI_C55_AEXP_IHIST_DISABLE);
->   }
->   
->   void mali_c55_unregister_params(struct mali_c55 *mali_c55)
-> 
-
+greg k-h
 
