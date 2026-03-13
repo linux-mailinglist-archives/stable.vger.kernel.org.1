@@ -1,168 +1,227 @@
-Return-Path: <stable+bounces-225262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IS+LzvFs2mEagAAu9opvQ
-	(envelope-from <stable+bounces-225262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:05:15 +0100
+	id mFoFIWjHs2kqawAAu9opvQ
+	(envelope-from <stable+bounces-225263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:14:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD727F37A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:05:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FEE27F6CA
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 09:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A575B300B9E5
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:05:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75227318CC3C
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 08:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C394D3161A3;
-	Fri, 13 Mar 2026 08:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B0036AB5E;
+	Fri, 13 Mar 2026 08:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="B0rHviys";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tiGHJU1Q"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="L4q5ULpa";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="L4q5ULpa"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4A825A35A;
-	Fri, 13 Mar 2026 08:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD65330D35
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 08:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773389112; cv=none; b=mnhhIBe8iDOK+R1M1FSxgCWIfhcW1dq5VEAuAwRkH55ZjiWVdyER82Xn2WMQHIhXnQ6wYwndVv3DUo1u/WFfOIhzvkUGjinY9qp/2eT2xuT4P2a97Jjrt7++qFb2SQqH2hUSg1901PJh1KShV0AENNhT16zX64IJbIEwuAVgxbU=
+	t=1773389157; cv=none; b=rDXvl54H8LP7vKN7H9S5KxE+FuQTy/9f37ZJ5lCdE0Io+C+bLoHIXABlCOfOLuybVi+6pw9z7rTmZ3p6t/YKvFy9EDOtfb/AjRKiJVUOnHsmgrS7aEURL0Cx24P5srm3BDS55n1Jin4foDllIPNmWb33jcTo8TqZw/6jiekgJaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773389112; c=relaxed/simple;
-	bh=wqErozLvvgWWmkLVt6qgXKa9A3uBCc8KacAL1eRrX7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HHcznYbIYsAlNxoT5VzeyZ3um7sORCVRNR4OtE05C+c5cSkAUX4YXsmY5IO7TPENA04tLrADX6yUrWNaHHRz/TvwqGKUlL3w3iwlNGlEPkI9mmChajDhakwJDfiH4VaxROgYbzPFiXDaXMkc8/jYz3ch0t55vALWhtBd+eyFSSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=B0rHviys; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tiGHJU1Q; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 542997A01A4;
-	Fri, 13 Mar 2026 04:05:09 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-08.internal (MEProxy); Fri, 13 Mar 2026 04:05:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773389109;
-	 x=1773475509; bh=OhYcmieEv+FE8vEFiY/PmfbU95BqiZFGrB6FxP1Df+8=; b=
-	B0rHviyszSzXKV4CqvgUk89h6QVt/Fn+x7aUfEuOA9+qtaMdb08bv9RAHY26se/O
-	BYlXmiMf8fz3t+Usn7N0rp55LzLAJyPYLE2RbIE8MIMC3UF75K5x+lnhKKIGsmfq
-	HZGPlPD297q6vCQHsangFsQXDf7DcqfCSdADf7C7H4dYwRDH3FZGHsh0g7tuqqb8
-	itZRDMETY+Zdf8bwuuT2mMjWu77mphmrpXClEmS1RTH5hhE1o0jmez5sKRW3+f02
-	s2viwgUutrK7dN04kHDShRkdW3vR0Itrsp8PEAvlgysUL/kSfeJ0pOW2wHW/E0iJ
-	NTmdBVtEULYtD7JDdkwtqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773389109; x=
-	1773475509; bh=OhYcmieEv+FE8vEFiY/PmfbU95BqiZFGrB6FxP1Df+8=; b=t
-	iGHJU1QEl2szCuN0eGxxp9lURLNv9hMUK75g+r6sb/0Rwo9F1cqkW5GByCFx5fGp
-	obZktNOBPLEf3AXyNSkvSPLm/kiV0BThSWPtPamBaD8kNGBWA+xkklmXqsFXg0ws
-	wF0X090bqwqIJJtX+qGImpc0/h2p5ga7YvG2TvSl7iVxTiziBtTnZhUVvr6tFVMC
-	NVOwMshEGKoJ1tfrSOOJS7BbKuPdjvSGYr4K4MNX/10pKLS7IwUyhc3FxFnB/14T
-	Z+TZd2AntRKvZz4rQBd4p6c7M8DId+MSHAxJaR4b/4CjuPNbYp0EYdxLYmBy63vg
-	/WxT1pXUJnhXDMoGH2Hnw==
-X-ME-Sender: <xms:NMWzaQqW_zoyFzK7l4jRL6BVKyujcfygoN6WbEuXRrgNwkvxWiVUIQ>
-    <xme:NMWzaXCS5obQ_uw2ECHsiqSc7VY-8i1LpOshtTsyzuWVGSCQ-WXGEpM9vSrpzIPI0
-    1MmTlKgvFEsvpYnmw3XZrYJ6s3oP1-q7Xexi2Y6F8noE21HUGZI7w>
-X-ME-Received: <xmr:NMWzaWUHtzXd_fm-CR69dgmfNkyoeAgI1_J-Ln29Y7rxv1EQapzcidst2n6A-rP919IToK4G-yfL51hkxNBGBIDuNcVPTg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeeludefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
-    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeetkeelheeuhfegueevveefheehheehgeehveehjeehfeduheejudff
-    geefueffjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpegsrghrrhihnhesphhosghogidrtghomhdpnhgspghrtghpthhtohepvddupdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehrvgesfieirhiirdhnvghtpdhrtghpthhtoh
-    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
-    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
-    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
-    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
-    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
-    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:NMWzaT6VgFT0FQJ8c3EWVTyz18-yhCVO6ip3ItURlX_Wmc7nExzviw>
-    <xmx:NMWzafBDLHV1QLPMoHJeWollETlMydIEx9sRxUmv3xOvUsdki8vrNw>
-    <xmx:NMWzaQA13hTWEwVpn4xBj1rzJqrxWwWTz2e2eNrLWSwITG6el2WAHQ>
-    <xmx:NMWzaXguYKglV8vUkl1VtpKi4Iykd3G7SwhV-pQfTiMUvVQk-9OVQQ>
-    <xmx:NcWzaTf226_aVsyne-P-0tVA_ericZQxyuE8klKfKZ3XgmfeNDtpMmQ3>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Mar 2026 04:05:05 -0400 (EDT)
-Message-ID: <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
-Date: Fri, 13 Mar 2026 01:05:04 -0700
+	s=arc-20240116; t=1773389157; c=relaxed/simple;
+	bh=vbcc5K10vQNN/VVddyoPX4YlLlX42ocZcrQf+B+PO7k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYHzlh6COSZ1QQNjattoVd0usvGjjjasOHGpoNLKemngVSC1Z9lUCllZ0FSjr9zQpGPj1FhfvuqJBRB44+R9DJAxIZzzCSY/WCIhbcLAh7BLj0+3jvTy48ta7Qbpeo3KyLfc2Vh8Z2MzStMKI8cKezCZlrqUixirpYKtuRs5tWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=L4q5ULpa; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=L4q5ULpa; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 82D924E428;
+	Fri, 13 Mar 2026 08:05:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1773389153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MghTzkGJejGDi7XxGLM7oPSZbZwR1JfnwjSrypF5lJY=;
+	b=L4q5ULpa0mki0I+TD0uv4gervOE3kSiJurZO712Pd62TRIALTnmCCkAQzlH/VPzaaEZ8ce
+	ZLEU3KyC6T2tdTS0zY6W1jAxSaWyxLgisrtqIFhMEQySHrFU+rAJUSwrt0+LI7HwVBB7EQ
+	bMICzh+HzspNjThngdL6G5dAzl5ymFo=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=L4q5ULpa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1773389153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MghTzkGJejGDi7XxGLM7oPSZbZwR1JfnwjSrypF5lJY=;
+	b=L4q5ULpa0mki0I+TD0uv4gervOE3kSiJurZO712Pd62TRIALTnmCCkAQzlH/VPzaaEZ8ce
+	ZLEU3KyC6T2tdTS0zY6W1jAxSaWyxLgisrtqIFhMEQySHrFU+rAJUSwrt0+LI7HwVBB7EQ
+	bMICzh+HzspNjThngdL6G5dAzl5ymFo=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D30840408;
+	Fri, 13 Mar 2026 08:05:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QSFHMF/Fs2mgKgAAD6G6ig
+	(envelope-from <wqu@suse.com>); Fri, 13 Mar 2026 08:05:51 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	David Sterba <dsterba@suse.com>,
+	Jean-Christophe Guillain <jean-christophe@guillain.net>
+Subject: [PATCH v2] btrfs: zlib: handle page aligned compressed size correctly
+Date: Fri, 13 Mar 2026 18:35:26 +1030
+Message-ID: <ab5c12312b275589abd42c47a0c34b7e68375407.1773389056.git.wqu@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: freeze during boot regression Re: [PATCH 6.12 000/265]
- 6.12.77-rc1 review
-To: Ron Economos <re@w6rz.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260312201018.128816016@linuxfoundation.org>
- <b4f58774-18d4-4a32-9c85-603f9e2c98fc@pobox.com>
- <ee851013-fec8-47f8-9863-392f17e54474@pobox.com>
- <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-225262-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225263-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 6BDD727F37A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,guillain.net:email]
+X-Rspamd-Queue-Id: E9FEE27F6CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 23:10, Ron Economos wrote:
-> Probably those sched/fair patches.
+[BUG]
+Since commit 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio()
+helper"), there are some reports about different crashes in zlib
+compression path. One of the symptoms is list corruption like the
+following:
 
-Yes, after bisecting it turned out to be
-sched-fair-fix-eevdf-entity-placement-bug-causing-sc.patch
+  list_del corruption. next->prev should be fffffbb340204a08, but was ffff8d6517cb7de0. (next=fffffbb3402d62c8)
+  ------------[ cut here ]------------
+  kernel BUG at lib/list_debug.c:65!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 1 UID: 0 PID: 21436 Comm: kworker/u16:7 Not tainted 7.0.0-rc2-jcg+ #1 PREEMPT
+  Hardware name: LENOVO 10VGS02P00/3130, BIOS M1XKT57A 02/10/2022
+  Workqueue: btrfs-delalloc btrfs_work_helper [btrfs]
+  RIP: 0010:__list_del_entry_valid_or_report+0xec/0xf0
+  Call Trace:
+   <TASK>
+   btrfs_alloc_compr_folio+0xae/0xc0 [btrfs]
+   zlib_compress_bio+0x39d/0x6a0 [btrfs]
+   btrfs_compress_bio+0x2e3/0x3d0 [btrfs]
+   compress_file_range+0x2b0/0x660 [btrfs]
+   btrfs_work_helper+0xdb/0x3e0 [btrfs]
+   process_one_work+0x192/0x3d0
+   worker_thread+0x19a/0x310
+   kthread+0xdf/0x120
+   ret_from_fork+0x22e/0x310
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Taking 6.12.77-rc1 and reverting both of the sched-fair patches
-results in a working kernel that boots consistently (which I am
-using now to send this email).
+Other symptoms include VM_BUG_ON() during folio_put() but it's rarer.
 
+David Sterba firstly reported this during his CI runs but unfortunately
+I'm unable to hit it.
+
+Meanwhile zstd/lzo doesn't seem to have the same problem.
+
+[CAUSE]
+During zlib_compress_bio() every time the output buffer is full, we
+queue the full folio into the compressed bio, and allocate a new folio
+as the output folio.
+
+After the input has finished, we loop through zlib_deflate() with
+Z_FINISH to flush all output.
+
+And when that is done, we still need to check if the last folio has any
+content, and if so we still need to queue that part into the compressed
+bio.
+
+The problem is in the final folio handling, if the final folio is full
+(for x86_64 the folio size is 4K), the length to queue is calculated by
+
+  u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
+
+But since total_out is 4K aligned, the resulted @cur_len will be 0, then
+we hit the bio_add_folio(), which has a quirk that if bio_add_folio()
+got an length 0, it will still queue the folio into the bio, but return
+false.
+
+In that case we go to out: tag, which calls btrfs_free_compr_folio() to
+release @out_folio, which may put the out folio into the btrfs global
+pool list.
+
+On the other hand, that @out_folio is already added to the
+compressed bio, and will later be released again by
+cleanup_compressed_bio(), which results double release.
+
+And if this time we still need to put the folio into the btrfs global
+pool list, it will result a list corruption because it's already in the
+list.
+
+[FIX]
+Instead of offset_inside_folio(), directly use the difference between
+strm.total_out and bi_size.
+So that if the last folio is completely full, we can still properly
+queue the full folio other than queueing zero byte.
+
+Fixes: 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio() helper")
+Cc: stable@vger.kernel.org # 7.0+
+Reported-by: David Sterba <dsterba@suse.com>
+Reported-by: Jean-Christophe Guillain <jean-christophe@guillain.net>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221176
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+Changelog:
+v2:
+- Add missing reported-by/link/cc tags
+---
+ fs/btrfs/zlib.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
+index 1a5093525e32..147c92a4dd04 100644
+--- a/fs/btrfs/zlib.c
++++ b/fs/btrfs/zlib.c
+@@ -308,7 +308,9 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
+ 	}
+ 	/* Queue the remaining part of the folio. */
+ 	if (workspace->strm.total_out > bio->bi_iter.bi_size) {
+-		u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
++		const u32 cur_len = workspace->strm.total_out - bio->bi_iter.bi_size;
++
++		ASSERT(cur_len <= folio_size(out_folio));
+ 
+ 		if (!bio_add_folio(bio, out_folio, cur_len, 0)) {
+ 			ret = -E2BIG;
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.53.0
+
 
