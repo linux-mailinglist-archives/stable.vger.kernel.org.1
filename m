@@ -1,261 +1,214 @@
-Return-Path: <stable+bounces-225227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGVGMV5ts2kEWQAAu9opvQ
-	(envelope-from <stable+bounces-225227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 02:50:22 +0100
+	id wPkHOTZxs2kEWQAAu9opvQ
+	(envelope-from <stable+bounces-225228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:06:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F7827C4E3
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 02:50:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630ED27C7BA
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7AD953067855
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 01:50:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 837303074107
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 02:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94482F532C;
-	Fri, 13 Mar 2026 01:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4CA33B6C9;
+	Fri, 13 Mar 2026 02:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="SYO7SUMd"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="AdBuCQX3";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="oLOchP9m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B6A32AABD;
-	Fri, 13 Mar 2026 01:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF52E2D8DC4
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 02:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773366608; cv=none; b=m/tcgSxRrf9KFcgKkLPAy4BCk24EA/8NLMxV9WiMqH+Uet+OFYmCUoytIFCzC6pYTBqD/5PvlvER3A3y6Eg7Ue4V+lKF0rNAuPHu/zIn3lgepoG0cLJs5wq8dhPsT1GDVYiFaHSUZtoASy9bmDlb7h7VJHwylTV6wz8YfUxU1QI=
+	t=1773367601; cv=none; b=lSh8w1JwanrelWMiOQK64SVu6iQHA0yEObuWTDEjLL756Q6XclZ9wFppRz05KB4a8y6nIfy7lE29DuJDZkit7x9L9a8lhT/ZkSI36HOduZOfpUby3oaivyYenAnsy28JmH7Mdyp9SFnxMW/UvAg6H9oSkRXGcw4twSeO61s+B8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773366608; c=relaxed/simple;
-	bh=6KtpKOJDtkV6BORlHClu997PS0MH/vOvv0UwIKGsQWA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jy0/74FzDww0zS+CSE7C6iDPgq2c1lQvo9aK+fJBiH68rZSVXhA3dnvGqBdSpvqjlS0GDl7ZnVhrvkpjTPYVR0lvqveyGYD+RsoLLhn22skRPA7cXhnP3XyDvzdkQRCvOQQLxeFlTHu15EfddCJnJgBJ/Nn3kzY1Z6PLmA6klvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=SYO7SUMd; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 36c692dc3;
-	Fri, 13 Mar 2026 09:49:47 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: slava.dubeyko@ibm.com
-Cc: akpm@linux-foundation.org,
-	frank.li@vivo.com,
-	glaubitz@physik.fu-berlin.de,
-	jianhao.xu@seu.edu.cn,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	slava@dubeyko.com,
-	sougata@tuxera.com,
-	stable@vger.kernel.org,
-	zilin@seu.edu.cn
-Subject: RE:  [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Fri, 13 Mar 2026 09:49:49 +0800
-Message-Id: <20260313014949.19178-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <77a8534a8b7922a1c0cf85f68fd8bda2bd7a61dc.camel@ibm.com>
-References: <77a8534a8b7922a1c0cf85f68fd8bda2bd7a61dc.camel@ibm.com>
+	s=arc-20240116; t=1773367601; c=relaxed/simple;
+	bh=vh/P8kbp1hWf10ZVMwrraSQAU4dPg5iPOhKjlEjT3to=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ud7XQ81doTOH25loeWr5uNTNHKRw4sOo0Z4xWX3zqAgEm+Oc0dNL733YtpfglsFFIr0wSgO4BQT3aprePpSNB6YOsDmfH5UH/o0iuhx4vz3TYlSlpmT2WdhvzWckbMJqKSVxEDDHyNRqCVYj5BwpCFzBKcDAmzrB5a6V8sAEspE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=AdBuCQX3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=oLOchP9m; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EDB065CB7A;
+	Fri, 13 Mar 2026 02:06:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1773367598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZUCfbMNY8lnlMMklEtXNnM/VK2+0Q4m/fHVOJoiHfqk=;
+	b=AdBuCQX30SuFJSF/lIC+VU5vQRhBg9sMzwCDJdwmzC4d6a+XVd2HnVNUmMeD2FBfbQtp2v
+	VNJEcPRz1uy4MxyUH6whTbXM9nznA95b/AhV/MXpFZ3ojSGdugRGYHT+ZzZW23eokK5Onu
+	rK8Q0IJaXIZ/GOgZpg6g6HYPswC3TM0=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=oLOchP9m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1773367597; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZUCfbMNY8lnlMMklEtXNnM/VK2+0Q4m/fHVOJoiHfqk=;
+	b=oLOchP9mXT3c6bjLpqtPOhTAPXfCy8mdvvTWYpiKtruWxG39263KrG2zHM6Pf2DbDlqLeR
+	FIY1pXh7JWxa0C+mSS7nhuBuDxHiX3QendUre4GN1ONBv8qOCf+hJgooqIHzMacTzWWOqX
+	Koa0o8T/oNj0Q825rnSvPDIwUcyFmTA=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECD59402A0;
+	Fri, 13 Mar 2026 02:06:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iZoyKyxxs2n2QQAAD6G6ig
+	(envelope-from <wqu@suse.com>); Fri, 13 Mar 2026 02:06:36 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: zlib: handle page aligned compressed size correctly
+Date: Fri, 13 Mar 2026 12:36:19 +1030
+Message-ID: <e4b8b53446f543b8e0ee08ab78537e76174995a3.1773367428.git.wqu@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ce4e2b01a03a1kunm4d4ba3db1d2ae
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaSU5IVklCQkxKGEoYGEhKSFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUJCSU5LVUpLS1VKQk
-	tCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=SYO7SUMdYOF03vRa30IWqaGsPjE0zvVt5x3maj+9yeEngdnRX8aiEf+6i9VOCPZeb01pJONY6ca9GsRTLyA6eUaiZtgyQg1nN6OipBQMGkNWlwkfJsrLrC2yuvhZM2kNR+bmTENWG1NSu/tmwQfCWkSKxIFElQFkBap5rLjkxVE=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=3f94yEpvLHTFyIc2v5X/OTnhWXa1TvgrDI017wFG8+s=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225227-lists,stable=lfdr.de];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_FROM(0.00)[bounces-225228-lists,stable=lfdr.de];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+]
-X-Rspamd-Queue-Id: 41F7827C4E3
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 630ED27C7BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 05:36:38PM +0000, Viacheslav Dubeyko wrote:
-> On Thu, 2026-03-12 at 10:17 +0800, Zilin Guan wrote:
-> > On Wed, Mar 11, 2026 at 09:17:59PM +0000, Viacheslav Dubeyko wrote:
-> > > On Wed, 2026-03-11 at 19:43 +0800, Zilin Guan wrote:
-> > > >  fs/hfsplus/super.c | 4 +++-
-> > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-> > > > index 7229a8ae89f9..f396fee19ab8 100644
-> > > > --- a/fs/hfsplus/super.c
-> > > > +++ b/fs/hfsplus/super.c
-> > > > @@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
-> > > >  	if (err)
-> > > >  		goto out_put_root;
-> > > >  	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
-> > > > -	if (unlikely(err < 0))
-> > > > +	if (unlikely(err < 0)) {
-> > > > +		hfs_find_exit(&fd);
-> > > >  		goto out_put_root;
-> > > > +	}
-> > > >  	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-> > > >  		hfs_find_exit(&fd);
-> > > >  		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
-> > > 
-> > > Makes sense.
-> > > 
-> > > Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-> > > 
-> > > Frankly speaking, I think, potentially, we can introduce static inline function
-> > > for this code:
-> > > 
-> > > 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
-> > > 	str.name = HFSP_HIDDENDIR_NAME;
-> > > 	err = hfs_find_init(sbi->cat_tree, &fd);
-> > > 	if (err)
-> > > 		goto out_put_root;
-> > > 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID,
-> > > &str);
-> > > 	if (unlikely(err < 0))
-> > > 		goto out_put_root;
-> > > 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-> > > 		hfs_find_exit(&fd);
-> > > 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
-> > > 			err = -EIO;
-> > > 			goto out_put_root;
-> > > 		}
-> > > 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
-> > > 		if (IS_ERR(inode)) {
-> > > 			err = PTR_ERR(inode);
-> > > 			goto out_put_root;
-> > > 		}
-> > > 		sbi->hidden_dir = inode;
-> > > 	} else
-> > > 		hfs_find_exit(&fd);
-> > > 
-> > > Because, hiding this code into small function will provide opportunity to call
-> > > hfs_find_exit() in one place only (as for normal as for erroneous flow).
-> > > 
-> > > What do you think?
-> > > 
-> > > Thanks,
-> > > Slava.
-> > 
-> > Thanks for the feedback, Slava.
-> > 
-> > While I see the merit in refactoring this into a helper to centralize the 
-> > cleanup, I’m concerned that doing so wouldn’t actually achieve a single 
-> > hfs_find_exit() call without compromising the resource lifecycle.
-> > 
-> > In the current logic, we need to call hfs_find_exit(&fd) as early as 
-> > possible—specifically before entering hfsplus_iget(), which might involve 
-> > further I/O or sleeping. If we were to use a single-exit goto pattern in a 
-> > helper function, we would end up holding the search data and its 
-> > associated buffers/locks longer than necessary. To maintain the current 
-> > early-release behavior, we would still be forced to sprinkle multiple 
-> > hfs_find_exit() calls across different branches within that helper anyway, 
-> > which defeats the purpose of the refactoring.
-> > 
-> > Given that this is a straightforward fix for a specific leak, I believe 
-> > keeping the logic inline preserves the optimal resource release timing 
-> > without adding unnecessary abstraction.
-> > 
-> 
-> I mean really simple solution:
-> 
-> static inline
-> int hfsplus_get_hidden_dir_entry(struct super_block *sb,
->                                  hfsplus_cat_entry *entry)
-> {
->     int err = 0;
-> 
-> 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
-> 	str.name = HFSP_HIDDENDIR_NAME;
-> 	err = hfs_find_init(sbi->cat_tree, &fd);
-> 	if (err)
-> 		goto finish_logic;
-> 
-> 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID,
-> &str);
-> 	if (unlikely(err < 0))
-> 		goto free_fd;
-> 
->         err = hfs_brec_read(&fd, entry, sizeof(*entry));
-> 
-> free_fd:
->      hfs_find_exit(&fd);
-> finish_logic:
->      return err;
-> }
-> 
-> static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
-> {
->   <skipped>
-> 
->   err = hfsplus_get_hidden_dir_entry(sb, &entry);
->   if (err)
->       goto process_error;
-> 
-> 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
-> 			err = -EIO;
-> 			goto finish_logic;
-> 		}
-> 		inode = hfsplus_iget(sb, be32_to_cpu(entry.folder.id));
-> 		if (IS_ERR(inode)) {
-> 			err = PTR_ERR(inode);
-> 			goto finish_logic;
-> 		}
-> 		sbi->hidden_dir = inode;
-> 
->   <skipped>
-> }
-> 
-> Does it makes sense to you?
-> 
-> Thanks,
-> Slava.
+[BUG]
+Since commit 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio()
+helper"), there are some reports about different crashes in zlib
+compression path. One of the symptoms is list corruption like the
+following:
 
-Hi Slava,
+  list_del corruption. next->prev should be fffffbb340204a08, but was ffff8d6517cb7de0. (next=fffffbb3402d62c8)
+  ------------[ cut here ]------------
+  kernel BUG at lib/list_debug.c:65!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 1 UID: 0 PID: 21436 Comm: kworker/u16:7 Not tainted 7.0.0-rc2-jcg+ #1 PREEMPT
+  Hardware name: LENOVO 10VGS02P00/3130, BIOS M1XKT57A 02/10/2022
+  Workqueue: btrfs-delalloc btrfs_work_helper [btrfs]
+  RIP: 0010:__list_del_entry_valid_or_report+0xec/0xf0
+  Call Trace:
+   <TASK>
+   btrfs_alloc_compr_folio+0xae/0xc0 [btrfs]
+   zlib_compress_bio+0x39d/0x6a0 [btrfs]
+   btrfs_compress_bio+0x2e3/0x3d0 [btrfs]
+   compress_file_range+0x2b0/0x660 [btrfs]
+   btrfs_work_helper+0xdb/0x3e0 [btrfs]
+   process_one_work+0x192/0x3d0
+   worker_thread+0x19a/0x310
+   kthread+0xdf/0x120
+   ret_from_fork+0x22e/0x310
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Thanks for the detailed proposal. However, this proposed refactoring 
-changes the existing semantics and introduces a regression.
+Other symptoms include VM_BUG_ON() during folio_put().
 
-The hidden directory is optional. If hfs_brec_read() fails, the original 
-code simply calls hfs_find_exit() and proceeds with the mount. It is a 
-non-fatal error.
+Meanwhile zstd/lzo doesn't seem to have the same problem.
 
-In contrast, failures from hfs_find_init() and hfsplus_cat_build_key() are 
-fatal and must abort the mount.
+[CAUSE]
+During zlib_compress_bio() every time the output buffer is full, we
+queue the full folio into the compressed bio, and allocate a new folio
+as the output folio.
 
-By wrapping these into a single helper and returning err, the caller can no 
-longer distinguish between them. A missing hidden directory will trigger 
-if (err) goto process_error; in hfsplus_fill_super(), making it a fatal 
-error. This will break mounting for any valid HFS+ volume that lacks the 
-private data directory.
+After the input has finished, we loop through zlib_deflate() with
+Z_FINISH to flush all output.
 
-Thanks,
-Zilin
+And when that is done, we still need to check if the last folio has any
+content, and if so we still need to queue that part into the compressed
+bio.
+
+The problem is in the final folio handling, if the final folio is full
+(for x86_64 the folio size is 4K), the length to queue is calculated by
+
+  u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
+
+But since total_out is 4K aligned, the resulted @cur_len will be 0, then
+we hit the bio_add_folio(), which has a quirk that if bio_add_folio()
+got an length 0, it will still queue the folio into the bio, but return
+false.
+
+In that case we go to out: tag, which calls btrfs_free_compr_folio() to
+release @out_folio, which may put the out folio into the btrfs global
+pool list.
+
+On the other hand, that @out_folio is already added to the
+compressed bio, and will later be released again by
+cleanup_compressed_bio(), which results double release.
+
+And if this time we still need to put the folio into the btrfs global
+pool list, it will result a list corruption because it's already in the
+list.
+
+[FIX]
+Instead of offset_inside_folio(), directly use the difference between
+strm.total_out and bi_size.
+So that if the last folio is completely full, we can still properly
+queue the full folio other than queueing zero byte.
+
+Fixes: 3d74a7556fba ("btrfs: zlib: introduce zlib_compress_bio() helper")
+Cc: stable@vger.kernel.org # 7.0+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+ fs/btrfs/zlib.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
+index 1a5093525e32..147c92a4dd04 100644
+--- a/fs/btrfs/zlib.c
++++ b/fs/btrfs/zlib.c
+@@ -308,7 +308,9 @@ int zlib_compress_bio(struct list_head *ws, struct compressed_bio *cb)
+ 	}
+ 	/* Queue the remaining part of the folio. */
+ 	if (workspace->strm.total_out > bio->bi_iter.bi_size) {
+-		u32 cur_len = offset_in_folio(out_folio, workspace->strm.total_out);
++		const u32 cur_len = workspace->strm.total_out - bio->bi_iter.bi_size;
++
++		ASSERT(cur_len <= folio_size(out_folio));
+ 
+ 		if (!bio_add_folio(bio, out_folio, cur_len, 0)) {
+ 			ret = -E2BIG;
+-- 
+2.53.0
+
 
