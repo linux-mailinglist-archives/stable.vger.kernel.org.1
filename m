@@ -1,379 +1,162 @@
-Return-Path: <stable+bounces-225366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALWhMFVEtGk4kAAAu9opvQ
-	(envelope-from <stable+bounces-225366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 18:07:33 +0100
+	id KLAJBYJFtGk4kAAAu9opvQ
+	(envelope-from <stable+bounces-225367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 18:12:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C723287D26
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 18:07:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948F3287E7F
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 18:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C74C3097193
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:01:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E068302F981
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1209B373C01;
-	Fri, 13 Mar 2026 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AC33C73FD;
+	Fri, 13 Mar 2026 17:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="p+KCuHI8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBCfK00H"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8744F5E0;
-	Fri, 13 Mar 2026 17:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8F73C5DDE
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 17:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773421257; cv=none; b=mq6VvJqugOoUdYouLJJU4Snr7ggl3FvMQlZMc4HiKmfCddsTMolz2sW++5EvbboXhuMqERYv9tX3fpZ1c2RiErwMT4PVt81xTzRNbA5Cl2PoSQsId0AWN4fyZIVcSxO9ediAW+qXYhT75SFb4Zr48wGX34V724ESkaMpvkxky9Y=
+	t=1773421355; cv=none; b=r6SPnLPax2LKO9c5pGjw7yJSmiDGDXDtZ6JVMIjZvpCstF+qsNFS4cu45zooKk0eVeLmCdJ+p63iKUpquygqAShOxzb/dO6E0qIfAWssA+O9yu9lB5kGIHtTGgnhzFqlBtc7q0XzogmKAiB/fW/5dBXR1op+V7RJ4caeD96+aBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773421257; c=relaxed/simple;
-	bh=z/hTVL4gp5i7xmDMSCWusJ6b42xwKNNlA9/18BDqYAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=quZ0ylnEYBe/d/4aTI+Xv32I05bbRryAuhxpqtG5oGAbGrAi+9eJKVeTrHmjnuO/UXWFn/WGWo+6C6Rd2MGVYCvMnftkDUYKMTxEhk4FiIRCumt/pe7M7SU1XxECnkJudXLufqi99V2gX4LdPxybSVR2X6sWjxQDHUoUBJMFjBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=p+KCuHI8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (mob-83-225-98-137.net.vodafone.it [83.225.98.137])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2EF3BF52;
-	Fri, 13 Mar 2026 17:59:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773421185;
-	bh=z/hTVL4gp5i7xmDMSCWusJ6b42xwKNNlA9/18BDqYAA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p+KCuHI87jHbMuDArvUXwCA4/0/YfwIx80I3TImOnUNA+eEk3xsMZisQq8s8lW0p6
-	 Jyp3HkNg6dFdBK9oSo5iCHW1YarqrbJVqfRbuZWpVDDtNEvF1p+Lb40p0qjnZSZXop
-	 b5MrSlS9atzgwvKnCNLTOfC39RWoH83qVO21CE9A=
-Date: Fri, 13 Mar 2026 18:00:50 +0100
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Dan Scally <dan.scally@ideasonboard.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Anthony McGivern <anthony.mcgivern@arm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Nayden Kanchev <Nayden.Kanchev@arm.com>, Konstantin Babin <Konstantin.Babin@arm.com>, 
-	=?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] media: mali-c55: Initialize the ISP in
- enable_streams()
-Message-ID: <abRBtB7e2Yc2XwBb@zed>
-References: <20260313-mali-c55-fixes-v7-0-v2-0-885c07961f30@ideasonboard.com>
- <20260313-mali-c55-fixes-v7-0-v2-2-885c07961f30@ideasonboard.com>
- <fc5b4699-37b8-41fe-ab9d-b1ac7fbe33e2@ideasonboard.com>
- <abQ2rGd9GUQZM3mb@zed>
- <5c0f9a45-4726-4d42-b209-9d80108147ae@ideasonboard.com>
+	s=arc-20240116; t=1773421355; c=relaxed/simple;
+	bh=w5AlOwFdnlULwQcESRQdoCOJWsSJRnMvGEX4ADD7jng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b4aCJA29Lw9AVbVrgVdd7iI9a/xHqWgbNZknxPSs6DMjTZGkAA+EUPc9aCZ7DnGX9EIXBHgotbgzYSuxpAhTCOwQmfamChEpd5ER2Mx+Yo1PZ7ckhrGOvTAIBxHTgM68dct4jLkWK+2iL3kb525YX7Qug52m1Otg+g+F53Vn2KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBCfK00H; arc=none smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2bea8a1c040so915854eec.0
+        for <stable@vger.kernel.org>; Fri, 13 Mar 2026 10:02:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773421353; x=1774026153; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9a17dPzIDqIL4X7UEpxgCYfEwk+WmJdSdSzwqIhoGE=;
+        b=eBCfK00HmYKlQIKLKfCTHWxJUaEXncnSc31WNOFqNIIIcUMhKVAczHjV6voHUgYt4+
+         I7EN2A/jRUvSyjOIkf9zQs5NPzIjxXNf5DyV8XKE/apdUHGpDdR9aIM+svaGSq2A+LqS
+         HGaDLdBoGq9Qod0obE91JY1NKCEGema8kdwjdf0DRTo3jEucxnWltluGw/OgGAJJlj4m
+         +ttE5pwjRtPqhdaSaG1KQ/62IJYBdTO5Uv2dFa/cxiDyPsaVQyda7+Umc7w/c1yRC4Up
+         bN8QOEexfs/zuqppGYtMnPJE9q1lnI4T98QnMGgqY4niVoy0zUBddhJr4NhHySH/Twci
+         HBWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773421353; x=1774026153;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y9a17dPzIDqIL4X7UEpxgCYfEwk+WmJdSdSzwqIhoGE=;
+        b=QdFiYQhdPBWgzmN66yRMtgv+PDATKs9ryJLlXmIH4zQ20xpMzkD3moVpbW1oFc2j9y
+         AxgqHbDSCIs7JYVxvjXsDY1rpQ5oBkrupaXBUZH4/AGbjtp418tSbo5CYmdCRR21I65l
+         S8oJdXMSylerUIKJe8pUG1tY4KtZIz+BzcJIFojniLya9jUS0miXSJJprWRk1KjnAZjL
+         K2Ite0mnB3rXp4fDJUvA21I15vikUKBSO4gHX3n95MLi0ccRSxoXbk9C25s+wDgeYpZa
+         NDTafoKSU7X6UJ90hE/x4cyUoPBtakpCH+/ZmGEjFmGFiv2JbGV2O1E++z0hZ8tP3wil
+         OWyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeUWncv/zdVBcTFjjFHqC+4Zp7cDel2mETGZDjCJyixqCpaenC8nfbMzdCjp9h4xgPBUd2OjM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdmysHTsvI+5nhOU+bu8rr1xEeCm16IBECK2NsxWCSBtDXzE8z
+	2268d0aZ42MMkZygWvqrqAz6SHo+2AbwhZZADUQVItUWAHqTwBnk20ppfWU1hA==
+X-Gm-Gg: ATEYQzzEgJv2154XktMvOEGSnwSnNsvAD+sVnZUR7LvbT/kt5XFNpVUP3n6l3ac/RoC
+	pYvIkTkY3IkdyOfeSYiqdnxexeX2//9M0F3IPYEg956AScRIOEGliCBeSBFX+WE7c1+y68krjKd
+	eH4p0j0LyBquTq3CnxLDYBadxYP9rMjyQzFYF4aw23kB4nEoNCcfzy4qC7xayIa35w9kW/TlMQ7
+	e4PX2n62aBfsatQ84Zyxb5TgsEjmHQpeyWJubcXkbpcdj59EAkkKsje7Fihacp2Gf9kfScYcb2F
+	iXnPX9sbjgHc/otZ9sy+BZRgNMeWBOHhmDy3y+YEkiGrSEY6wyKe7SlAJP2mJu0l9Fu2yBZ4k7i
+	0jxcMgt9X6Uf6TMrNVTD+a5/pWP1mAzOQXUOWy/xmPlSV3Qpedb4IAx2QkPELwe/IpTAik76rA0
+	L6B9QYYN2sFHBF4zALJBdMW6rHmgFpT+wUFY8qkoXcUBH+595z+mxdp/9gSTCV
+X-Received: by 2002:a05:7301:fa0b:b0:2ba:6aef:697a with SMTP id 5a478bee46e88-2bea54df24emr1749497eec.24.1773421353131;
+        Fri, 13 Mar 2026 10:02:33 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab3a0b3fsm3463739eec.5.2026.03.13.10.02.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Mar 2026 10:02:32 -0700 (PDT)
+Message-ID: <c8ac11d1-3e93-477a-be4c-721579382fbc@gmail.com>
+Date: Fri, 13 Mar 2026 10:02:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5c0f9a45-4726-4d42-b209-9d80108147ae@ideasonboard.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/265] 6.12.77-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260312201018.128816016@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225367-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225366-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email]
-X-Rspamd-Queue-Id: 3C723287D26
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: 948F3287E7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Dan
+On 3/12/26 13:06, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.77 release.
+> There are 265 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 13 Mar 2026 20:09:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.77-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On Fri, Mar 13, 2026 at 04:14:09PM +0000, Dan Scally wrote:
-> Hi Jacopo
->
-> On 13/03/2026 16:10, Jacopo Mondi wrote:
-> > Hi Dan
-> >
-> > On Fri, Mar 13, 2026 at 03:59:22PM +0000, Dan Scally wrote:
-> > > Hi Jacopo - thanks for the patches
-> > >
-> > > On 13/03/2026 14:53, Jacopo Mondi wrote:
-> > > > The Mali C55 driver initializes the ISP in two points:
-> > > >
-> > > > 1) At probe time it disables ISP blocks by configuring them in bypass
-> > > >      mode
-> > > > 2) At enable_streams() it initializes the crop rectangles and the image
-> > > >      processing pipeline using the current image format
-> > > >
-> > > > However, as ISP blocks are configured by userspace, if their
-> > > > configuration is not reset, from the second enable_streams() call
-> > > > onwards the ISP configuration will depend on the previous streaming
-> > > > session configuration.
-> > > >
-> > > > To re-initialize the ISP completely at enable_strems() time consolidate
-> > >
-> > > s/enable_strems/enable_streams
-> > >
-> > > > the ISP block bypass configuration and the image processing path
-> > > > configuration in a single function to be called at enabled_streams()
-> > > > time.
-> > >
-> > > I'm slightly confused; the change seems fine, but as far as I can see it's
-> > > non-functional...or is this just preliminary reorganisation to make the next
-> > > patch easier?
-> >
-> > Isn't mali_c55_init_context() only called at probe() time ?
-> >
-> > IOW all the bypass configuration that were only performed at probe
-> > time are now performed at every streaming start.
-> >
-> > Or have I missed something ?
->
-> But they're context rather than hardware writes; they're stored in the
-> context's registers buffer and should persist past power off / on and then
-> be re-written to the hardware when mali_c55_config_write() is called in
-> mali_c55_isp_start() the next time streaming started...at least that's
-> what's supposed to happen.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-I'm not so concerned about power on/off but rather about configs from a
-streaming session being applied to the following one.
-
-In the case of the bypasses that are configured in
-mali_c55_init_context(), at the moment there is no uAPI to enable
-them.
-
-However, rather soon we'll introduce blocks in the uAPI to enable
-them, and I think there still is value in resetting the ISP
-configuration in full at start streaming time. Do you agree ?
-
-
->
-> Thanks
-> Dan
->
-> >
-> > Thanks
-> >    j
-> >
-> > >
-> > > Thanks
-> > > Dan
-> > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
-> > > > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > > > ---
-> > > >    .../media/platform/arm/mali-c55/mali-c55-common.h  |  2 +
-> > > >    .../media/platform/arm/mali-c55/mali-c55-core.c    | 35 -----------
-> > > >    drivers/media/platform/arm/mali-c55/mali-c55-isp.c | 37 ++---------
-> > > >    .../media/platform/arm/mali-c55/mali-c55-params.c  | 72 ++++++++++++++++++++++
-> > > >    4 files changed, 79 insertions(+), 67 deletions(-)
-> > > >
-> > > > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-common.h b/drivers/media/platform/arm/mali-c55/mali-c55-common.h
-> > > > index 31c1deaca146..13a3e9dc4243 100644
-> > > > --- a/drivers/media/platform/arm/mali-c55/mali-c55-common.h
-> > > > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-common.h
-> > > > @@ -306,5 +306,7 @@ bool mali_c55_pipeline_ready(struct mali_c55 *mali_c55);
-> > > >    void mali_c55_stats_fill_buffer(struct mali_c55 *mali_c55,
-> > > >    				enum mali_c55_config_spaces cfg_space);
-> > > >    void mali_c55_params_write_config(struct mali_c55 *mali_c55);
-> > > > +void mali_c55_params_init_isp_config(struct mali_c55 *mali_c55,
-> > > > +				     const struct v4l2_subdev_state *state);
-> > > >    #endif /* _MALI_C55_COMMON_H */
-> > > > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-core.c b/drivers/media/platform/arm/mali-c55/mali-c55-core.c
-> > > > index 43b834459ccf..c1a562cd214e 100644
-> > > > --- a/drivers/media/platform/arm/mali-c55/mali-c55-core.c
-> > > > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-core.c
-> > > > @@ -663,41 +663,6 @@ static int mali_c55_init_context(struct mali_c55 *mali_c55,
-> > > >    		      mali_c55->base + config_space_addrs[MALI_C55_CONFIG_PING],
-> > > >    		      MALI_C55_CONFIG_SPACE_SIZE);
-> > > > -	/*
-> > > > -	 * Some features of the ISP need to be disabled by default and only
-> > > > -	 * enabled at the same time as they're configured by a parameters buffer
-> > > > -	 */
-> > > > -
-> > > > -	/* Bypass the sqrt and square compression and expansion modules */
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BYPASS_1,
-> > > > -				 MALI_C55_REG_BYPASS_1_FE_SQRT,
-> > > > -				 MALI_C55_REG_BYPASS_1_FE_SQRT);
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BYPASS_3,
-> > > > -				 MALI_C55_REG_BYPASS_3_SQUARE_BE,
-> > > > -				 MALI_C55_REG_BYPASS_3_SQUARE_BE);
-> > > > -
-> > > > -	/* Bypass the temper module */
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_BYPASS_2,
-> > > > -			   MALI_C55_REG_BYPASS_2_TEMPER);
-> > > > -
-> > > > -	/* Disable the temper module's DMA read/write */
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_TEMPER_DMA_IO, 0x0);
-> > > > -
-> > > > -	/* Bypass the colour noise reduction  */
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_BYPASS_4,
-> > > > -			   MALI_C55_REG_BYPASS_4_CNR);
-> > > > -
-> > > > -	/* Disable the sinter module */
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_SINTER_CONFIG,
-> > > > -				 MALI_C55_SINTER_ENABLE_MASK, 0);
-> > > > -
-> > > > -	/* Disable the RGB Gamma module for each output */
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_FR_GAMMA_RGB_ENABLE, 0);
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_DS_GAMMA_RGB_ENABLE, 0);
-> > > > -
-> > > > -	/* Disable the colour correction matrix */
-> > > > -	mali_c55_ctx_write(mali_c55, MALI_C55_REG_CCM_ENABLE, 0);
-> > > > -
-> > > >    	return 0;
-> > > >    }
-> > > > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-isp.c b/drivers/media/platform/arm/mali-c55/mali-c55-isp.c
-> > > > index 497f25fbdd13..4c0fd1ec741c 100644
-> > > > --- a/drivers/media/platform/arm/mali-c55/mali-c55-isp.c
-> > > > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-isp.c
-> > > > @@ -112,9 +112,6 @@ static int mali_c55_isp_start(struct mali_c55 *mali_c55,
-> > > >    			      const struct v4l2_subdev_state *state)
-> > > >    {
-> > > >    	struct mali_c55_context *ctx = mali_c55_get_active_context(mali_c55);
-> > > > -	const struct mali_c55_isp_format_info *cfg;
-> > > > -	const struct v4l2_mbus_framefmt *format;
-> > > > -	const struct v4l2_rect *crop;
-> > > >    	u32 val;
-> > > >    	int ret;
-> > > > @@ -122,35 +119,11 @@ static int mali_c55_isp_start(struct mali_c55 *mali_c55,
-> > > >    			     MALI_C55_REG_MCU_CONFIG_WRITE_MASK,
-> > > >    			     MALI_C55_REG_MCU_CONFIG_WRITE_PING);
-> > > > -	/* Apply input windowing */
-> > > > -	crop = v4l2_subdev_state_get_crop(state, MALI_C55_ISP_PAD_SINK_VIDEO);
-> > > > -	format = v4l2_subdev_state_get_format(state,
-> > > > -					      MALI_C55_ISP_PAD_SINK_VIDEO);
-> > > > -	cfg = mali_c55_isp_get_mbus_config_by_code(format->code);
-> > > > -
-> > > > -	mali_c55_write(mali_c55, MALI_C55_REG_HC_START,
-> > > > -		       MALI_C55_HC_START(crop->left));
-> > > > -	mali_c55_write(mali_c55, MALI_C55_REG_HC_SIZE,
-> > > > -		       MALI_C55_HC_SIZE(crop->width));
-> > > > -	mali_c55_write(mali_c55, MALI_C55_REG_VC_START_SIZE,
-> > > > -		       MALI_C55_VC_START(crop->top) |
-> > > > -		       MALI_C55_VC_SIZE(crop->height));
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BASE_ADDR,
-> > > > -				 MALI_C55_REG_ACTIVE_WIDTH_MASK, format->width);
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BASE_ADDR,
-> > > > -				 MALI_C55_REG_ACTIVE_HEIGHT_MASK,
-> > > > -				 format->height << 16);
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BAYER_ORDER,
-> > > > -				 MALI_C55_BAYER_ORDER_MASK, cfg->order);
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_INPUT_WIDTH,
-> > > > -				 MALI_C55_INPUT_WIDTH_MASK,
-> > > > -				 MALI_C55_INPUT_WIDTH_20BIT);
-> > > > -
-> > > > -	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_ISP_RAW_BYPASS,
-> > > > -				 MALI_C55_ISP_RAW_BYPASS_BYPASS_MASK,
-> > > > -				 cfg->bypass ? MALI_C55_ISP_RAW_BYPASS_BYPASS_MASK :
-> > > > -					     0x00);
-> > > > -
-> > > > +	/*
-> > > > +	 * Apply default ISP configuration and the apply configurations from
-> > > > +	 * the first available parameters buffer.
-> > > > +	 */
-> > > > +	mali_c55_params_init_isp_config(mali_c55, state);
-> > > >    	mali_c55_params_write_config(mali_c55);
-> > > >    	ret = mali_c55_config_write(ctx, MALI_C55_CONFIG_PING, true);
-> > > >    	if (ret) {
-> > > > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-params.c b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> > > > index c03a6120ddbf..c84a6047a570 100644
-> > > > --- a/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> > > > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> > > > @@ -732,6 +732,78 @@ void mali_c55_params_write_config(struct mali_c55 *mali_c55)
-> > > >    	vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_DONE);
-> > > >    }
-> > > > +void mali_c55_params_init_isp_config(struct mali_c55 *mali_c55,
-> > > > +				     const struct v4l2_subdev_state *state)
-> > > > +{
-> > > > +	const struct mali_c55_isp_format_info *cfg;
-> > > > +	const struct v4l2_mbus_framefmt *format;
-> > > > +	const struct v4l2_rect *crop;
-> > > > +
-> > > > +	/* Apply input windowing */
-> > > > +	crop = v4l2_subdev_state_get_crop(state, MALI_C55_ISP_PAD_SINK_VIDEO);
-> > > > +	format = v4l2_subdev_state_get_format(state,
-> > > > +					      MALI_C55_ISP_PAD_SINK_VIDEO);
-> > > > +	cfg = mali_c55_isp_get_mbus_config_by_code(format->code);
-> > > > +
-> > > > +	mali_c55_write(mali_c55, MALI_C55_REG_HC_START,
-> > > > +		       MALI_C55_HC_START(crop->left));
-> > > > +	mali_c55_write(mali_c55, MALI_C55_REG_HC_SIZE,
-> > > > +		       MALI_C55_HC_SIZE(crop->width));
-> > > > +	mali_c55_write(mali_c55, MALI_C55_REG_VC_START_SIZE,
-> > > > +		       MALI_C55_VC_START(crop->top) |
-> > > > +		       MALI_C55_VC_SIZE(crop->height));
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BASE_ADDR,
-> > > > +				 MALI_C55_REG_ACTIVE_WIDTH_MASK, format->width);
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BASE_ADDR,
-> > > > +				 MALI_C55_REG_ACTIVE_HEIGHT_MASK,
-> > > > +				 format->height << 16);
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BAYER_ORDER,
-> > > > +				 MALI_C55_BAYER_ORDER_MASK, cfg->order);
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_INPUT_WIDTH,
-> > > > +				 MALI_C55_INPUT_WIDTH_MASK,
-> > > > +				 MALI_C55_INPUT_WIDTH_20BIT);
-> > > > +
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_ISP_RAW_BYPASS,
-> > > > +				 MALI_C55_ISP_RAW_BYPASS_BYPASS_MASK,
-> > > > +				 cfg->bypass ? MALI_C55_ISP_RAW_BYPASS_BYPASS_MASK :
-> > > > +					     0x00);
-> > > > +
-> > > > +	/*
-> > > > +	 * Some features of the ISP need to be disabled by default and only
-> > > > +	 * enabled at the same time as they're configured by a parameters buffer
-> > > > +	 */
-> > > > +
-> > > > +	/* Bypass the sqrt and square compression and expansion modules */
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BYPASS_1,
-> > > > +				 MALI_C55_REG_BYPASS_1_FE_SQRT,
-> > > > +				 MALI_C55_REG_BYPASS_1_FE_SQRT);
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_BYPASS_3,
-> > > > +				 MALI_C55_REG_BYPASS_3_SQUARE_BE,
-> > > > +				 MALI_C55_REG_BYPASS_3_SQUARE_BE);
-> > > > +
-> > > > +	/* Bypass the temper module */
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_BYPASS_2,
-> > > > +			   MALI_C55_REG_BYPASS_2_TEMPER);
-> > > > +
-> > > > +	/* Disable the temper module's DMA read/write */
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_TEMPER_DMA_IO, 0x0);
-> > > > +
-> > > > +	/* Bypass the colour noise reduction  */
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_BYPASS_4,
-> > > > +			   MALI_C55_REG_BYPASS_4_CNR);
-> > > > +
-> > > > +	/* Disable the sinter module */
-> > > > +	mali_c55_ctx_update_bits(mali_c55, MALI_C55_REG_SINTER_CONFIG,
-> > > > +				 MALI_C55_SINTER_ENABLE_MASK, 0);
-> > > > +
-> > > > +	/* Disable the RGB Gamma module for each output */
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_FR_GAMMA_RGB_ENABLE, 0);
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_DS_GAMMA_RGB_ENABLE, 0);
-> > > > +
-> > > > +	/* Disable the colour correction matrix */
-> > > > +	mali_c55_ctx_write(mali_c55, MALI_C55_REG_CCM_ENABLE, 0);
-> > > > +}
-> > > > +
-> > > >    void mali_c55_unregister_params(struct mali_c55 *mali_c55)
-> > > >    {
-> > > >    	struct mali_c55_params *params = &mali_c55->params;
-> > > >
-> > >
->
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
