@@ -1,160 +1,160 @@
-Return-Path: <stable+bounces-225239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPiiFZWDs2msXQAAu9opvQ
-	(envelope-from <stable+bounces-225239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:25:09 +0100
+	id YIeWCUWHs2nPXgAAu9opvQ
+	(envelope-from <stable+bounces-225241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:40:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B880A27D0FC
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:25:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9986827D2F9
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 591F1302D950
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:25:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CD1F3054213
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9546A345721;
-	Fri, 13 Mar 2026 03:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D09359A94;
+	Fri, 13 Mar 2026 03:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlDNB2ZD"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="j09M3lJP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0EE304BDC
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 03:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501F72EA159;
+	Fri, 13 Mar 2026 03:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773372306; cv=none; b=XkKqxXsuDj3I+po68Y5dDv7FkH7uNX2k066Va4vSZkKeTO0F80s4xvib0r/nyyk4qqvLvS5OZX/x41r8mr7R1kDrDgw9qsz8YCBXBVh3sxZ+0NBtLyrM8LKTj1rCRepDby7CyHJLn8RhrDyQ8Z3yuKnduOirsBgmI+FdRVO2Z9o=
+	t=1773373238; cv=none; b=Q67sFaVCoIdHT6dgxk6G9ZhcqArlq2sAao3rtqUia7qIeBJL6IdJQZksySzVOwS/7OPknYqGpYdkGCMi75YADpy9fWSpAE4W3BMTgGx+fp1PGfeXK3K04+7HL7QXeLQpRo1fB5zAwG0fBdfcyjJIOsRxhu8G5C8ALrVzFWR1taE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773372306; c=relaxed/simple;
-	bh=UnpoWyQV7I2G9oKCVZTTUlyjEKgTNZRO7I8Y2CTany8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z0FXNATqvy18w/srlMu1rNMlTGQQI6SLb3eqJuCCRMDxv+9P6ZjgaStfmUiQS0ENCdZHaiFydVlH0epbapqmuReZQHIaTXLxaLk1JaOrG0Y2gZ2q9ljxfaAWihx+W4Id2kFyaMZOP1IPrrNaNtD1S559PiF+sKjtxn1VOZ+GOOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlDNB2ZD; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8cd71fb9f06so115526485a.2
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 20:25:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1773372304; x=1773977104; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QNtbuNDe4pXFksjcrSvvrnUEDc9BgD3q2Pyzectx8xg=;
-        b=AlDNB2ZDwXbYDhcNFz+voCqIemvw1LCv/05eO/EGKIi4GKxZhdfgvTumVAPQsnorvS
-         hBXNOYd3/gwne11FzassoABCuw1rMTBYwTXdxYvuixvg3lhHu9Iil5L6HfztS943DzI9
-         lwShDVO7Wjoew7aFh2cLTdfaJiqy4Pg6bKd2o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773372304; x=1773977104;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QNtbuNDe4pXFksjcrSvvrnUEDc9BgD3q2Pyzectx8xg=;
-        b=INpVpjxtGlUG5C+KL0zdRRivO0me6B7q1WTvqxaHCeX7xCgrXu135jPIiUExe07HWO
-         uwkwheQK1hI/2oAHepOFV8QhwkO6c1Mk+RQCXN1K6gipB/bm6jzArro/X8BQfRRCCw1r
-         FSptIlG+nXBeZzorqjFSjYW8u4L3X68ZpbLwx+op2rPis5SgSaCn1L0sysCjPGdstZEY
-         aUkwr4HvDSzM/782gx6bBgXX1a4AcIRAkgvyrdWZjaeAvytLnXBw00f4c/x8735fiMdW
-         uqpTN9Gleg2x+li2TxgwDi9g/CbzaTrzspHsoma03qSoB6poBr8/cAnpz+0ksiSfiaqH
-         jLdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVsL2ZR78M5o0tnxt6/FXB4XeOQFrbNdN7dEdyn0u45iVO4Xx592W4Qa5WSsSrzuss/74KGsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrOGvTrfmta6H0uAyD3/vV+DzjypQsCYAQfpVS1jFN57Rnveno
-	FdWkC/BUDAwNywkarXQ5ZSBSyjCj7nQzl785SvF8HymWruOwml++tw9ycGn4xgW6VKQ=
-X-Gm-Gg: ATEYQzyJ1N/PjaV7juCwkFfs3NbONuz1dZ6fYBUnHdG0R2vCufME0i5lS68oGqEVDw5
-	V88znrapl+F4UR37X3ml6SV71dANrBmzna6/Y8VOEQvvtxlTGfXGk4L2i89kwBjcZyg8XZZXwUp
-	RSgpUDORVSpOwDL5ioiNy2o5KyeayZSpIzNxS4x2dkVhmzIcz1KaFBVBusrOfE/bR02053ofChC
-	YJ2v5yAA8NBOXpmInJbbXwOLxPERX7LJrWZW/j1I5tGJunh7puCAc5W8IKt7btPwV7hWGbEMAs1
-	oCUTVTRARvJ7jWNkscLSMBDvodrDNqVH2w3DfDhu2qq59FC/f4R1gcnZGNPh0K3x30cMi6jyRry
-	gyMjxpXNbNGegVOk2mgeVtouO19JekGcdlHmPrK/g6jwwN6Eb1mH9rZMnAtbpKurS02ZD6cfCqE
-	ctNU/cEElg9R/j1QwM2wp7kWQebpnw8mTuHPElZZUd1ibfFw==
-X-Received: by 2002:a05:620a:46a5:b0:8cd:8f94:2598 with SMTP id af79cd13be357-8cdb5b54176mr275792285a.61.1773372304103;
-        Thu, 12 Mar 2026 20:25:04 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda1ff7642sm529673685a.21.2026.03.12.20.25.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 20:25:03 -0700 (PDT)
-Message-ID: <46ec4dae-8422-486d-b2cc-fb4c0d385780@linuxfoundation.org>
-Date: Thu, 12 Mar 2026 21:25:01 -0600
+	s=arc-20240116; t=1773373238; c=relaxed/simple;
+	bh=NggLR0I+UlR+c27hCToYTFR7gboM1SSAVr6TfrsU/6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZIpX+9lxK1gNQqrvcrv5PUJjhIbuf5SQDzbKCDLwnFK27i59heqj9yXt/riHJvN+Bv9AZt2Feu4CBJgTX3pktMBiqvl4xY3e1We3kGEuMWcDjDhVpqhByrF4I2Uc1Frd3gHrledLrUvplUI0JkTAG3p3foBZCoScFTfu7ePQ+Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=j09M3lJP; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=kpxSdz/+UMvNKg0RMweyNkPP8eMewLSlykXzZYK04VA=; b=j09M3lJPrMyI+FHTpzctWDKtLd
+	6TLCa3PvFXg0WJyQfeppUcyDlH2uIPGWhzYw/3eHAOCkcoJYl0UogytAQC/pVjAcAe4nXTM0N2/QQ
+	gCorH/XMS+EX/EKV1q7UGTzahS6OQSaQ68xTnvYB7rokXYAlQwZYWS8HBIdx3rQk++dpFjwYRUnmA
+	/oJP1k5RzN3UQSTzyJjFOZ7yo1h6YQJGocYojNhMmycHRsLVx/mK6LIISXkbUiPMKuchL0E3kqvbB
+	WiDurUx5cMZstK40V0MRsf3SJdOSy1pcsQtPz1/YheaGSBPJdoaD+K+B3FFAmfXZSttc/cjx4qz+J
+	bWi8Aqqw==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
+	id 1w0tNz-00000000pLA-3ZMI;
+	Fri, 13 Mar 2026 00:40:27 -0300
+From: Paulo Alcantara <pc@manguebit.org>
+To: smfrench@gmail.com
+Cc: Oscar Santos <ossantos@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] smb: client: fix krb5 mount with username option
+Date: Fri, 13 Mar 2026 00:40:27 -0300
+Message-ID: <20260313034027.933719-1-pc@manguebit.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/265] 6.12.77-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260312201018.128816016@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[manguebit.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[manguebit.org:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-225239-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225241-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[pc@manguebit.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[manguebit.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B880A27D0FC
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9986827D2F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 14:06, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.77 release.
-> There are 265 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 13 Mar 2026 20:09:29 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.77-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Customer reported that some of their krb5 mounts were failing against
+a single server as the client was trying to mount the shares with
+wrong credentials.  It turned out the client was reusing SMB session
+from first mount to try mounting the other shares, even though a
+different username= option had been specified to the other mounts.
 
-Compiled and booted on my test system. No dmesg regressions.
+By using username mount option along with sec=krb5 to search for
+principals from keytab is supported by cifs.upcall(8) since
+cifs-utils-4.8.  So fix this by matching username mount option in
+match_session() even with Kerberos.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+For example, the second mount below should fail with -ENOKEY as there
+is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
+ends up reusing SMB session from first mount to perform the second
+one, which is wrong.
 
-thanks,
--- Shuah
+```
+$ ktutil
+ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
+Password for testuser@ZELDA.TEST:
+ktutil:  write_kt /etc/krb5.keytab
+ktutil:  quit
+$ klist -ke
+Keytab name: FILE:/etc/krb5.keytab
+KVNO Principal
+ ---- ----------------------------------------------------------------
+   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
+$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
+$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
+$ mount -t cifs | grep -Po 'username=\K\w+'
+testuser
+testuser
+```
+
+Reported-by: Oscar Santos <ossantos@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+ fs/smb/client/connect.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 3bad2c5c523d..8573d5c5235b 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1955,6 +1955,11 @@ static int match_session(struct cifs_ses *ses,
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
++		if (ctx->username &&
++		    (!ses->user_name ||
++		     strncmp(ses->user_name, ctx->username,
++			     CIFS_MAX_USERNAME_LEN)))
++			return 0;
+ 		break;
+ 	case NTLMv2:
+ 	case RawNTLMSSP:
+-- 
+2.53.0
+
 
