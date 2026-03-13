@@ -1,165 +1,197 @@
-Return-Path: <stable+bounces-225307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HjWIj4TtGlkgwAAu9opvQ
-	(envelope-from <stable+bounces-225307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:38:06 +0100
+	id qLeENKIVtGlkgwAAu9opvQ
+	(envelope-from <stable+bounces-225309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:48:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33329284063
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E09E28431F
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66B94309CF05
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:29:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C485B30923E2
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9723AEF53;
-	Fri, 13 Mar 2026 13:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED5A3A1A48;
+	Fri, 13 Mar 2026 13:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mSKEJ6Xx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BA6P4hjD"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EA13AD533;
-	Fri, 13 Mar 2026 13:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE563264F3;
+	Fri, 13 Mar 2026 13:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773408268; cv=none; b=ZaCvbbYjYxgW8pBMoG+86Ry4ungBn8XHWC313rnNehClL8e0noyD7omjyOC+ToVudrUy7O2ZyXgZxb3ZLnOW+fiYVeoytPDV18xVodeF6xQrJ+YXzrDayLJBb/TK0IcDcslKrpRE4OOhKLEpcUVZkxZtG/k35tixt4/snedUViY=
+	t=1773408527; cv=none; b=kNkZOB7RKKs7zs3o/52vUBAX77Q8mbT3n2Jy4J3VYOFenSup3oUymgdej1hiPoq2PzTmlDRF/Xh+ebRPi2tKY+q4pD8Mp5tJBbqn2fNyK44sQInOxWTvh9S7yv6dNSjthdUH3ou0bUF/X/i+HYGovIbAmjDcJfjDXYp9cy4T5Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773408268; c=relaxed/simple;
-	bh=WdbifB+Lpy61GxOTmYIJ/0d0Q7fAs/e2+cEJDWNbeeE=;
+	s=arc-20240116; t=1773408527; c=relaxed/simple;
+	bh=O0gqbP/30/ClS1ol+vdztMDTLfFPaTJvksNQ5DFWZU0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B8J48bN7IrElqdN7hJo5kSB46nPhkk2450VEdPiTMlJ14XuLQgEIQpn1bFTiIJlem0/3/Ugaxuyml803+XY/wPuxFHj+I6A1t8sWIOP9s3A2c5/mVWdLwEM3ELObB1I5NgDRk1XkBX42KmtiP52Bbxpec4GJgkdnvC8+BMlaHF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mSKEJ6Xx; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=X6CzG4WOOG89ao7WBG1kuZfV24i1xtrz3dwp1BQ647U=; b=mSKEJ6XxlogPw/552tbelWc2Zz
-	PdiqU4/kgpDb0b2MGgMZh4POFgho9l/Cw574YBNjVwaSp7VSfLrprJRQ81CBRWIsLg1Df5bjoAJ7h
-	OFEXI7Is0HnzJvVoPXbKCymHJJQYgyie3i3ufKEHUS7nWE1vugAjMSSeCoA+JFreB4IGG3F0/FxX4
-	eI+njI1x9EdNVkprQDwi4vr+aQzk0I19myY+2vu5XsunIOOYhvbvvUB1RbHXmU5eueYOK7mDvbDeB
-	bqIzi7DGBWj0tYteJAofvUwvUXkO+zr78gUc+Q8Ob3+WA6ljCl35gb5VNXyuPvwaIG1wdJLcTdRth
-	gsivNQgg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1w12UV-005LlJ-Qm; Fri, 13 Mar 2026 13:23:48 +0000
-Date: Fri, 13 Mar 2026 06:23:41 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ian Rogers <irogers@google.com>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] perf/x86: Move event pointer setup earlier in
- x86_pmu_enable()
-Message-ID: <abQPM7zKWBaNJufd@gmail.com>
-References: <20260310-perf-v2-1-4a3156fce43c@debian.org>
- <a0a1d8ab-85cd-411c-b8e2-9e7e2f7136fd@linux.intel.com>
- <CAP-5=fWAzaKNO0wmAA89ovJLFgxCWQ3khnyWFotnaSAGiugv+A@mail.gmail.com>
- <20260311173509.GR606826@noisy.programming.kicks-ass.net>
- <20260311204035.GX606826@noisy.programming.kicks-ass.net>
- <9e0e04e9-7421-4dfb-a017-c31741a8d500@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZHRl0lC8Dod3hF3YY9sAeorPUW+L0WXJJUTJocPbkOwqlE7YaPOArV64/zmUdr+5BHGwVFEPpPi01MZzzBF6dF5XMdbwAJUc7N8/epc0xrRxqEm2/LbXjyPuLa8O15jKux/Nl5JT8UN3WXK7BHhUWMoYM8Qa11VAty1foFwjaHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BA6P4hjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3798C19421;
+	Fri, 13 Mar 2026 13:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773408527;
+	bh=O0gqbP/30/ClS1ol+vdztMDTLfFPaTJvksNQ5DFWZU0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BA6P4hjDl4gdLW5miQu5qj59YCPPJdBmWo77gbRvwnE41HXaWkm4g/idUUdMPUB7M
+	 kBQNVIFLM+EBWKzF6QMqFRRsZVKXCA049wYICRQnJwwJseanlp+G5c3g8DePL69dNm
+	 SMl4AEMNG5YeYxcPsau1UHusVbIdL5huOh/yIXvO14xee8KvYSqKYkbw3Bxdhf4oap
+	 QrNhzbHffSjIRb08vqUVejz0ajdR7zln19mvgey39fi8UHIH73pJIaTmZiKVpmf4WE
+	 Xs7NfkqRl9x7XTry8w2Auo/11f0+/Ij5J3SwY2D2A4GxLsywUdNIQkSm0EecLVIdfy
+	 wN31ttfRkqsnA==
+Date: Fri, 13 Mar 2026 14:28:06 +0100
+From: Benjamin Tissoires <bentiss@kernel.org>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Jiri Kosina <jikos@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-input@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] selftests/hid: fix compilation when bpf_wq and
+ hid_device are not exported
+Message-ID: <abQQQ0KNxJeO3JIZ@beelink>
+References: <20260313-wip-bpf-fixes-v1-0-74b860315060@kernel.org>
+ <20260313-wip-bpf-fixes-v1-1-74b860315060@kernel.org>
+ <20260313095731-682bbab2-5861-4aea-bc83-420492400c19@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <9e0e04e9-7421-4dfb-a017-c31741a8d500@linux.intel.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260313095731-682bbab2-5861-4aea-bc83-420492400c19@linutronix.de>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225309-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-225307-lists,stable=lfdr.de];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: 33329284063
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: 7E09E28431F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 10:53:59AM +0800, Mi, Dapeng wrote:
-> On 3/12/2026 4:40 AM, Peter Zijlstra wrote:
-> > Subject: x86/perf: Make sure to program the counter value for stopped events on migration
-> > From: Peter Zijlstra <peterz@infradead.org>
-> > Date: Wed Mar 11 21:29:14 CET 2026
-> >
-> > Both Mi Dapeng and Ian Rogers noted that not everything that sets HES_STOPPED
-> > is required to EF_UPDATE. Specifically the 'step 1' loop of rescheduling
-> > explicitly does EF_UPDATE to ensure the counter value is read.
-> >
-> > However, then 'step 2' simply leaves the new counter uninitialized when
-> > HES_STOPPED, even though, as noted above, the thing that stopped them might not
-> > be aware it needs to EF_RELOAD -- since it didn't EF_UPDATE on stop.
-> >
-> > One such location that is affected is throttling, throttle does pmu->stop(, 0);
-> > and unthrottle does pmu->start(, 0); possibly restarting an uninitialized counter.
-> >
-> > Fixes: a4eaf7f14675 ("perf: Rework the PMU methods")
-> > Reported-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> > Reported-by: Ian Rogers <irogers@google.com>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+On Mar 13 2026, Thomas Weißschuh wrote:
+> On Fri, Mar 13, 2026 at 08:40:24AM +0100, Benjamin Tissoires wrote:
+> > This can happen in situations when CONFIG_HID_SUPPORT is set to no, or
+> > some complex situations where struct bpf_wq is not exported.
+> > 
+> > So do the usual dance of hiding them before including vmlinux.h, and
+> > then redefining them and make use of CO-RE to have the correct offsets.
+> > 
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202603111558.KLCIxsZB-lkp@intel.com/
+> > Cc: stable@vger.kernel.org
+> 
+> 'Fixes' missing? Also for patch 2 in the series.
+> 
+> > Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+> 
+> Reviewed-by: Thomas Weiï¿½schuh <thomas.weissschuh@linutronix.de>
+
+Thanks!
+
+> 
+> (Some nits below, feel free to ignore them)
+> 
 > > ---
-> >  arch/x86/events/core.c |    4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > --- a/arch/x86/events/core.c
-> > +++ b/arch/x86/events/core.c
-> > @@ -1374,8 +1374,10 @@ static void x86_pmu_enable(struct pmu *p
-> >
-> >  			cpuc->events[hwc->idx] = event;
-> >
-> > -			if (hwc->state & PERF_HES_ARCH)
-> > +			if (hwc->state & PERF_HES_ARCH) {
-> > +				static_call(x86_pmu_set_period)(event);
-> >  				continue;
-> > +			}
-> >
-> >  			/*
-> >  			 * if cpuc->enabled = 0, then no wrmsr as
->
-> LGTM.
->
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> >  tools/testing/selftests/hid/progs/hid_bpf_helpers.h | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/hid/progs/hid_bpf_helpers.h b/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
+> > index 80ab60905865..2c6ec907dd05 100644
+> > --- a/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
+> > +++ b/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
+> > @@ -8,9 +8,11 @@
+> >  /* "undefine" structs and enums in vmlinux.h, because we "override" them below */
+> >  #define hid_bpf_ctx hid_bpf_ctx___not_used
+> >  #define hid_bpf_ops hid_bpf_ops___not_used
+> > +#define hid_device hid_device___not_used
+> >  #define hid_report_type hid_report_type___not_used
+> >  #define hid_class_request hid_class_request___not_used
+> >  #define hid_bpf_attach_flags hid_bpf_attach_flags___not_used
+> > +#define bpf_wq bpf_wq___not_used
+> 
+> 'bpf' would sort before 'hid' alphabetically.
 
-Thank you for the patch and the discussion. To confirm my understanding:
-this patch should be applied on top of my v2 series to fully resolve the
-issue, correct?
+ack (note that the last 3 are not sorted, oops).
 
-If so, would you prefer that I include both patches together in a single
-series, or are you fine with them as-is?
+> 
+> >  #define HID_INPUT_REPORT         HID_INPUT_REPORT___not_used
+> >  #define HID_OUTPUT_REPORT        HID_OUTPUT_REPORT___not_used
+> >  #define HID_FEATURE_REPORT       HID_FEATURE_REPORT___not_used
+> > @@ -29,9 +31,11 @@
+> >  
+> >  #undef hid_bpf_ctx
+> >  #undef hid_bpf_ops
+> > +#undef hid_device
+> >  #undef hid_report_type
+> >  #undef hid_class_request
+> >  #undef hid_bpf_attach_flags
+> > +#undef bpf_wq
+> >  #undef HID_INPUT_REPORT
+> >  #undef HID_OUTPUT_REPORT
+> >  #undef HID_FEATURE_REPORT
+> > @@ -55,6 +59,14 @@ enum hid_report_type {
+> >  	HID_REPORT_TYPES,
+> >  };
+> >  
+> > +struct hid_device {
+> > +	unsigned int id;
+> > +} __attribute__((preserve_access_index));
+> > +
+> > +struct bpf_wq {
+> > +	__u64 __opaque[2];
+> > +};
+> 
+> The fields are never used, would a forward-declaration be sufficient?
+> 
+> struct bpf_wq;
+> 
+> Then you could also avoid the #define dance for that struct.
 
-Thanks,
---breno
+Unfortunately no. The fields are not used, but the struct is stored in
+struct elem, and we use that struct size to compute the size of the map
+elements. So we need to tell the compiler how much memory it needs to
+be.
+
+Cheers,
+Benjamin
+
+> 
+> > +
+> >  struct hid_bpf_ctx {
+> >  	struct hid_device *hid;
+> >  	__u32 allocated_size;
+> > 
+> > -- 
+> > 2.52.0
+> > 
+> 
 
