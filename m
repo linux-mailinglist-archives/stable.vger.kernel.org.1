@@ -1,152 +1,170 @@
-Return-Path: <stable+bounces-225282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFn8MxXws2nYdgAAu9opvQ
-	(envelope-from <stable+bounces-225282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:08:05 +0100
+	id 8HXLAODxs2nYdgAAu9opvQ
+	(envelope-from <stable+bounces-225283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:15:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DFE281E84
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:08:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D94A2820FC
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F4AA305FC53
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:07:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 270A13072650
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AAA3328FD;
-	Fri, 13 Mar 2026 11:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E363822AB;
+	Fri, 13 Mar 2026 11:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AQJSCkq2"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QeL6xajd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F116D372B3B
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 11:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB15277CA5;
+	Fri, 13 Mar 2026 11:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773400067; cv=none; b=tQzoHsDiVfr9/52ZUj8j8ZpK6ZwPjnefpXQab76ZIdIHk9rYBjz/oIh2+PVbnfvHsCcdxylqTjo5yZIJ0H5kOeHqr5QjlqURS+1nXmgTrMzU4oL1Y3R+q+S2QU+EC3LPqTCnk3YaRI1EYGIJOLuZ0nYyMjaDpOfOjpImQ0dOBI8=
+	t=1773400453; cv=none; b=FlBSRuDUx1+LHyj7ZnHlaBDVQKtJ4icpQH7W1yOFNKdCsaXo/5QE168dgLUvVhJADOgny0MfwVX8l+9XOWhQza9cgBWT2CFFG4ZnvUrv6ACRdF3m43eQFs24fjWnPjpmpZbkpPoH9O/YTuM6o5/xCm/pc4qYgB8Z3Gcg0MR4ld4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773400067; c=relaxed/simple;
-	bh=DzUf/8iRGA8qUsueHxIvGDpDNyCtY9vmcu0Q7nYLcAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K4iSfRmBGnp85vabRHjdSKSSFCimBu/2ULM//KpoO5KIUHBk+X2mjnkscMhZki00dAPYmYAMPHZJYI4yI3ZFhfLSZ1z9P5ZtySXGpFsiIx1ymJNs2b0t3shZXvFsvb5tomSfSLNFynKsoX1TR/GiJSDO9ldfmeSCLlENu29kJFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AQJSCkq2; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773400066; x=1804936066;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DzUf/8iRGA8qUsueHxIvGDpDNyCtY9vmcu0Q7nYLcAM=;
-  b=AQJSCkq2U4ZMD3j22SQIUtQQWdtJmuBrVqnlxGZ8+1CX/HrbZcXIpRyC
-   yMxk5eLNv3h0f+QsqCEZu9OMO2bHP3hpStq7pYgO+I/8mlHz8SWxJ9zFQ
-   E9legoirhKSXBvwHLGNHqRc2GEOyY9nOTWQjLWPzjyOGIPpzL4+UDQaiQ
-   agvnegAns61vrCfm3TYlYq/3Uakvn5cRW2yE9sNXWubavGcKhTfo6RICC
-   X6GyNGOK5YoFf5t6xCcCggaozfoaDhekzRA24SBb/plpZmso1VEyNtOkb
-   Y0HofkvMNk760lAK/ckoMngoWA7i0+U8mlCwpK/eshje3PCJqxrT8D1F5
-   A==;
-X-CSE-ConnectionGUID: SbqyZ1AnT+uius93T7Qo3Q==
-X-CSE-MsgGUID: VDBu3oyIRoSHCJ217WigaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="85134816"
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="85134816"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 04:07:45 -0700
-X-CSE-ConnectionGUID: gfF/eYY5SVmFBvkyMAph5w==
-X-CSE-MsgGUID: bEtW3hdpQJSVMuyRTvSw7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
-   d="scan'208";a="226088946"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.21])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 04:07:44 -0700
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Order OP vs. timeout correctly in __wait_for()
-Date: Fri, 13 Mar 2026 13:07:40 +0200
-Message-ID: <20260313110740.24620-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1773400453; c=relaxed/simple;
+	bh=VTlKAUXRjtNvrAzU2KtEl0Xt/Sbz/0Q0eCX6rPkRKI4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V2KwBCUr64/soMCbI6IrXsRueuTuUknVvhUV/8ewG2xOBYgQlKLRCh81ug+el9qKdAkJgW0aDzA4YKRNEZVOpqWiu8Trxc4bORBs6jVZwJkVEZUO7pDPKcWIkvc45IFHduxAIGBSNpOvwCemND1EPXjMxZ5N1286ILUIng7nz6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QeL6xajd; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.224.131] (unknown [37.159.92.229])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A8D8BF52;
+	Fri, 13 Mar 2026 12:13:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773400381;
+	bh=VTlKAUXRjtNvrAzU2KtEl0Xt/Sbz/0Q0eCX6rPkRKI4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=QeL6xajdN+KPfkUJVFYQDyeaTDCtAxa63cjN/n7v+762tzTIxpGWULdSU2flA0Yg2
+	 CohibMjOLsVTku+Z78e4koqYm3IH0E4hhL+HJlWvmxMzV6/MsXfq/Jmc0FBKKlqRBI
+	 d7+Pdl3majuKAHtcWq36STOFQrkmzg1M4nZniVmw=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH 0/7] media: renesas: rzv2h-ivc: Fix concurrent job
+ scheduling
+Date: Fri, 13 Mar 2026 12:13:56 +0100
+Message-Id: <20260313-mali-ivc-fixes-v7-0-v1-0-cb0714cd1279@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-B4-Tracking: v=1; b=H4sIAHTxs2kC/x3LQQqAIBBA0avErBtQJ7K6SrQom2qgLBQkiO6et
+ Hx8/gORg3CErnggcJIop8/QZQFuG/3KKHM2GGVqRVrjMe6CkhwucnPEZFFhRYsjmhprW4J8XoH
+ /msd+eN8PNXTyyGUAAAA=
+X-Change-ID: 20260311-mali-ivc-fixes-v7-0-43fc33b87793
+To: Daniel Scally <dan.scally@ideasonboard.com>, 
+ =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, 
+ Daniel Scally <dan.scally+renesas@ideasonboard.com>, stable@vger.kernel.org, 
+ =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze+renesas@ideasonboard.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1962;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=VTlKAUXRjtNvrAzU2KtEl0Xt/Sbz/0Q0eCX6rPkRKI4=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBps/F/p4LONZvvLS3Q+nCbe0IYpcgOnCu8w62OT
+ rZ8zKwYYe+JAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCabPxfwAKCRByNAaPFqFW
+ PPDRD/9naa62MXEZEtp5n4BqX2lQpDgyjCahw95256IbdKhX184rWnUuTWfuRyGEhmyyaG9xWys
+ oYHSTQ1OaOLKrHo+DC8IcKLDHTacSTWX0M+t/IOAQ1x3EIhaP/Pmq/dMxZHMfMJRCybdIBZpL1/
+ GvShq2omK+StfmhqSo5jpHa1c51I+7gsBSXm7vSDTxhEL6xeM3FuNB+Xt+FqEP1CZgL5v7uA+1a
+ 0HkIu9eMlWvXUGjuxH1SPdyfe92gimTqe5OEnleEsWUgHoud9Mw8YcCe+tUbemjmoVN33Zn6Um4
+ q24/5+YL37VhWppxKQH4CWu59YxR0kxaUQP7DFMZIXZcJq9mq4wnWmI6CzeGIlePF7Qa7eUgmHu
+ eUmx3LC4Pmzyo+id1qLycKobmU3nslGIRNb4O7/AQm8w0EsIlcg+dmvH0Vpc7XkoG+9ROaJ9BoP
+ VbjelR++ZZSPqvzx+7+5NR6WcC6RrSUVN3ruaGJfSkmG4O5E2DYPK4e4W/bU+3V1shMe58hs+Am
+ 1nye+Emzgsg7ZG5yteJXEQd8HV94+cAblW2c7kEkCtY9PhzaWPOUzA2+iaIInNHPbNpj+Z8hgxj
+ LmLZj+fTmV3mxgs9TAyostUmS6Dt64Bj4Qdk0082PgbsCoaMoaAq8ykX01MS2JjYhczDjtw1QY1
+ 7v6MDwPDnhltVww==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225282-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-225283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.intel.com:mid]
-X-Rspamd-Queue-Id: 47DFE281E84
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5D94A2820FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+We have been exercizing the RZ/V2H(P) IVC block quite intensly these
+last two months.
 
-Put the barrier() before the OP so that anything we read out in
-OP and check in COND will actually be read out after the timeout
-has been evaluated.
+Here it is a collection of fixes and improvements to the driver.
 
-Currently the only place where we use OP is __intel_wait_for_register(),
-but the use there is precisely susceptible to this reordering, assuming
-the ktime_*() stuff itself doesn't act as a sufficient barrier:
+The first 4 patches in the series address a few registers writes that
+do not respect the documentation.
 
-__intel_wait_for_register(...)
-{
-	...
-	ret = __wait_for(reg_value = intel_uncore_read_notrace(...),
- 			 (reg_value & mask) == value, ...);
-	...
-}
+The 5th and 6th patches fixes concurrent access to the list of queued
+buffers and fix a WARN() visible under heavy system load conditions
+caused by concurrent buffer transfers.
 
-Cc: stable@vger.kernel.org
-Fixes: 1c3c1dc66a96 ("drm/i915: Add compiler barrier to wait_for")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+The last patch is actually up for discussion. It is my opinion that the
+trouble of setting up a workqueue item is not justified by the
+relatively small amount of work that has to be carried out in interrupt
+context. In any case, there shouldn't be any functional change
+introduced by this patch.
+
+Patch #7 makes patch #6 reduntant: if we use direct function
+calls, then the issue of concurrently running workqueue items cannot
+happen. However, I actually think patch #6 has value regardless as it
+makes the code more robust.
+
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 ---
- drivers/gpu/drm/i915/i915_wait_util.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Barnabás Pőcze (4):
+      media: rzv2h-ivc: Fix AXIRX_VBLANK register write
+      media: rzv2h-ivc: Write AXIRX_PIXFMT once
+      media: rzv2h-ivc: Fix FM_STOP register write
+      media: rzv2h-ivc: Fix concurrent buffer list access
 
-diff --git a/drivers/gpu/drm/i915/i915_wait_util.h b/drivers/gpu/drm/i915/i915_wait_util.h
-index 7376898e3bf8..e1ed7921ec70 100644
---- a/drivers/gpu/drm/i915/i915_wait_util.h
-+++ b/drivers/gpu/drm/i915/i915_wait_util.h
-@@ -25,9 +25,9 @@
- 	might_sleep();							\
- 	for (;;) {							\
- 		const bool expired__ = ktime_after(ktime_get_raw(), end__); \
--		OP;							\
- 		/* Guarantee COND check prior to timeout */		\
- 		barrier();						\
-+		OP;							\
- 		if (COND) {						\
- 			ret__ = 0;					\
- 			break;						\
+Daniel Scally (1):
+      media: rzv2h-ivc: Revise default VBLANK formula
+
+Jacopo Mondi (2):
+      media: rzv2h-ivc: Avoid double job scheduling
+      media: rzv2h-ivc: Replace workqueue with direct function call
+
+ .../platform/renesas/rzv2h-ivc/rzv2h-ivc-dev.c     |  2 +-
+ .../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c   | 63 +++++++++++-----------
+ .../media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h   | 13 ++---
+ 3 files changed, 39 insertions(+), 39 deletions(-)
+---
+base-commit: f6390408a846aacc2171c17d88b062e202d84e86
+change-id: 20260311-mali-ivc-fixes-v7-0-43fc33b87793
+
+Best regards,
 -- 
-2.52.0
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
 
