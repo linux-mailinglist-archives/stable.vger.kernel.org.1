@@ -1,229 +1,120 @@
-Return-Path: <stable+bounces-225300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKQaIAUFtGnjfQAAu9opvQ
-	(envelope-from <stable+bounces-225300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:37:25 +0100
+	id mE61BNcGtGnjfQAAu9opvQ
+	(envelope-from <stable+bounces-225301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:45:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B50228321A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:37:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9880D283319
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97955301CA8F
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:37:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E3FA302F68F
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26218397696;
-	Fri, 13 Mar 2026 12:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2CC239085;
+	Fri, 13 Mar 2026 12:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BrkeFO9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVHPsaRA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6930395279;
-	Fri, 13 Mar 2026 12:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F5298991
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 12:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773405436; cv=none; b=UttAnmU7lOInsg8tm/zmFr/w2GViLmM+BBtg+fTbpjqFJlM0agiS9At990+cX0rL/pM+FP6c+h6E7KA/yVBrCY+6rL7ybOfNyo710bz/WRkH5pOnMy8EnRcHB6posWRrmR8asCkiphoqPYtiMdescbUS5MG0UoGvxHhItW3cB6c=
+	t=1773405907; cv=none; b=Nacy6m9Lwd9JsYCu0OpP6C8j6Z6bgDLoJMNWzfQAAUyrz8UR1N6x0E0YcW1cl0ZRd61Gka79NbwxDbTm6GNBlno29lnRjwe3oBxH5rG+F+AxpJXULIrIH9gZmgz8TxjpknzlC+ZeX+LTOIwsHKFmE3Itf6NbLwSYqGW/HtsuAAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773405436; c=relaxed/simple;
-	bh=drJxjPYYn4yLlsDAZKfAjq7zL4hGx7yjY8uuovq1vFU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=QAbset7IFxSY48Z/BcXZvnLyl3qr+/QkyDF+eIeb6s5xdBnCLGz5nNSTpjIrk3uyXTtaRNTFKY7LMJNDyiKQVh4//ONcqvJl3I+em2k0ZJSFR6z8gJAtot7s1+40YVtgHFWDE7K+SMBWGBEl1vMXgEhsdwG/k/InCtTSIBAqa20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BrkeFO9H; arc=none smtp.client-ip=79.135.106.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1773405420; x=1773664620;
-	bh=drJxjPYYn4yLlsDAZKfAjq7zL4hGx7yjY8uuovq1vFU=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=BrkeFO9H7INzr4l9XKsWPBDB1E3gsJewTTTY7QHBjXlFPvcviMI5NeSqN64Qt5o7H
-	 vBYf7hy6cns9j0+i7qAPC9bX0YJY0UFhATJ8WjhGUE0blW/+l/rym7fR/LZYfgUDrr
-	 BtyBwOBjHAinDNOWI7FxDiVQFCvDy7GC5drGphQmC+knTznCOWyVC///+QKZS5fVMK
-	 3iVLR+qrUA0yBRyk0Ov1LURpWz7w7eOMfkM5Zsg5BehDs1p2ln6Sijq0UUoOPYBz8j
-	 YSvYo+8bT8XibJ2JbWmgVchQt71nJQIE1UXqn65eeuTBgfJpEuKlU9/KNsmV+kmreQ
-	 mGiq7UVmLAqpQ==
-Date: Fri, 13 Mar 2026 12:36:54 +0000
-To: bjorn.andersson@oss.qualcomm.com
-From: Tj <tj.iam.tj@proton.me>
-Cc: gregkh@linuxfoundation.org, krzk@kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, srini@kernel.org, stable@vger.kernel.org, vkoul@kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH 1/7] slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
-Message-ID: <2e06ae01-6af9-4de7-be27-e439dc365d9b@proton.me>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: 2ff8e9f9e5ed6e8baa6e202986b4159e1e43e813
+	s=arc-20240116; t=1773405907; c=relaxed/simple;
+	bh=YPUgM1oYyjHaELzyKFInr4XZsQ717NDAukTaozxNc7Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UJ4As5ZibF2x606pqP5xBAVU9a8FWoEeUU69VQY2YDh+yCe6S1ChoDdyY+qXruiBW1aNS7FjuDW5YkYPTcNquOU3f55WpzcMxXP+4SJOV3iRq1edr9lenpBmz59dlkenVt3K3n4VOrowAV45cRdnTNGRglG7muaKnwn89LDWUmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVHPsaRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61409C19421;
+	Fri, 13 Mar 2026 12:45:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773405907;
+	bh=YPUgM1oYyjHaELzyKFInr4XZsQ717NDAukTaozxNc7Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DVHPsaRAJVFPZgXKk1Zrws6DEyWHV3h09eKdaJpFMku6YPgetLc2Ri+RA19jVwdSh
+	 rysIZF6n245K21yX2HuoywsHu4y0YkwcF8YoTMiod5n8gYIaAPjoC5Lk9+arwZbkqk
+	 RbxSsP0jNDmNN8K3IS7w1LCgD8wToQ+ehzmu0bW8=
+Date: Fri, 13 Mar 2026 13:44:57 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: linux-stable <stable@vger.kernel.org>,
+	Menglong Dong <menglong8.dong@gmail.com>
+Subject: Re: Backport to 6.6 and 6.1
+Message-ID: <2026031351-carve-crayon-4496@gregkh>
+References: <CANn89iJzYON_QPGsgXii6r5tONLU+PepfP-b6J4MGguB979BQA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89iJzYON_QPGsgXii6r5tONLU+PepfP-b6J4MGguB979BQA@mail.gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FAKE_REPLY(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225300-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[proton.me:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225301-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,proton.me:dkim,proton.me:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,0.0.0.1:email]
-X-Rspamd-Queue-Id: 7B50228321A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9880D283319
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Following up on the registration problems on recommendation of Konrad=20
-Dybcio.
+On Fri, Mar 13, 2026 at 01:34:27PM +0100, Eric Dumazet wrote:
+> Hi team
+> 
+> Would you be kind enough to backport the following patch to 6.6 and 6.1 ?
+> 
+> For some reason we missed that the issue was serious, no Fixes: tag at
+> that time :/
+> 
+> It applies cleanly.
+> 
+> commit 795a7dfbc3d95e4c7c09569f319f026f8c7f5a9c
+> Author: Menglong Dong <menglong8.dong@gmail.com>
+> Date:   Fri Jan 26 12:05:19 2024 +0800
+> 
+>     net: tcp: accept old ack during closing
+> 
+> Thanks a lot !
+> 
+> Related : packetdrill test sent to net-next today:
+> 
+> https://lore.kernel.org/netdev/20260313115429.3365751-1-edumazet@google.com/T/#u
+> 
 
-I previously reported a hang during driver registration due to lock=20
-contention. Konrad pointed me to this thread. Earlier, I had fixed the=20
-issue myself and whilst doing it saw that order of registration is=20
-important - ctrl must be last otherwise it causes:
+Now queued up,t hanks.
 
-qcom,slim-ngd-ctrl 171c0000.slim-ngd: Failed to create device link=20
-(0x180) with supplier 34000000.pinctrl for=20
-/soc@0/slim-ngd@171c0000/slim@1/codec@1,0
-
-so I'd be surprised if Patch 1 works (not had chance to test the patch=20
-series as yet).
-
-With my local patch the result is:
-
-qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM SAT: Rcvd master capability
-qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM controller Registered
-
----
- =C2=A0 =C2=A0 slimbus: ngd: fix lock hang on probe
-
- =C2=A0 =C2=A0 Module contains two platform_drivers. The initial probe call=
-s
- =C2=A0 =C2=A0 platform_register_driver() with the second struct platform_d=
-river.
-
- =C2=A0 =C2=A0 This caused a hung task due to mutex lock in __driver_attach=
-():
-
- =C2=A0 =C2=A0 INFO: task swapper/0:1 blocked for more than 1232 seconds.
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Not tainted 7.0.0.-=
-rc2-sdm845 #89
- =C2=A0 =C2=A0 task:swapper/0=C2=A0 =C2=A0 state:D pid:1 tgid:1 ppid:0 task=
-_flags:0x0140=20
-flags:0x00000010
- =C2=A0 =C2=A0 Call trace:
- =C2=A0 =C2=A0 __switch_to_0x104/0x1c8 (T)
- =C2=A0 =C2=A0 __schedule+0x438/0x1168
- =C2=A0 =C2=A0 schedule+0x3c/0x120
- =C2=A0 =C2=A0 schedule_preempt_disabled+0x2c/0x50
- =C2=A0 =C2=A0 __mutex_lock.constprop.0+0x3d0/0x938
- =C2=A0 =C2=A0 __mutex_lock_slowpath+0x1c/0x30
- =C2=A0 =C2=A0 __driver_attach+0x38/0x280
- =C2=A0 =C2=A0 bus_for_each_dev+0x80/0xc8
- =C2=A0 =C2=A0 driver_attach+0x2c/0x40
- =C2=A0 =C2=A0 bus_add_driver+0x128/0x258
- =C2=A0 =C2=A0 driver_register+0x68/0x138
- =C2=A0 =C2=A0 __platform_driver_register+0x2c/0x40
- =C2=A0 =C2=A0 qcom_slim_ngd_ctrl_probe+0x1f4/0x400
- =C2=A0 =C2=A0 platform_probe+0x64/0xa8
- =C2=A0 =C2=A0 really_probe+0xc8/0x3f0
- =C2=A0 =C2=A0 __driver_probe_device+0x88/0x190
- =C2=A0 =C2=A0 driver_probe_device+0x44/0x120
- =C2=A0 =C2=A0 __driver_attach+0x138/0x280
- =C2=A0 =C2=A0 bus_for_each_dev+0x80/0xc8
- =C2=A0 =C2=A0 driver_attach+0x2c/0x40
- =C2=A0 =C2=A0 bus_add_driver+0x128/0x258
- =C2=A0 =C2=A0 driver_register+0x68/0x138
- =C2=A0 =C2=A0 __platform_driver_register+0x2c/0x40
- =C2=A0 =C2=A0 qcom_slim_ngd_ctrl_driver_init+0x24/0x38
- =C2=A0 =C2=A0 do_one_initcall+0x60/0x450
- =C2=A0 =C2=A0 kernel_init_freeable+0x23c/0x630
- =C2=A0 =C2=A0 kernel_init+0x2c/0x1f8
- =C2=A0 =C2=A0 ret_from_fork+0x10/0x20
- =C2=A0 =C2=A0 INFO: task swapper/0:1 is blocked on a mutex likely owned by=
- task
- =C2=A0 =C2=A0 swapper/0:1.
-
- =C2=A0 =C2=A0 Showing all locks held in the system:
- =C2=A0 =C2=A0 2 locks held by swapper/0/1:
- =C2=A0 =C2=A0 =C2=A0#0: ffff000080ff80f8 (&dev->mutex){....}-{4:4}, at:
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0__driver_attach+0x19c/0x2c0
- =C2=A0 =C2=A0 =C2=A0#1: ffff000080ff80f8 (&dev->mutex){....}-{4:4}, at:
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0__driver_attach+0x38/0x2c0
- =C2=A0 =C2=A0 1 lock held by khungtaskd/73:
- =C2=A0 =C2=A0 =C2=A0#0: ffffbc5dfc38f1d8 (rcu_read_lock){....}-{1:3}, at:
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0debug_show_all_locks+0x18/0x1f0
-
- =C2=A0 =C2=A0 After this fix:
-
- =C2=A0 =C2=A0 qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM SAT: Rcvd master =
-capability
- =C2=A0 =C2=A0 qcom,slim-ngd-ctrl 171c0000.slim-ngd: SLIM controller Regist=
-ered
-
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c=20
-b/drivers/slimbus/qcom-ngd-ctrl.c
-index 9aa7218b4e8d2..abdd4ad57f2d2 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1664,7 +1664,6 @@ static int qcom_slim_ngd_ctrl_probe(struct=20
-platform_device *pdev)
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err_pdr_looku=
-p;
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
-
--=C2=A0 =C2=A0 =C2=A0 =C2=A0platform_driver_register(&qcom_slim_ngd_driver)=
-;
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 return of_qcom_slim_ngd_register(dev, ctrl);
-
- =C2=A0err_pdr_alloc:
-@@ -1754,6 +1753,23 @@ static struct platform_driver=20
-qcom_slim_ngd_driver =3D {
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 },
- =C2=A0};
-
--module_platform_driver(qcom_slim_ngd_ctrl_driver);
-+static struct platform_driver * const qcom_slim_ngd_drivers[] =3D {
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0/* Order here is important; ctrl last */
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0&qcom_slim_ngd_driver,
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0&qcom_slim_ngd_ctrl_driver,
-+};
-+
-+static int __init qcom_slim_ngd_init(void)
-+{
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0return platform_register_drivers(qcom_slim_ngd_=
-drivers,=20
-ARRAY_SIZE(qcom_slim_ngd_drivers));
-+}
-+module_init(qcom_slim_ngd_init);
-+
-+static void __exit qcom_slim_ngd_exit(void)
-+{
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0return platform_unregister_drivers(qcom_slim_ng=
-d_drivers,=20
-ARRAY_SIZE(qcom_slim_ngd_drivers));
-+}
-+module_exit(qcom_slim_ngd_exit);
-+
- =C2=A0MODULE_LICENSE("GPL v2");
- =C2=A0MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
-
-
+greg k-h
 
