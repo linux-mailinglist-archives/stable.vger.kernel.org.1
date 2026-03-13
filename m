@@ -1,178 +1,193 @@
-Return-Path: <stable+bounces-225314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cERSOrIWtGlkgwAAu9opvQ
-	(envelope-from <stable+bounces-225314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:50 +0100
+	id 8OeMMV8YtGlkgwAAu9opvQ
+	(envelope-from <stable+bounces-225315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:59:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517C7284467
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:52:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AD8284623
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F4CC320C95A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:50:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 853D43070CCE
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E387397E93;
-	Fri, 13 Mar 2026 13:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B218838D012;
+	Fri, 13 Mar 2026 13:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWz1Qzl4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/qvAEqr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352973976B6;
-	Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4E0390C95
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 13:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773409790; cv=none; b=t/VYfLl1QHuWQRxEQZw8D0HO7zsow9tjUOh0Y+Fh1OfhMN1QpqX2VhNsAfPMighWHwVLGXF0tJcJM0jbfJgbcOjx/3E0P+NUVzXm70sB5thHY11/hgYa9whPtZ8a/Ms5MovEYpl6VxjyAbvqqGTTVlnriagqn0laRhh0PGO+bNo=
+	t=1773409981; cv=none; b=YQji2qv7yo7fu78uNPYV6AwMkEPHy+IIay4Zna2ZoRYphgF44YW78pqQ3nwD1pDI+RPO2rS1IS7RBubZc43cBVMpkDYJvuA1WIA3KrtgHee4UEXJyg1/+W5Nz95p9+XswO4WrB7OFJupxhiTZSwfA2R3nQZjwVzcffAwiCrFojU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773409790; c=relaxed/simple;
-	bh=t9ivlOfBBXOXqvNL3l77+EjcZmEMBN+3jdHwaM2lnvw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f+ZMNzA0V45lEkzz7MnY9HNbT7m5hDoM4rd+h++9IJST73ukc/yh+3ag//9Bqj9IhKyoElaqis+IbKv6ORtlHOXg0m/KwJXbhcmgEm8na0eaBhJaNxAvZANKkr/30HakTobaJnvwH0koqMAo6Uabm9szsqac4S8S/U406dy63AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWz1Qzl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AD2C2BCC6;
-	Fri, 13 Mar 2026 13:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773409789;
-	bh=t9ivlOfBBXOXqvNL3l77+EjcZmEMBN+3jdHwaM2lnvw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nWz1Qzl4WqrK6ZtgHHPr6gEsoWt+ZazIcI7+DnFxSG0zw4WjUFtL0c7Hxtjq82W2z
-	 2EUWw09XB+TNVYESMKlrnC8Ap1JhJENNb9YMYwnatGpYvDOxd3uEYhP6cAaSRA9z7Y
-	 CsbIh4pvSqTqrjp6XXbgwB5lIkfksYLlkczY2AUc=
-Date: Fri, 13 Mar 2026 14:49:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Barry K. Nathan" <barryn@pobox.com>
-Cc: Ron Economos <re@w6rz.net>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com, Francesco Dolcini <francesco@dolcini.it>
-Subject: Re: freeze during boot regression Re: [PATCH 6.12 000/265]
- 6.12.77-rc1 review
-Message-ID: <2026031314-civic-sandlot-7a67@gregkh>
-References: <20260312201018.128816016@linuxfoundation.org>
- <b4f58774-18d4-4a32-9c85-603f9e2c98fc@pobox.com>
- <ee851013-fec8-47f8-9863-392f17e54474@pobox.com>
- <2a313336-ccfc-42b7-a14d-c116733ef64a@w6rz.net>
- <1c54210a-e197-4eb9-88b5-2ed2589c7230@pobox.com>
- <88e4edea-f204-4f06-b898-2995237fc823@w6rz.net>
- <d87a1702-6906-475c-afd7-9b4b25bfd48c@pobox.com>
- <71d1fa5b-e6bb-4289-bd8d-445aeddcb9d8@pobox.com>
+	s=arc-20240116; t=1773409981; c=relaxed/simple;
+	bh=l0zF3ej8aQms2XTunb0vRjXBt1VP0mDbI74gU5Fkie0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=arCFWWz1iWO113f4XUVtUknvaJYwlaZGmBV2ktT81NMR7OmHfHjqTZovSd20dZH77egLG/m7RfctOktlXFuN2d9SBscFVEZDDQRRLmWDSbpR16p+oxSw1qE0bFCIERSAa/NxuVIm9dKuyy3ScvyTNZdks5+ibYvd7jcbCK+Fa3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/qvAEqr; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso19977285e9.3
+        for <stable@vger.kernel.org>; Fri, 13 Mar 2026 06:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773409973; x=1774014773; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dX48aVLfTgFvgth3UwNoAcH/+u5VTaLKWTUPbGKCPbY=;
+        b=W/qvAEqrNLJfCc+Nn6Rmr7/Ar5Iq4HQ0V/tpYpizC+C3Z4Blr4Af38Um7UlKJTCUEV
+         DBAL2Dg8wJXvqozJcLmXM6HlI3eSFCQVXwe5GXaSf/AtmIw720K83PxLjNdGkCM7a323
+         YSyZUc2A95r1YON0pjCDEHOO5/kAikHZmpFX1zkw+fIAhJ8WGnOnPIbssjwpe32AmWcG
+         O6WZ3UmTgAX+cyvYp0t0N6xAlAxEXWaeJCq7hBVxXca5isZ70jmSz5pKH3UzzrgV1OF2
+         zLeeyJIqhtTaln8tbevWOc2d4ObQcmjumQ0CVGpF5YBLZtcKb/qatSWnwfvD16ugTRlN
+         tfVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773409973; x=1774014773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dX48aVLfTgFvgth3UwNoAcH/+u5VTaLKWTUPbGKCPbY=;
+        b=i+qTLoXRwxmGUs/05Myi+Cq+VLS6cY4r9XUIe/lNWwjvP+BVrG8DGLhcfMpQto1mw4
+         EYLIq0VyrSW60bs4p+1zlYIF6VKgbPYQb82XMCNwFdtD0VBrnd2VuJuFSth4wupur87j
+         14+vzKJ9WFZbHLm1oMS+Q4JYA5CISF5+bg+Ng3nclVeOWUCepzwRhmpkPaxPCooXnz8x
+         9LA8ze8rrM4GzArkEOmduHeg0D8rAVdo9+q8tNuL7gXf6WsDz7ANiNkUFdpUsuHRKBCi
+         GoxYwB6sdhTHMDJZuE1AlhrJekGLr5Q0/Kqxaj8bE9cS+mDuNVHn2oL6M2rElev2TodC
+         SKQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpb2SHQjUI6FTbQtilI15xsO6Nsa/hZuyByoH0V+XtrEC44aFulgemP7O09sPFNAEdqApxSl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcePGW7J76byTy6TJMxRAfrLY+Tt2KYXovw08oqfIINNAerc+u
+	ZgyIrb/XqUkStqD+YkDoRY9fvuyDoE/sHydoap5ysplrhNU+YC8oa1Tf
+X-Gm-Gg: ATEYQzzoau2HBa+ytm0BIH++yVVlufL1jPVvCXFqdcODN9o1fE3mBF93hXYyjLYRCtA
+	u3L3xM+hELuJ8ht6kVcImBLOht/a8CBQ05znNjrCgchSeabgSE7UyzyDxj25btYWDpcP6eYebJK
+	AuFW481wflbm1JK+z/hDTkMvj9oGZTBaIm0fBd3BqtrwZFjUgWQe3ovjGA1daExiOMJfLfP0AyK
+	vZ3P3JtB9JyRTs5pYA3nhLRy+TbF3nRTARiQz24JPRrdmn1dSd9Bgo4bIUl3ps1IUHsSlsA7TPO
+	XMlfYTK798r9pDIJMIPcredoDc3snz10sRcsL1RvOiXflRf64Ytub7DdlCJs1bdnQb8g0V8XQ6k
+	bmb2XYAG3utVYTIftVs6ClV/gWuZzDVtCyVFX2IMkYDQEGKjeRnkEGxUX1tCfrxw+6094xWvbIY
+	3KyIlliPJU8OyngPA7wbdY7P5p0nmKwrNk7/HvhGKR+G+Kgwl5YSVWBvjFVcCN0UJs73qV
+X-Received: by 2002:a05:600c:1395:b0:485:2fc5:3a5 with SMTP id 5b1f17b1804b1-48556709d85mr52860705e9.26.1773409973305;
+        Fri, 13 Mar 2026 06:52:53 -0700 (PDT)
+Received: from emanueleg-nb.. (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48556414295sm39850805e9.3.2026.03.13.06.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 06:52:52 -0700 (PDT)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	a-dutta@ti.com,
+	s-vadapalli@ti.com,
+	mkorpershoek@kernel.org,
+	khairul.anuar.romli@altera.com,
+	stable@vger.kernel.org
+Subject: [PATCH v1] spi: cadence-qspi: Fix exec_mem_op error handling
+Date: Fri, 13 Mar 2026 14:52:31 +0100
+Message-ID: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <71d1fa5b-e6bb-4289-bd8d-445aeddcb9d8@pobox.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225314-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225315-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FREEMAIL_CC(0.00)[w6rz.net,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,dolcini.it];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[ghidoliemanuele@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 517C7284467
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 75AD8284623
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 13, 2026 at 06:38:25AM -0700, Barry K. Nathan wrote:
-> On 3/13/26 03:53, Barry K. Nathan wrote:
-> [snip]
-> > On 3/13/26 02:37, Ron Economos wrote:
-> > > On 3/13/26 01:05, Barry K. Nathan wrote:
-> > > > On 3/12/26 23:10, Ron Economos wrote:
-> > > > > Probably those sched/fair patches.
-> > > > 
-> > > > Yes, after bisecting it turned out to be
-> > > > sched-fair-fix-eevdf-entity-placement-bug-causing-sc.patch
-> > > > 
-> > > > Taking 6.12.77-rc1 and reverting both of the sched-fair patches
-> > > > results in a working kernel that boots consistently (which I am
-> > > > using now to send this email).
-> > > 
-> > > Confirmed on RISC-V. Reverting "sched/fair: Fix lag clamp" commit b547745a2c78fd1cc1fdc6a0d1b05c884c05cec2 and "sched/fair: Fix EEVDF entity placement bug causing scheduling lag" commit f9891a33ba67ce40e5a17023d2f3a5e2b7d72ffd resolves the issue.
-> > 
-> > After looking into it a bit more, I found two upstream commits that
-> > should fix this issue without reverting the two sched/fair patches
-> > (either of the two commits alone should fix it if I understand
-> > the bug and the code correctly):
-> > 
-> > 
-> > commit 4423af84b29794a9bd2bd07188d8e71083e54c61
-> > sched/fair: optimize the PLACE_LAG when se->vlag is zero
-> > 
-> > commit c70fc32f44431bb30f9025ce753ba8be25acbba3
-> > sched/fair: Adhere to place_entity() constraints
-> > 
-> > 
-> > I think c70fc32f4443 is theoretically the proper fix, while
-> > 4423af84b297 is a performance optimization that just happens to also
-> > fix the bug.
-> > 
-> > 4423af84b297 turned out to be the easier backport; the upstream patch
-> > applies to 6.12.77-rc1 with an offset but no fuzz or conflicts. So I
-> > tried 6.12.77-rc1 + 4423af84b297, and just as with reverting the two
-> > sched/fair patches, it eliminates the boot freeze in my testing. It's
-> > what I'm running now as I write and send this email.
-> > 
-> > Next, I think I'll try doing a backport of c70fc32f4443 (I think it
-> > should be easy enough), and I'll try testing 6.12.77-rc1 +
-> > c70fc32f4443 (probably both with and without 4423af84b297).
-> > Maybe 4423af84b297 on its own is enough though.
-> 
-> I originally wrote a much longer email, but I'll try to keep this concise.
-> 
-> I was able to backport c70fc32f4443 successfully, and the backport does
-> fix the reboot freezes (with or without 4423af84b297). However,
-> backporting that commit convinced me that it's too risky; I'm particularly
-> worried it could make future sched/fair backports more difficult. And once
-> 4423af84b297 is applied, I think c70fc32f4443 ends up being a fix for a
-> theoretical bug.
-> 
-> So, even though c70fc32f4443 is the commit that was cc'd to stable@, I
-> believe 4423af84b297 is a better (safer, less risky) way to go.
-> 
-> 
-> In summary, I believe the two best ways to fix this regression are:
-> 1. Backport 4423af84b297, or
-> 2. Revert the two sched/fair patches.
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-I'll go drop these for now, and if they should come back in the future,
-someone can send all of the needed ones at once.
+cqspi_exec_mem_op() increments the runtime PM usage counter before all
+refcount checks are performed. If one of these checks fails, the function
+returns without dropping the PM reference.
 
-thanks so much for the testing and figuring it all out!
+Move the pm_runtime_resume_and_get() call after the refcount checks so
+that runtime PM is only acquired when the operation can proceed and
+drop the inflight_ops refcount if the PM resume fails.
 
-greg k-h
+Cc: stable@vger.kernel.org
+Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+---
+ drivers/spi/spi-cadence-quadspi.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 5fb0cb07c110..2ead419e896e 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1483,14 +1483,6 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (refcount_read(&cqspi->inflight_ops) == 0)
+ 		return -ENODEV;
+ 
+-	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+-		ret = pm_runtime_resume_and_get(dev);
+-		if (ret) {
+-			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+-			return ret;
+-		}
+-	}
+-
+ 	if (!refcount_read(&cqspi->refcount))
+ 		return -EBUSY;
+ 
+@@ -1502,6 +1494,14 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		return -EBUSY;
+ 	}
+ 
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret) {
++			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
++			goto dec_inflight_refcount;
++		}
++	}
++
+ 	ret = cqspi_mem_process(mem, op);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+@@ -1510,6 +1510,7 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++dec_inflight_refcount:
+ 	if (refcount_read(&cqspi->inflight_ops) > 1)
+ 		refcount_dec(&cqspi->inflight_ops);
+ 
+-- 
+2.43.0
+
 
