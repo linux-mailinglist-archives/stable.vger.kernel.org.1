@@ -1,255 +1,281 @@
-Return-Path: <stable+bounces-225384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yV/hJ+R2tGlHogAAu9opvQ
-	(envelope-from <stable+bounces-225384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 21:43:16 +0100
+	id cLDFD253tGlHogAAu9opvQ
+	(envelope-from <stable+bounces-225385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 21:45:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF25289DD3
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 21:43:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF594289E02
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 21:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79ACB3020A42
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 20:43:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87F7B3006F23
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 20:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905A03D3D04;
-	Fri, 13 Mar 2026 20:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D5537DE91;
+	Fri, 13 Mar 2026 20:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="curyDYdy"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DVGJSBiI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012071.outbound.protection.outlook.com [40.93.195.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761E739EF22;
-	Fri, 13 Mar 2026 20:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773434593; cv=none; b=FJ5+4a2p7X4AVCOnfFXLaBOpRaHv+gmOXUed0sQihe/oYvAo5JVQIKEaCKnlIfruTgplKltIAG+4L7absbagjwiYXpcB62I32XcfhlFBAjbtPrUHWgCYER7hpo+l3KPC3gtM0WmeFsvHebU9U8x/C8TKU/urA/DgicNMrynpmcQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773434593; c=relaxed/simple;
-	bh=9ihc3ObVU1jdn6AjGf+/TJIcduS4gQy/lZMlNP7z5Xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i2kJqq7mODcqf+QfTQhR+YJDAjj+ZPwyq+iVfZq5A2drerK6XT+8gEGVJJZylv13KM95UHhcWVbKZDcqukBS6zvi/lhPBqmM5GKD9KjZioseMR4KWG2I3gy0+x62B0GsABWAgdhsRiMM8GZ2+NxkbxmHvD9rAsTbThFodL30Hrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=curyDYdy; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E9F7040E01D2;
-	Fri, 13 Mar 2026 20:43:08 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id df0A_RpuSWSF; Fri, 13 Mar 2026 20:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1773434583; bh=118vG4IRxyg/u7hvdZvxPs+MMZw9lt+3EYVU7R8pt1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=curyDYdyHTwNmBkvjqQlmU2lPa5pvMLaKWl8eX3O/P5h/dS9iKr2C2u70BCyt0ypc
-	 Evr8r/xhS/epMEcYYGvfhs5kxbrUh08g529v6tUg0SuUW9Wff/dcPoE2iQ0g9SDpcq
-	 urxeBtdEyl/Ek6dhDkgouL47KGu7zt+LlhgMPR69EcP3avGgAUyFv/tGzv008dc3SK
-	 OHhvuPaw2rC3LS/vsaEa7m+axr+H+PDQpce8ix78/44OH3q6ZHmL+9sVbqJcrpt3hg
-	 jiu7dovnmE2uX9JOgX+zcotngMZNpYYCHMLlnnaQO+R+AOjcSFH0DnUp0roE3SZVbQ
-	 hzb05Nk2ql30sbCw7ndQLTepUlydNCkm95Cn96VfrDFTPOtOakcCNmPrf8ZtNTczeR
-	 G4qUTsRkhtf8GcAN3MyfiKcy6Z36VwNRnBsk2IMdGglrgttHmQnyC+V/hbcRpSfXsG
-	 HJOj0IOsPtYaP3MF8TNe0KCHVPmVKHi/3rm0D75JOv74sR2MnYdR5z6TW0UtPifJr0
-	 eHZf36UpL33qnMU3FbUEZjL2fR2Rt8KhOVRUkP7YFBr7LEB9IS1lJJpUpo/Eh/lIPn
-	 i1u1fhcvgxKg9ppuRWHPAb0O+2uNUiL3kAyhTp+41nuhGv9Nt5L+WH0N3tdWuV6enL
-	 SD/j57Bg16vGdoN/vXU0nf7Q=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7DBB240E016B;
-	Fri, 13 Mar 2026 20:42:49 +0000 (UTC)
-Date: Fri, 13 Mar 2026 21:42:43 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
-	stable@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/boot: Fix NULL dereference for missing
- hugepagesz/hugepages value
-Message-ID: <20260313204243.GIabR2w3PqVcFxg66B@fat_crate.local>
-References: <20260302205901.39610-1-thorsten.blum@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B24C37DEB3
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 20:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773434731; cv=fail; b=GLIp02M5iwyGZUtQ6mTjk3moBzfe6Dn0dfHi/8r4uFPzcQ0jGZcFS+IZOaNYTYlg9BKbnzwmcv9rF6iGWXa0rpdZXTXvPHJMFMjucs7FV6ewrst9zT1iQAnXqicE10bjcM44/W46RYcBKwZhaDqKdMmSe2wbkrQqDRU05ouD4JQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773434731; c=relaxed/simple;
+	bh=8svU/pRDwy019O3BwkHt68O4Uhyk+i+3ndzvGeFrjfA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fx7Q6PjewG228ebAyHx52Cf3VI9dUiv5zkBmtFFY4RoEeGrIaKfIa2WCVxtJAxUxxHYc9TTdG7vQDxuU7kqYfwKVC9qNimJHM4uYFjkSLpKrr9jRgexZCuH3uIQHTSP5jcAidjpz+dQTxM34M+Hwqma2Rvb7u2a8rQUNmT6rVWE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DVGJSBiI; arc=fail smtp.client-ip=40.93.195.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vDLZKz3CtIFqAGaDWCdzckKEfixV+CckUkzmoZIYF1UcWuhoYdm7tTH4FhrpFBCusmp5hGnM5/2dfnCQpbdIFZxqiMEmCLDGPkQnv4lvdMdzIxWT3zEpSgskASKAazebUH9d4BB8E+Mjqc4jD1Bp+D9hOUERgYHoCs74AC/+YPpT+tZGwp4VDhaAU+pcCpZ6FbGcoV/jKMqzgMy2ztBIbCeoslwh1CUzPe4nFmuBSQ0p3r2XAb72CkUOW1CEdF7tezWkF/J+LhjL/e26IKRUVYZUM+06BcadV5Ypz8B07dINhM837djRvIquAWJaXVFtVRP4joTpv6Q6iYe5/beuIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O5BYzute5+kZ3yyCHv9fymXh8G+FGy3aAw6haj9RGDc=;
+ b=e35YtllWc+BR73RbUrd/Bub03hDevKICzi+xaJTLkM6B7EgLByI7ceIR+KgONDlEJFKimHokmrDQrnbspqRyqZ5Ikq79o16Xrrug3a7uC7uRbpSLmc5cGksX8qbh0RnI968y/v3Bd9269Lzbzyv/9TMeST863O1xdCajmRr02rBcCWPqij54I+xX7NKGVFJ09CFx8DXP/8ZyQn8JvybI1eAL820BP3474Vb1f4jgrFvBDwdQMxKq0YuHh+yU+f/RIKEYf2llULXYrU4C0E8MS+Y7gRVRspBQi871VLYUJe6tm2qaigS6smLvuaFlZh2Q83EKN2jXttkJqBoNZnrVMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O5BYzute5+kZ3yyCHv9fymXh8G+FGy3aAw6haj9RGDc=;
+ b=DVGJSBiI6dTVQaWSFD8cOKr5wmVymDkRYjptvF5dg+SjO4l7EDuAGgpgsOraEh6guBWUardDKQlCn3pIGFb5tHBU15ZPllvTDA9MAsjwbI8mnRqGSfp3mD+9tHK38E64dMUZNr4V59rXTtsPK+k8hPpgdSyINiJfPWGLZMBR5EI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5126.namprd12.prod.outlook.com (2603:10b6:208:312::8)
+ by SJ0PR12MB6853.namprd12.prod.outlook.com (2603:10b6:a03:47b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.4; Fri, 13 Mar
+ 2026 20:45:26 +0000
+Received: from BL1PR12MB5126.namprd12.prod.outlook.com
+ ([fe80::c3e7:1bc5:2b91:1cfe]) by BL1PR12MB5126.namprd12.prod.outlook.com
+ ([fe80::c3e7:1bc5:2b91:1cfe%4]) with mapi id 15.20.9723.008; Fri, 13 Mar 2026
+ 20:45:25 +0000
+Message-ID: <a0ec2ae2-502a-4587-8951-41dca92fc8c6@amd.com>
+Date: Fri, 13 Mar 2026 16:45:21 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] drm/colorop: Keep colorop state consistent across
+ atomic commits
+To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
+Cc: contact@emersion.fr, alex.hung@amd.com, daniels@collabora.com,
+ mwen@igalia.com, sebastian.wick@redhat.com, uma.shankar@intel.com,
+ ville.syrjala@linux.intel.com, maarten.lankhorst@linux.intel.com,
+ jani.nikula@intel.com, louis.chauvet@bootlin.com, stable@vger.kernel.org
+References: <20260310113238.3495981-1-chaitanya.kumar.borah@intel.com>
+Content-Language: en-US
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20260310113238.3495981-1-chaitanya.kumar.borah@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT3PR01CA0114.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:85::31) To BL1PR12MB5126.namprd12.prod.outlook.com
+ (2603:10b6:208:312::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260302205901.39610-1-thorsten.blum@linux.dev>
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5126:EE_|SJ0PR12MB6853:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75dd4a72-1635-4ea2-8383-08de81417432
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	7s9VVaWP4ASqQfFEVUA5D7H9dTAVRFt1VIx7SeDn2HqD5S5Zf/iDT/xz4MrkJIpfik222uqTn8jRLD/g5UIEfudh3avTAS2JOMDqHlprVATywnH01bYiZhdvslvPye8M5yBBVlnT5pf6cW2fnW0N0s1WY+7UsZcbOqEw/dAv30yeRY+QrI82SPmx+zZGi7nSGLjnIPS/HsIaJw+nkng5ULprK8rIEgW8bYhf8Fmiu0IXDZ3JFypzeDcTbBm2CKw9+n5UiOFrK+mh5eTy5AYzsWrGfSybXij8gTu7gkfRQO+lACajp8EprI9QFRg0IJp2UxrNlmLs2UW8DKjdVlnJd++WcKmQ2q8NleG6SeBfqa5xqJhTyWlM6qu7sYOK2sqeqtrlcdNAGFMEauEU8eQ/b8CxomeFm+t7hXWsaImZbtrNZPDpDinPeXpsGvfPn28YTRuyO3P4k7JPExIqd7TsBUNmX4ciwWT/vPWIfQuYnsJganjyt3+sUAifRt515sqGLWK1TnAqUVr+pMGdI5GtQDgXmOVOah1LVnrJLvMtIwhGQGRZrXYWbLrrHEVKv2BAzsiBMeTsZ2AvPK7Xy22QVPfSSsE5u5OBGob70w8BQemHkL8OOMgYBrfNRcTptx4xsKuNia9H9zZP1wxDV07F27Bgtqn1uFoEqh8EVAHyxS6FipXYcEJ2S1dwbSeei1Bz27u58skpZW1k9JsdlpgakKNJOK1m8DEfgevFPgK2VkM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5126.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eXpFZ0RWaGlrVFBwMzhUU1BwMXYzbjVsTVROekZxNXdmRWdzNnhkVXpoakx5?=
+ =?utf-8?B?ZEg4LzBQYjEvUmJQT055WkNxS3NmbGVhTEQ5S1BpZWVKOGpLRyttb2w0UUVH?=
+ =?utf-8?B?ZGt0RnBtTno3VmJCc1hkS3h3cFh6cDA0bUFENzk0Y2pYc1FkaVFXaGRhS2Rt?=
+ =?utf-8?B?RTJ0cENlZ0FqcU1FKzlid0VnV010MFE2eWZKSnlIekpwYXVqc0tWUlhvbUVp?=
+ =?utf-8?B?dVQxaHZuMEZNOGJ2VnI1cFhGdDV6OVV6WUZmUzRMeXZiclRZZExqUGpvbXZZ?=
+ =?utf-8?B?QVpKSWNITVJhaFdiVldWdVc3Qjl3ZWRJd051bm52VDRRZU1oaHZGN2p3dWlN?=
+ =?utf-8?B?U2RPcVVycm9MUm91Z2NVZWtUSTBkZllMcGV0TDBzejhjRyt4N0lxbnA3bUc5?=
+ =?utf-8?B?eTBpUk9uSTIrKytjWjZuZk5rdzhMek5VeWlTbThzVjJRODJ1bll4UFErZEdR?=
+ =?utf-8?B?T0wvRFdpdlJkQUN2WlVBN3graHlveXJPcGFKMU0ydjdNRHNZTnlhSmt4dE1i?=
+ =?utf-8?B?dXUyajR6b0Mwb2swcStlL2JwSDZLaUhUS1RwcUlqTmQ0RTJWTm9NMmJkdjU3?=
+ =?utf-8?B?NUFaN0VWanVlUlJxUmlwekN6WkovOXhpVW9nUFpRdlp3KysvWlVjY3poZ1Bu?=
+ =?utf-8?B?UmtNbVgwVjF1dHRmL3hxWTI1UXlVeHJPTHEvNnc1RlFReXVCOWtnZS9iRGpp?=
+ =?utf-8?B?a2hURGlpRThENWR6N0hVcXQ1N1htT20ySjMzSmQ1N3JickdUeE5VbFV1Y1NO?=
+ =?utf-8?B?TzRhUjFUSXhxNkFLaFZIYlJvbTBadVlrcmp2dG4yb242NFBId2RwK3pUK2Vq?=
+ =?utf-8?B?SXNEYkRMNWpWTjIvZGhXOStxVVovUkZHL3FFZVp3bnZ1dHpxa1F3cXpUb1RF?=
+ =?utf-8?B?WVE4T1NTaTRnQVNWYTJLbjNEdFQ2VVZwaTlDMlR2eWZGTi9pSFByOVpoUlgx?=
+ =?utf-8?B?NmNHVUYyK3FtUkoxY2hWNnRtMkt1UWs5dTJxdTFFbFlxS2J4VnB0MDlRbFpz?=
+ =?utf-8?B?blZCTUU3eGp4Z0VCMG5ScVhJc3pmTHM5ckUxRkFnbGc3V1FzTGQ2eWR6N3NY?=
+ =?utf-8?B?clZVcEdMNTNkRCtSbHNzRS83NzBwK3FQMHZKY2FBbFM2MnJnLzE0a2RVdE1B?=
+ =?utf-8?B?aFoxOWNweUhMYmVyUUk0dDFGbjFtTmhGc3k0YlVSaDFybzBwcUNaL1hIZFFk?=
+ =?utf-8?B?OWc5b0piU0l0V2hXcktZbEVsU3dYQ2dVdWYxQjU0bGJTWHZKZi9tczhvS0dK?=
+ =?utf-8?B?Nkg2SlBweTgybmZLc2liMGR4VFhVdU03cUU1THliZmVzS2lueXllT0pFME1O?=
+ =?utf-8?B?clIvRmpKRERkS2o5eURZR2tmcTZwRW9WdWlBR1dtbzFXOTVORkVYN1Npbndk?=
+ =?utf-8?B?SC9QUVNrSVJqbXBwK1VhWStUTFlsMmpTYTNIVkZZZHUxb3BCVmtVNVp5VEc5?=
+ =?utf-8?B?R1pBSWhEdEFhazZOTlB6KzJ1UUJYVkx4UTUvUUxrbkhtWEpFMlVqL1dNbWN1?=
+ =?utf-8?B?Rmx3SDF3cHhmbXBLdnpwbVh2YVloRUlvRERFUlFSaGtuemJEWmx0SFB4dVpo?=
+ =?utf-8?B?VnZnNFBkd01CMGZVYmRjU3dRYUU1L3R1czI1dTY2Ry8vcXVVbFc3eFhwL2lm?=
+ =?utf-8?B?VVB2UWtianNTd3hhM2t6N2w5SUZHeSt4bkhsWlZBNC8xYlpVSlBYL0ZQWE5p?=
+ =?utf-8?B?VjhpNmt4NDZnLzJmNmpSZk5EQldldm5YM3ZqSVVVWWZLK3E2THRILzhsYWxk?=
+ =?utf-8?B?V1h3U3JDMCtKS3hmUzF2bnZnOHlZdXZhN0ZSODlidjB5Vnd0MGliUW9NOE9W?=
+ =?utf-8?B?blE2VERuTHhHNERLTTVPbk9FM0xXanRHb210L0dMays5RTF4ZTExM1Z5YjUr?=
+ =?utf-8?B?OVdtNFgvTUNlUE1zVUdBZWI0d1N2aGorc0xCWHFtUWdvVU5OUmYvVlo5a1Rl?=
+ =?utf-8?B?WEJmTXJ0MjZDSEhMdU14eFlXS0c4aWxnYnlWMFN3clRablZwQzdHUVNXeER4?=
+ =?utf-8?B?ZmNXNVRDbCtYK3ZXWndITzJIMi94N2RDSXN2RFllZ1lMOXZmZ0lyMVVNQU1a?=
+ =?utf-8?B?SEdUQlN1N1NlTkw0KzdnSDcvbU9jNyswRVZVMEdUY1YydlM3YklWSDNSaE14?=
+ =?utf-8?B?V0tVZFdkQ1ZZRjNTV2ZiQktUNW00QTZwUWc3NW9UVEZLa2RhNDIybXVYRnVr?=
+ =?utf-8?B?NEpLTGdWaWN6VnNCNThuR2tjLzNRUUMvWUZXQnA2QzNwaU5NakpCekNIQTQv?=
+ =?utf-8?B?RnZNdk5pTjBFdWNpbU9kdWlEYUludlRvbE1DSEZzZjhIR3VxbSt3cmNVTklz?=
+ =?utf-8?B?eEc3ZElwZDF0aVd6VzhNeG4xRFl0OXM0cnNvdldZZCsyN2NBZnNEQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75dd4a72-1635-4ea2-8383-08de81417432
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5126.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 20:45:25.6993
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Nb0oF3uArxdMNMOJmeL18zPQ0+IBdrBX4OPtVSajE+U22RZpWlb/0weXCD2xBBgeL7sDutoDioIdw0pV0dInAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6853
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225384-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225385-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[harry.wentland@amd.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fat_crate.local:mid,linux.dev:email,alien8.de:dkim]
-X-Rspamd-Queue-Id: 3BF25289DD3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,01.org:url,emersion.fr:email,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF594289E02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 02, 2026 at 09:58:59PM +0100, Thorsten Blum wrote:
-> In parse_gb_huge_pages(), 'val' can be NULL if '=' is missing from the
-> boot parameter. The code passes 'val' to memparse() and
-> simple_strtoull(), which can dereference NULL.
+Would you like me to pull these into drm-misc-next? I'd love
+the changes as base for me next patchset.
+
+Harry
+
+On 2026-03-10 07:32, Chaitanya Kumar Borah wrote:
+> This series aims to keep colorop state consistent across atomic
+> transactions by ensuring it accurately reflects committed hardware
+> state and remains part of the atomic update whenever its associated
+> plane is involved.
 > 
-> Reject 'hugepagesz' and 'hugepages' when no value has been provided and
-> log a warning.
+> It contains two changes:
+> - Preserves the bypass value in duplicated colorop state.
 > 
-> Fixes: 9b912485e0e7 ("x86/boot/KASLR: Add two new functions for 1GB huge pages handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  arch/x86/boot/compressed/kaslr.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> _drm_atomic_helper_colorop_duplicate_state() unconditionally reset
+> bypass to true, which means the duplicated state no longer reflects the
+> committed hardware state. Since bypass directly controls whether the
+> colorop is active in hardware, this can lead to an unintended disable
+> during subsequent commits.
 > 
-> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> index 3b0948ad449f..88ccc3b2c5aa 100644
-> --- a/arch/x86/boot/compressed/kaslr.c
-> +++ b/arch/x86/boot/compressed/kaslr.c
-> @@ -205,6 +205,11 @@ static void parse_gb_huge_pages(char *param, char *val)
->  	char *p;
->  
->  	if (!strcmp(param, "hugepagesz")) {
-> +		if (!val) {
-> +			warn("Missing value in hugepagesz= boot parameter\n");
-> +			return;
-> +		}
-> +
->  		p = val;
->  		if (memparse(p, &p) != PUD_SIZE) {
->  			gbpage_sz = false;
-> @@ -218,6 +223,11 @@ static void parse_gb_huge_pages(char *param, char *val)
->  	}
->  
->  	if (!strcmp(param, "hugepages") && gbpage_sz) {
-> +		if (!val) {
-> +			warn("Missing value in hugepages= boot parameter\n");
-> +			return;
-> +		}
-> +
->  		p = val;
->  		max_gb_huge_pages = simple_strtoull(p, &p, 0);
->  		return;
+> This could potentially be a problem also for colorops where bypass value
+> is immutably false.
+> 
+> Conceptually, I consider 'bypass' to behave similar to 'visible' in plane 
+> state - it represents current HW state and should therefore be preserved
+> across duplication.
+> 
+> - Add affected colorops with affected plane
+> 
+> Colorops are unique in the DRM model. While they are DRM objects with their
+> own states, they are logically attached to a plane and exposed through
+> a plane property. In some sense, they share the same hierarchy as CRTC and
+> planes while following a different 'ownership' model.
+> 
+> Given that enabling a CRTC pulls in all its affected planes into the atomic
+> state, it follows that when a plane is added, its associated colorops are
+> also included. Otherwise, during modesets or internal commits, colorop state
+> may be missing from the transaction, resulting in inconsistent or incomplete
+> state updates.
+> 
+> That said, I do have a concern about potentially inflating the atomic
+> state by automatically pulling in colorops from the core. It is not
+> entirely clear to me whether inclusion of affected colorops should be
+> handled in core, or left to individual drivers.
+> 
+> My understanding of the atomic framework is still evolving, so
+> I would appreciate feedback from those more familiar with the intended
+> design direction.
+> 
+> ==
+> Chaitanya
+> 
+> P.S/Background/TL;DR:
+> 
+> I discovered inconsistency with the colorop state while analysing CRC mismatches
+> in kms_color_pipeline test cases[1]. Visual inspection reveals that while CRC is
+> being collected degamma block has been reset. This was traced back to the internal
+> commit that the driver does to disable PSR2 and selective fetch for CRC collection.
+> 
+> crtc_crc_open
+>     -> intel_crtc_set_crc_source
+>         -> intel_crtc_crc_setup_workarounds
+>             -> drm_atomic_commit
+> 
+> During this flow colorop states are never added to the atomic state which in turn
+> makes intel_plane_color_copy_uapi_to_hw_state() disable the colorops.
+> 
+> If we add the colorops, to the atomic state, the problem still persisted because
+> while duplicating the colorop state, 'bypass' was getting reset to true.
+> 
+> The two changes made in this series fixes the issue.
+> 
+> [1] https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18001/shard-mtlp-6/igt@kms_color_pipeline@plane-lut1d.html
+> 
+> v2:
+>   - Add affected colorops only when a pipeline is enabled
+> 
+> Cc: Simon Ser <contact@emersion.fr>
+> Cc: Alex Hung <alex.hung@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Daniel Stone <daniels@collabora.com>
+> Cc: Melissa Wen <mwen@igalia.com>
+> Cc: Sebastian Wick <sebastian.wick@redhat.com>
+> Cc: Alex Hung <alex.hung@amd.com>
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+> Cc: <stable@vger.kernel.org> #v6.19+
+> 
+> Chaitanya Kumar Borah (2):
+>   drm/colorop: Preserve bypass value in duplicate_state()
+>   drm/atomic: Add affected colorops with affected planes
+> 
+>  drivers/gpu/drm/drm_atomic.c  | 7 +++++++
+>  drivers/gpu/drm/drm_colorop.c | 2 --
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+> 
 
-The intent is good even if it is not working fully yet, see below.
-
-That's with
-
-[    0.000000] Command line: root=/dev/sda2 resume=/dev/sda3 debug ignore_loglevel log_buf_len=16M earlyprintk=ttyS0,115200 console=ttyS0,115200 console=tty0 no_console_suspend nokaslr no_hash_pointers sysrq_always_enabled net.ifnames=0 hugepagesz
-
-on the cmdline.
-
-And that happens even without your kaslr.c changes because I have
-
-# CONFIG_RANDOMIZE_BASE is not set
-
-So it looks like there's more crap in the parsing of those two options.
-
-Also, while at it, you probably wanna add this:
-
----
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 88ccc3b2c5aa..e041be5e4326 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -206,8 +206,8 @@ static void parse_gb_huge_pages(char *param, char *val)
- 
- 	if (!strcmp(param, "hugepagesz")) {
- 		if (!val) {
--			warn("Missing value in hugepagesz= boot parameter\n");
--			return;
-+			warn("No value supplied with hugepagesz= boot parameter\n");
-+			goto next;
- 		}
- 
- 		p = val;
-@@ -222,9 +222,10 @@ static void parse_gb_huge_pages(char *param, char *val)
- 		return;
- 	}
- 
-+next:
- 	if (!strcmp(param, "hugepages") && gbpage_sz) {
- 		if (!val) {
--			warn("Missing value in hugepages= boot parameter\n");
-+			warn("No value supplied with hugepages= boot parameter\n");
- 			return;
- 		}
-
----
-
-I'm not sure what the logic is wrt allowing *both* cmdline options or
-separately or whatnot.
- 
-In any case, I'd appreciate it if you take the time and whack all those
-possible snafus with parsing hugepage* options so that we're solid there.
-
-Thx!
-
----
-PANIC: early exception 0x0e IP 10:ffffffff81d1e014 error 0 cr2 0x0
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.0.0-rc3+ #1 PREEMPT(undef) 
-[    0.000000] RIP: 0010:strlen+0x4/0x30
-[    0.000000] Code: f7 75 ec 31 c0 e9 bc 6a 02 00 48 89 f8 e9 b4 6a 02 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <80> 3f 00 74 18 48 89 f8 0f 1f 40 00 48 83 c0 01 80 38 00 75 f7 48
-[    0.000000] RSP: 0000:ffffffff82403dc0 EFLAGS: 00010097 ORIG_RAX: 0000000000000000
-[    0.000000] RAX: ffffffff899c5a70 RBX: 0000000000000000 RCX: 00000000ffffffea
-[    0.000000] RDX: 0000000000000000 RSI: ffffffff899c6100 RDI: 0000000000000000
-[    0.000000] RBP: 0000000000000000 R08: ffffffff899fe170 R09: 0000000000000000
-[    0.000000] R10: ffffffff82403e40 R11: ffffffff82403e38 R12: ffffffff899c6100
-[    0.000000] R13: 000000000000005f R14: ffffffff899fe17a R15: ffffffff899fe170
-[    0.000000] FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
-[    0.000000] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.000000] CR2: 0000000000000000 CR3: 000000000a208000 CR4: 00000000000000f0
-[    0.000000] Call Trace:
-[    0.000000]  <TASK>
-[    0.000000]  ? hugetlb_add_param+0x24/0x90
-[    0.000000]  ? do_early_param+0x44/0x70
-[    0.000000]  ? parse_args+0x146/0x410
-[    0.000000]  ? _printk+0x4c/0x60
-[    0.000000]  ? parse_early_options+0x29/0x30
-[    0.000000]  ? __pfx_do_early_param+0x10/0x10
-[    0.000000]  ? parse_early_param+0x36/0x90
-[    0.000000]  ? setup_arch+0x47b/0xa90
-[    0.000000]  ? _printk+0x4c/0x60
-[    0.000000]  ? start_kernel+0x56/0x770
-[    0.000000]  ? x86_64_start_reservations+0x24/0x30
-[    0.000000]  ? x86_64_start_kernel+0xd6/0xe0
-[    0.000000]  ? common_startup_64+0x13e/0x141
-[    0.000000]  </TASK>
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
