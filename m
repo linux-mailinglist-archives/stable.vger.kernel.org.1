@@ -1,171 +1,162 @@
-Return-Path: <stable+bounces-225324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ63OasgtGknhwAAu9opvQ
-	(envelope-from <stable+bounces-225324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 15:35:23 +0100
+	id GBqDE+YntGkQiQAAu9opvQ
+	(envelope-from <stable+bounces-225325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:06:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F0028514F
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 15:35:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3B92858B8
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:06:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA7C931523C2
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:30:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8E5E3132C05
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FBD3A545A;
-	Fri, 13 Mar 2026 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FB13A8723;
+	Fri, 13 Mar 2026 14:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="u4DD+QV4"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7D03A381A
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 14:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544E53A4523;
+	Fri, 13 Mar 2026 14:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773412228; cv=none; b=KyBH9Ocb1klhiBx1XkYg/wEoo2YXMt6kEUNpBgmQbpaVQrD+X5+dUgPAVhs0BK4K31PS6hKp0bvQ1SbXe0iqGSpOKfEQ/nUwKiI9KGJOoWn1ocIxi5DemBmrhfHZYDrT2QVW6EBZ4HwxA3FkMBaIfJMEn/nZeqqzfxOlAtGcn+I=
+	t=1773413652; cv=none; b=mXxIuBC9eR/SYblwsLdyVEN+ULxghrf05fzeg4YLDD28NMa1oNzMSa4jBNz1AMko4hjd01HutYP3w8RyvFFfqfMFDfnkYNPgnLOPTf4O8eDDXwiwFzNEwI/kz99ideR0MBr+zCJgW4iM3JQ+NHhK/kfQwWKb5q7GzqzrEnBkRw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773412228; c=relaxed/simple;
-	bh=nYwqeFc8OgCowD+Gzv8JyACPtM0oEhL1VoJpKzVF6cs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MfcxBkoSSCLqYmAi/M2L60GHQKYQXkc8lgJ3mgeIIptXPGo2f9oMcXwLxewfV4OEbsLw3OoBf+jWyR5dz8oSdOL4e5Ta6MzDqZujb9dYXNnr1eWyqSXka9Bxzaq9e742zv6fJcAwXcN1UyIqEgfdft56KtawhNBZbZ513j6N9/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A91E5165C;
-	Fri, 13 Mar 2026 07:30:18 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E4AA23F7BD;
-	Fri, 13 Mar 2026 07:30:23 -0700 (PDT)
-Date: Fri, 13 Mar 2026 14:30:19 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Discard PC update state on vcpu reset
-Message-ID: <20260313143019.GA3369094@e124191.cambridge.arm.com>
-References: <20260312140850.822968-1-maz@kernel.org>
+	s=arc-20240116; t=1773413652; c=relaxed/simple;
+	bh=E6AiUIAxIWfClFBdApDMzqhP2EVm2gqzRa0y4vYhwpI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LAeMkCTXjvgxBAH2STXXP+Rli0hB2DCJrVLoxgbvrRKeL54Z1zKO2a42YVeIOqaqdf1Hhon+UOkAMWgNsKIyq0ojalVuSLkMRgl7K70bd+HREFkLMLlVxIx6tELfFEJJm44ZeMeZ22XygQ7Vl7QPBPvOCXNQqkT+QggH8o2gMvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=u4DD+QV4; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.224.131] (unknown [37.159.122.93])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 945D4E70;
+	Fri, 13 Mar 2026 15:52:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773413579;
+	bh=E6AiUIAxIWfClFBdApDMzqhP2EVm2gqzRa0y4vYhwpI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=u4DD+QV4b1tCBWtAeAI7tH0/hrxW+QFiS7CqvfwnLKCFW/Glh5xRXE6cR3P9GhomH
+	 NsmBRbmAPxwtzdaGRHyZkMFBHOCCXBfXmqhk+8Q7GML8FFxGQ+oxDXDvZGnU310sjM
+	 FwDUb4GjImUFxJ/ZNSHli2RAoMxVCjTrS2SjzoW0=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH v2 0/6] media: mali-c55: Fix ISP reset and blocks bypass
+Date: Fri, 13 Mar 2026 15:53:56 +0100
+Message-Id: <20260313-mali-c55-fixes-v7-0-v2-0-885c07961f30@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312140850.822968-1-maz@kernel.org>
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAQltGkC/22NwQrCMBBEf6Xs2ZVsamrx5H9ID0mz2gXbSCJBK
+ fl3Y8Gbl4E3w8yskDgKJzg1K0TOkiQsFfSugXGyy41RfGXQSneqJcLZ3gVHY/AqL06Yj6jQeKe
+ tOrDtqYfafETe0lq8DJUnSc8Q39tJpq/722v/7mWqoqlXxmlnqHNn8WxTWFyw0e/HMMNQSvkAd
+ a85kL0AAAA=
+X-Change-ID: 20260311-mali-c55-fixes-v7-0-5db2a04ea818
+To: Anthony McGivern <anthony.mcgivern@arm.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Nayden Kanchev <Nayden.Kanchev@arm.com>, 
+ Konstantin Babin <Konstantin.Babin@arm.com>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ =?utf-8?q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1545;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=E6AiUIAxIWfClFBdApDMzqhP2EVm2gqzRa0y4vYhwpI=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBptCUO8qWoB/l5M/+kQh+BZmAJO6/UZcg0mpMwo
+ 6ndwdC6jBqJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCabQlDgAKCRByNAaPFqFW
+ PBuJD/wIBdBp4olVMz3ZXb2T9pR0V258HeENssphlLByl8Kjhy4f3zd5imtKSfzSsMTfMSNZwl3
+ oHsc34hFeJH/BgMKnAmi86Jhnzuuc1P+Z5b5Hnwdw4PZJMI2GrkgbyERckVjf7HkJ4PAZaKk21F
+ ejUKcH4nceEkkAQCzM3CrLZn9Ujs6GIJxeFSeWyhSiRZIj9viFAuhPu54K4wvsgkbIWVWXXYpS3
+ x8jSlAxl8ARfCltg7jSsY5aFpkKgLhDZUwDpcioHw+BTyRcmk0Ap/U8sUpBiOdPoEqh5Xrwukii
+ l8F3KyTCxlCjlfAxcDpH2pvgNSeErjhVdY6MMm+4lQXhbpN9cyWpx9S0o7zntDwoYxjcwBzFwbR
+ d4HpQNZ3Sxmrargl5Sn9cP7EeoUidRwZ3uGp0OucJZ6ioKVsdeTPwLv48jh0XAmfNpQZ2lgutQj
+ GM34hGleCtTVHUmX6KBh1U6C5OpF+bOj9zK6hjPnQ49P4z7FGaumQoKm+hwKn3Z1SR9UllS227A
+ UDXc9NzNxArVIaMXVrzx98AwqvXuh8fj1tT+Ec97VdURZela+CNEzijkTBLkP+nDytPZkVyGAja
+ mP/j6J6WsvQwLZrs8+n/trY+Pxu9wsE1zDANjGJOylYzCZT5ogcNMCgr4oFS68xfAoVmNd/300j
+ 1oMmJA6BOA3JplA==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225324-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225325-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joey.gouly@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
-X-Rspamd-Queue-Id: 42F0028514F
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
+X-Rspamd-Queue-Id: EB3B92858B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 02:08:50PM +0000, Marc Zyngier wrote:
-> Our vcpu reset suffers from a particularly interesting flaw, as it
-> does not correctly deal with state that will have an effect on the
-> execution flow out of reset.
-> 
-> Take the following completely random example, never seen in the wild
-> and that never resulted in a couple of sleepless nights: /s
-> 
-> - vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
-> 
-> - SMC being a trapped instruction (as opposed to HVC which is always
->   normally executed), we annotate the vcpu as needing to skip the
->   next instruction, which is the SMC itself
-> 
-> - vcpu-A is now safely off
-> 
-> - vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
-> 
-> - vcpu-A gets reset, get the new PC, and is sent on its merry way
-> 
-> - right at the point of entering the guest, we notice that a PC
->   increment is pending (remember the earlier SMC?)
-> 
-> - vcpu-A skips its first instruction...
-> 
-> What could possibly go wrong?
-> 
-> Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
-> is extremely significant, as it indicates whether the CPU is booting
-> or resuming. Having skipped that instruction, nothing makes any sense
-> anymore, and CPU hotplugging fails.
+The ISP is initialized in two different points (s_stream and probe).
+This cause two consecutive start streaming to use settings from the
+previous one.
 
-Would the normal method of offlining/onlining via sysfs also be affected?
+Also, not all the blocks that userspace can configure are properly
+reset.
 
-> 
-> This is all caused by the decoupling of PC update from the handling
-> of an exception that triggers such update, making it non-obvious
-> what affects what when.
-> 
-> Fix this train wreck by discarding all the PC-affecting state on
-> vcpu reset.
+Fix that and also bypass a few ISP blocks which if not bypassed might
+interfere with the image processing.
 
-Good job on tracking it down.. makes you wonder why the DSB "fixed" things!
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-> 
-> Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/kvm/reset.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-> index 959532422d3a3..b963fd975aaca 100644
-> --- a/arch/arm64/kvm/reset.c
-> +++ b/arch/arm64/kvm/reset.c
-> @@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
->  			kvm_vcpu_set_be(vcpu);
->  
->  		*vcpu_pc(vcpu) = target_pc;
-> +
-> +		/*
-> +		 * We may come from a state where either a PC update was
-> +		 * pending (SMC call resulting in PC being increpented to
-                                                           incremented
-> +		 * skip the SMC) or a pending exception. Make sure we get
-> +		 * rid of all that, as this cannot be valid out of reset.
-> +		 *
-> +		 * Note that clearing the exception mask also clears PC
-> +		 * updates, but that's an implementation detail, and we
-> +		 * really want to make it explicit.
-> +		 */
-> +		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
-> +		vcpu_clear_flag(vcpu, EXCEPT_MASK);
-> +		vcpu_clear_flag(vcpu, INCREMENT_PC);
->  		vcpu_set_reg(vcpu, 0, reset_state.r0);
->  	}
->  
+---
+Changes in v2:
+- Collect tags and fix a wrong "Fixes:" tag
+- Link to v1: https://lore.kernel.org/r/20260313-mali-c55-fixes-v7-0-v1-0-21805b2b516b@ideasonboard.com
 
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+---
+Daniel Scally (1):
+      media: mali-c55: Fix Iridix bypass macros
 
-Thanks,
-Joey
+Jacopo Mondi (5):
+      media: mali-c55: Fix wrong comment of ISP block types
+      media: mali-c55: Initialize the ISP in enable_streams()
+      media: mali-c55: Fully reset the ISP configuration
+      media: mali-c55: Bypass the Iridix Tonemap engine
+      media: mali-c55: Bypass Purple Fringe Correction
+
+ .../media/platform/arm/mali-c55/mali-c55-common.h  |   2 +
+ .../media/platform/arm/mali-c55/mali-c55-core.c    |  35 ------
+ drivers/media/platform/arm/mali-c55/mali-c55-isp.c |  37 +-----
+ .../media/platform/arm/mali-c55/mali-c55-params.c  | 134 ++++++++++++++++++++-
+ .../platform/arm/mali-c55/mali-c55-registers.h     |   4 +-
+ 5 files changed, 140 insertions(+), 72 deletions(-)
+---
+base-commit: f6390408a846aacc2171c17d88b062e202d84e86
+change-id: 20260311-mali-c55-fixes-v7-0-5db2a04ea818
+
+Best regards,
+-- 
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
 
