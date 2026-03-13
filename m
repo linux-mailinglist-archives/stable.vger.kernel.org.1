@@ -1,280 +1,133 @@
-Return-Path: <stable+bounces-225303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED1bDFoItGlvfwAAu9opvQ
-	(envelope-from <stable+bounces-225303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:51:38 +0100
+	id GCNrNjsMtGlvfwAAu9opvQ
+	(envelope-from <stable+bounces-225304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:08:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4AD2833D2
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:51:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054F1283736
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 14:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC6C1324767A
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:50:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6A5383059E38
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A9037CD5D;
-	Fri, 13 Mar 2026 12:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1441A2EA732;
+	Fri, 13 Mar 2026 13:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="FJ+vn4iZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpTdYjwK"
 X-Original-To: stable@vger.kernel.org
-Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB130372688;
-	Fri, 13 Mar 2026 12:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75852E040D;
+	Fri, 13 Mar 2026 13:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773406252; cv=none; b=SAd8VAuVpRtu418pNpTOSvOCQELtrPMb/iIaruy4udOburXuH7OLDhHiUtyZ5fa0u/4KTTe9WWLaCntO1WXzZjre1604qPaNMp4i0wJpOxoSERvr9txazqV3IltLxFYTnoFxkU4wmueEOuSi49BPUTB+1fju27d8u5xABbbjK3Q=
+	t=1773407113; cv=none; b=qzPQnEf21IlQvVXLgUTA2p4sDsbvMqNzVIC5NNqVnyAybB4H7bRZfCwDuFI0szcZWNN+VeB4xZlorh314M0rX5lo9aN3WAQtug4vG72XwLEuC2NqzhFmSzciM51Y6afotDju90N6AQgy9tC6kUTLsfq4N7c8oHNrRGnJIxsjnfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773406252; c=relaxed/simple;
-	bh=6nw6NGkitUqWKUtqTIpuXPprPsRCD+DwKTUvFc5roWY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bTmiMdnKU+TrnIpegIuwRfKe3Qjkuziko8FfS0ijFDRSDGuEi2sUP1Gy8aM8EiyziRNMC8eoOvlsjxZY/fMxdR5cN+bDCZ5DfiqDE6FYI6LqXPgzKk2gTfHbdC04tL2zZY73zTKQvNl/sttJfW7IIGvsW9/7HENzKXRPdubS0mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=FJ+vn4iZ; arc=none smtp.client-ip=213.165.83.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
-Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
-	by os-cillation.de (Postfix) with ESMTPSA id 9D4D5C00EC;
-	Fri, 13 Mar 2026 13:50:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
-	s=202409; t=1773406242;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=W9s7DsJlXt7kVwh12JgxnA5gL7P46xWuvv+NbcZTtuo=;
-	b=FJ+vn4iZ7eE/65CVVk5LLY10mDrv0LxKUwjUzH/Rwz52fYAtaUDRXxXIDZxQ/jB+PgX583
-	+XQqDdEer7BPqIaI8dc7lO9UjmTIOsEQNqEUqyVT0TQ/6qtNywEn1MuFApD94VnbKpNvWK
-	kfZtnqqib9srGuaj+mkicGDexmjfnLZ1ai2wnRjBfEI4L27/qir9A/nLqD5M2B61YveeI6
-	SioCm31jJHpfUgdNxhIXtRNeOO0ofa2lLoxlfKCaZJ9YnJM1DYHKQQldTdrg4qH61suPiw
-	04lFxYJEM56IRQTxfmreT7f0Qexf3ckyl89oWyLQe+DTsjDypHtiz6AL+Uh8iQ==
-Authentication-Results: os-cillation.de;
-	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
-Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
-	by core2024.osc.gmbh (Postfix) with ESMTPSA id 502EE200B4A;
-	Fri, 13 Mar 2026 13:50:42 +0100 (CET)
-Message-ID: <aa6bfa3a-8389-4dfa-a477-dcfb3340b1f5@os-cillation.de>
-Date: Fri, 13 Mar 2026 13:50:42 +0100
+	s=arc-20240116; t=1773407113; c=relaxed/simple;
+	bh=02Qz2Blpm4owVvlfAn97zUbASh+PlbTXPCnUAuOB8rQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VafV3PhtiwAsXtVeHOWLyYHJkcFJV/DmKmtSP0tsP874m7AmKf3St6ICtZXbNp7xJdNnQTk2S/5IRxzLJS2yFFfdaIONeAtafmBMEjhYNKStoD318xRT2fC1wH2cXTJ8EOB6kpzEx/FRPEuGsCE6xcmtSCF61e5pEgWG4CkmQYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpTdYjwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FF3C19421;
+	Fri, 13 Mar 2026 13:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773407113;
+	bh=02Qz2Blpm4owVvlfAn97zUbASh+PlbTXPCnUAuOB8rQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LpTdYjwKwZQbpRMR6j6uH1kCCtMTCsK4xGATzGqYH0AoKcw4aGE3ruoXogJ0T56BX
+	 ita98FtYmM+bYtKW90wZa1QTwXFdbeMXZtgJB6i666gUK1dt63EuH4P2LAhsznUlxl
+	 xNG/CJFyHUIPqW98lJtEu+R5oUnw5qmHsVmbytrvrCTGJ+2B8wzSlG+0FQpp9POw2c
+	 a1qePALdi121Wkv0EHm1DTjQ/OFYGZwNNSDkfPVdctEZhknzmXWIQgy6cDSTcjD+OY
+	 yV2vodeGd9StQSurz8/ipBUEpXb9JOR4mG6UirTapFSZvmO/3yh7bW7TlP0CJ9wv6I
+	 CA2UFne/DCMnw==
+Date: Fri, 13 Mar 2026 13:05:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/265] 6.12.77-rc1 review
+Message-ID: <d54d43c4-96fb-409a-a87f-fc093086ee60@sirena.org.uk>
+References: <20260312201018.128816016@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI
- sequence
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Michael Walle <mwalle@kernel.org>,
- Sanjaikumar V S <sanjaikumarvs@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com, richard@nod.at,
- sanjaikumar.vs@dicortech.com, stable@vger.kernel.org,
- tudor.ambarus@linaro.org, vigneshr@ti.com
-References: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
- <20260223091733.47-1-sanjaikumarvs@gmail.com>
- <DGM8HPC181AF.3FCCS4MIE4A43@kernel.org>
- <8a1db3a5-09b3-4ef1-87e8-66553a81ec27@os-cillation.de>
- <2vxzpl58dk9u.fsf@kernel.org>
-Content-Language: en-US
-From: Hendrik Donner <hd@os-cillation.de>
-Autocrypt: addr=hd@os-cillation.de; keydata=
- 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 li+2
-In-Reply-To: <2vxzpl58dk9u.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Sj3wDGsBYrr482S+"
+Content-Disposition: inline
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+X-Cookie: Monitor not included.
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[os-cillation.de,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[os-cillation.de:s=202409];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[os-cillation.de:+];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.infradead.org,bootlin.com,nod.at,dicortech.com,linaro.org,ti.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225304-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225303-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hd@os-cillation.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3A4AD2833D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: 054F1283736
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
 
-On 3/13/26 12:46, Pratyush Yadav wrote:
-> On Fri, Mar 06 2026, Hendrik Donner wrote:
-> 
->> Hello,
->>
->> On 2/23/26 10:29, Michael Walle wrote:
->>> Hi,
->>> On Mon Feb 23, 2026 at 10:17 AM CET, Sanjaikumar V S wrote:
->>>>> Raises concern about writes ending at odd offsets potentially
->>>>> having the same issue
->>>>
->>>> The odd end address case (trailing byte) is already handled in the
->>>> existing code at lines 243-255:
->>>>
->>>> /* Write out trailing byte if it exists. */
->>>> if (actual != len) {
->>>>       ret = spi_nor_write_enable(nor);
->>>>       ...
->>>>       ret = sst_nor_write_data(nor, to, 1, buf + actual);
->>>> }
->>> Ah, I must be blind. I stopped reading at the write_disable.
->>>
->>>> So write_enable is already called before writing the trailing
->>>> byte. My patch only addresses the odd start case where BP clears
->>>> WEL before the AAI sequence begins.
->>>>
->>>>> Suggests simplifying the conditional logic by removing the length
->>>>> check
->>>>
->>>> The condition `if (actual < len - 1)` avoids an unnecessary
->>>> write_enable when len == 1 (single byte write at odd address, no
->>>> AAI follows). But if you prefer unconditional write_enable for
->>>> simplicity, I can change it in v3.
->>> I know, but I actually don't like repeating the condition in the for
->>> loop. So I'd prefer to have a local "needs_write_enable" boolean
->>> which will be set to true. But then, I wouldn't care too much if
->>> there is a write enable followed by a write disable for a rare case.
->>>
->>>>> Notes the patch lacks runtime testing
->>>>
->>>> I don't have the hardware setup to test odd-address writes at the
->>>> moment. The fix is based on code analysis. I have tested patch 2/2
->>>> (dirmap fallback) on hardware.
->>> I'm hesitant - because like I said, if there is really a bug - it
->>> would have never worked correctly, since day 1. But yeah, I've also
->>> read the datasheet and it clearly states that the byte write will
->>> clear the write enable latch.
->>>
->>
->> i can confirm both patches fix real issues, i have similiar fixes
->> on a kernel tree i always wanted to clean up and upstream. Diffs
->> based on 6.6.127:
->>
->> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
->> index 197d2c1101ed5..eaa50561ede2c 100644
->> --- a/drivers/mtd/spi-nor/sst.c
->> +++ b/drivers/mtd/spi-nor/sst.c
->> @@ -155,6 +155,13 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->>                  if (ret)
->>                          goto out;
->>
->> +               ret = spi_nor_write_enable(nor);
->> +               if (ret)
->> +                       goto out;
->> +               ret = spi_nor_wait_till_ready(nor);
->> +               if (ret)
->> +                       goto out;
->> +
->>                  to++;
->>                  actual++;
->>          }
->>
->>
->> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
->> index 1b0c6770c14e4..646bfb2e91a65 100644
->> --- a/drivers/mtd/spi-nor/core.c
->> +++ b/drivers/mtd/spi-nor/core.c
->> @@ -276,7 +276,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
->>          if (spi_nor_spimem_bounce(nor, &op))
->>                  memcpy(nor->bouncebuf, buf, op.data.nbytes);
->>
->> -       if (nor->dirmap.wdesc) {
->> +       if (nor->dirmap.wdesc && nor->program_opcode != SPINOR_OP_AAI_WP) {
-> 
-> Why is this better? This removes the use of dirmap for all flashes other
-> than SST.
+--Sj3wDGsBYrr482S+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-i claim the opposite down below? That patch 2 of the posted patch series
-looks better to me. Sorry if that was unclear.
+On Thu, Mar 12, 2026 at 09:06:27PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.77 release.
+> There are 265 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Regards,
-Hendrik
+Tested-by: Mark Brown <broonie@kernel.org>
 
-> 
->>                  nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
->>                                                op.data.nbytes, op.data.buf.out);
->>          } else {
->>
->>
->> I think patch 2 of this series is the better approach though.
-> 
-> There is a v4 here:
-> https://lore.kernel.org/linux-mtd/20260311103057.29-1-sanjaikumarvs@gmail.com/T/#u
-> 
-> Can you please review and test it so we can apply it?
-> 
->>
->> Regards,
->> Hendrik
->>
->>>> Please let me know if you'd like me to send a v3 with the
->>>> simplified unconditional write_enable.
->>> Please see above.
->>> -michael
->>> ______________________________________________________
->>> Linux MTD discussion mailing list
->>> http://lists.infradead.org/mailman/listinfo/linux-mtd/
->>
-> 
+--Sj3wDGsBYrr482S+
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm0C4IACgkQJNaLcl1U
+h9D4UQf9EWMWwiYeu/WNMcDHbhSqrFtOI/UTJR2h7NzCUGkmVUT7eZ6W4FRPyc7u
+T7BpBeAqKMlsNbo/R4oKxBHgWaBmp7D5wwUEsJWt26gDK+5dOKBlBCmqz4UA0b9W
+olUOs41AzhsQFX8v4zygDF+5R7/+JUaxjboBIsCH2KjCw70dTsBeToSfu8Uc9IIu
+t9jUcMbTAYAJOsWDDqaWl8da62PVH45F97FzFVX6Srwv3UVN1DkIXdhBHXwxXXS3
+RJeSE2xYVpAqj6d6InYJOWbPHsQBTQDjFA6vESq5c/L9XmgjRMv8czBpYe4alI+9
+AoTW69lKvmJEOrFpz6GBfFozJtIQ+A==
+=tkhd
+-----END PGP SIGNATURE-----
+
+--Sj3wDGsBYrr482S+--
 
