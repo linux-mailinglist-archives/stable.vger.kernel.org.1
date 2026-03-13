@@ -1,170 +1,160 @@
-Return-Path: <stable+bounces-225294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KDSHdD2s2nYdgAAu9opvQ
-	(envelope-from <stable+bounces-225294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:36:48 +0100
+	id IDCBFev2s2nYdgAAu9opvQ
+	(envelope-from <stable+bounces-225295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:37:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE65D2824D5
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:36:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA442824E4
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9288A3237DC7
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:34:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A3F0302E77F
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC65F325727;
-	Fri, 13 Mar 2026 11:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB61362125;
+	Fri, 13 Mar 2026 11:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Nmp1sZYB"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KL4PJ99q"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD99028BA95;
-	Fri, 13 Mar 2026 11:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3625635F616;
+	Fri, 13 Mar 2026 11:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773401663; cv=none; b=J5pw7VhKDoaWBHWvjGp7j9c6b7jU9FiLK+ZEqv71aClH8Swr240rVvIovBaqDDozkRjqSMLSdebjTgYjZUCVC8+seWL5ao0dM3l87sZ7t0wWkewwquIE06PjVk40BusodJxi1RclefQkrYS+5WLC+EGm9RTf6/nt3pSbDdTJwR8=
+	t=1773401827; cv=none; b=UcAjgVdVSgd+YiJKS/RtGxrXqXzYlKpDeLFP835hp2QiTGp9W6bOB6yoJpq3vZNcbs/3KzhhSuck5/HDM0n53RZnKb1ovXbUMLNpFe18OujsJ4/Je+8uqjB+vXgmWl57hUmyZabyTVOW6WXBy+AnJnWAkxJII3zdoYxk+Y4Ubi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773401663; c=relaxed/simple;
-	bh=Is90Lbq1TqckLWjdloG7Ms2MmpgjtHfLDupPvwdQTI0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MWsdpn2BJXqgMhtszbeOdfwjpubpqj7uNcsvQmR/tt6BmT9D5auXxT3qFTOp4feAW2iN4/G0+KH3z23OwcbHFnZs5yO2HHmNAWNRjvn5F9hZcUd9Lzm7+xzC4q1aQ49uOwICh46wtPmkriCkpt42ChzzqcRzh1rf4xk13Bp2Mkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Nmp1sZYB; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 01D2B201A7;
-	Fri, 13 Mar 2026 12:34:19 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id r30F7oMHMAnP; Fri, 13 Mar 2026 12:34:18 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 62A3920184;
-	Fri, 13 Mar 2026 12:34:18 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 62A3920184
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1773401658;
-	bh=auH0wLDZVzJv1DswK/GkLmTiWQz/vTXAvedisJlEgZI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=Nmp1sZYBTcuKTpJMYdRslINLBiB3OPQYPxQMwMHCeASoHMa+F28une8jSRejkLhJp
-	 /Iu7rNtSEdILxz/CPFn9Q5vKA0WZcaqfydRM3LniQf/oeF1qPJGaZwdNPKlikFvoeg
-	 9lbqpVt1MG7Ac6ynXlTPWkjATm/qSGFAss0lYbXh/GOLV3sKt0CUPjdBDVUnYP5yYo
-	 lJSJ53ZCVjBdcSWOfUjFgEHspwgdonCdUQh55UJ0mcgtlDHG0Ih/tUGae4KfEMPHPy
-	 kFj0E59iyEIbi4gk4wluDZHM6UkvrTA6Kj+gG0a4JLxf0BfspHrXHA1KZg1gMw0jrJ
-	 8nVIerN4Md3/Q==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 13 Mar
- 2026 12:34:17 +0100
-Received: (nullmailer pid 3889090 invoked by uid 1000);
-	Fri, 13 Mar 2026 11:34:16 -0000
-Date: Fri, 13 Mar 2026 12:34:16 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Paul Moses <p@1g4.org>
-CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <chopps@labn.net>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v2] xfrm: iptfs: only publish mode_data after clone
- setup
-Message-ID: <abP2OKsk9wbCH892@secunet.com>
-References: <20260312113843.2883169-1-p@1g4.org>
+	s=arc-20240116; t=1773401827; c=relaxed/simple;
+	bh=v+t/YcPItl9BmhKZbd4tDOxUNwcnc1sJiB9izierkCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTYHqZpvSaoCCpaLuL5TXIBv4sJHMuWlRC+lihAmFY0bfU8PmEvFPH2qyXy3kR3+eqPF++AzGq4h/fndmlu9C+/I/Xs7VQy/FBpva49cEe06XOjF0bFt56kvJ80Xg2gNR6vS8VM2Y4k5zAwn703du5M0VukQWfQGlMEIrNNGa/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KL4PJ99q; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from ideasonboard.com (mob-5-90-29-175.net.vodafone.it [5.90.29.175])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2BFFEF52;
+	Fri, 13 Mar 2026 12:35:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773401755;
+	bh=v+t/YcPItl9BmhKZbd4tDOxUNwcnc1sJiB9izierkCk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KL4PJ99qvyaJODrY+7+VkEkI9V16qA9u0cOROtX3a/yjoX4GcaSVx5pYBTU+bg3Ui
+	 eUy0+mjj6jelyhDy5QTYYhgsPDt7KHFzENmnM9IVCktMMuItGWkSk9whL0TdYJTToP
+	 P2cC4A+7ObzIu00OeJ3REEmSpcvQwZZYGLcDy7/c=
+Date: Fri, 13 Mar 2026 12:37:00 +0100
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Anthony McGivern <anthony.mcgivern@arm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Nayden Kanchev <Nayden.Kanchev@arm.com>, Konstantin Babin <Konstantin.Babin@arm.com>, 
+	Daniel Scally <dan.scally@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 4/6] media: mali-c55: Fix Iridix bypass macros
+Message-ID: <abP2maYiLNmnMFFr@zed>
+References: <20260313-mali-c55-fixes-v7-0-v1-0-21805b2b516b@ideasonboard.com>
+ <20260313-mali-c55-fixes-v7-0-v1-4-21805b2b516b@ideasonboard.com>
+ <36f2247c-cfd5-46b4-a16d-1afc3a6504d8@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260312113843.2883169-1-p@1g4.org>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <36f2247c-cfd5-46b4-a16d-1afc3a6504d8@ideasonboard.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[secunet.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225294-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:dkim,secunet.com:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225295-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: EE65D2824D5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5AA442824E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 11:39:09AM +0000, Paul Moses wrote:
-> iptfs_clone_state() stores x->mode_data before allocating the reorder
-> window. If that allocation fails, the code frees the cloned state and
-> returns -ENOMEM, leaving x->mode_data pointing at freed memory.
-> 
-> The xfrm clone unwind later runs destroy_state() through x->mode_data,
-> so the failed clone path tears down IPTFS state that clone_state()
-> already freed.
-> 
-> Keep the cloned IPTFS state private until all allocations succeed so
-> failed clones leave x->mode_data unset. The destroy path already
-> handles a NULL mode_data pointer.
-> 
-> Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paul Moses <p@1g4.org>
-> ---
-> Changes in v2:
-> - Fix Fixes tag to point to 6be02e3e4f37
-> 
->  net/xfrm/xfrm_iptfs.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 050a82101ca51..4d7a925f59b7c 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -2653,9 +2653,6 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
->  	if (!xtfs)
->  		return -ENOMEM;
->  
-> -	x->mode_data = xtfs;
-> -	xtfs->x = x;
-> -
->  	xtfs->ra_newskb = NULL;
->  	if (xtfs->cfg.reorder_win_size) {
->  		xtfs->w_saved = kzalloc_objs(*xtfs->w_saved,
-> @@ -2666,6 +2663,9 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
->  		}
->  	}
->  
-> +	x->mode_data = xtfs;
-> +	xtfs->x = x;
-> +
->  	return 0;
->  }
 
-This does not apply to the ipsec tree. Can you rebase on top of the
-current ipsec tree?
+On Fri, Mar 13, 2026 at 12:15:10PM +0100, Barnabás Pőcze wrote:
+> 2026. 03. 13. 11:49 keltezéssel, Jacopo Mondi írta:
+> > From: Daniel Scally <dan.scally@ideasonboard.com>
+> >
+> > The Mali C55 Iridix block has a digital gain function and tone mapping
+> > function, whose enablement is controlled by two different bits
+> > in the BYPASS_3 register.
+> >
+> > Unfortunately, the "Gain" and "Tonemap" bypass bit definitions are the
+> > wrong way around. Swap them so that the ISP is now operated with the
+> > "Iridix Gain" block enabled and default configured at a x1.0 gain and
+> > with the "Iridix Tonemap" disabled, as it was originally intended.
+>
+> As far as I can see the current upstream driver does not bypass either of them,
+> so swapping them will have no direct effect.
 
-Thanks!
+You're right, I swapped the patch order and in this version I sent out
+this comes before the actual iridix bypass
+
+>
+>
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 8ec187829a4c ("media: mali-c55: Fix Iridix bypass macros")
+>
+> Where is this commit? I cannot seem to find it.
+
+Clearly, this doesn't make sense. I generated the fixes tag pointing
+it to this patch. I'll fix, thanks.
+
+>
+>
+> Reviewed-by: Barnabás Pőcze <barnabas.pocze@ideasonboard.com>
+>
+>
+> > Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> > ---
+> >   drivers/media/platform/arm/mali-c55/mali-c55-registers.h | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-registers.h b/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
+> > index f5a148add1c8..f098effde7b4 100644
+> > --- a/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
+> > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
+> > @@ -128,8 +128,8 @@ enum mali_c55_interrupts {
+> >   #define MALI_C55_REG_BYPASS_3_SENSOR_OFFSET_PRE_SH	BIT(1)
+> >   #define MALI_C55_REG_BYPASS_3_MESH_SHADING		BIT(3)
+> >   #define MALI_C55_REG_BYPASS_3_WHITE_BALANCE		BIT(4)
+> > -#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(5)
+> > -#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(6)
+> > +#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(5)
+> > +#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(6)
+> >   #define MALI_C55_REG_BYPASS_4				0x18ec0
+> >   #define MALI_C55_REG_BYPASS_4_DEMOSAIC_RGB		BIT(1)
+> >   #define MALI_C55_REG_BYPASS_4_PF_CORRECTION		BIT(3)
+> >
+>
 
