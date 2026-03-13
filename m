@@ -1,138 +1,156 @@
-Return-Path: <stable+bounces-225394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id m01jLn2LtGlUpgAAu9opvQ
-	(envelope-from <stable+bounces-225394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 23:11:09 +0100
+	id EJpfKJiLtGlUpgAAu9opvQ
+	(envelope-from <stable+bounces-225395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 23:11:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A6228A465
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 23:11:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1998428A47B
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 23:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C04EA300E482
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 22:11:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD016304EA4D
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 22:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D2F33689D;
-	Fri, 13 Mar 2026 22:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7AA37EFFA;
+	Fri, 13 Mar 2026 22:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="dhCIrDbt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.aaazen.com (99-33-87-210.lightspeed.sntcca.sbcglobal.net [99.33.87.210])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4592DF707;
-	Fri, 13 Mar 2026 22:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.33.87.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C333F30EF8B;
+	Fri, 13 Mar 2026 22:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773439863; cv=none; b=CuKZDn3/ZKQ7A2i/sKdVlWFWZbmGGk18HNPUkASysEsDKLmLq2fkW5iYoFKgp8kSIBkQsaxSuQkV73bZBVqemEY8gEC184zkGIJphGQ3DrSjOpwU25hrQU9Q9CEktDZyDjDlcDDBLWroWo/2uRE6bIuGvZagTdsOwfLdiZVLCfE=
+	t=1773439893; cv=none; b=o15zadtxA4w1R3i/CO5QNPncSP/ENm64hA+r0tevNzvAH4ApqX83KSau8d1Jf74Xu8HfWXK1JI/S9OD7cDpotdJ0NUFdyWBOdrgSdm7wtY5CFdkNiAPuBkyNsy9iNZCW1S4rLMP6wLYpIIfhCWlRGu3CGoU36pSGq2Zzv9e1kt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773439863; c=relaxed/simple;
-	bh=iB3FvdL1/ak7SaRE+09pl8/n1ufE21vz+EeoB662cIM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=F/TxendUO2CUSnjVNydGrOElXqNRj8O6TRMXo+tkPGZU2RNRuX+u1R43gcBzNdle1urED36We0iIlccab57xgtgtaS70az3hUUv3XDHs3BocHkk1M4Yu6TajNEOTjQ0o6JE2keFDgoryTG1vCF6ONpX7Aekc0NV9XNIqQsxMTkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com; spf=pass smtp.mailfrom=aaazen.com; arc=none smtp.client-ip=99.33.87.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaazen.com
-Received: from localhost (localhost [127.0.0.1])
-	by thursday.test (OpenSMTPD) with ESMTP id a2d8674c;
-	Fri, 13 Mar 2026 15:04:21 -0700 (PDT)
-Date: Fri, 13 Mar 2026 15:04:21 -0700 (PDT)
-From: Richard Narron <richard@aaazen.com>
-X-X-Sender: richard@thursday.test
-To: Sasha Levin <sashal@kernel.org>
-cc: Cal Peake <cp@absolutedigital.net>, 
-    Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-    Linux stable <stable@vger.kernel.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Linus Torvalds <torvalds@linux-foundation.org>, jslaby@suse.cz, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Patrick Volkerding <volkerdi@gmail.com>
-Subject: Re: Linux 6.18.17 -- build regression
-In-Reply-To: <abNdx_cQR_BqMm3z@laps>
-Message-ID: <358262e8-70ca-9db3-1774-9170cc69dae7@aaazen.com>
-References: <20260312112454.940017-1-sashal@kernel.org> <b1844e83-80a5-973e-93bd-9e721e27ebb@absolutedigital.net> <abNdx_cQR_BqMm3z@laps>
+	s=arc-20240116; t=1773439893; c=relaxed/simple;
+	bh=GJZt30vNQyu7+UBMXI7MfauI9fMydlfltlyDWqNS89k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SqW0TinOCDQGGP70jR+xjZYyD5RztbomzmtxzKuQaHnTS+oTqNM3qDd362UsOuumI/RzsPk0xSDBvHFNb5XsfdtFneNXclWu6BZ4rxarjcrP0HF773JsSXNrI0lrHAX503r22nsNzpdNbi2+DzpCnRPPf7YFL7uFSrMEuVOuvYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=dhCIrDbt; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.0.43] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net [86.13.91.161])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5A7A75A5;
+	Fri, 13 Mar 2026 23:10:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773439820;
+	bh=GJZt30vNQyu7+UBMXI7MfauI9fMydlfltlyDWqNS89k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dhCIrDbtiI4TJ/2kVziPZzbxgmcCsg5RLdjbDtCe7rw5Z9kP/6Cc3P7GO3J9TB1jU
+	 sWroWrNkT787LWEnB3hEzhhwEnEzvVNIyS1AS7uCVO3kcomPgzOn2bWq45cSahWIAF
+	 xHz5slkmsdU0Q1FeWhw5ers1IrEn4Ge+wAs82mFU=
+Message-ID: <14436f93-b8df-4c1c-85d8-5959bbfdbac6@ideasonboard.com>
+Date: Fri, 13 Mar 2026 22:11:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-1.46 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] media: rzv2h-ivc: Fix concurrent buffer list access
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+ =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?=
+ <barnabas.pocze+renesas@ideasonboard.com>, stable@vger.kernel.org
+References: <20260313-mali-ivc-fixes-v7-0-v1-0-cb0714cd1279@ideasonboard.com>
+ <20260313-mali-ivc-fixes-v7-0-v1-5-cb0714cd1279@ideasonboard.com>
+Content-Language: en-US
+From: Dan Scally <dan.scally@ideasonboard.com>
+In-Reply-To: <20260313-mali-ivc-fixes-v7-0-v1-5-cb0714cd1279@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225395-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225394-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[absolutedigital.net,vger.kernel.org,linux-foundation.org,suse.cz,linuxfoundation.org,gmail.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[aaazen.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[richard@aaazen.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,aaazen.com:mid]
-X-Rspamd-Queue-Id: B3A6228A465
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
+X-Rspamd-Queue-Id: 1998428A47B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 12 Mar 2026, Sasha Levin wrote:
+Hi Jacopo and Barnabás
 
-> On Thu, Mar 12, 2026 at 06:24:19PM -0400, Cal Peake wrote:
-> > On Thu, 12 Mar 2026, Sasha Levin wrote:
-> >
-> > > I'm announcing the release of the 6.18.17 kernel.
-> > >
-> > > All users of the 6.18 kernel series must upgrade.
-> > >
-> >
-> > Hi,
-> >
-> > This release breaks my build with the following output:
-> >
-> >  LD      .tmp_vmlinux1
-> > ld: drivers/cxl/acpi.o: in function `add_root_nvdimm_bridge':
-> > acpi.c:(.text+0x16f): undefined reference to `devm_cxl_add_nvdimm_bridge'
-> > make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
-> > make[1]: *** [/home/cal/linux/kernel/build/linux-6.18.17/Makefile:1242:
-> > vmlinux] Error 2
-> > make: *** [Makefile:248: __sub-make] Error 2
-> >
-> > I've attached my gzipped config. Commit af9bf9889663 looks possibly
-> > guilty, but I don't have time at the moment to fully verify.
-> >
-> > Please let me know if I can provide anything else.
->
-> Hey,
->
-> Thanks for the report!
->
-> Could you please confirm that cherry-picking 93d0fcdddc9e ("cxl/acpi: Fix
-> CXL_ACPI and CXL_PMEM Kconfig tristate mismatch") fixes the issue you're
-> seeing?
->
-Hello Sasha,
+On 13/03/2026 11:14, Jacopo Mondi wrote:
+> From: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+> 
+> The list of buffers (`rzv2h_ivc::buffers.queue`) is protected by a
+> spinlock (`rzv2h_ivc::buffers.lock`). However, in
+> `rzv2h_ivc_transfer_buffer()`, which runs in a separate workqueue, the
+> `list_del()` call is executed without holding the spinlock, which makes
+> it possible for the list to be concurrently modified
+> 
+> Fix that by removing a buffer from the list in the lock protected section.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+> Signed-off-by: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+> [assign ivc->buffers.curr in critical section as reported by Barnabas]
+> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> ---
 
-   Patrick Volkerding found a patch that worked for me:
+Looks good, thanks
 
-https://lore.kernel.org/lkml/20260302200429.803417-1-gourry@gourry.net/
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
 
-   In drivers/cxl/acpi.c
-    static int cxl_acpi_probe(struct platform_device *pdev)
-    it changes IS_ENABLED(CONFIG_CXL_PMEM)
-            to IS_REACHABLE(CONFIG_CXL_PMEM)
+>   drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c | 11 +++++------
+>   1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> index 9b75e4b10e99..a22aee0fe1cf 100644
+> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> @@ -153,14 +153,13 @@ static void rzv2h_ivc_transfer_buffer(struct work_struct *work)
+>   	scoped_guard(spinlock_irqsave, &ivc->buffers.lock) {
+>   		buf = list_first_entry_or_null(&ivc->buffers.queue,
+>   					       struct rzv2h_ivc_buf, queue);
+> -	}
+> -
+> -	if (!buf)
+> -		return;
+> +		if (!buf)
+> +			return;
+>   
+> -	list_del(&buf->queue);
+> +		list_del(&buf->queue);
+> +		ivc->buffers.curr = buf;
+> +	}
+>   
+> -	ivc->buffers.curr = buf;
+>   	buf->addr = vb2_dma_contig_plane_dma_addr(&buf->vb.vb2_buf, 0);
+>   	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_SADDL_P0, buf->addr);
+>   
+> 
 
-Richard Narron
 
