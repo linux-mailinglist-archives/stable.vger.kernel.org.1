@@ -1,206 +1,207 @@
-Return-Path: <stable+bounces-225352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDcqJpI5tGl3jAAAu9opvQ
-	(envelope-from <stable+bounces-225352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:21:38 +0100
+	id oAZiJJ86tGk4jQAAu9opvQ
+	(envelope-from <stable+bounces-225353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:26:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112F3286E4E
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:21:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B17286F8B
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD3D230C5528
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:18:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFC4F3043D31
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E4A3C3C02;
-	Fri, 13 Mar 2026 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A3B3A256A;
+	Fri, 13 Mar 2026 16:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UhG6QGvY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNhdfnFC"
 X-Original-To: stable@vger.kernel.org
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013004.outbound.protection.outlook.com [40.93.201.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4734035CB60;
-	Fri, 13 Mar 2026 16:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773418715; cv=fail; b=P7EVwNAGYxmYg+vvwNDHPUbY6ZeMuykRszDQeWZ91g07pH5MguC5dhIQ0T0OHhZT/lbU9/LtsQsykIPJQSyADIxxILSmx2rB1x9NCNzXp2bm3W90TH4UYrGWyro2yynJkilyubIXTiPY8GXXdx92DYLIbvJ2s9x35Gcq6mVYQGM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773418715; c=relaxed/simple;
-	bh=reQ2SGJPbEyXEjCph4oTXgqm4FqK/W7+8sl0zgwpYAg=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=OXmGF/NF5vTZegi3GBcsdbmvlibDMlxfcUlRMoaynw38o7rkiiro6cGRz/aU52CFibNbcsl7MxrkU6nGTLCWZzr0tks/eDri/YNDyhgaYhoBbUuarC7vSjnnCKhZmK5fQwJdSCMeUr91lnKCRfzikN4q2ZT17HSj8TjR2XhOvag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UhG6QGvY; arc=fail smtp.client-ip=40.93.201.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yTTbveyFPhJMPAQH2lBkH+FGPOAYX9WocjhxEUucexkd5TW92gSFk3SnMupZgFxT6hn0F+5O7rFJVAkFm+i18UGLu3ARvaCrD0BEtZZgW+tyT8zEvmKO2qqX3ve0s7gVeTzzMmyTzHNMaDQkSc9Zuom8UTirj+erI3iODXZWLa5rwYr7Fc5xxysooeJQpsqHpt4jzXigO8Q9qy9jbGJIhyxxFyDeZxD/dEl8DXRSRJQ37hl0X2JQpa38Hfci0RnzfvojSUD2JLC3nQoPVrXC8reUz0aKeI6C/xA/oLKcJJw9kLVUY5MO8DGl+iBtJzKMq0jKbU4bdjXYLjOkVE56Pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YhFyU0f1DuVfH7Ad98ZfKkcDpl8+dlxpDiA7GUA2YKU=;
- b=INm6nv2w36Tt1DzouHnd/xtPPcB9QaKTqt0CrQgBZul49KnIsPaPq0OR4W/MK5k6jMKODg2UCVeFQekARfPlUwNiFPimsatFeqwYlpp1PEYxFtDGapqk4VcitdAw/8cfGA88be16G8fwjOldL0mN/QOxLJDRSA6fIHtmHtD2d23OVeWzFOaPsNd3/STR+zIT3VfkgsMDB7bnuJAS1Ynrbn9AIA0tB2V+ZDdxINgVQvYnyQ7ubgQTT5v33W17DBbS7Ve/quLEqQ4ofeEOOood91soHXYJkg57Yykh/lMwx3a3py+yFMsbZhO5t7RDtjMSjH7Y7vMlYx6yl3H7vCCsGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YhFyU0f1DuVfH7Ad98ZfKkcDpl8+dlxpDiA7GUA2YKU=;
- b=UhG6QGvYwicDHL56TY9oClL6ZumHdc/EYFEYBgx0N8deFQjMvrUChGG7GJjdwLDbR2QN/g7Zt39j+3BHpgly3IV6D3wWWTlsiGLbhJipo+btkYqjHas+fViXTiiJ9lAYDejK54XIMlNuLo2goqUVBDnWjgw4yXuwBojWz4GrBPhwMbMyIOuSG2u+AZwnZ+IZaIOrUzsrwbQqucxSg69rNI86p4H38CW/o5sMwZpWEnUvFuearSQd8a2XhVQzJACpTOhkI6z1eXOB7YetJN4kxiVS/ggVzUFv0VuaBnoA7tWJikSb8tczAFPTixlKHKsx2dLp7AnMiFvVvOtUrDeYww==
-Received: from SN7PR04CA0097.namprd04.prod.outlook.com (2603:10b6:806:122::12)
- by SJ2PR12MB9164.namprd12.prod.outlook.com (2603:10b6:a03:556::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.8; Fri, 13 Mar
- 2026 16:18:30 +0000
-Received: from SN1PEPF0002BA50.namprd03.prod.outlook.com
- (2603:10b6:806:122:cafe::8f) by SN7PR04CA0097.outlook.office365.com
- (2603:10b6:806:122::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Fri,
- 13 Mar 2026 16:18:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SN1PEPF0002BA50.mail.protection.outlook.com (10.167.242.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Fri, 13 Mar 2026 16:18:30 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 13 Mar
- 2026 09:18:18 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Fri, 13 Mar 2026 09:18:18 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Fri, 13 Mar 2026 09:18:18 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@nabladev.com>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
-	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
-	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 6.19 00/13] 6.19.8-rc1 review
-In-Reply-To: <20260312200321.671986598@linuxfoundation.org>
-References: <20260312200321.671986598@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BB4371CF9;
+	Fri, 13 Mar 2026 16:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773418897; cv=none; b=ekWlxEnB6t0dhZjNnITiQxO9L9lEqWBDwXnqPCN/sFNRGuQXJ9dau3WYOht5kfbWCWo9bDwkDuJ34/bu3g59iWl8MK62zPMx8j8dsJvGOfWP3M6Yt2wM/A772iTqBm9cEN47rjkEI/dbSgCsAEIhcs3TUWEQAMwEDR/J+EHS4pE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773418897; c=relaxed/simple;
+	bh=Cp8x8Bv0sxIKPeMyGLBJaZhu+zViKlpdZD/FAbUs4cI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kZGcYbYdcjz6E85RzvkZGTTYM9lTWCD9Ch/RQBswmm3lnFwj02zsxgJAr9qU/gGXIqlAptN04yudFX1SABj0+Zl92hA+AATd6UEd9jREdCN+iBfCxzSKZl9VUAQ2J4yik1kp7cBL91wnLYrYwwHafh6RTVoOzjyI3J1u9cgAvB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNhdfnFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6EBC19421;
+	Fri, 13 Mar 2026 16:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773418897;
+	bh=Cp8x8Bv0sxIKPeMyGLBJaZhu+zViKlpdZD/FAbUs4cI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nNhdfnFCIoNU4XkA8fVhSHYP4g9k/hEJErZ4cTYsWhwAPhRnG+G/KMAs0ftrbuNJn
+	 RwdjaeCPXgCJxjQhS/5WaG0GJ3VAvSyGNOfuSCPnlomMf34fT+j1ctc1a4c5BM+Mwb
+	 JHi4Gq6c31f/m9fDlltiDdKiq+2CHVE68c7WR0OyfA9ZRBh4oulgpzklQPJF3ujPG/
+	 FC4SICizdRuslF+pAUcJb9spBRd6yxx8c5arDHQ7cZ812fgREcxHaH/75eQwuS2oxM
+	 RV5tUhJMvf9rX8kh/IiWo/hbbDx+juUVHxSUv1lCqUxVwpDneMKy0+dl4O1FMIr5/H
+	 5wW4em+i3bLYg==
+Message-ID: <22c94dd0-7bef-4682-acdb-905dd81f8083@kernel.org>
+Date: Fri, 13 Mar 2026 17:21:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <92fdeddb-1671-413e-a1be-9e88322ecd11@drhqmail202.nvidia.com>
-Date: Fri, 13 Mar 2026 09:18:18 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA50:EE_|SJ2PR12MB9164:EE_
-X-MS-Office365-Filtering-Correlation-Id: dab1ffa6-51f4-4ced-0861-08de811c2a73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	drdf5T0cG3BgCbCIjTwPDZFMpabWG0QTuslYowqs4zZU85tBO1MYQMU/gGaS6WqcToymPQS5YYP2xiLOZNPkXTAXuRS9K7U7RVF1cis9+tHS1oLDurHKHSJc2dQjKxanteDf4o+Ur2i2802K1ntyE8rQ775UwR8oQXFi5hfw6bKuhiTrDG1d0E5OuMRYybr2e5s4fXZW9ZglFMbUWM6MqV55yflXxMbnxQTfdQwA7U/kMF8sHaPqjSwv9LGX7wyvIb5M03Q8/8DzyJApw4/OHk7sJqP5z0jvQEdY7Rfsyxc/2T35RX5w2VOgIx5fGrnU7M8HZe+dT9cZkaLOQXZCJlEAQV+ESO5XMOcaILwG5oI1NlTx343vJtArbSVX+YUbAb9cacybSUK6xHll0NNYC0Hr1gEB4w6ZClCUu4AvQzltDJqvyExo1wZyspYqyZdDi8QkbS6wdMCC4lI3/QcBaABieCzsSyMUgBFTs9pfccBKvvqUStua9rX2G5cWGEOgLzewHsCNX5U8g2FOKbKmSRU5ley8Tscg9ACwoA3JpRl5wtd+6CltJ0IJl8Xduq6eEgO6fMdjWLrAL20DdHo2fSXPy3+J0Gjo+a4DMQdP6iSoVlH03IjaPXgoEJFKFz+wh1mJbt8A2khmTUbGqmQj8fd1vVKhGHhU0Uu5mKA5iAifiP3roXJuaTdydzjioQwsSioh0d+7KbTWftCDiUWduU1iWKSTp8jYlDKAxJ1QKLigWSz4+JZZh27xM+RJdhye5ORDJxSWYM+jRf75Fy4o4Q==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	p47PZv5tIlo7VyMFlJOaUl7coW+r6IIzNUGrUWfAa9q015FF8kRFRRSMztvjzM9ZyctmfMmEH0whDe6FvTE/hxpJsS8ZBVRIqr1Y21ZjzLehmFSbXN3Dz7rZWHRQjvTw5GEvt9XSZ2E0YIpjfnA2ypXH+ssW7dQ2wLcTQ0c4r+IV1Xj3rIyygDdKc8t7ntTyivYFrYNAZS7TEqvJ9pjWPGrlRPWoMoWD0x25r6kBeK46Jvj8C1KX3VYQmnLG7xnInNpaWyTsuQasMOmDD/K6PgVkVFkaTqCI4l/z+5Z1SuxaPBP80/juE4dFLOwqPssEPTMEneF07jkYOxbOCV0xICXyP0AW05KczGqyCO0l4gY4RB4f5KGoVrAd/uKuMzp6MJKelyBkINM7HWjKmMpF/uCB8a5eDvlC16KUI08LLuub7fyqLBifCYpaGFZ0hkh1
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 16:18:30.3321
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dab1ffa6-51f4-4ced-0861-08de811c2a73
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002BA50.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9164
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: typec: fusb302: Switch to threaded IRQ handler
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Alexey Charkov <alchark@flipper.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Yongbo Zhang <giraffesnn123@gmail.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260311-fusb302-irq-v1-1-7e7105706629@flipper.net>
+ <abKDG8wHJ-19c3AD@kuha> <63dfd90a-d54d-4d87-8c62-61a3c24d76fd@kernel.org>
+ <20260312120418.99U0NPWL@linutronix.de>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260312120418.99U0NPWL@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_CC(0.00)[linux.intel.com,flipper.net,linuxfoundation.org,collabora.com,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225352-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225353-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 112F3286E4E
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 06B17286F8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 12 Mar 2026 21:03:32 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.8 release.
-> There are 13 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi,
+
+On 12-Mar-26 13:04, Sebastian Andrzej Siewior wrote:
+> On 2026-03-12 11:49:30 [+0100], Hans de Goede wrote:
+>> Using a threaded interrupt handler should be ok, yes. This should
+>> also fix the issue this patch tries to fix:
+>>
+>> https://lore.kernel.org/linux-usb/20260103083232.9510-4-linux.amoon@gmail.com
 > 
-> Responses should be made by Fri, 13 Mar 2026 20:03:10 +0000.
-> Anything received after that time might be too late.
+> This issue went away with commit a7fb84ea70aae ("usb: typec: fusb302:
+> Remove IRQF_ONESHOT").
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+>> Normally an i2c device like this would use a threaded interrupt handler to
+>> do all the work since I2C transfers can sleep combined with disabling the IRQ
+>> on suspend to avoid the interrupt handler running while the parent i2c-adapter
+>> may be suspended.
+>>
+>> The problem with the fusb302 is that it can be a wakeup source so we cannot
+>> disable the IRQ. I worked around this in commit 207338ec5a2 ("usb: typec: fusb302:
+>> Improve suspend/resume handling") by moving the actual work to a workqueue
+>> and have a hard (non threaded) interrupt handler which disables the IRQ and
+>> queues the work, with the work re-enabling the IRQ when done + special
+>> handling for the suspended case. Basically our own manual oneshot.
+>>
+>> If we move the IRQ disabling to a threaded handler, which appears to be
+>> necessary for some IRQ controllers (arguably a IRQ controller driver issue,
+>> but this seems to be a re-occuring issue), then I wonder if we need
+>> the ONESHOT flag again to avoid a level type IRQ re-triggering before
+>> the threaded handler gets a chance to disable it (with the workqueue
+>> item eventually re-enabling it).
+>>
+>> I think we need to re-add the ONESHOT flag, but maybe that is the default
+>> with a primary NULL handler ?
+>>
+>> Sebastian Siewior I think you now the IRQ subsystem better then me,
+>> any advice / remarks ?
 
-All tests passing for Tegra ...
+Sebastian, Thank you for your input.
 
-Test results for stable-v6.19:
-    11 builds:	11 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    133 tests:	133 pass, 0 fail
+> You could do
+> 	request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
+> 			     IRQF_ONESHOT | IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
 
-Linux version:	6.19.8-rc1-gc1996363ec4b
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra234-p3737-0000+p3701-0000,
-                tegra234-p3768-0000+p3767-0005, tegra30-cardhu-a04
+Ok, that is good to know.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+> which would ensure that the handler runs as a thread and the interrupt
+> line is disable while it is active.
 
-Jon
+That is what we want, thank you.
+
+> Then you could let fusb302_irq_intn() do what fusb302_irq_work() does.
+> Since it is a thread, mutex_lock() works here.
+
+Right, but the resume handler needs to also schedule the work when the
+IRQ is initially ignored if the IRQ triggers before the i2c_client's
+resume-handler is called to ensure that the parent i2c-adapter is
+ready when the IRQ handling code does i2c accesses.
+
+> Last step would be to replace fusb302_chip::irq_suspended with
+> disable_irq() in fusb302_pm_suspend() and enable_irq() in
+> fusb302_pm_resume().
+
+That unfortunately is not possible because the fusb302 maybe
+a wake-up source so it cannot be disabled unconditionally
+and without the disable_irq() / enable_irq() pair the IRQ
+may trigger before the parent i2c-adapter is resumed.
+
+This is why the IRQ handling in this driver is as convoluted
+as it is in the first place. With the IRQ handler setting
+an irq_while_suspended flag if the IRQ runs before the
+i2c_client resume and then with resume checking that flag
++ queuing the work do to the actual IRQ handling once the
+parent i2c-adapter is ready (if we hit this race).
+
+So as far as I can see the current state of fusb302 code
+is good as is.
+
+Except for the problem on case the IRQ line is connected to
+the mentioned i2c GPIO expander in this email thread.
+
+I think that proper handling of the sync mechanism for IRQ
+chips attached to busses where IO to the IRQ chip may sleep
+should fix this. But this seems to keep coming up, so I'm
+tempted to just move the IRQ handler to a thread, to avoid
+problems with disable_irq_nosync() not working from
+"hard" IRQ handlers with some IRQ chip drivers.
+
+TL;DR:
+
+I think doing this:
+
+ 	request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
+ 			     IRQF_ONESHOT | IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
+
+as you suggest is the best way forward here.
+
+This does what the original patch in this thread suggested,
+with the modification that it re-adds the IRQF_ONESHOT flag.
+
+Regards,
+
+Hans
+
+
 
