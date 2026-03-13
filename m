@@ -1,51 +1,43 @@
-Return-Path: <stable+bounces-225347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKqmMCs4tGnTiwAAu9opvQ
-	(envelope-from <stable+bounces-225347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:15:39 +0100
+	id AE4iDQs5tGl3jAAAu9opvQ
+	(envelope-from <stable+bounces-225348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:19:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B2E286CDC
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:15:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90020286DA1
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 17:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8BA553008C31
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:15:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8505301C5A7
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D22E3C3BED;
-	Fri, 13 Mar 2026 16:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jzobwSha"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA2937F8D7;
+	Fri, 13 Mar 2026 16:16:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52DE33F5A5;
-	Fri, 13 Mar 2026 16:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7683C3459
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 16:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773418535; cv=none; b=cpG/MRkbZ7bDSxOrWGOPE4QUvro4hqdQnZDIf/+p9Hfv2aeywsA7V5HC0+76P5pqjSskPE4g63xOPhfGsHOuVbS5B5pH8NrOUD9pAYH8zZXTYcMy52kdSO2m8PmwTUtGtxMrTZFDrlDmLRS03bUI2I/EpQEdwZQ751RZBDmbnhg=
+	t=1773418579; cv=none; b=Ux3LBtNjoOoaxj3bSo4JPFTtxGQZ2Qz3tgOZTR4YYJ0x8oPR+D4sQFFlTW2ZAl+1gr6A87NoSBxLqpEM6Ap4IwFNJoHwtg/8qScKtasxiTqkzbvZOFILCknEeI54huzoUT0+UOQMPxfbs5GGU8w9B3FwvUZkpNf2rB2E0nOzvZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773418535; c=relaxed/simple;
-	bh=ZtNdm7oHMvpMhja4wEwddzvbwSc+E5sMcY2/pg0Sax0=;
+	s=arc-20240116; t=1773418579; c=relaxed/simple;
+	bh=xpb+sAZZFW4cZzQqktbvtQyTfq7nsxB6lk9Mqo8D8Mc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQTcXVne77ATpNXyaYPc9yEXD38K9nKtuDBYuj0hsPYm4XlSIho7cenrg5IP55h4G+M+z07HXbebgzcNdNAQybXzb0wJnrYox+5L05IsLk5vxIYBCGzkw9lCPf0LQFUCuIN/z43tqr36qRDw6HCi+6hGCPCC5a8R4MER7gZfJUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jzobwSha; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.0.43] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net [86.13.91.161])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8B9F2E70;
-	Fri, 13 Mar 2026 17:14:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773418464;
-	bh=ZtNdm7oHMvpMhja4wEwddzvbwSc+E5sMcY2/pg0Sax0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jzobwShar5AhYeHrU7rDSTm+xf86sKmAbUR/TsmSuBol9g3yJBIIS6mQIT3V0VDPh
-	 /JfaSduq6JGC+CO/lrxV6+JnLcrnoJ1FygGuxNskd768YrP6p2idh7A6Z6ZvAtKVq5
-	 z+hnneInGJLHY6Q3QfZ9jxsWVrQaXWmCQMK35REI=
-Message-ID: <8ca5a858-e42c-4cf8-b2f4-2169cd29d3f1@ideasonboard.com>
-Date: Fri, 13 Mar 2026 16:15:29 +0000
+	 In-Reply-To:Content-Type; b=pphrnD2jMPLX9aZqvvF/BQ8H02YRPNdPyR02hoHE2vbVu8QJJ8LjqMaqMyC/vOXGyjoT+D0k08fHMDHzUeZuZ9JAl5nP74bGEiImQ8Kgz/LBSW6BrQP4B6a+bBB/IgQq5x4SThOoK3A/bTP/8PGmmHl5yoKTEFdN4kq0ynrAM3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B102176A;
+	Fri, 13 Mar 2026 09:16:11 -0700 (PDT)
+Received: from [10.57.18.169] (unknown [10.57.18.169])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9780F3F7BD;
+	Fri, 13 Mar 2026 09:16:16 -0700 (PDT)
+Message-ID: <10f5de0b-1fdc-4867-8ccb-e9362fc553fe@arm.com>
+Date: Fri, 13 Mar 2026 16:16:15 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,112 +45,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] media: rzv2h-ivc: Fix AXIRX_VBLANK register write
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil+cisco@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
- =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?=
- <barnabas.pocze+renesas@ideasonboard.com>, stable@vger.kernel.org
-References: <20260313-mali-ivc-fixes-v7-0-v1-0-cb0714cd1279@ideasonboard.com>
- <20260313-mali-ivc-fixes-v7-0-v1-2-cb0714cd1279@ideasonboard.com>
-Content-Language: en-US
-From: Dan Scally <dan.scally@ideasonboard.com>
-In-Reply-To: <20260313-mali-ivc-fixes-v7-0-v1-2-cb0714cd1279@ideasonboard.com>
+Subject: Re: [PATCH] KVM: arm64: Discard PC update state on vcpu reset
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>, Oliver Upton <oupton@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
+References: <20260312140850.822968-1-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260312140850.822968-1-maz@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225347-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225348-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,renesas];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid]
-X-Rspamd-Queue-Id: 68B2E286CDC
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[suzuki.poulose@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.962];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,arm.com:mid]
+X-Rspamd-Queue-Id: 90020286DA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Jacopo and Barnabás
-
-On 13/03/2026 11:13, Jacopo Mondi wrote:
-> From: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+On 12/03/2026 14:08, Marc Zyngier wrote:
+> Our vcpu reset suffers from a particularly interesting flaw, as it
+> does not correctly deal with state that will have an effect on the
+> execution flow out of reset.
 > 
-> According to the documentation there are writable reserved bits in the
-> register and those should not be set to 0. So use `rzv2h_ivc_update_bits()`
-> with a proper bitmask.
+> Take the following completely random example, never seen in the wild
+> and that never resulted in a couple of sleepless nights: /s
 > 
+> - vcpu-A issues a PSCI_CPU_OFF using the SMC conduit
+> 
+> - SMC being a trapped instruction (as opposed to HVC which is always
+>    normally executed), we annotate the vcpu as needing to skip the
+>    next instruction, which is the SMC itself
+> 
+> - vcpu-A is now safely off
+> 
+> - vcpu-B issues a PSCI_CPU_ON for vcpu-A, providing a starting PC
+> 
+> - vcpu-A gets reset, get the new PC, and is sent on its merry way
+> 
+> - right at the point of entering the guest, we notice that a PC
+>    increment is pending (remember the earlier SMC?)
+> 
+> - vcpu-A skips its first instruction...
+> 
+> What could possibly go wrong?
+> 
+> Well, I'm glad you asked. For pKVM as a NV guest, that first instruction
+> is extremely significant, as it indicates whether the CPU is booting
+> or resuming. Having skipped that instruction, nothing makes any sense
+> anymore, and CPU hotplugging fails.
+> 
+> This is all caused by the decoupling of PC update from the handling
+> of an exception that triggers such update, making it non-obvious
+> what affects what when.
+> 
+> Fix this train wreck by discarding all the PC-affecting state on
+> vcpu reset.
+> 
+> Fixes: f5e30680616ab ("KVM: arm64: Move __adjust_pc out of line")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 > Cc: stable@vger.kernel.org
-> Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
-> Signed-off-by: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
-> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 > ---
-
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-
->   drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c | 7 +++++--
->   drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h       | 2 +-
->   2 files changed, 6 insertions(+), 3 deletions(-)
+>   arch/arm64/kvm/reset.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 > 
-> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> index 1e016b17dcee..bfe5b0c7045e 100644
-> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> @@ -7,6 +7,7 @@
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index 959532422d3a3..b963fd975aaca 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -247,6 +247,20 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>   			kvm_vcpu_set_be(vcpu);
 >   
->   #include "rzv2h-ivc.h"
->   
-> +#include <linux/bitfield.h>
->   #include <linux/cleanup.h>
->   #include <linux/iopoll.h>
->   #include <linux/lockdep.h>
-> @@ -235,8 +236,10 @@ static void rzv2h_ivc_format_configure(struct rzv2h_ivc *ivc)
->   	hts = pix->width + RZV2H_IVC_FIXED_HBLANK;
->   	vblank = RZV2H_IVC_MIN_VBLANK(hts);
->   
-> -	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_BLANK,
-> -			RZV2H_IVC_VBLANK(vblank));
-> +	rzv2h_ivc_update_bits(ivc, RZV2H_IVC_REG_AXIRX_BLANK,
-> +			      RZV2H_IVC_AXIRX_BLANK_FIELD_VBLANK,
-> +			      FIELD_PREP(RZV2H_IVC_AXIRX_BLANK_FIELD_VBLANK,
-> +					 vblank));
->   }
->   
->   static void rzv2h_ivc_return_buffers(struct rzv2h_ivc *ivc,
-> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
-> index 3bcaab990b0f..4ef44c8b4656 100644
-> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
-> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
-> @@ -34,7 +34,7 @@
->   #define RZV2H_IVC_REG_AXIRX_HSIZE			0x0020
->   #define RZV2H_IVC_REG_AXIRX_VSIZE			0x0024
->   #define RZV2H_IVC_REG_AXIRX_BLANK			0x0028
-> -#define RZV2H_IVC_VBLANK(x)				((x) << 16)
-> +#define RZV2H_IVC_AXIRX_BLANK_FIELD_VBLANK		GENMASK(25, 16)
->   #define RZV2H_IVC_REG_AXIRX_STRD			0x0030
->   #define RZV2H_IVC_REG_AXIRX_ISSU			0x0040
->   #define RZV2H_IVC_REG_AXIRX_ERACT			0x0048
-> 
+>   		*vcpu_pc(vcpu) = target_pc;
+> +
+> +		/*
+> +		 * We may come from a state where either a PC update was
+> +		 * pending (SMC call resulting in PC being increpented to
+> +		 * skip the SMC) or a pending exception. Make sure we get
+> +		 * rid of all that, as this cannot be valid out of reset.
+> +		 *
+> +		 * Note that clearing the exception mask also clears PC
+> +		 * updates, but that's an implementation detail, and we
+> +		 * really want to make it explicit.
+> +		 */
+> +		vcpu_clear_flag(vcpu, PENDING_EXCEPTION);
+> +		vcpu_clear_flag(vcpu, EXCEPT_MASK);
+> +		vcpu_clear_flag(vcpu, INCREMENT_PC);
+>   		vcpu_set_reg(vcpu, 0, reset_state.r0);
+>   	}
+
+Wow! Thats it finally !! Glad you found the root cause.
+
+
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
 
 
