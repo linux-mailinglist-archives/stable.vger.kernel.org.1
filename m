@@ -1,274 +1,200 @@
-Return-Path: <stable+bounces-225237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NveLfx/s2k7XQAAu9opvQ
-	(envelope-from <stable+bounces-225237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:09:48 +0100
+	id 6EYhCtWDs2msXQAAu9opvQ
+	(envelope-from <stable+bounces-225240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:26:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2B127CFEF
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:09:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD30427D12A
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6BE0C302FB24
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:09:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C5A630AA171
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 03:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9543B32D43C;
-	Fri, 13 Mar 2026 03:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCB030AAA9;
+	Fri, 13 Mar 2026 03:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="JCYOZtwm"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="YnzBEnMy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-95.sinamail.sina.com.cn (mail115-95.sinamail.sina.com.cn [218.30.115.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B86923EAB4
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 03:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED82304BDC
+	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 03:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773371385; cv=none; b=s7Ql85L9I6tPyA271cSW1bSRypAWM0eLNq+84eKid2x0hLqzQvmztMXTiF/dBBXnuftrKVxzua42WwY42uoCq6nck6YLr+P28E8AG9D2KWvTDyutHknVZRR6gfxhN73YisbrSmXhbNnPZZRSqWgxve77YblnrBm22fc6K7+96U0=
+	t=1773372347; cv=none; b=m+Lg2dMS6SL2U9DTkhEKbKfiZc4hE5ASXqob1q7bDFT20RZgxdW/s917TvH69v2gUgFit5STn1uuNpT2wpe8CUFMJTKB7HjMm7YAkkg5+eao6lcwq9uc/RAtjopGQ4oxIO+Kse335hA19Gneyj7xjVn3Z3o6fQ716h0cZSx+RuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773371385; c=relaxed/simple;
-	bh=C/8mUQKkQW3Nw+n7SYR1OvSfVZq85NOMHEHdbRNGIas=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GDXi/GexnczbqONdO70NDHoPGEfTlq3F1V9HtYgn5fWeegW2qqFvyAT+SNMxHEAQ0Qv+n6rMcHUgvifCgUSTD9Vi5bk4zcj5dbHTpgOsY5dFUb6QLdYgUda4YCD53iSY9A6Ez63giVipneLqiLenr4yiC3IdMfCCgiMciMF4tx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=JCYOZtwm; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso15208885e9.2
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 20:09:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773371381; x=1773976181; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=WJB3Q3K9nN6lyOyAV/eD0epGzhDSQTZR2IuP5rmRiEU=;
-        b=JCYOZtwmCJUMmJhgjvaUoAr0qtRNDIriOpI88enxQEJTQyBRuru+Pwke0d1cNFD1M8
-         JmLnMC7y3k8LFxjWyQmEOa/E02W7mFpfHs+1LKG29z/SOqhDQz0P1FRxO0ijf5sEOqev
-         Cu3NwECIPSizPW65sNkFOtL2mKKHyxRS82vdGG4KSVTBMlGJxFIPf97BxTJuQRz8DlTZ
-         MCzqWF0iHV451qeJZmNFcLa9lVQRUhp3Tp6nxVcvORx758uFSWcrQJaC+5DWp68xs2DC
-         0e8lM0H+iH1qRIQNnWMx50IKTNamEp5C+jZsNKgldtL+MngvmXNxtDFz+wam4e7op7jF
-         xLUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773371381; x=1773976181;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WJB3Q3K9nN6lyOyAV/eD0epGzhDSQTZR2IuP5rmRiEU=;
-        b=sd6CqyaYnz5xB0cEUWku1R8U1XJsDQVvJPeUEst6WrrmFa6QvRsZkXWJxrKivLKRGG
-         OG50Q+5gqFSMy1LSjDF1J+K1hKpXsvuLexhlryBA7CVbG4dNNv7226IuJiX1uvvLtmTr
-         uXrY3xVKZCRUkwdX8k5yH+xQdrm5UrfWd0zYxrFH1+AkoOegqOBcluFwPcEO5H4CMySn
-         w8eMQXRe33CyDC7XelJB7QqiSz+uxZWolVGIXellxxzv7KdAIW8LT4E1D7keuQ2xpGdT
-         /Nx6+MHOkLluMKOUom9mER5VCcj9N821tJ9yNVnTivhw7LyY+TKrD6xWRE+iMn4Ls4fv
-         3vZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKYn4LgKdEVz+lOq2OjP+xTpulXOqvHo7sPwskm1WcFdQwwINTf+r0oBUcwVNmVLAfYbHPOCQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLJ+cOR3+GjkI7DzD/A8cEtyNp9eYqnILXEuCO/Jy2oaELpzZt
-	dhgDHi0hIOhPK/gKeyk1JI7dB7Rqvr2g4SjKkwlAnNY0SRfkt2ojoLHB+sI4Oiy0FsY=
-X-Gm-Gg: ATEYQzwy/dqKb/f5C8qIquC1PStDwO2TUdIEzP7HB4v40+bh5RdPFfHAWRMh/azLPji
-	859mS4TEuNx7DJkqJXtcMCwsPq4NcjcES7vQ24prlE5nZ0jpBXLo25L5mW25bAKknGhfasf9ixa
-	f5kbUUpJteBgzT+xeSgwcm5T+N/A5wU/04nMV4k7GOVADs21avqZ2wrkmAHgnDl1f3zeTDM3H2d
-	K28HS24bVsmpxWeiCr9QumaPK2lXBt2QcqMXq8muZv2wVIg+44SuzHDEsZcBkOOsfdmpw7/8plf
-	tXglih+dCiz/6p/ofZd+jHSHg//KcMzQZjjkPsRBY9AUDUDrP2tur8xX5mG4CjlOx9+Txqu++43
-	ZEMHuiYxzPloykjqVpcAG42wM+D9DFlGcGPB52TEDbaY9hIAXIBVApZAwE3kYvde9FckRSPgZLt
-	HRGNGvbPXHXQIeZXTuVL1hOrBmKMEE41b001vjTTIm5uEp7aVD3iU=
-X-Received: by 2002:a05:600c:c4ac:b0:477:7b16:5f9f with SMTP id 5b1f17b1804b1-4855670e7c6mr22890475e9.31.1773371380446;
-        Thu, 12 Mar 2026 20:09:40 -0700 (PDT)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a072418e9sm4664280b3a.3.2026.03.12.20.09.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 20:09:39 -0700 (PDT)
-Message-ID: <14bae5ed-c12c-4380-a9a0-7a714217913e@suse.com>
-Date: Fri, 13 Mar 2026 13:39:34 +1030
+	s=arc-20240116; t=1773372347; c=relaxed/simple;
+	bh=y0Ah/CzvBkpqX7I7vu2xVBl2TW0EAIWYO7FzvuDd4mw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A10tyYEZWy3daaskHVqc1oaXvvggncEHUuWpus7xG4oxURYbCgfY/XCR/dtnpdhpnQe1RQzF0fWbjsAkcBSvuUsIG5XSF+vny2x4J0fxZYoHGGTXup+xvGe60Jcw/kgkPJd2OJ0f4XMdNL3ut4DaWULyDLU5sPukx0Z0nV8Ouz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=YnzBEnMy; arc=none smtp.client-ip=218.30.115.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773372342;
+	bh=sSJYW5io/4MyT3pXpRddCt5uwN76i4vLd85t6YieSm4=;
+	h=From:Subject:Date:Message-Id;
+	b=YnzBEnMyocmDhlTEnap1GE7ZWynk8GCEHwc1ul+V8rLD+Xra1fz+ySB7zU90mahcG
+	 CZK3BNId8tn0dOE7fVSUBQCpNVvkOYUmVVtiNO0Qi8D/JTGtjwC0xwpAhZXsJGbjAo
+	 75q+JjqFyLJMTfjdor8MsWi85PmzcOavDp8v966c=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.23) with ESMTP
+	id 69B3826B0000382D; Fri, 13 Mar 2026 11:20:13 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 3918558912958
+X-SMAIL-UIID: 70AA6FCCB42040DE9AC27B7A05CF2B26-20260313-112013-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 6.1.y] net: fec: handle page_pool_dev_alloc_pages error
+Date: Fri, 13 Mar 2026 11:20:09 +0800
+Message-Id: <20260313032009.2181924-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] btrfs: reject root with mismatched level between
- root_item and node header
-To: ZhengYuan Huang <gality369@gmail.com>
-Cc: dsterba@suse.com, clm@fb.com, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, r33s3n6@gmail.com,
- zzzccc427@gmail.com, stable@vger.kernel.org
-References: <20260312102229.220570-1-gality369@gmail.com>
- <ac5058d0-ba4e-4de6-b231-64a29ee2d5e3@suse.com>
- <CAOmEq9U14a=pwN_dw2M70gfujhMKki434cfmegoxcyUpkYs5bQ@mail.gmail.com>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <CAOmEq9U14a=pwN_dw2M70gfujhMKki434cfmegoxcyUpkYs5bQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225240-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lenbrook.com,intel.com,nxp.com,kernel.org,sina.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,fb.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-225237-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_FROM(0.00)[sina.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5E2B127CFEF
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sina.com:dkim,sina.com:email,sina.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: CD30427D12A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
 
+[ Upstream commit 001ba0902046cb6c352494df610718c0763e77a5 ]
 
-在 2026/3/13 13:19, ZhengYuan Huang 写道:
-> On Fri, Mar 13, 2026 at 5:29 AM Qu Wenruo <wqu@suse.com> wrote:
->> Nope, we have btrfs_tree_parent_check structure, which has all the
->> needed checks at read time.
->>
->> The point of using that other than doing it manually here is, if one
->> mirror is bad, but the other mirror is good, then we can still grab the
->> good copy, but checking it here means if we got the bad mirror first, we
->> have no more chance.
->>
->> And during read of root-node, we have already passed the proper level
->> into it.
->>
->> So the only possibility is, your fuzzing tool is modifying the memory
->> after the read check.
->>
->> If so, it's impossible to fix.
-> 
-> Thanks for the review and for pointing this out.
-> 
-> I agree that btrfs_tree_parent_check is the intended read-time
-> verifier, but the crash path here relies on a cache-hit bypass where
-> that verification is not re-run.
-> 
-> My earlier description may have been misleading, or at least not clear
-> enough, so let me clarify the exact trigger path in more detail below.
+The fec_enet_update_cbd function calls page_pool_dev_alloc_pages but did
+not handle the case when it returned NULL. There was a WARN_ON(!new_page)
+but it would still proceed to use the NULL pointer and then crash.
 
-My bad, I forgot to mention the correct way to fix: you should put the 
-check into the cached hit path, other than adhocing random checks around.
+This case does seem somewhat rare but when the system is under memory
+pressure it can happen. One case where I can duplicate this with some
+frequency is when writing over a smbd share to a SATA HDD attached to an
+imx6q.
 
-The correct way is to add an optional @check parameter for 
-btrfs_buffer_uptodate() so that cached extent buffer will still be checked.
+Setting /proc/sys/vm/min_free_kbytes to higher values also seems to solve
+the problem for my test case. But it still seems wrong that the fec driver
+ignores the memory allocation error and can crash.
 
-> 
-> Two different metadata blocks are involved:
-> - Block A: a root-tree leaf containing root_item for tree 265 (this
-> field is corrupted: root_item.level = 1)
->    item 11 key (265 ROOT_ITEM 0) itemoff 13489 itemsize 439
->        generation 4255 root_dirid 256 bytenr 18787663872 level 1 refs 1
->        lastsnap 4214 byte_limit 0 bytes_used 16384 flags 0x0(none)
->        uuid 4cc4bc58-9708-2848-a264-19b95269f104
->        ctransid 13 otransid 13 stransid 0 rtransid 0
->        ctime 1766050670.362764444 (2025-12-18 09:37:50)
->        otime 1766050670.362000000 (2025-12-18 09:37:50)
->        drop key (0 UNKNOWN.0 0) level 0
-> 
-> - Block B: the actual tree-265 root block at bytenr 18787663872
-> (header.level = 0, otherwise valid)
->      item 57 key (18787663872 METADATA_ITEM 0) itemoff 14198 itemsize 33
->        refs 1 gen 4255 flags TREE_BLOCK
->        tree block skinny level 0
->        tree block backref root 265
-> 
-> In relocate_tree_blocks phase 1 (get_tree_block_key), block B is read
-> with check.level = block->level = 0 (from extent-tree metadata for
-> that extent item).
-> This I/O path runs btrfs_validate_extent_buffer, and level check
-> passes (found 0, expected 0).
-> So block B becomes EXTENT_BUFFER_UPTODATE.
-> 
-> In phase 2 (build_backref_tree -> handle_indirect_tree_backref ->
-> btrfs_get_fs_root -> read_tree_root_path), level is taken from
-> root_item in block A via btrfs_root_level, so expected level becomes 1
-> (corrupt value).
-> Then read_tree_block is called for the same bytenr (block B), but now
-> it hits EXTENT_BUFFER_UPTODATE and returns from
-> read_extent_buffer_pages_nowait early.
-> 
-> On that cache-hit path, btrfs_validate_extent_buffer is not executed
-> again, so no level mismatch check occurs for expected=1 vs actual=0.
-> 
-> Because no read error is returned on cache hit, mirror retry logic is
-> never entered. So this is not a “bad mirror first, good mirror later”
-> case: there is no second mirror attempt because the read already
-> succeeded from cache.
-> 
-> read_tree_root_path then builds an inconsistent root object:
->    - root->root_item.level = 1 (from block A)
->    - root->node/commit_root level = 0 (from cached block B)
-> 
-> handle_indirect_tree_backref computes level = cur->level + 1 = 1,
-> searches commit_root (actual level 0), path->nodes[1] remains NULL,
-> and btrfs_node_blockptr(NULL, ...) crashes. So the issue is a
-> cross-block consistency gap at root construction time, not post-read
-> memory corruption by the fuzzer.
-> 
-> That is why the fix in read_tree_root_path (checking
-> btrfs_header_level(root->node) == btrfs_root_level(&root->root_item))
-> is needed even with btrfs_tree_parent_check in place.
-> 
-> To clarify, our fuzzing tool does not perform any in-memory
-> modification during testing. In fact, this bug is not caused by memory
-> corruption at all; it is triggered entirely by corrupted on-disk
-> metadata together with a cache-hit path that skips re-validation of
-> the root block. I have also uploaded the reproduction script to
-> https://drive.google.com/drive/folders/1BPXcgVI4DLzDcufNyynOakKD4EKnfVCg.
-> 
-> To reproduce the issue:
-> 1. Build the PoC program: gcc repro.c -o poc
-> 2. Build the ublk helper program from the ublk codebase, which is
-> used to provide the runtime corruption capability:
-> g++ -std=c++20 -fcoroutines -O2 -o standalone_replay \
-> standalone_replay_btrfs.cpp targets/ublksrv_tgt.cpp \
-> -I. -Iinclude -Itargets/include \
-> -L./lib/.libs -lublksrv -luring -lpthread
-> 3. Attach the crafted image through ublk:
-> ./standalone_replay add -t loop -f /path/to/image
-> 4. Run the PoC: ./poc
-> This reliably reproduces the bug.
-> 
-> Thanks,
-> ZhengYuan Huang
+This commit handles the allocation error by dropping the current packet.
+
+Fixes: 95698ff6177b5 ("net: fec: using page pool to manage RX buffers")
+Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250113154846.1765414-1-kgroeneveld@lenbrook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit 6c8fae0caf5d
+(net: fec: simplify the code logic of quirks")
+in v6.2 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index c8f897afb30a..e9c4945d0c27 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1595,19 +1595,22 @@ fec_enet_copybreak(struct net_device *ndev, struct sk_buff **skb,
+ 	return true;
+ }
+ 
+-static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
++static int fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
+ 				struct bufdesc *bdp, int index)
+ {
+ 	struct page *new_page;
+ 	dma_addr_t phys_addr;
+ 
+ 	new_page = page_pool_dev_alloc_pages(rxq->page_pool);
+-	WARN_ON(!new_page);
+-	rxq->rx_skb_info[index].page = new_page;
++	if (unlikely(!new_page))
++		return -ENOMEM;
+ 
++	rxq->rx_skb_info[index].page = new_page;
+ 	rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
+ 	phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
+ 	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
++
++	return 0;
+ }
+ 
+ /* During a receive, the bd_rx.cur points to the current incoming buffer.
+@@ -1632,6 +1635,7 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 	int	index = 0;
+ 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
+ 	struct page *page;
++	__fec32 cbd_bufaddr;
+ 
+ #ifdef CONFIG_M532x
+ 	flush_cache_all();
+@@ -1686,12 +1690,17 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 
+ 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+ 		page = rxq->rx_skb_info[index].page;
++		cbd_bufaddr = bdp->cbd_bufaddr;
++		if (fec_enet_update_cbd(rxq, bdp, index)) {
++			ndev->stats.rx_dropped++;
++			goto rx_processing_done;
++		}
++
+ 		dma_sync_single_for_cpu(&fep->pdev->dev,
+-					fec32_to_cpu(bdp->cbd_bufaddr),
++					fec32_to_cpu(cbd_bufaddr),
+ 					pkt_len,
+ 					DMA_FROM_DEVICE);
+ 		prefetch(page_address(page));
+-		fec_enet_update_cbd(rxq, bdp, index);
+ 
+ 		/* The packet length includes FCS, but we don't want to
+ 		 * include that when passing upstream as it messes up
+-- 
+2.34.1
 
 
