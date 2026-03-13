@@ -1,94 +1,59 @@
-Return-Path: <stable+bounces-225243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GbzAkeNs2klYAAAu9opvQ
-	(envelope-from <stable+bounces-225243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:06:31 +0100
+	id yfqAIlCWs2n+YQAAu9opvQ
+	(envelope-from <stable+bounces-225244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:45:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE9D27D3B9
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:06:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C938627D4B0
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 05:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F8643081BFF
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:06:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 742503097E8E
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 04:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F802417D9;
-	Fri, 13 Mar 2026 04:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5383D29A312;
+	Fri, 13 Mar 2026 04:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hldKoajK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0aA3IvN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603BE126F3B
-	for <stable@vger.kernel.org>; Fri, 13 Mar 2026 04:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1262028852E;
+	Fri, 13 Mar 2026 04:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773374786; cv=none; b=ERUA07Gml5nwh5abSgP3LFdEzn422o9MUhTBu7rfwc9WtQU8m/NCp416iOcPQf5kVzMDvOWKs6fEIcRAsLzbZah9GEdSTPiLns4HY5kowrJfgcicWB0Di79HXBj9W1Yza6wXeAa2sbKc7N3Lal4U+gBaQjgMYodYTW5daegOz7Y=
+	t=1773377098; cv=none; b=FhNIqh6wZ5hykWN0OmlfLsVTxLHqPr8HYu+3uaF1WmSAp7SeFNhOBkamTFg8WjunEjjFUI24fxd6tsoTiOLqxyfuM8n+y5O9oZp5+Szepqd3nhMhJeNbeSLR8nc6ofdfFmMQlNtVKKHEC+YO9Wlo7/4EUxrbkyyKsPyo18xluiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773374786; c=relaxed/simple;
-	bh=Ccb7/rrFkWTefSKTgc4VB5t8QmMBzWsjuDWfEug+R5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WB+le/CnrtMZoRlXsUp3wTPrQnnUhlYhMOxp6pei6bcTJ4GVtQMe42xwZoiktR7yv97CjVE9Y5CvYQhd/GXpEF0SYWBMbSaNdhXs6H7KPl2zKI4bip4BMiSj5GI/lle429nYpmHqyID271CK956xNqkRhMX3MXGalLl/qB9cpJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hldKoajK; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-823c56765fdso1002388b3a.1
-        for <stable@vger.kernel.org>; Thu, 12 Mar 2026 21:06:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773374785; x=1773979585; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MZbSvC8sAuSPUZNbLT6g7eFzZMKiQ1pz/Tp17o9W3DA=;
-        b=hldKoajKAFz4kdwRadE2N05T34zqqC+fbwO0fZf0UjP1eXPJTSEpyFzFzJ+hOkD1S7
-         ucHwOLG6Tt+Cy6Hp+iMRhyhj/tNiTi6kaQFPMh2hUIMd/5T4dA2XR/HikyuUOil2cjUH
-         c5FzenoPLOPIjK9gB7hu2UBCDSBJZtu5LaxA6YFPfFcGt2hJCsPc/Zyg9GwArG2+Ygla
-         GxrIpkDcXBcOQgRlQl3XMDlTKGjscvUu4OxcUTWnoi2gRdHNOP+5zFRBsryNTb+Q041z
-         Q3LEEDKpePFOd/0AcJNDHhi1c2oaQpye71i/PF/FowAQrtUvaoGJbW/p8XVlrO7z0ZX6
-         ICjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773374785; x=1773979585;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MZbSvC8sAuSPUZNbLT6g7eFzZMKiQ1pz/Tp17o9W3DA=;
-        b=EAjaOdjk8hXEr3VUa06qqJUL/6tL91FqeD1KcnLAe1Z4c8eCHpoxr7rnPSc5rLB/FA
-         zCqkM60+dSz9gZ1vi2xtiZpX8l34eiw6L8bWsUwpVEyYl05ueASHZ9DXlnGTBBp2jJrk
-         vmIkz189RB0x4q88frBXBQpx/H3l3niC1tRJ9t2574zVCrOuhgW53oIQ0O/KVrTMKLr+
-         Pyit9x4uXWuj08p6/6wWIwyK9XG90gDLGS4LupGLmhHpnnaHc57BoL2hj1/Yxz2T7xyB
-         jygOeUohkLbAuxNJDBDSMAEZHq7yIxsh0L2u7s1PXOEpnM422m8Gk9fhhXuh6NrRhtLH
-         Y+Kg==
-X-Forwarded-Encrypted: i=1; AJvYcCXduaZxwZxc00WaCXSwo7FMrZtxwGZLcy0Cn9yEswA0z4Tvc/kvazPItkPuCnRnSsMukJO/nDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi0jotzlte6mXEQa3S2nnr4x9NRONLT6cBomX6ZjbTd99DDI/9
-	sjGeAPK4oxMmdCz8yfbkbpW1kjViKC9pCYzxCcJdckZ5sbbuUbtsx+Jk
-X-Gm-Gg: ATEYQzx0rHK+EnKfqE4mqJ8xyCRBBdyrQzKPBG1wmvmYKvr7eOZ69Do5wMJNBYTnSMT
-	n5jI8IM3ZP3ibEuMgvNgs3Y1Zi7r2ILYxwpnauh1J6XZHQtxp6/7DcxRpzL5B/0YD2lTe9cSGTk
-	hgy1T3GWUrcaCZf13BxizStHQkMlTGQwZpHIRkkXZPmknaix4AhN0SiHt9fBCIvxG026ZQbtZB9
-	fFwb2H8hMD9bzoTjicUb3kpNgRTfF/iKWOMLUe92gbxwWmnQxotlq/BkUOUhcvPtPSGAAIviIVQ
-	TqL3HuAC67fv1+WpqaGQUsNfsFQr+O95/6L1DhZLNIvalrKToLtxIjMIcZp5RkmvL2RLTMTEqqe
-	+c+EFEAQ3Xcl9jTIqKw0D8f9eW9T4kwV9gpXGQ8tGNOczkgbNqH57MWLimfoXlwxxUHlklVCRhE
-	t5RffSpx7XnHTfoB2OPMqm
-X-Received: by 2002:a05:6a00:7084:b0:824:a7bb:e8fc with SMTP id d2e1a72fcca58-82a1983fc2dmr1224093b3a.24.1773374784697;
-        Thu, 12 Mar 2026 21:06:24 -0700 (PDT)
-Received: from lgs.. ([223.80.110.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07384b27sm4523373b3a.53.2026.03.12.21.06.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2026 21:06:24 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Kiseok Jo <kiseok.jo@irondevice.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ASoC: sma1307: fix double free of devm_kzalloc() memory
-Date: Fri, 13 Mar 2026 12:06:11 +0800
-Message-ID: <20260313040611.391479-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773377098; c=relaxed/simple;
+	bh=XrYj7XvkjVOrSZUvKRwcxWJvhLvpmnJnSlNXlwKIaTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l3+cxCL4O7+yI9kc6trKT0Ytzp8aEcTL6kXUFpTHxVWRvwFTNnhROG15m2mscMszJQNTDwS7HcqQewa3JmShu77OLWufpOIpM4luX8ZC7RXW/eKz1OkEqV54o3+RasY+MuKUOw3PSSLDgHmaS0GI/V96wpE6+twYkEesUs5D/vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0aA3IvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B247C19421;
+	Fri, 13 Mar 2026 04:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773377097;
+	bh=XrYj7XvkjVOrSZUvKRwcxWJvhLvpmnJnSlNXlwKIaTg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H0aA3IvNRoRHgjcHUUzksuzmMWNJLmK4v9Lp48NTbH9e0AkbLkElRqbWZayjAPLbg
+	 x+GoXKm90rStryfp+ullE7dqATkwSMnrcpKaYaeFX28NCEdDzvVn0Zw5jDlW0czAJs
+	 eX1rDZXX+XK1ViKtJ+/lAWC+24LB3/EoKAoROgDjSRZ+bQMnxT6nyw6YwaZfvpA619
+	 toeR62XHeVE55FV2ujkN7fP4gCs26O3txwrcpEttmrZ7jnoX2lJQmeXM8B14v3e6HA
+	 yxeDVZFPCQzeYhHuRM9y2E3JShr3xKYpyMr7hRWVZxTCBbxueKef6aHjYAOpSEyr+h
+	 cFgG9SxQo41Aw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/stat: monitor all System RAM resources
+Date: Thu, 12 Mar 2026 21:44:47 -0700
+Message-ID: <20260313044449.4038-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,78 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225244-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225243-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[irondevice.com,gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7AE9D27D3B9
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C938627D4B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A previous change added NULL checks and cleanup for allocation
-failures in sma1307_setting_loaded().
+DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+says it monitors the system's entire physical memory.  But, it is
+monitoring only the biggest System RAM resource of the system.  When
+there are multiple System RAM resources, this results in monitoring only
+an unexpectedly small fraction of the physical memory.  For example,
+suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+500 GiB System RAM resources in order on the physical address space.
+DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+situation is particularly common on NUMA systems.
 
-However, the cleanup for mode_set entries is wrong. Those entries are
-allocated with devm_kzalloc(), so they are device-managed resources and
-must not be freed with kfree(). Manually freeing them in the error path
-can lead to a double free when devres later releases the same memory.
+Select a physical address range that covers all System RAM areas of the
+system, to fix this issue and make it work as documented.
 
-Drop the manual kfree() loop and let devres handle the cleanup.
-
-Fixes: 0ec6bd16705fe ("ASoC: sma1307: Add NULL check in sma1307_setting_loaded()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-v2:
-  - Replace kfree() with devm_kfree() for mode_set[] error cleanup.
-  - Clear released mode_set[] pointers after devm_kfree().
+ mm/damon/stat.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
- sound/soc/codecs/sma1307.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index f9a2028483b05..3ed71db33e899 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -145,12 +145,57 @@ static int damon_stat_damon_call_fn(void *data)
+ 	return 0;
+ }
+ 
++struct damon_stat_system_ram_range_walk_arg {
++	bool walked;
++	struct resource res;
++};
++
++static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
++{
++	struct damon_stat_system_ram_range_walk_arg *a = arg;
++
++	if (!a->walked) {
++		a->walked = true;
++		a->res.start = res->start;
++	}
++	a->res.end = res->end;
++	return 0;
++}
++
++static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
++		unsigned long addr_unit)
++{
++	/*
++	 * Use div_u64() for avoiding linking errors related with __udivdi3,
++	 * __aeabi_uldivmod, or similar problems.  This should also improve the
++	 * performance optimization (read div_u64() comment for the detail).
++	 */
++	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
++		return div_u64(ra, addr_unit);
++	return ra / addr_unit;
++}
++
++static int damon_stat_set_monitoring_region(struct damon_target *t,
++		unsigned long addr_unit, unsigned long min_region_sz)
++{
++	struct damon_addr_range addr_range;
++	struct damon_stat_system_ram_range_walk_arg arg = {};
++
++	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
++	if (!arg.walked)
++		return -EINVAL;
++	addr_range.start = damon_stat_res_to_core_addr(
++			arg.res.start, addr_unit);
++	addr_range.end = damon_stat_res_to_core_addr(
++			arg.res.end + 1, addr_unit);
++	return damon_set_regions(t, &addr_range, addr_unit, min_region_sz);
++}
++
+ static struct damon_ctx *damon_stat_build_ctx(void)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_attrs attrs;
+ 	struct damon_target *target;
+-	unsigned long start = 0, end = 0;
+ 
+ 	ctx = damon_new_ctx();
+ 	if (!ctx)
+@@ -180,8 +225,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
+-				ctx->addr_unit, ctx->min_region_sz))
++	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
++				ctx->min_region_sz))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 
-diff --git a/sound/soc/codecs/sma1307.c b/sound/soc/codecs/sma1307.c
-index 4bb59e5c0891..5850bf6e71ca 100644
---- a/sound/soc/codecs/sma1307.c
-+++ b/sound/soc/codecs/sma1307.c
-@@ -1759,8 +1759,10 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
- 				   sma1307->set.mode_size * 2 * sizeof(int),
- 				   GFP_KERNEL);
- 		if (!sma1307->set.mode_set[i]) {
--			for (int j = 0; j < i; j++)
--				kfree(sma1307->set.mode_set[j]);
-+			for (int j = 0; j < i; j++) {
-+				devm_kfree(sma1307->dev, sma1307->set.mode_set[j]);
-+				sma1307->set.mode_set[j] = NULL;
-+			}
- 			sma1307->set.status = false;
- 			return;
- 		}
+base-commit: ef772f765091af645985f2bd70390143a9820970
 -- 
-2.43.0
-
+2.47.3
 
