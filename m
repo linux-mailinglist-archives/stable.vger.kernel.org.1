@@ -1,160 +1,218 @@
-Return-Path: <stable+bounces-225295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDCBFev2s2nYdgAAu9opvQ
-	(envelope-from <stable+bounces-225295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:37:15 +0100
+	id EOzzFCf5s2nWeQAAu9opvQ
+	(envelope-from <stable+bounces-225296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:46:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA442824E4
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:37:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F142826DF
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A3F0302E77F
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:37:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4977D302F406
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB61362125;
-	Fri, 13 Mar 2026 11:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D6A363098;
+	Fri, 13 Mar 2026 11:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KL4PJ99q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l18N0UmG"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3625635F616;
-	Fri, 13 Mar 2026 11:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2932877F6;
+	Fri, 13 Mar 2026 11:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773401827; cv=none; b=UcAjgVdVSgd+YiJKS/RtGxrXqXzYlKpDeLFP835hp2QiTGp9W6bOB6yoJpq3vZNcbs/3KzhhSuck5/HDM0n53RZnKb1ovXbUMLNpFe18OujsJ4/Je+8uqjB+vXgmWl57hUmyZabyTVOW6WXBy+AnJnWAkxJII3zdoYxk+Y4Ubi4=
+	t=1773402401; cv=none; b=t+6Oul0Qv6v/Qbor9YWA8uIY9j4jXlk2ByJI3n/tdqJzge1/D8c/Da/R9nb0ms52lSYulCJjvrOyzKoFZfUK6ZyBpCX69ClCdZXk0EHmk57ul4pSZLz2Ix165Tt/eyOqrF/5bwuKTOjXNK5Pkvv7prSiKcf0GqGV83MbwCTZi/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773401827; c=relaxed/simple;
-	bh=v+t/YcPItl9BmhKZbd4tDOxUNwcnc1sJiB9izierkCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZTYHqZpvSaoCCpaLuL5TXIBv4sJHMuWlRC+lihAmFY0bfU8PmEvFPH2qyXy3kR3+eqPF++AzGq4h/fndmlu9C+/I/Xs7VQy/FBpva49cEe06XOjF0bFt56kvJ80Xg2gNR6vS8VM2Y4k5zAwn703du5M0VukQWfQGlMEIrNNGa/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KL4PJ99q; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (mob-5-90-29-175.net.vodafone.it [5.90.29.175])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2BFFEF52;
-	Fri, 13 Mar 2026 12:35:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773401755;
-	bh=v+t/YcPItl9BmhKZbd4tDOxUNwcnc1sJiB9izierkCk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KL4PJ99qvyaJODrY+7+VkEkI9V16qA9u0cOROtX3a/yjoX4GcaSVx5pYBTU+bg3Ui
-	 eUy0+mjj6jelyhDy5QTYYhgsPDt7KHFzENmnM9IVCktMMuItGWkSk9whL0TdYJTToP
-	 P2cC4A+7ObzIu00OeJ3REEmSpcvQwZZYGLcDy7/c=
-Date: Fri, 13 Mar 2026 12:37:00 +0100
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Anthony McGivern <anthony.mcgivern@arm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Nayden Kanchev <Nayden.Kanchev@arm.com>, Konstantin Babin <Konstantin.Babin@arm.com>, 
-	Daniel Scally <dan.scally@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 4/6] media: mali-c55: Fix Iridix bypass macros
-Message-ID: <abP2maYiLNmnMFFr@zed>
-References: <20260313-mali-c55-fixes-v7-0-v1-0-21805b2b516b@ideasonboard.com>
- <20260313-mali-c55-fixes-v7-0-v1-4-21805b2b516b@ideasonboard.com>
- <36f2247c-cfd5-46b4-a16d-1afc3a6504d8@ideasonboard.com>
+	s=arc-20240116; t=1773402401; c=relaxed/simple;
+	bh=MKpOcpqNGirnFljtrZqJxY8MJ+ogzgLHLzhDGY7ue5Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=d+b0ELSgiacd436Q9kwpmtJuSNjeJ8962dEu60KaedrGPEiRG3R8f7Ef+66wAiAI7f243FgZbTYJ4HIifHuRxlogW5xzri3JoLOateTUDbxGa7qxdC1/IEA75jQK/Qmg0/ZBXR5YlKtg7SK1FN4amyFdOVZd0myD0xFUeR7x8tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l18N0UmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD1EC19421;
+	Fri, 13 Mar 2026 11:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773402401;
+	bh=MKpOcpqNGirnFljtrZqJxY8MJ+ogzgLHLzhDGY7ue5Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=l18N0UmGqs8YhyTgBxhgsryVSokfa0KC9rRLhpCJcfCuwTu6UHZLHiZZv3r63bfP4
+	 zNLhiJJelDcn4NLand0iZ2QvMxCsKIgYSF97upXRKiUBeQSYH5An6lOtU7dz4e4p0H
+	 RXM5bjIJuy1SJxUJurGpsw/XpizQ9kZDg0rGIpp9pjKxaguXl67kmWEhTS68VJdUfA
+	 Wed5QGqCqXXqUL79wLeRPR7y2snvwso3d7rlzFoyi4IlCDVMdfL+5EzUSIZD3jG7QE
+	 pZhe3J8El830NhFLB6Y3EqL39jRP9sTGj5BTj7GQuZJxHEULlXcMy9pdmuYmKJdAl+
+	 QQNdwP99XkDHQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Hendrik Donner <hd@os-cillation.de>
+Cc: Michael Walle <mwalle@kernel.org>,  Sanjaikumar V S
+ <sanjaikumarvs@gmail.com>,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  miquel.raynal@bootlin.com,
+  pratyush@kernel.org,  richard@nod.at,  sanjaikumar.vs@dicortech.com,
+  stable@vger.kernel.org,  tudor.ambarus@linaro.org,  vigneshr@ti.com
+Subject: Re: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI
+ sequence
+In-Reply-To: <8a1db3a5-09b3-4ef1-87e8-66553a81ec27@os-cillation.de> (Hendrik
+	Donner's message of "Fri, 6 Mar 2026 23:36:03 +0100")
+References: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
+	<20260223091733.47-1-sanjaikumarvs@gmail.com>
+	<DGM8HPC181AF.3FCCS4MIE4A43@kernel.org>
+	<8a1db3a5-09b3-4ef1-87e8-66553a81ec27@os-cillation.de>
+Date: Fri, 13 Mar 2026 11:46:37 +0000
+Message-ID: <2vxzpl58dk9u.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <36f2247c-cfd5-46b4-a16d-1afc3a6504d8@ideasonboard.com>
+Content-Type: text/plain
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225295-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225296-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.infradead.org,bootlin.com,nod.at,dicortech.com,linaro.org,ti.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:dkim,ideasonboard.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5AA442824E4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pratyush@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:url]
+X-Rspamd-Queue-Id: B0F142826DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Mar 06 2026, Hendrik Donner wrote:
 
-On Fri, Mar 13, 2026 at 12:15:10PM +0100, Barnabás Pőcze wrote:
-> 2026. 03. 13. 11:49 keltezéssel, Jacopo Mondi írta:
-> > From: Daniel Scally <dan.scally@ideasonboard.com>
-> >
-> > The Mali C55 Iridix block has a digital gain function and tone mapping
-> > function, whose enablement is controlled by two different bits
-> > in the BYPASS_3 register.
-> >
-> > Unfortunately, the "Gain" and "Tonemap" bypass bit definitions are the
-> > wrong way around. Swap them so that the ISP is now operated with the
-> > "Iridix Gain" block enabled and default configured at a x1.0 gain and
-> > with the "Iridix Tonemap" disabled, as it was originally intended.
+> Hello,
 >
-> As far as I can see the current upstream driver does not bypass either of them,
-> so swapping them will have no direct effect.
+> On 2/23/26 10:29, Michael Walle wrote:
+>> Hi,
+>> On Mon Feb 23, 2026 at 10:17 AM CET, Sanjaikumar V S wrote:
+>>>> Raises concern about writes ending at odd offsets potentially
+>>>> having the same issue
+>>>
+>>> The odd end address case (trailing byte) is already handled in the
+>>> existing code at lines 243-255:
+>>>
+>>> /* Write out trailing byte if it exists. */
+>>> if (actual != len) {
+>>>      ret = spi_nor_write_enable(nor);
+>>>      ...
+>>>      ret = sst_nor_write_data(nor, to, 1, buf + actual);
+>>> }
+>> Ah, I must be blind. I stopped reading at the write_disable.
+>> 
+>>> So write_enable is already called before writing the trailing
+>>> byte. My patch only addresses the odd start case where BP clears
+>>> WEL before the AAI sequence begins.
+>>>
+>>>> Suggests simplifying the conditional logic by removing the length
+>>>> check
+>>>
+>>> The condition `if (actual < len - 1)` avoids an unnecessary
+>>> write_enable when len == 1 (single byte write at odd address, no
+>>> AAI follows). But if you prefer unconditional write_enable for
+>>> simplicity, I can change it in v3.
+>> I know, but I actually don't like repeating the condition in the for
+>> loop. So I'd prefer to have a local "needs_write_enable" boolean
+>> which will be set to true. But then, I wouldn't care too much if
+>> there is a write enable followed by a write disable for a rare case.
+>> 
+>>>> Notes the patch lacks runtime testing
+>>>
+>>> I don't have the hardware setup to test odd-address writes at the
+>>> moment. The fix is based on code analysis. I have tested patch 2/2
+>>> (dirmap fallback) on hardware.
+>> I'm hesitant - because like I said, if there is really a bug - it
+>> would have never worked correctly, since day 1. But yeah, I've also
+>> read the datasheet and it clearly states that the byte write will
+>> clear the write enable latch.
+>> 
+>
+> i can confirm both patches fix real issues, i have similiar fixes
+> on a kernel tree i always wanted to clean up and upstream. Diffs
+> based on 6.6.127:
+>
+> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
+> index 197d2c1101ed5..eaa50561ede2c 100644
+> --- a/drivers/mtd/spi-nor/sst.c
+> +++ b/drivers/mtd/spi-nor/sst.c
+> @@ -155,6 +155,13 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+>                 if (ret)
+>                         goto out;
+>
+> +               ret = spi_nor_write_enable(nor);
+> +               if (ret)
+> +                       goto out;
+> +               ret = spi_nor_wait_till_ready(nor);
+> +               if (ret)
+> +                       goto out;
+> +
+>                 to++;
+>                 actual++;
+>         }
+>
+>
+> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+> index 1b0c6770c14e4..646bfb2e91a65 100644
+> --- a/drivers/mtd/spi-nor/core.c
+> +++ b/drivers/mtd/spi-nor/core.c
+> @@ -276,7 +276,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
+>         if (spi_nor_spimem_bounce(nor, &op))
+>                 memcpy(nor->bouncebuf, buf, op.data.nbytes);
+>
+> -       if (nor->dirmap.wdesc) {
+> +       if (nor->dirmap.wdesc && nor->program_opcode != SPINOR_OP_AAI_WP) {
 
-You're right, I swapped the patch order and in this version I sent out
-this comes before the actual iridix bypass
+Why is this better? This removes the use of dirmap for all flashes other
+than SST.
+
+>                 nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
+>                                               op.data.nbytes, op.data.buf.out);
+>         } else {
+>
+>
+> I think patch 2 of this series is the better approach though.
+
+There is a v4 here:
+https://lore.kernel.org/linux-mtd/20260311103057.29-1-sanjaikumarvs@gmail.com/T/#u
+
+Can you please review and test it so we can apply it?
 
 >
+> Regards,
+> Hendrik
 >
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 8ec187829a4c ("media: mali-c55: Fix Iridix bypass macros")
+>>> Please let me know if you'd like me to send a v3 with the
+>>> simplified unconditional write_enable.
+>> Please see above.
+>> -michael
+>> ______________________________________________________
+>> Linux MTD discussion mailing list
+>> http://lists.infradead.org/mailman/listinfo/linux-mtd/
 >
-> Where is this commit? I cannot seem to find it.
 
-Clearly, this doesn't make sense. I generated the fixes tag pointing
-it to this patch. I'll fix, thanks.
-
->
->
-> Reviewed-by: Barnabás Pőcze <barnabas.pocze@ideasonboard.com>
->
->
-> > Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > ---
-> >   drivers/media/platform/arm/mali-c55/mali-c55-registers.h | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-registers.h b/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
-> > index f5a148add1c8..f098effde7b4 100644
-> > --- a/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
-> > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
-> > @@ -128,8 +128,8 @@ enum mali_c55_interrupts {
-> >   #define MALI_C55_REG_BYPASS_3_SENSOR_OFFSET_PRE_SH	BIT(1)
-> >   #define MALI_C55_REG_BYPASS_3_MESH_SHADING		BIT(3)
-> >   #define MALI_C55_REG_BYPASS_3_WHITE_BALANCE		BIT(4)
-> > -#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(5)
-> > -#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(6)
-> > +#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(5)
-> > +#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(6)
-> >   #define MALI_C55_REG_BYPASS_4				0x18ec0
-> >   #define MALI_C55_REG_BYPASS_4_DEMOSAIC_RGB		BIT(1)
-> >   #define MALI_C55_REG_BYPASS_4_PF_CORRECTION		BIT(3)
-> >
->
+-- 
+Regards,
+Pratyush Yadav
 
