@@ -1,218 +1,121 @@
-Return-Path: <stable+bounces-225296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOzzFCf5s2nWeQAAu9opvQ
-	(envelope-from <stable+bounces-225296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:46:47 +0100
+	id MMhMM8T8s2mWewAAu9opvQ
+	(envelope-from <stable+bounces-225297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:02:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F142826DF
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:46:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A95A2829D8
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 13:02:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4977D302F406
-	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 11:46:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 471F2301B668
+	for <lists+stable@lfdr.de>; Fri, 13 Mar 2026 12:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D6A363098;
-	Fri, 13 Mar 2026 11:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559D837B03D;
+	Fri, 13 Mar 2026 12:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l18N0UmG"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FXHA9sHu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2932877F6;
-	Fri, 13 Mar 2026 11:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBC51DDC28;
+	Fri, 13 Mar 2026 12:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773402401; cv=none; b=t+6Oul0Qv6v/Qbor9YWA8uIY9j4jXlk2ByJI3n/tdqJzge1/D8c/Da/R9nb0ms52lSYulCJjvrOyzKoFZfUK6ZyBpCX69ClCdZXk0EHmk57ul4pSZLz2Ix165Tt/eyOqrF/5bwuKTOjXNK5Pkvv7prSiKcf0GqGV83MbwCTZi/g=
+	t=1773403317; cv=none; b=Frw8RLKTJN5gU+nU9tcEQPlBrhxt10APPmPK7wMfdzHOnC2+w0zBXFk82f/9z8GTfyqy2vFI+Ng6xAkQPb/xEX62cKqzi2WbrM4bsl7lPFcpE0E2rGFJFikmrqXtby4G3C1uSTMQqw9jSf7Z4NZE1xpSPvpqBFi4Z7bj5SdWfc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773402401; c=relaxed/simple;
-	bh=MKpOcpqNGirnFljtrZqJxY8MJ+ogzgLHLzhDGY7ue5Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=d+b0ELSgiacd436Q9kwpmtJuSNjeJ8962dEu60KaedrGPEiRG3R8f7Ef+66wAiAI7f243FgZbTYJ4HIifHuRxlogW5xzri3JoLOateTUDbxGa7qxdC1/IEA75jQK/Qmg0/ZBXR5YlKtg7SK1FN4amyFdOVZd0myD0xFUeR7x8tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l18N0UmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD1EC19421;
-	Fri, 13 Mar 2026 11:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773402401;
-	bh=MKpOcpqNGirnFljtrZqJxY8MJ+ogzgLHLzhDGY7ue5Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=l18N0UmGqs8YhyTgBxhgsryVSokfa0KC9rRLhpCJcfCuwTu6UHZLHiZZv3r63bfP4
-	 zNLhiJJelDcn4NLand0iZ2QvMxCsKIgYSF97upXRKiUBeQSYH5An6lOtU7dz4e4p0H
-	 RXM5bjIJuy1SJxUJurGpsw/XpizQ9kZDg0rGIpp9pjKxaguXl67kmWEhTS68VJdUfA
-	 Wed5QGqCqXXqUL79wLeRPR7y2snvwso3d7rlzFoyi4IlCDVMdfL+5EzUSIZD3jG7QE
-	 pZhe3J8El830NhFLB6Y3EqL39jRP9sTGj5BTj7GQuZJxHEULlXcMy9pdmuYmKJdAl+
-	 QQNdwP99XkDHQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Hendrik Donner <hd@os-cillation.de>
-Cc: Michael Walle <mwalle@kernel.org>,  Sanjaikumar V S
- <sanjaikumarvs@gmail.com>,  linux-kernel@vger.kernel.org,
-  linux-mtd@lists.infradead.org,  miquel.raynal@bootlin.com,
-  pratyush@kernel.org,  richard@nod.at,  sanjaikumar.vs@dicortech.com,
-  stable@vger.kernel.org,  tudor.ambarus@linaro.org,  vigneshr@ti.com
-Subject: Re: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI
- sequence
-In-Reply-To: <8a1db3a5-09b3-4ef1-87e8-66553a81ec27@os-cillation.de> (Hendrik
-	Donner's message of "Fri, 6 Mar 2026 23:36:03 +0100")
-References: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
-	<20260223091733.47-1-sanjaikumarvs@gmail.com>
-	<DGM8HPC181AF.3FCCS4MIE4A43@kernel.org>
-	<8a1db3a5-09b3-4ef1-87e8-66553a81ec27@os-cillation.de>
-Date: Fri, 13 Mar 2026 11:46:37 +0000
-Message-ID: <2vxzpl58dk9u.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1773403317; c=relaxed/simple;
+	bh=klnlkVZW5ooK6rH93PXh5pZHgx2YTaJnnl4cniAe3sg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VIxYcUyPnTbJLjJhVOXIQ765P2iA9H8g2WMGicxQe4yfUYJcX3IJyrr+ikaihr+stfrRAPNOhJGez/TyWPDHO9kLb3jJ3Xe2ETOUOPylB+XezxAAKUIA/rj2g7KWOcBUpAkCcIotrz2YNIFoMG1R4g0KPqnjrA3OaHz1RbVPh+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FXHA9sHu; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=e/6Qya3g2Az9z6Fvg6kLMSVvcFkL/b4Ek7bHah/8dLM=; b=FXHA9sHul41Ys2QXs4Zu4NGtlX
+	5faRTuDKmDL1l7vCJllr7BX0zVv/Er6w5Ve6/REzVZ8KfEM048h3Eyz0TJJ4N4bBfjUIOq1LuC27p
+	27A2yReVgSJS4/gp2taA7v2nDVMniKpmR6NSdPikVNqhFsQi/T3lG5QgtGXO+/y8WL9E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w11Cu-00BUPh-Nq; Fri, 13 Mar 2026 13:01:32 +0100
+Date: Fri, 13 Mar 2026 13:01:32 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Hongguang Gao <hongguang.gao@broadcom.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] bnxt_en: fix OOB access in DBG_BUF_PRODUCER async
+ event handler
+Message-ID: <be6c2fb6-1f34-4396-9b1d-3d1f156f3146@lunn.ch>
+References: <SYBPR01MB7881338BC956C39A9848EE86AF45A@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SYBPR01MB7881338BC956C39A9848EE86AF45A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225296-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.infradead.org,bootlin.com,nod.at,dicortech.com,linaro.org,ti.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225297-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pratyush@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[broadcom.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:url]
-X-Rspamd-Queue-Id: B0F142826DF
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:dkim,lunn.ch:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A95A2829D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 06 2026, Hendrik Donner wrote:
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -2929,6 +2929,8 @@ static int bnxt_async_event_process(struct bnxt *bp,
+>  		u16 type = (u16)BNXT_EVENT_BUF_PRODUCER_TYPE(data1);
+>  		u32 offset =  BNXT_EVENT_BUF_PRODUCER_OFFSET(data2);
+>  
+> +		if (type >= BNXT_TRACE_MAX)
+> +			goto async_event_process_exit;
+>  		bnxt_bs_trace_check_wrap(&bp->bs_trace[type], offset);
 
-> Hello,
->
-> On 2/23/26 10:29, Michael Walle wrote:
->> Hi,
->> On Mon Feb 23, 2026 at 10:17 AM CET, Sanjaikumar V S wrote:
->>>> Raises concern about writes ending at odd offsets potentially
->>>> having the same issue
->>>
->>> The odd end address case (trailing byte) is already handled in the
->>> existing code at lines 243-255:
->>>
->>> /* Write out trailing byte if it exists. */
->>> if (actual != len) {
->>>      ret = spi_nor_write_enable(nor);
->>>      ...
->>>      ret = sst_nor_write_data(nor, to, 1, buf + actual);
->>> }
->> Ah, I must be blind. I stopped reading at the write_disable.
->> 
->>> So write_enable is already called before writing the trailing
->>> byte. My patch only addresses the odd start case where BP clears
->>> WEL before the AAI sequence begins.
->>>
->>>> Suggests simplifying the conditional logic by removing the length
->>>> check
->>>
->>> The condition `if (actual < len - 1)` avoids an unnecessary
->>> write_enable when len == 1 (single byte write at odd address, no
->>> AAI follows). But if you prefer unconditional write_enable for
->>> simplicity, I can change it in v3.
->> I know, but I actually don't like repeating the condition in the for
->> loop. So I'd prefer to have a local "needs_write_enable" boolean
->> which will be set to true. But then, I wouldn't care too much if
->> there is a write enable followed by a write disable for a rare case.
->> 
->>>> Notes the patch lacks runtime testing
->>>
->>> I don't have the hardware setup to test odd-address writes at the
->>> moment. The fix is based on code analysis. I have tested patch 2/2
->>> (dirmap fallback) on hardware.
->> I'm hesitant - because like I said, if there is really a bug - it
->> would have never worked correctly, since day 1. But yeah, I've also
->> read the datasheet and it clearly states that the byte write will
->> clear the write enable latch.
->> 
->
-> i can confirm both patches fix real issues, i have similiar fixes
-> on a kernel tree i always wanted to clean up and upstream. Diffs
-> based on 6.6.127:
->
-> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-> index 197d2c1101ed5..eaa50561ede2c 100644
-> --- a/drivers/mtd/spi-nor/sst.c
-> +++ b/drivers/mtd/spi-nor/sst.c
-> @@ -155,6 +155,13 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->                 if (ret)
->                         goto out;
->
-> +               ret = spi_nor_write_enable(nor);
-> +               if (ret)
-> +                       goto out;
-> +               ret = spi_nor_wait_till_ready(nor);
-> +               if (ret)
-> +                       goto out;
-> +
->                 to++;
->                 actual++;
->         }
->
->
-> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-> index 1b0c6770c14e4..646bfb2e91a65 100644
-> --- a/drivers/mtd/spi-nor/core.c
-> +++ b/drivers/mtd/spi-nor/core.c
-> @@ -276,7 +276,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
->         if (spi_nor_spimem_bounce(nor, &op))
->                 memcpy(nor->bouncebuf, buf, op.data.nbytes);
->
-> -       if (nor->dirmap.wdesc) {
-> +       if (nor->dirmap.wdesc && nor->program_opcode != SPINOR_OP_AAI_WP) {
+Using ARRAY_SIZE(&bp->bs_trace) makes it clearer why you are doing the
+check.
 
-Why is this better? This removes the use of dirmap for all flashes other
-than SST.
+	Andrew
 
->                 nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
->                                               op.data.nbytes, op.data.buf.out);
->         } else {
->
->
-> I think patch 2 of this series is the better approach though.
-
-There is a v4 here:
-https://lore.kernel.org/linux-mtd/20260311103057.29-1-sanjaikumarvs@gmail.com/T/#u
-
-Can you please review and test it so we can apply it?
-
->
-> Regards,
-> Hendrik
->
->>> Please let me know if you'd like me to send a v3 with the
->>> simplified unconditional write_enable.
->> Please see above.
->> -michael
->> ______________________________________________________
->> Linux MTD discussion mailing list
->> http://lists.infradead.org/mailman/listinfo/linux-mtd/
->
-
--- 
-Regards,
-Pratyush Yadav
 
