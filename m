@@ -1,222 +1,185 @@
-Return-Path: <stable+bounces-225430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIjPLy6JtWn11QAAu9opvQ
-	(envelope-from <stable+bounces-225430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:13:34 +0100
+	id +H/cFOKStWnL2AAAu9opvQ
+	(envelope-from <stable+bounces-225431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:54:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DF228DD4F
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:13:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB73228DFBA
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13D08300D75E
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:13:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24F373034DD4
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C42937756D;
-	Sat, 14 Mar 2026 16:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7FA30F7F3;
+	Sat, 14 Mar 2026 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D1mSdLJG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sqdqzD1W";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D1mSdLJG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sqdqzD1W"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPrP7LnS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FFD34E768
-	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 16:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E603195F9
+	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 16:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773504806; cv=none; b=SsNHnFOKjuKov3DigMwlD7BwSPEvuueJPq9++v+Jx6YS/L2OlEVlYt9IXpwvEbAXrDdv97/lAn9SRxb93dsPpihnXZxXmSuQJW4imso9i6wv7mWnrGItBMf7nhVJr6u1A0BodVozsAUnnOlRQqVa9mRAZjm7jdO8Pj/qXzJ8/hQ=
+	t=1773507264; cv=none; b=muFS6IjGVYuf/cj8PB+xr/LlY4EUGMhp4msUt9gyg3egLSOPWmc5FSh+apOtELEmRupjnJzx78VmJvn39ZqEqz4g2XOumGUShaza5DHdSjhF+Qavt1jS4dHxuu/gJmKqrweHHwlpnYJYT8YPsUplfYH37hF6bJWe5oSBYVvRxro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773504806; c=relaxed/simple;
-	bh=Mae2/w4abHA8kh6yARLjOYoztZzFL7n+8muNpidz7NQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PPToSIjJQYbW4/pI41dQ86/U9dX/xbTQUna8tIc8bUc9hDv1kTqO1xWSdZ4QLNf25EU2Fl3hXQqMBopDe5HPvPnmtgL5I5x4fu5jTw6t5sOdrFvDtoJeXTsEMs9NO1U1mLqO3eXuSxQpF5xqpAYksNi4PaiMNXVIb3nSTG5g2y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D1mSdLJG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sqdqzD1W; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D1mSdLJG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sqdqzD1W; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9552C4D205;
-	Sat, 14 Mar 2026 16:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773504803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
-	b=D1mSdLJGmdUy+fajfjONs9n+A6zwNw4jByeBDrlshJtYB8vqvYnPK8Y23IeRni8do4kE0C
-	FlezAOH1d+TSzdcQiBcGbspqwycI0aoO0ey/WfQElVsg8GnCZ2mzeVwTsYh84o/0FLHfB+
-	/AYl28d2M3FvGsdOcpkRLPkxJwhdzqE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773504803;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
-	b=sqdqzD1WVnQoMhTrfUAveW9aXUjvvHY+MrT5wAYhELzU/ZrCVnpHnqKhgSJl6fYYsq7gxL
-	+d7+zkSX2o9nMGAA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=D1mSdLJG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sqdqzD1W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773504803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
-	b=D1mSdLJGmdUy+fajfjONs9n+A6zwNw4jByeBDrlshJtYB8vqvYnPK8Y23IeRni8do4kE0C
-	FlezAOH1d+TSzdcQiBcGbspqwycI0aoO0ey/WfQElVsg8GnCZ2mzeVwTsYh84o/0FLHfB+
-	/AYl28d2M3FvGsdOcpkRLPkxJwhdzqE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773504803;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
-	b=sqdqzD1WVnQoMhTrfUAveW9aXUjvvHY+MrT5wAYhELzU/ZrCVnpHnqKhgSJl6fYYsq7gxL
-	+d7+zkSX2o9nMGAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 985D842724;
-	Sat, 14 Mar 2026 16:13:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5u6pISKJtWnAKAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sat, 14 Mar 2026 16:13:22 +0000
-Message-ID: <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
-Date: Sat, 14 Mar 2026 17:13:14 +0100
+	s=arc-20240116; t=1773507264; c=relaxed/simple;
+	bh=Jij9gi3TsnS7xUAJHX5L0HW3kLeYqNjfpTF6uWaPqV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GXHNZe9KEh6PsX4h4oyp5FhzrA5DgM4HgfQTQWnAOn3hNDyywVhgJqYQtVgZtwv+KPaVN7G0rHzzx/2vV3Ms/QfijestZHgRtPdpO5XablY8R3Ou8zJ2JLHxEBfkEy5zh7WFOZXVO6OXCvxKj2a7sJS24oNLIPOYvLYLgvxvScs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPrP7LnS; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89a6ac6f389so42764466d6.3
+        for <stable@vger.kernel.org>; Sat, 14 Mar 2026 09:54:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773507260; x=1774112060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cPyKAj/9uBDc/GZMXJxB4GAuk/lnBgwa2DYDtcJI+Qs=;
+        b=PPrP7LnSWGe3DEd/JsWPEIPXmKmYN8fls0kUZwcCnMiMp3f+fUj+kpJuHHJBwaxCL+
+         lIEMu5FTCD/Z41wL7UnBo1h8AxM/leCvC8A2w31WdebNsZhBvIQ2aTOoN189GEoBfv2y
+         XRmL8jSzY6BhFA9cZ2HLaJV869+DqruLZiyVXW1FdvwAe2WIzOp39ZWZ4T7AAFBYkuBX
+         iDohF8ycvb4mYF7FDLzt/ysal+BuYc3iiF1fEM+KgE2ps6RczOFKt3deOVMo0Cm3VstH
+         wz3BhVykjCuu0BSy9DDMRuvbSTYzWDVpdoT867KWkbXCf+XCUHivI1RyC5HdJPN8O73f
+         /bxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773507260; x=1774112060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPyKAj/9uBDc/GZMXJxB4GAuk/lnBgwa2DYDtcJI+Qs=;
+        b=IpsMpimTXL0Z8lZM8MbGaaqjNtG8QX/hOZ6i32Dw0PjYNieEYVQOm9wByC6bksTxwK
+         bGHfDW00Mdyly9uPb48J5wL09AkzC75B4jVNVx/XuDTMKpL/eoJQz72LhDfKm5XeDCnI
+         wfZK2D21B6TiZCyjRQjS++uzwnvasrC5zx5A0DHLN+dB9tHyJVVYRmgztM/qxYrCttyw
+         rUfgFx07Ax034nx/1SuzwPJ94R2j4rAHjfibPmGsxgNOShd0toNfxg0bE0DmHJ4TZweY
+         Qijqbu3YSUp/rRrqRy5CNHVDRrZXwwhkxqU09XMGt0NQL+Yh/2hA4q2f7MFhPKKRl2Ug
+         yBDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbgkFNhAWBL3oL6v1vn3XbKGzWAr4Bodkoh1KCOLK2Z0VJYlVpCAQvkBkKUinEujHkMlAz62E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ4CG/m6Qk0i0g/yKvS7FCwbKPeAinvwIPrYmT5DYz7pDL7IHJ
+	osVC5mLLKzfptYT3AFWkTZrahI2jymPoV2zKrrSPfBbGey+l0d+L/ZZI
+X-Gm-Gg: ATEYQzx/p4Y87ATdvj+av16Vqn1YTmQO0CWIY1Spz9MsgyKHaWQ+LebW/6jF6TvaQUC
+	oTqwF6YzBSynPois3anGTxBeybW8FRi0g7pdOGs6LGEgIelGJeCzDspygBLntSSFOYg5AJ1K4+G
+	TNnsKwiSxaenRKtvnkcnyHbsuQNZKJz7JYv0E57lvijDNexSFg1+V9/lvy6ugEXpL3S/EvC2p/k
+	E6puPinDUeyXxlJRKlKgi4hDFE1fY8XwexAlC0+WkQbUwjlpfQ9XAmToAPYhsti38Z24mQ5AAep
+	H3BjnTvxtRWqHMQEcR0U97zdLZpmoPAoK+LsKpC81c1SsvTbxA31rBJbwhUEBYUoNCWNFM/pHbr
+	STo7BQkhOFwGMjjQAs0uizCi4JCjT7/+W2lXgVTt5ZgvHFrkArDNQ20fGvzrxwc/aZiUk8sO9mF
+	NLIuyL4L9W/GJyEzxIs0Go9yCOHp3XCayOlsTdyYTiRy/5Hp7/6d1i0J15L7voOL8UXo4HsrAxV
+	emj
+X-Received: by 2002:a05:6214:529d:b0:89a:f10:996e with SMTP id 6a1803df08f44-89a81cb9887mr107045666d6.6.1773507260019;
+        Sat, 14 Mar 2026 09:54:20 -0700 (PDT)
+Received: from CS-396-Lab-Machine.. (c-24-12-10-127.hsd1.il.comcast.net. [24.12.10.127])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65cd7f49sm83527896d6.34.2026.03.14.09.54.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 09:54:19 -0700 (PDT)
+From: Tyllis Xu <livelycarpet87@gmail.com>
+X-Google-Original-From: Tyllis Xu <LivelyCarpet87@gmail.com>
+To: gregkh@linuxfoundation.org,
+	arnd@arndb.de
+Cc: kees@kernel.org,
+	linux-kernel@vger.kernel.org,
+	ychen@northwestern.edu,
+	Tyllis Xu <LivelyCarpet87@gmail.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ibmasm: fix OOB reads in command_file_write due to missing size checks
+Date: Sat, 14 Mar 2026 11:53:54 -0500
+Message-ID: <20260314165355.548119-1-LivelyCarpet87@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [regression] Network failure beyond first connection after
- 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
- skipped")
-To: Salvatore Bonaccorso <carnil@debian.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>
-Cc: 1130336@bugs.debian.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <177349610461.3071718.4083978280323144323@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225430-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[debian.org,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,northwestern.edu,gmail.com];
+	TAGGED_FROM(0.00)[bounces-225431-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[livelycarpet87@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E8DF228DD4F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CB73228DFBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+The command_file_write() handler allocates a kernel buffer of exactly
+count bytes and copies user data into it, but does not validate the
+buffer against the dot command protocol before passing it to
+get_dot_command_size() and get_dot_command_timeout().
 
-On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
-> Control: forwarded -1 https://lore.kernel.org/regressions/177349610461.3071718.4083978280323144323@eldamar.lan
-> Control: tags -1 + upstream
-> 
-> Hi
-> 
-> In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
-> after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
-> update the count if add was skipped"), when the following rule is set
-> 
-> 	iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
-> 
-> connections get stuck accordingly, it can be easily reproduced by:
-> 
-> # iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
-> # nft list ruleset
-> # Warning: table ip filter is managed by iptables-nft, do not touch!
-> table ip filter {
->          chain INPUT {
->                  type filter hook input priority filter; policy accept;
->                  ip protocol tcp xt match "connlimit" counter packets 0 bytes 0 reject with tcp reset
->          }
-> }
-> # wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-> --2026-03-14 14:53:51--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-> Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
-> Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... connected.
-> HTTP request sent, awaiting response... 301 Moved Permanently
-> Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz [following]
-> --2026-03-14 14:53:51--  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
-> Reusing existing connection to git.kernel.org:443.
-> HTTP request sent, awaiting response... 200 OK
-> Length: unspecified [application/x-gzip]
-> Saving to: ‘/dev/null’
-> 
-> /dev/null                         [                         <=>                    ] 248.03M  51.9MB/s    in 5.0s
-> 
-> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
-> 
-> # wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-> --2026-03-14 14:53:58--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-> Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
-> Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... failed: Connection timed out.
-> Connecting to git.kernel.org (git.kernel.org)|2a01:7e01:e001:937:0:1991:8:25|:443... failed: Network is unreachable.
-> 
-> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
-> if add was skipped") commit this worked.
-> 
+Since both the allocation size (count) and the header fields (command_size,
+data_size) are independently user-controlled, an attacker can cause
+get_dot_command_size() to return a value exceeding the allocation,
+triggering OOB reads in get_dot_command_timeout() and an out-of-bounds
+memcpy_toio() that leaks kernel heap memory to the service processor.
 
-Thanks for the report. I have reproduced this on upstream kernel. I am 
-working on it.
+Fix with two guards: reject writes smaller than sizeof(struct
+dot_command_header) before allocation, then after copying user data
+reject commands where the buffer is smaller than the total size declared
+by the header (sizeof(header) + command_size + data_size). This ensures
+all subsequent header and payload field accesses stay within the buffer.
 
-Thanks,
-Fernando.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
+---
+ drivers/misc/ibmasm/ibmasmfs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> #regzbot introduced: 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e
-> #regzbot link: https://bugs.debian.org/1130336
-> 
-> Regards,
-> Salvatore
-> 
+diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
+index f68a8957b98f..dfdfa9ba4747 100644
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -303,6 +303,8 @@ static ssize_t command_file_write(struct file *file, const char __user *ubuff, s
+ 		return -EINVAL;
+ 	if (count == 0 || count > IBMASM_CMD_MAX_BUFFER_SIZE)
+ 		return 0;
++	if (count < sizeof(struct dot_command_header))
++		return -EINVAL;
+ 	if (*offset != 0)
+ 		return 0;
+ 
+@@ -319,6 +321,11 @@ static ssize_t command_file_write(struct file *file, const char __user *ubuff, s
+ 		return -EFAULT;
+ 	}
+ 
++	if (count < get_dot_command_size(cmd->buffer)) {
++		command_put(cmd);
++		return -EINVAL;
++	}
++
+ 	spin_lock_irqsave(&command_data->sp->lock, flags);
+ 	if (command_data->command) {
+ 		spin_unlock_irqrestore(&command_data->sp->lock, flags);
+-- 
+2.43.0
 
 
