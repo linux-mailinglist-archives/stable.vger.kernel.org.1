@@ -1,193 +1,179 @@
-Return-Path: <stable+bounces-225424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGozHstqtWkq0QAAu9opvQ
-	(envelope-from <stable+bounces-225424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 15:03:55 +0100
+	id +LO8CjJ4tWln0wAAu9opvQ
+	(envelope-from <stable+bounces-225425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:01:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F3528D6C1
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 15:03:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5604B28D986
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A5D5303989D
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 14:03:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E14BC301AD25
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 15:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FCB378D89;
-	Sat, 14 Mar 2026 14:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="naAjBzjc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA4A366548;
+	Sat, 14 Mar 2026 15:01:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.aaazen.com (99-33-87-210.lightspeed.sntcca.sbcglobal.net [99.33.87.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA098374E62
-	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 14:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF64D26AAAB;
+	Sat, 14 Mar 2026 15:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.33.87.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773497025; cv=none; b=C2Eh9ry8vI65AQrVpSBT/XR9PMLtnZpDzMjj6Fcb0TT2DM/nuWbkeQsBW4VLV2LYyguW9vJVV5qQSgP9byw5hOzuZ3Pfn7uclrsi72dOJaaiQTLe7zM4NgjGmyRAWwjwtYJccIw3+V/azbZZjqqeFacu+H82JvEcfBliH1fsyGk=
+	t=1773500460; cv=none; b=f8QmZFt1dW8BvdvgEkYAMA5tAC/VtxnMowy3AWNuCQZVu1ZqFpgWWAnQgaZCl2S/rdTKeT+kFbZLUYMJ3gWwdRIm4R/vdSCvCScelyh1kYflAOITbhoK5UIRqG4r1HXOcW8NtcFFDutKztJ44AOjLjCav0TSjzp9cARPmXo4tfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773497025; c=relaxed/simple;
-	bh=sgPSEBXiJzbLUZfpo/yiL7lSsuvwcrEZVoSXxcN8Trg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=RlcdeAek5Ay1ndD2XVkRrXzChP64gFqzx7cDO/tgIk5nhgg/l/bJmIqxmnUaADAobGfi9C67bbp4AHUxN/Gtaj9i8N0XPODqoTlC5Jg9EmAo+EwAzzZZllBA94ynlm1To53dqU4NThDA6YSYrMPMV1iZ62ur8sU5hmPN30ug+K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=naAjBzjc; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8cd80bea5f3so194734285a.3
-        for <stable@vger.kernel.org>; Sat, 14 Mar 2026 07:03:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773497023; x=1774101823; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ozggT4VxXxi8nNocpv6bPtGBFv9+GusqHxKISYZjKwg=;
-        b=naAjBzjcKOhTPuzjMw4A3c5mCvmKOuEcqDolxMAdROPVIR2Zqvb992FrptAvczZ1Gv
-         Cn8B73JNKdfMpD+oaeptKTMvvjU8qVWvVDgf5wT8jCUNnvkOib1QFKooFYxXyl3SJ9tN
-         PzICESDCJbEG675cNKUQiKoJyUdRI645Zr1NDLldq33XuNn3RBBTEGdTSA8ycXmeu5+Y
-         c709/5Zzv/RuBR6IV2NaQN7A5M5j+H0tI6QwawR013pc35SUmj9x+dw/fDEr++4WNhKZ
-         lVtK29R2wwfYfHf38f7ZthLHstSdCeGGBJP6JSmQin4Rr91JwrZUXCNZ3KTOnmHI9LTQ
-         2CZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773497023; x=1774101823;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ozggT4VxXxi8nNocpv6bPtGBFv9+GusqHxKISYZjKwg=;
-        b=nm42VTS2jccQtnhFko7peCAjjEy30vF4rCPMvYH753TWFDUO5og/rNtRdfK/Gp7spA
-         izsPdc/LYihviRo+/HGPYzALmmUQL7p2UhA1O9hMkk+Iq1Gx8pOy35zyrVh00CLcDqj2
-         ZwxC6uSs9qEi1RXlaS2WTEaV3iU0gb4lWCbq86rMbo60n39b5NoLrAINb1AZo4bbPfjX
-         NHxbF5eDOB/7f2LkZPtD5QRwmZTcgQSTU7GZ1wrM7+LpKpwraufeK0m1T0CKudB/vExG
-         c1GoXWjTV5S/IDHivJQlgsiD54AS1/lsIrUnWagFiWWP+Ux6VM/oB86c1eIbShMj6RLj
-         vLOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRtpMdmmrWaNr3uzooNplCVftNMy8dyYpKXfv0kRj243GEwyRl5UfF1QCVlbrI6ZvPlRgaz+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKlfDwn89CVaKNp4Ht2JQ8fYUKFrWnGLMDqW0NPARUNvgknZQl
-	KR5XPauqO2ZKgIvx6tfD1PzZm+xpQdRv4QfQg5iRNyJMkjDORM8/dqPt
-X-Gm-Gg: ATEYQzx98oTVRGwZwET7cz/LQpQipJSHgTUj7AWNqgUz5qhSWyxcI9nJwqBNwgM3PhH
-	xYygk/6Om/7vTdJ67VEg7TdwiNYIFdZJ6IUgBhkfE//hhqJZbA6bptbtC+LrXQUfF3vYOvSWic9
-	TzGJrrtdOaQiYVVuFhaPEpdiFkYdtRKdiMIqiHdv7OJYiReeT8Ak0toikiO6nyPsaDpFA6FoA8b
-	ZdOtlIuvZgWqhujF9bN2KIw2KxCjSkITq03KRQxnHqhW1+7daOmUsEOlzjuzYXETMkLvwq5PtEM
-	RZDxhLWRraMCarEwfaPHcjDO7bKhX8ONzvwDbUhVaX1AAnM0KaGSWth0uZYX6UONFq6zG+GgBnf
-	R/yIj1ykxQG3pik9OyZmHYp+LIYOU6+2ifnOkzb6aWIkiN8E/XTQZmfWKHCshb+nLeLY9snnXoq
-	Ac08vuo1JHRMjdbOmLTS5c2v8qYNt9TZJQiT0z8D/Vhsy4FerjREatGpADERo42TXhmbvXjQ==
-X-Received: by 2002:a05:6214:5907:b0:89c:44f9:e879 with SMTP id 6a1803df08f44-89c44f9e989mr4328376d6.49.1773497022499;
-        Sat, 14 Mar 2026 07:03:42 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-247-196.customer.ggaweb.ch. [82.192.247.196])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65cfc85dsm78266516d6.37.2026.03.14.07.03.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 07:03:41 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id F187DBE2EE7; Sat, 14 Mar 2026 15:03:38 +0100 (CET)
-Date: Sat, 14 Mar 2026 15:03:38 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>
-Cc: 1130336@bugs.debian.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [regression] Network failure beyond first connection after
- 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
- skipped")
-Message-ID: <177349610461.3071718.4083978280323144323@eldamar.lan>
+	s=arc-20240116; t=1773500460; c=relaxed/simple;
+	bh=2pU54HCPZnv78c96M8Vd4vM7vortapSFQYle0mPNuwk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=q00Gip151eXcmZJkV5ZlWxqdfyqZv6ELqSF70wYBFdp0GBsCMSy57+ZPIAbDM5dK6QmoKqyLDci2ipY2Zg1mC7i2rdVNoqfHEfXmo6vTMbmLn01QKB9gxkZhda35kHKehJYr2v5vqF9zykZKx6R5MIrJ4lff8A0DJDDwXnmKwUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com; spf=pass smtp.mailfrom=aaazen.com; arc=none smtp.client-ip=99.33.87.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaazen.com
+Received: from localhost (localhost [127.0.0.1])
+	by thursday.test (OpenSMTPD) with ESMTP id 21360fc3;
+	Sat, 14 Mar 2026 08:00:57 -0700 (PDT)
+Date: Sat, 14 Mar 2026 08:00:57 -0700 (PDT)
+From: Richard Narron <richard@aaazen.com>
+X-X-Sender: richard@thursday.test
+To: Cal Peake <cp@absolutedigital.net>
+cc: Sasha Levin <sashal@kernel.org>, 
+    Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+    Linux stable <stable@vger.kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>, jslaby@suse.cz, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Patrick Volkerding <volkerdi@gmail.com>
+Subject: Re: Linux 6.18.17 -- build regression
+In-Reply-To: <403d62bf-e375-4bf5-a5be-f1792a52010@absolutedigital.net>
+Message-ID: <f7968de1-ecf0-e0f4-2a39-957b4dc7f35@aaazen.com>
+References: <20260312112454.940017-1-sashal@kernel.org> <b1844e83-80a5-973e-93bd-9e721e27ebb@absolutedigital.net> <abNdx_cQR_BqMm3z@laps> <358262e8-70ca-9db3-1774-9170cc69dae7@aaazen.com> <403d62bf-e375-4bf5-a5be-f1792a52010@absolutedigital.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225424-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[suse.de,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225425-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linux-foundation.org,suse.cz,linuxfoundation.org,gmail.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[aaazen.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[richard@aaazen.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[eldamar.lan:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 18F3528D6C1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,aaazen.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: 5604B28D986
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Control: forwarded -1 https://lore.kernel.org/regressions/177349610461.3071718.4083978280323144323@eldamar.lan
-Control: tags -1 + upstream
+On Fri, 13 Mar 2026, Cal Peake wrote:
 
-Hi
+> On Fri, 13 Mar 2026, Richard Narron wrote:
+>
+> > On Thu, 12 Mar 2026, Sasha Levin wrote:
+> >
+> > > Could you please confirm that cherry-picking 93d0fcdddc9e ("cxl/acpi: Fix
+> > > CXL_ACPI and CXL_PMEM Kconfig tristate mismatch") fixes the issue you're
+> > > seeing?
+> > >
+> > Hello Sasha,
+> >
+> >    Patrick Volkerding found a patch that worked for me:
+> >
+> > https://lore.kernel.org/lkml/20260302200429.803417-1-gourry@gourry.net/
+> >
+> >    In drivers/cxl/acpi.c
+> >     static int cxl_acpi_probe(struct platform_device *pdev)
+> >     it changes IS_ENABLED(CONFIG_CXL_PMEM)
+> >             to IS_REACHABLE(CONFIG_CXL_PMEM)
+> >
+>
+> Hi Richard, Pat,
+>
+> Below is the commit that Sasha pointed me to that fixes the issue for me
+> if you'd like to have a look.
+>
+> --
+> Cal Peake
+>
+> >From 93d0fcdddc9e7be9d4f42acbe57bc90dbb0fe75d Mon Sep 17 00:00:00 2001
+> From: Keith Busch <kbusch@kernel.org>
+> Date: Thu, 5 Mar 2026 12:40:56 -0800
+> Subject: cxl/acpi: Fix CXL_ACPI and CXL_PMEM Kconfig tristate mismatch
+>
+> Commit e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to
+> cxl_pmem.ko") moves devm_cxl_add_nvdimm_bridge() into the cxl_pmem file,
+> which has independent config compile options for built-in or module. The
+> call from cxl_acpi_probe() is guarded by IS_ENABLED(CONFIG_CXL_PMEM),
+> which evaluates to true for both =y and =m.
+>
+> When CONFIG_CXL_PMEM=m, a built-in cxl_acpi attempts to reference a
+> symbol exported by a module, which fails to link. CXL_PMEM cannot simply
+> be promoted to =y in this configuration because it depends on LIBNVDIMM,
+> which may itself be =m.
+>
+> Add a Kconfig dependency to prevent CXL_ACPI from being built-in when
+> CXL_PMEM is a module. This contrains CXL_ACPI to =m when CXL_PMEM=m,
+> while still allowing CXL_ACPI to be freely configured when CXL_PMEM is
+> either built-in or disabled.
+>
+> [ dj: Fix up commit reference formatting. ]
+>
+> Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
+> Signed-off-by: Keith Busch <kbusch@kernel.org>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Link: https://patch.msgid.link/20260305204057.1516948-1-kbusch@meta.com
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/cxl/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index 4589bf11d3fe00..80aeb0d556bd76 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -59,6 +59,7 @@ config CXL_ACPI
+>  	tristate "CXL ACPI: Platform Support"
+>  	depends on ACPI
+>  	depends on ACPI_NUMA
+> +	depends on CXL_PMEM || !CXL_PMEM
+>  	default CXL_BUS
+>  	select ACPI_TABLE_LIB
+>  	select ACPI_HMAT
+> --
+> cgit 1.2.3-korg
+>
+>
+Hi Cal and Sasha,
 
-In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
-after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
-update the count if add was skipped"), when the following rule is set
+I tested the patch and it gave me a clean build.
 
-	iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
+Patrick found a "no-patch" configuration solution:
 
-connections get stuck accordingly, it can be easily reproduced by:
+   Change CXL_ACPI=y to CXL_ACPI=m
 
-# iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
-# nft list ruleset
-# Warning: table ip filter is managed by iptables-nft, do not touch!
-table ip filter {
-        chain INPUT {
-                type filter hook input priority filter; policy accept;
-                ip protocol tcp xt match "connlimit" counter packets 0 bytes 0 reject with tcp reset
-        }
-}
-# wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
---2026-03-14 14:53:51--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
-Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... connected.
-HTTP request sent, awaiting response... 301 Moved Permanently
-Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz [following]
---2026-03-14 14:53:51--  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
-Reusing existing connection to git.kernel.org:443.
-HTTP request sent, awaiting response... 200 OK
-Length: unspecified [application/x-gzip]
-Saving to: ‘/dev/null’
-
-/dev/null                         [                         <=>                    ] 248.03M  51.9MB/s    in 5.0s
-
-2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
-
-# wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
---2026-03-14 14:53:58--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
-Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
-Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... failed: Connection timed out.
-Connecting to git.kernel.org (git.kernel.org)|2a01:7e01:e001:937:0:1991:8:25|:443... failed: Network is unreachable.
-
-Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
-if add was skipped") commit this worked.
-
-#regzbot introduced: 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e
-#regzbot link: https://bugs.debian.org/1130336
-
-Regards,
-Salvatore
+which I also tested and it also gave me a clean build.
 
