@@ -1,172 +1,276 @@
-Return-Path: <stable+bounces-225420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id axF8DgVVtWnAzQAAu9opvQ
-	(envelope-from <stable+bounces-225420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:31:01 +0100
+	id t64bF6hWtWkMzgAAu9opvQ
+	(envelope-from <stable+bounces-225421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:38:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273F628D23C
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:31:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFC328D2AC
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BFC023011D46
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 12:30:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 656193016EC8
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 12:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAC11AA1F4;
-	Sat, 14 Mar 2026 12:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6E425F96B;
+	Sat, 14 Mar 2026 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="KFyCjgek"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XR3DcV50"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97891DD9AC;
-	Sat, 14 Mar 2026 12:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B72926F46E
+	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 12:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773491452; cv=none; b=uNJKtXihM/HqPvIz8ozw3pafH8eDEJV/HnSH4J2O9oQLf2YuKCC4a0wd8boEJOT8aLJM8FBlysRsWBsPcCTFZ1NHeW8tE/x8tvftfjnHdFt2olket5BTYxvFZo31g1iFTQX4NXT2WdLxVbp/8ZUmBbYjZFDXGTeLI9hXIDih1+U=
+	t=1773491876; cv=none; b=n+KNZWgGb4L853EIZlCaLdx83F+TpG+uidD970wMtMLG26duC0XruIG9MdOnp3sUsbWZCEgRmZ67DqhSPn3NQhD0C8uTkJTvgT3EX4inGp3V7Bb4qmThQBiGEVFfFxeCW9v2BksQRVzCZBOSRpLm77MZMUxlfjOKr7323oZJFeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773491452; c=relaxed/simple;
-	bh=9ZK2vTkCbsS5uxnoWel8n1PDRrnyWVIPtUMBJGP84mM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d2x05Qyxryihakw8ucwqvxFt29z6/eWyGalREIr+6s/r5YLbyq8nDuQFXmrMKxd1A2xsULBQbWnPUi+ZWk0ZDdjVTW8JT5E1Pi8I0VaAWopWerAx5Ykaane5P1lZnhVNf+/e5eC9cKEjOT04G9gQ8mp3VAa7J0T4w9VkuyrHWWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=KFyCjgek; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 6506F14C2D6;
-	Sat, 14 Mar 2026 13:30:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1773491447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VcoWzFo2iytvBU59qSwVkLxsYp37sXMszYQYBam9i0c=;
-	b=KFyCjgekH3VZNvEK1Lo/dG2gqjqtWALYEA5viHfhjhlY0lNXYsL6ISTAHhVrsVEdRBtqTp
-	TytgEBqJKgzVHqP8BBbau0iToaUc7IRtTRTrzvc3FYJhS0O99JjbJ5eqX0ylR3Vdkq7qEb
-	7LC/3Q+QayzQ0e/vMUmykycZ+26iooe2YfmM2CfR3RBEnwYU2/cwojnqQQiRNG8JTG/u2e
-	5TftV0qfWen521PoAGRLTgP/IkxocKBTMZNmualiHNxVV8RxNrrcsVtpU40UuFpXjvEi7A
-	/f3TmLVOaXKeKgnvzZaVvBDZi1jV1cVgLnQ61L7KftpPMIw47KEE80HAkgqv5w==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4374c7c6;
-	Sat, 14 Mar 2026 12:30:42 +0000 (UTC)
-Date: Sat, 14 Mar 2026 21:30:27 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Hyungjung Joo <jhj140711@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	m.grzeschik@pengutronix.de, gregkh@linuxfoundation.org,
-	v9fs@lists.linux.dev, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
-Message-ID: <abVU46kfH0K5I6OY@codewreck.org>
-References: <20260313171659.1225180-1-jhj140711@gmail.com>
- <abT5tabfYV9a9RF_@codewreck.org>
- <CAP_j_b9i2n+ZUriWceZJgAKz_MeGMFkRiOz7yCYE4as4T6auVQ@mail.gmail.com>
+	s=arc-20240116; t=1773491876; c=relaxed/simple;
+	bh=z5AD4JniElssw7dAZ3Z2sfNgq0aQO8sOOb3qGgHe3LU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iapTJRcaK/dGERxzoZJAq2xQXCGVfXQoiF8YKi21OY0Q18sUCQxZ697ZZPIgwFToDR4BXO8xX8zub2TOu/WmV4PUo3AxzjM81QqDJL+P8GrINbt6Wupe5dN8z+dmXgkALAbzVr2UgsfTn/XBVM/wnRUT3sKFR+9kfGJpn9tZhVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XR3DcV50; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ab232cc803so14812165ad.3
+        for <stable@vger.kernel.org>; Sat, 14 Mar 2026 05:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773491875; x=1774096675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ch0eaxVQ4/ts2cf46sQ450Wifko7pmpNDC0czkFsQbk=;
+        b=XR3DcV50O2XxLiQpqzCAMkbgY8hoGrNVcoru0cycEVQuzkUynVoJFkIWyRjP/71eil
+         oO0nB6b1Glb4h+ZZ4Yn2BV7jx3kqjTzA1eRR8+y83tuP8Q34bhnXA6ujG8eGte+AOnXg
+         l2laMb3cnQUvDXJfWEFuBA8LXRdxOF/HnIAjoZyoUGNj0FUl5lFRm2nkDh2PYDvknJI0
+         g0w3RJoCPEhkaWaq5HqQSt29CgeuO3Xe7SyXoXgLgkFBVrYCLYh+YeXWjuAP5qy0KXT0
+         5SUIjzuqEdXSKPuP70Nk0MsNk48oKZhZM8aTO8SRjx7JW7nDTUnYtBhKllOdjbhsKnDN
+         MWUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773491875; x=1774096675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ch0eaxVQ4/ts2cf46sQ450Wifko7pmpNDC0czkFsQbk=;
+        b=GE2FxS9/ou91ggHwJjsudPjaoeOqM95zKhxo/byHFZSiFS6XuMFLMWeZhhdZ+7+Xml
+         TAzWqjZWft1yjWtXg9QZbIvUoerzxICmmJSf298Xhu8KksACR45fAfnXJD7oSRKnblou
+         9P/W6I+/eqWpy8ixsHDZTxCkBI3XHFLAEnMz5fVxOFL9crAnlMATMfOtpFC/01fVF3NL
+         AgQDy3HyD02Fmqt9+K4VsOsWqfcPFj4bYoBCUwLkaGPHbttA6ua0jv0Q1pq6p9LFLs/s
+         Tcmwi4s/xy0IHj+pcopPz8RkTqAN7xRfyerTjpHPvFen9x9ePE9LtZI4haWGad5B1uVG
+         Kfkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdskTMV3pKGSni+7glC7jbmxU6WUGWskTPExuGjB+MR66o7y/poixrPXlDylaCSjzFWmG+UE0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/S9FezCvCNJHzWeKxGg+esiMsp8jgnyzZPh9WLpo1PCq21kD2
+	nxzHtMiZqvMZ00rvDcKC1P637cia9ipk0wewjW0ggG3KHnDAaXJMkwrL
+X-Gm-Gg: ATEYQzy8g0AvUobHLF/nLaIARyoj1Ysb9jab8Uynry/UH+G4zGxIA7rWb8QLUN2X4Wb
+	Lgr9A8JOiWRYRi3UKnE931TNtyt1uhwBpliagJrXWyQjo4KvwDkTBuOpDJ0Q7gIGFvCvlG9qlnk
+	5ZolRFdgv0kjht1hvBJTeHwUCsjlquBsNVw0wG/EQp+24DJx4RYtBaydHmN3ZapnITykPHMmGEg
+	cUsHhon5LZyGjS2tIzZhy/dLaRxlKbjLFmJYBXgOhWhdze775hl3fcEX2qTY45j2XuImrzdYZr6
+	smg1+0Gu9yFOqb32ONghsqAlI12WI0vV21Pio9YeDCq6RFJYZEjguKmslmZ6e94tQ9jn6b7GyyU
+	t0juQfRZ1bmg8aJjFgmFu3cUfdnxI/rK5ttT/5SEf4OYnpaDI1dNyaWNOWUOzFJ9DWekRjW5iII
+	AhLV7695wH6d0kPwQPu0dUsiUGtnvbmrOebnK37DTbe4AK2mRz4328nJyUv9WTW45cI0+9P5E=
+X-Received: by 2002:a17:903:20ce:b0:2ae:6031:bc59 with SMTP id d9443c01a7336-2aecaa1504emr50150105ad.30.1773491874677;
+        Sat, 14 Mar 2026 05:37:54 -0700 (PDT)
+Received: from kernel-fuzz.. ([103.172.183.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece56e0b8sm63561935ad.16.2026.03.14.05.37.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 05:37:54 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: dsterba@suse.com,
+	clm@fb.com,
+	idryomov@gmail.com
+Cc: linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] btrfs: balance: fix null-ptr-deref in chunk_usage_filter
+Date: Sat, 14 Mar 2026 20:37:39 +0800
+Message-ID: <20260314123741.1439792-2-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260314123741.1439792-1-gality369@gmail.com>
+References: <20260314123741.1439792-1-gality369@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAP_j_b9i2n+ZUriWceZJgAKz_MeGMFkRiOz7yCYE4as4T6auVQ@mail.gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[codewreck.org,none];
-	R_DKIM_ALLOW(-0.20)[codewreck.org:s=2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[codewreck.org:+];
-	TAGGED_FROM(0.00)[bounces-225420-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-225421-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[suse.com,fb.com,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmadeus@codewreck.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 273F628D23C
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: ECFC328D2AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hyungjung Joo wrote on Sat, Mar 14, 2026 at 04:24:19PM +0900:
-> Thanks for the careful review.
-> 
-> > Just to make sure the problem is the usb9pfs struct being freed, not the
-> > p9_client itself which is still alive after the usb device is gone
-> > (until umount)?
-> 
-> The issue I am addressing is the stale use of the usb9pfs->client
-> association after the transport has been closed. I am not relying on
-> early free of struct f_usb9pfs for this bug.
-> 
-> The lifetime mismatch here is that struct f_usb9pfs belongs to the
-> gadget function and can be reused across mount sessions, while
-> struct p9_client is per-mount. On the close path, p9_usbg_close() did
-> not detach usb9pfs->client, so late TX/RX completions could still
-> follow that pointer after close, including into a later remount that
-> rebinds it.
+[BUG]
+Running btrfs balance with a usage filter (-dusage=N) can trigger a
+null-ptr-deref when metadata corruption causes a chunk to have no
+corresponding block group in the in-memory cache:
 
-Ah, you did write p9_usbg_close() in the commit message and I skipped
-over it too fast...
+  KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+  RIP: 0010:chunk_usage_filter fs/btrfs/volumes.c:3874 [inline]
+  RIP: 0010:should_balance_chunk fs/btrfs/volumes.c:4018 [inline]
+  RIP: 0010:__btrfs_balance fs/btrfs/volumes.c:4172 [inline]
+  RIP: 0010:btrfs_balance+0x2024/0x42b0 fs/btrfs/volumes.c:4604
+  ...
+  Call Trace:
+    btrfs_ioctl_balance fs/btrfs/ioctl.c:3577 [inline]
+    btrfs_ioctl+0x25cf/0x5b90 fs/btrfs/ioctl.c:5313
+    vfs_ioctl fs/ioctl.c:51 [inline]
+    ...
 
-I also misread your locking, I thought you were just getting a client
-pointer under lock, but you're also using it only within the lock (so
-there is no benefit from using a local variable as far as locking goes,
-but releasing the lock early would be invalid as the client itself is
-freed immediately after close...)
+The bug is reproducible on next-20260312 with our dynamic metadata
+fuzzing tool, which corrupts btrfs metadata at runtime.
 
-From a performance point of view I think making close() stop the ep and
-wait until any in flight calls would be better than taking the lock all
-the time, but I'm not sure how visible that'd actually be on real
-workloads... close() can take as long as you want, it's perfectly fine
-to sleep there until the usb side has finished flushing if you want.
-I'm curious what approach Michael picked?
+[CAUSE]
+Two separate data structures are involved:
 
+1. The on-disk chunk tree, which records every chunk (logical address
+   space region) and is iterated by __btrfs_balance().
+2. The in-memory block group cache (fs_info->block_group_cache_tree),
+   which is built at mount time by btrfs_read_block_groups() and holds
+   a struct btrfs_block_group for each chunk. This cache is what the
+   usage filter queries.
 
-> > I'm surprised free_func isn't called after unbind, which should stop the
-> > queues (through disable_usb9pfs)?
-> > or are the ep being disabled not enough to ensure the callbacks are not
-> > in use? (e.g. disabling prevents further calls, but doesn't wait for
-> > currently running/queued requests?)
-> 
-> My understanding is that the unbind/free_func path is different from the
-> close path at issue here. This patch is not trying to change or rely on
-> gadget teardown ordering; it addresses the close-side race where
-> usb9pfs->client remained attached and the completion paths still
-> dereferenced it.
+On a well-formed filesystem, these two are kept in 1:1 correspondence.
+However, btrfs_read_block_groups() builds the cache from block group
+items in the extent tree, not directly from the chunk tree. A corrupted
+image can therefore contain a chunk item in the chunk tree whose
+corresponding block group item is absent from the extent tree; that
+chunk's block group is then never inserted into the in-memory cache.
 
-Yes, transport close corresponds to a umount call, and is unrelated to
-usb lifetime; I was thinking of the other way around (usb device
-disappearing while the mount is still alive)
+When balance iterates the chunk tree and reaches such an orphaned chunk,
+should_balance_chunk() calls chunk_usage_filter(), which queries the block
+group cache:
 
-> That is why the patch:
-> - clears usb9pfs->client under usb9pfs->lock on close,
-> - detaches any pending TX request from in_req->context, and
-> - makes TX/RX completions bail out once the transport has been detached.
-> 
-> So the intent is to prevent late completions from using a stale or
-> rebound client association after close, rather than to claim an early
-> free of the gadget object itself.
+  cache = btrfs_lookup_block_group(fs_info, chunk_offset);
+  chunk_used = cache->used;   /* cache may be NULL */
 
-Thank you for the details (and the patch!); I'll have a deeper look
-after hearing back from Michael
+btrfs_lookup_block_group() returns NULL silently when no cached entry
+covers chunk_offset. chunk_usage_filter() does not check the return value,
+so the immediately following dereference of cache->used triggers the crash.
 
+[FIX]
+Add a NULL check after btrfs_lookup_block_group() in chunk_usage_filter().
+When the lookup fails, emit a btrfs_err() message identifying the
+affected bytenr and return -EUCLEAN to indicate filesystem corruption.
+
+Since the filter function now has an error return path, change its
+return type from bool to int (negative = error, 0 = do not balance,
+positive = balance). Update should_balance_chunk() accordingly (bool ->
+int, with the same convention) and add error propagation for the usage
+filter path. Finally, handle the new negative return in __btrfs_balance()
+by jumping to the existing error path, which aborts the balance
+operation and reports the error to userspace.
+
+After the fix, the same corruption is correctly detected and reported
+by the filter, and the null-ptr-deref is no longer triggered.
+
+Fixes: 5ce5b3c0916b ("Btrfs: usage filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+ fs/btrfs/volumes.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 2bec544d8ba3..7c21ac249383 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3863,14 +3863,20 @@ static bool chunk_usage_range_filter(struct btrfs_fs_info *fs_info, u64 chunk_of
+ 	return ret;
+ }
+ 
+-static bool chunk_usage_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
+-			       struct btrfs_balance_args *bargs)
++static int chunk_usage_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
++			      struct btrfs_balance_args *bargs)
+ {
+ 	struct btrfs_block_group *cache;
+ 	u64 chunk_used, user_thresh;
+ 	bool ret = true;
+ 
+ 	cache = btrfs_lookup_block_group(fs_info, chunk_offset);
++	if (!cache) {
++		btrfs_err(fs_info,
++			  "balance: chunk at bytenr %llu has no corresponding block group",
++			  chunk_offset);
++		return -EUCLEAN;
++	}
+ 	chunk_used = cache->used;
+ 
+ 	if (bargs->usage_min == 0)
+@@ -3986,8 +3992,8 @@ static bool chunk_soft_convert_filter(u64 chunk_type, struct btrfs_balance_args
+ 	return false;
+ }
+ 
+-static bool should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk *chunk,
+-				 u64 chunk_offset)
++static int should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk *chunk,
++				u64 chunk_offset)
+ {
+ 	struct btrfs_fs_info *fs_info = leaf->fs_info;
+ 	struct btrfs_balance_control *bctl = fs_info->balance_ctl;
+@@ -4014,9 +4020,13 @@ static bool should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk
+ 	}
+ 
+ 	/* usage filter */
+-	if ((bargs->flags & BTRFS_BALANCE_ARGS_USAGE) &&
+-	    chunk_usage_filter(fs_info, chunk_offset, bargs)) {
+-		return false;
++	if (bargs->flags & BTRFS_BALANCE_ARGS_USAGE) {
++		int filter_ret = chunk_usage_filter(fs_info, chunk_offset, bargs);
++
++		if (filter_ret < 0)
++			return filter_ret;
++		if (filter_ret)
++			return false;
+ 	} else if ((bargs->flags & BTRFS_BALANCE_ARGS_USAGE_RANGE) &&
+ 	    chunk_usage_range_filter(fs_info, chunk_offset, bargs)) {
+ 		return false;
+@@ -4172,6 +4182,10 @@ static int __btrfs_balance(struct btrfs_fs_info *fs_info)
+ 		ret = should_balance_chunk(leaf, chunk, found_key.offset);
+ 
+ 		btrfs_release_path(path);
++		if (ret < 0) {
++			mutex_unlock(&fs_info->reclaim_bgs_lock);
++			goto error;
++		}
+ 		if (!ret) {
+ 			mutex_unlock(&fs_info->reclaim_bgs_lock);
+ 			goto loop;
 -- 
-Dominique Martinet | Asmadeus
+2.43.0
+
 
