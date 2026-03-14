@@ -1,131 +1,139 @@
-Return-Path: <stable+bounces-225442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAnjDnW3tWkj4AAAu9opvQ
-	(envelope-from <stable+bounces-225442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:31:01 +0100
+	id CBwUE2i5tWmc4AAAu9opvQ
+	(envelope-from <stable+bounces-225443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:39:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C627C28E9C0
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:31:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D7028EA2C
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75424303466C
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:30:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F09F302E926
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCE634D3B5;
-	Sat, 14 Mar 2026 19:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58616349B02;
+	Sat, 14 Mar 2026 19:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHh/Kztx"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A3V02oBy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E0303C97;
-	Sat, 14 Mar 2026 19:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B659A343D72
+	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 19:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773516614; cv=none; b=owlruiUoWaRvfowRWCxxvApgN0UJG3LJw5hus7kONil2OhtnFuJlSvDiMV7NbalIM8MZUdin73yWLHmPlOYYDk+elBCgwqxg+TteIPjXN/dJE4bh3v3+mzR3QgG5/ASl/aW6nedvkv1SxzpdPOR3XnXfJstCxEFJ8/4+m3v/v90=
+	t=1773517103; cv=none; b=kWLPo3C3pOU/0SHsoc/360iXxQouE0s6gZl4um0PQ+f7xwjkQkyhgK7ovxV43E7eFF6QOURLkr734+L2yqUMP8FuHsLKE7yTD8hLQsZeAoImep1BBbdwvY3St3wQzUpmbt8AKHPZRogquxSOF9QGpOb7tDkzvRWefMPS2xHFGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773516614; c=relaxed/simple;
-	bh=zmDFLImBATrlY5PX+2lUXOVkdP0lQVU0kz9DlM4p4Qk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VM92lByFQn40IHg43mX8GDQe6LEpRFBo9qdK3DuWI2sSaEln1GRd3GwTeZlebCVIORQohylJ4GqBnDeLuMI80R0fYGiEkbIsy43FZD+IuObrTjYU7cIhhQiBtXQaBjvwNW1yxlh+YAUq5pLAOPAm/aC1vMtSYrwJfVNz01ZKjOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHh/Kztx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFECC116C6;
-	Sat, 14 Mar 2026 19:30:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773516613;
-	bh=zmDFLImBATrlY5PX+2lUXOVkdP0lQVU0kz9DlM4p4Qk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aHh/KztxU7iwBEtOksUZoBj0wDg9oZiP6+sw12vXDujKYB3B548tTMxG5E+SqcPlw
-	 mvKHgiqB2XnsfeL68MgLlkXiQCfmGJo2NZaQ2q3V+UkeZkzRsXK3ZjA0KL/li0OW6B
-	 3IRiS1RuB/IsD6iqgJF5emWUNTqANUlk2KClybyQ0CrCuq3dTf9Ak6LR5025jlP/FZ
-	 dXyt+gXy5pRTdzGFMjm9fjFJDBHxgW5K0ckiXl848VuMSetE70trjldecGP0NQth5r
-	 RJbM8VTKF3OWS81HWQHoD+1rktC+UU8cgm+N4kzgpncIGdbIVzOLY1czU6og4BWK1H
-	 NnlSqUUUI96GQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DC33808200;
-	Sat, 14 Mar 2026 19:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1773517103; c=relaxed/simple;
+	bh=BHatjBYmMqWDoVSJLpd9wA/cae++1PKscmXrKmMopf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hustd23rIFLQ4pEcUJIkz2gnlPay/gpPIqDnB8e8abJ+XFMq3vwsWKBp0PltjY1ZvuwihHTVtxKgVt2DBPwXZFEy2FOQ8rHAsiIKeAIdWExRlMpJ7bR3C5Cgw2CTmy4QOs4sPmiu7nloSRHC5U8JJSHtXikSXZ+I0IGTL0zUV84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A3V02oBy; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773517089;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1y6+a9hP8kEfCSdJXdEzyPlBatUJQdOrQGIEsbPLPCI=;
+	b=A3V02oBykMZFjJkvFdBTU8UsKKvRxTIgCvPWDEvhTMMlcsLr6W+uFUVAy9doWxfVVoecpR
+	3I433k6t7LirJaul8QEZuRQQZ4Wa4+bLobvVZnbE6mI1P+qbqJBcb+4UMrBR37ih/ccmpR
+	ni8Qqj9hk9YB7SGvUBLR6Z4sWicitQg=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Linus Walleij <linusw@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] crypto: atmel-sha204a - Fix potential UAF and memory leak in remove path
+Date: Sat, 14 Mar 2026 20:36:29 +0100
+Message-ID: <20260314193627.728469-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1492; i=thorsten.blum@linux.dev; h=from:subject; bh=BHatjBYmMqWDoVSJLpd9wA/cae++1PKscmXrKmMopf0=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJlbd+xedn693PdS6WdfZ39YtTi9wcJ6nYnS65CH37tEm 7jf3XdM7yhlYRDjYpAVU2R5MOvHDN/SmspNJhE7YeawMoEMYeDiFICJpAozMrw+ZHPk7bm2vVHL /lQVZSs9aatY9YTVYf0kfY2SP+tMN+gx/C/Iy6tm5F/vv/FEorbcxh02qbenfN+3y8Hu9VuvmwV imbwA
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: macb: Fix Ethernet malfunction on AMD Versal
- board after suspend
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177351660779.1763199.11769087375422491221.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Mar 2026 19:30:07 +0000
-References: <20260312-macb-versal-v1-0-467647173fa4@gmail.com>
-In-Reply-To: <20260312-macb-versal-v1-0-467647173fa4@gmail.com>
-To: Kevin Hao <haokexin@gmail.com>
-Cc: netdev@vger.kernel.org, nicolas.ferre@microchip.com,
- claudiu.beznea@tuxon.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- quanyang.wang@windriver.com, stable@vger.kernel.org
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225442-lists,stable=lfdr.de,netdevbpf];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225443-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[3];
 	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C627C28E9C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
+X-Rspamd-Queue-Id: A2D7028EA2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+Unregister the hwrng to prevent new ->read() calls and flush the Atmel
+I2C workqueue before teardown to prevent a potential UAF if a queued
+callback runs while the device is being removed.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Drop the early return to ensure sysfs entries are removed and
+->hwrng.priv is freed, preventing a memory leak.
 
-On Thu, 12 Mar 2026 16:13:57 +0800 you wrote:
-> Hi,
-> 
-> On Versal boards, the tx/rx queue pointer registers are cleared after suspend,
-> which causes Ethernet malfunction. This patch series addresses this issue by
-> reinitializing the tx/rx queue pointer registers and the rx ring.
-> 
-> 
-> [...]
+Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+Changes in v2:
+- Unregister hwrng to avoid new ->read() calls and then flush the queue
+- Drop the ->tfm_count check and error logging after flushing (Herbert)
+- Link to v1: https://lore.kernel.org/lkml/20260221190424.85984-2-thorsten.blum@linux.dev/
+---
+ drivers/crypto/atmel-sha204a.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Here is the summary with links:
-  - [net,1/2] net: macb: Introduce gem_init_rx_ring()
-    https://git.kernel.org/netdev/net/c/1a7124ecd655
-  - [net,2/2] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
-    https://git.kernel.org/netdev/net/c/718d0766ce4c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+index 98d1023007e3..aeadbc9a2759 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -191,10 +191,8 @@ static void atmel_sha204a_remove(struct i2c_client *client)
+ {
+ 	struct atmel_i2c_client_priv *i2c_priv = i2c_get_clientdata(client);
+ 
+-	if (atomic_read(&i2c_priv->tfm_count)) {
+-		dev_emerg(&client->dev, "Device is busy, will remove it anyhow\n");
+-		return;
+-	}
++	devm_hwrng_unregister(&client->dev, &i2c_priv->hwrng);
++	atmel_i2c_flush_queue();
+ 
+ 	sysfs_remove_group(&client->dev.kobj, &atmel_sha204a_groups);
+ 
 
