@@ -1,134 +1,199 @@
-Return-Path: <stable+bounces-225437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFmrI5artWkn3QAAu9opvQ
-	(envelope-from <stable+bounces-225437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:40:22 +0100
+	id iOlFNJmstWla3QAAu9opvQ
+	(envelope-from <stable+bounces-225438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:44:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAFC28E81D
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:40:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7452628E846
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:44:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA5173015D34
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 18:40:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97000300F10E
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 18:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEAD0346ADA;
-	Sat, 14 Mar 2026 18:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA2D33A03A;
+	Sat, 14 Mar 2026 18:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxivH/Ko"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="GrYEwdei"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D96934214F;
-	Sat, 14 Mar 2026 18:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CB5202997;
+	Sat, 14 Mar 2026 18:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773513619; cv=none; b=PZ1Df6ei6ywnQGmu2N8pCFNfDuqQk4Y5k3yknVZG3q713Ivp/dqOCdbmJjUsLCGkCnWTFuY7Q01RqJFRGlSm/E2epNe6p3hAUeAx9eE7DZ2YC6wvbTMgol/SLnHkKkIx+LexVrCeDUpA3UAZdWxQRdGGEfN8lHvMgvIURJw6Dws=
+	t=1773513877; cv=none; b=oXDST+dVUxlFqZFqQ/7sNyLYsUvPExozcrjyFvnQK6eBtGCqX8dTpF8S3kgCbkK6NUV12FqlTmkxTn1eMZsSnqpoIyMzAYw+brY4d3m9hnls3BylbaUR/zTj3qGP86d8TVKN/cwSe7EOn4/yOfTaKR/HeP3u3Q03U9kNimRwb/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773513619; c=relaxed/simple;
-	bh=MeeEBlZe1+s9pl24DBcFReIEEYqdGrsL04hNwJmo9gs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q7NCvGR5pOU9CMeU7wp9TifVTJQVCgidYTzR66kFYDOMTbSDE2rZO+jKAiApBabloDMAj2BS0mT4A7fMfoN0Qak6Wxg2jZrUSCnwPyhJs2UCgHfgVG6Ir/vK28sfiGt43mC5mYZXJ28WtOxWcPHtmQNjYPogIFsCIIPmW43nmVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxivH/Ko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6699EC116C6;
-	Sat, 14 Mar 2026 18:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773513619;
-	bh=MeeEBlZe1+s9pl24DBcFReIEEYqdGrsL04hNwJmo9gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nxivH/KoWLaxIA2WqV9So+q2d7xYpVcU2fNoXareIHooz03X8AyqQ1wfJ1eCEDIfE
-	 DjZow/6kbrNsbKFIqjn811JrQ/Iku1eTJqmTmmM7EHGqnTt2OhMbVEtfQ7SGzUHNLn
-	 7/gC5mbBAOa3q7kNeCevNkuwXnIjp3zTHIjTvTRQBib5XaJwwq4X9nAOhovOJseqxO
-	 LXtgcsLGm3o0qQKo2vibfaM5BaQXErHm1vmsJmGKBnkIqVtPioY0iSmbcOlb6eUugO
-	 5Hi60HO+4dZhGGRmGPCPdv/OvcbyVfwKSXF6Kk7ftOUcCslpCoHVtYJECbyDWirSyz
-	 IHwEUFRuARRTw==
-Date: Sat, 14 Mar 2026 11:40:16 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: AlanSong-oc <AlanSong-oc@zhaoxin.com>
-Cc: herbert@gondor.apana.org.au, davem@davemloft.net, Jason@zx2c4.com,
-	ardb@kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org, CobeChen@zhaoxin.com,
-	TonyWWang-oc@zhaoxin.com, YunShen@zhaoxin.com,
-	GeorgeXue@zhaoxin.com, LeoLiu@zhaoxin.com, HansHu@zhaoxin.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] crypto: padlock-sha - Disable for Zhaoxin
- processor
-Message-ID: <20260314184016.GB40504@quark>
-References: <20260313080150.9393-1-AlanSong-oc@zhaoxin.com>
- <20260313080150.9393-2-AlanSong-oc@zhaoxin.com>
+	s=arc-20240116; t=1773513877; c=relaxed/simple;
+	bh=b/m0C98Ar1qk6GqkYHn0uxkv8LlQkvvWGQ54JoPFdFI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E9HNJFfY8viws8tCdOs+xBAp6+d8bSjQQ/KU95FHEwMNJOn8F87/V2Jxl1AAotYMW5adSmRWyAWDVyP/fL5DV1EdJD2NCTo5dMQ/bbUWjYxYc8Lue5nXLheV5dpDKnic385ihCGwTITU0neMKmLIrIoFFL0HchXVpiUKkmMjsb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=GrYEwdei; arc=none smtp.client-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773513876; x=1805049876;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nucdgIT4ue9aPFJmvyBHRTxOW28+Q8aHVHM5lAkRMG4=;
+  b=GrYEwdei0+zzpY/IToHk3LuTlpM0t68bTp3e28la3Kcbqxh2T6Y9MEun
+   HR7FkMF69JFppyCOsbDYFwUMR6UD8nE1pCocMnUVHgGio/LMH+4qQijMj
+   SxRnpWwGwmECsG1XPSGpyznxHNJpcHGW25HG5oSZWnApT9vULUOlu5evx
+   rf+UCemsEluiUXVDJG77FARi5iYorriyIQwkG7n7G3yainDxUXhha4IwF
+   wpd/xvbXZTcFOVBUFFuu1mjD75/bkZE5UJmHJ+HfvzCQe8IPvl7L1pv4m
+   e2wiczEPlipBYgT5LkFVafSY20QFCDt+a1JYkEpqmaOPyd/yBzUI7A7pu
+   Q==;
+X-CSE-ConnectionGUID: f+QIM8NoSb2xa235nSjVPg==
+X-CSE-MsgGUID: QJi5NFfwQq2+zfmGpC8TMw==
+X-IronPort-AV: E=Sophos;i="6.23,119,1770595200"; 
+   d="scan'208";a="14848842"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2026 18:44:32 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:27108]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.38.193:2525] with esmtp (Farcaster)
+ id 0a86d918-46fb-435b-8db8-3fbeaf6c9c13; Sat, 14 Mar 2026 18:44:31 +0000 (UTC)
+X-Farcaster-Flow-ID: 0a86d918-46fb-435b-8db8-3fbeaf6c9c13
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Sat, 14 Mar 2026 18:44:31 +0000
+Received: from c889f3b07a0a.amazon.com (10.106.82.29) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Sat, 14 Mar 2026 18:44:30 +0000
+From: Yuto Ohnuki <ytohnuki@amazon.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+	<brauner@kernel.org>
+CC: Jan Kara <jack@suse.cz>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Yuto Ohnuki <ytohnuki@amazon.com>,
+	<syzbot+c0fd9ea308d049c4e0b9@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] fs: fix use-after-free in peer group traversal during mount release
+Date: Sat, 14 Mar 2026 18:44:22 +0000
+Message-ID: <20260314184421.47303-2-ytohnuki@amazon.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260313080150.9393-2-AlanSong-oc@zhaoxin.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-ClientProxiedBy: EX19D037UWC002.ant.amazon.com (10.13.139.250) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-6.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225437-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-225438-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ytohnuki@amazon.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,c0fd9ea308d049c4e0b9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ECAFC28E81D
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7452628E846
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 13, 2026 at 04:01:49PM +0800, AlanSong-oc wrote:
-> For Zhaoxin processors, the XSHA1 instruction requires the total memory
-> allocated at %rdi register must be 32 bytes, while the XSHA1 and
-> XSHA256 instruction doesn't perform any operation when %ecx is zero.
+mntput_no_expire_slowpath() does not remove a mount from its peer group
+(mnt_share list) or slave list before sending it to the free path. If a
+mount that was added to a peer group by clone_mnt() is freed through
+mntput() without going through umount_tree()/bulk_make_private(), it
+remains linked in the peer group's circular list after the slab object
+is freed.
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-fixes
+When another mount namespace is later torn down, umount_tree() calls
+bulk_make_private() -> trace_transfers(), which walks the peer group via
+next_peer(). This dereferences the freed mount's mnt_share field,
+causing use-after-free:
 
-I made a few tweaks to your commit message, as noted below:
+  BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report
+  Read of size 8 at addr ffff88807d533af8
 
-> ------------[ cut here ]------------
-> 
-> alg: shash: sha256-padlock-nano test failed (wrong result) on test vector 0, cfg="init+update+final aligned buffer"
-> alg: self-tests for sha256 using sha256-padlock-nano failed (rc=-22)
-> ------------[ cut here ]------------
+  Call Trace:
+   __list_del_entry_valid_or_report
+   bulk_make_private
+   umount_tree
+   put_mnt_ns
+   do_exit
 
-Removed the "cut here" lines because they caused checkpatch errors
+  Allocated by:
+   alloc_vfsmnt
+   clone_mnt
+   vfs_open_tree
 
-> Disable the padlock-sha driver on Zhaoxin processors with the CPU family
-> 0x07 and newer. Following the suggestion in [3], add support for the PHE
-> extensions to lib/crypto. Only XSHA256 support for SHA-256 is included,
-> since SHA-1 has been cryptographically broken, as recommended in [4].
+  Freed by:
+   kmem_cache_free
+   rcu_core
 
-Changed to clarify that the lib/crypto/ support is in a different patch:
+Fix this by calling change_mnt_propagation(mnt, MS_PRIVATE) in
+mntput_no_expire_slowpath() after mnt_del_instance(), while holding
+lock_mount_hash(). This removes the mount from both the peer group and
+any slave list before it enters the cleanup path.
 
-    Disable the padlock-sha driver on Zhaoxin processors with the CPU
-    family 0x07 and newer. Following the suggestion in [3], support for
-    PHE will be added to lib/crypto/ instead.
+This is safe without namespace_sem: the mount has MNT_DOOMED set and has
+been removed from the instance list by mnt_del_instance(), making it
+unreachable through normal lookup paths. lock_mount_hash() prevents
+concurrent peer group traversal. This call is also idempotent: mounts
+already made private by bulk_make_private() have IS_MNT_SHARED() and
+IS_MNT_SLAVE() both false, so the condition is skipped.
 
-> [1] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1103397
+Reported-by: syzbot+c0fd9ea308d049c4e0b9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c0fd9ea308d049c4e0b9
+Fixes: 75db7fd99075b ("umount_tree(): take all victims out of propagation graph at once")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuto Ohnuki <ytohnuki@amazon.com>
+---
+ fs/namespace.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changed to correct link https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1113996
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 854f4fc66469..d25abf051ad6 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -1359,6 +1359,11 @@ static void noinline mntput_no_expire_slowpath(struct mount *mnt)
+ 	rcu_read_unlock();
+ 
+ 	mnt_del_instance(mnt);
++
++	/* Remove from peer group / slave list before freeing */
++	if (unlikely(IS_MNT_SHARED(mnt) || IS_MNT_SLAVE(mnt)))
++		change_mnt_propagation(mnt, MS_PRIVATE);
++
+ 	if (unlikely(!list_empty(&mnt->mnt_expire)))
+ 		list_del(&mnt->mnt_expire);
+ 
+-- 
+2.50.1
 
-- Eric
+
+
+
+Amazon Web Services EMEA SARL, 38 avenue John F. Kennedy, L-1855 Luxembourg, R.C.S. Luxembourg B186284
+
+Amazon Web Services EMEA SARL, Irish Branch, One Burlington Plaza, Burlington Road, Dublin 4, Ireland, branch registration number 908705
+
+
+
 
