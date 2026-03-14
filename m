@@ -1,63 +1,93 @@
-Return-Path: <stable+bounces-225432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CXqEiKTtWnL2AAAu9opvQ
-	(envelope-from <stable+bounces-225432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:56:02 +0100
+	id 8FlXIrKTtWnL2AAAu9opvQ
+	(envelope-from <stable+bounces-225433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:58:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B8828DFCA
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:56:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863FC28E025
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:58:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F36893019C9D
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:56:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9EA41300BCA5
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B29631F9B3;
-	Sat, 14 Mar 2026 16:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A403090C1;
+	Sat, 14 Mar 2026 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANCrx5T8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkeLzWI/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA87F507;
-	Sat, 14 Mar 2026 16:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967363009DA
+	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 16:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773507358; cv=none; b=LERT/5f1k4wrjD0Ep3PnuKdioYfqj13hhCFiydn8w6KLjkAf+ncj/B9q07cmRuQw0bg/z/W7oqxs/e6geDSFHX1+PtwMbZadiID4W0P8IHyxlQY+FWMHIjoMaWpbM3QrTQLZJzsAQApqLHbkToF33CCK6rqQ8CN8uZN/HEn0tKw=
+	t=1773507500; cv=none; b=TrJu9Byfh8BZXm4cPdpf+t0jyGD87E65UI/KgcHHk+62quqjCUE4KnFnvvgrXgHBLQMytKZunIdeXTznxYzTv7JzvvI34LogJMphWFUePSJSNx/F76k5MWTfgTBo/YKCJtsWyofQNoq5cW4uTtr8Ux1daOHPmETCsGQ2WgZIMvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773507358; c=relaxed/simple;
-	bh=OU2kqLqL46R/whoj7/DBKG1N2KxHrjeHH683kSBKUxc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I3DusJEh5h9Mbll00Kz7CgBl+L71wrSujgytCHgU7eB/bL6fe1FfnwUkevMZIeF5lu969N0aSv0Mc1qUSvV4xXKkdPjCMhgQJ3CxvwPHfMjRWKJKJ6FF3l5Kwtw/azvABAIMoTTOtmHWoRjL4xgiC1kbjUK8ny/LWqyAlDDJWeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANCrx5T8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3DEC116C6;
-	Sat, 14 Mar 2026 16:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773507358;
-	bh=OU2kqLqL46R/whoj7/DBKG1N2KxHrjeHH683kSBKUxc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ANCrx5T8MufQXBY2woTDqlBfXgvZxyD4i8MsnPhrQbASPKjywtvZZf1V5ypMLAUea
-	 QqGV/V6TLoGZOg/ggr12tsQHYqT3cdG/qtNVoMAMO50rs6sGQmhFdiNyGv6an86Nyt
-	 rvkFyrExlBnH3DEuZ3vXdIjuAV5sDKeiLoj7gqJi/Txj41xD7vfsu98iL0JphdxzGD
-	 ncLLym8LTgk4r3SGHofa7hi+JIsn8/MXvda4liTXY4bAG2/FdLQQQxrBHmNjz4rfDq
-	 cMamCoInZHj1hlRnHB7JFJjDhIzaERoweMZJC2ENy4aHn6jYGAwjHekHI8x1lUWue8
-	 h973Gw5UNoImA==
-From: Eric Biggers <ebiggers@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-crypto@vger.kernel.org
-Cc: linux-ext4@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Zorro Lang <zlang@redhat.com>,
+	s=arc-20240116; t=1773507500; c=relaxed/simple;
+	bh=RJQligzopvcVnL3GVik1MA/7l4yn/T/8LnZtjy7Rnlw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sw2rZiw5V7tWY9A7sNAOUzARrqJMIjtO8WTOOG0HXwK5sJNnQjXKTf78QEAbOTU7NbNWJCWVP6ZH9VWyZIKM8E+6/4lMPkNJtAb96g+HCMzb4dSJUtwg5vxT+E/djF8Hi/CwUdwsX6V+c7FS16ze1R9UA/yXuxsN2zpks4lQM/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkeLzWI/; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899ee491af3so38439906d6.1
+        for <stable@vger.kernel.org>; Sat, 14 Mar 2026 09:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773507498; x=1774112298; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4FJSg6yO8bqCihG6mTbOKq9sLeSeUKoFCGVbsYkTlRw=;
+        b=IkeLzWI/iBvDvXNW4+ZaUSE7RYQ2knUgcTWlkFxkEZ2PCW8chAMpNq6I19ypcp8LGi
+         +4sA/VxvoYlGAPNxn6aO36Capz9HB6PiJ8HabwP2/WOlV5fDE1tSzx5fWW67rq0p3zPG
+         vh6wi/WH15rF+Stf61wQ/2SLnHc+4ZLLoUNYb0bcI5AHTAtLqxx9OYmvD2K44VaIdzV+
+         1PiMRmu/tydi054JwILTE7ZwOHIFIanpaixjUXWRBLt/r0bzKJ9zgjBqaGSPVbY20DWd
+         1BBzNv/aE6aS0audULPGVcXqO8o7LQ6EyXN/Cq7yfezSmE0h+ysQY6Nt0/wAm/zmcxtx
+         yhYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773507498; x=1774112298;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4FJSg6yO8bqCihG6mTbOKq9sLeSeUKoFCGVbsYkTlRw=;
+        b=K0LZahdU3WXZ0HdWoeGiOADIExMWU0muQVfPkFJoidmTS4u6LdzmDMUtyYAMXmrPaF
+         UdbGIP4GBV29qlAsAOVvi21azgWtpiP8MIlv6ZF3jRf9c3z114A9pKK2nangFpVOqqtf
+         qVZt9Y5o1DI0NXSGeM4X7GgKE1sWqVpVuldlvfCstJ+9GTv3C/jrWatwT/qGk1pc/1zx
+         igMmnndxiEMRDOsVLlwlT8NE3J9BcdRcbgVupYt3zH44pmRqNADPbiQpGr5R4vO1sFRg
+         F3p7rDRCUR25cnYZgJA6fmN/1Rx/2Z6V+gG7/QTalhA/9+LVggolTtMu8fUAUQWWfVU8
+         1p5w==
+X-Forwarded-Encrypted: i=1; AJvYcCV9g8rdSlG8cl0yVawNOwjhNoGhfIvgB15xMe+DuzWWYgP3KqwuprkxBqOyBpSZVaAB2HTs/iI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4DukS4y+wfBdC+yKa0l2zWQKytvS/f7Q6GT7PKvmL6/ni8mjF
+	lgb3cRdXVoqiP70034qMyaenHFXeiqA0w41zOq/NY3OdGwYM1NTj7kFvQs+yVUAQ
+X-Gm-Gg: ATEYQzzRy8PM+uwsNrcJn7LAESPkQ+UcxuqNmRdGzPYqLWYV5A2jJUDQ86PdWzm1kBC
+	mxjGzreq2qXylhRqRUmC7JcGMzuIaWIR5xBbvtDlkTuL6uSP6fARqXppA5eIu7sVoyOx3fjF1ru
+	IwILyjBFA4tjLR26kTzD4hgjiMQxjlGVmrR/YuND0XipLWrM2snCMofyZXWXTBsFgLRIKXYZaif
+	pkrE8Nx59lm9CyuPKxk35l70FORsSdBWgB1O9qd3XpdXgLj8dWueGXPeAKsYicrYRhuuPfVbwvd
+	eRMxEl6bEJKw9rbaNkmHXvmPbVRGyy0SJtIeIR7XlK7Bn/KAaL74N+0v1sv8ycAQl92hqv8bkrA
+	KHEKqSW24vDRIa8ATnvZwTjPXrMv8oQoip/U+Epan917Athuqjfw9nWj28W1MgLhCvEO9mmqPrO
+	hjuxUYHpUhIp65ROHTTY07+PWDdCgCXGp9X28kVvyu18kOgm/epzRdpB+OoIqxZjuOZ8GaLEbLJ
+	0cZXhc4ej8NICM=
+X-Received: by 2002:a05:6214:1c0b:b0:89a:ff2:b8d4 with SMTP id 6a1803df08f44-89a81ef3356mr114611416d6.36.1773507498590;
+        Sat, 14 Mar 2026 09:58:18 -0700 (PDT)
+Received: from CS-396-Lab-Machine.. (c-24-12-10-127.hsd1.il.comcast.net. [24.12.10.127])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65bd318fsm80958236d6.8.2026.03.14.09.58.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Mar 2026 09:58:18 -0700 (PDT)
+From: Tyllis Xu <livelycarpet87@gmail.com>
+X-Google-Original-From: Tyllis Xu <LivelyCarpet87@gmail.com>
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	Akhil R <akhilrajeev@nvidia.com>
-Subject: [PATCH] crypto: tegra - Add missing CRYPTO_ALG_ASYNC
-Date: Sat, 14 Mar 2026 09:55:15 -0700
-Message-ID: <20260314165515.9678-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	danisjiang@gmail.com,
+	ychen@northwestern.edu,
+	Tyllis Xu <LivelyCarpet87@gmail.com>
+Subject: [PATCH] ibmasm: fix heap over-read in ibmasm_send_i2o_message()
+Date: Sat, 14 Mar 2026 11:58:05 -0500
+Message-ID: <20260314165805.548293-1-LivelyCarpet87@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,113 +95,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,nvidia.com,kernel.org,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225432-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,northwestern.edu];
+	TAGGED_FROM(0.00)[bounces-225433-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[livelycarpet87@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03B8828DFCA
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 863FC28E025
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The tegra crypto driver failed to set the CRYPTO_ALG_ASYNC on its
-asynchronous algorithms, causing the crypto API to select them for users
-that request only synchronous algorithms.  This causes crashes (at
-least).  Fix this by adding the flag like what the other drivers do.
+The ibmasm_send_i2o_message() function uses get_dot_command_size() to
+compute the byte count for memcpy_toio(), but this value is derived from
+user-controlled fields in the dot_command_header (command_size: u8,
+data_size: u16) and is never validated against the actual allocation size.
+A root user can write a small buffer with inflated header fields, causing
+memcpy_toio() to read up to ~65 KB past the end of the allocation into
+adjacent kernel heap, which is then forwarded to the service processor
+over MMIO.
 
-Reported-by: Zorro Lang <zlang@redhat.com>
-Closes: https://lore.kernel.org/r/20260314080937.pghb4aa7d4je3mhh@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Silently clamping the copy size is not sufficient: if the header fields
+claim a larger size than the buffer, the SP receives a dot command whose
+own header is inconsistent with the I2O message length, which can cause
+the SP to desynchronize. Reject such commands outright by returning
+failure.
+
+Validate command_size before calling get_mfa_inbound() to avoid leaking
+an I2O message frame: reading INBOUND_QUEUE_PORT dequeues a hardware
+frame from the controller's free pool, and returning without a
+corresponding set_mfa_inbound() call would permanently exhaust it.
+
+Additionally, clamp command_size to I2O_COMMAND_SIZE before the
+memcpy_toio() so the MMIO write stays within the I2O message frame,
+consistent with the clamping already performed by outgoing_message_size()
+for the header field.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Cc: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
 ---
+ drivers/misc/ibmasm/lowlevel.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-This patch is targeting crypto/master
+diff --git a/drivers/misc/ibmasm/lowlevel.c b/drivers/misc/ibmasm/lowlevel.c
+index 1a59d1b8e05e..xxxxxxxxxxxx 100644
+--- a/drivers/misc/ibmasm/lowlevel.c
++++ b/drivers/misc/ibmasm/lowlevel.c
+@@ -19,17 +19,21 @@ static struct i2o_header header = I2O_HEADER_TEMPLATE;
+ int ibmasm_send_i2o_message(struct service_processor *sp)
+ {
+ 	u32 mfa;
+-	unsigned int command_size;
++	size_t command_size;
+ 	struct i2o_message *message;
+ 	struct command *command = sp->current_command;
 
- drivers/crypto/tegra/tegra-se-aes.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
++	command_size = get_dot_command_size(command->buffer);
++	if (command_size > command->buffer_size)
++		return 1;
++	if (command_size > I2O_COMMAND_SIZE)
++		command_size = I2O_COMMAND_SIZE;
++
+ 	mfa = get_mfa_inbound(sp->base_address);
+ 	if (!mfa)
+ 		return 1;
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index 0e07d0523291a..cb97a59084519 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -592,10 +592,11 @@ static struct tegra_se_alg tegra_aes_algs[] = {
- 			.ivsize	= AES_BLOCK_SIZE,
- 			.base = {
- 				.cra_name = "xts(aes)",
- 				.cra_driver_name = "xts-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize	   = sizeof(struct tegra_aes_ctx),
- 				.cra_alignmask	   = (__alignof__(u64) - 1),
- 				.cra_module	   = THIS_MODULE,
- 			},
-@@ -1920,10 +1921,11 @@ static struct tegra_se_alg tegra_aead_algs[] = {
- 			.ivsize	= GCM_AES_IV_SIZE,
- 			.base = {
- 				.cra_name = "gcm(aes)",
- 				.cra_driver_name = "gcm-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = 1,
- 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
- 				.cra_alignmask = 0xf,
- 				.cra_module = THIS_MODULE,
- 			},
-@@ -1942,10 +1944,11 @@ static struct tegra_se_alg tegra_aead_algs[] = {
- 			.chunksize = AES_BLOCK_SIZE,
- 			.base = {
- 				.cra_name = "ccm(aes)",
- 				.cra_driver_name = "ccm-aes-tegra",
- 				.cra_priority = 500,
-+				.cra_flags = CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = 1,
- 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
- 				.cra_alignmask = 0xf,
- 				.cra_module = THIS_MODULE,
- 			},
-@@ -1969,11 +1972,11 @@ static struct tegra_se_alg tegra_cmac_algs[] = {
- 			.halg.statesize = sizeof(struct tegra_cmac_reqctx),
- 			.halg.base = {
- 				.cra_name = "cmac(aes)",
- 				.cra_driver_name = "tegra-se-cmac",
- 				.cra_priority = 300,
--				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
-+				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_ASYNC,
- 				.cra_blocksize = AES_BLOCK_SIZE,
- 				.cra_ctxsize = sizeof(struct tegra_cmac_ctx),
- 				.cra_alignmask = 0,
- 				.cra_module = THIS_MODULE,
- 				.cra_init = tegra_cmac_cra_init,
+-	command_size = get_dot_command_size(command->buffer);
+-	header.message_size = outgoing_message_size(command_size);
+-
++	header.message_size = outgoing_message_size((unsigned int)command_size);
+ 	message = get_i2o_message(sp->base_address, mfa);
 
-base-commit: 1c9982b4961334c1edb0745a04cabd34bc2de675
+ 	memcpy_toio(&message->header, &header, sizeof(struct i2o_header));
 -- 
-2.53.0
-
+2.39.0
 
