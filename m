@@ -1,256 +1,198 @@
-Return-Path: <stable+bounces-225422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IO4yD/BWtWkMzgAAu9opvQ
-	(envelope-from <stable+bounces-225422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:39:12 +0100
+	id EBq2JD5ZtWl5zgAAu9opvQ
+	(envelope-from <stable+bounces-225423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:49:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC94A28D2E1
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:39:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D7F28D35E
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 13:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB6D030574AA
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 12:38:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C7CD30125D0
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 12:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7340D26E702;
-	Sat, 14 Mar 2026 12:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC8E1A2392;
+	Sat, 14 Mar 2026 12:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aaxia7Gx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JeqeaAwa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012016.outbound.protection.outlook.com [52.101.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F8227B4FA
-	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 12:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773491881; cv=none; b=P2nknF6eutcETTe1Ie3/yty001vqFo1ycma4r15IE/ol7zyrRa601zE3oioYSIE688SV7ES21neX9zYKSsIcuSKd/vEwNK1u/Frx93F1ZUg/mH4SOwl83jQAw2jyOeZA+k1GBhUA9iboWMYr3VeUuYobD5phgT6Kpk3w0ZtPyjU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773491881; c=relaxed/simple;
-	bh=mY0wN1Iv94QmwEBTkfV+F1YpjliEDVD6TkjX5Uyamic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQJeS+tK51GpqOqZSczQ5uloQJfWifc37D3s/QDSwV6rcVz9L7PAKgfOZruQRLBZA7meeV0zXWFve+OKUtLVZ3AYLJjxwlrp11LjbYneYbaRa8qsaGf7XNsq9Es2D2oyyTvB8nhUwmczckVMoGETkuhTMuhT/h2nIJMwXXfs9zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aaxia7Gx; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aaf59c4f7cso15570935ad.1
-        for <stable@vger.kernel.org>; Sat, 14 Mar 2026 05:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773491879; x=1774096679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0nzVhDf4BKtWklFTMhpHjd6JpAbDZy+t4Nj2UDjpxAI=;
-        b=aaxia7GxtzqOf/jscziIrMKulAsL99B2RDJxQZQtirJHeUTzWvjMH+fa7vJKc5CzMH
-         Ua33dj1B52ZMJLcVDJJ3GSlca+s2T0IS971hvrxiBqix04x19w0N7pTEaDUmuFgzntBZ
-         6QX9/Slvdk/4aLZQWWeu/gE646EXp1A5YgHehWchMHJoXSPKUjcUCfT3d5ZHGZHySdzX
-         xIW/kePSoMmktvydj9oxv5x5RX4L7m9BggaSUZXkA5j8fVFXiUupJCacEv5Si5Gr7Nks
-         4kDBhikMtVs1S8BISQ4Aezk5gjPsRngevsmbhR2urS6UZClK6l914vbduOGED282J2PD
-         AZ6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773491879; x=1774096679;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0nzVhDf4BKtWklFTMhpHjd6JpAbDZy+t4Nj2UDjpxAI=;
-        b=cpfVhO9UtWbuVoW+9uyaR98xK4fA7HG0pLFCS0B4tTGPvhjfnZ8a02efxsnJoQEtRG
-         h9hXt/kzhLzDLd8V7Ji6JUr24Xe6Uf6xowRQBTtelhPgm1l0hq2m3xKXo4kecZVn3JEp
-         jydniJ8+4KIPRRgFzqxnI6j/sfa6V+AobJPZ/hDmfdI2FOj69awzeuYlzWXrjkt9K9mT
-         ohNvUA4Py15uQueaWNcxSxAPZxELlwlrGDJMmnoPPrp9owuHAkaKVqRSynjzLZzANTKl
-         aaU/pWnU/gVMrAaWpEY7RT5pjNKqGHDlvngHbB88ma3gZpNyFw5Z8nPcvfWhV70kF4FG
-         dKrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNa7Oz3uvSIIw1YZiykNSp+yNndeHIrQ4OFizPvoTD8grg1LxbWBGbuvKY4INMKE65rnKjLzM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8YZq2kwdlx5YtqdaewggHLqRJ5Bw85hvpg9AFTEZiJzOEek43
-	U+bLl0Kad+fr+fesQIYkoWppcqW89MWnk6D5Ic2G2Zg0OABqOAExaWQo
-X-Gm-Gg: ATEYQzyNrQ/OYXNHkzw5p6f6ivSyx7P+b0GguTZW7C2s4G46se4vB0FtXwLM/6TEZe3
-	iScqtju0LTPVD+E8Y4/t8PdW7Csra0n77E2Fpl5ntRTJJXhbfiZQGggqxPEFjBHbQezmw/L/SD/
-	stvxh2siUONRtSns86hYlNbx7W+wlYzAFhOnNtq6WOTHww4y5sdULiWs7JZLMdfXqjhGYm/4sGz
-	Uu9faUY+yfFi2aZ3U3P+9CrUv5WBfWS4wwv2cB/t1HwqfR6cwPcrkXqc+rDBySU5256dPdkc9Xi
-	y9XyOr5Gtf8t4OE+JeTOrqXOpoh/8nP0av2+zxXfxzVYWCoAaNHPv473ke1gQUb97qKSj42lIJ9
-	k0IWu6ZHhbKuGB1q306zYi+1B3LZ/2J3rCVtbvS+53iwEnhndCArymgRwwuGZL308ukn6oi6MqU
-	Yd+UMxHm4prG/5urItide5D3HUWmOUn9w+NsdMvDPPG/qdJpbyrInVnpG+TBvPG3hBmJMZZhs=
-X-Received: by 2002:a17:903:3d0f:b0:2a9:62ce:1c15 with SMTP id d9443c01a7336-2aeca796da3mr62614755ad.0.1773491878653;
-        Sat, 14 Mar 2026 05:37:58 -0700 (PDT)
-Received: from kernel-fuzz.. ([103.172.183.54])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece56e0b8sm63561935ad.16.2026.03.14.05.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Mar 2026 05:37:58 -0700 (PDT)
-From: ZhengYuan Huang <gality369@gmail.com>
-To: dsterba@suse.com,
-	clm@fb.com,
-	idryomov@gmail.com
-Cc: linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	zzzccc427@gmail.com,
-	ZhengYuan Huang <gality369@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/3] btrfs: balance: fix null-ptr-deref in chunk_usage_range_filter
-Date: Sat, 14 Mar 2026 20:37:40 +0800
-Message-ID: <20260314123741.1439792-3-gality369@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260314123741.1439792-1-gality369@gmail.com>
-References: <20260314123741.1439792-1-gality369@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E271C5C613;
+	Sat, 14 Mar 2026 12:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773492516; cv=fail; b=acJBSlBamBE6rRBbIxUKRXJxF39HB1L9+ZI/vTlPQhOV+PJKNpJsJdfw8Yb+PmSMKUB9R2+W2DzS4yeG7OslgDOMojMXBA0FRWjtMxVC5kc1O3BPobI47ahqBBgrLoXkXJ3FvjD5jSxxEjlCWuyACymwwqK8gufp0Rj6Z837ymY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773492516; c=relaxed/simple;
+	bh=6w96V+RGjxNjFlgtuomax1KCTHcsNjcEDVzEYlsw0bU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XH9g7aIFK5GTgZyUipICY0HR+IErtvhvPJoGUWByRy+366lEvwue9tl6FEi2vTVY9hFJPZLZrxFME7v+k4DD1Tu1fCUPuEYdJaLk/jqHEIF0A+RmE9dSqTvQtfqKQHQr4cjPWHxAG+uVBx3fsFzngJX2tv1pwybJzgtfCMgYOH0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JeqeaAwa; arc=fail smtp.client-ip=52.101.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sr6BLHjIj8eEgwcWE8w8NUcCfiHdJHYCWCfIQkkAM8GFuM2PCyc6Fi71Zl8ogSWWEhbhZzIxj5RsQ/qu6lhJKyGo+DcEQlLu3XJYb8NEYqi+bKUTaVuVuW24B0rfgVhvFVrCgD+PsJCegWyNKs1F6R6WO5QSA/PghvObGxRzBwwgES6pHVS1ozK+pbut2NV4QapwIS3b6sLtDVPqlYIKxOdqnmA5ieRSbwLC1hF/DhBI/0GamQjT+kzZTyRqQ8IR9eaR0B8t1BatUO6JaILV0DB775seeZYdsgZ9I1sPQcDjN4q9A8uTjYc0ouTJm3pREi9lA1IoucD55U84jmzhFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HPtVSl/knnE/VhzPtb+pdr0mJ4YVtDQskPkxtP7df1g=;
+ b=S5bc7evnX27OkW225/TWwF4m3BowqBdO7MuyXFro4J3vWK3FKFfe2oqN0aXNEF6y9i0aBP4ilIbuzLhbjoGKsUDoxL/xOG9nArlSZJxp7pxTazP1HsPhFmcJhCs3acAbWWY0CCoboKYvGiR/q0jqUbCqR5Gt5k/teHIMV9RnAsg6T7rlRPFmSPY1Rq8dmSKU5uK1+W9nEY+URyFh1RanV8eAG6irlaWcv/vLRHKkQ7vre0LBdVtJkrPa+3ZRcbJYDqGRuNBR2QDcUbU9yKykyJfG3hR/xA4+fsuHSr5VZ1UkIdt2zpbqlTqEezGMh2T5uX4ZEAYsxxGQwrGw7peFLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HPtVSl/knnE/VhzPtb+pdr0mJ4YVtDQskPkxtP7df1g=;
+ b=JeqeaAwa7GNEW9sBAN2Eq1WSLiTlS4KfU1nrYeK9QO4rGcnHOpzmV9eYGNwCKDMvN1f3BG6iFGEcYEU17Zbise7QDaim/ziK++Y1MMOQIWI5EAWL0bQzbtWD8U8IHHoN4RaIfnyL12PHFAzReXe75tYY1oMJzyMQzHvbGddzxUM=
+Received: from SJ0PR03CA0009.namprd03.prod.outlook.com (2603:10b6:a03:33a::14)
+ by DS4PR10MB997770.namprd10.prod.outlook.com (2603:10b6:8:34b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.17; Sat, 14 Mar
+ 2026 12:48:33 +0000
+Received: from MWH0EPF000A6733.namprd04.prod.outlook.com
+ (2603:10b6:a03:33a:cafe::8c) by SJ0PR03CA0009.outlook.office365.com
+ (2603:10b6:a03:33a::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.27 via Frontend Transport; Sat,
+ 14 Mar 2026 12:48:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ MWH0EPF000A6733.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Sat, 14 Mar 2026 12:48:32 +0000
+Received: from DLEE200.ent.ti.com (157.170.170.75) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sat, 14 Mar
+ 2026 07:48:32 -0500
+Received: from DLEE213.ent.ti.com (157.170.170.116) by DLEE200.ent.ti.com
+ (157.170.170.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sat, 14 Mar
+ 2026 07:48:31 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE213.ent.ti.com
+ (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Sat, 14 Mar 2026 07:48:31 -0500
+Received: from uda0132425.dhcp.ti.com (uda0132425.dhcp.ti.com [172.24.233.103])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 62ECmRY12257177;
+	Sat, 14 Mar 2026 07:48:27 -0500
+From: Vignesh Raghavendra <vigneshr@ti.com>
+To: <nm@ti.com>, <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <jm@ti.com>, <afd@ti.com>, Siddharth Vadapalli
+	<s-vadapalli@ti.com>
+CC: Vignesh Raghavendra <vigneshr@ti.com>, <stable@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH v2] arm64: dts: ti: k3-am62a7-sk: Fix pin name in comment from M19 to N22
+Date: Sat, 14 Mar 2026 18:18:22 +0530
+Message-ID: <177349248630.927221.11137917567321094680.b4-ty@ti.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260309045539.2070793-1-s-vadapalli@ti.com>
+References: <20260309045539.2070793-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6733:EE_|DS4PR10MB997770:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62b8a428-237c-4415-3923-08de81c80005
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|82310400026|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	9bTDtlNPO1UkuZr84N3fn4r4noeLzd/LUePdcmxT9X37RRp3kbYcteP7DXCFj1/CYhn3H/DsKxi1oeryDw2rGSlxw+Q0A6diCEMyxqK/Rw3JiNY6CounFeU+J4vQtdPPeTIRsjGALjgMzkXl3+RPKBICFp1tDXib9Hog36zjG7CUJ4VGtUZhJ1/dCYud8OrMNmtk2gqeJ5+yrqi8fuN2w16pOZ8gyKDMacXz2vA0XNMLHF1EgX9PpQoaXvHT05EGFYf7wUAmxbkSGm7O7cl2d47S6PFqE3kxn2fIv1YqvLsbY1vnEAp+j/A3rNkkcTPbXR6CSEsb1cJzKVIVaJYAo0evl/HvJ73VwtM3cfpqLbHmkVGM2cKawVS9J/3l8JkmPFhzw/BfWLbmaZEQA4Yh0O94i37LwEpjwfnY5W4b4ZF54Eu3vT255VDkw1EQVi27EbXjZkMz3HWcAk1dRvCOG2wHlpnM0HVoufe1dATt/eKElePHxVPO0rEuGqMFrzfzwjWIPK0SxNuFUjPiWPb2J/mWk7M3nQLtgf0cg7OaxsvIN4YncwlI+fqOXzjFTl0qD5S3je1K6hICO/6NPRxyvl5TbkmpFv22FCUJGDWkDKWqTu5YP3AjPKRLk3RxaPso5tyRvtn0oTd7HTkdOA3k2pQ/NAIJDzuaEiQZ2xklhrFl23ybk2zyxUoZ5D7eyUNjygpYrORODm9eCG3S4AXT+fZmgBh/7czrhCFcGwwMMhU=
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	oaKZ40wKglCVYYAnTuEMFM6FParPsBrWlRDS1e9Zfgo3CvrQJgVxsvc1KASPX1w/KI2F+n7k1HlU8eoEjo0YTY8qjyHVrEpG4TaVIzMvrgYq1Xw5bGL+AxJOy4AW0vEm+B0/559t5tmbIypqaT2IcagLiGVQ7m4Uuq3IcfMHa+/b+/tohtghmM2ucDBAfSxOPEdrQlz7Tdz49sgtRhD8KGdot6o/uqZ1ncoR1uaHTmgEsbeUmiIo22WGPpXXzEDTLn+PU8yDPrqhmpBNulCT62LtIAzPI3IjOPTeFNAPs8YOrz+16QX9htsh9PFlsbjr8O20iC0MFjwP4kxXNeqEqg8iySyWK63IpTwR+8fuhWfvEk786qTpMiihMgdYHZ0n1hp0Dv1+cXf0Jjs22GYJTdVdUZqhF5567eTGzryy27BRMn23KvQLlU/Owkp6tmBh
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2026 12:48:32.5717
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62b8a428-237c-4415-3923-08de81c80005
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A6733.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR10MB997770
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225423-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225422-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[suse.com,fb.com,gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:dkim,ti.com:mid];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[ti.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vigneshr@ti.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CC94A28D2E1
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,dt];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: F3D7F28D35E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[BUG]
-Running btrfs balance with a usage range filter (-dusage=min..max) can
-trigger a null-ptr-deref when metadata corruption causes a chunk to have
-no corresponding block group in the in-memory cache:
+Hi Siddharth Vadapalli,
 
-  KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-  RIP: 0010:chunk_usage_range_filter fs/btrfs/volumes.c:3845 [inline]
-  RIP: 0010:should_balance_chunk fs/btrfs/volumes.c:4031 [inline]
-  RIP: 0010:__btrfs_balance fs/btrfs/volumes.c:4182 [inline]
-  RIP: 0010:btrfs_balance+0x249e/0x4320 fs/btrfs/volumes.c:4618
-  ...
-  Call Trace:
-    btrfs_ioctl_balance fs/btrfs/ioctl.c:3577 [inline]
-    btrfs_ioctl+0x25cf/0x5b90 fs/btrfs/ioctl.c:5313
-    vfs_ioctl fs/ioctl.c:51 [inline]
-    ...
+On Mon, 09 Mar 2026 10:25:32 +0530, Siddharth Vadapalli wrote:
+> The pin for GPMC0_CLK.GPIO0_31 at address 0x000F407C is N22 and not M19.
+> Hence, fix the pin name in the comment to avoid confusion.
+> 
+> 
 
-The bug is reproducible on next-20260312 with our dynamic metadata
-fuzzing tool, which corrupts btrfs metadata at runtime.
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-[CAUSE]
-Two separate data structures are involved:
+[1/1] arm64: dts: ti: k3-am62a7-sk: Fix pin name in comment from M19 to N22
+      commit: 6ee0792d83d5c690205c350825a4c30746c0e0a2
 
-1. The on-disk chunk tree, which records every chunk (logical address
-   space region) and is iterated by __btrfs_balance().
-2. The in-memory block group cache (fs_info->block_group_cache_tree),
-   which is built at mount time by btrfs_read_block_groups() and holds
-   a struct btrfs_block_group for each chunk. This cache is what the
-   usage range filter queries.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-On a well-formed filesystem, these two are kept in 1:1 correspondence.
-However, btrfs_read_block_groups() builds the cache from block group
-items in the extent tree, not directly from the chunk tree. A corrupted
-image can therefore contain a chunk item in the chunk tree whose
-corresponding block group item is absent from the extent tree; that
-chunk's block group is then never inserted into the in-memory cache.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-When balance iterates the chunk tree and reaches such an orphaned chunk,
-should_balance_chunk() calls chunk_usage_range_filter(), which queries
-the block group cache:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  cache = btrfs_lookup_block_group(fs_info, chunk_offset);
-  chunk_used = cache->used;   /* cache may be NULL */
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-btrfs_lookup_block_group() returns NULL silently when no cached entry
-covers chunk_offset. chunk_usage_range_filter() does not check the return
-value, so the immediately following dereference of cache->used triggers
-the crash.
-
-[FIX]
-Add a NULL check after btrfs_lookup_block_group() in
-chunk_usage_range_filter(). When the lookup fails, emit a btrfs_err()
-message identifying the affected bytenr and return -EUCLEAN to indicate
-filesystem corruption.
-
-Since chunk_usage_range_filter() now has an error return path, change its
-return type from bool to int (negative = error, 0 = do not balance,
-positive = balance). Update the BTRFS_BALANCE_ARGS_USAGE_RANGE branch in
-should_balance_chunk() to propagate negative errors instead of treating
-them as a normal filter result.
-
-After the fix, the same corruption is correctly detected and reported
-by the filter, and the null-ptr-deref is no longer triggered.
-
-Fixes: bc3094673f22 ("btrfs: extend balance filter usage to take minimum and maximum")
-Cc: stable@vger.kernel.org
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
----
- fs/btrfs/volumes.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 7c21ac249383..4958e074d420 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3832,8 +3832,8 @@ static bool chunk_profiles_filter(u64 chunk_type, struct btrfs_balance_args *bar
- 	return true;
- }
- 
--static bool chunk_usage_range_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
--				     struct btrfs_balance_args *bargs)
-+static int chunk_usage_range_filter(struct btrfs_fs_info *fs_info, u64 chunk_offset,
-+				    struct btrfs_balance_args *bargs)
- {
- 	struct btrfs_block_group *cache;
- 	u64 chunk_used;
-@@ -3842,6 +3842,12 @@ static bool chunk_usage_range_filter(struct btrfs_fs_info *fs_info, u64 chunk_of
- 	bool ret = true;
- 
- 	cache = btrfs_lookup_block_group(fs_info, chunk_offset);
-+	if (!cache) {
-+		btrfs_err(fs_info,
-+			  "balance: chunk at bytenr %llu has no corresponding block group",
-+			  chunk_offset);
-+		return -EUCLEAN;
-+	}
- 	chunk_used = cache->used;
- 
- 	if (bargs->usage_min == 0)
-@@ -4027,9 +4033,13 @@ static int should_balance_chunk(struct extent_buffer *leaf, struct btrfs_chunk *
- 			return filter_ret;
- 		if (filter_ret)
- 			return false;
--	} else if ((bargs->flags & BTRFS_BALANCE_ARGS_USAGE_RANGE) &&
--	    chunk_usage_range_filter(fs_info, chunk_offset, bargs)) {
--		return false;
-+	} else if (bargs->flags & BTRFS_BALANCE_ARGS_USAGE_RANGE) {
-+		int filter_ret = chunk_usage_range_filter(fs_info, chunk_offset, bargs);
-+
-+		if (filter_ret < 0)
-+			return filter_ret;
-+		if (filter_ret)
-+			return false;
- 	}
- 
- 	/* devid filter */
--- 
-2.43.0
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
 
