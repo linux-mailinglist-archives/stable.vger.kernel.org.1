@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-225440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJkAFjy2tWng3wAAu9opvQ
-	(envelope-from <stable+bounces-225440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:25:48 +0100
+	id oDESAyi3tWkj4AAAu9opvQ
+	(envelope-from <stable+bounces-225441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:29:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F268728E957
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:25:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7883828E982
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 20:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3EA4300C0F8
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:25:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4912630215B8
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 19:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CB4346E56;
-	Sat, 14 Mar 2026 19:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AFA33F594;
+	Sat, 14 Mar 2026 19:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="jqvhTO9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC7030F815;
-	Sat, 14 Mar 2026 19:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981464A35;
+	Sat, 14 Mar 2026 19:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773516341; cv=none; b=dJFp0LN5bYHM8oToJRIHR8y21QUyNcLeam704QHCfUqcfweKmvd4DbjF10o/PfS8ZAa31UULN9dJFNTujwTFMiagU4kFRNMYRjLoafQIkJP4UTLKvMPKFQy7sH9h3lg5hKmmFbhxc5PjfUk+8FpZy55+QBvogIBs18oVkdQE8Mg=
+	t=1773516576; cv=none; b=rvUR3nZHrVcCKv29B2cgu8VzCzsM66Su8zbsLok6dweAR65pKoPnYR85ta9y8HLEYoIE+x5u+F4QTj3Q3vkmFsJqGIIghxyG0KlQmXDfkLnFqlk62pgfpemGbMwQrgo7Etvwa6rezqHEGfJcfWVCzdCD+79nQhLBbzItxzn8i5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773516341; c=relaxed/simple;
-	bh=EY4NrOW7BadVbd8u5vDNYGYggIIemFfUWeVOvozJxUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LDYiycEjQjHKStdf7opLzWV8s93IzyGp47Ybvlx7Qx7/cXn2yPNIaaijCCrH0Tltt1eZ+HjE2t06IxrlGR4nHDuR+UJuwkQGtAu9Z45E5+Pa2dT0l6jHbg0FfoJtu5P0lpXMeGwWhr8zWRdtQUrhp8cRQdQaLDwpVyhkVXHbjtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 390D160291; Sat, 14 Mar 2026 20:25:37 +0100 (CET)
-Date: Sat, 14 Mar 2026 20:25:36 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>,
-	1130336@bugs.debian.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [regression] Network failure beyond first connection after
- 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
- skipped")
-Message-ID: <abW2MAAqLnKZm3KF@strlen.de>
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
- <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
- <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de>
+	s=arc-20240116; t=1773516576; c=relaxed/simple;
+	bh=Bgmcbq9oKuH7wBe/gofoij0gbrlNnMKsyHtucKsYpX0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DgAjM/+hPxU1zAnqBd3fi/9OIbiDG9iVl92sLCPhudWq5gRx7exOLcltwgL18ws2sF9DP+cA5pI6hY+YsxCOrEN3Lert2v7ySOaHtet64gybCJRqieU3lf6JCr3aUUwhPiZkDYaWxykrXz4WL/ERWfAu1E7hATb0EMlf1tVUkjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=jqvhTO9Q; arc=none smtp.client-ip=57.129.93.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
+	s=protonmail3; t=1773516554; x=1773775754;
+	bh=OQ+MzS+TsnjSS3Tt5b0aBZsS9ft/puTKKEeze9mG2OY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=jqvhTO9QtqgaUnhMexYpyX7wFOq0rLnfCGTHf85OQIq912/BoJ0fumOm6wEnSkx+N
+	 bSZue+cqsknJVDqsAjaYG3WODL/jvZ3nXqn1UXWWjmhy9U9xUdYuEs/u4d09UjaULl
+	 FuJmixTwyUVZWe0THKhBNATFekTKmzavhe9gBt1xF0+Iss+a67Y2v9phv8V/lPhkDZ
+	 UY0+BJ1pbub4MY/P4eqgbaA8JHe26tdIy8DOK7SjT8njXYfYWRZilJxyuQ3+Hs7fGf
+	 rWKeoR6IOvyWnB6HAUgjZBCG74NiSqIUMRGD63QEiVA0hHRA0c4534TPS623M00sTV
+	 NlmTcRSyylxQA==
+Date: Sat, 14 Mar 2026 19:29:10 +0000
+To: Stephen Hemminger <stephen@networkplumber.org>
+From: William Liu <will@willsroot.io>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Savino Dicanosa <savy@syst3mfailure.io>, Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>
+Subject: Re: [PATCH 03/12] net/sched: netem: add per-CPU recursion guard for duplication
+Message-ID: <ydqKfVXU_4_kSsU89EbfSyd66aGeaCaVHFr6kXhrF-qG7G2WCAAOS51LTAM2y_thGnB0pp-pbGLDWqM4XooMX-jelz30W0KbpE3KzCKiWqo=@willsroot.io>
+In-Reply-To: <20260313211646.12549-4-stephen@networkplumber.org>
+References: <20260313211646.12549-1-stephen@networkplumber.org> <20260313211646.12549-4-stephen@networkplumber.org>
+Feedback-ID: 42723359:user:proton
+X-Pm-Message-ID: 6f1399f9c83baaca7c8f762ed71be5a2e689db52
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,154 +63,169 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de>
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[willsroot.io,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[willsroot.io:s=protonmail3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225440-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[strlen.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-225441-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[debian.org,netfilter.org,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,bugs.debian.org,vger.kernel.org,lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[willsroot.io:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fw@strlen.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[will@willsroot.io,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: F268728E957
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syst3mfailure.io:email,willsroot.io:dkim,willsroot.io:email,willsroot.io:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7883828E982
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Fernando Fernandez Mancera <fmancera@suse.de> wrote:
-> On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
-> > Hi,
-> > 
-> > On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
-> > > Control: forwarded -1
-> > > https://lore.kernel.org/ regressions/177349610461.3071718.4083978280323144323@eldamar.lan
-> > > Control: tags -1 + upstream
-> > > 
-> > > Hi
-> > > 
-> > > In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
-> > > after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
-> > > update the count if add was skipped"), when the following rule is set
-> > > 
-> > >     iptables -A INPUT -p tcp -m
-> > > connlimit --connlimit-above 111 -j
-> > > REJECT --reject-with tcp-reset
-> > > 
-> > > connections get stuck accordingly, it can be easily reproduced by:
-> > > 
-> > > # iptables -A INPUT -p tcp -m connlimit
-> > > --connlimit-above 111 -j REJECT
-> > > --reject-with tcp-reset
-> > > # nft list ruleset
-> > > # Warning: table ip filter is managed by iptables-nft, do not touch!
-> > > table ip filter {
-> > >          chain INPUT {
-> > >                  type filter hook input priority filter; policy accept;
-> > >                  ip protocol tcp xt
-> > > match "connlimit" counter packets 0
-> > > bytes 0 reject with tcp reset
-> > >          }
-> > > }
-> > > # wget -O /dev/null
-> > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > rc3.tar.gz
-> > > --2026-03-14 14:53:51-- 
-> > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > rc3.tar.gz
-> > > Resolving git.kernel.org
-> > > (git.kernel.org)... 172.105.64.184,
-> > > 2a01:7e01:e001:937:0:1991:8:25
-> > > Connecting to git.kernel.org
-> > > (git.kernel.org)|172.105.64.184|:443...
-> > > connected.
-> > > HTTP request sent, awaiting response... 301 Moved Permanently
-> > > Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
-> > > linux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > [following]
-> > > --2026-03-14 14:53:51-- 
-> > > https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > Reusing existing connection to git.kernel.org:443.
-> > > HTTP request sent, awaiting response... 200 OK
-> > > Length: unspecified [application/x-gzip]
-> > > Saving to: ‘/dev/null’
-> > > 
-> > > /dev/null                         [
-> > > <=>                    ] 248.03M 
-> > > 51.9MB/s    in 5.0s
-> > > 
-> > > 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
-> > > 
-> > > # wget -O /dev/null
-> > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > rc3.tar.gz
-> > > --2026-03-14 14:53:58-- 
-> > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > rc3.tar.gz
-> > > Resolving git.kernel.org
-> > > (git.kernel.org)... 172.105.64.184,
-> > > 2a01:7e01:e001:937:0:1991:8:25
-> > > Connecting to git.kernel.org
-> > > (git.kernel.org)|172.105.64.184|:443...
-> > > failed: Connection timed out.
-> > > Connecting to git.kernel.org
-> > > (git.kernel.org)|
-> > > 2a01:7e01:e001:937:0:1991:8:25|:443...
-> > > failed: Network is unreachable.
-> > > 
-> > > Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
-> > > if add was skipped") commit this worked.
-> > > 
-> > 
-> > Thanks for the report. I have reproduced
-> > this on upstream kernel. I am working on it.
-> > 
-> 
-> This is what is happening:
-> 
-> 1. The first connection is established and
-> tracked, all good. When it finishes, it goes to
-> TIME_WAIT state
-> 2. The second connection is established, ct is
-> confirmed since the beginning, skipping the
-> tracking and calling a GC.
-> 3. The previously tracked connection is cleaned
-> up during GC as TIME_WAIT is considered closed.
+Looping in Jamal and Victor.
 
-This is stupid.  The fix is to add --syn or use
-OUTPUT.  Its not even clear to me what the user wants to achive with this rule.
+On Friday, March 13th, 2026 at 9:17 PM, Stephen Hemminger <stephen@networkp=
+lumber.org> wrote:
 
-> +static inline bool tcp_syn_sent_or_recv(const struct nf_conn *conn)
-> +{
-> +	if (nf_ct_protonum(conn) == IPPROTO_TCP)
-> +		return conn->proto.tcp.state == TCP_CONNTRACK_SYN_SENT ||
-> +		       conn->proto.tcp.state == TCP_CONNTRACK_SYN_RECV;
-> +	else
-> +		return false;
-> +}
+> Add a per-CPU recursion depth counter to netem_enqueue(). When netem
+> duplicates a packet, the clone is re-enqueued at the root qdisc. If
+> the tree contains other netem instances, this can recurse without
+> bound, causing soft lockups and OOM.
+>=20
+> This approach was previously considered but rejected on the grounds
+> that netem_dequeue calling enqueue on a child netem could bypass the
+> depth check. That concern does not apply: the child netem's
+> netem_enqueue() increments the same per-CPU counter, so the total
+> nesting depth across all netem instances in the call chain is tracked
+> correctly.
 
-We're adding ever more complex checks in the conncount backend.
-I don't like any of the solutions.
+I'm assuming you are referring to [1] (and other relevant followup messages=
+), but has this setup been tested against the original repro? I think there=
+ was a similar draft fix originally but it failed during testing because DO=
+S still happened [2].
 
-What about reverting the offending commit, at least for tree_count?
-That way it continues to work as it did in the past.
+If I remember correctly,  the issue is less so the recursive depth but more=
+ so being able to differentiate between packets that are previously involve=
+d in duplication or not.
+
+>=20
+> A depth limit of 4 is generous for any legitimate configuration.
+>=20
+> Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220774
+> Cc: stable@vger.kernel.org
+> Reported-by: William Liu <will@willsroot.io>
+> Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+>=20
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> ---
+>  net/sched/sch_netem.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>=20
+> diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+> index 0ccf74a9cb82..085fa3ad6f83 100644
+> --- a/net/sched/sch_netem.c
+> +++ b/net/sched/sch_netem.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/rtnetlink.h>
+>  #include <linux/reciprocal_div.h>
+>  #include <linux/rbtree.h>
+> +#include <linux/percpu.h>
+>=20
+>  #include <net/gso.h>
+>  #include <net/netlink.h>
+> @@ -29,6 +30,15 @@
+>=20
+>  #define VERSION "1.3"
+>=20
+> +/*
+> + * Limit for recursion from duplication.
+> + * Duplicated packets are re-enqueued at the root qdisc, which may
+> + * reach this or another netem instance, causing nested calls to
+> + * netem_enqueue(). This per-CPU counter limits the total depth.
+> + */
+> +static DEFINE_PER_CPU(unsigned int, netem_enqueue_depth);
+> +#define NETEM_RECURSION_LIMIT=094
+> +
+>  /*=09Network Emulation Queuing algorithm.
+>  =09=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> @@ -460,6 +470,14 @@ static int netem_enqueue(struct sk_buff *skb, struct=
+ Qdisc *sch,
+>  =09/* Do not fool qdisc_drop_all() */
+>  =09skb->prev =3D NULL;
+>=20
+> +=09/* Guard against recursion from duplication re-injection. */
+> +=09if (unlikely(this_cpu_inc_return(netem_enqueue_depth) >
+> +=09=09     NETEM_RECURSION_LIMIT)) {
+> +=09=09this_cpu_dec(netem_enqueue_depth);
+> +=09=09qdisc_drop(skb, sch, to_free);
+> +=09=09return NET_XMIT_DROP;
+> +=09}
+> +
+>  =09/* Random duplication */
+>  =09if (q->duplicate && q->duplicate >=3D get_crandom(&q->dup_cor, &q->pr=
+ng))
+>  =09=09++count;
+> @@ -474,6 +492,7 @@ static int netem_enqueue(struct sk_buff *skb, struct =
+Qdisc *sch,
+>  =09if (count =3D=3D 0) {
+>  =09=09qdisc_qstats_drop(sch);
+>  =09=09__qdisc_drop(skb, to_free);
+> +=09=09this_cpu_dec(netem_enqueue_depth);
+>  =09=09return NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+>  =09}
+>=20
+> @@ -529,6 +548,7 @@ static int netem_enqueue(struct sk_buff *skb, struct =
+Qdisc *sch,
+>  =09=09qdisc_drop_all(skb, sch, to_free);
+>  =09=09if (skb2)
+>  =09=09=09__qdisc_drop(skb2, to_free);
+> +=09=09this_cpu_dec(netem_enqueue_depth);
+>  =09=09return NET_XMIT_DROP;
+>  =09}
+>=20
+> @@ -643,8 +663,10 @@ static int netem_enqueue(struct sk_buff *skb, struct=
+ Qdisc *sch,
+>  =09=09/* Parent qdiscs accounted for 1 skb of size @prev_len */
+>  =09=09qdisc_tree_reduce_backlog(sch, -(nb - 1), -(len - prev_len));
+>  =09} else if (!skb) {
+> +=09=09this_cpu_dec(netem_enqueue_depth);
+>  =09=09return NET_XMIT_DROP;
+>  =09}
+> +=09this_cpu_dec(netem_enqueue_depth);
+>  =09return NET_XMIT_SUCCESS;
+>  }
+>=20
+> --
+> 2.51.0
+>=20
+>=20
+
+What about the last suggestion for a robust fix from [3]?
+
+Best,
+Will
+
+[1] https://lore.kernel.org/netdev/DISZZlS5CdbUKITzkIyT3jki3inTWSMecT6FplNm=
+kpYs9bJizbs0iwRbTGMrnqEXrL3-__IjOQxdULPdZwGdKFSXJ1DZYIj6xmWPBZxerdk=3D@will=
+sroot.io/
+[2] https://lore.kernel.org/netdev/q7G0Z7oMR2x9TWwNHOiPNsZ8lHzAuXuVgrZgGmAg=
+kH8lkIYyTgeqXwcDrelE_fdS9OdJ4TlfS96px6O9SvnmKigNKFkiaFlStvAGPIJ3b84=3D@will=
+sroot.io/
+[3] https://lore.kernel.org/netdev/20260111163947.811248-6-jhs@mojatatu.com=
+/
 
