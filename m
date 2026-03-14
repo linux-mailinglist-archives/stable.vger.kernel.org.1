@@ -1,268 +1,222 @@
-Return-Path: <stable+bounces-225429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBReC7mGtWnP1QAAu9opvQ
-	(envelope-from <stable+bounces-225429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:03:05 +0100
+	id UIjPLy6JtWn11QAAu9opvQ
+	(envelope-from <stable+bounces-225430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:13:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8C428DC41
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:03:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DF228DD4F
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 17:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB199302291B
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:03:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13D08300D75E
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 16:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B86D314D37;
-	Sat, 14 Mar 2026 16:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C42937756D;
+	Sat, 14 Mar 2026 16:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QYASmWMm"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D1mSdLJG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sqdqzD1W";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D1mSdLJG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sqdqzD1W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBAF1DD525;
-	Sat, 14 Mar 2026 16:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FFD34E768
+	for <stable@vger.kernel.org>; Sat, 14 Mar 2026 16:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773504178; cv=none; b=gK3zd3+y1/dX9TiPwodfKuR++r/7Z5S0DlkexF/1NI6I1OAMoPSfV3Nh6qYpRnEDsU/TrXC8v/KxsNI98zhbwUF0qeDKqhw6QF3O2lSToSL9tO+eqL2nll3PLZK7xZ0tPLuuAuohXfg5DXelg+WR+y0lbAX/YhtDwg2OIrc/gcg=
+	t=1773504806; cv=none; b=SsNHnFOKjuKov3DigMwlD7BwSPEvuueJPq9++v+Jx6YS/L2OlEVlYt9IXpwvEbAXrDdv97/lAn9SRxb93dsPpihnXZxXmSuQJW4imso9i6wv7mWnrGItBMf7nhVJr6u1A0BodVozsAUnnOlRQqVa9mRAZjm7jdO8Pj/qXzJ8/hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773504178; c=relaxed/simple;
-	bh=gW273cX5oHbg/QoABE2SB7PT0aTQ/h5U216t18qbRMs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L6iYqLqFHfHcVlOFxP7GnZqm6i9aXxfcttArtCriTDW3xXz5clzkxG67nsWEbfjCi0tzvbBBPSXHCsLJGRQmsiSE4C1ZyuLbA3RCDP9o6UEYOK8xEyJ7HAQW0Jh/O5fIf1jQXYJ5GOxB/1Yao2z0omGkHz2Dxe+7GsXp5avjp28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QYASmWMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 236E1C116C6;
-	Sat, 14 Mar 2026 16:02:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773504178;
-	bh=gW273cX5oHbg/QoABE2SB7PT0aTQ/h5U216t18qbRMs=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QYASmWMmM5rPb6P6M/GW67xjWV0DT2QV6FnyrC4XUjVrQaRAM6mP1gsANpFO3gcHl
-	 XzYCqtfvxi8oGwntcVW4pRyoh+nejoV8cnOZ3aCD/JYyWJDtMsgMtoVMvz2T49HX4x
-	 7StCfls88j2SlaMD7GE6yzX1ACkZHXN7D2HXTYTlyHvDY7WwvGLqkZ7x7/IjyiHDtw
-	 cXORGe1sfs+kcBbXhAnBJGoKxDZEZTwJTHrV/IVBh0w0ysCBml3lTIBPJ41jHmuYyc
-	 aIaE6RynhHdB8cRc422lONZiGyS6rpbBjwsWrpTNKfmjrnNL/Goah+oRSCir4ByhIE
-	 e0Nf50eLdE1Hg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 117BC10706E2;
-	Sat, 14 Mar 2026 16:02:58 +0000 (UTC)
-From: Levi Zim via B4 Relay <devnull+rsworktech.outlook.com@kernel.org>
-Date: Sun, 15 Mar 2026 00:02:48 +0800
-Subject: [PATCH bpf v3] bpf: do not use kmalloc_nolock when
- !HAVE_CMPXCHG_DOUBLE
+	s=arc-20240116; t=1773504806; c=relaxed/simple;
+	bh=Mae2/w4abHA8kh6yARLjOYoztZzFL7n+8muNpidz7NQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PPToSIjJQYbW4/pI41dQ86/U9dX/xbTQUna8tIc8bUc9hDv1kTqO1xWSdZ4QLNf25EU2Fl3hXQqMBopDe5HPvPnmtgL5I5x4fu5jTw6t5sOdrFvDtoJeXTsEMs9NO1U1mLqO3eXuSxQpF5xqpAYksNi4PaiMNXVIb3nSTG5g2y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D1mSdLJG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sqdqzD1W; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D1mSdLJG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sqdqzD1W; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9552C4D205;
+	Sat, 14 Mar 2026 16:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773504803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
+	b=D1mSdLJGmdUy+fajfjONs9n+A6zwNw4jByeBDrlshJtYB8vqvYnPK8Y23IeRni8do4kE0C
+	FlezAOH1d+TSzdcQiBcGbspqwycI0aoO0ey/WfQElVsg8GnCZ2mzeVwTsYh84o/0FLHfB+
+	/AYl28d2M3FvGsdOcpkRLPkxJwhdzqE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773504803;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
+	b=sqdqzD1WVnQoMhTrfUAveW9aXUjvvHY+MrT5wAYhELzU/ZrCVnpHnqKhgSJl6fYYsq7gxL
+	+d7+zkSX2o9nMGAA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=D1mSdLJG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sqdqzD1W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1773504803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
+	b=D1mSdLJGmdUy+fajfjONs9n+A6zwNw4jByeBDrlshJtYB8vqvYnPK8Y23IeRni8do4kE0C
+	FlezAOH1d+TSzdcQiBcGbspqwycI0aoO0ey/WfQElVsg8GnCZ2mzeVwTsYh84o/0FLHfB+
+	/AYl28d2M3FvGsdOcpkRLPkxJwhdzqE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1773504803;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SNJELziumJN+7WTPukQjXt809HE9JLgHCSJSSDmqMPE=;
+	b=sqdqzD1WVnQoMhTrfUAveW9aXUjvvHY+MrT5wAYhELzU/ZrCVnpHnqKhgSJl6fYYsq7gxL
+	+d7+zkSX2o9nMGAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 985D842724;
+	Sat, 14 Mar 2026 16:13:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5u6pISKJtWnAKAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sat, 14 Mar 2026 16:13:22 +0000
+Message-ID: <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
+Date: Sat, 14 Mar 2026 17:13:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260315-bpf-kmalloc-nolock-v3-1-91c72bf91902@outlook.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNyQ6CMBAG4Fchc7amCxT15HsYDwWm0rAMabHRE
- N7dpjcvepnkn+WbDQJ6hwEuxQYeowuO5hTUoYC2N/MDmetSBsml5kqUrFksGyYzjtSymVIdmOa
- dOXHUQnUI6XDxaN0rozdI+3BPzd6Flfw7P4oij36ZUTDBZGkaq2xdmbO90nMdiYZjS1MGo/yPy
- IRUtUalsLRG19/Ivu8fv2qK1AABAAA=
-X-Change-ID: 20260314-bpf-kmalloc-nolock-60da80e613de
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: Amery Hung <ameryhung@gmail.com>, linux-riscv@lists.infradead.org, 
- stable@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-rt-devel@lists.linux.dev, Levi Zim <rsworktech@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5177;
- i=rsworktech@outlook.com; s=ryzen; h=from:subject:message-id;
- bh=F3NzhvAzd0zCVDcRlr7RmrSHpJygKeFMqZIONIS/DVY=;
- b=owEBbQKS/ZANAwAKAW87mNQvxsnYAcsmYgBptYataz9Rjqgmj6vGqmsIM8a6ZekZLkTCdBL8E
- xjDsqOUPQWJAjMEAAEKAB0WIQQolnD5HDY18KF0JEVvO5jUL8bJ2AUCabWGrQAKCRBvO5jUL8bJ
- 2F2AD/9oKgja014FkRBZt0+EeVAdwGQx2xV8nIGzJFegeQEj1nn2IEPSyYITgmeLJ+wp0LhaJ7M
- KZ2ZG7quAiDTUYPLSTk1+qNAR+JaDp15cA1/GHDrdFoLCEO0A4TYRP4eMrqQIOIZra2hF+7EX0C
- v6ndojsunyGRPgeDln9cs6pYfa1XUa8dHgD9bSivT1DluvOajJU1gXjbhTKEOeasYdzMt1IQfNw
- kQX7wq/P3JoUFMTJCL4I66odN1QlGfe2sS7xNg5GOu08NtxDrXY8QkbSLNGAqYA/t5lKwOjdjNg
- MfdFm4zzKcTm4Qe9STv6V9cQjVoG3kRqCbP35meqrOq690na+7HUW4RrAjozujCSLeQ8Zv2s32q
- o9m6p3nzUyP6wB2/sJkwk8eD7S3o4X9ODWpdSAr76mi+9o5AHTvTA2BdaHE4yDhjfSByRrZxjin
- riSi1Foj46ovVjKDCFwdEN0ocJFHCfUW1GjnXA2qjM2Sale7GV7fS/UNNnftktWBTyYA2Jw8hyK
- V30UKE2bZsSHx5wsDVKV/YphBApMDRFi+2OUkKhFIJovNl7pxU2DxjHiKa0T5r1u6xAVlpvEfA7
- 5lHcoM60D8Hn0Xn4JcC9YioctxKS6UI/2FPAVvrham+ytnO0SIbDZbXaiqjWhkr/F7qR0LE3eGI
- k2lMPSDkv1fCCIA==
-X-Developer-Key: i=rsworktech@outlook.com; a=openpgp;
- fpr=17AADD6726DDC58B8EE5881757670CCFA42CCF0A
-X-Endpoint-Received: by B4 Relay for rsworktech@outlook.com/ryzen with
- auth_id=536
-X-Original-From: Levi Zim <rsworktech@outlook.com>
-Reply-To: rsworktech@outlook.com
-X-Spamd-Result: default: False [1.34 / 15.00];
-	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] Network failure beyond first connection after
+ 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
+ skipped")
+To: Salvatore Bonaccorso <carnil@debian.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>
+Cc: 1130336@bugs.debian.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org
+References: <177349610461.3071718.4083978280323144323@eldamar.lan>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <177349610461.3071718.4083978280323144323@eldamar.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225429-lists,stable=lfdr.de,rsworktech.outlook.com];
-	FREEMAIL_REPLYTO(0.00)[outlook.com];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,google.com,linutronix.de,goodmis.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225430-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[rsworktech@outlook.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[debian.org,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org,vger.kernel.org,lists.linux.dev,outlook.com];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,outlook.com:replyto,outlook.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DF8C428DC41
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E8DF228DD4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Levi Zim <rsworktech@outlook.com>
+Hi,
 
-kmalloc_nolock always fails for architectures that lack cmpxchg16b.
-For example, this causes bpf_task_storage_get with flag
-BPF_LOCAL_STORAGE_GET_F_CREATE to fails on riscv64 6.19 kernel.
+On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
+> Control: forwarded -1 https://lore.kernel.org/regressions/177349610461.3071718.4083978280323144323@eldamar.lan
+> Control: tags -1 + upstream
+> 
+> Hi
+> 
+> In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
+> after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
+> update the count if add was skipped"), when the following rule is set
+> 
+> 	iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
+> 
+> connections get stuck accordingly, it can be easily reproduced by:
+> 
+> # iptables -A INPUT -p tcp -m connlimit --connlimit-above 111 -j REJECT --reject-with tcp-reset
+> # nft list ruleset
+> # Warning: table ip filter is managed by iptables-nft, do not touch!
+> table ip filter {
+>          chain INPUT {
+>                  type filter hook input priority filter; policy accept;
+>                  ip protocol tcp xt match "connlimit" counter packets 0 bytes 0 reject with tcp reset
+>          }
+> }
+> # wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
+> --2026-03-14 14:53:51--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
+> Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
+> Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... connected.
+> HTTP request sent, awaiting response... 301 Moved Permanently
+> Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz [following]
+> --2026-03-14 14:53:51--  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
+> Reusing existing connection to git.kernel.org:443.
+> HTTP request sent, awaiting response... 200 OK
+> Length: unspecified [application/x-gzip]
+> Saving to: ‘/dev/null’
+> 
+> /dev/null                         [                         <=>                    ] 248.03M  51.9MB/s    in 5.0s
+> 
+> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
+> 
+> # wget -O /dev/null https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
+> --2026-03-14 14:53:58--  https://git.kernel.org/torvalds/t/linux-7.0-rc3.tar.gz
+> Resolving git.kernel.org (git.kernel.org)... 172.105.64.184, 2a01:7e01:e001:937:0:1991:8:25
+> Connecting to git.kernel.org (git.kernel.org)|172.105.64.184|:443... failed: Connection timed out.
+> Connecting to git.kernel.org (git.kernel.org)|2a01:7e01:e001:937:0:1991:8:25|:443... failed: Network is unreachable.
+> 
+> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
+> if add was skipped") commit this worked.
+> 
 
-Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-But leave the PREEMPT_RT case as is because it requires kmalloc_nolock
-for correctness. Add a comment about this limitation that architecture's
-lack of CMPXCHG_DOUBLE combined with PREEMPT_RT could make
-bpf_local_storage_alloc always fail.
+Thanks for the report. I have reproduced this on upstream kernel. I am 
+working on it.
 
-Fixes: f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock() in local storage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Levi Zim <rsworktech@outlook.com>
----
-I find that bpf_task_storage_get with flag BPF_LOCAL_STORAGE_GET_F_CREATE
-always fails for me on 6.19 kernel on riscv64 and bisected it.
+Thanks,
+Fernando.
 
-In f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock()
-in local storage"), bpf memory allocator is replaced with kmalloc_nolock.
-This approach is problematic for architectures that lack CMPXCHG_DOUBLE
-because kmalloc_nolock always fails in this case:
-
-In function kmalloc_nolock (kmalloc_nolock_noprof): 
-
-	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
-		/*
-		 * kmalloc_nolock() is not supported on architectures that
-		 * don't implement cmpxchg16b, but debug caches don't use
-		 * per-cpu slab and per-cpu partial slabs. They rely on
-		 * kmem_cache_node->list_lock, so kmalloc_nolock() can
-		 * attempt to allocate from debug caches by
-		 * spin_trylock_irqsave(&n->list_lock, ...)
-		 */
-		return NULL;
-
-Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-(But not for a PREEMPT_RT case as explained in the comment and commitmsg)
-
-Note for stable: this only needs to be picked into v6.19 if the patch
-makes it into 7.0.
----
-Changes in v3:
-- Use macro instead of const static variable to avoid triggering
-  warnings.
-- Wrap lines at 80 columns
-- Link to v2: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v2-1-576e33e4fa67@outlook.com
-
-Changes in v2:
-- Drop the modification to the PREEMPT_RT case as it requires
-  kmalloc_nolock for correctness.
-- Add a comment to the PREEMPT_RT case about the limitation when
-  not HAVE_CMPXCHG_DOUBLE but enables PREEMPT_RT.
-- Link to v1: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v1-1-24abf3f75a9f@outlook.com
----
- include/linux/bpf_local_storage.h | 1 +
- kernel/bpf/bpf_cgrp_storage.c     | 3 ++-
- kernel/bpf/bpf_local_storage.c    | 4 ++++
- kernel/bpf/bpf_task_storage.c     | 3 ++-
- 4 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
-index 8157e8da61d40..d8f2c5d63a80e 100644
---- a/include/linux/bpf_local_storage.h
-+++ b/include/linux/bpf_local_storage.h
-@@ -18,6 +18,7 @@
- #include <asm/rqspinlock.h>
- 
- #define BPF_LOCAL_STORAGE_CACHE_SIZE	16
-+#define KMALLOC_NOLOCK_SUPPORTED IS_ENABLED(CONFIG_HAVE_CMPXCHG_DOUBLE)
- 
- struct bpf_local_storage_map_bucket {
- 	struct hlist_head list;
-diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
-index c2a2ead1f466d..cd18193c44058 100644
---- a/kernel/bpf/bpf_cgrp_storage.c
-+++ b/kernel/bpf/bpf_cgrp_storage.c
-@@ -114,7 +114,8 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
- 
- static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
- {
--	return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
-+	return bpf_local_storage_map_alloc(attr, &cgroup_cache,
-+					   KMALLOC_NOLOCK_SUPPORTED);
- }
- 
- static void cgroup_storage_map_free(struct bpf_map *map)
-diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index 9c96a4477f81a..a6c240da87668 100644
---- a/kernel/bpf/bpf_local_storage.c
-+++ b/kernel/bpf/bpf_local_storage.c
-@@ -893,6 +893,10 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
- 	/* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
- 	 * preemptible context. Thus, enforce all storages to use
- 	 * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
-+	 *
-+	 * However, kmalloc_nolock would fail on architectures that do not
-+	 * have CMPXCHG_DOUBLE. On such architectures with PREEMPT_RT,
-+	 * bpf_local_storage_alloc would always fail.
- 	 */
- 	smap->use_kmalloc_nolock = IS_ENABLED(CONFIG_PREEMPT_RT) ? true : use_kmalloc_nolock;
- 
-diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_storage.c
-index 605506792b5b4..6e8597edea314 100644
---- a/kernel/bpf/bpf_task_storage.c
-+++ b/kernel/bpf/bpf_task_storage.c
-@@ -212,7 +212,8 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
- 
- static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
- {
--	return bpf_local_storage_map_alloc(attr, &task_cache, true);
-+	return bpf_local_storage_map_alloc(attr, &task_cache,
-+					   KMALLOC_NOLOCK_SUPPORTED);
- }
- 
- static void task_storage_map_free(struct bpf_map *map)
-
----
-base-commit: e06e6b8001233241eb5b2e2791162f0585f50f4b
-change-id: 20260314-bpf-kmalloc-nolock-60da80e613de
-
-Best regards,
--- 
-Levi Zim <rsworktech@outlook.com>
-
+> #regzbot introduced: 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e
+> #regzbot link: https://bugs.debian.org/1130336
+> 
+> Regards,
+> Salvatore
+> 
 
 
