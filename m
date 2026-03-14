@@ -1,286 +1,247 @@
-Return-Path: <stable+bounces-225413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PbLFz8vtWkXxQAAu9opvQ
-	(envelope-from <stable+bounces-225413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 10:49:51 +0100
+	id cCyZGjY6tWmgxwAAu9opvQ
+	(envelope-from <stable+bounces-225414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 11:36:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A9D28C858
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 10:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D6228CB6F
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 11:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF6A2300AB3D
-	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 09:45:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54652303AF0F
+	for <lists+stable@lfdr.de>; Sat, 14 Mar 2026 10:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D8A1427A;
-	Sat, 14 Mar 2026 09:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FC43264F3;
+	Sat, 14 Mar 2026 10:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="VdmynsFA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHk8E9JB"
 X-Original-To: stable@vger.kernel.org
-Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010022.outbound.protection.outlook.com [52.103.72.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CDA22256F;
-	Sat, 14 Mar 2026 09:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773481547; cv=fail; b=gRPkzVmoD+J6ujkT85Ktg62ZOYpT2E+DufktAl6Zp4Rz1dFxy0Y0+N8IFKeEAe8GtDtJQ6O1fhxs777phEoFv+Ltk1f/0llhoP8PBegac8WrjU1r6a0hkFLPEAldQwKSo5N/j5sWA3GeXFqZtEw4OEbU+MWr9FUt1yOHgk9DwR0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773481547; c=relaxed/simple;
-	bh=wtiz7Yt6lnXYYzThiRjSb2F2qaOn6hwNuvMfXQ/CMr8=;
-	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=eJJngcGbQG9/dVOEuAQetsvk8UusyYDdobM0d1h2Ls2LDOrsxi0HBjbjD3O1vp4dd3RC9qXaCvpwgSqoib5PJIm+CsLAHrW8YckaTNbg0xqLZ0vhux3ZDiTDVbiGM/hk+9bGtR4QRlE5jZk1BDSoAp4ODxkVmY2xcxArvtIDjjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=VdmynsFA; arc=fail smtp.client-ip=52.103.72.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IL56+cHDIbJAdO/rfevletVLhr0vo9e2SGmr6cYZblK3VkpgxXb86hzafYmnt/7w9uM6Gq+fLvHen11c6WEXUm3YizqDFlSB8ltzVoOplVYJvZMJd/KL0v+IM4/HwGkrs6j0Z+5VBkeKjVX7oA9e+huVv9ILbcEjlWFeaTqGsQ4XkqtvRR3oxsu6JFJWFy/IBgcC3wtmpIc7UrXGi/vGBOzJzM8JunRqqEGbTs+G8K1l1CTMHh500wCHHvF3bgIP0v3jNFSiF52Q2MpSAJByaV3dA4got6sRyUONtOGVv88LrwbCjmJgrpOkfngpe0u8IEaTLzPDsV2Gq5mgPn8Jgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=akZGKYQSVl93tDg3LUmChBVgAXuy88SUG2bJhkdqVTU=;
- b=ChunuKYak0JYSK0a1eJi/x9QaIikpr4Hlv5lDj7Ulys8pjTPE0dJBJ0JD1qH+mTOfp/XTZeJ14v3z8twyzrLvk/zK3opLZXbrGE9qyHAcowbTsy+phTtAYNKAZtoB4x4qMpzcd3LL0bRCUnVYLAMJBP80pS/pbI6kjVFJREn9/33mcbn4AkLjXCMXEwleG19D4EDZXXC1vxs+2m6g4Syy+ySjPslzO2IaFa5sRdKNhidHtDSqJlqPqYAfA1cUGmUH+DlVMfsEvE/XOZoN4hVPHPB7cneuy0iq2wK2FmjHjnbJnhGBn+XwxHj/M46G+n0YehL/43hJ8/DbKMfy0p1Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=akZGKYQSVl93tDg3LUmChBVgAXuy88SUG2bJhkdqVTU=;
- b=VdmynsFAD1neeec2qvypEXDpRFgysF1VvvguC7U/6E1at4TCiiKI0lMtVLraroEl+n0LrWzoBRREO45eDXpAHF5VZQy/mm5VcKA5beOU3fkf9EnN9XdE5cFODEeYe1b/SX6h5N7iJ9vb5mnsetujy9H9touL3OoANZdIgxogk0cUQ0rSl3CJjA2fVptMmvaxmkdBgF9qT6pw205pCT4tWU3Db0kKapNegCMZ6bIED3X7RnXkf8mN9luQa6Y6stlpoLd1sXgQ0gQUz8gWnb9mo7ei3bypPF3RQ1Kc+4tDVBwkhrAZjBblTGD72PSuCsb8+IiyYRFLRo65bnN8aNGqAg==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by SYZPR01MB7785.ausprd01.prod.outlook.com (2603:10c6:10:169::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Sat, 14 Mar
- 2026 09:45:38 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9700.018; Sat, 14 Mar 2026
- 09:45:38 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Sat, 14 Mar 2026 17:41:04 +0800
-Subject: [PATCH net v3] bnxt_en: fix OOB access in DBG_BUF_PRODUCER async
- event handler
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID:
- <SYBPR01MB7881A253A1C9775D277F30E9AF42A@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NwQ7CIAwG4FdZehZDh2yLJ9/D7ACjc0QFA0g0y
- 95dtpvGU/O3X/7OEClYinCsZgiUbbTelYC7CoZJuQsxa0qGmtcNFyjYaF8UGeF4MKjUqJGg2Ee
- g7VDoGRyldZcF9GVMNiYf3tuHjBv4KcvIkIkOjcR2qEl3J/9MN++v+8Hf16Z/XqpO87ZpSWr55
- ftlWT5LS0pT1wAAAA==
-X-Change-ID: 20260313-fixes-e1f4d1aafb1e
-To: Michael Chan <michael.chan@broadcom.com>, 
- Pavan Chebbi <pavan.chebbi@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shruti Parab <shruti.parab@broadcom.com>, 
- Hongguang Gao <hongguang.gao@broadcom.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
- Junrui Luo <moonafterrain@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2997;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=wtiz7Yt6lnXYYzThiRjSb2F2qaOn6hwNuvMfXQ/CMr8=;
- b=owGbwMvMwCVW+MIioLvvgwPjabUkhsytuvptMXHz67epBAYY8l5UiZz9f4+f6pWjb378cHP5x
- vT3g7BdRykLgxgXg6yYIsvxgkvfLHy36G7x2ZIMM4eVCWQIAxenAEzk4zxGhscvX6e6cidONyw0
- sn7vxeAfVeT6pSnw3XZpBhnL+hsu7owM+47fEPonNW3Vi603PLfOmMgQsM6P+VbBKjUbX/bXwpO
- TGAA=
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-X-ClientProxiedBy: BYAPR05CA0012.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::25) To SYBPR01MB7881.ausprd01.prod.outlook.com
- (2603:10c6:10:1b0::5)
-X-Microsoft-Original-Message-ID:
- <20260314-fixes-v1-1-9d9a143896c7@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E6625BEF8;
+	Sat, 14 Mar 2026 10:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773484592; cv=none; b=RHf+GmRUOXar68tgc+w3fGUTEV5DgMHDVRmY04KTB1umEtpSS+06LaDpdRzKZodE1KLB/9zEkVgrqQfxfL3DtCYM00BVq6VNdsTaIko9vjTNyJBBx6CQtRhs3XAUYdgp3tdmCI71Eg8vFOTlBLaarwGmcbMVzuOqQD9Eil5pnJc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773484592; c=relaxed/simple;
+	bh=8ETulfXTKfn6xXZVUkPqEIhROGr0XO3o3r6Ttt19XQk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WRPgH0Kfy5mSJhvkm6KWxpZxDyb/+vsjzeyKYZnsLRK114cEpg+c6mwemhzyQLIVCpwpOPfleXwbCCssTJyxO4VYva3OdTMA62YHMt+fc37vfDymUl23osZwOOev9f5L8KCU51cHbKpYisR0ELdfYgC2cAESySN7B94lpskGRlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHk8E9JB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BCE80C116C6;
+	Sat, 14 Mar 2026 10:36:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773484591;
+	bh=8ETulfXTKfn6xXZVUkPqEIhROGr0XO3o3r6Ttt19XQk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=vHk8E9JBoOnLB/4CsXojWjwa/EhIcCulnxGLn+x1tEK3hdjU7WX3oA6prrCCKaIbo
+	 AAJwQLXTLPj+YToYB2jeNlmiTjKQ4xL6oQ58jEpIrGOsjB7wwVPXRQEOQxkNYbQCsq
+	 sNWmE2XbysaEY5YhblpLyptnB7lhZbcd2P2gS4FvcJSOJ2rAmW2pMGIDc49Zr2MNkt
+	 BooD1btWz1CoH/1mjANOtSlhrjd7hhLxZKYAN156b975cAFcS/0OSOkyEu8FEiNYsH
+	 Sf0Q6KwxQQmAt7n20H/5kK/2klKweOuIH/C0spgfn54iV18MXy0dqH8d1Kz1Oop7uz
+	 NVwr4Qcpct7QQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B12E010706CE;
+	Sat, 14 Mar 2026 10:36:31 +0000 (UTC)
+From: Levi Zim via B4 Relay <devnull+rsworktech.outlook.com@kernel.org>
+Date: Sat, 14 Mar 2026 18:36:19 +0800
+Subject: [PATCH bpf] bpf: do not use kmalloc_nolock when
+ !HAVE_CMPXCHG_DOUBLE
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SYZPR01MB7785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e4ab6a4-94a9-4350-249d-08de81ae7281
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199028|8060799015|13031999003|5072599009|5062599005|23021999003|51005399006|15080799012|6090799003|22091999003|12121999013|19110799012|24121999003|10035399007|3412199025|4302099013|440099028|1602099012|40105399003|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T1NINXVXdVFPNnpqK2ZLQlNYU0N0a1Y0S0kwT0N6RW85TVh2YzZtRnFDZ0hF?=
- =?utf-8?B?dyt5dER5enpzdjdzdGFWZXZrczdyRE84alBSK0gwQTZnazRMZUw1cjdjcW4z?=
- =?utf-8?B?MDViV2tIZHVEdWVhemhqaW9FemF1U2JDTEs4SjRVeWNVK1RTejlnb0F0ODV2?=
- =?utf-8?B?TXpqMGRIUkNLbmpoOXVzMktad1F2MnIrUGdJb2FKeFhveWNvdW5VYnZpY2No?=
- =?utf-8?B?c0ZBTEF2Zk1hMUgrNi91M2VUWHdDbjAwRnQrc01xUHRKVEtnMkVvOHVkN1hR?=
- =?utf-8?B?VnAySzlYd3VIQXVUY20zRVZ2SDhiTEZwQVNZdElndzcvYzhwRVQvM09xWXNY?=
- =?utf-8?B?cDlOU1A4NkFjWnRDUklIWDVYUzhiYUFPNzZZVkJodDM0YlcvRCtWaWN5TWsz?=
- =?utf-8?B?eThBNXd1SHFaMy9PazM5UWVwZE5uQWMzdXFSdExWZ1c3M1N2d2VleUhONjBE?=
- =?utf-8?B?enliVVRqNGRRRGgwSlhNSlFGUWNoTnp3UGkwMWxvMFlVR3pmeGdXdjFhUEhW?=
- =?utf-8?B?UnB1U1I0ZmFaVVZYSGM0dmtKVHlLZitnVjJpNGduK1IrcUFlSzVlaEs1cWFl?=
- =?utf-8?B?a2FXclRpV0hqSmFzcURWWUEraisxU0RGYlhYOWFhcDZHdUtERkZmbDRpOUZP?=
- =?utf-8?B?clo4THY5OUVTUWRobVRBVmwvcDVSQnk1VFE4YjV2SGo2aUhnZ2pjZFYzdTVv?=
- =?utf-8?B?ekQyaFpJWWJmRGVWT0JTaHNrU0FjemVoU29TSHdNODgyblN1bVVVMnJXOEZj?=
- =?utf-8?B?VmdEdmk5Q1ZKOENMcndFMVoxdk1XYlFiT0ZNRFlpL0w3c1p0NGNVS0J5NGJD?=
- =?utf-8?B?bFZ2ejlBVFhvWS9nSGRmNFdFakpQbXBTQ2lreVBaWmlOWDMvRmlIS081aWJ4?=
- =?utf-8?B?TWw0akRwMktBWWRlOHJaTEJMVkFVTjBYaCtXa1hDTnAweVNSSFlPYmV6V0Fa?=
- =?utf-8?B?MjFmVjd0RkpiRGNNUnl6Rjd1a1hLWWcvM2xjdGhvbDVMa3FBeUpEMlh0Q0Rt?=
- =?utf-8?B?TXVYek45dkpNcmZRRlJoMlJ0WklmcDJjVzI4d2RuT3FTUGtyKzdURWM4bFBE?=
- =?utf-8?B?eHplOU9MV2pqSVp6TGVTWHNOb05uWi83YW5GTktjUG5UVFZGRmxrdzBYRitH?=
- =?utf-8?B?RHFTWDhVV2lVNXh5UG9OS2NjTnNpNXhKbjZ2TFNMSkhiZ0luUktKYjliaFRp?=
- =?utf-8?B?TkcvSktrcnhleDJMTGtRRUZZQkQrRDlKSmVzZURhaWJVY3lqd25sajNNNXJQ?=
- =?utf-8?B?RGU2Nk1vWGJCc2xQYVBmTTNydVhvRU13Nkd2dGp3NmJyWndVdjRSOWIvUm1z?=
- =?utf-8?B?a2NQZHZBV2ZNTndOMnhYTnhHVW1OcDlsTlV2N0R3bXpIQW9NRG1LRytzZ1Rk?=
- =?utf-8?B?SGJPNzcwWWZEVWltanFRc2RIeGkxWmcrUmVhdHJBNFRGSExVR2dsb1dDNnh0?=
- =?utf-8?B?VTVqS2NSczJYVDhBa2haM0JLZ3JxanZMTVorSHlya0VYb1VyUDVKRzdaMEZQ?=
- =?utf-8?B?VHVIeVFWOXhBVzRlVmhjUHJ4aUs2WkNNQTExRnY3UXcxZ04yK3RPVWszeURC?=
- =?utf-8?B?YUpSUEx3bk9waWJWMXZBb3RCKytWL2NMOGducDNURFA4ejd5aG9QQWRrejZa?=
- =?utf-8?B?TDExLzhTZGRzTzZKTmFHd3lCVDduUlM1bHV0Rld2THovODJPVWFIMEtLUkdl?=
- =?utf-8?Q?F9iNCd8Wn4jeZGotrg7K?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MnJCdGZHWTByQmxMRFBQUUhBMFlFblVRdVhKWDBBQ2FTUUl3S0ppYitLUWw3?=
- =?utf-8?B?OUNaZWRGc2RsTEU5UFBSTUt0UzkybHlYY2NBZXY5ZkYrT2s4c0d6WkoxSDB5?=
- =?utf-8?B?c3pXeE1YeE5aaFJUL0tyZ2FuU2tpNElFQy9GS01JQ29mb1BBQ1UzTHEvRlZl?=
- =?utf-8?B?c25rRW1QR2JuRTBEK0JZczR5cEVoM2lDYWYwYU45b2FOR3NERUtYU21TeHBE?=
- =?utf-8?B?RnpNNnV3R0NDNnlSa3h0TTlJdWYyRXNPRTN3aHJyY3dSUkNaU1IrYXJlbEU4?=
- =?utf-8?B?NDVSN3hkS1l0N2hWSFJYLytyNGp5ZnlvODFuU0taWXdyRkZnSzZvaGNqdXpj?=
- =?utf-8?B?MkNIOEl3eXRkc1F3bkw0MitML01SSldPS3lHK3Bla2VYZ2FuaXA1WXBiTklZ?=
- =?utf-8?B?aElwQnd5ZXh5TExVYUhqS2NXR24vWG81bTR1TFc2b2dsM2lTSWRNb0F4OHZm?=
- =?utf-8?B?VjRVMUtkVlVKKzZzRjA2NnBNaDFiMkIwV3ZEQlRhUnprdzlMVXV6TlFJdmM1?=
- =?utf-8?B?NlFHeTNpR0pqWXhuT3ZWUnQwYzluUDlnczNkZWtUZ2ZOdTYweHVLekJQdTEy?=
- =?utf-8?B?ODRMdGRPc1B0WTh5bi8zUGVXU3JmMDNZT0ErNUVTSU9LdUxRTHFxSU5iMXJk?=
- =?utf-8?B?dHNUcXd6R21Qdnp1M09lK2R1R1BGbmkyK1BSTXF4NGhETHZYc0x5VmpNa2NN?=
- =?utf-8?B?aEZmS1NIYTFYMHl5dTN0V2RlN000bWlINGFUajl1UHNrSWlsTTNTSHpudWw3?=
- =?utf-8?B?REdWYUg5THdIS1k4eGdJSnd3WnUzclJPdFArVkkxanZOeGhuaWdVQXNiTDJx?=
- =?utf-8?B?L2tWenIzMWcwMFYyREd0ak1Bc2x2bE84bzZ2UkhGcmEvTWd6VXFkYkI1cWhP?=
- =?utf-8?B?Z0h3eWhRKytvV3poVnhiRDF0RXJ3WGM3T0hQcUVxNDQ2VlNOamwvQUJDQnl5?=
- =?utf-8?B?bHFXd3FDdjFqOTBFVXZFNE90UXhSM2ZNNWRYOVQ1dEVaTHYzR0RSQ01UWk5o?=
- =?utf-8?B?UW8rM0FFOVg5by9FNksyanhKWWt2cFh4N2QyeS9KVHg0ekt6cFdHcXUwWGZl?=
- =?utf-8?B?bnplTVhWMk4xaTFWVnl3U2ZobUp6dG4wbXpkaDJjSHNvdlJYelNJNnFKUlEy?=
- =?utf-8?B?SDlZbHdlNzRnZHpxYWRLUEkrRG9kZTdPWWJOWTYrY0M5L2VTdlFvUUxNakdT?=
- =?utf-8?B?WlhUQjVHZVV6cU9HTEgwOG0zV0lnVTV5NUJ1UWR3akNIYW5wNlFxSWdJZXBj?=
- =?utf-8?B?OGR5Ym1DSXZnUkpOSlZoN2lXc2pYVkpWRkZ5emJna2x3RWRiT3BvbFFyNWJM?=
- =?utf-8?B?WUtwSUxrdSsvNWxYUFNxMFJDVmRVY0hLZ3V6b2JxMzhEaVhlMXNBb1o1eWNy?=
- =?utf-8?B?S28zY1pRKytuN3JlTmpVTXJCYVNONjUzbVVtSE5ZTytaeC90Znh3N0Nrc1Bl?=
- =?utf-8?B?aUdvSm5udWY2UXJleXFJclh0Z0JyQzdGK25xSGpkeTNLUUpKVUZLYUxYRlRI?=
- =?utf-8?B?YnB3enZzU3JGNWZ1aDB2VE9BOEZhdDRTdjFNNTJUYmRqZUs1VXArZFdUQkdF?=
- =?utf-8?B?dzg3WnV3WnhkR3lPUjBmZ2UrRnNramxnQ3NnN3U2bkhZTzYzVW5IRFFYRTNm?=
- =?utf-8?B?ZlNwTmhSWFNhc3gxYjR3bHlyVDFtVWgyMGNmaVJ4ZG05dkRiVTY3ZnZZcVBn?=
- =?utf-8?B?V1k5YnZybGU2TVRFdEQ1TFh2VTR0RmtXOHpucVRNM2VCT3hTOURETE00UWd3?=
- =?utf-8?B?QWxwRDhPYnJMaE9NRDZWdXErYkJYaUNwT3R4WTFrMXlOWFlwRzNmMVZtSmhD?=
- =?utf-8?B?cFc3ZUNqNlFmcWVXKzcyY3NEc0tCeFBQbmJTdG50eE5LTTIvTzJuREcya0pY?=
- =?utf-8?Q?MMV+B9Ljgo0DW?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e4ab6a4-94a9-4350-249d-08de81ae7281
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2026 09:45:38.2448
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SYZPR01MB7785
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260314-bpf-kmalloc-nolock-v1-1-24abf3f75a9f@outlook.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MUQqAIBAFrxL73YJWSHSV6MNyq8XSUIhAuntLP
+ wMD816BTIkpw1AVSHRz5hhEdF3BstuwEbITh0Y1RrW6w/la0Z/2OOKCIQo9GuVsr8jo1hHI8Eq
+ 08vOfjiA9TO/7AU1VTm9pAAAA
+X-Change-ID: 20260314-bpf-kmalloc-nolock-60da80e613de
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: Amery Hung <ameryhung@gmail.com>, linux-riscv@lists.infradead.org, 
+ stable@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, Levi Zim <rsworktech@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4230;
+ i=rsworktech@outlook.com; s=ryzen; h=from:subject:message-id;
+ bh=QOQQvNeL8PrIqPi0m3JHglV7ieN/9+UfvisySvT/v4A=;
+ b=owEBbQKS/ZANAwAKAW87mNQvxsnYAcsmYgBptTooRbmkLsBvfVY7zCs8SZI8nDOpAcm9uBuzB
+ nCMVjhWUTiJAjMEAAEKAB0WIQQolnD5HDY18KF0JEVvO5jUL8bJ2AUCabU6KAAKCRBvO5jUL8bJ
+ 2OeCEADR8P2Uxds/iCtElbGKkbcKkohS0ENKy1l3pKUinigemojfX5EVTSbjU/jcGoQ6t7TeHNi
+ yqDF0iWuanovTdO0u+0RgRQWeubUh2DcU9zoZFIRLAEa74AfnUWizOF9x5jakwt7DN1/tXGJx/D
+ z5s74yT1frkH4nzW+ScRdTeNz2i5HM//MIFmQ0uZCOqSweN5MjpWO6kvN9gdqP6u6+2iiZWkIk0
+ 801KLi8G7GlxX0yTldIj+LUzknAdTvpT/bsPOrD+lGtvLAwcU0Zz6RitWxCpKHP1FAi1qd3OWhA
+ WioCxp4COL7nt4X0TZuRWpinmpn1noa226U5cfrFMUNGKPDwySfWYyvJn8zOZRKVg+xnrtD29pA
+ QuFmje0O3MobS6IMKwRLTlBDkcGWpV8R26y5FiaPpZcGqmZWa2NF1BMXtiXiEjl17fdAEMqW2dT
+ pXcrNjXiaIi/lPOOZk+TmwasML6EyNX0F7XbgcKuq0zUX0omVVwpurhpoKh/BKTMETJOFkEuJkK
+ 6R+fyFjRkgezi8zeO4P0Nw4+9ck5p7P37UdhoRsQiF+oUZ6jWo4p/v0YUmfLPXmnM49Hm2aBUMH
+ La4koSyh3joxkpiGyhEw3sD41kditehoALriZ/Z8qW84QCSMF5W+vX0Dd+PowVO4Jgr06iiA0xF
+ DhNLuSZrftM31Fg==
+X-Developer-Key: i=rsworktech@outlook.com; a=openpgp;
+ fpr=17AADD6726DDC58B8EE5881757670CCFA42CCF0A
+X-Endpoint-Received: by B4 Relay for rsworktech@outlook.com/ryzen with
+ auth_id=536
+X-Original-From: Levi Zim <rsworktech@outlook.com>
+Reply-To: rsworktech@outlook.com
 X-Spamd-Result: default: False [1.34 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225413-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225414-lists,stable=lfdr.de,rsworktech.outlook.com];
+	FREEMAIL_REPLYTO(0.00)[outlook.com];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,outlook.com];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,google.com,linutronix.de,goodmis.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[26];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[rsworktech@outlook.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org,vger.kernel.org,lists.linux.dev,outlook.com];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,SYBPR01MB7881.ausprd01.prod.outlook.com:mid,outlook.com:dkim,outlook.com:email]
-X-Rspamd-Queue-Id: C1A9D28C858
+	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,outlook.com:replyto,outlook.com:mid]
+X-Rspamd-Queue-Id: D5D6228CB6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ASYNC_EVENT_CMPL_EVENT_ID_DBG_BUF_PRODUCER handler in
-bnxt_async_event_process() uses a firmware-supplied 'type' field
-directly as an index into bp->bs_trace[] without bounds validation.
+From: Levi Zim <rsworktech@outlook.com>
 
-The 'type' field is a 16-bit value extracted from DMA-mapped completion
-ring memory that the NIC writes directly to host RAM. A malicious or
-compromised NIC can supply any value from 0 to 65535, causing an
-out-of-bounds access into kernel heap memory.
+kmalloc_nolock always fails for architectures that lack cmpxchg16b.
+For example, this causes bpf_task_storage_get with flag
+BPF_LOCAL_STORAGE_GET_F_CREATE to fails on riscv64 6.19 kernel.
 
-The bnxt_bs_trace_check_wrap() call then dereferences bs_trace->magic_byte
-and writes to bs_trace->last_offset and bs_trace->wrapped, leading to
-kernel memory corruption or a crash.
+Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE
 
-Fix by adding a bounds check and defining BNXT_TRACE_MAX as
-DBG_LOG_BUFFER_FLUSH_REQ_TYPE_ERR_QPC_TRACE + 1 to cover all currently
-defined firmware trace types (0x0 through 0xc).
-
-Fixes: 84fcd9449fd7 ("bnxt_en: Manage the FW trace context memory")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock() in local storage")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Levi Zim <rsworktech@outlook.com>
 ---
-Changes in v3:
-- Define BNXT_TRACE_MAX using DBG_LOG_BUFFER_FLUSH_REQ_TYPE_ERR_QPC_TRACE + 1
-  to clarify the supported trace type range, as suggested by Michael Chan.
-- Link to v2: https://lore.kernel.org/all/SYBPR01MB78817D5AED8035071888D7EDAF45A@SYBPR01MB7881.ausprd01.prod.outlook.com/
-Changes in v2:
-- Use ARRAY_SIZE(bp->bs_trace) instead of BNXT_TRACE_MAX for the
-  bounds check, as suggested by Andrew Lunn.
-- Link to v1: https://lore.kernel.org/all/SYBPR01MB7881338BC956C39A9848EE86AF45A@SYBPR01MB7881.ausprd01.prod.outlook.com/
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+I find that bpf_task_storage_get with flag BPF_LOCAL_STORAGE_GET_F_CREATE
+always fails for me on 6.19 kernel on riscv64 and bisected it.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index c426a41c3663..0751c0e4581a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -2929,6 +2929,8 @@ static int bnxt_async_event_process(struct bnxt *bp,
- 		u16 type = (u16)BNXT_EVENT_BUF_PRODUCER_TYPE(data1);
- 		u32 offset =  BNXT_EVENT_BUF_PRODUCER_OFFSET(data2);
+In f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock()
+in local storage"), bpf memory allocator is replaced with kmalloc_nolock.
+This approach is problematic for architectures that lack CMPXCHG_DOUBLE
+because kmalloc_nolock always fails in this case:
+
+In function kmalloc_nolock (kmalloc_nolock_noprof): 
+
+	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+		/*
+		 * kmalloc_nolock() is not supported on architectures that
+		 * don't implement cmpxchg16b, but debug caches don't use
+		 * per-cpu slab and per-cpu partial slabs. They rely on
+		 * kmem_cache_node->list_lock, so kmalloc_nolock() can
+		 * attempt to allocate from debug caches by
+		 * spin_trylock_irqsave(&n->list_lock, ...)
+		 */
+		return NULL;
+
+Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
+
+Note for stable: this only needs to be picked into v6.19 if the patch
+makes it into 7.0.
+---
+ include/linux/bpf_local_storage.h | 2 ++
+ kernel/bpf/bpf_cgrp_storage.c     | 2 +-
+ kernel/bpf/bpf_local_storage.c    | 3 ++-
+ kernel/bpf/bpf_task_storage.c     | 2 +-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
+index 8157e8da61d40..a7ae5dde15bcb 100644
+--- a/include/linux/bpf_local_storage.h
++++ b/include/linux/bpf_local_storage.h
+@@ -19,6 +19,8 @@
  
-+		if (type >= ARRAY_SIZE(bp->bs_trace))
-+			goto async_event_process_exit;
- 		bnxt_bs_trace_check_wrap(&bp->bs_trace[type], offset);
- 		goto async_event_process_exit;
- 	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 9a41b9e0423c..a97d651130df 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2146,7 +2146,7 @@ enum board_idx {
- };
+ #define BPF_LOCAL_STORAGE_CACHE_SIZE	16
  
- #define BNXT_TRACE_BUF_MAGIC_BYTE ((u8)0xbc)
--#define BNXT_TRACE_MAX 11
-+#define BNXT_TRACE_MAX (DBG_LOG_BUFFER_FLUSH_REQ_TYPE_ERR_QPC_TRACE + 1)
++static const bool KMALLOC_NOLOCK_SUPPORTED = IS_ENABLED(CONFIG_HAVE_CMPXCHG_DOUBLE);
++
+ struct bpf_local_storage_map_bucket {
+ 	struct hlist_head list;
+ 	rqspinlock_t lock;
+diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+index c2a2ead1f466d..09c557e426968 100644
+--- a/kernel/bpf/bpf_cgrp_storage.c
++++ b/kernel/bpf/bpf_cgrp_storage.c
+@@ -114,7 +114,7 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
  
- struct bnxt_bs_trace_info {
- 	u8 *magic_byte;
+ static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
+ {
+-	return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
++	return bpf_local_storage_map_alloc(attr, &cgroup_cache, KMALLOC_NOLOCK_SUPPORTED);
+ }
+ 
+ static void cgroup_storage_map_free(struct bpf_map *map)
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index 9c96a4477f81a..8e4b0fe6d12af 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -894,7 +894,8 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
+ 	 * preemptible context. Thus, enforce all storages to use
+ 	 * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
+ 	 */
+-	smap->use_kmalloc_nolock = IS_ENABLED(CONFIG_PREEMPT_RT) ? true : use_kmalloc_nolock;
++	smap->use_kmalloc_nolock = IS_ENABLED(CONFIG_PREEMPT_RT) &&
++		KMALLOC_NOLOCK_SUPPORTED ? true : use_kmalloc_nolock;
+ 
+ 	smap->cache_idx = bpf_local_storage_cache_idx_get(cache);
+ 	return &smap->map;
+diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_storage.c
+index 605506792b5b4..9f74fd1ef7f46 100644
+--- a/kernel/bpf/bpf_task_storage.c
++++ b/kernel/bpf/bpf_task_storage.c
+@@ -212,7 +212,7 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
+ 
+ static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
+ {
+-	return bpf_local_storage_map_alloc(attr, &task_cache, true);
++	return bpf_local_storage_map_alloc(attr, &task_cache, KMALLOC_NOLOCK_SUPPORTED);
+ }
+ 
+ static void task_storage_map_free(struct bpf_map *map)
 
 ---
-base-commit: 0257f64bdac7fdca30fa3cae0df8b9ecbec7733a
-change-id: 20260313-fixes-e1f4d1aafb1e
+base-commit: e06e6b8001233241eb5b2e2791162f0585f50f4b
+change-id: 20260314-bpf-kmalloc-nolock-60da80e613de
 
 Best regards,
 -- 
-Junrui Luo <moonafterrain@outlook.com>
+Levi Zim <rsworktech@outlook.com>
+
 
 
