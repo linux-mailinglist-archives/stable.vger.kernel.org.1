@@ -1,203 +1,157 @@
-Return-Path: <stable+bounces-225465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDZCLRqBtmluCgEAu9opvQ
-	(envelope-from <stable+bounces-225465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 10:51:22 +0100
+	id UEdKBXyctmlvEQEAu9opvQ
+	(envelope-from <stable+bounces-225466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:48:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A972905C6
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 10:51:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7202908E6
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CCD59300463F
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 09:51:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE996301904F
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 11:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6033223DD6;
-	Sun, 15 Mar 2026 09:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21DE3382CF;
+	Sun, 15 Mar 2026 11:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hxGHp9so"
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="Dh0ycOU+"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8B813A3ED;
-	Sun, 15 Mar 2026 09:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773568273; cv=none; b=oDLhkfI0nC/PsJisV+jOWnlvcp8ETag+YK20qn5OkdD5y6zjY+sMncMN/wMWQ/17goAM4JOwnHDNS9mmdVovS69/RV++cbl8TqSoTYUmDk95fFE5oOrb3EANpv+4ZxSpJvlGeLCwJ0J1fXw8D8UZmEitCeQNBMiI+xg3l5W+KnU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773568273; c=relaxed/simple;
-	bh=ERTci3cLC+ElVakmPaGexKA6SpnaBFzbp42qOCgi7pQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YAcQX0BR7BqxXx6zCLyJiMVr5exoK4DRNw4VptRkVBiWFNIZPBIX7HryyOa/FOh/G1aQ62dub2VPfDWIRfMN7wIZsYKi1Lvu+p+yPuN1FUNKWW5gvjKSp55UBN4jOU2Xn0Fg4Iq/iGfxKWxuis8vcxDNuFmRxg2eEc5cT0s3/Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hxGHp9so; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1773568253; x=1774173053; i=markus.elfring@web.de;
-	bh=ERTci3cLC+ElVakmPaGexKA6SpnaBFzbp42qOCgi7pQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hxGHp9so5fLOTzauu9iA8BmdW9jjyWwNLSJRTQPseiwvWTwVcNI3L5Uz4GjO3x1W
-	 XdzxZlWxR54W6DatHZEzyDnFDDqD1dv/68yXu8fU4y5Gt/7SxYlq6tGUdw/sZH9Xc
-	 LceuUqa0fsZHMrMsoROZjJqyJFho3nOj8RXlvjD+vdU2n5KQTyFbQy8EmrQHMFldU
-	 7524kY6TCCRCG+Hrn5HJTsyuO3Y0XQMcuiYRzj1ZtrTrXCJ4c7fXzb7HEI4EH7Gc6
-	 0/XaoDRL5r5tZt1X7jFNOCo/WgJPWmmlZldDeiemM5/EdWbi5DWa0fjf+aKrHtDme
-	 Qp07M1mNgly/uqo9gg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N5CQT-1vaSQC21zh-00rYey; Sun, 15
- Mar 2026 10:50:53 +0100
-Message-ID: <c505bc0f-28e5-406b-acd6-3c1f20c70c5d@web.de>
-Date: Sun, 15 Mar 2026 10:50:44 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B9526AAAB;
+	Sun, 15 Mar 2026 11:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773574913; cv=pass; b=cF7JXS8/rf26zSLQElqccoKU3G6elKdYKtM/Lr+vbxajLPWt0iVryJQx62SKKUeK0h2RRh24fJa6cO/ZGzMq6NXtXiZPA40aU8xootM2eZ7KoP7QOonXf1uv6SvbckbEUx5MNRd91O/IPZlmzeo/IuvRX1snBcefOS8F7aORB6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773574913; c=relaxed/simple;
+	bh=YSmRuxKBO2kw+E3WKTHsuieuLjI2IbFdsM0DVKohbQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YEPLusw9NjWi9QDJFjB/JzNOqGKFcrcnM27OtxTjQioOYaxstmMI6T+TR1oM4crgrPiWThTlUpiMUqGb8tKtViplDI5QxH2xxc3n6BhPF++13dhQl1YAKsKg1l710yuk2HmNOV12aDIIO0u6b7OlCiHXH1HqBF91jGwK1tbRVoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=Dh0ycOU+; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+ARC-Seal: i=1; a=rsa-sha256; t=1773574888; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=F8Ovw6IWDaW4TdQr4veQWCP9nnOMBUf3aabZZP0I4uPKehETDqinip9tkU4gjDtvKrNqAHp9plySAUYuB3iMg45e5lqAHcxILc8nbPY4cGKzmb7W9g8MJsGMenxJ3m7lobgxkzdFpO3APXPCaJ+3wPNeQ5xrahkVbQEEXHFmhgQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773574888; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=uN8w1OeE6HEvMiWwhvg2LiJ/nLSS/nbJhI/YzLpKiTA=; 
+	b=H6zdgdlFhUMsaNNbu6UXpSS8BnZGLrs47dPaSGMptIC6U8nvaMS8regzhpPRMcuW7OixZlQZ7pnQLNi49mIf4NyYYVPatJTh/faxw0VmQJ+hWRkRNyL4n93b2/fsIejVvUdIKMd+JV2FLaYGzNFCpz89EQ3CR5S6tv2M4SCYrGs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773574888;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=uN8w1OeE6HEvMiWwhvg2LiJ/nLSS/nbJhI/YzLpKiTA=;
+	b=Dh0ycOU+kMmTiXKP7rMt5W1VyD/yZcNTmLN0qbGxwFjIJw/sH6Bg7Gfnpc+8ctpq
+	BMU568G6xLDKMC0gA1ael0PGbfaaklyK1JaLbzvo0RGxkWZYWn4zWIv7/W3uFudBefM
+	2CJpJBMGF1lJYc35IH0t/2GD58h546huyJIdvJ3c=
+Received: by mx.zohomail.com with SMTPS id 1773574884580662.9489585086674;
+	Sun, 15 Mar 2026 04:41:24 -0700 (PDT)
+Date: Sun, 15 Mar 2026 11:41:16 +0000
+From: Yao Zi <me@ziyao.cc>
+To: "Rong Zhang" <rongrong@oss.cipunited.com>,
+	"Huacai Chen" <chenhuacai@kernel.org>,
+	"Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+	"Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+Cc: <linux-mips@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	"Icenowy Zheng" <uwu@icenowy.me>, "Rong Zhang" <i@rong.moe>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: Loongson64: env: Check UARTs passed by LEFI
+ cautiously
+Message-ID: <abaa3Nb5P_6wUtxL@pie>
+References: <20260314211336.408561-1-rongrong@oss.cipunited.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: Re: drm/amdgpu/userq: fix memory leak in MQD creation error paths
-To: Junrui Luo <moonafterrain@outlook.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Prike Liang <Prike.Liang@amd.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Yuhao Jiang <danisjiang@gmail.com>
-References: <SYBPR01MB7881A279A361F81B670CDEEAAF42A@SYBPR01MB7881.ausprd01.prod.outlook.com>
- <bed7f0c7-4346-41d0-ac5f-f5a897888533@web.de>
- <51CF1DD4-7CB7-4B5B-BDF9-3411B921B5D7@outlook.com>
-Content-Language: en-GB, de-DE
-In-Reply-To: <51CF1DD4-7CB7-4B5B-BDF9-3411B921B5D7@outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:raQnjTdJ0UP7CGBa+juRuJInl0ZhDjfo6QI0Nr1lPqoevBxHWzx
- i213qIEB+8Nc2VUFgFuN2U2tO5HLTiCtsu0bVLRU8rthDNspW9Lor3kCeqYiPJ0CjbQOzJB
- BkD5fC6jM7MW2p4Vw4IficSYdNdY2IG4tXDzmexzSXvSyFBSY4LCVta6LRLIbtMZDk15Lav
- DHSy3+levER+5Ivh8Lt6Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cAnQlNwmqQ0=;TwvmfDiWcH3O/xdLhSRmt+avY8w
- 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
- Hinq0BzvNmFkWwmcj2XM
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[web.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260314211336.408561-1-rongrong@oss.cipunited.com>
+X-ZohoMailClient: External
+X-ZohoMail-Owner: <abaa3Nb5P_6wUtxL@pie>+zmo_0_me@ziyao.cc
+X-Spamd-Result: default: False [7.84 / 15.00];
+	URIBL_BLACK(7.50)[ziyao.cc:dkim,ziyao.cc:email];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225465-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[outlook.com,lists.freedesktop.org,amd.com,gmail.com,ffwll.ch];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225466-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
+	FROM_HAS_DN(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[web.de:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.875];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ziyao.cc:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[web.de]
-X-Rspamd-Queue-Id: C2A972905C6
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cipunited.com:email,ziyao.cc:dkim,ziyao.cc:email]
+X-Rspamd-Queue-Id: 6C7202908E6
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-> A full conversion to scope-based cleanup would require restructuring
-> the entire function, which seems beyond the scope of a bug fix.
+On Sun, Mar 15, 2026 at 05:13:29AM +0800, Rong Zhang wrote:
+> Some firmware does not set nr_uarts properly and passes empty items.
+> Iterate at most min(system->nr_uarts, MAX_UARTS) items to prevent
+> out-of-bounds access, and ignore UARTs with addr 0 silently.
+> 
+> Meanwhile, our DT only works with UPIO_MEM but theoretically firmware
+> may pass other IO types, so explicitly check against that.
+> 
+> Tested on Loongson-LS3A4000-7A1000-NUC-SE.
+> 
+> Fixes: 3989ed418483 ("MIPS: Loongson64: env: Fixup serial clock-frequency when using LEFI")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rong Zhang <rongrong@oss.cipunited.com>
+> ---
+>  arch/mips/loongson64/env.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/loongson64/env.c b/arch/mips/loongson64/env.c
+> index 11ddf02d6a15..c6b99b3740ea 100644
+> --- a/arch/mips/loongson64/env.c
+> +++ b/arch/mips/loongson64/env.c
+> @@ -17,8 +17,10 @@
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/export.h>
+>  #include <linux/libfdt.h>
+> +#include <linux/minmax.h>
+>  #include <linux/pci_ids.h>
+>  #include <linux/string_choices.h>
+> +#include <linux/serial_core.h>
 
-If you would like to stick to the usage of goto labels so far,
-I see further possibilities to avoid also duplicate source code for
-the affected implementation of the function =E2=80=9Cmes_userq_mqd_create=
-=E2=80=9D.
-https://elixir.bootlin.com/linux/v7.0-rc3/source/drivers/gpu/drm/amd/amdgp=
-u/mes_userqueue.c#L275-L434
+Maybe putting this before string_choices.h to keep the headers sorted
+at least locally? Though the order is already broken, this may minimize
+the diff if someone is willing to sort them later.
 
-Regards,
-Markus
+>  #include <asm/bootinfo.h>
+>  #include <loongson.h>
+>  #include <boot_param.h>
+
+Reviewed-by: Yao Zi <me@ziyao.cc>
+
+Thanks,
+Yao Zi
 
