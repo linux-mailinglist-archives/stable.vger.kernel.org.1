@@ -1,186 +1,219 @@
-Return-Path: <stable+bounces-225489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGPvLPg/t2kwOwEAu9opvQ
-	(envelope-from <stable+bounces-225489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:25:44 +0100
+	id mH0sHUdHt2krPQEAu9opvQ
+	(envelope-from <stable+bounces-225490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:56:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AF329302B
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2287129311E
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 028E83013A4F
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 23:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF251300D454
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 23:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816DE2BDC23;
-	Sun, 15 Mar 2026 23:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC22C21C4;
+	Sun, 15 Mar 2026 23:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="duygOQXM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDmf7fc+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D02135D7
-	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 23:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773617120; cv=none; b=YTgqoM4rwaF8pGbxjrwUg6tnZPi/VLuv4tmoobPTQ2ulWBrrux/VwmH5xr9cu34uMx0hK9JIuUsVXQ4CalCoJrygfKwdw6cgMtIReW2eyXgutpIiBiCckWbgtWJ3l/i0IIVkTQ1bG1TvrrnFcf2pgZrZ6ihMxMvI3RCNtbQkyNA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773617120; c=relaxed/simple;
-	bh=jAMfolcZSWXlBmUQWetpINLpy01Bq3OSZvhc2R2/9CQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=na3lGDzv8jjiJAY8APKIhEsqlhuRZvfvFMbq7D3JwuBevstq6rVtTJB+JZbWriT3QJiiWzCeYvb0J6uVTc3JrE2+AoC/Q0MxFS/oMuLMgwoEzGBarODrF6UZ8qvL+0rgEeeCpyWhch37SITiMXPGrVTaGdPwCcSGWfingv5Vwf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=duygOQXM; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2FB2BEC2E
+	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 23:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773619011; cv=pass; b=E423dRdOPHyMDNhEivGWbq6lUYVlEBDKwup87OC20ndLd+mgDZcSfr+V+H83sWU4rMmBJrjD28TYjhYpOfUxGsPqHAtvCgRkvSvoBnrmK0mt07wnofaDCYx3sMY6WhGj64dBchI9TzWzYfesYdHsE2parfZbMZ53KLs9DdAR90s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773619011; c=relaxed/simple;
+	bh=0v9aYL1OBh/52O29eAqygO95z0sTQ4zRbjxSU2mIdWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=efWeQ1yn6SH8M0hhUSn555ssLI4ItuQqJkVXr8gUNMMC4DruEO7UKmqmpissdOKkQNy9do2O/jfJLwEd9BrSDAVIdGaN/88dkcFULS20XFnHMxytZAW5f8FQfTClzw5/BFxuqGdvp882DRnrWt7M42K6UL0sJUeHZqGLEHVCtpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDmf7fc+; arc=pass smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so1602289eec.1
-        for <stable@vger.kernel.org>; Sun, 15 Mar 2026 16:25:17 -0700 (PDT)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-505a1789a27so20493431cf.3
+        for <stable@vger.kernel.org>; Sun, 15 Mar 2026 16:56:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773619009; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g4qQMLyJa5jM4WCPGr0nPmz8LnIWtI7Zvt/+z1ZkPHNvnfwweOh2Haau29+JwYGvgk
+         KpckY4DEbod8eaSXGcpH+OvB/scgmBxOX9psU9tg3GqQS3bjYX1pzXZPgriY/BUMYE4Y
+         DvqYZjNb5jWJXUu+siYhySD4rNREllllnmkirenPGGWmthhG086M/fIfAyc4B8HEMcNI
+         k6HhvufgsYdYsbWFR/TZtgDyciFDNwI7SKFBoMa6fkBvgXomEujG0n/wwSTIVZbkFIZB
+         Sv9G7nhL5Dux+Pi0wW1EgWzAgSMOhJ1brvmCq0FrsdGEruKwS1QPHVRb/t/LAVHZT0hu
+         EFrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        fh=Pd9dEniilcuIMmn5mDNURCqi15WYr0B0YuNKqYTypPc=;
+        b=JZmb/sNLvPko52oRAcgvwOETuTc9a5019mNah6N9KN5z5IsQra/bwsa2OcQcdV5wTO
+         u95iKJ/OVOji4m4VxqnCB18asR+kUJQx4isDbFofw6heEWDhAXpFt4UL8bUBLmWZXC0r
+         pLN99ALDHRxgrhcZ1x+iq3B4blkUpfcWZD+2R1gX1+1uq0vBy8zFZWFLrSDBBNwa/q+6
+         ouYO/a/g1ZOvIRDktDd5dHSlUM4c2Ss2sBLP7PgK81SVQQKP1bTNEhgkkrqEhbsI4cSD
+         Zl0fqCfJ38sJsQO4ucaJej5WUYz3zLk8sOdE+o7j1fubHl5PVrqTJT928fsNNYpS6d9/
+         fizw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773617117; x=1774221917; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AeJ4mquJYADCwtgoxMoMXaszduThytc8keaBhAGxhiY=;
-        b=duygOQXMHtlmZSAaZsJLarnH+A5ocoOLHLvMDcw6N/W4KI5tI9F0RFLDW+WhzuXOLG
-         PJSXfjUyGWxBK3L12rkxfH/2aCWI3Xt+FnBbydO0TlvcTrxu8J/2tPe1QrQkoXnvKyRY
-         hfpilROOY1Q10wLt6xLWdx8oU0Om3HBmmxQPVSumkVmvIfcrSKMAtO02YkmBzzIlLlN8
-         ZWgjnVfNqzsOTtOiJzi7QCaZnXUuiTWvsld7F33rNMEWZLyByj2EibnKUkW5Gkddbfat
-         ZTXQ0pb4Qvykmh7dw9YbCTYE+XofFqlNVwMZs4jl9otH9L1hr84Ke8cSQXR4/911Y/Bh
-         ZQxQ==
+        d=gmail.com; s=20230601; t=1773619009; x=1774223809; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        b=jDmf7fc+f9BCgOZW6E7rh3CD7tYKfuiycRK0gyl19AqcMOwc/NY+Eje2wEntYn+HxX
+         b0rE1Mtr/3odNc0uiqWboqoTQxoIV5LpOqy8G07Vyfo++8RNJW6Pns/P3Uc27ZsVjiz4
+         uUyhneV+z67d+0Jei07+ZMj0Rx+rcjbeZee3EH8Lpj2uZqZ1s31JvxhPOxe0Ubes0Vwp
+         AiQjO4Dji53UeL0DhdeebMeDJaxV2A/TnZeOnyLyWF+BMA6SZcHyQ8Sm+Q4UhTGzyYkR
+         dQIRhnW0GxqusGP5GhvrGSW4Qpo792Amu+626ux0cCKmMhUQCdNCVjJmNv25byekh247
+         Kucg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773617117; x=1774221917;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1773619009; x=1774223809;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AeJ4mquJYADCwtgoxMoMXaszduThytc8keaBhAGxhiY=;
-        b=ecs9nQYhCxjZiNhpEuQEw8QWznABLsV3OdlDMIBtAbWFnG8nG9a7OydqkCYEFz0wdL
-         0/fI+LBQRJPJiUjsUzDcQVSq+GZKCJD1+HTg7VwUubSAoG8GkQXIHE5fnMahAmCzxwcC
-         N+iRcOXvPWYdCOlrEiJecbNUK1DduFNkbAsps7377a/Ob4T0qw+kDacgpqVJYO8CXvoS
-         LG8sRP/ciStuDvIW/DiNkEoOyFTpC8Sg7m4TNdsYLCJBRIK+kiYqfnN8qo3B/RdHvAj5
-         5/94KyFf0lwohxriRPaffqKB3WUaAFEDOgILbJ4J/+9nFVh8tsutLlwmfUgumX60m560
-         h3Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCXL+PO5k8HrpXGgDSReFIMYQ0eK3e0sUOXYID8KAudf0lywlSXaVudNAfkxMm3YF/4dPHstc2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybMBthDrQHjAKPJPLoNixEROkFIBE1F2C6Spj5w+zWY8A/zUew
-	eSjt5IsXY0g2GFCbM/pxMRZqQWBmQEDr8zHSYrH+o59UIkFJnA9yPqTW
-X-Gm-Gg: ATEYQzwyXJls8ON4SOmbTMMek/i30g65XI1Tzv9dum2RPA0wBLJW19BAeBsOFcbmQ3y
-	xUu8sXmSiDDS4Cr8M3v8OICmGzbvVgrZyZCfpNG3kaau9tRtBrwtZMtunLTS7GcvhLH/18Cqst4
-	dRFTyHxyfwvGJBMqtSg9+OLpzNGQ/M4OsgBbYZtbvUg8wbiYdX4LV6iL5udN4DxmwNBL+3Qwjk3
-	YqkVV3zsQjVa4b/ncQiYD0vhS3njsxBf8rJ035iWNAy8rEKbqoaDPU9xeOAisChi4wC9PBPv2L/
-	uZRlI02q57u5g/t84HGPtud47smZdapooVQvHgByHlthcu/ArwWh43q0nxqvvuDg2R1UQQh4oju
-	8xl4pnyP9XjEEE1EhT4R2TQUapSgPwoxtDi02K6iE6FIneTPt2J83OM/HerBCtIAOxlAEkBAlT4
-	qs/DXRK97bkCc1F4PAX5XbQ6AwBRsHFQcZoHUNKk756LMLqbvpBpZtkupdxit3ReMe
-X-Received: by 2002:a05:7300:2319:b0:2ba:8e16:260e with SMTP id 5a478bee46e88-2bea5473d9bmr5229217eec.11.1773617116756;
-        Sun, 15 Mar 2026 16:25:16 -0700 (PDT)
-Received: from luna.turtle.lan (static-23-234-93-211.cust.tzulo.com. [23.234.93.211])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab3a0b3fsm12531375eec.5.2026.03.15.16.25.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 16:25:16 -0700 (PDT)
-From: Sam Edwards <cfsworks@gmail.com>
-X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
-To: Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Cc: Milind Changire <mchangir@redhat.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sam Edwards <CFSworks@gmail.com>,
-	stable@vger.kernel.org
-Subject: [REGRESSION] [PATCH] ceph: fix num_ops OBOE when crypto allocation fails
-Date: Sun, 15 Mar 2026 16:25:00 -0700
-Message-ID: <20260315232500.251088-1-CFSworks@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        b=p1pyQJ3MoNaeAWN1IgrXxxJHu5OMihiV1Jt+Up9d0UeMz8XUXnn5fjk0fVlJjVj5do
+         e7LoV7UcMVdeTirIAR0udeTL+Ymwa2e0DTCLBEBpszVBAuMNnXpEBIAU3Tzg44wUykXh
+         0m1IXTffNnFAteDCZ1oG3afiek5qC/JbhAIjGsMIiNK+V230dhBmZxEjjymcrHJVOoJv
+         dux6QJD4G2PDgiURN7yIRvLnFbCOLAEN27zZ3nQIDlGECv1G/LA3l4Sct62/fpqDVpHX
+         5DvpjdEcydXJYLf8ykDHHck9gip2u9B7bxFI6El4ub83j8YRIa3MLt3FG5Hzu7R+su4+
+         l6Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOm2/Y4WPtSs7vVKOUkIwxOFws7+na17JPwEWlS0yhH8GagvhuuRjdZ2vIxJeVE+jQ3HbQmwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGZFuYTHVQdsbcR3Lf0B6BFHrD0aFWlkRzDFGSYXWicfPNulVf
+	vkZf0IM/dz8i2v6aNfgv3Vmy/ok/EtL71novc4MEYTJVzSxFxCfUYrdHAuE7x0ayXEEtKrwBpgs
+	4aSwhihV2ILfw1cIIXe2LXE9DbLYthg==
+X-Gm-Gg: ATEYQzwNgAxW4dSKrblVLs/SOEoWQvb9kR8xp8bymEl9a8jc28giTmPBxJHC8zHAqTC
+	8LrE1IMNRXBHc+b2YzJLyN9bVBhIhCSxOoBrZp4zSx7qkJvBRLoqew1qwVR1sVZxRpFTCKUxriX
+	c0Pkfznu/cD9pQJKfweBbMqypg51VXMqNUBexhxHCubf3a2JcbCsPPaS4cCB5MvgUo0H0m2rCM9
+	gTBbR1tSDmonkpzpx2q8e22Rwx1P3O4Caxy4ju1dc+ps0EPVz3gj5f3czDKqVTz+QNgeFQpHYco
+	c+8ODw0cEsytTNdAXA==
+X-Received: by 2002:a05:622a:1998:b0:509:1260:b138 with SMTP id
+ d75a77b69052e-50957e323c0mr131795091cf.58.1773619009394; Sun, 15 Mar 2026
+ 16:56:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+References: <20260311002825.15502-1-sean.wang@kernel.org> <20260311002825.15502-2-sean.wang@kernel.org>
+ <CAFktD2cbFJrLS4ggc+yf582BYmw=jJsntfbDR65ssMpVGM2BKA@mail.gmail.com>
+ <CAFrh3J-PsVQ1u_hGFxTVKK0uOs6KxT=euK+jbGvWCueqvynAgw@mail.gmail.com> <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
+In-Reply-To: <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
+From: Nick <morrownr@gmail.com>
+Date: Sun, 15 Mar 2026 18:56:23 -0500
+X-Gm-Features: AaiRm51Qj5-6K1SxyXtVVXgAPeBMnSu9mdsfs7G65KWz5yr6fupz2hG1vMFQLVU
+Message-ID: <CAFktD2cot4QuVSs0_r2p0ajuRSDCL2u8d94Eq5vuVBfZxCsKzw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
+To: Satadru Pramanik <satadru@gmail.com>
+Cc: Sean Wang <sean.wang@kernel.org>, nbd@nbd.name, lorenzo.bianconi@redhat.com, 
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	Sean Wang <sean.wang@mediatek.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,kernel.org,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225489-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,dubeyko.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225490-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[morrownr@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 21AF329302B
+X-Rspamd-Queue-Id: 2287129311E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-move_dirty_folio_in_page_array() may fail if the file is encrypted, the
-dirty folio is not the first in the batch, and it fails to allocate a
-bounce buffer to hold the ciphertext. When that happens,
-ceph_process_folio_batch() simply redirties the folio and flushes the
-current batch -- it can retry that folio in a future batch.
+> >> > From: Sean Wang <sean.wang@mediatek.com>
+> >> >
+> >> > mt7925u uses different reset/status registers from mt7921u. Reusing the
+> >> > mt7921u register set causes the WFSYS reset to fail.
+> >> >
+> >> > Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
+> >> > correct registers and fix mt7925u failing to initialize after a warm
+> >> > reboot.
+> >> >
+> >> > Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
+> >> > Cc: stable@vger.kernel.org
+> >> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> >> > ---
+> >> >  drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  4 ++++
+> >> >  drivers/net/wireless/mediatek/mt76/mt792x_usb.c  | 13 ++++++++++++-
+> >> >  2 files changed, 16 insertions(+), 1 deletion(-)
+> >> >
+> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > index 7ddde9286861..d2a8b2b0df32 100644
+> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > @@ -392,6 +392,10 @@
+> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST     MT_CBTOP_RGU(0x600)
+> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
+> >> >
+> >> > +#define MT7925_CBTOP_RGU_WF_SUBSYS_RST 0x70028600
+> >> > +#define MT7925_WFSYS_INIT_DONE_ADDR    0x184c1604
+> >> > +#define MT7925_WFSYS_INIT_DONE         0x00001d1e
+> >> > +
+> >> >  #define MT_HW_BOUND                    0x70010020
+> >> >  #define MT_HW_CHIPID                   0x70010200
+> >> >  #define MT_HW_REV                      0x70010204
+> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > index a92e872226cf..47827d1c5ccb 100644
+> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > @@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
+> >> >         .need_status_sel = true,
+> >> >  };
+> >> >
+> >> > +static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
+> >> > +       .rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
+> >> > +       .done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
+> >> > +       .done_mask = U32_MAX,
+> >> > +       .done_val = MT7925_WFSYS_INIT_DONE,
+> >> > +       .delay_ms = 20,
+> >> > +       .need_status_sel = false,
+> >> > +};
+> >> > +
+> >> >  int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+> >> >  {
+> >> >         int err;
+> >> > @@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+> >> >
+> >> >  int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+> >> >  {
+> >> > -       const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
+> >> > +       const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
+> >> > +                                               &mt7925_wfsys_desc :
+> >> > +                                               &mt7921_wfsys_desc;
+> >> >         u32 val;
+> >> >         int i;
+> >> >
+> >> > --
+> >> > 2.43.0
 
-However, if this failed folio is not contiguous with the last folio that
-did make it into the batch, then ceph_process_folio_batch() has already
-incremented `ceph_wbc->num_ops`; because it doesn't follow through and
-add the discontiguous folio to the array, ceph_submit_write() -- which
-expects that `ceph_wbc->num_ops` accurately reflects the number of
-contiguous ranges (and therefore the required number of "write extent"
-ops) in the writeback -- will panic the kernel:
+Sean, I have been testing this series of 2 patches for the last two days. I
+am no longer seeing problems with warm boot so:
 
-    BUG_ON(ceph_wbc->op_idx + 1 != req->r_num_ops);
+Tested-by: Nick Morrow <morrownr@gmail.com>
 
-Fix this crash by decrementing `ceph_wbc->num_ops` back to the correct
-value when move_dirty_folio_in_page_array() fails, but the folio already
-started counting a new (i.e. still-empty) extent.
-
-The defect corrected by this patch has existed since 2022 (see first
-`Fixes:`), but another bug blocked multi-folio encrypted writeback until
-recently (see second `Fixes:`). The second commit made it into 6.18.16,
-6.19.6, and 7.0-rc1, unmasking the panic in those versions. This patch
-therefore fixes a regression (panic) introduced by cac190c7674f.
-
-Cc: stable@vger.kernel.org # v6.18+
-Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
-Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
----
- fs/ceph/addr.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index e87b3bb94ee8..f366e159ffa6 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1366,6 +1366,10 @@ void ceph_process_folio_batch(struct address_space *mapping,
- 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
- 				folio);
- 		if (rc) {
-+			/* Did we just begin a new contiguous op? Nevermind! */
-+			if (ceph_wbc->len == 0)
-+				ceph_wbc->num_ops--;
-+
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_unlock(folio);
- 			break;
--- 
-2.52.0
-
+Thanks.
 
