@@ -1,305 +1,124 @@
-Return-Path: <stable+bounces-225458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPIMMeEGtmkC8gAAu9opvQ
-	(envelope-from <stable+bounces-225458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 02:09:53 +0100
+	id QDpPO5wHtmku8gAAu9opvQ
+	(envelope-from <stable+bounces-225459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 02:13:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDE428FB2C
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 02:09:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC5628FB6E
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 02:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A05D3080C32
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 01:09:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1798302244C
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 01:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796CD191F84;
-	Sun, 15 Mar 2026 01:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F3020DD51;
+	Sun, 15 Mar 2026 01:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z46vcah3";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="u+hSqfIC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oZ5rmAoZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RcbNkZ+W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdJGaiPB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68181C862F
-	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 01:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3591D7995;
+	Sun, 15 Mar 2026 01:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773536987; cv=none; b=uXNBVhiwni5zP3AWOKHjdEkMuNRiZ9dX9B35NJOBDPbwSqSfLI8P1oTdbN7G2qxKfLD1050O4pA28gXjlBZu+W+Gwyukq+nzur1BIP1ngn2rtBZiwc3JuzFwdRndf+67BfjaXnvlMs4oX6xUUNqpcbmgL57CE5zKLDqgfLtfcS8=
+	t=1773537165; cv=none; b=l30lVvoyG4M3lI72HS7uqy9QVF6319Cp1+Oyuao/EjldmizYSnyC+v22/H2oY6n/62vA5Wc3FZlGbUe+xPDF/4PoJfV/nxp5ic1fYL5qRnKV7dsDdVNAq9FWm8eST0odqStiWk6hZTrj5k7HDwHko+6eY+MA72ijO2BScnlTL7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773536987; c=relaxed/simple;
-	bh=1cGHAp0+IA6rbxYKu7JtRhj9A+B91vWfhIrGduMl/Jc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S0dwzX84FKCHvu5Zgy/3udVaeRjZht+AZjRF/Za6FzwKsfCEfT+0SU2/Z1MiO7mZh2dY7T64nNEocOya9i5Ra5dgM+VOYn70udtbSu3M25TNb2o1lsrNmyYGvaS2srykPhmtz9toQaCawUCOGNo8aMdOhAT5WX4CSeYbP3bfXsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z46vcah3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=u+hSqfIC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oZ5rmAoZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RcbNkZ+W; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CC66F5BD58;
-	Sun, 15 Mar 2026 01:09:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773536983; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EWs+ynpUqEagn7VJCLxWFEiWmU0H5pJ30kSA7AwSPHU=;
-	b=Z46vcah3TCiF9OWpUTK3muXj9mSZZzY1HAj/GVa3xaVU4Y0AHbo8Lopq5cVnLoP7N63ptk
-	9ONco9ka726VpM/eEBDgIixI60CxDu+UJFnsWtlcrJP8gNz9bkWdr7OHXpeNE5Kh4Ld3uY
-	BDj0W7BC0LNKqR4VhQ4ovC2pAzRTZdc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773536983;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EWs+ynpUqEagn7VJCLxWFEiWmU0H5pJ30kSA7AwSPHU=;
-	b=u+hSqfICmwTKA1pqWylGTa4JsCibE93S1H0/ap+eCoBARCoMUriOn9OUSA1WSUo0ZbDji7
-	A2O0EeFw3fJ6YZBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oZ5rmAoZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RcbNkZ+W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773536982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EWs+ynpUqEagn7VJCLxWFEiWmU0H5pJ30kSA7AwSPHU=;
-	b=oZ5rmAoZhHGKEmewKuYjmp2cMLsTV8bfhn/Rawg8OSAE7Xf8qOnmSSdi0R8WwTjV+Ipvqm
-	FgCS0z40GVJCBalSc6R5WHAwTctE528fq+cXkkmDuunZmb33ZHTgKhbVxlYUt+w8iL9pBw
-	ND9g2rFWOcfalYqcIXYJbPZDEKzOC5E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773536982;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EWs+ynpUqEagn7VJCLxWFEiWmU0H5pJ30kSA7AwSPHU=;
-	b=RcbNkZ+WRRGDHVYxyHS5iTDS9ypKMQXhE5SCRdWWlFZzaBqg0jBjSFplL0MKZnvHdkDhtd
-	iUe0HTZPDXvGg4CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C03B54273B;
-	Sun, 15 Mar 2026 01:09:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ia7RKtUGtmlAMwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sun, 15 Mar 2026 01:09:41 +0000
-Message-ID: <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de>
-Date: Sun, 15 Mar 2026 02:09:33 +0100
+	s=arc-20240116; t=1773537165; c=relaxed/simple;
+	bh=JAs/1nlYTkYCSuyox/Z4p/qg35k7HFn5402MuhdAo3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AnD2/JXwCPxdzKQRkM7Jr62d+YW1CdXvQgijjTtbsDCFJ5J9mc1kunZ0cROSygi/tFm7Bg3y8auPekG3jg5TyW8fVEUq73iJwcM9P006PbMqjH+NrI/A411Nk8mvsyPkSFjzqz45xxg15e8kMJemGkDJmmI749O+lJsG291TaFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdJGaiPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31517C116C6;
+	Sun, 15 Mar 2026 01:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773537164;
+	bh=JAs/1nlYTkYCSuyox/Z4p/qg35k7HFn5402MuhdAo3g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SdJGaiPB8kA5VjEf+HBii1iPWqlVB7gSwv1gRkXcjcRaA4X4OKNCqrYHtzVEjwt/2
+	 W3mkfCxb+FPk1cKpiwjN0HxpK3XsF9DD9Y/VsaHRx7MiS/WtoDi+/R7ncZnOiyfESU
+	 jkkIE6Xo2rS9Y9HoPkCPfa9k1TC2paVUmx34NFKhFJoiPKssfm2cxW64dYwsc/2Krw
+	 p5kWl6r01Or1MCuoSW1i3tykayDGqvfGxmf3YqN3poJxvIycu4cS9nEUkslBpbm/Ws
+	 En1AzOmiQrz5sBBZh5U9qu/4vtXcNtWD/5orhm6a3wX9K8vT+/Fa2a/gK7WpPmZOJe
+	 ru63pHsk7191w==
+Date: Sat, 14 Mar 2026 18:12:43 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: xietangxin <xietangxin@yeah.net>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, "David S . Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v2] virtio_net: Fix UAF on dst_ops when
+ IFF_XMIT_DST_RELEASE is cleared and napi_tx is false
+Message-ID: <20260314181243.177d4ab4@kernel.org>
+In-Reply-To: <CANn89iJHp+nCcAo7tzMTfH5yW2qDsEXP_u=RzdV=DC9ZvDH9Fg@mail.gmail.com>
+References: <20260312025406.15641-1-xietangxin@yeah.net>
+	<20260314124017.59206dac@kernel.org>
+	<CANn89iJHp+nCcAo7tzMTfH5yW2qDsEXP_u=RzdV=DC9ZvDH9Fg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [regression] Network failure beyond first connection after
- 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
- skipped")
-To: Florian Westphal <fw@strlen.de>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>,
- 1130336@bugs.debian.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
- <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
- <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de> <abW2MAAqLnKZm3KF@strlen.de>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <abW2MAAqLnKZm3KF@strlen.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[debian.org,netfilter.org,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,bugs.debian.org,vger.kernel.org,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-225458-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225459-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[yeah.net,redhat.com,davemloft.net,lunn.ch,linux.alibaba.com,vger.kernel.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3DDE428FB2C
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yeah.net:email]
+X-Rspamd-Queue-Id: EAC5628FB6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/14/26 8:25 PM, Florian Westphal wrote:
-> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
->> On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
->>> Hi,
->>>
->>> On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
->>>> Control: forwarded -1
->>>> https://lore.kernel.org/ regressions/177349610461.3071718.4083978280323144323@eldamar.lan
->>>> Control: tags -1 + upstream
->>>>
->>>> Hi
->>>>
->>>> In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
->>>> after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
->>>> update the count if add was skipped"), when the following rule is set
->>>>
->>>>      iptables -A INPUT -p tcp -m
->>>> connlimit --connlimit-above 111 -j
->>>> REJECT --reject-with tcp-reset
->>>>
->>>> connections get stuck accordingly, it can be easily reproduced by:
->>>>
->>>> # iptables -A INPUT -p tcp -m connlimit
->>>> --connlimit-above 111 -j REJECT
->>>> --reject-with tcp-reset
->>>> # nft list ruleset
->>>> # Warning: table ip filter is managed by iptables-nft, do not touch!
->>>> table ip filter {
->>>>           chain INPUT {
->>>>                   type filter hook input priority filter; policy accept;
->>>>                   ip protocol tcp xt
->>>> match "connlimit" counter packets 0
->>>> bytes 0 reject with tcp reset
->>>>           }
->>>> }
->>>> # wget -O /dev/null
->>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>> rc3.tar.gz
->>>> --2026-03-14 14:53:51--
->>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>> rc3.tar.gz
->>>> Resolving git.kernel.org
->>>> (git.kernel.org)... 172.105.64.184,
->>>> 2a01:7e01:e001:937:0:1991:8:25
->>>> Connecting to git.kernel.org
->>>> (git.kernel.org)|172.105.64.184|:443...
->>>> connected.
->>>> HTTP request sent, awaiting response... 301 Moved Permanently
->>>> Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
->>>> linux.git/snapshot/linux-7.0-rc3.tar.gz
->>>> [following]
->>>> --2026-03-14 14:53:51--
->>>> https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
->>>> Reusing existing connection to git.kernel.org:443.
->>>> HTTP request sent, awaiting response... 200 OK
->>>> Length: unspecified [application/x-gzip]
->>>> Saving to: ‘/dev/null’
->>>>
->>>> /dev/null                         [
->>>> <=>                    ] 248.03M
->>>> 51.9MB/s    in 5.0s
->>>>
->>>> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
->>>>
->>>> # wget -O /dev/null
->>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>> rc3.tar.gz
->>>> --2026-03-14 14:53:58--
->>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>> rc3.tar.gz
->>>> Resolving git.kernel.org
->>>> (git.kernel.org)... 172.105.64.184,
->>>> 2a01:7e01:e001:937:0:1991:8:25
->>>> Connecting to git.kernel.org
->>>> (git.kernel.org)|172.105.64.184|:443...
->>>> failed: Connection timed out.
->>>> Connecting to git.kernel.org
->>>> (git.kernel.org)|
->>>> 2a01:7e01:e001:937:0:1991:8:25|:443...
->>>> failed: Network is unreachable.
->>>>
->>>> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
->>>> if add was skipped") commit this worked.
->>>>
->>>
->>> Thanks for the report. I have reproduced
->>> this on upstream kernel. I am working on it.
->>>
->>
->> This is what is happening:
->>
->> 1. The first connection is established and
->> tracked, all good. When it finishes, it goes to
->> TIME_WAIT state
->> 2. The second connection is established, ct is
->> confirmed since the beginning, skipping the
->> tracking and calling a GC.
->> 3. The previously tracked connection is cleaned
->> up during GC as TIME_WAIT is considered closed.
+On Sat, 14 Mar 2026 21:11:33 +0100 Eric Dumazet wrote:
+> > On Thu, 12 Mar 2026 10:54:06 +0800 xietangxin wrote:  
+> > > Fixes: f2fc6a54585a ("[NETNS][IPV6] route6 - move ip6_dst_ops inside the network namespace")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: xietangxin <xietangxin@yeah.net>  
+> >
+> > The Fixes tag should be:
+> >
+> > Fixes: 0287587884b1 ("net: better IFF_XMIT_DST_RELEASE support")  
 > 
-> This is stupid.  The fix is to add --syn or use
-> OUTPUT.  Its not even clear to me what the user wants to achive with this rule.
+> I disagree
 > 
+> What was the situation before this patch ?
 
-Yes, the ruleset shown does not make sense. Having said this, it could 
-affect to a soft-limit scenario as the one described on the blamed commit..
-
-xt_connlimit was designed with --syn on mind but it was not enforced and 
-people used it for many different things. At least, we are learning many 
-people ignored --syn completely.
-
->> +static inline bool tcp_syn_sent_or_recv(const struct nf_conn *conn)
->> +{
->> +	if (nf_ct_protonum(conn) == IPPROTO_TCP)
->> +		return conn->proto.tcp.state == TCP_CONNTRACK_SYN_SENT ||
->> +		       conn->proto.tcp.state == TCP_CONNTRACK_SYN_RECV;
->> +	else
->> +		return false;
->> +}
-> 
-> We're adding ever more complex checks in the conncount backend.
-> I don't like any of the solutions.
-> 
-
-As we are already fetching the ct.. would it be fine if instead we go 
-for a protocol agnostic solution with:
-
-if (ctinfo == IP_CT_NEW)
-	goto check_connections;
-
-inside the confirmed if statement? If I am not wrong, it should be a 
-valid solution too and IMHO a better one.
-
-> What about reverting the offending commit, at least for tree_count?
-> That way it continues to work as it did in the past.
-> 
-
-Before the fix, soft-limiting scenarios were broken and therefore this 
-specific ruleset was too. I hope this is not a ruleset in production and 
-it is just for reproducing the issue.
-
-P.S: I have been investigating on a way to improve conncount backend 
-structure so the GC is not that expensive.. I don't have anything 
-relevant yet but I plan to provide some updates.
+My thinking process was that it's fairly unusual that the dst is kept
+because the stack decided so. Normally its the device driver that asks
+for dst to be kept when its xmit is called. I thought 0287587884b1 was
+the first time when stack could make the dst decision behind device
+driver's back. But my analysis was very shallow, could well be wrong.
 
