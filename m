@@ -1,157 +1,167 @@
-Return-Path: <stable+bounces-225466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEdKBXyctmlvEQEAu9opvQ
-	(envelope-from <stable+bounces-225466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:48:12 +0100
+	id +M0EIdqbtmlAEQEAu9opvQ
+	(envelope-from <stable+bounces-225467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:45:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7202908E6
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:48:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ABB2908C4
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 12:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE996301904F
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 11:41:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13400302D979
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 11:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21DE3382CF;
-	Sun, 15 Mar 2026 11:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A863382FB;
+	Sun, 15 Mar 2026 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="Dh0ycOU+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2xNnlg5"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B9526AAAB;
-	Sun, 15 Mar 2026 11:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773574913; cv=pass; b=cF7JXS8/rf26zSLQElqccoKU3G6elKdYKtM/Lr+vbxajLPWt0iVryJQx62SKKUeK0h2RRh24fJa6cO/ZGzMq6NXtXiZPA40aU8xootM2eZ7KoP7QOonXf1uv6SvbckbEUx5MNRd91O/IPZlmzeo/IuvRX1snBcefOS8F7aORB6o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773574913; c=relaxed/simple;
-	bh=YSmRuxKBO2kw+E3WKTHsuieuLjI2IbFdsM0DVKohbQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YEPLusw9NjWi9QDJFjB/JzNOqGKFcrcnM27OtxTjQioOYaxstmMI6T+TR1oM4crgrPiWThTlUpiMUqGb8tKtViplDI5QxH2xxc3n6BhPF++13dhQl1YAKsKg1l710yuk2HmNOV12aDIIO0u6b7OlCiHXH1HqBF91jGwK1tbRVoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=Dh0ycOU+; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
-ARC-Seal: i=1; a=rsa-sha256; t=1773574888; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=F8Ovw6IWDaW4TdQr4veQWCP9nnOMBUf3aabZZP0I4uPKehETDqinip9tkU4gjDtvKrNqAHp9plySAUYuB3iMg45e5lqAHcxILc8nbPY4cGKzmb7W9g8MJsGMenxJ3m7lobgxkzdFpO3APXPCaJ+3wPNeQ5xrahkVbQEEXHFmhgQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773574888; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=uN8w1OeE6HEvMiWwhvg2LiJ/nLSS/nbJhI/YzLpKiTA=; 
-	b=H6zdgdlFhUMsaNNbu6UXpSS8BnZGLrs47dPaSGMptIC6U8nvaMS8regzhpPRMcuW7OixZlQZ7pnQLNi49mIf4NyYYVPatJTh/faxw0VmQJ+hWRkRNyL4n93b2/fsIejVvUdIKMd+JV2FLaYGzNFCpz89EQ3CR5S6tv2M4SCYrGs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773574888;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=uN8w1OeE6HEvMiWwhvg2LiJ/nLSS/nbJhI/YzLpKiTA=;
-	b=Dh0ycOU+kMmTiXKP7rMt5W1VyD/yZcNTmLN0qbGxwFjIJw/sH6Bg7Gfnpc+8ctpq
-	BMU568G6xLDKMC0gA1ael0PGbfaaklyK1JaLbzvo0RGxkWZYWn4zWIv7/W3uFudBefM
-	2CJpJBMGF1lJYc35IH0t/2GD58h546huyJIdvJ3c=
-Received: by mx.zohomail.com with SMTPS id 1773574884580662.9489585086674;
-	Sun, 15 Mar 2026 04:41:24 -0700 (PDT)
-Date: Sun, 15 Mar 2026 11:41:16 +0000
-From: Yao Zi <me@ziyao.cc>
-To: "Rong Zhang" <rongrong@oss.cipunited.com>,
-	"Huacai Chen" <chenhuacai@kernel.org>,
-	"Jiaxun Yang" <jiaxun.yang@flygoat.com>,
-	"Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
-Cc: <linux-mips@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	"Icenowy Zheng" <uwu@icenowy.me>, "Rong Zhang" <i@rong.moe>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: Loongson64: env: Check UARTs passed by LEFI
- cautiously
-Message-ID: <abaa3Nb5P_6wUtxL@pie>
-References: <20260314211336.408561-1-rongrong@oss.cipunited.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBEC1A2392
+	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 11:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773575119; cv=none; b=kve6M6GPbo2MOmeRw61dZJIV5Jy8LVID6NiFQt+JXYQMa38V6rTOlziZ8axqkDODgySDEGyxPffw56GKmHqjOrwN8Bnh2hHOuI2b/QzypMe6qrKAkoF7wu6ZU37u5l2uHRb7zgSt5/Y0S11k/PVTuduhEV+KeLE0D8MJSeWmJ9c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773575119; c=relaxed/simple;
+	bh=ekePeo7xFC4JcJRPKdRTzFotIT38WWC5cJ1Esdr9dfg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o85jRzkGVZTI0TIScSTLKEdqXym0HmRw2PGZD2VnoA/kRyF+dr12JtAAkw8OQGRsrLkRrS5iwJKZ0WJdqZXT1scAjmze5j6x6+LFEzJJdVwiFIWi0XRJJD9NBYD5wjl5QRtUwZYgya2WiSub7UfBq+62lrXfSB5VGhZmbRPbk4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2xNnlg5; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89a0ece9f14so45902866d6.3
+        for <stable@vger.kernel.org>; Sun, 15 Mar 2026 04:45:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773575116; x=1774179916; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6uDVHudfcd1lMVGOAwbARh4Bs+Hb4RWQ4xLnldj9Zw0=;
+        b=O2xNnlg5i/SUl6LOrcYsfVoBQr9+SLht2lg5DB2B2Zwv4725H2ZjyGsU2PaKu595ef
+         PYl+Rf8GmgM+qoOlhUECTFZQRB36YNC2YWnIodCJNfuCdAng+CagrMEpiMQutwHCd8FH
+         t/p93Wqfg1PTH8YifIDHPF4MZJswU2vyrv5dSbwgEzEAKDkAIPfJ8cZ8xDHgurE8mb2L
+         OKbv95HEEZMrLPnL5EbbFKDP61Nka30uZH4trHuRtl2pG5m1lb1uSSyXiG2e9jPGngIw
+         6+WxRGn/ZghpeNKbJOdBjFtCNoVREik32aAkF70GT2KZlCRpblMqY3YNOCqbknb/ACR3
+         4U/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773575116; x=1774179916;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6uDVHudfcd1lMVGOAwbARh4Bs+Hb4RWQ4xLnldj9Zw0=;
+        b=kLtKuoyx265mjU0xk97uZnNXzmpLGJn3/JM3s3ecFf72mxpHCQwJS86iOAE3QzKlaE
+         rkGJ9ajzeX70L6wut22ju25O1hPgiydtcfUqq5XuH5BZviSx9zDxwxo8Jfz5OdC4D+/9
+         57iqq53tpo7rinitRv9doDCwD+Og+SJZAjsRodtaz7T0iFNKRbIQ9L2jYHDutvgCQpHU
+         GDyJFgDk5CZfjmyHGWyesYBPuLPcXVc3QnJ2kUSE72nFxXxTwvqfeH0HeS0L2Vb5ijUi
+         PvfNu+BqF9pZHiWY0bnq8if+DcwjFIdr4YdETpYW6R5RfffQIBsnT6H8f/ibY7BPMMpl
+         A0hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUHa8bSojVF38tHLJYaz/eUVor7hQa8TqRZa8G9AI3nSxo0SXKjxjqhAqaefEuMLfYCBIt2Vg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVD8MzLizS6cpmcvVVGsXBjPNebivwuJt1v80pM6fqr5/w/I8d
+	LlOm+Nr/CFF0z88ComTPc//9MAayjg7+p0IXxdXqKOpLHSqMx9NYR34h
+X-Gm-Gg: ATEYQzwaqyPwYW5eJ0GPNcLOwVtQLDlcN3BuDLbtLmVuZ/v9ts78p1W2rbkPTtBpixS
+	TGj+npgsSaOPHRcowhwR+sHnaQ31z9zH7W7K4HEliTsFyALkRyVDurfQsEsU0VFZQEQRNEdwHek
+	0d+g5cE3zCrIeyg4qBT+4keLugp1wxMOCBh+jqiZm5oqOgva1Upjrtz5Lk/nQkMrDZxwqQQ5mmX
+	lind4jMSH0x/DpOjQXkY/q1CYGFLKyrsy0nnQLnxqaYKPBXhYmYNJYFD+QFHdlEb6OvGDeMkk2u
+	ZVcFC8mseasMjlgSsl5c6OnqmjOmU0lp/r4PqpT6f721TzmFJ0DkHP+cXg0wHwh+EYTLqccDgf1
+	TRGetpBCR1QzMsgi/RgPjf0TVHhWqikyRRjb3F+o8iVht2DB6MI7FR1kK1RqvlvbhkpBesVB7Gn
+	HznSBMLm6+xdkUU5vACPLM7FXl/mqi9qYmDX5lnV42v6c=
+X-Received: by 2002:a05:6214:509b:b0:89a:b0c:7268 with SMTP id 6a1803df08f44-89a8201b511mr126210196d6.54.1773575116135;
+        Sun, 15 Mar 2026 04:45:16 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65ce339dsm98261896d6.26.2026.03.15.04.45.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Mar 2026 04:45:15 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Subject: [PATCH net 0/2] net: macb: Fix two lock warnings when WOL is used
+Date: Sun, 15 Mar 2026 19:44:26 +0800
+Message-Id: <20260315-macb-irq-v1-0-0154104cbf61@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260314211336.408561-1-rongrong@oss.cipunited.com>
-X-ZohoMailClient: External
-X-ZohoMail-Owner: <abaa3Nb5P_6wUtxL@pie>+zmo_0_me@ziyao.cc
-X-Spamd-Result: default: False [7.84 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:dkim,ziyao.cc:email];
-	MID_RHS_NOT_FQDN(0.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJqbtmkC/x2MSwqAIBQAryJvneAHwrpKtPDzqrfISiMC8e5Js
+ xsYpkDGRJhhZAUSPpTpiE1kx8BvNq7IKTQHJVQvtJR8t95xShfXgzNWN1ww0PIz4ULvv5og4g1
+ zrR+DcvpiXwAAAA==
+X-Change-ID: 20260311-macb-irq-39b8a3333bd8
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>, 
+ Harini Katakam <harini.katakam@amd.com>, Kevin Hao <haokexin@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225467-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225466-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
-	FROM_HAS_DN(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[microchip.com,tuxon.dev,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,amd.com,gmail.com,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.875];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ziyao.cc:+];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cipunited.com:email,ziyao.cc:dkim,ziyao.cc:email]
-X-Rspamd-Queue-Id: 6C7202908E6
-X-Rspamd-Action: add header
+	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tuxon.dev:email,amd.com:email,microchip.com:email]
+X-Rspamd-Queue-Id: 45ABB2908C4
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-On Sun, Mar 15, 2026 at 05:13:29AM +0800, Rong Zhang wrote:
-> Some firmware does not set nr_uarts properly and passes empty items.
-> Iterate at most min(system->nr_uarts, MAX_UARTS) items to prevent
-> out-of-bounds access, and ignore UARTs with addr 0 silently.
-> 
-> Meanwhile, our DT only works with UPIO_MEM but theoretically firmware
-> may pass other IO types, so explicitly check against that.
-> 
-> Tested on Loongson-LS3A4000-7A1000-NUC-SE.
-> 
-> Fixes: 3989ed418483 ("MIPS: Loongson64: env: Fixup serial clock-frequency when using LEFI")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rong Zhang <rongrong@oss.cipunited.com>
-> ---
->  arch/mips/loongson64/env.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/mips/loongson64/env.c b/arch/mips/loongson64/env.c
-> index 11ddf02d6a15..c6b99b3740ea 100644
-> --- a/arch/mips/loongson64/env.c
-> +++ b/arch/mips/loongson64/env.c
-> @@ -17,8 +17,10 @@
->  #include <linux/dma-map-ops.h>
->  #include <linux/export.h>
->  #include <linux/libfdt.h>
-> +#include <linux/minmax.h>
->  #include <linux/pci_ids.h>
->  #include <linux/string_choices.h>
-> +#include <linux/serial_core.h>
+Hi,
 
-Maybe putting this before string_choices.h to keep the headers sorted
-at least locally? Though the order is already broken, this may minimize
-the diff if someone is willing to sort them later.
+This patch series addresses two lock warnings that occur when using WOL as a
+wakeup source on my AMD ZynqMP board.
 
->  #include <asm/bootinfo.h>
->  #include <loongson.h>
->  #include <boot_param.h>
+---
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: Harini Katakam <harini.katakam@amd.com>
 
-Reviewed-by: Yao Zi <me@ziyao.cc>
+---
+Kevin Hao (2):
+      net: macb: Move devm_{free,request}_irq() out of spin lock area
+      net: macb: Protect access to net_device::in_ptr with RCU lock
 
-Thanks,
-Yao Zi
+ drivers/net/ethernet/cadence/macb_main.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+---
+base-commit: 6ba8fb373522ad9ee3e828c8e77d8bd1acf3dc33
+change-id: 20260311-macb-irq-39b8a3333bd8
+
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
+
 
