@@ -1,253 +1,652 @@
-Return-Path: <stable+bounces-225472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6H7/G7LBtmkWHwEAu9opvQ
-	(envelope-from <stable+bounces-225472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:26:58 +0100
+	id kEjoKt7Gtmk3IgEAu9opvQ
+	(envelope-from <stable+bounces-225473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:49:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1885C291050
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:26:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0153D291144
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFB6B301487E
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 14:26:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2223013AAB
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 14:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48381366545;
-	Sun, 15 Mar 2026 14:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1323334DB66;
+	Sun, 15 Mar 2026 14:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b="czX7u1YK"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cp20R81v"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021122.outbound.protection.outlook.com [52.101.100.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CFA366050;
-	Sun, 15 Mar 2026 14:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773584801; cv=none; b=XcuhAEKFxaMlbBsI+u4k4K90mXN+omWUQ72JIKAN0mSCWvSlInR0b4YyAEGyyfYcieCuuCRinjGN3XZ8ieqZtA+Y8QYLz08cVY6hYlpKixrjeMGwDfx7UduGRo/zVYyJxEosktSsj9Qa0aSvEtd/DSr6rF6ykTOWXULHdabAT3I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773584801; c=relaxed/simple;
-	bh=senDZHEmYebQCAnLtwzi1Q/bk5sXkiAKoJBR4qJTN4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=saWPPRPIEscRZ3Y41f3KflDQqgZYy+H09XnFY8mUKI9GIUc/GvyTRJ55thujYmTgT7uhB6QjtdnWy5nwXpqSwFzDLXjjCuYXoGa9mrl6dQ5X8zCHdXCyxbM9OC1UaZlbrzH1+ik+yZgDlAYADC9FJJH3Xepnh2NjSbrjvkOAeG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b=czX7u1YK; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1773584796; x=1774189596; i=ps.report@gmx.net;
-	bh=4phVwyEWx1J9XfZ+dWJJNPe7PNfSIlQ75z9+gBftQk8=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=czX7u1YKU8YnUGQXn6jPhZqy/KosjAK+7EJUawJIxytHGm5vy4RPK6SkyUweGOf4
-	 eEzThQIPJj+2wTJC5kNqjr6bZ0sesMW8gQfNGX23XOR6Z9MdNt66butW70G3lKiVW
-	 5uhe1lqFaZbDZn/HXc3ABceJ54chWfB35n3cPGYgSRAtVPssCFC+GO8SGLAhmeuSp
-	 iMWdVLq66tOMyZZZJUP0Cv4gPt9wRkr7tuZILUI6hpejURJkIJyuhdLiBqdTqXn3O
-	 sdsnqmvi5ZW8qBSDeFyAYoIpC2GLCfrdf11U2dvub17Z3ZgGuSvJnBfYc5bwFE80c
-	 FC2hUHmaFqh3qSxOtw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5wLZ-1vzKdz018d-006hB3; Sun, 15
- Mar 2026 15:26:36 +0100
-Date: Sun, 15 Mar 2026 15:26:35 +0100
-From: Peter Seiderer <ps.report@gmx.net>
-To: Marc Buerg <buermarc@googlemail.com>
-Cc: elias.rw2@gmail.com, joel.granados@kernel.org, kees@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH ] sysctl: fix uninitialized variable in
- proc_do_large_bitmap
-Message-ID: <20260315152635.4c20c6f0@pc-1>
-In-Reply-To: <20260314093725.12429-1-buermarc@googlemail.com>
-References: <20260313121708.137dae22@pc-1>
-	<20260314093725.12429-1-buermarc@googlemail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-suse-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DED13002D8;
+	Sun, 15 Mar 2026 14:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773586138; cv=fail; b=VfZOsnHFWR11LjvzhMktN+nBTKmE3Aykab6S7EEnZXhz1TVY1DKZYyrqPjAXMzE/Vl7yoKCgFNQpptOrs+aCzUXQiYDrP+eSXE7uISp4Aum8Nl+4WgQMvgb5cG4dah/2YbPy3pVyHaL0ed9b0cjMndVtnVm+n36M5YCE3u3+1YQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773586138; c=relaxed/simple;
+	bh=/FZhWuFAGGWsghoU6KZarHsT+BCLY9LCSRpbNKrlOAg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=T+ygGjSxiSv9jYAYAtphVGD7rf4pX8Mc1rHLU6vF1KonRqUZS8/nud+6yGAU5m2q5VzTWtIjtg2frOTEc1zahkikSQqXJgGEYQWkA0SlgflKYmZ9DEgWGGjuwfOaIZ218BQLD/m+TNwIb4gDep/9UAi29c2FWoofwB34bdNUbNU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cp20R81v; arc=fail smtp.client-ip=52.101.100.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A1bX16kDPSn3AnFbdNwt1ZoVZAiiLnFV+5FgAl3d68GPIZcYMllYynOZ3QzITJdZPFfX0plgjyfp587i1+m3Iin1Nu1AJvAorLewRlr8r23er/UqHq5IIBWZD7KdOpODJH5oFj13vcdQAZBpyns4SNEqotfwtYCKeeMrfy7T6ZVSSSSDoRR00rxxbD800eqW2Gu4zthPeNESjSQMFPpjUoI49b6sApUugsrbl+42q0C3C3TnDhILMwT7viIYBc8U+Xp3qRQi4E1c72Rek9Oc+PygO7qHXXYz8S3wXozCGG6NpOy2KpgP/oFVl/bCZLmHUTolsPtDscgFxqLMnQ8Haw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MooL9FvFtz2rRZBiMsjKCHmD1jZpmU9nRLp0M3qvuco=;
+ b=v+7M0lCfC7IOD76BIj86Nux3ATGdiYBXZf7kLQrNahTyw2LAz0sPANUb62oxGO+d28ATY54WuUuqPxMOmQDLIY1WneeiFB1gA+ja52xgJPT5EAb0he14aP9IDRyaZ5y3RoX1SbBmO5WGcvIaGy17bKZnPU2zzaCKy06u0Q53aUq2+WKTqQSvuvn/L4okBU+MW4edAcUxtSiKwmfcnY7raHDXzq9016u6RjdlmhbMcA8vQD2xZWG5RGfdQUu4F/CoK59tPTNp+HEcOKtpSgH1XNCDGOrz4MC6hQoD/2BJhCZWpVTl64SeAbLI/8I5oQcTZEmRlcZ/1rUUjXRBGpuCuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MooL9FvFtz2rRZBiMsjKCHmD1jZpmU9nRLp0M3qvuco=;
+ b=cp20R81vR5s8P2q0L6lsf2pVZZuDraPo5+gx8yklo/2Xb5YTkp2wkSyS1eQISU6oBHcXi+ms14BRn5cOnPPTSlkHSQVKoBBXX9Jp18aBuBBIv2Q1B/oZCKObpOBXKGTlJbbPndwylwov6aYAY3GGcG1ACMRWbGXoZB/GB4f3Eic=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB2912.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:172::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.22; Sun, 15 Mar
+ 2026 14:48:53 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9700.021; Sun, 15 Mar 2026
+ 14:48:52 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 15 Mar 2026 14:48:52 +0000
+Message-Id: <DH3FT8ZMGH0T.2NA5M5351UP2L@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Abdiel
+ Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: Patch "rust: dma: use pointer projection infra for
+ `dma_{read,write}` macro" has been added to the 6.19-stable tree
+From: "Gary Guo" <gary@garyguo.net>
+To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>,
+ <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260315144041.25312-1-sashal@kernel.org>
+In-Reply-To: <20260315144041.25312-1-sashal@kernel.org>
+X-ClientProxiedBy: LO4P265CA0123.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ig1xaAQ0+949JxY3JMvRhraHgbltCILHchzewdZeiUJB+3E35lA
- R8llC13Dy93hScIZoCsK6IzqY0WGdR+Y5qeF2yjF7TyutfWVq/vy8MJ08z73jymo2y10CA0
- jAczLc4z2LhsN5gD6xbyvfZm50wxRdYC9diU3iQhCj1csOaY1CczayYu8UIkOzOsJUrYALC
- W0N2FEEIqLXp32ZV3kz0A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tYu6fy0/5EM=;MWPce6m82ylYga0wuKq+ASsQ+3X
- 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
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.net,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmx.net:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2912:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9225bf60-0205-4425-70ea-08de82a1f9e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|56012099003|22082099003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	T4X3nGDrEBcLO/3O70qqT3ALmdjhFrohVVOUSavP8EiqTEqh3fr9tJiYeL0jkVxDU5qnuOfndF/r1trquHnBGpEDzcG0zciwxsQKedmU61sOvb2wVS6d/6jjYSigK0qcatmVrAPxC+ZGtM9XEQ9hF4pgm5KL6Rkuytid0h2k2MpQZQL0P4ctydcZ028wpmVJRkRwENyymQFoyd3yp5oSyQ9ToHc4tAO+mIblYEPlO+3MB87HuGKHlrC/YtTWNsXurIcflVPiBYPFXltRa2PVYrI5WdJstPrItqdwMnaYsrYRsXsNuwCZhsUhQ+9EJMoFbpdsO7ENORLTc9H2YJZfdRIYgW6VBxUbQNWcaJH+3rFFoL45HZgsQVXm17pLlpoVJ/eFsSLKZzCsVOfc/oeT6EACEW4/dlxb6bLipAF4QJ6jNE5OEPvAuD/7ipUJpGg91b33gv2zHo+afTd+o52tL7yLzGpebJd4TDmSmWlfKeXBCYe3CabuCSiyqU7Fhnmj2thVb5N8CCESTy/2VDN1y8jZkL2vtSZAJd0iK8h3r95CyGfkcrTNvS9eUPdONWntwRb3C74wFVA8Qm9qA0XGH0DJD/1iQlL79C8dE5PN67vUbUk7zjrjx0057JMTsM0NhOi7XjubNfr2BmT6vzvBVG61O1uWWtVBMFNvkA4Aq62sDWcjewFwhme/ncF0TVm6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V29GYzNmUm5lbi8rVERUYzUvdngxYmdDaXFyY3p5M2tvcm1GQ25nY2ZLa0Vl?=
+ =?utf-8?B?RWxhaDh3VVYvY0tEWmZCM1hpNDZLMmhKMlljckpTcU1hbUd1SSsvNkl2Vitt?=
+ =?utf-8?B?WjB5Qk9ub3FyeWRWL2FyY2NvdUhnMkliQUlRZkxTbVJEa2lTbGFpVlpWTXFw?=
+ =?utf-8?B?ekZQa3ZLaS9ycWxOMmNRbFBnMUFSejF0NUNwWG50ZDZENms4aWJxSEw4NXlD?=
+ =?utf-8?B?VDc1MUd5ODMvRzIzdi9FWmQxTkZ4STJmd0NBdzM0OW5QT2h0RW5tSklSM1Rx?=
+ =?utf-8?B?ZVJVWGp5Mi9uaXpiZ0J6eEdJa3ljZnZsUDMxRmthczlCVE1maU9tbGR3S0pi?=
+ =?utf-8?B?ZXdkUjg4SFNDVFZOZ2ZLeVMvSXN2RUhyREZhS0hmbE1WbkxXdmozbnBPc1l0?=
+ =?utf-8?B?NzBSK3ZSRGJtM1N3dmFrZWkyTnM4RS8vRlNsandVSVFvZi9nSVVNZklWbG00?=
+ =?utf-8?B?a2luUnphaEE3SWFKODIvVzRITmxmb3J5dmg5dGZsMFQwaXprcnlONFpoZGlr?=
+ =?utf-8?B?bEs0eTRLaDFPeXoxMXVYajBaSnd2eENNQU5vQkdvNm81ZjZEN1FrK0ZPRGlk?=
+ =?utf-8?B?MUoxNER6YnNHTXIxNUYyN3ZvTnh5MU5HZWJlSzBoOGRPNDQ0YkkxbTlZTnhC?=
+ =?utf-8?B?RFZ1TVpxeDc3VmRJVFpsaExmcXVUMVc4OWN4RG93K1AxWExSY204K3Q5ZTFx?=
+ =?utf-8?B?ajVER3dMTnBMeEt1NDFFL1lQR2RUeW4yZXN2VGx2T25rVXJVZGJyd2NYM3J0?=
+ =?utf-8?B?dzFhT2dIVS9EbXpOZjJIVm94WGFhK3QvTWhHUVpvdm9FamhsY2drVTEvWlBy?=
+ =?utf-8?B?R0ZGdGl3SW5SaXRpaDZjckF0Qmd2VWRjYlI0RUticXdSU0Y1ZmxLVVJjRGhN?=
+ =?utf-8?B?d3NRcndGUXIwMmtRUEVFSlRZVkR4a2E2VEs3WU9MVXpNaVN4SnY2bVFiM05S?=
+ =?utf-8?B?UkJEdEtseEJ3eXBnVkdDaWRNVUZnbE8yTHI2bmdQM2x1MVZydWwxVDlKVXJw?=
+ =?utf-8?B?UTlnRG9DT1BWUzlIeFpPV2FQdERpOW0xdDdQTXV2K3AxMGloL0d4WW5Ya2l6?=
+ =?utf-8?B?YTUvcnNoWWRkTlZoK3hlUUxXbk93TDc2dDhUek4zZE56Si9qeStCejBTWGlP?=
+ =?utf-8?B?b3UyNkxEZXoyVVUxTmlJencvZHNlMDFCOEJpa1NxckN5bDRTL2loVHRudmdD?=
+ =?utf-8?B?eVpXMU1YZDRtQS9tWE94Y1B6TGc2Q0lxMzRxVHd4elFCN2FvTlJudjJVUFhq?=
+ =?utf-8?B?RG5DRC83bU5qcEpMWW8wUlJwUnNmUlBuRlR0OEtsTmpCRVVPK2gwSUw4NFZ1?=
+ =?utf-8?B?OFJWakk1M21valFQTVRHTWswM2ppT241RDVHLytabGhzSkIzZ3doZStrcmd3?=
+ =?utf-8?B?a25ub3JhTXFYZHZVN3VuaFZJTnRCbmN4WVVRQS9DZ0tZWituSng0Y3NrU1lV?=
+ =?utf-8?B?RjcyOUREdHdXUmJvTHJYaE1PWG1obi9FYTUrQm8xQ3ZDTEl0Y0dSdmJ2MHB4?=
+ =?utf-8?B?YVFCOGV6Q1ZZN3F4OThhbllKRWZKZkN3QnY0UktONm9qOUtqQ2FLdHdpdlU0?=
+ =?utf-8?B?eW9MWVl2WUU3RFlMMmtJZGl1bm9kQUFud0F2NWlZQS81a1NqNEI3WVZiZGFr?=
+ =?utf-8?B?WXFoRlBYZlBLK0FKWXJFQlhzTWtCVnJOcUgyTFk2blhzNDJWVWhaMUVTS1RV?=
+ =?utf-8?B?clJKWWJZaFFKU3FWbUIremlCck9SUU5RVkl4TXdOTmsrV2ZmTlpWZ0VTRm0w?=
+ =?utf-8?B?a0Z3UUIwMENua09KYlRpWlpHUHVOaXdmaVErenBobkY5UjlzUEFDQno5Z05Q?=
+ =?utf-8?B?K1FYYkswL2pJbVZ0emljWnUxM21oajRNZVRQZkpQUlIxV0krNU5hOTVpcTBG?=
+ =?utf-8?B?U1o2ZzVnUjhaQUl6dUQ3MllKY3JnS21odDlPazhjQTZ1ZmxKRDQyUzBoZkxD?=
+ =?utf-8?B?dnlRNUNUYTMxY1FmZjdpaytINjhYcnZoczFVY01Cdml1NlJsaGxoZkcrdFMy?=
+ =?utf-8?B?TGVqWGZQU1lHUURxL3kzQW1sa2RKc3E2L25Xalp4THNSQndHRFdxdloyVloz?=
+ =?utf-8?B?a05MUXplYVpyb084dTVCSmFRSHdWRjdOWEY5KzNKWHI0cVBCcHdFK2NvRTlt?=
+ =?utf-8?B?dG1XZ2w2WGhxZnUvNEYwNTRwcHB4YkZpRENYOW42bU1VbkdGVEg2aVBqdHBB?=
+ =?utf-8?B?dFp6NWxDaTArbzFFQXlmZHdBTmt3d2FrOHZ5NGNVaElNZ3hIOFk2NTB4V2Ew?=
+ =?utf-8?B?Qzd1QTBGMDY2RVArMmMzZXNuT2lrQVlCSXA0MHQ4ODZlNDNQUCtHUUN6T1M2?=
+ =?utf-8?B?dkcyQkdpczFxbkttQUNBVndUc1k5Q1NwM1pXUVZ5aC9DeUtyVGNPUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9225bf60-0205-4425-70ea-08de82a1f9e1
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2026 14:48:52.7674
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XWqSbaK44XlMKDW8MRvfZFoG/YEv1yV+97Hq4VoWOormu/Cm9GII3juyWUNMByxzWkb1+hoU2Njv4rxU7i4BQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2912
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[garyguo.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[garyguo.net:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225472-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225473-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,nvidia.com,gmail.com,ffwll.ch,collabora.com,arm.com,protonmail.com,umich.edu];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.net];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ps.report@gmx.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.net:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gary@garyguo.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[garyguo.net:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1885C291050
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:dkim,garyguo.net:email,garyguo.net:mid]
+X-Rspamd-Queue-Id: 0153D291144
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello Marc,
+On Sun Mar 15, 2026 at 2:40 PM GMT, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>
+>     rust: dma: use pointer projection infra for `dma_{read,write}` macro
+>
+> to the 6.19-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>
+> The filename of the patch is:
+>      rust-dma-use-pointer-projection-infra-for-dma_-read-.patch
+> and it can be found in the queue-6.19 subdirectory.
 
-On Sat, 14 Mar 2026 10:37:25 +0100, Marc Buerg <buermarc@googlemail.com> w=
-rote:
+Hi Sasha,
 
-> Hello Peter,
->=20
-> Thanks for your feedback and the idea. You are correct proc_get_long()
-> does not set @tr if @size is zero, therefore, left in
-> proc_do_large_bitmap() should be zero when we expect @tr to not be
-> written to and c still being uninitialized.
->=20
-> > Would the better fix be:
-> >=20
-> > diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-> > index 354a2d294f52..89db88552987 100644
-> > --- a/kernel/sysctl.c
-> > +++ b/kernel/sysctl.c
-> > @@ -1427,7 +1427,7 @@ int proc_do_large_bitmap(struct ctl_table *table=
-, in=3D
-> > t write,
-> >  				left--;
-> >  			}
-> > =20
-> > -			if (c =3D=3D '-') {
-> > +			if (left && c =3D=3D '-') {
-> >  				err =3D proc_get_long(&p, &left, &val_b,
-> >  						     &neg, tr_b, sizeof(tr_b),
-> >  						     &c); =20
->=20
-> This would explicitly fix the problem as it enforces that we only check
-> if we know c contains what we want to check for. Fixing it like you
-> proposed seems better to me.
->=20
-> I am somewhat conflicted because leaving c uninitialized allows that a
-> similar problematic access of c could be made in the future.
-> Initializing c could prevent that. I also do not see an immediate
-> downside, but that could just be my naivety. Further, that part would
-> now behave similar to when we apply the default hardening configuration,
-> if my understanding is correct.
+commit 08da98f18f4f ("rust: ptr: add `KnownSize` trait to support DST size =
+info
+extraction") and commit f41941aab3ac ("rust: ptr: add projection
+infrastructure") are dependencies of this fix.
 
-Your 'initialize c' (outside of the while loop) approach will only fix the
-problem at the first iteration of the loop, on further iterations c will b=
+It doesn't look like these commits are currently being picked. They're need=
+ed
+for building.
+
+They're part of the same series: https://lore.kernel.org/rust-for-linux/202=
+60302164239.284084-1-gary@kernel.org/
+
+Best,
+Gary
+
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
+>
+>
+> commit 26dd613c37a79884da7fd824263d4c93123688c3
+> Author: Gary Guo <gary@garyguo.net>
+> Date:   Mon Mar 2 16:42:36 2026 +0000
+>
+>     rust: dma: use pointer projection infra for `dma_{read,write}` macro
+>    =20
+>     [ Upstream commit 4da879a0d3fd170a70994b73baa554c6913918b5 ]
+>    =20
+>     Current `dma_read!`, `dma_write!` macros also use a custom
+>     `addr_of!()`-based implementation for projecting pointers, which has
+>     soundness issue as it relies on absence of `Deref` implementation on =
+types.
+>     It also has a soundness issue where it does not protect against unali=
+gned
+>     fields (when `#[repr(packed)]` is used) so it can generate misaligned
+>     accesses.
+>    =20
+>     This commit migrates them to use the general pointer projection
+>     infrastructure, which handles these cases correctly.
+>    =20
+>     As part of migration, the macro is updated to have an improved surfac=
 e
-overwritten by the prior proc_get_long() calls..., for me the 'check c onl=
-y
-if valid' seems the better approach.... ;-)
-
-Regards,
-Peter
-
->=20
-> On the other hand, we do not read c later on, and I do not see a reason
-> why the function would change significantly. Still, it feels more
-> defensive to me to also set c to 0.
->=20
-> In the end, I am not so used to the kernel coding style. Is there
-> anything that can be argued against providing both? If you think this is
-> unnecessary I am happy to follow your reasoning and go with only the
-> check for left being non-zero.
->=20
-> Kind Regards,
-> Marc
+>     syntax. The current macro have
+>    =20
+>         dma_read!(a.b.c[d].e.f)
+>    =20
+>     to mean `a.b.c` is a DMA coherent allocation and it should project in=
+to it
+>     with `[d].e.f` and do a read, which is confusing as it makes the inde=
+xing
+>     operator integral to the macro (so it will break if you have an array=
+ of
+>     `CoherentAllocation`, for example).
+>    =20
+>     This also is problematic as we would like to generalize
+>     `CoherentAllocation` from just slices to arbitrary types.
+>    =20
+>     Make the macro expects `dma_read!(path.to.dma, .path.inside.dma)` as =
+the
+>     canonical syntax. The index operator is no longer special and is just=
+ one
+>     type of projection (in additional to field projection). Similarly, ma=
+ke
+>     `dma_write!(path.to.dma, .path.inside.dma, value)` become the canonic=
+al
+>     syntax for writing.
+>    =20
+>     Another issue of the current macro is that it is always fallible. Thi=
+s
+>     makes sense with existing design of `CoherentAllocation`, but once we
+>     support fixed size arrays with `CoherentAllocation`, it is desirable =
+to
+>     have the ability to perform infallible indexing as well, e.g. doing a=
+ `[0]`
+>     index of `[Foo; 2]` is okay and can be checked at build-time, so forc=
+ing
+>     falliblity is non-ideal. To capture this, the macro is changed to use
+>     `[idx]` as infallible projection and `[idx]?` as fallible index proje=
+ction
+>     (those syntax are part of the general projection infra). A benefit of=
+ this
+>     is that while individual indexing operation may fail, the overall
+>     read/write operation is not fallible.
+>    =20
+>     Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
+>     Reviewed-by: Benno Lossin <lossin@kernel.org>
+>     Signed-off-by: Gary Guo <gary@garyguo.net>
+>     Link: https://patch.msgid.link/20260302164239.284084-4-gary@kernel.or=
+g
+>     [ Capitalize safety comments; slightly improve wording in doc-comment=
+s.
+>       - Danilo ]
+>     Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+> index 174feaca0a6b9..25cd48514c777 100644
+> --- a/drivers/gpu/nova-core/gsp.rs
+> +++ b/drivers/gpu/nova-core/gsp.rs
+> @@ -143,14 +143,14 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>=
+) -> impl PinInit<Self, Error
+>                      // _kgspInitLibosLoggingStructures (allocates memory=
+ for buffers)
+>                      // kgspSetupLibosInitArgs_IMPL (creates pLibosInitAr=
+gs[] array)
+>                      dma_write!(
+> -                        libos[0] =3D LibosMemoryRegionInitArgument::new(=
+"LOGINIT", &loginit.0)
+> -                    )?;
+> +                        libos, [0]?, LibosMemoryRegionInitArgument::new(=
+"LOGINIT", &loginit.0)
+> +                    );
+>                      dma_write!(
+> -                        libos[1] =3D LibosMemoryRegionInitArgument::new(=
+"LOGINTR", &logintr.0)
+> -                    )?;
+> -                    dma_write!(libos[2] =3D LibosMemoryRegionInitArgumen=
+t::new("LOGRM", &logrm.0))?;
+> -                    dma_write!(rmargs[0].inner =3D fw::GspArgumentsCache=
+d::new(cmdq))?;
+> -                    dma_write!(libos[3] =3D LibosMemoryRegionInitArgumen=
+t::new("RMARGS", rmargs))?;
+> +                        libos, [1]?, LibosMemoryRegionInitArgument::new(=
+"LOGINTR", &logintr.0)
+> +                    );
+> +                    dma_write!(libos, [2]?, LibosMemoryRegionInitArgumen=
+t::new("LOGRM", &logrm.0));
+> +                    dma_write!(rmargs, [0]?.inner, fw::GspArgumentsCache=
+d::new(cmdq));
+> +                    dma_write!(libos, [3]?, LibosMemoryRegionInitArgumen=
+t::new("RMARGS", rmargs));
+>                  },
+>              }))
+>          })
+> diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gs=
+p/boot.rs
+> index 54937606b5b0a..38b4682ff01be 100644
+> --- a/drivers/gpu/nova-core/gsp/boot.rs
+> +++ b/drivers/gpu/nova-core/gsp/boot.rs
+> @@ -160,7 +160,7 @@ pub(crate) fn boot(
+> =20
+>          let wpr_meta =3D
+>              CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, G=
+FP_KERNEL | __GFP_ZERO)?;
+> -        dma_write!(wpr_meta[0] =3D GspFwWprMeta::new(&gsp_fw, &fb_layout=
+))?;
+> +        dma_write!(wpr_meta, [0]?, GspFwWprMeta::new(&gsp_fw, &fb_layout=
+));
+> =20
+>          self.cmdq
+>              .send_command(bar, commands::SetSystemInfo::new(pdev))?;
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 3991ccc0c10f1..1cdd1ccfe5702 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -201,9 +201,13 @@ fn new(dev: &device::Device<device::Bound>) -> Resul=
+t<Self> {
+> =20
+>          let gsp_mem =3D
+>              CoherentAllocation::<GspMem>::alloc_coherent(dev, 1, GFP_KER=
+NEL | __GFP_ZERO)?;
+> -        dma_write!(gsp_mem[0].ptes =3D PteArray::new(gsp_mem.dma_handle(=
+))?)?;
+> -        dma_write!(gsp_mem[0].cpuq.tx =3D MsgqTxHeader::new(MSGQ_SIZE, R=
+X_HDR_OFF, MSGQ_NUM_PAGES))?;
+> -        dma_write!(gsp_mem[0].cpuq.rx =3D MsgqRxHeader::new())?;
+> +        dma_write!(gsp_mem, [0]?.ptes, PteArray::new(gsp_mem.dma_handle(=
+))?);
+> +        dma_write!(
+> +            gsp_mem,
+> +            [0]?.cpuq.tx,
+> +            MsgqTxHeader::new(MSGQ_SIZE, RX_HDR_OFF, MSGQ_NUM_PAGES)
+> +        );
+> +        dma_write!(gsp_mem, [0]?.cpuq.rx, MsgqRxHeader::new());
+> =20
+>          Ok(Self(gsp_mem))
+>      }
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index acc65b1e0f245..37e125bb423ad 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> @@ -444,6 +444,19 @@ pub fn size(&self) -> usize {
+>          self.count * core::mem::size_of::<T>()
+>      }
+> =20
+> +    /// Returns the raw pointer to the allocated region in the CPU's vir=
+tual address space.
+> +    #[inline]
+> +    pub fn as_ptr(&self) -> *const [T] {
+> +        core::ptr::slice_from_raw_parts(self.cpu_addr.as_ptr(), self.cou=
+nt)
+> +    }
+> +
+> +    /// Returns the raw pointer to the allocated region in the CPU's vir=
+tual address space as
+> +    /// a mutable pointer.
+> +    #[inline]
+> +    pub fn as_mut_ptr(&self) -> *mut [T] {
+> +        core::ptr::slice_from_raw_parts_mut(self.cpu_addr.as_ptr(), self=
+.count)
+> +    }
+> +
+>      /// Returns the base address to the allocated region in the CPU's vi=
+rtual address space.
+>      pub fn start_ptr(&self) -> *const T {
+>          self.cpu_addr.as_ptr()
+> @@ -564,23 +577,6 @@ pub unsafe fn write(&mut self, src: &[T], offset: us=
+ize) -> Result {
+>          Ok(())
+>      }
+> =20
+> -    /// Returns a pointer to an element from the region with bounds chec=
+king. `offset` is in
+> -    /// units of `T`, not the number of bytes.
+> -    ///
+> -    /// Public but hidden since it should only be used from [`dma_read`]=
+ and [`dma_write`] macros.
+> -    #[doc(hidden)]
+> -    pub fn item_from_index(&self, offset: usize) -> Result<*mut T> {
+> -        if offset >=3D self.count {
+> -            return Err(EINVAL);
+> -        }
+> -        // SAFETY:
+> -        // - The pointer is valid due to type invariant on `CoherentAllo=
+cation`
+> -        // and we've just checked that the range and index is within bou=
+nds.
+> -        // - `offset` can't overflow since it is smaller than `self.coun=
+t` and we've checked
+> -        // that `self.count` won't overflow early in the constructor.
+> -        Ok(unsafe { self.cpu_addr.as_ptr().add(offset) })
+> -    }
+> -
+>      /// Reads the value of `field` and ensures that its type is [`FromBy=
+tes`].
+>      ///
+>      /// # Safety
+> @@ -653,6 +649,9 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for C=
+oherentAllocation<T> {}
+> =20
+>  /// Reads a field of an item from an allocated region of structs.
+>  ///
+> +/// The syntax is of the form `kernel::dma_read!(dma, proj)` where `dma`=
+ is an expression evaluating
+> +/// to a [`CoherentAllocation`] and `proj` is a [projection specificatio=
+n](kernel::ptr::project!).
+> +///
+>  /// # Examples
+>  ///
+>  /// ```
+> @@ -667,36 +666,29 @@ unsafe impl<T: AsBytes + FromBytes + Send> Send for=
+ CoherentAllocation<T> {}
+>  /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+>  ///
+>  /// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Resu=
+lt {
+> -/// let whole =3D kernel::dma_read!(alloc[2]);
+> -/// let field =3D kernel::dma_read!(alloc[1].field);
+> +/// let whole =3D kernel::dma_read!(alloc, [2]?);
+> +/// let field =3D kernel::dma_read!(alloc, [1]?.field);
+>  /// # Ok::<(), Error>(()) }
+>  /// ```
+>  #[macro_export]
+>  macro_rules! dma_read {
+> -    ($dma:expr, $idx: expr, $($field:tt)*) =3D> {{
+> -        (|| -> ::core::result::Result<_, $crate::error::Error> {
+> -            let item =3D $crate::dma::CoherentAllocation::item_from_inde=
+x(&$dma, $idx)?;
+> -            // SAFETY: `item_from_index` ensures that `item` is always a=
+ valid pointer and can be
+> -            // dereferenced. The compiler also further validates the exp=
+ression on whether `field`
+> -            // is a member of `item` when expanded by the macro.
+> -            unsafe {
+> -                let ptr_field =3D ::core::ptr::addr_of!((*item) $($field=
+)*);
+> -                ::core::result::Result::Ok(
+> -                    $crate::dma::CoherentAllocation::field_read(&$dma, p=
+tr_field)
+> -                )
+> -            }
+> -        })()
+> +    ($dma:expr, $($proj:tt)*) =3D> {{
+> +        let dma =3D &$dma;
+> +        let ptr =3D $crate::ptr::project!(
+> +            $crate::dma::CoherentAllocation::as_ptr(dma), $($proj)*
+> +        );
+> +        // SAFETY: The pointer created by the projection is within the D=
+MA region.
+> +        unsafe { $crate::dma::CoherentAllocation::field_read(dma, ptr) }
+>      }};
+> -    ($dma:ident [ $idx:expr ] $($field:tt)* ) =3D> {
+> -        $crate::dma_read!($dma, $idx, $($field)*)
+> -    };
+> -    ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) =3D> {
+> -        $crate::dma_read!($($dma).*, $idx, $($field)*)
+> -    };
+>  }
+> =20
+>  /// Writes to a field of an item from an allocated region of structs.
+>  ///
+> +/// The syntax is of the form `kernel::dma_write!(dma, proj, val)` where=
+ `dma` is an expression
+> +/// evaluating to a [`CoherentAllocation`], `proj` is a
+> +/// [projection specification](kernel::ptr::project!), and `val` is the =
+value to be written to the
+> +/// projected location.
+> +///
+>  /// # Examples
+>  ///
+>  /// ```
+> @@ -711,37 +703,31 @@ macro_rules! dma_read {
+>  /// unsafe impl kernel::transmute::AsBytes for MyStruct{};
+>  ///
+>  /// # fn test(alloc: &kernel::dma::CoherentAllocation<MyStruct>) -> Resu=
+lt {
+> -/// kernel::dma_write!(alloc[2].member =3D 0xf);
+> -/// kernel::dma_write!(alloc[1] =3D MyStruct { member: 0xf });
+> +/// kernel::dma_write!(alloc, [2]?.member, 0xf);
+> +/// kernel::dma_write!(alloc, [1]?, MyStruct { member: 0xf });
+>  /// # Ok::<(), Error>(()) }
+>  /// ```
+>  #[macro_export]
+>  macro_rules! dma_write {
+> -    ($dma:ident [ $idx:expr ] $($field:tt)*) =3D> {{
+> -        $crate::dma_write!($dma, $idx, $($field)*)
+> -    }};
+> -    ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) =3D> {{
+> -        $crate::dma_write!($($dma).*, $idx, $($field)*)
+> +    (@parse [$dma:expr] [$($proj:tt)*] [, $val:expr]) =3D> {{
+> +        let dma =3D &$dma;
+> +        let ptr =3D $crate::ptr::project!(
+> +            mut $crate::dma::CoherentAllocation::as_mut_ptr(dma), $($pro=
+j)*
+> +        );
+> +        let val =3D $val;
+> +        // SAFETY: The pointer created by the projection is within the D=
+MA region.
+> +        unsafe { $crate::dma::CoherentAllocation::field_write(dma, ptr, =
+val) }
+>      }};
+> -    ($dma:expr, $idx: expr, =3D $val:expr) =3D> {
+> -        (|| -> ::core::result::Result<_, $crate::error::Error> {
+> -            let item =3D $crate::dma::CoherentAllocation::item_from_inde=
+x(&$dma, $idx)?;
+> -            // SAFETY: `item_from_index` ensures that `item` is always a=
+ valid item.
+> -            unsafe { $crate::dma::CoherentAllocation::field_write(&$dma,=
+ item, $val) }
+> -            ::core::result::Result::Ok(())
+> -        })()
+> +    (@parse [$dma:expr] [$($proj:tt)*] [.$field:tt $($rest:tt)*]) =3D> {
+> +        $crate::dma_write!(@parse [$dma] [$($proj)* .$field] [$($rest)*]=
+)
+> +    };
+> +    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr]? $($rest:tt)*]) =
+=3D> {
+> +        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]?] [$($rest)=
+*])
+> +    };
+> +    (@parse [$dma:expr] [$($proj:tt)*] [[$index:expr] $($rest:tt)*]) =3D=
+> {
+> +        $crate::dma_write!(@parse [$dma] [$($proj)* [$index]] [$($rest)*=
+])
+>      };
+> -    ($dma:expr, $idx: expr, $(.$field:ident)* =3D $val:expr) =3D> {
+> -        (|| -> ::core::result::Result<_, $crate::error::Error> {
+> -            let item =3D $crate::dma::CoherentAllocation::item_from_inde=
+x(&$dma, $idx)?;
+> -            // SAFETY: `item_from_index` ensures that `item` is always a=
+ valid pointer and can be
+> -            // dereferenced. The compiler also further validates the exp=
+ression on whether `field`
+> -            // is a member of `item` when expanded by the macro.
+> -            unsafe {
+> -                let ptr_field =3D ::core::ptr::addr_of_mut!((*item) $(.$=
+field)*);
+> -                $crate::dma::CoherentAllocation::field_write(&$dma, ptr_=
+field, $val)
+> -            }
+> -            ::core::result::Result::Ok(())
+> -        })()
+> +    ($dma:expr, $($rest:tt)*) =3D> {
+> +        $crate::dma_write!(@parse [$dma] [] [$($rest)*])
+>      };
+>  }
+> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+> index f53bce2a73e3b..bcba1a6e6aaf4 100644
+> --- a/samples/rust/rust_dma.rs
+> +++ b/samples/rust/rust_dma.rs
+> @@ -68,7 +68,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo=
+) -> impl PinInit<Self, E
+>                  CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_V=
+ALUES.len(), GFP_KERNEL)?;
+> =20
+>              for (i, value) in TEST_VALUES.into_iter().enumerate() {
+> -                kernel::dma_write!(ca[i] =3D MyStruct::new(value.0, valu=
+e.1))?;
+> +                kernel::dma_write!(ca, [i]?, MyStruct::new(value.0, valu=
+e.1));
+>              }
+> =20
+>              let size =3D 4 * page::PAGE_SIZE;
+> @@ -85,6 +85,20 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInf=
+o) -> impl PinInit<Self, E
+>      }
+>  }
+> =20
+> +impl DmaSampleDriver {
+> +    fn check_dma(&self) -> Result {
+> +        for (i, value) in TEST_VALUES.into_iter().enumerate() {
+> +            let val0 =3D kernel::dma_read!(self.ca, [i]?.h);
+> +            let val1 =3D kernel::dma_read!(self.ca, [i]?.b);
+> +
+> +            assert_eq!(val0, value.0);
+> +            assert_eq!(val1, value.1);
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+>  #[pinned_drop]
+>  impl PinnedDrop for DmaSampleDriver {
+>      fn drop(self: Pin<&mut Self>) {
+> @@ -92,19 +106,7 @@ fn drop(self: Pin<&mut Self>) {
+> =20
+>          dev_info!(dev, "Unload DMA test driver.\n");
+> =20
+> -        for (i, value) in TEST_VALUES.into_iter().enumerate() {
+> -            let val0 =3D kernel::dma_read!(self.ca[i].h);
+> -            let val1 =3D kernel::dma_read!(self.ca[i].b);
+> -            assert!(val0.is_ok());
+> -            assert!(val1.is_ok());
+> -
+> -            if let Ok(val0) =3D val0 {
+> -                assert_eq!(val0, value.0);
+> -            }
+> -            if let Ok(val1) =3D val1 {
+> -                assert_eq!(val1, value.1);
+> -            }
+> -        }
+> +        assert!(self.check_dma().is_ok());
+> =20
+>          for (i, entry) in self.sgt.iter().enumerate() {
+>              dev_info!(dev, "Entry[{}]: DMA address: {:#x}", i, entry.dma=
+_address());
 
 
