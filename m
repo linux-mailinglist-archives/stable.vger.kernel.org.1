@@ -1,122 +1,150 @@
-Return-Path: <stable+bounces-225483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKBIIsUBt2mKLQEAu9opvQ
-	(envelope-from <stable+bounces-225483-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 20:00:21 +0100
+	id 0JpHOeIFt2mKLgEAu9opvQ
+	(envelope-from <stable+bounces-225484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 20:17:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6522922AB
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 20:00:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDC029236C
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 20:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9CE4300A53F
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 19:00:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AC0A30107EE
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 19:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1762917555;
-	Sun, 15 Mar 2026 19:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA11372689;
+	Sun, 15 Mar 2026 19:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=b4.vu header.i=@b4.vu header.b="NpiBJUXe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL/9PmUt"
 X-Original-To: stable@vger.kernel.org
-Received: from m.b4.vu (m.b4.vu [203.16.231.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB11337BE89
-	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 19:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.16.231.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB001EFFB7;
+	Sun, 15 Mar 2026 19:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773601215; cv=none; b=faEH3oM5WJN9n18Ivq9B1EKbMf4+g11uNtCd+05D0ZAZb1AvYyUrvVbSNEM8u4i+74Iu6D4p20POj2SamZ5ExxFWFMOCeJq1POPBqHmz+lt89itPDvhSLfYQfXQMMmjP/L31+kjMc2f8D61N14Xlku/YUmmy3Nl4ReG2ivZ7kdc=
+	t=1773602269; cv=none; b=CCjKG78mgYk3I1aNxfW89W0i0Y1Wb7IDjKr+LIhTli78NYC49RHnxa3lLjsPhLr7E5zHxIztaoNjyJRaxpRxrELjve6nnzU4j5vdaNezbbh8iBkGfe0EvjXChUwmhq/SNWxaYhP2af0Rj3x7XOloyOjSBlY6scgeNXdnSVieNMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773601215; c=relaxed/simple;
-	bh=OFaa1T9u+uSLmtJRAe56Fb1TCQ2XzYkq5bRxObJiXmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6k1l+cLpmgNw0tqXLnapfzWJptG+QYmTS3nbd9/8Y36dyVjlp+MuQ+49GW2D81BWlE5xzQcSWqJdOC+ayISDGHlwvJHefRM5t1dxcAKemIngCsM38OZEK8Grg8moEQOd5n9KT2cPOqkKdNdjSkt9n1g4/E5sro8jIsVIX+k1m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=b4.vu; spf=pass smtp.mailfrom=b4.vu; dkim=pass (2048-bit key) header.d=b4.vu header.i=@b4.vu header.b=NpiBJUXe; arc=none smtp.client-ip=203.16.231.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=b4.vu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=b4.vu
-Received: by m.b4.vu (Postfix, from userid 1000)
-	id B55BA6792310; Mon, 16 Mar 2026 05:24:31 +1030 (ACDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.b4.vu B55BA6792310
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=b4.vu; s=m1;
-	t=1773600871; bh=kwi2gTZOa3Ar8ndt1TXk+t9vC2qMZ3g1oYe6sQzcylU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NpiBJUXepl6VbfTtlnqgAA3TrnxNxKP/OUG6gEdnVWCN5KT8hggxQXB5wkK1piAM0
-	 AT7ZRNU3LuPTeTvTe5eH0C4va2F/2ZWNy0S1hcNPkAZQtf8fCsscDyed0rJWHybEAP
-	 SBwLFknHu2zTnU773d+dupnWUOlbLE2Sj3OlHvYCjhq0zadj24gsyD56OGLe/tD5ip
-	 N5Mz5zCroWzFmID6wco5nz/tfAZtXA+/Mp52HNsznBMMVSkIh1XXLYy7hGTKQx5BWg
-	 Xw3ADtanPoioTQLgQW4LABvyCXVgP9qzo6s0+Dt5t4eYxAs3wLO4M3Dfvmw+G+9eZc
-	 Qaw1baLldYrSw==
-Date: Mon, 16 Mar 2026 05:24:31 +1030
-From: "Geoffrey D. Bennett" <g@b4.vu>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 6.19 017/311] ALSA: usb-audio: Remove VALIDATE_RATES
- quirk for Focusrite devices
-Message-ID: <abcAZzOM0P7fKVoz@m.b4.vu>
-References: <cover.1773140654.git.sashal@kernel.org>
- <3fc64e0aaa72a20bed4ebd8951c89cfadf474e62.1773140655.git.sashal@kernel.org>
+	s=arc-20240116; t=1773602269; c=relaxed/simple;
+	bh=lnmezolbS9hPqh6D5aE6eJP3t19p6P+GRKf1MW+dOjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b/bsIezgPaHHBAywHeRbHKQIwH4xy4V5swMsTSURkvd5m0PNb26MH2waIQXqHWqQ71I0tu02ax0r+kE3lY9RwYql2ExXYjY7eNMlAcd9ihocD0i6bjltt+4WsPZ8+ueg+Rosf22OAxcQ5fFONvUPByarVeedOtto7ja9E1ZWAHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL/9PmUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85299C4CEF7;
+	Sun, 15 Mar 2026 19:17:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773602268;
+	bh=lnmezolbS9hPqh6D5aE6eJP3t19p6P+GRKf1MW+dOjo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZL/9PmUtoKntf0zCvjFDx8vgOM00T8LuhM3lw7fxsGtBty+RhVV6BFVhTn5CbwLW6
+	 GNEkIFHzn8YIVi/EM8H5c+YTbMT6n81G/7v+Q8glLjiEDd2mPBYPrMXzDUUXTtk1EL
+	 VlGaPoF3xHbrKkYQxsQjTobxdeQYmvVZXCsugB6HrJA4cSLA4O3KT/X6L85mBgDF9m
+	 UG7UU8oqHu3HcYAxNLsLB2J6PMXEiTDoJHzXMnmmW8rcisnMlfWwoM/HDOxYN2wyxI
+	 yTrh2nn3Iopxrokme22Re8eTwOPlRiHRhx4wVCSIXrm8BDftTskZM61yJVgxGdAOSq
+	 rhkDx5DiQ12yA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/damon/stat: monitor all System RAM resources
+Date: Sun, 15 Mar 2026 12:17:40 -0700
+Message-ID: <20260315191741.88931-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260315162717.80870-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3fc64e0aaa72a20bed4ebd8951c89cfadf474e62.1773140655.git.sashal@kernel.org>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[b4.vu,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[b4.vu:s=m1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225483-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-225484-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[b4.vu:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[g@b4.vu,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: BE6522922AB
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4EDC029236C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 10, 2026 at 07:01:04AM -0400, Sasha Levin wrote:
-> From: "Geoffrey D. Bennett" <g@b4.vu>
+On Sun, 15 Mar 2026 09:27:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+> DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+> says it monitors the system's entire physical memory.  But, it is
+> monitoring only the biggest System RAM resource of the system.  When
+> there are multiple System RAM resources, this results in monitoring only
+> an unexpectedly small fraction of the physical memory.  For example,
+> suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+> 500 GiB System RAM resources in order on the physical address space.
+> DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+> situation is particularly common on NUMA systems.
 > 
-> [ Upstream commit a8cc55bf81a45772cad44c83ea7bb0e98431094a ]
-> 
-> Remove QUIRK_FLAG_VALIDATE_RATES for Focusrite. With the previous
-> commit, focusrite_valid_sample_rate() produces correct rate tables
-> without USB probing.
-[...]
+> Select a physical address range that covers all System RAM areas of the
+> system, to fix this issue and make it work as documented.
 
-Hi Sasha, Greg,
+sashiko.dev adds [1] below comment:
 
-This commit depends on its predecessor 24d2d3c5f940 ("ALSA: usb-audio:
-Improve Focusrite sample rate filtering") which was not picked up for
-stable because it didn't have a Fixes tag.
+'''
+Does this single bounding box incorrectly include unpopulated address gaps
+between discrete System RAM resources?
 
-Without the rate filtering patch, the Focusrite Scarlett 18i8 3rd Gen
-gets all sample rates advertised on every altsetting instead of the
-correct per-altsetting subset. I've confirmed this on 6.19.7.
+On systems with non-contiguous physical memory, such as NUMA architectures,
+there can be massive physical address gaps between memory nodes. By coalescing
+all resources into a single addr_range and passing nr_ranges = 1 to
+damon_set_regions(), DAMON treats these unpopulated gaps as part of the
+monitored memory.
 
-Could 24d2d3c5f940 be queued for stable please?
+This appears to artificially inflate total_sz in
+damon_stat_set_idletime_percentiles(), where the gap could completely
+dominate the distribution and skew the percentiles to report that nearly
+100% of memory is permanently idle.
+
+Could this also wildly inflate estimated_memory_bandwidth in
+damon_stat_set_estimated_memory_bandwidth() if an adaptive DAMON region
+bridges valid RAM and a physical gap? The size (r->ar.end - r->ar.start)
+would be massively inflated and multiplied by nr_accesses.
+
+Would it be better to collect all discrete System RAM resources into an
+array of struct damon_addr_range and pass them to damon_set_regions() using
+the actual number of ranges?
+'''
+
+My answer is no.  It is an intended behavior and no negative impact is
+expected.  I think the reason is in the patch description.  If any human needs
+more clarifications about this, please let me know.
+
+[1] https://sashiko.dev/#/patchset/20260315162717.80870-1-sj@kernel.org
+
 
 Thanks,
-Geoffrey.
+SJ
+
+[...]
 
