@@ -1,267 +1,253 @@
-Return-Path: <stable+bounces-225471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAjdEOC/tmkWHwEAu9opvQ
-	(envelope-from <stable+bounces-225471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:19:12 +0100
+	id 6H7/G7LBtmkWHwEAu9opvQ
+	(envelope-from <stable+bounces-225472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:26:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230CF290F7B
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:19:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1885C291050
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 15:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E567D3015115
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 14:18:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFB6B301487E
+	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 14:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B825C366DA1;
-	Sun, 15 Mar 2026 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48381366545;
+	Sun, 15 Mar 2026 14:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openresty.com header.i=@openresty.com header.b="KzoB8J6b"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b="czX7u1YK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00136605C
-	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 14:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CFA366050;
+	Sun, 15 Mar 2026 14:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773584305; cv=none; b=gw5RkscjzCU5fI/gki0+IRcNEaiAOmtLMu1rFrLOS7aOvAhLB6W5qilrtCGWNGQ9qHhsqx2EVhvkISj9nGsqkrsP8bw1JFAgUYcHMhrtrB3DD7uoUEi9W3WcD/uMc0kOhPBO/vPkoz7UpPmQCei1lapWpF4ydZ0xs2uhTeRdgdY=
+	t=1773584801; cv=none; b=XcuhAEKFxaMlbBsI+u4k4K90mXN+omWUQ72JIKAN0mSCWvSlInR0b4YyAEGyyfYcieCuuCRinjGN3XZ8ieqZtA+Y8QYLz08cVY6hYlpKixrjeMGwDfx7UduGRo/zVYyJxEosktSsj9Qa0aSvEtd/DSr6rF6ykTOWXULHdabAT3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773584305; c=relaxed/simple;
-	bh=Y8fUBbvyzMQviIAW9sd4PkX24w/Vd0VYkVpKNberqqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LrmBWOzeMh3TovSii8KH8Eqpnm9MRHU7M8118iphw9u7L72to52/t++tStzUmB46Epr7D3iLs6i7XdvHyGThOZtOwP3jiuBiGJATirP0lDAFX9ys3JlsnPF51G4EFcpnQ6hO8npuYs86jdGVzfrvEXSEHpQQ+DOOFh6pb0DhFb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openresty.com; spf=pass smtp.mailfrom=openresty.com; dkim=pass (2048-bit key) header.d=openresty.com header.i=@openresty.com header.b=KzoB8J6b; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openresty.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openresty.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-829759ca646so2210062b3a.2
-        for <stable@vger.kernel.org>; Sun, 15 Mar 2026 07:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openresty.com; s=google; t=1773584303; x=1774189103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fnEVg49IYI7HJLp/yxY4lgc89fYbkbBOZ6L8Tars9Cg=;
-        b=KzoB8J6blozUzsEDo8eXBOEtawkea/XAev3d4QP0R9SwFhQRSmYNLSvQXiWPzIL39D
-         trSaNuqMKDtwBuQSeM/XGObATfMZyXDW8u5fkxzpofr2w2TX/BUMCzQSNlod5qlYRDfc
-         8P+GOP4NXFtxIVF5Gnay1V3I4w/5C6MbQ5yZbg+R/Dsgwdd1GBcLqFQ6X/tU1sxsUmCC
-         z1loUkd8G2LIweijsQP2DQaQiyAtbxDU7Uq5jQt01wn0pZ3BpC6HsvRoEBHyArGQFyD2
-         CHe4QJvJ/lt4PZHtqNLu/7AKfllupfFPatn7+KrveXJGfSmS7SNh7GFkwuoy/zd3bnen
-         tUWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773584303; x=1774189103;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fnEVg49IYI7HJLp/yxY4lgc89fYbkbBOZ6L8Tars9Cg=;
-        b=KHtiIfARXeKSzu+QQi081Gj0jPrk/hhXzeA5nEWTX5oEWcZT2/KjBBoFN1uT76XNJh
-         8TLPg495N4ZwMuGLbDRTxZUor0/b1PL3pVQWXWtlS4LjcBcmKPyy0X3SydwRO1RL5Cy3
-         9dx7PFc3Ny4tuWf30u4CpS20miJvSO30ic+SCjrzKG5ZYrEhZMY8uUb7X20jdQdTmkfb
-         hirFzLTSpzTexRRyGZCpwnYh9dLbliNCa8DI7Z0hhMwCsnFUfx4/JATjbW5CyL2wrFy8
-         UURc8deQ6xSrQxtq6yRZPLEsjgWyG25VJ+YyI6iTEaxfmPdzelN2yz+MnyYNmY6a8bGo
-         qHHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaP3hTegit+MtNzCQ0VMabMWENkljPBr6fwSyZzUbs3HSF8s5p7UQVmq0tMT3jcEPZyYuTTW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz75errQUSP9i8naGTMQ6ZJGspLQrWOuruGzQkVZOE5yiEZQ999
-	+cPxKuKgo1xzqF2S+VzDIEaEStQHISBUdK7qepakk/tlvkwMp/eN2apxNeSuzDldyNs=
-X-Gm-Gg: ATEYQzz6wNgjvNMTRnl9wRlxIY0eLkziBizpOfLo6u4BlkwXUIr6gsAS39fDOULZPVh
-	+1X8zbrzoGTJHzJKkQovh2hs2P7yxgU5owWbAfRVAbxZA7B7KW1ppqDAXRrV/wMUGIxMfsDojQ0
-	fUMigYaVW+R5/AQH8Vyr5a3uaLQVmGHxjbbwbVl744mMLRG88ofdqmm6tyEIAB0iUg68zcGky3y
-	OhWF/MGB5vS7myFTFW2gp81l4TLRGh3Ne4s+Txca3eUVzZZgtqXUH+aORBTO9Z/8U1b3hflDCsc
-	RcNE0lQIozP14Xx2rYnnYkw/G8m91wdFt3KFEbw94uNKyRej9BtRSIqoh6/o6Ydn71MXF1/eG4X
-	aZfuC8YXgweLVMNU4krPyyMG6OH6FzIGDH1JUbVrhhnPDksVsQLMyK4Gw/2F3QJU3UZm77Kr5YU
-	PG3T3ZICjFZVyX1Rco5HHUbMFiC/3l5jaBRrQV0cTLNS3G0hU=
-X-Received: by 2002:a05:6a00:4196:b0:82a:ea3:c172 with SMTP id d2e1a72fcca58-82a198f68f3mr8174011b3a.46.1773584303210;
-        Sun, 15 Mar 2026 07:18:23 -0700 (PDT)
-Received: from localhost.localdomain ([2402:8780:1329:fe1:ca3e:1abc:522f:35d5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0725e0cdsm10871428b3a.16.2026.03.15.07.18.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 07:18:22 -0700 (PDT)
-From: Ammar Faizi <ammarfaizi2@openresty.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Ammar Faizi <ammarfaizi2@openresty.com>,
-	Yichun Zhang <yichun@openresty.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Yuka <yuka@umeyashiki.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	David Hildenbrand <david@kernel.org>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	gwml@gnuweeb.org,
-	stable@vger.kernel.org
-Subject: [PATCH] virtio_pci: fix vq info pointer lookup via wrong index
-Date: Sun, 15 Mar 2026 21:18:08 +0700
-Message-Id: <20260315141808.547081-1-ammarfaizi2@openresty.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773584801; c=relaxed/simple;
+	bh=senDZHEmYebQCAnLtwzi1Q/bk5sXkiAKoJBR4qJTN4s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=saWPPRPIEscRZ3Y41f3KflDQqgZYy+H09XnFY8mUKI9GIUc/GvyTRJ55thujYmTgT7uhB6QjtdnWy5nwXpqSwFzDLXjjCuYXoGa9mrl6dQ5X8zCHdXCyxbM9OC1UaZlbrzH1+ik+yZgDlAYADC9FJJH3Xepnh2NjSbrjvkOAeG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b=czX7u1YK; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1773584796; x=1774189596; i=ps.report@gmx.net;
+	bh=4phVwyEWx1J9XfZ+dWJJNPe7PNfSIlQ75z9+gBftQk8=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=czX7u1YKU8YnUGQXn6jPhZqy/KosjAK+7EJUawJIxytHGm5vy4RPK6SkyUweGOf4
+	 eEzThQIPJj+2wTJC5kNqjr6bZ0sesMW8gQfNGX23XOR6Z9MdNt66butW70G3lKiVW
+	 5uhe1lqFaZbDZn/HXc3ABceJ54chWfB35n3cPGYgSRAtVPssCFC+GO8SGLAhmeuSp
+	 iMWdVLq66tOMyZZZJUP0Cv4gPt9wRkr7tuZILUI6hpejURJkIJyuhdLiBqdTqXn3O
+	 sdsnqmvi5ZW8qBSDeFyAYoIpC2GLCfrdf11U2dvub17Z3ZgGuSvJnBfYc5bwFE80c
+	 FC2hUHmaFqh3qSxOtw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5wLZ-1vzKdz018d-006hB3; Sun, 15
+ Mar 2026 15:26:36 +0100
+Date: Sun, 15 Mar 2026 15:26:35 +0100
+From: Peter Seiderer <ps.report@gmx.net>
+To: Marc Buerg <buermarc@googlemail.com>
+Cc: elias.rw2@gmail.com, joel.granados@kernel.org, kees@kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH ] sysctl: fix uninitialized variable in
+ proc_do_large_bitmap
+Message-ID: <20260315152635.4c20c6f0@pc-1>
+In-Reply-To: <20260314093725.12429-1-buermarc@googlemail.com>
+References: <20260313121708.137dae22@pc-1>
+	<20260314093725.12429-1-buermarc@googlemail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Ig1xaAQ0+949JxY3JMvRhraHgbltCILHchzewdZeiUJB+3E35lA
+ R8llC13Dy93hScIZoCsK6IzqY0WGdR+Y5qeF2yjF7TyutfWVq/vy8MJ08z73jymo2y10CA0
+ jAczLc4z2LhsN5gD6xbyvfZm50wxRdYC9diU3iQhCj1csOaY1CczayYu8UIkOzOsJUrYALC
+ W0N2FEEIqLXp32ZV3kz0A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:tYu6fy0/5EM=;MWPce6m82ylYga0wuKq+ASsQ+3X
+ 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
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[openresty.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[openresty.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.net,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmx.net:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[openresty.com,nvidia.com,umeyashiki.org,kernel.org,gmail.com,google.com,resnulli.us,lists.linux.dev,vger.kernel.org,gnuweeb.org];
-	TAGGED_FROM(0.00)[bounces-225471-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	URIBL_MULTI_FAIL(0.00)[nvidia.com:query timed out];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225472-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ammarfaizi2@openresty.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[openresty.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,lkml];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.net];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ps.report@gmx.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.net:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,openresty.com:dkim,openresty.com:email,openresty.com:mid,nvidia.com:email,umeyashiki.org:email]
-X-Rspamd-Queue-Id: 230CF290F7B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1885C291050
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Unbinding a virtio balloon device:
+Hello Marc,
 
-    echo virtio0 > /sys/bus/virtio/drivers/virtio_balloon/unbind
+On Sat, 14 Mar 2026 10:37:25 +0100, Marc Buerg <buermarc@googlemail.com> w=
+rote:
 
-triggers a NULL pointer dereference. The dmesg says:
+> Hello Peter,
+>=20
+> Thanks for your feedback and the idea. You are correct proc_get_long()
+> does not set @tr if @size is zero, therefore, left in
+> proc_do_large_bitmap() should be zero when we expect @tr to not be
+> written to and c still being uninitialized.
+>=20
+> > Would the better fix be:
+> >=20
+> > diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+> > index 354a2d294f52..89db88552987 100644
+> > --- a/kernel/sysctl.c
+> > +++ b/kernel/sysctl.c
+> > @@ -1427,7 +1427,7 @@ int proc_do_large_bitmap(struct ctl_table *table=
+, in=3D
+> > t write,
+> >  				left--;
+> >  			}
+> > =20
+> > -			if (c =3D=3D '-') {
+> > +			if (left && c =3D=3D '-') {
+> >  				err =3D proc_get_long(&p, &left, &val_b,
+> >  						     &neg, tr_b, sizeof(tr_b),
+> >  						     &c); =20
+>=20
+> This would explicitly fix the problem as it enforces that we only check
+> if we know c contains what we want to check for. Fixing it like you
+> proposed seems better to me.
+>=20
+> I am somewhat conflicted because leaving c uninitialized allows that a
+> similar problematic access of c could be made in the future.
+> Initializing c could prevent that. I also do not see an immediate
+> downside, but that could just be my naivety. Further, that part would
+> now behave similar to when we apply the default hardening configuration,
+> if my understanding is correct.
 
-    BUG: kernel NULL pointer dereference, address: 0000000000000008
-    [...]
-    RIP: 0010:__list_del_entry_valid_or_report+0x5/0xf0
-    Call Trace:
-    <TASK>
-    vp_del_vqs+0x121/0x230
-    remove_common+0x135/0x150
-    virtballoon_remove+0xee/0x100
-    virtio_dev_remove+0x3b/0x80
-    device_release_driver_internal+0x187/0x2c0
-    unbind_store+0xb9/0xe0
-    kernfs_fop_write_iter.llvm.11660790530567441834+0xf6/0x180
-    vfs_write+0x2a9/0x3b0
-    ksys_write+0x5c/0xd0
-    do_syscall_64+0x54/0x230
-    entry_SYSCALL_64_after_hwframe+0x29/0x31
-    [...]
-    </TASK>
+Your 'initialize c' (outside of the while loop) approach will only fix the
+problem at the first iteration of the loop, on further iterations c will b=
+e
+overwritten by the prior proc_get_long() calls..., for me the 'check c onl=
+y
+if valid' seems the better approach.... ;-)
 
-The virtio_balloon device registers 5 queues (inflate, deflate, stats,
-free_page, reporting) but only the first two are unconditional. The
-stats, free_page and reporting queues are each conditional on their
-respective feature bits. When any of these features are absent, the
-corresponding vqs_info entry has name == NULL, creating holes in the
-array.
+Regards,
+Peter
 
-The root cause is an indexing mismatch introduced when vq info storage
-was changed to be passed as an argument. vp_find_vqs_msix() and
-vp_find_vqs_intx() store the info pointer at vp_dev->vqs[i], where 'i'
-is the caller's sparse array index. However, the virtqueue itself gets
-vq->index assigned from queue_idx, a dense index that skips NULL
-entries. When holes exist, 'i' and queue_idx diverge. Later,
-vp_del_vqs() looks up info via vp_dev->vqs[vq->index] using the dense
-index into the sparsely-populated array, and hits NULL.
-
-Fix this by storing info at vp_dev->vqs[queue_idx] instead of
-vp_dev->vqs[i], so the store index matches the lookup index
-(vq->index). Apply the fix to both the MSIX and INTX paths.
-
-Cc: Yichun Zhang <yichun@openresty.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Cc: stable@vger.kernel.org # v6.11+
-Tested-by: Yuka <yuka@umeyashiki.org>
-Fixes: 89a1c435aec2 ("virtio_pci: pass vq info as an argument to vp_setup_vq()")
-Signed-off-by: Ammar Faizi <ammarfaizi2@openresty.com>
----
- drivers/virtio/virtio_pci_common.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
-index da97b6a988de..164f480b18a6 100644
---- a/drivers/virtio/virtio_pci_common.c
-+++ b/drivers/virtio/virtio_pci_common.c
-@@ -414,28 +414,29 @@ static int vp_find_vqs_msix(struct virtio_device *vdev, unsigned int nvqs,
- 	err = vp_request_msix_vectors(vdev, nvectors, per_vq_vectors, desc);
- 	if (err)
- 		goto error_find;
- 
- 	vp_dev->per_vq_vectors = per_vq_vectors;
- 	allocated_vectors = vp_dev->msix_used_vectors;
- 	for (i = 0; i < nvqs; ++i) {
- 		vqi = &vqs_info[i];
- 		if (!vqi->name) {
- 			vqs[i] = NULL;
- 			continue;
- 		}
--		vqs[i] = vp_find_one_vq_msix(vdev, queue_idx++, vqi->callback,
-+		vqs[i] = vp_find_one_vq_msix(vdev, queue_idx, vqi->callback,
- 					     vqi->name, vqi->ctx, false,
- 					     &allocated_vectors, vector_policy,
--					     &vp_dev->vqs[i]);
-+					     &vp_dev->vqs[queue_idx]);
-+		queue_idx++;
- 		if (IS_ERR(vqs[i])) {
- 			err = PTR_ERR(vqs[i]);
- 			goto error_find;
- 		}
- 	}
- 
- 	if (!avq_num)
- 		return 0;
- 	sprintf(avq->name, "avq.%u", avq->vq_index);
- 	vq = vp_find_one_vq_msix(vdev, avq->vq_index, vp_modern_avq_done,
- 				 avq->name, false, true, &allocated_vectors,
- 				 vector_policy, &vp_dev->admin_vq.info);
-@@ -476,27 +477,28 @@ static int vp_find_vqs_intx(struct virtio_device *vdev, unsigned int nvqs,
- 	if (err)
- 		goto out_del_vqs;
- 
- 	vp_dev->intx_enabled = 1;
- 	vp_dev->per_vq_vectors = false;
- 	for (i = 0; i < nvqs; ++i) {
- 		struct virtqueue_info *vqi = &vqs_info[i];
- 
- 		if (!vqi->name) {
- 			vqs[i] = NULL;
- 			continue;
- 		}
--		vqs[i] = vp_setup_vq(vdev, queue_idx++, vqi->callback,
-+		vqs[i] = vp_setup_vq(vdev, queue_idx, vqi->callback,
- 				     vqi->name, vqi->ctx,
--				     VIRTIO_MSI_NO_VECTOR, &vp_dev->vqs[i]);
-+				     VIRTIO_MSI_NO_VECTOR, &vp_dev->vqs[queue_idx]);
-+		queue_idx++;
- 		if (IS_ERR(vqs[i])) {
- 			err = PTR_ERR(vqs[i]);
- 			goto out_del_vqs;
- 		}
- 	}
- 
- 	if (!avq_num)
- 		return 0;
- 	sprintf(avq->name, "avq.%u", avq->vq_index);
- 	vq = vp_setup_vq(vdev, queue_idx++, vp_modern_avq_done, avq->name,
- 			 false, VIRTIO_MSI_NO_VECTOR,
- 			 &vp_dev->admin_vq.info);
--- 
-Ammar Faizi
+>=20
+> On the other hand, we do not read c later on, and I do not see a reason
+> why the function would change significantly. Still, it feels more
+> defensive to me to also set c to 0.
+>=20
+> In the end, I am not so used to the kernel coding style. Is there
+> anything that can be argued against providing both? If you think this is
+> unnecessary I am happy to follow your reasoning and go with only the
+> check for left being non-zero.
+>=20
+> Kind Regards,
+> Marc
 
 
