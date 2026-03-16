@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kI96KdXtt2mzWwEAu9opvQ
-	(envelope-from <stable+bounces-225530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 12:47:33 +0100
+	id mJjMDBLyt2mfXQEAu9opvQ
+	(envelope-from <stable+bounces-225531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:05:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCF4298E72
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 12:47:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9327729919E
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4913300BB84
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 11:47:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A00DB301F48B
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 12:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4CC2BE655;
-	Mon, 16 Mar 2026 11:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D7F3939CD;
+	Mon, 16 Mar 2026 12:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p16Nraxy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MG6J1pyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB311ACEDE;
-	Mon, 16 Mar 2026 11:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86AF24DD17;
+	Mon, 16 Mar 2026 12:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773661648; cv=none; b=JWy5LMCTlvVEcgliDdLspKTigp6S0qozGoYEsvmunaqxntmA9+bjBypg2w5T2kzGC3OzkNRKZXPocW7rNnmReq4DDk+0nhcKo3ZrOkjtDj43uxEDyovtI6HgC8k0NQ2UhZkCrGo3+J141niRleRdOuV0sdrAlAEpLnrB58ecicc=
+	t=1773662734; cv=none; b=d3fq6xy9Ik1qY5dSupbrDaNw/sV9vZ186Z0ZtJlooo47eW6wneHMoLSzmJI4mTC99mRzbx9epF4+cXUPc4bS/XkZ8BlIuI8w7gK0ZGJcmGE2E0whtaR9PA0X/MdnNFbCyH+VPIb4sGrQDWdH1Uy+EqxCTXXAXsMUuwL8OQenOeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773661648; c=relaxed/simple;
-	bh=av+7z0mXyWtCSHRnkciprE6M07LpBQLUpNtFVLfrUAg=;
+	s=arc-20240116; t=1773662734; c=relaxed/simple;
+	bh=r9SR7xsL4/Fg3mVurfhVnPn2aomWDtFUVPrG6H7Dqoo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cY9y+olfmScmI4BEXFTFRLbKu6SsRgBnIsWWjDsg5KIEYDWGvr4kcgIDpdo5ZMBEygwUa7qMyVgoRkgt2gqdcJFpUjpVY5nOkHukX/3zKYgTl+XopVDOXUrhZmNzTEhEZvahgOAK8SqacyT5Wn4qNNnfjJgBgHdyyGwOa5crljU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p16Nraxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1A7C19421;
-	Mon, 16 Mar 2026 11:47:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=MBOAVxbOiIwummifPgGSK75QshVz7IedLnEb/t6n6s9iBBqvZ/+JmSh4ZNBm0M7pu7ydgSy/3o7itNm3SbkWM1F73Kqgm6yyC4Yf/vFfwxx7GFo3doG+jeGyO3HNA+BRekC2JIMmiTl7JDdTafIL4xPIOCxEGk5K3FXMbwq4cTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MG6J1pyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01421C19421;
+	Mon, 16 Mar 2026 12:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773661648;
-	bh=av+7z0mXyWtCSHRnkciprE6M07LpBQLUpNtFVLfrUAg=;
+	s=k20201202; t=1773662734;
+	bh=r9SR7xsL4/Fg3mVurfhVnPn2aomWDtFUVPrG6H7Dqoo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p16Nraxy/pspvcMbyQg7yBMIBXWV0Hf9vFFoql6vzRWVfgFqeZW2H21XsMMOlO5+W
-	 1RbDzEv81h95sSQnh8rcanik1MSqrJph0lFqRgaCbEj8jyJIyFjELidwI+fDHYPb+W
-	 KhdqXjWo6tnv7PlrzEbwtWhv+WDafTiNds7IEZSkgqz52KeJQkfWsmQ+37IipUZewp
-	 okgv6q4pt50PatDGQP+5AhvkD7LBIpFaN/KxOWJUAa+2ribwWXG4dBeHe3mLZcUm4P
-	 kyo+jjYCKhEPyhPm5qHghhVp/uEwhvi3WEgoeN1wQzZomeij2uNRXMTYWxZtccTdcL
-	 IuQXJ5ZtGUaqA==
-Message-ID: <ae6e15c9-2004-4509-86d4-360ddb59af09@kernel.org>
-Date: Mon, 16 Mar 2026 12:47:24 +0100
+	b=MG6J1pyGm3as1ZTS+v6Aaq44FT3wnEBXhi8qUfvBtm9kBzU1InMRvQHbHO7oug1uq
+	 Id3nOqKwJ9fFPBgWm1UqTCRMxuzGzdw7ATi7UuFxj5y95eVUdmOzTihx+fKTlnt1xa
+	 BhghYYEW5RcvLWDmasKT8gSmsH3oY5aU3r4Hvx+zpXGePfvp5gbMGM0DldY4dHaI22
+	 yPa7qsRMpH7Z/9osm1c7rnI952VGNeH3BFdBJLTRWWVozLZth0At4T8DcQf3q8d5Xx
+	 gyEkiR9DnXq3Te5m4H3+5Oxn0fQEOUwryVeCnk6UXxMQKlE2Z80+rjqNMUsBovhX4W
+	 NEgv2Fag8jN0g==
+Message-ID: <6783b48c-9e4c-45ad-a691-9f172c978428@kernel.org>
+Date: Mon, 16 Mar 2026 13:05:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,8 +53,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] media: uvcvideo: Enable VB2_DMABUF for metadata
- stream
+Subject: Re: [PATCH 0/3] media: uvcvideo: Improvements for UVC metadata
 To: Ricardo Ribalda <ribalda@chromium.org>,
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
@@ -62,21 +61,20 @@ To: Ricardo Ribalda <ribalda@chromium.org>,
 Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
  Yunke Cao <yunkec@google.com>, stable@vger.kernel.org
 References: <20260309-uvc-metadata-dmabuf-v1-0-fc8b87bd29c5@chromium.org>
- <20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org>
 From: Hans de Goede <hansg@kernel.org>
 Content-Language: en-US, nl
-In-Reply-To: <20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org>
+In-Reply-To: <20260309-uvc-metadata-dmabuf-v1-0-fc8b87bd29c5@chromium.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225530-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225531-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,68 +86,57 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4CCF4298E72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 9327729919E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi,
 
 On 9-Mar-26 4:01 PM, Ricardo Ribalda wrote:
-> The UVC driver has two video streams, one for the frames and another one
-> for the metadata. Both streams share most of the codebase, but only the
-> data stream declares support for DMABUF transfer mode.
+> This series introduces some improvements for UVC metadata:
 > 
-> I have tried the DMABUF transfer mode with CONFIG_DMABUF_HEAPS_SYSTEM
-> and the frames looked correct.
+> - Allow bigger sizes of metadata.
+> - Refactor the code to avoid invalid pointer arithmetic.
+> - Add support for DMABUF
 > 
-> This patch announces the support for DMABUF for the metadata stream.
-> This is useful for apps/HALs that only want to support DMABUF.
+> Cheers!
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 088ead2552458 ("media: uvcvideo: Add a metadata device node")
 > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Thanks, patch looks good to me:
+Thank you.
 
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+This entire series seems simple/safe enough and looks good to me
+from a review pov, so I've pushed this to uvc/for-next now.
+
+While it also rebasing uvc/for-next on top of the latest
+media-committers/next .
 
 Regards,
 
 Hans
 
 
-
 > ---
->  drivers/media/usb/uvc/uvc_queue.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> Ricardo Ribalda (3):
+>       media: uvcvideo: Enable VB2_DMABUF for metadata stream
+>       media: uvcvideo: uvc_queue_to_stream(): Support meta queues
+>       media: uvcvideo: Allow userspace to increase the meta buffersize
 > 
-> diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-> index 8b8f44b4a045..0eddd4f872ca 100644
-> --- a/drivers/media/usb/uvc/uvc_queue.c
-> +++ b/drivers/media/usb/uvc/uvc_queue.c
-> @@ -243,7 +243,7 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type)
->  	int ret;
->  
->  	queue->queue.type = type;
-> -	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
-> +	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR | VB2_DMABUF;
->  	queue->queue.drv_priv = queue;
->  	queue->queue.buf_struct_size = sizeof(struct uvc_buffer);
->  	queue->queue.mem_ops = &vb2_vmalloc_memops;
-> @@ -256,7 +256,6 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type)
->  		queue->queue.ops = &uvc_meta_queue_qops;
->  		break;
->  	default:
-> -		queue->queue.io_modes |= VB2_DMABUF;
->  		queue->queue.ops = &uvc_queue_qops;
->  		break;
->  	}
+>  drivers/media/usb/uvc/uvc_isight.c   |  3 ++-
+>  drivers/media/usb/uvc/uvc_metadata.c |  9 +++++++--
+>  drivers/media/usb/uvc/uvc_queue.c    | 18 ++++++++----------
+>  drivers/media/usb/uvc/uvcvideo.h     |  7 +++++--
+>  4 files changed, 22 insertions(+), 15 deletions(-)
+> ---
+> base-commit: a7da7fb57f2a787412da1a62292a17fa00fbfbdf
+> change-id: 20260309-uvc-metadata-dmabuf-b98359eec8dd
 > 
+> Best regards,
 
 
