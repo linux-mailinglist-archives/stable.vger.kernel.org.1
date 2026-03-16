@@ -1,221 +1,224 @@
-Return-Path: <stable+bounces-225511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFXjB0/Jt2kRVQEAu9opvQ
-	(envelope-from <stable+bounces-225511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 10:11:43 +0100
+	id CAM+JWDLt2kRVQEAu9opvQ
+	(envelope-from <stable+bounces-225512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 10:20:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E564296C47
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 10:11:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19B0296DC3
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 10:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00DB13018419
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 09:11:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A824B305719E
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 09:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D677A386439;
-	Mon, 16 Mar 2026 09:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC71386573;
+	Mon, 16 Mar 2026 09:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CWfJIxdn";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eNMH7iAN"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IrMgo/7F"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C7D3542F8
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 09:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1650A385533;
+	Mon, 16 Mar 2026 09:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773652297; cv=none; b=sz+061CxLLDv2BqmAbTIuG1lltxx7rOsXX2tdSvn1wpwf5ZQYgkBmva7yaV5ZzYKfarg22N6ua5CUEpxVa5DV9PxX5Mq5pu/ZuJE/YQ7ZXu0groW/R21tqy/qItOKryw1+tuRXQOyffSwAno4VAQdwpfk7A0SnUQ0HB7WRXca/E=
+	t=1773652649; cv=none; b=Upf9rX/metrNflB/KzK6qybMbAemos69S0yxQ6rajfqVXhMk6g5FDT+2FeOxc3hVk69e8ghyEngcrq9N+q0XhB+GowZpL5LAp0IOZFed+LV3S+cI58f8+vzKV2gBy3N0e/2/8xAOezgGdGpmIusg6bYOZWpJ33jVgfgKHDSJbVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773652297; c=relaxed/simple;
-	bh=+eC8eAmFeq/qr1/xTtK9cYJ8MQ18m1zZJmA0ouJVonE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCdJQqho3hkKUVFY+W+u6XGRTQ3dwh5/Xg1QAoKNGR8iWMEsCQQiuZFEzJT6BLB8BLUbBoOvYJE6eRFGWkSIuhPNOYwscChp8wcY+1m3dokf5sWDGZkGBdybtnfuzIWxs6MPVPwhmv4Ts90r7O8wtRmx6kFDdshmRx2h4ksTPtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CWfJIxdn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eNMH7iAN; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62G64ed31282063
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 09:11:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	i72EfdgJ7doLImzDWatjm2GnnkPEZNv7sHePPRX+J+A=; b=CWfJIxdn7icUCxum
-	1Uo1mlsWgJOsUfxnavJTE9oKSTrDTMVTrSI5u8SPiPfdZrXVOdsvcJ59HAH8WSQg
-	y4gvt86Dt6P7LBcZsdu0ojBD+8Ik6jPpTjEF5JMWHiV7tx26E7zaUDSbVpvbmFvO
-	J7niurtpXHJ3VuTeOdz4v+jSY02CPsPKRhCYAtvBo+YEyE8vJaMQvbKVPkSNrxnL
-	W7l7ROrpAc2qeO3W3hpqqbkDej0UnDO7yXDygEQWCwsFtTCEYEqgLZnMjEqTnRQD
-	Owmxo0+Fu5KuaYCmPWFVVrJRFkh7JYSGjdf4GOop6mBqQK/Zul9lPsW2Q2yF9Drv
-	7vIdaQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cvyyc4vma-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 09:11:35 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cb706313beso595052185a.3
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 02:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773652294; x=1774257094; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i72EfdgJ7doLImzDWatjm2GnnkPEZNv7sHePPRX+J+A=;
-        b=eNMH7iAN+ZfcOg4NxZR4jDeAqW9aU16cHFKH2gx1IMjGtPWkjLzvcXrF20MPdmwTtc
-         ekOnIwdxIBKRg4sQmyJ6F5I7aCw5AJ8yTMtaCtSxQZThjVHTWD46ImmDtAAxqYaNCRVT
-         bv22BDAiK4G+/MA5P/TCT51lGhLF8gJj9jG1PrmHNuwppoTtsDaXI2VdbTv+1pldupRz
-         AV/W/nXvaQ7dvIxwldcce611iojbI9lyhY6DQ7p7i0GXKmmhQ6U3FjeaExbebaRdsiF+
-         xbE5EEtZJ2Z3zGnVusi0BT6qf7/pVBTDIw7OD0yrT0C4qRp3qdHeb0LWGi4RpEi3IHCd
-         cO8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773652294; x=1774257094;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=i72EfdgJ7doLImzDWatjm2GnnkPEZNv7sHePPRX+J+A=;
-        b=AVkhlXRpzeOIdQ2Adyb9elXbqmlDxl58QdrftueR8Vljtk8vijj3SaaDcJHELsAKCy
-         9vC9NgZ+0xZvHz3Kn7A/ncnvk0q88yojMA5+1iL0dxuyKQ1LtTglXzMTDNG0px3Hnndp
-         sHdh+sqZ4W5RNszWUCIKRxyGYhTowJD4O1TuEye+iHGO/UkRefM9RmkUaIRpAOH3dJ6k
-         j9VjAUg3CKRh6aVBtS+hS2hMWT05bHFGgDd0766Cg33I+yU+/Hg2XLDOx1x281hXEUda
-         IBN/OVHK3sGSCFR57ILLcwtfdcZrxHa0hTXwqTpplshwHcZBFtEtao8aYLEzdTam0CvS
-         BbCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmps72RWZRHKxTP70rmsCMizIxPxUmjCRZg47ejPW+2TgQ0c49CkZGsBZ91VIYgRVwldzGZx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5wmHM90GAYqFrty/ZrQIHkbCaKwtUXRX3XpLHjgdZwLQzK0vV
-	sBijiUqoEejBk+dQpWoUYEZ+wHGU3q/bNekLMVT/LwADoU4xWlyqoDsbZrg7D6NEdY30Vp8nGeR
-	W6z8J0xWG+TYUr13rw7WLfegcNn+nqGdx9epwwz42kDlho/mN9H0OA7cWThI=
-X-Gm-Gg: ATEYQzytkzGmmnOXZEKZNfp+gw+pYggAFFr/y83BlN7riEAlCk3Varvon7/OQR3GHRm
-	IGkg3v0kiA/td0e2dhEqUrL75DNB6ISsvkmuKzP+zOifiPk0XygGK+NoX8fB8SbWn+fKi993bbC
-	UpEXPOF+QWeFOAUAxpXRclx+fKR3dUPoX5b5MXV2M1PC9ax6nj+I+dDHe/RiJPcrCIK9I02hqkQ
-	mGojUdkC/sWP+v+csy/B3sC1w9e2kp4N14EW5fpfECszs/BhX/PUhco654zDGFQ6/cwNKQixXpU
-	m7XGw9bLSGG3yKc/lgAQ46w9sBMeA055BpCWC6HNHHXyzelYlrTZ3ultc5PuoFDgmSLk8S58qaN
-	OZv17mLd6MNrSv/YdoZo+UwgIGU6oJfQEpZfV+aSmtkhqPqSd4xc=
-X-Received: by 2002:a05:620a:44ca:b0:8cd:79f2:dc50 with SMTP id af79cd13be357-8cdb57aa4a8mr1434710185a.0.1773652294360;
-        Mon, 16 Mar 2026 02:11:34 -0700 (PDT)
-X-Received: by 2002:a05:620a:44ca:b0:8cd:79f2:dc50 with SMTP id af79cd13be357-8cdb57aa4a8mr1434705685a.0.1773652293841;
-        Mon, 16 Mar 2026 02:11:33 -0700 (PDT)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:ba9e:e504:fb0b:f1f3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b468cf785sm2932198f8f.12.2026.03.16.02.11.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 02:11:33 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mika Westerberg <westeri@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-doc@vger.kernel.org,
-        stable@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kevin Hilman <khilman@baylibre.com>
-Subject: Re: [PATCH v2 0/6] gpiolib: unify gpio-hog code
-Date: Mon, 16 Mar 2026 10:11:20 +0100
-Message-ID: <177365228183.54363.13735316568548509348.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260309-gpio-hog-fwnode-v2-0-4e61f3dbf06a@oss.qualcomm.com>
-References: <20260309-gpio-hog-fwnode-v2-0-4e61f3dbf06a@oss.qualcomm.com>
+	s=arc-20240116; t=1773652649; c=relaxed/simple;
+	bh=kW0uevZIAiHlWGLEWUUwO3X4mshB7DijrK8eKuBN1pY=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=VO69nvIszfwXdxbh4fbTuCiLqm1yAKUboVOHU/vx8DsVMRVhXp/R1RDf3uck8JG7cQA79vHm7qT77eKnhQufWgJBRfwztsTvnOo7mf0LJDxa0cvZzcxgluIqDhNh3V1LSsp2hW8QPhNkafHdKVSP8yAIvH0mC4/9ve6K3qdG8e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IrMgo/7F; arc=none smtp.client-ip=203.205.221.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1773652626; bh=EgPkdtjellcGPlO/mT0/8ktiAnBmk8sNk4Hq0Z6O344=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IrMgo/7F9XQCK7SwODSSglNUdcXz12OtkB+FW6C2oZLYSU+gmuV6726Niv/9H0GIf
+	 Uuyn525xYt0nbUqmbHQM1HAKJWwkHz/8ovEoqWbn96D7ZxsZ4YGl/aem4LZBvpuhOD
+	 ppILmLXcoAdJQhkb94pqpUvZEshXmZAdn/TqlakY=
+Received: from June.localdomain ([123.121.145.35])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 432AD2D1; Mon, 16 Mar 2026 17:16:50 +0800
+X-QQ-mid: xmsmtpt1773652619t6i0q337v
+Message-ID: <tencent_F686048835F2A38E0A148AF50F1CE147BB06@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5VXfkThOnAAGmduqINloI/VW4GikcsecxI1xhElz1I47QeEY6ck
+	 MVDuq1IKnTC72aDbAraGMb0+DpqFGCbbfAwX18tC5hrl/5uSk4kCHrTLAitN+eezHnHcEZQg9acu
+	 Ko9QRx60Oz3SdXVh5W+yhePyMg7yKwezqFXFi90P3jQXFVtAz/vgGnBIa1TB5hG/e13SeUQffZMZ
+	 Z49QNqgpiWNKNLws4rqd3Oad7WR5njTDKADzg99O2ZTc1R23UeaHh90dSU8Z7JJMyOs3MCg36wwK
+	 X74d9e27Bi+UBKHbP8jIRM7tFDfMr7HXAZd+ugAp/cDI1m1/bH2U0F4rClYRIcHThZPn5TZWQ8vC
+	 CvolsJtFpBvwNg4M2vrUrwPV0b76UcCfvgLo1oxRUcxGOTSN3mwf3BLlILodMLfpgup8cPB7QV67
+	 Txj8KCJLYjof0CmkCaATQYQ6Usp896UAEZweQYJzTYKQq/lkb3AzhJepcQciIICXumOohtFzxpGr
+	 KKxrziYqWhZSZ/oDRIqvO+sfXmjZLna6C0W5jFtnEUB9fYMxvLtbrlqsni51BlWVVGM7XeJlsPiE
+	 K2greZ9kcEb9OAQK16sXAhVCfupe07FJSXzmqOVAb6E2ysOTRinHpbQmDen8XbzPoPKqQta+UAIH
+	 D5ug/7RuGL6Zn+oV3XGnB25eCOlU7NPAgHqvq1BF+F3TdERP7fa5bTZtQHPbqtURaGvklpu+AEKz
+	 2x5uKuTYXW784lUeVg9gSZ2vesbqwxE4N3Ar3CRHnXPgDowx7QXoQCnv74AIAjivLMN9vw83x9Xj
+	 jdX2WroRkbZ008J2Bta4UvsEgkuwiRhWkUirm+Ac2kQMG7Mv+gxgrPYX5lALP9LVRfdO8TK8YnHI
+	 Ub/0jfezP+V9VRlz01LL2cNscB6zzF+zDVGYd1LIYGkVe1bMZfOvjfBm6rnoFr3BMnidj8noPcNf
+	 /bhdczlSGXM8enttjPNyDYfpGi+ueA3jx/5aqYKOZytQKiu4wPWk426ZOZnsO2JAMx3DXp08v7K8
+	 QqtAsifm90+6xIopG9For3/z7+z9U+nL2oT4xh+dbdKDwl4jzzbGc0m7vBkn4=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Wang Jun <1742789905@qq.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Wang Jun <1742789905@qq.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH v6 1/1] media: saa7164: add ioremap return checks and cleanups
+Date: Mon, 16 Mar 2026 17:16:48 +0800
+X-OQ-MSGID: <20260316091649.14827-2-1742789905@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260316091649.14827-1-1742789905@qq.com>
+References: <a44adff7-60fd-4fca-85f4-0c69a035ec69@web.de>
+ <20260316091649.14827-1-1742789905@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=euXSD4pX c=1 sm=1 tr=0 ts=69b7c947 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=jtPpctr3BKvZZnv9HkwA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: nQKJhTgxrI6v64P4jNJnkyf7xbaNgmJ6
-X-Proofpoint-ORIG-GUID: nQKJhTgxrI6v64P4jNJnkyf7xbaNgmJ6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDA3MCBTYWx0ZWRfXwj6QnvUpKtij
- KxmsNTYTGdIYhxYNEtol76UWc1xcWCgyeW5pMSbt7ryG90yM99EL9v/Di4PLqGq3afMwGsecZUn
- 9jqjqwKRHa8MAuUEwEhhsRgdtiw1twzShzDxYOepa550F56Pnrk/jDbKyY6b7F9JQYqKvsRrgdD
- 1AEJxOnCXK0SSD3zKDqScnaddZab1n2zqxhsVgK7RBMWUgBksxUX73Ubig7mn0v2y5Hpueq6Qzd
- ccsBnvpzpSF0wa27k+82+f30PaiKnk47BYSBfGPF3OKSiXrjrImgqdOmyiZM5QZ014GneTxk3xX
- CucunFSSY4A5aGnPpnHMjcJtcFuKO1rOEDoEw/ZoIOjW6F+tiUIF2SrbFP+GNhxxQ/T+KNqDCWk
- ESRyLapwjJ6lswUeFMA/dnnhcG/W8UaMQvVaf2JolJ7I6pRcg7GEp+hnCQ+IhOSDDt6aJPoxYZ7
- vV1QnJ2STIWsOTk2I0Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_03,2026-03-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160070
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225511-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	FREEMAIL_TO(0.00)[kernel.org,glider.be,gmail.com,linux.intel.com,iki.fi,atomide.com,armlinux.org.uk,lwn.net,linuxfoundation.org,oss.qualcomm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-225512-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,qq.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8E564296C47
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:dkim,qq.com:email,qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F19B0296DC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Add checks for ioremap return values in saa7164_dev_setup(). If
+ioremap for BAR0 or BAR2 fails, release the already allocated PCI
+memory regions, remove the device from the global list, decrement
+the device count, and return -ENODEV.
 
-On Mon, 09 Mar 2026 13:42:36 +0100, Bartosz Golaszewski wrote:
-> GPIO hogs are handled separately in three places: for OF, ACPI and
-> machine lookup. In addition hogs cannot be set up using software nodes.
-> A lot of that code is actually redundant and - except for some special
-> handling of OF nodes - can be unified in one place.
-> 
-> This series moves hogging into GPIO core and bases it on fwnode API
-> (with a single helper from OF to translate devicetree properties into
-> lookup flags), converts the two remaining users of machine hogs to using
-> software node approach and removes machine hog support entirely. In
-> addition, there's a patch extending the configurability of gpio-sim now
-> that it uses software nodes for hogs.
-> 
-> [...]
+This prevents potential null pointer dereferences and ensures proper
+cleanup on memory mapping failures.
 
-Applied, thanks!
+Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wang Jun <1742789905@qq.com>
+---
+ drivers/media/pci/saa7164/saa7164-core.c | 47 ++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-[1/6] gpio: of: clear OF_POPULATED on hog nodes in remove path
-      https://git.kernel.org/brgl/c/bbee90e750262bfb406d66dc65c46d616d2b6673
-[2/6] gpio: move hogs into GPIO core
-      https://git.kernel.org/brgl/c/d1d564ec4992945db853303dc2978256bce8c0b4
-[3/6] gpio: sim: use fwnode-based GPIO hogs
-      https://git.kernel.org/brgl/c/5cfbd0eb784f19436b5d5a9a7e0dca862619739a
-[4/6] ARM: omap1: ams-delta: convert GPIO hogs to using firmware nodes
-      https://git.kernel.org/brgl/c/e627fc9fad93d59765dd16adac1b2a9bf68d7523
-[5/6] gpio: remove machine hogs
-      https://git.kernel.org/brgl/c/dea046e7f46f2357124a465e058c92cac3e351c5
-[6/6] gpio: sim: allow to define the active-low setting of a simulated hog
-      https://git.kernel.org/brgl/c/696e9ba9a3da3d919d08a1abf05c9288311858f1
-
-Best regards,
+diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
+index 74406d5ea0a5..5aea5ab34c3f 100644
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_dev *dev)
+ 	return -EBUSY;
+ }
+ 
++static void release_resources(struct saa7164_dev *dev)
++{
++	release_mem_region(pci_resource_start(dev->pci, 0),
++			   pci_resource_len(dev->pci, 0));
++
++	release_mem_region(pci_resource_start(dev->pci, 2),
++			   pci_resource_len(dev->pci, 2));
++}
++
+ static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
+ {
+ 	struct saa7164_port *port = NULL;
+@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 
+ 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
+ 
+-	mutex_lock(&devlist);
+-	list_add_tail(&dev->devlist, &saa7164_devlist);
+-	mutex_unlock(&devlist);
++	scoped_guard(mutex, &devlist) {
++		list_add_tail(&dev->devlist, &saa7164_devlist);
++	}
+ 
+ 	/* board config */
+ 	dev->board = UNSET;
+@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	}
+ 
+ 	/* PCI/e allocations */
+-	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
+-			     pci_resource_len(dev->pci, 0));
++	dev->lmmio = pci_ioremap_bar(dev->pci, 0);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
++		goto err_ioremap_bar0;
++	}
+ 
+-	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
+-			     pci_resource_len(dev->pci, 2));
++	dev->lmmio = pci_ioremap_bar(dev->pci, 2);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
++		goto err_ioremap_bar2;
++	}
+ 
+ 	dev->bmmio = (u8 __iomem *)dev->lmmio;
+ 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
+@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	saa7164_pci_quirks(dev);
+ 
+ 	return 0;
++
++err_ioremap_bar2:
++	iounmap(dev->lmmio);
++err_ioremap_bar0:
++	release_resources(dev);
++
++	scoped_guard(mutex, &devlist) {
++		list_del(&dev->devlist);
++	}
++	saa7164_devcount--;
++
++	return	-ENODEV;
+ }
+ 
+ static void saa7164_dev_unregister(struct saa7164_dev *dev)
+ {
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-	release_mem_region(pci_resource_start(dev->pci, 0),
+-		pci_resource_len(dev->pci, 0));
+-
+-	release_mem_region(pci_resource_start(dev->pci, 2),
+-		pci_resource_len(dev->pci, 2));
++	release_resources(dev);
+ 
+ 	if (!atomic_dec_and_test(&dev->refcount))
+ 		return;
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+2.43.0
+
 
