@@ -1,112 +1,156 @@
-Return-Path: <stable+bounces-225640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGu+CIE+uGmpagEAu9opvQ
-	(envelope-from <stable+bounces-225640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:45 +0100
+	id SIzUEOxAuGnSawEAu9opvQ
+	(envelope-from <stable+bounces-225641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:42:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C04129E4BD
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A333029E6E1
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6ACAF3038FE6
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C48D430F98CC
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D2533A9DE;
-	Mon, 16 Mar 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1117330B2E;
+	Mon, 16 Mar 2026 17:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Umj/WqyW"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="fA/2ALAz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EAB3CF68B;
-	Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CBB327BFC
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 17:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773681941; cv=none; b=aJj5GsHJqKbTc46c5dgdNSvpdBiwNo0wC8PzRtPX16PMCTloBRPQhPtB1ZF3xFM/OSXrRx/UE2OAe+dyIqtypZGV0IEluWKpoXfJ8+KnxPkz1WjgyKClg0K71ecife5BHhOemX2W2yV2b2YHBRqoQMqEaW+sc2+KgGKEfVBfTME=
+	t=1773682607; cv=none; b=T183Zj+PJNdmz6YelRZlPxIlDICAZdzSRSbWeAdJsjLriY1fRXIFY9a94WVLVDvyS/9YbRCL7Wbl5lF0VYw0OGYMxVRwgSnrPYWEvryi3aFFM7Tegn8XTbTSqG5jT83ExKxobJeJdQuKjR4LSr/wJ/aN6q/DDkqCRSKvlMkJ+kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773681941; c=relaxed/simple;
-	bh=/OYUQzvbizA/HnFcDSxx3chz1+uWDAT16QLEnDDvjhY=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=BJRXFu7xwGOJTjx0G+uXyJdxzCVeFYA2A2FhszWLp5FrsDTDkEBszN8kPX5gbMAdXZ2wtStr+oxG+dEnugJ0JuDxoaDlIkDg3PJNT32eqJQRe9PEwGtsc6eXuD6BeXtjuRGhHFDE0qk+Y895m+Jv2xqzuMYy7VwzslVsyITj++A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Umj/WqyW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F6CC19421;
-	Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773681940;
-	bh=/OYUQzvbizA/HnFcDSxx3chz1+uWDAT16QLEnDDvjhY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Umj/WqyW7820d/fMeiEsgdsRbY/VadfKZl6+bgrA1xdbsU8fNY4yW0TxP7k99k2mG
-	 7G5ZIrfMbx2ThX2VzYgqG7sKNqqK/9Pzq8ygwaRpP3jxJ4Mdv9UnXSupmEQfE5y6W6
-	 G8TWLdqhDFLeH2pd0tys3pcCxsxQh9cB+dgdhrAo=
-Date: Mon, 16 Mar 2026 10:25:39 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 17 . x" <stable@vger.kernel.org>, damon@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/damon/stat: monitor all System RAM resources
-Message-Id: <20260316102539.2af039f5ca7ce1164da34b47@linux-foundation.org>
-In-Reply-To: <20260315162717.80870-1-sj@kernel.org>
-References: <20260315162717.80870-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1773682607; c=relaxed/simple;
+	bh=nRk+BqLXO6nRR7vlha6s+jbOBge8/EBwlJRvGcfgEEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LuiRr7UHdPTDrvOe5cUumRnNWCvRbF6R1DYDHteQZMdfgYo39Ml/hwDziH8PiNzVOp4y2Vvr4xXRiw/QBDipCcmBIFzIP+74KIOJf5aZ9s/ZCGyMpHX8uWfyfuklIQvlF+4ZH1fBYJPhrJM9h+BmOVTivQ9/Fc9XK0fb1lm9IWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=fA/2ALAz; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 072BF1C0F86
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 20:26:41 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1773682000; x=
+	1774546001; bh=nRk+BqLXO6nRR7vlha6s+jbOBge8/EBwlJRvGcfgEEc=; b=f
+	A/2ALAzi53HWhfoRxwlqH82smSSgcSC7+Kj6rdkDTCiRAT0Fdo6EkfYop/Nbx3Bt
+	0658XSlW3qYjR8TG25dtUm4vL7BVwBGONDGugb9wHH4HaLg2W82gcxyueYP60DaH
+	n0nkH/WgaSh24u4nrFn49hv49870J8Dfjm4P9IG9Bw=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id PgJIaOT0ctg0 for <stable@vger.kernel.org>;
+	Mon, 16 Mar 2026 20:26:40 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 12A001C0EE6;
+	Mon, 16 Mar 2026 20:26:35 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Ben Skeggs <bskeggs@redhat.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/nouveau/disp: Fix potential NULL pointer dereference in nouveau_dp_irq
+Date: Mon, 16 Mar 2026 17:26:17 +0000
+Message-ID: <20260316172631.82304-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[nppct.ru:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225640-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-225641-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[nppct.ru,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,redhat.com,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[nppct.ru];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nppct.ru:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 8C04129E4BD
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A333029E6E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 15 Mar 2026 09:27:15 -0700 SeongJae Park <sj@kernel.org> wrote:
+nouveau_dp_irq() dereferences the encoder pointer before verifying
+that it is valid. The drm pointer is initialized using
+outp->base.base.dev prior to the NULL check:
 
-> DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
-> says it monitors the system's entire physical memory.  But, it is
-> monitoring only the biggest System RAM resource of the system.  When
-> there are multiple System RAM resources, this results in monitoring only
-> an unexpectedly small fraction of the physical memory.  For example,
-> suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
-> 500 GiB System RAM resources in order on the physical address space.
-> DAMON_STAT will monitor only the first 500 GiB System RAM.  This
-> situation is particularly common on NUMA systems.
-> 
-> Select a physical address range that covers all System RAM areas of the
-> system, to fix this issue and make it work as documented.
-> 
-> Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-> Cc: <stable@vger.kernel.org> # 6.17.x
+  struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
 
-This doesn't apply to current mainline?
+If no encoder is associated with the connector, this leads to a
+NULL pointer dereference.
+
+Move the drm initialization after the NULL check.
+
+Fixes: 773eb04d14a1 ("drm/nouveau/disp: expose conn event class")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ drivers/gpu/drm/nouveau/nouveau_dp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
+index 55691ec44aba..738802358d85 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dp.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
+@@ -486,7 +486,7 @@ nouveau_dp_irq(struct work_struct *work)
+ 		container_of(work, typeof(*nv_connector), irq_work);
+ 	struct drm_connector *connector = &nv_connector->base;
+ 	struct nouveau_encoder *outp = find_encoder(connector, DCB_OUTPUT_DP);
+-	struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
++	struct nouveau_drm *drm;
+ 	struct nv50_mstm *mstm;
+ 	u64 hpd = 0;
+ 	int ret;
+@@ -494,6 +494,8 @@ nouveau_dp_irq(struct work_struct *work)
+ 	if (!outp)
+ 		return;
+ 
++	drm = nouveau_drm(outp->base.base.dev);
++
+ 	mstm = outp->dp.mstm;
+ 	NV_DEBUG(drm, "service %s\n", connector->name);
+ 
+-- 
+2.43.0
 
 
