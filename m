@@ -1,129 +1,165 @@
-Return-Path: <stable+bounces-225598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMsXI8EmuGnhZgEAu9opvQ
-	(envelope-from <stable+bounces-225598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:50:25 +0100
+	id 2DWsDgMmuGnhZgEAu9opvQ
+	(envelope-from <stable+bounces-225599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:47:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1415129CC46
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:50:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E26D29CB44
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78415302A508
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:44:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28C53300AEDE
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77E33A1A5B;
-	Mon, 16 Mar 2026 15:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4A13A257F;
+	Mon, 16 Mar 2026 15:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TcOeR9Sg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRCHlyin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E13A0E93;
-	Mon, 16 Mar 2026 15:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3893A254D
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 15:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773675896; cv=none; b=j89TY0Woxnhchvw9LmZiblkGHAdElB/kPN17/hPC3V7pwfjtr2lZWTWn9MR8EuErNIdXIlUYpz+zvAoWqxgDSVDBWy7OYTW1Lyvf5BwiHxCUH7bC1NIe5skSONd/i9TBDFjKSt3f0WVZ5/I8JHt1I0C+6rvr4+mGwqGXWtio/2o=
+	t=1773675995; cv=none; b=e6J5mX4M79yflPw1BukPfFLZTtIU/+nCY0CPjwRwYFwy633OnKb/c/3k66P4F4aWH+sAaAl3HMmM2b1GVeh9astyIJ6/NE7hD92/Ir7TriR9ST4CErrlYfLd9XncH7LXbIw3BkrnjxQ0xLBrbr7p+CfAbsR29QswEtIQepwG464=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773675896; c=relaxed/simple;
-	bh=IH6hjF+pkW2zjrOcoLLUCtQbwyxCT8NByC78D6ekXco=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Oyma/DbF1xw0eDQ/lZ9DImZ5bgJrKmnKtKfSezv13JoQnIGvaWPFYR6Cm2E8fMHP+8gzdxInOqYPNHDYhz3yX0TgoH7tKl9WKM0id6mp49PCzEBaudWKURa+fT1EN/u4NkFbM9kDIb5BLzbW84vMlgXZ+jGccH4EojD7KFGwqyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TcOeR9Sg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE97C19421;
-	Mon, 16 Mar 2026 15:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773675896;
-	bh=IH6hjF+pkW2zjrOcoLLUCtQbwyxCT8NByC78D6ekXco=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TcOeR9SgSAlkVmfMXk8wAz1W+adrhixRO9ilx9mDNYkqKasT0/37suCzyVn5arpef
-	 8+axpziHyVNvrp8vMNMQTmTnKkwlsFNtb2TmxOlNa4WXFUg4R0IPHS7CHZvX2eRlfb
-	 vnib7BcfwcCG2CaM+sGH5qQT9iRVVwlx83jDrY7I=
-Date: Mon, 16 Mar 2026 08:44:55 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Suren Baghdasaryan
- <surenb@google.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Qi
- Zheng <zhengqi.arch@bytedance.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] riscv: mm: add null check for find_vm_area in
- __set_memory
-Message-Id: <20260316084455.bb44dd7baa47487f1e567ce9@linux-foundation.org>
-In-Reply-To: <20260316151642.13738-1-osama.abdelkader@gmail.com>
-References: <20260316151642.13738-1-osama.abdelkader@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1773675995; c=relaxed/simple;
+	bh=hcmcijAfZTDXsn8HFy1hMZYMdNdXANUnydw5bdD1q8Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BfO2xano9tV8KcnuYK7zZVRq6btXExBmhuxwn0rjmo2Fap1Xll0ifjVThrFobxbnKlsZfkbJW/MDAD8V+Le/jaTAGfUo2Eyezyf18apgAfRP/RF9YCN9ArbB3qDcumtfngTeu4Ohf4/+lEOg1ll6P4kZZxIZUOyVK/ctT6iUlgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRCHlyin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8121C19421;
+	Mon, 16 Mar 2026 15:46:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773675995;
+	bh=hcmcijAfZTDXsn8HFy1hMZYMdNdXANUnydw5bdD1q8Q=;
+	h=Subject:To:Cc:From:Date:From;
+	b=SRCHlyinUU6yU3TQr/VKa3tL3tKdN1UaT+FdyKdSzjysBznaZs2eUGm/ZHFZCkesG
+	 4LrZz6oYJ6iJOwwN/m5lwleM0c2TbVhU7oCskNZExmh3Hl/gDQwBDm8ir0dvoOiJ6u
+	 lhMW769nFMgKJT3aSmXiuRb/bJWQQ/6zstoDgHak=
+Subject: FAILED: patch "[PATCH] usb: roles: get usb role switch from parent only for" failed to apply to 5.10-stable tree
+To: xu.yang_2@nxp.com,arnaud.ferraris@collabora.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 16 Mar 2026 16:46:30 +0100
+Message-ID: <2026031630-flier-referee-3151@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225599-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-225598-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1415129CC46
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 8E26D29CB44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 16 Mar 2026 16:16:39 +0100 Osama Abdelkader <osama.abdelkader@gmail.com> wrote:
 
-> find_vm_area() can return NULL. Add a null check to avoid potential
-> null pointer dereference, matching the pattern used by other arches.
-> 
-> Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Three years ago.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> Cc: stable@vger.kernel.org
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8345b1539faa49fcf9c9439c3cbd97dac6eca171
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031630-flier-referee-3151@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-Why cc:stable?  Has anyone ever hit this?  Are we able to identify a
-scenario where this bug might be triggered?
+Possible dependencies:
 
-> --- a/arch/riscv/mm/pageattr.c
-> +++ b/arch/riscv/mm/pageattr.c
-> @@ -289,6 +289,10 @@ static int __set_memory(unsigned long addr, int numpages, pgprot_t set_mask,
->  		int i, page_start;
->  
->  		area = find_vm_area((void *)start);
-> +		if (!area) {
-> +			ret = -EINVAL;
-> +			goto unlock;
-> +		}
->  		page_start = (start - (unsigned long)area->addr) >> PAGE_SHIFT;
->  
->  		for (i = page_start; i < page_start + numpages; ++i) {
-> -- 
-> 2.43.0
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8345b1539faa49fcf9c9439c3cbd97dac6eca171 Mon Sep 17 00:00:00 2001
+From: Xu Yang <xu.yang_2@nxp.com>
+Date: Mon, 9 Mar 2026 15:43:13 +0800
+Subject: [PATCH] usb: roles: get usb role switch from parent only for
+ usb-b-connector
+
+usb_role_switch_is_parent() was walking up to the parent node and checking
+for the "usb-role-switch" property regardless of the type of the passed
+fwnode. This could cause unrelated device nodes to be probed as potential
+role switch parent, leading to spurious matches and "-EPROBE_DEFER" being
+returned infinitely.
+
+Till now only Type-B connector node will have a parent node which may
+present "usb-role-switch" property and register the role switch device.
+For Type-C connector node, its parent node will always be a Type-C chip
+device which will never register the role switch device. However, it may
+still present a non-boolean "usb-role-switch = <&usb_controller>" property
+for historical compatibility.
+
+So restrict the helper to only operate on Type-B connector when attempting
+to get the role switch from parent node.
+
+Fixes: 6fadd72943b8 ("usb: roles: get usb-role-switch from parent")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260309074313.2809867-3-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
+index b8e28ceca51e..edec139b68b5 100644
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -139,9 +139,14 @@ static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const cha
+ static struct usb_role_switch *
+ usb_role_switch_is_parent(struct fwnode_handle *fwnode)
+ {
+-	struct fwnode_handle *parent = fwnode_get_parent(fwnode);
++	struct fwnode_handle *parent;
+ 	struct device *dev;
+ 
++	if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
++		return NULL;
++
++	parent = fwnode_get_parent(fwnode);
++
+ 	if (!fwnode_property_present(parent, "usb-role-switch")) {
+ 		fwnode_handle_put(parent);
+ 		return NULL;
+
 
