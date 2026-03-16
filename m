@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-225657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0E+9HcFNuGlHbwEAu9opvQ
-	(envelope-from <stable+bounces-225657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:36:49 +0100
+	id uNUvOL5QuGmKcAEAu9opvQ
+	(envelope-from <stable+bounces-225658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:49:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B079C29F1DB
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:36:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CDB29F43C
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F23DF303C28A
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:34:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3339A30C16AA
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF563292936;
-	Mon, 16 Mar 2026 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94043DF009;
+	Mon, 16 Mar 2026 18:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UY5ZISRI"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="lEQhynEA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33E333A9D3
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE033E0C4A
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686095; cv=none; b=l2zPvuUI7ulXBtdswd9By9t7PKAbAHuJZW1uNFBtiQff3sPNcYtvP/Z2oUzqXUR1lHPNzyEH1uOVU2ZScxi+9kZ+B5c6nGcLzTYfyopBe2S8Iu20rh99qOi9F07WESWihI/AuobEM4wZ8/Lud0XX0zwRXqbYazIJLZv0hYe07WA=
+	t=1773686578; cv=none; b=CTbbVZ+rz5jMv0khXLhUVCKb8Dgfs+zVJnXbhBDN7APL+nJU0AfeROiopFMeNLRIZZXcryXvpAefzFIJUzNE1gfUvORPHd3NF5mLMcgiYK4TvE0DUuFyiuZpbW2KlxHGYqr5JR8LWuBL3heGSN+LQ53KSAMH4sU/uIysWlzCqZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686095; c=relaxed/simple;
-	bh=HqWm2bgX/gK3H9/EMIAXY2CiTkopaY0jur+QA7YYJ98=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ax10FrQh8s0IKrSadrXfkhvVedBiezMALQZKj3X3+YIbwBVIjo2nfePJgtHJTH4KOX7IV5YkmSQ3R6W/PkqFgSeyVNa0FqG771+m3FkVRXqGAdJku1WFYp3ugbHGZgNfCzWLZOOyPdfqnghAlTYruVd+ymShITafoXfPs7MBtD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UY5ZISRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38D3C19421;
-	Mon, 16 Mar 2026 18:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773686095;
-	bh=HqWm2bgX/gK3H9/EMIAXY2CiTkopaY0jur+QA7YYJ98=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UY5ZISRIZl7B+4rGrnQFJepaSBMPO2O1Z2M7FRNyZbIpNwNYoTpLVggPv47sAkB1p
-	 i7MyiYQVqgY+5SnN/vozTBRnwk8bv3O+6r/hQ5CtZlkoJFhjHJDjdGYTB4Ix/R3eY3
-	 W8AX1gvwqUkbQPyr2FCgmgK16TmahMcZxXtDx7v1nGOJnAeVLzpmx0/N1gf9P+5ZGY
-	 U48MNCXqprcSJQRs2Qof2NaHra+yYSy59HrAR4yf6OAy+Fo/mj8VgVPWyZ75LrVdNs
-	 vXVLMI3kbLxcvTH+6RsawSbgL9Ta9V4CdVsXj5ajcpcjZeG4FlHa+CyEKsBoHMtzuv
-	 Db1kzkCuD/t/g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] can: gs_usb: gs_can_open(): always configure bitrates before starting device
-Date: Mon, 16 Mar 2026 14:34:53 -0400
-Message-ID: <20260316183453.1075555-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031635-starved-nervy-a49c@gregkh>
-References: <2026031635-starved-nervy-a49c@gregkh>
+	s=arc-20240116; t=1773686578; c=relaxed/simple;
+	bh=3sBY4tW9sUTsq5I04TqNM0MDdmo2tDC1vEIhnJUCkOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iQ8ADcO5A8GwzWx2m95L9sv9EoMjVJSYL69x3ZhDlOKmCoj1j5vKvi6fbs0qlB6yF13bvVJZxy1wTJrdZQE5e1VUTmr6C8f0z3OoOX9Sa/bL6sCpNrfi60c1BKQM6CSQmu0J3L3dN8Fqb1cDPbgqIvt2TVyOArgLne6trXDHl24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=lEQhynEA; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id AA9E31C0F79
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 21:42:51 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1773686566; x=
+	1774550567; bh=3sBY4tW9sUTsq5I04TqNM0MDdmo2tDC1vEIhnJUCkOE=; b=l
+	EQhynEAvuAjLAlVaGTRamznV5ieGXYp0lDyWeNtaamfLeYAsvCKD/I573iJbCI1E
+	PL8BRCa3AwYhrU43zy5/Rx+f5oNT/KUcI4idI2qRM7buyGOVRv94FgVKgTakIGw3
+	No3o3j6AR85bHdN8Fa7fHSL07LGifTHpOuK69LU2O8=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8WqmiXtEONrl for <stable@vger.kernel.org>;
+	Mon, 16 Mar 2026 21:42:46 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 224FB1C0E83;
+	Mon, 16 Mar 2026 21:41:59 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Ben Skeggs <bskeggs@redhat.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/nouveau/disp: Fix potential NULL pointer dereference in nouveau_dp_irq
+Date: Mon, 16 Mar 2026 18:41:41 +0000
+Message-ID: <20260316184143.82894-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,132 +79,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[nppct.ru:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225658-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[nppct.ru,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,redhat.com,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225657-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[nppct.ru];
+	DKIM_TRACE(0.00)[nppct.ru:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: B079C29F1DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 63CDB29F43C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+The issue was discovered through static analysis after reviewing changes
+introduced by commit 773eb04d14a1 ("drm/nouveau/disp: expose conn event
+class"). Function nouveau_dp_irq() dereferences the encoder pointer before
+verifying that it is valid. The drm pointer is initialized using
+outp->base.base.dev prior to the NULL check:
 
-[ Upstream commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 ]
+  struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
 
-So far the driver populated the struct can_priv::do_set_bittiming() and
-struct can_priv::fd::do_set_data_bittiming() callbacks.
+If no encoder is associated with the connector, this leads to a
+NULL pointer dereference.
 
-Before bringing up the interface, user space has to configure the bitrates.
-With these callbacks the configuration is directly forwarded into the CAN
-hardware. Then the interface can be brought up.
+Move the drm initialization after the NULL check.
 
-An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
-the bitrates in the CAN hardware. This leads to a problem with the
-CANable-2.5 [1] firmware, which resets the configured bit rates during
-ifdown.
-
-To fix the problem remove both bit timing callbacks and always configure
-the bitrates in the struct net_device_ops::ndo_open() callback.
-
-[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
-
+Fixes: 773eb04d14a1 ("drm/nouveau/disp: expose conn event class")
 Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-[ adapted to different structure of the struct ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- drivers/net/can/usb/gs_usb.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_dp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 8859e65d4470b..220496b76cd94 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -678,9 +678,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	}
- }
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
+index 55691ec44aba..738802358d85 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dp.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
+@@ -486,7 +486,7 @@ nouveau_dp_irq(struct work_struct *work)
+ 		container_of(work, typeof(*nv_connector), irq_work);
+ 	struct drm_connector *connector = &nv_connector->base;
+ 	struct nouveau_encoder *outp = find_encoder(connector, DCB_OUTPUT_DP);
+-	struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
++	struct nouveau_drm *drm;
+ 	struct nv50_mstm *mstm;
+ 	u64 hpd = 0;
+ 	int ret;
+@@ -494,6 +494,8 @@ nouveau_dp_irq(struct work_struct *work)
+ 	if (!outp)
+ 		return;
  
--static int gs_usb_set_bittiming(struct net_device *netdev)
-+static int gs_usb_set_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -698,9 +697,8 @@ static int gs_usb_set_bittiming(struct net_device *netdev)
- 				    GFP_KERNEL);
- }
- 
--static int gs_usb_set_data_bittiming(struct net_device *netdev)
-+static int gs_usb_set_data_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.data_bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -961,6 +959,20 @@ static int gs_can_open(struct net_device *netdev)
- 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
- 
-+	rc = gs_usb_set_bittiming(dev);
-+	if (rc) {
-+		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
-+		goto out_usb_kill_anchored_urbs;
-+	}
++	drm = nouveau_drm(outp->base.base.dev);
 +
-+	if (ctrlmode & CAN_CTRLMODE_FD) {
-+		rc = gs_usb_set_data_bittiming(dev);
-+		if (rc) {
-+			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
-+			goto out_usb_kill_anchored_urbs;
-+		}
-+	}
-+
- 	/* start polling timestamp */
- 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		gs_usb_timestamp_init(dev);
-@@ -1231,7 +1243,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 	dev->can.state = CAN_STATE_STOPPED;
- 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
- 	dev->can.bittiming_const = &dev->bt_const;
--	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ 	mstm = outp->dp.mstm;
+ 	NV_DEBUG(drm, "service %s\n", connector->name);
  
- 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
- 
-@@ -1255,7 +1266,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
- 		 */
- 		dev->can.data_bittiming_const = &dev->bt_const;
--		dev->can.do_set_data_bittiming = gs_usb_set_data_bittiming;
- 	}
- 
- 	if (feature & GS_CAN_FEATURE_TERMINATION) {
 -- 
-2.51.0
+2.43.0
 
 
