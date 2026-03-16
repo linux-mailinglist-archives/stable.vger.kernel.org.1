@@ -1,203 +1,248 @@
-Return-Path: <stable+bounces-225659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKT0E35RuGmKcAEAu9opvQ
-	(envelope-from <stable+bounces-225659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:52:46 +0100
+	id KNQTLN1QuGmKcAEAu9opvQ
+	(envelope-from <stable+bounces-225660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:50:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCB029F526
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:52:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E7529F45A
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B9D93062438
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:46:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBE10303EA8F
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91E13D5652;
-	Mon, 16 Mar 2026 18:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDDE3E5EDC;
+	Mon, 16 Mar 2026 18:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="YDZKP+6q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m6jycxPW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106100.protonmail.ch (mail-106100.protonmail.ch [79.135.106.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2337D30B509
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.100
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686764; cv=none; b=lHit1EKjJMNVMBpzXxwR4OaTkAabLanNJpHVwRdGk6aYt2ocjZFNtJcuSZZveiZOW6fAKEiSMGdijC60cYhyF6fShrMxsUZiW91fYEcKJxTxzscKV2WAmExw73K8PTmz+MDakXWGO6i7vvpobtV4NCmYkwpWt3PecoWM0O+JePo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686764; c=relaxed/simple;
-	bh=GhaGTWaAC9f2cyezBsr1nAmhVqDMM4husB5sfRHYLqs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXoSsxU4/kMEFDo8UiycbgX28lT56NKoaqTl9qMREqWeJe6/+MEyu76vQihLBblCoQ4nEKfbLphooM4ZfxqMAn9ITWBXNm3ZJYUJJk0UhrAHQFaPJAVvoBIstbdgWcea1gRCVXahAg8JYSm5ivb95umbLjVKVbe6KrdDD/wxt6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=YDZKP+6q; arc=none smtp.client-ip=79.135.106.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1773686752; x=1773945952;
-	bh=jYCSUK08Navzfq6Y6W1JAa1hQPi9EJkF7xj1O3nnbBI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=YDZKP+6qwHw+vopjjYN5aLZgLhIQPPMnBe3awSYFntqha02lWBIT5q3fcgI4lC6Kv
-	 WfGP+ZJwrEerUHwcKGni4trdlzGETmk4PrrPh53BFfh2ZuVzp+7HflXSHnqzyJ926n
-	 IRTPaECiUgAyIeLzNbTSp2WwAjYKAQR/m786KejOQGXqZDQy63ECrHnY/15huN82uC
-	 m+8YCeedD4A7mcHjeG7hGQhaWeM+VtzbppYISK+N2kVQ6uaCoJ+Woi6xVrSyRtLcJl
-	 6F8Gz7jhdRHCuBq7B3oBiuibHPXRwQhzkh/343Km2tqwGE5LW0jVgJl1pmtpdxeC8H
-	 ytpCf9rPLxRAg==
-Date: Mon, 16 Mar 2026 18:45:48 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: Paul Moses <p@1g4.org>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net-shapers: clear hierarchy pointer and defer flush frees with RCU
-Message-ID: <hHYLQqDrBCcK_2x6uSbGsBott3QuXe8o-R9tj4vNmw8UUEFxpzoD_PCMiHMyyOnySAtQbJtCAB8yVoCmWxzO07C02Q5o0J6fHu4NLEa-ggY=@1g4.org>
-In-Reply-To: <20260310192842.3c3b2070@kernel.org>
-References: <20260309173450.538026-1-p@1g4.org> <20260310192842.3c3b2070@kernel.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 0ccbae606882ace79d5a92f44365f6688dda9b9d
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E230B509
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773686904; cv=pass; b=eO482aKhyM0+VIcVMjHMbEoxTDjTZoOq9F/WvWakJG7QVdO2tKkpXBFefAHKNBtI57BgkXwYOTyWNmCvsHsU639kZC/fKCjSFodz3DOUVbLPp3IclVKc4f7DX95PFkNyUI38HeMdiX4kzf7A2Ex/YHeiA4UIYd+5cnC5tVyM+pI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773686904; c=relaxed/simple;
+	bh=UvWF57nXqI9vHHj3agvW/9JVTqcg20vwpy6Zqyd76bk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GMMJU12o+8aD/XsCXSt78KBLhKnqGWujWMgW6+xhiowSkZBYYdtDNdQMONvVO8arWnZ/hHH7DmaaIIzyom3HdzEoV23HYwjyEjrFxZnqNRl8lnjQQamACwBBG4Uh3i1jFvX6sSnd8feOkwi8nTG3Mv+F99BcZLdTMXC7PxOI5Jw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m6jycxPW; arc=pass smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439c6fc2910so3761258f8f.0
+        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 11:48:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773686901; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JAGFVHz6R70YscT7B+azkYIaMD9kM388idUTDTF3FYWBhgk6h/4z4ptWulieyipLze
+         U5SiYBZDmUdYd9Y1IlJiG/4e33kPukMCOuxMSwj2PbXVNqfoIqeIFhnUBJ9/nf9lqJFG
+         4e4lnQtd3de+b5EVRxYEcpT+efGgBgX4ADXlkgF8p6zgj11Dq9baBfA7BPVXd00zLkab
+         ld1uF/UZgyOc1BJW3b3rPxUXkk1ymBXyMUkBAdsLcUIC0lcCwC63qYR3jJnfW6NvR5Z6
+         KGUNjTHEd+vL3objLatLHRCkY5YnWOIvSLCkkUANNfDD3W2nK8mioDFkqXkv6K3bbnF0
+         zk3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DBjVV457G/se68523LSZtd2ILvGUaX28G26qIIbHCwU=;
+        fh=Ib63GqBV5chd3rQZ/p2tbryku1EdRqnVI4LTJOSVZw4=;
+        b=VBPy0cxzuWZADXBE09AeIz6E7Y3u9Q4eCbAsirBZdtWZ8Z7BVH28WH3qKxqbfluNgN
+         zaoTVH4cnbNr4XyzujqIKC6bTn7HGkCzIA3O8fpgeVSkqsSnzegMNCp2N/6qngn8oUru
+         UKMcFawsGFa0B+i+EiwlTJ01uB9RKr5rdJo8LTbAWU7kmcVFhF5jo+acsWJuAjdym+Yi
+         b8SiWBiABBBqD7V8Yht8QwjPUXobQCAhVMrEQGuuCawLDOfub51UuSMxWBJ3b+D34jjJ
+         veqZnUenUd9OXi5HQ0RCqrplYocbwhq79ealIZh2TPu6ybqXwDy8JsRbGE6ke524wLzc
+         gjZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773686901; x=1774291701; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DBjVV457G/se68523LSZtd2ILvGUaX28G26qIIbHCwU=;
+        b=m6jycxPWJ6wAimrQuV+R2rgpF6jgeDWP9EFYimZEZxzR264avQErYcND3XyRRwiBjh
+         8fnrMYq0oe958ygQ71Y9CYC5uRxaR41A03wX6P1U+ppIKWqLB6lZfaDodvKjC4YMIO/r
+         tOdb57w991xgNE1eTb6zygqFp0fV2s3PcEw8ddXgol+KCdXddb9of8mpOvtdNm9/1uIX
+         1p1/ZVFMCDA/hu4Rmmc01hQdJWdQcqjshXpchlKYv9fD6ngkCYw1B/g3MHQVkSqMzN58
+         FbNOpFoZM11UYXEPZF+h0gDc50EzAS8oi6231xJL2OO/0+CBM11y9uDPbzU0wYnsr+1m
+         FKsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773686901; x=1774291701;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DBjVV457G/se68523LSZtd2ILvGUaX28G26qIIbHCwU=;
+        b=bzlOpEhK94jgD+hefuJq8S7Nne+yXytRB8/9qu4BbY+hXLQKWMfJlef81wKzUmwPRT
+         Pb5y8gYKT78gE7DxjSYvSsvHKLtAMKTiHYdEGSbfpFsC7S/xthL9JJzwHw9fahkGvqee
+         nlUj55gRawdqapO+MC7cadbIufKBy3KDtA+rFgUDeQl7PQKaWw7dhOozG+Vjb2P5SDWm
+         rfJq+dhvCg9+drXYzijF+fGeGchdoNISgD/Ory9Sjc898695NjD1iOwqSm0LJcKfSuBA
+         8Q3QeEMvEkmzxM7gppioBDns5xSu6I0Tdsf+7qri5t03u6GlwkVwTADMa4xYhDVPjxok
+         J5zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFZWWbpwUYDyMEjQrmitaLZZB1UI69gRR5Owz78ZlVLz/ppyYSrl3Z6lzcnG3Ihk9+W/naNfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSvOTUzyZTCpTEJrBCBgCDqUBm8ypafLD0Ivb2wmD6jDHpZKmo
+	RZz9HqUbQvI6+rZXPz3db9jkwkFwX1FsbI37BjAyhf0kXbeV5n8nrBCugbeU9I854WnyiHK1rDx
+	rsd9UjCwNL1hRC3Zljr90csXeVc/oQfA=
+X-Gm-Gg: ATEYQzx+75Uf6IF9ajxvJ9sKBkwJtVcgn6akDvCQxShWaEY8GX/Q4vAzWhwMPduZbey
+	kdVQS/QJj+Lsr9mglH4WpG3Q4qktC6gNDVQHu8hi/YMwo6saFenSLD38dlLOf/qdqyW+ggOIpaz
+	8NGGyQk/prqhXKtV+IMauv6NnAW8gMPB7XZm9JrnWFPWB/sRQWqz12En3OM7feUbAenfeXLLNZm
+	89Z+hBDJbdbsGMD95FmrJm6MCZjEu09Qgi0+kzmnCvzTyOd4HRMEYhWzvVxe24Fjrrvku5EL8tj
+	GHTo6g==
+X-Received: by 2002:a05:6000:4310:b0:43b:492c:8349 with SMTP id
+ ffacd0b85a97d-43b492c8602mr2857424f8f.3.1773686900933; Mon, 16 Mar 2026
+ 11:48:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260316165320.3245526-1-mszeredi@redhat.com> <20260316165320.3245526-2-mszeredi@redhat.com>
+In-Reply-To: <20260316165320.3245526-2-mszeredi@redhat.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Mon, 16 Mar 2026 11:48:09 -0700
+X-Gm-Features: AaiRm52ozqBHON4mjfX3OgUHvOecBGZhPeVdde2955BrAmJ9byyH-P5BG2hpsWc
+Message-ID: <CAJnrk1ZCLS4BhGJm7y4HC07tvAL-KHeU_B-0ep_1r9kaaf1Lnw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] fuse: abort on fatal signal during sync init
+To: Miklos Szeredi <mszeredi@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, Bernd Schubert <bernd@bsbernd.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225660-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBCB029F526
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 18E7529F45A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> This is not the right fix. The shaper hierarchy as a while is not under
-> RCU. The problem is that we take a ref on netdev and then lock it,
-> assuming that it's still alive. But it may have gotten unregistered in
-> the meantime. The correct fix is to check that the netdev is still
-> alive after we lock the binding or take RCU from the Netlink side.
+On Mon, Mar 16, 2026 at 9:53=E2=80=AFAM Miklos Szeredi <mszeredi@redhat.com=
+> wrote:
+>
+> When sync init is used and the server exits for some reason (error, crash=
+)
+> while processing FUSE_INIT, the filesystem creation will hang.  The reaso=
+n
+> is that while all other threads will exit, the mounting thread (or proces=
+s)
+> will keep the device fd open, which will prevent an abort from happening.
+>
+> This is a regression from the async mount case, where the mount was done
+> first, and the FUSE_INIT processing afterwards, in which case there's no
+> such recursive syscall keeping the fd open.
+>
+> Fixes: dfb84c330794 ("fuse: allow synchronous FUSE_INIT")
+> Cc: stable@vger.kernel.org # v6.18
+> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 
-Ok I see it now, I didn't care about anything except queue because it's the=
- only=20
-path that affected both drivers. This is an entirely different issue.
+LGTM but left a comment below
 
-1. net_shaper_nl_pre_doit() =E2=86=92 net_shaper_ctx_setup()
-=09gets dev =3D netdev_get_by_index(...) (ref only, no alive check)=20
-2. Before doit runs, unregister can do:
-=09- unlist_netdevice(dev) (dev.c:12388)
-=09- dev->reg_state =3D NETREG_UNREGISTERING=20
-3. Doit then runs:
-=09- net_shaper_lock(binding)=20
-=09- continues without checking reg_state
-=09- may call ops->set/delete/group() on a dying device
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
 
-Here's the flow of reported issue:
+> ---
+>  fs/fuse/dev.c    | 6 +++++-
+>  fs/fuse/fuse_i.h | 1 +
+>  fs/fuse/inode.c  | 1 +
+>  3 files changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+> index 2c16b94357d5..f0631c48abef 100644
+> --- a/fs/fuse/dev.c
+> +++ b/fs/fuse/dev.c
+> @@ -576,6 +576,9 @@ static void request_wait_answer(struct fuse_req *req)
+>                         removed =3D fuse_remove_pending_req(req, &fiq->lo=
+ck);
+>                 if (removed)
+>                         return;
+> +
+> +               if (req->args->abort_on_kill)
+> +                       fuse_abort_conn(fc);
 
-1) A userspace GET doit path does this:
+Maybe more straightforward to move this logic a few lines above? eg
 
-  net_shaper_nl_get_doit()
-    -> rcu_read_lock()
-    -> net_shaper_lookup()
-         -> net_shaper_hierarchy()
-              -> READ_ONCE(dev->net_shaper_hierarchy)
-         -> xa_get_mark() / xa_load()
-              -> dereference hierarchy->shapers
-    -> rcu_read_unlock()
+@@ -570,6 +570,11 @@ static void request_wait_answer(struct fuse_req *req)
+                /* Only fatal signals may interrupt this */
+                err =3D wait_event_killable(req->waitq,
+                                        test_bit(FR_FINISHED, &req->flags))=
+;
+                if (!err)
+                        return;
 
-That can race with netdevice unregister teardown:
-
-  net_shaper_flush_netdev()
-    -> net_shaper_flush()
-         -> xa_for_each(...) {
-              __xa_erase(...)
-              kfree(cur)
-            }
-         -> kfree(hierarchy)
-
-The problem is that readers walk the published hierarchy locklessly under
-an RCU read-side section, but teardown reclaims both the shapers and the
-hierarchy with plain kfree() rather than kfree_rcu().
-
-2) The original flush path does this:
-
-  net_shaper_flush()
-    -> hierarchy =3D net_shaper_hierarchy(binding)
-    -> ... free shapers ...
-    -> kfree(hierarchy)
-    -> no WRITE_ONCE(dev->net_shaper_hierarchy, NULL)
-
-So a later GET reader can still do:
-
-  net_shaper_hierarchy()
-    -> return stale non-NULL pointer
-
-and then walk the freed hierarchy through xa_* operations.
-
-The only remaining issue I found after fully reviewing this is the dump
-path, but I have not been able to reproduce it so far:
-
-- kfree_rcu() only protects readers that have already entered
-  rcu_read_lock()
-- In the old net_shaper_nl_get_dumpit(), hierarchy was loaded before
-  rcu_read_lock()
-- So this sequence is possible:
-    1. dump path reads the hierarchy pointer
-    2. gets preempted
-    3. teardown detaches the pointer and queues kfree_rcu()
-    4. the grace period ends and the object is freed
-    5. dump resumes, enters rcu_read_lock(), and dereferences the stale
-       pointer
-
-=09diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-=09index ab0de415546d6..452557c52488b 100644
-=09--- a/net/shaper/shaper.c
-=09+++ b/net/shaper/shaper.c
-=09@@ -779,11 +779,13 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
- =09
- =09=09/* Don't error out dumps performed before any set operation. */
- =09=09binding =3D net_shaper_binding_from_ctx(ctx);
-=09+=09rcu_read_lock();
- =09=09hierarchy =3D net_shaper_hierarchy(binding);
-=09-=09if (!hierarchy)
-=09+=09if (!hierarchy) {
-=09+=09=09rcu_read_unlock();
- =09=09=09return 0;
-=09+=09}
- =09
-=09-=09rcu_read_lock();
- =09=09for (; (shaper =3D xa_find(&hierarchy->shapers, &ctx->start_index,
- =09=09=09=09 =09U32_MAX, XA_PRESENT)); ctx->start_index++) {
- =09=09=09ret =3D net_shaper_fill_one(skb, binding, shaper, info);
-=09--=20
-=092.53.GIT
-
-
-So I still have no more changes besides possibly the inclusion of this patc=
-h.
++               if (req->args->abort_on_kill) {
++                       fuse_abort_conn(fc);
++                       return;
++               }
 
 Thanks,
-Paul
+Joanne
+
+>         }
+>
+>         /*
+> @@ -676,7 +679,8 @@ ssize_t __fuse_simple_request(struct mnt_idmap *idmap=
+,
+>                         fuse_force_creds(req);
+>
+>                 __set_bit(FR_WAITING, &req->flags);
+> -               __set_bit(FR_FORCE, &req->flags);
+> +               if (!args->abort_on_kill)
+> +                       __set_bit(FR_FORCE, &req->flags);
+>         } else {
+>                 WARN_ON(args->nocreds);
+>                 req =3D fuse_get_req(idmap, fm, false);
+> diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+> index 7f16049387d1..23a241f18623 100644
+> --- a/fs/fuse/fuse_i.h
+> +++ b/fs/fuse/fuse_i.h
+> @@ -345,6 +345,7 @@ struct fuse_args {
+>         bool is_ext:1;
+>         bool is_pinned:1;
+>         bool invalidate_vmap:1;
+> +       bool abort_on_kill:1;
+>         struct fuse_in_arg in_args[4];
+>         struct fuse_arg out_args[2];
+>         void (*end)(struct fuse_mount *fm, struct fuse_args *args, int er=
+ror);
+> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+> index e57b8af06be9..84f78fb89d35 100644
+> --- a/fs/fuse/inode.c
+> +++ b/fs/fuse/inode.c
+> @@ -1551,6 +1551,7 @@ int fuse_send_init(struct fuse_mount *fm)
+>         int err;
+>
+>         if (fm->fc->sync_init) {
+> +               ia->args.abort_on_kill =3D true;
+>                 err =3D fuse_simple_request(fm, &ia->args);
+>                 /* Ignore size of init reply */
+>                 if (err > 0)
+> --
+> 2.53.0
+>
+>
 
