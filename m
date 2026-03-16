@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-225671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLNJCUJXuGmKcAEAu9opvQ
-	(envelope-from <stable+bounces-225671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:17:22 +0100
+	id 0BdWDShXuGmKcAEAu9opvQ
+	(envelope-from <stable+bounces-225670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:16:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C348229FAED
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:17:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5C429FAA6
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FA82307D4EC
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:16:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D0EE306BD26
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED6F3ED5A8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326E73ED10F;
 	Mon, 16 Mar 2026 19:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IlSsUfKW"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="n3Hvou1/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD8B338592;
-	Mon, 16 Mar 2026 19:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F32D3ECBF2;
+	Mon, 16 Mar 2026 19:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773688563; cv=none; b=WlJ3Ltf4Wr040WCWkZQFwKGj3U4oNNC+oNHvPYw0UbdA4F4Z/9yEYARDDWhvoVcHM0xLHg5uKBVo5Tln0YvNXyjgwrRWNODg5+eHysbPicbd0d6UVN+nCvSno58MkL9kXqMC5f+mUYauSqoVofhc/cq4yJ+7uSlmn6iO36+91Qs=
+	t=1773688563; cv=none; b=c+oci9zjMGxYnFiCINPFiBwtiTpP8Y81AkHk/NIcLtvuOkh+wA1/FF09HKsnV6ZDYAKNAQKMNvl1oMXn1+YmIIHA9pr7cHagpsc+J+XAz7vlQtJpJ/JvJDP11I8a60GE3GHAoyWXI8GXGIrMoiURdAh5tnGhxkh3hKl7p/ndESw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773688563; c=relaxed/simple;
-	bh=TY2zpKNifG/8eMBOZOhi6HU+JgCTeK/+REWlaOd7vW8=;
+	bh=/TAkttD/m8UcNbC+JGdCeHld2Xon1e0lpOiw6KxQiQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4JnYNr7NEB3im4qDrPe5S37c4eS9D3i2vo1csBnBKdbv5vzPbe+2Nw+FPb0wFd2ds+f/e0BJVyEuKTB26JilLIgrMT4MPhg41H+hH/jHydPnA3YR0xedL6zF4LoryzKWd1tI4st4ZUlI9NZ6ZLx5rR0WUA7Ruvku3cddGaXGxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IlSsUfKW; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=T43NyGnqHPfvgj3koqA86nRTbnrT0m0Ya9+wiiXdvDVzeZucUiMhJVWagidEqZbMlZ7I/8ORuP092SkFhE7PxSTqp3BEkHUpFFGq1gFskpPJL1IWHHIoZU/NV6L3CsGFqDjA4ifIQyysmGMxgiiyK5pYFsDgPCvx/kwTmHNjwk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=n3Hvou1/; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GDmT7v231841;
-	Mon, 16 Mar 2026 19:15:55 GMT
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GABFaR3402882;
+	Mon, 16 Mar 2026 19:15:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=aOTMZASEbw1JAk72/
-	rixAqSaOEQh2zzVQjtzAMAH4bo=; b=IlSsUfKWh2MHVcW/Ip801uPGZJppXLHxv
-	NNy/qB/QqVYUIjFd2mpoUUMU8XbBW9ZNiPrF8aWCyQSg8kx/uesFbU2W5K/91EmB
-	+uFL90eDo4iwbNVR3jD5m/8m/Fe0W+Rp5mUR6128YefIA6j+Xapu85RchYD/fXu5
-	Ysr8f0nQRVSz8htcrUJMj88WcMXnRT6GqfSKStE+JKFXJQii8rGF1uOPd9pzDMGa
-	luclLrms7TgzncS7dErptONQdqNsgqd0cKp9IGqDUE321JKZPgB9tGuyQxFwshyP
-	/0qyLv+1W3M4g3yaC7K8gLy7WXjv3YPUCrhwHGsKTIu42x2T1c0vw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybs1d31-1
+	:mime-version:references:subject:to; s=pp1; bh=uhUr2ihj00lp3TH0a
+	EtGm1BA+ajK9Cbm95BModvo6JU=; b=n3Hvou1/mTY0TGUfDaVdCCv3E/a2iY4ab
+	7RfxuK/gz5yf6OKsyDtepquYarP94mA7qsZgd5xj2dIVUmXjnhUFSG89db1LNvCP
+	qwoI8r7vcNbYGMg5ZM6LG5345XX0BfGDlqvF9dOazs8Ts5r4JnFekw0x8/+wzghB
+	0oT4ACuPpJ5/pHa93A8rbD1gF9lGaco2d1Wsy9hle/845KqpsmvIk4m1TSGRbpx4
+	fPVguuZWcMocpurkIT7lMDkBE78t5SnjNnKnTuaya1Ck+uqak2CNEW5fieTuOggn
+	wg1DsqLkd0hfQhoUlXR72uwDx1OjZBn9654rZFaE/16tS/AP7b1Kg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvyau8yha-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 19:15:55 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GGZPJp028452;
-	Mon, 16 Mar 2026 19:15:54 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwmq15tt5-1
+	Mon, 16 Mar 2026 19:15:56 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GEPTWi014032;
+	Mon, 16 Mar 2026 19:15:55 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcxx3yn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 19:15:54 +0000
+	Mon, 16 Mar 2026 19:15:55 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GJFqwL4588032
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GJFsB832637606
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 19:15:52 GMT
+	Mon, 16 Mar 2026 19:15:54 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8032B58055;
+	by IMSVA (Postfix) with ESMTP id E794358055;
+	Mon, 16 Mar 2026 19:15:53 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9F985804B;
 	Mon, 16 Mar 2026 19:15:52 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2AFA158063;
-	Mon, 16 Mar 2026 19:15:51 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.241.131])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Mar 2026 19:15:51 +0000 (GMT)
+	Mon, 16 Mar 2026 19:15:52 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-pci@vger.kernel.org
 Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, kbusch@kernel.org,
         clg@redhat.com, stable@vger.kernel.org, alifm@linux.ibm.com,
         schnelle@linux.ibm.com, mjrosato@linux.ibm.com
-Subject: [PATCH v11 2/9] s390/pci: Add architecture specific resource/bus address translation
-Date: Mon, 16 Mar 2026 12:15:37 -0700
-Message-ID: <20260316191544.2279-3-alifm@linux.ibm.com>
+Subject: [PATCH v11 3/9] PCI: Avoid saving config space state if inaccessible
+Date: Mon, 16 Mar 2026 12:15:38 -0700
+Message-ID: <20260316191544.2279-4-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260316191544.2279-1-alifm@linux.ibm.com>
 References: <20260316191544.2279-1-alifm@linux.ibm.com>
@@ -90,40 +90,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69b856eb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDE1MyBTYWx0ZWRfX9c79WJrVBsTB
+ lo4pL7cVsZM7wzO2sLxM3hKT502d8AJ/JaOIuMyWsJXu4P8Ykz7a7R9SVOOXM2diG2xY8oNLsk2
+ T3kNXM3zCyqKB1CNG9yCuV2pRxV9m1KLtq2/qHpRym68TB4MvFIwZ9pqPdonGs3RG1tlbnq4CcO
+ BJ70ZX2jeLgK1hXcQ5U4t+PaSClksRUgFMGebTRpjPnVAHU48zj8UcIErxMeqe20EDYo4UI9h3j
+ 5yhwEyx2MOv6Xi3dvQuKYRayYbIQofnaMPqwfoCNLJbMWh/z9CHtnaIjuG3P3qCyjikftjQf9jR
+ IukzmeWZf2Z4kkh17P+1UahCsQBnMIDNCe2AyfFRfNJBx9BNuk7Fszd1kMcZm3gNd5QPaI1df+A
+ mVyDpYS2JxVw//Fal1RV6TkV6HxDyHUiD5D+PDxVeU7LgY7Te7UrHl0bFVocxwKjfsv+KOO9lF4
+ sBoBYHXuS+LsZm+hXEw==
+X-Authority-Analysis: v=2.4 cv=GIQF0+NK c=1 sm=1 tr=0 ts=69b856ec cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=WI2LcE4NPZyv2LzpnzYA:9
-X-Proofpoint-ORIG-GUID: 9B3VMW4k79C6H2lLa666312DBvUpP6oo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDE1MyBTYWx0ZWRfX5NpBeL/2x8Um
- 421P7c/cW8Q92JxG2L8c43QxPU7hGOcEf52+z9/QnHwaEjQZCnzef95zeqXCMSgFM7t8laVEQx9
- cnqBAJJiczPHVxijvFWrU5JzRRibvqHIEgW6PjfAji+k+TH6i/5vNVpcbnRllZJb4sEzZEedxZS
- vIxKJyD/U3KniKKTLCnNtRrU0iZ9101QTTuv/eEpHBGno62FH8U+aXNDBaupNTjIJ98/qYMUleP
- DKrIwE1sqEQo+MkPWWq+W9X9Sfwpt5EeFvukRgW8pqNiPzqygCdH1VvcrRRH2AT8ptXkCcrFGY2
- TSC6MLrCZf+TiUvo+pKYUisKLU4bcgAYSGhFNigWnkshb1bL+yZF3vlkpbVUeFz0OAVBCuodW6Q
- +iqMjcyP5UfLYSfRUgXnc7M8CK91DxHOobWDHsr2qbG1suGNhmzG++/OFi2lcEcpDhD9OoRP5hE
- OaZAPRmd+eYfNPeaBTg==
-X-Proofpoint-GUID: 9B3VMW4k79C6H2lLa666312DBvUpP6oo
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=zIJZGsahcqu1twqqOCkA:9
+X-Proofpoint-ORIG-GUID: atdWXU3xHPgmlDB3jke0XVY08A_n6ylN
+X-Proofpoint-GUID: atdWXU3xHPgmlDB3jke0XVY08A_n6ylN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-16_05,2026-03-16_06,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603160153
+ spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ phishscore=0 impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160153
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225671-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225670-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -133,148 +132,65 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.ibm.com:mid];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	DKIM_TRACE(0.00)[ibm.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: C348229FAED
+X-Rspamd-Queue-Id: 8E5C429FAA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On s390 today we overwrite the PCI BAR resource address to either an
-artificial cookie address or MIO address. However this address is different
-from the bus address of the BARs programmed by firmware. The artificial
-cookie address was created to index into an array of function handles
-(zpci_iomap_start). The MIO (mapped I/O) addresses are provided by firmware
-but maybe different from the bus addresses. This creates an issue when
-trying to convert the BAR resource address to bus address using the generic
-pcibios_resource_to_bus().
+The current reset process saves the device's config space state before
+reset and restores it afterward. However errors may occur unexpectedly and
+it may then be impossible to save config space because the device may be
+inaccessible (e.g. DPC) or config space may be corrupted. This results in
+saving corrupted values that get written back to the device during state
+restoration.
 
-Implement an architecture specific pcibios_resource_to_bus() function to
-correctly translate PCI BAR resource addresses to bus addresses for s390.
-Similarly add architecture specific pcibios_bus_to_resource function to do
-the reverse translation.
+With a reset we want to recover/restore the device into a functional state.
+So avoid saving the state of the config space when the device config space
+is inaccessible.
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
 ---
- arch/s390/pci/pci.c       | 74 +++++++++++++++++++++++++++++++++++++++
- drivers/pci/host-bridge.c |  8 ++---
- 2 files changed, 78 insertions(+), 4 deletions(-)
+ drivers/pci/pci.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 2a430722cbe4..87077e510266 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -272,6 +272,80 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
- 	return 0;
- }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index a93084053537..373421f4b9d8 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5014,6 +5014,7 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
+ {
+ 	const struct pci_error_handlers *err_handler =
+ 			dev->driver ? dev->driver->err_handler : NULL;
++	u32 val;
  
-+void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
-+			     struct resource *res)
-+{
-+	struct zpci_bus *zbus = bus->sysdata;
-+	struct zpci_bar_struct *zbar;
-+	struct zpci_dev *zdev;
-+
-+	region->start = res->start;
-+	region->end = res->end;
-+
-+	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
-+		int j = 0;
-+
-+		zbar = NULL;
-+		zdev = zbus->function[i];
-+		if (!zdev)
-+			continue;
-+
-+		for (j = 0; j < PCI_STD_NUM_BARS; j++) {
-+			if (zdev->bars[j].res->start == res->start &&
-+			    zdev->bars[j].res->end == res->end &&
-+			    res->flags & IORESOURCE_MEM) {
-+				zbar = &zdev->bars[j];
-+				break;
-+			}
-+		}
-+
-+		if (zbar) {
-+			/* only MMIO is supported */
-+			region->start = zbar->val & PCI_BASE_ADDRESS_MEM_MASK;
-+			if (zbar->val & PCI_BASE_ADDRESS_MEM_TYPE_64)
-+				region->start |= (u64)zdev->bars[j + 1].val << 32;
-+
-+			region->end = region->start + (1UL << zbar->size) - 1;
-+			return;
-+		}
+ 	/*
+ 	 * dev->driver->err_handler->reset_prepare() is protected against
+@@ -5033,6 +5034,19 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
+ 	 */
+ 	pci_set_power_state(dev, PCI_D0);
+ 
++	/*
++	 * If device's config space is inaccessible it can return ~0 for
++	 * any reads. Since VFs can also return ~0 for Device and Vendor ID
++	 * check Command and Status registers. At the very least we should
++	 * avoid restoring config space for device with error bits set in
++	 * Status register.
++	 */
++	pci_read_config_dword(dev, PCI_COMMAND, &val);
++	if (PCI_POSSIBLE_ERROR(val)) {
++		pci_warn(dev, "Device config space inaccessible\n");
++		return;
 +	}
-+}
 +
-+void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
-+			     struct pci_bus_region *region)
-+{
-+	struct zpci_bus *zbus = bus->sysdata;
-+	struct zpci_dev *zdev;
-+	resource_size_t start, end;
-+
-+	res->start = region->start;
-+	res->end = region->end;
-+
-+	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
-+		zdev = zbus->function[i];
-+		if (!zdev || !zdev->has_resources)
-+			continue;
-+
-+		for (int j = 0; j < PCI_STD_NUM_BARS; j++) {
-+			if (!zdev->bars[j].size)
-+				continue;
-+
-+			/* only MMIO is supported */
-+			start = zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_MASK;
-+			if (zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_TYPE_64)
-+				start |= (u64)zdev->bars[j + 1].val << 32;
-+
-+			end = start + (1UL << zdev->bars[j].size) - 1;
-+
-+			if (start == region->start && end == region->end) {
-+				res->start = zdev->bars[j].res->start;
-+				res->end = zdev->bars[j].res->end;
-+				return;
-+			}
-+		}
-+	}
-+}
-+
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
- 			   pgprot_t prot)
- {
-diff --git a/drivers/pci/host-bridge.c b/drivers/pci/host-bridge.c
-index be5ef6516cff..aed031b8a9f3 100644
---- a/drivers/pci/host-bridge.c
-+++ b/drivers/pci/host-bridge.c
-@@ -49,8 +49,8 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
- }
- EXPORT_SYMBOL_GPL(pci_set_host_bridge_release);
- 
--void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
--			     struct resource *res)
-+void __weak pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
-+				    struct resource *res)
- {
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
- 	struct resource_entry *window;
-@@ -74,8 +74,8 @@ static bool region_contains(struct pci_bus_region *region1,
- 	return region1->start <= region2->start && region1->end >= region2->end;
- }
- 
--void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
--			     struct pci_bus_region *region)
-+void __weak pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
-+				    struct pci_bus_region *region)
- {
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
- 	struct resource_entry *window;
+ 	pci_save_state(dev);
+ 	/*
+ 	 * Disable the device by clearing the Command register, except for
 -- 
 2.43.0
 
