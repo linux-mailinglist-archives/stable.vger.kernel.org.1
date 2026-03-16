@@ -1,84 +1,77 @@
-Return-Path: <stable+bounces-225534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAMuI8H2t2mfXQEAu9opvQ
-	(envelope-from <stable+bounces-225534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:25:37 +0100
+	id gKbyNmb8t2mXXwEAu9opvQ
+	(envelope-from <stable+bounces-225535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:49:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A29A29974E
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:25:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371FE299A93
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BBCF2300BE86
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 12:25:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7961E302C779
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 12:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BA5395240;
-	Mon, 16 Mar 2026 12:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8414381B16;
+	Mon, 16 Mar 2026 12:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="MMXrGwYv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nHq1ZzZ3"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2317220F3E;
-	Mon, 16 Mar 2026 12:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B6F21C173;
+	Mon, 16 Mar 2026 12:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773663929; cv=none; b=snOCEcAcJKVrjWZPUtEBrVrej0U9x3zmFI+JE68oqXLMLtroHRnfiDxPvkQskGDOl75lKrNwKHu26QQ260t87eEcGlDVP9Kr8UBp1P1uiU6AFiWfg4vtrzJ90Da1DBPioWXHc+1r9FWKsXJsdNRATQW0Gi3azBzM/mrt3F6ouF0=
+	t=1773665352; cv=none; b=W/XiiTFrWAxy7cG1hmvjxrFxS6Yfc/SOf9CgMUeOoW1O9pAiwAU5tPuut0GGNL7Mg+lCZoYUPvdN3RPI1iT6qPCUGUFKqAP7067ToYO0eOQHmOV/hPCZdMFmvBpQSkYrT8Upu2RgXsmNlBpqnyI4Cc35sROM/0QVj5fC5R2QdYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773663929; c=relaxed/simple;
-	bh=kPJYIEAJR54rRZMU4vjSNZyuTkSLhKkgEbKyOFFoJkc=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=ih3QRhsJp5smtf6jODhXa8z32Y9anOP+eMsX3KP36/1UR32Dm2pJh+kehUYBuq599cy7A2zAKBAISEYeghghdpWNkXRopgmm6teXAP5fL3a3uUbUCJ7e4px+z1h9gaGQaotlezEtxRc8XmT1jCNANIeTyjLY2bn69WCk038knZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=MMXrGwYv; arc=none smtp.client-ip=43.163.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1773663919; bh=8IlexxpMmwKQzRij5fT70kj2wanqMWnzZ9aWuQZ0bFY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MMXrGwYvMxa7UkPPOwwjkHPJJZaAh9t+UEZxsosofHd9RM/7STYZG2uKwzbcsYg12
-	 iFpW2sh96OKJaFNY1zOiPWmCPE9oTx6G+euKV4VfWTAC/Jk0oMHugreiK3Q0lTeI89
-	 Z7VK5O6ME2kS+smVThl9F/GRASwEzEia3OXLpvQM=
-Received: from June.localdomain ([123.121.145.35])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 6040EEFF; Mon, 16 Mar 2026 20:24:04 +0800
-X-QQ-mid: xmsmtpt1773663846tp2qb4xg8
-Message-ID: <tencent_58827022DBE97040A15A03C0657EC869140A@qq.com>
-X-QQ-XMAILINFO: MRMtjO3A6C9Xixzd0RHdhCMLvrK3ihLIBz5bhDAPSwLnSLRRGDvVDPmxKOESBI
-	 mMQkN4Z65t9+iSvQRhSaC6rQhFcsdzQPJDkqWwJr1s6crwt+ubEiYpC6vwm25Zyv4kN4IaQWvny1
-	 CiPXGyS86SmmMsICcWH+N4D5ADgChRQ9fxSJkdIra//40cstQ4fgHRKZ8sXjFx8u010mRke0EPht
-	 9FSkPoJJr9eZehdUvSibFS4QUwwbPfnu0SBCMTE7xA6OYPPpN/qzhdbFKy/0DTBnX6Fg+LFBXUWJ
-	 Z44sidX0ApdJPnYnkBt7JjwV9VmjZjsTprDmmX75Xy1wuC1PwTDWXMsx9STHDtpB5eoVs1dqqyQW
-	 H+O2D2DTDnsq+CHRE3LD8XL0hEp2+sO+Pw5X4xCmVxWsXOWpvPExJFcyh+9Tr+dLkgdvhvwus1t8
-	 u75QobVUKhzcRpLZKgdyVpUbWFnIlEaWEdfk/aYG4/3Wwo7UwXpsyEa3TIUTTXIws8k3zU4qnLmX
-	 54TzEm2YN0yYT1+tN6QKZUcqGccRxxBPWWXX0UhM9mipvlTklbP0ny6i1Sthkhn6yBWG0yMrb6i/
-	 HQjMbDGni+H8l5jpdQINFDwjO8BWByd2YE88cY2kCOjadU7B2Cl2QZ4quxuaeILPJdcTyzYJZroF
-	 2GNt4GijYT22dw67h78qYj6cb8Lthoyju1oX49WOWpcvrQeaYEFjN1j7EGqbVCRsVVTdBr0Tp7WM
-	 HD6vuCgLXtNteCVO0WKAhmc3IujpznE2A7x6Dsb2p/hAVXf0/9T2isNJw58gouZobY+t0TygIsOo
-	 Uj8kIxdgW4LGJ5CEBH1tBGjHg1/Qbgm/Y0AEtxEbMf+CViZ9/yXC/N2hr9L4oDzQ0Nxi2oTN97kJ
-	 HgVqihBqSDFIJ+icp5fI33S8whTCt8NGdPtVXETcfsS4fUEBqfMfJi2iGGuf5p28r26M//iRQH43
-	 K7ub7+c1k8ytm0BrP6Zs/vne1JwyNVd78UOXjU1qeO1OHPrMYlRUrn1wbRZEmO2KStsWVRL+suYK
-	 wnMd90rq6z5+mqA6sS/MWsU+eSC6k6HaE+2jyWisuRUTaQ8YJSMAiznvEKAznADTtxXf7yFcz0tn
-	 bqUAnhNeQgovB+13w=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: Wang Jun <1742789905@qq.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Wang Jun <1742789905@qq.com>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: gszhai@bjtu.edu.cn,
-	25125332@bjtu.edu.cn,
-	25125283@bjtu.edu.cn,
-	23120469@bjtu.edu.cn,
+	s=arc-20240116; t=1773665352; c=relaxed/simple;
+	bh=+fKnMOAy4txozyuTQa186zP47LQj68e8yWqSt0ZdZiE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hwd1+x9/Rop5zdzrMSruPLiQ2Jr2JuQpPOMehIfEUrqV4du+emChLkmjG1b4kbJlZ6gFgN9mDVO5uGm/uGybOdbZziOrDAkXGy6JV6TlSLRAP4xIh4yRXktrQNhqPR8jtPPdPcSwLD7GB8sCHsXFnADZLiUrTT0/cgeGUDUDO7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nHq1ZzZ3; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773665351; x=1805201351;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+fKnMOAy4txozyuTQa186zP47LQj68e8yWqSt0ZdZiE=;
+  b=nHq1ZzZ3urO+lek5hQrppKmsOE84kJvwKvxKB/Pt2ZpBxXqZRLBHYGM1
+   jBElZzIYRIbnEKXKlTbU5AHDbPF+R+gnGaN7n5V8Nofd+Uni/ul4Q4z3Y
+   ofQ0fb0UYAZ8beJi+opR5/a31eJGEHql+rLB6J/xI1RnZON231NAjUld0
+   I5SOH80gcsFfzTULSRc0p+VYcMzD+bnoYNUBB6WVJM9HTYcCXkFmhHbSi
+   bTI29nbQhclDN4oIDNPWRXjpnLNv48T3i55lLrOfGtbUd9DOUC805myeF
+   3SuelA8KndQXEs1fSjtMRoJKR/tXrYnY0aBNL7FTCk05T7aXrDgDj2IgN
+   g==;
+X-CSE-ConnectionGUID: nYA0v7IuSaqbL0waDjmCaA==
+X-CSE-MsgGUID: Cqa5yglgRe+qETmwApbP4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74382108"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="74382108"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 05:49:10 -0700
+X-CSE-ConnectionGUID: EjlCi3DxRQatj9fKZHTReg==
+X-CSE-MsgGUID: K9Hc76poRwCC4Cy9XMcoEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="221146562"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.244.184])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 05:49:08 -0700
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	ckeepax@opensource.cirrus.com,
+	david.rhodes@cirrus.com,
+	rf@opensource.cirrus.com
+Cc: linux-sound@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v7 1/1] media: saa7164: add ioremap return checks and cleanups
-Date: Mon, 16 Mar 2026 20:24:01 +0800
-X-OQ-MSGID: <20260316122403.23337-2-1742789905@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260316122403.23337-1-1742789905@qq.com>
-References: <a44adff7-60fd-4fca-85f4-0c69a035ec69@web.de>
- <20260316122403.23337-1-1742789905@qq.com>
+Subject: [PATCH] ASoC: cs42l43-jack: Remove manual pm_runtime get/put from tip_sense_work
+Date: Mon, 16 Mar 2026 14:49:24 +0200
+Message-ID: <20260316124924.31047-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,140 +79,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225535-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225534-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,qq.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qq.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[qq.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,opensource.cirrus.com,cirrus.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:dkim,qq.com:email,qq.com:mid]
-X-Rspamd-Queue-Id: 8A29A29974E
+	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 371FE299A93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add checks for ioremap return values in saa7164_dev_setup(). If
-ioremap for BAR0 or BAR2 fails, release the already allocated PCI
-memory regions, remove the device from the global list, decrement
-the device count, and return -ENODEV.
+When a jack is inserted the forced pm_runtime_get() will keep the codec,
+soundwire bus and it's parent active as long as the jack is connected.
+This makes for example the DSP and firmware booted up on Intel platforms.
 
-This prevents potential null pointer dereferences and ensures proper
-cleanup on memory mapping failures.
+If the module is removed while the jack is connected we will also have
+unbalanced runtime PM state.
 
-Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
+Without the manual get/put, the button detection still works correctly and
+the system can reach lower power state while the jack is connected like
+in the case when there is no jack connected.
+
+Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wang Jun <1742789905@qq.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 ---
- drivers/media/pci/saa7164/saa7164-core.c | 47 ++++++++++++++++++------
- 1 file changed, 35 insertions(+), 12 deletions(-)
+ sound/soc/codecs/cs42l43-jack.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
-index 74406d5ea0a5..e8037ac1db73 100644
---- a/drivers/media/pci/saa7164/saa7164-core.c
-+++ b/drivers/media/pci/saa7164/saa7164-core.c
-@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_dev *dev)
- 	return -EBUSY;
- }
+diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
+index 3e04e6897b14..d90a13a55845 100644
+--- a/sound/soc/codecs/cs42l43-jack.c
++++ b/sound/soc/codecs/cs42l43-jack.c
+@@ -756,10 +756,8 @@ void cs42l43_tip_sense_work(struct work_struct *work)
+ 	ring = (sts >> CS42L43_RINGSENSE_PLUG_DB_STS_SHIFT) & CS42L43_JACK_PRESENT;
  
-+static void release_resources(struct saa7164_dev *dev)
-+{
-+	release_mem_region(pci_resource_start(dev->pci, 0),
-+			   pci_resource_len(dev->pci, 0));
-+
-+	release_mem_region(pci_resource_start(dev->pci, 2),
-+			   pci_resource_len(dev->pci, 2));
-+}
-+
- static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
- {
- 	struct saa7164_port *port = NULL;
-@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	if (tip == CS42L43_JACK_PRESENT) {
+-		if (cs42l43->sdw && !priv->jack_present) {
++		if (cs42l43->sdw && !priv->jack_present)
+ 			priv->jack_present = true;
+-			pm_runtime_get(priv->dev);
+-		}
  
- 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
+ 		if (priv->use_ring_sense && ring == CS42L43_JACK_ABSENT) {
+ 			report = CS42L43_JACK_OPTICAL;
+@@ -779,10 +777,8 @@ void cs42l43_tip_sense_work(struct work_struct *work)
  
--	mutex_lock(&devlist);
--	list_add_tail(&dev->devlist, &saa7164_devlist);
--	mutex_unlock(&devlist);
-+	scoped_guard(mutex, &devlist) {
-+		list_add_tail(&dev->devlist, &saa7164_devlist);
-+	}
+ 		snd_soc_jack_report(priv->jack_hp, 0, 0xFFFF);
  
- 	/* board config */
- 	dev->board = UNSET;
-@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+-		if (cs42l43->sdw && priv->jack_present) {
+-			pm_runtime_put(priv->dev);
++		if (cs42l43->sdw && priv->jack_present)
+ 			priv->jack_present = false;
+-		}
  	}
  
- 	/* PCI/e allocations */
--	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
--			     pci_resource_len(dev->pci, 0));
-+	dev->lmmio = pci_ioremap_bar(dev->pci, 0);
-+	if (!dev->lmmio) {
-+		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
-+		goto err_ioremap_bar0;
-+	}
- 
--	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
--			     pci_resource_len(dev->pci, 2));
-+	dev->lmmio2 = pci_ioremap_bar(dev->pci, 2);
-+	if (!dev->lmmio2) {
-+		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
-+		goto err_ioremap_bar2;
-+	}
- 
- 	dev->bmmio = (u8 __iomem *)dev->lmmio;
- 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
-@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
- 	saa7164_pci_quirks(dev);
- 
- 	return 0;
-+
-+err_ioremap_bar2:
-+	iounmap(dev->lmmio);
-+err_ioremap_bar0:
-+	release_resources(dev);
-+
-+	scoped_guard(mutex, &devlist) {
-+		list_del(&dev->devlist);
-+	}
-+	saa7164_devcount--;
-+
-+	return	-ENODEV;
- }
- 
- static void saa7164_dev_unregister(struct saa7164_dev *dev)
- {
- 	dprintk(1, "%s()\n", __func__);
- 
--	release_mem_region(pci_resource_start(dev->pci, 0),
--		pci_resource_len(dev->pci, 0));
--
--	release_mem_region(pci_resource_start(dev->pci, 2),
--		pci_resource_len(dev->pci, 2));
-+	release_resources(dev);
- 
- 	if (!atomic_dec_and_test(&dev->refcount))
- 		return;
+ error:
 -- 
-2.43.0
+2.53.0
 
 
