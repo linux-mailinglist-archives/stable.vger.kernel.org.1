@@ -1,142 +1,145 @@
-Return-Path: <stable+bounces-225652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKb7F1VJuGmgbgEAu9opvQ
-	(envelope-from <stable+bounces-225652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:17:57 +0100
+	id MB03HE4auGn/YwEAu9opvQ
+	(envelope-from <stable+bounces-225570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:57:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AA129EF0E
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:17:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF5F29BDBA
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2F9A30838E4
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:15:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57D83302CB16
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B298B3D5663;
-	Mon, 16 Mar 2026 18:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA81D30648C;
+	Mon, 16 Mar 2026 14:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gblBs/uQ"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="rZW/B/xb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10627.protonmail.ch (mail-10627.protonmail.ch [79.135.106.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7478C34AB01;
-	Mon, 16 Mar 2026 18:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA01304BCB
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773684927; cv=none; b=N4CpXhnQ/837i2KerCIE5i2oECZjwOT8NHcObe7v9ROcbWqIe8xmH5NUS9bsTg4sgdXVdKIHLBUs/Xsjqc2VQgPKpLjV9HimnFDZuzT51/0OS8wMaIYF7XhN+toGzzqKpiENYQaWlpwtAOtM4XFiHvXDqN1nQkChq9QSj4nxdbs=
+	t=1773673027; cv=none; b=a4VDYTHwZlVKnUQ1z5d/kh2ioh6vr7EsdsG10DUWEAC08jYZtQEy1efXzZznja6gz+ZkkLmQlSGbccRI2y8/oormBqQEJCpr2EcHwCqiCvkVOJG5ESKRFOlQ8oD2hg4Juyckjl6C9lRAq+JBDsySLSu3nhv449LZpcxFRIvuf70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773684927; c=relaxed/simple;
-	bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=G3K5mUbwIxqYyFX3gYYRMJatr9TuW5PShbIHI6AQT9t0MKgGt+3aLH9E00ZlTsTnGKbCnRW9oFFXOGz+XAZ+NNoyMaBguOpVs502kTMdsg7rjKEaHHW4StCAekoF6Hba7EcBwpMEnLzPwCweJ3RlTcAuKxRUBvcWcemKjTTjIVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gblBs/uQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E20C19421;
-	Mon, 16 Mar 2026 18:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773684927;
-	bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=gblBs/uQnCo1hzsx+i1mnoUIn+ygiKKU7KZQDpNLNnMzCrF7Bfw7kjLq9KiBBiuKs
-	 8Y7XOu2JZS6fxe62CmetSOyr/Y/zAzUZUr/t1puX2oekM82FVsfoBHoYOkgtPuJomX
-	 ZlGoxbf4DSarEeQhVOlZ4Yq0SWajiMwRpRoTJErVKNnAKFd/hFDWaM0Lo9YbIihCQA
-	 Q+i1OFSG2T5m/QcX40B87lPKNjL+xTedNKnN+o3GiF/i+j4XptyyokHN+t7dzL0lr8
-	 naLhV0ndCmtbjUm9MyAoD8+z4TWPQVxrHQ2FHvg5nvIjNwnGdyadpoTrNhQE5JydyL
-	 P7xlasTuOKT/w==
-From: Mark Brown <broonie@kernel.org>
-To: Jonathan Marek <jonathan@marek.ca>, konrad.dybcio@oss.qualcomm.com, 
- Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
-Cc: kernel@quicinc.com, linux-arm-msm@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com, 
- bjorande@quicinc.com, mukesh.savaliya@oss.qualcomm.com, 
- praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
-In-Reply-To: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
-References: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
-Subject: Re: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change
- detection
-Message-Id: <177367248800.88614.6533439150057723684.b4-ty@kernel.org>
-Date: Mon, 16 Mar 2026 14:48:08 +0000
+	s=arc-20240116; t=1773673027; c=relaxed/simple;
+	bh=Y1ReUoDwMJO+LpydzwkDbXsa1KYgRtYo1UWlqvLRxbg=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=iLl/YXwVCyRwDMEOPBz88xya3YraQRhlutrTxv8l9JbfBkYoMJZSd38+FixtvLrtmt1UxJsSNkpneMqY/gRgZwUTTOu9foB1hbCv0YvFzEo6ZyuO05NRtx/PsMawtQIKY7LTJVXjylWz6mD+nGl08k0SjY0ebn4FotY0z+3/4mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=rZW/B/xb; arc=none smtp.client-ip=79.135.106.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1773673016; x=1773932216;
+	bh=Y1ReUoDwMJO+LpydzwkDbXsa1KYgRtYo1UWlqvLRxbg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=rZW/B/xbv8RTkcBgZxlEZAs0uBgOsFuhBGzcEto8Mt6Ih3gPJj6gVIE7KRH85cejC
+	 TrkzWg6ubYRaYKCGwwjljnTi6/ZN8XB4x+cMoPAhdPlgeBYFof9Y4nQYZ0djrtRFpg
+	 OpTQlMqRekuDcL1F9V0Rrvw+lpcL/UnscYmxr2TBQQI1DReWP7f0fRlTaXhFxhIqHa
+	 Y3OxoaUZNvDhYmf8JFoNIltwWpUBy7cO8yOgVrZ3vuZS56nzs9KtphtniVg5tG6k4C
+	 HcONW2GaNzRFBYS9cqEosyH48gXZlvLKLsTALhFX98DGnLqxagutQMoYr0Nsxhu8Yx
+	 cCIz8uVSzJRQg==
+Date: Mon, 16 Mar 2026 14:56:51 +0000
+To: netdev@vger.kernel.org
+From: Paul Moses <p@1g4.org>
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, chopps@labn.net, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
+Subject: [PATCH net v3] xfrm: iptfs: only publish mode_data after clone setup
+Message-ID: <20260316145642.4154656-1-p@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 47428d8ed8b1babe832c1a8256bc94242e64a3a3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c239c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1128; i=broonie@kernel.org;
- h=from:subject:message-id; bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpuEi7krKr001FTWyaeUED0fslvcGMiS7eKHip3
- pm37botAwOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabhIuwAKCRAk1otyXVSH
- 0J8kB/4rJhDDxY6QohwJqf6wrPrt2fXvD+yk8IFIxisasIN9DXuBSwGcuQMyBWAoF/10+9Zp2En
- lGh+tC09FRon+y356FXJvg8xo1Gn+mhFq0Pp6talbvJWKN4KvnOFl+VeZoVD6HaZeN0HWsqHhnc
- vWL8U5k0jhH6qcC0OjmupOJKYCJ33QVIAMHxVJaIUGrp5bHyiCKcVuZ6H+accFpBY+6Zoa4GNgY
- CnDj93/38PD9ab1MLWkvhNtR2lGaF1dXJ6ayK55++3SIWQ8dbOLIrUONeH3ERcsns7WOm6GGvwr
- 3Z7x0f878taMB6MR1k5pjLjv4hzDAek9D6WtZ3l2j2ds01QY
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225652-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-225570-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1g4.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00AA129EF0E
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2BF5F29BDBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 16 Mar 2026 18:53:31 +0530, Maramaina Naresh wrote:
-> spi: geni-qcom: Fix CPHA and CPOL mode change detection
+iptfs_clone_state() stores x->mode_data before allocating the reorder
+window. If that allocation fails, the code frees the cloned state and
+returns -ENOMEM, leaving x->mode_data pointing at freed memory.
 
-Applied to
+The xfrm clone unwind later runs destroy_state() through x->mode_data,
+so the failed clone path tears down IPTFS state that clone_state()
+already freed.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
+Keep the cloned IPTFS state private until all allocations succeed so
+failed clones leave x->mode_data unset. The destroy path already
+handles a NULL mode_data pointer.
 
-Thanks!
+Fixes: 6be02e3e4f37 ("xfrm: iptfs: handle reordering of received packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+---
+Changes in v3:
+- Rebase on top of current ipsec tree
 
-[1/1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
-      https://git.kernel.org/broonie/spi/c/ba3402f6c85b
+ net/xfrm/xfrm_iptfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 2c87290fe06c..7cd97c1dcd11 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2664,9 +2664,6 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
+ruct xfrm_state *orig)
+ =09if (!xtfs)
+ =09=09return -ENOMEM;
+=20
+-=09x->mode_data =3D xtfs;
+-=09xtfs->x =3D x;
+-
+ =09xtfs->ra_newskb =3D NULL;
+ =09if (xtfs->cfg.reorder_win_size) {
+ =09=09xtfs->w_saved =3D kcalloc(xtfs->cfg.reorder_win_size,
+@@ -2677,6 +2674,9 @@ static int iptfs_clone_state(struct xfrm_state *x, st=
+ruct xfrm_state *orig)
+ =09=09}
+ =09}
+=20
++=09x->mode_data =3D xtfs;
++=09xtfs->x =3D x;
++
+ =09return 0;
+ }
+=20
+--=20
+2.53.GIT
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 
 
