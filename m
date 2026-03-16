@@ -1,222 +1,235 @@
-Return-Path: <stable+bounces-225540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4M4IFrQGuGkWYQEAu9opvQ
-	(envelope-from <stable+bounces-225540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:33:40 +0100
+	id uKxTBgcKuGkWYQEAu9opvQ
+	(envelope-from <stable+bounces-225541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:47:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B2429A77E
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:33:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C5929AB62
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F1C33016EE8
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:33:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8DCA303AA94
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 13:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CE739A071;
-	Mon, 16 Mar 2026 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F28F39A071;
+	Mon, 16 Mar 2026 13:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="q5I/euFS"
+	dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b="dGxbqzpf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from os-cillation.de (mx.os-c.de [213.165.83.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EA039A050
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 13:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEF22253EB;
+	Mon, 16 Mar 2026 13:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.165.83.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773667989; cv=none; b=e/iAR48SvAAVR44y1BkVvh613hCJ+GUU2M37G7a8ZgGwSbeUqYz7gYwet6a3N4l1ydKTpSI/h4uGOxD9rZGKfFpYbkq/dSapmV/t2tgPzXLOCN3vEkpLMGn/pqhplAUji/S/cg/alkNwcPMYcjy6gsGpwCEc4PHWAXd/i4hPxC8=
+	t=1773668688; cv=none; b=kYJtEFRKuF42KTY1UUd+RLvD/a5UGM8bB7ac0rPb+O7LExln0DzBse/IOUa/MTgmImbZEbgTsmklA5cIhQfH2Sh4WLvZXqcWMAHgQieZy878AWaK6/1BIhcY+21qPO6RYeEQ4PTqaJgq+BKhCp22hRVqUqQ36+o6K9wey80+a1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773667989; c=relaxed/simple;
-	bh=HHBTFy4zMHjrD5CSXhgI6Vm7bW76Ah/euPxJ1LSRW1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkJy9CKpl6xI2W4Kp7256haA+FPzmIwDZkaKro0HHExUInN+/fRciQ7Cxeu0QQAtJ7+OERPVsiemzO19QhxOj9t6m4rtjw2IPykcLFIkPIN30Yy0E7ysg22jBhc6IUY4qOCXawcDa9WiECrxf7bJrJO1JAvsyRFWHH/KdGZzA7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=q5I/euFS; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-439bc14dcf4so4023726f8f.1
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 06:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1773667986; x=1774272786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JgZptLTx0r+9WdLD0VCkYl5EKFDxApu+RZvQ4Ya6Vgs=;
-        b=q5I/euFS/li7/YUzGvqzgaPCBpyOswmLtcu9qnJx/hZnoJS4heLU1J0q4NuqrIQTjG
-         MmeZ1PvPznBOxC0qUm5EuNI2PBUsc4bWvEB8OWqNUaBkKJmrdGzIbatVzCh5aWLREXKs
-         Hm7Lc0HPZ1CwE3C9kL864ZKJxgchxOm15pw75PKqATkUgm/frN8cLblAwW2+qEgAeb8F
-         AIQ1uMk0NN3QWIHSlhbmKK6VjTrQ79izJ1OBugm3V8Rhj+l8E8SVjMJPkJA+vjaSalFt
-         rKp1XkSAzcgsVLh0rSiPUroDys8bWbk91RQhbIY6ny+TLW8FrXMT0TyCv3rIE4cQsVoR
-         tp9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773667986; x=1774272786;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JgZptLTx0r+9WdLD0VCkYl5EKFDxApu+RZvQ4Ya6Vgs=;
-        b=O6mjoYrTKILu9i4BlFUHcPshWmSjybPzKj3CQdHhMGC8kzO0ooe+YP77iHLMi3l6Mz
-         HP47Nyiz9+lIIulxow7PYout5hd5JOdynMkWbgpgN+SsdgzEeUtT1kZ27hJQUVKrWofh
-         DpYh/JbBJodfrW238ggqb+GYXir2O3Ci61Ls09ygQfyMq4nq9rt+z3v9o7U6P5GBZpaW
-         XxtTMjKqJ34ft1oE3n+rOMdxt3BY5SFg2izVfh/w7y0UbsynMTmHqLY4Nj/fn0j76rYt
-         73MFAaPZc1GBhhbA9TSr0vvLlsV7nvZ3K1RcqzxGPwTX6wTiUa6u7uoOtsTh2UM4MoFm
-         8nWg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9SehxFqwJ9F+a9SZDH7hrLOYQGUGSR+m4gyuXQVphFJxN/pRB6vVv1y68B8Y5hQOrhcFxup8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSKLPqegSLKIzgOjnx1tT3qgEiO7QS2WvCFutjbkweztfUM1Mt
-	M92mB0q/xxuGSjKiH/ieW5SIWLw7QlBB5Lb+5p9e25pA0Pjqsa7Ws9v2xOYmZl4PUZU=
-X-Gm-Gg: ATEYQzybt7b6KJpxGsmxP5+7NPBRNqGQJjT7BmCFGxBjt1F/yOMZaENQRod58QNSyMz
-	iCCB/SG8NTOcCW2+PGvbLx5QgX37md4m+hY7jrpDh18z+x+oUYddKOQ6lMLuUSWM8dqQ5byJnkQ
-	6SOFcgF+dXYY4robz4gcXNIE1He5igWodrVBP0//FrcZgs3QMybuDsA5XAjUTPVZJOcByZD0am1
-	NZsKxGb+c6/A2qbM2HBAbPZsMt6E+CdxvRaORZpBmundkHCQS+0JnPZwGuuK00BOAkzMaPtSXB4
-	aEZ0SYwE1Fd57Eux/c/p351mbBkT39/J6aN5RFZPCjBYl9O9jPEtMAHA4Ol6kK9RtaU0Y1uhsAk
-	W9o+WMSuDMsQPPobq6JOs5UxTZbWNFin6GBIDDimSHnLaEPLW8mPaczlRUs3KLspQBWU7sZu0+E
-	tRs7aoe0RYiCu8uEl1J/z2ii+y3RHnvgl/q9ta0sS33YL3Du1QzWQmaEztpOYkrI9sxNrPXpyyW
-	tiEmT2pVzQ5bq2J6A==
-X-Received: by 2002:a5d:49cd:0:b0:43b:4746:7cf7 with SMTP id ffacd0b85a97d-43b47467d5bmr2174740f8f.24.1773667985830;
-        Mon, 16 Mar 2026 06:33:05 -0700 (PDT)
-Received: from claudiu-TUXEDO-InfinityBook-Pro-AMD-Gen9.. ([2a02:2f04:6208:0:c5e3:3624:ad1c:6b4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b419270efsm11629888f8f.16.2026.03.16.06.33.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 06:33:05 -0700 (PDT)
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-To: vkoul@kernel.org,
-	Frank.Li@kernel.org,
-	geert+renesas@glider.be,
-	biju.das.jz@bp.renesas.com,
-	john.madieu.xa@bp.renesas.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com
-Cc: claudiu.beznea@tuxon.dev,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v10 2/8] dmaengine: sh: rz-dmac: Move CHCTRL updates under spinlock
-Date: Mon, 16 Mar 2026 15:32:46 +0200
-Message-ID: <20260316133252.240348-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260316133252.240348-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20260316133252.240348-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1773668688; c=relaxed/simple;
+	bh=1uigPK22o3/EKF5G1wKKq68Rx61xM13Z4PxAxsJsUSk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SrXhN8jyOQoxe49nP/tquMEbOMtqkUBWSwQwy0wK09S0S30dYYToR6OT9h0V9MCY80lRdJN44IpuJ9MTyV+lqh1vAW34GSWJNnuZQA+laHxoQmOO0GGCF4BD6hnNqJr8MzmClfm3aQ4yFvfVOV3JB6tixzY00bt1v7UsfegAJzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de; spf=pass smtp.mailfrom=os-cillation.de; dkim=pass (2048-bit key) header.d=os-cillation.de header.i=@os-cillation.de header.b=dGxbqzpf; arc=none smtp.client-ip=213.165.83.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=os-cillation.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os-cillation.de
+Received: from core2024.osc.gmbh (ip-094-079-177-042.um30.pools.vodafone-ip.de [94.79.177.42])
+	by os-cillation.de (Postfix) with ESMTPSA id 50C4BC06C4;
+	Mon, 16 Mar 2026 14:44:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=os-cillation.de;
+	s=202409; t=1773668678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Xs2GL3fzG5DdJwAquzy5MyIEQPZUdmAb8QjJf+1ONQ0=;
+	b=dGxbqzpf9aBZr8mqE5/bmBgH7OjT1GKW3e5TYdTpzantFr+SaRZ6CeCcqkkqlLL+dQ7h18
+	fdsCVKVv0NFjGz686diGdHlLugDsrZqcbar8EBIt/HPCxOStLwaJpmpgpRbc0z+07c+XJn
+	vKa9Bb3qjebF+v7L/X99JwsAPL+cSQZzrYLFD4PF8aGGD1xPsYGEdoohVWjN6QI0Bkr831
+	wRLJEclWTaPfbFecFNp4gHLSzv9QX7WOhcHADV/MVSFNMi5tH6OpEVDsENfPcqDf/z2SG0
+	qqndvB8ntrmJSvvATQdyEfRXrHGtHrqIIpqcIwKcOcyCFyGlGTeDUbnCvArMBw==
+Authentication-Results: os-cillation.de;
+	auth=pass smtp.auth=os-c@schweissgut.net smtp.mailfrom=hd@os-cillation.de
+Received: from [192.168.3.45] (hd2022.osc.gmbh [192.168.3.45])
+	by core2024.osc.gmbh (Postfix) with ESMTPSA id DC9FB200EBD;
+	Mon, 16 Mar 2026 14:44:37 +0100 (CET)
+Message-ID: <229484e3-d1b1-4cac-ae80-e483b7b90597@os-cillation.de>
+Date: Mon, 16 Mar 2026 14:44:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+From: Hendrik Donner <hd@os-cillation.de>
+Subject: Re: [PATCH v4 1/2] mtd: spi-nor: sst: Fix write enable before AAI
+ sequence
+To: Sanjaikumar V S <sanjaikumarvs@gmail.com>, mwalle@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+ miquel.raynal@bootlin.com, pratyush@kernel.org, richard@nod.at,
+ sanjaikumar.vs@dicortech.com, stable@vger.kernel.org,
+ tudor.ambarus@linaro.org, vigneshr@ti.com
+References: <20260311103057.29-1-sanjaikumarvs@gmail.com>
+ <20260311103057.29-2-sanjaikumarvs@gmail.com>
+Content-Language: en-US
+Autocrypt: addr=hd@os-cillation.de; keydata=
+ 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 li+2
+In-Reply-To: <20260311103057.29-2-sanjaikumarvs@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[os-cillation.de,reject];
+	R_DKIM_ALLOW(-0.20)[os-cillation.de:s=202409];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[os-cillation.de:+];
+	TAGGED_FROM(0.00)[bounces-225541-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225540-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[tuxon.dev];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[tuxon.dev:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 07B2429A77E
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hd@os-cillation.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,os-cillation.de:dkim,os-cillation.de:email,os-cillation.de:mid,dicortech.com:email]
+X-Rspamd-Queue-Id: 86C5929AB62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Both rz_dmac_disable_hw() and rz_dmac_irq_handle_channel() update the
-CHCTRL register. To avoid concurrency issues when configuring
-functionalities exposed by this registers, take the virtual channel lock.
-All other CHCTRL updates were already protected by the same lock.
+Hello,
 
-Previously, rz_dmac_disable_hw() disabled and re-enabled local IRQs, before
-accessing CHCTRL registers but this does not ensure race-free access.
-Remove the local IRQ disable/enable code as well.
+On 3/11/26 11:30, Sanjaikumar V S wrote:
+> From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+> 
+> When writing to SST flash starting at an odd address, a single byte is
+> first programmed using the byte program (BP) command. After this
+> operation completes, the flash hardware automatically clears the Write
+> Enable Latch (WEL) bit.
+> 
+> If an AAI (Auto Address Increment) word program sequence follows, it
+> requires WEL to be set. Without re-enabling writes, the AAI sequence
+> fails.
+> 
+> Add spi_nor_write_enable() after the odd-address byte program when more
+> data needs to be written. Use a local boolean for clarity.
+> 
+> Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+> ---
+>   drivers/mtd/spi-nor/sst.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
+> index 175211fe6a5e..db02c14ba16f 100644
+> --- a/drivers/mtd/spi-nor/sst.c
+> +++ b/drivers/mtd/spi-nor/sst.c
+> @@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+>   
+>   	/* Start write from odd address. */
+>   	if (to % 2) {
+> +		bool needs_write_enable = (len > 1);
+> +
+>   		/* write one byte. */
+>   		ret = sst_nor_write_data(nor, to, 1, buf);
+>   		if (ret < 0)
+> @@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+>   
+>   		to++;
+>   		actual++;
+> +
+> +		/*
+> +		 * Byte program clears the write enable latch. If more
+> +		 * data needs to be written using the AAI sequence,
+> +		 * re-enable writes.
+> +		 */
+> +		if (needs_write_enable) {
+> +			ret = spi_nor_write_enable(nor);
+> +			if (ret)
+> +				goto out;
+> +		}
+>   	}
+>   
+>   	/* Write out most of the data here. */
 
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+found a board with
 
-Changes in v10:
-- none
+   spi-nor spi0.0: sst25vf032b (4096 Kbytes)
 
-Changes in v9:
-- collected tags
+for testing. Tests are on top of
 
-Changes in v8:
-- none
+   94645aa41bf9e (mtd/spi-nor/next)
 
-Changes in v7:
-- collected tags
+This should be done according to the datasheet and fixes that only 1
+byte is written on writes to a an odd address and following AAI writes
+fail, resulting in something looking like this:
 
-Changes in v6:
-- update patch title and description
-- in rz_dmac_irq_handle_channel() lock only around the
-  updates for the error path and continued using the vc lock
-  as this is the error path and the channel will anyway be
-  stopped; this avoids updating the code with another lock
-  as it was suggested in the review process of v5 and the code
-  remain simpler for a fix, w/o any impact on performance
+ffa9 ffff ffff ffff ffff ffff ffff ffff
 
-Changes in v5:
-- none, this patch is new
+when
 
- drivers/dma/sh/rz-dmac.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+24a9 91b3 7cb6 f01c 2994 c368 fdad d3a2
 
-diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
-index ec1b6b00af76..e2d506eb8194 100644
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -303,13 +303,10 @@ static void rz_dmac_disable_hw(struct rz_dmac_chan *channel)
- {
- 	struct dma_chan *chan = &channel->vc.chan;
- 	struct rz_dmac *dmac = to_rz_dmac(chan->device);
--	unsigned long flags;
- 
- 	dev_dbg(dmac->dev, "%s channel %d\n", __func__, channel->index);
- 
--	local_irq_save(flags);
- 	rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
--	local_irq_restore(flags);
- }
- 
- static void rz_dmac_set_dmars_register(struct rz_dmac *dmac, int nr, u32 dmars)
-@@ -573,8 +570,8 @@ static int rz_dmac_terminate_all(struct dma_chan *chan)
- 	unsigned int i;
- 	LIST_HEAD(head);
- 
--	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	rz_dmac_disable_hw(channel);
- 	for (i = 0; i < DMAC_NR_LMDESC; i++)
- 		lmdesc[i].header = 0;
- 
-@@ -705,7 +702,9 @@ static void rz_dmac_irq_handle_channel(struct rz_dmac_chan *channel)
- 	if (chstat & CHSTAT_ER) {
- 		dev_err(dmac->dev, "DMAC err CHSTAT_%d = %08X\n",
- 			channel->index, chstat);
--		rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
-+
-+		scoped_guard(spinlock_irqsave, &channel->vc.lock)
-+			rz_dmac_ch_writel(channel, CHCTRL_DEFAULT, CHCTRL, 1);
- 		goto done;
- 	}
- 
--- 
-2.43.0
+was supposed to be written.
 
+Tested-by: Hendrik Donner <hd@os-cillation.de>
+Reviewed-by: Hendrik Donner <hd@os-cillation.de>
+
+Regards,
+Hendrik
 
