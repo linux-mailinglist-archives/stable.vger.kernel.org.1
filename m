@@ -1,189 +1,152 @@
-Return-Path: <stable+bounces-225546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGE+Fu4OuGmIYgEAu9opvQ
-	(envelope-from <stable+bounces-225546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:08:46 +0100
+	id KK/PJgwTuGk7YwEAu9opvQ
+	(envelope-from <stable+bounces-225547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:26:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1E129B0AD
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:08:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0575029B4F1
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D264308B73B
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:04:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4550B3028E92
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B500239C64E;
-	Mon, 16 Mar 2026 14:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03A32853FD;
+	Mon, 16 Mar 2026 14:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="p7/jnTAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtEEbJL8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5B39B95D;
-	Mon, 16 Mar 2026 14:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3715284880
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669882; cv=none; b=kGQzKIlIsgN0iVkz5ALDftNXLFSfi9gPhEidu8LSdkeZrlM4eE9R6l9Mz+vkWV0v/8NI6MUjZhc5p/4AylMyXyQpyyCKgfYQl0DGw8wuWL3TKF+VlYIbg0MN1CCd4wbQm91fyftxLZ0YxAyzC+WSA3tuirz3mxL8vAiwvhbdnRs=
+	t=1773671136; cv=none; b=SmjXJVtmPmWgCtgwuLBNcHRY01Qh1fNoq5UHBHShEznKy0NCRXE3hu3qaMsY67caEI+LEl8P2vt0EHkE6pqPYe3va3HGDKDYQwdzYnaO91RmdDi6PR2wQAThHJjp5io4F5lZxYDQfPTibELhe8WIzjAi8UN3MkXUpL6lMIaz3Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669882; c=relaxed/simple;
-	bh=mPy27bcHbJYkQHRhzRTcD2juq8WeYLtVss7554Ec/UE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pytwbgEkVhRdD/nFkya498QfytWHSN7ci93TAdq1xvO03FZO71kJI658otESszzvOLqg9LAKrcXPjQuIyxuj1c3D4cPJ4USb2hz+c7g4rE/9VZ7xtU7jrt+vyHhIyOIQa9bxuMEmLwneYebitLfIciVtlvTw/cLsT2Bh/yowvNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=p7/jnTAq; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62FKtSYV737432;
-	Mon, 16 Mar 2026 14:04:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=9GcvlaVj9JseoW8iTrTJv7aIB+ClD6
-	Y7tN5Boz9Tvt4=; b=p7/jnTAq6McYJRa71Va47wxR26Qh5f3gWp5pirsmD/HNlQ
-	Wypmojdz0/wOQVIPl+sdpChIQ57egOAkWVWOqi9VgJ6isw1aajJFLomKIhryUut+
-	vTIFnX725LAbrvpUEuMf2zEg83d1eHQxnIRrYVbMk3TrHfhn/Xp4n6uJEiNLJ06X
-	G8vgW+84ixRR7A7fkmmHdRUUTfKMegKkqLNTRo5exWCyIeYCD0ssng21EgVlxelM
-	6nN1KGqkWX5gCmm6yauV3ZcA3/FJucWwsjZmn0rGOvWLIy2WcXCKF6pKnkdoH+2S
-	2NpibWPu+TQKd+LgzhL4Bt3fYw4FBCdDLtLEBNQQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cvybs05rt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 14:04:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62GAU3Ad028753;
-	Mon, 16 Mar 2026 14:04:25 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwkgk51v6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Mar 2026 14:04:25 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62GE4OaA23462526
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 14:04:24 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83E605804E;
-	Mon, 16 Mar 2026 14:04:24 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E57B05803F;
-	Mon, 16 Mar 2026 14:04:23 +0000 (GMT)
-Received: from d (unknown [9.61.72.10])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Mar 2026 14:04:23 +0000 (GMT)
-From: Dave Marquardt <davemarq@linux.ibm.com>
-To: Tyllis Xu <livelycarpet87@gmail.com>
-Cc: tyreld@linux.ibm.com, James.Bottomley@HansenPartnership.com,
-        martin.petersen@oracle.com, brking@linux.vnet.ibm.com,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, danisjiang@gmail.com, ychen@northwestern.edu
-Subject: Re: [PATCH] scsi: ibmvfc: fix OOB access in
- ibmvfc_discover_targets_done()
-In-Reply-To: <20260314170151.548614-1-LivelyCarpet87@gmail.com> (Tyllis Xu's
-	message of "Sat, 14 Mar 2026 12:01:50 -0500")
-References: <20260314170151.548614-1-LivelyCarpet87@gmail.com>
-Date: Mon, 16 Mar 2026 09:04:23 -0500
-Message-ID: <87ms07euqg.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1773671136; c=relaxed/simple;
+	bh=5sSWvpml8A4r27zlB6LvIcknnZLEax/Q7GcMSC+ooXg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OPz+Me8A4OeKqeLzSnXU5PpVOL421ddK7P7nt2RP6qsQdCE/4gVJFzVbef3g5T0rCO+j3AmFUUr+iACnZ2d2TNuFnRVcQIlmR4nfat5rIT1wVnQdo7f7Q/sMAuG18hJya93SlBiLQRJntGraUbARYVWMAJpwhX2iY4O03mRxZf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtEEbJL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87459C19421;
+	Mon, 16 Mar 2026 14:25:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773671136;
+	bh=5sSWvpml8A4r27zlB6LvIcknnZLEax/Q7GcMSC+ooXg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LtEEbJL8zvgGWS5q9FpodDqM2vlpRi6Y/tIxXmkA4l1mJNaj5mRDJRnSS+rPUDcZY
+	 /h9/1Hmqi96zqoGnmNNSTi7IQDJebj4+8u1+K2Oi0wonPFUqQ/QSC3I2nelxmMQw+K
+	 9umYSDTAl5KVgWOlAOGgPrqikeOLEEL9muUEyTHY=
+Subject: FAILED: patch "[PATCH] sched_ext: Remove redundant css_put() in scx_cgroup_init()" failed to apply to 6.12-stable tree
+To: yphbchou0911@gmail.com,arighi@nvidia.com,tj@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 16 Mar 2026 15:25:30 +0100
+Message-ID: <2026031630-character-subsector-36b1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=MMttWcZl c=1 sm=1 tr=0 ts=69b80deb cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=F9OWliIrSa7ykrEN07sA:9
-X-Proofpoint-ORIG-GUID: EolokV-Vn9u9N0e0P5MBrHTxebThJoAo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDEwNCBTYWx0ZWRfX6qZN48idoYCz
- +T+i5GZSEFX4wpcE/wUK2D5FN+Lnca6h2/vV9WhLvJoFjRKjnuLqdeLXeSXsNuhTGO/21n3Ck3U
- lgXNnONiAjAbUiwYQJxhTROx9Lt8G+2WpgO52dGcnTsJIbYoSwuiZmGHkNc28Ia5ZIQWKPU/evS
- 9t+vKMHY+ZjyzMbCOCjy6iWFSSRv7TMLajH96WzqPDeM17k50we67uqGYu/N4xK3GU/sfBMa39B
- 6rBjO6P2GY8u7469NMhRQeXpwi7l7SD3BbM0s/+y5jWHIIrMLK5t7NGsP10VLu6DNWGo2UF7a3L
- LJbNmHE/6MVNKxdsHLQa1lUKA9lEsK2Rf/ApOdk94jCU23M5HG+8BwQRu56DEBZ7k6EnWynLnvM
- KP1lxf/U2Fy579DCZak1GKK68TlSmXat0M2wZaRwx/wgg71mDHIyvzqVO1NKVC6PHLn6zj/eshi
- OY2a9BcxLyoL7dABVww==
-X-Proofpoint-GUID: 1CWs5HVzl9OknVQy9i86GexwQpW1usNI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_04,2026-03-16_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 clxscore=1011
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603160104
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225546-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,HansenPartnership.com,oracle.com,linux.vnet.ibm.com,vger.kernel.org,gmail.com,northwestern.edu];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[davemarq@linux.ibm.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.ibm.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225547-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,nvidia.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: CE1E129B0AD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: 0575029B4F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Tyllis Xu <livelycarpet87@gmail.com> writes:
 
-> A malicious or compromised VIO server can return a num_written value in
-> the discover targets MAD response that exceeds max_targets. This value
-> is stored directly in vhost->num_targets without validation, and is then
-> used as the loop bound in ibmvfc_alloc_targets() to index into disc_buf[],
-> which is only allocated for max_targets entries. Indices at or beyond
-> max_targets access kernel memory outside the DMA-coherent allocation.
-> The out-of-bounds data is subsequently embedded in Implicit Logout and
-> PLOGI MADs that are sent back to the VIO server, leaking kernel memory.
->
-> Fix by clamping num_written to max_targets before storing it.
->
-> Fixes: 072b91f9c651 ("[SCSI] ibmvfc: IBM Power Virtual Fibre Channel Adapter Client Driver")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tyllis Xu <LivelyCarpet87@gmail.com>
-> ---
->  drivers/scsi/ibmvscsi/ibmvfc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-> index a20fce04fe79..3dd2adda195e 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> @@ -4966,7 +4966,8 @@ static void ibmvfc_discover_targets_done(struct ibmvfc_event *evt)
->  	switch (mad_status) {
->  	case IBMVFC_MAD_SUCCESS:
->  		ibmvfc_dbg(vhost, "Discover Targets succeeded\n");
-> -		vhost->num_targets = be32_to_cpu(rsp->num_written);
-> +		vhost->num_targets = min_t(u32, be32_to_cpu(rsp->num_written),
-> +					   max_targets);
->  		ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_ALLOC_TGTS);
->  		break;
->  	case IBMVFC_MAD_FAILED:
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 1336b579f6079fb8520be03624fcd9ba443c930b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031630-character-subsector-36b1@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 1336b579f6079fb8520be03624fcd9ba443c930b Mon Sep 17 00:00:00 2001
+From: Cheng-Yang Chou <yphbchou0911@gmail.com>
+Date: Tue, 3 Mar 2026 22:35:30 +0800
+Subject: [PATCH] sched_ext: Remove redundant css_put() in scx_cgroup_init()
+
+The iterator css_for_each_descendant_pre() walks the cgroup hierarchy
+under cgroup_lock(). It does not increment the reference counts on
+yielded css structs.
+
+According to the cgroup documentation, css_put() should only be used
+to release a reference obtained via css_get() or css_tryget_online().
+Since the iterator does not use either of these to acquire a reference,
+calling css_put() in the error path of scx_cgroup_init() causes a
+refcount underflow.
+
+Remove the unbalanced css_put() to prevent a potential Use-After-Free
+(UAF) vulnerability.
+
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 2ba69b302368..eab6e09b6442 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3589,7 +3589,6 @@ static int scx_cgroup_init(struct scx_sched *sch)
+ 		ret = SCX_CALL_OP_RET(sch, SCX_KF_UNLOCKED, cgroup_init, NULL,
+ 				      css->cgroup, &args);
+ 		if (ret) {
+-			css_put(css);
+ 			scx_error(sch, "ops.cgroup_init() failed (%d)", ret);
+ 			return ret;
+ 		}
+
 
