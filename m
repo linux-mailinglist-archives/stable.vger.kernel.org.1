@@ -1,66 +1,53 @@
-Return-Path: <stable+bounces-225544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAc0KxYNuGkWYQEAu9opvQ
-	(envelope-from <stable+bounces-225544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:00:54 +0100
+	id CM0RGR8OuGkWYQEAu9opvQ
+	(envelope-from <stable+bounces-225545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:05:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2DC29AE9D
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF7929AF86
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 006F1301DAD5
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:00:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1ECC300879A
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F39339B94D;
-	Mon, 16 Mar 2026 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE37239B49E;
+	Mon, 16 Mar 2026 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEfYk8KH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6/9M3Ll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4179D280A5B;
-	Mon, 16 Mar 2026 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7233834F275
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669618; cv=none; b=kc+H/v2M6iDJgiKzqHqqaSUZnJ87gvEdphN0PIz9G5Zs3VUCX7HhB7vG8OrQ23Pv87eGYg4Hp/tHR1BI2/PPkAVyqdGt9af4PhZlJH47IbOCofABJ3JgmnidVvBUOQ7W4I8lw1bbPzp/mD1XG0rrYSTKpI71VQGV7TLQQK2Aabk=
+	t=1773669863; cv=none; b=cIC3bCrR2A4Ly3UGZV0+B9/AmyCuj8QfZcXKLfPNUviuU8vI3nWmrBZA3fwdD8682vXjd05kcLICezdskSPmWrr2vVNxocVCZToLsJz6CM7qFn8iJp/DyoJr+Axdi5rTOgWXVYtR55p8uIV50VS2UlpilUl6D2tjnU4DmnszHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669618; c=relaxed/simple;
-	bh=x38VKQGhBnKIwfNWbrj99HKBfUSLFjXy3N6yDwz6tOI=;
+	s=arc-20240116; t=1773669863; c=relaxed/simple;
+	bh=KvUASMu7CidRO1RJlSxq5DHtwfSW4qW352+DTUQi5gQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pbMG0CmnD9BeH68xTc9FsW/WIbE23Q+7XQzPZuq0ueMAxETnQduhPalnv8GImLApUPaGQMuwrBRb/QoAh9YOEvmUy3KNyR8a/mxmzfbXwUDg00ehvoGraGdlWOrCKMp53k2u5+qy8DOQqlN4RQGwrKiToiWWQAfFpBbL9J6NhqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEfYk8KH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29229C19425;
-	Mon, 16 Mar 2026 14:00:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OywSu6fDE25UqWpAkaq5mVYCXzm4hpkTQQeP0mYVDofrm3O4BBdFXIZKUZ2pv01QyzSqZ/sXq5VZ0t38Mm+1osx+WUTbC0r+F+9n9RfO191Y/E9w3SFXVyf6o8UikOJ8updSuqTRlgK8Cj//wIoeMMrCavygQPT+ejfcTWLZZEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6/9M3Ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194A9C19421;
+	Mon, 16 Mar 2026 14:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773669617;
-	bh=x38VKQGhBnKIwfNWbrj99HKBfUSLFjXy3N6yDwz6tOI=;
+	s=korg; t=1773669863;
+	bh=KvUASMu7CidRO1RJlSxq5DHtwfSW4qW352+DTUQi5gQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GEfYk8KHJR6lSfdkLrg5PuWbyDkE8tiF70JwF3dSUSJsI0LCoggSxIvZMSxPKCp/T
-	 hpD6FmtVCf1XmeQkddomaoHlQuUQcU3JPX7gi5UuzSb879sOHpEtINLYj8RpQG8ZI3
-	 BplcKHB92risyVSc/vLyKFVZ8hRpJBtQgprNe1Vw=
-Date: Mon, 16 Mar 2026 15:00:12 +0100
+	b=P6/9M3Lltxp9HQXlRTUzORBzV2yHflNOGrtXj6ehtVTHuIeokomyqHwSs0MXD85SZ
+	 bDpGPQNNdJe7T9z6VByK3kovOUIstCUa3nr4TS6YCb9Ynonkojnt5xHjMZxE/pR2EQ
+	 oD0WFRin9YhlyvYKEr5XwX4IF7APA7DqgYEG9Y/0=
+Date: Mon, 16 Mar 2026 15:04:17 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: Patch "rust: dma: use pointer projection infra for
- `dma_{read,write}` macro" has been added to the 6.19-stable tree
-Message-ID: <2026031639-duplicity-playroom-7b3f@gregkh>
-References: <20260315144041.25312-1-sashal@kernel.org>
- <DH3FT8ZMGH0T.2NA5M5351UP2L@garyguo.net>
+To: Simon Liebold <simonlie@amazon.de>
+Cc: stable@vger.kernel.org
+Subject: Re: 6.18.y: Please backport commit 31b153315b87
+Message-ID: <2026031601-uncorrupt-saucy-36b4@gregkh>
+References: <h6dsx7brbucyy.fsf@dev-dsk-simonlie-1b-ad174abf.eu-west-1.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,10 +56,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DH3FT8ZMGH0T.2NA5M5351UP2L@garyguo.net>
-X-Spamd-Result: default: False [3.84 / 15.00];
+In-Reply-To: <h6dsx7brbucyy.fsf@dev-dsk-simonlie-1b-ad174abf.eu-west-1.amazon.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
@@ -82,55 +68,40 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225544-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-225545-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,nvidia.com,gmail.com,ffwll.ch,collabora.com,arm.com,protonmail.com,umich.edu];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2F2DC29AE9D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EDF7929AF86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 15, 2026 at 02:48:52PM +0000, Gary Guo wrote:
-> On Sun Mar 15, 2026 at 2:40 PM GMT, Sasha Levin wrote:
-> > This is a note to let you know that I've just added the patch titled
-> >
-> >     rust: dma: use pointer projection infra for `dma_{read,write}` macro
-> >
-> > to the 6.19-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> >
-> > The filename of the patch is:
-> >      rust-dma-use-pointer-projection-infra-for-dma_-read-.patch
-> > and it can be found in the queue-6.19 subdirectory.
+On Mon, Mar 16, 2026 at 01:21:25PM +0000, Simon Liebold wrote:
+> Hi,
 > 
-> Hi Sasha,
+> could you please backport the following commit to 6.18.y stable:
 > 
-> commit 08da98f18f4f ("rust: ptr: add `KnownSize` trait to support DST size info
-> extraction") and commit f41941aab3ac ("rust: ptr: add projection
-> infrastructure") are dependencies of this fix.
+> 31b153315b87 ("drm/amdgpu: ensure no_hw_access is visible before MMIO")
 > 
-> It doesn't look like these commits are currently being picked. They're needed
-> for building.
+> It is a follow-up fix for commit cd7ff7fd3e4b ("drm/amd/pm: Disable MMIO
+> access during SMU Mode 1 reset") which was backported to v6.18.10.
 > 
-> They're part of the same series: https://lore.kernel.org/rust-for-linux/20260302164239.284084-1-gary@kernel.org/
+> It's a clean cherry-pick.
 
-Yeah, this breaks the build on my systems.  I'll go drop this patch for
-now, and if you want these in the stable trees, can you provide a
-backported series of them?
+Also queued up to 6.19.y, as you do not want a regression there.
 
 thanks,
 
