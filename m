@@ -1,153 +1,112 @@
-Return-Path: <stable+bounces-225639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OnXN1o+uGmxawEAu9opvQ
-	(envelope-from <stable+bounces-225639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:06 +0100
+	id KGu+CIE+uGmpagEAu9opvQ
+	(envelope-from <stable+bounces-225640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCF629E482
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C04129E4BD
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99A03301DEFD
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:23:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6ACAF3038FE6
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE203CF032;
-	Mon, 16 Mar 2026 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D2533A9DE;
+	Mon, 16 Mar 2026 17:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Xvlxiznf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Umj/WqyW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308D31E7660
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 17:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EAB3CF68B;
+	Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773681821; cv=none; b=P4RLiemH2Co44TSx1yC3o8lFB2KYcimntm+cVgtsXpET6bkFO0cmW+IwK2eO6EBasFskTUN1sq34u7Jl5cExnMCmglSvHKViQKhHLyF9vjV5DO3p8CL5cg1ze40v0xsmPHOt7FKkpqPWhTTI5W1uqT19CXSMALqDO+sHf4tASfI=
+	t=1773681941; cv=none; b=aJj5GsHJqKbTc46c5dgdNSvpdBiwNo0wC8PzRtPX16PMCTloBRPQhPtB1ZF3xFM/OSXrRx/UE2OAe+dyIqtypZGV0IEluWKpoXfJ8+KnxPkz1WjgyKClg0K71ecife5BHhOemX2W2yV2b2YHBRqoQMqEaW+sc2+KgGKEfVBfTME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773681821; c=relaxed/simple;
-	bh=XUMpQ+10FZHfgJfnOFqGeZ08vd90HbRW79j6d9PUQqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jTQX/BVrDITkdSYXDW0aX1aTy4+Kzo0zThtcoBTnx6ygOFy2V5LBeeLwlDwB6grqJWnkkNW9D1ZcXksD4xPdCT42UNBF6eMZNVgTPnh9fTO4qBoGCuS1men8IK6YMXUCAQvyeVXnNQP5FzHnrgNqYMxp433oHBeqmVaTVpy8KXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Xvlxiznf; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4853aec185aso40066515e9.1
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 10:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773681818; x=1774286618; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8b9XuRtDgXlhvc/ORfCs98sIv3e/g8y530Cpr28kNVA=;
-        b=XvlxiznfcMaQbVAYfj3rmk18tyGMrWJAmrQNcUh5RWdwHDQyKFBX6D27lc3J9IKViO
-         dWRvrhb3HPZOyN/qPmugTkXMcQlcN88z4hTDNBDylSl+jwfs8txzUmiy4i0uTIKJTyUz
-         gu9TDslsh/rSjQobhyliRjXbSgo42pFYeUtCDEZCFQzjHtl998qCkk3BbvW3auxjiV32
-         JQUSP8D8xxuzYKLyWNaWgy7JRMdAH3hF1/GrwnLx/DQ5u4m7lkv6NAsbKD4JotTzYmvA
-         UYeoG1y8K3Gkbb4s7oGa1cHUE4RoQWozwC6iN3lr0q8s5f7bXTittzLWYzwKL73Sj/tb
-         dUTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773681818; x=1774286618;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8b9XuRtDgXlhvc/ORfCs98sIv3e/g8y530Cpr28kNVA=;
-        b=O92AS4MrnixfC+4zzogveepClTJTdGx3CRJnr3MziTuyLOoAKdgg4d3ViX+Y1AHsOC
-         l7YUq4t+vCRMeaFqUjWRByOynx8cg/KGw7imuzL9TB2JsrOQJPSy4KP2RZdh+DJc3NuB
-         Sa5uFOBpmUqBBNeIaY/MtJdIoFpc0wh3kZSfDax3pHxdRC31R2eLYoPEb+YmNpxEcjx8
-         W5wUDlX1J3sdx75u250svDxvyRVwNWo28fVxgBp3ZlZ5bmWoCULEnj0JksTtqLFC+m9J
-         ZCAW8dOxd2+/FUu4O9bO3a17VaCwDZkIQzot0pYFpCEzQNGDbxT5q5AkmmsZwD467o14
-         GG8w==
-X-Gm-Message-State: AOJu0YzD/RUXiOJvGSjYpB2OZXU50WhdnLjM9A53i427tnjI55KohQ3m
-	g9HhlcER7RpCdWmlj3PhbM6nEWNbhye7iTB4RGH6XRSt090M+/FFLrDYjvgffffHrhQ=
-X-Gm-Gg: ATEYQzzUEKEvzpEHOZH3YARQvlCbgR8bpWiwbK7PRgLgX4Gf3IKjRaq4hAokQPhb6Sw
-	2IzuD3IuGJLoeKKvJdHD90q9K+kl38L/St0IBuRdz1KM9jSlFzwpmuq97nlNGVvRKDOJ+imLzps
-	/nAhVIQCKyNXbcGDLTpxbaMcqZxWBvV4BOcIdsmYVY8LDbJe82wZabJceX/ZAjLV71q/xVnRC3n
-	xaVNNFcZuBCn8rRwExv2TgZrkouHjimhmZXo3yxmZkzfuMQFyjjfuqJ3Q5YIsu4b249bGGBXSK7
-	o/1ylKfAqwrEeM5BAxsx1WkecQjWph71hcj94Ye6nmmXRNu08FXMzfMYGlViG5RJy/VWZUVCHQz
-	IsBFqgSacwU8MF06FHBNcemtVRa9Qen1e2RygsCj8YAyxNqkNMUWtaV+zNsefstijxfTWVoNmNM
-	jO0ZUyAlrRzxpq0E2xMz6j3r7l/IX5CjHSBXtX55EAS5JZyHomlS5/R1E=
-X-Received: by 2002:a05:600c:4514:b0:483:78c5:d743 with SMTP id 5b1f17b1804b1-48556709e2cmr221416935e9.28.1773681818463;
-        Mon, 16 Mar 2026 10:23:38 -0700 (PDT)
-Received: from precision.tail0b5424.ts.net ([2804:7f0:6402:b103:6a0a:3e1c:778a:5cc7])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab3a0c34sm15142622eec.7.2026.03.16.10.23.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 10:23:37 -0700 (PDT)
-Date: Mon, 16 Mar 2026 14:23:32 -0300
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	Steve French <smfrench@gmail.com>, thorsten.blum@linux.dev, pc@manguebit.org
-Subject: Re: stable: [PATCH] smb: client: Don't log plaintext credentials in
- cifs_set_cifscreds
-Message-ID: <qy7umjmnkwhtmixp7giob2iqstrwr6crntuyakibcdpqhzo7ty@bgbcu3bntz5d>
-References: <eijo3pknvy4gl2xh23by7kjdxpoc27an3dqfmfttremp4xb53o@z2kq34l2onvy>
- <2026031616-flashily-strung-a688@gregkh>
+	s=arc-20240116; t=1773681941; c=relaxed/simple;
+	bh=/OYUQzvbizA/HnFcDSxx3chz1+uWDAT16QLEnDDvjhY=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BJRXFu7xwGOJTjx0G+uXyJdxzCVeFYA2A2FhszWLp5FrsDTDkEBszN8kPX5gbMAdXZ2wtStr+oxG+dEnugJ0JuDxoaDlIkDg3PJNT32eqJQRe9PEwGtsc6eXuD6BeXtjuRGhHFDE0qk+Y895m+Jv2xqzuMYy7VwzslVsyITj++A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Umj/WqyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F6CC19421;
+	Mon, 16 Mar 2026 17:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773681940;
+	bh=/OYUQzvbizA/HnFcDSxx3chz1+uWDAT16QLEnDDvjhY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Umj/WqyW7820d/fMeiEsgdsRbY/VadfKZl6+bgrA1xdbsU8fNY4yW0TxP7k99k2mG
+	 7G5ZIrfMbx2ThX2VzYgqG7sKNqqK/9Pzq8ygwaRpP3jxJ4Mdv9UnXSupmEQfE5y6W6
+	 G8TWLdqhDFLeH2pd0tys3pcCxsxQh9cB+dgdhrAo=
+Date: Mon, 16 Mar 2026 10:25:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 17 . x" <stable@vger.kernel.org>, damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/damon/stat: monitor all System RAM resources
+Message-Id: <20260316102539.2af039f5ca7ce1164da34b47@linux-foundation.org>
+In-Reply-To: <20260315162717.80870-1-sj@kernel.org>
+References: <20260315162717.80870-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026031616-flashily-strung-a688@gregkh>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MV_CASE(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225639-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.dev,manguebit.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225640-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 7DCF629E482
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 8C04129E4BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 16, 2026 at 04:53:02PM +0100, Greg KH wrote:
-> On Mon, Mar 16, 2026 at 12:49:00PM -0300, Henrique Carvalho wrote:
-> > Hi,
-> > 
-> > I believe the following commit may have been missed for the relevant
-> > stable branches.
-> > 
-> > 2f37dc436d4e ("smb: client: Don't log plaintext credentials in cifs_set_cifscreds")
-> > 
-> > Could you please consider backporting it?
-> 
-> I see it in the following released stable kernels:
-> 	6.12.77
-> 	6.18.17
-> 	6.19.7
-> 	7.0-rc2
-> 
-> And it is in the 6.1 and 6.6 queues for the next stable release for
-> them.
-> 
-> Do you not see the same?
-> 
+On Sun, 15 Mar 2026 09:27:15 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Thank you! I only looked in 6.6.y, saw no emails from stable and assumed
-it had been missed. Apologies.
+> DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+> says it monitors the system's entire physical memory.  But, it is
+> monitoring only the biggest System RAM resource of the system.  When
+> there are multiple System RAM resources, this results in monitoring only
+> an unexpectedly small fraction of the physical memory.  For example,
+> suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+> 500 GiB System RAM resources in order on the physical address space.
+> DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+> situation is particularly common on NUMA systems.
+> 
+> Select a physical address range that covers all System RAM areas of the
+> system, to fix this issue and make it work as documented.
+> 
+> Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+> Cc: <stable@vger.kernel.org> # 6.17.x
+
+This doesn't apply to current mainline?
 
 
