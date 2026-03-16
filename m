@@ -1,158 +1,229 @@
-Return-Path: <stable+bounces-225498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEmiMFZ5t2k9RgEAu9opvQ
-	(envelope-from <stable+bounces-225498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:30:30 +0100
+	id ih5nLAp5t2k9RgEAu9opvQ
+	(envelope-from <stable+bounces-225497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:29:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C242946A7
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:30:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC65294698
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAD503011867
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 03:30:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBC6A3008E10
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 03:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BA63597B;
-	Mon, 16 Mar 2026 03:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C6E31E833;
+	Mon, 16 Mar 2026 03:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="sCDYvCrI"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="LCFHekan"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D420ED
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 03:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+Received: from mail115-63.sinamail.sina.com.cn (mail115-63.sinamail.sina.com.cn [218.30.115.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5DD2248A0
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 03:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773631826; cv=none; b=IaJf+bXlnMCJn/M7K6vM1NM9RcowqtiVooq5qtvWHn+oFOBYo+7g4qEuSoY2MLLcdofhaKkFVTcZKeQuvWHP1AaGyChyXV9YwKhUS3LDgtkY5lAAqmZfE87NjnaxmODxzqpovqhSlf8DfHMz57NVX7/gY+ZBjFahYh/YWgXBb28=
+	t=1773631749; cv=none; b=PgkWufalAi8pS7c9GJfV6W5zjZ8HjAXnIqXVMOhEaceIMPrC1XffFdWSGA2sjxDPVgpG5aznZ5i8QOwyjQyh6Hr9kztv5mlJFq3Rb4squKAXkSLbH7tYPF9/lr3swf47fglXTRI2KCDANDo1jO6PTQdRt+U8nszaAM3y3+QBYSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773631826; c=relaxed/simple;
-	bh=MudBcZXjkh+vbCwy5P5AerbJ8b+pJaKdThSeJbCjHOE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c33DA3EgYhCv86NfQrJvMXP9gVigcZ8voswVHrGOOvEXqkyQxES4Y6bvM0CuAqIuxI91F70it622v8jhe3eBhnmneLRix6DEE0lPnVqNg/TxBjAMqJuHu/f1431E28BvM5iKpTGEucHHd/ok+KT7LLpEXKEVohQ3w2CZjexcmJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=sCDYvCrI; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=sCDYvCrILdlfSFo5PWpAfUMmVMs9+JT7DLYWP3wU49fS55kcA+UbTcvHymiSDNPj+a90bNa6wVs7F
-	 BYYJPatJIYK/yViFcfBnqNhjjc3W1BOPdGe6y4qudOvuZIeQ2fj+LjLdDyKpKVfpp8FLPkR390E3vE
-	 hkGMzu2miSWa9nbA=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from China-Mobile-Kernel-Team (unknown[223.104.40.137])
-	by rmsmtp-lg-appmail-16-12015 (RichMail) with SMTP id 2eef69b7788b43e-2421d;
-	Mon, 16 Mar 2026 11:27:08 +0800 (CST)
-X-RM-TRANSID:2eef69b7788b43e-2421d
-From: Leon Chen <leonchen.oss@139.com>
-To: dwagner@suse.de,
-	hch@lst.de,
-	kbusch@kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 5.15.y] nvmet: always initialize cqe.result
-Date: Mon, 16 Mar 2026 11:27:06 +0800
-Message-Id: <20260316032706.2924-1-leonchen.oss@139.com>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1773631749; c=relaxed/simple;
+	bh=nDCEkiMBSJkq83qtDB2UfmzjB8QDzKSiI6zhVpqInEU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=XhnMi2CPePAsx+IiFqlOUoQ4qQiGhHY0KpOjywXL0lQ7At9X47vxsE3IV3vdPnFzBxijaWJ/wcW9mzDgWTIYvqBn7Gf0N0VBaFo+6YY9fK9UTMwsYB6CK1lE8EsFwLZXfZ48k+8ezq5N8dRgXF4eHfpIzJPzDkMi3vPcEx07Bwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=LCFHekan; arc=none smtp.client-ip=218.30.115.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773631746;
+	bh=VxfbjtCzWItjsvhY21xBF6X/Ve2lQuBcY7H86bU8ujE=;
+	h=From:Subject:Date:Message-Id;
+	b=LCFHekanW7pmE0Vnyz4PCDwrfiru4m8RN0iarMPCxnGi1mQ/75Z6B/NyiTG/BLyIh
+	 pSJLtPElZX6cBRbs05AHP4Ido7BDTBSerEvl3gJuCNkKnpVvXH8fmQIHodwAXnJsP9
+	 RhkVmMi0F2ROZugM2lgHu48ECX957CpQSDWt9gyg=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.22) with ESMTP
+	id 69B778F400007515; Mon, 16 Mar 2026 11:28:56 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 9515797602529
+X-SMAIL-UIID: 42F187FB0F524273B6D19C5D4AEF4D68-20260316-112856-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Lang Yu <Lang.Yu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 5.15.y] drm/amdgpu: unmap and remove csa_va properly
+Date: Mon, 16 Mar 2026 11:28:51 +0800
+Message-Id: <20260316032851.3319377-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225498-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,sina.com];
+	TAGGED_FROM(0.00)[bounces-225497-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	NEURAL_SPAM(0.00)[0.729];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:email,139.com:mid,suse.de:email,lst.de:email]
-X-Rspamd-Queue-Id: 71C242946A7
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,csa_tv.bo:url]
+X-Rspamd-Queue-Id: CDC65294698
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Lang Yu <Lang.Yu@amd.com>
 
-[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
+[ Upstream commit 5daff15cd013422bc6d1efcfe82b586800025384 ]
 
-The spec doesn't mandate that the first two double words (aka results)
-for the command queue entry need to be set to 0 when they are not
-used (not specified). Though, the target implemention returns 0 for TCP
-and FC but not for RDMA.
+Root PD BO should be reserved before unmap and remove
+a bo_va from VM otherwise lockdep will complain.
 
-Let's make RDMA behave the same and thus explicitly initializing the
-result field. This prevents leaking any data from the stack.
+v2: check fpriv->csa_va is not NULL instead of amdgpu_mcbp (christian)
 
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Ignored the fabrics-cmd-auth.c, it was introduced in commit:db1312dd9548
-("nvmet: implement basic In-Band Authentication") ]
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
+[14616.936827] WARNING: CPU: 6 PID: 1711 at drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c:1762 amdgpu_vm_bo_del+0x399/0x3f0 [amdgpu]
+[14616.937096] Call Trace:
+[14616.937097]  <TASK>
+[14616.937102]  amdgpu_driver_postclose_kms+0x249/0x2f0 [amdgpu]
+[14616.937187]  drm_file_free+0x1d6/0x300 [drm]
+[14616.937207]  drm_close_helper.isra.0+0x62/0x70 [drm]
+[14616.937220]  drm_release+0x5e/0x100 [drm]
+[14616.937234]  __fput+0x9f/0x280
+[14616.937239]  ____fput+0xe/0x20
+[14616.937241]  task_work_run+0x61/0x90
+[14616.937246]  exit_to_user_mode_prepare+0x215/0x220
+[14616.937251]  syscall_exit_to_user_mode+0x2a/0x60
+[14616.937254]  do_syscall_64+0x48/0x90
+[14616.937257]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ The context change is due to the commit e56694f718f0
+("drm/amdgpu: rename amdgpu_vm_bo_rmv to _del")
+in v5.18 and the proper adoption is done which
+is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
 ---
- drivers/nvme/target/core.c        | 1 +
- drivers/nvme/target/fabrics-cmd.c | 6 ------
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 38 +++++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h |  3 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 10 +++----
+ 3 files changed, 45 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index ef2e500bccfd..65bc1efa33d6 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -932,6 +932,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
- 	req->metadata_sg_cnt = 0;
- 	req->transfer_len = 0;
- 	req->metadata_len = 0;
-+	req->cqe->result.u64 = 0;
- 	req->cqe->status = 0;
- 	req->cqe->sq_head = 0;
- 	req->ns = NULL;
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index e5ee3d3ce164..a12f80869d6f 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -187,9 +187,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index da21e60bb827..b0016d634e1d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -106,3 +106,41 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	ttm_eu_backoff_reservation(&ticket, &list);
+ 	return 0;
+ }
++
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr)
++{
++	struct ww_acquire_ctx ticket;
++	struct list_head list;
++	struct amdgpu_bo_list_entry pd;
++	struct ttm_validate_buffer csa_tv;
++	int r;
++
++	INIT_LIST_HEAD(&list);
++	INIT_LIST_HEAD(&csa_tv.head);
++	csa_tv.bo = &bo->tbo;
++	csa_tv.num_shared = 1;
++
++	list_add(&csa_tv.head, &list);
++	amdgpu_vm_get_pd_bo(vm, &list, &pd);
++
++	r = ttm_eu_reserve_buffers(&ticket, &list, true, NULL);
++	if (r) {
++		DRM_ERROR("failed to reserve CSA,PD BOs: err=%d\n", r);
++		return r;
++	}
++
++	r = amdgpu_vm_bo_unmap(adev, bo_va, csa_addr);
++	if (r) {
++		DRM_ERROR("failed to do bo_unmap on static CSA, err=%d\n", r);
++		ttm_eu_backoff_reservation(&ticket, &list);
++		return r;
++	}
++
++	amdgpu_vm_bo_rmv(adev, bo_va);
++
++	ttm_eu_backoff_reservation(&ticket, &list);
++
++	return 0;
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+index 524b4437a021..7dfc1f2012eb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+@@ -34,6 +34,9 @@ int amdgpu_allocate_static_csa(struct amdgpu_device *adev, struct amdgpu_bo **bo
+ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 			  struct amdgpu_bo *bo, struct amdgpu_bo_va **bo_va,
+ 			  uint64_t csa_addr, uint32_t size);
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr);
+ void amdgpu_free_static_csa(struct amdgpu_bo **bo);
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
-@@ -255,9 +252,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+ #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 70d49b998ee9..b8b0b819de72 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -1273,14 +1273,12 @@ void amdgpu_driver_postclose_kms(struct drm_device *dev,
+ 	if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_VCE) != NULL)
+ 		amdgpu_vce_free_handles(adev, file_priv);
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
+-	amdgpu_vm_bo_rmv(adev, fpriv->prt_va);
++	if (fpriv->csa_va) {
++		uint64_t csa_addr = amdgpu_csa_vaddr(adev) & AMDGPU_GMC_HOLE_MASK;
+ 
+-	if (amdgpu_mcbp || amdgpu_sriov_vf(adev)) {
+-		/* TODO: how to handle reserve failure */
+-		BUG_ON(amdgpu_bo_reserve(adev->virt.csa_obj, true));
+-		amdgpu_vm_bo_rmv(adev, fpriv->csa_va);
++		WARN_ON(amdgpu_unmap_static_csa(adev, &fpriv->vm, adev->virt.csa_obj,
++						fpriv->csa_va, csa_addr));
+ 		fpriv->csa_va = NULL;
+-		amdgpu_bo_unreserve(adev->virt.csa_obj);
+ 	}
+ 
+ 	pasid = fpriv->vm.pasid;
 -- 
-2.35.3
-
+2.34.1
 
 
