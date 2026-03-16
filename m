@@ -1,320 +1,125 @@
-Return-Path: <stable+bounces-225610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPjxGCMpuGnhZgEAu9opvQ
-	(envelope-from <stable+bounces-225610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:00:35 +0100
+	id oAfPOJoquGnhZgEAu9opvQ
+	(envelope-from <stable+bounces-225611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:06:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5A429CE7D
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:00:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9453729D0D9
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB85430541C8
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:54:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B47AC3065AFB
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089633B7B9F;
-	Mon, 16 Mar 2026 15:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63A33C3BFB;
+	Mon, 16 Mar 2026 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDgz+MKF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxsGrlMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD593B6BE3
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 15:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ED03C345E;
+	Mon, 16 Mar 2026 16:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773676430; cv=none; b=K7zwdBtrI5rgzcCqYEeSLa1znClxLD6IdMqcvQUhOBCnzsHztcD/SrAyuvAWMLvBqeO84f8G7ZU1+c/jeKFFclQoAKzHCP0xdsZV9nkV1za+gpgu2CNFCjiu6W8x7NMk6eUViMAivHvd1rvVERyWJDU21yHR3a3kb4o+njm5OXg=
+	t=1773676837; cv=none; b=jXNG0VXzKLkNp2eIDgrZJ+1znfOFifa8rwKV6JY2uzVcGu8iT4grmkL4tk4bBNSfcgAl533fmZtmjvmJCUn3x+Ya56tghdWJJZqPXFYCa5cTLD57y5+Q6G06teKSXds9TlDmz0fjccngsgUvdglioiFkc3swAF706mEEnbk0UCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773676430; c=relaxed/simple;
-	bh=5NqH9Bdkz+RHbsvNCuclkh196FGIaf4htJuAD/nBjrA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tYezeZuCwmejilsDmiyDPi+iSiHy+gp7CVqmb3oxbdfca4ABbSpjnW8WZI0NktAvSXp0wIX3XN9VBxgifXz8z8bMEVu0mEcO9E+lW/KDTpT6ziTW0/jQTiRfch+Nx85ozjg7wP1ZEbPocm8udIG2Akv4Tr5p0WWSSPUTnIuXV2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDgz+MKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CB1C19421;
-	Mon, 16 Mar 2026 15:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773676429;
-	bh=5NqH9Bdkz+RHbsvNCuclkh196FGIaf4htJuAD/nBjrA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=cDgz+MKFaWTEeU6rPnkn3RPN1WJYqOJxwON1Nrf2M7N8AtXduG9FWfR5MCZSOwZDQ
-	 vB4KoMulCJC60/JtfUTCoUx6myeocvk+DQlBAtRP6z1mjrG5XfhxL2P/KsQqcIiNPn
-	 FC0B+Psmc40YJZ449+vqRD1YVFPcJv+GD3OCqH7Y=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_ncm: Fix net_device lifecycle with device_move" failed to apply to 6.12-stable tree
-To: khtsai@google.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 16 Mar 2026 16:53:45 +0100
-Message-ID: <2026031645-manger-gratitude-6c61@gregkh>
+	s=arc-20240116; t=1773676837; c=relaxed/simple;
+	bh=IU1MBjH4PTTzqtvtGeMpj6CeXYmu0DgE4Gk5/C2LnrY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Pl2yh8eJUqeg9TJ+lmSW9iafKyI5MCW23MTjAzFe1DPDV0zMG6/AlPhGosBTxu3vjXgGAfofoecJCpRAtZ6u+mr9UVOZ2J2syzlqmfWWxTyUnyAVu02Yb6LcT4R5Iyftr9CpNbIHdCVMghdmU+Sm+jaD8l0+8SUs65mrIEPzzcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxsGrlMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD40DC2BC9E;
+	Mon, 16 Mar 2026 16:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773676837;
+	bh=IU1MBjH4PTTzqtvtGeMpj6CeXYmu0DgE4Gk5/C2LnrY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=oxsGrlMJtN06NL/590oUIrmHsEwpKypVpff6KjlCw3J4DQWeo+1dd03po3gq6BUh1
+	 VcixEXexRLtT7h1RUCGdQ0t14/EqhNN+LEQN9a8blph3PJwVWYbFzjhbS8qLUdfs2F
+	 ARvESo5mWtdc6JOnWBWtk/Yw6KZ+KcklyE944aXl8Bgr2udbGPC4mLulK1e3/+w0lh
+	 E79MutXCh4wvJGal8Bfvq7H2GeC6srpgC3m5+EKyoKR1AULExhH0F1KiL6E1Zm++3U
+	 boX+xK9zN5pxUrzuCP2SwECxxq53c8z9+QKV0lBc6FXPCOC2ChJlGuxXkGhsixovKP
+	 JnBrFDkYUI6zw==
+From: Benjamin Tissoires <bentiss@kernel.org>
+To: Jiri Kosina <jikos@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Benjamin Tissoires <bentiss@kernel.org>
+Cc: linux-input@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20260313-wip-bpf-fixes-v1-0-74b860315060@kernel.org>
+References: <20260313-wip-bpf-fixes-v1-0-74b860315060@kernel.org>
+Subject: Re: (subset) [PATCH 0/4] HID: bpf fixes for 7.0/7.1
+Message-Id: <177367679366.2580085.7917002120079974985.b4-ty@kernel.org>
+Date: Mon, 16 Mar 2026 16:59:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225610-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-225611-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email]
-X-Rspamd-Queue-Id: BF5A429CE7D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bentiss@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 9453729D0D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Fri, 13 Mar 2026 08:40:23 +0100, Benjamin Tissoires wrote:
+> This is a series that targets a few HID-BPF issues I discovered or I've
+> been reported:
+> - first 2 patches should go to for-7.0/upstream-fixes:
+>   - 1/4 fixes a compilation issue when HID is not enabled
+>   - 2/4 is a nasty bug which allows a HID-BPF to crash the running
+>     kernel, so not critical (you need special permissions to load the
+>     HID-BPF program), but not great as you don't expect tinkering with
+>     HID-BPF would crash
+> - last 2 patches are more 7.1 material: basically the LEDs on the
+>   keyboards are bypassing HID-BPF, and then that made me realize that
+>   the fallback calls in case of an unnumbered report is not correct (and
+>   likely unnoticed because I don't think I've seen unnumbered reports on
+>   anything else than USB devices)
+> 
+> [...]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Applied, thanks!
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x ec35c1969650e7cb6c8a91020e568ed46e3551b0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031645-manger-gratitude-6c61@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+[1/4] selftests/hid: fix compilation when bpf_wq and hid_device are not exported
+      commit: 5d4c6c132ea9a967d48890dd03e6a786c060e968
+[2/4] HID: bpf: prevent buffer overflow in hid_hw_request
+      commit: 2b658c1c442ec1cd9eec5ead98d68662c40fe645
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From ec35c1969650e7cb6c8a91020e568ed46e3551b0 Mon Sep 17 00:00:00 2001
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Mon, 9 Mar 2026 20:04:52 +0800
-Subject: [PATCH] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
-
-The network device outlived its parent gadget device during
-disconnection, resulting in dangling sysfs links and null pointer
-dereference problems.
-
-A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
-was reverted due to power management ordering concerns and a NO-CARRIER
-regression.
-
-A subsequent attempt to defer net_device allocation to bind [2] broke
-1:1 mapping between function instance and network device, making it
-impossible for configfs to report the resolved interface name. This
-results in a regression where the DHCP server fails on pmOS.
-
-Use device_move to reparent the net_device between the gadget device and
-/sys/devices/virtual/ across bind/unbind cycles. This preserves the
-network interface across USB reconnection, allowing the DHCP server to
-retain their binding.
-
-Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
-__free(detach_gadget) macro to undo attachment on bind failure. The
-bind_count ensures device_move executes only on the first bind.
-
-[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
-[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 3d772c9beb91..a6fa5ed3d6cb 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1439,6 +1439,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
-@@ -1452,18 +1453,19 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 			return -ENOMEM;
- 	}
- 
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound) {
--		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
--		status = gether_register_netdev(ncm_opts->net);
--	}
--	mutex_unlock(&ncm_opts->lock);
-+	scoped_guard(mutex, &ncm_opts->lock)
-+		if (ncm_opts->bind_count == 0) {
-+			if (!device_is_registered(&ncm_opts->net->dev)) {
-+				ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
-+				gether_set_gadget(ncm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ncm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
- 
--	if (status)
--		return status;
--
--	ncm_opts->bound = true;
-+			if (status)
-+				return status;
-+			net = ncm_opts->net;
-+		}
- 
- 	ncm_string_defs[1].s = ncm->ethaddr;
- 
-@@ -1564,6 +1566,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
- 	ncm->notify_req = no_free_ptr(request);
- 
-+	ncm_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
-@@ -1655,7 +1660,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -1718,9 +1723,12 @@ static void ncm_free(struct usb_function *f)
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ncm *ncm = func_to_ncm(f);
-+	struct f_ncm_opts *ncm_opts;
- 
- 	DBG(c->cdev, "ncm unbind\n");
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	hrtimer_cancel(&ncm->task_timer);
- 
- 	kfree(f->os_desc_table);
-@@ -1736,6 +1744,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm_opts->bind_count--;
-+	if (ncm_opts->bind_count == 0)
-+		gether_detach_gadget(ncm_opts->net);
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index c47965d850d4..1a9e7c495e2e 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -897,6 +897,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
- }
- EXPORT_SYMBOL_GPL(gether_set_gadget);
- 
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
-+{
-+	int ret;
-+
-+	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
-+	if (ret)
-+		return ret;
-+
-+	gether_set_gadget(net, g);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gether_attach_gadget);
-+
-+void gether_detach_gadget(struct net_device *net)
-+{
-+	struct eth_dev *dev = netdev_priv(net);
-+
-+	device_move(&net->dev, NULL, DPM_ORDER_NONE);
-+	dev->gadget = NULL;
-+}
-+EXPORT_SYMBOL_GPL(gether_detach_gadget);
-+
- int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
- {
- 	struct eth_dev *dev;
-diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
-index 34be220cef77..c85a1cf3c115 100644
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -150,6 +150,32 @@ static inline struct net_device *gether_setup_default(void)
-  */
- void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
- 
-+/**
-+ * gether_attach_gadget - Reparent net_device to the gadget device.
-+ * @net: The network device to reparent.
-+ * @g: The target USB gadget device to parent to.
-+ *
-+ * This function moves the network device to be a child of the USB gadget
-+ * device in the device hierarchy. This is typically done when the function
-+ * is bound to a configuration.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
-+
-+/**
-+ * gether_detach_gadget - Detach net_device from its gadget parent.
-+ * @net: The network device to detach.
-+ *
-+ * This function moves the network device to be a child of the virtual
-+ * devices parent, effectively detaching it from the USB gadget device
-+ * hierarchy. This is typically done when the function is unbound
-+ * from a configuration but the instance is not yet freed.
-+ */
-+void gether_detach_gadget(struct net_device *net);
-+
-+DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
-+
- /**
-  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
-  * @net: device representing this link
-diff --git a/drivers/usb/gadget/function/u_ncm.h b/drivers/usb/gadget/function/u_ncm.h
-index 49ec095cdb4b..b1f3db8b68c1 100644
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -18,7 +18,7 @@
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
+Best regards,
+-- 
+Benjamin Tissoires <bentiss@kernel.org>
 
 
