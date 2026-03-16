@@ -1,161 +1,191 @@
-Return-Path: <stable+bounces-225612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIpjMX0uuGnhZgEAu9opvQ
-	(envelope-from <stable+bounces-225612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:23:25 +0100
+	id sG0cINkuuGm3aAEAu9opvQ
+	(envelope-from <stable+bounces-225613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:24:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3057329D447
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:23:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D538C29D542
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 17:24:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B1E3063A15
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:19:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B52C63018BD2
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6754335555;
-	Mon, 16 Mar 2026 16:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A855533554F;
+	Mon, 16 Mar 2026 16:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JC/5rM9d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRT4EFUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B9E33507C;
-	Mon, 16 Mar 2026 16:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D479334C1C
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 16:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773677970; cv=none; b=uFECRBW08k80Kt7dCahOdKhHKagcp8bAPI5pPkrlGRXfAQvRZNe2IKnpqESmaU8M+CfDlf0fKZNp7kONSlPGMsSyY7PBL34cgYNGzcM423OdWIRaVHGFgJI0RA12pm0zZ/8/xe8CeG96ArKurLc/UpZjXnaS392n93K72YA/fn8=
+	t=1773678063; cv=none; b=iUwsEHgPvhF+AUZI0M5xQ/jgKgBz6KywDvlPusWw6e6o971m8Nt5PXEWE7SeNbCDtDz9DMgT/5GrOZexo6AHnAT/J7arPQEyO9Mh9i2OVu978l+jQuq0Xt038yMaI53Nf+fUuvEqwLPFgWbY1zuKSReS67+V2WP0+TJabDbUgDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773677970; c=relaxed/simple;
-	bh=rOUBRT544J5oes5zvZ3Lac3Nb4EGLKQIyTPm3RrhX1A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=cIFwUgs74H/y/iU4Y5L02eHLf7y5//6nO+++HldWl7cTHmymfO64zyOx5Ob/qt7To5RsRuUr8bkaeeVZlFFL5rdKmuBrCh6oAYBMapWk2i3D81CElIykWTgcP2o+QrSt87CDtwDdUZ1scd1+2fQKAn9IF2nsl8aZFMoFKNfgcsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JC/5rM9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACD9C19421;
-	Mon, 16 Mar 2026 16:19:26 +0000 (UTC)
+	s=arc-20240116; t=1773678063; c=relaxed/simple;
+	bh=5Jbkko11dGP+XuoPmXkWCngmJVfSxKJSD1BF/syq0vE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aKqiu++s3R26wtiKAp9sLRbdvQc9Zz+G9KPKZoz1fD5hALZBrbioqyJpbBWXCHfkOu6JHd9LvdctpUuGeIyZWX47e/NwKa0UYtLMjdpWOGKb365Pc3eWwIoC6XQL3oX+BJjs0u9epLF7nU4UxalkK9LoA3+LemB3I+lCE0NQV8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRT4EFUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33AFC19421;
+	Mon, 16 Mar 2026 16:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773677970;
-	bh=rOUBRT544J5oes5zvZ3Lac3Nb4EGLKQIyTPm3RrhX1A=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=JC/5rM9d7fPHFFHn8oEWK0/z1K4Rh1h1BTKcXeijp6mBU9H9PuWSwDfZyOzURXeOz
-	 8QUi4Ya+CNKysxhWuSZ6lq/rKmXWOcRda7YxSWD325uLGvcIbdN0fjQ4Q0RewsubFY
-	 xXRqjTVeR9RABnv9+2FV0yf8piu/r0xnUa5lpX/Lh/Xv5xTzoD8OyMLzE4nQ6GIHEc
-	 bTxzAFj/zrxm64owzJZlOjxQdvT/3RRkR8AW9QsMm+bsTkZLPgFWgmR3Ine4/VVcxo
-	 Z8efa15EG3OtowKQcXE9nvme4MCI8J7Sg3q6Tk22kuPxTtw9UG+0kY5xpHm7yKRT7h
-	 DVO7CJcEOZljw==
+	s=k20201202; t=1773678063;
+	bh=5Jbkko11dGP+XuoPmXkWCngmJVfSxKJSD1BF/syq0vE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rRT4EFUtamlgWAG4qe/6N9zvuR1/Pzcwgjqm4RKyAa7zF5ClLC0S8imWBQiOMhTNn
+	 k8s5nY6+n68iTRq3GmsFm4jfBjY2YylaZCYaAe92SH2u8yO+sHpA/85t7vOVh0M0an
+	 uKlVaQ21NWa9xnUGwSTpUNuwBOxsgaM7/v5tQnC6L0sSeMIGtYpFZqimBkFW9t5xNA
+	 1VYv9l5cwOcd3/Uj1BggTno7+3mjgKFbwvs8W5GQJhA1/36AU1CTgJbJK6+W/ZHP7T
+	 aSJlizma+vbmLTNReq1ufl/0QCYsogtz1rpLyCP2vO7JP5viucGElnwZKneThQc3+X
+	 gihxihsCgPyfw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] can: gs_usb: gs_can_open(): always configure bitrates before starting device
+Date: Mon, 16 Mar 2026 12:21:00 -0400
+Message-ID: <20260316162100.915732-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031627-challenge-relenting-a5a1@gregkh>
+References: <2026031627-challenge-relenting-a5a1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Mar 2026 17:19:25 +0100
-Message-Id: <DH4CD4IAYRS1.1P5BTFC6U3LBP@kernel.org>
-Subject: Re: Patch "rust: dma: use pointer projection infra for
- `dma_{read,write}` macro" has been added to the 6.19-stable tree
-Cc: "Gary Guo" <gary@garyguo.net>, <stable@vger.kernel.org>,
- <stable-commits@vger.kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260315144041.25312-1-sashal@kernel.org>
- <DH3FT8ZMGH0T.2NA5M5351UP2L@garyguo.net>
- <2026031639-duplicity-playroom-7b3f@gregkh>
-In-Reply-To: <2026031639-duplicity-playroom-7b3f@gregkh>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225612-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[garyguo.net,vger.kernel.org,google.com,nvidia.com,gmail.com,ffwll.ch,collabora.com,arm.com,kernel.org,protonmail.com,umich.edu];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225613-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3057329D447
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: D538C29D542
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon Mar 16, 2026 at 3:00 PM CET, Greg KH wrote:
-> On Sun, Mar 15, 2026 at 02:48:52PM +0000, Gary Guo wrote:
->> On Sun Mar 15, 2026 at 2:40 PM GMT, Sasha Levin wrote:
->> > This is a note to let you know that I've just added the patch titled
->> >
->> >     rust: dma: use pointer projection infra for `dma_{read,write}` mac=
-ro
->> >
->> > to the 6.19-stable tree which can be found at:
->> >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queu=
-e.git;a=3Dsummary
->> >
->> > The filename of the patch is:
->> >      rust-dma-use-pointer-projection-infra-for-dma_-read-.patch
->> > and it can be found in the queue-6.19 subdirectory.
->>=20
->> Hi Sasha,
->>=20
->> commit 08da98f18f4f ("rust: ptr: add `KnownSize` trait to support DST si=
-ze info
->> extraction") and commit f41941aab3ac ("rust: ptr: add projection
->> infrastructure") are dependencies of this fix.
->>=20
->> It doesn't look like these commits are currently being picked. They're n=
-eeded
->> for building.
->>=20
->> They're part of the same series: https://lore.kernel.org/rust-for-linux/=
-20260302164239.284084-1-gary@kernel.org/
->
-> Yeah, this breaks the build on my systems.  I'll go drop this patch for
-> now, and if you want these in the stable trees, can you provide a
-> backported series of them?
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-The DMA soundness fix, as a potential bug, is probably not crucial to backp=
-ort.
+[ Upstream commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 ]
 
-There are two nova-core fixes on top of it. One of them fixes a UB conditio=
-n
-reading from and writing to a DMA buffer, the other one is a potential stac=
-k
-overflow.
+So far the driver populated the struct can_priv::do_set_bittiming() and
+struct can_priv::fd::do_set_data_bittiming() callbacks.
 
-nova-core is still work in progress, so I'm not too worried about this as f=
-ar as
-stable trees are concerned.
+Before bringing up the interface, user space has to configure the bitrates.
+With these callbacks the configuration is directly forwarded into the CAN
+hardware. Then the interface can be brought up.
 
-I think we usually backport soundness fixes anyway, plus everything should =
-apply
-without conflicts, so it probably doesn't hurt to pick them up regardless.
+An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
+the bitrates in the CAN hardware. This leads to a problem with the
+CANable-2.5 [1] firmware, which resets the configured bit rates during
+ifdown.
 
-I can send a separate series if preferred.
+To fix the problem remove both bit timing callbacks and always configure
+the bitrates in the struct net_device_ops::ndo_open() callback.
+
+[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
+
+Cc: stable@vger.kernel.org
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/can/usb/gs_usb.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 861b583935225..e336703b941ef 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -772,9 +772,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
+ }
+ 
+-static int gs_usb_set_bittiming(struct net_device *netdev)
++static int gs_usb_set_bittiming(struct gs_can *dev)
+ {
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -791,9 +790,8 @@ static int gs_usb_set_bittiming(struct net_device *netdev)
+ 				    GFP_KERNEL);
+ }
+ 
+-static int gs_usb_set_data_bittiming(struct net_device *netdev)
++static int gs_usb_set_data_bittiming(struct gs_can *dev)
+ {
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.fd.data_bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -1057,6 +1055,20 @@ static int gs_can_open(struct net_device *netdev)
+ 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
+ 
++	rc = gs_usb_set_bittiming(dev);
++	if (rc) {
++		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
++		goto out_usb_kill_anchored_urbs;
++	}
++
++	if (ctrlmode & CAN_CTRLMODE_FD) {
++		rc = gs_usb_set_data_bittiming(dev);
++		if (rc) {
++			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
++			goto out_usb_kill_anchored_urbs;
++		}
++	}
++
+ 	/* finally start device */
+ 	dev->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	dm.flags = cpu_to_le32(flags);
+@@ -1357,7 +1369,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 	dev->can.state = CAN_STATE_STOPPED;
+ 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
+ 	dev->can.bittiming_const = &dev->bt_const;
+-	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ 
+ 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
+ 
+@@ -1381,7 +1392,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
+ 		 */
+ 		dev->can.fd.data_bittiming_const = &dev->bt_const;
+-		dev->can.fd.do_set_data_bittiming = gs_usb_set_data_bittiming;
+ 	}
+ 
+ 	if (feature & GS_CAN_FEATURE_TERMINATION) {
+-- 
+2.51.0
+
 
