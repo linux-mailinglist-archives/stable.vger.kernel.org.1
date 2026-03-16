@@ -1,109 +1,116 @@
-Return-Path: <stable+bounces-225718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HaoLFaUuGnTgAEAu9opvQ
-	(envelope-from <stable+bounces-225718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:37:58 +0100
+	id AAILDIeVuGnTgAEAu9opvQ
+	(envelope-from <stable+bounces-225719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:43:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BE02A205F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:37:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43212A2100
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2A8B30616D5
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:37:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37F53306E87D
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3105937186C;
-	Mon, 16 Mar 2026 23:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB13D37754E;
+	Mon, 16 Mar 2026 23:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgxOcbYd"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="XxsvWGDu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4320.protonmail.ch (mail-4320.protonmail.ch [185.70.43.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A1034B434;
-	Mon, 16 Mar 2026 23:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E61D376BD5;
+	Mon, 16 Mar 2026 23:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773704241; cv=none; b=tlEvcdSypxrfgyKxvCjsOY+RQT2UfmWsBKAPE3avk1zO2BMpbhNWPNH6jQqlw/YMAsmkViJ1XbFvRvkIorii8ns0v1fzXDqP34kohdW/oRdZ+pZ67OlAwICQbOl8B3c+zX9xXvl33F3ImScRu75FxQEEFrBD8Zx1jwUjD5tU5rY=
+	t=1773704517; cv=none; b=ELQeEbXoiap/YUnRhYguDrRxsDx0/ymxy7GrKYnZ33iH4d4VQl/lEMklmoAPjtoQuFcpsASirUE9EF884ZIjjo8OQbQWnFpCClflB4NeeGqqM3UEfM288hLl2pv863O1wOuXDQ7yTipLLziHWVdqTzIBCFDcc9+5FNNoDWzwHAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773704241; c=relaxed/simple;
-	bh=S+lf83P352ONiWt5Oxfez1dYw+llENHgLdCSYdGltzw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=meJLguyZFpijHIOp4PC1jiKkONGP3Uk5qA2w8AeyYRmkIi5xmNeBIyquWaDvLfRQDDHPdY0/rbVRLRvbbIOXn+HXKKinVTW4xjK+WkAKDU1nh91WyAW+7kcizW2YXWZGKxwxWs8dgXWze2dEtktKmDCs6ArfhsrRi1Yimla5bg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgxOcbYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD5EC4AF0C;
-	Mon, 16 Mar 2026 23:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773704240;
-	bh=S+lf83P352ONiWt5Oxfez1dYw+llENHgLdCSYdGltzw=;
-	h=Date:From:To:Cc:Subject:From;
-	b=KgxOcbYdV505UOsLjaZ7P4Qmg0qu3Hz3EO4NxCNS/k61ra5gatuYtw0ZB1SWH2PRq
-	 RiSpbvyvLezGfH0VGkxEU7VkDD+G6Fq3xb0mvkuS7pyXgkaoEYFInKijwbjfra3Afe
-	 EdANAeNrUsgcwSGS8AGMKNmChpNBgTqDCxeGdsg/yWQ3emjGHMbHNzfRWZlB9RmNip
-	 JsmYLy2BPs9l0PhfG2kyxyehS8IavRs8y4/yL8gwYGVL0ApLd2OitP2wYGqt5LWZTx
-	 LUHJqFzyjEmjyn7vNK2ebMPgTOvx0L1SghbzRAiH03VXNBuON5tUPJHeMBd+XW+Ba7
-	 8nGODklXrL4MQ==
-Date: Mon, 16 Mar 2026 16:37:16 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, llvm@lists.linux.dev
-Subject: Apply e2ffa15b9baa and fde0ab43b9a3 to 6.12
-Message-ID: <20260316233716.GA758717@ax162>
+	s=arc-20240116; t=1773704517; c=relaxed/simple;
+	bh=GPG40qgsiWGfnf1HBeZ8ASKYrpHqfbll19YA2ateEtE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dfZ1p+DwL3wCW+xmRU+fsGIK3cva+Jkr0zVFiQCuvR2KN3EUoXfxwEZZezhIauZ0EUzjZpLX5xU6zA0AH4wVJu9EO3mo2neZV1/FQqK0CckgYtzH0VpCXqM1Ez+ZCXncORzttqDF9fuvOBNvWauh2ZlRW9MmtqX65dYXUopT3s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=XxsvWGDu; arc=none smtp.client-ip=185.70.43.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1773704505; x=1773963705;
+	bh=GPG40qgsiWGfnf1HBeZ8ASKYrpHqfbll19YA2ateEtE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XxsvWGDu/IN4vUaX8G7/9dIgPzaVfiyArlcXkWH4G7abI6Haa7C9Ko2IGiQgo67ih
+	 rwvUBxlImxJrkqvaHWz/x7hzBJgPfkl7r9gwjP8qf99ScHvMdkyYYXYZ47ZqCB2Ktk
+	 vZKjDZMBe3Xa00zJUlOUGaujz0I4hasJpxdPX+x5XXKTAJM7soR++tCvUApSofjUC9
+	 epDDXM30IZH/N008XSqu6JpLGinjpYk6indAXTk3YHJj6mYJ+Y5+X2WkDDzJQChOlC
+	 fDhIvN45U8guqk4WuSwRVdA4zs9qAuphSv7+tkipHA4oTaY25k9aLlug2gunPrFkiy
+	 kMvWfF9ux9rFA==
+Date: Mon, 16 Mar 2026 23:41:41 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+From: Paul Moses <p@1g4.org>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net-shapers: clear hierarchy pointer and defer flush frees with RCU
+Message-ID: <kml9JrxcP_XGGG4SSCVJO6f8Oi9zTfdJg9NRVZyvu7YAd5dgDy-uBE2m1U6MVY-ponQRFLuWQ6z14W63DCLevPICexEWX_yMQcZrytxCgDM=@1g4.org>
+In-Reply-To: <20260316161247.1f472be5@kernel.org>
+References: <20260309173450.538026-1-p@1g4.org> <20260310192842.3c3b2070@kernel.org> <hHYLQqDrBCcK_2x6uSbGsBott3QuXe8o-R9tj4vNmw8UUEFxpzoD_PCMiHMyyOnySAtQbJtCAB8yVoCmWxzO07C02Q5o0J6fHu4NLEa-ggY=@1g4.org> <20260316161247.1f472be5@kernel.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: f1e5586f1442cebbc8c2d3a2fe4677b0d66b1bed
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225718-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-225719-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 58BE02A205F
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A43212A2100
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg and Sasha,
+Do you actually look at code anymore or just mash a button to generate summ=
+aries?
 
-Please apply
 
-  e2ffa15b9baa ("kbuild: Disable CC_HAS_ASM_GOTO_OUTPUT on clang < 17")
 
-and its follow up fix
+-------- Original Message --------
+On Monday, 03/16/26 at 18:12 Jakub Kicinski <kuba@kernel.org> wrote:
+On Mon, 16 Mar 2026 18:45:48 +0000 Paul Moses wrote:
+> > This is not the right fix. The shaper hierarchy as a while is not under
+> > RCU. The problem is that we take a ref on netdev and then lock it,
+> > assuming that it's still alive. But it may have gotten unregistered in
+> > the meantime. The correct fix is to check that the netdev is still
+> > alive after we lock the binding or take RCU from the Netlink side.
+>
+> Ok I see it now, I didn't care about anything except queue because it's t=
+he only
+> path that affected both drivers. This is an entirely different issue.
 
-  fde0ab43b9a3 ("Fix CC_HAS_ASM_GOTO_OUTPUT on non-x86 architectures")
+Did you write any of this email or am I just talking to an LLM?
 
-to 6.12, as it helps avoid bogus errors around cleanup variables.
-
-If there are any issues, please let me know.
-
-Cheers,
-Nathan
 
