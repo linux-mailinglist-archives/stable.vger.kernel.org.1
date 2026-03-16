@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-225656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKH4NltNuGlHbwEAu9opvQ
-	(envelope-from <stable+bounces-225656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:35:07 +0100
+	id 0E+9HcFNuGlHbwEAu9opvQ
+	(envelope-from <stable+bounces-225657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:36:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEE929F199
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B079C29F1DB
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4438305A6D5
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:34:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F23DF303C28A
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9682733A9D3;
-	Mon, 16 Mar 2026 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF563292936;
+	Mon, 16 Mar 2026 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9vjU9qr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UY5ZISRI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1AD292936
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33E333A9D3
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686070; cv=none; b=QnlznpszI6c2Jao5Lb/bT1hnapr+iXun3BxFm1ePnzrFK0B+q8vqlzHMKOUMXLAlCu8iw1AWYqFvQCXQ/TXEQgI9fW4xKKO5s9Om5LvYGJvDhQNgMqB/5wM6IF17Cv5oztTiFivPF+UK3oD4CHd6rxsiAFt0R2sieDZP+rekw54=
+	t=1773686095; cv=none; b=l2zPvuUI7ulXBtdswd9By9t7PKAbAHuJZW1uNFBtiQff3sPNcYtvP/Z2oUzqXUR1lHPNzyEH1uOVU2ZScxi+9kZ+B5c6nGcLzTYfyopBe2S8Iu20rh99qOi9F07WESWihI/AuobEM4wZ8/Lud0XX0zwRXqbYazIJLZv0hYe07WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686070; c=relaxed/simple;
-	bh=yfC99boTQVO2Gfeo45Fgh1YWtr5s1tGjp6ei0Yweoq0=;
+	s=arc-20240116; t=1773686095; c=relaxed/simple;
+	bh=HqWm2bgX/gK3H9/EMIAXY2CiTkopaY0jur+QA7YYJ98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3MMuZQstTt9hj2GOeqBo7qz0hONjo/qdQnN11yncHJUX3loJcbee/Fq/4wB320RKmTBh5TqpiulUiSLKy0wienkJx2JyqH4U/8yNVfIspWVSxQkQb5VBqAjof4BhGmHM+vUwfexyeBkzcV5ZYPm1Y1Xvo5BtffUZlK9h5slYOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9vjU9qr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5489AC19421;
-	Mon, 16 Mar 2026 18:34:29 +0000 (UTC)
+	 MIME-Version; b=ax10FrQh8s0IKrSadrXfkhvVedBiezMALQZKj3X3+YIbwBVIjo2nfePJgtHJTH4KOX7IV5YkmSQ3R6W/PkqFgSeyVNa0FqG771+m3FkVRXqGAdJku1WFYp3ugbHGZgNfCzWLZOOyPdfqnghAlTYruVd+ymShITafoXfPs7MBtD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UY5ZISRI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38D3C19421;
+	Mon, 16 Mar 2026 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773686070;
-	bh=yfC99boTQVO2Gfeo45Fgh1YWtr5s1tGjp6ei0Yweoq0=;
+	s=k20201202; t=1773686095;
+	bh=HqWm2bgX/gK3H9/EMIAXY2CiTkopaY0jur+QA7YYJ98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9vjU9qrtlmtTCDjemgK5CLGi0hj6c5D9PmeODdcbdHD39hJHBZEBcIPnQ95QM1f4
-	 Es+WxDeLlX7zfvCckMZf2PoHqTahm+9DkogSpuBY/b5RynbrfU0C1Fl+12G9WAI0Ej
-	 aFjWRkf0X4CmUixqMPZwIbt0hrx2eDKZCwndI6SliZbkCnRb/5wEOfUBfIysFSyfz3
-	 lnXyMOSd1K7s0rxbwc9VkczQo8/lCgF2h8tBO+ef81kr1p7CJqCaaAecwRUSw6lb/Z
-	 Ni9t/zfuT8gKmFmFLO4hmg7sBF13gztni9RM4c+wDTfIjKfk0/Er6RE83Wt+Q4u4yQ
-	 Ds+COZlvWD4UA==
+	b=UY5ZISRIZl7B+4rGrnQFJepaSBMPO2O1Z2M7FRNyZbIpNwNYoTpLVggPv47sAkB1p
+	 i7MyiYQVqgY+5SnN/vozTBRnwk8bv3O+6r/hQ5CtZlkoJFhjHJDjdGYTB4Ix/R3eY3
+	 W8AX1gvwqUkbQPyr2FCgmgK16TmahMcZxXtDx7v1nGOJnAeVLzpmx0/N1gf9P+5ZGY
+	 U48MNCXqprcSJQRs2Qof2NaHra+yYSy59HrAR4yf6OAy+Fo/mj8VgVPWyZ75LrVdNs
+	 vXVLMI3kbLxcvTH+6RsawSbgL9Ta9V4CdVsXj5ajcpcjZeG4FlHa+CyEKsBoHMtzuv
+	 Db1kzkCuD/t/g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with in-kernel APIC
-Date: Mon, 16 Mar 2026 14:34:27 -0400
-Message-ID: <20260316183427.1074945-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] can: gs_usb: gs_can_open(): always configure bitrates before starting device
+Date: Mon, 16 Mar 2026 14:34:53 -0400
+Message-ID: <20260316183453.1075555-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031620-pediatric-distant-133b@gregkh>
-References: <2026031620-pediatric-distant-133b@gregkh>
+In-Reply-To: <2026031635-starved-nervy-a49c@gregkh>
+References: <2026031635-starved-nervy-a49c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,19 +66,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225656-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225657-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,73 +86,106 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2DEE929F199
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: B079C29F1DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 3989a6d036c8ec82c0de3614bed23a1dacd45de5 ]
+[ Upstream commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 ]
 
-Initialize all per-vCPU AVIC control fields in the VMCB if AVIC is enabled
-in KVM and the VM has an in-kernel local APIC, i.e. if it's _possible_ the
-vCPU could activate AVIC at any point in its lifecycle.  Configuring the
-VMCB if and only if AVIC is active "works" purely because of optimizations
-in kvm_create_lapic() to speculatively set apicv_active if AVIC is enabled
-*and* to defer updates until the first KVM_RUN.  In quotes because KVM
-likely won't do the right thing if kvm_apicv_activated() is false, i.e. if
-a vCPU is created while APICv is inhibited at the VM level for whatever
-reason.  E.g. if the inhibit is *removed* before KVM_REQ_APICV_UPDATE is
-handled in KVM_RUN, then __kvm_vcpu_update_apicv() will elide calls to
-vendor code due to seeing "apicv_active == activate".
+So far the driver populated the struct can_priv::do_set_bittiming() and
+struct can_priv::fd::do_set_data_bittiming() callbacks.
 
-Cleaning up the initialization code will also allow fixing a bug where KVM
-incorrectly leaves CR8 interception enabled when AVIC is activated without
-creating a mess with respect to whether AVIC is activated or not.
+Before bringing up the interface, user space has to configure the bitrates.
+With these callbacks the configuration is directly forwarded into the CAN
+hardware. Then the interface can be brought up.
+
+An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
+the bitrates in the CAN hardware. This leads to a problem with the
+CANable-2.5 [1] firmware, which resets the configured bit rates during
+ifdown.
+
+To fix the problem remove both bit timing callbacks and always configure
+the bitrates in the struct net_device_ops::ndo_open() callback.
+
+[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
 
 Cc: stable@vger.kernel.org
-Fixes: 67034bb9dd5e ("KVM: SVM: Add irqchip_split() checks before enabling AVIC")
-Fixes: 6c3e4422dd20 ("svm: Add support for dynamic APICv")
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ context ]
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[ adapted to different structure of the struct ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c | 2 +-
- arch/x86/kvm/svm/svm.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/usb/gs_usb.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 4bb2fbe6676a1..7ed416dcb89c6 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -199,7 +199,7 @@ void avic_init_vmcb(struct vcpu_svm *svm)
- 	vmcb->control.avic_physical_id |= AVIC_MAX_PHYSICAL_ID_COUNT;
- 	vmcb->control.avic_vapic_bar = APIC_DEFAULT_PHYS_BASE & VMCB_AVIC_APIC_BAR_MASK;
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 8859e65d4470b..220496b76cd94 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -678,9 +678,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
+ }
  
--	if (kvm_apicv_activated(svm->vcpu.kvm))
-+	if (kvm_vcpu_apicv_active(&svm->vcpu))
- 		vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
- 	else
- 		vmcb->control.int_ctl &= ~AVIC_ENABLE_MASK;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 1687b74a1a4d8..02346fcce5d8a 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1299,7 +1299,7 @@ static void init_vmcb(struct kvm_vcpu *vcpu)
- 	if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_SPEC_CTRL, 1, 1);
+-static int gs_usb_set_bittiming(struct net_device *netdev)
++static int gs_usb_set_bittiming(struct gs_can *dev)
+ {
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -698,9 +697,8 @@ static int gs_usb_set_bittiming(struct net_device *netdev)
+ 				    GFP_KERNEL);
+ }
  
--	if (kvm_vcpu_apicv_active(vcpu))
-+	if (enable_apicv && irqchip_in_kernel(vcpu->kvm))
- 		avic_init_vmcb(svm);
+-static int gs_usb_set_data_bittiming(struct net_device *netdev)
++static int gs_usb_set_data_bittiming(struct gs_can *dev)
+ {
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.data_bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -961,6 +959,20 @@ static int gs_can_open(struct net_device *netdev)
+ 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
  
- 	if (vgif) {
++	rc = gs_usb_set_bittiming(dev);
++	if (rc) {
++		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
++		goto out_usb_kill_anchored_urbs;
++	}
++
++	if (ctrlmode & CAN_CTRLMODE_FD) {
++		rc = gs_usb_set_data_bittiming(dev);
++		if (rc) {
++			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
++			goto out_usb_kill_anchored_urbs;
++		}
++	}
++
+ 	/* start polling timestamp */
+ 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 		gs_usb_timestamp_init(dev);
+@@ -1231,7 +1243,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 	dev->can.state = CAN_STATE_STOPPED;
+ 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
+ 	dev->can.bittiming_const = &dev->bt_const;
+-	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ 
+ 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
+ 
+@@ -1255,7 +1266,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
+ 		 */
+ 		dev->can.data_bittiming_const = &dev->bt_const;
+-		dev->can.do_set_data_bittiming = gs_usb_set_data_bittiming;
+ 	}
+ 
+ 	if (feature & GS_CAN_FEATURE_TERMINATION) {
 -- 
 2.51.0
 
