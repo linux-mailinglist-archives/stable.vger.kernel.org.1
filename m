@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNabDu0TuGl/YwEAu9opvQ
-	(envelope-from <stable+bounces-225558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:30:05 +0100
+	id GHTIBQsVuGl/YwEAu9opvQ
+	(envelope-from <stable+bounces-225559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:34:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A698629B656
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:30:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8989929B73C
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8EE8300CC95
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:28:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA4E2302DB52
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD27282F39;
-	Mon, 16 Mar 2026 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB37282F36;
+	Mon, 16 Mar 2026 14:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5J9p04E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFQMlz6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4FF282F1D
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD41CBEB9
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773671334; cv=none; b=dF6PKWb2r3WEf29wbgn/Zs+Y8tVcCOlPagFGGREF7m8VwBGpOSDtcpYEZwvbCKpHHVN/rO8bCPVCID91ZdZwUeL3lDM9ucRz546Hz4HkGQouO9zVr0HCgvLKvyRDPbVRU3FYBo21oY0V3sQJADStLiQ/1rMjzqQsh2dUsez+Q2c=
+	t=1773671646; cv=none; b=m0NBV1bPAHuzcW79KNCgIAS4AQ8Xck5P33l1cmToZFCWQoHmcQ/J7PFD+yMqn3wwLCQ2XL7Rx9lFAkFmOsSW3L2GEhA/tD1ULIMxB54HgFARJLbnguZOxrvqnDBlt5+1I/g3eD760SBkXYj50EkpVCVaB99t1tIkalyd/ywStFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773671334; c=relaxed/simple;
-	bh=1CgUzBuwgXA3cATqi+p54xFYMGiACyrj0PRWieKpQSc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aczsFSiy/KxKMw4UEGRHH4c/KoHn3+enUoE2Gy318eV3VsnY9OBDGoSWB6GR3yxvTOvxvo/3E45RhzGkMdEkVFlggH9rZ1G4qlWW4juNDdN+fbcWAm9oJUo1khJqMJE5iYul1Xulpd2QV0KTPEcHd8iRBFL+i7WS88AFXFmCbvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5J9p04E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B840C19421;
-	Mon, 16 Mar 2026 14:28:52 +0000 (UTC)
+	s=arc-20240116; t=1773671646; c=relaxed/simple;
+	bh=qCETHl7zcdnGEh8sWvWf4K7POVVVa1TItw60PYHWh5c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jJYh7/MaIMWfUob6rXAko67jE0zi+vVlsoskF0tDBNO2bNbmBjlnDVIoRreys+hJwpn/mFaNhaORDih38ulRglm9q7SvxVBEMckqOje3QoZYfSoRYvKVHWvw7ZoojTkjr+3VELmwN5DZ8INw5gn04wiTpNBmip2MbwKi09GHrjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFQMlz6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AA7C19421;
+	Mon, 16 Mar 2026 14:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773671334;
-	bh=1CgUzBuwgXA3cATqi+p54xFYMGiACyrj0PRWieKpQSc=;
+	s=korg; t=1773671645;
+	bh=qCETHl7zcdnGEh8sWvWf4K7POVVVa1TItw60PYHWh5c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=E5J9p04EGtHkidGf6XLxCFYgDjyG+PtyAp0UDIomMcvBPsrat03ot1Z30qRGKJ213
-	 DUBSxMEWA0Lsl4O3LP88gPvG+2GkTlzJtDDiaCDFxCJkDxj5c1PKLoWQQudwMweWYC
-	 0hfPcOBBY+qwpwJAf0tJ5AUzVT/Fp2hCWPh7fG2I=
-Subject: FAILED: patch "[PATCH] can: gs_usb: gs_can_open(): always configure bitrates before" failed to apply to 5.10-stable tree
-To: mkl@pengutronix.de
+	b=mFQMlz6K9gOHRiWvVMIbEp95y18hBOfBaGCjSpIs1kAX/vH69aeeq+6Ou8jxc9a0b
+	 NDStLACNCh1Lk7UPyNksGCg1O/5xHAQR3WMOBTQRTnCnVJl72CohRxh+JIELNTK3/b
+	 4NK+fq3+YA56jmiwlIpYoH7MTFi1odBtb5cBk3D4=
+Subject: FAILED: patch "[PATCH] rust: pin-init: replace shadowed return token by" failed to apply to 6.19-stable tree
+To: lossin@kernel.org,aliceryhl@google.com,gary@garyguo.net,ojeda@kernel.org,theemathas@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 16 Mar 2026 15:28:36 +0100
-Message-ID: <2026031636-victory-unviable-f8fc@gregkh>
+Date: Mon, 16 Mar 2026 15:34:01 +0100
+Message-ID: <2026031601-outrage-unheard-916c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,47 +59,48 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225558-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225559-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[kernel.org,google.com,garyguo.net,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,msgid.link:url,pengutronix.de:email]
-X-Rspamd-Queue-Id: A698629B656
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,gregkh:email,garyguo.net:email]
+X-Rspamd-Queue-Id: 8989929B73C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2df6162785f31f1bbb598cfc3b08e4efc88f80b6
+git cherry-pick -x fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031636-victory-unviable-f8fc@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031601-outrage-unheard-916c@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,96 +112,174 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 Mon Sep 17 00:00:00 2001
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 19 Feb 2026 13:57:34 +0100
-Subject: [PATCH] can: gs_usb: gs_can_open(): always configure bitrates before
- starting device
+From fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 Mon Sep 17 00:00:00 2001
+From: Benno Lossin <lossin@kernel.org>
+Date: Wed, 11 Mar 2026 11:50:49 +0100
+Subject: [PATCH] rust: pin-init: replace shadowed return token by
+ `unsafe`-to-create token
 
-So far the driver populated the struct can_priv::do_set_bittiming() and
-struct can_priv::fd::do_set_data_bittiming() callbacks.
+We use a unit struct `__InitOk` in the closure generated by the
+initializer macros as the return value. We shadow it by creating a
+struct with the same name again inside of the closure, preventing early
+returns of `Ok` in the initializer (before all fields have been
+initialized).
 
-Before bringing up the interface, user space has to configure the bitrates.
-With these callbacks the configuration is directly forwarded into the CAN
-hardware. Then the interface can be brought up.
+In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
+this solution no longer works [1]. The shadowed struct can be named
+through type inference. In addition, there is an RFC proposing to add
+the feature of path inference to Rust, which would similarly allow [2].
 
-An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
-the bitrates in the CAN hardware. This leads to a problem with the
-CANable-2.5 [1] firmware, which resets the configured bit rates during
-ifdown.
+Thus remove the shadowed token and replace it with an `unsafe` to create
+token.
 
-To fix the problem remove both bit timing callbacks and always configure
-the bitrates in the struct net_device_ops::ndo_open() callback.
+The reason we initially used the shadowing solution was because an
+alternative solution used a builder pattern. Gary writes [3]:
 
-[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
+    In the early builder-pattern based InitOk, having a single InitOk
+    type for token is unsound because one can launder an InitOk token
+    used for one place to another initializer. I used a branded lifetime
+    solution, and then you figured out that using a shadowed type would
+    work better because nobody could construct it at all.
 
+The laundering issue does not apply to the approach we ended up with
+today.
+
+With this change, the example by Tim Chirananthavat in [1] no longer
+compiles and results in this error:
+
+    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType {}
+       |                 ^^^^^^^^^^^^
+       |
+       = note: private field `0` that was not provided
+    help: you might have meant to use the `new` associated function
+       |
+    26 -                 InferredType {}
+    26 +                 InferredType::new()
+       |
+
+Applying the suggestion of using the `::new()` function, results in
+another expected error:
+
+    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
+      --> src/main.rs:26:17
+       |
+    26 |                 InferredType::new()
+       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
+       |
+       = note: consult the function's documentation for information on how to avoid undefined behavior
+
+Reported-by: Tim Chirananthavat <theemathas@gmail.com>
+Link: https://github.com/rust-lang/rust/issues/153535 [1]
+Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
+Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
+Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
 Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
+[ Added period as mentioned. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 9d27d6f0c0b5..ec9a7cbbbc69 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -772,9 +772,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	}
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 738f62c8105c..2fe918f4d82a 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -148,11 +148,6 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+     let init_fields = init_fields(&fields, pinned, &data, &slot);
+     let field_check = make_field_check(&fields, init_kind, &path);
+     Ok(quote! {{
+-        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
+-        // type and shadow it later when we insert the arbitrary user code. That way there will be
+-        // no possibility of returning without `unsafe`.
+-        struct __InitOk;
+-
+         // Get the data about fields from the supplied type.
+         // SAFETY: TODO
+         let #data = unsafe {
+@@ -162,18 +157,15 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+             #path::#get_data()
+         };
+         // Ensure that `#data` really is of type `#data` and help with type inference:
+-        let init = ::pin_init::__internal::#data_trait::make_closure::<_, __InitOk, #error>(
++        let init = ::pin_init::__internal::#data_trait::make_closure::<_, #error>(
+             #data,
+             move |slot| {
+-                {
+-                    // Shadow the structure so it cannot be used to return early.
+-                    struct __InitOk;
+-                    #zeroable_check
+-                    #this
+-                    #init_fields
+-                    #field_check
+-                }
+-                Ok(__InitOk)
++                #zeroable_check
++                #this
++                #init_fields
++                #field_check
++                // SAFETY: we are the `init!` macro that is allowed to call this.
++                Ok(unsafe { ::pin_init::__internal::InitOk::new() })
+             }
+         );
+         let init = move |slot| -> ::core::result::Result<(), #error> {
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90f18e9a2912..90adbdc1893b 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -46,6 +46,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     }
  }
  
--static int gs_usb_set_bittiming(struct net_device *netdev)
-+static int gs_usb_set_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -791,9 +790,8 @@ static int gs_usb_set_bittiming(struct net_device *netdev)
- 				    GFP_KERNEL);
- }
- 
--static int gs_usb_set_data_bittiming(struct net_device *netdev)
-+static int gs_usb_set_data_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.fd.data_bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -1057,6 +1055,20 @@ static int gs_can_open(struct net_device *netdev)
- 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
- 
-+	rc = gs_usb_set_bittiming(dev);
-+	if (rc) {
-+		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
-+		goto out_usb_kill_anchored_urbs;
-+	}
++/// Token type to signify successful initialization.
++///
++/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
++/// token type to prevent returning `Ok` from an initializer without initializing all fields.
++pub struct InitOk(());
 +
-+	if (ctrlmode & CAN_CTRLMODE_FD) {
-+		rc = gs_usb_set_data_bittiming(dev);
-+		if (rc) {
-+			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
-+			goto out_usb_kill_anchored_urbs;
-+		}
-+	}
++impl InitOk {
++    /// Creates a new token.
++    ///
++    /// # Safety
++    ///
++    /// This function may only be called from the `init!` macro in `../internal/src/init.rs`.
++    #[inline(always)]
++    pub unsafe fn new() -> Self {
++        Self(())
++    }
++}
 +
- 	/* finally start device */
- 	dev->can.state = CAN_STATE_ERROR_ACTIVE;
- 	dm.flags = cpu_to_le32(flags);
-@@ -1370,7 +1382,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 	dev->can.state = CAN_STATE_STOPPED;
- 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
- 	dev->can.bittiming_const = &dev->bt_const;
--	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
+ /// the pin projections within the initializers.
+ ///
+@@ -68,9 +86,10 @@ pub unsafe trait PinData: Copy {
+     type Datee: ?Sized + HasPinData;
  
- 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
+@@ -98,9 +117,10 @@ pub unsafe trait InitData: Copy {
+     type Datee: ?Sized + HasInitData;
  
-@@ -1394,7 +1405,6 @@ static struct gs_can *gs_make_candev(unsigned int channel,
- 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
- 		 */
- 		dev->can.fd.data_bittiming_const = &dev->bt_const;
--		dev->can.fd.do_set_data_bittiming = gs_usb_set_data_bittiming;
- 	}
- 
- 	if (feature & GS_CAN_FEATURE_TERMINATION) {
+     /// Type inference helper function.
+-    fn make_closure<F, O, E>(self, f: F) -> F
++    #[inline(always)]
++    fn make_closure<F, E>(self, f: F) -> F
+     where
+-        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
++        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
+     {
+         f
+     }
 
 
