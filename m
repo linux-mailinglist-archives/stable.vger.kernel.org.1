@@ -1,84 +1,59 @@
-Return-Path: <stable+bounces-225496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPu3EBprt2kuRAEAu9opvQ
-	(envelope-from <stable+bounces-225496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 03:29:46 +0100
+	id cEmiMFZ5t2k9RgEAu9opvQ
+	(envelope-from <stable+bounces-225498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:30:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975EB29411F
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 03:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C242946A7
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 04:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B612300F9FF
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 02:29:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAD503011867
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 03:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4090E30C63B;
-	Mon, 16 Mar 2026 02:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BA63597B;
+	Mon, 16 Mar 2026 03:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="sCDYvCrI"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D866F30C37B;
-	Mon, 16 Mar 2026 02:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D420ED
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 03:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773628139; cv=none; b=dHtsMYDfFOUdN2BjG0NsCuzxXXEWGkTQU3h3jEwIkH+2gkvWfKUHIfxgGalYA5eVXrZzfDDO7xE6lGDqqbxWq0ZRodV8n6Z6VxAjhB9+4w7DMZG9vq91O7kGT3OTxGRi21C8F7ZArdppkjRZmdFSuvoEbqjzFG4jgqy7eSfjvNk=
+	t=1773631826; cv=none; b=IaJf+bXlnMCJn/M7K6vM1NM9RcowqtiVooq5qtvWHn+oFOBYo+7g4qEuSoY2MLLcdofhaKkFVTcZKeQuvWHP1AaGyChyXV9YwKhUS3LDgtkY5lAAqmZfE87NjnaxmODxzqpovqhSlf8DfHMz57NVX7/gY+ZBjFahYh/YWgXBb28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773628139; c=relaxed/simple;
-	bh=mmp62MrrCOCESyBRQSDFmVdab3QIStL6vtm9gBwvsjk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Esut8wE571tDVfka6jwDITz5Vaw3QNJPPZdArU8u4SX0pqHXXxkKlhHin401RMhjYjP73vAVqNsPXTzulYYiabXmQv4uzH9iHHzStBa8QPexAf6UMUM4XLQa5H9JYYyVsp0eWxTW/4Xd+TzV6eYppfrjPGhOdq77i3UMPg9ndgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: dcdb379a20df11f1a21c59e7364eecb8-20260316
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI
-	GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:450d16d7-08a6-478a-bbb7-5671805982f4,IP:10,
-	URL:0,TC:0,Content:-5,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,AC
-	TION:release,TS:0
-X-CID-INFO: VERSION:1.3.11,REQID:450d16d7-08a6-478a-bbb7-5671805982f4,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:9c86387c8d5efe42be7b6a8a75ec43dc,BulkI
-	D:260316102850WCD2VXOF,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|898
-	,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:n
-	il,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC
-	:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: dcdb379a20df11f1a21c59e7364eecb8-20260316
-X-User: zhangheng@kylinos.cn
-Received: from thinksys.. [(112.64.161.44)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1250051832; Mon, 16 Mar 2026 10:28:48 +0800
-From: Zhang Heng <zhangheng@kylinos.cn>
-To: tiwai@suse.com,
-	perex@perex.cz,
-	chris.chiu@canonical.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com
-Cc: danYc_LG@outlook.com,
-	baojun.xu@ti.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek: add quirk for ASUS Strix G16 G615JMR
-Date: Mon, 16 Mar 2026 10:28:43 +0800
-Message-Id: <20260316022843.2809968-1-zhangheng@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773631826; c=relaxed/simple;
+	bh=MudBcZXjkh+vbCwy5P5AerbJ8b+pJaKdThSeJbCjHOE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c33DA3EgYhCv86NfQrJvMXP9gVigcZ8voswVHrGOOvEXqkyQxES4Y6bvM0CuAqIuxI91F70it622v8jhe3eBhnmneLRix6DEE0lPnVqNg/TxBjAMqJuHu/f1431E28BvM5iKpTGEucHHd/ok+KT7LLpEXKEVohQ3w2CZjexcmJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=sCDYvCrI; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=sCDYvCrILdlfSFo5PWpAfUMmVMs9+JT7DLYWP3wU49fS55kcA+UbTcvHymiSDNPj+a90bNa6wVs7F
+	 BYYJPatJIYK/yViFcfBnqNhjjc3W1BOPdGe6y4qudOvuZIeQ2fj+LjLdDyKpKVfpp8FLPkR390E3vE
+	 hkGMzu2miSWa9nbA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from China-Mobile-Kernel-Team (unknown[223.104.40.137])
+	by rmsmtp-lg-appmail-16-12015 (RichMail) with SMTP id 2eef69b7788b43e-2421d;
+	Mon, 16 Mar 2026 11:27:08 +0800 (CST)
+X-RM-TRANSID:2eef69b7788b43e-2421d
+From: Leon Chen <leonchen.oss@139.com>
+To: dwagner@suse.de,
+	hch@lst.de,
+	kbusch@kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 5.15.y] nvmet: always initialize cqe.result
+Date: Mon, 16 Mar 2026 11:27:06 +0800
+Message-Id: <20260316032706.2924-1-leonchen.oss@139.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,61 +61,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225498-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225496-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[outlook.com,ti.com,vger.kernel.org,kylinos.cn];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[139.com];
+	NEURAL_SPAM(0.00)[0.729];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.920];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,kylinos.cn:mid]
-X-Rspamd-Queue-Id: 975EB29411F
+	FREEMAIL_FROM(0.00)[139.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:email,139.com:mid,suse.de:email,lst.de:email]
+X-Rspamd-Queue-Id: 71C242946A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The machine is equipped with ALC294 and requires the
-ALC287_FIXUP_TXNW2781_I2C_ASUS quirk for the amplifier to work properly.
-Since the machine's PCI SSID is also 1043:1204, HDA_CODEC_QUIRK is
-used to retain the previous quirk.
+From: Daniel Wagner <dwagner@suse.de>
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221173
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
+
+The spec doesn't mandate that the first two double words (aka results)
+for the command queue entry need to be set to 0 when they are not
+used (not specified). Though, the target implemention returns 0 for TCP
+and FC but not for RDMA.
+
+Let's make RDMA behave the same and thus explicitly initializing the
+result field. This prevents leaking any data from the stack.
+
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[ Ignored the fabrics-cmd-auth.c, it was introduced in commit:db1312dd9548
+("nvmet: implement basic In-Band Authentication") ]
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/target/core.c        | 1 +
+ drivers/nvme/target/fabrics-cmd.c | 6 ------
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index ab4b22fcb72e..0e8b005cf5fa 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7177,6 +7177,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x1194, "ASUS UM3406KA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	HDA_CODEC_QUIRK(0x1043, 0x1204, "ASUS Strix G16 G615JMR", ALC287_FIXUP_TXNW2781_I2C_ASUS),
- 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index ef2e500bccfd..65bc1efa33d6 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -932,6 +932,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
+ 	req->metadata_sg_cnt = 0;
+ 	req->transfer_len = 0;
+ 	req->metadata_len = 0;
++	req->cqe->result.u64 = 0;
+ 	req->cqe->status = 0;
+ 	req->cqe->sq_head = 0;
+ 	req->ns = NULL;
+diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
+index e5ee3d3ce164..a12f80869d6f 100644
+--- a/drivers/nvme/target/fabrics-cmd.c
++++ b/drivers/nvme/target/fabrics-cmd.c
+@@ -187,9 +187,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
+ 	if (status)
+ 		goto out;
+ 
+-	/* zero out initial completion result, assign values as needed */
+-	req->cqe->result.u32 = 0;
+-
+ 	if (c->recfmt != 0) {
+ 		pr_warn("invalid connect version (%d).\n",
+ 			le16_to_cpu(c->recfmt));
+@@ -255,9 +252,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
+ 	if (status)
+ 		goto out;
+ 
+-	/* zero out initial completion result, assign values as needed */
+-	req->cqe->result.u32 = 0;
+-
+ 	if (c->recfmt != 0) {
+ 		pr_warn("invalid connect version (%d).\n",
+ 			le16_to_cpu(c->recfmt));
 -- 
-2.34.1
+2.35.3
+
 
 
