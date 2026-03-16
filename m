@@ -1,182 +1,129 @@
-Return-Path: <stable+bounces-225597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJJlGdgkuGmNZgEAu9opvQ
-	(envelope-from <stable+bounces-225597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:42:16 +0100
+	id kMsXI8EmuGnhZgEAu9opvQ
+	(envelope-from <stable+bounces-225598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:50:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E52829CA0C
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:42:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1415129CC46
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 16:50:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D2E93034638
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:36:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78415302A508
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AD639FCB6;
-	Mon, 16 Mar 2026 15:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77E33A1A5B;
+	Mon, 16 Mar 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmNRwOtb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TcOeR9Sg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB339F19A
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 15:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E13A0E93;
+	Mon, 16 Mar 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773675388; cv=none; b=jWEOKV+5NKHx6CCVcZbAd25SUlLZT3IYSJ/+mz2JyUNIMjWwmGAUjQPD2JOwQReTDI6ZVsyJGuC0IlmUS3VXXofs34KLjXQaAnfezT6FcPCfPM/VvajA1IyYB7ADxCph4Ccj6psge1X4l9dlXC8GZRPNNRM+YUZGrBE8EFG7A70=
+	t=1773675896; cv=none; b=j89TY0Woxnhchvw9LmZiblkGHAdElB/kPN17/hPC3V7pwfjtr2lZWTWn9MR8EuErNIdXIlUYpz+zvAoWqxgDSVDBWy7OYTW1Lyvf5BwiHxCUH7bC1NIe5skSONd/i9TBDFjKSt3f0WVZ5/I8JHt1I0C+6rvr4+mGwqGXWtio/2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773675388; c=relaxed/simple;
-	bh=/ew7Kc6F/auPYuWrx/olAAAKj32SOGEI6ohm/UXSnFE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S9s+VwhXt0FJu916EU8480Laoi5eADtWSEY8jD1CYNADjxjVWwzGqeqhrieQv8kS8B54QYsVo+te5M3xgD6g6XF3amHDryUTR8+8H85ygpDtUMAwiXvdipis+qJxZcSdi4El6w3F5SlReTKkpFh75ZejXD7dQQdenOVqXkkwMig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmNRwOtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2332FC19421;
-	Mon, 16 Mar 2026 15:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773675388;
-	bh=/ew7Kc6F/auPYuWrx/olAAAKj32SOGEI6ohm/UXSnFE=;
-	h=Subject:To:Cc:From:Date:From;
-	b=qmNRwOtbYTgRuDHLYNEl6B1gXPs+aFyYYn1/YJhm7NdRBdFhiSwdHyiapqpQ6VeQd
-	 1IsV27h+DcGSEgmCx+aFNNHKxWIqL9K+gETH7N4gPC9bRD9vyzE+Dz7ABxqT+nUGFj
-	 NEb1CPhlGBB35JrI7kFekOHyCxr4QY1ra2uAfdGk=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus" failed to apply to 5.10-stable tree
-To: jiashengjiangcool@gmail.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 16 Mar 2026 16:36:10 +0100
-Message-ID: <2026031610-unlearned-sturdy-3047@gregkh>
+	s=arc-20240116; t=1773675896; c=relaxed/simple;
+	bh=IH6hjF+pkW2zjrOcoLLUCtQbwyxCT8NByC78D6ekXco=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Oyma/DbF1xw0eDQ/lZ9DImZ5bgJrKmnKtKfSezv13JoQnIGvaWPFYR6Cm2E8fMHP+8gzdxInOqYPNHDYhz3yX0TgoH7tKl9WKM0id6mp49PCzEBaudWKURa+fT1EN/u4NkFbM9kDIb5BLzbW84vMlgXZ+jGccH4EojD7KFGwqyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TcOeR9Sg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE97C19421;
+	Mon, 16 Mar 2026 15:44:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773675896;
+	bh=IH6hjF+pkW2zjrOcoLLUCtQbwyxCT8NByC78D6ekXco=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TcOeR9SgSAlkVmfMXk8wAz1W+adrhixRO9ilx9mDNYkqKasT0/37suCzyVn5arpef
+	 8+axpziHyVNvrp8vMNMQTmTnKkwlsFNtb2TmxOlNa4WXFUg4R0IPHS7CHZvX2eRlfb
+	 vnib7BcfwcCG2CaM+sGH5qQT9iRVVwlx83jDrY7I=
+Date: Mon, 16 Mar 2026 08:44:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Suren Baghdasaryan
+ <surenb@google.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Qi
+ Zheng <zhengqi.arch@bytedance.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] riscv: mm: add null check for find_vm_area in
+ __set_memory
+Message-Id: <20260316084455.bb44dd7baa47487f1e567ce9@linux-foundation.org>
+In-Reply-To: <20260316151642.13738-1-osama.abdelkader@gmail.com>
+References: <20260316151642.13738-1-osama.abdelkader@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225597-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,synopsys.com,linuxfoundation.org,kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-225598-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[synopsys.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0E52829CA0C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1415129CC46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, 16 Mar 2026 16:16:39 +0100 Osama Abdelkader <osama.abdelkader@gmail.com> wrote:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> find_vm_area() can return NULL. Add a null check to avoid potential
+> null pointer dereference, matching the pattern used by other arches.
+> 
+> Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Three years ago.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x b9fde507355342a2d64225d582dc8b98ff5ecb19
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031610-unlearned-sturdy-3047@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+> Cc: stable@vger.kernel.org
 
-Possible dependencies:
+Why cc:stable?  Has anyone ever hit this?  Are we able to identify a
+scenario where this bug might be triggered?
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b9fde507355342a2d64225d582dc8b98ff5ecb19 Mon Sep 17 00:00:00 2001
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Date: Thu, 19 Feb 2026 02:38:34 +0000
-Subject: [PATCH] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus
- handling
-
-The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
-managed and tied to userspace configuration via ConfigFS. It can be
-NULL if the USB host sends requests before the nexus is fully
-established or immediately after it is dropped.
-
-Currently, functions like `bot_submit_command()` and the data
-transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
-dereference `tv_nexus->tvn_se_sess` without any validation. If a
-malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
-command during this race window, it triggers a NULL pointer
-dereference, leading to a kernel panic (local DoS).
-
-This exposes an inconsistent API usage within the module, as peer
-functions like `usbg_submit_command()` and `bot_send_bad_response()`
-correctly implement a NULL check for `tv_nexus` before proceeding.
-
-Fix this by bringing consistency to the nexus handling. Add the
-missing `if (!tv_nexus)` checks to the vulnerable BOT command and
-request processing paths, aborting the command gracefully with an
-error instead of crashing the system.
-
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index ec050d8f99f1..a7853dcbb14c 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1222,6 +1222,13 @@ static void usbg_submit_cmd(struct usbg_cmd *cmd)
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
-@@ -1483,6 +1490,13 @@ static void bot_cmd_work(struct work_struct *work)
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
-
+> --- a/arch/riscv/mm/pageattr.c
+> +++ b/arch/riscv/mm/pageattr.c
+> @@ -289,6 +289,10 @@ static int __set_memory(unsigned long addr, int numpages, pgprot_t set_mask,
+>  		int i, page_start;
+>  
+>  		area = find_vm_area((void *)start);
+> +		if (!area) {
+> +			ret = -EINVAL;
+> +			goto unlock;
+> +		}
+>  		page_start = (start - (unsigned long)area->addr) >> PAGE_SHIFT;
+>  
+>  		for (i = page_start; i < page_start + numpages; ++i) {
+> -- 
+> 2.43.0
 
