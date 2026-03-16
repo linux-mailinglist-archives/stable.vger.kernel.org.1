@@ -1,159 +1,203 @@
-Return-Path: <stable+bounces-225658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNUvOL5QuGmKcAEAu9opvQ
-	(envelope-from <stable+bounces-225658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:49:34 +0100
+	id gKT0E35RuGmKcAEAu9opvQ
+	(envelope-from <stable+bounces-225659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:52:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CDB29F43C
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:49:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCB029F526
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3339A30C16AA
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:43:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B9D93062438
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 18:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94043DF009;
-	Mon, 16 Mar 2026 18:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91E13D5652;
+	Mon, 16 Mar 2026 18:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="lEQhynEA"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="YDZKP+6q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from mail-106100.protonmail.ch (mail-106100.protonmail.ch [79.135.106.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE033E0C4A
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2337D30B509
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 18:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686578; cv=none; b=CTbbVZ+rz5jMv0khXLhUVCKb8Dgfs+zVJnXbhBDN7APL+nJU0AfeROiopFMeNLRIZZXcryXvpAefzFIJUzNE1gfUvORPHd3NF5mLMcgiYK4TvE0DUuFyiuZpbW2KlxHGYqr5JR8LWuBL3heGSN+LQ53KSAMH4sU/uIysWlzCqZg=
+	t=1773686764; cv=none; b=lHit1EKjJMNVMBpzXxwR4OaTkAabLanNJpHVwRdGk6aYt2ocjZFNtJcuSZZveiZOW6fAKEiSMGdijC60cYhyF6fShrMxsUZiW91fYEcKJxTxzscKV2WAmExw73K8PTmz+MDakXWGO6i7vvpobtV4NCmYkwpWt3PecoWM0O+JePo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686578; c=relaxed/simple;
-	bh=3sBY4tW9sUTsq5I04TqNM0MDdmo2tDC1vEIhnJUCkOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iQ8ADcO5A8GwzWx2m95L9sv9EoMjVJSYL69x3ZhDlOKmCoj1j5vKvi6fbs0qlB6yF13bvVJZxy1wTJrdZQE5e1VUTmr6C8f0z3OoOX9Sa/bL6sCpNrfi60c1BKQM6CSQmu0J3L3dN8Fqb1cDPbgqIvt2TVyOArgLne6trXDHl24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=lEQhynEA; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id AA9E31C0F79
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 21:42:51 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1773686566; x=
-	1774550567; bh=3sBY4tW9sUTsq5I04TqNM0MDdmo2tDC1vEIhnJUCkOE=; b=l
-	EQhynEAvuAjLAlVaGTRamznV5ieGXYp0lDyWeNtaamfLeYAsvCKD/I573iJbCI1E
-	PL8BRCa3AwYhrU43zy5/Rx+f5oNT/KUcI4idI2qRM7buyGOVRv94FgVKgTakIGw3
-	No3o3j6AR85bHdN8Fa7fHSL07LGifTHpOuK69LU2O8=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 8WqmiXtEONrl for <stable@vger.kernel.org>;
-	Mon, 16 Mar 2026 21:42:46 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 224FB1C0E83;
-	Mon, 16 Mar 2026 21:41:59 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Ben Skeggs <bskeggs@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/nouveau/disp: Fix potential NULL pointer dereference in nouveau_dp_irq
-Date: Mon, 16 Mar 2026 18:41:41 +0000
-Message-ID: <20260316184143.82894-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773686764; c=relaxed/simple;
+	bh=GhaGTWaAC9f2cyezBsr1nAmhVqDMM4husB5sfRHYLqs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bXoSsxU4/kMEFDo8UiycbgX28lT56NKoaqTl9qMREqWeJe6/+MEyu76vQihLBblCoQ4nEKfbLphooM4ZfxqMAn9ITWBXNm3ZJYUJJk0UhrAHQFaPJAVvoBIstbdgWcea1gRCVXahAg8JYSm5ivb95umbLjVKVbe6KrdDD/wxt6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=YDZKP+6q; arc=none smtp.client-ip=79.135.106.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1773686752; x=1773945952;
+	bh=jYCSUK08Navzfq6Y6W1JAa1hQPi9EJkF7xj1O3nnbBI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=YDZKP+6qwHw+vopjjYN5aLZgLhIQPPMnBe3awSYFntqha02lWBIT5q3fcgI4lC6Kv
+	 WfGP+ZJwrEerUHwcKGni4trdlzGETmk4PrrPh53BFfh2ZuVzp+7HflXSHnqzyJ926n
+	 IRTPaECiUgAyIeLzNbTSp2WwAjYKAQR/m786KejOQGXqZDQy63ECrHnY/15huN82uC
+	 m+8YCeedD4A7mcHjeG7hGQhaWeM+VtzbppYISK+N2kVQ6uaCoJ+Woi6xVrSyRtLcJl
+	 6F8Gz7jhdRHCuBq7B3oBiuibHPXRwQhzkh/343Km2tqwGE5LW0jVgJl1pmtpdxeC8H
+	 ytpCf9rPLxRAg==
+Date: Mon, 16 Mar 2026 18:45:48 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+From: Paul Moses <p@1g4.org>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net-shapers: clear hierarchy pointer and defer flush frees with RCU
+Message-ID: <hHYLQqDrBCcK_2x6uSbGsBott3QuXe8o-R9tj4vNmw8UUEFxpzoD_PCMiHMyyOnySAtQbJtCAB8yVoCmWxzO07C02Q5o0J6fHu4NLEa-ggY=@1g4.org>
+In-Reply-To: <20260310192842.3c3b2070@kernel.org>
+References: <20260309173450.538026-1-p@1g4.org> <20260310192842.3c3b2070@kernel.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 0ccbae606882ace79d5a92f44365f6688dda9b9d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[nppct.ru:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225658-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[nppct.ru,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,redhat.com,lists.freedesktop.org,vger.kernel.org,linuxtesting.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-225659-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[1g4.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[nppct.ru];
-	DKIM_TRACE(0.00)[nppct.ru:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sdl@nppct.ru,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 63CDB29F43C
+X-Rspamd-Queue-Id: BBCB029F526
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The issue was discovered through static analysis after reviewing changes
-introduced by commit 773eb04d14a1 ("drm/nouveau/disp: expose conn event
-class"). Function nouveau_dp_irq() dereferences the encoder pointer before
-verifying that it is valid. The drm pointer is initialized using
-outp->base.base.dev prior to the NULL check:
+> This is not the right fix. The shaper hierarchy as a while is not under
+> RCU. The problem is that we take a ref on netdev and then lock it,
+> assuming that it's still alive. But it may have gotten unregistered in
+> the meantime. The correct fix is to check that the netdev is still
+> alive after we lock the binding or take RCU from the Netlink side.
 
-  struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
+Ok I see it now, I didn't care about anything except queue because it's the=
+ only=20
+path that affected both drivers. This is an entirely different issue.
 
-If no encoder is associated with the connector, this leads to a
-NULL pointer dereference.
+1. net_shaper_nl_pre_doit() =E2=86=92 net_shaper_ctx_setup()
+=09gets dev =3D netdev_get_by_index(...) (ref only, no alive check)=20
+2. Before doit runs, unregister can do:
+=09- unlist_netdevice(dev) (dev.c:12388)
+=09- dev->reg_state =3D NETREG_UNREGISTERING=20
+3. Doit then runs:
+=09- net_shaper_lock(binding)=20
+=09- continues without checking reg_state
+=09- may call ops->set/delete/group() on a dying device
 
-Move the drm initialization after the NULL check.
+Here's the flow of reported issue:
 
-Fixes: 773eb04d14a1 ("drm/nouveau/disp: expose conn event class")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- drivers/gpu/drm/nouveau/nouveau_dp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+1) A userspace GET doit path does this:
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
-index 55691ec44aba..738802358d85 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dp.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
-@@ -486,7 +486,7 @@ nouveau_dp_irq(struct work_struct *work)
- 		container_of(work, typeof(*nv_connector), irq_work);
- 	struct drm_connector *connector = &nv_connector->base;
- 	struct nouveau_encoder *outp = find_encoder(connector, DCB_OUTPUT_DP);
--	struct nouveau_drm *drm = nouveau_drm(outp->base.base.dev);
-+	struct nouveau_drm *drm;
- 	struct nv50_mstm *mstm;
- 	u64 hpd = 0;
- 	int ret;
-@@ -494,6 +494,8 @@ nouveau_dp_irq(struct work_struct *work)
- 	if (!outp)
- 		return;
- 
-+	drm = nouveau_drm(outp->base.base.dev);
-+
- 	mstm = outp->dp.mstm;
- 	NV_DEBUG(drm, "service %s\n", connector->name);
- 
--- 
-2.43.0
+  net_shaper_nl_get_doit()
+    -> rcu_read_lock()
+    -> net_shaper_lookup()
+         -> net_shaper_hierarchy()
+              -> READ_ONCE(dev->net_shaper_hierarchy)
+         -> xa_get_mark() / xa_load()
+              -> dereference hierarchy->shapers
+    -> rcu_read_unlock()
 
+That can race with netdevice unregister teardown:
+
+  net_shaper_flush_netdev()
+    -> net_shaper_flush()
+         -> xa_for_each(...) {
+              __xa_erase(...)
+              kfree(cur)
+            }
+         -> kfree(hierarchy)
+
+The problem is that readers walk the published hierarchy locklessly under
+an RCU read-side section, but teardown reclaims both the shapers and the
+hierarchy with plain kfree() rather than kfree_rcu().
+
+2) The original flush path does this:
+
+  net_shaper_flush()
+    -> hierarchy =3D net_shaper_hierarchy(binding)
+    -> ... free shapers ...
+    -> kfree(hierarchy)
+    -> no WRITE_ONCE(dev->net_shaper_hierarchy, NULL)
+
+So a later GET reader can still do:
+
+  net_shaper_hierarchy()
+    -> return stale non-NULL pointer
+
+and then walk the freed hierarchy through xa_* operations.
+
+The only remaining issue I found after fully reviewing this is the dump
+path, but I have not been able to reproduce it so far:
+
+- kfree_rcu() only protects readers that have already entered
+  rcu_read_lock()
+- In the old net_shaper_nl_get_dumpit(), hierarchy was loaded before
+  rcu_read_lock()
+- So this sequence is possible:
+    1. dump path reads the hierarchy pointer
+    2. gets preempted
+    3. teardown detaches the pointer and queues kfree_rcu()
+    4. the grace period ends and the object is freed
+    5. dump resumes, enters rcu_read_lock(), and dereferences the stale
+       pointer
+
+=09diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+=09index ab0de415546d6..452557c52488b 100644
+=09--- a/net/shaper/shaper.c
+=09+++ b/net/shaper/shaper.c
+=09@@ -779,11 +779,13 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
+ =09
+ =09=09/* Don't error out dumps performed before any set operation. */
+ =09=09binding =3D net_shaper_binding_from_ctx(ctx);
+=09+=09rcu_read_lock();
+ =09=09hierarchy =3D net_shaper_hierarchy(binding);
+=09-=09if (!hierarchy)
+=09+=09if (!hierarchy) {
+=09+=09=09rcu_read_unlock();
+ =09=09=09return 0;
+=09+=09}
+ =09
+=09-=09rcu_read_lock();
+ =09=09for (; (shaper =3D xa_find(&hierarchy->shapers, &ctx->start_index,
+ =09=09=09=09 =09U32_MAX, XA_PRESENT)); ctx->start_index++) {
+ =09=09=09ret =3D net_shaper_fill_one(skb, binding, shaper, info);
+=09--=20
+=092.53.GIT
+
+
+So I still have no more changes besides possibly the inclusion of this patc=
+h.
+
+Thanks,
+Paul
 
