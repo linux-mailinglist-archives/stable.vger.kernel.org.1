@@ -1,219 +1,224 @@
-Return-Path: <stable+bounces-225490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mH0sHUdHt2krPQEAu9opvQ
-	(envelope-from <stable+bounces-225490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:56:55 +0100
+	id SKrIJqZTt2kCQAEAu9opvQ
+	(envelope-from <stable+bounces-225491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 01:49:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2287129311E
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:56:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FF6293263
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 01:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF251300D454
-	for <lists+stable@lfdr.de>; Sun, 15 Mar 2026 23:56:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5146130104AA
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 00:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC22C21C4;
-	Sun, 15 Mar 2026 23:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C220A5F3;
+	Mon, 16 Mar 2026 00:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDmf7fc+"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="l72C19X6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2FB2BEC2E
-	for <stable@vger.kernel.org>; Sun, 15 Mar 2026 23:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773619011; cv=pass; b=E423dRdOPHyMDNhEivGWbq6lUYVlEBDKwup87OC20ndLd+mgDZcSfr+V+H83sWU4rMmBJrjD28TYjhYpOfUxGsPqHAtvCgRkvSvoBnrmK0mt07wnofaDCYx3sMY6WhGj64dBchI9TzWzYfesYdHsE2parfZbMZ53KLs9DdAR90s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773619011; c=relaxed/simple;
-	bh=0v9aYL1OBh/52O29eAqygO95z0sTQ4zRbjxSU2mIdWY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=efWeQ1yn6SH8M0hhUSn555ssLI4ItuQqJkVXr8gUNMMC4DruEO7UKmqmpissdOKkQNy9do2O/jfJLwEd9BrSDAVIdGaN/88dkcFULS20XFnHMxytZAW5f8FQfTClzw5/BFxuqGdvp882DRnrWt7M42K6UL0sJUeHZqGLEHVCtpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDmf7fc+; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-505a1789a27so20493431cf.3
-        for <stable@vger.kernel.org>; Sun, 15 Mar 2026 16:56:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773619009; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g4qQMLyJa5jM4WCPGr0nPmz8LnIWtI7Zvt/+z1ZkPHNvnfwweOh2Haau29+JwYGvgk
-         KpckY4DEbod8eaSXGcpH+OvB/scgmBxOX9psU9tg3GqQS3bjYX1pzXZPgriY/BUMYE4Y
-         DvqYZjNb5jWJXUu+siYhySD4rNREllllnmkirenPGGWmthhG086M/fIfAyc4B8HEMcNI
-         k6HhvufgsYdYsbWFR/TZtgDyciFDNwI7SKFBoMa6fkBvgXomEujG0n/wwSTIVZbkFIZB
-         Sv9G7nhL5Dux+Pi0wW1EgWzAgSMOhJ1brvmCq0FrsdGEruKwS1QPHVRb/t/LAVHZT0hu
-         EFrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
-        fh=Pd9dEniilcuIMmn5mDNURCqi15WYr0B0YuNKqYTypPc=;
-        b=JZmb/sNLvPko52oRAcgvwOETuTc9a5019mNah6N9KN5z5IsQra/bwsa2OcQcdV5wTO
-         u95iKJ/OVOji4m4VxqnCB18asR+kUJQx4isDbFofw6heEWDhAXpFt4UL8bUBLmWZXC0r
-         pLN99ALDHRxgrhcZ1x+iq3B4blkUpfcWZD+2R1gX1+1uq0vBy8zFZWFLrSDBBNwa/q+6
-         ouYO/a/g1ZOvIRDktDd5dHSlUM4c2Ss2sBLP7PgK81SVQQKP1bTNEhgkkrqEhbsI4cSD
-         Zl0fqCfJ38sJsQO4ucaJej5WUYz3zLk8sOdE+o7j1fubHl5PVrqTJT928fsNNYpS6d9/
-         fizw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773619009; x=1774223809; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
-        b=jDmf7fc+f9BCgOZW6E7rh3CD7tYKfuiycRK0gyl19AqcMOwc/NY+Eje2wEntYn+HxX
-         b0rE1Mtr/3odNc0uiqWboqoTQxoIV5LpOqy8G07Vyfo++8RNJW6Pns/P3Uc27ZsVjiz4
-         uUyhneV+z67d+0Jei07+ZMj0Rx+rcjbeZee3EH8Lpj2uZqZ1s31JvxhPOxe0Ubes0Vwp
-         AiQjO4Dji53UeL0DhdeebMeDJaxV2A/TnZeOnyLyWF+BMA6SZcHyQ8Sm+Q4UhTGzyYkR
-         dQIRhnW0GxqusGP5GhvrGSW4Qpo792Amu+626ux0cCKmMhUQCdNCVjJmNv25byekh247
-         Kucg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773619009; x=1774223809;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
-        b=p1pyQJ3MoNaeAWN1IgrXxxJHu5OMihiV1Jt+Up9d0UeMz8XUXnn5fjk0fVlJjVj5do
-         e7LoV7UcMVdeTirIAR0udeTL+Ymwa2e0DTCLBEBpszVBAuMNnXpEBIAU3Tzg44wUykXh
-         0m1IXTffNnFAteDCZ1oG3afiek5qC/JbhAIjGsMIiNK+V230dhBmZxEjjymcrHJVOoJv
-         dux6QJD4G2PDgiURN7yIRvLnFbCOLAEN27zZ3nQIDlGECv1G/LA3l4Sct62/fpqDVpHX
-         5DvpjdEcydXJYLf8ykDHHck9gip2u9B7bxFI6El4ub83j8YRIa3MLt3FG5Hzu7R+su4+
-         l6Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOm2/Y4WPtSs7vVKOUkIwxOFws7+na17JPwEWlS0yhH8GagvhuuRjdZ2vIxJeVE+jQ3HbQmwI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGZFuYTHVQdsbcR3Lf0B6BFHrD0aFWlkRzDFGSYXWicfPNulVf
-	vkZf0IM/dz8i2v6aNfgv3Vmy/ok/EtL71novc4MEYTJVzSxFxCfUYrdHAuE7x0ayXEEtKrwBpgs
-	4aSwhihV2ILfw1cIIXe2LXE9DbLYthg==
-X-Gm-Gg: ATEYQzwNgAxW4dSKrblVLs/SOEoWQvb9kR8xp8bymEl9a8jc28giTmPBxJHC8zHAqTC
-	8LrE1IMNRXBHc+b2YzJLyN9bVBhIhCSxOoBrZp4zSx7qkJvBRLoqew1qwVR1sVZxRpFTCKUxriX
-	c0Pkfznu/cD9pQJKfweBbMqypg51VXMqNUBexhxHCubf3a2JcbCsPPaS4cCB5MvgUo0H0m2rCM9
-	gTBbR1tSDmonkpzpx2q8e22Rwx1P3O4Caxy4ju1dc+ps0EPVz3gj5f3czDKqVTz+QNgeFQpHYco
-	c+8ODw0cEsytTNdAXA==
-X-Received: by 2002:a05:622a:1998:b0:509:1260:b138 with SMTP id
- d75a77b69052e-50957e323c0mr131795091cf.58.1773619009394; Sun, 15 Mar 2026
- 16:56:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58091EE7B7;
+	Mon, 16 Mar 2026 00:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773622160; cv=none; b=t+FXm+JlPQ9FrirSL7cHTeyBmy0F9BezUU6tl2M1l08k7wA/fRxDqt3RlUdrTS2bWjCbG9v38QrDh8VuAneW/ZnRpDrK2Lj7Uxpd7Ruw2Uv+qFMApebNKHkBu9vwgrdGNUTHcZBrW0whehY7TYsbgc87J2CkEtIWqfAy3yBQ9/s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773622160; c=relaxed/simple;
+	bh=P7sr7744rWBZuNKXE3ysOad6x1sqVLb87D9KOug6edE=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=qd33Z6ZWAnP5b8W/cqtwVdgM2rqgLBlk9kIX7aauPQo10W1IkzzWh8EuTWxNLFbw4xiaKvdl8Kv9oYP+knX6bT47id489pPzS5fwoktHy+5jWHlWd60P6Fa7BGEUO6xy9jfAMDF1UbFZjoAstz0F9EkEvc0juEiTZ6S8/1DRm2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=l72C19X6; arc=none smtp.client-ip=203.205.221.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1773622149; bh=9jBg3jqCF1kbWlIOevv9//4WRhEcTPgrOPzJy0L+n0Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=l72C19X6g+ZN5/mP60AMU+9abwSzFnHSM2IzoqRS47yQb0ecjEWPPH7RLmhGTOw0/
+	 BAxhjv9rf33DTVNO0XhtGkz8JwMeNhXbnrC9UXsmJHnMdERwTtdhuncz8xcsjtuxBx
+	 S9r4OuRdT7W5dxferYXAmYREQ8B5vKGT4sMXEVYg=
+Received: from June.localdomain ([123.121.145.35])
+	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
+	id C398223C; Mon, 16 Mar 2026 08:48:57 +0800
+X-QQ-mid: xmsmtpt1773622141tsrg5jwzr
+Message-ID: <tencent_85434243050417195C47168AC3BA186EF305@qq.com>
+X-QQ-XMAILINFO: N/WmRbclY25GmJ6tVvoTTBxAiLbUz7RGwyM2f1e4UfvizyWWMogtkdiabW7IF0
+	 wxj8fFlswwEWLG/Nx9WGKZy/IqVPTfnTGnhnC+QgEh/JdwG4M8ypaLV3Peg63AnSKCZzmL2DHGVo
+	 0pXvveGtxI+G/77Y4DA5WFXUdTLgM9DFAS5gSuwWm8H8gOmL91XWzuezCofKJ8glu1QOOc60DWV9
+	 y5esZOmk8qgardeMj5coZiWe0kgy3dcHDyw8Qh6GVD2CbeRNQcZJ/sSF8cF1OM4uh2HjhfJ2bWgA
+	 0aaBGaz7JM/g1/esv+Hc/jEXBWaHMG2SL2j37ZLFtvJLTbna/sTOHgWoA0Tb6OVvdTMDv9JhEizC
+	 F0UkwSZQT4t5Ee2gFluWevgG0AIBjjF0gvr4jSRMNfoF2CdMHHLvH1Bh6lUcugmaEMDglK9syUeO
+	 4duVrUeZV+NbA4UEEwP5A+3eXJI0nu2ZYvbo8Zr8ESZVTpW1GXzHH+a9vdHsrY3Yn10kxU9zcYbY
+	 OooASidCaIQ2QSlykJKgAVQEcKLp3lkX7X/pvu8/hOSb6B0tqU6ZJAwsyHJxrQWi6WafpAE4cUsx
+	 j9klnF74CRLLVWY1vdsmhOjq7+AfSB7/h4Bd87FBW4J5Nj8VSs5q9PRXdFtJzwQ/rK2+vEXcukcr
+	 ZGzbkeXiNnxbcPbf/+5JZCLq5Gv6q6g/wkNOSswoX6XE2mLfkscHRyepJ2cEqYLcnAdO5pod3Yp2
+	 aesR8kzHmIQ58ex0ulBEGotrJYXCSI5CuSu68BQKipe36Grn8wBypB8VWVAw5EE4J/6BLc1P7h6p
+	 ejo4UQEQBCtzpmOtiBE+mWkClbKarjcGJTN2ssAQWjtIbJo8SnumwOE65xEgyWThUSnCclv+aRp3
+	 qsGxm5+96B1weq+ZsRMi5n01YtH/3sstUmsQtqOQYyNQzI2PX10nV92bro7u31fDK1KAzS0Ix/nc
+	 oxwsxyRIkqXXP7oMUMXHIDSc/8pRihTo9/ULR3d1Cjo9DVHd2D3xqTwvRwyTdtjiSVq1bA6Cuqxp
+	 LUz+lBRjS1EbbwEeKsvuDKzKjRtkQxDvnuGZXUoPH5dEipSvkQg+tRtTE6R7E=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Wang Jun <1742789905@qq.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Wang Jun <1742789905@qq.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/1] media: saa7164: add ioremap return checks and cleanups
+Date: Mon, 16 Mar 2026 08:48:18 +0800
+X-OQ-MSGID: <20260316004854.1711-2-1742789905@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260316004854.1711-1-1742789905@qq.com>
+References: <a44adff7-60fd-4fca-85f4-0c69a035ec69@web.de>
+ <20260316004854.1711-1-1742789905@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311002825.15502-1-sean.wang@kernel.org> <20260311002825.15502-2-sean.wang@kernel.org>
- <CAFktD2cbFJrLS4ggc+yf582BYmw=jJsntfbDR65ssMpVGM2BKA@mail.gmail.com>
- <CAFrh3J-PsVQ1u_hGFxTVKK0uOs6KxT=euK+jbGvWCueqvynAgw@mail.gmail.com> <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
-In-Reply-To: <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
-From: Nick <morrownr@gmail.com>
-Date: Sun, 15 Mar 2026 18:56:23 -0500
-X-Gm-Features: AaiRm51Qj5-6K1SxyXtVVXgAPeBMnSu9mdsfs7G65KWz5yr6fupz2hG1vMFQLVU
-Message-ID: <CAFktD2cot4QuVSs0_r2p0ajuRSDCL2u8d94Eq5vuVBfZxCsKzw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
-To: Satadru Pramanik <satadru@gmail.com>
-Cc: Sean Wang <sean.wang@kernel.org>, nbd@nbd.name, lorenzo.bianconi@redhat.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	Sean Wang <sean.wang@mediatek.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225490-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-225491-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,qq.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[morrownr@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2287129311E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qq.com:dkim,qq.com:email,qq.com:mid]
+X-Rspamd-Queue-Id: 22FF6293263
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> >> > From: Sean Wang <sean.wang@mediatek.com>
-> >> >
-> >> > mt7925u uses different reset/status registers from mt7921u. Reusing the
-> >> > mt7921u register set causes the WFSYS reset to fail.
-> >> >
-> >> > Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
-> >> > correct registers and fix mt7925u failing to initialize after a warm
-> >> > reboot.
-> >> >
-> >> > Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
-> >> > Cc: stable@vger.kernel.org
-> >> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> >> > ---
-> >> >  drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  4 ++++
-> >> >  drivers/net/wireless/mediatek/mt76/mt792x_usb.c  | 13 ++++++++++++-
-> >> >  2 files changed, 16 insertions(+), 1 deletion(-)
-> >> >
-> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-> >> > index 7ddde9286861..d2a8b2b0df32 100644
-> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-> >> > @@ -392,6 +392,10 @@
-> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST     MT_CBTOP_RGU(0x600)
-> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
-> >> >
-> >> > +#define MT7925_CBTOP_RGU_WF_SUBSYS_RST 0x70028600
-> >> > +#define MT7925_WFSYS_INIT_DONE_ADDR    0x184c1604
-> >> > +#define MT7925_WFSYS_INIT_DONE         0x00001d1e
-> >> > +
-> >> >  #define MT_HW_BOUND                    0x70010020
-> >> >  #define MT_HW_CHIPID                   0x70010200
-> >> >  #define MT_HW_REV                      0x70010204
-> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-> >> > index a92e872226cf..47827d1c5ccb 100644
-> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-> >> > @@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
-> >> >         .need_status_sel = true,
-> >> >  };
-> >> >
-> >> > +static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
-> >> > +       .rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
-> >> > +       .done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
-> >> > +       .done_mask = U32_MAX,
-> >> > +       .done_val = MT7925_WFSYS_INIT_DONE,
-> >> > +       .delay_ms = 20,
-> >> > +       .need_status_sel = false,
-> >> > +};
-> >> > +
-> >> >  int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
-> >> >  {
-> >> >         int err;
-> >> > @@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
-> >> >
-> >> >  int mt792xu_wfsys_reset(struct mt792x_dev *dev)
-> >> >  {
-> >> > -       const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
-> >> > +       const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
-> >> > +                                               &mt7925_wfsys_desc :
-> >> > +                                               &mt7921_wfsys_desc;
-> >> >         u32 val;
-> >> >         int i;
-> >> >
-> >> > --
-> >> > 2.43.0
+Add checks for ioremap return values in saa7164_dev_setup(). If
+ioremap for BAR0 or BAR2 fails, release the already allocated PCI
+memory regions, remove the device from the global list, decrement
+the device count, and return -ENODEV.
 
-Sean, I have been testing this series of 2 patches for the last two days. I
-am no longer seeing problems with warm boot so:
+This prevents potential null pointer dereferences and ensures proper
+cleanup on memory mapping failures.
 
-Tested-by: Nick Morrow <morrownr@gmail.com>
+Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wang Jun <1742789905@qq.com>
+---
+ drivers/media/pci/saa7164/saa7164-core.c | 47 ++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-Thanks.
+diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
+index 74406d5ea0a5..b410e24c403c 100644
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_dev *dev)
+ 	return -EBUSY;
+ }
+ 
++static void release_resources(struct saa7164_dev *dev)
++{
++	release_mem_region(pci_resource_start(dev->pci, 0),
++					   pci_resource_len(dev->pci, 0));
++
++	release_mem_region(pci_resource_start(dev->pci, 2),
++					   pci_resource_len(dev->pci, 2));
++}
++
+ static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
+ {
+ 	struct saa7164_port *port = NULL;
+@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 
+ 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
+ 
+-	mutex_lock(&devlist);
+-	list_add_tail(&dev->devlist, &saa7164_devlist);
+-	mutex_unlock(&devlist);
++	scoped_guard(mutex, &devlist) {
++		list_add_tail(&dev->devlist, &saa7164_devlist);
++	}
+ 
+ 	/* board config */
+ 	dev->board = UNSET;
+@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	}
+ 
+ 	/* PCI/e allocations */
+-	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
+-			     pci_resource_len(dev->pci, 0));
++	dev->lmmio = pci_ioremap_bar(dev->pci_dev, 0);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
++		goto err_ioremap_bar0;
++	}
+ 
+-	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
+-			     pci_resource_len(dev->pci, 2));
++	dev->lmmio = pci_ioremap_bar(dev->pci_dev, 2);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
++		goto err_ioremap_bar2;
++	}
+ 
+ 	dev->bmmio = (u8 __iomem *)dev->lmmio;
+ 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
+@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	saa7164_pci_quirks(dev);
+ 
+ 	return 0;
++
++err_ioremap_bar2:
++	iounmap(dev->lmmio);
++err_ioremap_bar0:
++	release_resources(dev);
++
++	scoped_guard(mutex, &devlist) {
++		list_del(&dev->devlist);
++	}
++	saa7164_devcount--;
++
++	return	-ENODEV;
+ }
+ 
+ static void saa7164_dev_unregister(struct saa7164_dev *dev)
+ {
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-	release_mem_region(pci_resource_start(dev->pci, 0),
+-		pci_resource_len(dev->pci, 0));
+-
+-	release_mem_region(pci_resource_start(dev->pci, 2),
+-		pci_resource_len(dev->pci, 2));
++	release_resources(dev);
+ 
+ 	if (!atomic_dec_and_test(&dev->refcount))
+ 		return;
+-- 
+2.43.0
+
 
