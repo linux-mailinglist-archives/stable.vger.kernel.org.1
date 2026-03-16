@@ -1,186 +1,179 @@
-Return-Path: <stable+bounces-225567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHHnKkoWuGl/YwEAu9opvQ
-	(envelope-from <stable+bounces-225567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:40:10 +0100
+	id cAOiK6QWuGl/YwEAu9opvQ
+	(envelope-from <stable+bounces-225568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:41:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D3629B8D6
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E2529B914
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A212C301ECC6
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:37:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AB23307411C
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA78829B20D;
-	Mon, 16 Mar 2026 14:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5A82D063A;
+	Mon, 16 Mar 2026 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZITZBwQv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNcTo7z2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0561E511;
-	Mon, 16 Mar 2026 14:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773671836; cv=none; b=Mk1Cdl71fUPPENKFWQdPQtqGXUWgtxvGSD0j2fGGd5mu5t6dShyPDtZrbJHSrUrAUtUov3cfUs0/EwhoZy4cIPud6rS+pzF9hG+n9E4ysyZu8TCiheWhfDuBGwo/TBq/VEi9yWl5c6Oas2Ku2Sp5z/+DsMNANaxhNrsmcdOjT6w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773671836; c=relaxed/simple;
-	bh=74v6NDydt6az4QsLHrQuZPD12oghWeI3uJouhMrdHsY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSVTtDJMEcoVw8dqHH/+MrybIVVUexlg+E6B/cSXlXs7P9DXX5X0Kqb2pWH7cZSuVMSOKXC6bNQQdulIC2Vt/IauYHoJCS1Q9AeQo3o75wxIeyhbjziWUXFkn9v+9mrd5+FZMTGhQ5qh8wVlDwBDvfrmmNqEL53LhXNDrJnGn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZITZBwQv; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773671835; x=1805207835;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=74v6NDydt6az4QsLHrQuZPD12oghWeI3uJouhMrdHsY=;
-  b=ZITZBwQvqnXRGIu9T/iJymZHhHyLlxFoVSsAeMjkSxr/YWL+NWlV75Tu
-   IEhh5Cb0WHPtln1ybJW4KaA706kH0VwlTDvqKLOn36jtSklM3PUhrIx+l
-   Hqz20JSjMAy2CJK1kRKvoj597UaeRbja02nZtRq1HT1qPnNcjS8yKDshi
-   +ubRxafw40+zIyu/5lkSxoeCqjzPpkmQNF4kEBXmQI59AOYEYjbdtoqNh
-   1sSYp7jLRoZ3J9nmHLumklAPbcz2WzQAlLWh5UCvUOYcuWslvUE2OCxw0
-   bbpR8Ze7L8/LWwdLcJRj9IZ5CFVB7EIbLDZ8o+57sLfilOIUEzdhXyghu
-   A==;
-X-CSE-ConnectionGUID: P2aUOZLgRxWzgKSYzMKv6A==
-X-CSE-MsgGUID: 3CqEYjnARtmm4jHwte/Ltw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74874891"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74874891"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 07:37:15 -0700
-X-CSE-ConnectionGUID: KpRHgULAQsCumIeriir+Og==
-X-CSE-MsgGUID: 7NB741r9TrObAepMbvHpRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="221191490"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.184]) ([10.245.244.184])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 07:37:14 -0700
-Message-ID: <d5353ee4-1a3f-43a6-93ed-5127d666ad0b@linux.intel.com>
-Date: Mon, 16 Mar 2026 16:37:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909652C1594
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773671933; cv=pass; b=lRfysn/1bf1yWgAqCw2Jce+gH6iewfgX1q58yK9PxcajpaUNtFpwoxqPJrb5jYHxs6pV3BUATurlBmTAFTgvwOonAmRV8xHamenRJmUD1D8k4qdsZkROvHK33l9SyRX6gtD3Yu7wo98SX+o3ImXgV9CNGE+M1J/A5+vKwU0cUXM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773671933; c=relaxed/simple;
+	bh=8tz8cJV3JMrlvEE8awZB92wRqurtJhd5Zcy2cM4jGHM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bCxIVHx6wM5RHClEIwBM++6T3IN3/1Jtyprt3+HjlzJkskYgNdPWjNQseqvJAkXV6cBqKvBFXePD6tMUUZ76GNUx0rTZy0zTW6hnTDTjCgAN9TXHdwXbop4wbsMkT9FAekG//5h96wd0lC3D42BVkW1j490rAXyBYlZcsgZaovc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNcTo7z2; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2be084d8166so360512eec.2
+        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 07:38:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773671932; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bR6RfMx5HKUDPCT2P3zw+ON0l6wzZ/TnT8UVSqP0NQxvG1XZygiN3px5W57NVMYIqW
+         eOkPCGZCHUNbzS735zcHou+VgJ0g7nsJHCist0GDG2eWqMXPzEI+aWem0o/0/ZrrI5t1
+         WkQwaoj6PqqRU/GMCooitHsHioIniGyB6VN/mz1Y6Q84qIiHmOLRoa+OxZNy1p0zIfDS
+         sqHh56/cqrx/DgiSosHjjlM/52dvRjzUsxjN68vgn0uY2sEb6tyHx97qAiywWKpzAV+A
+         dtjkwuE8kjhtsBGkVoG9PSGZ8ri6qFK2I3gOqJd/95d5ulhdkOVqWiLueguPuHVPbaSv
+         eYOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1oAfO4kk9+ce4bAmHjxkSea3HeVPWrM9gkj0DpyhShA=;
+        fh=rpzUyIeiW3SLYs5EojmgfxxOmyixhQC06SuJjFJUFno=;
+        b=SSQQzs/MqmfmKUmSdO5M2hpWbgKdzgRD01CsLD5mMH/JqSbGyiSk5LEArySl5UnvTZ
+         JA7/UQoWjSrqeU3qZi67ClAHtR1pPgTG/qstSvKfoniCg045sguytTLfdWCzqlXTDzg4
+         yxNn9uykkU5tjX+36k5Qv+OkWoULjOoKDbWO7ddaav8iEhqDIF1bDszYwXtuKMhQcATR
+         5abH7Ux7u5IfLKq6e++nyiZjnr/JLwjkn7xsP1dqXJVh80r14uXY31eKRISmGuuo75sK
+         Ntx6rYoUqTPFn01TnMJ860OKCg7Dveep0SXbNCYqdj6k5jZfh3IwsJL13Y6SXoR1ju/L
+         4llg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773671932; x=1774276732; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1oAfO4kk9+ce4bAmHjxkSea3HeVPWrM9gkj0DpyhShA=;
+        b=kNcTo7z20kvyPJobEtu5R6pvswdnx5E/oJZ54Xuozp8XKmrpbuOlggPqNQLi3lGZxm
+         YBN2R1efPxbB2KLRPb7KngtR16wirEOIsf7N8yZuMvEjE9fkAdoIwYJhWh+v7tI+Bm+2
+         uGnrKSsW1kCKBPxIgtLrOO1ITbMuzFvSVmbhvzefFBQ/Ma5Z7avFArRei+4Qc/N1tLkd
+         HQzBk+orNldT5sbv2aEIW5CmsSoDI5fuCxzN+dbPD20NWl296/QdWm+uIOinBePHzK2w
+         wj2YIK9dNW5z5Z8SzJnXFr4YYsZGDkV/MBzk9CAtAExp+dpkrhyuwqofKUkCVy0Dn5PI
+         WWEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773671932; x=1774276732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1oAfO4kk9+ce4bAmHjxkSea3HeVPWrM9gkj0DpyhShA=;
+        b=sdnySjQtNE55dkFPH/XN1JXeEYVG+bsHALjm600XMkIAe1ifNkTHqvxCIDSRxgZag2
+         zWcF4QWJ0DLSmbKdydA6uHgURLOFJ7atKlhS5W0GT3htrwWfm5X1zGCkRVm6IXr0JrL5
+         o7NTNnEFSLw3CfrLjmr27sbsk+AH8fSD2Y46EiGV7Eou0z8lahKmeUvLQ12dTDWiAyqJ
+         wEFVYbIMsJVUmZZQu4K9nyXPzKJsx3dz5ti65GhN/VvyzsQwk8vmzGfqA8+0vM+831Nu
+         x9oZ1NQS+p7IVzYhDzk2NJjlxy+7ACLtRLUB2MV60TLf+6wecysYl/Gd1OssYg8hgFHb
+         eIeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWETioRNaOuB7WudkVq9oan4BPrbgXPYFGpgz0j3aISghprHRdOktIIhF6sAfaYjaBbYW096/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz0Jg39pTsHsap+f3PrjrL9mptdwpt2/sqUitrcHJkA0qzQHz7
+	ETtBGsMKRGT3lKiG1dgkkykiuwZgsuj0GlXPWA2jM6l0vApihjkaQu871yBaiYZJf3z+OM4FcP6
+	IlcFOFu3GypfxSNoLgGU+KjUI5BtPc+c=
+X-Gm-Gg: ATEYQzxd4kIZtxu+IxKOb9B5HfQlGowNbeLv0Nm+mxxuN2rejyoXHEVchCwf/g+3hya
+	rbaVH1+mul3059RG/jmoDOFEm1N0bj57ZA+52JqYvfXLgI/5ae7JgxoZCmZi2+UQ1GAf2ANKD9N
+	Q9ZRKwkXwlYsjFFHMzC/WOke2oLFs5tbXrA4V+JYhKJjX6oQdZYjrSWv1qA4zK02rxT8g7ZDJjZ
+	R2hmIBC6IGxmkuunD+qMiQTiAgfoJwmLpjBaAiqmy80qX1O1u9DyDvFyhANf+ff07YNvNuaBiqJ
+	GdHkC7iR7cnItMioA0EPlzDLjfS6241/VOvyURVuRJgDbTPqgfIzVgatQDUsQ/v2ASJsmOASDfF
+	O5oirSCplli4NwWRaGOcPfT4=
+X-Received: by 2002:a05:7300:fb88:b0:2b7:103a:7697 with SMTP id
+ 5a478bee46e88-2bea55f6aa0mr3367946eec.5.1773671931629; Mon, 16 Mar 2026
+ 07:38:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: cs42l43-jack: Remove manual pm_runtime get/put from
- tip_sense_work
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, david.rhodes@cirrus.com,
- rf@opensource.cirrus.com, linux-sound@vger.kernel.org, stable@vger.kernel.org
-References: <20260316124924.31047-1-peter.ujfalusi@linux.intel.com>
- <abgTWxI1Q9M1o+ka@opensource.cirrus.com>
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <abgTWxI1Q9M1o+ka@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <2026031601-outrage-unheard-916c@gregkh>
+In-Reply-To: <2026031601-outrage-unheard-916c@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 16 Mar 2026 15:38:39 +0100
+X-Gm-Features: AaiRm51tR7Oi_8-rit1yHxUPs2vmcX3RAeb7cggnBapkVFQ7c_XLOtPogxKphnY
+Message-ID: <CANiq72=DogsD6Y7C5owQ8raQd7S9NEz2EBX5=11qTtn+BSE31A@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] rust: pin-init: replace shadowed return
+ token by" failed to apply to 6.19-stable tree
+To: gregkh@linuxfoundation.org, lossin@kernel.org
+Cc: aliceryhl@google.com, gary@garyguo.net, ojeda@kernel.org, 
+	theemathas@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,cirrus.com,opensource.cirrus.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225567-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,garyguo.net,kernel.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225568-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 13D3629B8D6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,gregkh:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F1E2529B914
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, Mar 16, 2026 at 3:34=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 6.19-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.19.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031601-=
+outrage-unheard-916c@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
+This one and the other pin-init ones just sent were expected -- we
+will need a custom version, but we added Cc: stable@ to get the
+notification (if you prefer we avoid that, please let us know!):
 
-On 16/03/2026 16:27, Charles Keepax wrote:
-> On Mon, Mar 16, 2026 at 02:49:24PM +0200, Peter Ujfalusi wrote:
->> When a jack is inserted the forced pm_runtime_get() will keep the codec,
->> soundwire bus and it's parent active as long as the jack is connected.
->> This makes for example the DSP and firmware booted up on Intel platforms.
->>
->> If the module is removed while the jack is connected we will also have
->> unbalanced runtime PM state.
->>
->> Without the manual get/put, the button detection still works correctly and
->> the system can reach lower power state while the jack is connected like
->> in the case when there is no jack connected.
->>
->> Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
->> ---
->>  sound/soc/codecs/cs42l43-jack.c | 8 ++------
->>  1 file changed, 2 insertions(+), 6 deletions(-)
->>
->> diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
->> index 3e04e6897b14..d90a13a55845 100644
->> --- a/sound/soc/codecs/cs42l43-jack.c
->> +++ b/sound/soc/codecs/cs42l43-jack.c
->> @@ -756,10 +756,8 @@ void cs42l43_tip_sense_work(struct work_struct *work)
->>  	ring = (sts >> CS42L43_RINGSENSE_PLUG_DB_STS_SHIFT) & CS42L43_JACK_PRESENT;
->>  
->>  	if (tip == CS42L43_JACK_PRESENT) {
->> -		if (cs42l43->sdw && !priv->jack_present) {
->> +		if (cs42l43->sdw && !priv->jack_present)
->>  			priv->jack_present = true;
->> -			pm_runtime_get(priv->dev);
->> -		}
-> 
-> Hmm... yes, I have this feeling this was in here for a reason I
-> should probably have left a comment here. I somewhat agree it
-> looks a bit mad with fresh eyes. The variable is also only used
-> for tracking this pm_runtime_get so you can drop the jack_present
-> variable from the struct as well, if we take the patch forward.
+  https://lore.kernel.org/all/CANiq72kk5_wzA9izJ3YPWUcQGiEUQmCif+iqFfwK9b_5=
+mq145g@mail.gmail.com/
 
-That was my thinking as well, but then when the headset buttons did
-worked after the patch on an idle system (ARL laptop) then I thought
-that this might no longer be needed?
+Thanks!
 
-Fwiw, I have been banging my head on why the DSP is not suspending ever
-on the laptop and the system is not hitting lower C state because of
-this when I had some spare time and studied the code and then removed
-the jack and boom, the DSP suspended right away :o
-
-> Best I can come up with was it was some interaction with the
-> Intel host's doing a bus reset when coming out of clock stop. I
-> think that might have caused something important to get
-> clobbered in some situations. But anyway will do some testing and
-> thinking and report back.
-
-Sure, but draining battery when the jack is connected is not a great
-added feature of a codec driver.
-The type-Cs are on the other side of the laptop, so taping the jack and
-power together is not a workable solution - to disconnect jack if power
-is removed ;)
-
-It would be great if you can find the reason for forcing the system up
-if jack is connected.
-Even then there is the issue of unbalance in runtime get on module
-removal when the jack is connected...
-
--- 
-Péter
-
+Cheers,
+Miguel
 
