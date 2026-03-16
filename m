@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-225697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK0AH5xluGlOdQEAu9opvQ
-	(envelope-from <stable+bounces-225697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:18:36 +0100
+	id kJYYDINmuGlOdQEAu9opvQ
+	(envelope-from <stable+bounces-225698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:22:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CED2A020E
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:18:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856182A026D
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21E5E307E865
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:18:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FE313045C29
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B16355F2C;
-	Mon, 16 Mar 2026 20:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2223EE1DE;
+	Mon, 16 Mar 2026 20:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSFDdZIp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkDskulU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AEF2C0F78
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 20:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9AB296BDC;
+	Mon, 16 Mar 2026 20:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773692284; cv=none; b=BFyU7dusihD43dfgGcQF5Gdfr3wHovHbn74TknkdKf3mqSrczGqAewbhyCtUScqNjfqLyZAjlwjUykyXrC9qZYYgAf0rQ+tuD2LHN7j5wzGWuRYyXi13cNctJBdTiIxrBu2p5bEPf2imXV+hgF+rFtHhRa80k38MamRB0tu4w9Y=
+	t=1773692540; cv=none; b=uY6ozJXyGaTuvKUdbjjogJoM+e2ZzTt9TTZPFsZSFigUgZBxPxrLngQX/nPovGsmIVn6vcZX5HsXsZM27I4mtk/1bxDGr8wDS1IBPSELljOzKZVD2Klq16HfmtjEmyaHrPSrn3+w2UissX/a9tSAYuLnpLCiFD4OC5mboZkmOTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773692284; c=relaxed/simple;
-	bh=Xgw0bWhldJJQL74Ufbt8AJWFi3/wKvBtlFJbfcTRsmM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjbBKHeTef876y8rAbcpR6q4KDTQACzkJ8K02twTPb1LQS9GgHRVHwED4/7RApi7WceEhwFbJQ/51TTj1VSSsIsoox21u0462LXFmS5G6XblDBMDZY3BN69zdILukuf0aMw5wv0dWalj7NeFUKE91rKhrkTpE8iBiX9dpJMwXFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSFDdZIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C673C19421;
-	Mon, 16 Mar 2026 20:18:03 +0000 (UTC)
+	s=arc-20240116; t=1773692540; c=relaxed/simple;
+	bh=lunMFDLmUDZwME6Stf/cLCjqXqvBAvKS+2/nf2ou+lU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IieE79mlNtIlYyfNW+JyuY/vaoDKIz8idukbIka0HEzICDlkib5/yVA9UlgPluLYXOMfw8Mc/5QZEaHHwEIDoZ8NEMGjsnVg4UMdggKxv9BhY4Ncky2kEXEYXozW1bA5j3pvccfLR49MUwkzIvevZLutPyNn0xcgyWd9A84oJVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkDskulU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB5BC19421;
+	Mon, 16 Mar 2026 20:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773692283;
-	bh=Xgw0bWhldJJQL74Ufbt8AJWFi3/wKvBtlFJbfcTRsmM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSFDdZIpbcDIGQhdZK61jmNFx8QE3wTFyim+/DKMyHM2eKmD5MOoLHWbEI5/WSPud
-	 K+4JhG07wECdUnlTbQnwKneB5D35JW5rr932b0B8BhEWaJccR2Eh17yVCk++c0ggK/
-	 RdnkRm+SWDzyxiEX26lusqcbZJgJcjMYREfYdtEhHlXxohsZW6v9exlFp2d5hcn2+4
-	 XJNQ6muWgmVOhYM2Ak5cxBYPczSvxjrEX1S7Ki/dkkgeBhenjwzXynRclmVY9u9lj1
-	 tQGtHk+iSMqbPC/ZGR5R1gUqXbqHf9GSTKOT78Gz/mJF/RdvXfkuYjmfHnjXOt4TAl
-	 96LbB3J8T0IXw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
-Date: Mon, 16 Mar 2026 16:18:01 -0400
-Message-ID: <20260316201801.1376275-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031634-departed-sandlot-6482@gregkh>
-References: <2026031634-departed-sandlot-6482@gregkh>
+	s=k20201202; t=1773692540;
+	bh=lunMFDLmUDZwME6Stf/cLCjqXqvBAvKS+2/nf2ou+lU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pkDskulUimYSgSHEr5XRuQ6Y2UyWEaEb4MET41cMDSNhkVIW2u91d+9a5w66hAthj
+	 b99sEtvhucrCtqDbUF1ETKIaxX1ybhNIfjwPP2i2jOrBBGGIE0670W4IkVDqz9XIHg
+	 veSX2KtUsNvSfj1MQmuO+/mqgil09m1VFDq8me6KFrPxBacoDUY72TSOc7tH7JmwoE
+	 M+WqEWHwQHUyWfeVofPyA9DJJLDL7V+68Zu8X/Vg41kYXgFX/xZ5I9eh4PSLFAExpt
+	 zEqjm0BNbezNK+3wdxJ2G1JDfDsI134PBmIGgeljnFvYAoz/uX4oPnmrgf7nmS31AF
+	 U816hA1TfBIxQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org
+Cc: linux-ext4@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Zorro Lang <zlang@redhat.com>,
+	stable@vger.kernel.org,
+	Akhil R <akhilrajeev@nvidia.com>
+Subject: [PATCH v2] crypto: tegra - Add missing CRYPTO_ALG_ASYNC
+Date: Mon, 16 Mar 2026 13:21:19 -0700
+Message-ID: <20260316202119.13934-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,131 +65,334 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,nvidia.com,kernel.org,redhat.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225697-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225698-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D2CED2A020E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 856182A026D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Sean Christopherson <seanjc@google.com>
+The tegra crypto driver failed to set the CRYPTO_ALG_ASYNC on its
+asynchronous algorithms, causing the crypto API to select them for users
+that request only synchronous algorithms.  This causes crashes (at
+least).  Fix this by adding the flag like what the other drivers do.
+Also remove the unnecessary CRYPTO_ALG_TYPE_* flags, since those just
+get ignored and overridden by the registration function anyway.
 
-[ Upstream commit 87d0f901a9bd8ae6be57249c737f20ac0cace93d ]
-
-Explicitly set/clear CR8 write interception when AVIC is (de)activated to
-fix a bug where KVM leaves the interception enabled after AVIC is
-activated.  E.g. if KVM emulates INIT=>WFS while AVIC is deactivated, CR8
-will remain intercepted in perpetuity.
-
-On its own, the dangling CR8 intercept is "just" a performance issue, but
-combined with the TPR sync bug fixed by commit d02e48830e3f ("KVM: SVM:
-Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active"), the danging
-intercept is fatal to Windows guests as the TPR seen by hardware gets
-wildly out of sync with reality.
-
-Note, VMX isn't affected by the bug as TPR_THRESHOLD is explicitly ignored
-when Virtual Interrupt Delivery is enabled, i.e. when APICv is active in
-KVM's world.  I.e. there's no need to trigger update_cr8_intercept(), this
-is firmly an SVM implementation flaw/detail.
-
-WARN if KVM gets a CR8 write #VMEXIT while AVIC is active, as KVM should
-never enter the guest with AVIC enabled and CR8 writes intercepted.
-
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
+Reported-by: Zorro Lang <zlang@redhat.com>
+Closes: https://lore.kernel.org/r/20260314080937.pghb4aa7d4je3mhh@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
 Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Squash fix to avic_deactivate_vmcb. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ adjusted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c | 6 +++++-
- arch/x86/kvm/svm/svm.c  | 7 ++++---
- 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 0adbf0677b7c4..e6abfec5e7b29 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -79,9 +79,10 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
- 
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
--
- 	vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
- 
-+	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
-+
- 	/* Note:
- 	 * KVM can support hybrid-AVIC mode, where KVM emulates x2APIC
- 	 * MSR accesses, while interrupt injection to a running vCPU
-@@ -116,6 +117,9 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
- 
-+	if (!sev_es_guest(svm->vcpu.kvm))
-+		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+
- 	/*
- 	 * If running nested and the guest uses its own MSR bitmap, there
- 	 * is no need to update L0's msr bitmap
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index a885fb39a6559..6e3c27cc7b7fc 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1192,8 +1192,7 @@ static void init_vmcb(struct kvm_vcpu *vcpu)
- 	svm_set_intercept(svm, INTERCEPT_CR0_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR3_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR4_WRITE);
--	if (!kvm_vcpu_apicv_active(vcpu))
--		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
- 
- 	set_dr_intercepts(svm);
- 
-@@ -2690,9 +2689,11 @@ static int dr_interception(struct kvm_vcpu *vcpu)
- 
- static int cr8_write_interception(struct kvm_vcpu *vcpu)
- {
-+	u8 cr8_prev = kvm_get_cr8(vcpu);
- 	int r;
- 
--	u8 cr8_prev = kvm_get_cr8(vcpu);
-+	WARN_ON_ONCE(kvm_vcpu_apicv_active(vcpu));
-+
- 	/* instruction emulation calls kvm_set_cr8() */
- 	r = cr_interception(vcpu);
- 	if (lapic_in_kernel(vcpu))
+This patch is targeting crypto/master.
+
+v2: fix tegra-se-hash.c as well, and remove unnecessary type flags
+
+ drivers/crypto/tegra/tegra-se-aes.c  | 11 ++++++----
+ drivers/crypto/tegra/tegra-se-hash.c | 30 ++++++++++++++++------------
+ 2 files changed, 24 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index 0e07d0523291..9210cceb4b7b 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -527,11 +527,11 @@ static struct tegra_se_alg tegra_aes_algs[] = {
+ 			.ivsize	= AES_BLOCK_SIZE,
+ 			.base = {
+ 				.cra_name = "cbc(aes)",
+ 				.cra_driver_name = "cbc-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+ 				.cra_module = THIS_MODULE,
+ 			},
+@@ -548,11 +548,11 @@ static struct tegra_se_alg tegra_aes_algs[] = {
+ 			.max_keysize = AES_MAX_KEY_SIZE,
+ 			.base = {
+ 				.cra_name = "ecb(aes)",
+ 				.cra_driver_name = "ecb-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+ 				.cra_module = THIS_MODULE,
+ 			},
+@@ -570,11 +570,11 @@ static struct tegra_se_alg tegra_aes_algs[] = {
+ 			.ivsize	= AES_BLOCK_SIZE,
+ 			.base = {
+ 				.cra_name = "ctr(aes)",
+ 				.cra_driver_name = "ctr-aes-tegra",
+ 				.cra_priority = 500,
+-				.cra_flags = CRYPTO_ALG_TYPE_SKCIPHER | CRYPTO_ALG_ASYNC,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask = 0xf,
+ 				.cra_module = THIS_MODULE,
+ 			},
+@@ -592,10 +592,11 @@ static struct tegra_se_alg tegra_aes_algs[] = {
+ 			.ivsize	= AES_BLOCK_SIZE,
+ 			.base = {
+ 				.cra_name = "xts(aes)",
+ 				.cra_driver_name = "xts-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize	   = sizeof(struct tegra_aes_ctx),
+ 				.cra_alignmask	   = (__alignof__(u64) - 1),
+ 				.cra_module	   = THIS_MODULE,
+ 			},
+@@ -1920,10 +1921,11 @@ static struct tegra_se_alg tegra_aead_algs[] = {
+ 			.ivsize	= GCM_AES_IV_SIZE,
+ 			.base = {
+ 				.cra_name = "gcm(aes)",
+ 				.cra_driver_name = "gcm-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
+ 				.cra_alignmask = 0xf,
+ 				.cra_module = THIS_MODULE,
+ 			},
+@@ -1942,10 +1944,11 @@ static struct tegra_se_alg tegra_aead_algs[] = {
+ 			.chunksize = AES_BLOCK_SIZE,
+ 			.base = {
+ 				.cra_name = "ccm(aes)",
+ 				.cra_driver_name = "ccm-aes-tegra",
+ 				.cra_priority = 500,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = 1,
+ 				.cra_ctxsize = sizeof(struct tegra_aead_ctx),
+ 				.cra_alignmask = 0xf,
+ 				.cra_module = THIS_MODULE,
+ 			},
+@@ -1969,11 +1972,11 @@ static struct tegra_se_alg tegra_cmac_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_cmac_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "cmac(aes)",
+ 				.cra_driver_name = "tegra-se-cmac",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = AES_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_cmac_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_cmac_cra_init,
+diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
+index 4a298ace6e9f..06bb5bf0fa33 100644
+--- a/drivers/crypto/tegra/tegra-se-hash.c
++++ b/drivers/crypto/tegra/tegra-se-hash.c
+@@ -759,11 +759,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha1",
+ 				.cra_driver_name = "tegra-se-sha1",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA1_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -784,11 +784,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha224",
+ 				.cra_driver_name = "tegra-se-sha224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -809,11 +809,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha256",
+ 				.cra_driver_name = "tegra-se-sha256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -834,11 +834,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha384",
+ 				.cra_driver_name = "tegra-se-sha384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -859,11 +859,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha512",
+ 				.cra_driver_name = "tegra-se-sha512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -884,11 +884,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha3-224",
+ 				.cra_driver_name = "tegra-se-sha3-224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -909,11 +909,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha3-256",
+ 				.cra_driver_name = "tegra-se-sha3-256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -934,11 +934,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha3-384",
+ 				.cra_driver_name = "tegra-se-sha3-384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -959,11 +959,11 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "sha3-512",
+ 				.cra_driver_name = "tegra-se-sha3-512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH,
++				.cra_flags = CRYPTO_ALG_ASYNC,
+ 				.cra_blocksize = SHA3_512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -986,11 +986,12 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "hmac(sha224)",
+ 				.cra_driver_name = "tegra-se-hmac-sha224",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA224_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -1013,11 +1014,12 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "hmac(sha256)",
+ 				.cra_driver_name = "tegra-se-hmac-sha256",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA256_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -1040,11 +1042,12 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "hmac(sha384)",
+ 				.cra_driver_name = "tegra-se-hmac-sha384",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA384_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+@@ -1067,11 +1070,12 @@ static struct tegra_se_alg tegra_hash_algs[] = {
+ 			.halg.statesize = sizeof(struct tegra_sha_reqctx),
+ 			.halg.base = {
+ 				.cra_name = "hmac(sha512)",
+ 				.cra_driver_name = "tegra-se-hmac-sha512",
+ 				.cra_priority = 300,
+-				.cra_flags = CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_NEED_FALLBACK,
++				.cra_flags = CRYPTO_ALG_ASYNC |
++					     CRYPTO_ALG_NEED_FALLBACK,
+ 				.cra_blocksize = SHA512_BLOCK_SIZE,
+ 				.cra_ctxsize = sizeof(struct tegra_sha_ctx),
+ 				.cra_alignmask = 0,
+ 				.cra_module = THIS_MODULE,
+ 				.cra_init = tegra_sha_cra_init,
+
+base-commit: 5c52607c43c397b79a9852ce33fc61de58c3645c
 -- 
-2.51.0
+2.53.0
 
 
