@@ -1,116 +1,200 @@
-Return-Path: <stable+bounces-225719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAILDIeVuGnTgAEAu9opvQ
-	(envelope-from <stable+bounces-225719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:43:03 +0100
+	id eBebIJCXuGk8gQEAu9opvQ
+	(envelope-from <stable+bounces-225720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:51:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43212A2100
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:43:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B02A2193
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37F53306E87D
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:42:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 418193055120
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB13D37754E;
-	Mon, 16 Mar 2026 23:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EC5379987;
+	Mon, 16 Mar 2026 23:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="XxsvWGDu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BU0ZTXFD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4320.protonmail.ch (mail-4320.protonmail.ch [185.70.43.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E61D376BD5;
-	Mon, 16 Mar 2026 23:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EBE371D08;
+	Mon, 16 Mar 2026 23:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773704517; cv=none; b=ELQeEbXoiap/YUnRhYguDrRxsDx0/ymxy7GrKYnZ33iH4d4VQl/lEMklmoAPjtoQuFcpsASirUE9EF884ZIjjo8OQbQWnFpCClflB4NeeGqqM3UEfM288hLl2pv863O1wOuXDQ7yTipLLziHWVdqTzIBCFDcc9+5FNNoDWzwHAk=
+	t=1773705087; cv=none; b=bwSOS+fU20yfcOuQ4Dw2Ud6c8jpZvBfuiY2v9VJCL5UigZ29qwUjG4Y0nqj7fzPkeINLvJDid8DlZ0HswQeLiMwaJwUMQFUKHVOuB5OhI7aaZeO4Aougd5n/4Kpnbi+sNa0+FSroY0RC+b5rTm2xI4iNmrTbNZ8BzRf3ye9RDLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773704517; c=relaxed/simple;
-	bh=GPG40qgsiWGfnf1HBeZ8ASKYrpHqfbll19YA2ateEtE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dfZ1p+DwL3wCW+xmRU+fsGIK3cva+Jkr0zVFiQCuvR2KN3EUoXfxwEZZezhIauZ0EUzjZpLX5xU6zA0AH4wVJu9EO3mo2neZV1/FQqK0CckgYtzH0VpCXqM1Ez+ZCXncORzttqDF9fuvOBNvWauh2ZlRW9MmtqX65dYXUopT3s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=XxsvWGDu; arc=none smtp.client-ip=185.70.43.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1773704505; x=1773963705;
-	bh=GPG40qgsiWGfnf1HBeZ8ASKYrpHqfbll19YA2ateEtE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=XxsvWGDu/IN4vUaX8G7/9dIgPzaVfiyArlcXkWH4G7abI6Haa7C9Ko2IGiQgo67ih
-	 rwvUBxlImxJrkqvaHWz/x7hzBJgPfkl7r9gwjP8qf99ScHvMdkyYYXYZ47ZqCB2Ktk
-	 vZKjDZMBe3Xa00zJUlOUGaujz0I4hasJpxdPX+x5XXKTAJM7soR++tCvUApSofjUC9
-	 epDDXM30IZH/N008XSqu6JpLGinjpYk6indAXTk3YHJj6mYJ+Y5+X2WkDDzJQChOlC
-	 fDhIvN45U8guqk4WuSwRVdA4zs9qAuphSv7+tkipHA4oTaY25k9aLlug2gunPrFkiy
-	 kMvWfF9ux9rFA==
-Date: Mon, 16 Mar 2026 23:41:41 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: Paul Moses <p@1g4.org>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net-shapers: clear hierarchy pointer and defer flush frees with RCU
-Message-ID: <kml9JrxcP_XGGG4SSCVJO6f8Oi9zTfdJg9NRVZyvu7YAd5dgDy-uBE2m1U6MVY-ponQRFLuWQ6z14W63DCLevPICexEWX_yMQcZrytxCgDM=@1g4.org>
-In-Reply-To: <20260316161247.1f472be5@kernel.org>
-References: <20260309173450.538026-1-p@1g4.org> <20260310192842.3c3b2070@kernel.org> <hHYLQqDrBCcK_2x6uSbGsBott3QuXe8o-R9tj4vNmw8UUEFxpzoD_PCMiHMyyOnySAtQbJtCAB8yVoCmWxzO07C02Q5o0J6fHu4NLEa-ggY=@1g4.org> <20260316161247.1f472be5@kernel.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: f1e5586f1442cebbc8c2d3a2fe4677b0d66b1bed
+	s=arc-20240116; t=1773705087; c=relaxed/simple;
+	bh=2RCyDp6yxdkFkrGuSTJt1rP/JNUEB1SMSr+RxZLc1Yo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eM5KVOqwtx6pDW3HwuKcCsJDGpGxB96oFcqnGd+MP76nd70eE4Jir/vr97+qU38wQNnabH007/iMnX8jg2/GT6hwJnApgrVvXP5K/j6mcxUq9uibj6Oc4wySC1yKH9RgNml6CrX+hT6CXc2v6mgS58y7KBunxkXgKxBR9n83q+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BU0ZTXFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A991C19421;
+	Mon, 16 Mar 2026 23:51:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773705087;
+	bh=2RCyDp6yxdkFkrGuSTJt1rP/JNUEB1SMSr+RxZLc1Yo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BU0ZTXFDpWubidgl3UQVb54EaQZZ8ggCdnoXsw55JpLalSmMYn1MHJaoMJ9YkzDox
+	 6uY7qUvHyQEp8cevIiPGRAkRaJXrxiCzsHt6Y4XjhGBgV+6yjBgLXi9U7o7AC9H/WS
+	 NGsM5+KXu0+tUT3VLMh+74u2xjCcySAr2684Ke7n2fCT+WmTu6qjz5J37MZkBI1Ufq
+	 WGfiQq9bqNepsmiZtT9qblRdCiYyq0sy4Op06g3F1HDjijsLAOALfWTmonkKPOog3u
+	 GF4/O/4w9gr7aq71he6g1nyVr89t7BLblLBkJSKF8EJ2ZHL4vfh3yx1re4wayahpGb
+	 dGNOlTTnjyZ5A==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3] mm/damon/stat: monitor all System RAM resources
+Date: Mon, 16 Mar 2026 16:51:17 -0700
+Message-ID: <20260316235118.873-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-225719-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225720-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: A43212A2100
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E87B02A2193
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Do you actually look at code anymore or just mash a button to generate summ=
-aries?
+DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
+says it monitors the system's entire physical memory.  But, it is
+monitoring only the biggest System RAM resource of the system.  When
+there are multiple System RAM resources, this results in monitoring only
+an unexpectedly small fraction of the physical memory.  For example,
+suppose the system has a 500 GiB System RAM, 10 MiB non-System RAM, and
+500 GiB System RAM resources in order on the physical address space.
+DAMON_STAT will monitor only the first 500 GiB System RAM.  This
+situation is particularly common on NUMA systems.
 
+Select a physical address range that covers all System RAM areas of the
+system, to fix this issue and make it work as documented.
 
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v2
+(https://lore.kernel.org/20260315162717.80870-1-sj@kernel.org)
+- Rebase to mm-hotfixes-unstable
+Changes from v1
+(https://lore.kernel.org/20260313044449.4038-1-sj@kernel.org)
+- Fix wrong argument for damon_set_regions().
 
--------- Original Message --------
-On Monday, 03/16/26 at 18:12 Jakub Kicinski <kuba@kernel.org> wrote:
-On Mon, 16 Mar 2026 18:45:48 +0000 Paul Moses wrote:
-> > This is not the right fix. The shaper hierarchy as a while is not under
-> > RCU. The problem is that we take a ref on netdev and then lock it,
-> > assuming that it's still alive. But it may have gotten unregistered in
-> > the meantime. The correct fix is to check that the netdev is still
-> > alive after we lock the binding or take RCU from the Netlink side.
->
-> Ok I see it now, I didn't care about anything except queue because it's t=
-he only
-> path that affected both drivers. This is an entirely different issue.
+ mm/damon/stat.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-Did you write any of this email or am I just talking to an LLM?
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 25fb44ccf99d0..c5af8ad4bcb65 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -145,12 +145,57 @@ static int damon_stat_damon_call_fn(void *data)
+ 	return 0;
+ }
+ 
++struct damon_stat_system_ram_range_walk_arg {
++	bool walked;
++	struct resource res;
++};
++
++static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
++{
++	struct damon_stat_system_ram_range_walk_arg *a = arg;
++
++	if (!a->walked) {
++		a->walked = true;
++		a->res.start = res->start;
++	}
++	a->res.end = res->end;
++	return 0;
++}
++
++static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
++		unsigned long addr_unit)
++{
++	/*
++	 * Use div_u64() for avoiding linking errors related with __udivdi3,
++	 * __aeabi_uldivmod, or similar problems.  This should also improve the
++	 * performance optimization (read div_u64() comment for the detail).
++	 */
++	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
++		return div_u64(ra, addr_unit);
++	return ra / addr_unit;
++}
++
++static int damon_stat_set_monitoring_region(struct damon_target *t,
++		unsigned long addr_unit, unsigned long min_region_sz)
++{
++	struct damon_addr_range addr_range;
++	struct damon_stat_system_ram_range_walk_arg arg = {};
++
++	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
++	if (!arg.walked)
++		return -EINVAL;
++	addr_range.start = damon_stat_res_to_core_addr(
++			arg.res.start, addr_unit);
++	addr_range.end = damon_stat_res_to_core_addr(
++			arg.res.end + 1, addr_unit);
++	return damon_set_regions(t, &addr_range, 1, min_region_sz);
++}
++
+ static struct damon_ctx *damon_stat_build_ctx(void)
+ {
+ 	struct damon_ctx *ctx;
+ 	struct damon_attrs attrs;
+ 	struct damon_target *target;
+-	unsigned long start = 0, end = 0;
+ 
+ 	ctx = damon_new_ctx();
+ 	if (!ctx)
+@@ -180,8 +225,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
+ 	if (!target)
+ 		goto free_out;
+ 	damon_add_target(ctx, target);
+-	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
+-							ctx->min_region_sz))
++	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
++				ctx->min_region_sz))
+ 		goto free_out;
+ 	return ctx;
+ free_out:
 
+base-commit: 10125b79cb0e7037fff6cd8cc9fafacfda8113a0
+-- 
+2.47.3
 
