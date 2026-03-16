@@ -1,169 +1,199 @@
-Return-Path: <stable+bounces-225695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM/FBlpluGlOdQEAu9opvQ
-	(envelope-from <stable+bounces-225695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:17:30 +0100
+	id sJEQIXpluGlOdQEAu9opvQ
+	(envelope-from <stable+bounces-225696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:18:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934FF2A01E8
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:17:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F852A01F2
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 969693046004
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:17:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B71F3046510
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C2E366043;
-	Mon, 16 Mar 2026 20:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFB43E92B2;
+	Mon, 16 Mar 2026 20:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPV2hO1S"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8ri1ixT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE2F355F2C
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 20:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773692242; cv=none; b=C5MJGPPYgRq1CG6k/dR9DVLSA4euh++NbuMm4qzSjVL4zY4UD8c4gUrDYyaanOSWMlwOajYWXMXpDeRjSMVFKxiokGlDBvkebQWetJ/4ghGSAhZe3NiYyI7jUwB0qJPMyhBRJ5q9UeoF/WJPG/jXbJlWL1TMK6TEp3TOFxeeioQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773692242; c=relaxed/simple;
-	bh=blvrolMKNdBvLh9N1XgDf1YHQV+vPsJq6c54kJkV0P0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvkVZBwD5yhVoHKj+53bwUWIOL8w2NWISp0Y3J2Kpi6AGviC6xsZn02ulTSbi+ZiOPsmSFApvBmrncFCZSN146JzSo80Lm3xiPkK6npkt3u5m1BePJlmrmmX+g2fc6gg5ZgBQPdSjQeLsA+JEI2TVn/Bf8z8KSvcb88EFEDlDcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPV2hO1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6EAC19421;
-	Mon, 16 Mar 2026 20:17:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773692241;
-	bh=blvrolMKNdBvLh9N1XgDf1YHQV+vPsJq6c54kJkV0P0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPV2hO1Sc+bzHYlHForiVLw+ZRQk9TNV5fZZTc+m8+v10fNYGxnNdfvQrPSKlLcDh
-	 CzGLKoA5y5s7Ia2ssY3deWvyFQOM4ktfp1Zgwc0E8TdMbxUGzE9Hd7CDcDq6HnmTzn
-	 z9Rk7Z2htJREiJw1HYT+x79ZmnuWguCDk9y1tpxw4XIyQlg+q26nhIXwa/lzulTq7e
-	 NRnkp8EV+bBQNtc5Vdkb+xKpJg1TPRhq8EAR2NWWDRehdogSG39MU3K4pBaurvkj9t
-	 NbV4Ii+/+2RKbu9R0cF/S+WtsKSvJZEI4qKBeo5fQJRMFo6RZYB/+qWTY4w07Oe2iw
-	 T8enewBBGlpNQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus handling
-Date: Mon, 16 Mar 2026 16:17:19 -0400
-Message-ID: <20260316201719.1375493-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031608-staining-monitor-6c94@gregkh>
-References: <2026031608-staining-monitor-6c94@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A35355F2C
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 20:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773692279; cv=pass; b=oaWRsI42FIHvclKEJLwLCBdqUGf3vKtgCWQffcKMZyU4op7yfYjBFtyUFMAJ8QwXnMrWbRQlgpleh31Mb737j1AGg2uzmaZ3LF/pjrcCDGPCmyxsJ9W+t6bs4QVPaAdaviTIvsJrxEM/ZXZf9wPurETP7xwhI2mbGpjNOx/jHEw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773692279; c=relaxed/simple;
+	bh=zflpxtRBylCX5rFH1aSVW9cpbT8IuiGQT38tsF8ylXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RiPNg/XHnkc21768jGQ3Hx5IXkWcD4cqGwhtsXQDLEsmhCuVZwr/L8WAd3/W+SdesY0p+4r+gFPklPhnC4Yhl6GQ9BShtQsnw5jXE7AFofgld58GgRXwOE9wpPnLBgdav9n5P9TBonqQj3bspgOCHFuwWuT+5CMVQHTxtl5O5qM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8ri1ixT; arc=pass smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56b679e72d9so1314304e0c.3
+        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 13:17:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773692277; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Xva8VtGN7YvrSgJMsTJsL5XE3Ev39Q3CxLCitARAZROueImz4ISOknW8tJXCUZ8XVO
+         1kE5hsfQCbtEN2hbw/K9dIy44J9TuEejW39vqc7pZbfA8tKr97jbVhzo0EaFxhb2d1Vg
+         EeVg+1T8m0nHf6pEoZgU4a+UIP3AjT26N8uPsHKoYVYmGKFB1PE82ZAD0DIH+B0bfIu1
+         n36wcNiw7dxAxnK0zw9yAzjcX/FJADi7iic8kasPvJfSM9MOiDe1Z+qYQis7lDJyLEc9
+         Skptc1hAbm7IhOXYjywPwSgICx5ydIiAFk2CTt/Isymf6M2Nfcc8nhQsp5NGqbXyYEsV
+         2sXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Z9Q6fH9c6L1HLnK289rjhbhnEGeVoiRSnOJS5fAspJg=;
+        fh=t4T5geW5MVzn8E6A5JjHShyIUZevNImyXD2viTDbcqI=;
+        b=YjpPA/8LVdWeZmYqR30zGIJtWv/DAQqijrkoM3cth5SuiDQDE/xx7xJtlzd3vGbYTX
+         7jGC1rI6hDiud6FiNleVY6Zot0k49eDvcl4fAEf6O31MQe8Y6ZQu5UzP7mHt4ZrWycVH
+         yPOA91vHE6AtDvDcrQI4IXc/JvLnJL2n9ARzzE7ZlsflTrERwn83ETQF7Uareu5GiDNw
+         Gz1aJFOEtOOHxy5IBYJvp7dviXNUivNFoegJ5UWPRyZRMB+p97yQgQpm2lh+s56yMQev
+         1ppDdngmey40RgmQF6OHgxpBtVWhvkznKgHZEkYLJwHC3UyhsPXphcpzJko2nyGm9Iwb
+         RqjA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1773692277; x=1774297077; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z9Q6fH9c6L1HLnK289rjhbhnEGeVoiRSnOJS5fAspJg=;
+        b=u8ri1ixTDzIQxdC3TGqvVvkrleLPHqqfAiTWEMbkICgOCrTocy+FVEorLtqAypQIic
+         5boB45tp0hc6jK/YeBee8DIFKK4YxE1N0ZXalfQgebLxDTMyg8Eczngrtz2N5RXIzF4R
+         4T3UxnW6isTBqY/HVwtx7jYJax8o5dROVjGecgTlveQyodatP99tEM36/6B/nTmgyE5X
+         u/TsJTNAG/vdazyTnRFyKJZT6pt1AsJz6CWn49k/smcHUze4VxuHLMrvc0vTTQQs4j9W
+         rqtqLNe2Ev8ubOK6VuZRtPNHxuOy0wlLlwBi3WFOBrq045FYCjrRT2KXvdv6y3dNI+zb
+         gWrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773692277; x=1774297077;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z9Q6fH9c6L1HLnK289rjhbhnEGeVoiRSnOJS5fAspJg=;
+        b=kWtITYISoHBp0RlnG+de5o9vgoYL1NBJXnR0b7dawQ9D7bCJ+hs9y2sRBr8Ho6nJXR
+         Ji4RNb4gyv4m8g8mjSXIitObGw+2DW37Jo42ErMj3fwGK6OxJmmUXn8l1XHUlBNI5r4m
+         jpJe58er7mPlelNkWcomryDoWkHCSDzAOzczo7DKdXx5xmHDpZDHGUbRD/oT7EHNzVof
+         t9cDRF/AAHCzTeZ6pC4lfZt1EYSRkpbfECSYlX09UQTdQ0nfIIOCp9fMsugSgJj2Cu7R
+         A7Ncws4iZqut+LEvSGiZTokchI9WIxEuw33cFB+jwjjWd/Px73+DSjRbPMVESZzK6x2p
+         7hcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNNhA6h1uzt0vHSBUjosyZUQB9tQsCNeYG/NsmQVgi0oV/Mie7rjrqbkftijhLOJ4JS/tyWUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxwi8bK4fThYZLMip51XmAn23YpwP61FOGkVAigaS8ZvfxcqCco
+	0Unv0EasxcQj0E5CvFCupMST+Tfe76npKaCde54hLFpU8NdsMeJ6YkHltn2sr7uPtD+9pyi0f9g
+	MaoS1xY3CIHFDPYrsmub2LC16/fJraXtUgWvvzlxr
+X-Gm-Gg: ATEYQzzYoJrDjKfckKSl7lhec1Tv+gRsibun+V4milPk0zBvD8UeTLTcnD6MQXu72rX
+	nasptGmzXRVlmDHJvs2fB4U7je/ou2JDDg+fuQEJ9unk+UU6edu9VCiD/ST3oFhIGhda53/zszI
+	KvlC1x4JGgMvGuLkpzZHiAhnCoRQ7IgX3L79q9t/bR3VI19FTG5SiA1xHmyWXjKHIg2J1LSfEVG
+	hPJ9Ybx77zyWdT2x21m7/aDuQ+U41gkWS6F1/fcnbrecsybY8BpAkZu1B4vY7lvMTH1KVtDIXtk
+	Gfe+TosK
+X-Received: by 2002:a05:6102:2914:b0:5db:f031:84ce with SMTP id
+ ada2fe7eead31-6020e545dd6mr4815388137.29.1773692276401; Mon, 16 Mar 2026
+ 13:17:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260316182025.3383443-1-mhonap@nvidia.com>
+In-Reply-To: <20260316182025.3383443-1-mhonap@nvidia.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 16 Mar 2026 13:17:27 -0700
+X-Gm-Features: AaiRm500IMKzdT9Uk7XlTKlfOo9LWN5p_UCslJHzbBodrkrMtGSMmsrWtG5rUj8
+Message-ID: <CALzav=dkiHkA6f9xv3HAozsoOz39ruLVB8yCMLB6nw-+hX1cHA@mail.gmail.com>
+Subject: Re: [PATCH] selftests/vfio: Fix VLA initialisation in vfio_pci_irq_set()
+To: mhonap@nvidia.com
+Cc: alwilliamson@nvidia.com, dave.jiang@intel.com, ankita@nvidia.com, 
+	kjaju@nvidia.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,synopsys.com,linuxfoundation.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225695-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[dmatlack@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 934FF2A01E8
+	TAGGED_FROM(0.00)[bounces-225696-lists,stable=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+]
+X-Rspamd-Queue-Id: 10F852A01F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+On Mon, Mar 16, 2026 at 11:21=E2=80=AFAM <mhonap@nvidia.com> wrote:
+>
+> From: Manish Honap <mhonap@nvidia.com>
 
-[ Upstream commit b9fde507355342a2d64225d582dc8b98ff5ecb19 ]
+Please use "vfio: selftests: " instead of "selftests/vfio:" to match
+all the other changes to tools/testing/selftests/vfio.
 
-The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
-managed and tied to userspace configuration via ConfigFS. It can be
-NULL if the USB host sends requests before the nexus is fully
-established or immediately after it is dropped.
+  $ git log --oneline tools/testing/selftests/vfio
 
-Currently, functions like `bot_submit_command()` and the data
-transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
-dereference `tv_nexus->tvn_se_sess` without any validation. If a
-malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
-command during this race window, it triggers a NULL pointer
-dereference, leading to a kernel panic (local DoS).
+> C does not permit an initialiser expression on a variable-length array
+> (C99 Section 6.7.9 constraint: "The type of the entity to be initialized
+> shall not be a variable length array type").
+>
+> vfio_pci_irq_set() declared:
+>
+>       u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] =3D {};
+>
+> where `count` is a runtime function parameter, making `buf` a VLA.
+>
+> GCC rejects this with (tried with GCC-9.4.0):
+>
+>       error: variable-sized object may not be initialized
+>
+> Fix by removing the `=3D {}` initialiser and inserting an explicit
+> memset() immediately after the declaration.  memset() on a VLA is
+> perfectly legal and achieves the same zero-initialisation on all
+> conforming C implementations.
+>
+> This fix is self-contained: it touches only the existing vfio selftest
+> helper library and carries no dependency on any other patch.  It was
+> originally included as PATCH 20/20 in the CXL Type-2 VFIO passthrough
+> RFC series [1] but belongs on the vfio list independently, as noted by
+> Dave Jiang.
 
-This exposes an inconsistent API usage within the module, as peer
-functions like `usbg_submit_command()` and `bot_send_bad_response()`
-correctly implement a NULL check for `tv_nexus` before proceeding.
+This should go after the "---" below. It does not need to be in the
+commit message.
 
-Fix this by bringing consistency to the nexus handling. Add the
-missing `if (!tv_nexus)` checks to the vulnerable BOT command and
-request processing paths, aborting the command gracefully with an
-error instead of crashing the system.
+> [1] https://lore.kernel.org/all/20260311203440.752648-1-mhonap@nvidia.com=
+/
 
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/gadget/function/f_tcm.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+I see you also included a new selftest in this series. I'm glad to see
+more usage of VFIO selftests!
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index 5d0d894953953..3811b7abaf589 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1032,6 +1032,13 @@ static void usbg_cmd_work(struct work_struct *work)
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0) {
- 		__target_init_cmd(se_cmd,
-@@ -1160,6 +1167,13 @@ static void bot_cmd_work(struct work_struct *work)
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0) {
- 		__target_init_cmd(se_cmd,
--- 
-2.51.0
+Can you please Cc me on any future changes that touch
+tools/testing/selftests/vfio? Or better yet run
+scripts/get_maintainer.pl and it should add me automatically. Thanks.
 
+> Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO self=
+tests")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Dave Jiang <dave.jiang@intel.com>
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+
+Aside from the commit message nits above:
+
+  Reviewed-by: David Matlack <dmatlack@google.com>
 
