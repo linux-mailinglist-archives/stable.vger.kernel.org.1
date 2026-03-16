@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-225711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOttK3aAuGltfAEAu9opvQ
-	(envelope-from <stable+bounces-225711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:13:10 +0100
+	id yKNCH1OEuGltfAEAu9opvQ
+	(envelope-from <stable+bounces-225712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:29:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3E52A1522
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:13:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38E82A1795
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 23:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B8E623026069
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 22:12:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC483075965
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 22:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753AF36B04B;
-	Mon, 16 Mar 2026 22:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE91D37267F;
+	Mon, 16 Mar 2026 22:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDAXPwUs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/GWtKJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370BA369224
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 22:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CE7146D5A
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 22:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773699178; cv=none; b=YCEjdoJwnEuoVYs7SJ+W2kTCcgLHHvwJvmNuX3UllirB1NcW6naT1ZglY0F8xPDIJJo8nrvDxIOzYjoAVQ8JyDlWhG0fFU+NsixrJFVd+L8b1zCzNfUhUQFeyRJTMzJqIffs+YJb4nRInSlL4+jl4p1HcFuRdIdMBVkMqlttYBc=
+	t=1773700098; cv=none; b=pOEMMmgnWnu5hVv/hZt3GyUR283IshyOpnOVqBSfpjQjdvCmZKG3DZEvahWh3WvsliXEL0yooUvSrGIZvVe4iYPwa/Pm4id/BxVkOUxIl0aqI6eavk3ZUPylqjDw2sNaNYmUe03QEyeVyrrhTMyGkpyOzeNDPlypaRn1oGLBGns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773699178; c=relaxed/simple;
-	bh=b4YtdXnYPgLFKkP5EaW2UyYa6x8EqqVUtV2ZOx16CGg=;
+	s=arc-20240116; t=1773700098; c=relaxed/simple;
+	bh=ysRmrZlYKrG9j7Zj0WVXoZKWwuWFDO123+CFUMCoOZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afn1q3dDxZ2Kv2q6RxlnXS5jTkDGrvbS49RHIS1TeiA7Gmsg6wa48nTv9z7rCW/Vf9IEUeMjIuypdpEd5q57wQ1wQb71LVPovKcopCvvi9DJcGjFSQE7mDnyms8hGje5ZhDMxJeCmvml2CEVmXTh+nyTeZXF3e4SUw+5BXsCsb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IDAXPwUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0FDC2BCB0;
-	Mon, 16 Mar 2026 22:12:56 +0000 (UTC)
+	 MIME-Version; b=j1qk8Mb/0ik/KPV61R1O/hC16lvJ13Hesc3+uOJdQRxyKt8CHr3xP6Is0jcf0tgflR6U2vIhga07dAO8X4ysmC0Kfb4kT77uwT0xP5doMqVr4C3g+z4VszbTZdUv524O9K/g0w4p88DRhkDJvc0JCF5K+9rSBISDbNzU4wshFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/GWtKJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FFAC19421;
+	Mon, 16 Mar 2026 22:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773699177;
-	bh=b4YtdXnYPgLFKkP5EaW2UyYa6x8EqqVUtV2ZOx16CGg=;
+	s=k20201202; t=1773700098;
+	bh=ysRmrZlYKrG9j7Zj0WVXoZKWwuWFDO123+CFUMCoOZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDAXPwUsw8bpK1jBIoXH9mI4EqCT84KpaBrVn5KmmmrbG+m0XIMSKaHQiUUkgAmMJ
-	 M9ghwxJ6L8UecbexeO2mx5WJxx9iwBBhYDpQWsp1eCsxRnzQ7DKoQUjO7t4avmXWnu
-	 zm105UivGYHsex9xGmqSOHk9tPB7h+AUp1lRM3QED2R4/SA6+JTqFJF7rgtz7Cb2KZ
-	 aB5wgK8RuJtD5WQLJ3sKLZrWIw9VSqx36rzpwfz3A4HZNYU0fvuDdukRyxPvQr3eyY
-	 S9Lxs5nXLBUhrf8dHgePLOfY8WORtnYDpYjJQ9bsJiQJ0zRbw/nLUU99gcIad5kZoo
-	 4QZf1kAFzHQfA==
+	b=N/GWtKJIKpwtbOTFNKKl5vycCwPpyJkk/O6hEgdH9iSufwW8HhG1YkYpAmXisWo9Q
+	 rO+xuGGzy/UClMI/VKtY4B1u4+V8Lh8KFaOWEzOjniEBBCc8HXdZE4nsm0wQgkhw34
+	 0nzMMbZAOtrusTp1DSc6JIvCD66Ar5TaPzpHkVl7lX37Qc23HbVmBygHhaaj+TD3GV
+	 xgZ1MXm/nRajBWGiJzAmzlpmC99ha2FBQo1K0Kav+EicEWM0UPT7GCcRswySTWyeJY
+	 MBm4eFnzv48Bc0L+d7msqHor/32GA1ivuNR4umpspYeduQGvfvR/YmcPjVjSwpTWP/
+	 c4jZJvp5wHRIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xu Yang <xu.yang_2@nxp.com>,
@@ -52,12 +52,12 @@ Cc: Xu Yang <xu.yang_2@nxp.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] usb: roles: get usb role switch from parent only for usb-b-connector
-Date: Mon, 16 Mar 2026 18:12:55 -0400
-Message-ID: <20260316221255.1430374-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: roles: get usb role switch from parent only for usb-b-connector
+Date: Mon, 16 Mar 2026 18:28:15 -0400
+Message-ID: <20260316222815.1434974-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031615-celibate-diabolic-3dae@gregkh>
-References: <2026031615-celibate-diabolic-3dae@gregkh>
+In-Reply-To: <2026031630-flier-referee-3151@gregkh>
+References: <2026031630-flier-referee-3151@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,10 +78,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225711-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225712-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF3E52A1522
+X-Rspamd-Queue-Id: D38E82A1795
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -129,7 +129,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index 917dffe9aee54..79c068c537934 100644
+index 821b813370256..ae5aff85252fe 100644
 --- a/drivers/usb/roles/class.c
 +++ b/drivers/usb/roles/class.c
 @@ -108,9 +108,14 @@ static void *usb_role_switch_match(struct fwnode_handle *fwnode, const char *id,
