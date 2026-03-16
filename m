@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFOaDjQVuGl/YwEAu9opvQ
-	(envelope-from <stable+bounces-225562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:35:32 +0100
+	id iFl8GoEVuGl/YwEAu9opvQ
+	(envelope-from <stable+bounces-225563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:36:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B887B29B7A7
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:35:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08EE29B7EE
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 15:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 215A4303F7FC
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:34:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6714301C165
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 14:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD21526E173;
-	Mon, 16 Mar 2026 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B55D28B7EA;
+	Mon, 16 Mar 2026 14:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA4lm64u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sgw+uICe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926101E511
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC99288CA3
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773671662; cv=none; b=mG6+hIhmEiiMTtNv2vQi2/Jy5J0GeUK1glUCboFBjzLy7Y8MAWFvr5dJncQpHeokzs91URdvoEu7hWg4SVprOs73FtmQBpgi+oTEfEpkwHzzr75gyiVYVXva825x3zyHG4BjtI6tu4VC8+o20CFq09sBe809hQIwNBm+o2gcU5Q=
+	t=1773671677; cv=none; b=PQREAirhqKaxX5gjYU5tsHY3pmR36Gl8o8DmnuDz8OQrAlXNQQ7d3glo3n4vLMNf3QuBnWShYtNiZ12qQo2EclRhVl7QRzEgesPc3E13FCaUPnwFy2p85UU064hwsZgHSYQclWlzs+GH+WNeZfzZ0XTf+Nz7HpORwLTI6PsU288=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773671662; c=relaxed/simple;
-	bh=ACVHjTAsNIQmzrd5Y8I8QbFdXlue4Q8EObnz1k+SmTI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NvfCqFJQIqT56SMQeuDFY9Og2lHsazpMs9EUotVJbDkyeeUoPNkHvktMsb5JZJt+1Pay/BmqOlmIvxOEPCE3B1IvKS3Y/+99oJ29SVQax43ivfLxOw6X1dUwaQsyhjHAoTyILML/PD0a92v7cxKXVr64KyK2Vm6riKIhePLyQ6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA4lm64u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8942C19421;
-	Mon, 16 Mar 2026 14:34:21 +0000 (UTC)
+	s=arc-20240116; t=1773671677; c=relaxed/simple;
+	bh=DbJ3LxBu4z/OMcSQzJOl964YL4IrsmQPGe0GC9wQiuw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pzxIeFfcR7stAS1DFZmcFdfEnwMESJbhdLO5i2Nap35le4Zx9BA2lqfTEonN4JjeZlL6ztkkW6Kb9s5BcgeHm4HyrjMSKCGlOWcDtWNEae1px0wEUr4eKc9xgI9VTAJ2BC6QYq7Oc0Le+E7qXkhVVXVPI/rZ/uX2P7j4Kp99LJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgw+uICe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEA0C19421;
+	Mon, 16 Mar 2026 14:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773671662;
-	bh=ACVHjTAsNIQmzrd5Y8I8QbFdXlue4Q8EObnz1k+SmTI=;
+	s=korg; t=1773671676;
+	bh=DbJ3LxBu4z/OMcSQzJOl964YL4IrsmQPGe0GC9wQiuw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IA4lm64uQXn9zjOoyrogaBjwmufi+DVhzeETGNyxwhhXhwxFlr9XS26n/mtI+hl6d
-	 3BlepdpM2LF379cNTULpfSmHqh6s7pm0HKPCpThqVdO2Ey0LhOU9EO6vtAaGo6+k1m
-	 cv2rCFXeXRyYAM3+fXXH2Ye6yY3cvlpgAUu6syWk=
-Subject: FAILED: patch "[PATCH] rust: pin-init: replace shadowed return token by" failed to apply to 6.6-stable tree
-To: lossin@kernel.org,aliceryhl@google.com,gary@garyguo.net,ojeda@kernel.org,theemathas@gmail.com
+	b=Sgw+uICegxIMzQiz/Ntn63iD2dxsDJOHrmVeXkeqBNh5E4uc5gXMNaIWwfv6LgqSm
+	 QkITupnf9ebExVuGXNuyGeo2kRzJC+jPQ/IFy3WhLoiTTi9P756VwuVe3YEh68NXxB
+	 U/jFgzss5oi1tI0zokBkkGh/MVgyj6NagXyVaLPs=
+Subject: FAILED: patch "[PATCH] rust: pin-init: internal: init: document load-bearing fact of" failed to apply to 6.19-stable tree
+To: lossin@kernel.org,gary@garyguo.net,ojeda@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 16 Mar 2026 15:34:04 +0100
-Message-ID: <2026031604-carried-hazing-b7db@gregkh>
+Date: Mon, 16 Mar 2026 15:34:32 +0100
+Message-ID: <2026031632-headband-sprinkled-2a47@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,48 +59,47 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225562-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225563-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,google.com,garyguo.net,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.974];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email]
-X-Rspamd-Queue-Id: B887B29B7A7
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,zulipchat.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,garyguo.net:email]
+X-Rspamd-Queue-Id: C08EE29B7EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749
+git cherry-pick -x 580cc37b1de4fcd9997c48d7080e744533f09f36
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031604-carried-hazing-b7db@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031632-headband-sprinkled-2a47@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,174 +111,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fdbaa9d2b78e0da9e1aeb303bbdc3adfe6d8e749 Mon Sep 17 00:00:00 2001
+From 580cc37b1de4fcd9997c48d7080e744533f09f36 Mon Sep 17 00:00:00 2001
 From: Benno Lossin <lossin@kernel.org>
-Date: Wed, 11 Mar 2026 11:50:49 +0100
-Subject: [PATCH] rust: pin-init: replace shadowed return token by
- `unsafe`-to-create token
+Date: Mon, 2 Mar 2026 15:04:15 +0100
+Subject: [PATCH] rust: pin-init: internal: init: document load-bearing fact of
+ field accessors
 
-We use a unit struct `__InitOk` in the closure generated by the
-initializer macros as the return value. We shadow it by creating a
-struct with the same name again inside of the closure, preventing early
-returns of `Ok` in the initializer (before all fields have been
-initialized).
+The functions `[Pin]Init::__[pinned_]init` and `ptr::write` called from
+the `init!` macro require the passed pointer to be aligned. This fact is
+ensured by the creation of field accessors to previously initialized
+fields.
 
-In the face of Type Alias Impl Trait (TAIT) and the next trait solver,
-this solution no longer works [1]. The shadowed struct can be named
-through type inference. In addition, there is an RFC proposing to add
-the feature of path inference to Rust, which would similarly allow [2].
+Since we missed this very important fact from the beginning [1],
+document it in the code.
 
-Thus remove the shadowed token and replace it with an `unsafe` to create
-token.
-
-The reason we initially used the shadowing solution was because an
-alternative solution used a builder pattern. Gary writes [3]:
-
-    In the early builder-pattern based InitOk, having a single InitOk
-    type for token is unsound because one can launder an InitOk token
-    used for one place to another initializer. I used a branded lifetime
-    solution, and then you figured out that using a shadowed type would
-    work better because nobody could construct it at all.
-
-The laundering issue does not apply to the approach we ended up with
-today.
-
-With this change, the example by Tim Chirananthavat in [1] no longer
-compiles and results in this error:
-
-    error: cannot construct `pin_init::__internal::InitOk` with struct literal syntax due to private fields
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType {}
-       |                 ^^^^^^^^^^^^
-       |
-       = note: private field `0` that was not provided
-    help: you might have meant to use the `new` associated function
-       |
-    26 -                 InferredType {}
-    26 +                 InferredType::new()
-       |
-
-Applying the suggestion of using the `::new()` function, results in
-another expected error:
-
-    error[E0133]: call to unsafe function `pin_init::__internal::InitOk::new` is unsafe and requires unsafe block
-      --> src/main.rs:26:17
-       |
-    26 |                 InferredType::new()
-       |                 ^^^^^^^^^^^^^^^^^^^ call to unsafe function
-       |
-       = note: consult the function's documentation for information on how to avoid undefined behavior
-
-Reported-by: Tim Chirananthavat <theemathas@gmail.com>
-Link: https://github.com/rust-lang/rust/issues/153535 [1]
-Link: https://github.com/rust-lang/rfcs/pull/3444#issuecomment-4016145373 [2]
-Link: https://github.com/rust-lang/rust/issues/153535#issuecomment-4017620804 [3]
-Fixes: fc6c6baa1f40 ("rust: init: add initialization macros")
-Cc: stable@vger.kernel.org
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/561532-pin-init/topic/initialized.20field.20accessor.20detection/with/576210658 [1]
+Fixes: 90e53c5e70a6 ("rust: add pin-init API core")
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y: 42415d163e5d: rust: pin-init: add references to previously initialized fields
+Cc: <stable@vger.kernel.org> # 6.6.y, 6.12.y, 6.18.y, 6.19.y
 Signed-off-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260311105056.1425041-1-lossin@kernel.org
-[ Added period as mentioned. - Miguel ]
+Link: https://patch.msgid.link/20260302140424.4097655-2-lossin@kernel.org
+[ Updated Cc: stable@ tags as discussed. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 738f62c8105c..2fe918f4d82a 100644
+index da53adc44ecf..738f62c8105c 100644
 --- a/rust/pin-init/internal/src/init.rs
 +++ b/rust/pin-init/internal/src/init.rs
-@@ -148,11 +148,6 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
-     let init_fields = init_fields(&fields, pinned, &data, &slot);
-     let field_check = make_field_check(&fields, init_kind, &path);
-     Ok(quote! {{
--        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
--        // type and shadow it later when we insert the arbitrary user code. That way there will be
--        // no possibility of returning without `unsafe`.
--        struct __InitOk;
--
-         // Get the data about fields from the supplied type.
-         // SAFETY: TODO
-         let #data = unsafe {
-@@ -162,18 +157,15 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
-             #path::#get_data()
-         };
-         // Ensure that `#data` really is of type `#data` and help with type inference:
--        let init = ::pin_init::__internal::#data_trait::make_closure::<_, __InitOk, #error>(
-+        let init = ::pin_init::__internal::#data_trait::make_closure::<_, #error>(
-             #data,
-             move |slot| {
--                {
--                    // Shadow the structure so it cannot be used to return early.
--                    struct __InitOk;
--                    #zeroable_check
--                    #this
--                    #init_fields
--                    #field_check
--                }
--                Ok(__InitOk)
-+                #zeroable_check
-+                #this
-+                #init_fields
-+                #field_check
-+                // SAFETY: we are the `init!` macro that is allowed to call this.
-+                Ok(unsafe { ::pin_init::__internal::InitOk::new() })
-             }
-         );
-         let init = move |slot| -> ::core::result::Result<(), #error> {
-diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 90f18e9a2912..90adbdc1893b 100644
---- a/rust/pin-init/src/__internal.rs
-+++ b/rust/pin-init/src/__internal.rs
-@@ -46,6 +46,24 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
-     }
- }
- 
-+/// Token type to signify successful initialization.
-+///
-+/// Can only be constructed via the unsafe [`Self::new`] function. The initializer macros use this
-+/// token type to prevent returning `Ok` from an initializer without initializing all fields.
-+pub struct InitOk(());
-+
-+impl InitOk {
-+    /// Creates a new token.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function may only be called from the `init!` macro in `../internal/src/init.rs`.
-+    #[inline(always)]
-+    pub unsafe fn new() -> Self {
-+        Self(())
-+    }
-+}
-+
- /// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
- /// the pin projections within the initializers.
- ///
-@@ -68,9 +86,10 @@ pub unsafe trait PinData: Copy {
-     type Datee: ?Sized + HasPinData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
-@@ -98,9 +117,10 @@ pub unsafe trait InitData: Copy {
-     type Datee: ?Sized + HasInitData;
- 
-     /// Type inference helper function.
--    fn make_closure<F, O, E>(self, f: F) -> F
-+    #[inline(always)]
-+    fn make_closure<F, E>(self, f: F) -> F
-     where
--        F: FnOnce(*mut Self::Datee) -> Result<O, E>,
-+        F: FnOnce(*mut Self::Datee) -> Result<InitOk, E>,
-     {
-         f
-     }
+@@ -251,6 +251,10 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
++                // NOTE: the field accessor ensures that the initialized field is properly aligned.
++                // Unaligned fields will cause the compiler to emit E0793. We do not support
++                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++                // `ptr::write` below has the same requirement.
+                 let accessor = if pinned {
+                     let project_ident = format_ident!("__project_{ident}");
+                     quote! {
+@@ -278,6 +282,10 @@ fn init_fields(
+             InitializerKind::Init { ident, value, .. } => {
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
++                // NOTE: the field accessor ensures that the initialized field is properly aligned.
++                // Unaligned fields will cause the compiler to emit E0793. We do not support
++                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
++                // `ptr::write` below has the same requirement.
+                 let (value_init, accessor) = if pinned {
+                     let project_ident = format_ident!("__project_{ident}");
+                     (
 
 
