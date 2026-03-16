@@ -1,310 +1,240 @@
-Return-Path: <stable+bounces-225691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNNkGD9guGlbdAEAu9opvQ
-	(envelope-from <stable+bounces-225691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:55:43 +0100
+	id 4O9dO9JkuGlOdQEAu9opvQ
+	(envelope-from <stable+bounces-225692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:15:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F347D29FF01
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:55:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7762A01A0
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 21:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9E5B304926F
-	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 19:53:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C0E88301779D
+	for <lists+stable@lfdr.de>; Mon, 16 Mar 2026 20:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E5A3DB64B;
-	Mon, 16 Mar 2026 19:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3E93EE1C5;
+	Mon, 16 Mar 2026 20:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/kjkEYN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fVDEnNlo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0458B3ED5B5
-	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 19:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F113EE1C8
+	for <stable@vger.kernel.org>; Mon, 16 Mar 2026 20:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773690821; cv=pass; b=f9imaWuBqSq61yFhCeMKXhKyA/nswSITGCvgiUS6mf8huZqv3nL4YSwMIxlGwekWvYaEnHtaauMpR82Oq8f+lJsWr6YPuO+73XplEG4vrhm/FlOlpt8fwV3lxyyZ6ahigmSMcv9n9KkdvvaZLbUoHcL/PwN4E0rCnRpAtkblpyc=
+	t=1773692108; cv=pass; b=NwzkLw4c68qafrd94O/EbgiDYnZ7lHZq89E0p2plJU25eaP5Ngpz9RTwgt2OddZ/ylId4+k934I8X7o7/5qtQTISGiBr3AF1bgfXZ+rjKWx7ucJcqYtxj7Fzsoi0AzJufm2W7+XfKaPA2ghJtVoY4nDCMeA3OCpaIsw3Tc62ShU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773690821; c=relaxed/simple;
-	bh=VY7/ARQ274h4uKfie1OktnCkIxcE/wgH7GGSyqdtydE=;
+	s=arc-20240116; t=1773692108; c=relaxed/simple;
+	bh=8niDkbFsuiT/+hqsTJO6w83pdohKFBF4kUT+Kf+V3LE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tsn/fE0TW4NOaL798JXXLs9s3kcExa/hg11vIVd8R9rdr4Jw720thFPPnsRemR7ykuiGBUNO53KnRVywGhf+YlbkbnDZMiE0jGHFb4IkxPM3dqaLp71Z/gwd4UJai2qv+UDrk0z9sgDg8lTD1eEFNajM8HTK5Or+NfK6T7OJgAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/kjkEYN; arc=pass smtp.client-ip=209.85.128.170
+	 To:Cc:Content-Type; b=B394FgTOUqkpBSCZyrjie5hInhhWZbSxX7u7vlgx72PQCdUlUgq8ecVooqoHw3TUqqNiGkdO8gAmlgoKMzAl1x/3qzzp7uxgMyuzEjR6RVgN4nE/iESg0d6hgPpG/bw1ZBjrJTh/fVnINnvBwhP3eBUXm5QI3Mriom7Z2oQAkq8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fVDEnNlo; arc=pass smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7927261a3acso40182917b3.0
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 12:53:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773690818; cv=none;
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso44402525e9.3
+        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 13:15:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773692105; cv=none;
         d=google.com; s=arc-20240605;
-        b=XGOsPaaYPoZ+2jw72cccw5Y40f295VRXzE4ymv1qvAVFwA12mC+uM5tcRbLQd+d5Op
-         gCBlcGUnJamhyTZoCaKSFuoRVt8U7eIy0xsB2vhZbG/fI7fiWpMNkur5oUT9uBEWoy1e
-         gfuOCSLp5TyXJDID3xvGVLnorBkxQXzeMEzNgJg1Ze2LDqqzDYK6qHBOLGT0GrnOJEj1
-         4knSfACwWCrvmEwJK1aHUHIRbu3nId5rGHpGXOdajl52nkPvADe3snhhH0soZyBpJcDz
-         5Bhb9U6M1VKVhyBtKk3tNQPGqF5gxfKkZGogcyBypGoxQvDlEaQxxIQgRKzWu2CcfklL
-         yZCw==
+        b=hdYEX0gq/a20XxZLbvoyJQiYs2PmX9JLz7klUJAY1tLM7vwA0S1e1w850iRlS9vay9
+         8rn06nRYXpm4+sY+9dMrWlgScMe//Deh1QBtBq97paCyFqecCaLDxLJ/wzFBcsnf9ZER
+         DmXT33IKszlCRUXtEb5MD79BL8K1qZhMOPcOrxu8KWEbezz9uV5oyRSAGA7VSeoiVnaX
+         RDnrEwNXkhXU29qdGeEG0NYFCMGDTBpquRqJXJroJwP9vs5jaz+i1R5Z5W2twl6eza7R
+         iPV33ras8JISpyi2IUblt1v+a5HwDT6mp5TxeU9VtMBVl/c//WG/Jo2k3+uqdLi0syMd
+         FKSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=cfr/+KdWaNG7d26GP7p0CvuBKTKufLHHRbtv8HCrcI8=;
-        fh=2GtsKwzmwEnZahBmj9mP5j4uLnjU6Zb/RZqReMWfmhQ=;
-        b=JHgdiCdP+TCKRS7M4pvPlmUai/TyXP1OaenMS2VtG3XhK6v87B7mH3kPCgmw00JR6w
-         rFO894E9ZM8GU/wSZvTZpz6xnNBEGW6rB03Kcfrw0pBcBBB8eJann9Gw7DSjY9juH1XL
-         +E+/l7RdEOJ/LUp25z8D3itrlc0RbVWk5I1MhQoHWFHa2H5TTn5OW81bh3ePesjfF5up
-         1ar5fVFjuXjpnklq76zotqkxC/508+T2oCTArNCUkelHWl6f0rWdNhfvVAFE1w34AsGq
-         ID3xjzmAIQYOVdNme9qtRf3IVnCmksi8dgvKtGFjBq8sIFidWFQaJMdtPmcTh0cGteBC
-         308w==;
+        bh=CYoN8btAUIlvILFgoOAtc9iU/qNjitR/kbbHyyiUI+c=;
+        fh=2bRH+onBcZXYiXdutTy3/PIsKYmwgP4rr3q1gQfuBK8=;
+        b=Xo8J9qYvogW8P4w0vcar0t4JI4VT90ioRBUltLee38s4ixRpQEkGBhuM1BzsVpSus1
+         LJ6pU3nlgvKUT3rD3wstTdtRVUX6pXZITJIrYRTPtwRPTYKSobJRPmidBA24ybHDPzP9
+         RquKS5tn6sFWlfCp+FdwRztcowoo4+0SHLKw1DXxz7b4kb+QBoVchJkW3UUaHzNBNi3i
+         Ae9zFdXPxH6ieoX0YozDteuanWEhfUKczBMo2ORpMH9ogYb9zoMp5UgkNPoDlDYcozew
+         xavsfoGB3MYvI0zd7wWpkqHfSyIg/8cKLz6O/HaAuu2Y3P54az1GWEG9kzSnVHNR7XMw
+         Cl6A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773690818; x=1774295618; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773692105; x=1774296905; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cfr/+KdWaNG7d26GP7p0CvuBKTKufLHHRbtv8HCrcI8=;
-        b=c/kjkEYN3oBorrXhP4wUvrrlFlAEgUgv6mZICv0wTLd3Dg6GwDE1PStnQQ70b8nlmX
-         +lRI7ZL7OyGshmCQ3mNL4Bjypn6+2hV2m0tJVMgIG7EJAyoxI0sM4zSuKRLaItSg0RPp
-         34OVwOFOPl45i6ASkzCqC3I1C/g6oIwfiIIOJqMDuxdZt8g1OqADU/DOTrHV5vniTg8j
-         NV/T/sfOWT9wapsnCCquzHghKsuNARxerYCY7FExT3F2FUTYjVCCkxSdQcd8oMpED5pL
-         GInqJGmcQrELNrFEJQshbpbxERVxHcRDq8mZjMvrxu7ZeqH+JYSSmW2g8yi6rrr0zLYi
-         ccAw==
+        bh=CYoN8btAUIlvILFgoOAtc9iU/qNjitR/kbbHyyiUI+c=;
+        b=fVDEnNloFqOdz29Kk0eJSkXisqbgtBhtZ1GCHYD+Lsab5Q8Q2p0xKTAONLOEZa+5tm
+         wQag7wou7pfvRJn4tYIs6Uy8qbcg5AvzBDQXaAYFZMTHJTEp+3IpaviYtCRza5zaye0k
+         /5B15r1I68hI2oyeyW0Hhl8YzFZoN7X2/QJSgweIRh5Xai38JjELR5y9/oShn1IZhFyG
+         eZAuUInSIKlv8KGwY8xLpurNSatih9Iqm2CkbvsmXSg0Gp/r5fqL+zBvvkfCVd1nxC55
+         EkLxKb9nxySVeGvdm31dqDrsS6xk56EpYk3nHQoxEy4nJi38t4oSRqYpAPgu9GwT69y8
+         Qgng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773690818; x=1774295618;
+        d=1e100.net; s=20251104; t=1773692105; x=1774296905;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=cfr/+KdWaNG7d26GP7p0CvuBKTKufLHHRbtv8HCrcI8=;
-        b=iUEP1uxsUq3WpE7ReNsBB2uqZqK1QFTygsZ9j6y1pz/m5Cjn6/thKS0u4AXLjzZC9u
-         hV4ENK1fgqzNnV1QeKa/hJl35hZGO8wlwqLpdZ+G/tiKoCv7eao1fmXq5juIfMtUbk4P
-         lPAF9Gi6LGtXpOxNdvrJIiv9ifhnmSNcZm6e3Cv8TE52hAKQRUfFhsi5eYzXXTVwDGMj
-         96+xxDUszistT9lqcj9A+WRy0l2qwO7Txm9PerLXDP76fw5+ktayZP4OKfIazhiISTkx
-         dNp2LooBoM2oPJqwQVi1SssTjL5q4iQV63V2fSKF6L10Cib3TJplfEuQJfOGto+zJLj2
-         XkpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqI3H/L0OJ9LJ8R7lr+v2objDpFlSozFDLegUl+Y1Ffdp9kkt22i+lzcaMaJjCv7C24Jgb4YQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmdqc6AQxoTzWTWbXEHp7ACvEmdSrzbzLAFLBA92lVsDCeyifS
-	qak3P0ab9tfr6KMLganiWERZTCtxQALvNNEWOZr8+O5hBO3qBdmH52PFYr0xwU7YtnusUefaUjP
-	SLMImTzY+hcDk/c3yg9tBjgPKEx3TdDc=
-X-Gm-Gg: ATEYQzwYTd56Rghry13fme8k44kQDZ+I3hTYLl0aV9Xl7aykOs93uLx2iFxAVE99YLr
-	KQFRoysocIvO2PeNsuZKRBCd040aTeqRahx4foeknI3dGhCm1LeB01W+S1XuOgMxOYDh3FaiqNh
-	bv1cHKGTGY2OO+Zcz0Ip7ksI9gNgFMgpISRH8kScm2HCboCPenxU/DztJ7RkLLb0eGb1ZjhuuvU
-	4yQOjolGyI7RjY6cps4ttBzZi/eKCxbBPaMiDcbZ+kC5VKVIKJqUrK3sdUUFAD9nv5KipcrOsUd
-	PQhzwdCya6oyqbx92ifbyac=
-X-Received: by 2002:a05:690c:6c0b:b0:79a:4317:395a with SMTP id
- 00721157ae682-79a43175384mr64466277b3.2.1773690817924; Mon, 16 Mar 2026
- 12:53:37 -0700 (PDT)
+        bh=CYoN8btAUIlvILFgoOAtc9iU/qNjitR/kbbHyyiUI+c=;
+        b=aluIbNtX4TLDETa3gNQYQL82mssEVAsvYkl/0X1Y2ijNccVr5GusXwjsEmGAEXMKVK
+         81nGrdg4Ongd7/s8qU/Fq4+FUDkA2pkxrSsIwS7vouRCN3mkCUgLHChzQ8QnsB3ZW6sJ
+         xesy03SS3FsBWV76C1GV0TW3cqTjuhmABQ9B/lQsu49jOkF4Nr9x4m9aH59hNWz4ovoU
+         MT+q0rq+Xiy7VYon80OhhY3HVC3ygzIdNrxO9qqNpYmMODQmjuHtN+FOnMlGikPKwbKK
+         L5DkRe6G9ZP+VoLQjegiIGZB4cqw3I5fbhiocNyWL5vdoZXe4QBtKos0aAYHAgCuTxdh
+         Jakg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQBJ/YNQDArKqgpdiFyawpoyM47RUT2lotEhJ4fRU9BgrGqc6I4apElA5Uws7cX/2k9TaCo3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR8SOSUR2WzXN5rkq57vVGzMqBfpuDFj3mY84dvtDsSifzTCGX
+	7HEVs8eiPjpMjDaXjHuYFs5yM7e+zlxW09LPwhWjSvcl23SRKKb+5HdT+KqFkaapHwSkZfRuMQX
+	+v8ke32i30hZ4raIDIUsWN5Lw33cdpF3u0Px7ELc=
+X-Gm-Gg: ATEYQzx9G6tsUlfghlWS/iqqN1ITjRjtSPr3OXnuu72IpdytYky+wiCegsfesT74XK9
+	wYanD7OFK5dD4UpYOWMsK1dRGKBitzl4ZNZFBTqir8Su4MqQAxi7a3CxUL+TL13kN+/IdiXAKSU
+	2dAF1bHavs8BHXAkG4o5LQKAGQaVXLMO+sCLNyjthu4bTn2mVsx1dV2sWU/52khm3v5b8lGkkLx
+	SGwnd7TcPe9exkXrGiC91pqdotiv06vs6CKdrqdA50NBLdCF6Y7vEvdHrECaXdZpT1Z2v7Zsytw
+	0BNw5rGEEbhLnJ9vDX1lqJx0pIn7qr8=
+X-Received: by 2002:a05:600c:1395:b0:480:1c85:88bf with SMTP id
+ 5b1f17b1804b1-4855670b72fmr237585685e9.27.1773692104868; Mon, 16 Mar 2026
+ 13:15:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260315-bpf-kmalloc-nolock-v3-1-91c72bf91902@outlook.com>
-In-Reply-To: <20260315-bpf-kmalloc-nolock-v3-1-91c72bf91902@outlook.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Mon, 16 Mar 2026 12:53:27 -0700
-X-Gm-Features: AaiRm51TRiU_TdEe_xqQj-pB0MImfrzcDdg1WNNiYNlT_5xOuouk70K7fxXMtb4
-Message-ID: <CAMB2axN9xYPzAJVQVywx3sxYa5ViRxt2oktt1LFXsSD_XsuJrA@mail.gmail.com>
-Subject: Re: [PATCH bpf v3] bpf: do not use kmalloc_nolock when !HAVE_CMPXCHG_DOUBLE
-To: rsworktech@outlook.com
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev
+References: <20260315232500.251088-1-CFSworks@gmail.com> <bbc55ded3e226cee35e04a071400981e2069eb3e.camel@ibm.com>
+In-Reply-To: <bbc55ded3e226cee35e04a071400981e2069eb3e.camel@ibm.com>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Mon, 16 Mar 2026 13:14:53 -0700
+X-Gm-Features: AaiRm51dpPBipZZWQanwptiEoyoB_MXYhvmujHnwSw7-J6BK8JmDh4pDIUmVfgQ
+Message-ID: <CAH5Ym4j6gPCR9UhM1ywkDmvcDAccNrL72LFLy468T4PfPTxU7Q@mail.gmail.com>
+Subject: Re: [REGRESSION] [PATCH] ceph: fix num_ops OBOE when crypto
+ allocation fails
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: "idryomov@gmail.com" <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+	"slava@dubeyko.com" <slava@dubeyko.com>, Milind Changire <mchangir@redhat.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Xiubo Li <xiubli@redhat.com>, 
+	"jlayton@kernel.org" <jlayton@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-225692-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,dubeyko.com,vger.kernel.org,kernel.org];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-225691-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ameryhung@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,google.com,linutronix.de,goodmis.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,lists.infradead.org,vger.kernel.org,lists.linux.dev];
+	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,outlook.com:email]
-X-Rspamd-Queue-Id: F347D29FF01
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EC7762A01A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 14, 2026 at 9:02=E2=80=AFAM Levi Zim via B4 Relay
-<devnull+rsworktech.outlook.com@kernel.org> wrote:
+On Mon, Mar 16, 2026 at 10:44=E2=80=AFAM Viacheslav Dubeyko
+<Slava.Dubeyko@ibm.com> wrote:
 >
-> From: Levi Zim <rsworktech@outlook.com>
+> On Sun, 2026-03-15 at 16:25 -0700, Sam Edwards wrote:
+> > move_dirty_folio_in_page_array() may fail if the file is encrypted, the
+> > dirty folio is not the first in the batch, and it fails to allocate a
+> > bounce buffer to hold the ciphertext. When that happens,
+> > ceph_process_folio_batch() simply redirties the folio and flushes the
+> > current batch -- it can retry that folio in a future batch.
+> >
 >
-> kmalloc_nolock always fails for architectures that lack cmpxchg16b.
-> For example, this causes bpf_task_storage_get with flag
-> BPF_LOCAL_STORAGE_GET_F_CREATE to fails on riscv64 6.19 kernel.
->
-> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-> But leave the PREEMPT_RT case as is because it requires kmalloc_nolock
-> for correctness. Add a comment about this limitation that architecture's
-> lack of CMPXCHG_DOUBLE combined with PREEMPT_RT could make
-> bpf_local_storage_alloc always fail.
+> How this issue can be reproduced? Do you have a reproduction script or an=
+ything
+> like this?
 
-Let's not do this.
+Good day Slava,
 
-This re-introduces deadlock to local storage. In addition, local
-storage will switch to using kmalloc_nolock() entirely.
+Is this question about the preceding paragraph? If so: that paragraph
+is just describing current (and intended) behavior, not an issue.
 
-For riscv hardware without zacas extension, I think a workaround with
-some performance overhead is to enable CONFIG_SLUB_DEBUG and
-slub_debug options.
+If this is just a general question about the patch, then I don't know
+of a way to trigger the issue in a short timeframe, but something like
+this ought to work:
+1. Create a reasonably-sized (e.g. 4GiB) fscrypt-protected file in CephFS
+2. Put the CephFS client system under heavy memory pressure, so that
+bounce page allocation is more likely to fail
+3. Repeatedly write to the file in a 4KiB-written/4KiB-skipped
+pattern, starting over upon getting to the end of the file
+4. Wait for the system to panic, gradually ramping up the memory
+pressure until it does
 
->
-> Fixes: f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolo=
-ck() in local storage")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Levi Zim <rsworktech@outlook.com>
-> ---
-> I find that bpf_task_storage_get with flag BPF_LOCAL_STORAGE_GET_F_CREATE
-> always fails for me on 6.19 kernel on riscv64 and bisected it.
->
-> In f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock()
-> in local storage"), bpf memory allocator is replaced with kmalloc_nolock.
-> This approach is problematic for architectures that lack CMPXCHG_DOUBLE
-> because kmalloc_nolock always fails in this case:
->
-> In function kmalloc_nolock (kmalloc_nolock_noprof):
->
->         if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
->                 /*
->                  * kmalloc_nolock() is not supported on architectures tha=
+I run a workload that performs fairly random I/O atop CephFS+fscrypt.
+Before this patch, I'd get a panic after about a day. After this
+patch, I've been running for 4+ days without this particular issue
+reappearing.
+
+> > However, if this failed folio is not contiguous with the last folio tha=
 t
->                  * don't implement cmpxchg16b, but debug caches don't use
->                  * per-cpu slab and per-cpu partial slabs. They rely on
->                  * kmem_cache_node->list_lock, so kmalloc_nolock() can
->                  * attempt to allocate from debug caches by
->                  * spin_trylock_irqsave(&n->list_lock, ...)
->                  */
->                 return NULL;
+> > did make it into the batch, then ceph_process_folio_batch() has already
+> > incremented `ceph_wbc->num_ops`; because it doesn't follow through and
+> > add the discontiguous folio to the array, ceph_submit_write() -- which
+> > expects that `ceph_wbc->num_ops` accurately reflects the number of
+> > contiguous ranges (and therefore the required number of "write extent"
+> > ops) in the writeback -- will panic the kernel:
+> >
+> >     BUG_ON(ceph_wbc->op_idx + 1 !=3D req->r_num_ops);
 >
-> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-> (But not for a PREEMPT_RT case as explained in the comment and commitmsg)
+> I don't quite follow. We decrement ceph_wbc->num_ops but BUG_ON() operate=
+s by
+> req->r_num_ops. How req->r_num_ops receives the value of ceph_wbc->num_op=
+s?
+
+ceph_submit_write() passes ceph_wbc->num_ops to ceph_osdc_new_request()...
+
+> We change ceph_wbc->num_ops, ceph_wbc->offset, and ceph_wbc->len here:
 >
-> Note for stable: this only needs to be picked into v6.19 if the patch
-> makes it into 7.0.
-> ---
-> Changes in v3:
-> - Use macro instead of const static variable to avoid triggering
->   warnings.
-> - Wrap lines at 80 columns
-> - Link to v2: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v2-1-=
-576e33e4fa67@outlook.com
+>                 } else if (!is_folio_index_contiguous(ceph_wbc, folio)) {
+>                         if (is_num_ops_too_big(ceph_wbc)) {
+>                                 folio_redirty_for_writepage(wbc, folio);
+>                                 folio_unlock(folio);
+>                                 break;
+>                         }
 >
-> Changes in v2:
-> - Drop the modification to the PREEMPT_RT case as it requires
->   kmalloc_nolock for correctness.
-> - Add a comment to the PREEMPT_RT case about the limitation when
->   not HAVE_CMPXCHG_DOUBLE but enables PREEMPT_RT.
-> - Link to v1: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v1-1-=
-24abf3f75a9f@outlook.com
-> ---
->  include/linux/bpf_local_storage.h | 1 +
->  kernel/bpf/bpf_cgrp_storage.c     | 3 ++-
->  kernel/bpf/bpf_local_storage.c    | 4 ++++
->  kernel/bpf/bpf_task_storage.c     | 3 ++-
->  4 files changed, 9 insertions(+), 2 deletions(-)
+>                         ceph_wbc->num_ops++;
+>                         ceph_wbc->offset =3D (u64)folio_pos(folio);
+>                         ceph_wbc->len =3D 0;
+>                 }
 >
-> diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_=
-storage.h
-> index 8157e8da61d40..d8f2c5d63a80e 100644
-> --- a/include/linux/bpf_local_storage.h
-> +++ b/include/linux/bpf_local_storage.h
-> @@ -18,6 +18,7 @@
->  #include <asm/rqspinlock.h>
->
->  #define BPF_LOCAL_STORAGE_CACHE_SIZE   16
-> +#define KMALLOC_NOLOCK_SUPPORTED IS_ENABLED(CONFIG_HAVE_CMPXCHG_DOUBLE)
->
->  struct bpf_local_storage_map_bucket {
->         struct hlist_head list;
-> diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.=
-c
-> index c2a2ead1f466d..cd18193c44058 100644
-> --- a/kernel/bpf/bpf_cgrp_storage.c
-> +++ b/kernel/bpf/bpf_cgrp_storage.c
-> @@ -114,7 +114,8 @@ static int notsupp_get_next_key(struct bpf_map *map, =
-void *key, void *next_key)
->
->  static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
->  {
-> -       return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
-> +       return bpf_local_storage_map_alloc(attr, &cgroup_cache,
-> +                                          KMALLOC_NOLOCK_SUPPORTED);
->  }
->
->  static void cgroup_storage_map_free(struct bpf_map *map)
-> diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storag=
-e.c
-> index 9c96a4477f81a..a6c240da87668 100644
-> --- a/kernel/bpf/bpf_local_storage.c
-> +++ b/kernel/bpf/bpf_local_storage.c
-> @@ -893,6 +893,10 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
->         /* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
->          * preemptible context. Thus, enforce all storages to use
->          * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
-> +        *
-> +        * However, kmalloc_nolock would fail on architectures that do no=
-t
-> +        * have CMPXCHG_DOUBLE. On such architectures with PREEMPT_RT,
-> +        * bpf_local_storage_alloc would always fail.
->          */
->         smap->use_kmalloc_nolock =3D IS_ENABLED(CONFIG_PREEMPT_RT) ? true=
- : use_kmalloc_nolock;
->
-> diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_storage.=
-c
-> index 605506792b5b4..6e8597edea314 100644
-> --- a/kernel/bpf/bpf_task_storage.c
-> +++ b/kernel/bpf/bpf_task_storage.c
-> @@ -212,7 +212,8 @@ static int notsupp_get_next_key(struct bpf_map *map, =
-void *key, void *next_key)
->
->  static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
->  {
-> -       return bpf_local_storage_map_alloc(attr, &task_cache, true);
-> +       return bpf_local_storage_map_alloc(attr, &task_cache,
-> +                                          KMALLOC_NOLOCK_SUPPORTED);
->  }
->
->  static void task_storage_map_free(struct bpf_map *map)
->
-> ---
-> base-commit: e06e6b8001233241eb5b2e2791162f0585f50f4b
-> change-id: 20260314-bpf-kmalloc-nolock-60da80e613de
->
-> Best regards,
-> --
-> Levi Zim <rsworktech@outlook.com>
->
->
+> First of all, technically speaking, move_dirty_folio_in_page_array() can =
+fail
+> even if is_folio_index_contiguous() is positive. Do you mean that we don'=
+t need
+> to decrement the ceph_wbc->num_ops in such case?
+
+Yes, exactly: as stated in the commit message, we only need to correct
+the value "when move_dirty_folio_in_page_array() fails, but the folio
+already started counting a new (i.e. still-empty) extent." The `len =3D=3D
+0` test is checking for that new/still-empty condition.
+
+> Secondly, do we need to correct ceph_wbc->offset?
+
+No, we do not; the valid lifetime of offset/len ends when
+ceph_process_folio_batch() returns. I'd even argue they don't belong
+in ceph_wbc at all and should be local variables instead, but that's a
+matter for a different patch.
+
+Cheers,
+Sam
 
