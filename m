@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-226596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BDOHfeLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:31 +0100
+	id 0GSfF6+HuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D882AF2AD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD26E2AEA65
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 018D9309C46A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7842931857C6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA193F660E;
-	Tue, 17 Mar 2026 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0AB3F23C7;
+	Tue, 17 Mar 2026 16:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6znX5Y3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGkCdZ6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EC23F54CE;
-	Tue, 17 Mar 2026 17:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DA83F23B9;
+	Tue, 17 Mar 2026 16:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767395; cv=none; b=kGWWV3keeVez83pblUsF4pXNuQW1lVQmA9+MHai4LB6v/H9bx2zDyQTPZcyJ4WVCOScwoVVngXuj22D/rnk7SnD5NrlC69U5yeLEOtggSwU+iHampUawHNOCJtlpubQKafOGvQOS8yvHpZsQvgD+Qa8D03MD+BefLvQLePEBWJw=
+	t=1773766014; cv=none; b=tekQOeY/1IqnPcdHQn3RXfy+PWuvKz08xTDa/02Uw4xLwelcik1DDan5gb0k/ebeobOeA+1PKTwY5GWs7pRCV2Z3x6aOaZAweN1NMPUVpS74qPnYBQF7nx2B5eHk0GM6jGN1mKf7Zi+l2JrsfOlWrh7qicMw4y3D/mVC2AUv8ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767395; c=relaxed/simple;
-	bh=IWzJhA58+jzzu5F1n033G8LGztQDC7rmdd2LKJdIvYA=;
+	s=arc-20240116; t=1773766014; c=relaxed/simple;
+	bh=QYmb/1DYB2jiRMW2vEbQ0EKanCLUXO6TgQc0vK9I6YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo4Oj/1w9pw6m0LYsKxP90XCN49UpY03mr21yhsL8bNPpNw84DKZcrs/7Wro9d7PWQaFh9i6LDWdcolqrMO/klVKfol9w/6+rvI6CdAfbcdUk1wUUv0ZwYaYkyLMacp/LTT51aP9zkX4XTK5Je4u3hFbVRBmYYgQOjKxTkFjcjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6znX5Y3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D3BC4CEF7;
-	Tue, 17 Mar 2026 17:09:52 +0000 (UTC)
+	 MIME-Version; b=inYgyXOkz1t+MMqYxjOV8zoWhi+2pgksBGnGWHpphNX68+IVsk1DkYta0sFu/mMce+Dx+twskfh7/TOjNx5OL1CfNuNYK3YrdHyqJ5UEqP3eVCwmzuEcz4ll01m2LUGuSeSYbmqrlRDv4RThTLSZuCbo0paQzJsFLDogNifkIM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGkCdZ6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C325C4CEF7;
+	Tue, 17 Mar 2026 16:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767394;
-	bh=IWzJhA58+jzzu5F1n033G8LGztQDC7rmdd2LKJdIvYA=;
+	s=korg; t=1773766014;
+	bh=QYmb/1DYB2jiRMW2vEbQ0EKanCLUXO6TgQc0vK9I6YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6znX5Y3YPWtrCf15CdIsnsTJx6kh7WbydidFs0gebfKmQDhE0WYntqlDHYT0Cqt1
-	 9piD7RsfhsEXe8XnIdq75Bz82BMwo7IDWX0oe2P6fzSYbK5tjjautOMlHpm3UgFX12
-	 b52NtBLDW9JHyWVdTfLeLLghNyzLNqPWoBcpep4I=
+	b=wGkCdZ6+7iDEB+4S1WgBp/eFYqHJxQOmj4rxvKiShActnq1lulxK/qB9ohinQwcQu
+	 3LMSt0LCFg0ExMt9d4EH2qeQw8skAVqFs2JdWnujTyiL/XtZHvVJJ13HKSfIhub5cq
+	 2wBALlf1hLAHpzc+awAX6S544P/uKkvVUsq198F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/333] sched: idle: Make skipping governor callbacks more consistent
-Date: Tue, 17 Mar 2026 17:31:47 +0100
-Message-ID: <20260317163002.268874790@linuxfoundation.org>
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.19 151/378] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+Date: Tue, 17 Mar 2026 17:31:48 +0100
+Message-ID: <20260317163012.568265822@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226282-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226596-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 24D882AF2AD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BD26E2AEA65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
+commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
 
-If the cpuidle governor .select() callback is skipped because there
-is only one idle state in the cpuidle driver, the .reflect() callback
-should be skipped as well, at least for consistency (if not for
-correctness), so do it.
+Remove the error path from the usb_phy_roothub_set_mode() function.
+The code is clearly wrong, because phy_set_mode() calls can't be
+balanced with phy_power_off() calls.
 
-Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally, the usb_phy_roothub_set_mode() function is called only
+from usb_add_hcd() before it powers on the PHYs, so powering off those
+makes no sense anyway.
+
+Presumably, the code is copy-pasted from the phy_power_on() function
+without adjusting the error handling.
+
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: b97a31348379 ("usb: core: comply to PHY framework")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/cpuidle.c | 10 ----------
- kernel/sched/idle.c       | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/usb/core/phy.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 8950796a493de..56132e843c991 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -357,16 +357,6 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		   bool *stop_tick)
- {
--	/*
--	 * If there is only a single idle state (or none), there is nothing
--	 * meaningful for the governor to choose. Skip the governor and
--	 * always use state 0 with the tick running.
--	 */
--	if (drv->state_count <= 1) {
--		*stop_tick = false;
--		return 0;
--	}
--
- 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
- }
- 
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index ac9690805be4f..d9c515da328e5 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -219,7 +219,7 @@ static void cpuidle_idle_call(void)
- 
- 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
- 		call_cpuidle(drv, dev, next_state);
--	} else {
-+	} else if (drv->state_count > 1) {
- 		bool stop_tick = true;
- 
- 		/*
-@@ -237,6 +237,15 @@ static void cpuidle_idle_call(void)
- 		 * Give the governor an opportunity to reflect on the outcome
- 		 */
- 		cpuidle_reflect(dev, entered_state);
-+	} else {
-+		tick_nohz_idle_retain_tick();
-+
-+		/*
-+		 * If there is only a single idle state (or none), there is
-+		 * nothing meaningful for the governor to choose.  Skip the
-+		 * governor and always use state 0.
-+		 */
-+		call_cpuidle(drv, dev, 0);
+--- a/drivers/usb/core/phy.c
++++ b/drivers/usb/core/phy.c
+@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_
+ 	list_for_each_entry(roothub_entry, head, list) {
+ 		err = phy_set_mode(roothub_entry->phy, mode);
+ 		if (err)
+-			goto err_out;
++			return err;
  	}
  
- exit_idle:
--- 
-2.51.0
-
+ 	return 0;
+-
+-err_out:
+-	list_for_each_entry_continue_reverse(roothub_entry, head, list)
+-		phy_power_off(roothub_entry->phy);
+-
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
+ 
 
 
 
