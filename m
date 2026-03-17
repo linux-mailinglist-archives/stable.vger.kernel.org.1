@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCd7IBSHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:40 +0100
+	id +BWJCc6KuWl6JwIAu9opvQ
+	(envelope-from <stable+bounces-226573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6252AE978
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D452D2AF0E4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8CE0F302CC1F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3D6F63040FC3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387B3F54A4;
-	Tue, 17 Mar 2026 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548EC2116F6;
+	Tue, 17 Mar 2026 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLBZDWbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fW7FwcZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B5D3164B5;
-	Tue, 17 Mar 2026 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E943A4F46;
+	Tue, 17 Mar 2026 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766096; cv=none; b=ex2XWS+nEfuyqKlT6Uv4+HmdvTlrZulkJePVMjrKLQbTkBYx2jse+HmtRpVtc21LAFDYa92EbmwyapBX8X859y30TAGQvuN/0jy9JUled3GDIo6yQtHOoLNyccEZ5LwGUaUUfozFf41zLa9rdJybPAiX/lnbP/Swj1RV+od6ZT8=
+	t=1773767291; cv=none; b=oul4aXt0MDlcCtSHj1kIrJpy3rrAonHFXYrArbtYUfodGmq7JydiS/UYTEPIfzY6wqrPkf4LS8M6ggSzcLw3DW+o2lKByU6YiB0fLoWWziwzB/HoSzY+To/tuTxfybw3uOoBCMqvpyRyiH+8giDRKkQ/DJfVYffMAW9d+JCUxoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766096; c=relaxed/simple;
-	bh=V6Hxa1xBOGncamyFrnMyegGlU+KVndYKBwnfFpIcly4=;
+	s=arc-20240116; t=1773767291; c=relaxed/simple;
+	bh=wKnt8nF4BeufhvG3Mm5i6rhhHf4dgKGmomPzyVcOURg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2CYkgBIyHsTLC9eVF1CrqNeSTjDrbNHy5vcDzt6Qq7s6CkS3SqZl/JTpVHbf/uHe1fTGGpgnkpR9o1P2IHduhvIgNb6jat/qtLqa5XnHyPoSWURzPp0KHCOziNTjpBzApQwEt2UjScucNeJ3zSFTICnznFRthJ6Gj2Xra9rOdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLBZDWbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C42C4CEF7;
-	Tue, 17 Mar 2026 16:48:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c1OrW6vZnzgTIDlHO2dU0L0JblzafwBvyX9uJvz00QRZYtQYRd+0xkNNZWRTjwjhjvPJMTGPeJ7xoAfPiuzI/ct9OBhb5uy5QrO78hFipTfb8XFiOQO6O43GOy9lNfWMBY0d4kH0k1wFvriFPLrUXBErfmF4mEglSatD0C9wvvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fW7FwcZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D54C19424;
+	Tue, 17 Mar 2026 17:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766096;
-	bh=V6Hxa1xBOGncamyFrnMyegGlU+KVndYKBwnfFpIcly4=;
+	s=korg; t=1773767290;
+	bh=wKnt8nF4BeufhvG3Mm5i6rhhHf4dgKGmomPzyVcOURg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLBZDWbWJv2gXltEqVQqc4hpe5tNgMoJdPBW/NK5hoQs3a2b2PzuZmiDHbvEc9b8V
-	 xW31VjM1DYWADpV0lpnnva3MlBsmwJxg93iiAPHmOKJl2Qxt4Ezgt7E5P5tsmzY6g7
-	 UxIu4xEITVD8647UdBOIz7AIhPVvJzRBlKF3bafU=
+	b=fW7FwcZ/MkoVkiUzodDz8nZ7Qs5/FRnFdwBdNGaNX343aqiVVjJvOkX2vzUqDce/a
+	 GUMNgm0saJIfDlNFcR/FMvgxK6XNHrF7/DT09bRdR7HPA5GibmfWH4M+YYi2MwIUv+
+	 5FAWPMcpWnJ3iZPCHd9QUlKFiAL6TQ9u4wyxU8ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.19 126/378] rust_binder: fix oneway spam detection
-Date: Tue, 17 Mar 2026 17:31:23 +0100
-Message-ID: <20260317163011.650411247@linuxfoundation.org>
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 055/333] net: sfp: improve Huawei MA5671a fixup
+Date: Tue, 17 Mar 2026 17:31:24 +0100
+Message-ID: <20260317163001.408831722@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lunn.ch,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226300-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-226573-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AD6252AE978
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lunn.ch:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D452D2AF0E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 4fc87c240b8f30e22b7ebaae29d57105589e1c0b upstream.
+[ Upstream commit 87d126852158467ab87d5cbc36ccfd3f15464a6c ]
 
-The spam detection logic in TreeRange was executed before the current
-request was inserted into the tree. So the new request was not being
-factored in the spam calculation. Fix this by moving the logic after
-the new range has been inserted.
+With the current sfp_fixup_ignore_tx_fault() fixup we ignore the TX_FAULT
+signal, but we also need to apply sfp_fixup_ignore_los() in order to be
+able to communicate with the module even if the fiber isn't connected for
+configuration purposes.
+This is needed for all the MA5671a firmwares, excluding the FS modded
+firmware.
 
-Also, the detection logic for ArrayRange was missing altogether which
-meant large spamming transactions could get away without being detected.
-Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
-
-Note that I looked into centralizing this logic in RangeAllocator but
-iterating through 'state' and 'size' got a bit too complicated (for me)
-and I abandoned this effort.
-
-Cc: stable <stable@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260210232949.3770644-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2069624dac19 ("net: sfp: Add tx-fault workaround for Huawei MA5671A SFP ONT")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260306125139.213637-1-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder/range_alloc/array.rs |   35 ++++++++++++++++++++++++++--
- drivers/android/binder/range_alloc/mod.rs   |    4 +--
- drivers/android/binder/range_alloc/tree.rs  |   18 +++++++-------
- 3 files changed, 44 insertions(+), 13 deletions(-)
+ drivers/net/phy/sfp.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder/range_alloc/array.rs
-+++ b/drivers/android/binder/range_alloc/array.rs
-@@ -118,7 +118,7 @@ impl<T> ArrayRangeAllocator<T> {
-         size: usize,
-         is_oneway: bool,
-         pid: Pid,
--    ) -> Result<usize> {
-+    ) -> Result<(usize, bool)> {
-         // Compute new value of free_oneway_space, which is set only on success.
-         let new_oneway_space = if is_oneway {
-             match self.free_oneway_space.checked_sub(size) {
-@@ -146,7 +146,38 @@ impl<T> ArrayRangeAllocator<T> {
-             .ok()
-             .unwrap();
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 43aefdd8b70f7..ca09925335725 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -367,6 +367,12 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
+ 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+ }
  
--        Ok(insert_at_offset)
-+        // Start detecting spammers once we have less than 20%
-+        // of async space left (which is less than 10% of total
-+        // buffer size).
-+        //
-+        // (This will short-circuit, so `low_oneway_space` is
-+        // only called when necessary.)
-+        let oneway_spam_detected =
-+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
++static void sfp_fixup_ignore_tx_fault_and_los(struct sfp *sfp)
++{
++	sfp_fixup_ignore_tx_fault(sfp);
++	sfp_fixup_ignore_los(sfp);
++}
 +
-+        Ok((insert_at_offset, oneway_spam_detected))
-+    }
-+
-+    /// Find the amount and size of buffers allocated by the current caller.
-+    ///
-+    /// The idea is that once we cross the threshold, whoever is responsible
-+    /// for the low async space is likely to try to send another async transaction,
-+    /// and at some point we'll catch them in the act.  This is more efficient
-+    /// than keeping a map per pid.
-+    fn low_oneway_space(&self, calling_pid: Pid) -> bool {
-+        let mut total_alloc_size = 0;
-+        let mut num_buffers = 0;
-+
-+        // Warn if this pid has more than 50 transactions, or more than 50% of
-+        // async space (which is 25% of total buffer size). Oneway spam is only
-+        // detected when the threshold is exceeded.
-+        for range in &self.ranges {
-+            if range.state.is_oneway() && range.state.pid() == calling_pid {
-+                total_alloc_size += range.size;
-+                num_buffers += 1;
-+            }
-+        }
-+        num_buffers > 50 || total_alloc_size > self.size / 4
-     }
+ static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
+ {
+ 	sfp->state_hw_mask &= ~mask;
+@@ -530,7 +536,7 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	// Huawei MA5671A can operate at 2500base-X, but report 1.2GBd NRZ in
+ 	// their EEPROM
+ 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
+-		  sfp_fixup_ignore_tx_fault),
++		  sfp_fixup_ignore_tx_fault_and_los),
  
-     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
---- a/drivers/android/binder/range_alloc/mod.rs
-+++ b/drivers/android/binder/range_alloc/mod.rs
-@@ -188,11 +188,11 @@ impl<T> RangeAllocator<T> {
-                 self.reserve_new(args)
-             }
-             Impl::Array(array) => {
--                let offset =
-+                let (offset, oneway_spam_detected) =
-                     array.reserve_new(args.debug_id, args.size, args.is_oneway, args.pid)?;
-                 Ok(ReserveNew::Success(ReserveNewSuccess {
-                     offset,
--                    oneway_spam_detected: false,
-+                    oneway_spam_detected,
-                     _empty_array_alloc: args.empty_array_alloc,
-                     _new_tree_alloc: args.new_tree_alloc,
-                     _tree_alloc: args.tree_alloc,
---- a/drivers/android/binder/range_alloc/tree.rs
-+++ b/drivers/android/binder/range_alloc/tree.rs
-@@ -164,15 +164,6 @@ impl<T> TreeRangeAllocator<T> {
-             self.free_oneway_space
-         };
- 
--        // Start detecting spammers once we have less than 20%
--        // of async space left (which is less than 10% of total
--        // buffer size).
--        //
--        // (This will short-circut, so `low_oneway_space` is
--        // only called when necessary.)
--        let oneway_spam_detected =
--            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
--
-         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
-             None => {
-                 pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
-@@ -203,6 +194,15 @@ impl<T> TreeRangeAllocator<T> {
-             self.free_tree.insert(free_tree_node);
-         }
- 
-+        // Start detecting spammers once we have less than 20%
-+        // of async space left (which is less than 10% of total
-+        // buffer size).
-+        //
-+        // (This will short-circuit, so `low_oneway_space` is
-+        // only called when necessary.)
-+        let oneway_spam_detected =
-+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
-+
-         Ok((found_off, oneway_spam_detected))
-     }
- 
+ 	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
+ 	// incorrectly report 2500MBd NRZ in their EEPROM.
+-- 
+2.51.0
+
 
 
 
