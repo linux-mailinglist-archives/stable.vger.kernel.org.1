@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-226657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOdMJYyNuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:16 +0100
+	id 4CfNIP+JuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D162AF5FD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1786A2AEEEE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB77932ACECF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24BF93164EED
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94102DA756;
-	Tue, 17 Mar 2026 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AB53EAC6F;
+	Tue, 17 Mar 2026 16:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCGFU+c0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk9glvDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33C1ACEDE;
-	Tue, 17 Mar 2026 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962143EDADB;
+	Tue, 17 Mar 2026 16:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767674; cv=none; b=NoLgYXqdL4QxP9YzhTjqy+WbtcI+7R1BB8BNV3apIzgG+cOHRd7GoZGZ/dTGYKfkyYq4n5KJUres8sDZXwrblbF6myRQmztGeFIpFWiUhHnQGTvG0OHfuTDXw9k+FWAIWMhZprRkis/CXPHwr/GBE4+CmHEtmbzymWXGq/xVEU8=
+	t=1773766402; cv=none; b=C28bvJ6088O4HMWV41394pxCbh67KSVCIwFgBdNHbNT9ZBBGo4qpfuu97Bsmmhj3h/7TPqe4QPr7LD5lDC+6lR0q1nLhLp3Xfn0Rn8ciNnZxYo/q15mB8SINYfM2X7cK21ji8bxh510Yz2BW7cMmfHhFyGiYmXG0/LWA9+gvdTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767674; c=relaxed/simple;
-	bh=JrAS3a7N/zH57GERoGgWsRSucoQEVyf39WH6eXlaCjQ=;
+	s=arc-20240116; t=1773766402; c=relaxed/simple;
+	bh=tA1f66WkLPSmk/T9UzgNETdzT6D7/a5P1q+BjCeuFTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRG7FMst4DbYeccGYyAP0wLGQjpIosCUYCiwesLFTXBvV1F1x8wCR31RoqLgHljb+unMjskyGd/dtTTOgNSbvk9NI/u2lMF1RQ+yYqW3KU36u3zjhzgMOLQwuL51EPH7bYFxpOLzCdKJPaeeLAqbMcgOadd2sE3sQFWx8KIWHww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCGFU+c0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1FAC4CEF7;
-	Tue, 17 Mar 2026 17:14:33 +0000 (UTC)
+	 MIME-Version; b=uCdrJC0xYMMt7utn071I++dbd5+ObUJoRiZV/EBUD7MIFFY+rU1wdF12e8DGRfuuFUJXHtHYOYIxq4ccghxvbo2tXcr8DGxyOQ+DlaAJF9KpTpnPZi3OyzPZ5fkg48T0fPF8tGPLqisndaOZ+XGZvaSiESB4CejBNkLPxxJwH6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk9glvDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913EFC4CEF7;
+	Tue, 17 Mar 2026 16:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767674;
-	bh=JrAS3a7N/zH57GERoGgWsRSucoQEVyf39WH6eXlaCjQ=;
+	s=korg; t=1773766402;
+	bh=tA1f66WkLPSmk/T9UzgNETdzT6D7/a5P1q+BjCeuFTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCGFU+c09ujEIZLLm1QMDvTvmlPmstA9YtWweH0kPDxYGwXF3Vs/Gq0gbskYo+RJn
-	 g6BH4IwAO8kYsoR6nzGfnqW2uM7guGl04xT1IQ90iKi406consfG9lcfq1ntGbkbSO
-	 5wrJg0IcOWgJebjMm1EdXsttEa4N/sOjasEDKY+U=
+	b=rk9glvDYWHAenRfVOII2OPWwxIr2egGkOOnC9LGtgiBlFD2HdXPcziv6AGSOO48yj
+	 04F2VneL3MZ7IugMEmmpuAp+pwBIypwVAaVis8ZXR9L8oImdZG1ww28EMRV0riXh2D
+	 fVkia98FCj4BK7hkgwHjzz8xTOGE/GqngPb+v3Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.18 134/333] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>
+Subject: [PATCH 6.19 206/378] libceph: reject preamble if control segment is empty
 Date: Tue, 17 Mar 2026 17:32:43 +0100
-Message-ID: <20260317163004.331421321@linuxfoundation.org>
+Message-ID: <20260317163014.589520419@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226657-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-226371-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,60 +90,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
-X-Rspamd-Queue-Id: 11D162AF5FD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1786A2AEEEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
+commit c4c22b846eceff05b1129b8844a80310e55a7f87 upstream.
 
-Remove the error path from the usb_phy_roothub_set_mode() function.
-The code is clearly wrong, because phy_set_mode() calls can't be
-balanced with phy_power_off() calls.
+While head_onwire_len() has a branch to handle ctrl_len == 0 case,
+prepare_read_control() always sets up a kvec for the CRC meaning that
+a non-empty control segment is effectively assumed.  All frames that
+clients deal with meet that assumption, so let's make it official and
+treat the preamble with an empty control segment as malformed.
 
-Additionally, the usb_phy_roothub_set_mode() function is called only
-from usb_add_hcd() before it powers on the PHYs, so powering off those
-makes no sense anyway.
-
-Presumably, the code is copy-pasted from the phy_power_on() function
-without adjusting the error handling.
-
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: b97a31348379 ("usb: core: comply to PHY framework")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/phy.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/ceph/messenger_v2.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/core/phy.c
-+++ b/drivers/usb/core/phy.c
-@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_
- 	list_for_each_entry(roothub_entry, head, list) {
- 		err = phy_set_mode(roothub_entry->phy, mode);
- 		if (err)
--			goto err_out;
-+			return err;
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -392,7 +392,7 @@ static int head_onwire_len(int ctrl_len,
+ 	int head_len;
+ 	int rem_len;
+ 
+-	BUG_ON(ctrl_len < 0 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
++	BUG_ON(ctrl_len < 1 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
+ 
+ 	if (secure) {
+ 		head_len = CEPH_PREAMBLE_SECURE_LEN;
+@@ -401,9 +401,7 @@ static int head_onwire_len(int ctrl_len,
+ 			head_len += padded_len(rem_len) + CEPH_GCM_TAG_LEN;
+ 		}
+ 	} else {
+-		head_len = CEPH_PREAMBLE_PLAIN_LEN;
+-		if (ctrl_len)
+-			head_len += ctrl_len + CEPH_CRC_LEN;
++		head_len = CEPH_PREAMBLE_PLAIN_LEN + ctrl_len + CEPH_CRC_LEN;
+ 	}
+ 	return head_len;
+ }
+@@ -528,11 +526,16 @@ static int decode_preamble(void *p, stru
+ 		desc->fd_aligns[i] = ceph_decode_16(&p);
  	}
  
- 	return 0;
--
--err_out:
--	list_for_each_entry_continue_reverse(roothub_entry, head, list)
--		phy_power_off(roothub_entry->phy);
--
--	return err;
- }
- EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
+-	if (desc->fd_lens[0] < 0 ||
++	/*
++	 * This would fire for FRAME_TAG_WAIT (it has one empty
++	 * segment), but we should never get it as client.
++	 */
++	if (desc->fd_lens[0] < 1 ||
+ 	    desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
+ 		pr_err("bad control segment length %d\n", desc->fd_lens[0]);
+ 		return -EINVAL;
+ 	}
++
+ 	if (desc->fd_lens[1] < 0 ||
+ 	    desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
+ 		pr_err("bad front segment length %d\n", desc->fd_lens[1]);
+@@ -549,10 +552,6 @@ static int decode_preamble(void *p, stru
+ 		return -EINVAL;
+ 	}
  
+-	/*
+-	 * This would fire for FRAME_TAG_WAIT (it has one empty
+-	 * segment), but we should never get it as client.
+-	 */
+ 	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
+ 		pr_err("last segment empty, segment count %d\n",
+ 		       desc->fd_seg_cnt);
 
 
 
