@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMN/G6CIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:16 +0100
+	id wAmmOrKPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D181A2AEC5E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116492AFB5B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8214A30E9C5C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2EA1431A5211
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D503F54A6;
-	Tue, 17 Mar 2026 16:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546C3E122D;
+	Tue, 17 Mar 2026 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGpiBXna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eP61UZ8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88EB3EC2F1;
-	Tue, 17 Mar 2026 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DEF2DA756;
+	Tue, 17 Mar 2026 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766190; cv=none; b=utOhDU95e0OWOIBb5y7dQup5LcN1FXhHyTrwLP7qFVPvdVwAfZYJzqHukWJatYOlrWcm4fbaJBguQZTkIuXpPNlTxDh7XLtyja9GH4Fm3UqdlxBuxFJCuAS5XMu0+CbcfLccLQb630miEaUawaSMRfJ/FbLafhDRKIVXgPk11ks=
+	t=1773767588; cv=none; b=aR8XOKMJol1g+kmHFJ2u3n7+virAJUKSDRCT1ROY1nk3rcnUMC7rGFe9eFRKxSSUCX6mKKKNQwlvnrrHCfF1zXFSH14udsbv8URtYNM96MbV2dE0hiyQhtGudZdAp2e4lQfKWJt1ozxIRW0hmHXBwnz/sWcR4Q5agORZZa2ntOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766190; c=relaxed/simple;
-	bh=FJsK7LQENqefdTVT8NCcOMJru6X8mShX6+wc73okjIY=;
+	s=arc-20240116; t=1773767588; c=relaxed/simple;
+	bh=apu4o1aCE3FBL5xpZOITqNQ7FVs73j437iDa2kygjkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsZNRkalJBUn4iUp7TIseH6n9Zaxw64PGGBwEkc5nl0+4wuM7sypRXOnhIaslCXEu3rCu+rEfnZ6g5hX35ME8w1dq/hSt76GsKH1pKJh0Uy8gQwy8naXbu3B4NarGFgNg+lB6S4yiSUsoAm3Gw/DBXh4NkI3IhCKzkGPaYVr2GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGpiBXna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0249DC4CEF7;
-	Tue, 17 Mar 2026 16:49:49 +0000 (UTC)
+	 MIME-Version; b=jlsRkJGaC3zjUroCAwavPk089kbvJFre3a0QibM/bEP8EVWbR2N3+TfnS0cOqJyogAfNIXJdlR7SlTltXDCN8jsXoiap1FOMVMiuEx4fjrOGgfMuroMylwMx6UlWI2LuHBWgg5SrJJNNjVUSkwimE2BkKI4zk55oXhZx+A6gKbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eP61UZ8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B352C4CEF7;
+	Tue, 17 Mar 2026 17:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766190;
-	bh=FJsK7LQENqefdTVT8NCcOMJru6X8mShX6+wc73okjIY=;
+	s=korg; t=1773767587;
+	bh=apu4o1aCE3FBL5xpZOITqNQ7FVs73j437iDa2kygjkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGpiBXnaCdkq2rN485/ULXMCJhC78h8A9kCk06O9j8iWQTcP+e0nXDvFniOzEdk5A
-	 aXq6V+7TB3CN1YhMwEO9MKGj3ZFixwuy3OtFxSwo4yTCElXJRHxD0awyQkkPIVPbhR
-	 piewTA9UAEADoQuoTxd5+tw6VaeZRsU6ceZ0s3hQ=
+	b=eP61UZ8DUhM87FURUbu4XS+mOfAi53YYHz2ZJrFg1iR4MekOGcbECH3NSNVEcPxTy
+	 wXyWNQKIctaLQYhi0pYaPYUg+/ccJDJc2si6lrmXK9tlap9HRHA4MruqneU2ZvMlOv
+	 VcX4oMTe8EA6C1tHeleVcxCluzAuk2VauUtmKVLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 189/378] i3c: dw-i3c-master: Set SIR_REJECT in DAT on device attach and reattach
-Date: Tue, 17 Mar 2026 17:32:26 +0100
-Message-ID: <20260317163013.960572431@linuxfoundation.org>
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 118/333] rust: kbuild: allow `unused_features`
+Date: Tue, 17 Mar 2026 17:32:27 +0100
+Message-ID: <20260317163003.742998390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +68,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226320-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226639-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nxp.com:email,altera.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: D181A2AEC5E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,garyguo.net:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 116492AFB5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit f311a05784634febd299f03476b80f3f18489767 ]
+commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
 
-The DesignWare I3C master controller ACKs IBIs as soon as a valid
-Device Address Table (DAT) entry is present. This can create a race
-between device attachment (after DAA) and the point where the client
-driver enables IBIs via i3c_device_enable_ibi().
+Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
+`rustc` introduces the new lint `unused_features` [1], which warns [2]:
 
-Set DEV_ADDR_TABLE_SIR_REJECT in the DAT entry during
-attach_i3c_dev() and reattach_i3c_dev() so that IBIs are rejected
-by default. The bit is managed thereafter by the existing
-dw_i3c_master_set_sir_enabled() function, which clears it in
-enable_ibi() after ENEC is issued, and restores it in disable_ibi()
-after DISEC.
+    warning: feature `used_with_arg` is declared but not used
+     --> <crate attribute>:1:93
+      |
+    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
+      |                                                                                             ^^^^^^^^^^^^^
+      |
+      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
 
-Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
-Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/53f5b8cbdd8af789ec38b95b02873f32f9182dd6.1770962368.git.adrianhoyin.ng@altera.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The original goal of using `-Zcrate-attr` automatically was that there
+is a consistent set of features enabled and managed globally for all
+Rust kernel code (modulo exceptions like the `rust/` crated).
+
+While we could require crates to enable features manually (even if we
+still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
+list), it is not really worth making all developers worry about it just
+for a new lint.
+
+The features are expected to eventually become stable anyway (most already
+did), and thus having to remove features in every file that may use them
+is not worth it either.
+
+Thus just allow the new lint globally.
+
+The lint actually existed for a long time, which is why `rustc` does
+not complain about an unknown lint in the stable versions we support,
+but it was "disabled" years ago [3], and now it was made to work again.
+
+For extra context, the new implementation of the lint has already been
+improved to avoid linting about features that became stable thanks to
+Benno's report and the ensuing discussion [4] [5], but while that helps,
+it is still the case that we may have features enabled that are not used
+for one reason or another in a particular crate.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/152164 [1]
+Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
+Link: https://github.com/rust-lang/rust/issues/44232 [3]
+Link: https://github.com/rust-lang/rust/issues/153523 [4]
+Link: https://github.com/rust-lang/rust/pull/153610 [5]
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 4033bc16677ff..f9b981abd10c5 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1010,7 +1010,7 @@ static int dw_i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
- 		master->free_pos &= ~BIT(pos);
- 	}
- 
--	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr),
-+	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr) | DEV_ADDR_TABLE_SIR_REJECT,
- 	       master->regs +
- 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
- 
-@@ -1039,7 +1039,7 @@ static int dw_i3c_master_attach_i3c_dev(struct i3c_dev_desc *dev)
- 	master->free_pos &= ~BIT(pos);
- 	i3c_dev_set_master_data(dev, data);
- 
--	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr),
-+	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr) | DEV_ADDR_TABLE_SIR_REJECT,
- 	       master->regs +
- 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
- 
--- 
-2.51.0
-
+--- a/Makefile
++++ b/Makefile
+@@ -473,6 +473,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+ export rust_common_flags := --edition=2021 \
+ 			    -Zbinary_dep_depinfo=y \
+ 			    -Astable_features \
++			    -Aunused_features \
+ 			    -Dnon_ascii_idents \
+ 			    -Dunsafe_op_in_unsafe_fn \
+ 			    -Wmissing_docs \
 
 
 
