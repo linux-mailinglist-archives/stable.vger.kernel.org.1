@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAg+AxeJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:15 +0100
+	id GL7wH1+NuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CD62AED2A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC982AF58F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB42430500CD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80F6030038DA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476FF3F54C2;
-	Tue, 17 Mar 2026 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA32C328B61;
+	Tue, 17 Mar 2026 17:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfUCtQ8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZt1l0l2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F803EAC6F;
-	Tue, 17 Mar 2026 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5B43246F8;
+	Tue, 17 Mar 2026 17:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766435; cv=none; b=Xhs2r1nuj7/cgAL0FeGxMKc2jZOWa19PvmZ9gA4AnAsa0IBU2vkQIf/mVHgQQhx9Vkpf6BExy7KzQ3uuZJcHmVsKGzZZyHrz4EcKVLrQqMx3mMIda1CP7FcJmen78k+mhUbp6IVBmn5z6aFOCnq9too3lvB98uU6E8ngOXNvsck=
+	t=1773767931; cv=none; b=uYYP3yPFBobwz5VfplUKXbMCBtARSe05k/7fObWJASkFqvOBwmoP5Y8vWr2oeZ2olYi74Wq2yffPR1OtSwJAAY4+ptys11Hgrk1b/XCZb2puQoqlaYH/+2/nXqkmckjBG/XA6Vp56abll3s02YZ4DkhQ0yVBezRj7j7lS16iJ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766435; c=relaxed/simple;
-	bh=lgZ6BtE4Zkx7yrMPJEfYnuaMH82MfBhsipDte/7J42Y=;
+	s=arc-20240116; t=1773767931; c=relaxed/simple;
+	bh=usv8McoHmnnnP7PSJ0MNiLBSJNowkF9Fj45X0Zq+9To=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqZaMiPH9QsnVfSXFy5SzLKQjWUWgWMQMeeSS102mIUZ6bpS2Rd/GeB0n8IIDMnbTQ/BcBGe3Y/RoCf3C9UFzciy9sBsd+2JfogkWDr+P9id9Yu8h5Mt47g0d1kikk+ZUvTmu0ZETIosDx2r6GP3lU77mw2AhKRhb6HiS86PwDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfUCtQ8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A2EC19424;
-	Tue, 17 Mar 2026 16:53:53 +0000 (UTC)
+	 MIME-Version; b=aQ8eH6uMVpEqZ/TUXN2md6AUhApRy2yOqTzBZlEdufyJrflofMcFTUTvnBujTjWGuFSkUHUMCvHuod2MGGq7kkShpa5ceBI+xZB683jPB1yql1jdc6qR6h61uPdCNPY0t9Pu3r7GnJ3F5ztRPvh3YN7YnwkKpuq+vBkq925qLnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZt1l0l2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F76C4CEF7;
+	Tue, 17 Mar 2026 17:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766434;
-	bh=lgZ6BtE4Zkx7yrMPJEfYnuaMH82MfBhsipDte/7J42Y=;
+	s=korg; t=1773767931;
+	bh=usv8McoHmnnnP7PSJ0MNiLBSJNowkF9Fj45X0Zq+9To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfUCtQ8FYglS101z1gBk05XI6f5HcDY/XI1SeT+xiWRPPhoZ0nlSpwBuLYfD0yF9W
-	 XdT25zqoKfXq6KWowNY1C7goPx5SsqaQWJnrSjOVO6wFtTrHAy6tf3QKg71bRmLy5s
-	 N0NZnJl2VeFzu+NzRT34rVTxkFTLCutzziK04sj8=
+	b=LZt1l0l2nspYwFoV1nVaFx5zS2J6KkyeXyejfGMaN88A+EyfUFlz1f+mcMgVXa5m2
+	 a2O9sp7MXyFF9+oaPeXlqZwzWvr8DtSLweZS/RTl8/58V7zAc2pj1bflZEzM7Lvxie
+	 WrZxM2Z1gS4FkrIGF2nmXu+St5JT13cFOOQQtExc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <david@davidgow.net>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.19 246/378] kunit: irq: Ensure timer doesnt fire too frequently
-Date: Tue, 17 Mar 2026 17:33:23 +0100
-Message-ID: <20260317163016.072809363@linuxfoundation.org>
+	Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 175/333] i3c: dw-i3c-master: Set SIR_REJECT in DAT on device attach and reattach
+Date: Tue, 17 Mar 2026 17:33:24 +0100
+Message-ID: <20260317163005.846454275@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226716-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226378-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,davidgow.net:email]
-X-Rspamd-Queue-Id: 40CD62AED2A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,altera.com:email]
+X-Rspamd-Queue-Id: EFC982AF58F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
 
-commit 201ceb94aa1def0024a7c18ce643e5f65026be06 upstream.
+[ Upstream commit f311a05784634febd299f03476b80f3f18489767 ]
 
-Fix a bug where kunit_run_irq_test() could hang if the system is too
-slow.  This was noticed with the crypto library tests in certain VMs.
+The DesignWare I3C master controller ACKs IBIs as soon as a valid
+Device Address Table (DAT) entry is present. This can create a race
+between device attachment (after DAA) and the point where the client
+driver enables IBIs via i3c_device_enable_ibi().
 
-Specifically, if kunit_irq_test_timer_func() and the associated hrtimer
-code took over 5us to run, then the CPU would spend all its time
-executing that code in hardirq context.  As a result, the task executing
-kunit_run_irq_test() never had a chance to run, exit the loop, and
-cancel the timer.
+Set DEV_ADDR_TABLE_SIR_REJECT in the DAT entry during
+attach_i3c_dev() and reattach_i3c_dev() so that IBIs are rejected
+by default. The bit is managed thereafter by the existing
+dw_i3c_master_set_sir_enabled() function, which clears it in
+enable_ibi() after ENEC is issued, and restores it in disable_ibi()
+after DISEC.
 
-To fix it, make kunit_irq_test_timer_func() increase the timer interval
-when the other contexts aren't having a chance to run.
-
-Fixes: 950a81224e8b ("lib/crypto: tests: Add hash-test-template.h and gen-hash-testvecs.py")
-Cc: stable@vger.kernel.org
-Reviewed-by: David Gow <david@davidgow.net>
-Link: https://lore.kernel.org/r/20260224033751.97615-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
+Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/53f5b8cbdd8af789ec38b95b02873f32f9182dd6.1770962368.git.adrianhoyin.ng@altera.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kunit/run-in-irq-context.h |   44 +++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/kunit/run-in-irq-context.h
-+++ b/include/kunit/run-in-irq-context.h
-@@ -12,16 +12,16 @@
- #include <linux/hrtimer.h>
- #include <linux/workqueue.h>
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index c06595cb74010..41ddac1d49d5e 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1005,7 +1005,7 @@ static int dw_i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
+ 		master->free_pos &= ~BIT(pos);
+ 	}
  
--#define KUNIT_IRQ_TEST_HRTIMER_INTERVAL us_to_ktime(5)
--
- struct kunit_irq_test_state {
- 	bool (*func)(void *test_specific_state);
- 	void *test_specific_state;
- 	bool task_func_reported_failure;
- 	bool hardirq_func_reported_failure;
- 	bool softirq_func_reported_failure;
-+	atomic_t task_func_calls;
- 	atomic_t hardirq_func_calls;
- 	atomic_t softirq_func_calls;
-+	ktime_t interval;
- 	struct hrtimer timer;
- 	struct work_struct bh_work;
- };
-@@ -30,14 +30,25 @@ static enum hrtimer_restart kunit_irq_te
- {
- 	struct kunit_irq_test_state *state =
- 		container_of(timer, typeof(*state), timer);
-+	int task_calls, hardirq_calls, softirq_calls;
+-	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr),
++	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr) | DEV_ADDR_TABLE_SIR_REJECT,
+ 	       master->regs +
+ 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
  
- 	WARN_ON_ONCE(!in_hardirq());
--	atomic_inc(&state->hardirq_func_calls);
-+	task_calls = atomic_read(&state->task_func_calls);
-+	hardirq_calls = atomic_inc_return(&state->hardirq_func_calls);
-+	softirq_calls = atomic_read(&state->softirq_func_calls);
-+
-+	/*
-+	 * If the timer is firing too often for the softirq or task to ever have
-+	 * a chance to run, increase the timer interval.  This is needed on very
-+	 * slow systems.
-+	 */
-+	if (hardirq_calls >= 20 && (softirq_calls == 0 || task_calls == 0))
-+		state->interval = ktime_add_ns(state->interval, 250);
+@@ -1034,7 +1034,7 @@ static int dw_i3c_master_attach_i3c_dev(struct i3c_dev_desc *dev)
+ 	master->free_pos &= ~BIT(pos);
+ 	i3c_dev_set_master_data(dev, data);
  
- 	if (!state->func(state->test_specific_state))
- 		state->hardirq_func_reported_failure = true;
+-	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr),
++	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr) | DEV_ADDR_TABLE_SIR_REJECT,
+ 	       master->regs +
+ 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
  
--	hrtimer_forward_now(&state->timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL);
-+	hrtimer_forward_now(&state->timer, state->interval);
- 	queue_work(system_bh_wq, &state->bh_work);
- 	return HRTIMER_RESTART;
- }
-@@ -86,10 +97,14 @@ static inline void kunit_run_irq_test(st
- 	struct kunit_irq_test_state state = {
- 		.func = func,
- 		.test_specific_state = test_specific_state,
-+		/*
-+		 * Start with a 5us timer interval.  If the system can't keep
-+		 * up, kunit_irq_test_timer_func() will increase it.
-+		 */
-+		.interval = us_to_ktime(5),
- 	};
- 	unsigned long end_jiffies;
--	int hardirq_calls, softirq_calls;
--	bool allctx = false;
-+	int task_calls, hardirq_calls, softirq_calls;
- 
- 	/*
- 	 * Set up a hrtimer (the way we access hardirq context) and a work
-@@ -104,21 +119,18 @@ static inline void kunit_run_irq_test(st
- 	 * and hardirq), or 1 second, whichever comes first.
- 	 */
- 	end_jiffies = jiffies + HZ;
--	hrtimer_start(&state.timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL,
--		      HRTIMER_MODE_REL_HARD);
--	for (int task_calls = 0, calls = 0;
--	     ((calls < max_iterations) || !allctx) &&
--	     !time_after(jiffies, end_jiffies);
--	     task_calls++) {
-+	hrtimer_start(&state.timer, state.interval, HRTIMER_MODE_REL_HARD);
-+	do {
- 		if (!func(test_specific_state))
- 			state.task_func_reported_failure = true;
- 
-+		task_calls = atomic_inc_return(&state.task_func_calls);
- 		hardirq_calls = atomic_read(&state.hardirq_func_calls);
- 		softirq_calls = atomic_read(&state.softirq_func_calls);
--		calls = task_calls + hardirq_calls + softirq_calls;
--		allctx = (task_calls > 0) && (hardirq_calls > 0) &&
--			 (softirq_calls > 0);
--	}
-+	} while ((task_calls + hardirq_calls + softirq_calls < max_iterations ||
-+		  (task_calls == 0 || hardirq_calls == 0 ||
-+		   softirq_calls == 0)) &&
-+		 !time_after(jiffies, end_jiffies));
- 
- 	/* Cancel the timer and work. */
- 	hrtimer_cancel(&state.timer);
+-- 
+2.51.0
+
 
 
 
