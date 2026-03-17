@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-226808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPc9CSeUuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:27 +0100
+	id kMPjHTiPuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4F2B02BF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEE22AF9F7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 461BE3101072
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06878304A913
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B4036606E;
-	Tue, 17 Mar 2026 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F312332548B;
+	Tue, 17 Mar 2026 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxvGa7NJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnx6GVWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B2F377579;
-	Tue, 17 Mar 2026 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FFB2459DC;
+	Tue, 17 Mar 2026 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768275; cv=none; b=YFuSMzJ1COFNwEGlaciemsn6/Fp/JuKa2YLuHqI5XjY+mj9TlYQMr4512GEd5QRSI8WD4heGAH+JLKdRShYgvK708rut6TgKZWZE9/BGHXGRttdFkxWRRVOF6nqVCcB55lB/OGsH+u1Hund+mOJnb6atIBWrBstbaL7F8NYwn7A=
+	t=1773768307; cv=none; b=vDrJmQyQgnL8aZkuEk6NpsiVdfM5MLRxsoieBrRQzCQzSJqYFZHj4MJRKK4kMSyHqgJXCyuW8pvcnmX2hT5eHmkU9wpV96Hq8ChP7c5gySMDEeDC208Tvmb1caae/DQaqLzKIHw5ju5XDuAAND610FISLjDZbOXjetWVU2hp2Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768275; c=relaxed/simple;
-	bh=3ZmH0BBfzw7+W9uNmkZ3W8VZOjDnT5pqCBPdcMwMY5c=;
+	s=arc-20240116; t=1773768307; c=relaxed/simple;
+	bh=5/huQM07TMQY0gazUe1K/o/lRuVEZlCFUWFGkHBbods=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ikMJzJIuMKyiGERYdbztNMw7fFx+d45ztnT82AcVsd3JocZAhekjePx71hIo9e19vVN2lzcVxI/s4AWfT+fBHxOjmiEfHdVqtF66Qi+RHECRnwQMa2+O5SvpReO2OiK+le/sIa/uNiedmFAEaHp7sPmDenuCpdxoehNylOH9Vo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxvGa7NJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC57C2BCB0;
-	Tue, 17 Mar 2026 17:24:33 +0000 (UTC)
+	 MIME-Version; b=iuXR8CTbeGaYk9OOFutav+ZGJ3IFpIrpQZ3z1O3k/ohdRQdazexkinXEJ/q63YPPP4k+wxa2USOf+f9jgwyLT/XWMZJ21q5wOs6US6REXXsoFxDI6vcJvUzmJCeXhHNY4b1c8PZ3X0BE2b38TGI0cdskZHoRn+UGjIcqy46YUqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnx6GVWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97FCC4CEF7;
+	Tue, 17 Mar 2026 17:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768275;
-	bh=3ZmH0BBfzw7+W9uNmkZ3W8VZOjDnT5pqCBPdcMwMY5c=;
+	s=korg; t=1773768307;
+	bh=5/huQM07TMQY0gazUe1K/o/lRuVEZlCFUWFGkHBbods=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxvGa7NJlW41gfQyMH/jnRF6wspGUh9JsqVi/FiDQ6gE7pLJQsyafrYUINSUCv3+6
-	 +LRBUXcEmBxCULWSTFkqhkIH+6Xl2K66+dTn6/OwDYl3cH88Gg5Hgl1TL4UomnWLNq
-	 KG1S65dHdpwUn2Rghnqcd5GQDvbHKDpnxrxfotgU=
+	b=tnx6GVWTHqwglnBsGtrA3sXjluycc8+XxPd6ravGtqQbqHYJ1VdB0A82Lxh7NCeau
+	 gqulHfFRu8KZ5RBDAk/V/hIx6cAb0hNaGL3W6x4a56wHrM4p2MiEsorki0o3d1jkBA
+	 A8IjmgW5m23cCqEeftznqd/+0IHtvXJkHKJ7CD58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehul Rao <mehulrao@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Jian Zhang <zhangjian.3032@bytedance.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 246/333] net: nexthop: fix percpu use-after-free in remove_nh_grp_entry
-Date: Tue, 17 Mar 2026 17:34:35 +0100
-Message-ID: <20260317163008.489019624@linuxfoundation.org>
+Subject: [PATCH 6.18 247/333] net: ncsi: fix skb leak in error paths
+Date: Tue, 17 Mar 2026 17:34:36 +0100
+Message-ID: <20260317163008.526490502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -64,36 +62,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,nvidia.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226808-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226815-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2FD4F2B02BF
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,bytedance.com:email]
+X-Rspamd-Queue-Id: 2EEE22AF9F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,84 +98,86 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mehul Rao <mehulrao@gmail.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-commit b2662e7593e94ae09b1cf7ee5f09160a3612bcb2 upstream.
+commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
 
-When removing a nexthop from a group, remove_nh_grp_entry() publishes
-the new group via rcu_assign_pointer() then immediately frees the
-removed entry's percpu stats with free_percpu(). However, the
-synchronize_net() grace period in the caller remove_nexthop_from_groups()
-runs after the free. RCU readers that entered before the publish still
-see the old group and can dereference the freed stats via
-nh_grp_entry_stats_inc() -> get_cpu_ptr(nhge->stats), causing a
-use-after-free on percpu memory.
+Early return paths in NCSI RX and AEN handlers fail to release
+the received skb, resulting in a memory leak.
 
-Fix by deferring the free_percpu() until after synchronize_net() in the
-caller. Removed entries are chained via nh_list onto a local deferred
-free list. After the grace period completes and all RCU readers have
-finished, the percpu stats are safely freed.
+Specifically, ncsi_aen_handler() returns on invalid AEN packets
+without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
+when failing to resolve the NCSI device, response handler, or
+request, leaving the skb unfreed.
 
-Fixes: f4676ea74b85 ("net: nexthop: Add nexthop group entry stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260306233821.196789-1-mehulrao@gmail.com
+CC: stable@vger.kernel.org
+Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/nexthop.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ net/ncsi/ncsi-aen.c |    3 ++-
+ net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2005,7 +2005,8 @@ static void nh_hthr_group_rebalance(stru
- }
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
+ 	if (!nah) {
+ 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
+ 			    h->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
  
- static void remove_nh_grp_entry(struct net *net, struct nh_grp_entry *nhge,
--				struct nl_info *nlinfo)
-+				struct nl_info *nlinfo,
-+				struct list_head *deferred_free)
- {
- 	struct nh_grp_entry *nhges, *new_nhges;
- 	struct nexthop *nhp = nhge->nh_parent;
-@@ -2065,8 +2066,8 @@ static void remove_nh_grp_entry(struct n
- 	rcu_assign_pointer(nhp->nh_grp, newg);
- 
- 	list_del(&nhge->nh_list);
--	free_percpu(nhge->stats);
- 	nexthop_put(nhge->nh);
-+	list_add(&nhge->nh_list, deferred_free);
- 
- 	/* Removal of a NH from a resilient group is notified through
- 	 * bucket notifications.
-@@ -2086,6 +2087,7 @@ static void remove_nexthop_from_groups(s
- 				       struct nl_info *nlinfo)
- {
- 	struct nh_grp_entry *nhge, *tmp;
-+	LIST_HEAD(deferred_free);
- 
- 	/* If there is nothing to do, let's avoid the costly call to
- 	 * synchronize_net()
-@@ -2094,10 +2096,16 @@ static void remove_nexthop_from_groups(s
- 		return;
- 
- 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
--		remove_nh_grp_entry(net, nhge, nlinfo);
-+		remove_nh_grp_entry(net, nhge, nlinfo, &deferred_free);
- 
- 	/* make sure all see the newly published array before releasing rtnl */
- 	synchronize_net();
-+
-+	/* Now safe to free percpu stats — all RCU readers have finished */
-+	list_for_each_entry_safe(nhge, tmp, &deferred_free, nh_list) {
-+		list_del(&nhge->nh_list);
-+		free_percpu(nhge->stats);
+ 	ret = ncsi_validate_aen_pkt(h, nah->payload);
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	/* Find the NCSI device */
+ 	nd = ncsi_find_dev(orig_dev);
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+-	if (!ndp)
+-		return -ENODEV;
++	if (!ndp) {
++		ret = -ENODEV;
++		goto err_free_skb;
 +	}
- }
  
- static void remove_nexthop_group(struct nexthop *nh, struct nl_info *nlinfo)
+ 	/* Check if it is AEN packet */
+ 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
+@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	if (!nrh) {
+ 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
+ 			   hdr->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto err_free_skb;
+ 	}
+ 
+ 	/* Associate with the request */
+@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	nr = &ndp->requests[hdr->id];
+ 	if (!nr->used) {
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_free_skb;
+ 	}
+ 
+ 	nr->rsp = skb;
+@@ -1261,4 +1265,8 @@ out_netlink:
+ out:
+ 	ncsi_free_request(nr);
+ 	return ret;
++
++err_free_skb:
++	kfree_skb(skb);
++	return ret;
+ }
 
 
 
