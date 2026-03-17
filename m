@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL0iMNmPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:05 +0100
+	id YA0/DS6GuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E0D2AFBAD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D0D2AE7E9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33ACE31BA8B3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3BAF31221CD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628483E8C49;
-	Tue, 17 Mar 2026 17:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54D13ED5C7;
+	Tue, 17 Mar 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOMynkaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNy979Qz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B9332604;
-	Tue, 17 Mar 2026 17:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9957E3EE1D8;
+	Tue, 17 Mar 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767102; cv=none; b=XrzbXnkjy4ZVSieb1oSZDbRnfE37jlaLnl/QIVSYbXdsvW9cKzedRccLCy/STuiHgv2FkB1wqKap2SO2QpP6rjJ4vEFqVi/jGuaG/12we7rKvv79txGjGNw4MX3TJ+NYSJ4Kr5pjGztuV6sRJsU5cnbiaB/RAK6UJPOehbHLGaQ=
+	t=1773765764; cv=none; b=aF98xasAPXF179MeASI98+V0O3GvMi20Cwn3mS54i4m5xwqemRNYvWAUQgW7r2k+YZn7wcvSxaYH+mbs8ILVdfIs45XNCFouFIQveY4knKu2lmf49ISObubKJZDxZJEx2509YgVtVSWerMEjdYczPW2xDGqrphFh1iLmQ17Nhlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767102; c=relaxed/simple;
-	bh=pLExz5N3BJ+X54xkMLh7+guTCPEr9vjs0rIXP0abisA=;
+	s=arc-20240116; t=1773765764; c=relaxed/simple;
+	bh=jfaIziGwpZjobJtpeXrbP2Xb6VNi0N/qM9/wpf6vzcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWEyGEAsNQqZvOx2TniERs9sWPo0bMgCgLKgYKaLHmFwetB+b/KQblNC869VF2vaz+T7ZESxNsCLRYmTJMgCPepcLi38WlbIf+JDvOH837BaGt4yLnROqQB0OeQqOK7LFceD/+6iYmo3UrCootx2iTmFYR7iDAU+3cWmHpsqxb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOMynkaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E92BC2BC86;
-	Tue, 17 Mar 2026 17:05:01 +0000 (UTC)
+	 MIME-Version; b=JyNv8lPUqNETWz1UA82xczwnuyBxeeLECuOS8xQTaXviy3Y9HMRkMd0wsyWgZ2AY9+VXjjnuGaf71JkpEYqjCdNfCuz6el/lQ32By3QssTrLXS2gnxqrJJbmrLw/yJufzPIBPmXSrpjPgBUkxw/Fm6Ti85289zqAtQHwZ9S3kU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNy979Qz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4892C4CEF7;
+	Tue, 17 Mar 2026 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767102;
-	bh=pLExz5N3BJ+X54xkMLh7+guTCPEr9vjs0rIXP0abisA=;
+	s=korg; t=1773765764;
+	bh=jfaIziGwpZjobJtpeXrbP2Xb6VNi0N/qM9/wpf6vzcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOMynkaBc6mpmPIY/G+bZEfpr8jHc2+uxEFAsrmzuXGSYDmZ3BXRB2IjG4QYHK/UQ
-	 7wfyJlsAJjaExToWbYsPjvMFxE9t7eQrxTJDXeTD3MVtKBc/WI1V57uBAOZXvLbupH
-	 mi/ZqeU3xsIRpRTuIsaYBbJjIuBRle1zqJYz4hmI=
+	b=UNy979Qz+FWlNuUA9+bE/6lA7vJjWpnqnltgG6s2f2A4CVeHlLvh1MaYaf/t9nFFb
+	 aX3UQOZdH54qeI3cO2Foj4BTs4yicGY1A0sTSZpZ2HueexTdrDEa4YQlhTkwsE+mky
+	 J24kAos49uwDiKeUHQnF8YirWiHzSyhpx6DbbZI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 015/333] ALSA: usb-audio: Avoid implicit feedback mode on DIYINHK USB Audio 2.0
-Date: Tue, 17 Mar 2026 17:30:44 +0100
-Message-ID: <20260317162959.925849893@linuxfoundation.org>
+	Nikolay Aleksandrov <nikolay@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.19 088/378] drivers: net: ice: fix devlink parameters get without irdma
+Date: Tue, 17 Mar 2026 17:30:45 +0100
+Message-ID: <20260317163010.252760925@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,71 +74,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226219-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226530-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: 46E0D2AFBAD
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: A5D0D2AE7E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nikolay Aleksandrov <nikolay@nvidia.com>
 
-[ Upstream commit c5bf24c8aba1ff711226ee0f039ff01a5754692b ]
+[ Upstream commit bd98c6204d1195973b1760fe45860863deb6200c ]
 
-Although DIYINHK USB Audio 2.0 (ID 20b1:2009) shows the implicit
-feedback source for the capture stream, this would cause several
-problems for the playback.  Namely, the device can get wMaxPackSize
-1024 for 24/32 bit format with 6 channels, and when a high sample rate
-like 352.8kHz or 384kHz is played, the packet size overflows the max
-limit.  Also, the device has another two playback altsets, and those
-aren't properly handled with the implicit feedback.
+If CONFIG_IRDMA isn't enabled but there are ice NICs in the system, the
+driver will prevent full devlink dev param show dump because its rdma get
+callbacks return ENODEV and stop the dump. For example:
+ $ devlink dev param show
+ pci/0000:82:00.0:
+   name msix_vec_per_pf_max type generic
+     values:
+       cmode driverinit value 2
+   name msix_vec_per_pf_min type generic
+     values:
+       cmode driverinit value 2
+ kernel answers: No such device
 
-Since the device has been working well even before introducing the
-implicit feedback, we can assume that it works fine in the async mode.
-This patch adds the explicit skip of the implicit fb detection to make
-the playback running in the async mode.
+Returning EOPNOTSUPP allows the dump to continue so we can see all devices'
+devlink parameters.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221076
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260225085233.316306-4-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c24a65b6a27c ("iidc/ice/irdma: Update IDC to support multiple consumers")
+Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/ice/devlink/devlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index c411005cd4d87..fd50bf7c381d6 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2362,6 +2362,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x2040, 0x7281, /* Hauppauge HVR-950Q-MXL */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
-+	DEVICE_FLG(0x20b1, 0x2009, /* XMOS Ltd DIYINHK USB Audio 2.0 */
-+		   QUIRK_FLAG_SKIP_IMPLICIT_FB | QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2040, 0x8200, /* Hauppauge Woodbury */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
+diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+index 2ef39cc70c21d..7de749d3f0479 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+@@ -1360,7 +1360,7 @@ ice_devlink_enable_roce_get(struct devlink *devlink, u32 id,
+ 
+ 	cdev = pf->cdev_info;
+ 	if (!cdev)
+-		return -ENODEV;
++		return -EOPNOTSUPP;
+ 
+ 	ctx->val.vbool = !!(cdev->rdma_protocol & IIDC_RDMA_PROTOCOL_ROCEV2);
+ 
+@@ -1427,7 +1427,7 @@ ice_devlink_enable_iw_get(struct devlink *devlink, u32 id,
+ 
+ 	cdev = pf->cdev_info;
+ 	if (!cdev)
+-		return -ENODEV;
++		return -EOPNOTSUPP;
+ 
+ 	ctx->val.vbool = !!(cdev->rdma_protocol & IIDC_RDMA_PROTOCOL_IWARP);
+ 
 -- 
 2.51.0
 
