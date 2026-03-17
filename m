@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-226353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CkDNkuIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:51 +0100
+	id eM7lGQSOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B912AEB8C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2B02AF764
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 06F3A308867D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E588324948B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C4D3F54C9;
-	Tue, 17 Mar 2026 16:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C774C32548B;
+	Tue, 17 Mar 2026 17:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIKna/rF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmL3P/qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D6D3EDADB;
-	Tue, 17 Mar 2026 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2DB2FE579;
+	Tue, 17 Mar 2026 17:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766329; cv=none; b=cGkoijDiiWCZyVvWX93gz6I1fIvkiBtL0oyWCWkpAQUb6GkxvopFjHfGGahBTSV5U4lDqWFU/i+UfT6BKEXqUoWQFirRRTUs33YllvyLmAc05x6pgOTxSkWqB4ipmMj5OYzacBmSsnFyVvpj76ZP5UnZQA6efcBlFFDBuGp4i4E=
+	t=1773767741; cv=none; b=JPfwdt9aJtygemz+EddsVGgcdbNPGXCU9JCRkI7v/ZSlBYi0dq95D8wYkDK0vZ+H+WruhqjYPqoREYJqdZ5QU18vjmE2Sh849hWvXsDbbfPHEQ1C+Dp7B5UAaeQPzZP8VJN2mPZA2xRi89cZsR7DMhGcJTwwy+0FA2nG03Iuscw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766329; c=relaxed/simple;
-	bh=LKdW0Yvrylx41pNUMyKGB/CPtD8w2v2aKWfRTtjd2tI=;
+	s=arc-20240116; t=1773767741; c=relaxed/simple;
+	bh=h99wV3EghYer1ntv9zU6d8J8i/FKo5iefcaNM6z0xEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTdaGKVWAMVeMTahpub74cfw1HaErteLwpRcu6pEvRZ0xZmU396ipndGpRkGWHZo1Fz2Y0UPShAXrqf/enOGugI72CoUMR5MGlkjt4uxvKIYSvCgZGMFLHAKQTlaWhXwaO+T/nrj+rdkcJHI8JgP6ctsewLS2H63/Ze+3FFbMpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIKna/rF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4522BC4CEF7;
-	Tue, 17 Mar 2026 16:52:09 +0000 (UTC)
+	 MIME-Version; b=e71o3ekv1qGODab+mbu14x+mAkqvWW7zL/Nxot3kLRctbYPUl8tK9IwXhA6IfeJ+IOZnGnGRp0EVrYiW6fbUTPLQcuvQM2+SiThNKaGMB9xShu52QkXD7Vats7Pfv113zUMgf/XFzCakO3/wBqgyk54ezbzQIUj9ikrCpMXLang=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmL3P/qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42C8C19424;
+	Tue, 17 Mar 2026 17:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766329;
-	bh=LKdW0Yvrylx41pNUMyKGB/CPtD8w2v2aKWfRTtjd2tI=;
+	s=korg; t=1773767741;
+	bh=h99wV3EghYer1ntv9zU6d8J8i/FKo5iefcaNM6z0xEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIKna/rF3wJYxc4hvzZSs+AnW9b/8RosPst386R5DGe+dLnnzpYBhVze4VhuUkUeY
-	 XFtcTMTAP2I7wMBNjqQHJODmO6wYZxpOLE4ybqBj5fG0gpsnlskGprRZEdWPwGe46P
-	 2xD1aT6TCwbP7y8DrAC9x9eKqiy0I4LSgVhrRw8c=
+	b=YmL3P/qfhLfowGpRFBAvIbnrrIqBq2wn682HFUwNaUOGOcHaMbuaQPBYEjQi2cbyM
+	 fMMfycYUGByBlvHHgjyvmWQc9jYHAa/Jcjcubt1lElpXgCIBBJNptRsWahxA/GpQyK
+	 s72e+zAEpYZd1ONzGh8hSnE01pwlsTlsFZ5kPJaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.19 220/378] drm/amd: Disable MES LR compute W/A
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.18 148/333] usb: gadget: f_ncm: Fix atomic context locking issue
 Date: Tue, 17 Mar 2026 17:32:57 +0100
-Message-ID: <20260317163015.105382864@linuxfoundation.org>
+Message-ID: <20260317163004.846632061@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226353-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226669-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,71 +88,164 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E8B912AEB8C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EC2B02AF764
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 6b0d812971370c64b837a2db4275410f478272fe upstream.
+commit 0d6c8144ca4d93253de952a5ea0028c19ed7ab68 upstream.
 
-A workaround was introduced in commit 1fb710793ce2 ("drm/amdgpu: Enable
-MES lr_compute_wa by default") to help with some hangs observed in gfx1151.
+The ncm_set_alt function was holding a mutex to protect against races
+with configfs, which invokes the might-sleep function inside an atomic
+context.
 
-This WA didn't fully fix the issue.  It was actually fixed by adjusting
-the VGPR size to the correct value that matched the hardware in commit
-b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151").
+Remove the struct net_device pointer from the f_ncm_opts structure to
+eliminate the contention. The connection state is now managed by a new
+boolean flag to preserve the use-after-free fix from
+commit 6334b8e4553c ("usb: gadget: f_ncm: Fix UAF ncm object at re-bind
+after usb ep transport error").
 
-There are reports of instability on other products with newer GC microcode
-versions, and I believe they're caused by this workaround. As we don't
-need the workaround any more, remove it.
+BUG: sleeping function called from invalid context
+Call Trace:
+ dump_stack_lvl+0x83/0xc0
+ dump_stack+0x14/0x16
+ __might_resched+0x389/0x4c0
+ __might_sleep+0x8e/0x100
+ ...
+ __mutex_lock+0x6f/0x1740
+ ...
+ ncm_set_alt+0x209/0xa40
+ set_config+0x6b6/0xb40
+ composite_setup+0x734/0x2b40
+ ...
 
-Fixes: b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9973e64bd6ee7642860a6f3b6958cbf14e89cabd)
-Cc: stable@vger.kernel.org
+Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260221-legacy-ncm-v2-2-dfb891d76507@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |    5 -----
- 2 files changed, 10 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c            |   29 ++++++++++---------------
+ drivers/usb/gadget/function/u_ether_configfs.h |   11 ---------
+ drivers/usb/gadget/function/u_ncm.h            |    1 
+ 3 files changed, 13 insertions(+), 28 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -718,11 +718,6 @@ static int mes_v11_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
- 	mes_set_hw_res_pkt.oversubscription_timer = 50;
--	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
--		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
--	else
--		dev_info_once(mes->adev->dev,
--			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -58,6 +58,7 @@ struct f_ncm {
+ 	u8				notify_state;
+ 	atomic_t			notify_count;
+ 	bool				is_open;
++	bool				is_connected;
  
- 	if (amdgpu_mes_log_enable) {
- 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -779,11 +779,6 @@ static int mes_v12_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
--	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
--		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
--	else
--		dev_info_once(adev->dev,
--			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
+ 	const struct ndp_parser_opts	*parser_opts;
+ 	bool				is_crc;
+@@ -864,7 +865,6 @@ invalid:
+ static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
+-	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
  
- 	/*
- 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
+ 	/* Control interface has only altsetting 0 */
+@@ -887,13 +887,12 @@ static int ncm_set_alt(struct usb_functi
+ 		if (alt > 1)
+ 			goto fail;
+ 
+-		scoped_guard(mutex, &opts->lock)
+-			if (opts->net) {
+-				DBG(cdev, "reset ncm\n");
+-				opts->net = NULL;
+-				gether_disconnect(&ncm->port);
+-				ncm_reset_values(ncm);
+-			}
++		if (ncm->is_connected) {
++			DBG(cdev, "reset ncm\n");
++			ncm->is_connected = false;
++			gether_disconnect(&ncm->port);
++			ncm_reset_values(ncm);
++		}
+ 
+ 		/*
+ 		 * CDC Network only sends data in non-default altsettings.
+@@ -926,8 +925,7 @@ static int ncm_set_alt(struct usb_functi
+ 			net = gether_connect(&ncm->port);
+ 			if (IS_ERR(net))
+ 				return PTR_ERR(net);
+-			scoped_guard(mutex, &opts->lock)
+-				opts->net = net;
++			ncm->is_connected = true;
+ 		}
+ 
+ 		spin_lock(&ncm->lock);
+@@ -1374,16 +1372,14 @@ err:
+ static void ncm_disable(struct usb_function *f)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
+-	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
+ 
+ 	DBG(cdev, "ncm deactivated\n");
+ 
+-	scoped_guard(mutex, &opts->lock)
+-		if (opts->net) {
+-			opts->net = NULL;
+-			gether_disconnect(&ncm->port);
+-		}
++	if (ncm->is_connected) {
++		ncm->is_connected = false;
++		gether_disconnect(&ncm->port);
++	}
+ 
+ 	if (ncm->notify->enabled) {
+ 		usb_ep_disable(ncm->notify);
+@@ -1687,7 +1683,6 @@ static struct usb_function_instance *ncm
+ 	if (!opts)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	opts->net = NULL;
+ 	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
+ 	gether_setup_opts_default(&opts->net_opts, "usb");
+ 
+--- a/drivers/usb/gadget/function/u_ether_configfs.h
++++ b/drivers/usb/gadget/function/u_ether_configfs.h
+@@ -326,18 +326,9 @@ out:									\
+ 					      char *page)			\
+ 	{									\
+ 		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		const char *name;						\
+ 										\
+ 		guard(mutex)(&opts->lock);					\
+-		rtnl_lock();							\
+-		if (opts->net_opts.ifname_set)					\
+-			name = opts->net_opts.name;				\
+-		else if (opts->net)						\
+-			name = netdev_name(opts->net);				\
+-		else								\
+-			name = "(inactive net_device)";				\
+-		rtnl_unlock();							\
+-		return sysfs_emit(page, "%s\n", name);				\
++		return sysfs_emit(page, "%s\n", opts->net_opts.name);		\
+ 	}									\
+ 										\
+ 	static ssize_t _f_##_opts_ifname_store(struct config_item *item,	\
+--- a/drivers/usb/gadget/function/u_ncm.h
++++ b/drivers/usb/gadget/function/u_ncm.h
+@@ -19,7 +19,6 @@
+ 
+ struct f_ncm_opts {
+ 	struct usb_function_instance	func_inst;
+-	struct net_device		*net;
+ 
+ 	struct gether_opts		net_opts;
+ 	struct config_group		*ncm_interf_group;
 
 
 
