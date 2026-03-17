@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-226623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE1vCGKRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:38 +0100
+	id +EMhIESSuWl3KgIAu9opvQ
+	(envelope-from <stable+bounces-226667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E1E2AFE32
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99EB2AFFB6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25553326AF78
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 358CB335EEBC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD1F31815D;
-	Tue, 17 Mar 2026 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F7437C10E;
+	Tue, 17 Mar 2026 17:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeDQvDzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fStJv1OX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE4926FD9B;
-	Tue, 17 Mar 2026 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD537C106;
+	Tue, 17 Mar 2026 17:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767516; cv=none; b=SkYf5hkd+ERG5yaErqS98DVozXGAuNKVazXc1ugN+Km2zyKtz9wG0eVGOf0+AYt9EJju7fN8wOUPQx5799yx/btfjn9aOb4ILHV1X54B6pqoY5QJj1L+Fxb57lsRYmU2y5aoxSUwvzqqWxJOLw/QeRf+zHsGqjrk+OlEKztv2/E=
+	t=1773767729; cv=none; b=LYOjqrnA62cHebKeTv4aIxpcfo+Tx0ZoRktGSswsM+Vh9diFK30Yk+K0xN+U9yeul3ssnXjUiRkPbA9IDDe0gENPWVgM5xUuIeqVwCckjsX0j94vML2V4OXaESDBa3s/jIlAWe3kMUlw5vXLluy7K5mfP8QpanQMoX/1T6lymfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767516; c=relaxed/simple;
-	bh=7biJQf+letdU5ffW1U7ceOu7gLQmt1+obeGazCOvYUk=;
+	s=arc-20240116; t=1773767729; c=relaxed/simple;
+	bh=Q3MIFg26rnUGD3bXVkpjtp7xP6zgZj86bRClnAAxSTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXjqPEGUlRgHKVS6peeI1JmaMpC/2s0MpHRWJNOwKUG9X4Q3X/WxIXr3ouz2LiBThZxWtvl6Flzn3SC31Iihcz2C62TA9TGSRs+rBlCn0mejexLgwuzYVf9eqit5LPw8gaOCr1Q8/a/ID1r17tLc//KpxWX2J5zAuVO1VPSXXbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeDQvDzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F080BC4CEF7;
-	Tue, 17 Mar 2026 17:11:55 +0000 (UTC)
+	 MIME-Version; b=rhL1EwIxThqhZl/GzW+NNrBYgWj9TTZVQDReTAn5xMm3slq91ALAe/WWDL5DGVgSHNEIESkgsnuIEAKQ0qKEGaGPSTJFBjJdSYmYE7D4Zj14MVjm/z+RgCAEOS+x162KIkODZ8Enjz+2y7d8f0jeKlBVR30ygA2RnppRCuwIg3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fStJv1OX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E2CC2BCC9;
+	Tue, 17 Mar 2026 17:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767516;
-	bh=7biJQf+letdU5ffW1U7ceOu7gLQmt1+obeGazCOvYUk=;
+	s=korg; t=1773767729;
+	bh=Q3MIFg26rnUGD3bXVkpjtp7xP6zgZj86bRClnAAxSTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeDQvDzMEggOCPpqWIBSOVBehmUHNcgu3IsPJoD0bkMn3maUXnTn34jpEH7W+Vwyu
-	 qsErABVemp2sYkgWpweVCFXV4MsHDaz6Jr8UnbgHWwQM5Bn8GWWStTmPVmoRNIggpE
-	 04s72hVb/P4fbRuZ+bmE7tDv2Hf9YjveKsT5XG2k=
+	b=fStJv1OXX5wPCqfM1MTdzlHn3qkVxuI5vlr+gMYmw6zdhmgwppjTG+yRPcl7vh8QC
+	 HiHWSW+Vj9TTwHdwiYjvvVOkMI0oAGA4VWexoENpq+XzfOQ8j+R11kYGFj+qClynw9
+	 GEHTPQUfhNwLou1V0BTK+zOLTpbosp70MwVz9PJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 101/333] net: prevent NULL deref in ip[6]tunnel_xmit()
-Date: Tue, 17 Mar 2026 17:32:10 +0100
-Message-ID: <20260317163003.116355657@linuxfoundation.org>
+Subject: [PATCH 6.18 102/333] iio: imu: inv-mpu9150: fix irq ack preventing irq storms
+Date: Tue, 17 Mar 2026 17:32:11 +0100
+Message-ID: <20260317163003.152886652@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -69,31 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226623-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226667-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 83E1E2AFE32
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tdk.com:email]
+X-Rspamd-Queue-Id: D99EB2AFFB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,67 +100,84 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit c38b8f5f791ecce13ab77e2257f8fd2444ba80f6 ]
+[ Upstream commit d23d763e00ace4e9c59f8d33e0713d401133ba88 ]
 
-Blamed commit missed that both functions can be called with dev == NULL.
+IRQ needs to be acked. for some odd reasons, reading from irq status does
+not reliable help, enable acking from any register to be on the safe side
+and read the irq status register. Comments in the code indicate a known
+unreliability with that register.
+The blamed commit was tested with mpu6050 in lg,p895 and lg,p880 according
+to Tested-bys. But with the MPU9150 in the Epson Moverio BT-200 this leads
+to irq storms without properly acking the irq.
 
-Also add unlikely() hints for these conditions that only fuzzers can hit.
-
-Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-CC: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260312043908.2790803-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0a3b517c8089 ("iio: imu: inv_mpu6050: fix interrupt status read for old buggy chips")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip6_tunnel.h  | 10 ++++++----
- net/ipv4/ip_tunnel_core.c | 10 ++++++----
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 8 ++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     | 2 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 ++++-
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-index 1253cbb4b0a45..359b595f1df93 100644
---- a/include/net/ip6_tunnel.h
-+++ b/include/net/ip6_tunnel.h
-@@ -156,10 +156,12 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
- {
- 	int pkt_len, err;
- 
--	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
--		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
--				     dev->name);
--		DEV_STATS_INC(dev, tx_errors);
-+	if (unlikely(dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT)) {
-+		if (dev) {
-+			net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-+					     dev->name);
-+			DEV_STATS_INC(dev, tx_errors);
-+		}
- 		kfree_skb(skb);
- 		return;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index b2fa1f4957a5b..5796896d54cd8 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1943,6 +1943,14 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 			irq_type);
+ 		return -EINVAL;
  	}
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index b1b6bf949f65a..5683c328990f4 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -58,10 +58,12 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 	struct iphdr *iph;
- 	int err;
++
++	/*
++	 * Acking interrupts by status register does not work reliably
++	 * but seem to work when this bit is set.
++	 */
++	if (st->chip_type == INV_MPU9150)
++		st->irq_mask |= INV_MPU6050_INT_RD_CLEAR;
++
+ 	device_set_wakeup_capable(dev, true);
  
--	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
--		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
--				     dev->name);
--		DEV_STATS_INC(dev, tx_errors);
-+	if (unlikely(dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT)) {
-+		if (dev) {
-+			net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-+					     dev->name);
-+			DEV_STATS_INC(dev, tx_errors);
-+		}
- 		ip_rt_put(rt);
- 		kfree_skb(skb);
- 		return;
+ 	st->vdd_supply = devm_regulator_get(dev, "vdd");
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index 211901f8b8eb6..6239b1a803f77 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -390,6 +390,8 @@ struct inv_mpu6050_state {
+ /* enable level triggering */
+ #define INV_MPU6050_LATCH_INT_EN	0x20
+ #define INV_MPU6050_BIT_BYPASS_EN	0x2
++/* allow acking interrupts by any register read */
++#define INV_MPU6050_INT_RD_CLEAR	0x10
+ 
+ /* Allowed timestamp period jitter in percent */
+ #define INV_MPU6050_TS_PERIOD_JITTER	4
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 10a4733420759..22c1ce66f99ee 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -248,7 +248,6 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+ 	switch (st->chip_type) {
+ 	case INV_MPU6000:
+ 	case INV_MPU6050:
+-	case INV_MPU9150:
+ 		/*
+ 		 * WoM is not supported and interrupt status read seems to be broken for
+ 		 * some chips. Since data ready is the only interrupt, bypass interrupt
+@@ -257,6 +256,10 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+ 		wom_bits = 0;
+ 		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
+ 		goto data_ready_interrupt;
++	case INV_MPU9150:
++		/* IRQ needs to be acked */
++		wom_bits = 0;
++		break;
+ 	case INV_MPU6500:
+ 	case INV_MPU6515:
+ 	case INV_MPU6880:
 -- 
 2.51.0
 
