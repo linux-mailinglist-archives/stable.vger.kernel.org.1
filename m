@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKFMKbiMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:44 +0100
+	id UBmpLvOVuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:57:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6752AF43F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A602B0644
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A05BE302C6D0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:03:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D29B43263E6C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B03377EDD;
-	Tue, 17 Mar 2026 17:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BDF2DECC6;
+	Tue, 17 Mar 2026 17:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiwEyI5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGTivhNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4656429D26C;
-	Tue, 17 Mar 2026 17:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF42115E5BB;
+	Tue, 17 Mar 2026 17:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766991; cv=none; b=Rj1eMpAoEWluJzjJKtGSmNwpW04IDySgD73tLy3oFjk11M/8v6B3LduSChOR1ac0WXRS4eXzeE7OMBb0M+mgIfd73OO87KewuCyKj1VNYvMU2/PLjTQHNlPdoaKpETOYBRtLI1ED9ZnNmyH+0tYOmYzKjOtqI/6ciTrDVj5NxWM=
+	t=1773768382; cv=none; b=hcLwoeIoLHICcQBgmPCCNr2zzc4292vCd1qQ5/HCNcFMVDvO47ofzOU44Bp1E7N9/HLFPp7e+j2Cfp1lfq6BAoK21LZVAGZFf8cV8IdSDRmJuKY+N8oFRlN5VXwhDmNYbYx+1Y2Ov23qxo3GNQdbkIX+YfkEePo/XRwq5Ea9Kyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766991; c=relaxed/simple;
-	bh=qjmzHvTUT2y2ixFQFVJgdODVkPNTK+QdGt2f8XgNFnU=;
+	s=arc-20240116; t=1773768382; c=relaxed/simple;
+	bh=FSLqW76QMTKCqRLkfi82dXSDWEtmluESDLuGMMrd+AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KisYFObLCaUHMK/bWbJ3wvDot4DreCFcEZuNj0Ly3FvTvKGPka2sOOXqbJv/tQV/pe9MBWCNZAytejG6zBMGwTt2OQyRZ8xgX9jPFvcIqM4YWqeaGmUo6UZqNNzw/8/WFAkCbQnKxA/eGSvzokrHWecCIX/+i3EL9rvKCpY+w80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiwEyI5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF95AC4CEF7;
-	Tue, 17 Mar 2026 17:03:10 +0000 (UTC)
+	 MIME-Version; b=S+ljygDCUT/OXKQJ/eralOONTKmDbQMLKAFKh3ajBLAlrdoudLsLX+Rhh29y+c1dw7fU5g26SHRQPrGLvGXJ9ZbvD905i1TFAKwbd5YXA4T0oQx6zucsi4a0D+Aj98mZgSAN6/SloDFGmPg8ufB7eHeIE0HBlprHk8CXcMov5os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGTivhNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03FEC4CEF7;
+	Tue, 17 Mar 2026 17:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766991;
-	bh=qjmzHvTUT2y2ixFQFVJgdODVkPNTK+QdGt2f8XgNFnU=;
+	s=korg; t=1773768382;
+	bh=FSLqW76QMTKCqRLkfi82dXSDWEtmluESDLuGMMrd+AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiwEyI5FHwNTQkKp0hWXKkzCtqj/I0QKqHNc+w/RItDn38Sz6tntWI13BlVJbRkUt
-	 NmkyiVKHk8EIITag1dNaDbN7x7m+qaSx1DYk0pv1acsknkmjPFjWZrEKdtbELQVMl2
-	 9LSSuM4jXF2MV54KJLrq1tpH4YOefprQlsd7DUUM=
+	b=vGTivhNdDA1Y3FA01kHdLkNBUr9160hQvfC8A15WbWckeUT5mru3X+Zn2MBRQi50S
+	 RmYD7S08GLHasHD1T/n+IPDVWYCZ5U5QwH0O1OPUk2T3Kewi1dMobnCTMxhVpt0xuJ
+	 yB6e4o01PUGq0+Xp01PewIZ5mljvPCgD7HtVQYpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.19 368/378] i3c: mipi-i3c-hci: Add missing TID field to no-op command descriptor
-Date: Tue, 17 Mar 2026 17:35:25 +0100
-Message-ID: <20260317163020.516909087@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lukas Schmid <lukas.schmid@netcube.li>
+Subject: [PATCH 6.18 297/333] iio: potentiometer: mcp4131: fix double application of wiper shift
+Date: Tue, 17 Mar 2026 17:35:26 +0100
+Message-ID: <20260317163010.406648283@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226503-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226831-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,65 +89,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,bootlin.com:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9E6752AF43F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,netcube.li:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 25A602B0644
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Lukas Schmid <lukas.schmid@netcube.li>
 
-commit ec3cfd835f7c4bbd23bc9ad909d2fdc772a578bb upstream.
+commit 85e4614524dca6c0a43874f475a17de2b9725648 upstream.
 
-The internal control command descriptor used for no-op commands includes a
-Transaction ID (TID) field, but the no-op command constructed in
-hci_dma_dequeue_xfer() omitted it.  As a result, the hardware receives a
-no-op descriptor without the expected TID.
+The MCP4131 wiper address is shifted twice when preparing the SPI
+command in mcp4131_write_raw().
 
-This bug has gone unnoticed because the TID is currently not validated in
-the no-op completion path, but the descriptor format requires it to be
-present.
+The address is already shifted when assigned to the local variable
+"address", but is then shifted again when written to data->buf[0].
+This results in an incorrect command being sent to the device and
+breaks wiper writes to the second channel.
 
-Add the missing TID field when generating a no-op descriptor so that its
-layout matches the defined command structure.
+Remove the second shift and use the pre-shifted address directly
+when composing the SPI transfer.
 
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-10-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 22d199a53910 ("iio: potentiometer: add driver for Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X")
+Signed-off-by: Lukas Schmid <lukas.schmid@netcube.li>#
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/cmd.h |    1 +
- drivers/i3c/master/mipi-i3c-hci/dma.c |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/potentiometer/mcp4131.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master/mipi-i3c-hci/cmd.h
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd.h
-@@ -17,6 +17,7 @@
- #define CMD_0_TOC			W0_BIT_(31)
- #define CMD_0_ROC			W0_BIT_(30)
- #define CMD_0_ATTR			W0_MASK(2, 0)
-+#define CMD_0_TID			W0_MASK(6, 3)
+--- a/drivers/iio/potentiometer/mcp4131.c
++++ b/drivers/iio/potentiometer/mcp4131.c
+@@ -221,7 +221,7 @@ static int mcp4131_write_raw(struct iio_
  
- /*
-  * Response Descriptor Structure
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -510,7 +510,7 @@ static bool hci_dma_dequeue_xfer(struct
- 			u32 *ring_data = rh->xfer + rh->xfer_struct_sz * idx;
+ 	mutex_lock(&data->lock);
  
- 			/* store no-op cmd descriptor */
--			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7);
-+			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7) | FIELD_PREP(CMD_0_TID, xfer->cmd_tid);
- 			*ring_data++ = 0;
- 			if (hci->cmd == &mipi_i3c_hci_cmd_v2) {
- 				*ring_data++ = 0;
+-	data->buf[0] = address << MCP4131_WIPER_SHIFT;
++	data->buf[0] = address;
+ 	data->buf[0] |= MCP4131_WRITE | (val >> 8);
+ 	data->buf[1] = val & 0xFF; /* 8 bits here */
+ 
 
 
 
