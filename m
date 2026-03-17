@@ -1,186 +1,205 @@
-Return-Path: <stable+bounces-226128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMJ9NFeDuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:37:43 +0100
+	id pg8mJyeKuWkjJwIAu9opvQ
+	(envelope-from <stable+bounces-226380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5542B2AE216
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:37:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1499C2AEF6A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B7D5307BB6A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:33:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE9E431DFE92
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487753A5E66;
-	Tue, 17 Mar 2026 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1953D3EAC6F;
+	Tue, 17 Mar 2026 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="pTnBX+aL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="rAWHtRhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfiVV0E7"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83430376BCC
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BAE3F23AA;
+	Tue, 17 Mar 2026 16:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765216; cv=none; b=ou/A3TxvkixkKIkw7HdUSotb8Uz/AuYZipkPvTB8OQ/DJOWP7BIaBl/iMlVS3lLAh6P3efqs1asfYuEtzd2L0QCzdEVzZvCqg0fjtqVl8ik8hUjL9u4vNtaCAl9CbhS5mzUSJATzzkxJ2NoaKM2u7uzMKuF0T0nWJ4nQFTt4IIM=
+	t=1773766443; cv=none; b=d86lm4W1ovJLWGz6L1g0j/jA0JLzJtqon+CfyxQuE+SmtD7h9H6BcE03ZQNXl3MvD7IwiTN09pUdoK/kLB6nKPWJg2JFc0viDHuovKOEaBjSlOXnlOP76vx55zhSC0Xk44cjlwfYkvpbYbCF/b586Mey2ZuPFqh2Sml8bQbLf0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765216; c=relaxed/simple;
-	bh=U06W9qx2yxe4I4rWXhJNkuERNXmG75ZCzvKbbPiCk+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xb7NZoUfZrlByfi5aGVhkHwOHyOgmGQWSSysg8iQAoB1Ts+3ku3oTq2WXtVmnTz6JrdjCPTmpTR3r/SLSql021CL4NuoVsDfOFn1xIuoiTOgP2UVbURu4OnvRFHXk4RNhJff2iQpQIczHrTVqSAWLzZwQ7e7HLzNnXvZdOaIod4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=pTnBX+aL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=rAWHtRhz; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9EABA14000BE;
-	Tue, 17 Mar 2026 12:33:29 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 17 Mar 2026 12:33:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1773765209; x=1773851609; bh=SSLYqYLx7+
-	n7Z0JXA2O6XisSJW6wdXE89jwL1yjenOY=; b=pTnBX+aLL5DhazRPNGaYv/kkWp
-	SwCzNquYT683vHTIDDhgzgszT6SjeOGXCuxT4wA2bwgvh4tEAOKoi3FIpy7HKDGa
-	KAv+Pm3lBoPHshbRc5FNTtCQzU3tWnRBSKQiGxM342rDIaN8pyDruFWBuih7YWZA
-	BIMhkKc7MJrHqt5qzF538L94kbAhh66e5CHeXY4KkSoQPxPFm+6DIvx1AiiAprGx
-	ps1R3ohJdGk0Vez0DYiOkUpZ1d+eRXMaUMtx6TSaKWsz+3L4MaZl0l2knyqk1sFB
-	sdhr+LVtEXz3Y0Fzq/z8NfimD68s4IJZ/GWbYhsKoHbnL3EY2Ahaw1KIM55w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1773765209; x=1773851609; bh=SSLYqYLx7+n7Z0JXA2O6XisSJW6wdXE89jw
-	L1yjenOY=; b=rAWHtRhzsS8FAPzvo7P+OTpaKdaeK54b+hAX2TcJCnOboL6T+hQ
-	WXgFuXhuBTRrs+Q+juRF90Dx+6Pv2EfG63YyLp/xmj0/ehG05p9R4i8jQXPLXROA
-	qvtTn+TrIjfN3bvGIw7uPq/B5bNHhk6T+AtnbkP4wIn7MP/H3H5xQITIfX6IYtno
-	DE8BNklGzCBArcyDVgPGrutfrpnOPoJgYO53bQAG8Wn7S6hioSz7GmafbNtPrmWW
-	p9Ti6YvaV/ATb8nc/SfhQLLY860tm65qIaDtM8OlisGoYxVtmAR9/xnM8zOraAMF
-	x6IUN/wKFEJuYl5uCKaE7e3nLZVqlEMSFcw==
-X-ME-Sender: <xms:WYK5aWxYhHwQw7svbflQE0m1VPxIgDOFexXVjXLjwt4rhLQXtBEK7g>
-    <xme:WYK5acTLQ4ydKgcHpJUr4Tcwg5VYtjwimVvYupCXTOvdwTTc--8gmke-ImndxTpgz
-    I30P46FFyZeOlYJGAwJeu2bkqbx2ntvkwvKJCSm8NDnSUXNRw>
-X-ME-Received: <xmr:WYK5ae9o3pr4vEVxroSUxJi8VGEocZgVVI8N63YAdlFh6DLw31mNHXwa2Gh5CJvNpSY87dLzhXSihWa6>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftddujeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehinhhvrdhgihhtqdgtohhmmhhithesthgukhdrtghomhdprhgtphhtthhopehsthgrsg
-    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjvggrnhdqsggrphht
-    ihhsthgvrdhmrghnvgihrhholhesthgukhdrtghomhdprhgtphhtthhopehjohhnrghthh
-    grnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhm
-X-ME-Proxy: <xmx:WYK5aatlBaIpThlrwdwCdTaZpMut3eeiGSutAnfsAT1f150OWn4dpA>
-    <xmx:WYK5aWM8C1yqwIQeeJCz-8qIXPIWZkPWkjvfa-4ZlxoXLnS7F6pb4w>
-    <xmx:WYK5aXiIAQEuWKypVDGf2NUwpV5E0vZ4Eivvrz2-SDbNZFW0k9l6Gw>
-    <xmx:WYK5aQ7AADTc9Hsl1FABUKdWU9N4ugYwFiiO79iw_m5VvO96ul7x8w>
-    <xmx:WYK5aZWeVWmxX0U6owZ486p9TC-gNOH7KtHXyun0_YbwoMY_rstntBzd>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Mar 2026 12:33:28 -0400 (EDT)
+	s=arc-20240116; t=1773766443; c=relaxed/simple;
+	bh=IxWM7XapqTu/N1PQkZbsswifDkStzDx4qvefoRMwI5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jGASj2GMCS3L3FgMTP9ifCvqNROZF282xcO7dfecHKV9LuJO7bayJZVuh2SVL2mCTKrbHT0USUpa2kcsGIpqSqp/qlXLIKCWPps8+9iEnoE0Ih35kVA+b7Pqi2fGzXplNOf+3aKTDqBi2ol3/3rYztq8/BkoAKwzcUTcIAmijLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfiVV0E7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFAEC19424;
+	Tue, 17 Mar 2026 16:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773766443;
+	bh=IxWM7XapqTu/N1PQkZbsswifDkStzDx4qvefoRMwI5g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sfiVV0E75/j/Mz8Yf757uLU5gg6yStvLCSI1pKvSVPASL0OKlihMBGO9SOiTn5286
+	 0xqCz73A2uBBxRnq2tE5WRDyJS3UPI5cCDZNSn19MM3/eGOgmiLUY7OFN+f2merthW
+	 UMss8IWw9A2mTASo8w+kUjUQERehlbjCGC+u4Vj4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 248/378] mm: memfd_luo: always make all folios uptodate
 Date: Tue, 17 Mar 2026 17:33:25 +0100
-From: Greg KH <greg@kroah.com>
-To: inv.git-commit@tdk.com
-Cc: stable@vger.kernel.org,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 6.1.y] iio: imu: inv_icm42600: fix odr switch when
- turning buffer off
-Message-ID: <2026031722-capacity-compactly-7cef@gregkh>
-References: <2026031739-putdown-harmony-6f22@gregkh>
- <20260317153124.522408-1-inv.git-commit@tdk.com>
+Message-ID: <20260317163016.144722662@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317153124.522408-1-inv.git-commit@tdk.com>
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226128-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226380-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim,tdk.com:email,kroah.com:dkim]
-X-Rspamd-Queue-Id: 5542B2AE216
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,soleen.com:email]
+X-Rspamd-Queue-Id: 1499C2AEF6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 03:31:24PM +0000, inv.git-commit@tdk.com wrote:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> ODR switch is done in 2 steps when FIFO is on : change the ODR register
-> value and acknowledge change when reading the FIFO ODR change flag.
-> When we are switching odr and turning buffer off just afterward, we are
-> losing the FIFO ODR change flag and ODR switch is blocked.
-> 
-> Fix the issue by force applying any waiting ODR change when turning
-> buffer off.
-> 
-> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> index 32d7f8364230..f29c3e8531e6 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> @@ -377,6 +377,7 @@ static int inv_icm42600_buffer_predisable(struct iio_dev *indio_dev)
->  static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
->  {
->  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
->  	struct device *dev = regmap_get_device(st->map);
->  	unsigned int sensor;
->  	unsigned int *watermark;
-> @@ -398,6 +399,8 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
->  
->  	mutex_lock(&st->lock);
->  
-> +	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
-> +
->  	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
->  	if (ret)
->  		goto out_unlock;
-> -- 
-> 2.25.1
-> 
-> 
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
-No git id :(
+------------------
+
+From: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+commit 50d7b4332f27762d24641970fc34bb68a2621926 upstream.
+
+Patch series "mm: memfd_luo: fixes for folio flag preservation".
+
+This series contains a couple fixes for flag preservation for memfd live
+update.
+
+The first patch fixes memfd preservation when fallocate() was used to
+pre-allocate some pages.  For these memfds, all the writes to fallocated
+pages touched after preserve were lost.
+
+The second patch fixes dirty flag tracking.  If the dirty flag is not
+tracked correctly, the next kernel might incorrectly reclaim some folios
+under memory pressure, losing user data.  This is a theoretical bug that I
+observed when reading the code, and haven't been able to reproduce it.
+
+
+This patch (of 2):
+
+When a folio is added to a shmem file via fallocate, it is not zeroed on
+allocation.  This is done as a performance optimization since it is
+possible the folio will never end up being used at all.  When the folio is
+used, shmem checks for the uptodate flag, and if absent, zeroes the folio
+(and sets the flag) before returning to user.
+
+With LUO, the flags of each folio are saved at preserve time.  It is
+possible to have a memfd with some folios fallocated but not uptodate.
+For those, the uptodate flag doesn't get saved.  The folios might later
+end up being used and become uptodate.  They would get passed to the next
+kernel via KHO correctly since they did get preserved.  But they won't
+have the MEMFD_LUO_FOLIO_UPTODATE flag.
+
+This means that when the memfd is retrieved, the folios will be added to
+the shmem file without the uptodate flag.  They will be zeroed before
+first use, losing the data in those folios.
+
+Since we take a big performance hit in allocating, zeroing, and pinning
+all folios at prepare time anyway, take some more and zero all
+non-uptodate ones too.
+
+Later when there is a stronger need to make prepare faster, this can be
+optimized.
+
+To avoid racing with another uptodate operation, take the folio lock.
+
+Link: https://lkml.kernel.org/r/20260223173931.2221759-2-pratyush@kernel.org
+Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ mm/memfd_luo.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index e485b828d173..1c9510289312 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 		if (err)
+ 			goto err_unpreserve;
+ 
++		folio_lock(folio);
++
+ 		if (folio_test_dirty(folio))
+ 			flags |= MEMFD_LUO_FOLIO_DIRTY;
+-		if (folio_test_uptodate(folio))
+-			flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		/*
++		 * If the folio is not uptodate, it was fallocated but never
++		 * used. Saving this flag at prepare() doesn't work since it
++		 * might change later when someone uses the folio.
++		 *
++		 * Since we have taken the performance penalty of allocating,
++		 * zeroing, and pinning all the folios in the holes, take a bit
++		 * more and zero all non-uptodate folios too.
++		 *
++		 * NOTE: For someone looking to improve preserve performance,
++		 * this is a good place to look.
++		 */
++		if (!folio_test_uptodate(folio)) {
++			folio_zero_range(folio, 0, folio_size(folio));
++			flush_dcache_folio(folio);
++			folio_mark_uptodate(folio);
++		}
++		flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		folio_unlock(folio);
+ 
+ 		pfolio->pfn = folio_pfn(folio);
+ 		pfolio->flags = flags;
+-- 
+2.53.0
+
+
+
 
