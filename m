@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IPrK9KMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:10 +0100
+	id +PxxEaqGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692432AF471
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160F12AE8C5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F551304C7B2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5C1C33020217
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6331E29D26C;
-	Tue, 17 Mar 2026 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643933F54B5;
+	Tue, 17 Mar 2026 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioseGfkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9J1tlSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271841ACEDE;
-	Tue, 17 Mar 2026 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260C13F23DD;
+	Tue, 17 Mar 2026 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767633; cv=none; b=Mtr++3ZuZWC8cIxvf19Gu86V4XXSjHAYw94etckMigTYR+2p5/zmS7s+Ut3x+DK8Xua/3q9TwkLaFkYwjyz+Qh7yEma1SkzrXeUKzCfHmiutTl3DOvi7B9zrAVIobP8AROhIUE5Mx3+MabNssWBoVm9h9s+zPqjnlhadAvKmdzk=
+	t=1773766312; cv=none; b=U15EsdgCByXKpifau3H3zy7SIofJkhtYyMX62Xot/XrJHOrhsxi1ARIm/77F5y8x4iqEyzVH/RLyujj/0t+NJ7V3IHMvJgZa6TuycZb+FKgA3brqrw48LpnY7FRbAwHPFbTNwbkFm1/7P5pcDrHhl+gED88GXN+u8k99ieODX8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767633; c=relaxed/simple;
-	bh=M2W88/PYCFKcwtBmwO6hb3Yyia9olv5iw7AOAGeDYJM=;
+	s=arc-20240116; t=1773766312; c=relaxed/simple;
+	bh=Hs7FJI4oyzBt6Q9HyPpn+KQxtAPsZTBT8WwDJ+qsbUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFPpi6lIBVgYTcAA555H30r1YvgXHlDB2KEQAeAA/IqLw+LKjahcACzYevlhLT8R/YQRMRVggDkEAcyi4NcthhHOUkEsLufTirixI5eDHAC+a3rOYPjdiCyX2yNBODlswZEUBwnaBEBGxlPWSNVpCsHQ/CGUtGcPpf6q2/rGpJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioseGfkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7CFC4CEF7;
-	Tue, 17 Mar 2026 17:13:52 +0000 (UTC)
+	 MIME-Version; b=ujNeIKk+2XaSccNFCYlDHWxJ60IXJ9s7vCEyUEg1+dSXeJtLHZpg9aLPpzupBngaQEWbagOjCTC/BdvGZVUSAJe70J13x/obf/JqGuadN9eyH50EJH1OAYDd2tw/84yj35PQod3BJpIiJ+HnqcCMLPhYzxs5s9GZjbtKJpwJ1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9J1tlSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68576C4CEF7;
+	Tue, 17 Mar 2026 16:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767633;
-	bh=M2W88/PYCFKcwtBmwO6hb3Yyia9olv5iw7AOAGeDYJM=;
+	s=korg; t=1773766312;
+	bh=Hs7FJI4oyzBt6Q9HyPpn+KQxtAPsZTBT8WwDJ+qsbUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ioseGfkZ6gWRv3UCHOzMhugkY6JSVN0Lf5im7kglpxi/binkugenaT8KnjLZuQhhl
-	 82MXYcvqqCGw86VERQis6LYX1mjF+11xu4iyc/nVfIGGuJVVhdozc7BzJyI+8LFPem
-	 PIWQnTtg5Els+n4I1QxMzK10ny1AydkKt4z06R9s=
+	b=O9J1tlSpSWv08719py4CBw88YcB1S445JnU9ZEarYcIeHrXAOVZ3OnfH/WfJBh3DI
+	 OVhJh+axNYOmPiy21eQBNdDLglggy722qRRsbAb3SIZq25FG4mGSzY8B6nmIB/4KOr
+	 6BufoyCGg8g4xQNinKLbEnJSsMrQd7uWQsyLeA/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 6.18 127/333] usb/core/quirks: Add Huawei ME906S-device to wakeup quirk
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Penghe Geng <pgeng@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.19 199/378] mmc: core: Avoid bitfield RMW for claim/retune flags
 Date: Tue, 17 Mar 2026 17:32:36 +0100
-Message-ID: <20260317163004.074641130@linuxfoundation.org>
+Message-ID: <20260317163014.323982299@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226649-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226347-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,47 +89,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tuxedocomputers.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tuxedo.de:email]
-X-Rspamd-Queue-Id: 692432AF471
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 160F12AE8C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Penghe Geng <pgeng@nvidia.com>
 
-commit 0326ff28d56b4fa202de36ffc8462a354f383a64 upstream.
+commit 901084c51a0a8fb42a3f37d2e9c62083c495f824 upstream.
 
-Similar to other Huawei LTE modules using this quirk, this version with
-another vid/pid suffers from spurious wakeups.
+Move claimed and retune control flags out of the bitfield word to
+avoid unrelated RMW side effects in asynchronous contexts.
 
-Setting the quirk fixes the issue for this device as well.
+The host->claimed bit shared a word with retune flags. Writes to claimed
+in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
+other bits when concurrent updates happen in other contexts, triggering
+spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
+retune_now and retune_paused to bool to remove shared-word coupling.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260306172817.2098898-1-wse@tuxedocomputers.com
+Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
+Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
+Cc: stable@vger.kernel.org
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/mmc/host.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -208,6 +208,10 @@ static const struct usb_device_id usb_qu
- 	/* HP v222w 16GB Mini USB Drive */
- 	{ USB_DEVICE(0x03f0, 0x3f40), .driver_info = USB_QUIRK_DELAY_INIT },
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -486,14 +486,12 @@ struct mmc_host {
  
-+	/* Huawei 4G LTE module ME906S  */
-+	{ USB_DEVICE(0x03f0, 0xa31d), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
+ 	struct mmc_ios		ios;		/* current io bus settings */
+ 
++	bool			claimed;	/* host exclusively claimed */
 +
- 	/* Creative SB Audigy 2 NX */
- 	{ USB_DEVICE(0x041e, 0x3020), .driver_info = USB_QUIRK_RESET_RESUME },
+ 	/* group bitfields together to minimize padding */
+ 	unsigned int		use_spi_crc:1;
+-	unsigned int		claimed:1;	/* host exclusively claimed */
+ 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
+-	unsigned int		can_retune:1;	/* re-tuning can be used */
+ 	unsigned int		doing_retune:1;	/* re-tuning in progress */
+-	unsigned int		retune_now:1;	/* do re-tuning at next req */
+-	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
+ 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+@@ -508,6 +506,9 @@ struct mmc_host {
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
  
++	bool			can_retune;	/* re-tuning can be used */
++	bool			retune_now;	/* do re-tuning at next req */
++	bool			retune_paused;	/* re-tuning is temporarily disabled */
+ 	int			need_retune;	/* re-tuning is needed */
+ 	int			hold_retune;	/* hold off re-tuning */
+ 	unsigned int		retune_period;	/* re-tuning period in secs */
 
 
 
