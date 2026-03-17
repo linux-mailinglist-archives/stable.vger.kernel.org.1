@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-226645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAVuGtGRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:29 +0100
+	id kDhvDsWIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4612AFEC3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6E72AECAD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A473A3318E3F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AB813135D26
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E453F54BD;
-	Tue, 17 Mar 2026 17:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7693EAC6F;
+	Tue, 17 Mar 2026 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPYcvNTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbY6XvG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E123E3E6DCF;
-	Tue, 17 Mar 2026 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDA2179A3;
+	Tue, 17 Mar 2026 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767615; cv=none; b=OvQiTUTtfx09FQK1tquJvkOCQfSyQRzlQxh1Gcc2f3zDrTD4jJiRsBK+2zgsAZLk3C5Qpfyoy3xEeeeUbyZbM6AK6wTCc9VtfwLIUWP20xDs1zWmIFnYU3QOH/m4QnbXTlK1UWliVElVMSKenqZYq4VrcEtqwa/aHQ6dU+6ZbAw=
+	t=1773766227; cv=none; b=hl7svXYT0iLEgdC25b53xe4AJKZLOb6hD9wpEcgM2GSHtvJT6R/rhZ1PRVYipGnppCGXXShaK7cF6W5yJj9qrkY88Uo+Doz5klxwgtyd3my+dOMsg3xwp85wYBD9nRhDZr3bmd6Hk8fAb0M0FnCrinZI2zJ2VXA2AO8upuh9WSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767615; c=relaxed/simple;
-	bh=UjGoSxRSBMfaoXHVqT0kCXwG4kQdD3fuDAL8qaI4Oag=;
+	s=arc-20240116; t=1773766227; c=relaxed/simple;
+	bh=gbhmR0Ii2CdeIyFxdwdlZ52jkR257u46ueG4+Py8aYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSUH1wPwCV8R5FphGb7Hc7yRkW+5/JqVsG59igIqgDgbNLVn0rmcTHYeyP0U5odf6SttUSy0V/Ri/Ppy03kzbTJHKZPynO/W9YhfwkICurAmQy83gXXFDcdzFqOC/FyN6oF3i0ngBpjushG++cb011pJsl6gldiqFD8Bj/B4PHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPYcvNTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A6CC4CEF7;
-	Tue, 17 Mar 2026 17:13:33 +0000 (UTC)
+	 MIME-Version; b=EbmNA6ij6N2eL57lhJl912p1lJXLyjDQ/5hU97dhtUDq68LD8PRESMBc6Q+jmMSX6McZVZUZhlamI2MjcwTsvZznNuJGEY4aQLwz7plqZZasy5AUBeJM20zh7sUHoyq3NtbugqV+bFCQZzx3kQUP0nsxrbcImegsCtia8SqZoco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbY6XvG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FCFC4CEF7;
+	Tue, 17 Mar 2026 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767614;
-	bh=UjGoSxRSBMfaoXHVqT0kCXwG4kQdD3fuDAL8qaI4Oag=;
+	s=korg; t=1773766227;
+	bh=gbhmR0Ii2CdeIyFxdwdlZ52jkR257u46ueG4+Py8aYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPYcvNTCtfETestaw0BwApxWiSaFi84LfqRzJ4LtaAwblaIRTUQm3MuRHApnXk0aj
-	 NYXyl8wMYNc51lVoH42hBQ+a+NQkZNuDoqry2Xizr583JfBZyIxY1OE0f7cG5hZuh6
-	 AvsZftNXhmrSb604QpEglaS/9vdaN1/8ghGudZnI=
+	b=wbY6XvG8lqO/s775Ly2baE2/zyrwGI/cTanTadJht6OaVv5e5qzD9dW/jWIp6UEXS
+	 xiQ//N0F3FiX4bb/B/IqX73FxOP4xFI+qGx+uD6c7gCGdU/OHdQWGXVYn0uimjeyDx
+	 LqjI5aIbHIqdbC09HVL5bNFna1ruBOCICEg0Ua+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 123/333] KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM
-Date: Tue, 17 Mar 2026 17:32:32 +0100
-Message-ID: <20260317163003.927182647@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 196/378] mm/kfence: disable KFENCE upon KASAN HW tags enablement
+Date: Tue, 17 Mar 2026 17:32:33 +0100
+Message-ID: <20260317163014.214976588@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +69,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226645-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226328-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,tugraz.at,kernel.org,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BC4612AFEC3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,tugraz.at:email]
+X-Rspamd-Queue-Id: BB6E72AECAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Alexander Potapenko <glider@google.com>
 
-commit e2ffe85b6d2bb7780174b87aa4468a39be17eb81 upstream.
+commit 09833d99db36d74456a4d13eb29c32d56ff8f2b6 upstream.
 
-Add KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM to allow L1 to set
-FREEZE_IN_SMM in vmcs12's GUEST_IA32_DEBUGCTL field, as permitted
-prior to commit 6b1dd26544d0 ("KVM: VMX: Preserve host's
-DEBUGCTLMSR_FREEZE_IN_SMM while running the guest").  Enable the quirk
-by default for backwards compatibility (like all quirks); userspace
-can disable it via KVM_CAP_DISABLE_QUIRKS2 for consistency with the
-constraints on WRMSR(IA32_DEBUGCTL).
+KFENCE does not currently support KASAN hardware tags.  As a result, the
+two features are incompatible when enabled simultaneously.
 
-Note that the quirk only bypasses the consistency check.  The vmcs02 bit is
-still owned by the host, and PMCs are not frozen during virtualized SMM.
-In particular, if a host administrator decides that PMCs should not be
-frozen during physical SMM, then L1 has no say in the matter.
+Given that MTE provides deterministic protection and KFENCE is a
+sampling-based debugging tool, prioritize the stronger hardware
+protections.  Disable KFENCE initialization and free the pre-allocated
+pool if KASAN hardware tags are detected to ensure the system maintains
+the security guarantees provided by MTE.
 
-Fixes: 095686e6fcb4 ("KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260205231537.1278753-1-jmattson@google.com
-[sean: tag for stable@, clean-up and fix goofs in the comment and docs]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Rename quirk. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Suggested-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/virt/kvm/api.rst  |    8 ++++++++
- arch/x86/include/asm/kvm_host.h |    3 ++-
- arch/x86/include/uapi/asm/kvm.h |    1 +
- arch/x86/kvm/vmx/nested.c       |   22 ++++++++++++++++++----
- 4 files changed, 29 insertions(+), 5 deletions(-)
+ mm/kfence/core.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -8403,6 +8403,14 @@ KVM_X86_QUIRK_IGNORE_GUEST_PAT      By d
-                                     guest software, for example if it does not
-                                     expose a bochs graphics device (which is
-                                     known to have had a buggy driver).
-+
-+KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM   By default, KVM relaxes the consistency
-+                                      check for GUEST_IA32_DEBUGCTL in vmcs12
-+                                      to allow FREEZE_IN_SMM to be set.  When
-+                                      this quirk is disabled, KVM requires this
-+                                      bit to be cleared.  Note that the vmcs02
-+                                      bit is still completely controlled by the
-+                                      host, regardless of the quirk setting.
- =================================== ============================================
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -13,6 +13,7 @@
+ #include <linux/hash.h>
+ #include <linux/irq_work.h>
+ #include <linux/jhash.h>
++#include <linux/kasan-enabled.h>
+ #include <linux/kcsan-checks.h>
+ #include <linux/kfence.h>
+ #include <linux/kmemleak.h>
+@@ -912,6 +913,20 @@ void __init kfence_alloc_pool_and_metada
+ 		return;
  
- 7.32 KVM_CAP_MAX_VCPU_ID
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2473,7 +2473,8 @@ int memslot_rmap_alloc(struct kvm_memory
- 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
- 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
- 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
--	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
-+	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
-+	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM)
- 
- #define KVM_X86_CONDITIONAL_QUIRKS		\
- 	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -476,6 +476,7 @@ struct kvm_sync_regs {
- #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
- #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
- #define KVM_X86_QUIRK_IGNORE_GUEST_PAT		(1 << 9)
-+#define KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (1 << 10)
- 
- #define KVM_STATE_NESTED_FORMAT_VMX	0
- #define KVM_STATE_NESTED_FORMAT_SVM	1
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3262,10 +3262,24 @@ static int nested_vmx_check_guest_state(
- 	if (CC(vmcs12->guest_cr4 & X86_CR4_CET && !(vmcs12->guest_cr0 & X86_CR0_WP)))
- 		return -EINVAL;
- 
--	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
--	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
--	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
--		return -EINVAL;
-+	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
-+		u64 debugctl = vmcs12->guest_ia32_debugctl;
-+
-+		/*
-+		 * FREEZE_IN_SMM is not virtualized, but allow L1 to set it in
-+		 * vmcs12's DEBUGCTL under a quirk for backwards compatibility.
-+		 * Note that the quirk only relaxes the consistency check.  The
-+		 * vmcc02 bit is still under the control of the host.  In
-+		 * particular, if a host administrator decides to clear the bit,
-+		 * then L1 has no say in the matter.
-+		 */
-+		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM))
-+			debugctl &= ~DEBUGCTLMSR_FREEZE_IN_SMM;
-+
-+		if (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
-+		    CC(!vmx_is_valid_debugctl(vcpu, debugctl, false)))
-+			return -EINVAL;
+ 	/*
++	 * If KASAN hardware tags are enabled, disable KFENCE, because it
++	 * does not support MTE yet.
++	 */
++	if (kasan_hw_tags_enabled()) {
++		pr_info("disabled as KASAN HW tags are enabled\n");
++		if (__kfence_pool) {
++			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
++			__kfence_pool = NULL;
++		}
++		kfence_sample_interval = 0;
++		return;
 +	}
- 
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
- 	    CC(!kvm_pat_valid(vmcs12->guest_ia32_pat)))
++
++	/*
+ 	 * If the pool has already been initialized by arch, there is no need to
+ 	 * re-allocate the memory pool.
+ 	 */
 
 
 
