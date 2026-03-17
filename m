@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEU2K3aGuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:02 +0100
+	id WL9yIFORuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D92D2AE867
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3DA2AFE0E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E286300C033
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8A6E3263C8A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F13357A4A;
-	Tue, 17 Mar 2026 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E732C29D26C;
+	Tue, 17 Mar 2026 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zto1SYcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsJgFBWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AECE2E62B7;
-	Tue, 17 Mar 2026 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A977A1E2834;
+	Tue, 17 Mar 2026 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766249; cv=none; b=pb1T1EebEg9ZnNZMraVyRqY9jemN2PQ+LWb34bSMuIdvz2epIRx66YcrRFWLzSnF7HFy7D1pI9vSM2pSgTA39OCI9iyRzBsMgFd3wwCgxdr8xI7+ZdiZdh/ObEb5H9mTOakRCm9UL4cmJ8HKX4P+THNglfT2HRPrp8kzB0MGR+Q=
+	t=1773767498; cv=none; b=kirq6yC9T5/52xYToIBm45w9XPWrqNfOuinhwFMC8ZXp+NpDy8p/UOqu6THYdwRO/XPUX0052i60E5KKb9PncGWiO94W3Wgdo+lfwd2/15Uys7XYlqRwXhQcKfMPIV3GKsG450ec01nL2VlX3kzD41YxyqJAJ8O0A7gmUdfUydE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766249; c=relaxed/simple;
-	bh=LInAmkVAznnqeAoHibBSQvK8g5BRCAGKIejXqvdMGMc=;
+	s=arc-20240116; t=1773767498; c=relaxed/simple;
+	bh=LcoKNasKSxSPayFyRCeiQ70EFivV0GCyMwkJ+HNZVIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+ZHf2tV7xeF1MW3FTM1Tv/kZSbCLCeIN4HEZvlTRGnHiimbxu3w8xUtoNICN2IueSfyLCHYJMtz2PawJxTIl6QTabWdPNvHLG+Um0FuHecr0ZVFJnkxXRk37bjakTuwo2VcSY+Mi9Iq6ozZwicmPqrYubutVA9hFtW6syMlI+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zto1SYcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE327C4CEF7;
-	Tue, 17 Mar 2026 16:50:48 +0000 (UTC)
+	 MIME-Version; b=UTzLMZ8AQEY0QR8142zt9MiVQNKzKjxADino/e3e/x9/DUpTkNL1BLCbWiWEcgcbarMpAdN+5NxtHYxsF1uiBArAi1xeTrjFDdbpRoxJAuubOP780ZOKG0OFTDoU2QKo4uIFMt4LwkcTes6Dpjk4iso/aKNLEzYl7QuOIJ73pNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsJgFBWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA7C4CEF7;
+	Tue, 17 Mar 2026 17:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766249;
-	bh=LInAmkVAznnqeAoHibBSQvK8g5BRCAGKIejXqvdMGMc=;
+	s=korg; t=1773767498;
+	bh=LcoKNasKSxSPayFyRCeiQ70EFivV0GCyMwkJ+HNZVIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zto1SYcEdxc9bp57h+gRP9x2mK4Ecb1NkaCkrAitCfQJaQKRlTS5VqJFLDF1Wrp7W
-	 eJjlyRmahD8JLMr+oYiLJv2bapT9D0/CeL5wldMjuA+AsXCZ+FvQzEaQ0wn2eCJIaj
-	 1voEJ0OM9h8PeZvI8LL3wWjyzCJ0QigLjT9WHEiw=
+	b=jsJgFBWdDAdmHRbSSMSp+EWpiKz/HHU9kKKuRssrOjgLXyIePrED2mzfSv+QiBFLT
+	 NtQvGf7Ap1hVB6oKbLcZcjVi/G6uOKHjwP6F2rROPoH25wG89vV1Q4ElZ8Q/NizAOU
+	 f5xZesFpt7yFcoGTBKTPLxN2/qTrZNLyHv7zdIwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.19 170/378] Revert "usb: gadget: f_ncm: align net_device lifecycle with bind/unbind"
+	Chintan Vankar <c-vankar@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 098/333] net: ethernet: ti: am65-cpsw-nuss: Fix rx_filter value for PTP support
 Date: Tue, 17 Mar 2026 17:32:07 +0100
-Message-ID: <20260317163013.264582950@linuxfoundation.org>
+Message-ID: <20260317163003.005381889@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226333-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226620-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,354 +89,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D92D2AE867
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: ED3DA2AFE0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Chintan Vankar <c-vankar@ti.com>
 
-commit 37893bc5de2460c543ec1aa8250c37a305234054 upstream.
+[ Upstream commit 840c9d13cb1ca96683a5307ee8e221be163a2c1e ]
 
-This reverts commit 56a512a9b4107079f68701e7d55da8507eb963d9.
+The "rx_filter" member of "hwtstamp_config" structure is an enum field and
+does not support bitwise OR combination of multiple filter values. It
+causes error while linuxptp application tries to match rx filter version.
+Fix this by storing the requested filter type in a new port field.
 
-This commit is being reverted as part of a series-wide revert.
-
-By deferring the net_device allocation to the bind() phase, a single
-function instance will spawn multiple network devices if it is symlinked
-to multiple USB configurations.
-
-This causes regressions for userspace tools (like the postmarketOS DHCP
-daemon) that rely on reading the interface name (e.g., "usb0") from
-configfs. Currently, configfs returns the template "usb%d", causing the
-userspace network setup to fail.
-
-Crucially, because this patch breaks the 1:1 mapping between the
-function instance and the network device, this naming issue cannot
-simply be patched. Configfs only exposes a single 'ifname' attribute per
-instance, making it impossible to accurately report the actual interface
-name when multiple underlying network devices can exist for that single
-instance.
-
-All configurations tied to the same function instance are meant to share
-a single network device. Revert this change to restore the 1:1 mapping
-by allocating the network device at the instance level (alloc_inst).
-
-Reported-by: David Heidelberg <david@ixit.cz>
-Closes: https://lore.kernel.org/linux-usb/70b558ea-a12e-4170-9b8e-c951131249af@ixit.cz/
-Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-3-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97248adb5a3b ("net: ti: am65-cpsw: Update hw timestamping filter for PTPv1 RX packets")
+Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Link: https://patch.msgid.link/20260310160940.109822-1-c-vankar@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |  128 ++++++++++++++++++------------------
- drivers/usb/gadget/function/u_ncm.h |    4 -
- 2 files changed, 66 insertions(+), 66 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 16 +++++++++-------
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h |  2 +-
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -83,11 +83,6 @@ static inline struct f_ncm *func_to_ncm(
- 	return container_of(f, struct f_ncm, port.func);
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 071a7c42caa9a..31d436cdceb7c 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1351,7 +1351,7 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
+ 	ndev_priv = netdev_priv(ndev);
+ 	am65_cpsw_nuss_set_offload_fwd_mark(skb, ndev_priv->offload_fwd_mark);
+ 	skb_put(skb, pkt_len);
+-	if (port->rx_ts_enabled)
++	if (port->rx_ts_filter)
+ 		am65_cpts_rx_timestamp(common->cpts, skb);
+ 	skb_mark_for_recycle(skb);
+ 	skb->protocol = eth_type_trans(skb, ndev);
+@@ -1811,11 +1811,14 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 
+ 	switch (cfg->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+-		port->rx_ts_enabled = false;
++		port->rx_ts_filter = HWTSTAMP_FILTER_NONE;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
++		port->rx_ts_filter = HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+@@ -1825,8 +1828,8 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+-		port->rx_ts_enabled = true;
+-		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		port->rx_ts_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
++		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+ 		break;
+ 	case HWTSTAMP_FILTER_ALL:
+ 	case HWTSTAMP_FILTER_SOME:
+@@ -1863,7 +1866,7 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 		ts_ctrl |= AM65_CPSW_TS_TX_ANX_ALL_EN |
+ 			   AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN;
+ 
+-	if (port->rx_ts_enabled)
++	if (port->rx_ts_filter)
+ 		ts_ctrl |= AM65_CPSW_TS_RX_ANX_ALL_EN |
+ 			   AM65_CPSW_PN_TS_CTL_RX_VLAN_LT1_EN;
+ 
+@@ -1888,8 +1891,7 @@ static int am65_cpsw_nuss_hwtstamp_get(struct net_device *ndev,
+ 	cfg->flags = 0;
+ 	cfg->tx_type = port->tx_ts_enabled ?
+ 		      HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
+-	cfg->rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
+-			HWTSTAMP_FILTER_PTP_V1_L4_EVENT : HWTSTAMP_FILTER_NONE;
++	cfg->rx_filter = port->rx_ts_filter;
+ 
+ 	return 0;
  }
- 
--static inline struct f_ncm_opts *func_to_ncm_opts(struct usb_function *f)
--{
--	return container_of(f->fi, struct f_ncm_opts, func_inst);
--}
--
- /*-------------------------------------------------------------------------*/
- 
- /*
-@@ -864,7 +859,6 @@ invalid:
- static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- {
- 	struct f_ncm		*ncm = func_to_ncm(f);
--	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
- 	struct usb_composite_dev *cdev = f->config->cdev;
- 
- 	/* Control interface has only altsetting 0 */
-@@ -887,13 +881,12 @@ static int ncm_set_alt(struct usb_functi
- 		if (alt > 1)
- 			goto fail;
- 
--		scoped_guard(mutex, &opts->lock)
--			if (opts->net) {
--				DBG(cdev, "reset ncm\n");
--				opts->net = NULL;
--				gether_disconnect(&ncm->port);
--				ncm_reset_values(ncm);
--			}
-+		if (ncm->netdev) {
-+			DBG(cdev, "reset ncm\n");
-+			ncm->netdev = NULL;
-+			gether_disconnect(&ncm->port);
-+			ncm_reset_values(ncm);
-+		}
- 
- 		/*
- 		 * CDC Network only sends data in non-default altsettings.
-@@ -926,8 +919,7 @@ static int ncm_set_alt(struct usb_functi
- 			net = gether_connect(&ncm->port);
- 			if (IS_ERR(net))
- 				return PTR_ERR(net);
--			scoped_guard(mutex, &opts->lock)
--				opts->net = net;
-+			ncm->netdev = net;
- 		}
- 
- 		spin_lock(&ncm->lock);
-@@ -1374,16 +1366,14 @@ err:
- static void ncm_disable(struct usb_function *f)
- {
- 	struct f_ncm		*ncm = func_to_ncm(f);
--	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
- 	struct usb_composite_dev *cdev = f->config->cdev;
- 
- 	DBG(cdev, "ncm deactivated\n");
- 
--	scoped_guard(mutex, &opts->lock)
--		if (opts->net) {
--			opts->net = NULL;
--			gether_disconnect(&ncm->port);
--		}
-+	if (ncm->netdev) {
-+		ncm->netdev = NULL;
-+		gether_disconnect(&ncm->port);
-+	}
- 
- 	if (ncm->notify->enabled) {
- 		usb_ep_disable(ncm->notify);
-@@ -1443,44 +1433,39 @@ static int ncm_bind(struct usb_configura
- {
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct f_ncm		*ncm = func_to_ncm(f);
--	struct f_ncm_opts	*ncm_opts = func_to_ncm_opts(f);
- 	struct usb_string	*us;
- 	int			status = 0;
- 	struct usb_ep		*ep;
-+	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
--	struct net_device		*netdev __free(free_gether_netdev) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
- 		return -EINVAL;
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	if (cdev->use_os_string) {
- 		os_desc_table = kzalloc(sizeof(*os_desc_table), GFP_KERNEL);
- 		if (!os_desc_table)
- 			return -ENOMEM;
- 	}
- 
--	netdev = gether_setup_default();
--	if (IS_ERR(netdev))
--		return -ENOMEM;
--
--	scoped_guard(mutex, &ncm_opts->lock) {
--		gether_apply_opts(netdev, &ncm_opts->net_opts);
--		netdev->mtu = ncm_opts->max_segment_size - ETH_HLEN;
-+	mutex_lock(&ncm_opts->lock);
-+	gether_set_gadget(ncm_opts->net, cdev->gadget);
-+	if (!ncm_opts->bound) {
-+		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
-+		status = gether_register_netdev(ncm_opts->net);
- 	}
-+	mutex_unlock(&ncm_opts->lock);
- 
--	gether_set_gadget(netdev, cdev->gadget);
--	status = gether_register_netdev(netdev);
- 	if (status)
- 		return status;
- 
--	/* export host's Ethernet address in CDC format */
--	status = gether_get_host_addr_cdc(netdev, ncm->ethaddr,
--					  sizeof(ncm->ethaddr));
--	if (status < 12)
--		return -EINVAL;
--	ncm_string_defs[STRING_MAC_IDX].s = ncm->ethaddr;
-+	ncm_opts->bound = true;
-+
-+	ncm_string_defs[1].s = ncm->ethaddr;
- 
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
-@@ -1578,8 +1563,6 @@ static int ncm_bind(struct usb_configura
- 		f->os_desc_n = 1;
- 	}
- 	ncm->notify_req = no_free_ptr(request);
--	ncm->netdev = no_free_ptr(netdev);
--	ncm->port.ioport = netdev_priv(ncm->netdev);
- 
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
-@@ -1594,19 +1577,19 @@ static inline struct f_ncm_opts *to_f_nc
- }
- 
- /* f_ncm_item_ops */
--USB_ETHER_OPTS_ITEM(ncm);
-+USB_ETHERNET_CONFIGFS_ITEM(ncm);
- 
- /* f_ncm_opts_dev_addr */
--USB_ETHER_OPTS_ATTR_DEV_ADDR(ncm);
-+USB_ETHERNET_CONFIGFS_ITEM_ATTR_DEV_ADDR(ncm);
- 
- /* f_ncm_opts_host_addr */
--USB_ETHER_OPTS_ATTR_HOST_ADDR(ncm);
-+USB_ETHERNET_CONFIGFS_ITEM_ATTR_HOST_ADDR(ncm);
- 
- /* f_ncm_opts_qmult */
--USB_ETHER_OPTS_ATTR_QMULT(ncm);
-+USB_ETHERNET_CONFIGFS_ITEM_ATTR_QMULT(ncm);
- 
- /* f_ncm_opts_ifname */
--USB_ETHER_OPTS_ATTR_IFNAME(ncm);
-+USB_ETHERNET_CONFIGFS_ITEM_ATTR_IFNAME(ncm);
- 
- static ssize_t ncm_opts_max_segment_size_show(struct config_item *item,
- 					      char *page)
-@@ -1672,27 +1655,34 @@ static void ncm_free_inst(struct usb_fun
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
-+	if (opts->bound)
-+		gether_cleanup(netdev_priv(opts->net));
-+	else
-+		free_netdev(opts->net);
- 	kfree(opts->ncm_interf_group);
- 	kfree(opts);
- }
- 
- static struct usb_function_instance *ncm_alloc_inst(void)
- {
--	struct usb_function_instance *ret;
-+	struct f_ncm_opts *opts;
- 	struct usb_os_desc *descs[1];
- 	char *names[1];
- 	struct config_group *ncm_interf_group;
- 
--	struct f_ncm_opts *opts __free(kfree) = kzalloc(sizeof(*opts), GFP_KERNEL);
-+	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
- 	if (!opts)
- 		return ERR_PTR(-ENOMEM);
--
--	opts->net = NULL;
- 	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
--	gether_setup_opts_default(&opts->net_opts, "usb");
- 
- 	mutex_init(&opts->lock);
- 	opts->func_inst.free_func_inst = ncm_free_inst;
-+	opts->net = gether_setup_default();
-+	if (IS_ERR(opts->net)) {
-+		struct net_device *net = opts->net;
-+		kfree(opts);
-+		return ERR_CAST(net);
-+	}
- 	opts->max_segment_size = ETH_FRAME_LEN;
- 	INIT_LIST_HEAD(&opts->ncm_os_desc.ext_prop);
- 
-@@ -1703,22 +1693,26 @@ static struct usb_function_instance *ncm
- 	ncm_interf_group =
- 		usb_os_desc_prepare_interf_dir(&opts->func_inst.group, 1, descs,
- 					       names, THIS_MODULE);
--	if (IS_ERR(ncm_interf_group))
-+	if (IS_ERR(ncm_interf_group)) {
-+		ncm_free_inst(&opts->func_inst);
- 		return ERR_CAST(ncm_interf_group);
-+	}
- 	opts->ncm_interf_group = ncm_interf_group;
- 
--	ret = &opts->func_inst;
--	retain_and_null_ptr(opts);
--	return ret;
-+	return &opts->func_inst;
- }
- 
- static void ncm_free(struct usb_function *f)
- {
--	struct f_ncm_opts *opts = func_to_ncm_opts(f);
-+	struct f_ncm *ncm;
-+	struct f_ncm_opts *opts;
- 
--	scoped_guard(mutex, &opts->lock)
--		opts->refcnt--;
--	kfree(func_to_ncm(f));
-+	ncm = func_to_ncm(f);
-+	opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+	kfree(ncm);
-+	mutex_lock(&opts->lock);
-+	opts->refcnt--;
-+	mutex_unlock(&opts->lock);
- }
- 
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
-@@ -1742,15 +1736,13 @@ static void ncm_unbind(struct usb_config
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
--
--	ncm->port.ioport = NULL;
--	gether_cleanup(netdev_priv(ncm->netdev));
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
- {
- 	struct f_ncm		*ncm;
- 	struct f_ncm_opts	*opts;
-+	int status;
- 
- 	/* allocate and initialize one new instance */
- 	ncm = kzalloc(sizeof(*ncm), GFP_KERNEL);
-@@ -1758,12 +1750,22 @@ static struct usb_function *ncm_alloc(st
- 		return ERR_PTR(-ENOMEM);
- 
- 	opts = container_of(fi, struct f_ncm_opts, func_inst);
-+	mutex_lock(&opts->lock);
-+	opts->refcnt++;
- 
--	scoped_guard(mutex, &opts->lock)
--		opts->refcnt++;
-+	/* export host's Ethernet address in CDC format */
-+	status = gether_get_host_addr_cdc(opts->net, ncm->ethaddr,
-+				      sizeof(ncm->ethaddr));
-+	if (status < 12) { /* strlen("01234567890a") */
-+		kfree(ncm);
-+		mutex_unlock(&opts->lock);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
- 	spin_lock_init(&ncm->lock);
- 	ncm_reset_values(ncm);
-+	ncm->port.ioport = netdev_priv(opts->net);
-+	mutex_unlock(&opts->lock);
- 	ncm->port.is_fixed = true;
- 	ncm->port.supports_multi_frame = true;
- 
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -15,13 +15,11 @@
- 
- #include <linux/usb/composite.h>
- 
--#include "u_ether.h"
--
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
-+	bool				bound;
- 
--	struct gether_opts		net_opts;
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
- 	char				ncm_ext_compat_id[16];
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+index 917c37e4e89bd..7750448e47468 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+@@ -52,7 +52,7 @@ struct am65_cpsw_port {
+ 	bool				disabled;
+ 	struct am65_cpsw_slave_data	slave;
+ 	bool				tx_ts_enabled;
+-	bool				rx_ts_enabled;
++	enum hwtstamp_rx_filters	rx_ts_filter;
+ 	struct am65_cpsw_qos		qos;
+ 	struct devlink_port		devlink_port;
+ 	struct bpf_prog			*xdp_prog;
+-- 
+2.51.0
+
 
 
 
