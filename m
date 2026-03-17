@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNqTBoSMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:52 +0100
+	id oFccI/yFuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5292AF3C8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 251B32AE753
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BDCD31F9532
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B60030120DC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CDD3BFE59;
-	Tue, 17 Mar 2026 17:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870E83F54BE;
+	Tue, 17 Mar 2026 16:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCx+x2UF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+nY6Udb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8503A373C18;
-	Tue, 17 Mar 2026 17:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3DA3F54B6;
+	Tue, 17 Mar 2026 16:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767295; cv=none; b=QyAmfLjbHmCCsvUHo6U4X79/kaIl1VU1Kk7yZujKSOIcJcnA0Y2gyzoMY802ZcE18O+MssTmqMl8bLq9I3gzzozZflhd6di3FUwVij3XTIvangF0v9ndOE6vxDahxlDKkCrdvsqs+eURx44eYGphfwohQegUuUi6U8xGIcG+TZ4=
+	t=1773766036; cv=none; b=Pgk8uAgcxT4DqC9SRECko33eehl0MvTVZeu6fZEHmMsTMqQ95y2cRYr4oFF6HTDXPH3Tgsx2lcgKHGYEVNlHncL+27CGKF7uUDEDiYbAf7YQZyK0zK6MeqhMSZi3tJ36jnE5AtIOOZiCxkNCkPFymUeBxymv1XZMm3RxynQjQYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767295; c=relaxed/simple;
-	bh=Bk2HK1iMyk5yO8TOenDKaEp1dT3Dve6oRp+S6LfvGhg=;
+	s=arc-20240116; t=1773766036; c=relaxed/simple;
+	bh=t2zxRUBIRIFP2lgdJQEKIFFTwUREEQ+jWiojO84Blx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gP98R8hZk1M9R6YtrypgRmbd83jHlx5+i0Ecvdhzogb1idJFxpZVNuVJLmhxXd5ivUxh+cXxfWmuPCwlWFi1T34HF7ITsgFv7628+lBQ6ylUHT8r67BGcdTdBZsCcfnppFhI3pwmktKtTRvxgGcD8KEBR0FlwbZXMYlNgIu7+c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCx+x2UF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ABCC4CEF7;
-	Tue, 17 Mar 2026 17:08:14 +0000 (UTC)
+	 MIME-Version; b=LkhVvzzZ3fAnDeqzivrnulUIaNKhM8ANPNFLmnfT5Em+QcMIqA4EFwyl6Wm2p8GylyTHS/jYvtVHLxpROIC466/NTRPd6Djqkrp1rylF4CdgwptuNdydgl9e3slplp5PWqg2iXzRwZPPJpQBYuWkB4eKpE5DMJ73wSgnPMJcU3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+nY6Udb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDE5C4CEF7;
+	Tue, 17 Mar 2026 16:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767295;
-	bh=Bk2HK1iMyk5yO8TOenDKaEp1dT3Dve6oRp+S6LfvGhg=;
+	s=korg; t=1773766036;
+	bh=t2zxRUBIRIFP2lgdJQEKIFFTwUREEQ+jWiojO84Blx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCx+x2UFGTnjy1cvCmXKjC88jBtQJfzf2X7R7E5y3ugXMijbGIcTfcSTL5NEmmg06
-	 SfjXsj18u8qUVrUgAh+ZGjNkUEszCgX65amcKKz83rwNrOPM4pkvN/kRfK2Y0aGBeB
-	 D0y2Ow2+2mbGzbCDNoD6BYg+ms1CWAQ3f8dkzEXg=
+	b=V+nY6Udbb+/cp/zwt+uqgiG+jbzbZIowCKfnLCTKGIRhzqkWmDv7uIo9avHeYRe4q
+	 DaqUIx2oMGLjnPeZiKQUfHzVNgWPi8OfYl8400dDELY+hxGcjnw8dzR5az0iNCgj6i
+	 C4dO143IarmeF+aad5d9jqxfiPsVNkIU5r4Xrf7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 056/333] serial: caif: hold tty->link reference in ldisc_open and ser_release
-Date: Tue, 17 Mar 2026 17:31:25 +0100
-Message-ID: <20260317163001.447061776@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com,
+	Alice Ryhl <aliceryhl@google.com>,
+	Gary Guo <gary@garyguo.net>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH 6.19 129/378] rust_binder: call set_notification_done() without proc lock
+Date: Tue, 17 Mar 2026 17:31:26 +0100
+Message-ID: <20260317163011.760686909@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +72,90 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226574-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226287-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 6E5292AF3C8
+	TAGGED_RCPT(0.00)[stable,c8287e65a57a89e7fb72];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,garyguo.net:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 251B32AE753
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
+commit 2e303f0febb65a434040774b793ba8356698802b upstream.
 
-A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
-when caif_serial's TX path calls tty_write_room(). The faulting access
-is on tty->link->port.
+Consider the following sequence of events on a death listener:
+1. The remote process dies and sends a BR_DEAD_BINDER message.
+2. The local process invokes the BC_CLEAR_DEATH_NOTIFICATION command.
+3. The local process then invokes the BC_DEAD_BINDER_DONE.
+Then, the kernel will reply to the BC_DEAD_BINDER_DONE command with a
+BR_CLEAR_DEATH_NOTIFICATION_DONE reply using push_work_if_looper().
 
-Hold an extra kref on tty->link for the lifetime of the caif_serial line
-discipline: get it in ldisc_open() and drop it in ser_release(), and
-also drop it on the ldisc_open() error path.
+However, this can result in a deadlock if the current thread is not a
+looper. This is because dead_binder_done() still holds the proc lock
+during set_notification_done(), which called push_work_if_looper().
+Normally, push_work_if_looper() takes the thread lock, which is fine to
+take under the proc lock. But if the current thread is not a looper,
+then it falls back to delivering the reply to the process work queue,
+which involves taking the proc lock. Since the proc lock is already
+held, this is a deadlock.
 
-With this change applied, the reproducer no longer triggers the UAF in
-my testing.
+Fix this by releasing the proc lock during set_notification_done(). It
+was not intentional that it was held during that function to begin with.
 
-Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
-Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
-Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I don't think this ever happens in Android because BC_DEAD_BINDER_DONE
+is only invoked in response to BR_DEAD_BINDER messages, and the kernel
+always delivers BR_DEAD_BINDER to a looper. So there's no scenario where
+Android userspace will call BC_DEAD_BINDER_DONE on a non-looper thread.
+
+Cc: stable <stable@kernel.org>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
+Tested-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://patch.msgid.link/20260224-binder-dead-binder-done-proc-lock-v1-1-bbe1b8a6e74a@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/caif/caif_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/android/binder/process.rs |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index b90890030751f..1873d8287bb9b 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -297,6 +297,7 @@ static void ser_release(struct work_struct *work)
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty->link);
- 			tty_kref_put(tty);
- 		}
- 		rtnl_unlock();
-@@ -331,6 +332,7 @@ static int ldisc_open(struct tty_struct *tty)
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1289,7 +1289,8 @@ impl Process {
+     }
  
- 	ser = netdev_priv(dev);
- 	ser->tty = tty_kref_get(tty);
-+	tty_kref_get(tty->link);
- 	ser->dev = dev;
- 	debugfs_init(ser, tty);
- 	tty->receive_room = 4096;
-@@ -339,6 +341,7 @@ static int ldisc_open(struct tty_struct *tty)
- 	rtnl_lock();
- 	result = register_netdevice(dev);
- 	if (result) {
-+		tty_kref_put(tty->link);
- 		tty_kref_put(tty);
- 		rtnl_unlock();
- 		free_netdev(dev);
--- 
-2.51.0
-
+     pub(crate) fn dead_binder_done(&self, cookie: u64, thread: &Thread) {
+-        if let Some(death) = self.inner.lock().pull_delivered_death(cookie) {
++        let death = self.inner.lock().pull_delivered_death(cookie);
++        if let Some(death) = death {
+             death.set_notification_done(thread);
+         }
+     }
 
 
 
