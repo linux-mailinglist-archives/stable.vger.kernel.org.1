@@ -1,161 +1,159 @@
-Return-Path: <stable+bounces-225801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFvzK+4quWmVtQEAu9opvQ
-	(envelope-from <stable+bounces-225801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:30 +0100
+	id UDuAJvUquWmVtQEAu9opvQ
+	(envelope-from <stable+bounces-225802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB2D2A7BF0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101442A7BF7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 033DB3072A46
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4985305B597
 	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904143A5424;
-	Tue, 17 Mar 2026 10:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB613A4F37;
+	Tue, 17 Mar 2026 10:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fkCP15LE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yRoEmxVM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IHDUxvmp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7113E3A5E76
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D7E3A2576;
+	Tue, 17 Mar 2026 10:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773742737; cv=none; b=a4I4zhX7QD/6rvVzNdMud7srEEQqQDgTfTDGkjHT4G7GDyKf0yu1YMkAbr7SGyw4IcC9n/A4s6zem9FZFzCDGEprk/QrTUqXxq/CaT2fI3BTlhSw5K8qctaYfmFAdIdxz7CRthJ6/BEhKCyLTkKBNrK0uPCZ0149XQZouB20Yy4=
+	t=1773742738; cv=none; b=pvIvAg/EKeev5Tz+hxfHvKseYEb5FHCBjCb1JFb+CpgJuLbs60IHgqMUz2Qz+zkmdsH8zfn/UwzEiU2xKpHspz5k4RfzuTrbByuAapnZ0SxErlpjqV8Ks2P7emaYSn3o5ur7M7oQVFt3LEvhAJVLegsiawwUC3wma83cv+Zfr1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773742737; c=relaxed/simple;
-	bh=O1KwwbQkeH+m9sbzmbA7ooBcgtVHpXC4vbD2iXTWTjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKMgZIZd0LnVBq4gzuKAP1g/abhzi/2ZCM2ocnb69jQs/6Tz/F4GufxdLTjqrSwvWXaDaL3N/2oQeCqPb1BB4m+7wMMzcLwgYvLXn+xLclWR7/e95NNRWH4G5EjiEEg84DdMBORi2GCIUCxVoBmFTT+Hap0mdoprY9w+c+9q5g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fkCP15LE; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DDD6F1A2DE6;
-	Tue, 17 Mar 2026 10:18:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A8A095FC9A;
-	Tue, 17 Mar 2026 10:18:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A2620104503AE;
-	Tue, 17 Mar 2026 11:18:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773742732; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=4431+403VgIMOFb1WnJXNwOIWwdeLzJGBbwjHIdj18M=;
-	b=fkCP15LEhQo8MK56RIRXFqlDzhkbVTelzf1BlfscgR4iwwc5mdRvPbItLYg9/oUJF7it5a
-	H8JeGJMpAdgida0koLDGy3aoxq1hRyJ0msVJ17Xap7ZutsO8ayh2+q/vVyj/wm2hcleW0D
-	Uf4ZrFNso1jSQA6/BjmQqMH8H+fl/GdpDAj+CQfVqKd3o3f5OWrlJT0n9mTisQptEOnfJw
-	OIboTUBBoHwV4VzXjrmn/RmzHz7DTut4kavbgBM5ZjH7KJKMihAxGLaHhWf9yp53HwIt/E
-	mcWAVqpqHl/Ea/rn5h/BEaK5xr3mAje7IYC5eWSyPp2jfoml0Zjps61oW/WGgw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Cheng Ming Lin <chengminglin@mxic.com.tw>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Subject: [PATCH v2] mtd: spi-nor: Fix RDCR controller capability core check
-Date: Tue, 17 Mar 2026 11:18:42 +0100
-Message-ID: <20260317101842.319656-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.51.1
+	s=arc-20240116; t=1773742738; c=relaxed/simple;
+	bh=jPnYWUdNEjc9kUZMOXRUxrepSYhE+tXXV3PPmUEzhts=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=IpPQNbcadzqRegYyMTQaQxVDsU9lJHXIaSgrzDPYhmhe+oo0n2GTsYbUnWFY1tPHEiKa0jf6bXeATJ5vDMQbe9zTCTxhqgmmhz90h7SlBH83yUggz0f3IRwnnpXkPimYTL/O+HxBXkktFIETGdxaMpQY+4lCPjnrjUJq50J6C7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yRoEmxVM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IHDUxvmp; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 17 Mar 2026 10:18:52 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1773742733;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AwtexRlYAbh2H4NdKQSY59V2rxetHEziyTG51wy+FcA=;
+	b=yRoEmxVMOhf5tixRI9lK/V3B6grfVnSgNNO9h1zMdrSwhX9vYXYkuGRtb5fw7EfxzbQZw6
+	RenloPS5y+IfyY/XdHystIS1pbrl3NXpKOIU41cdsQmmMmtGgNd6azZzwYt7snYqofwEb0
+	wSPUlBEHZBcLwqZPwNPKml0TV9vvACOUUJaTM15hll1unFn3y5D5ILYy1FqJXExPd6cgzt
+	ty6Ic0KFtiApqOzbWCE8ECfQ1uc7OQDB+jnaelM5Y+VkoaJgof/iujj4D/Omhokg15m0vb
+	1jRtwPZsmu0+yh3JCf9jEbQlsVfWySIqL6VHzkEwuiq4nKL++ySRHz+GNi2ozA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1773742733;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AwtexRlYAbh2H4NdKQSY59V2rxetHEziyTG51wy+FcA=;
+	b=IHDUxvmp6CLePqKJB1+xAH/kb2DLdo95kS67rNcmkwp/4vliD2/toSJ0Wb1FudwKAGkOL+
+	e3T00oj26NufBOAQ==
+From: "tip-bot2 for Felix Gu" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/riscv-rpmi-sysmsi: Fix mailbox channel leak
+ in rpmi_sysmsi_probe()
+Cc: Felix Gu <ustc.gu@gmail.com>, Thomas Gleixner <tglx@kernel.org>,
+ stable@vger.kernel.org, Rahul Pathak <rahul@summations.net>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com>
+References: <20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Message-ID: <177374273228.1647592.6158346179399854363.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225802-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225801-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infineon.com:email]
-X-Rspamd-Queue-Id: 2AB2D2A7BF0
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org,summations.net];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,summations.net:email]
+X-Rspamd-Queue-Id: 101442A7BF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support") adds a
-controller check to make sure the core will not use CR reads on
-controllers not supporting them. The approach is valid but the fix is
-incorrect. Unfortunately, the author could not catch it, because the
-expected behavior was met. The patch indeed drops the RDCR capability,
-but it does it for all controllers!
+The following commit has been merged into the irq/urgent branch of tip:
 
-The issue comes from the use of spi_nor_spimem_check_op() which is an
-internal helper dedicated to check read/write operations only, despite
-its generic name.
+Commit-ID:     76f0930d6e809234904cf9f0f5f42ee6c1dc694e
+Gitweb:        https://git.kernel.org/tip/76f0930d6e809234904cf9f0f5f42ee6c1d=
+c694e
+Author:        Felix Gu <ustc.gu@gmail.com>
+AuthorDate:    Sun, 15 Mar 2026 15:17:54 +08:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Tue, 17 Mar 2026 11:16:15 +01:00
 
-This helper looks for the biggest number of address bytes that can be
-used for a page operation and tries 4 then 3. It then calls the usual
-spi-mem helpers to do the checks. These will always fail because there
-is now an inconsistency: the address cycles are forced to 4 (then 3)
-bytes, but the bus width during the address cycles rightfully remains
-0. There is a non-zero address length but a zero address bus width,
-which is an invalid combination.
+irqchip/riscv-rpmi-sysmsi: Fix mailbox channel leak in rpmi_sysmsi_probe()
 
-The correct check in this case is to directly call spi_mem_supports_op()
-which doesn't messes up with the operation content.
+When riscv_acpi_get_gsi_info() fails, the mailbox channel previously
+requested via mbox_request_channel() is not freed. Add the missing
+mbox_free_channel() call to prevent the resource leak.
 
-Fixes: 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support")
+Fixes: 4752b0cfbc37 ("irqchip/riscv-rpmi-sysmsi: Add ACPI support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Acked-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Rahul Pathak <rahul@summations.net>
+Link: https://patch.msgid.link/20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com
 ---
-Changes in v2:
-* Add precisions about how it fails.
-* Collect tags.
-* Mention reads/writes instead of page reads/page writes.
----
- drivers/mtd/spi-nor/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-riscv-rpmi-sysmsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 8ffeb41c3e08..13201908a69f 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2466,7 +2466,7 @@ spi_nor_spimem_adjust_hwcaps(struct spi_nor *nor, u32 *hwcaps)
- 
- 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
- 
--		if (spi_nor_spimem_check_op(nor, &op))
-+		if (!spi_mem_supports_op(nor->spimem, &op))
- 			nor->flags |= SNOR_F_NO_READ_CR;
- 	}
- }
--- 
-2.51.1
-
+diff --git a/drivers/irqchip/irq-riscv-rpmi-sysmsi.c b/drivers/irqchip/irq-ri=
+scv-rpmi-sysmsi.c
+index 5c74c56..612f397 100644
+--- a/drivers/irqchip/irq-riscv-rpmi-sysmsi.c
++++ b/drivers/irqchip/irq-riscv-rpmi-sysmsi.c
+@@ -250,6 +250,7 @@ static int rpmi_sysmsi_probe(struct platform_device *pdev)
+ 		rc =3D riscv_acpi_get_gsi_info(fwnode, &priv->gsi_base, &id,
+ 					     &nr_irqs, NULL);
+ 		if (rc) {
++			mbox_free_channel(priv->chan);
+ 			dev_err(dev, "failed to find GSI mapping\n");
+ 			return rc;
+ 		}
 
