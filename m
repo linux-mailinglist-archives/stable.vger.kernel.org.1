@@ -1,201 +1,167 @@
-Return-Path: <stable+bounces-225829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN1AHIU9uWkowQEAu9opvQ
-	(envelope-from <stable+bounces-225829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:39:49 +0100
+	id IOi7IqU9uWkowQEAu9opvQ
+	(envelope-from <stable+bounces-225830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66642A90CA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914D32A910A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1A5A30DB80D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:34:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C6AD5308510B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AAC3B8BD0;
-	Tue, 17 Mar 2026 11:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A8934A3A2;
+	Tue, 17 Mar 2026 11:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cWZ6SAyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyH0TVM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A6D3B8938;
-	Tue, 17 Mar 2026 11:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2037633067A
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773747191; cv=none; b=c9cVF75widBOfTp+R1oPbrVRHyb1sW9huTl58zfOo/YeZ7oKu8dD0+qN4R16Tts6IMxOdJ0sMytPpkor5z8dhV+fzS3tNJE1HPGZU3qCxtxIqRnTn1ySWvCYTFW5+hvToqD2i+0UmhrxHb06/G+X68bGey2Hbw923zikMypvMsM=
+	t=1773747203; cv=none; b=ApLQJCvN8n3JJfivpM0/XOE1m/xp50ASKp7qGvJbrMl5YJQB5XvIsJltci17MVY/ZdEqk+hZukSzYoCfVlQCzZEZidYHu2F/qZcXRUjg9LOQnAKWc3lDUKHLIcenwebbvzFI/cyfdIbZpvB/2N3ryMFi9fcXbuG3tVBAhVzGmy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773747191; c=relaxed/simple;
-	bh=JEJzMC7JKr5FmW+9VFixyXgn97ExOON2VornUdb+rH8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=St3pvdQD2Kf0cbQIEHCbFgvkkvlTgkvmxQ4z3oTM+VrRPz7B1fuLDHzYCSfs/vPSrO+PxK7IlCwgQ5+2/vK46lsl8ebl8MwX3WDjfOtlnugjo0rnmceAuv04MdzQ4w1906slQe/6ADhEtFNx0hWjquh59txxZBErDgYiVuoDHZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cWZ6SAyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77846C2BCAF;
-	Tue, 17 Mar 2026 11:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773747191;
-	bh=JEJzMC7JKr5FmW+9VFixyXgn97ExOON2VornUdb+rH8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWZ6SAyxtlzmMVWmSawBqX4D8cCGzZiBDLcuzII2okY1H0aa9czXZrsO3nWQ748df
-	 1pZcu3f0k9f6v3bm0QGR0gLwA+/yE+3+lDGC41Z4gM59QpHrrvnyepb5UKjv3no65O
-	 80cVdDr58EjoRnPtuoSfrIgbx8GTZwUcJA/MU0L17eyN4eX2rGCHY0dEZkHIJH0TEl
-	 4xCANIVAq/PcvxNjcg2HDR3LhRHhM9eT16sqg2la+vmxOlmu/soDBhjqIBDhq2tFuw
-	 g/MwFGIEuH2taP46RWJg8l+cbWaHhr9KIWLgNmPrjx2ymymUH4t6444oPM2/IULN9O
-	 5amUl7DnRtZ/Q==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Uzair Mughal <contact@uzair.is-a.dev>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] ALSA: hda/realtek: Add headset jack quirk for Thinkpad X390
-Date: Tue, 17 Mar 2026 07:32:47 -0400
-Message-ID: <20260317113249.117771-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260317113249.117771-1-sashal@kernel.org>
-References: <20260317113249.117771-1-sashal@kernel.org>
+	s=arc-20240116; t=1773747203; c=relaxed/simple;
+	bh=NFitPmyIuevu2qyMFM8PhTDiHvkP5U8DuWrKl2MYlAg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XuwB4xsiey6ex0djE3z1ZdHi3E54tJxWSPuLvOyoq6gVo8dXu6MFScLqS2d3AmMupPf3NeQ0oy1iVMt9qczrugKDIaPUiSe+iTcKULzwWIbp5OCDNpWY4kkEVlXRlClr7beh2T+I0GpnzNxYnlmAMkTGUcESApr3XYKIYq4MYLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyH0TVM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458FCC4CEF7;
+	Tue, 17 Mar 2026 11:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773747202;
+	bh=NFitPmyIuevu2qyMFM8PhTDiHvkP5U8DuWrKl2MYlAg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=CyH0TVM72UQVtZMKdmzcBXKhqNG4JjEfuenDi9aVP8/crLYV0eFjZGaeVoHDum91B
+	 d8oKaCt9b/QAELcW/mtAPiJbbLnT/34lfaawKNXxLFsHa7mh68nqCCzTi+bmJnnsGB
+	 c8ZiVyr/GrfbljHQ6Sn81t6H8Q3X1hkT3rO203Uk=
+Subject: FAILED: patch "[PATCH] nouveau/gsp: drop WARN_ON in ACPI probes" failed to apply to 6.12-stable tree
+To: airlied@redhat.com,dakr@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 12:33:17 +0100
+Message-ID: <2026031717-hydrant-dreaded-5b32@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.8
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225829-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225830-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,msgid.link:url,uzair.is-a.dev:email]
-X-Rspamd-Queue-Id: E66642A90CA
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 914D32A910A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Uzair Mughal <contact@uzair.is-a.dev>
 
-[ Upstream commit 542127f6528ca7cc3cf61e1651d6ccb58495f953 ]
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The Lenovo ThinkPad X390 (ALC257 codec, subsystem ID 0x17aa2288)
-does not report headset button press events. Headphone insertion is
-detected (SW_HEADPHONE_INSERT), but pressing the inline microphone
-button on a headset produces no input events.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Add a SND_PCI_QUIRK entry that maps this subsystem ID to
-ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK, which enables
-headset jack button detection through alc_fixup_headset_jack()
-and ThinkPad ACPI integration. This is the same fixup used by
-similar ThinkPad models (P1 Gen 3, X1 Extreme Gen 3).
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9478c166c46934160135e197b049b5a05753f2ad
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031717-hydrant-dreaded-5b32@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Signed-off-by: Uzair Mughal <contact@uzair.is-a.dev>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260307012906.20093-1-contact@uzair.is-a.dev
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Possible dependencies:
 
-LLM Generated explanations, may be completely bogus:
 
-## Analysis
 
-### What the commit does
+thanks,
 
-This is a single-line addition of a `SND_PCI_QUIRK` entry for the Lenovo
-ThinkPad X390 (subsystem ID `0x17aa:0x2288`) using the ALC257 codec. It
-maps this device to the existing fixup
-`ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK`, which enables headset
-jack button detection.
+greg k-h
 
-### Bug being fixed
+------------------ original commit in Linus's tree ------------------
 
-Headset button press events are not reported on this laptop. While
-headphone insertion is detected, pressing the inline microphone button
-on a headset produces no input events — a functional defect for users.
+From 9478c166c46934160135e197b049b5a05753f2ad Mon Sep 17 00:00:00 2001
+From: Dave Airlie <airlied@redhat.com>
+Date: Thu, 21 Nov 2024 11:46:01 +1000
+Subject: [PATCH] nouveau/gsp: drop WARN_ON in ACPI probes
 
-### Stable kernel criteria
+These WARN_ONs seem to trigger a lot, and we don't seem to have a
+plan to fix them, so just drop them, as they are most likely
+harmless.
 
-- **Obviously correct**: Yes — it's a one-line quirk table entry using
-  the same fixup already applied to similar ThinkPads (P1 Gen 3 at
-  `0x22c1`, X1 Extreme Gen 3 at `0x22c2`).
-- **Fixes a real bug**: Yes — headset buttons don't work without this
-  quirk.
-- **Small and contained**: Yes — one line added to a quirk table. Zero
-  risk of regression on other hardware.
-- **No new features**: Correct — it uses an existing fixup on existing
-  driver infrastructure.
-- **Hardware quirk exception**: This falls squarely into the "audio
-  codec quirks" category explicitly listed as appropriate for stable
-  backporting.
+Cc: stable@vger.kernel.org
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20241121014601.229391-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-### Risk assessment
-
-**Minimal risk.** The change only affects the specific subsystem ID
-`0x17aa:0x2288`. It cannot affect any other hardware. The fixup chain it
-invokes (`ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK`) is already
-proven on multiple ThinkPad models in the same quirk table.
-
-### Verification
-
-- The diff shows exactly one line added in sorted order within the
-  existing `alc269_fixup_tbl[]` quirk table in
-  `sound/hda/codecs/realtek/alc269.c`.
-- The same fixup `ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK` is
-  used by entries at `0x22c1` (P1 Gen 3) and `0x22c2` (X1 Extreme Gen
-  3), both visible in the diff context — confirmed directly from the
-  patch.
-- The commit is signed off by Takashi Iwai (ALSA/HDA subsystem
-  maintainer), confirming maintainer review and acceptance.
-- The vendor ID `0x17aa` is Lenovo, consistent with ThinkPad X390.
-
-This is a textbook stable-worthy hardware quirk addition: one line, zero
-regression risk, fixes a real hardware defect for ThinkPad X390 users.
-
-**YES**
-
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 13d14c86569f9..f213f8792b01f 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7471,6 +7471,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x224c, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x224d, "Thinkpad", ALC298_FIXUP_TPT470_DOCK),
- 	SND_PCI_QUIRK(0x17aa, 0x225d, "Thinkpad T480", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x17aa, 0x2288, "Thinkpad X390", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x2292, "Thinkpad X1 Carbon 7th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22be, "Thinkpad X1 Carbon 8th", ALC285_FIXUP_THINKPAD_HEADSET_JACK),
- 	SND_PCI_QUIRK(0x17aa, 0x22c1, "Thinkpad P1 Gen 3", ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK),
--- 
-2.51.0
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+index 7fb13434c051..a575a8dbf727 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+@@ -737,8 +737,8 @@ r535_gsp_acpi_caps(acpi_handle handle, CAPS_METHOD_DATA *caps)
+ 	if (!obj)
+ 		goto done;
+ 
+-	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+-	    WARN_ON(obj->buffer.length != 4))
++	if (obj->type != ACPI_TYPE_BUFFER ||
++	    obj->buffer.length != 4)
+ 		goto done;
+ 
+ 	caps->status = 0;
+@@ -773,8 +773,8 @@ r535_gsp_acpi_jt(acpi_handle handle, JT_METHOD_DATA *jt)
+ 	if (!obj)
+ 		goto done;
+ 
+-	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+-	    WARN_ON(obj->buffer.length != 4))
++	if (obj->type != ACPI_TYPE_BUFFER ||
++	    obj->buffer.length != 4)
+ 		goto done;
+ 
+ 	jt->status = 0;
+@@ -861,8 +861,8 @@ r535_gsp_acpi_dod(acpi_handle handle, DOD_METHOD_DATA *dod)
+ 
+ 	_DOD = output.pointer;
+ 
+-	if (WARN_ON(_DOD->type != ACPI_TYPE_PACKAGE) ||
+-	    WARN_ON(_DOD->package.count > ARRAY_SIZE(dod->acpiIdList)))
++	if (_DOD->type != ACPI_TYPE_PACKAGE ||
++	    _DOD->package.count > ARRAY_SIZE(dod->acpiIdList))
+ 		return;
+ 
+ 	for (int i = 0; i < _DOD->package.count; i++) {
 
 
