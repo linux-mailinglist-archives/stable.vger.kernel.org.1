@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GDFGuWMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:29 +0100
+	id uOOMNs6FuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD66E2AF4B4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEA62AE70D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BFDF321AF82
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DFC0301FBAA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCE3357A4A;
-	Tue, 17 Mar 2026 17:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AAB3F54A6;
+	Tue, 17 Mar 2026 16:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LxLU7LL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0rdWo0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB792F60A7;
-	Tue, 17 Mar 2026 17:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9343F23DD;
+	Tue, 17 Mar 2026 16:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767334; cv=none; b=cjseYNIBNoN1Zoo0mSCT/c4whd6bjITjFoxYlQQvBSLzx4lDBY21ZAZKOa/T+pIQ1DT52O3uKygmlOzfntKF3qSMK5FyYC/N8C68o1a1cPUWZbvQULgS6YV/FziuPCM+3KnnttTP0Zjkn70qBkfPbhibBtjJBHVPOJ/qDWAD1gw=
+	t=1773766092; cv=none; b=E8w+wVnpq5Kqk/93+mgKLgsycabyru/fhaScxrC+xO3rVbqk8YUdYawZFeY4JiJqKem1GsHM0lIVoPZbOjewDdqA9spRDAk4m99bA5mQGQNLE+qNWt6iEjpCYdMuxSJd979FmyOYGQ0LeG2eBemyBjBbo5uyX8cB71KBf/gK8Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767334; c=relaxed/simple;
-	bh=1nj9BFNXSjU3guZ0EXaD4y/06q/WMIvWGnlNIEo9y7U=;
+	s=arc-20240116; t=1773766092; c=relaxed/simple;
+	bh=IX8XhHk9FuFshYtZ2mXPUWj6WRqcaVQ4bLHXuMP6LNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwqUg7gzCaIXKf1ZnqJx5qXJDurmDyMhY454EEvksiCnNmUlsV5GNL6/CV9ByxN38V14qVhUQ6vl0b04W4TMINbjYcQRiNXQqI7Hfr67Bj64zho9g7IemjrlYBdAO/LiK1czLlqiuVq+dl8I7NMilOPGxs7ag4zc6auEuxPkaB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LxLU7LL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD1BC4CEF7;
-	Tue, 17 Mar 2026 17:08:53 +0000 (UTC)
+	 MIME-Version; b=aZkO4S5733E18flu5Ma0m4lYM8SKDr8OigGUEOvXYQv+F9cVwmg+DxXkWiCRM+qQV8wDCRBO61nRs4BoEvb0h+ewr/4aR56e+wqWQlLduCikx+oDVZ+rNigbmdHumsa+f7HySgHRWrVoRJSTJZm8M6/yNhN4qewksFAwBlWn0sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0rdWo0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EEC4CEF7;
+	Tue, 17 Mar 2026 16:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767334;
-	bh=1nj9BFNXSjU3guZ0EXaD4y/06q/WMIvWGnlNIEo9y7U=;
+	s=korg; t=1773766092;
+	bh=IX8XhHk9FuFshYtZ2mXPUWj6WRqcaVQ4bLHXuMP6LNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LxLU7LLpMJsOsL2gGtCwzn+skqv0c1yqVuywQHF5CryZhglnzRgfCwnW6nXCroSy
-	 m3vnIch94ALFI61XWuwVWuRAoCX1mjEvf6y5Zt4QHlvySVr9Pjsym5jyR/xdSIZx2h
-	 6EVdBSOYXNo9O71O7EpOSX1+X02w2zMXDc5P/M/o=
+	b=S0rdWo0xLErtOt+TKGWiMLnIpp7RvBPqFBWwSSiGK+IbUuXi37SSUvlspXbs4bYhj
+	 mnU9Q8ei/wcHvoJrLCDL+hdDVf8Q0NtAMnmeBhL3dClp1OZelDAvWheTYHKHFIEZBj
+	 gOa7OB5qfC5mvYLD52ZI78UdubrWdUVi4lwgEjGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/333] amd-xgbe: fix link status handling in xgbe_rx_adaptation
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.19 135/378] KVM: arm64: Fix protected mode handling of pages larger than 4kB
 Date: Tue, 17 Mar 2026 17:31:32 +0100
-Message-ID: <20260317163001.707192073@linuxfoundation.org>
+Message-ID: <20260317163011.982006007@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226583-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226299-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,76 +86,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: DD66E2AF4B4
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ADEA62AE70D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 6485cb96be5cd0f4bf39554737ba11322cc9b053 ]
+commit 08f97454b7fa39bfcf82524955c771d2d693d6fe upstream.
 
-The link status bit is latched low to allow detection of momentary
-link drops. If the status indicates that the link is already down,
-read it again to obtain the current state.
+Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
+pKVM tracks the memory that has been mapped into a guest in a
+side data structure. Crucially, it uses it to find out whether
+a page has already been mapped, and therefore refuses to map it
+twice. So far, so good.
 
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-2-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, this very patch completely breaks non-4kB page support,
+with guests being unable to boot. The most obvious symptom is that
+we take the same fault repeatedly, and not making forward progress.
+A quick investigation shows that this is because of the above
+rejection code.
+
+As it turns out, there are multiple issues at play:
+
+- while the HPFAR_EL2 register gives you the faulting IPA minus
+  the bottom 12 bits, it will still give you the extra bits that
+  are part of the page offset for anything larger than 4kB,
+  even for a level-3 mapping
+
+- pkvm_pgtable_stage2_map() assumes that the address passed as
+  a parameter is aligned to the size of the intended mapping
+
+- the faulting address is only aligned for a non-page mapping
+
+When the planets are suitably aligned (pun intended), the guest
+faults on a page by accessing it past the bottom 4kB, and extra bits
+get set in the HPFAR_EL2 register. If this results in a page mapping
+(which is likely with large granule sizes), nothing aligns it further
+down, and pkvm_mapping_iter_first() finds an intersection that
+doesn't really exist. We assume this is a spurious fault and return
+-EAGAIN. And again...
+
+This doesn't hit outside of the protected code, as the page table
+code always aligns the IPA down to a page boundary, hiding the issue
+for everyone else.
+
+Fix it by always forcing the alignment on vma_pagesize, irrespective
+of the value of vma_pagesize.
+
+Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://https://patch.msgid.link/20260222141000.3084258-1-maz@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/mmu.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 450a573960e7a..92cb061c90ebc 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -1941,7 +1941,7 @@ static void xgbe_set_rx_adap_mode(struct xgbe_prv_data *pdata,
- static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
- {
- 	struct xgbe_phy_data *phy_data = pdata->phy_data;
--	unsigned int reg;
-+	int reg;
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1753,14 +1753,12 @@ static int user_mem_abort(struct kvm_vcp
+ 	}
  
- 	/* step 2: force PCS to send RX_ADAPT Req to PHY */
- 	XMDIO_WRITE_BITS(pdata, MDIO_MMD_PMAPMD, MDIO_PMA_RX_EQ_CTRL4,
-@@ -1963,11 +1963,20 @@ static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
+ 	/*
+-	 * Both the canonical IPA and fault IPA must be hugepage-aligned to
+-	 * ensure we find the right PFN and lay down the mapping in the right
+-	 * place.
++	 * Both the canonical IPA and fault IPA must be aligned to the
++	 * mapping size to ensure we find the right PFN and lay down the
++	 * mapping in the right place.
+ 	 */
+-	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
+-		fault_ipa &= ~(vma_pagesize - 1);
+-		ipa &= ~(vma_pagesize - 1);
+-	}
++	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
++	ipa = ALIGN_DOWN(ipa, vma_pagesize);
  
- 	/* Step 4: Check for Block lock */
- 
--	/* Link status is latched low, so read once to clear
--	 * and then read again to get current state
--	 */
--	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
- 	reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+	if (reg < 0)
-+		goto set_mode;
-+
-+	/* Link status is latched low so that momentary link drops
-+	 * can be detected. If link was already down read again
-+	 * to get the latest state.
-+	 */
-+	if (!pdata->phy.link && !(reg & MDIO_STAT1_LSTATUS)) {
-+		reg = XMDIO_READ(pdata, MDIO_MMD_PCS, MDIO_STAT1);
-+		if (reg < 0)
-+			goto set_mode;
-+	}
-+
- 	if (reg & MDIO_STAT1_LSTATUS) {
- 		/* If the block lock is found, update the helpers
- 		 * and declare the link up
--- 
-2.51.0
-
+ 	gfn = ipa >> PAGE_SHIFT;
+ 	mte_allowed = kvm_vma_mte_allowed(vma);
 
 
 
