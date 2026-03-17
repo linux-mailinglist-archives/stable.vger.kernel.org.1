@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-226595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFdaHvaLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:30 +0100
+	id 2GxYF7+HuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236B22AF2A6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6D12AEA81
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1CA2C309C450
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBBA73049271
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8C33F880E;
-	Tue, 17 Mar 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CD83F23C7;
+	Tue, 17 Mar 2026 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kk8zIP35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb13A0pR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8B23F65FC;
-	Tue, 17 Mar 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2A73F23BF;
+	Tue, 17 Mar 2026 16:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767389; cv=none; b=PbmUTK4PMi8c8jPGTwyTIXaplhGiyEMW3C/m1DRLIFEYH215GN4r8D+qnNIKuYvHhwk2i3gg81dojsAfJgQCkjQF5Wk0OwM4NRbHQW9MOGhI9W0JWJTnb9C1NKT2AxY4sOqQJCjOPan5fngQnGtN2gp8epsiznA6a3XoGC1WwjM=
+	t=1773766010; cv=none; b=P4vck+oSaw9CJyZKlvfn23S55lt0UhWUG1q7T7zFHgaqjswEQwurWwhj8EJRsGE/z+ysDi1stYEOMUKg4k8N0M3badXD8p27mEwlxsl5ICs+lV/6PwAY3hscS50n6mf0VCzbODFoTAEjWGuoB/AGRm/tR31qhN4PkCFTfELEu2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767389; c=relaxed/simple;
-	bh=SquOo5i7H2IaPJ4aOyWyLPc3j3T0EHM/Mn89pFneAQQ=;
+	s=arc-20240116; t=1773766010; c=relaxed/simple;
+	bh=8K/GtWjbLIZ401ULQQKI54G/4LDswNruLDtScETX5PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rClpQpecCLWc9Q/MzSi51DUkbg5HFLpRgwRKIKfwfQeeAhN4b2JthYfrlEJC2fx3zOPpmEmFSVaG/ne2dBH9Jn2Nwdxh6iR1cAseF5QduHFHFuPWuCZLV0/UgJzwKY+vEvLe3693e0FXnCy8zMDimZvNDVCvZNHwJjpPE7ulR+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kk8zIP35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175F4C19424;
-	Tue, 17 Mar 2026 17:09:48 +0000 (UTC)
+	 MIME-Version; b=X797B+l9VnHBCI+YZSS7mFe6CAvQe8lgT6JVm/X+UpCgALis0WP9SwVmT5YbDp9YtUPgC23aDxG9Ethk83nv0+8n2tAp0G2jI5lydh5DrUwcDeQ80+IZcpwYjTYG9KUTwESC8/inLTKrLgqQ/2sgPQ75LqPm8//EXWlfx7orAyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb13A0pR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1A9C4CEF7;
+	Tue, 17 Mar 2026 16:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767389;
-	bh=SquOo5i7H2IaPJ4aOyWyLPc3j3T0EHM/Mn89pFneAQQ=;
+	s=korg; t=1773766009;
+	bh=8K/GtWjbLIZ401ULQQKI54G/4LDswNruLDtScETX5PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kk8zIP3505cah5lg2g5D0XVgt+0FpK/wznmRv1cEXUm6sLcPjECnxIak0adboZ0/F
-	 B3P2N6buVP0qoqyE/DlJiEVd/bDUD5RmP0c0peadRimqqBHs0RcZYGOB/xL2+hfrUw
-	 6geh8URN9mmuSNxV0QtlSsjuh49qe+ImvAcf9LdA=
+	b=wb13A0pRfbETsG92GPsoqCunAc+uvV4lc60T18wxopazD55ApSeP2NcvSa/gWuaSg
+	 SgLyVNmMT1l1h8K+j7olSNBzJY1fnosbFByhd5qIYAliL18jBN1YjbECydv2u0P/U7
+	 PDdzemjarV+HGFacxggzc1J1rFgJbT8ueZfS5Pqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 077/333] perf ftrace: Fix hashmap__new() error checking
-Date: Tue, 17 Mar 2026 17:31:46 +0100
-Message-ID: <20260317163002.231620260@linuxfoundation.org>
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 150/378] usb: misc: uss720: properly clean up reference in uss720_probe()
+Date: Tue, 17 Mar 2026 17:31:47 +0100
+Message-ID: <20260317163012.531457338@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,20 +66,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226281-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226595-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -98,73 +87,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,iscas.ac.cn:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: 236B22AF2A6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: CE6D12AEA81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit be34705aa527872e5ce83927b7bc9307ba8095ca ]
+commit 45dba8011efac11a2f360383221b541f5ea53ce5 upstream.
 
-The hashmap__new() function never returns NULL, it returns error
-pointers. Fix the error checking to match.
+If get_1284_register() fails, the usb device reference count is
+incorrect and needs to be properly dropped before returning.  That will
+happen when the kref is dropped in the call to destroy_priv(), so jump
+to that error path instead of returning directly.
 
-Additionally, set ftrace->profile_hash to NULL on error, and return the
-exact error code from hashmap__new().
-
-Fixes: 0f223813edd051a5 ("perf ftrace: Add 'profile' command")
-Suggested-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Link: https://patch.msgid.link/2026022342-smokiness-stove-d792@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-ftrace.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/misc/uss720.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index 6b6eec65f93f5..4cc33452d79b6 100644
---- a/tools/perf/builtin-ftrace.c
-+++ b/tools/perf/builtin-ftrace.c
-@@ -18,6 +18,7 @@
- #include <poll.h>
- #include <ctype.h>
- #include <linux/capability.h>
-+#include <linux/err.h>
- #include <linux/string.h>
- #include <sys/stat.h>
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -736,7 +736,7 @@ static int uss720_probe(struct usb_inter
+ 	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
+ 	if (ret < 0)
+-		return ret;
++		goto probe_abort;
  
-@@ -1209,8 +1210,12 @@ static int prepare_func_profile(struct perf_ftrace *ftrace)
- 	ftrace->graph_verbose = 0;
- 
- 	ftrace->profile_hash = hashmap__new(profile_hash, profile_equal, NULL);
--	if (ftrace->profile_hash == NULL)
--		return -ENOMEM;
-+	if (IS_ERR(ftrace->profile_hash)) {
-+		int err = PTR_ERR(ftrace->profile_hash);
-+
-+		ftrace->profile_hash = NULL;
-+		return err;
-+	}
- 
- 	return 0;
- }
--- 
-2.51.0
-
+ 	ret = usb_find_last_int_in_endpoint(interface, &epd);
+ 	if (!ret) {
 
 
 
