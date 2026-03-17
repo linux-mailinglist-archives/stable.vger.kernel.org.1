@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-226781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP+QIoqTuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:50 +0100
+	id MAtLLhKIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB022B01F3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A81C2AEB3D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 997823368667
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77A9B3040FE7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872C237B01C;
-	Tue, 17 Mar 2026 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF473F0778;
+	Tue, 17 Mar 2026 16:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKO/nKPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Atf4ByIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AF836493D;
-	Tue, 17 Mar 2026 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36FB3F54B8;
+	Tue, 17 Mar 2026 16:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768173; cv=none; b=prQ8hOOOeFgNbGhgRwZhNAlg7+KhF5zfpC+P8iewE8hnwvUpi3OBjxn/83U2Y2y7S0TFJiTbUrmowByNSDBO/gkWnA72NmGn173eb3fAMQ42uXvZrhWM2clBgQAUDI6xM8CFamP5bGA5PeJaqNYf5wvbb0t15rYCFXMkC+iY5/w=
+	t=1773766633; cv=none; b=Usw87qRjW1PeU2ygpV/2h5dMVbWWXpmC6v5CCR4/gvgKIXc8pQEK2rXtjpYhrUciA9/Eu1psYNd8WaWLsfcPza2RbywXxLNzX4ulji4+X9EYD6kaUpcveSb/7FCQxXrhtRUKT417DR1715LXm1WGRF/Xy9zhn9/extP0L1XHcC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768173; c=relaxed/simple;
-	bh=6AgH7eB16jnOFyN3cYGVIV6oUpmt2xE/KWEB75Kb5gg=;
+	s=arc-20240116; t=1773766633; c=relaxed/simple;
+	bh=kJBcu3hVyXcpBcpBTddZP+6NC0Ry3e8b7yapqhyAAaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpFeS16bZ8aHi2PP1Uab17oBavtzSFsPlVBVd2Si+lNQo9v/FbpZOVXoqNqOaOL1ojZaWvn+Jru0vu7MSPPRhP85LqqPGOb+h2YLy67Zf+aPFiBbjvrV/1eHjvkTlDeQNpMJq+lQrKtBkT8+5T07nVw/FGJlLHlQn7sLH5AL1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKO/nKPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92631C4CEF7;
-	Tue, 17 Mar 2026 17:22:52 +0000 (UTC)
+	 MIME-Version; b=Qm2GVkzQRJgA32dyZXUUgcsf+RrYrmQWLb7Ca9aogpPbyrRSX3NB8NXNWn/tmjfjcFxeP6Ayo8g9XJkaAJ74VnFsLuQfD+FH8IUi8PZgKRh3GDoxj/wor367mcakR3ee/QvVj5v8+q6Xh+FgHgVV3lzvy1m2NYxKu0GjG1GBGGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Atf4ByIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32295C4CEF7;
+	Tue, 17 Mar 2026 16:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768173;
-	bh=6AgH7eB16jnOFyN3cYGVIV6oUpmt2xE/KWEB75Kb5gg=;
+	s=korg; t=1773766632;
+	bh=kJBcu3hVyXcpBcpBTddZP+6NC0Ry3e8b7yapqhyAAaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKO/nKPTmBkFoE5M9/p2zsI11SM68eFanrWd6/+mX5U+v3AlTlhtk/rnTM7A7PuGL
-	 f01XvGmCxGhhQx4YP+BP/mmVl5y6F4AbV+CkcekWrvpAeeGAM3tArVLO35zdTBN/4F
-	 e2k0AhjH5I1aGHMULh9NUWfDyyDPKTgBirBhNxZM=
+	b=Atf4ByIp/Qv3sYY7fPnCjCtvAJK+T4Bcy0KVthtxvv7TSkxfb3wgTvQ1ZNaaGlV7H
+	 JtLLu/kKd5z4Q1OtkpC72X528Jcj7JpwrGS854Kta3/zfmk7k9okZDR/6/m9dTs2QN
+	 2qcJcdm3LvATjYZzQCrsMh6NVBajq6roTUG/bT2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ariel Silver <arielsilver77@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.18 215/333] media: dvb-net: fix OOB access in ULE extension header tables
-Date: Tue, 17 Mar 2026 17:34:04 +0100
-Message-ID: <20260317163007.337311528@linuxfoundation.org>
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Hao Li <hao.li@linux.dev>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH 6.19 288/378] slab: distinguish lock and trylock for sheaf_flush_main()
+Date: Tue, 17 Mar 2026 17:34:05 +0100
+Message-ID: <20260317163017.606702276@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +66,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226781-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226421-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2EB022B01F3
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,oracle.com:email,msgid.link:url,suse.cz:email]
+X-Rspamd-Queue-Id: 5A81C2AEB3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ariel Silver <arielsilver77@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit 24d87712727a5017ad142d63940589a36cd25647 upstream.
+commit 48647d3f9a644d1e81af6558102d43cdb260597b upstream.
 
-The ule_mandatory_ext_handlers[] and ule_optional_ext_handlers[] tables
-in handle_one_ule_extension() are declared with 255 elements (valid
-indices 0-254), but the index htype is derived from network-controlled
-data as (ule_sndu_type & 0x00FF), giving a range of 0-255. When
-htype equals 255, an out-of-bounds read occurs on the function pointer
-table, and the OOB value may be called as a function pointer.
+sheaf_flush_main() can be called from __pcs_replace_full_main() where
+it's fine if the trylock fails, and pcs_flush_all() where it's not
+expected to and for some flush callers (when destroying the cache or
+memory hotremove) it would be actually a problem if it failed and left
+the main sheaf not flushed. The flush callers can however safely use
+local_lock() instead of trylock.
 
-Add a bounds check on htype against the array size before either table
-is accessed. Out-of-range values now cause the SNDU to be discarded.
+The trylock failure should not happen in practice on !PREEMPT_RT, but
+can happen on PREEMPT_RT. The impact is limited in practice because when
+a trylock fails in the kmem_cache_destroy() path, it means someone is
+using the cache while destroying it, which is a bug on its own. The memory
+hotremove path is unlikely to be employed in a production RT config, but
+it's possible.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Ariel Silver <arielsilver77@gmail.com>
-Signed-off-by: Ariel Silver <arielsilver77@gmail.com>
+To fix this, split the function into sheaf_flush_main() (using
+local_lock()) and sheaf_try_flush_main() (using local_trylock()) where
+both call __sheaf_flush_main_batch() to flush a single batch of objects.
+This will also allow lockdep to verify our context assumptions.
+
+The problem was raised in an off-list question by Marcelo.
+
+Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reported-by: Marcelo Tosatti <mtosatti@redhat.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Link: https://patch.msgid.link/20260211-b4-sheaf-flush-v1-1-4e7f492f0055@suse.cz
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_net.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/slub.c |   47 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
---- a/drivers/media/dvb-core/dvb_net.c
-+++ b/drivers/media/dvb-core/dvb_net.c
-@@ -228,6 +228,9 @@ static int handle_one_ule_extension( str
- 	unsigned char hlen = (p->ule_sndu_type & 0x0700) >> 8;
- 	unsigned char htype = p->ule_sndu_type & 0x00FF;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2730,19 +2730,19 @@ static void __kmem_cache_free_bulk(struc
+  * object pointers are moved to a on-stack array under the lock. To bound the
+  * stack usage, limit each batch to PCS_BATCH_MAX.
+  *
+- * returns true if at least partially flushed
++ * Must be called with s->cpu_sheaves->lock locked, returns with the lock
++ * unlocked.
++ *
++ * Returns how many objects are remaining to be flushed
+  */
+-static bool sheaf_flush_main(struct kmem_cache *s)
++static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s)
+ {
+ 	struct slub_percpu_sheaves *pcs;
+ 	unsigned int batch, remaining;
+ 	void *objects[PCS_BATCH_MAX];
+ 	struct slab_sheaf *sheaf;
+-	bool ret = false;
  
-+	if (htype >= ARRAY_SIZE(ule_mandatory_ext_handlers))
-+		return -1;
+-next_batch:
+-	if (!local_trylock(&s->cpu_sheaves->lock))
+-		return ret;
++	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	pcs = this_cpu_ptr(s->cpu_sheaves);
+ 	sheaf = pcs->main;
+@@ -2760,10 +2760,37 @@ next_batch:
+ 
+ 	stat_add(s, SHEAF_FLUSH, batch);
+ 
+-	ret = true;
++	return remaining;
++}
+ 
+-	if (remaining)
+-		goto next_batch;
++static void sheaf_flush_main(struct kmem_cache *s)
++{
++	unsigned int remaining;
 +
- 	/* Discriminate mandatory and optional extension headers. */
- 	if (hlen == 0) {
- 		/* Mandatory extension header */
++	do {
++		local_lock(&s->cpu_sheaves->lock);
++
++		remaining = __sheaf_flush_main_batch(s);
++
++	} while (remaining);
++}
++
++/*
++ * Returns true if the main sheaf was at least partially flushed.
++ */
++static bool sheaf_try_flush_main(struct kmem_cache *s)
++{
++	unsigned int remaining;
++	bool ret = false;
++
++	do {
++		if (!local_trylock(&s->cpu_sheaves->lock))
++			return ret;
++
++		ret = true;
++		remaining = __sheaf_flush_main_batch(s);
++
++	} while (remaining);
+ 
+ 	return ret;
+ }
+@@ -6215,7 +6242,7 @@ alloc_empty:
+ 	if (put_fail)
+ 		 stat(s, BARN_PUT_FAIL);
+ 
+-	if (!sheaf_flush_main(s))
++	if (!sheaf_try_flush_main(s))
+ 		return NULL;
+ 
+ 	if (!local_trylock(&s->cpu_sheaves->lock))
 
 
 
