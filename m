@@ -1,68 +1,70 @@
-Return-Path: <stable+bounces-225858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCGdBjJAuWkowQEAu9opvQ
-	(envelope-from <stable+bounces-225858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:51:14 +0100
+	id sBhKM5tAuWmB9QEAu9opvQ
+	(envelope-from <stable+bounces-225859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:52:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B555B2A93DB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:51:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33F92A9449
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1023F3025E09
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6BDD30388AE
 	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF883B19CF;
-	Tue, 17 Mar 2026 11:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CAF3B4EA8;
+	Tue, 17 Mar 2026 11:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/MJX3Io"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjxuhn+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9E53B19C7
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7F33B3BF0
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773748257; cv=none; b=WvclT7rltI2n/IK8Z3deybtjPGvhVnTqkQMqhHLeo2YIdoFVBiHiyf5Ma4QidSaR+A3HnE2q7mWq4F0+Yra8hTDkaz8wEliJbgOe9n+nEKavjMVfscJfQLMmRmkWeMe0DuzTzROeLWqtwIBJ4jBMJxu2H42bZ7ia/GGw6JMFtzg=
+	t=1773748258; cv=none; b=o+GSZ5W+DbVtrRAABpCIAGOpRN2h+Va3C+4ba4GHz2kbcEG0yVNymbAHH5cBaHUrq32gyQqC++q+dar5CccwE3gVIg1AumZ+YOLS0RLUYWScx0mMN0d4DnNV3EdPVCqlOA9RSKiN1NpjLJ1LAvutVSnGZEQ+CwjDbUmbwHYGc2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773748257; c=relaxed/simple;
-	bh=Ha3Ahw2465uwgqbd3xurkD/M13tKFu2NbrEkSPH6XD4=;
+	s=arc-20240116; t=1773748258; c=relaxed/simple;
+	bh=QVZxWUvyeHggkOVf9TUf/5gSOXj4Q6wVTHhbFkbnodU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odeaCoX88Dcsfh4ieMYwH2h46uJstzfH7vpQ4OWrMiC+0KjY5PanOyLBWkuonAiOG/AP57ChyDUVVPJAVQcXvMewZUnqZWRMYk1+jtwg9wHyxVWAaHYmm0Mfdn+gE58m2AINj8ublZlIW/fway5HhXH4g/UZjcc0L+tQ80xM2b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/MJX3Io; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68F2C4CEF7;
-	Tue, 17 Mar 2026 11:50:55 +0000 (UTC)
+	 MIME-Version; b=qfiVko3Sdn6p3KE1Q14+p1RC1gcijOiaJx3E5DUHt8E3HyGLNrKqApsKtcV15dGw3/it2SCFdCLrX2cICuVi8GF66dwcVM/VsnfHhA5br4xaxUNsVS0lZX3CNBAPy9NGfwjwa1PkoBqfmsL9BVel2PMxtGsoLrvivw3q/T2d5jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjxuhn+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC96C2BCB1;
+	Tue, 17 Mar 2026 11:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773748257;
-	bh=Ha3Ahw2465uwgqbd3xurkD/M13tKFu2NbrEkSPH6XD4=;
+	s=k20201202; t=1773748258;
+	bh=QVZxWUvyeHggkOVf9TUf/5gSOXj4Q6wVTHhbFkbnodU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/MJX3Io660WYlUgROeksOxOkqMG4mtRGI/RXt2GQwgDq3EmU6/mLMXCporUKdhSr
-	 aiX6Jj+bNnpjKVuLalaQ8EWGwek4AbgFVjcyQn+5ENZJpUlFgZrtOu09yovFSuSj0W
-	 O+pmcGtDS9JiJ0LBI1B4Oy7yNeW8XpJpFW+Lww6O0E/qZCyeiQNjrCgDoOhuoUaPEc
-	 u2vw89iVBD6zsU77YPlnZCoxZ+R0gGLcAWQIC/onGgv+WKz136pg/nDhukKi9wySHH
-	 2eADK3d1yE5HrSeP7seXd+cv+qZks4gfSAlqxhlcwATHBax08KeFMN3ryU5T3oYNk5
-	 VgkPI9sfwUFfg==
+	b=hjxuhn+SaXYI27o2wxLTfpqNy1gNVF/IjNhU3b8GX8BoAv9UAkafWOXNeOMxS7CnK
+	 pUH29wMt7wNLoq12rYc/W/4en3d36PEY6dTio03NNzD2oCKEz03wGG953MjCQgrR/8
+	 pvfUXnKkTZTuAECGscXnIVWTWmoX6RWoVdRgh5p4pnRRwLgJ/+F7+eut0PpKdutTNn
+	 1kuzu5JqoIRkLXao1wYZMnUMqhza8fhWbEzWycb/K58TluI1/ACDOnB+U7/G4yWlc4
+	 +VklsDlJiOQacqgFhsnh1WrJcYk8+E+GggG3v8hykdXCbc0WEEyIFRImgG2zP/ps6n
+	 HdH7kdPzw0UdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
+Cc: David Hildenbrand <david@redhat.com>,
 	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Muchun Song <songmuchun@bytedance.com>,
-	William Kucharski <william.kucharski@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/4] mm/page_alloc: move set_page_refcounted() to callers of post_alloc_hook()
-Date: Tue, 17 Mar 2026 07:50:51 -0400
-Message-ID: <20260317115054.127467-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/4] mm/page_alloc: sort out the alloc_contig_range() gfp flags mess
+Date: Tue, 17 Mar 2026 07:50:52 -0400
+Message-ID: <20260317115054.127467-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031724-slimness-shell-ed87@gregkh>
+In-Reply-To: <20260317115054.127467-1-sashal@kernel.org>
 References: <2026031724-slimness-shell-ed87@gregkh>
+ <20260317115054.127467-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,14 +79,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[infradead.org,huawei.com,nvidia.com,redhat.com,suse.cz,gmail.com,techsingularity.net,bytedance.com,oracle.com,linux-foundation.org,kernel.org];
+	FREEMAIL_CC(0.00)[redhat.com,nvidia.com,suse.cz,suse.de,csgroup.eu,linux.ibm.com,ellerman.id.au,kernel.org,gmail.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-225858-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-225859-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -97,100 +99,138 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,linux-foundation.org:email,infradead.org:email,bytedance.com:email]
-X-Rspamd-Queue-Id: B555B2A93DB
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,suse.cz:email,linux-foundation.org:email,suse.de:email,csgroup.eu:email,ellerman.id.au:email]
+X-Rspamd-Queue-Id: D33F92A9449
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 8fd10a892a8db797fffb59a9a60bce23a56eef46 ]
+[ Upstream commit f6037a4a686523dee1967ef7620349822e019ff8 ]
 
-In preparation for allocating frozen pages, stop initialising the page
-refcount in post_alloc_hook().
+It's all a bit complicated for alloc_contig_range().  For example, we
+don't support many flags, so let's start bailing out on unsupported ones
+-- ignoring the placement hints, as we are already given the range to
+allocate.
 
-Link: https://lkml.kernel.org/r/20241125210149.2976098-5-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
+While we currently set cc.gfp_mask, in __alloc_contig_migrate_range() we
+simply create yet another GFP mask whereby we ignore the reclaim flags
+specify by the caller.  That looks very inconsistent.
+
+Let's clean it up, constructing the gfp flags used for
+compaction/migration exactly once.  Update the documentation of the
+gfp_mask parameter for alloc_contig_range() and alloc_contig_pages().
+
+Link: https://lkml.kernel.org/r/20241203094732.200195-5-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: William Kucharski <william.kucharski@oracle.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: d155aab90fff ("mm/kfence: fix KASAN hardware tag faults during late enablement")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/compaction.c | 2 ++
- mm/internal.h   | 3 +--
- mm/page_alloc.c | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ mm/page_alloc.c | 48 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index eb5474dea04d9..66032064387ef 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -83,6 +83,7 @@ static inline bool is_via_compact_memory(int order) { return false; }
- static struct page *mark_allocated_noprof(struct page *page, unsigned int order, gfp_t gfp_flags)
- {
- 	post_alloc_hook(page, order, __GFP_MOVABLE);
-+	set_page_refcounted(page);
- 	return page;
- }
- #define mark_allocated(...)	alloc_hooks(mark_allocated_noprof(__VA_ARGS__))
-@@ -1869,6 +1870,7 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
- 	dst = (struct folio *)freepage;
- 
- 	post_alloc_hook(&dst->page, order, __GFP_MOVABLE);
-+	set_page_refcounted(&dst->page);
- 	if (order)
- 		prep_compound_page(&dst->page, order);
- 	cc->nr_freepages -= 1 << order;
-diff --git a/mm/internal.h b/mm/internal.h
-index 9e0577413087c..b7b942767c702 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -729,8 +729,7 @@ static inline void prep_compound_tail(struct page *head, int tail_idx)
- 
- extern void prep_compound_page(struct page *page, unsigned int order);
- 
--extern void post_alloc_hook(struct page *page, unsigned int order,
--					gfp_t gfp_flags);
-+void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
- extern bool free_pages_prepare(struct page *page, unsigned int order);
- 
- extern int user_min_free_kbytes;
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 4282c9d0a5ddd..0bd0784952386 100644
+index 0bd0784952386..0a0497a3d1109 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -1542,7 +1542,6 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	int i;
+@@ -6509,7 +6509,7 @@ int __alloc_contig_migrate_range(struct compact_control *cc,
+ 	int ret = 0;
+ 	struct migration_target_control mtc = {
+ 		.nid = zone_to_nid(cc->zone),
+-		.gfp_mask = GFP_USER | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL,
++		.gfp_mask = cc->gfp_mask,
+ 		.reason = MR_CONTIG_RANGE,
+ 	};
+ 	struct page *page;
+@@ -6605,6 +6605,39 @@ static void split_free_pages(struct list_head *list)
+ 	}
+ }
  
- 	set_page_private(page, 0);
--	set_page_refcounted(page);
++static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
++{
++	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
++	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
++	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
++
++	/*
++	 * We are given the range to allocate; node, mobility and placement
++	 * hints are irrelevant at this point. We'll simply ignore them.
++	 */
++	gfp_mask &= ~(GFP_ZONEMASK | __GFP_RECLAIMABLE | __GFP_WRITE |
++		      __GFP_HARDWALL | __GFP_THISNODE | __GFP_MOVABLE);
++
++	/*
++	 * We only support most reclaim flags (but not NOFAIL/NORETRY), and
++	 * selected action flags.
++	 */
++	if (gfp_mask & ~(reclaim_mask | action_mask))
++		return -EINVAL;
++
++	/*
++	 * Flags to control page compaction/migration/reclaim, to free up our
++	 * page range. Migratable pages are movable, __GFP_MOVABLE is implied
++	 * for them.
++	 *
++	 * Traditionally we always had __GFP_HARDWALL|__GFP_RETRY_MAYFAIL set,
++	 * keep doing that to not degrade callers.
++	 */
++	*gfp_cc_mask = (gfp_mask & (reclaim_mask | cc_action_mask)) |
++			__GFP_HARDWALL | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL;
++	return 0;
++}
++
+ /**
+  * alloc_contig_range() -- tries to allocate given range of pages
+  * @start:	start PFN to allocate
+@@ -6613,7 +6646,9 @@ static void split_free_pages(struct list_head *list)
+  *			#MIGRATE_MOVABLE or #MIGRATE_CMA).  All pageblocks
+  *			in range must have the same migratetype and it must
+  *			be either of the two.
+- * @gfp_mask:	GFP mask to use during compaction
++ * @gfp_mask:	GFP mask. Node/zone/placement hints are ignored; only some
++ *		action and reclaim modifiers are supported. Reclaim modifiers
++ *		control allocation behavior during compaction/migration/reclaim.
+  *
+  * The PFN range does not have to be pageblock aligned. The PFN range must
+  * belong to a single zone.
+@@ -6639,11 +6674,14 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
+ 		.mode = MIGRATE_SYNC,
+ 		.ignore_skip_hint = true,
+ 		.no_set_skip_hint = true,
+-		.gfp_mask = current_gfp_context(gfp_mask),
+ 		.alloc_contig = true,
+ 	};
+ 	INIT_LIST_HEAD(&cc.migratepages);
  
- 	arch_alloc_page(page, order);
- 	debug_pagealloc_map_pages(page, 1 << order);
-@@ -1598,6 +1597,7 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
- 							unsigned int alloc_flags)
- {
- 	post_alloc_hook(page, order, gfp_flags);
-+	set_page_refcounted(page);
- 
- 	if (order && (gfp_flags & __GFP_COMP))
- 		prep_compound_page(page, order);
-@@ -6591,6 +6591,7 @@ static void split_free_pages(struct list_head *list)
- 			int i;
- 
- 			post_alloc_hook(page, order, __GFP_MOVABLE);
-+			set_page_refcounted(page);
- 			if (!order)
- 				continue;
- 
++	gfp_mask = current_gfp_context(gfp_mask);
++	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
++		return -EINVAL;
++
+ 	/*
+ 	 * What we do here is we mark all pageblocks in range as
+ 	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
+@@ -6785,7 +6823,9 @@ static bool zone_spans_last_pfn(const struct zone *zone,
+ /**
+  * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
+  * @nr_pages:	Number of contiguous pages to allocate
+- * @gfp_mask:	GFP mask to limit search and used during compaction
++ * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
++ *		action and reclaim modifiers are supported. Reclaim modifiers
++ *		control allocation behavior during compaction/migration/reclaim.
+  * @nid:	Target node
+  * @nodemask:	Mask for other possible nodes
+  *
 -- 
 2.51.0
 
