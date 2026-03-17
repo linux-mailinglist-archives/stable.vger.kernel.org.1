@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKmoOtGNuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:25 +0100
+	id qJZRM9mGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9254C2AF70C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9553F2AE918
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6502630480CD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 332FC303E160
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BB7333745;
-	Tue, 17 Mar 2026 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9D13F65E1;
+	Tue, 17 Mar 2026 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2/Fq07O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1tQmEx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0632D5940;
-	Tue, 17 Mar 2026 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAB63F54DC;
+	Tue, 17 Mar 2026 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767746; cv=none; b=SO3M9pZfB5dh4CeV/vPutAGnZ1lw7C9MbnYcBwRxCMS3dBau0EugiyNniIj3/T9YtpxUAAj69F3JLNdiRj9X2POq5B0BgjEO4GOop0qAv9Wod9kqT2DlcvV/TE+mokccNwupnb/ZK6Tv1TPgh9eSKKj7uYOLE0DKIzABqR9vBic=
+	t=1773766334; cv=none; b=Ut+T5qUT7Dk+fR3ccSohXyQpgrI55lgAAvLsmXNUDLIWeZmtfkI5uOELRlFR8QCo19h0JBLcTB9HhbDyKAibLB9/fbANleBPl/BMrRJXrnzXy0iE8Mplp8aHNvOaZ5i2AlnXtFTa034BlO/t/wMkA0NSgnxjMujS8VEH3B92tbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767746; c=relaxed/simple;
-	bh=GYbqnQbQXyg99WdztuOkujBGHJldDlbiBvDYLtCoTC0=;
+	s=arc-20240116; t=1773766334; c=relaxed/simple;
+	bh=EwqpOrOrrz8vo6g/yCZasGGu8T48+Y4Jq7N73XitQQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6fkrV7BYs3QCTJpbZy+fYyHvKzSh4y3hfsvI7a3fyQF7LQ87DMbBS9pxNwdicQcavBHy/vDDdXHNsXXA9qzDqA9YR67/JqDaisw3coUFayl2XscTtoC4nrauDN6L13G77eFJxLROGVxQhcFusC0Kl+a9JGwBQg+MVod55q/3hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2/Fq07O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497EEC4CEF7;
-	Tue, 17 Mar 2026 17:15:44 +0000 (UTC)
+	 MIME-Version; b=W5hFdW4vRKj5KwM76mDx7XNY1jIVw05eCDDPiG1sARGoUSU3ehS6DVoA5cKtvodo5N1i+MdUzp9FW95l3RVCWFmCcwG7qgKqKMPaAthPYthZlSEUJ5NIVKCHQDWas89rO5hHhlOA0O/Qp3WynkUYpnEwdNFUjv5lszHgkFNyw9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1tQmEx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03948C19424;
+	Tue, 17 Mar 2026 16:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767746;
-	bh=GYbqnQbQXyg99WdztuOkujBGHJldDlbiBvDYLtCoTC0=;
+	s=korg; t=1773766334;
+	bh=EwqpOrOrrz8vo6g/yCZasGGu8T48+Y4Jq7N73XitQQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2/Fq07OuJQhNPbwxNcPDtg8pHgjO+KWa9/ICEyfcMY5uOzgxkN0fleqoTyrPHfPP
-	 /pDIe6q3VJmilKapb6jhi5KOBV4oxqHFxglMYGPK3ZpALIq2VYJkR3G3W2CXrbf1Ln
-	 DkaYKpicHTTNpwGgsSc6UpkwoIvuOA/vr/Hf1IPU=
+	b=x1tQmEx8Fg6DuWKA1sMNHC040sBWID4hKjcu2Js4vvDI3FlprNdZ0EFL7wZQcUlJj
+	 vS+ArrGWe77gNW8/9VNll6YB3Q8Vpku0ECLkruzPk5rjiw8KiLrF1diff50oUbJ2S3
+	 jfNyI5JxED92ZL9Q4OwMWkz6KnfyE+KLE5QncOEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	kernel test robot <oliver.sang@intel.com>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.18 149/333] usb: legacy: ncm: Fix NPE in gncm_bind
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.19 221/378] ipmi:si: Dont block module unload if the BMC is messed up
 Date: Tue, 17 Mar 2026 17:32:58 +0100
-Message-ID: <20260317163004.882994028@linuxfoundation.org>
+Message-ID: <20260317163015.141249585@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226670-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226354-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,88 +86,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 9254C2AF70C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,minyard.net:email]
+X-Rspamd-Queue-Id: 9553F2AE918
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit fde0634ad9856b3943a2d1a8cc8de174a63ac840 upstream.
+commit f895e5df80316a308c2f7d64d13a78494630ea05 upstream.
 
-Commit 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle
-with bind/unbind") deferred the allocation of the net_device. This
-change leads to a NULL pointer dereference in the legacy NCM driver as
-it attempts to access the net_device before it's fully instantiated.
+If the BMC is in a bad state, don't bother waiting for queues messages
+since there can't be any.  Otherwise the unload is blocked until the
+BMC is back in a good state.
 
-Store the provided qmult, host_addr, and dev_addr into the struct
-ncm_opts->net_opts during gncm_bind(). These values will be properly
-applied to the net_device when it is allocated and configured later in
-the binding process by the NCM function driver.
-
-Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
-Cc: stable@kernel.org
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202602181727.fd76c561-lkp@intel.com
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260221-legacy-ncm-v2-1-dfb891d76507@google.com
+Reported-by: Rafael J. Wysocki <rafael@kernel.org>
+Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
+Cc: stable@vger.kernel.org # 4.18
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/legacy/ncm.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/legacy/ncm.c b/drivers/usb/gadget/legacy/ncm.c
-index 0f1b45e3abd1..e8d565534053 100644
---- a/drivers/usb/gadget/legacy/ncm.c
-+++ b/drivers/usb/gadget/legacy/ncm.c
-@@ -15,8 +15,10 @@
- /* #define DEBUG */
- /* #define VERBOSE_DEBUG */
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -2226,7 +2226,8 @@ static void wait_msg_processed(struct sm
+ 	unsigned long jiffies_now;
+ 	long time_diff;
  
-+#include <linux/hex.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/string.h>
- #include <linux/usb/composite.h>
- 
- #include "u_ether.h"
-@@ -129,6 +131,7 @@ static int gncm_bind(struct usb_composite_dev *cdev)
- 	struct usb_gadget	*gadget = cdev->gadget;
- 	struct f_ncm_opts	*ncm_opts;
- 	int			status;
-+	u8			mac[ETH_ALEN];
- 
- 	f_ncm_inst = usb_get_function_instance("ncm");
- 	if (IS_ERR(f_ncm_inst))
-@@ -136,11 +139,15 @@ static int gncm_bind(struct usb_composite_dev *cdev)
- 
- 	ncm_opts = container_of(f_ncm_inst, struct f_ncm_opts, func_inst);
- 
--	gether_set_qmult(ncm_opts->net, qmult);
--	if (!gether_set_host_addr(ncm_opts->net, host_addr))
-+	ncm_opts->net_opts.qmult = qmult;
-+	if (host_addr && mac_pton(host_addr, mac)) {
-+		memcpy(&ncm_opts->net_opts.host_mac, mac, ETH_ALEN);
- 		pr_info("using host ethernet address: %s", host_addr);
--	if (!gether_set_dev_addr(ncm_opts->net, dev_addr))
-+	}
-+	if (dev_addr && mac_pton(dev_addr, mac)) {
-+		memcpy(&ncm_opts->net_opts.dev_mac, mac, ETH_ALEN);
- 		pr_info("using self ethernet address: %s", dev_addr);
-+	}
- 
- 	/* Allocate string descriptor numbers ... note that string
- 	 * contents can be overridden by the composite_dev glue.
--- 
-2.53.0
-
+-	while (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL)) {
++	while (smi_info->si_state != SI_HOSED &&
++		    (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL))) {
+ 		jiffies_now = jiffies;
+ 		time_diff = (((long)jiffies_now - (long)smi_info->last_timeout_jiffies)
+ 		     * SI_USEC_PER_JIFFY);
 
 
 
