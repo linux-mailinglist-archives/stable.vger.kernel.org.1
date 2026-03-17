@@ -1,204 +1,157 @@
-Return-Path: <stable+bounces-226917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCrPD9jPuWmMOAIAu9opvQ
-	(envelope-from <stable+bounces-226917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 23:04:08 +0100
+	id 6OBNL53TuWkqOQIAu9opvQ
+	(envelope-from <stable+bounces-226918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 23:20:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B17C2B2E66
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 23:04:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5762B30DA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 23:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0037B302E93F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:03:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E6F693060CFA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBE33176E4;
-	Tue, 17 Mar 2026 22:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247DC395D85;
+	Tue, 17 Mar 2026 22:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gdrR6vxf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0YgK7gH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0712116F4
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 22:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98FD393DC8
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 22:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773785007; cv=none; b=gZGstrtEIfpaqCPpgmk77tCje9TEUo3SpHb/VkS8XoFJrdrfdveQTvUwspRM8XaBf1l7tfcNdodfHiwAmBZxrU2/ZZhGymLmb44riPnh6Q9mkPggi72YNedBWz8+WNX6D6cvyGPY5ANwWBshqyXIZVXZOQ6w/EW3y0vOgMLrISM=
+	t=1773786006; cv=none; b=cigGhvn8sssWoLynBC8ei8m2SBk47OqKZLUl56QMMOwDmGua4OHkhkrohS0gRCJ1x/p1oODDNHAoXjn6wTbKOOj4ix+6kG+lHPs6tUD15d3zUm32nGcO9yHin8s8Pup3NdIpfNr0MOgkSHCGmnWWKh5NqOiw+SX23+DLvhTinLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773785007; c=relaxed/simple;
-	bh=oU3OVhNKPZI6FrfLf4b3tz8GEz5wRhmrq2qNQQUyCnY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tqpJV5gGXk1cK09F56mPhFcJFNBMMpmPaHFGxsAA9Bf+MJ2Hg3lILBjmn533GH2212sUcKFMeS41tWj1Q/SxHHimUcvEW4wESTFB02AdZxKKzCyTuoS7+AAcFpYPyFBi3Mrgk5SnyQNH0BODHjYy/lDKFLxgx/1Cxp+9Iydm9iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gdrR6vxf; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4868e691614so7461345e9.1
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 15:03:26 -0700 (PDT)
+	s=arc-20240116; t=1773786006; c=relaxed/simple;
+	bh=y/EmYIg0gRmVkSyOE3fKWNsZUImGNsUyuRa0ygA4/YM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cAd1R+kuP3OHPh0MjRVmPDXPBznT5sdsbg4YcnVVpT0yWYUAoESWhHYxChQDXOQh9NSsrvLfUPhsAkzeordmLCzEa7Qcs7jvTIcxOkkrxPCEiqpNIE0adzOMq+ZK9h5kSCE8GLhtVfHzc+HEAFA9Wnvbx5M2ayqXrIlsDFYxNQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0YgK7gH; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b4520f6b32so9003891eec.0
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 15:20:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773785004; x=1774389804; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=a5ROHSj5Kev7hvsbjDyb4mWRpxoAV8o5zFiVg3Mbgk4=;
-        b=gdrR6vxfLZs4p3VvRvGjUtPXUtp/vwYI8n613Zm0GD/pNpF/fdVOHepVTYl1eob9cv
-         HqNcsPBiNM8fMvtjBAukkYICIz3asFzoO3Ha7JEudG56wmD1F6VpZfAu/nciwt+M0geC
-         FpQg1FapsGDEXRAw31rf1kifY+p/k0J7nQwZZiYDHyNcTOnMmfq9VfmAZTunCq6Vwpyo
-         HMwRxn1qqdQwGr4Og+Yo9yK59gEtqz1oUeW3w3lOPQfi6Vo/6f48XkooDBx/n3OpdFpB
-         SaY+W6eKeupMVd3N9qIP8Hji1ba3fF6TGBeMYFli6eKHBoysLoTL5dsIE31zMkgBec3Q
-         0QbA==
+        d=gmail.com; s=20230601; t=1773786005; x=1774390805; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/yPZOqi1ryUibCEpvsqKM4HgGM7evfo9zGBJ9SdBBPQ=;
+        b=W0YgK7gHc/sgaz4Yujm3o8Qs3rDhg6AVp+xfKH/+UQB8pJ3oUxrYBgAgLPXoAQDC4V
+         vsebvbJTRoGOMXztaJeMjYdooCeoQHTEDkY3ugSHgvOHeQbqQDRFh7MLb6vlIpZHPc2Z
+         YBeDCnGb0dHt3yevD4VqOhE8cWiQ9d1qNgo8GRhKDbGvzhKRLfIy5dChhqtZIaVL6bOF
+         QEHfKD+sG0clVFqvGwC3Aq6Mpt2a2apsZsYi3JlBgbXXrO+SYE1M09UmQR5nlpE80ria
+         QucN9fBBj8vmcvTcOiiuaAtvFVlDICjmMfMIYTUfrJsfir3+PrhMpSmhXgasdrIuySLX
+         o4Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773785004; x=1774389804;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a5ROHSj5Kev7hvsbjDyb4mWRpxoAV8o5zFiVg3Mbgk4=;
-        b=d1sXfOdyhyqkUukYqxXIutTHT8WR7q7f4LerGlYfKyr4Vcf38sDjixaKQG8S7Dh8yk
-         ycWQ/FfWK98KwQThUpwv+z6hr0qM4j6OQ/mAoxyp8JXYh2p8MTTEwkSuiW+X+jt71oGk
-         eS+ApoRqBR+WiDKA6f+MrXI6EvsBPS/iw54dB6QO5fEdSPUdSnwtgYm4rvLKaNFfiukJ
-         TSRPD21XR3kyS5LITiXQfS3fol3TbMTUZwLq0H8iO/SgaXcPNdMqHUHhgobpqGXbiKMQ
-         PFzyC8DJuG4nFgivtM+WifdIgE8b1p67n1s6SkyshfncXU12hRT4JP9+HXUYFvrckV0U
-         IOKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJVq6LcuJA/RuEWeVlcUnVRUpheVBoCK+aoErgX9IvGsy/wty+2KVqafhu8qjpIRHYpmhhVQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvV1Ylde9DG9M9GFTFd0gUcIsbx4Cxtpq0HMAhkZEjug0+ZFqq
-	3KthQ+X/1XLM29gOY6wxiYBI1eX6R0QeahLZ418+POc1qCL0H41JEGGnXGn80kYL5boOKB4nNcq
-	3EMkSPA==
-X-Received: from wmpo21.prod.google.com ([2002:a05:600c:3395:b0:483:b1c6:5b34])
- (user=nogikh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3514:b0:485:3a03:ced1
- with SMTP id 5b1f17b1804b1-486f458107fmr19079455e9.28.1773785004419; Tue, 17
- Mar 2026 15:03:24 -0700 (PDT)
-Date: Tue, 17 Mar 2026 23:03:19 +0100
+        d=1e100.net; s=20251104; t=1773786005; x=1774390805;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/yPZOqi1ryUibCEpvsqKM4HgGM7evfo9zGBJ9SdBBPQ=;
+        b=OMl3aJ/Y2Iy+QIdLlO8wX+I4ZUar2IyrTmbykBRi0r/pWtYU3twPabha2B43hLTIEq
+         XORs5lv2wXPp9yN8FQxfRz29FfnB0XWJHphfMbX1q6NtjMrXFUfpaqm5a3vKIBeZgxxf
+         vL+9P8mapvK/Sla20Hd/kDj/lijEdWTut2UEYiFM2LNecvvxf7LvsrZnuxXkf62cWOiS
+         qPzWZwYhYfBZwuELHs2bOFINGcoDH4jJMnWGXDj4VxBL59GNxWiC6O2LrObRRFwT9tet
+         Ddov6PBwR/OJxk2O4Eim+jRZsAP5u2WhKEfA9lIhXdEfJcsNmLvRLZj1DiymsKVOlQ2f
+         JziA==
+X-Forwarded-Encrypted: i=1; AJvYcCXsDs2GyEn+oJapeCDg+agncbXU5jjJTSiFP+58pVcCaPSLEu0PmfILFHEoSSmX92U160i0d4Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgqrEA9ShtN3lTHd7xTZwwcP1FTp7v7r/UyIbyx/J5rAIKdSOm
+	Y4/uUONM219d8WlE5ozyZAWG3llF9mgN8REarOoAZut3gX1PoNdUmUp4
+X-Gm-Gg: ATEYQzxTtaAtMYWixSJT6NE/USom6nNS4vEj5qJoww++nhublGjhwlKSpKCg98k2ZjY
+	NUMS1tndsv3bwUASfVwkH/X/LFHF/jiCWqc+LDEQMT8A/KctkQUnyEDcUeefbCccnWrgk3x/ml8
+	EU2DeGMtHvkuiSexVVp1d5mJpmyxbg/siQHi9GMFn9wQfRL9m3Rggu8mGr8TLK4SaJiAdQvSRPo
+	1Dctb8Xac6FZHF6Q+SpaysYsBf5wbY0jio8h4/uovLTY0jw3S8T7jmDvKMtiYkT3jFUwW1H6kwY
+	nUrATLBnwCe2umFko4SH9MtP4iU31Ma24F95IojJNIVZaC3OIIW3CyShIZKoHzR5N62jK2r9G9V
+	PLrdmLn1Gpa0r4Q1LaA7GDoi95GE3iFkk0TuWUCqsd4sfUn8zn96RkDYxbzwa0Qywj7qmjzwGiq
+	m38jW053hDsVK54RusB6KGsPS/yNPo0D0V1DB66HwAZEt/cDM=
+X-Received: by 2002:a05:7022:90e:b0:128:ca90:32e2 with SMTP id a92af1059eb24-1299ba8b9a6mr586674c88.7.1773786004776;
+        Tue, 17 Mar 2026 15:20:04 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c0e5583533sm1291913eec.18.2026.03.17.15.20.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 15:20:04 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 17 Mar 2026 15:20:03 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"vasileios.amoiridis@cern.ch" <vasileios.amoiridis@cern.ch>,
+	"leo.yang.sy0@gmail.com" <leo.yang.sy0@gmail.com>,
+	"wensheng@yeah.net" <wensheng@yeah.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/5] hwmon: (pmbus/hac300s) Add error check for
+ pmbus_read_word_data() return value
+Message-ID: <8aec79cb-3884-4aa2-870f-6e136f6fb373@roeck-us.net>
+References: <20260317173308.382545-1-sanman.pradhan@hpe.com>
+ <20260317173308.382545-2-sanman.pradhan@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
-Message-ID: <20260317220319.788561-1-nogikh@google.com>
-Subject: [PATCH v2] x86/kexec: Disable KCOV instrumentation after load_segments()
-From: Aleksandr Nogikh <nogikh@google.com>
-To: bp@alien8.de, tglx@kernel.org, mingo@redhat.com
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, dvyukov@google.com, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	Aleksandr Nogikh <nogikh@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.66 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317173308.382545-2-sanman.pradhan@hpe.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226917-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,cern.ch,gmail.com,yeah.net,juniper.net];
+	TAGGED_FROM(0.00)[bounces-226918-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[google.com:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nogikh@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[roeck-us.net];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 8B17C2B2E66
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3C5762B30DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The load_segments() function changes segment registers, invalidating
-GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-enabled, any subsequent instrumented C code call (e.g.
-native_gdt_invalidate()) begins crashing the kernel in an endless
-loop.
+On Tue, Mar 17, 2026 at 05:36:53PM +0000, Pradhan, Sanman wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+> 
+> hac300s_read_word_data() passes the return value of pmbus_read_word_data()
+> directly to FIELD_GET() without checking for errors. If the I2C transaction
+> fails, a negative error code is sign-extended and passed to FIELD_GET(),
+> which silently produces garbage data instead of propagating the error.
+> 
+> Add the missing error check before using the return value in
+> the FIELD_GET() macro.
+> 
+> Fixes: 669cf162f7a1 ("hwmon: Add support for HiTRON HAC300S PSU")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
 
-To reproduce the problem, it's sufficient to do kexec on a
-KCOV-instrumented kernel:
-$ kexec -l /boot/otherKernel
-$ kexec -e
+Applied.
 
-The real-world context for this problem is enabling crash dump
-collection in syzkaller. For this, the tool loads a panic kernel
-before fuzzing and then calls makedumpfile after the panic. This
-workflow requires both CONFIG_KEXEC and CONFIG_KCOV to be enabled
-simultaneously.
-
-Adding safeguards directly to the KCOV fast-path
-(__sanitizer_cov_trace_pc()) is also undesirable as it would
-introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too
-fragile, so let's fix the bug by disabling KCOV instrumentation for
-the entire machine_kexec_64.c and physaddr.c. If coverage-guided
-fuzzing ever needs these components in the future, we should consider
-other approaches.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
-supported there.
-
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Cc: stable@vger.kernel.org
----
-v2:
-Updated the comments to explain the underlying context.
-
-v1:
-https://lore.kernel.org/all/20260216173716.2279847-1-nogikh@google.com/
----
- arch/x86/kernel/Makefile | 10 ++++++++++
- arch/x86/mm/Makefile     | 10 ++++++++++
- 2 files changed, 20 insertions(+)
-
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index e9aeeeafad173..41b1333907ded 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -43,6 +43,16 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
- KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), we could either
-+# selectively disable KCOV instrumentation, which can be fragile, or add
-+# more checks to KCOV, which would slow it down.
-+# As a compromise solution, let's disable KCOV instrumentation for the
-+# whole file. If its coverage is ever needed, we should consider other
-+# approaches.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
- 
- CFLAGS_head32.o := -fno-stack-protector
- CFLAGS_head64.o := -fno-stack-protector
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 5b9908f13dcfd..ea3a31b54e49e 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -4,6 +4,16 @@ KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), we could either
-+# selectively disable KCOV instrumentation, which can be fragile, or add
-+# more checks to KCOV, which would slow it down.
-+# As a compromise solution, let's disable KCOV instrumentation for the
-+# whole file. If its coverage is ever needed, we should consider other
-+# approaches.
-+KCOV_INSTRUMENT_physaddr.o		:= n
- 
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
-
-base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
--- 
-2.53.0.959.g497ff81fa9-goog
-
+Thanks,
+Guenter
 
