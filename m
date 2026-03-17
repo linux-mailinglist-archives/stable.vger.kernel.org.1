@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPFoGV+GuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:39 +0100
+	id sBtgEGCMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4162AE841
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2EF2AF385
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12EA2303F89A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FC1C318763B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C953ED5C7;
-	Tue, 17 Mar 2026 16:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3614C3E8C49;
+	Tue, 17 Mar 2026 17:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJcPBonF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIieQ/6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E703A382E;
-	Tue, 17 Mar 2026 16:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22ED3F54CE;
+	Tue, 17 Mar 2026 17:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765910; cv=none; b=phwiVeWQl37GD/PAMXyTZ+Yakrv7Rxr4w++TCW74a1w2bivlv2H8diadYkm6VIKFa9B8RXaCzawN/99V5mp46WOvFvGOiIyAUAQWdTUyHLwsW9/2yZNYZxYWGk95MBY2yI0MI1zXaUfkbLfYapgIZmeGC94F5yT9F5/GsKD8T1w=
+	t=1773767262; cv=none; b=bCUEU+dFCQ0J+I2k0SGpRdSY697d65w9DChpxWTxFRmpdZeVVYgYINsZkDVfVFSzUpzaJRdui5DjPPoZmHO8eUNvORoizDOGzPbCWPjTiutWr+i82iy6mRedfzWzMSVqI7/EGasqF2DdMJoSTsqmm3NCoad5qJVTPQ30301n1k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765910; c=relaxed/simple;
-	bh=41Sg/kd00Y63cadcorkQ12WwDBJypQDSenwVd9/pEas=;
+	s=arc-20240116; t=1773767262; c=relaxed/simple;
+	bh=UtGECo4WoArlV4ZaaYM6d+Nun27+AtL9qddXEvL9fPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKeAo6Ih9idWJb6/+k03mvm0tupslUSDX33vuMS2f6Ceb0GGK+xoQNHH5UHNioDtJJakQbawdXvuchyhtle2OhKjOjg/eUAwjUTaA1jxCoK0Dx2DoivmzrGWPZ3bWWtWHSZ0nAaK49nYQyl9FibodZvAZ9Cpip59WdcSKJ5OfOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJcPBonF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10307C4CEF7;
-	Tue, 17 Mar 2026 16:45:09 +0000 (UTC)
+	 MIME-Version; b=JRjILuEgMk27stfjpvNpEyMWcwpHRagtDe7w9XEVreZS1f16WqYXQoU8wGX36AKM+GDws6jg8w/Xwc8qV0nUDhpOf/UuE45Vfih3L3RVlDmOTWNCN9qc7sqkREsy7XFOO9YRYyvvDVoyEvNg/v9W8xW2asy6MKYerSPqFznJ/vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIieQ/6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1F1C19424;
+	Tue, 17 Mar 2026 17:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765910;
-	bh=41Sg/kd00Y63cadcorkQ12WwDBJypQDSenwVd9/pEas=;
+	s=korg; t=1773767262;
+	bh=UtGECo4WoArlV4ZaaYM6d+Nun27+AtL9qddXEvL9fPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJcPBonFpAe4nEk6QpRlgzBhfNBLP000JuUjIzfldZxY8IUf6FXm1lKM7wEZoD0YN
-	 HwVOnCm8LJc8tubxEK5MYZfVPJizrP4VmfbObKtuI4HeyFxZ73smkZG6k2fasNQajG
-	 ttLEOCHwsZnfb0I/JG8enxw4N2ffqIJy54h7ophA=
+	b=FIieQ/6nPM2qpWD0TobeMQqPIH2P3kCCOF1A4SRxHBJyppRgXA54TrJDWAGHZg+Oo
+	 +REWw2oI4+cqm7c6lXCQX3ousk4oe3VSem7J1KeOIrxWT9WzEGGoA6QDtc//1+LrWd
+	 LltLFWgauoHiOzxFpIN5ejxEk+qRvG03F0teKWCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 122/378] net: usb: lan78xx: fix TX byte statistics for small packets
+	Felix Gu <ustc.gu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 050/333] spi: amlogic: spifc-a4: Fix DMA mapping error handling
 Date: Tue, 17 Mar 2026 17:31:19 +0100
-Message-ID: <20260317163011.505452408@linuxfoundation.org>
+Message-ID: <20260317163001.221620827@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226254-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226567-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7E4162AE841
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3D2EF2AF385
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 50988747c30df47b73b787f234f746027cb7ec6c upstream.
+[ Upstream commit b20b437666e1cb26a7c499d1664e8f2a0ac67000 ]
 
-Account for hardware auto-padding in TX byte counters to reflect actual
-wire traffic.
+Fix three bugs in aml_sfc_dma_buffer_setup() error paths:
+1. Unnecessary goto: When the first DMA mapping (sfc->daddr) fails,
+   nothing needs cleanup. Use direct return instead of goto.
+2. Double-unmap bug: When info DMA mapping failed, the code would
+   unmap sfc->daddr inline, then fall through to out_map_data which
+   would unmap it again, causing a double-unmap.
+3. Wrong unmap size: The out_map_info label used datalen instead of
+   infolen when unmapping sfc->iaddr, which could lead to incorrect
+   DMA sync behavior.
 
-The LAN7850 hardware automatically pads undersized frames to the minimum
-Ethernet frame length (ETH_ZLEN, 60 bytes). However, the driver tracks
-the network statistics based on the unpadded socket buffer length. This
-results in the tx_bytes counter under-reporting the actual physical
-bytes placed on the Ethernet wire for small packets (like short ARP or
-ICMP requests).
-
-Use max_t() to ensure the transmission statistics accurately account for
-the hardware-generated padding.
-
-Fixes: d383216a7efe ("lan78xx: Introduce Tx URB processing improvements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260305143429.530909-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4670db6f32e9 ("spi: amlogic: add driver for Amlogic SPI Flash Controller")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://patch.msgid.link/20260306-spifc-a4-v1-1-f22c9965f64a@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-amlogic-spifc-a4.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4178,7 +4178,7 @@ static struct skb_data *lan78xx_tx_buf_f
+diff --git a/drivers/spi/spi-amlogic-spifc-a4.c b/drivers/spi/spi-amlogic-spifc-a4.c
+index 35a7c4965e113..f324aa39a8976 100644
+--- a/drivers/spi/spi-amlogic-spifc-a4.c
++++ b/drivers/spi/spi-amlogic-spifc-a4.c
+@@ -411,7 +411,7 @@ static int aml_sfc_dma_buffer_setup(struct aml_sfc *sfc, void *databuf,
+ 	ret = dma_mapping_error(sfc->dev, sfc->daddr);
+ 	if (ret) {
+ 		dev_err(sfc->dev, "DMA mapping error\n");
+-		goto out_map_data;
++		return ret;
+ 	}
+ 
+ 	cmd = CMD_DATA_ADDRL(sfc->daddr);
+@@ -429,7 +429,6 @@ static int aml_sfc_dma_buffer_setup(struct aml_sfc *sfc, void *databuf,
+ 		ret = dma_mapping_error(sfc->dev, sfc->iaddr);
+ 		if (ret) {
+ 			dev_err(sfc->dev, "DMA mapping error\n");
+-			dma_unmap_single(sfc->dev, sfc->daddr, datalen, dir);
+ 			goto out_map_data;
  		}
  
- 		tx_data += len;
--		entry->length += len;
-+		entry->length += max_t(unsigned int, len, ETH_ZLEN);
- 		entry->num_of_packet += skb_shinfo(skb)->gso_segs ?: 1;
+@@ -448,7 +447,7 @@ static int aml_sfc_dma_buffer_setup(struct aml_sfc *sfc, void *databuf,
+ 	return 0;
  
- 		dev_kfree_skb_any(skb);
+ out_map_info:
+-	dma_unmap_single(sfc->dev, sfc->iaddr, datalen, dir);
++	dma_unmap_single(sfc->dev, sfc->iaddr, infolen, dir);
+ out_map_data:
+ 	dma_unmap_single(sfc->dev, sfc->daddr, datalen, dir);
+ 
+-- 
+2.51.0
+
 
 
 
