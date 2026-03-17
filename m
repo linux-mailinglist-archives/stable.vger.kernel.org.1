@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAifA02PuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:45 +0100
+	id uBFGCXWVuWlcKwIAu9opvQ
+	(envelope-from <stable+bounces-226803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D722AFA3F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B29E2B0584
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D450A31C3202
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03A6B30DCAE0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691FA377EDD;
-	Tue, 17 Mar 2026 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C716F320CCF;
+	Tue, 17 Mar 2026 17:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBROw1rX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GVBLW02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C43A1ACEDE;
-	Tue, 17 Mar 2026 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D122459DC;
+	Tue, 17 Mar 2026 17:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766947; cv=none; b=ZIPBXnSYHMKpq25Hxe7/KKdqfOuEsBA0UeHC0X1FeraIfrSJaihptL4yuXiLHLugMRkwfMf3Y1Fiq3bQ5MN4SxDPjCIT07suh3m9HDGc7LOHWz+AX+9fQUlGHvezwfsc+kH8XYVqF4UXZicKNWfnmP6T7GkVDj2T/ks0MfjvD+M=
+	t=1773768251; cv=none; b=RkBZ68W2xU1Hen27T+nQXGaYnidC3LhcXv7NqxmGmYyq92nlozPFSsGFB7hyOAVXX1CS41uE7RdEDMB43jfFSz32nS6tea+mJVxdN6bUE9z6o48IbKwv7o7YcxsBDyjTw1fEIWuiIzEchkKGU1aLnTV0UsgC43tdldHRCBxi/2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766947; c=relaxed/simple;
-	bh=ZmaJl5v3x+fMceUz3G+8GDySQa4nk2qUHMLBXwavLtc=;
+	s=arc-20240116; t=1773768251; c=relaxed/simple;
+	bh=GNtAyggnVDkDJxt074kTEwdLrQ7qVQ83RgXjFCjtSew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4cgCur7mm8fFe6G7WDV7AR4guK6UlpDq/jRVU8BPujGBgdoMze0cZPgJ+n7DTgzBXLYF7FmjOG3zlF9lJPqOH1oNDyBuCJY1pU0HxBRbDwNheDPA1txo6JmNMfLFrexaUWHcjl1bpCSX60w+RWREHERMXblzSX/yHoWzrsTVRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBROw1rX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942BFC4CEF7;
-	Tue, 17 Mar 2026 17:02:26 +0000 (UTC)
+	 MIME-Version; b=XYHegRo+rnJk106D0FZrnvddAyvbVATjO7/801d7OGTlssUXhnj18ATxwUSjzuqAgURo2S5XazCJL/A6VRhZE/5lzoP/uyLyAJGch43qe4Sq+VoGFTO0CxaM+cZ7UPOU3u7wJgsetgyQsSY51ucZ8ns7mSzEiVd1xl+xMM2f8Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GVBLW02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10913C4CEF7;
+	Tue, 17 Mar 2026 17:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766947;
-	bh=ZmaJl5v3x+fMceUz3G+8GDySQa4nk2qUHMLBXwavLtc=;
+	s=korg; t=1773768251;
+	bh=GNtAyggnVDkDJxt074kTEwdLrQ7qVQ83RgXjFCjtSew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBROw1rXfWv1JnKsopjhN3qdrScKmBwxJbyLgdqYZRflLG6gBZmaFCu6QXIBvR/Kq
-	 GAuYqfcqH3mv084/aX4QRzJsaHlY1EQZ6n4fv+OZg7XvxpBHhUO5jr18XS226M/UXe
-	 AwfJ0oqtB9Hv0GHGGPY0vbEzGYuLpV6VoOsBQCvU=
+	b=0GVBLW02mYkt0Up993t7QvKNNVRY/tDq/7C6+Z3+9tWdkcgrgIpNIvu0GlZLA8f/3
+	 t60mcecztlGbm+pPL0zjnHQSVFeDlE/9bVDU/8qXGkce4k6xn0xKZMcEeZ7njoWb9c
+	 D4E9ZLvUh8nImW/6whT+MvfTXluG5/DPUFXnIgy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 340/378] smb: client: fix iface port assignment in parse_server_interfaces
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Souptick Joarder <souptick.joarder@hpe.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.18 268/333] xfs: fix returned valued from xfs_defer_can_append
 Date: Tue, 17 Mar 2026 17:34:57 +0100
-Message-ID: <20260317163019.498346115@linuxfoundation.org>
+Message-ID: <20260317163009.307191743@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226491-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226803-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,88 +87,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 68D722AFA3F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,hpe.com:email]
+X-Rspamd-Queue-Id: 7B29E2B0584
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Carlos Maiolino <cem@kernel.org>
 
-commit d4c7210d2f3ea481a6481f03040a64d9077a6172 upstream.
+commit 54fcd2f95f8d216183965a370ec69e1aab14f5da upstream.
 
-parse_server_interfaces() initializes interface socket addresses with
-CIFS_PORT. When the mount uses a non-default port this overwrites the
-configured destination port.
+xfs_defer_can_append returns a bool, it shouldn't be returning
+a NULL.
 
-Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr,
-causing reconnect attempts to use the wrong port after server interface
-updates.
+Found by code inspection.
 
-Use the existing port from server->dstaddr instead.
-
-Cc: stable@vger.kernel.org
-Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 4dffb2cbb483 ("xfs: allow pausing of pending deferred work items")
+Cc: <stable@vger.kernel.org> # v6.8
+Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Acked-by: Souptick Joarder <souptick.joarder@hpe.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_defer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -628,6 +628,7 @@ parse_server_interfaces(struct network_i
- 	struct smb_sockaddr_in6 *p6;
- 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
- 	struct cifs_server_iface tmp_iface;
-+	__be16 port;
- 	ssize_t bytes_left;
- 	size_t next = 0;
- 	int nb_iface = 0;
-@@ -662,6 +663,15 @@ parse_server_interfaces(struct network_i
- 		goto out;
- 	}
+--- a/fs/xfs/libxfs/xfs_defer.c
++++ b/fs/xfs/libxfs/xfs_defer.c
+@@ -809,7 +809,7 @@ xfs_defer_can_append(
  
-+	spin_lock(&ses->server->srv_lock);
-+	if (ses->server->dstaddr.ss_family == AF_INET)
-+		port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
-+	else if (ses->server->dstaddr.ss_family == AF_INET6)
-+		port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
-+	else
-+		port = cpu_to_be16(CIFS_PORT);
-+	spin_unlock(&ses->server->srv_lock);
-+
- 	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
- 		/* default to 1Gbps when link speed is unset */
-@@ -682,7 +692,7 @@ parse_server_interfaces(struct network_i
- 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
+ 	/* Paused items cannot absorb more work */
+ 	if (dfp->dfp_flags & XFS_DEFER_PAUSED)
+-		return NULL;
++		return false;
  
- 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
--			addr4->sin_port = cpu_to_be16(CIFS_PORT);
-+			addr4->sin_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
- 				 &addr4->sin_addr);
-@@ -696,7 +706,7 @@ parse_server_interfaces(struct network_i
- 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
- 			addr6->sin6_flowinfo = 0;
- 			addr6->sin6_scope_id = 0;
--			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
-+			addr6->sin6_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
- 				 &addr6->sin6_addr);
+ 	/* Already full? */
+ 	if (ops->max_items && dfp->dfp_count >= ops->max_items)
 
 
 
