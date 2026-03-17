@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-226841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKDrEhePuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:51 +0100
+	id qHJvLwWUuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99542AF999
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D112B028F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C271B301CFC2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83114323ACB8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A7C36405F;
-	Tue, 17 Mar 2026 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB875280A21;
+	Tue, 17 Mar 2026 17:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5fyTngr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeGEB1+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D85336EF1;
-	Tue, 17 Mar 2026 17:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF51B33290F;
+	Tue, 17 Mar 2026 17:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768427; cv=none; b=YWeMbykZvYToHp89HmO8IC1V7M8d/BmzcgMuolimPFtkVSfaQPaY95wJtLzEjPxUKlVkI3PpZ+xiOgLuS3sWgzITZb0JOhauRPdmFGHeygC46pRwC20fl9D29GzdfG+MFG5ATMUA6bgPbfP6H3Mx/YSC36GKlVzJdwENHTAKKoQ=
+	t=1773768430; cv=none; b=IgjiTM+tRmwHWRMT+KMBAer59GBMHnXDAC/ZxF2tUoNlGa3masaPv/GCrMHnwKhBZgoGg0bKjrAuu10ztuAnA94aWX3K6CRGDiuYJp0C7jS8NSk+OUMLXT2E5F0IC2Q4cGZGCeLv/JUmNYsEDP1lN6Ha0ebXYgUgNnqrSQuAbuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768427; c=relaxed/simple;
-	bh=iqLfbxTLfyxp8z01K9ijVNn119m99wfMgxr9gZZfpNc=;
+	s=arc-20240116; t=1773768430; c=relaxed/simple;
+	bh=hTOhbsTLPHYXIBzq2Fb2Ktt+B5wmMDEI6DGqSbJpk30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+6cc0DYMPiXqG9eGgPYVT8o63JUi+COfKtYyemRsZ7NpkYGZ6qdxJUzJ86wKmOWYv+wBgTVcCAAZKYFedVOZJfaGMYoSLQtduBw2qmMSPyPtBSPzp1daxu+dvoGaKCtPwtlcEojYcx2fuyTFDEW/UKUCtUgQw77vhSlTsV/u6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5fyTngr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11016C19424;
-	Tue, 17 Mar 2026 17:27:05 +0000 (UTC)
+	 MIME-Version; b=A/d6CRly+4NEl76pQur9w93o2MAu2MTOEiLvmqcA80HoJqcHhD+iNpcWAf+Qcyv2CDlHVGtN4q3iy3zmrUoAcv++0+jGK9BSIDU+/ERS/N2vbYHjRgU/YyG9+4m5HMhn49lMuvfQRXzhJ6ydBMePo3ikhNf98wC/Ud+KpbUEUKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeGEB1+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDF4C4CEF7;
+	Tue, 17 Mar 2026 17:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768426;
-	bh=iqLfbxTLfyxp8z01K9ijVNn119m99wfMgxr9gZZfpNc=;
+	s=korg; t=1773768430;
+	bh=hTOhbsTLPHYXIBzq2Fb2Ktt+B5wmMDEI6DGqSbJpk30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5fyTngrC1W+aMVmzQGHH9IDkkUXon3Mq4eY09721AgkHiWVbNZ6pQYmQIf2ZlZId
-	 8BoM6Bbiq/dKW763vF37uTRe0wBRxlgxrN/igQGhvDzch0alA5hD9uvnqlYcB3Pf7A
-	 CK/40Tkv9KP9lL4t2sa1wlDWe7m6JLD8iLivRtKU=
+	b=jeGEB1+FMoW2lS/iGQ5BqBx0xYUlZZy1Vt/TNe7xMbrv34rH85fMTTP/3Zb0CPPrB
+	 AIrQg1ZJcn7hVkKzByi1URVNKjNPcaSKv0/OL7x28tT0scU0zl5Lh/Qbsr8O1GmSZY
+	 dDiNiW/lbKlVDvqkH2bAW+SA1wBu6lAvDNY5vHBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andy Shevchenko <andriy.shevchenko@intel.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 306/333] iio: proximity: hx9023s: fix assignment order for __counted_by
-Date: Tue, 17 Mar 2026 17:35:35 +0100
-Message-ID: <20260317163010.737212460@linuxfoundation.org>
+Subject: [PATCH 6.18 307/333] iio: proximity: hx9023s: Protect against division by zero in set_samp_freq
+Date: Tue, 17 Mar 2026 17:35:36 +0100
+Message-ID: <20260317163010.773038200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -71,12 +71,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226841-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226842-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,14 +87,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: B99542AF999
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 17D112B028F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,35 +104,32 @@ X-Rspamd-Server: lfdr
 
 From: Yasin Lee <yasin.lee.x@gmail.com>
 
-commit 585b90c0161ab77416fe3acdbdc55b978e33e16c upstream.
+commit a318cfc0853706f1d6ce682dba660bc455d674ef upstream.
 
-Initialize fw_size before copying firmware data into the flexible
-array member to match the __counted_by() annotation. This fixes the
-incorrect assignment order that triggers runtime safety checks.
+Avoid division by zero when sampling frequency is unspecified.
 
-Fixes: e9ed97be4fcc ("iio: proximity: hx9023s: Added firmware file parsing functionality")
+Fixes: 60df548277b7 ("iio: proximity: Add driver support for TYHX's HX9023S capacitive proximity sensor")
 Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/proximity/hx9023s.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/proximity/hx9023s.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 --- a/drivers/iio/proximity/hx9023s.c
 +++ b/drivers/iio/proximity/hx9023s.c
-@@ -1034,9 +1034,8 @@ static int hx9023s_send_cfg(const struct
- 	if (!bin)
- 		return -ENOMEM;
+@@ -719,6 +719,9 @@ static int hx9023s_set_samp_freq(struct
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	unsigned int i, period_ms;
  
--	memcpy(bin->data, fw->data, fw->size);
--
- 	bin->fw_size = fw->size;
-+	memcpy(bin->data, fw->data, bin->fw_size);
- 	bin->fw_ver = bin->data[FW_VER_OFFSET];
- 	bin->reg_count = get_unaligned_le16(bin->data + FW_REG_CNT_OFFSET);
++	if (!val && !val2)
++		return -EINVAL;
++
+ 	period_ms = div_u64(NANO, (val * MEGA + val2));
  
+ 	for (i = 0; i < ARRAY_SIZE(hx9023s_samp_freq_table); i++) {
 
 
 
