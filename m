@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE8bE2ySuWl3KgIAu9opvQ
-	(envelope-from <stable+bounces-226700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:04 +0100
+	id 0JymN7aGuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539232B0014
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982FE2AE8DA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BC5F302D4B2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 393533030DB5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A702DEA9D;
-	Tue, 17 Mar 2026 17:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970FE3F54C1;
+	Tue, 17 Mar 2026 16:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZyhBBpo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8K8dGIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645D52D5940;
-	Tue, 17 Mar 2026 17:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5EF3F54D3;
+	Tue, 17 Mar 2026 16:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767874; cv=none; b=XrUoGy+LWUNE20qoiTGKmDN2QYwWFOAyGEohKW/9l6ODSUOYW4PouEe79TmCw18r35mSbHs6lefUixoV5INtMl90wc1khvegZMQq0/0HYXZfiCTD+ZdVs9ROdbZAdE/LuY3W+QS0TzBFf2x1Wz7waVgZBWwzr34zE8Alo7+z+gk=
+	t=1773766316; cv=none; b=NxfYbbAWT+rFq+LNSLr5+Rcg8NOGPUj0XEKpnd+RJNoQby01VDXZPk5UzJuQT3hZtuGPYQSE0zi6vTy9maHh73X4hjmDTTeN0I8o9wUETFKul5TZZ4w0CYgOjooaT9nYg+pSK54blpAi4Nl7BBPIhPgc/xZLbB1fAktHrsCw91M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767874; c=relaxed/simple;
-	bh=SsTFBgR/axyVDp7IldA14aRubu5qgVZwFKey+TdyAHo=;
+	s=arc-20240116; t=1773766316; c=relaxed/simple;
+	bh=E7YXiycfcXGJ2RvcT4utxSwp4JRqv3bUsHrqdpEZTB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLXus4UN1tLIJxpvDjqihLqZAkDSODji9Cb3jcIMt5nfRA20L2+bfhZVedWsJUJCmY+vIWR8jfyMj0Yiwe0pMUfdB8aiClf/Ft2gz5AfRRZF2Fyq2Lq9KExWh9B74VjTcALgyJRoDuZPzMxGgxhYueeVZXT5+He5iaq1Foj0lBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZyhBBpo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E13C4CEF7;
-	Tue, 17 Mar 2026 17:17:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JDEKCK36XMoEDs3kKwOMCv24gomh5K5qKR+V7CJpQNnSCunR973u9q8ZVHIWm4Y4kXAJOjzusPj2vJkYV13SigKlw1CnpFv2jpBACc30a3X5+8wzLlsQacJHMh5b9lM8+YtUKVYCT5CjeONEIhqydaX6r1zcAmj/PaE4t1lm48w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8K8dGIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7459C2BC86;
+	Tue, 17 Mar 2026 16:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767874;
-	bh=SsTFBgR/axyVDp7IldA14aRubu5qgVZwFKey+TdyAHo=;
+	s=korg; t=1773766316;
+	bh=E7YXiycfcXGJ2RvcT4utxSwp4JRqv3bUsHrqdpEZTB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZyhBBpo+avk13miNHgZHg4jqwhg4W9uWbnx+1JLOkYg1NcLUcPxAu6hbak4uOk5C
-	 8yJ5fcQCJKgB5x5vvbVucvs6q0tLOw7sPD4fgCodyqF+57neiF1bukQJB6igiZ4lZX
-	 PskQ6N8gVutoYCXMoCa0MG/JgO64X242DWjOthu4=
+	b=Q8K8dGIJTHobIS2Ckq7xKsO7+6S/ne0wYXqlVxGrnpF2cSvuLMBbFX9AzQxA/1U1d
+	 KcTP9prWbJ9tYHOlUAzsdnTPTpCwcZmtr8A7wAxr3rYRUpvt01JoY+32DqrQ90Prpv
+	 zHi72VQqDYOG6nKzxNoLGUOXNsl70GYNkgiepjw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Junzhong Pan <panjunzhong@linux.spacemit.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.18 145/333] usb: gadget: uvc: fix interval_duration calculation
+	Sunil Khatri <sunil.khatri@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 217/378] drm/amdgpu: add upper bound check on user inputs in signal ioctl
 Date: Tue, 17 Mar 2026 17:32:54 +0100
-Message-ID: <20260317163004.736430469@linuxfoundation.org>
+Message-ID: <20260317163014.994864704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226700-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226348-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nxp.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 539232B0014
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 982FE2AE8DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junzhong Pan <panjunzhong@linux.spacemit.com>
+From: Sunil Khatri <sunil.khatri@amd.com>
 
-commit 56135c0c60b07729401af9d329fa9c0eded845a6 upstream.
+commit ea78f8c68f4f6211c557df49174c54d167821962 upstream.
 
-To correctly convert bInterval as interval_duration:
-  interval_duration = 2^(bInterval-1) * frame_interval
+Huge input values in amdgpu_userq_signal_ioctl can lead to a OOM and
+could be exploited.
 
-Current code uses a wrong left shift operand, computing 2^bInterval
-instead of 2^(bInterval-1).
+So check these input value against AMDGPU_USERQ_MAX_HANDLES
+which is big enough value for genuine use cases and could
+potentially avoid OOM.
 
-Fixes: 010dc57cb516 ("usb: gadget: uvc: fix interval_duration calculation")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Junzhong Pan <panjunzhong@linux.spacemit.com>
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260306-fix-uvc-interval-v1-1-9a2df6859859@linux.spacemit.com
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit be267e15f99bc97cbe202cd556717797cdcf79a5)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index 7cea641b06b4..2f9700b3f1b6 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -513,7 +513,7 @@ uvc_video_prep_requests(struct uvc_video *video)
- 		return;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -35,6 +35,8 @@
+ static const struct dma_fence_ops amdgpu_userq_fence_ops;
+ static struct kmem_cache *amdgpu_userq_fence_slab;
  
--	interval_duration = 2 << (video->ep->desc->bInterval - 1);
-+	interval_duration = 1 << (video->ep->desc->bInterval - 1);
- 	if (cdev->gadget->speed < USB_SPEED_HIGH)
- 		interval_duration *= 10000;
- 	else
--- 
-2.53.0
-
++#define AMDGPU_USERQ_MAX_HANDLES	(1U << 16)
++
+ int amdgpu_userq_fence_slab_init(void)
+ {
+ 	amdgpu_userq_fence_slab = kmem_cache_create("amdgpu_userq_fence",
+@@ -476,6 +478,11 @@ int amdgpu_userq_signal_ioctl(struct drm
+ 	if (!amdgpu_userq_enabled(dev))
+ 		return -ENOTSUPP;
+ 
++	if (args->num_syncobj_handles > AMDGPU_USERQ_MAX_HANDLES ||
++	    args->num_bo_write_handles > AMDGPU_USERQ_MAX_HANDLES ||
++	    args->num_bo_read_handles > AMDGPU_USERQ_MAX_HANDLES)
++		return -EINVAL;
++
+ 	num_syncobj_handles = args->num_syncobj_handles;
+ 	syncobj_handles = memdup_user(u64_to_user_ptr(args->syncobj_handles),
+ 				      size_mul(sizeof(u32), num_syncobj_handles));
 
 
 
