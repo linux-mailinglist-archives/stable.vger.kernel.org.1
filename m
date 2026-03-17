@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAazNfmPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:37 +0100
+	id +P/LNuyGuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1462AFC17
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C51F2AE92F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D0533163B6A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3115C3091FA5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4333E3DB1;
-	Tue, 17 Mar 2026 17:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904643EB7E5;
+	Tue, 17 Mar 2026 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAnFX01J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIULuldk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D472FFDEA;
-	Tue, 17 Mar 2026 17:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541232FFDEA;
+	Tue, 17 Mar 2026 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767138; cv=none; b=jEXJ0ym139lmOkty3LeseMAiFiEycudNzrvRECcDhz4l61dyoou2ayK4MQTfP20Hwxma06d65mDQUbGO55IfNQKuPXk0SjY4fXsutSRnH0aKvBZX/SmHlgtcURLTeJG4cDgk9BVUOhQGKM6amCz92A6FI5HvuAvzTVgloNWEvvc=
+	t=1773765925; cv=none; b=DrK0HCq7lD2qhPmuhzkUal/g0qdzLK74jqH6O9Wbe0IWb4PwUZ0OqV1nSHX3fHF3lI6ZI9R7Kj1L+iL9kJnpkU3nG7moihEktRs0xAeDuF/pYRAguqMZJS4QR4D6+jnNDIbe7h7YxvpdOkxWpnNUIcfk1Xe0vSW/U7h3ngq3z0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767138; c=relaxed/simple;
-	bh=fjumpfleaci/tPpoOlAqqfvONjeov5e9kHm44GFGatk=;
+	s=arc-20240116; t=1773765925; c=relaxed/simple;
+	bh=OlCBrCgrcM8mt3bZvLYuHdJoISquDWT+zoOmOodlskI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQvlNX5ZITBJpDH6II1v94aiE8rdmsnA1unGJGbediFMSgm+4CDgGHNRy8a8q9p5DzLDbEP5zHbXJ+d0TdLipOuxNVder+VoYSozFBBSLG/PVsdg2TWbW0jaBETAEST+4XFUzrGykqe59HZa6J3jC2DZS0W9VBx9IFvTepG1Px4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAnFX01J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E19C4CEF7;
-	Tue, 17 Mar 2026 17:05:37 +0000 (UTC)
+	 MIME-Version; b=bRJhLi5lynoe0kWLC2yodn4YMpJEB6rvAB2rj2uTU6aFB7UTUL3wp2k/+VB00PLU9r0V31C/CcPWXKvkzlEWcfsrPb1afHC8ir7CumIK8hq2fOaW+BAb/WFvMlnGXD9SnoA6Pn/1tc8GD32q4Sq+swFL4kg6ldHcBO85vpWePFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIULuldk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5463C4CEF7;
+	Tue, 17 Mar 2026 16:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767138;
-	bh=fjumpfleaci/tPpoOlAqqfvONjeov5e9kHm44GFGatk=;
+	s=korg; t=1773765925;
+	bh=OlCBrCgrcM8mt3bZvLYuHdJoISquDWT+zoOmOodlskI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAnFX01JLfCN2mTO/D91aO8v/dXbXHNQRuQ+if91T/osr+MU2QYhfQJc1dYr0dliN
-	 zF0OI3xlqOAE8rGR3PALTBmSL92x3ytisJYJDBpXTZWhVk05X9avvEbgrGnyjxcGXJ
-	 cflez+G6wqe15YNZIOPR/r8b1Hy8jUMQBvnwvG5k=
+	b=ZIULuldknFjw9udpSOY+UhgWuTw/kAOoVljpAaj1CQGI53mVtPt1KSLolsRW/oL06
+	 LX1o2SuuBMPe4SySSCfHBmlcOUodq6MTmKIxu3xYJMhDyPHoSq6pGf1ME2TRReZY2W
+	 onft8OhAvcfTXEM1I/oaoyhL8utNXVNV1Lcp3L3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Chris Lew <christopher.lew@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/333] remoteproc: sysmon: Correct subsys_name_len type in QMI request
-Date: Tue, 17 Mar 2026 17:30:51 +0100
-Message-ID: <20260317163000.183916656@linuxfoundation.org>
+Subject: [PATCH 6.19 095/378] page_pool: store detach_time as ktime_t to avoid false-negatives
+Date: Tue, 17 Mar 2026 17:30:52 +0100
+Message-ID: <20260317163010.512852973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +68,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226539-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226258-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 4C1462AFC17
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 4C51F2AE92F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
+[ Upstream commit 28b225282d44e2ef40e7f46cfdbd5d1b20b8874f ]
 
-The QMI message encoder has up until recently read a single byte (as
-elem_size == 1), but with the introduction of big endian support it's
-become apparent that this field is expected to be a full u32 -
-regardless of the size of the length in the encoded message (which is
-what elem_size specifies).
+While testing other changes in vng I noticed that
+nl_netdev.page_pool_check flakes. This never happens in real CI.
 
-The result is that the encoder now reads past the length byte and
-rejects the unreasonably large length formed when including the
-following 3 bytes from the subsys_name array.
+Turns out vng may boot and get to that test in less than a second.
+page_pool_detached() records the detach time in seconds, so if
+vng is fast enough detach time is set to 0. Other code treats
+0 as "not detached". detach_time is only used to report the state
+to the user, so it's not a huge deal in practice but let's fix it.
+Store the raw ktime_t (nanoseconds) instead. A nanosecond value
+of 0 is practically impossible.
 
-Fix this by changing to the expected type.
-
-Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Fixes: 69cb4952b6f6 ("net: page_pool: report when page pool was destroyed")
+Link: https://patch.msgid.link/20260310003907.3540019-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_sysmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/page_pool/types.h | 2 +-
+ net/core/page_pool_user.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
-index 660ac6fc40821..c6cc6e519fe56 100644
---- a/drivers/remoteproc/qcom_sysmon.c
-+++ b/drivers/remoteproc/qcom_sysmon.c
-@@ -203,7 +203,7 @@ static const struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 1509a536cb855..fb4f03ccd6156 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -246,7 +246,7 @@ struct page_pool {
+ 	/* User-facing fields, protected by page_pools_lock */
+ 	struct {
+ 		struct hlist_node list;
+-		u64 detach_time;
++		ktime_t detach_time;
+ 		u32 id;
+ 	} user;
  };
+diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
+index c82a95beceff8..ee5060d8eec0e 100644
+--- a/net/core/page_pool_user.c
++++ b/net/core/page_pool_user.c
+@@ -245,7 +245,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
+ 		goto err_cancel;
+ 	if (pool->user.detach_time &&
+ 	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_DETACH_TIME,
+-			 pool->user.detach_time))
++			 ktime_divns(pool->user.detach_time, NSEC_PER_SEC)))
+ 		goto err_cancel;
  
- struct ssctl_subsys_event_req {
--	u8 subsys_name_len;
-+	u32 subsys_name_len;
- 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
- 	u32 event;
- 	u8 evt_driven_valid;
+ 	if (pool->mp_ops && pool->mp_ops->nl_fill(pool->mp_priv, rsp, NULL))
+@@ -337,7 +337,7 @@ int page_pool_list(struct page_pool *pool)
+ void page_pool_detached(struct page_pool *pool)
+ {
+ 	mutex_lock(&page_pools_lock);
+-	pool->user.detach_time = ktime_get_boottime_seconds();
++	pool->user.detach_time = ktime_get_boottime();
+ 	netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_CHANGE_NTF);
+ 	mutex_unlock(&page_pools_lock);
+ }
 -- 
 2.51.0
 
