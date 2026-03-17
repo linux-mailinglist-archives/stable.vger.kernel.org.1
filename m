@@ -1,207 +1,282 @@
-Return-Path: <stable+bounces-225741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMV9NYbouGkllQEAu9opvQ
-	(envelope-from <stable+bounces-225741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 06:37:10 +0100
+	id kFmKE4vpuGlplgEAu9opvQ
+	(envelope-from <stable+bounces-225742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 06:41:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4380C2A4043
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 06:37:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CEE2A40A2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 06:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5712301652D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 05:37:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6CA0301A9C8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 05:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD20137EFED;
-	Tue, 17 Mar 2026 05:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1C537F744;
+	Tue, 17 Mar 2026 05:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdOt05lH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NgnrMfL7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD4637F738
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 05:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773725825; cv=none; b=Z5cCIMCWTvVTcZsjcmonrtwY7vrQBZ6aozMgwEtzldaYUiBTq+ImIe+zJl5Lzc+RSwapuJ1ZsKIIUXSnjsCxH+dFZX+i6mxKptyZue85vYQgxrty27SOctwLroYr1PpdEGmlI+QAPKg1SDuAjO6hPX3dQOJvhv9oOq+YJCs2puc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773725825; c=relaxed/simple;
-	bh=GxQU1VRrYRoTgEMwUUU2mm0qyNrjehpCX0AAPIFbHH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Al+fNsDoYqw/U61s2VfJBdzwhvqYfC9v4cuIG+ofvUmsCYIOHptGLrEGxnhIQgHmAXrJsJ1doaulXjwk4OZX53DJ53HCkwM9JndoDDJ+atee5brgQvVH+zJ2MUhcm1K6gYyM70014eLBZ6IWkYr0PejFGO/4o7h+wmilLDWMKgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdOt05lH; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59e4989dacdso6045316e87.1
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 22:37:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773725822; x=1774330622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2NiRAQv05vxst//6uLfp/yYFASGq0d9XovqJe++xcxQ=;
-        b=OdOt05lHxGWg/gkvUpH+ItKSO494Xz9SfA2B3Ljhl5zGJyjtsgTkniIdCbAJF+MPcX
-         IvhR+Gedu+wSCPxqdJB5QQDEHeCD8RjHjE0T7O69qbHvKdgDa8+42Z/Z4KrulFtIoB/A
-         utRMtx3b36m/NUmoTif/d/VDP5d+fuTaWeuemjRImCPD4KMAp5/JCEo2XW4i8UUTZ0uc
-         Lql07SfF9PonCAskYOki3fme8O0WZkOR9BJYXatgeoknwNVQZaXa9/3LndeDCqtJfr9j
-         1okDnOTRNNoToBIuRjrSt5B6nLDAio8TzT30N1jvtIk4gh0mYdp6EzCQTZRlCc3K/6ZI
-         9mUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773725822; x=1774330622;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NiRAQv05vxst//6uLfp/yYFASGq0d9XovqJe++xcxQ=;
-        b=SoOcOG1KmgX9ho7YtJqrJlNGr8rQkMdfYal2Cgq6M+oOfoXVtXWeSdmwWZutkwku+W
-         et+nQ7grDLXpLn9TOrEr/U/AeLDPohzuHdAkpAEill999v3gIZwnbXrKVJRL96wwkxDQ
-         5BK6fXlBVO9w9joYUZvBSQykgkcP5mnhZV8Q+jZ3nVMfCaxSzqlTc2MfhDGXynkiHqPf
-         0NWfvWw1QbLUM/e6PLEyMTGujxKS72a1SNUjxv0zxkLqf4xW2juzEpfHmBaV04NvvVsg
-         iHUff2gW2YEQqKOiovkEDI7J3fG9pyq6eEzc/pleF5X7wZUjcQEgDRdp8R4bRU/79qJI
-         r6aA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ3IP0n9z9H+9mD7xn04m1bWc2kF8JTqy+Ae7HWRiJIMM8CaJn+DhVUG9fWnyrcUxRM63iRP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyypAVJZgFr6ayK03vb2ZFD8vSS6PUV18En5DnCcGqwBJrLT/PC
-	/PlIoBVviHhzsvkb2MkrK1SMKY12z+S9fKhuCNM9hXCkOtFM+lKtV85y
-X-Gm-Gg: ATEYQzzC31LaIuS4hxXzp9lWdpFWS3M8Mn7fPnFxWNE7bdRUOHuIs6ui1pkMrFGYNir
-	xBHWnNi7/c/bxUgEQJwib11vudAIhFNDRwFZAjwHlxsUPtJyTCoQD75GDu/AZL1P/oAKIozhN+v
-	S8QrcX8xJwTAVZSQamqyB/gAoykgOAyQYDFQ9TP5hXxfutvkBURqFpD2X6rmu0KgzkdK4hOzo4V
-	0nYryIj0fNtWk3gzR5q1f8cC1jEuM/g4tg+QcXsng9xWFsnNkbCyE2w9sLKY95bqc+3xofMpc7V
-	gPN6QoCSeIT+zxCrjEuiN3rCwLRUPzazSuljOuSg2Ppe1ZtMWHvXhjuvt3RbVrQHQGsJActX3yY
-	fTcgOPyztbtAX5yH+xM0a0u0iQi84PqME/5FIo9frTPMT2zST5lBKpqt5LrKd+9Jw9gYvzX17v7
-	FHWbARWw0uXLxll0mb/lF2g77+FV8oghQmJbaLpDakPyhW
-X-Received: by 2002:a05:6512:2350:b0:5a1:c03b:7980 with SMTP id 2adb3069b0e04-5a1c03b7a7dmr186889e87.28.1773725821391;
-        Mon, 16 Mar 2026 22:37:01 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a156366606sm3958338e87.73.2026.03.16.22.36.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 22:36:59 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: kraxel@redhat.com,
-	vivek.kasireddy@intel.com
-Cc: sumit.semwal@linaro.org,
-	christian.koenig@amd.com,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH] dma-buf/udmabuf: skip redundant cpu sync to fix cacheline EEXIST warning
-Date: Tue, 17 Mar 2026 10:36:53 +0500
-Message-ID: <20260317053653.28888-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920AB37EFFC;
+	Tue, 17 Mar 2026 05:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773726083; cv=fail; b=dI1xMDoz63yGs4ih7RC9qmMlTiBxdABMpsbDcovFzHcWsFJ8HvMBCsvp+CpvZ5nfYdLrY4bD1+qikRMmWczHx/mBoPk41xMwzGIP31iFvVJlUzU7xne+9sBNYzW1VTrh22zb+gG5GFqhu4BlDq+XNu+kBlj5eR4zEBBUpaSDnKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773726083; c=relaxed/simple;
+	bh=fGO/XY7OOmk6eLUAV8n1mTEYDdnfhOeDf4EpGRPhKe8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XsFt3LopyFp6LcsMTDM8lnYN1+OrzK2nqJD8y72gsRQQja3KkExwyN5O+6cUXVd5Ij8cXjTcBG1lllDME7rAotTyKkJpVxbeYfCaS+OfkAoxKJiacgRVl0ckHCbbnHYmc8R6dHjUhDubLSKckToDfYT0RE0AW435Bj5l8MuVu24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NgnrMfL7; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773726082; x=1805262082;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=fGO/XY7OOmk6eLUAV8n1mTEYDdnfhOeDf4EpGRPhKe8=;
+  b=NgnrMfL7KC+SlBFk7MqUZQDvZ0OJnDAhLmMcpzhL+HmU7tWRK/cOolRD
+   6+6iApKzNiwKK/6jV6dU18cVGvzTqwQF4aZF0oYyy93dF+GW7pX72/r9g
+   EiOEQYQPvbgBwe9Qg/lQNwP4ZIlAfizVjFctfKYpI3gzxE7U+Kbq/AyIp
+   SXFtkCYBNvKQA6U3Z332gQ3+pS6COUR0JPd1RRUTkFlLPhz1ib2zXiK4o
+   8KGO1H59aXGSmkLS3OMPJ563RNNYbqeabz+nCxiBjw3R2k6XStC0e7ALv
+   T6Z4DN4O5DOrb+2VsCLpUf7oTf3tXyP6aDbWKfakJeash7vVxVhdYJHgv
+   Q==;
+X-CSE-ConnectionGUID: Fh94HSI+TguFNVxuGTM9vQ==
+X-CSE-MsgGUID: bDdEs5iFRyiIwSd6ZlsMAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="85831091"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="85831091"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:40:48 -0700
+X-CSE-ConnectionGUID: fYyrnuLPQa6wEgNrhOAmfA==
+X-CSE-MsgGUID: c/u+DyRSR4+8bdldNhLmUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="227123893"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 22:40:48 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 16 Mar 2026 22:40:47 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 16 Mar 2026 22:40:47 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.6) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 16 Mar 2026 22:40:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RxKYMoglDlt0ZoLXQ511/5aYg0/s1Nh0lU/aWnplcsH3nG3MAtMarlxt1L3v8vRQl+rlmX9UqRRK2Pr2BL8HvhEgnOhQqAy/0t0q02ytI19AHZhRPy2EqGfARaZGXRPpuxJKYaI1KVpVWLKs/5BGCT8BFEJ35Ke3prcB0t/X67SWaHj1awaFblpNjAw61hT1/fzRuXc0wGeavSVzCIx1QNVzkeVfdLKXLlMeqC2Xgj6TF9tNE37FljPYAJz+XAv9vbmJv+0xHiQlvCK4eqLbckhkQc8vYfnq+y5AT5MCo5zcP9PbGSH6OK8ZmMNKHJaz7F8WHT/1dqPvs2kWhVZxHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g/xXg5kerkdqMCnKDjEvMoEaabcAwXfgjbYTzT55qLo=;
+ b=XBRm3vRWTzk/6JRY9kC36/YtciYdsZjsjnoqqwQxqh0s+55s4/MJV1WhhnGrDMxk8m0nJHuV/qaOBVnI2/q0zWwvkkDqktwKn4O5KTMJKnVzICCaGMunK5hxe2YW+25cvPqDkLUd2Mqj3de9b4k2yNwIfdu29tvXONx8+Cbaaxsm+bMEnRumWqO5s7F7WgCT19gnogKMTZSZfRzIh9rp2T7gqhm1bfXJG+HcJPqi9OWdL9NnmcGY+dOKxwtq8UPephHk8it2Re3C9Jkcywkf0rYDS9D/MN0l2jYDVtcw2gyN6V/Dee1xgY5Ipw1g2uVOA3iRIqBj0WxEYoCtMdWDLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH3PR11MB7177.namprd11.prod.outlook.com (2603:10b6:610:153::8)
+ by LV1PR11MB8842.namprd11.prod.outlook.com (2603:10b6:408:2b3::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.16; Tue, 17 Mar
+ 2026 05:40:42 +0000
+Received: from CH3PR11MB7177.namprd11.prod.outlook.com
+ ([fe80::b997:e226:4979:c035]) by CH3PR11MB7177.namprd11.prod.outlook.com
+ ([fe80::b997:e226:4979:c035%5]) with mapi id 15.20.9723.016; Tue, 17 Mar 2026
+ 05:40:42 +0000
+From: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, "kraxel@redhat.com"
+	<kraxel@redhat.com>
+CC: "sumit.semwal@linaro.org" <sumit.semwal@linaro.org>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] udmabuf: fix DMA direction mismatch in release_udmabuf()
+Thread-Topic: [PATCH] udmabuf: fix DMA direction mismatch in release_udmabuf()
+Thread-Index: AQHctAo67aqV68mpy0SJuNvlJ8/kZLWyNgwg
+Date: Tue, 17 Mar 2026 05:40:42 +0000
+Message-ID: <CH3PR11MB7177D5538C726029D80BA6CEF841A@CH3PR11MB7177.namprd11.prod.outlook.com>
+References: <20260314232722.15555-1-mikhail.v.gavrilov@gmail.com>
+In-Reply-To: <20260314232722.15555-1-mikhail.v.gavrilov@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB7177:EE_|LV1PR11MB8842:EE_
+x-ms-office365-filtering-correlation-id: ad2f13e6-930e-4fb1-60ae-08de83e7ba96
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|56012099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: Mxg4+5Smd21FJM9jxqGUk59+jplAR6qRohIrlBbrP3BtH6JHjPFUJTM7bVh0Oxwmbdij/kXLuI1PfTWVlmt/21N/jYBpUpAputxcVRapHKA/xoJy0TFd/NBG/In15VwW6Z5YPgq7yn2sdILafdYQ73WG5LV0zfv+JUnHpCRNN6TRoVW1oiOkmYgsCjlBowmFeGkgIARnmeIer3FOcoEHQa10iBhTWBa5sQodwNMqrHRFEA4N2yV5DcgzhGqaks4AlsxWxxWsNYOoAsFXrFpQR8dS/TPj29HpjWekT8uCUbWbxheF1eFPTjbarlpElWluMhLFiKom6p1ITgWHm6K55ckHHW+ctyICTQvMbXXrAfOy+2XMLrh4TFYVsb0hyK2oi/ltGLazbmapdwDtT3M3roFOKdkVf53RJRu7Y4VgAHDj1GNHGVMNrjLi+GC3bn1qbceGZMPd9UOmtiRwTAN/I/NTYbnMq+XKKJ4iynY3iyZePHRO0JRiamgwNyvafoGekGlO6wpLfqycV36hTowknvujvCvm2KVkRxeXNm/S3+c75ynZB0Qlz548MfIqO2C1vTxUahAu25tIjAjnGqvnUE6RGALbEYAA+hl5mVrd0/XCFHFi3de6sKxzHwYKZqq6BeVri3eKnxabO5Y1wZRNA0JRsGeMZg3uEyQjLy0P8oUhbfyONE3amFMXjwEjUhJNdsnBkrcNp4fJKbEY4+7TqoNNpZ92BDJjQe6QFnyEBxnfVXHntAeQaD9S5cEndmuOKf6rftklLB2YlQhRLSzkCeEq9eHFsGF0biqcPrKoJoQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB7177.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?w9vds569tcKfJ+1ea3Oun3Z6I7CXqLQSjvWnrBIIjVoL/7n6+1CrKKyGIX/U?=
+ =?us-ascii?Q?zYpltAp4qBO7yUOiCvYnXx279k5McVscSYhubW20P7VllrTOisX9S93JWb4i?=
+ =?us-ascii?Q?23xNZ2/BmABfXKtOOevZkuSYcO2oCfkTm9zfnVSD6JbTFO4XqHq+172j3uRI?=
+ =?us-ascii?Q?qm2cTiu6MQBkJOmPwzva7X0LEwaptzqADDCcbbp88e6KaYKN6jykbgUfFkpx?=
+ =?us-ascii?Q?/mUjLeFAeNrSYfYeGVd+VzkuKEhnzQl7rGDWajhohccs3uddXtBMvul7dk2q?=
+ =?us-ascii?Q?O6CJ+7TgZaIAkjQaTcA87v5eRvf+PyesYNdJCarvGpSs044I8hy0jZzhlyNm?=
+ =?us-ascii?Q?AyOaFYBTHrFRtSFOa5YrhPvAIHxpSJ/RwK72KMLFtTLLvkUltWjg/iU/Vnjd?=
+ =?us-ascii?Q?xuBE2mOdRckXckPjbSDXxFQ1Vgf1bsSDIdO62K6PLyIbYHoxohk0RO+SF1M6?=
+ =?us-ascii?Q?RE/1zi3qMGR2FV9G74JZ/h8zmySeZBpAxHhkKmCvNBlKVhR5cQqUPllX+3DL?=
+ =?us-ascii?Q?9OvKoQL9nEsohJb5MqOh3v8WQinMbLVDI3VrT6uZIZv8wADlsrSDqqYquJ4Z?=
+ =?us-ascii?Q?62lHlj8r8m/pUiJAP6NILl7Rbj0e9e1uRJQkjKrrX9bIrjhBBc3gXcvycazU?=
+ =?us-ascii?Q?y8Nue3CIdWHGZTdxZCS5J5wEIRuWDUxKT3ClC0v738S6hfqjXvz/tWx8rBVV?=
+ =?us-ascii?Q?ArCKuVg+PLlp9vLoMZApvAwPgiwfXiuqfZzWF2ovPg3ud0Y2AAA0Fodgipv/?=
+ =?us-ascii?Q?hXlOrZE9HVkkrIArXbAbf0DqBlZ+kkkFiwgvwquvm5gDLGNwdB2EdkJhG7cc?=
+ =?us-ascii?Q?3GeKJaK88K5K3gQyr/7KCe7+1hu4yJt1+nw2xWjEKMXiybaVoRvOu8gsLWwN?=
+ =?us-ascii?Q?BEvhIAsDlgsEAdSTzwycgQZ9QPGHD9bYA+mVf8fdoW23J2p9G7hjacrXW4GI?=
+ =?us-ascii?Q?UrBtSv1Md9erdvYri3oX6o/ZsE75djKAO5f8K7b8t6yA1k6idnaXgKi47CgR?=
+ =?us-ascii?Q?dtWhlyR4Q7MwP83oIf2syyCmLl/qHjz+M4jRghLj6HHc2KXTeHo+BY8vQy9W?=
+ =?us-ascii?Q?JhrF+MphWHQ9DTcZjSxtPt95Hd6j7G1W5XCUAzDIgD6jzizqg2S5Okz5iX6R?=
+ =?us-ascii?Q?BC74J6F8ZDlXaBBN/jB32c8fg9qo9oXHzTWqlV0Xka+jHXqNTNA9YppRNkSc?=
+ =?us-ascii?Q?KqWRPuP5FVpYk8Zf2AVIkp4g5sf3EWyLUEkjmTRfUShLFJIAS1a6i5kEvZ0d?=
+ =?us-ascii?Q?LbeePNjLq5zLnQev7+8n11U5U6J1R0/CUwdSR5jdHLzJVDQXVOP3PsVDTBjP?=
+ =?us-ascii?Q?4kyPEgZ7DvMdsjtrr+E6bmftoKqoez3yyDW8951X46mb8b5AEModm3ou4V1C?=
+ =?us-ascii?Q?SppoZ3Qq9dao5x/03BQPSrCdEcz7drvEQnEGhbRvxUA2V++nvJFYtkSsLNDw?=
+ =?us-ascii?Q?hR3MoLSr0ZCf47oa2OcEqtmdQAcLrIcWhLYiiCBgx2Pr5oWeebZWCAqHirkN?=
+ =?us-ascii?Q?Zqr9TDbYpJ4R798wkolJCbVCz9/t55h/i8GzTnNtj/eSogqoVxd1hbgkMTrr?=
+ =?us-ascii?Q?3ItiX1Kdjex8EnBW2+OG2Ogz3m2g3UYfjlJRnDEtlIZwryKC8aLecRRClDGS?=
+ =?us-ascii?Q?2YfX3lKHBDqlQ6G0CQc7Ni3MIJhAiWXiyjoPVg3mBn/IxCs5RghNXw4y1w/P?=
+ =?us-ascii?Q?2l+S7OopqLJPDNfo6mdNYcGRLRm7g3gEZaRFVLS2htnNr2ePWKixbhoriG2f?=
+ =?us-ascii?Q?vEzpAnXPZQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Exchange-RoutingPolicyChecked: t1cae1yk/BXjrGB8nwEwjtNwEYgM1d6VM/0Xv+8BuF52M9v17WJAk3ZI1T0bWJk1DcwhpBqerFaPZnnazhEUTuSHjcnyqnirSDtycxS43u63pOBurNGGeIcHeSZddtU1g/lGoFCCPK+/f7k9RUNeh1B59wgdqLN1Zn4LO/BJO+uvX2SddNlgMkk4SDmBMqCoZhWExgfNNMM9buxJk5UFsOUGfrZWtwFRuuYo0tAm2y2cmQ3XDQI1OPeEB/zW1uhon2SBz2WiCRiInKg5Yv6GkWhQdq5D9z7/6IQzV10tn2JgsR1T27whA6JfAH1aWmoLyIqTIiPAdSCGdAfn0+X1Ww==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB7177.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2f13e6-930e-4fb1-60ae-08de83e7ba96
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 05:40:42.4013
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2f6W9Fdz2LTlX/iiJrdIQ9B0e9X33VGBr5squW1Jhr2TNvgDEHoqg9SnIQhjUsplCrKwH+UrhIVu2eOGhoYOEWMCL5fs5VF/fXc7SgfYGuw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8842
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225742-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225741-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,amd.com,lists.freedesktop.org,vger.kernel.org,lists.linaro.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,CH3PR11MB7177.namprd11.prod.outlook.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vivek.kasireddy@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4380C2A4043
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: E3CEE2A40A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When CONFIG_DMA_API_DEBUG_SG is enabled, importing a udmabuf into a DRM
-driver (e.g. amdgpu for video playback in GNOME Videos / Showtime)
-triggers a spurious warning:
+> Subject: [PATCH] udmabuf: fix DMA direction mismatch in
+> release_udmabuf()
+>=20
+> begin_cpu_udmabuf() maps the sg_table with the caller-provided
+> direction
+> (e.g., DMA_TO_DEVICE for a write-only sync), and caches it in ubuf->sg
+> for reuse.  However, release_udmabuf() always unmaps this sg_table with
+> a hardcoded DMA_BIDIRECTIONAL, regardless of the direction that was
+> originally used for the mapping.
+>=20
+> With CONFIG_DMA_API_DEBUG=3Dy this produces:
+>=20
+>   DMA-API: misc udmabuf: device driver frees DMA memory with different
+>   direction [device address=3D0x000000044a123000] [size=3D4096 bytes]
+>   [mapped with DMA_TO_DEVICE] [unmapped with
+> DMA_BIDIRECTIONAL]
+>=20
+> The issue was found during video playback when GStreamer performed a
+> write-only DMA_BUF_IOCTL_SYNC on a udmabuf.  It can be reproduced
+> with CONFIG_DMA_API_DEBUG=3Dy by creating a udmabuf from a memfd,
+> performing a write-only sync (DMA_BUF_SYNC_WRITE without
+> DMA_BUF_SYNC_READ), and closing the file descriptor.
+>=20
+> Fix this by storing the DMA direction used when the sg_table is first
+> created in begin_cpu_udmabuf(), and passing that same direction to
+> put_sg_table() in release_udmabuf().
+>=20
+> Fixes: 284562e1f348 ("udmabuf: implement
+> begin_cpu_access/end_cpu_access hooks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> ---
+>  drivers/dma-buf/udmabuf.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+> index 94b8ecb892bb..d0836febefdd 100644
+> --- a/drivers/dma-buf/udmabuf.c
+> +++ b/drivers/dma-buf/udmabuf.c
+> @@ -40,6 +40,7 @@ struct udmabuf {
+>  	struct folio **pinned_folios;
+>=20
+>  	struct sg_table *sg;
+> +	enum dma_data_direction sg_dir;
+>  	struct miscdevice *device;
+>  	pgoff_t *offsets;
+>  };
+> @@ -235,7 +236,7 @@ static void release_udmabuf(struct dma_buf *buf)
+>  	struct device *dev =3D ubuf->device->this_device;
+>=20
+>  	if (ubuf->sg)
+> -		put_sg_table(dev, ubuf->sg, DMA_BIDIRECTIONAL);
+> +		put_sg_table(dev, ubuf->sg, ubuf->sg_dir);
+>=20
+>  	deinit_udmabuf(ubuf);
+>  	kfree(ubuf);
+> @@ -253,6 +254,8 @@ static int begin_cpu_udmabuf(struct dma_buf
+> *buf,
+>  		if (IS_ERR(ubuf->sg)) {
+>  			ret =3D PTR_ERR(ubuf->sg);
+>  			ubuf->sg =3D NULL;
+> +		} else {
+> +			ubuf->sg_dir =3D direction;
+Reviewed-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-  DMA-API: amdgpu 0000:03:00.0: cacheline tracking EEXIST, \
-      overlapping mappings aren't supported
-  WARNING: kernel/dma/debug.c:619 at add_dma_entry+0x473/0x5f0
+Thanks,
+Vivek
 
-The call chain is:
-
-  amdgpu_cs_ioctl
-   -> amdgpu_ttm_backend_bind
-    -> dma_buf_map_attachment
-     -> [udmabuf] map_udmabuf -> get_sg_table
-      -> dma_map_sgtable(dev, sg, direction, 0)  // attrs=0
-       -> debug_dma_map_sg -> add_dma_entry -> EEXIST
-
-This happens because udmabuf builds a per-page scatter-gather list via
-sg_set_folio().  When begin_cpu_udmabuf() has already created an sg
-table mapped for the misc device, and an importer such as amdgpu maps
-the same pages for its own device via map_udmabuf(), the DMA debug
-infrastructure sees two active mappings whose physical addresses share
-cacheline boundaries and warns about the overlap.
-
-The DMA_ATTR_SKIP_CPU_SYNC flag suppresses this check in
-add_dma_entry() because it signals that no CPU cache maintenance is
-performed at map/unmap time, making the cacheline overlap harmless.
-
-All other major dma-buf exporters already pass this flag:
-  - drm_gem_map_dma_buf() passes DMA_ATTR_SKIP_CPU_SYNC
-  - amdgpu_dma_buf_map() passes DMA_ATTR_SKIP_CPU_SYNC
-
-The CPU sync at map/unmap time is also redundant for udmabuf:
-begin_cpu_udmabuf() and end_cpu_udmabuf() already perform explicit
-cache synchronization via dma_sync_sgtable_for_cpu/device() when CPU
-access is requested through the dma-buf interface.
-
-Pass DMA_ATTR_SKIP_CPU_SYNC to dma_map_sgtable() and
-dma_unmap_sgtable() in udmabuf to suppress the spurious warning and
-skip the redundant sync.
-
-Fixes: 284562e1f348 ("udmabuf: implement begin_cpu_access/end_cpu_access hooks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
- drivers/dma-buf/udmabuf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 94b8ecb892bb..9c6f8785a28a 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -162,7 +162,7 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
- 		sg_set_folio(sgl, ubuf->folios[i], PAGE_SIZE,
- 			     ubuf->offsets[i]);
- 
--	ret = dma_map_sgtable(dev, sg, direction, 0);
-+	ret = dma_map_sgtable(dev, sg, direction, DMA_ATTR_SKIP_CPU_SYNC);
- 	if (ret < 0)
- 		goto err_map;
- 	return sg;
-@@ -177,7 +177,7 @@ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
- static void put_sg_table(struct device *dev, struct sg_table *sg,
- 			 enum dma_data_direction direction)
- {
--	dma_unmap_sgtable(dev, sg, direction, 0);
-+	dma_unmap_sgtable(dev, sg, direction, DMA_ATTR_SKIP_CPU_SYNC);
- 	sg_free_table(sg);
- 	kfree(sg);
- }
--- 
-2.53.0
+>  		}
+>  	} else {
+>  		dma_sync_sgtable_for_cpu(dev, ubuf->sg, direction);
+> --
+> 2.53.0
 
 
