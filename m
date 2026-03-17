@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-226311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KR2IyaIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:14 +0100
+	id 0AeyDCqGuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80752AEB52
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA42D2AE7DA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 696D131A58A9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8BD13303705D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65F53F54CB;
-	Tue, 17 Mar 2026 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008FF3F54CC;
+	Tue, 17 Mar 2026 16:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkAC7frI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRiksygz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74BC3F23AA;
-	Tue, 17 Mar 2026 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91E03F54B8;
+	Tue, 17 Mar 2026 16:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766149; cv=none; b=uh7FZ24qUJGsz1ZtFwrpJidjDHPr4K2EbcLDUdkvjA5MUQD9woxfiYOS7RKqvlCisB2S0dh4hYyKme3F+Sc0Ur2rTqb2Yzi8PngRSmtbGqQaEGwmVcJedli6jVzqVqCr8olMSHu+6yLInC/Q48knKe1+2Dwyb8+rHwzoVbzSQq8=
+	t=1773766158; cv=none; b=lZhKNy7ciCsea3MwjSIw2UiFvqw/nQ7Y8/FHzWCelu6FV5K45N3qoOaNmeCaMC1zVTCpo9G/SHKrGEREUg9orBFV0u09R+vA4l+ERJhjvbb4wVKoAFGPj5Tg7lhoYITSLq6ozUXilSuPoWf99xcBoNQ6ISovmhuw/UpJIopiang=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766149; c=relaxed/simple;
-	bh=aGXVHIrRuzHftgSKHICeXlbXMdjDBDLdrO3PN2nPrZ4=;
+	s=arc-20240116; t=1773766158; c=relaxed/simple;
+	bh=gH//UTdT/Z3znrzG1GRKMou9voVaAQFsgSjicI3Idrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfYJD3HQ29mM9KMTfA4+uLv71T3UeYaaeGbSpQe65neTkkZTxlaYk/J+UjLmML6q5UB9OvewL0ZJ/EdxuTXUjdtLAu3Gn0EEA6pbAa3Cyb0xo1rQLDK+iVHfuA+wcOsLP3b4l2xkGvOEYgIEOO6mzw5O7cJcCC8pnF3d21XeW1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkAC7frI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBA7C4CEF7;
-	Tue, 17 Mar 2026 16:49:08 +0000 (UTC)
+	 MIME-Version; b=V8RO6G8HYdS9s1783z10Km5SDRhfH8uQsotjMz6EZZ2xQp5POHBdUXyd6B3nPO48KL7NQTVsKntE0egU+oC7If4yCyEOJ3yyqDgXX780+OLxwvC8XYqRqY3jPYSRFNDsmWqoTrqqaTc5z/dWTsWeX+7dTZ1Xq3A+hmGUeWHW+go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRiksygz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF147C4CEF7;
+	Tue, 17 Mar 2026 16:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766149;
-	bh=aGXVHIrRuzHftgSKHICeXlbXMdjDBDLdrO3PN2nPrZ4=;
+	s=korg; t=1773766158;
+	bh=gH//UTdT/Z3znrzG1GRKMou9voVaAQFsgSjicI3Idrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkAC7frI9K0/DejLybS+atGNwVfpxKHQPWMhmOlmzph4a76ZltEq+WZU2e6CwMfcW
-	 GR27qLGmcBadXg9/QKLKTlXN+zCYkEJAQCursr/PWuoWsNIAEYkkmi8wiL/9zcptm8
-	 qbw5SoXIkc1j+b/kr1Bcj1lEAMX68Lxy6U/2hk64=
+	b=DRiksygzJp+fj6qf9kXlvaFeCnins8K9pKnPMHBXFvQt74+S9h+w+ew0AwGwHgx9f
+	 MSQuW/A1U3XrGHDq+OSHZVpBK9nCb/7iZg1jBTDSSPLyOsG9/JRUdFG/7/nqTXAhUn
+	 ciwuHKuoimdA0nYR7gl8OAIMPba+H75xoSaJ6I70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Hu <nick.hu@sifive.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Cyan Yang <cyan.yang@sifive.com>,
-	Nutty Liu <liujingqi@lanxincomputing.com>,
-	Anup Patel <anup@brainfault.org>,
+	Jessica Liu <liu.xuemei1@zte.com.cn>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 181/378] irqchip/riscv-aplic: Preserve APLIC states across suspend/resume
-Date: Tue, 17 Mar 2026 17:32:18 +0100
-Message-ID: <20260317163013.667252295@linuxfoundation.org>
+Subject: [PATCH 6.19 182/378] irqchip/riscv-aplic: Do not clear ACPI dependencies on probe failure
+Date: Tue, 17 Mar 2026 17:32:19 +0100
+Message-ID: <20260317163013.703577492@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -72,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226311-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226313-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sifive.com:email,lanxincomputing.com:email,brainfault.org:email]
-X-Rspamd-Queue-Id: B80752AEB52
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,zte.com.cn:email]
+X-Rspamd-Queue-Id: CA42D2AE7DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,326 +99,59 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nick Hu <nick.hu@sifive.com>
+From: Jessica Liu <liu.xuemei1@zte.com.cn>
 
-[ Upstream commit 95a8ddde36601d0a645475fb080ed118db59c8c3 ]
+[ Upstream commit 620b6ded72a7f0f77be6ec44d0462bb85729ab7a ]
 
-The APLIC states might be reset when the platform enters a low power
-state, but the register states are not being preserved and restored,
-which prevents interrupt delivery after the platform resumes.
-Solve this by adding a syscore ops and a power management notifier to
-preserve and restore the APLIC states on suspend and resume.
+aplic_probe() calls acpi_dev_clear_dependencies() unconditionally at the
+end, even when the preceding setup (MSI or direct mode) has failed. This is
+incorrect because if the device failed to probe, it should not be
+considered as active and should not clear dependencies for other devices
+waiting on it.
 
-[ tglx: Folded the build fix provided by Geert ]
+Fix this by returning immediately when the setup fails, skipping the ACPI
+dependency cleanup. Also, explicitly return 0 on success instead of relying
+on the value of 'rc' to make the success path clear.
 
-Signed-off-by: Nick Hu <nick.hu@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Cyan Yang <cyan.yang@sifive.com>
-Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://patch.msgid.link/20251202-preserve-aplic-imsic-v3-2-1844fbf1fe92@sifive.com
-Stable-dep-of: 620b6ded72a7 ("irqchip/riscv-aplic: Do not clear ACPI dependencies on probe failure")
+Fixes: 5122e380c23b ("irqchip/riscv-aplic: Add ACPI support")
+Signed-off-by: Jessica Liu <liu.xuemei1@zte.com.cn>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260310141600411Fu8H8-GXOOgKISU48Tjgx@zte.com.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-aplic-direct.c |  10 ++
- drivers/irqchip/irq-riscv-aplic-main.c   | 170 ++++++++++++++++++++++-
- drivers/irqchip/irq-riscv-aplic-main.h   |  19 +++
- 3 files changed, 198 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-riscv-aplic-main.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
-index c2a75bf3d20c6..5a9650225dd80 100644
---- a/drivers/irqchip/irq-riscv-aplic-direct.c
-+++ b/drivers/irqchip/irq-riscv-aplic-direct.c
-@@ -8,6 +8,7 @@
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/cpu.h>
-+#include <linux/cpumask.h>
- #include <linux/interrupt.h>
- #include <linux/irqchip.h>
- #include <linux/irqchip/chained_irq.h>
-@@ -171,6 +172,15 @@ static void aplic_idc_set_delivery(struct aplic_idc *idc, bool en)
- 	writel(de, idc->regs + APLIC_IDC_IDELIVERY);
- }
- 
-+void aplic_direct_restore_states(struct aplic_priv *priv)
-+{
-+	struct aplic_direct *direct = container_of(priv, struct aplic_direct, priv);
-+	int cpu;
-+
-+	for_each_cpu(cpu, &direct->lmask)
-+		aplic_idc_set_delivery(per_cpu_ptr(&aplic_idcs, cpu), true);
-+}
-+
- static int aplic_direct_dying_cpu(unsigned int cpu)
- {
- 	if (aplic_direct_parent_irq)
 diff --git a/drivers/irqchip/irq-riscv-aplic-main.c b/drivers/irqchip/irq-riscv-aplic-main.c
-index 93e7c51f944ab..4495ca26abf57 100644
+index 4495ca26abf57..8775f188ea4fc 100644
 --- a/drivers/irqchip/irq-riscv-aplic-main.c
 +++ b/drivers/irqchip/irq-riscv-aplic-main.c
-@@ -12,10 +12,169 @@
- #include <linux/of.h>
- #include <linux/of_irq.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
-+#include <linux/pm_runtime.h>
- #include <linux/printk.h>
-+#include <linux/syscore_ops.h>
- 
- #include "irq-riscv-aplic-main.h"
- 
-+static LIST_HEAD(aplics);
+@@ -372,18 +372,21 @@ static int aplic_probe(struct platform_device *pdev)
+ 		rc = aplic_msi_setup(dev, regs);
+ 	else
+ 		rc = aplic_direct_setup(dev, regs);
+-	if (rc)
 +
-+static void aplic_restore_states(struct aplic_priv *priv)
-+{
-+	struct aplic_saved_regs *saved_regs = &priv->saved_hw_regs;
-+	struct aplic_src_ctrl *srcs;
-+	void __iomem *regs;
-+	u32 nr_irqs, i;
-+
-+	regs = priv->regs;
-+	writel(saved_regs->domaincfg, regs + APLIC_DOMAINCFG);
-+#ifdef CONFIG_RISCV_M_MODE
-+	writel(saved_regs->msiaddr, regs + APLIC_xMSICFGADDR);
-+	writel(saved_regs->msiaddrh, regs + APLIC_xMSICFGADDRH);
-+#endif
-+	/*
-+	 * The sourcecfg[i] has to be restored prior to the target[i], interrupt-pending and
-+	 * interrupt-enable bits. The AIA specification states that "Whenever interrupt source i is
-+	 * inactive in an interrupt domain, the corresponding interrupt-pending and interrupt-enable
-+	 * bits within the domain are read-only zeros, and register target[i] is also read-only
-+	 * zero."
-+	 */
-+	nr_irqs = priv->nr_irqs;
-+	for (i = 0; i < nr_irqs; i++) {
-+		srcs = &priv->saved_hw_regs.srcs[i];
-+		writel(srcs->sourcecfg, regs + APLIC_SOURCECFG_BASE + i * sizeof(u32));
-+		writel(srcs->target, regs + APLIC_TARGET_BASE + i * sizeof(u32));
-+	}
-+
-+	for (i = 0; i <= nr_irqs; i += 32) {
-+		srcs = &priv->saved_hw_regs.srcs[i];
-+		writel(-1U, regs + APLIC_CLRIE_BASE + (i / 32) * sizeof(u32));
-+		writel(srcs->ie, regs + APLIC_SETIE_BASE + (i / 32) * sizeof(u32));
-+
-+		/* Re-trigger the interrupts if it forwards interrupts to target harts by MSIs */
-+		if (!priv->nr_idcs)
-+			writel(readl(regs + APLIC_CLRIP_BASE + (i / 32) * sizeof(u32)),
-+			       regs + APLIC_SETIP_BASE + (i / 32) * sizeof(u32));
-+	}
-+
-+	if (priv->nr_idcs)
-+		aplic_direct_restore_states(priv);
-+}
-+
-+static void aplic_save_states(struct aplic_priv *priv)
-+{
-+	struct aplic_src_ctrl *srcs;
-+	void __iomem *regs;
-+	u32 i, nr_irqs;
-+
-+	regs = priv->regs;
-+	nr_irqs = priv->nr_irqs;
-+	/* The valid interrupt source IDs range from 1 to N, where N is priv->nr_irqs */
-+	for (i = 0; i < nr_irqs; i++) {
-+		srcs = &priv->saved_hw_regs.srcs[i];
-+		srcs->target = readl(regs + APLIC_TARGET_BASE + i * sizeof(u32));
-+
-+		if (i % 32)
-+			continue;
-+
-+		srcs->ie = readl(regs + APLIC_SETIE_BASE + (i / 32) * sizeof(u32));
-+	}
-+
-+	/* Save the nr_irqs bit if needed */
-+	if (!(nr_irqs % 32)) {
-+		srcs = &priv->saved_hw_regs.srcs[nr_irqs];
-+		srcs->ie = readl(regs + APLIC_SETIE_BASE + (nr_irqs / 32) * sizeof(u32));
-+	}
-+}
-+
-+static int aplic_syscore_suspend(void *data)
-+{
-+	struct aplic_priv *priv;
-+
-+	list_for_each_entry(priv, &aplics, head)
-+		aplic_save_states(priv);
-+
-+	return 0;
-+}
-+
-+static void aplic_syscore_resume(void *data)
-+{
-+	struct aplic_priv *priv;
-+
-+	list_for_each_entry(priv, &aplics, head)
-+		aplic_restore_states(priv);
-+}
-+
-+static struct syscore_ops aplic_syscore_ops = {
-+	.suspend = aplic_syscore_suspend,
-+	.resume = aplic_syscore_resume,
-+};
-+
-+static struct syscore aplic_syscore = {
-+	.ops = &aplic_syscore_ops,
-+};
-+
-+static int aplic_pm_notifier(struct notifier_block *nb, unsigned long action, void *data)
-+{
-+	struct aplic_priv *priv = container_of(nb, struct aplic_priv, genpd_nb);
-+
-+	switch (action) {
-+	case GENPD_NOTIFY_PRE_OFF:
-+		aplic_save_states(priv);
-+		break;
-+	case GENPD_NOTIFY_ON:
-+		aplic_restore_states(priv);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static void aplic_pm_remove(void *data)
-+{
-+	struct aplic_priv *priv = data;
-+	struct device *dev = priv->dev;
-+
-+	list_del(&priv->head);
-+	if (dev->pm_domain)
-+		dev_pm_genpd_remove_notifier(dev);
-+}
-+
-+static int aplic_pm_add(struct device *dev, struct aplic_priv *priv)
-+{
-+	struct aplic_src_ctrl *srcs;
-+	int ret;
-+
-+	srcs = devm_kzalloc(dev, (priv->nr_irqs + 1) * sizeof(*srcs), GFP_KERNEL);
-+	if (!srcs)
-+		return -ENOMEM;
-+
-+	priv->saved_hw_regs.srcs = srcs;
-+	list_add(&priv->head, &aplics);
-+	if (dev->pm_domain) {
-+		priv->genpd_nb.notifier_call = aplic_pm_notifier;
-+		ret = dev_pm_genpd_add_notifier(dev, &priv->genpd_nb);
-+		if (ret)
-+			goto remove_head;
-+
-+		ret = devm_pm_runtime_enable(dev);
-+		if (ret)
-+			goto remove_notifier;
-+	}
-+
-+	return devm_add_action_or_reset(dev, aplic_pm_remove, priv);
-+
-+remove_notifier:
-+	dev_pm_genpd_remove_notifier(dev);
-+remove_head:
-+	list_del(&priv->head);
-+	return ret;
-+}
-+
- void aplic_irq_unmask(struct irq_data *d)
- {
- 	struct aplic_priv *priv = irq_data_get_irq_chip_data(d);
-@@ -60,6 +219,8 @@ int aplic_irq_set_type(struct irq_data *d, unsigned int type)
- 	sourcecfg += (d->hwirq - 1) * sizeof(u32);
- 	writel(val, sourcecfg);
- 
-+	priv->saved_hw_regs.srcs[d->hwirq - 1].sourcecfg = val;
-+
- 	return 0;
- }
- 
-@@ -82,6 +243,7 @@ int aplic_irqdomain_translate(struct irq_fwspec *fwspec, u32 gsi_base,
- 
- void aplic_init_hw_global(struct aplic_priv *priv, bool msi_mode)
- {
-+	struct aplic_saved_regs *saved_regs = &priv->saved_hw_regs;
- 	u32 val;
- #ifdef CONFIG_RISCV_M_MODE
- 	u32 valh;
-@@ -95,6 +257,8 @@ void aplic_init_hw_global(struct aplic_priv *priv, bool msi_mode)
- 		valh |= FIELD_PREP(APLIC_xMSICFGADDRH_HHXS, priv->msicfg.hhxs);
- 		writel(val, priv->regs + APLIC_xMSICFGADDR);
- 		writel(valh, priv->regs + APLIC_xMSICFGADDRH);
-+		saved_regs->msiaddr = val;
-+		saved_regs->msiaddrh = valh;
- 	}
- #endif
- 
-@@ -106,6 +270,8 @@ void aplic_init_hw_global(struct aplic_priv *priv, bool msi_mode)
- 	writel(val, priv->regs + APLIC_DOMAINCFG);
- 	if (readl(priv->regs + APLIC_DOMAINCFG) != val)
- 		dev_warn(priv->dev, "unable to write 0x%x in domaincfg\n", val);
-+
-+	saved_regs->domaincfg = val;
- }
- 
- static void aplic_init_hw_irqs(struct aplic_priv *priv)
-@@ -176,7 +342,7 @@ int aplic_setup_priv(struct aplic_priv *priv, struct device *dev, void __iomem *
- 	/* Setup initial state APLIC interrupts */
- 	aplic_init_hw_irqs(priv);
- 
--	return 0;
-+	return aplic_pm_add(dev, priv);
- }
- 
- static int aplic_probe(struct platform_device *pdev)
-@@ -209,6 +375,8 @@ static int aplic_probe(struct platform_device *pdev)
- 	if (rc)
++	if (rc) {
  		dev_err_probe(dev, rc, "failed to setup APLIC in %s mode\n",
  			      msi_mode ? "MSI" : "direct");
-+	else
-+		register_syscore(&aplic_syscore);
+-	else
+-		register_syscore(&aplic_syscore);
++		return rc;
++	}
++
++	register_syscore(&aplic_syscore);
  
  #ifdef CONFIG_ACPI
  	if (!acpi_disabled)
-diff --git a/drivers/irqchip/irq-riscv-aplic-main.h b/drivers/irqchip/irq-riscv-aplic-main.h
-index b0ad8cde69b13..2d8ad7138541a 100644
---- a/drivers/irqchip/irq-riscv-aplic-main.h
-+++ b/drivers/irqchip/irq-riscv-aplic-main.h
-@@ -23,7 +23,25 @@ struct aplic_msicfg {
- 	u32			lhxw;
- };
+ 		acpi_dev_clear_dependencies(ACPI_COMPANION(dev));
+ #endif
  
-+struct aplic_src_ctrl {
-+	u32			sourcecfg;
-+	u32			target;
-+	u32			ie;
-+};
-+
-+struct aplic_saved_regs {
-+	u32			domaincfg;
-+#ifdef CONFIG_RISCV_M_MODE
-+	u32			msiaddr;
-+	u32			msiaddrh;
-+#endif
-+	struct aplic_src_ctrl	*srcs;
-+};
-+
- struct aplic_priv {
-+	struct list_head	head;
-+	struct notifier_block	genpd_nb;
-+	struct aplic_saved_regs	saved_hw_regs;
- 	struct device		*dev;
- 	u32			gsi_base;
- 	u32			nr_irqs;
-@@ -40,6 +58,7 @@ int aplic_irqdomain_translate(struct irq_fwspec *fwspec, u32 gsi_base,
- 			      unsigned long *hwirq, unsigned int *type);
- void aplic_init_hw_global(struct aplic_priv *priv, bool msi_mode);
- int aplic_setup_priv(struct aplic_priv *priv, struct device *dev, void __iomem *regs);
-+void aplic_direct_restore_states(struct aplic_priv *priv);
- int aplic_direct_setup(struct device *dev, void __iomem *regs);
- #ifdef CONFIG_RISCV_APLIC_MSI
- int aplic_msi_setup(struct device *dev, void __iomem *regs);
+-	return rc;
++	return 0;
+ }
+ 
+ static const struct of_device_id aplic_match[] = {
 -- 
 2.51.0
 
