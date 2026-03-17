@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPLCLpuLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:12:59 +0100
+	id EG1XNUmFuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EC32AF1F5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:12:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA942AE5D4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA4DA3049E6C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15E05300C001
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A3D3F7A8C;
-	Tue, 17 Mar 2026 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4FB3815EA;
+	Tue, 17 Mar 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNGetFEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JK2K3yDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6EF3F54BD;
-	Tue, 17 Mar 2026 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E07B2F744F;
+	Tue, 17 Mar 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767344; cv=none; b=QjRXR3fceERzf+21bvz+mTHYFc/AmdJOafmcshFzIVk6GOLoorQF8+2K50KSnH+epXzOD9w3gvl/6aoQVPtlNAc5/XV5vFDAR7PCkA70H+8KkRSbCaLt4ZyqVnlx8WPXOMBtH5za/QB0Xo5pp0TFQKL02QfOqV8nX+atOjmuOEM=
+	t=1773765959; cv=none; b=tVIy9ry8699uE9x+E9ogKB4xTOazoS/SH027zPXdrI080Vyh9q7E7DrT2LIt9OOOOzH1K95ApuANwX7/kJyAz8BfZ7FgeZZeVMrCsFrgKZD26aU1uU+HjfwcalIFkFz3lwHTFLohHRIHgnCZhncIeMIN52k+7MGiLNcqrTqnMoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767344; c=relaxed/simple;
-	bh=tP/5SOklNPE/06yPbt/aHXXEHk3Su3DtFsZ8/SYYidA=;
+	s=arc-20240116; t=1773765959; c=relaxed/simple;
+	bh=1CunbzpgR8o0oJurPq9p773sfRDBEdYAhzYw48IoJ5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRwD/MTSMfO+U49YHS79qkXOFP3AKy1q8v6G81LrhA1jLZomtRjGur7a9NMnI+yvIMXgyby9EFUJVhsrGTJQGdfoBIx+SY8TyC+10PJRiLTACjzzlLOPVrFpdUbLOH3w3b94bYb1zfhiOuNUZr0rypw1e2mMJ0FIprQBzYwwA9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNGetFEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291E7C19424;
-	Tue, 17 Mar 2026 17:09:02 +0000 (UTC)
+	 MIME-Version; b=Ghn71RjuahtfCfb9DcgxhIsvPiHmbctXVx6p8gsb6UljxxiVjusmycZIfXKAGGEzgRn9VshfD60SJ8ZWgC2AoOl/gd6N1oDRIkuX+01A1ydI41hhXv+ihbYP7i5M8R4D3738CUChjZ/UHIEag5PMX13espJNV79nidTvXd7W0bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JK2K3yDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9729C19424;
+	Tue, 17 Mar 2026 16:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767343;
-	bh=tP/5SOklNPE/06yPbt/aHXXEHk3Su3DtFsZ8/SYYidA=;
+	s=korg; t=1773765959;
+	bh=1CunbzpgR8o0oJurPq9p773sfRDBEdYAhzYw48IoJ5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNGetFEEbMybokUQ5K09RSdondXJU6Xz/340rAft3jCOQp0+z3Yq7RrofOcAqF4eq
-	 Qe3n3OXqH+4MVzqxIktA2S8zyCBMwy+DCoRTq6fDgxnAqJPjWAdDCBgZBqU/4FllMe
-	 uPNEaoRQekp5JGX/SlyLykGkVDaAR7+wPaUi+NOA=
+	b=JK2K3yDB8/Rcule1lboeQq5mJ8RcgZLuqWNqGpDV6giUnKiNWGmpjcF6gGv5V1WDJ
+	 O1GOs5yuRlM64/aCTFJgYjCp0XBssEvTXlAUs5rkzS/5K/XJjvRDjEbv4XOqsGX8/K
+	 zJUYNCKbSWiNBRV6OseEAtklZJnOMU25MMebLUGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 065/333] net: add xmit recursion limit to tunnel xmit functions
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.19 137/378] KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with in-kernel APIC
 Date: Tue, 17 Mar 2026 17:31:34 +0100
-Message-ID: <20260317163001.782131311@linuxfoundation.org>
+Message-ID: <20260317163012.054403563@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,306 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226585-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226267-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email]
-X-Rspamd-Queue-Id: 59EC32AF1F5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9FA942AE5D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 6f1a9140ecda3baba3d945b9a6155af4268aafc4 ]
+commit 3989a6d036c8ec82c0de3614bed23a1dacd45de5 upstream.
 
-Tunnel xmit functions (iptunnel_xmit, ip6tunnel_xmit) lack their own
-recursion limit. When a bond device in broadcast mode has GRE tap
-interfaces as slaves, and those GRE tunnels route back through the
-bond, multicast/broadcast traffic triggers infinite recursion between
-bond_xmit_broadcast() and ip_tunnel_xmit()/ip6_tnl_xmit(), causing
-kernel stack overflow.
+Initialize all per-vCPU AVIC control fields in the VMCB if AVIC is enabled
+in KVM and the VM has an in-kernel local APIC, i.e. if it's _possible_ the
+vCPU could activate AVIC at any point in its lifecycle.  Configuring the
+VMCB if and only if AVIC is active "works" purely because of optimizations
+in kvm_create_lapic() to speculatively set apicv_active if AVIC is enabled
+*and* to defer updates until the first KVM_RUN.  In quotes because KVM
+likely won't do the right thing if kvm_apicv_activated() is false, i.e. if
+a vCPU is created while APICv is inhibited at the VM level for whatever
+reason.  E.g. if the inhibit is *removed* before KVM_REQ_APICV_UPDATE is
+handled in KVM_RUN, then __kvm_vcpu_update_apicv() will elide calls to
+vendor code due to seeing "apicv_active == activate".
 
-The existing XMIT_RECURSION_LIMIT (8) in the no-qdisc path is not
-sufficient because tunnel recursion involves route lookups and full IP
-output, consuming much more stack per level. Use a lower limit of 4
-(IP_TUNNEL_RECURSION_LIMIT) to prevent overflow.
+Cleaning up the initialization code will also allow fixing a bug where KVM
+incorrectly leaves CR8 interception enabled when AVIC is activated without
+creating a mess with respect to whether AVIC is activated or not.
 
-Add recursion detection using dev_xmit_recursion helpers directly in
-iptunnel_xmit() and ip6tunnel_xmit() to cover all IPv4/IPv6 tunnel
-paths including UDP encapsulated tunnels (VXLAN, Geneve, etc.).
-
-Move dev_xmit_recursion helpers from net/core/dev.h to public header
-include/linux/netdevice.h so they can be used by tunnel code.
-
- BUG: KASAN: stack-out-of-bounds in blake2s.constprop.0+0xe7/0x160
- Write of size 32 at addr ffff88810033fed0 by task kworker/0:1/11
- Workqueue: mld mld_ifc_work
- Call Trace:
-  <TASK>
-  __build_flow_key.constprop.0 (net/ipv4/route.c:515)
-  ip_rt_update_pmtu (net/ipv4/route.c:1073)
-  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:84)
-  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
-  gre_tap_xmit (net/ipv4/ip_gre.c:779)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  sch_direct_xmit (net/sched/sch_generic.c:347)
-  __dev_queue_xmit (net/core/dev.c:4802)
-  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
-  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
-  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  __dev_queue_xmit (net/core/dev.c:4841)
-  ip_finish_output2 (net/ipv4/ip_output.c:237)
-  ip_output (net/ipv4/ip_output.c:438)
-  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
-  gre_tap_xmit (net/ipv4/ip_gre.c:779)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  sch_direct_xmit (net/sched/sch_generic.c:347)
-  __dev_queue_xmit (net/core/dev.c:4802)
-  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
-  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
-  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  __dev_queue_xmit (net/core/dev.c:4841)
-  ip_finish_output2 (net/ipv4/ip_output.c:237)
-  ip_output (net/ipv4/ip_output.c:438)
-  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
-  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
-  gre_tap_xmit (net/ipv4/ip_gre.c:779)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  sch_direct_xmit (net/sched/sch_generic.c:347)
-  __dev_queue_xmit (net/core/dev.c:4802)
-  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
-  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
-  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  __dev_queue_xmit (net/core/dev.c:4841)
-  mld_sendpack
-  mld_ifc_work
-  process_one_work
-  worker_thread
-  </TASK>
-
-Fixes: 745e20f1b626 ("net: add a recursion limit in xmit path")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260306160133.3852900-2-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 67034bb9dd5e ("KVM: SVM: Add irqchip_split() checks before enabling AVIC")
+Fixes: 6c3e4422dd20 ("svm: Add support for dynamic APICv")
+Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://patch.msgid.link/20260203190711.458413-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h | 32 ++++++++++++++++++++++++++++++++
- include/net/ip6_tunnel.h  | 12 ++++++++++++
- include/net/ip_tunnels.h  |  7 +++++++
- net/core/dev.h            | 35 -----------------------------------
- net/ipv4/ip_tunnel_core.c | 13 +++++++++++++
- 5 files changed, 64 insertions(+), 35 deletions(-)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ arch/x86/kvm/svm/svm.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 8bb7b0e2c5438..0f425a1f80409 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3549,17 +3549,49 @@ struct page_pool_bh {
- };
- DECLARE_PER_CPU(struct page_pool_bh, system_page_pool);
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -368,7 +368,7 @@ void avic_init_vmcb(struct vcpu_svm *svm
+ 	vmcb->control.avic_physical_id = __sme_set(__pa(kvm_svm->avic_physical_id_table));
+ 	vmcb->control.avic_vapic_bar = APIC_DEFAULT_PHYS_BASE;
  
-+#define XMIT_RECURSION_LIMIT	8
-+
- #ifndef CONFIG_PREEMPT_RT
- static inline int dev_recursion_level(void)
- {
- 	return this_cpu_read(softnet_data.xmit.recursion);
- }
-+
-+static inline bool dev_xmit_recursion(void)
-+{
-+	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
-+			XMIT_RECURSION_LIMIT);
-+}
-+
-+static inline void dev_xmit_recursion_inc(void)
-+{
-+	__this_cpu_inc(softnet_data.xmit.recursion);
-+}
-+
-+static inline void dev_xmit_recursion_dec(void)
-+{
-+	__this_cpu_dec(softnet_data.xmit.recursion);
-+}
- #else
- static inline int dev_recursion_level(void)
- {
- 	return current->net_xmit.recursion;
- }
- 
-+static inline bool dev_xmit_recursion(void)
-+{
-+	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
-+}
-+
-+static inline void dev_xmit_recursion_inc(void)
-+{
-+	current->net_xmit.recursion++;
-+}
-+
-+static inline void dev_xmit_recursion_dec(void)
-+{
-+	current->net_xmit.recursion--;
-+}
- #endif
- 
- void __netif_schedule(struct Qdisc *q);
-diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-index 120db28658112..1253cbb4b0a45 100644
---- a/include/net/ip6_tunnel.h
-+++ b/include/net/ip6_tunnel.h
-@@ -156,6 +156,16 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
- {
- 	int pkt_len, err;
- 
-+	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
-+		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-+				     dev->name);
-+		DEV_STATS_INC(dev, tx_errors);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
-+	dev_xmit_recursion_inc();
-+
- 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
- 	IP6CB(skb)->flags = ip6cb_flags;
- 	pkt_len = skb->len - skb_inner_network_offset(skb);
-@@ -166,6 +176,8 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
- 			pkt_len = -1;
- 		iptunnel_xmit_stats(dev, pkt_len);
+-	if (kvm_apicv_activated(svm->vcpu.kvm))
++	if (kvm_vcpu_apicv_active(&svm->vcpu))
+ 		avic_activate_vmcb(svm);
+ 	else
+ 		avic_deactivate_vmcb(svm);
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1141,7 +1141,7 @@ static void init_vmcb(struct kvm_vcpu *v
+ 		svm_clr_intercept(svm, INTERCEPT_PAUSE);
  	}
-+
-+	dev_xmit_recursion_dec();
- }
- #endif
- #endif
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 4021e6a73e32b..80662f8120803 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -27,6 +27,13 @@
- #include <net/ip6_route.h>
- #endif
  
-+/* Recursion limit for tunnel xmit to detect routing loops.
-+ * Unlike XMIT_RECURSION_LIMIT (8) used in the no-qdisc path, tunnel
-+ * recursion involves route lookups and full IP output, consuming much
-+ * more stack per level, so a lower limit is needed.
-+ */
-+#define IP_TUNNEL_RECURSION_LIMIT	4
-+
- /* Keep error state on tunnel for 30 sec */
- #define IPTUNNEL_ERR_TIMEO	(30*HZ)
+-	if (kvm_vcpu_apicv_active(vcpu))
++	if (enable_apicv && irqchip_in_kernel(vcpu->kvm))
+ 		avic_init_vmcb(svm, vmcb);
  
-diff --git a/net/core/dev.h b/net/core/dev.h
-index df8a90fe89f8f..b458e2777725e 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -358,41 +358,6 @@ static inline void napi_assert_will_not_race(const struct napi_struct *napi)
- 
- void kick_defer_list_purge(unsigned int cpu);
- 
--#define XMIT_RECURSION_LIMIT	8
--
--#ifndef CONFIG_PREEMPT_RT
--static inline bool dev_xmit_recursion(void)
--{
--	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
--			XMIT_RECURSION_LIMIT);
--}
--
--static inline void dev_xmit_recursion_inc(void)
--{
--	__this_cpu_inc(softnet_data.xmit.recursion);
--}
--
--static inline void dev_xmit_recursion_dec(void)
--{
--	__this_cpu_dec(softnet_data.xmit.recursion);
--}
--#else
--static inline bool dev_xmit_recursion(void)
--{
--	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
--}
--
--static inline void dev_xmit_recursion_inc(void)
--{
--	current->net_xmit.recursion++;
--}
--
--static inline void dev_xmit_recursion_dec(void)
--{
--	current->net_xmit.recursion--;
--}
--#endif
--
- int dev_set_hwtstamp_phylib(struct net_device *dev,
- 			    struct kernel_hwtstamp_config *cfg,
- 			    struct netlink_ext_ack *extack);
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 2e61ac1371289..b1b6bf949f65a 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -58,6 +58,17 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 	struct iphdr *iph;
- 	int err;
- 
-+	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
-+		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-+				     dev->name);
-+		DEV_STATS_INC(dev, tx_errors);
-+		ip_rt_put(rt);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
-+	dev_xmit_recursion_inc();
-+
- 	skb_scrub_packet(skb, xnet);
- 
- 	skb_clear_hash_if_not_l4(skb);
-@@ -88,6 +99,8 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 			pkt_len = 0;
- 		iptunnel_xmit_stats(dev, pkt_len);
- 	}
-+
-+	dev_xmit_recursion_dec();
- }
- EXPORT_SYMBOL_GPL(iptunnel_xmit);
- 
--- 
-2.51.0
-
+ 	if (vnmi)
 
 
 
