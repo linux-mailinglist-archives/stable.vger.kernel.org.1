@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-226544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFFAMpKKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:34 +0100
+	id 2I8YOTCHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779942AF03D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6E2AE9CF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88BF33095237
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4544A316F153
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282AA3F0778;
-	Tue, 17 Mar 2026 17:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CA32DF132;
+	Tue, 17 Mar 2026 16:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDc6c/3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpSMrWDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3A63A4F46;
-	Tue, 17 Mar 2026 17:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4983EB7E5;
+	Tue, 17 Mar 2026 16:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767156; cv=none; b=SaP1aGMmS3F5Zgq2R7kxlq0aGeanV+qdCHdJW/Fxgdl1UK8zeWXjG6bh30g9vZAesGXnKgtOa2DFy7JC+KiNgf2XROhG0vGQSOTn0ClI2wPRumMcZl5zKKghgRT26UPAAF+QXm7SsOi1dVSZZdf7m+NvSxi667N8wpMI/wUqF2o=
+	t=1773765939; cv=none; b=Gvti6rnPysWCVpVU4QSDS1WhqZiNBaWBHvkNh8BELO6LybJuZnPNytIu9xuz9Z8KK+ZKyVpTF6OUb53ZIDQOIBo6U3cYZqcfO0UkMK000G69f5ZRhIscSGqvi0F3bjsGURtp7/VSiF5InGUpHZq+cufYYdPzsqrSyFdbnJsZzAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767156; c=relaxed/simple;
-	bh=dFdF5J0VAG0SRXeZpDuw3ITxKUdfNTWk6ahg9Xgznko=;
+	s=arc-20240116; t=1773765939; c=relaxed/simple;
+	bh=p+y0mWupIW1yrkYPSFWgz4x62T85uugqjHcqlQDllEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cs8YEkf22RMNFU5VjM54JzS3hf5/seGq7fGNvdFmrZPLv4u0fFe9adqVtg1Oy4KwrLaYR30IHzqpyMVtjg4s0xgKOPIp+pKmIF+Lb9w+cwSqW3OGyq+qdtAHy4YjbwSzZvUC9MxH20Ue1Y3LKfnN94GK+7HASyJQ6K+ItCZwUCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDc6c/3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08611C4CEF7;
-	Tue, 17 Mar 2026 17:05:55 +0000 (UTC)
+	 MIME-Version; b=AxSIyWfyGw3qiTMBzUpIT/4bXRfZI9lw27pX+zt2pHPJAsOwYUkRGrnY/G+a7j2ZMXYDSKz5H4tMsD5p8/QoyusmOESTQvZxEEcc0zRqamlMPN3NNDqybYSDJVLaL4WnTo6T8fyUZEsJ2FAPHBHU/i2TXt226Ng1hsW4caoMsU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpSMrWDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8F0C2BC86;
+	Tue, 17 Mar 2026 16:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767156;
-	bh=dFdF5J0VAG0SRXeZpDuw3ITxKUdfNTWk6ahg9Xgznko=;
+	s=korg; t=1773765939;
+	bh=p+y0mWupIW1yrkYPSFWgz4x62T85uugqjHcqlQDllEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDc6c/3Yt9FJPrFQgU1BBDRHLUOyEfAMkDwF/3qmUCHG12eZByPRLBjgecMPy1Vbp
-	 XfR1wvgG2uwH7/m8l2gvuIUI6OijJQp/+gSz/oReww/38xlznTSNjnXlf4XHg//x+9
-	 ATBfBcCogfcIwMrA9VBns6typBXViXKlg5eC/zNw=
+	b=vpSMrWDdXXARbi4YNTXpvzZzoQbnjKL+L7GAQPWau412/0Vqag8cvVBh33ufk/1r7
+	 tdsy1C7KF3s1FFxweScadnVSrno6nOyN7ObDhltGMZeJK/9MaBctawBX+M+Wt0TTBf
+	 b3gm4maB+4zykhKelAtiVrZHQdQPPwK9VMRU4gFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Roberto Bergantinos Corpas <rbergant@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 026/333] nfs: return EISDIR on nfs3_proc_create if d_alias is a dir
-Date: Tue, 17 Mar 2026 17:30:55 +0100
-Message-ID: <20260317163000.331738366@linuxfoundation.org>
+Subject: [PATCH 6.19 099/378] ASoC: detect empty DMI strings
+Date: Tue, 17 Mar 2026 17:30:56 +0100
+Message-ID: <20260317163010.659666821@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226544-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226262-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 779942AF03D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: 6BE6E2AE9CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Bergantinos Corpas <rbergant@redhat.com>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-[ Upstream commit 410666a298c34ebd57256fde6b24c96bd23059a2 ]
+[ Upstream commit a9683730e8b1d632674f81844ed03ddfbe4821c0 ]
 
-If we found an alias through nfs3_do_create/nfs_add_or_obtain
-/d_splice_alias which happens to be a dir dentry, we don't return
-any error, and simply forget about this alias, but the original
-dentry we were adding and passed as parameter remains negative.
+Some bootloaders like recent versions of U-Boot may install some DMI
+properties with empty values rather than not populate them. This manages
+to make its way through the validator and cleanup resulting in a rogue
+hyphen being appended to the card longname.
 
-This later causes an oops on nfs_atomic_open_v23/finish_open since we
-supply a negative dentry to do_dentry_open.
-
-This has been observed running lustre-racer, where dirs and files are
-created/removed concurrently with the same name and O_EXCL is not
-used to open files (frequent file redirection).
-
-While d_splice_alias typically returns a directory alias or NULL, we
-explicitly check d_is_dir() to ensure that we don't attempt to perform
-file operations (like finish_open) on a directory inode, which triggers
-the observed oops.
-
-Fixes: 7c6c5249f061 ("NFS: add atomic_open for NFSv3 to handle O_TRUNC correctly.")
-Reviewed-by: Olga Kornievskaia <okorniev@redhat.com>
-Reviewed-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Roberto Bergantinos Corpas <rbergant@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 4e01e5dbba96 ("ASoC: improve the DMI long card code in asoc-core")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Link: https://patch.msgid.link/20260306174707.283071-2-casey.connolly@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs3proc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/soc-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs3proc.c b/fs/nfs/nfs3proc.c
-index a4cb67573aa7c..993f62636a772 100644
---- a/fs/nfs/nfs3proc.c
-+++ b/fs/nfs/nfs3proc.c
-@@ -392,8 +392,13 @@ nfs3_proc_create(struct inode *dir, struct dentry *dentry, struct iattr *sattr,
- 	if (status != 0)
- 		goto out_release_acls;
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index e6045d30ee8e1..23ba821cd759d 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1863,12 +1863,15 @@ static void cleanup_dmi_name(char *name)
  
--	if (d_alias)
-+	if (d_alias) {
-+		if (d_is_dir(d_alias)) {
-+			status = -EISDIR;
-+			goto out_dput;
-+		}
- 		dentry = d_alias;
-+	}
+ /*
+  * Check if a DMI field is valid, i.e. not containing any string
+- * in the black list.
++ * in the black list and not the empty string.
+  */
+ static int is_dmi_valid(const char *field)
+ {
+ 	int i = 0;
  
- 	/* When we created the file with exclusive semantics, make
- 	 * sure we set the attributes afterwards. */
++	if (!field[0])
++		return 0;
++
+ 	while (dmi_blacklist[i]) {
+ 		if (strstr(field, dmi_blacklist[i]))
+ 			return 0;
 -- 
 2.51.0
 
