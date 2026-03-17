@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-226285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMbOFs2HuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:45 +0100
+	id fBYGDauOuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75D02AEAAD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB0C2AF888
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFC43318608C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7B5CB3113687
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5E23F54B0;
-	Tue, 17 Mar 2026 16:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D3A3F54DC;
+	Tue, 17 Mar 2026 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5xkWNgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKxTINbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B3C3F54BE;
-	Tue, 17 Mar 2026 16:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AD32F60A7;
+	Tue, 17 Mar 2026 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766026; cv=none; b=TkdUST6LXKTX7tlwpxCyZJl95bmqjdNFpr8tsXmxt5ZIzRPCFxj81La/DstqSD3YaoCqHQeqfPTJbe2JXVJnWA+eZX1VUVkMkpRLno5a4ARYmNvgBACZ4KS9X5+Nlav5PQ9a/x1JiMLjSzO20PY9Snu5pxRYqaBIXiSo9rUQx9Y=
+	t=1773767415; cv=none; b=to2xkri936M6ZDVCSFA6UOKYGPPyb8KTzQYpxyl8qmvFLU8neQQ4hcZlDoNpt+/qQbubqWU3X/gM6uOtXfoNr7nt+I/XyWBM+GGhD4vq0tmyQg01YUaXFWNDVrQY8CBq+KQHeCLscfqHT1gnIoTU7htpncmnY94KyAkf1mILbbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766026; c=relaxed/simple;
-	bh=DJ9triO5upS21goRgfJ2SRBnBtmxM7URLq/NrXbehXs=;
+	s=arc-20240116; t=1773767415; c=relaxed/simple;
+	bh=G1UfVPWgJXlPN5dPkhybqm6AmbcehoNGzc+CqljBvU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEEKa+NxJRP49MA99rXthMo4WHFWSn0mvTDow7pOsRmnKs/aU/hpWXA1ojAz/jolhut+91CW633+0HVwYoMSqgPKgEZc4TFjlvU2mHMQllpYn/yJ+4IVhXOeVIPHO76WzrLh3hyKgYk3vMq8gdMtj7EujlDKMM6OwCSi9jB7AZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5xkWNgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146B0C19424;
-	Tue, 17 Mar 2026 16:47:05 +0000 (UTC)
+	 MIME-Version; b=Y3NxtOTSSMmuZn5KPQ4TikM+Q1VZWIEkeHFgI8SJcV83MUwxD+FWVtCQl4XLNg7VwgYlR6ifp52FOaQM1UUrnPt3WtKKTaR61J2BLRmBfdlz15OwiHlUa1frE5Ze9bwJg811ZT5n6qLMCq4xdAcL1UFktT0gqJoMZl9Gu1m+kJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKxTINbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBB0C4CEF7;
+	Tue, 17 Mar 2026 17:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766026;
-	bh=DJ9triO5upS21goRgfJ2SRBnBtmxM7URLq/NrXbehXs=;
+	s=korg; t=1773767415;
+	bh=G1UfVPWgJXlPN5dPkhybqm6AmbcehoNGzc+CqljBvU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5xkWNglJuOfOWRX1A3+/aDef7nvZxpO3JhNBH8h4C8+gMn6jqrTkqgwQSSfRqNSi
-	 eDnq+7QYBrWZhBiezMtOa8U/gMBCMbeyjsKQhG1Sr7Th4YqbxtWsDgC/ZKvb+qEd6n
-	 LLHorB36ZoKJ9Z8LrlxEBJYhX/UXd8lBQaHiHOLk=
+	b=UKxTINbpNBH2+57J/TJZSqXJQELVXDuS7NX2J6VenEdAQ4sR8/gD5fmtP1b1dyird
+	 cu6f2Kyv3ac9FGe2se1FMEm6FlvWLWhzNE8FnuhHD0QIUpO/hFfh8Dzj7ojcMWuyWT
+	 eBKOrybPnQhLrFBx2g9jtv8tuSRsCOMXQEKHRcRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.19 154/378] usb: typec: altmode/displayport: set displayport signaling rate in configure message
+	Petr Oros <poros@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 082/333] iavf: fix PTP use-after-free during reset
 Date: Tue, 17 Mar 2026 17:31:51 +0100
-Message-ID: <20260317163012.678962911@linuxfoundation.org>
+Message-ID: <20260317163002.417674704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +73,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226600-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226285-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: A75D02AEAAD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mpg.de:email]
+X-Rspamd-Queue-Id: 5BB0C2AF888
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Petr Oros <poros@redhat.com>
 
-commit e8557acfa079a54b59a21f447c82a31aec7717df upstream.
+[ Upstream commit efc54fb13d79117a825fef17364315a58682c7ec ]
 
-dp_altmode_configure sets the signaling rate to the current
-configuration's rate and then shifts the value to the Select
-Configuration bitfield. On the initial configuration, dp->data.conf
-is 0 to begin with, so the signaling rate field is never set, which
-leads to some DisplayPort Alt Mode partners sending NAK to the
-Configure message.
+Commit 7c01dbfc8a1c5f ("iavf: periodically cache PHC time") introduced a
+worker to cache PHC time, but failed to stop it during reset or disable.
 
-Set the signaling rate to the capabilities supported by both the
-port and the port partner. If the cable supports DisplayPort Alt Mode,
-then include its capabilities as well.
+This creates a race condition where `iavf_reset_task()` or
+`iavf_disable_vf()` free adapter resources (AQ) while the worker is still
+running. If the worker triggers `iavf_queue_ptp_cmd()` during teardown, it
+accesses freed memory/locks, leading to a crash.
 
-Fixes: a17fae8fc38e ("usb: typec: Add Displayport Alternate Mode 2.1 Support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260310204106.3939862-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by calling `iavf_ptp_release()` before tearing down the adapter.
+This ensures `ptp_clock_unregister()` synchronously cancels the worker and
+cleans up the chardev before the backing resources are destroyed.
+
+Fixes: 7c01dbfc8a1c5f ("iavf: periodically cache PHC time")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -100,9 +100,14 @@ static int dp_altmode_configure(struct d
- {
- 	u8 pin_assign = 0;
- 	u32 conf;
-+	u32 signal;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 53a0366fbf998..3625c70bc3292 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3040,6 +3040,8 @@ static void iavf_disable_vf(struct iavf_adapter *adapter)
  
- 	/* DP Signalling */
--	conf = (dp->data.conf & DP_CONF_SIGNALLING_MASK) >> DP_CONF_SIGNALLING_SHIFT;
-+	signal = DP_CAP_DP_SIGNALLING(dp->port->vdo) & DP_CAP_DP_SIGNALLING(dp->alt->vdo);
-+	if (dp->plug_prime)
-+		signal &= DP_CAP_DP_SIGNALLING(dp->plug_prime->vdo);
+ 	adapter->flags |= IAVF_FLAG_PF_COMMS_FAILED;
+ 
++	iavf_ptp_release(adapter);
 +
-+	conf = signal << DP_CONF_SIGNALLING_SHIFT;
+ 	/* We don't use netif_running() because it may be true prior to
+ 	 * ndo_open() returning, so we can't assume it means all our open
+ 	 * tasks have finished, since we're not holding the rtnl_lock here.
+@@ -3215,6 +3217,8 @@ static void iavf_reset_task(struct work_struct *work)
+ 	iavf_change_state(adapter, __IAVF_RESETTING);
+ 	adapter->flags &= ~IAVF_FLAG_RESET_PENDING;
  
- 	switch (con) {
- 	case DP_STATUS_CON_DISABLED:
++	iavf_ptp_release(adapter);
++
+ 	/* free the Tx/Rx rings and descriptors, might be better to just
+ 	 * re-use them sometime in the future
+ 	 */
+-- 
+2.51.0
+
 
 
 
