@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MI8wGkOHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:27 +0100
+	id yMP8DS6PuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E932AE9FB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5479D2AF9D9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 219D2317141A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E2F63105F83
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B133F376464;
-	Tue, 17 Mar 2026 16:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DE53F788F;
+	Tue, 17 Mar 2026 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6K4i4K1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfmI1urd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741BE244694;
-	Tue, 17 Mar 2026 16:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EFA3F7864;
+	Tue, 17 Mar 2026 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765955; cv=none; b=esaaIHNTaDOj5V4ZjZD07CH8S5uG5jOrof2W2CrGMr7DDxUc/6SR25j2rYJzWDW0e9hpqQAD3Aw+cORufnK0qNM0PP5tnnGqlHQoOkAaOxA8+AfMHCehxt4UmIJVzeixuj7udNZq9w66P21x/ryo9qp7cRIbCWX7dRFnK3kUMKE=
+	t=1773767339; cv=none; b=UFqCee4ZnHsPU6MdaXk0RlGTc6mZWpMpz0HTLBXJSwdutDsG0gt+ZKWKx4px7tIQazesWRsWDHb/w7bD2FsHtyzFdyhIKeC5cGHCG7EJkn6dxYK8MZHlrpjg+ymoTOFjDmVzYd6NnMSlaiEW3veRZmyMi+52J7kbHnvdS3YB3+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765955; c=relaxed/simple;
-	bh=uP4YDgKPqy4xYWPY5beT2HfKKuPJN15rS10aKjZCiGs=;
+	s=arc-20240116; t=1773767339; c=relaxed/simple;
+	bh=2S3BIdTYvQoQ1fJPqi8iKRQQ1fNMet760m8XsG0MySE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmrSmSlzCmAvjZmr/ML/LFl2bgESv8MYI5GgWQakXK146tX0uu3jx4fh1wac27dehW3hAp7KFjDxcVUYYbLmK/U60B84FOU/JkKh9lwO96Nu0ZUf2KPP/SUqq12JJI4M9ZhaPMLQ5Uy6bwCbjVNaQqqnYX5VLAaFmxsRser/zys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6K4i4K1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECE1C4CEF7;
-	Tue, 17 Mar 2026 16:45:54 +0000 (UTC)
+	 MIME-Version; b=UyYj7GtXL4p7tu6vuHdC0FcWYVpy6QU9eOnZ6lHTb5jFkcmPQJVLsc4TM5HxdTKHKKqkP0L3CPSpPYc1ozwqFQUefIT/4yjW6IzP65cmYi2Vm98qDVw8ckAnvTfnAiDCM9hhrKU/BIoJsAR0tj4myC7fDm3z/vDiLtPnyAKblF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfmI1urd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D03C2BC86;
+	Tue, 17 Mar 2026 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765955;
-	bh=uP4YDgKPqy4xYWPY5beT2HfKKuPJN15rS10aKjZCiGs=;
+	s=korg; t=1773767339;
+	bh=2S3BIdTYvQoQ1fJPqi8iKRQQ1fNMet760m8XsG0MySE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6K4i4K1AT+W9JILj0FF7Q0e9sboBwznW4VwAx2JzD5xI/lJY6xrW5o7vVEtT1R6R
-	 e2h10Ob6dLznb6twM7ffzp11XDKoP1IJ3tDVymuBCN8ntKPx+KY3gdba2dSe6dkjFC
-	 dvMTtv9E8D2Kv+FKTMSDsCuBKx5Ox8xsQd+X/jJ4=
+	b=bfmI1urdemMBlKDe91cXvfVk+Ael4iht8QFN005pex5N5qUwXCzJE6U1ZIxrbYW6S
+	 dsgeIkpl/hnrY8lYHB9doRQsNjbPzUHX6QMZogg4uk+yv2SWhJTeH+ILZpKxl4ibSN
+	 Qd4MgsVen8wHkFRD1VgaEQ1gbtLdPUrI9FY/GJG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.19 136/378] KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 064/333] amd-xgbe: prevent CRC errors during RX adaptation with AN disabled
 Date: Tue, 17 Mar 2026 17:31:33 +0100
-Message-ID: <20260317163012.017810337@linuxfoundation.org>
+Message-ID: <20260317163001.744282305@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226266-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226584-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,119 +89,179 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 01E932AE9FB
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 5479D2AF9D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit e2ffe85b6d2bb7780174b87aa4468a39be17eb81 upstream.
+[ Upstream commit 27a4dd0c702b3b2b9cf2c045d100cc2fe8720b81 ]
 
-Add KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM to allow L1 to set
-FREEZE_IN_SMM in vmcs12's GUEST_IA32_DEBUGCTL field, as permitted
-prior to commit 6b1dd26544d0 ("KVM: VMX: Preserve host's
-DEBUGCTLMSR_FREEZE_IN_SMM while running the guest").  Enable the quirk
-by default for backwards compatibility (like all quirks); userspace
-can disable it via KVM_CAP_DISABLE_QUIRKS2 for consistency with the
-constraints on WRMSR(IA32_DEBUGCTL).
+When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
+adaptation enabled, CRC errors can occur during the RX adaptation
+process. This happens because the driver continues transmitting and
+receiving packets while adaptation is in progress.
 
-Note that the quirk only bypasses the consistency check.  The vmcs02 bit is
-still owned by the host, and PMCs are not frozen during virtualized SMM.
-In particular, if a host administrator decides that PMCs should not be
-frozen during physical SMM, then L1 has no say in the matter.
+Fix this by stopping TX/RX immediately when the link goes down and RX
+adaptation needs to be re-triggered, and only re-enabling TX/RX after
+adaptation completes and the link is confirmed up. Introduce a flag to
+track whether TX/RX was disabled for adaptation so it can be restored
+correctly.
 
-Fixes: 095686e6fcb4 ("KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260205231537.1278753-1-jmattson@google.com
-[sean: tag for stable@, clean-up and fix goofs in the comment and docs]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Rename quirk. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This prevents packets from being transmitted or received during the RX
+adaptation window and avoids CRC errors from corrupted frames.
+
+The flag tracking the data path state is synchronized with hardware
+state in xgbe_start() to prevent stale state after device restarts.
+This ensures that after a restart cycle (where xgbe_stop disables
+TX/RX and xgbe_start re-enables them), the flag correctly reflects
+that the data path is active.
+
+Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20260306111629.1515676-3-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/virt/kvm/api.rst  |    8 ++++++++
- arch/x86/include/asm/kvm_host.h |    3 ++-
- arch/x86/include/uapi/asm/kvm.h |    1 +
- arch/x86/kvm/vmx/nested.c       |   22 ++++++++++++++++++----
- 4 files changed, 29 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
+ drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
+ 3 files changed, 69 insertions(+), 2 deletions(-)
 
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -8438,6 +8438,14 @@ KVM_X86_QUIRK_IGNORE_GUEST_PAT      By d
-                                     guest software, for example if it does not
-                                     expose a bochs graphics device (which is
-                                     known to have had a buggy driver).
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 89ece3dbd773a..fe4233fef3089 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1246,6 +1246,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+ 
+ 	hw_if->enable_tx(pdata);
+ 	hw_if->enable_rx(pdata);
++	/* Synchronize flag with hardware state after enabling TX/RX.
++	 * This prevents stale state after device restart cycles.
++	 */
++	pdata->data_path_stopped = false;
+ 
+ 	udp_tunnel_nic_reset_ntf(netdev);
+ 
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+index 92cb061c90ebc..20d19d5a4effd 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -2016,6 +2016,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
+ 	xgbe_rx_adaptation(pdata);
+ }
+ 
++/*
++ * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
++ * @pdata: driver private data
++ *
++ * This function stops the data path (TX and RX) to prevent packet
++ * corruption during critical PHY operations like RX adaptation.
++ * Must be called before initiating RX adaptation when link goes down.
++ */
++static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
++{
++	if (pdata->data_path_stopped)
++		return;
 +
-+KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM   By default, KVM relaxes the consistency
-+                                      check for GUEST_IA32_DEBUGCTL in vmcs12
-+                                      to allow FREEZE_IN_SMM to be set.  When
-+                                      this quirk is disabled, KVM requires this
-+                                      bit to be cleared.  Note that the vmcs02
-+                                      bit is still completely controlled by the
-+                                      host, regardless of the quirk setting.
- =================================== ============================================
- 
- 7.32 KVM_CAP_MAX_VCPU_ID
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2470,7 +2470,8 @@ int memslot_rmap_alloc(struct kvm_memory
- 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
- 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
- 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
--	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
-+	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
-+	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM)
- 
- #define KVM_X86_CONDITIONAL_QUIRKS		\
- 	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -476,6 +476,7 @@ struct kvm_sync_regs {
- #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
- #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
- #define KVM_X86_QUIRK_IGNORE_GUEST_PAT		(1 << 9)
-+#define KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (1 << 10)
- 
- #define KVM_STATE_NESTED_FORMAT_VMX	0
- #define KVM_STATE_NESTED_FORMAT_SVM	1
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3292,10 +3292,24 @@ static int nested_vmx_check_guest_state(
- 	if (CC(vmcs12->guest_cr4 & X86_CR4_CET && !(vmcs12->guest_cr0 & X86_CR0_WP)))
- 		return -EINVAL;
- 
--	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
--	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
--	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
--		return -EINVAL;
-+	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
-+		u64 debugctl = vmcs12->guest_ia32_debugctl;
++	/* Stop TX/RX to prevent packet corruption during RX adaptation */
++	pdata->hw_if.disable_tx(pdata);
++	pdata->hw_if.disable_rx(pdata);
++	pdata->data_path_stopped = true;
 +
-+		/*
-+		 * FREEZE_IN_SMM is not virtualized, but allow L1 to set it in
-+		 * vmcs12's DEBUGCTL under a quirk for backwards compatibility.
-+		 * Note that the quirk only relaxes the consistency check.  The
-+		 * vmcc02 bit is still under the control of the host.  In
-+		 * particular, if a host administrator decides to clear the bit,
-+		 * then L1 has no say in the matter.
++	netif_dbg(pdata, link, pdata->netdev,
++		  "stopping data path for RX adaptation\n");
++}
++
++/*
++ * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
++ * @pdata: driver private data
++ *
++ * This function re-enables the data path (TX and RX) after RX adaptation
++ * has completed successfully. Only called when link is confirmed up.
++ */
++static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
++{
++	if (!pdata->data_path_stopped)
++		return;
++
++	pdata->hw_if.enable_rx(pdata);
++	pdata->hw_if.enable_tx(pdata);
++	pdata->data_path_stopped = false;
++
++	netif_dbg(pdata, link, pdata->netdev,
++		  "restarting data path after RX adaptation\n");
++}
++
+ static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
+ {
+ 	int reg;
+@@ -2809,13 +2851,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
+ 	if (pdata->en_rx_adap) {
+ 		/* if the link is available and adaptation is done,
+ 		 * declare link up
++		 *
++		 * Note: When link is up and adaptation is done, we can
++		 * safely re-enable the data path if it was stopped
++		 * for adaptation.
+ 		 */
+-		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
++		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
++			xgbe_phy_start_data_path(pdata);
+ 			return 1;
++		}
+ 		/* If either link is not available or adaptation is not done,
+ 		 * retrigger the adaptation logic. (if the mode is not set,
+ 		 * then issue mailbox command first)
+ 		 */
++
++		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
++		 * to prevent CRC errors from packets corrupted during
++		 * the adaptation process. This is especially important
++		 * when AN is OFF in 10G KR mode.
 +		 */
-+		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM))
-+			debugctl &= ~DEBUGCTLMSR_FREEZE_IN_SMM;
++		xgbe_phy_stop_data_path(pdata);
 +
-+		if (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
-+		    CC(!vmx_is_valid_debugctl(vcpu, debugctl, false)))
-+			return -EINVAL;
-+	}
+ 		if (pdata->mode_set) {
+ 			xgbe_phy_rx_adaptation(pdata);
+ 		} else {
+@@ -2823,8 +2879,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
+ 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
+ 		}
  
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
- 	    CC(!kvm_pat_valid(vmcs12->guest_ia32_pat)))
+-		if (pdata->rx_adapt_done)
++		if (pdata->rx_adapt_done) {
++			/* Adaptation complete, safe to re-enable data path */
++			xgbe_phy_start_data_path(pdata);
+ 			return 1;
++		}
+ 	} else if (reg & MDIO_STAT1_LSTATUS)
+ 		return 1;
+ 
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index 6fec51a065e22..ac0ba3d899dfd 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -1242,6 +1242,10 @@ struct xgbe_prv_data {
+ 	bool en_rx_adap;
+ 	int rx_adapt_retries;
+ 	bool rx_adapt_done;
++	/* Flag to track if data path (TX/RX) was stopped for RX adaptation.
++	 * This prevents packet corruption during the adaptation window.
++	 */
++	bool data_path_stopped;
+ 	bool mode_set;
+ };
+ 
+-- 
+2.51.0
+
 
 
 
