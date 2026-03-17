@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-226783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDtOBY6TuWnKKgIAu9opvQ
-	(envelope-from <stable+bounces-226783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:54 +0100
+	id wNn7LT2OuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:24:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807832B01FA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6039D2AF7E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2D42336F586
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FBB53061217
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABABB376BCD;
-	Tue, 17 Mar 2026 17:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A560328B61;
+	Tue, 17 Mar 2026 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itX6TD/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x53+ZxvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF0632AAC5;
-	Tue, 17 Mar 2026 17:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDFC2EF67A;
+	Tue, 17 Mar 2026 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768180; cv=none; b=C7zIm2k4QUCiHvxH3p/ETEaPmvUj6y/pdCtuNKkHrb9oKSLeeiSIm1fZyuNFk6Lg3RCsjnOQZPZn201Xy73MdKOVKqJgPsepO1YOCSnwBX0DnaI5cJJO8O0OaZc7sSz/JvXXOB994fZWkMMhr2De9rtOXMbbPZ0DCGf7MRejW3Q=
+	t=1773768039; cv=none; b=sGYfQ22SVgxf/9GGAmKQgkS/fdxsDomn4DA3UnaEJNjxN1P4tYlgNU4K1iaGDxEnfYWc7z/205ByhTrqYsWIwcI9sLAzxh/0pbLalX293uvZRnpNOQvlkQoswo0WxaQoyuBL5UplnG3KMDs9TaQ+34Y1zyHlXEBKQaRL16CBMT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768180; c=relaxed/simple;
-	bh=RvVSca8EDZazC3MIXZYbw5gdCp22r8/lGnal/FHTr5I=;
+	s=arc-20240116; t=1773768039; c=relaxed/simple;
+	bh=Vh2w5K8i0x3QTf89oKe5qdj5N7EroNCemmRqmRwSvSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eopb0Uod6qqA7fWgZWSUSHKRDVCslKnImrMc6/iM2NNIJz8l6OuMcgvipHxKZo+aw2uYioQV0R31qfLDXj9nTr03noWIKT+U8nkhZ6c67Nxsk3891CGG5WHA9EJJ6P4KDg07XQN6sffRYRJg1VoAM8cfzkEujmfBz7yMEDRmuPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itX6TD/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924DBC4CEF7;
-	Tue, 17 Mar 2026 17:22:59 +0000 (UTC)
+	 MIME-Version; b=KJsaeu4cnzII3nLPepw5tM4skajZkU4hvszpecCF1etPNFt2itMR+AEB2ZWXJJqXipw/oA2Td27KEWjhkLv6f1WUvUUZhpNgj8/TokdwbqElCNk/D9eEdVbFk8TBAQ4d8mXTMAW3qrbfIhLE4fF1VL4Yjr2DFjca/KMT/WfpIow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x53+ZxvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7A4C19424;
+	Tue, 17 Mar 2026 17:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768180;
-	bh=RvVSca8EDZazC3MIXZYbw5gdCp22r8/lGnal/FHTr5I=;
+	s=korg; t=1773768039;
+	bh=Vh2w5K8i0x3QTf89oKe5qdj5N7EroNCemmRqmRwSvSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itX6TD/LumFXcKKdQ2JXogN+HVJ3R/+xQ3x9XLd1LHnFQe5FQSnCkPjiBZB24IaYh
-	 Q+P4gIraHc2mh6WUjhulU60joj5rcOi9kErrM2rL33H8ON/RSlG9SjM3rlBcorfLih
-	 2NwAdlxRKmYZGvAkHSMc+M4E+U7X8O0sb9GpEqkI=
+	b=x53+ZxvV+B0tZNGG5DystYBqE3qt9Cs/YczhxC/Xy/4b7N4QntOImUZS/jna5Ml2h
+	 P4VgH9t/N+8v/a1R43HXKTRrdPvKiPUDcrFpE91HTEKcviGApjb0m6gh7f5NiB0xWO
+	 tDD6j89nee3JObVfbVNTcyJTEDs1NZ/UdNyR66XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 217/333] ice: fix retry for AQ command 0x06EE
-Date: Tue, 17 Mar 2026 17:34:06 +0100
-Message-ID: <20260317163007.410765836@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Huiwen He <hehuiwen@kylinos.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.18 218/333] tracing: Fix syscall events activation by ensuring refcount hits zero
+Date: Tue, 17 Mar 2026 17:34:07 +0100
+Message-ID: <20260317163007.449574806@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -72,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226783-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226749-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:url,mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 807832B01FA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goodmis.org:email,efficios.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 6039D2AF7E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,104 +100,120 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
+commit 0a663b764dbdf135a126284f454c9f01f95a87d4 upstream.
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+When multiple syscall events are specified in the kernel command line
+(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
+they are often not captured after boot, even though they appear enabled
+in the tracing/set_event file.
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
+The issue stems from how syscall events are initialized. Syscall
+tracepoints require the global reference count (sys_tracepoint_refcount)
+to transition from 0 to 1 to trigger the registration of the syscall
+work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
 
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
+The current implementation of early_enable_events() with disable_first=true
+used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
+If multiple syscalls are enabled, the refcount never drops to zero,
+preventing the 0->1 transition that triggers actual registration.
 
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
+Fix this by splitting early_enable_events() into two distinct phases:
+1. Disable all events specified in the buffer.
+2. Enable all events specified in the buffer.
+
+This ensures the refcount hits zero before re-enabling, allowing syscall
+events to be properly activated during early boot.
+
+The code is also refactored to use a helper function to avoid logic
+duplication between the disable and enable phases.
 
 Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
+Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |    1 
- drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ kernel/trace/trace_events.c |   52 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 15 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1854,6 +1854,7 @@ static bool ice_should_retry_sq_send_cmd
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -4513,26 +4513,22 @@ static __init int event_trace_memsetup(v
+ 	return 0;
+ }
+ 
+-__init void
+-early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++/*
++ * Helper function to enable or disable a comma-separated list of events
++ * from the bootup buffer.
++ */
++static __init void __early_set_events(struct trace_array *tr, char *buf, bool enable)
+ {
+ 	char *token;
+-	int ret;
+-
+-	while (true) {
+-		token = strsep(&buf, ",");
+-
+-		if (!token)
+-			break;
+ 
++	while ((token = strsep(&buf, ","))) {
+ 		if (*token) {
+-			/* Restarting syscalls requires that we stop them first */
+-			if (disable_first)
++			if (enable) {
++				if (ftrace_set_clr_event(tr, token, 1))
++					pr_warn("Failed to enable trace event: %s\n", token);
++			} else {
+ 				ftrace_set_clr_event(tr, token, 0);
+-
+-			ret = ftrace_set_clr_event(tr, token, 1);
+-			if (ret)
+-				pr_warn("Failed to enable trace event: %s\n", token);
++			}
+ 		}
+ 
+ 		/* Put back the comma to allow this to be called again */
+@@ -4541,6 +4537,32 @@ early_enable_events(struct trace_array *
  	}
+ }
  
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4495,7 +4495,7 @@ ice_get_module_eeprom(struct net_device
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
- 	int status;
-@@ -4537,26 +4537,19 @@ ice_get_module_eeprom(struct net_device
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
- 
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
- 
- 			/* Make sure we have enough room for the new block */
++/**
++ * early_enable_events - enable events from the bootup buffer
++ * @tr: The trace array to enable the events in
++ * @buf: The buffer containing the comma separated list of events
++ * @disable_first: If true, disable all events in @buf before enabling them
++ *
++ * This function enables events from the bootup buffer. If @disable_first
++ * is true, it will first disable all events in the buffer before enabling
++ * them.
++ *
++ * For syscall events, which rely on a global refcount to register the
++ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
++ * ensure the refcount hits zero before re-enabling them. A simple
++ * "disable then enable" per-event is not enough if multiple syscalls are
++ * used, as the refcount will stay above zero. Thus, we need a two-phase
++ * approach: disable all, then enable all.
++ */
++__init void
++early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++{
++	if (disable_first)
++		__early_set_events(tr, buf, false);
++
++	__early_set_events(tr, buf, true);
++}
++
+ static __init int event_trace_enable(void)
+ {
+ 	struct trace_array *tr = top_trace_array();
 
 
 
