@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEQAHq+FuWkPJAIAu9opvQ
-	(envelope-from <stable+bounces-226201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:43 +0100
+	id oIr6BwiNuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91DC2AE6DA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233342AF4F1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89B013009155
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:41:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E86830727CB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5993A3ED13D;
-	Tue, 17 Mar 2026 16:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A438A3E3DB1;
+	Tue, 17 Mar 2026 17:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHIBL//D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bUEw99e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE714F70;
-	Tue, 17 Mar 2026 16:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D7329D26C;
+	Tue, 17 Mar 2026 17:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765693; cv=none; b=g+dywPfwXl3NvMNPZypdIYQHg1L9sfzFbAo0aTKcSEPPEvjKTan+Nc3hKeM5t6DBrgn6ZeuEXPV5pIFSQWWDN+8Yj/mPjR/16OX2SLYM270hF3jnoTk3tMFe6uMQpbOrtlj4lElppCRkCX3X7FCttwNVh8R21PCQX5bMvdBjRrw=
+	t=1773767074; cv=none; b=ES+Mg4EWUt2Wpn+tOZWX+e/umeRLK2dgs8gQWF61vYNSXLj99Jk4ipBzq/v4fzjslTicuL8y2VHO25X6PcsjmFbhA7gaOPZoCzWjvU9cCFGdLrk/wgglbB6g+2gVDf4LwTTHjmGHd7//uG0BN1ub8WRLAozXAoPudQd/QDRLydk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765693; c=relaxed/simple;
-	bh=/OdfbMm/3Uy/m5eOm+geznu7Jo26ELfxlI+hUEOiPGg=;
+	s=arc-20240116; t=1773767074; c=relaxed/simple;
+	bh=zXPqQtK/ALa+x25maGWxNv5y8mjVrBreBWBaYfylSeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qX+pwAf9Td7Xk88tPiF08CTIcTBZotJgnSrO3ixUO+M2hq/vIvFXWa/LkvyXJC5WBjFxN37/nRwWt0iWPodgW61HB7V11Zf0ldO9+ZzmbkMlKJbyyuoi58VDcudG2kShbc5FrBcHQbQYtdNFkY87TC9KXVMxaGMO5KOt8HEPlD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHIBL//D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B957C4CEF7;
-	Tue, 17 Mar 2026 16:41:32 +0000 (UTC)
+	 MIME-Version; b=uCDftazPZZUMXpbut/VWnelLudkHg+bTccdOI8mIIAtw6EcZFX8tTYUeK431gefZfu4YJU/U/y8bIY6HSztxZ/vvIODbd94B71DCdFUSuE6+Ji/KEmWJ5NC/9K43nxqIKvye/wlbZ5Pm7L+da4iIQpa3+WJcbMvEFV6nb4qph00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bUEw99e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A88C4CEF7;
+	Tue, 17 Mar 2026 17:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765692;
-	bh=/OdfbMm/3Uy/m5eOm+geznu7Jo26ELfxlI+hUEOiPGg=;
+	s=korg; t=1773767074;
+	bh=zXPqQtK/ALa+x25maGWxNv5y8mjVrBreBWBaYfylSeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHIBL//DMVgSV2ac3/1zFm+EChOsdN1lQqbqfoliKVBLxpwPCPB8STIS3X2jaP9Z8
-	 7/8KBtcQHVQn5oKkF/yvfB184KM8406sz3sVMMine36sZ6FJH1NJQ0T/pCQyLpLjDk
-	 6kBtbXSUsD0b4qFcPFe7AmchSNcCJz4EzeTHW7Uc=
+	b=1bUEw99eZXtJM1qOMwjKwqoBYEr6Qm6OK4MehDSmX2RRreTrxxYfIoMeatuCfZ03e
+	 opFBuQfgk6Q5pGyxa2UenC2T4vaUlB6LNmoPyJdGOOO9vDM/GpFXlQjU+lCWg1coTx
+	 dEPiCo8w2REA0lk3Y7Dlb0227PH0hmni/w0lBCpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 072/378] amd-xgbe: reset PHY settings before starting PHY
-Date: Tue, 17 Mar 2026 17:30:29 +0100
-Message-ID: <20260317163009.665967103@linuxfoundation.org>
+Subject: [PATCH 6.18 001/333] scsi: storvsc: Fix scheduling while atomic on PREEMPT_RT
+Date: Tue, 17 Mar 2026 17:30:30 +0100
+Message-ID: <20260317162959.409709800@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +70,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,siemens.com,outlook.com,oracle.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226522-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226201-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,amd.com:email]
-X-Rspamd-Queue-Id: C91DC2AE6DA
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email]
+X-Rspamd-Queue-Id: 233342AF4F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-[ Upstream commit a8ba129af46856112981c124850ec6a85a1c1ab6 ]
+[ Upstream commit 57297736c08233987e5d29ce6584c6ca2a831b12 ]
 
-commit f93505f35745 ("amd-xgbe: let the MAC manage PHY PM") moved
-xgbe_phy_reset() from xgbe_open() to xgbe_start(), placing it after
-phy_start(). As a result, the PHY settings were being reset after the
-PHY had already started.
+This resolves the follow splat and lock-up when running with PREEMPT_RT
+enabled on Hyper-V:
 
-Reorder the calls so that the PHY settings are reset before
-phy_start() is invoked.
+[  415.140818] BUG: scheduling while atomic: stress-ng-iomix/1048/0x00000002
+[  415.140822] INFO: lockdep is turned off.
+[  415.140823] Modules linked in: intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core pmt_telemetry pmt_discovery pmt_class intel_pmc_ssram_telemetry intel_vsec ghash_clmulni_intel aesni_intel rapl binfmt_misc nls_ascii nls_cp437 vfat fat snd_pcm hyperv_drm snd_timer drm_client_lib drm_shmem_helper snd sg soundcore drm_kms_helper pcspkr hv_balloon hv_utils evdev joydev drm configfs efi_pstore nfnetlink vsock_loopback vmw_vsock_virtio_transport_common hv_sock vmw_vsock_vmci_transport vsock vmw_vmci efivarfs autofs4 ext4 crc16 mbcache jbd2 sr_mod sd_mod cdrom hv_storvsc serio_raw hid_generic scsi_transport_fc hid_hyperv scsi_mod hid hv_netvsc hyperv_keyboard scsi_common
+[  415.140846] Preemption disabled at:
+[  415.140847] [<ffffffffc0656171>] storvsc_queuecommand+0x2e1/0xbe0 [hv_storvsc]
+[  415.140854] CPU: 8 UID: 0 PID: 1048 Comm: stress-ng-iomix Not tainted 6.19.0-rc7 #30 PREEMPT_{RT,(full)}
+[  415.140856] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/04/2024
+[  415.140857] Call Trace:
+[  415.140861]  <TASK>
+[  415.140861]  ? storvsc_queuecommand+0x2e1/0xbe0 [hv_storvsc]
+[  415.140863]  dump_stack_lvl+0x91/0xb0
+[  415.140870]  __schedule_bug+0x9c/0xc0
+[  415.140875]  __schedule+0xdf6/0x1300
+[  415.140877]  ? rtlock_slowlock_locked+0x56c/0x1980
+[  415.140879]  ? rcu_is_watching+0x12/0x60
+[  415.140883]  schedule_rtlock+0x21/0x40
+[  415.140885]  rtlock_slowlock_locked+0x502/0x1980
+[  415.140891]  rt_spin_lock+0x89/0x1e0
+[  415.140893]  hv_ringbuffer_write+0x87/0x2a0
+[  415.140899]  vmbus_sendpacket_mpb_desc+0xb6/0xe0
+[  415.140900]  ? rcu_is_watching+0x12/0x60
+[  415.140902]  storvsc_queuecommand+0x669/0xbe0 [hv_storvsc]
+[  415.140904]  ? HARDIRQ_verbose+0x10/0x10
+[  415.140908]  ? __rq_qos_issue+0x28/0x40
+[  415.140911]  scsi_queue_rq+0x760/0xd80 [scsi_mod]
+[  415.140926]  __blk_mq_issue_directly+0x4a/0xc0
+[  415.140928]  blk_mq_issue_direct+0x87/0x2b0
+[  415.140931]  blk_mq_dispatch_queue_requests+0x120/0x440
+[  415.140933]  blk_mq_flush_plug_list+0x7a/0x1a0
+[  415.140935]  __blk_flush_plug+0xf4/0x150
+[  415.140940]  __submit_bio+0x2b2/0x5c0
+[  415.140944]  ? submit_bio_noacct_nocheck+0x272/0x360
+[  415.140946]  submit_bio_noacct_nocheck+0x272/0x360
+[  415.140951]  ext4_read_bh_lock+0x3e/0x60 [ext4]
+[  415.140995]  ext4_block_write_begin+0x396/0x650 [ext4]
+[  415.141018]  ? __pfx_ext4_da_get_block_prep+0x10/0x10 [ext4]
+[  415.141038]  ext4_da_write_begin+0x1c4/0x350 [ext4]
+[  415.141060]  generic_perform_write+0x14e/0x2c0
+[  415.141065]  ext4_buffered_write_iter+0x6b/0x120 [ext4]
+[  415.141083]  vfs_write+0x2ca/0x570
+[  415.141087]  ksys_write+0x76/0xf0
+[  415.141089]  do_syscall_64+0x99/0x1490
+[  415.141093]  ? rcu_is_watching+0x12/0x60
+[  415.141095]  ? finish_task_switch.isra.0+0xdf/0x3d0
+[  415.141097]  ? rcu_is_watching+0x12/0x60
+[  415.141098]  ? lock_release+0x1f0/0x2a0
+[  415.141100]  ? rcu_is_watching+0x12/0x60
+[  415.141101]  ? finish_task_switch.isra.0+0xe4/0x3d0
+[  415.141103]  ? rcu_is_watching+0x12/0x60
+[  415.141104]  ? __schedule+0xb34/0x1300
+[  415.141106]  ? hrtimer_try_to_cancel+0x1d/0x170
+[  415.141109]  ? do_nanosleep+0x8b/0x160
+[  415.141111]  ? hrtimer_nanosleep+0x89/0x100
+[  415.141114]  ? __pfx_hrtimer_wakeup+0x10/0x10
+[  415.141116]  ? xfd_validate_state+0x26/0x90
+[  415.141118]  ? rcu_is_watching+0x12/0x60
+[  415.141120]  ? do_syscall_64+0x1e0/0x1490
+[  415.141121]  ? do_syscall_64+0x1e0/0x1490
+[  415.141123]  ? rcu_is_watching+0x12/0x60
+[  415.141124]  ? do_syscall_64+0x1e0/0x1490
+[  415.141125]  ? do_syscall_64+0x1e0/0x1490
+[  415.141127]  ? irqentry_exit+0x140/0x7e0
+[  415.141129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: f93505f35745 ("amd-xgbe: let the MAC manage PHY PM")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-4-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+get_cpu() disables preemption while the spinlock hv_ringbuffer_write is
+using is converted to an rt-mutex under PREEMPT_RT.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Tested-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/0c7fb5cd-fb21-4760-8593-e04bade84744@siemens.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/scsi/storvsc_drv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 3444ec681a11f..6de12a0e06553 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1271,6 +1271,12 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index b43d876747b76..68c837146b9ea 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1855,8 +1855,9 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
+ 	cmd_request->payload_sz = payload_sz;
+ 
+ 	/* Invokes the vsc to start an IO */
+-	ret = storvsc_do_io(dev, cmd_request, get_cpu());
+-	put_cpu();
++	migrate_disable();
++	ret = storvsc_do_io(dev, cmd_request, smp_processor_id());
++	migrate_enable();
+ 
  	if (ret)
- 		goto err_napi;
- 
-+	/* Reset the phy settings */
-+	ret = xgbe_phy_reset(pdata);
-+	if (ret)
-+		goto err_irqs;
-+
-+	/* Start the phy */
- 	ret = phy_if->phy_start(pdata);
- 	if (ret)
- 		goto err_irqs;
-@@ -1284,11 +1290,6 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
- 
- 	udp_tunnel_nic_reset_ntf(netdev);
- 
--	/* Reset the phy settings */
--	ret = xgbe_phy_reset(pdata);
--	if (ret)
--		goto err_txrx;
--
- 	netif_tx_start_all_queues(netdev);
- 
- 	xgbe_start_timers(pdata);
-@@ -1298,10 +1299,6 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
- 
- 	return 0;
- 
--err_txrx:
--	hw_if->disable_rx(pdata);
--	hw_if->disable_tx(pdata);
--
- err_irqs:
- 	xgbe_free_irqs(pdata);
- 
+ 		scsi_dma_unmap(scmnd);
 -- 
 2.51.0
 
