@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-226165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HnbJ9yEuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:12 +0100
+	id wAYbMuKEuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D542AE4E1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8286B2AE4FE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 86DB630A8D03
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:39:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 972E430AA3D9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0A73EC2CC;
-	Tue, 17 Mar 2026 16:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D623ECBD7;
+	Tue, 17 Mar 2026 16:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/ZmzK6Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7u9yvJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161414F70
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E9A3EC2E4
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765570; cv=none; b=M3J3fZGpop2NUrXtHYcwW98tLfiqO+C3xL9K0ckrFMKX7ZXMwf3tFtZmDEIERDP6ZjJbP2gpSgmeH7Ypw8yPV/UpnTU55bmjgqbpWU+fc7IDXp31iO3pvDRAFSDWlBgyBzUu519xDtHZfOen1zzsBovAGaODq/gOCkPwntp9n7c=
+	t=1773765570; cv=none; b=dRpsvTK9GZdZlzkc5GLhL2LrxdRSpj+En/aWyGyA4TGd4p6EtIbREAnmBZ4MdnKdLqOxgptquyf96Cch0py4EHyhRJNcTcHCw5zWHP80qO+ELZZ0HBuCUUvz4PSfF4iS9u87I3BdMWOqSmOa0hDJ3dXJ8eZUB+fq5cfll50OjxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773765570; c=relaxed/simple;
-	bh=lG3D3Y2Z7iNjZaNfg+rqkA5wSyunmmcMamSLFiAeTzI=;
+	bh=cn5mKvSsLWeU2/we4D9CV8XTM3lnDyJ1nXketrUS8fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nuT3yBX6kW8ZUxdbmkDNHMLCf2UBv5MI+42dF+uF5duLjqkkcwus9TD99MkSyg8Y98WHb4qC0qyZOyNjyz/iHPVY3AgpuiQ2T+eftzcyLlZDSNPxyvXBweV7+ZWog2ksz6gOpwdybDXydvF0ZPXP9a67+l6Cv+vN5OPDK2jHzxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/ZmzK6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5493CC2BCAF;
-	Tue, 17 Mar 2026 16:39:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PSIXFSLo5j0wxGGC/f1sYjUYSSfxm7b1sfim9Gc0glROX0IA/ETeviPX3Iszqw7yiCOBU31F3b4w5mAwsT4S7w/OgNn7wTtOyrTwfnS8+Uoe0XiLxXaRCzzzuOvDYKqCHZgJJMBrGTwFgFvhYQdxPMQzLRg2kISB4RXFOBS3mtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7u9yvJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2150CC2BCB1;
+	Tue, 17 Mar 2026 16:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773765569;
-	bh=lG3D3Y2Z7iNjZaNfg+rqkA5wSyunmmcMamSLFiAeTzI=;
+	s=k20201202; t=1773765570;
+	bh=cn5mKvSsLWeU2/we4D9CV8XTM3lnDyJ1nXketrUS8fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/ZmzK6ZCkdMX82p3Dl2ge/vdT65SyxOEWb/FpljZrYMtk3If/SxPGTa/InaGZo6R
-	 V27aAcjT7w1EijeqJUkBfHP4goc8NZ0Y1d/oXiO3zY8r2g9h2E0EH2rNflHcJbyZNb
-	 K1uv962N/tkCOJcQx+dOY3pBVafoMV+2a/AqGfxLQvHGmIkpf8kVeZ1Sxpph64hFny
-	 GRT5cCvKBzCEMqzDB6/PnfToqRjs28byEir/+LpnrKotAZ+d4iesnfps04YOmH6rfb
-	 WFziEkWHSszjRy9NVLZSVuP2pyJQAWj/hV4UDqS+WDUgliWaRcYgP1L0Y53hfMya5h
-	 AOv0WtyQHEiWg==
+	b=X7u9yvJTMyYybTQqaMMOiW8ClWtVB8M9sbTX6IhoAgOObdhckwHZZcGw5KQkRazv1
+	 BYIW5KcyP6fzBYAvfR7EI9YtkkxOMcVYbY1ydHYX/iQLrz+XYgiqEmOZCI8Roo5E0x
+	 EuKi7CHzVnaqVtSkvxUwhx9yaV/Df/7MbB7FB/UNnFk6RtpL1uDHrMIRXE4PK1Rvdd
+	 oSC2XGlz1tJUzLo6LnVz206DT4RHLiVa6medpPBBY6VPc0zwYGYx8k4wZQ7CGOo9GT
+	 os8zDxKeWTLpyuJoTZnNTl9XJ+MukVMfhgd07gR9UwBks+CBhzpFVt6AFPAmHc7HAX
+	 t8L0C6DkqE2/A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Animesh Manna <animesh.manna@intel.com>,
 	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/8] drm/i915/lobf: Add lobf enablement in post plane update
-Date: Tue, 17 Mar 2026 12:39:20 -0400
-Message-ID: <20260317163924.220634-4-sashal@kernel.org>
+Subject: [PATCH 6.12.y 5/8] drm/i915/lobf: Disintegrate alpm_disable from psr_disable
+Date: Tue, 17 Mar 2026 12:39:21 -0400
+Message-ID: <20260317163924.220634-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260317163924.220634-1-sashal@kernel.org>
 References: <2026031731-secret-rocket-af05@gregkh>
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226165-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226167-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,130 +89,133 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54D542AE4E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 8286B2AE4FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Animesh Manna <animesh.manna@intel.com>
 
-[ Upstream commit 172757acd6f60625f09760ef0ffdcac01d8ed58a ]
+[ Upstream commit 504766382edb2a8babe030aad507965be1d632ee ]
 
-Enablement of LOBF is added in post plane update whenever
-has_lobf flag is set. As LOBF can be enabled in non-psr
-case as well so adding in post plane update. There is no
-change of configuring alpm with psr path.
+Currently clearing of alpm registers is done through psr_disable()
+which is always not correct, without psr also alpm can exist. So
+dis-integrate alpm_disable() from psr_disable().
 
 v1: Initial version.
-v2: Use encoder-mask to find the associated encoder from
-crtc-state. [Jani]
-v3: Remove alpm_configure from intel_psr.c. [Jouni]
+v2:
+- Remove h/w register read from alpm_disable(). [Jani]
 
 Signed-off-by: Animesh Manna <animesh.manna@intel.com>
 Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Link: https://lore.kernel.org/r/20250423092334.2294483-3-animesh.manna@intel.com
+Link: https://lore.kernel.org/r/20250423092334.2294483-5-animesh.manna@intel.com
 Stable-dep-of: eb4a7139e973 ("drm/i915/alpm: ALPM disable fixes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_alpm.c    | 25 ++++++++++++++++++++
- drivers/gpu/drm/i915/display/intel_alpm.h    |  4 ++++
- drivers/gpu/drm/i915/display/intel_display.c |  3 +++
- drivers/gpu/drm/i915/display/intel_psr.c     |  3 ---
- 4 files changed, 32 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_alpm.c      | 18 ++++++++++++++++++
+ drivers/gpu/drm/i915/display/intel_alpm.h      |  1 +
+ drivers/gpu/drm/i915/display/intel_ddi.c       |  2 ++
+ .../gpu/drm/i915/display/intel_display_types.h |  1 +
+ drivers/gpu/drm/i915/display/intel_psr.c       | 11 -----------
+ 5 files changed, 22 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/gpu/drm/i915/display/intel_alpm.c b/drivers/gpu/drm/i915/display/intel_alpm.c
-index 57afb25191bd9..d256bb831b136 100644
+index d256bb831b136..8f83dfb899308 100644
 --- a/drivers/gpu/drm/i915/display/intel_alpm.c
 +++ b/drivers/gpu/drm/i915/display/intel_alpm.c
-@@ -365,6 +365,31 @@ void intel_alpm_configure(struct intel_dp *intel_dp,
+@@ -363,6 +363,7 @@ void intel_alpm_configure(struct intel_dp *intel_dp,
+ 			  const struct intel_crtc_state *crtc_state)
+ {
  	lnl_alpm_configure(intel_dp, crtc_state);
++	intel_dp->alpm_parameters.transcoder = crtc_state->cpu_transcoder;
  }
  
-+void intel_alpm_post_plane_update(struct intel_atomic_state *state,
-+				  struct intel_crtc *crtc)
-+{
-+	struct intel_display *display = to_intel_display(state);
-+	const struct intel_crtc_state *crtc_state =
-+		intel_atomic_get_new_crtc_state(state, crtc);
-+	struct intel_encoder *encoder;
+ void intel_alpm_post_plane_update(struct intel_atomic_state *state,
+@@ -438,3 +439,20 @@ void intel_alpm_lobf_debugfs_add(struct intel_connector *connector)
+ 	debugfs_create_file("i915_edp_lobf_info", 0444, root,
+ 			    connector, &i915_edp_lobf_info_fops);
+ }
 +
-+	if (!crtc_state->has_lobf && !crtc_state->has_psr)
++void intel_alpm_disable(struct intel_dp *intel_dp)
++{
++	struct intel_display *display = to_intel_display(intel_dp);
++	enum transcoder cpu_transcoder = intel_dp->alpm_parameters.transcoder;
++
++	if (DISPLAY_VER(display) < 20)
 +		return;
 +
-+	for_each_intel_encoder_mask(display->drm, encoder,
-+				    crtc_state->uapi.encoder_mask) {
-+		struct intel_dp *intel_dp;
++	intel_de_rmw(display, ALPM_CTL(display, cpu_transcoder),
++		     ALPM_CTL_ALPM_ENABLE | ALPM_CTL_LOBF_ENABLE |
++		     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
 +
-+		if (!intel_encoder_is_dp(encoder))
-+			continue;
-+
-+		intel_dp = enc_to_intel_dp(encoder);
-+
-+		if (intel_dp_is_edp(intel_dp))
-+			intel_alpm_configure(intel_dp, crtc_state);
-+	}
++	intel_de_rmw(display,
++		     PORT_ALPM_CTL(cpu_transcoder),
++		     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
 +}
-+
- static int i915_edp_lobf_info_show(struct seq_file *m, void *data)
- {
- 	struct intel_connector *connector = m->private;
 diff --git a/drivers/gpu/drm/i915/display/intel_alpm.h b/drivers/gpu/drm/i915/display/intel_alpm.h
-index 8c409b10dce6c..2f862b0476a8a 100644
+index 2f862b0476a8a..91f51fb24f981 100644
 --- a/drivers/gpu/drm/i915/display/intel_alpm.h
 +++ b/drivers/gpu/drm/i915/display/intel_alpm.h
-@@ -12,6 +12,8 @@ struct intel_dp;
- struct intel_crtc_state;
- struct drm_connector_state;
- struct intel_connector;
-+struct intel_atomic_state;
-+struct intel_crtc;
- 
- void intel_alpm_init_dpcd(struct intel_dp *intel_dp);
- bool intel_alpm_compute_params(struct intel_dp *intel_dp,
-@@ -21,6 +23,8 @@ void intel_alpm_lobf_compute_config(struct intel_dp *intel_dp,
- 				    struct drm_connector_state *conn_state);
- void intel_alpm_configure(struct intel_dp *intel_dp,
- 			  const struct intel_crtc_state *crtc_state);
-+void intel_alpm_post_plane_update(struct intel_atomic_state *state,
-+				  struct intel_crtc *crtc);
+@@ -28,4 +28,5 @@ void intel_alpm_post_plane_update(struct intel_atomic_state *state,
  void intel_alpm_lobf_debugfs_add(struct intel_connector *connector);
  bool intel_alpm_aux_wake_supported(struct intel_dp *intel_dp);
  bool intel_alpm_aux_less_wake_supported(struct intel_dp *intel_dp);
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index e2736f50fef83..bb05c8fd5e5f3 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -57,6 +57,7 @@
- #include "i9xx_plane.h"
- #include "i9xx_plane_regs.h"
- #include "i9xx_wm.h"
++void intel_alpm_disable(struct intel_dp *intel_dp);
+ #endif
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index 5b24460c01341..6514ebbaf0025 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -34,6 +34,7 @@
+ #include "i915_drv.h"
+ #include "i915_reg.h"
+ #include "icl_dsi.h"
 +#include "intel_alpm.h"
- #include "intel_atomic.h"
- #include "intel_atomic_plane.h"
  #include "intel_audio.h"
-@@ -1116,6 +1117,8 @@ static void intel_post_plane_update(struct intel_atomic_state *state,
- 	if (audio_enabling(old_crtc_state, new_crtc_state))
- 		intel_encoders_audio_enable(state, crtc);
+ #include "intel_audio_regs.h"
+ #include "intel_backlight.h"
+@@ -3423,6 +3424,7 @@ static void intel_disable_ddi_dp(struct intel_atomic_state *state,
+ 	intel_dp->link_trained = false;
  
-+	intel_alpm_post_plane_update(state, crtc);
-+
- 	intel_psr_post_plane_update(state, crtc);
- }
+ 	intel_psr_disable(intel_dp, old_crtc_state);
++	intel_alpm_disable(intel_dp);
+ 	intel_edp_backlight_off(old_conn_state);
+ 	/* Disable the decompression in DP Sink */
+ 	intel_dp_sink_disable_decompression(state,
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index 9812191e7ef29..b6a388f5a7c8b 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1906,6 +1906,7 @@ struct intel_dp {
+ 	struct {
+ 		u8 io_wake_lines;
+ 		u8 fast_wake_lines;
++		enum transcoder transcoder;
  
+ 		/* LNL and beyond */
+ 		u8 check_entry_lines;
 diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 16fd393de04fc..855f22f1f8328 100644
+index 855f22f1f8328..3a8da3dcab6d5 100644
 --- a/drivers/gpu/drm/i915/display/intel_psr.c
 +++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1886,9 +1886,6 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- 			     intel_dp->psr.psr2_sel_fetch_enabled ?
- 			     IGNORE_PSR2_HW_TRACKING : 0);
+@@ -2108,17 +2108,6 @@ static void intel_psr_disable_locked(struct intel_dp *intel_dp)
+ 	if (intel_dp_is_edp(intel_dp))
+ 		intel_snps_phy_update_psr_power_state(&dp_to_dig_port(intel_dp)->base, false);
  
--	if (intel_dp_is_edp(intel_dp))
--		intel_alpm_configure(intel_dp, crtc_state);
+-	/* Panel Replay on eDP is always using ALPM aux less. */
+-	if (intel_dp->psr.panel_replay_enabled && intel_dp_is_edp(intel_dp)) {
+-		intel_de_rmw(display, ALPM_CTL(display, cpu_transcoder),
+-			     ALPM_CTL_ALPM_ENABLE |
+-			     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
 -
- 	/*
- 	 * Wa_16013835468
- 	 * Wa_14015648006
+-		intel_de_rmw(display,
+-			     PORT_ALPM_CTL(cpu_transcoder),
+-			     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
+-	}
+-
+ 	/* Disable PSR on Sink */
+ 	if (!intel_dp->psr.panel_replay_enabled) {
+ 		drm_dp_dpcd_writeb(&intel_dp->aux, DP_PSR_EN_CFG, 0);
 -- 
 2.51.0
 
