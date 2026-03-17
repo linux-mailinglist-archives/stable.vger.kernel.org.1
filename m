@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEEJJ5+SuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:55 +0100
+	id IIs4MAuIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B16E2B0084
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09952AEB34
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1121132D707B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23D1630629B6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A702D73B8;
-	Tue, 17 Mar 2026 17:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A653F54A4;
+	Tue, 17 Mar 2026 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOm3YaMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlGj8jr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C835B255F2C;
-	Tue, 17 Mar 2026 17:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12723F23AA;
+	Tue, 17 Mar 2026 16:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767870; cv=none; b=WbhvkbPCY98R5rayTFpVh9S86UPHABKyYPVzQj6+bU5lVEG8Ol7MoCHk7OqkRE+j2ZgUmJDV5vgpcl9we3CB05Y9KBZ0f13B9j8PnGBcmva9dzeYPZ9+LYIWUM8o2vYY2K3KvxxCynVR/CVH+4ncpOOU5JUia8Ijo1GZEIJfZLo=
+	t=1773766308; cv=none; b=lhgE6/43pFdv/xsx0tBHFbEpPtSmMbqwg4vYQ5jii6p3qSpK+SCL8ryPy1/FVFyIO0il3QEinuPTsqE4xWiYaXp01GR+H6QEoH4LzOLrikD5dJ6UcpGWDfWABFKpGz4ZnRlgs3vNTD9u5AHac2VX3Dzbpucxc7wDOkA5irM65qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767870; c=relaxed/simple;
-	bh=bMe1kEpP65MVaMlzxl4o7ayd+jYaV2owLLBlhw7guWU=;
+	s=arc-20240116; t=1773766308; c=relaxed/simple;
+	bh=U/3okOuG1AAMNSvUwCRpbIXf6G7h6jRyCBatoCiV1Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5AQi7LzMyoB8KpOgqP/eNyCsWM9dfQvVrRRFnFbpgUKvE6QE6wqbfGn4PmIF+XWzlfBjnLfGnKmVPfzUr83+ZlqSHSOncDVOJjBr3mAfQSCu0294r6ZN1OXTRk1Udu5X/8V5owGv8CrWwDiHHOi2XTXQ7H02Gav3zy7qcn6RmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOm3YaMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53874C4CEF7;
-	Tue, 17 Mar 2026 17:17:50 +0000 (UTC)
+	 MIME-Version; b=a0xdg8591RDYcyE3+0/kp77irY6bIJmor099CxbilJ7E7Rvh+FCuxhNXDHyueceAgyVneLOikha4su/oUI3bnU1MIVhXGIT+Qpy6q9ovYuPrxiSZWTB691VEo7uMYUA4d0onJSCJRr6Yomv+YCKgocKqOSzBMNj9DJvBtZoba6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlGj8jr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8AEC4CEF7;
+	Tue, 17 Mar 2026 16:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767870;
-	bh=bMe1kEpP65MVaMlzxl4o7ayd+jYaV2owLLBlhw7guWU=;
+	s=korg; t=1773766307;
+	bh=U/3okOuG1AAMNSvUwCRpbIXf6G7h6jRyCBatoCiV1Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOm3YaMa4MrAxrztb5Ib5FgUoziyE9/e/ZBVQiu9TIcyCgdINKByoWlVGxUJzysec
-	 2fEVKffBDN0jGCSCrWD1JAmN1w1bQOeFveO2njpjomeC1t/w/OOTkZCYNR3Hd1nkOD
-	 fYQPVqt8HbqOdIPDd5uJ47DUT7w94NuizjBoIc6M=
+	b=rlGj8jr3pb65MZqB8fT1/EfWJk7uBU8LcgGT3hgI/chOkTlLo1a1yx42piLRh4/bR
+	 UPf/ydkfZ2+pv1Bq+oyxneDiST7ZZlHrscVLQM/KFj8BqJl83frsqtVynK7PBQcoeN
+	 pldhNlhyplCYcOLhqNpIuzsw+z04ZBJ6OKqpZWLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 144/333] usb: mdc800: handle signal and read racing
+	Jirka Hladky <jhladky@redhat.com>,
+	David Arcari <darcari@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.19 216/378] cpufreq: intel_pstate: Fix NULL pointer dereference in update_cpu_qos_request()
 Date: Tue, 17 Mar 2026 17:32:53 +0100
-Message-ID: <20260317163004.699594146@linuxfoundation.org>
+Message-ID: <20260317163014.957376626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226699-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226346-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,45 +87,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0B16E2B0084
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: C09952AEB34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: David Arcari <darcari@redhat.com>
 
-commit 2d6d260e9a3576256fe9ef6d1f7930c9ec348723 upstream.
+commit ab39cc4cb8ceecdc2b61747433e7237f1ac2b789 upstream.
 
-If a signal arrives after a read has partially completed,
-we need to return the number of bytes read. -EINTR is correct
-only if that number is zero.
+The update_cpu_qos_request() function attempts to initialize the 'freq'
+variable by dereferencing 'cpudata' before verifying if the 'policy'
+is valid.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260209142048.1503791-1-oneukum@suse.com
+This issue occurs on systems booted with the "nosmt" parameter, where
+all_cpu_data[cpu] is NULL for the SMT sibling threads. As a result,
+any call to update_qos_requests() will result in a NULL pointer
+dereference as the code will attempt to access pstate.turbo_freq using
+the NULL cpudata pointer.
+
+Also, pstate.turbo_freq may be updated by intel_pstate_get_hwp_cap()
+after initializing the 'freq' variable, so it is better to defer the
+'freq' until intel_pstate_get_hwp_cap() has been called.
+
+Fix this by deferring the 'freq' assignment until after the policy and
+driver_data have been validated.
+
+Fixes: ae1bdd23b99f ("cpufreq: intel_pstate: Adjust frequency percentage computations")
+Reported-by: Jirka Hladky <jhladky@redhat.com>
+Closes: https://lore.kernel.org/all/CAE4VaGDfiPvz3AzrwrwM4kWB3SCkMci25nPO8W1JmTBd=xHzZg@mail.gmail.com/
+Signed-off-by: David Arcari <darcari@redhat.com>
+Cc: 6.18+ <stable@vger.kernel.org> # 6.18+
+[ rjw: Added one paragraph to the changelog ]
+Link: https://patch.msgid.link/20260224122106.228116-1-darcari@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/image/mdc800.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/image/mdc800.c
-+++ b/drivers/usb/image/mdc800.c
-@@ -707,7 +707,7 @@ static ssize_t mdc800_device_read (struc
- 		if (signal_pending (current)) 
- 		{
- 			mutex_unlock(&mdc800->io_lock);
--			return -EINTR;
-+			return len == left ? -EINTR : len-left;
- 		}
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1647,8 +1647,8 @@ static ssize_t store_no_turbo(struct kob
+ static void update_cpu_qos_request(int cpu, enum freq_qos_req_type type)
+ {
+ 	struct cpudata *cpudata = all_cpu_data[cpu];
+-	unsigned int freq = cpudata->pstate.turbo_freq;
+ 	struct freq_qos_request *req;
++	unsigned int freq;
  
- 		sts=left > (mdc800->out_count-mdc800->out_ptr)?mdc800->out_count-mdc800->out_ptr:left;
+ 	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+ 	if (!policy)
+@@ -1661,6 +1661,8 @@ static void update_cpu_qos_request(int c
+ 	if (hwp_active)
+ 		intel_pstate_get_hwp_cap(cpudata);
+ 
++	freq = cpudata->pstate.turbo_freq;
++
+ 	if (type == FREQ_QOS_MIN) {
+ 		freq = DIV_ROUND_UP(freq * global.min_perf_pct, 100);
+ 	} else {
 
 
 
