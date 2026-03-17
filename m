@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNedNrOLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:23 +0100
+	id WNwwBMGGuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26522AF229
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582A52AE8F3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B26B13090D2C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E2263161ED9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E60E3F7AA3;
-	Tue, 17 Mar 2026 17:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B57C3EE1CB;
+	Tue, 17 Mar 2026 16:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/L/71Sy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWj5BwAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317573F65EE;
-	Tue, 17 Mar 2026 17:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF84536C0B9;
+	Tue, 17 Mar 2026 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767363; cv=none; b=uZRu9JQQErfopEMlKEoNgkitcz/z6Fmi2GicouwC+2NdHj6ZLmyP5CvSHPbMayQADQCv7HicoJ6p4QsX8LDKzOv2XkjOcOCFxyVIj4RruTcWxcLB/m//vAHF8fBdXE9rGylMhJ0PtZvIjn256O2B0o2KRWoF0dYDI1RwVlpjIBw=
+	t=1773765853; cv=none; b=HjSo+vwHIj484UCl1f2F9UmhasFZc+FsobebdN6RQuyxNlLTfO4Esvw0vG8RTE3GzzcJwTg+pcQhCA3ZoNbXxj/ygVo1TeNJNWkBg9TRFChiZ11ykyiqbpZyLGCsDu9/mPvgWOvDgOrxezcxHndwE6PXxgLTa2VEr96j8/k7O1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767363; c=relaxed/simple;
-	bh=10LSTFglE6Bb7O76NalUqUrq6n6AtVqLq05hEF5WLlU=;
+	s=arc-20240116; t=1773765853; c=relaxed/simple;
+	bh=8wcz3Jo78JjnLPh1ih8DMQgLQ+QlqW2ePZ+HbKiD32A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipYhd4wi+ui6Wqyw8HfS1bjmvT45Ab9BbtSK8EOuMoCH1fKUK1h5VGisoY6Pn4xQq8FxmkTP3kuXNE9ArKGBWVg1mi7BBYcVqrzTr8/BdUWvhFYyHFnkRztw5aUMCyoR0+3IEIzn0/0b572TEtZH4JvdUTuP5pfTKmegWKdkr3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/L/71Sy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F91C2BC86;
-	Tue, 17 Mar 2026 17:09:22 +0000 (UTC)
+	 MIME-Version; b=hiciPzdQDUrqIzjuVEODkEJaEBUAmnLXKBJ3RvkAx+/AwXw46SJP9nwdrGOYu+RcZ0M/uzzel0Wd7yplbKzIao1FssPJbFkeVVJsau5yyGiXPPX0DjtJ/3Rqc3SKgBrDF3Z0Uh0PYH5+gi76c+Yt1cGANIXzD+Act9q/GaC3E74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWj5BwAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40FBC4CEF7;
+	Tue, 17 Mar 2026 16:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767363;
-	bh=10LSTFglE6Bb7O76NalUqUrq6n6AtVqLq05hEF5WLlU=;
+	s=korg; t=1773765853;
+	bh=8wcz3Jo78JjnLPh1ih8DMQgLQ+QlqW2ePZ+HbKiD32A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/L/71Syxs6VV3YT17UqyCuGq4Hekgr+YgqL7JhQZ74VEmmoia4EdITuK+Tfe8Gzz
-	 xugq67k3IFe9Z68ipr1coIVZhlAF9nSo5E2j3usqZ0Q3ubzahYeCXVJOxOBQw30113
-	 dNIC36fboQgdrcirMxh/lOfIOBw0Rd1/o7MzW4Ig=
+	b=nWj5BwAiLWDOVXoDXShinweycThD8zOSRB4D6MEg90QhcuBQb5TcHjQtxvdmSjV/F
+	 4NpSVJ4xIWiXBne/iD4XQBdTFOzFzGgXs0Y8V5r9+8RepszTbbfT2hdGJe7vpzlFRx
+	 CA/PvlBrCsxMQE648Sqi6F/uzw7/W1VS2Sw2H0yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 038/333] bonding: handle BOND_LINK_FAIL, BOND_LINK_BACK as valid link states
+Subject: [PATCH 6.19 110/378] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
 Date: Tue, 17 Mar 2026 17:31:07 +0100
-Message-ID: <20260317163000.775518704@linuxfoundation.org>
+Message-ID: <20260317163011.062817572@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226589-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226239-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A26522AF229
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 582A52AE8F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 3348be7978f450ede0c308a4e8416ac716cf1015 ]
+[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
 
-Before the fixed commit, we check slave->new_link during commit
-state, which values are only BOND_LINK_{NOCHANGE, UP, DOWN}. After
-the commit, we start using slave->link_new_state, which state also could
-be BOND_LINK_{FAIL, BACK}.
+The NIX RAS health report path uses nix_af_rvu_err when handling the
+NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
+than the RAS interrupt status.
 
-For example, when we set updelay/downdelay, after a failover,
-the slave->link_new_state could be set to BOND_LINK_{FAIL, BACK} in
-bond_miimon_inspect(). And later in bond_miimon_commit(), it will treat
-it as invalid and print an error, which would cause confusion for users.
+Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
 
-[  106.440254] bond0: (slave veth2): link status down for interface, disabling it in 200 ms
-[  106.440265] bond0: (slave veth2): invalid new link 1 on slave
-[  106.648276] bond0: (slave veth2): link status definitely down, disabling slave
-[  107.480271] bond0: (slave veth2): link status up, enabling it in 200 ms
-[  107.480288] bond0: (slave veth2): invalid new link 3 on slave
-[  107.688302] bond0: (slave veth2): link status definitely up, 10000 Mbps full duplex
-
-Let's handle BOND_LINK_{FAIL, BACK} as valid link states.
-
-Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260304-b4-bond_updelay-v1-2-f72eb2e454d0@gmail.com
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index dca0bec7240ad..322f910b06fc8 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2860,8 +2860,14 @@ static void bond_miimon_commit(struct bonding *bond)
- 
- 			continue;
- 
-+		case BOND_LINK_FAIL:
-+		case BOND_LINK_BACK:
-+			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
-+				  slave->link_new_state);
-+			continue;
-+
- 		default:
--			slave_err(bond->dev, slave->dev, "invalid new link %d on slave\n",
-+			slave_err(bond->dev, slave->dev, "invalid link_new_state %d on slave\n",
- 				  slave->link_new_state);
- 			bond_propose_link_state(slave, BOND_LINK_NOCHANGE);
- 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index fa6ca4f41b59a..2a715872e9edf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
+ 		rvu_report_pair_end(fmsg);
+ 		break;
+ 	case NIX_AF_RVU_RAS:
+-		intr_val = nix_event_context->nix_af_rvu_err;
++		intr_val = nix_event_context->nix_af_rvu_ras;
+ 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
+ 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
+-					  nix_event_context->nix_af_rvu_err);
++					  nix_event_context->nix_af_rvu_ras);
+ 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
+ 		if (intr_val & BIT_ULL(34))
+ 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
 -- 
 2.51.0
 
