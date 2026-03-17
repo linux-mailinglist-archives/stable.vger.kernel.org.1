@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMqrHskcuWm8rAEAu9opvQ
-	(envelope-from <stable+bounces-225779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:20:09 +0100
+	id CPeMLeYcuWm+qwEAu9opvQ
+	(envelope-from <stable+bounces-225780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:20:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2912A6821
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:20:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EF62A6885
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34D3D3022965
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:15:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC686304A16E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9A131B131;
-	Tue, 17 Mar 2026 09:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D273B288B8;
+	Tue, 17 Mar 2026 09:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHmwJX95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erFYCNgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F85D3176E4
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8469435836D
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738903; cv=none; b=tBQxDSIoVrQIl3C0DmmmJE+BnZhftdq/rSofSBKf52F5X16lZq1xXFA26wancA9l5IqM9pMjFjbJHC+SpcVT1714SPvxrCLU4RdrIcK2uDUmuG58OoLi5dl+YSCRrPoAH+CAxXUU2QIMg0QP1GFGqvLeHApq37F73NFCo9piyKw=
+	t=1773738918; cv=none; b=IY1GN5s8+xjhvoct+gUFvu0Rp5E/WSmhIeCBNDwcknlnSSv6tLNZ9U8qu1Zj0zhZE0Q0Pi/Vq9VY0MrR8ljrVZ/EN4HXi0GVFgoiMZMvPZ14zr9UNQlug0j7TFxY75cQCHuhyIEmk7vgTLKtMcds+rQwGcM/6I5+1YCxgQhrTZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738903; c=relaxed/simple;
-	bh=NdNmRMrIHDDBl4siGYaZnjQogFXJijnJ1TSjWm2RWIo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eWUFxXcpc7t8Re+b4OAYBhLXf1ouxSPvEFKpGv3wYIiAGWt6NZE1Vbm+2o+6cRceBE3KZFZz0HCN49Nrj+bhPjjrmUxXzt+dX/kfjPzX5wn61AuzT45eJ2YPX/7zuYxdL2o85COnr1FibPdgXx9VNC6UATnV58hd7ZkxKtCac4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHmwJX95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A0CC4CEF7;
-	Tue, 17 Mar 2026 09:15:02 +0000 (UTC)
+	s=arc-20240116; t=1773738918; c=relaxed/simple;
+	bh=XZ548VW34a4HHSiVJKV7MlTit9tTCvQeRtHLC+Hg500=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bJ/lpvmhSzkeopvNuEc4ILU/iWkgdUWne/KW/rFpdcVieE4U9NPlGj0RX5luWXtihEUhS1CyNS1D1TLU31s0Wq5tbuj7tRKoXoIV3WauXp994HvIBcxDOdywSQ9GjCZSkHeDnVHx7BE1TvwNVIWtqdh35C2JWSprGbEVy6rT91U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erFYCNgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A8EC2BCB0;
+	Tue, 17 Mar 2026 09:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773738903;
-	bh=NdNmRMrIHDDBl4siGYaZnjQogFXJijnJ1TSjWm2RWIo=;
+	s=korg; t=1773738918;
+	bh=XZ548VW34a4HHSiVJKV7MlTit9tTCvQeRtHLC+Hg500=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SHmwJX95zzJCRRUQdaHRhGwTNb//k9sou1mubBhvyPyZxj6EYZz9nIVripk0SyIJD
-	 tx+Sm/tkXRpygm4Y/09nYSXCd0kUqOQ7dIalC0eL+KljnzFotnFZ1LM4PxLl/2iC83
-	 8j7lLrZAQeX31/wJjgoA9ZPuJbVs930VX9gG9fhA=
-Subject: FAILED: patch "[PATCH] mmc: dw_mmc-rockchip: Fix runtime PM support for internal" failed to apply to 6.12-stable tree
-To: shawn.lin@rock-chips.com,heiko@sntech.de,mschirrmeister@gmail.com,ulf.hansson@linaro.org
+	b=erFYCNghmgWWeoxgbFnlbsmUwnhX4cKeBb/LdMj3yHcDHHY5UWGqCAn2KVs/TKzL+
+	 nrUFAfrg27ozX586jNLtT41uOC24jB2C8BQzhvKJyxVQ0ieKtT3rvnxolYGljuDrvq
+	 atjc+jDzi6RojJvaFPVEX7lcPo/kuTc/DIpfrrtQ=
+Subject: FAILED: patch "[PATCH] mmc: core: Avoid bitfield RMW for claim/retune flags" failed to apply to 5.10-stable tree
+To: pgeng@nvidia.com,adrian.hunter@intel.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 10:14:58 +0100
-Message-ID: <2026031758-blob-blot-0711@gregkh>
+Date: Tue, 17 Mar 2026 10:15:14 +0100
+Message-ID: <2026031713-defeat-mobster-d0a8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,48 +59,47 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225779-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225780-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[rock-chips.com,sntech.de,gmail.com,linaro.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.991];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linaro.org:email,gregkh:email,sntech.de:email,rock-chips.com:email]
-X-Rspamd-Queue-Id: EB2912A6821
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,intel.com:email,linaro.org:email,gregkh:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 25EF62A6885
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6465a8bbb0f6ad98aeb66dc9ea19c32c193a610b
+git cherry-pick -x 901084c51a0a8fb42a3f37d2e9c62083c495f824
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031758-blob-blot-0711@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031713-defeat-mobster-d0a8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,83 +111,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6465a8bbb0f6ad98aeb66dc9ea19c32c193a610b Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Date: Fri, 16 Jan 2026 08:55:30 +0800
-Subject: [PATCH] mmc: dw_mmc-rockchip: Fix runtime PM support for internal
- phase support
+From 901084c51a0a8fb42a3f37d2e9c62083c495f824 Mon Sep 17 00:00:00 2001
+From: Penghe Geng <pgeng@nvidia.com>
+Date: Thu, 19 Feb 2026 15:29:54 -0500
+Subject: [PATCH] mmc: core: Avoid bitfield RMW for claim/retune flags
 
-RK3576 is the first platform to introduce internal phase support, and
-subsequent platforms are expected to adopt a similar design. In this
-architecture, runtime suspend powers off the attached power domain, which
-resets registers, including vendor-specific ones such as SDMMC_TIMING_CON0,
-SDMMC_TIMING_CON1, and SDMMC_MISC_CON. These registers must be saved and
-restored, a requirement that falls outside the scope of the dw_mmc core.
+Move claimed and retune control flags out of the bitfield word to
+avoid unrelated RMW side effects in asynchronous contexts.
 
-Fixes: 59903441f5e4 ("mmc: dw_mmc-rockchip: Add internal phase support")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+The host->claimed bit shared a word with retune flags. Writes to claimed
+in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
+other bits when concurrent updates happen in other contexts, triggering
+spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
+retune_now and retune_paused to bool to remove shared-word coupling.
+
+Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
+Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
 Cc: stable@vger.kernel.org
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
-index 4e3423a19bdf..ac069d0c42b2 100644
---- a/drivers/mmc/host/dw_mmc-rockchip.c
-+++ b/drivers/mmc/host/dw_mmc-rockchip.c
-@@ -36,6 +36,8 @@ struct dw_mci_rockchip_priv_data {
- 	int			default_sample_phase;
- 	int			num_phases;
- 	bool			internal_phase;
-+	int                     sample_phase;
-+	int                     drv_phase;
- };
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index e0e2c265e5d1..ba84f02c2a10 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -486,14 +486,12 @@ struct mmc_host {
  
- /*
-@@ -573,9 +575,43 @@ static void dw_mci_rockchip_remove(struct platform_device *pdev)
- 	dw_mci_pltfm_remove(pdev);
- }
+ 	struct mmc_ios		ios;		/* current io bus settings */
  
-+static int dw_mci_rockchip_runtime_suspend(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct dw_mci *host = platform_get_drvdata(pdev);
-+	struct dw_mci_rockchip_priv_data *priv = host->priv;
++	bool			claimed;	/* host exclusively claimed */
 +
-+	if (priv->internal_phase) {
-+		priv->sample_phase = rockchip_mmc_get_phase(host, true);
-+		priv->drv_phase = rockchip_mmc_get_phase(host, false);
-+	}
-+
-+	return dw_mci_runtime_suspend(dev);
-+}
-+
-+static int dw_mci_rockchip_runtime_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct dw_mci *host = platform_get_drvdata(pdev);
-+	struct dw_mci_rockchip_priv_data *priv = host->priv;
-+	int ret;
-+
-+	ret = dw_mci_runtime_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->internal_phase) {
-+		rockchip_mmc_set_phase(host, true, priv->sample_phase);
-+		rockchip_mmc_set_phase(host, false, priv->drv_phase);
-+		mci_writel(host, MISC_CON, MEM_CLK_AUTOGATE_ENABLE);
-+	}
-+
-+	return ret;
-+}
-+
- static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
- 	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
--	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
-+	RUNTIME_PM_OPS(dw_mci_rockchip_runtime_suspend, dw_mci_rockchip_runtime_resume, NULL)
- };
+ 	/* group bitfields together to minimize padding */
+ 	unsigned int		use_spi_crc:1;
+-	unsigned int		claimed:1;	/* host exclusively claimed */
+ 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
+-	unsigned int		can_retune:1;	/* re-tuning can be used */
+ 	unsigned int		doing_retune:1;	/* re-tuning in progress */
+-	unsigned int		retune_now:1;	/* do re-tuning at next req */
+-	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
+ 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+@@ -508,6 +506,9 @@ struct mmc_host {
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
  
- static struct platform_driver dw_mci_rockchip_pltfm_driver = {
++	bool			can_retune;	/* re-tuning can be used */
++	bool			retune_now;	/* do re-tuning at next req */
++	bool			retune_paused;	/* re-tuning is temporarily disabled */
+ 	int			need_retune;	/* re-tuning is needed */
+ 	int			hold_retune;	/* hold off re-tuning */
+ 	unsigned int		retune_period;	/* re-tuning period in secs */
 
 
