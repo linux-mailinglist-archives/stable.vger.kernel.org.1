@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-226395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDdYLV6KuWkjJwIAu9opvQ
-	(envelope-from <stable+bounces-226395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:42 +0100
+	id 8ApcEsmHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8EC2AEFD1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1130E2AEA9E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65F2A31E888E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 966AE303A3FA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D223F23AA;
-	Tue, 17 Mar 2026 16:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD3B3F23DD;
+	Tue, 17 Mar 2026 16:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpz/0hu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydMDYddQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D25330B15;
-	Tue, 17 Mar 2026 16:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4001F3C6612;
+	Tue, 17 Mar 2026 16:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766513; cv=none; b=KfWBrOF1y0RBdachb9NHvsEvKYcCuVB4nu5DWZhOARerE7hcbMFUDZ8CytHwFmvs4QdGi3WyjurqExMEaQZ/pWATse5FrQ75B4Q6wSd/9XrSRiNf3bnAGVdTpdcRsyfFOjqbBRS+e9ANaHtHKrJcvg0cD4KnZO+UflqZ4PbJICY=
+	t=1773766543; cv=none; b=Px4oscGj8xQsMMuTNbj7lNl6w97Hn2wFY15zLKPgWdv4DEfygozc9Cal+wK4elvoD4a+tIsTp3nihGR0fq2SwiJ5WztSfYrTeCN+QL6ZCBqFoXb9gktj97IGmwhbO9Ux0twVk+zw8IB8UPNO1AtkQYewdYUbz4nKL1x9tQdKxrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766513; c=relaxed/simple;
-	bh=9tuHPcC4TBxNj7xx8Xta4tdPJpzULewWUle8On0Y0Vw=;
+	s=arc-20240116; t=1773766543; c=relaxed/simple;
+	bh=iTt6g+lNFcFKMpjC+wpusJxpzaEE6eMz1panmuyTptU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jj+pMM2qy/WkwdnFjgmAP9c1j4dvD+nhBZJJGx40CGWSz6bpwGph9aSCREZrUeCicU1yea6mBTF5KqljxWx8NhVpyVMz3jMyM9FL+1sYgupCY4D+VryLRxhchaqnGmSUtK8gTILamnVDvEu0ZUr6FIiFnbXTHBJRYWsO+BmwbCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpz/0hu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A792C4CEF7;
-	Tue, 17 Mar 2026 16:55:12 +0000 (UTC)
+	 MIME-Version; b=B624fOkyBsNfH4HpseVpvLtzMKsJEhGPZJbpMTZ5M4KISNldz7KoHKCrz8k8rFLOS7cvCmb047mW9rwJWp2Io+kB+YeIH2jZZSdlw8jEYDDsBAgf/2yKQCPjyNy8MUN4D1hVVTGlxlTjlSJ+oEphepHsX6cgjQqB6w4MikIlBSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMDYddQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9892EC4CEF7;
+	Tue, 17 Mar 2026 16:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766513;
-	bh=9tuHPcC4TBxNj7xx8Xta4tdPJpzULewWUle8On0Y0Vw=;
+	s=korg; t=1773766543;
+	bh=iTt6g+lNFcFKMpjC+wpusJxpzaEE6eMz1panmuyTptU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpz/0hu5sEY+H7decIAk8G+CWDHM3rrB/N6SfjKxKjfhLnSevSVQaFHgmz2fRrwxD
-	 saFLC8yLXG2278Gbv9MQ+4n6FE2RHAc+b0fKB+jPFTJWcH0vCzDp12r1+dMuCYCJk9
-	 tSKbypZpaWeN3m/5jocz1p3jhhmicxhd6VXpKpxM=
+	b=ydMDYddQyK80g2sRzXJfakp+0zXxCsDp1ZLfzZS6gm3XRtUGRZ2n3ACcEc9Tr3GLv
+	 uXzNbqKg4Y7ekhihNdq6BIztIfqwNitGdu+w1pO5F67C21dyexr0cSZQ1XmJpzuwFb
+	 y/PasVpr61Eb3xb3nEM/foytNlOra8SQzIK/XOuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.19 235/378] nfsd: Fix cred ref leak in nfsd_nl_listener_set_doit().
-Date: Tue, 17 Mar 2026 17:33:12 +0100
-Message-ID: <20260317163015.659364774@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.19 236/378] device property: Allow secondary lookup in fwnode_get_next_child_node()
+Date: Tue, 17 Mar 2026 17:33:13 +0100
+Message-ID: <20260317163015.695741681@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -68,30 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226401-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226395-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 3D8EC2AEFD1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1130E2AEA9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,42 +100,76 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 92978c83bb4eef55d02a6c990c01c423131eefa7 upstream.
+commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
 
-nfsd_nl_listener_set_doit() uses get_current_cred() without
-put_cred().
+When device_get_child_node_count() got split to the fwnode and device
+respective APIs, the fwnode didn't inherit the ability to traverse over
+the secondary fwnode. Hence any user, that switches from device to fwnode
+API misses this feature. In particular, this was revealed by the commit
+1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+that effectively broke the GPIO enumeration on Intel Galileo boards.
+Fix this by moving the secondary lookup from device to fwnode API.
 
-As we can see from other callers, svc_xprt_create_from_sa()
-does not require the extra refcount.
+Note, in general no device_*() API should go into the depth of the fwnode
+implementation.
 
-nfsd_nl_listener_set_doit() is always in the process context,
-sendmsg(), and current->cred does not go away.
-
-Let's use current_cred() in nfsd_nl_listener_set_doit().
-
-Fixes: 16a471177496 ("NFSD: add listener-{set,get} netlink command")
+Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/property.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1993,7 +1993,7 @@ int nfsd_nl_listener_set_doit(struct sk_
- 		}
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -797,7 +797,18 @@ struct fwnode_handle *
+ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+ 			   struct fwnode_handle *child)
+ {
+-	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	struct fwnode_handle *next;
++
++	if (IS_ERR_OR_NULL(fwnode))
++		return NULL;
++
++	/* Try to find a child in primary fwnode */
++	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	if (next)
++		return next;
++
++	/* When no more children in primary, continue with secondary */
++	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
+ }
+ EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
  
- 		ret = svc_xprt_create_from_sa(serv, xcl_name, net, sa, 0,
--					      get_current_cred());
-+					      current_cred());
- 		/* always save the latest error */
- 		if (ret < 0)
- 			err = ret;
+@@ -841,19 +852,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
+ {
+-	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	struct fwnode_handle *next;
+-
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return NULL;
+-
+-	/* Try to find a child in primary fwnode */
+-	next = fwnode_get_next_child_node(fwnode, child);
+-	if (next)
+-		return next;
+-
+-	/* When no more children in primary, continue with secondary */
+-	return fwnode_get_next_child_node(fwnode->secondary, child);
++	return fwnode_get_next_child_node(dev_fwnode(dev), child);
+ }
+ EXPORT_SYMBOL_GPL(device_get_next_child_node);
+ 
 
 
 
