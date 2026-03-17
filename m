@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-226292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DLGKeuHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:15 +0100
+	id iPe0L/aHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210262AEAD9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8452AEAEE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA41830DCAE1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD34E319184E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259963F54A4;
-	Tue, 17 Mar 2026 16:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074F53F54CB;
+	Tue, 17 Mar 2026 16:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTk3ZIfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcU0bVp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD22B3F23CC;
-	Tue, 17 Mar 2026 16:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBD3F54B4;
+	Tue, 17 Mar 2026 16:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766059; cv=none; b=DweUJY4Mn/E61nLgZpEjfrGN/n7TabnEGwPbWqX1E8jimHpeUoJStD3rxDkzo+2CDVpyzN/tRJbIR2JoZjd2dfZEogzoetFWZcC9/ZNKOOiL3ln1EKMZHuhHlsACm0FeGrWPMBEV5s3x1ZR5IEL+M3nxm6Nnuej/SNciupyoN7Y=
+	t=1773766064; cv=none; b=WPNSJ7t1uOMzqZNpjQOTnVmnkOyvj1h/FT87UGT5ihJ7RytY2Wxh61BrFVnkykzFNREB0G8w/TbLvSnewaY3UGLVDKPuoETT+58YJPu94R6HIeJDXh8MeN2TKIYDikPY+6WUt6huBIz/RU8DIzXvP+R1fV/uywjtv7xiUtC+0SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766059; c=relaxed/simple;
-	bh=U90FjWCZBfaLmgBmdPjSRKA33gkTL30vjCIoy9IEj/o=;
+	s=arc-20240116; t=1773766064; c=relaxed/simple;
+	bh=exNmnKXBWp9ynKx0hL/6jStGWhE93C9oC7/IdFe3pdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQlEme5p5y3dPY3d2DuFvYnC6vXdfeSkX1Ny512//KGsM1tr6vPMKlbWGZt/CTGmk8eQgHlKZRK1baOAfSSlspdyMmt6GNll0j90e/YH4ljUDrCbC6sa16Od1o45age9YKcTVusvzZ7LzVqO/1kIu+pwkV1T7BIgFFdkLJDp6YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTk3ZIfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536F1C19424;
-	Tue, 17 Mar 2026 16:47:38 +0000 (UTC)
+	 MIME-Version; b=uu/neXBd7NzqY064bQ9YGQ7WTId3+Z+5uIbKMJ1u/vNVJfLXdHSnFjIWgy8D0/Za9QMez7qHnl6k/43Sw63kUsPQWjcV8qATDnvZTH5gXOkIVaNbpwpg0Vy0Qu24sq/czkPUyqSVSUV3Ky+HvILKrit5nkc47KwuvuUsYZthyCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcU0bVp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2036C2BC86;
+	Tue, 17 Mar 2026 16:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766059;
-	bh=U90FjWCZBfaLmgBmdPjSRKA33gkTL30vjCIoy9IEj/o=;
+	s=korg; t=1773766064;
+	bh=exNmnKXBWp9ynKx0hL/6jStGWhE93C9oC7/IdFe3pdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTk3ZIfxxhPFEraMgdIZzBctfhrnFMdzXWxEi5bmeiiYHJtRd6bKXGpGW6dLcSfYm
-	 dKQzK381f4iFv+gA3lG/HhxssCBYTwkJmypxWGoYcnynN3XZVmDF1NSNKfjwxRVq/r
-	 NZEDonSxf6SU6zCueCHLaA+Yejx8CJYoRTcO4J4I=
+	b=kcU0bVp0RX7+FkcCuKjidOVqKsVgyELaHzWfHMgCUEqqX40XJe+5zwdMrgnPXAhNL
+	 iTzN+RUGTgDvUDmMR8Hkcl0WIsFt9EzEh1kzdNgOtFd4TDIWPvJfzvo7zZ2xvE13zB
+	 MSXPiYkyy3/2ujmmhOCPmVn24gVUoHwQJuV4K2SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Peter Korsgaard <peter@korsgaard.com>
-Subject: [PATCH 6.19 160/378] usb: gadget: f_hid: fix SuperSpeed descriptors
-Date: Tue, 17 Mar 2026 17:31:57 +0100
-Message-ID: <20260317163012.898956537@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 161/378] usb: mdc800: handle signal and read racing
+Date: Tue, 17 Mar 2026 17:31:58 +0100
+Message-ID: <20260317163012.935698613@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226292-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226293-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,11 +86,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 210262AEAD9
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3D8452AEAEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,54 +98,33 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 7f58b4148ef5d8ee0fb7d8113dcc38ff5374babc upstream.
+commit 2d6d260e9a3576256fe9ef6d1f7930c9ec348723 upstream.
 
-When adding dynamic configuration for bInterval, the value was removed
-from the static SuperSpeed endpoint descriptors but was not set from the
-configured value in hidg_bind().  Thus at SuperSpeed the interrupt
-endpoints have bInterval as zero which is not valid per the USB
-specification.
+If a signal arrives after a read has partially completed,
+we need to return the number of bytes read. -EINTR is correct
+only if that number is zero.
 
-Add the missing setting for SuperSpeed endpoints.
-
-Fixes: ea34925f5b2ee ("usb: gadget: hid: allow dynamic interval configuration via configfs")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://patch.msgid.link/20260227111540.431521-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20260209142048.1503791-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/image/mdc800.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1207,9 +1207,11 @@ static int hidg_bind(struct usb_configur
- 	if (!hidg->interval_user_set) {
- 		hidg_fs_in_ep_desc.bInterval = 10;
- 		hidg_hs_in_ep_desc.bInterval = 4;
-+		hidg_ss_in_ep_desc.bInterval = 4;
- 	} else {
- 		hidg_fs_in_ep_desc.bInterval = hidg->interval;
- 		hidg_hs_in_ep_desc.bInterval = hidg->interval;
-+		hidg_ss_in_ep_desc.bInterval = hidg->interval;
- 	}
- 
- 	hidg_ss_out_comp_desc.wBytesPerInterval =
-@@ -1239,9 +1241,11 @@ static int hidg_bind(struct usb_configur
- 		if (!hidg->interval_user_set) {
- 			hidg_fs_out_ep_desc.bInterval = 10;
- 			hidg_hs_out_ep_desc.bInterval = 4;
-+			hidg_ss_out_ep_desc.bInterval = 4;
- 		} else {
- 			hidg_fs_out_ep_desc.bInterval = hidg->interval;
- 			hidg_hs_out_ep_desc.bInterval = hidg->interval;
-+			hidg_ss_out_ep_desc.bInterval = hidg->interval;
+--- a/drivers/usb/image/mdc800.c
++++ b/drivers/usb/image/mdc800.c
+@@ -707,7 +707,7 @@ static ssize_t mdc800_device_read (struc
+ 		if (signal_pending (current)) 
+ 		{
+ 			mutex_unlock(&mdc800->io_lock);
+-			return -EINTR;
++			return len == left ? -EINTR : len-left;
  		}
- 		status = usb_assign_descriptors(f,
- 			    hidg_fs_descriptors_intout,
+ 
+ 		sts=left > (mdc800->out_count-mdc800->out_ptr)?mdc800->out_count-mdc800->out_ptr:left;
 
 
 
