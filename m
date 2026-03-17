@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPDMBVGMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:01 +0100
+	id 2K+pGQGHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AB92AF368
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C613E2AE93E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF157317143D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B0BD31650D8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D06357A4A;
-	Tue, 17 Mar 2026 17:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897893EB7E5;
+	Tue, 17 Mar 2026 16:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBlWJnX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJxzbp7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD13F54C6;
-	Tue, 17 Mar 2026 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5E112B94;
+	Tue, 17 Mar 2026 16:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767238; cv=none; b=T0T0Icg2rp/V0PZZOAeHdBUAo0mnapst23B/0xClsFjFNg3Th1M1ADSAsER40qCBRw0nNQjnr9VOtuK1JbQxI30v+QdivnhJvWcsUxUL4qeDaNXkMt2uiYRLHTQwEQeTMkHshjvahjXdQ1HCXNWum0i10ptDljmaMkHBI55OCog=
+	t=1773765892; cv=none; b=AFF3b/jZRirKJlxmibVb1u3R9FNCQJRy7+hmnNb3BYQEvjpc3c4QSnDwAXNpxn+mLjpqTsJefMkO4At7Re3E0Hxxaon81G0MCYByr20kJWAohAQsS0a6Fy8xy2qZsuC4rh2Od06DZ9i4t/xTvKHAjgiX61b1RHXdUNc0ytuc7Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767238; c=relaxed/simple;
-	bh=q/B3UertITIJNmO2FJ9fVymswYiXpVIkngBjT6F/yGM=;
+	s=arc-20240116; t=1773765892; c=relaxed/simple;
+	bh=3R9G1ynX+FdK43fFQIwf3aXuS4yYp6yB18su9yNKiCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TL9c+0f9EVRShOj5Empjb/mAq66NrcQGQCntf5dqSPoGS31x/BC8xAHeFQ6eaHYnq3BfLSm7WrRWIcHzl1RUUry7l1hipEr9Z63qMtECt9mqGK75fAm3GGl9alZb+fiwzX/npu/LLYswB+baAztC+lP9CSMRDR3gDSUtfH79mFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBlWJnX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5FFC4CEF7;
-	Tue, 17 Mar 2026 17:07:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RXfD2jrtmsvbFypfrCj4GR1wL/Yyjj7ZTnv4SAA8CTo4ZTQNb+aTMFe2ziGxtWNaAfVaGUdYoRI7ywZD4QC6i7JaNHY4aFi+sdEHtd8BIzgJU9yx1nRN5c9KefzRIZLmLDJdJwuiSMT8BvPCcwTx5ZsdvCjZWYZbGIyZnGmR6aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJxzbp7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48E4C4CEF7;
+	Tue, 17 Mar 2026 16:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767238;
-	bh=q/B3UertITIJNmO2FJ9fVymswYiXpVIkngBjT6F/yGM=;
+	s=korg; t=1773765892;
+	bh=3R9G1ynX+FdK43fFQIwf3aXuS4yYp6yB18su9yNKiCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBlWJnX6bsOlNlXqcSytYeeF8HAwXlNiwSbFMyW+X374ZPsSwvz9aXEkOHeCD+FN7
-	 NG7hommv66y1pIfHTz1zhwEc8cxaUOIVnhbI89jYWr0Q4KCnQgVSfD9t0pqrqkAdSi
-	 x9q+3oxYVbO15X/LZTyedleYbi97qLd0Y+MxZ8KI=
+	b=lJxzbp7vmVipjrCKE2/WMv5SkOh2dcuTM8aAkEPYMdeG1Wg3It+x1vq/7S7yjg84S
+	 ZCLaTZ7byfE8jnFDJm8WbbsOXrtfexKLSB27eMsNoH9oJzYBU6hSlfxR/qyruQVX91
+	 UfXdwBwtTEWS3j3n9R/FjEaLoveql/Qc6GFeiwIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/333] net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit
-Date: Tue, 17 Mar 2026 17:31:14 +0100
-Message-ID: <20260317163001.036330148@linuxfoundation.org>
+	Mehul Rao <mehulrao@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 118/378] ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain()
+Date: Tue, 17 Mar 2026 17:31:15 +0100
+Message-ID: <20260317163011.360102000@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +62,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226562-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226249-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 33AB92AF368
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: C613E2AE93E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Mehul Rao <mehulrao@gmail.com>
 
-[ Upstream commit 0cc0c2e661af418bbf7074179ea5cfffc0a5c466 ]
+commit 9b1dbd69ba6f8f8c69bc7b77c2ce3b9c6ed05ba6 upstream.
 
-teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
-through slave devices, but does not update skb->dev to the slave device
-beforehand.
+In the drain loop, the local variable 'runtime' is reassigned to a
+linked stream's runtime (runtime = s->runtime at line 2157).  After
+releasing the stream lock at line 2169, the code accesses
+runtime->no_period_wakeup, runtime->rate, and runtime->buffer_size
+(lines 2170-2178) — all referencing the linked stream's runtime without
+any lock or refcount protecting its lifetime.
 
-When a gretap tunnel is a TEQL slave, the transmit path reaches
-iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
-master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
-function does:
+A concurrent close() on the linked stream's fd triggers
+snd_pcm_release_substream() → snd_pcm_drop() → pcm_release_private()
+→ snd_pcm_unlink() → snd_pcm_detach_substream() → kfree(runtime).
+No synchronization prevents kfree(runtime) from completing while the
+drain path dereferences the stale pointer.
 
-    get_cpu_ptr(dev->tstats)
+Fix by caching the needed runtime fields (no_period_wakeup, rate,
+buffer_size) into local variables while still holding the stream lock,
+and using the cached values after the lock is released.
 
-Since teql_master_setup() does not set dev->pcpu_stat_type to
-NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
-for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
-NULL + __per_cpu_offset[cpu], resulting in a page fault.
-
- BUG: unable to handle page fault for address: ffff8880e6659018
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0002) - not-present page
- PGD 68bc067 P4D 68bc067 PUD 0
- Oops: Oops: 0002 [#1] SMP KASAN PTI
- RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
- Call Trace:
-  <TASK>
-  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
-  __gre_xmit (net/ipv4/ip_gre.c:478)
-  gre_tap_xmit (net/ipv4/ip_gre.c:779)
-  teql_master_xmit (net/sched/sch_teql.c:319)
-  dev_hard_start_xmit (net/core/dev.c:3887)
-  sch_direct_xmit (net/sched/sch_generic.c:347)
-  __dev_queue_xmit (net/core/dev.c:4802)
-  neigh_direct_output (net/core/neighbour.c:1660)
-  ip_finish_output2 (net/ipv4/ip_output.c:237)
-  __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
-  ip_mc_output (net/ipv4/ip_output.c:369)
-  ip_send_skb (net/ipv4/ip_output.c:1508)
-  udp_send_skb (net/ipv4/udp.c:1195)
-  udp_sendmsg (net/ipv4/udp.c:1485)
-  inet_sendmsg (net/ipv4/af_inet.c:859)
-  __sys_sendto (net/socket.c:2206)
-
-Fix this by setting skb->dev = slave before calling
-netdev_start_xmit(), so that tunnel xmit functions see the correct
-slave device with properly allocated tstats.
-
-Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260304044216.3517851-3-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f2b3614cefb6 ("ALSA: PCM - Don't check DMA time-out too shortly")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+Link: https://patch.msgid.link/20260305193508.311096-1-mehulrao@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_teql.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/core/pcm_native.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 6e4bdaa876ed6..783300d8b0197 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 			if (__netif_tx_trylock(slave_txq)) {
- 				unsigned int length = qdisc_pkt_len(skb);
- 
-+				skb->dev = slave;
- 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
- 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
- 				    NETDEV_TX_OK) {
--- 
-2.51.0
-
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -2144,6 +2144,10 @@ static int snd_pcm_drain(struct snd_pcm_
+ 	for (;;) {
+ 		long tout;
+ 		struct snd_pcm_runtime *to_check;
++		unsigned int drain_rate;
++		snd_pcm_uframes_t drain_bufsz;
++		bool drain_no_period_wakeup;
++
+ 		if (signal_pending(current)) {
+ 			result = -ERESTARTSYS;
+ 			break;
+@@ -2163,16 +2167,25 @@ static int snd_pcm_drain(struct snd_pcm_
+ 		snd_pcm_group_unref(group, substream);
+ 		if (!to_check)
+ 			break; /* all drained */
++		/*
++		 * Cache the runtime fields needed after unlock.
++		 * A concurrent close() on the linked stream may free
++		 * its runtime via snd_pcm_detach_substream() once we
++		 * release the stream lock below.
++		 */
++		drain_no_period_wakeup = to_check->no_period_wakeup;
++		drain_rate = to_check->rate;
++		drain_bufsz = to_check->buffer_size;
+ 		init_waitqueue_entry(&wait, current);
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 		add_wait_queue(&to_check->sleep, &wait);
+ 		snd_pcm_stream_unlock_irq(substream);
+-		if (runtime->no_period_wakeup)
++		if (drain_no_period_wakeup)
+ 			tout = MAX_SCHEDULE_TIMEOUT;
+ 		else {
+ 			tout = 100;
+-			if (runtime->rate) {
+-				long t = runtime->buffer_size * 1100 / runtime->rate;
++			if (drain_rate) {
++				long t = drain_bufsz * 1100 / drain_rate;
+ 				tout = max(t, tout);
+ 			}
+ 			tout = msecs_to_jiffies(tout);
 
 
 
