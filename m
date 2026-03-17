@@ -1,166 +1,251 @@
-Return-Path: <stable+bounces-225762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA2NKnYLuWk/ngEAu9opvQ
-	(envelope-from <stable+bounces-225762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:06:14 +0100
+	id IJH2JV4MuWk/ngEAu9opvQ
+	(envelope-from <stable+bounces-225763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:10:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1832A5490
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:06:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4513E2A5587
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98944301B794
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:06:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C329301BF7B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95509394481;
-	Tue, 17 Mar 2026 08:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F71393DC8;
+	Tue, 17 Mar 2026 08:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eN/Vw3xF"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=verivus.ai header.i=@verivus.ai header.b="S9vVMr0Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazon11021123.outbound.protection.outlook.com [40.107.39.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E814347506;
-	Tue, 17 Mar 2026 08:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734767; cv=none; b=S+5KVdnCAjJFLlghcHPFfLRK5vb4g9QHar9saXFVqRTRo+RlzZ4pFHsz4mLFncQvTjZ+IkEoRR82sfceRDry6zn0jW8AicRD1GA3Gfh1ZI/WQWRjQf5P3Qa08MgeXGE+Du9VRslBiolxxin4+Ylo4nJCEN5gzpcscLqyHU2itkc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734767; c=relaxed/simple;
-	bh=iMURNNM9AIH1rsZHJq+NkuOt1cRxxMqU8WKIAQJWBhY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HU5u5OEPnl0hB2zO3f3fBM/GOtxZ2RAK+cnHETEO1kIfdiqKWx1YiSgex8LTqp8KnKHyXkyzRxKCOwij4XSgXBCdPaQhWL1bVCdf9SqES02SZKC8rJKdXyklJ9p62saPkj9+0JXBHIfLOAnV40q8px80mWZ8TbSyr0zS/2lgQP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eN/Vw3xF; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773734766; x=1805270766;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iMURNNM9AIH1rsZHJq+NkuOt1cRxxMqU8WKIAQJWBhY=;
-  b=eN/Vw3xFo6L0Ez9LtUIqf1D5kZzucJMPpNuE9c49quSkRiwp3hvUMTkM
-   OQ3Wd+uWy61SaY1m0Z/oHWqI9w2yHilgmMWtssQNnOIUDFq0hpdvmc4a1
-   U3uiI0wNM8hA2vvvyjaB4DPKHiM4c+ctbAhvax0uL4/0I1ioXL9q4i9Rg
-   vqRz0tPoOKSGsaE8zcZmDt7eWJktHfC5sAHThlm0TQnpOh6ehZEDZQDcz
-   LrGV2cFt495+Ryl4BF109D2BIIAyyzhHkztBK90b4xMBuGJ8dAY3SCuhE
-   E2bbv/nJ3KpFDskz/KdRL/ImefS5EbusHDRdDZkwpAy6PGOT6THx5y2zY
-   g==;
-X-CSE-ConnectionGUID: UdKncv1VTW+LFoCR9IAAxQ==
-X-CSE-MsgGUID: SD5/ARtQQ/6BfGcU64M6gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="73777646"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="73777646"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:06:05 -0700
-X-CSE-ConnectionGUID: B6sce5gfS3eYat7KD1IA9A==
-X-CSE-MsgGUID: 7EgpgieoQr+l3rFUEy13xA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="221425403"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:05:58 -0700
-Date: Tue, 17 Mar 2026 10:05:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abkLY4AAQuFlTRC7@ashevche-desk.local>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86F6390C96;
+	Tue, 17 Mar 2026 08:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.39.123
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773734927; cv=fail; b=ogreuWCdI/8blDeY/Iu4L/j970PzL/wndF8sl6ircAzaJGn7BC8LLH0g16DH16rsQ5GarNPCOO6Xi4n+oIVFysO6rUAGL/HW7M5GJQ3c6RCJJfvKOvB01Nf3aYL3jCXqDC8K8dKZV+LZh0DvqQcRAY/+kseKvSPg4yCokuCr+zw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773734927; c=relaxed/simple;
+	bh=5UOIcl6uP31SxigqV0r3F5xU3vutxElaBrIWbBeE49c=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mO1ry0KYW6dxBLHF00yG5YpWkjjbVdNOkHOva4cFb8LV9N5BYTPcni5XoXRd16NwLRNv1P/7EgmjMGjE2tzfvJlvRgMSsQlNv7FYWuyfFLWH7N2lANTkZmezQ8fNQF36vXyqu5MokOxumXrPArdA5llJo/b3SBf0u3LgCOgWNlo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=verivus.ai; spf=pass smtp.mailfrom=verivus.ai; dkim=fail (2048-bit key) header.d=verivus.ai header.i=@verivus.ai header.b=S9vVMr0Z reason="signature verification failed"; arc=fail smtp.client-ip=40.107.39.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=verivus.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verivus.ai
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bhlAxSM1JIY6XRywT62V1AAyZqV8PPQdlLOPkYGCipgpBzbNkR490KvfTAMeCufcc5Rm+dFXAT2jDgdxmB3jQeYyWqRluAN7iq23cBqzxivx1O8L6ZKHZOPnIxoQDyjW8Ur+EBSTZnCLFXXG5CQ5v6yHVmJARjxPO0s/se1lwJt4o6gl6luUm19CNUinx3m2hGz9ujFxeg518b4GaV82OICh4L/mXtEfPq34JCheBqi2oTjnjqX1KBjyPRvmtRgzdPdyEdzzqHib7NMd/lTOZtjI2jJJhAlIfurtcLfOeYfFcQQny1bnsOGFkNHoDQSAGmB2jtC3nLKkF/Q+Fvdvbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HvmRLKOxfci5iIX5/sT/JNEi8lN/d5bDKTVt37821Q8=;
+ b=Qm1bkGrr8b/5ioRrSubcKQPSUveRhlvxjk60Ilrdvti+30FUQNv48rmohZSkGuKjQiOlvOoVLKdzEqY1v80vhkxvQv5cmt2Vag+krR+MkEbt1SLr7OUFOEvyvPJKu90LhkW5pPW5KRZdex82hLkRsw06OL5Hw46WlCYxjBvB+AKi9eYkXD/F9zT7zM1NHAaxObLpgI0OVJzl9BHsQ9Zfy4G2xZWFzQ19tE/0ZDRd9pGvjg7vOfRZOT++/WUXvqDyafbJ2GDf0TOuOFIhZqBOp8QKwA9/M8kH6kKK/aBIg30ggr0v2XBRxinfTuPFNoindvNU7evuNM5/ksUudrVSLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=verivus.ai; dmarc=pass action=none header.from=verivus.ai;
+ dkim=pass header.d=verivus.ai; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verivus.ai;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HvmRLKOxfci5iIX5/sT/JNEi8lN/d5bDKTVt37821Q8=;
+ b=S9vVMr0ZLCYmKvGdQYRxBC/6j8wqF8eptpwN+JMSCS9QxbcyVvBShIaCjXQ5WmkOLRTblUYR7ydgYuALi6UgZwgFWZExFmrxvIZn/j6Eq1z0Odw19LAhcnjCi1dWPxfBQRb8WdX3FLHf0ilCTZOWX85TzjhAnQ2xZNjrx19SUawGbWkGY1X4mw7S+j4lYKsAxYLe3oDI7IEJLJJwhFQBbHtBgL96dFvm+iGTNrELrw2mpxQ/Zo5o63Vva7UUPmE0qjLWsUMlQrdgEiaqmWiNJPq0nc4weRMYIeOFCulzgMFXHfcPhAZlQFSG0AOBYf54RqnrVFrYHFb+cPp3M2o+IA==
+Received: from ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM (2603:10c6:220:22a::5)
+ by SY7P300MB1515.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:2c9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Tue, 17 Mar
+ 2026 08:08:38 +0000
+Received: from ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::1e3f:9cb9:4a95:b5a2]) by ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::1e3f:9cb9:4a95:b5a2%5]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
+ 08:08:37 +0000
+From: Werner Kasselman <werner@verivus.ai>
+To: Namjae Jeon <linkinjeon@kernel.org>, Steve French <smfrench@gmail.com>
+CC: Sergey Senozhatsky <senozhatsky@chromium.org>, Tom Talpey
+	<tom@talpey.com>, "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Werner Kasselman
+	<werner@verivus.ai>
+Subject: [PATCH] ksmbd: fix memory leaks and NULL deref in smb2_lock()
+Thread-Topic: [PATCH] ksmbd: fix memory leaks and NULL deref in smb2_lock()
+Thread-Index: AQHcteVCmLHUy6PFJkipVHvK9wCm3g==
+Date: Tue, 17 Mar 2026 08:08:37 +0000
+Message-ID: <20260317080835.1947664-1-werner@verivus.com>
+Accept-Language: en-AU, en-AT, en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.43.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=verivus.ai;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ME0P300MB0853:EE_|SY7P300MB1515:EE_
+x-ms-office365-filtering-correlation-id: 6249c52b-b9de-4b6d-02e1-08de83fc64c7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ Z7NwSSfxRXymxD5pzXkdT43+3DNkka+GP+n81ztIOkkKIylkh9m0uWqWKAzHU8hPxl/q+jxW7/9jJjAK6Sb3rhphku4FMtdo3U09IuRD59HtTaeWsm22s1FAVbHDT4+zNSjYIKFkVr7qxi96j5sqtf9/ZF0X/locO/peciW0RRDlyYEt3FERb3mmbzu5yV2chrl5Un9sRNT3v+66DRB1R/2wQFkFzo+gMawsSY9NzkUWQRithIcdx6sgR4PwzEaER1w7GQ5pjviuFlEvUeiD3aloqdMpPfXfQD2FtQaFRa2PI6p+Yp2ABNHO9Fa28rvgl3VwFAAbkz7ZDi7bRVE6fhk48qQHyLEaUQotvh+i7EV+CotJdatzpwT+r/SSAh5qOpuajPqQz7EzZhS0nHUJ3EvWt5R1qsv7tkQx1GX2mgXfZPNMgS0hZE70cwYVdoC50AwMfpEoMJNtCe7PE4VNLDD5ZOdzKAmvAoayoYnZIbyhb0c3YGlU12ozqp4kqxGjZ3Wz1dieBSmdJEdStqI6Q6DvahZOh0Vc6e5BhvHEWsrrt2ciKvVsXLnpoSXbZm3JYTJ/OX86IpHixB4sHXLuPrX2cP5PgFu5BBTq/onET6AFOTbhAWNuXtEG1M0Zs4zCmRpsl+H/TAe8pepgf7sxz3Nook7I3NkjiyIsEsgEyk8X3ICgS0a+9v2nVf1K6o3bUHVy9zZbV67Hs9WHO0Juu896GFe2nakqshzE0Af0VOSN9T5LVRaZ67WeWbqPBCBoBPoMp7Oa3apMc5trjdmTMRtaaphnTHcQYra/uoP3JsM=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?LPXrWysSebbl4EGhYvnETpCNRRGiLh5s8USH4A/hvBeaaMLBm9HqxaHs3r?=
+ =?iso-8859-1?Q?UQRbjliuQRHzZYRVtQD9lyEUxGnFYfbfT/6EEEn7H1XSu01Xrw7CKWKxZV?=
+ =?iso-8859-1?Q?0SMAzfQb8ZqljJTnCx+rfSAWoWqkxu+hSgwZjg9r+Bpd40HP/tumhaORLO?=
+ =?iso-8859-1?Q?q7hHZGDxM7XqG3QXeBydh4tRcWkrBWhXgUrB6zmSIJBnvsUqtMRawzchN1?=
+ =?iso-8859-1?Q?KfU0h8OmAmVWWaRuUIMAoHkgfCEotAM8XneHkJtd3NO+RxTb01QCYzGYej?=
+ =?iso-8859-1?Q?4EQjRyx7iJAbT71lT+jBeGdfeEfUhp4yIDorVNqRzolgm1xs9z7zW2VR50?=
+ =?iso-8859-1?Q?ZOpbNMVlgURg6ZbP+XwmoZuWxUqAkMln0qTTWBX0lklbyO2Zl7NUHYCV1P?=
+ =?iso-8859-1?Q?mHvrziIIjgGwiimiE1BYtOqCkpiMYBJ6q449z1K2Eh/nKQ4atS49aAnT+c?=
+ =?iso-8859-1?Q?1ZCGkD3/a8c3Y4E/SYpHt0y5uUUKEQDLZ2AVJot/XQBxVS2MsUj9uqrcbc?=
+ =?iso-8859-1?Q?qTTEGSROsdezvWUW+du1rWhMWO17s6LTcYJmFJs6uUUsWVkYbBC5ngsaNM?=
+ =?iso-8859-1?Q?uf7XYiLDlANu3X2ol41cO+sZqx+W4qLkCy7LWiXich0oPtf29bM/uWkjNZ?=
+ =?iso-8859-1?Q?rhfFWD1hX//L3wvN08sTsP5WwghTGoi3k0B7ffVgYaGGlSA2xS5A9tZPoY?=
+ =?iso-8859-1?Q?G/+/qjwiao1IdB2m8PN6qxsxgDV0MA8B5YbTOcbskJMCgOmw4Aae1TrTWH?=
+ =?iso-8859-1?Q?FxpL8QlNYgnT1/pvR8WnODYGS+nl1N5yqXrbm9lDhfd/k6dVWvNKwPqvqv?=
+ =?iso-8859-1?Q?EodhPt838WclXBNbNF3tYmj4mBgqVgeKn/yrvFw+enNPzm8B4zDFPQZfvd?=
+ =?iso-8859-1?Q?3FceKHme4zbpQFWSDw6Fc0gTAmez8Pg/rwlmjzoGbcZTn4pAwQDrLHLJm3?=
+ =?iso-8859-1?Q?UdC4ccT79UXotKxdmxEsmokloP6KJuMjXooXLy0e6nWGXE/+hJJ0qFLcEI?=
+ =?iso-8859-1?Q?k3xd/Esn747jeLRRpZEwpQ/yp+5X6erAd0u70X6WKcTxJh3O4m6x4JYZES?=
+ =?iso-8859-1?Q?96kJZYeoVRsBMlnzBkQ6c9N2yAdFkiuABou/s4V19GOOmyf85bO+PcsgwR?=
+ =?iso-8859-1?Q?HnQ0IuF+VFeMvqx+O4OmzptFZ1Ii2HWy29dIpwQrhxO1BPw4zFNkq8WzlH?=
+ =?iso-8859-1?Q?pZ7MTVtwNYOqIanbW59s2YEXXcPC/ppG5/clWI/5x/diEz7jWtui9SfV8D?=
+ =?iso-8859-1?Q?0WjbR9VBmV18GspnJsbHGP7O2KNvZtLR4LOBaqqgGSKG7hfgf4c9g2NTNz?=
+ =?iso-8859-1?Q?2kmsBzJRIxM9PXSa69CoEkHGp9sTTDvIvf66UT+5SSiYs0hrEa02YBQntH?=
+ =?iso-8859-1?Q?AhbeHEZ8jgMQd+fkaJy75NdE67VppaTa8gp+G2J68V+4WwtHlDs1gI5UdF?=
+ =?iso-8859-1?Q?KtOvgTiz6uQWtLUoUv92g6pz99r4/x8xn4n157NutL755Tqq9lNTr6j1qn?=
+ =?iso-8859-1?Q?Xm1jP9XPMNS7gA296WKbfodCIh4ZDKUYc0ltCTOlK6xgr3xEHK3rg2/XiU?=
+ =?iso-8859-1?Q?9NZZ16TK+bs6iXrJfu5SrhIi9+a9LDeKDeRu045qyzcEkYEg6nwVoWEsid?=
+ =?iso-8859-1?Q?7Qkox1oe7+9hwsdY5ggAkf/R5Q2vfactO3lLildc5V4iA3FBywSpiXOjTk?=
+ =?iso-8859-1?Q?JnZeoX7fI50zfBGg5hWd1MP2YpMZPbDoC1bNBulPiZ06/NgXIMD3MVzrgx?=
+ =?iso-8859-1?Q?KFINurLv3KJ/H1dJz40EPf0M7OgG7xEdg6dPXg3ErE7oyuDMNAkxaxqZL0?=
+ =?iso-8859-1?Q?MkAu/aYR9w=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abkLEgrZbdb03VWg@ashevche-desk.local>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-OriginatorOrg: verivus.ai
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ME0P300MB0853.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6249c52b-b9de-4b6d-02e1-08de83fc64c7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2026 08:08:37.8498
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: ccdcedb0-4edc-4cc8-9791-c44ee6610030
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Rrp2xCzdXSm/UiTWmo2m/XOwfl87N0CRYb+sjAEHeh+W/aEEiHEBuhdK50mwIEpqPGDSJvNPXB/JjbZBQxJ8Sw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB1515
+X-Spamd-Result: default: False [1.64 / 15.00];
+	R_DKIM_REJECT(1.00)[verivus.ai:s=selector1];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[verivus.ai : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[chromium.org,linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,linux.intel.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-225762-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-225763-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ashevche-desk.local:mid]
-X-Rspamd-Queue-Id: 4A1832A5490
+	FROM_NEQ_ENVFROM(0.00)[werner@verivus.ai,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[verivus.ai:-];
+	NEURAL_HAM(-0.00)[-0.986];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4513E2A5587
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 10:04:43AM +0200, Andy Shevchenko wrote:
-> On Tue, Mar 17, 2026 at 08:42:08AM +0100, Wolfram Sang wrote:
-> 
-> > > > ... this change costs some memory on every system. Maybe it can be
-> > > > avoided?
-> > > 
-> > > How much memory does it cost? On most 64-bit architectures is +4 bytes,
-> > > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
-> > > +0 bytes. I expect that 64-bit machines will cope with this bump.
-> > 
-> > I am not opposing that the issue should be fixed. If it is not possible
-> > to take the lock everywhere, this is a proper solution. But if we don't
-> > have to use more memory, then we could save it. Our new SoC easily has
-> > 'struct device' in the hundreds.
-> 
-> What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
-> (I assume it's 64-bit SoC.)
-
-FWIW, with the given change it will be still inside 64-byte data structure
-which most likely occupies a single cache line (before this patch and after
-as well).
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+smb2_lock() has three error handling issues after list_del() detaches=0A=
+smb_lock from lock_list at no_check_cl:=0A=
+=0A=
+1) If vfs_lock_file() returns an unexpected error in the non-UNLOCK=0A=
+   path, goto out leaks smb_lock and its flock because the out:=0A=
+   handler only iterates lock_list and rollback_list, neither of=0A=
+   which contains the detached smb_lock.=0A=
+=0A=
+2) If vfs_lock_file() returns -ENOENT in the UNLOCK path, goto out=0A=
+   leaks smb_lock and flock for the same reason.  The error code=0A=
+   returned to the dispatcher is also stale.=0A=
+=0A=
+3) In the rollback path, smb_flock_init() can return NULL on=0A=
+   allocation failure.  The result is dereferenced unconditionally,=0A=
+   causing a kernel NULL pointer dereference.  Add a NULL check to=0A=
+   prevent the crash and clean up the bookkeeping; the VFS lock=0A=
+   itself cannot be rolled back without the allocation and will be=0A=
+   released at file or connection teardown.=0A=
+=0A=
+Fix by freeing smb_lock and flock before goto out in cases 1 and 2,=0A=
+propagating the correct error code, and adding a NULL check for the=0A=
+rollback allocation in case 3.=0A=
+=0A=
+Found via call-graph analysis using sqry.=0A=
+=0A=
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")=0A=
+Cc: stable@vger.kernel.org=0A=
+Signed-off-by: Werner Kasselman <werner@verivus.com>=0A=
+---=0A=
+ fs/smb/server/smb2pdu.c | 19 +++++++++++++++++++=0A=
+ 1 file changed, 19 insertions(+)=0A=
+=0A=
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c=0A=
+index 9f7ff7491e9a..36e281f5924a 100644=0A=
+--- a/fs/smb/server/smb2pdu.c=0A=
++++ b/fs/smb/server/smb2pdu.c=0A=
+@@ -7583,6 +7583,9 @@ int smb2_lock(struct ksmbd_work *work)=0A=
+ 				ksmbd_debug(SMB, "File unlocked\n");=0A=
+ 			} else if (rc =3D=3D -ENOENT) {=0A=
+ 				rsp->hdr.Status =3D STATUS_NOT_LOCKED;=0A=
++				locks_free_lock(flock);=0A=
++				kfree(smb_lock);=0A=
++				err =3D -ENOENT;=0A=
+ 				goto out;=0A=
+ 			}=0A=
+ 			locks_free_lock(flock);=0A=
+@@ -7655,6 +7658,9 @@ int smb2_lock(struct ksmbd_work *work)=0A=
+ 				spin_unlock(&work->conn->llist_lock);=0A=
+ 				ksmbd_debug(SMB, "successful in taking lock\n");=0A=
+ 			} else {=0A=
++				locks_free_lock(flock);=0A=
++				kfree(smb_lock);=0A=
++				err =3D rc;=0A=
+ 				goto out;=0A=
+ 			}=0A=
+ 		}=0A=
+@@ -7685,6 +7691,19 @@ int smb2_lock(struct ksmbd_work *work)=0A=
+ 		struct file_lock *rlock =3D NULL;=0A=
+ =0A=
+ 		rlock =3D smb_flock_init(filp);=0A=
++		if (!rlock) {=0A=
++			pr_err("rollback unlock alloc failed\n");=0A=
++			list_del(&smb_lock->llist);=0A=
++			spin_lock(&work->conn->llist_lock);=0A=
++			if (!list_empty(&smb_lock->flist))=0A=
++				list_del(&smb_lock->flist);=0A=
++			list_del(&smb_lock->clist);=0A=
++			spin_unlock(&work->conn->llist_lock);=0A=
++=0A=
++			locks_free_lock(smb_lock->fl);=0A=
++			kfree(smb_lock);=0A=
++			continue;=0A=
++		}=0A=
+ 		rlock->c.flc_type =3D F_UNLCK;=0A=
+ 		rlock->fl_start =3D smb_lock->start;=0A=
+ 		rlock->fl_end =3D smb_lock->end;=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
 
