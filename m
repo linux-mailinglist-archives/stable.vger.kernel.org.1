@@ -1,174 +1,219 @@
-Return-Path: <stable+bounces-226113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCnxHTx5uWnQGQIAu9opvQ
-	(envelope-from <stable+bounces-226113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:36 +0100
+	id IP9zHF15uWnQGQIAu9opvQ
+	(envelope-from <stable+bounces-226114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4732AD5A9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104082AD5C8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D46A30B4E76
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:53:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EDF33096EF2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1857D165F16;
-	Tue, 17 Mar 2026 15:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE282D593E;
+	Tue, 17 Mar 2026 15:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KpB/NouG"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FAivhwB7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EBD2C3260;
-	Tue, 17 Mar 2026 15:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D7025A357;
+	Tue, 17 Mar 2026 15:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773762785; cv=none; b=OJto09z0DuJwHc+FDuQ8KAnAwvTjIQWfSfmpqRt/nAUO55qwhdfGHLvXO8Suy9L6sr0VMSBQbJWQVKn9ipBY78tlfcqOdcGJh3LIJmptrz4rVB9VavyQkKkaeW5i1IteKMq761D3LmwZ4nKVMOBVRMZMIFlLAp5/5zbFvHZhhcY=
+	t=1773762860; cv=none; b=sTzbYvho1uuhy+0dsjn678y5Ra7mbh94T5QuoRfFRK3RxxLHwQVOM2PFNLZZTHVl7fUswj2gzuSEOyvT6dzTaGLwoOV1wUHgbJG7tKEbTcsBuUBoVLeA31qcX0VN2EqkljRUHbFrF3SNQiEluKtoVbU+j8YIiR2x1WJdtgt66Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773762785; c=relaxed/simple;
-	bh=WkOtaLA4cLaCHuzz/nuzEmtsoKxReySojEhImFBeApY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uK0u/rbaXyTw2P5PApJZ+9HwtKUf9EGSoQlzRzCKtdRt7nkHTdwUxxT4h4SLE15nbQDPGnZEdbMU9hojgLmCPDfyYlARhcxEMz3iEPsnZIBKhZT/0cVYXcR9lcydGVh1QQPgJoaGuHEI3rcLtKiugfnIUunO5BpczpVgs2RB0Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KpB/NouG; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773762785; x=1805298785;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WkOtaLA4cLaCHuzz/nuzEmtsoKxReySojEhImFBeApY=;
-  b=KpB/NouGyICkwJBEE1QO0U2W1+B2ayOkrQexhQ8ghUGxCa1R84bDofgc
-   44wdKoFSybWBUD1O18ZBDa/CbpS/fw+2wqGV7VGgI7gBksxOgtp0f8VZU
-   KMP3GaLOg9i2vl7NwRMepd4/5W7Yn2x9LcwMoBZmCNlFAIr6uJTCNY/Mi
-   hHwVEBPFS08XE0msLvuGWxeG2LQYMNVHLiNylw6Dfgkep4u+mNC/5xMqL
-   W7CicLr9kIY/yD0wunMqA55DTT4aDKGRjQ3ARFWlVuIsqaKKRkZJQWPoF
-   EEUf4FCBe79xwGMgGzS48OZPR58+ANaqmOY8roD3ZLweB9GMcYdcLf0qQ
-   A==;
-X-CSE-ConnectionGUID: IyeZvYuhRZqsw+k1FcxjCQ==
-X-CSE-MsgGUID: 8TUH6L12R4eoac7xt6DCcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="78405557"
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="78405557"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:53:04 -0700
-X-CSE-ConnectionGUID: 17+q91BRQpuq2aU4qEISxA==
-X-CSE-MsgGUID: IQ0PZSrmR/2Yh2Zt/jrEZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
-   d="scan'208";a="252787822"
-Received: from unknown (HELO [10.102.89.74]) ([10.102.89.74])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 08:53:01 -0700
-Message-ID: <b4023056-9c0b-4bf3-aef9-91c1e72d1e73@linux.intel.com>
-Date: Tue, 17 Mar 2026 16:52:59 +0100
+	s=arc-20240116; t=1773762860; c=relaxed/simple;
+	bh=vN4NuxCBZEg/bI6gchM7Bz4HW03ulxQ1D/xDEu+0pJI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Jbh08s9f7ey5Uo+GFu1j/GOyvqT/qUUcyJFJfsOnUWTteCaEcLaew5/RC/g77ApDDM5yxSAcMQ3/8PkncICKUjQG1fWKPukEDytwZNnXTvmRmeIAUEo4gbbuqiBKa4kUYf4JUmBKq/MHwTIJvP97xkAnDN5MBKZAdAfu4aBgY0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FAivhwB7; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 3A98AC5505C;
+	Tue, 17 Mar 2026 15:54:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 12F8E5FC9A;
+	Tue, 17 Mar 2026 15:54:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4516810450603;
+	Tue, 17 Mar 2026 16:54:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773762855; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wAAFsw9+mOysfWshLYmHn54unYKmwP5cY39tuEvZ5D4=;
+	b=FAivhwB79j8oCmzCTE0w2lzaadllX7KjcG/oSVWqAauImbnQQ5zvERXtKIfrYRceHZZ8Jl
+	DWe0uv+0qO4ZiKm5GQMPz/nw7k9tpXajes+OoXOhQFXGiBHMw8arx3nV9OBOYPlwsf5uGF
+	i3+s2Et7OE2uJFrkKhTT/1pKD2vudMXqgHx6IJxF6DAxLwEy9a+QQI7EL/4LG82rp0TBkH
+	AB4/0gpmTkKk3K9FQBifpWo0Xik8KxSGX3DF/VW9n3QwgnDJ8yhMCrpKIe0p8ouWDfa6Vp
+	0wA6Z/qjqQGeWishMa1PqSLohGtEnBMrEnDOaoLG54nf85ZIKsdXJGY5vUijHA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ice: fix retry for AQ command 0x06EE" has been added to
- the 5.15-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- aleksandr.loktionov@intel.com, anthony.l.nguyen@intel.com,
- jakub.staniszewski@linux.intel.com, pmenzel@molgen.mpg.de,
- przemyslaw.kitszel@intel.com, sx.rinitha@intel.com
-References: <2026031705-nimbly-relatable-1e23@gregkh>
- <c0b7e32a-b46a-4376-a3f6-f01ccfd85622@linux.intel.com>
- <225eb7e2-c470-4307-90d5-0b56a35c4543@linux.intel.com>
- <2026031723-graceful-chaos-9ca2@gregkh>
-Content-Language: pl, en-US
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <2026031723-graceful-chaos-9ca2@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 16:54:11 +0100
+Message-Id: <DH56GCWA9O1K.1KYOVK5RL00JC@bootlin.com>
+Subject: Re: [PATCH net 2/2] net: macb: Protect access to net_device::in_ptr
+ with RCU lock
+Cc: <netdev@vger.kernel.org>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Vineeth Karumanchi"
+ <vineeth.karumanchi@amd.com>, "Harini Katakam" <harini.katakam@amd.com>,
+ <stable@vger.kernel.org>
+To: "Kevin Hao" <haokexin@gmail.com>, =?utf-8?q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260315-macb-irq-v1-0-0154104cbf61@gmail.com>
+ <20260315-macb-irq-v1-2-0154104cbf61@gmail.com>
+ <DH4EHTJNY6GL.3EXTP61HNUNDD@bootlin.com> <abit7VLwoy2ttEus@pek-khao-d3>
+In-Reply-To: <abit7VLwoy2ttEus@pek-khao-d3>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226113-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226114-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,bootlin.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawid.osuchowski@linux.intel.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linux.intel.com:mid]
-X-Rspamd-Queue-Id: CB4732AD5A9
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:mid,bootlin.com:url]
+X-Rspamd-Queue-Id: 104082AD5C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-03-17 4:39 PM, Greg KH wrote:
-> On Tue, Mar 17, 2026 at 04:24:15PM +0100, Dawid Osuchowski wrote:
->> On 2026-03-17 4:14 PM, Dawid Osuchowski wrote:
->>> On 2026-03-17 1:11 PM, gregkh@linuxfoundation.org wrote:
->>>> If you, or anyone else, feels it should not be added to the stable tree,
->>>> please let <stable@vger.kernel.org> know about it.
->>>>
->>>
->>> Hey stable maintainers!
->>>
->>> This patch **depends heavily** on the change "ice: reintroduce retry
->>> mechanism for indirect AQ" which failed to apply for 5.15-stable and
->>> 6.1-stable trees.
->>>
->>> Until I can try to resolve the conflicts and resend, it might be
->>> necessary to pull this change from the 5.15-stable and 6.1-stable trees
->>> immediately as it will result in multiple WARN messages being printed
->>> into the dmesg upon issuing 'ethtool -m' on a interface under the 'ice'
->>> driver control.
->>
->> !!! FALSE ALARM - ABORT !!!
->>
->> I'm sorry, a bit of a chaotic day here at work...
->>
->> I was worried the lack of the "ice: reintroduce retry mechanism for indirect
->> AQ" patch will result in issues for users. It will not, as my colleague
->> Jakub Staniszewski politely informed me that the 5.15-stable and 6.1-stable
->> doesn't have the code from Michal Schmidt that we "reverted" using "ice:
->> reintroduce retry mechanism for indirect AQ". No warnings will be printed to
->> dmesg and everything should work correctly...
->>
->> Once again I am very sorry
-> 
-> No worries, I'd much rather people warn us and then say "nope, we were
-> wrong" instead of not saying anything if they think there might be a
-> problem.  So all is good here, thanks!
-> 
-> greg k-h
+On Tue Mar 17, 2026 at 2:27 AM CET, Kevin Hao wrote:
+> On Mon, Mar 16, 2026 at 06:59:35PM +0100, Th=C3=A9o Lebrun wrote:
+>> On Sun Mar 15, 2026 at 12:44 PM CET, Kevin Hao wrote:
+>> > @@ -5915,13 +5915,16 @@ static int __maybe_unused macb_suspend(struct =
+device *dev)
+>> > =20
+>> >  	if (bp->wol & MACB_WOL_ENABLED) {
+>> >  		/* Check for IP address in WOL ARP mode */
+>> > +		rcu_read_lock();
+>> >  		idev =3D __in_dev_get_rcu(bp->dev);
+>> >  		if (idev)
+>> >  			ifa =3D rcu_dereference(idev->ifa_list);
+>> >  		if ((bp->wolopts & WAKE_ARP) && !ifa) {
+>> >  			netdev_err(netdev, "IP address not assigned as required by WoL wal=
+k ARP\n");
+>> > +			rcu_read_unlock();
+>> >  			return -EOPNOTSUPP;
+>> >  		}
+>> > +
+>> >  		spin_lock_irqsave(&bp->lock, flags);
+>> > =20
+>> >  		/* Disable Tx and Rx engines before  disabling the queues,
+>> > @@ -5963,6 +5966,7 @@ static int __maybe_unused macb_suspend(struct de=
+vice *dev)
+>> >  			tmp |=3D MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
+>> >  		}
+>> >  		spin_unlock_irqrestore(&bp->lock, flags);
+>> > +		rcu_read_unlock();
+>> > =20
+>> >  		/* Change interrupt handler and
+>> >  		 * Enable WoL IRQ on queue 0
+>>=20
+>> Instead of making the RCU critical section extend so much, you could
+>> dereference ifa->ifa_local into a stack variable. In particular, it
+>> would avoid the RCU critical section covering a spinlock critical
+>> section.
+>
+> I initially considered using a local variable before submitting this, as =
+I also
+> believe that `ifa->ifa_local` is unlikely to be modified or freed in this
+> context. However, I ultimately decided to protect these sections with RCU=
+ for
+> the following reasons:
+>
+> - It is logically more consistent to protect access to `ifa->ifa_local` w=
+ith
+>   RCU locking.
+>
+> - For section already under spinlock protection, adding RCU locking intro=
+duces
+>   negligible overhead, especially in a scenario like this.
+>
+> That said, I do not have a strong preference for either approach. If you =
+prefer
+> using a local variable to keep the RCU region shorter, I can prepare a v2=
+ with
+> that change.
 
+I was not questioning whether this region should be protected, but
+rather how long you made the RCU critical section. The smaller the
+better, especially if you can remove a spinlock from it.
 
-Thanks for understanding Greg.
+On PREEMPT_RT kernels it could even cause trouble because spinlocks
+become sleep-able and that is not allowed inside RCU read-side critical
+section.
 
-Let me double check if this will break or not finally. I went in very 
-hot headed and I apologize about that. I'll cool off a bit and compile 
-the 5.15-stable and 6.1-stable trees and test on real hardware if this 
-can remain in the trees unchanged or if some modifications are necessary.
+So yes, I do insist that a tiny RCU is better; something like:
 
-I'll also read up on the stable process more in-depth to see how long it 
-takes from the patch queue / linux-stable-rc for a given tree to be 
-actually part of the next 6.1.y/5.15.y release.
+static int macb_suspend(struct device *dev)
+{
+	u32 ifa_local;
 
-Best regards
--Dawid
+	// ...
+
+	if (bp->wol & MACB_WOL_ENABLED) {
+		/* Check for IP address in WOL ARP mode */
+		rcu_read_lock();
+		idev =3D __in_dev_get_rcu(bp->dev);
+		if (idev)
+			ifa =3D rcu_dereference(idev->ifa_list);
+		if (ifa)
+			ifa_local =3D be32_to_cpu(ifa->ifa_local);
+		rcu_read_unlock();
+
+		if ((bp->wolopts & WAKE_ARP) && !ifa) {
+			netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\=
+n");
+			return -EOPNOTSUPP;
+		}
+
+		// ...
+	}
+
+	// ...
+}
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
