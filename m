@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-226144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E43OTuEuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:41:31 +0100
+	id aLN9KqqFuWkPJAIAu9opvQ
+	(envelope-from <stable+bounces-226195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8609C2AE376
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:41:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E122AE6C5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0009305DD4E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:38:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3542B30CA163
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33ED3E6DEE;
-	Tue, 17 Mar 2026 16:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550FF3ED5B2;
+	Tue, 17 Mar 2026 16:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmnLC4Wb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2gUXHzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756033C5DBA;
-	Tue, 17 Mar 2026 16:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1BB3ED136;
+	Tue, 17 Mar 2026 16:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765490; cv=none; b=qlOUexjK1+e5cNCTrGoi7gJpVcUTEr+Ktm/yI1HKupvW30+mj9I0Kwt4iFfgQCXDH+CSbru+9cmt9SeJjqkjMVe9a4oc0c+od+tBNB+DHBiqhjhi3zANSg2KsLPpIHkq9NJG9Ckyl9Tf+i1Tz5D0uMrGq7esYm71x7DH9nasgMw=
+	t=1773765670; cv=none; b=rvHn14dDs/ZA1Orh/InyN6m+hNcEVmlenB8t16plcN+5+oqCJ57JNibcfl6JemOQUN68eL8fj5+V9sTlJeggDJyskEk2m9OLuhgZhwoNQ5Pxb7AnhjiaA1nj3b+XT0PBa9LtSjl6dyjC2crsicJkDDZQwzUbqZW453/dWIcfM9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765490; c=relaxed/simple;
-	bh=HJvoaaE61Ip484V0BHs5o46yPVhEm3LJx0Mnq3DMjgA=;
+	s=arc-20240116; t=1773765670; c=relaxed/simple;
+	bh=jh/ip1/5HQoRM9U+FZaO5MBEGzrneBAR8kun9FlHEtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYteLQtCVnXna9VdX2JiIbr6yxIP/VfrfnybXqazya2wmXyqyeDztgmLkntM3sB+KqFUBXnnyvPrIk7BFLstv13eNIupsMyn2TGuGeD+W9dQuHonHfwvrUENe+N/PvC5Ri5Z1yBLlsuuVDYDZZkkL5Z0oJNU9sz+qSxbLjarOFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmnLC4Wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCD8C4CEF7;
-	Tue, 17 Mar 2026 16:38:08 +0000 (UTC)
+	 MIME-Version; b=FZJX6FgSZMzXgSG1583tmD+bJWAhhntpR3foVOc6JnlwzUBTUNgPWw9dWIdtA7o9cmz4qlSDFNwxdeuokjmpXm7zBjGCRNYcNqk4Qoo9Seq6Rdd1AniOJV1/66AdWjR56U/4nIGLS3NcMxQ8PALfwps7F2dGyqX6O9Ms9j7SBrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2gUXHzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FE3C19424;
+	Tue, 17 Mar 2026 16:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765490;
-	bh=HJvoaaE61Ip484V0BHs5o46yPVhEm3LJx0Mnq3DMjgA=;
+	s=korg; t=1773765670;
+	bh=jh/ip1/5HQoRM9U+FZaO5MBEGzrneBAR8kun9FlHEtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmnLC4WbHDCqW97bZYlzuy6AYElA7bu7XFe8go5Hf3MpoVmAitzayzLQYXnSb3SfB
-	 OAPIfYR0zAT+xk2eWPY7uZaDRLPbhc82h1j4PTJjFB8uxVmoMZLfBVGWARdgjLpXsi
-	 36GgsWez6csE1tEiR4juLRpb1s/mI+/0pbWgBvw8=
+	b=Z2gUXHzlBpgV48rt2oEY98IbFrfzdExW/dgpvC1XK1A8vzcY7lufKQRmhpoOhSktt
+	 sJ9AtWvNswzUA0lscnRW0Yn8NsXLdyTMln7MfsZuzwUyg2qlShWeVI3IiHF2GiUU0e
+	 zwVP560eFP+U1Gvx42OhoRboRPHxkbKqqxcQvarY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangshuaiwei <wangshuaiwei1@xiaomi.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 022/378] scsi: ufs: core: Fix shift out of bounds when MAXQ=32
-Date: Tue, 17 Mar 2026 17:29:39 +0100
-Message-ID: <20260317163007.791204426@linuxfoundation.org>
+Subject: [PATCH 6.19 023/378] ALSA: usb-audio: Avoid implicit feedback mode on DIYINHK USB Audio 2.0
+Date: Tue, 17 Mar 2026 17:29:40 +0100
+Message-ID: <20260317163007.827897150@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -69,30 +67,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226144-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226195-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,acm.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,xiaomi.com:email]
-X-Rspamd-Queue-Id: 8609C2AE376
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 60E122AE6C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,39 +98,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: wangshuaiwei <wangshuaiwei1@xiaomi.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2f38fd99c0004676d835ae96ac4f3b54edc02c82 ]
+[ Upstream commit c5bf24c8aba1ff711226ee0f039ff01a5754692b ]
 
-According to JESD223F, the maximum number of queues (MAXQ) is 32. When MCQ
-is enabled and ESI is disabled, nr_hw_queues=32 causes a shift overflow
-problem.
+Although DIYINHK USB Audio 2.0 (ID 20b1:2009) shows the implicit
+feedback source for the capture stream, this would cause several
+problems for the playback.  Namely, the device can get wMaxPackSize
+1024 for 24/32 bit format with 6 channels, and when a high sample rate
+like 352.8kHz or 384kHz is played, the packet size overflows the max
+limit.  Also, the device has another two playback altsets, and those
+aren't properly handled with the implicit feedback.
 
-Fix this by using 64-bit intermediate values to handle the nr_hw_queues=32
-case safely.
+Since the device has been working well even before introducing the
+implicit feedback, we can assume that it works fine in the async mode.
+This patch adds the explicit skip of the implicit fb detection to make
+the playback running in the async mode.
 
-Signed-off-by: wangshuaiwei <wangshuaiwei1@xiaomi.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260224063228.50112-1-wangshuaiwei1@xiaomi.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221076
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260225085233.316306-4-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index d5628ed086381..2048ebc86590e 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -7106,7 +7106,7 @@ static irqreturn_t ufshcd_handle_mcq_cq_events(struct ufs_hba *hba)
- 
- 	ret = ufshcd_vops_get_outstanding_cqs(hba, &outstanding_cqs);
- 	if (ret)
--		outstanding_cqs = (1U << hba->nr_hw_queues) - 1;
-+		outstanding_cqs = (1ULL << hba->nr_hw_queues) - 1;
- 
- 	/* Exclude the poll queues */
- 	nr_queues = hba->nr_hw_queues - hba->nr_queues[HCTX_TYPE_POLL];
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index a89ea2233180a..caca0e586d832 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2363,6 +2363,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x2040, 0x7281, /* Hauppauge HVR-950Q-MXL */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
++	DEVICE_FLG(0x20b1, 0x2009, /* XMOS Ltd DIYINHK USB Audio 2.0 */
++		   QUIRK_FLAG_SKIP_IMPLICIT_FB | QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2040, 0x8200, /* Hauppauge Woodbury */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
 -- 
 2.51.0
 
