@@ -1,220 +1,255 @@
-Return-Path: <stable+bounces-226883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHPgIt6TuWnKKgIAu9opvQ
-	(envelope-from <stable+bounces-226883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:14 +0100
+	id 2LB8HQiYuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:06:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9F22B0252
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761632B0985
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE9C83030D99
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B619A305A33E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4797D37C0E0;
-	Tue, 17 Mar 2026 17:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA88E36EABC;
+	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="QqXKX3lZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Dw+IXUz+"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9FE37C0ED;
-	Tue, 17 Mar 2026 17:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511E1D61B7;
+	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773769679; cv=none; b=kDeOfUuABM382pG9v93xJBwMRhrvv9mOl0FNMKSWgjOoKbiSkwkBAu2BDfneuo9D/TEdS9+AWs3I/rP42F1aDSvd72zgpn6TQ5c6ALoAJHdmvHztqMT1XltURa8opCp4hvuQgSd/z99Bb4f6AN1l4KikeqSZhCxgaPtdE0nR7OU=
+	t=1773769839; cv=none; b=IqtMcj9oFkNVMMWalfAHog9c8WyFV2dkHThg44aOSoDAIpKBUbKiJDExqPATlOZqM1HnnuMk3WocV6zQCIiBbq+SeML8/Y37sT7LpUFRxZocg2UvaGRDv8KPwXm0/gdgnmUIR0Qmk7uXTPNZZeKp6FT1YCMijDgm2BxM0jKD2Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773769679; c=relaxed/simple;
-	bh=ARTqOmYk66Vk2vqC3ltbLa6RvWqpE7HnxXkZGVlfraQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gtmEQ/J4huPfyln1VeVGrhgVl08nGRV2UEL0tU+ytIXB5ydk3bYSy8s09EiaOy3IKyPr/63kAOCQbtY7UM3ORalQCCWgj/hp/rexlw4mQXUynX2qr506O5rmHgEBgaMglJdhUSudyI8kMA0lIc6druO+0WG93nlydv+nVDE41Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=QqXKX3lZ; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1773769652; x=1774374452; i=rwarsow@gmx.de;
-	bh=o/ZmeXS2W3fbty4AWZGlOZm+IWjieGFac51nYgHaiWQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=QqXKX3lZGd/MuPf32UAeIQFXOcf+cUDjWYacXuZESq5f6+Z5yMgpg/DhTc6DkOHC
-	 t1Rf93V+8OluABS/NEbHg8En7qXF3c38HHR417/r7wi1Tu5OTMjaiRRgQzMXbEapx
-	 bIAK6S/GB12OXvbI5mkdIBKnYUHCbBe0dJzt8Qk3ooHd2wfgq6g3hkPn/QwOWs/NI
-	 +tz/cocC9SylztDPktrDwMEnn8LCrAj9YCpJFk0vnB0p44EOoWJdHb25kOykn5Ub1
-	 TX+0wcKpQVZOh4+dpZt5tSlKpGN5EDRIHx0CFkicQRvYDJyFeA9GuP4S5RHm2Ne+8
-	 VqC1l5TDz1mw6ZdZrQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPGW7-1wERYn025V-00Y0MD; Tue, 17
- Mar 2026 18:47:32 +0100
-Message-ID: <10df8843-67e6-4830-955c-befc783f25df@gmx.de>
-Date: Tue, 17 Mar 2026 18:47:30 +0100
+	s=arc-20240116; t=1773769839; c=relaxed/simple;
+	bh=JoeRMth2SP3hnKCpiuI2Tr9ZfUxI2xy0dY73fpaJAhI=;
+	h=Date:To:From:Subject:Message-Id; b=jrXDbAA9s5SfCOygeyPiLbZrIfw1c5z3vHJtIQbD0NnHEpvOwjz8kPdIlpL97rhjgdmfYbD3iVM1OnSHNwTzWA6NwGbHjJMdmOUH+iS3R+KtWNaTCfsXJbcu2hBsTo+zTLUwrubwFboXpI30f4SdCjupJhUpuOB17QYleLkKcR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Dw+IXUz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D98CC4CEF7;
+	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773769839;
+	bh=JoeRMth2SP3hnKCpiuI2Tr9ZfUxI2xy0dY73fpaJAhI=;
+	h=Date:To:From:Subject:From;
+	b=Dw+IXUz+xBkhYumbtPGUTSSvlagWLRkGyMl0PUX3xR0QxF1v6pDf7BUSOl6KNBWYm
+	 wYPT/hqeC8Af0udU5XsAZy2oKnthUEFFTgME1hT2umj4pkOO34MZg0qlOX81kzNl+k
+	 EMRGryGOfLrpse5iQ+cc0d3WBxTGjpkW7H9rlIb4=
+Date: Tue, 17 Mar 2026 10:50:38 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,mboone@akamai.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260317175039.2D98CC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/378] 6.19.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260317163006.959177102@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:N3pSBfrEhZyw2FHpqup8xJxe8rUoa6fkVuaOTv3vgaaiODp9w2O
- AhTgBwfa1O9fGomAKv46L8SGLBj6ctZSP9gUmONnqLloqo/D2h9ZJyzTzc+IaUlF4KpYqB1
- oYji/Y0feXbEtc8xOcHoERH/Dgr48QPY19jwmYWHWXJGLe14Vvl0LJblwAaQMA7mxzGXXkZ
- jR687kln1qXgvaKKZcH6g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1p4wHw6FyLQ=;IgIM/pVy4f9KImDP6FxdBKsFhmD
- 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
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226883-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-226884-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A9F22B0252
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,akamai.com:email,suse.com:email]
+X-Rspamd-Queue-Id: 761632B0985
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
 
-compile runs in an error:
+The patch titled
+     Subject: mm/pagewalk: fix race between concurrent split and refault
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
 
-   LD      vmlinux.unstripped
-   BTFIDS  vmlinux.unstripped
-WARN: resolve_btfids: unresolved symbol kthread_exit
-make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 255
-make[2]: *** Deleting file 'vmlinux.unstripped'
-make[1]: *** [/home/DATA/DEVEL/linux/Makefile:1277: vmlinux] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-if I do:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-git revert f5ee297b23d843d4ae690595aa29e8f5baeaecf9 --no-edit
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-see:
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.19.y&id=f5ee297b23d843d4ae690595aa29e8f5baeaecf9
+------------------------------------------------------
+From: Max Boone <mboone@akamai.com>
+Subject: mm/pagewalk: fix race between concurrent split and refault
+Date: Tue, 17 Mar 2026 15:03:04 +0100
 
+The splitting of a PUD entry in walk_pud_range() can race with a
+concurrent thread refaulting the PUD leaf entry causing it to try walking
+a PMD range that has disappeared.
 
+An example and reproduction of this is to try reading numa_maps of a
+process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
 
-all is fine here on x86_64 (Intel 11th Gen. CPU)
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
 
-Thanks
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further.  This mirrors the
+retry logic in walk_pmd_range().
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Link: https://lkml.kernel.org/r/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com
+Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/pagewalk.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+--- a/mm/pagewalk.c~mm-pagewalk-fix-race-between-concurrent-split-and-refault
++++ a/mm/pagewalk.c
+@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, un
+ 	int err = 0;
+ 	int depth = real_depth(3);
+ 
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim. If we spot a PMD
++	 * table, it cannot go away, so we can just walk it. However, if we find
++	 * something else, we have to retry.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, un
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
+ 
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
++
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
+_
+
+Patches currently in -mm which might be from mboone@akamai.com are
+
+mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
+
 
