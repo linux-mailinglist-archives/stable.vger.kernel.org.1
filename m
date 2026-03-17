@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOd7FjyNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:56 +0100
+	id 2KPxNzOHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9E52AF535
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8318C2AE9DE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 173073003732
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7266331700F7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE4A3A4F46;
-	Tue, 17 Mar 2026 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA103A382E;
+	Tue, 17 Mar 2026 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1ynVmSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QORLResI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DDA332604;
-	Tue, 17 Mar 2026 17:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26832DF132;
+	Tue, 17 Mar 2026 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767120; cv=none; b=PzOvMasbo5o0zl0HMolJtJ/jMptraUids4s7VuX8HFfWrL6mKBGzQvnslC6jZ8Y5jzK6g9dJvMH+ciP/bgQs7E9aCPxcD6O0U4ZFC2A1qkWJfaD0ef+sEgecjXZITkr0pdiJ8B77se4KEnxHW/bPgdKk/Yu8lfQtrK0isgQK9o4=
+	t=1773765948; cv=none; b=BYJRggDLI4Sjrsg6C96bcmERcpiPsVFMp4bouGh35gH/uFhvFoCUSZIYLfGyuoGh3dxvty7LHLzNypmELbLlSKjUAwSGLli8E0yeh0Yr9qL5OHPodc66ujCG7W5kaSLzoai4NKEsfBgpdHfNSw0K4wZL12ICT1RCeEtsbIuVcZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767120; c=relaxed/simple;
-	bh=WAD3Deg8IhtmTPQSTLkZJVsEOYWzgHHO6FzfL5Qf4dM=;
+	s=arc-20240116; t=1773765948; c=relaxed/simple;
+	bh=PAPXa7pnKhs66AeQZETzrPz4RaMxOxo8rLLJUJBtL9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAVGHDSGZWRj5c9ntEyeJ9IO6cMFIbhTRajcsMmB6swvZhoTVdHROJR/S4rJGOc06iXZRIsUJ9dvrxEzvegzxhL3fGedGJozRENKp74giHdoHKjWjEnuJ3cTYQkF67I83YxLkVy31++vDVDItEi0ROrne87GkJvl6G69jy3M2SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1ynVmSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C9FC4CEF7;
-	Tue, 17 Mar 2026 17:05:19 +0000 (UTC)
+	 MIME-Version; b=JB0OKRrlnH5GUet+cfgCFs2X7MjWm0kqggNuUeXc0R4R5/6k69unRS0dnb4ej+F8U6K+S2rXsUNmXThWBRPnUA1deTb9Fynw1U9Yd8t/DME9TriqxJtXuhbZ5Ca3MOw3sPAUGyBSpCjBGclpjLL1rKXnrr05yn1/uYZXG2J7McU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QORLResI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EFDC4CEF7;
+	Tue, 17 Mar 2026 16:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767120;
-	bh=WAD3Deg8IhtmTPQSTLkZJVsEOYWzgHHO6FzfL5Qf4dM=;
+	s=korg; t=1773765947;
+	bh=PAPXa7pnKhs66AeQZETzrPz4RaMxOxo8rLLJUJBtL9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1ynVmSbbOlLQkWiIPgqUG6tp+zRHlfg7eU+9opV999Kccun+VjIJtkn/zBBZr8+B
-	 M6lOcOCHMhP7xX3PR+Bl63uy+FlWWkmilEYLvH0EytiJVLhFmJfchuiVHjPskjoNRh
-	 X+/IDmMe+xo5RakX70e+xvW5iCgv19wTA+qfs3bw=
+	b=QORLResIZi6HUXvHgAOP/1nj5q58MF8Y+6rgzlFvUofnuK8yTfYJAn8Hcn4JVcaN7
+	 P3J29pWCGPl6s9ajcs8D6TJ3xI8uFYYblLO87TD7GKqmTiHRmkHMRIZixMHMrzh+HV
+	 ZrBkLC4puFwpjVE+039FzGEe5MMec5A6mxNVTJr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Collins <bcollins@kernel.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/333] kexec: Include kernel-end even without crashkernel
+Subject: [PATCH 6.19 091/378] accel/amdxdna: Fix runtime suspend deadlock when there is pending job
 Date: Tue, 17 Mar 2026 17:30:48 +0100
-Message-ID: <20260317163000.072748031@linuxfoundation.org>
+Message-ID: <20260317163010.366589852@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,131 +68,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226535-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226264-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7F9E52AF535
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 8318C2AE9DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Collins <bcollins@kernel.org>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 38c64dfe0af12778953846df5f259e913275cfe5 ]
+[ Upstream commit 6b13cb8f48a42ddf6dd98865b673a82e37ff238b ]
 
-Certain versions of kexec don't even work without kernel-end being
-added to the device-tree. Add it even if crash-kernel is disabled.
+The runtime suspend callback drains the running job workqueue before
+suspending the device. If a job is still executing and calls
+pm_runtime_resume_and_get(), it can deadlock with the runtime suspend
+path.
 
-Signed-off-by: Ben Collins <bcollins@kernel.org>
-Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/2025042122-inescapable-mandrill-8a5ff2@boujee-and-buff
-Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
+Fix this by moving pm_runtime_resume_and_get() from the job execution
+routine to the job submission routine, ensuring the device is resumed
+before the job is queued and avoiding the deadlock during runtime
+suspend.
+
+Fixes: 063db451832b ("accel/amdxdna: Enhance runtime power management")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20260310180058.336348-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/accel/amdxdna/aie2_ctx.c    | 14 ++------------
+ drivers/accel/amdxdna/amdxdna_ctx.c | 10 ++++++++++
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index d1a2d755381ca..cf803d09c8e51 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -22,6 +22,8 @@
- #include <asm/setup.h>
- #include <asm/firmware.h>
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index 9fc33b4298f23..9284c35aacfbf 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -165,7 +165,6 @@ aie2_sched_notify(struct amdxdna_sched_job *job)
  
-+#define cpu_to_be_ulong __PASTE(cpu_to_be, BITS_PER_LONG)
-+
- #ifdef CONFIG_CRASH_DUMP
- void machine_crash_shutdown(struct pt_regs *regs)
- {
-@@ -136,17 +138,10 @@ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
- }
+ 	trace_xdna_job(&job->base, job->hwctx->name, "signaled fence", job->seq);
  
- /* Values we need to export to the second kernel via the device tree. */
--static phys_addr_t kernel_end;
- static phys_addr_t crashk_base;
- static phys_addr_t crashk_size;
- static unsigned long long mem_limit;
+-	amdxdna_pm_suspend_put(job->hwctx->client->xdna);
+ 	job->hwctx->priv->completed++;
+ 	dma_fence_signal(fence);
  
--static struct property kernel_end_prop = {
--	.name = "linux,kernel-end",
--	.length = sizeof(phys_addr_t),
--	.value = &kernel_end,
--};
+@@ -290,19 +289,11 @@ aie2_sched_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	int ret;
+ 
+-	ret = amdxdna_pm_resume_get(hwctx->client->xdna);
+-	if (ret)
++	if (!hwctx->priv->mbox_chann)
+ 		return NULL;
+ 
+-	if (!hwctx->priv->mbox_chann) {
+-		amdxdna_pm_suspend_put(hwctx->client->xdna);
+-		return NULL;
+-	}
 -
- static struct property crashk_base_prop = {
- 	.name = "linux,crashkernel-base",
- 	.length = sizeof(phys_addr_t),
-@@ -165,8 +160,6 @@ static struct property memory_limit_prop = {
- 	.value = &mem_limit,
- };
+-	if (!mmget_not_zero(job->mm)) {
+-		amdxdna_pm_suspend_put(hwctx->client->xdna);
++	if (!mmget_not_zero(job->mm))
+ 		return ERR_PTR(-ESRCH);
+-	}
  
--#define cpu_to_be_ulong	__PASTE(cpu_to_be, BITS_PER_LONG)
--
- static void __init export_crashk_values(struct device_node *node)
+ 	kref_get(&job->refcnt);
+ 	fence = dma_fence_get(job->fence);
+@@ -333,7 +324,6 @@ aie2_sched_job_run(struct drm_sched_job *sched_job)
+ 
+ out:
+ 	if (ret) {
+-		amdxdna_pm_suspend_put(hwctx->client->xdna);
+ 		dma_fence_put(job->fence);
+ 		aie2_job_put(job);
+ 		mmput(job->mm);
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
+index 4e48519b699ac..f678ae4c682d1 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.c
++++ b/drivers/accel/amdxdna/amdxdna_ctx.c
+@@ -17,6 +17,7 @@
+ #include "amdxdna_ctx.h"
+ #include "amdxdna_gem.h"
+ #include "amdxdna_pci_drv.h"
++#include "amdxdna_pm.h"
+ 
+ #define MAX_HWCTX_ID		255
+ #define MAX_ARG_COUNT		4095
+@@ -445,6 +446,7 @@ amdxdna_arg_bos_lookup(struct amdxdna_client *client,
+ void amdxdna_sched_job_cleanup(struct amdxdna_sched_job *job)
  {
- 	/* There might be existing crash kernel properties, but we can't
-@@ -190,6 +183,15 @@ static void __init export_crashk_values(struct device_node *node)
- 	mem_limit = cpu_to_be_ulong(memory_limit);
- 	of_update_property(node, &memory_limit_prop);
- }
-+#endif /* CONFIG_CRASH_RESERVE */
+ 	trace_amdxdna_debug_point(job->hwctx->name, job->seq, "job release");
++	amdxdna_pm_suspend_put(job->hwctx->client->xdna);
+ 	amdxdna_arg_bos_put(job);
+ 	amdxdna_gem_put_obj(job->cmd_bo);
+ 	dma_fence_put(job->fence);
+@@ -482,6 +484,12 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
+ 		goto cmd_put;
+ 	}
+ 
++	ret = amdxdna_pm_resume_get(xdna);
++	if (ret) {
++		XDNA_ERR(xdna, "Resume failed, ret %d", ret);
++		goto put_bos;
++	}
 +
-+static phys_addr_t kernel_end;
-+
-+static struct property kernel_end_prop = {
-+	.name = "linux,kernel-end",
-+	.length = sizeof(phys_addr_t),
-+	.value = &kernel_end,
-+};
- 
- static int __init kexec_setup(void)
- {
-@@ -200,16 +202,17 @@ static int __init kexec_setup(void)
- 		return -ENOENT;
- 
- 	/* remove any stale properties so ours can be found */
--	of_remove_property(node, of_find_property(node, kernel_end_prop.name, NULL));
-+	of_remove_property(node, of_find_property(node, kernel_end_prop.name,
-+						  NULL));
- 
- 	/* information needed by userspace when using default_machine_kexec */
- 	kernel_end = cpu_to_be_ulong(__pa(_end));
- 	of_add_property(node, &kernel_end_prop);
- 
-+#ifdef CONFIG_CRASH_RESERVE
- 	export_crashk_values(node);
--
-+#endif
- 	of_node_put(node);
- 	return 0;
- }
- late_initcall(kexec_setup);
--#endif /* CONFIG_CRASH_RESERVE */
+ 	idx = srcu_read_lock(&client->hwctx_srcu);
+ 	hwctx = xa_load(&client->hwctx_xa, hwctx_hdl);
+ 	if (!hwctx) {
+@@ -522,6 +530,8 @@ int amdxdna_cmd_submit(struct amdxdna_client *client,
+ 	dma_fence_put(job->fence);
+ unlock_srcu:
+ 	srcu_read_unlock(&client->hwctx_srcu, idx);
++	amdxdna_pm_suspend_put(xdna);
++put_bos:
+ 	amdxdna_arg_bos_put(job);
+ cmd_put:
+ 	amdxdna_gem_put_obj(job->cmd_bo);
 -- 
 2.51.0
 
