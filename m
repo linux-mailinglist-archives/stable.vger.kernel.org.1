@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-226073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDkWAlpsuWl6EgIAu9opvQ
-	(envelope-from <stable+bounces-226073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:59:38 +0100
+	id 2AycOPFpuWmZDwIAu9opvQ
+	(envelope-from <stable+bounces-226075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:49:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601C42AC8EB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:59:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79FC2AC4DC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7E97317A2D2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 178293034C5B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3051B3E8660;
-	Tue, 17 Mar 2026 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AED26F291;
+	Tue, 17 Mar 2026 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjevygnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMO9fcgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E869D26F291
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391C3E8C52
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773758944; cv=none; b=CBgQWJaojI5JCnJ3S/aBrqcMdNF54mLZx1BhMiN8fPudZJAzrQpDlX68lQJat93Ze8GIoKVrADm+/5aZnKwKCTbjkEJBuqYjWZ/8bi1peBW4+cpKrNejWDVGRProwgpXL3UiiVB3MKDypb5ncX7dNg7cylnZnWXaKgpmpc21oRc=
+	t=1773758952; cv=none; b=Az9fnSXADGaFMgZhOQnS3ceeTl9ibJO9jggtAG8hlqmnCSsy0ls9Ubo3B3QJkyefaYACKp0DGiL4K9PtIES+F9s+fp5xQsK9uVJ0d+7sHAP/B7wwrbTWmv24qqZYO6DZ+X+S7P+6u2uFW5iua7np1hJF7RKb2569WkKHOw+hj84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773758944; c=relaxed/simple;
-	bh=HwvUSz0dUPsLit4AouvCBP9mWBC7Jr+FyOq4SnKQo9o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=us1PQWfkYcPJj1eGDfkaMUTZzJN53yrvKl1QjiPcqk4P4hXgPadVjvICyu0smdIxI5ZvF7/XtwTv3L3dHKrDFbAQjcjKoFjF4y5YclpihOqWahyUaizbvrITylCAdHRcsxF/bmenyfxmKIa5HMIcFdQBB5uxuqd2Jn6b8AEZQm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjevygnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AE5C4CEF7;
-	Tue, 17 Mar 2026 14:49:03 +0000 (UTC)
+	s=arc-20240116; t=1773758952; c=relaxed/simple;
+	bh=+Q28q58s3eEl2zu9W9lHPKaPGMpt4GJ0JydXtmpEcbg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MSjlIgIAIK10LyzoReBTih+9tGfFfjBidCpPF9cQSBLC3BieVNvCCgzyzPcAZ5xmzNcfg6bzUdqTD5NkUAVv9c1ZmWUnQ2CXGlqCJ+PatP5vb5S8ebsD8BUsObSlpO/tRyGQcy7Ik1i2eeGcDb5Ua/FJKQWUYqywFbuVrLelVkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMO9fcgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE669C4CEF7;
+	Tue, 17 Mar 2026 14:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773758943;
-	bh=HwvUSz0dUPsLit4AouvCBP9mWBC7Jr+FyOq4SnKQo9o=;
+	s=korg; t=1773758952;
+	bh=+Q28q58s3eEl2zu9W9lHPKaPGMpt4GJ0JydXtmpEcbg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LjevygnToyfDD/gGHR7zmSBHwIwgMtxzAy0dSgu8rsCHuVs9usnevlrJ1l2/uSgdX
-	 xUJ8XyYzWQwkAD/9PpIhPrKJMzA8rkQPeokQl1ommT/9MLRfHtSwc4hM9xwAaROfzs
-	 OvIOZkLPaqXY1RP9sToDcXz2K8qmojSUxDXR14gk=
-Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Consolidate common xfer processing logic" failed to apply to 5.15-stable tree
+	b=tMO9fcgcx+XJKcnMurpxl+LEuebw5AeDV5a4/pw2H6h+oN7SpqZh6cvzDEHOvry2L
+	 g4AIe9POQpaNoyt+EjWH1bmIJbnfzAYzuHZYpQPZJwqqQ5AyivGP/3jLXddDkCuOrh
+	 9ldWmcSort49DfUzcqPoa5Rr1d7OTVW7HJpMZp/k=
+Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Fix race in DMA error handling in" failed to apply to 6.19-stable tree
 To: adrian.hunter@intel.com,Frank.Li@nxp.com,alexandre.belloni@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 15:48:23 +0100
-Message-ID: <2026031723-figurine-viewable-baf7@gregkh>
+Date: Tue, 17 Mar 2026 15:48:30 +0100
+Message-ID: <2026031730-clothes-sprinkled-a4e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226075-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,33 +73,33 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.959];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,nxp.com:email,intel.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: 601C42AC8EB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,nxp.com:email,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email,intel.com:email]
+X-Rspamd-Queue-Id: A79FC2AC4DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7ac45bc68f089887ab3a70358057edb7e6b6084e
+git cherry-pick -x e44d2719225e618dde74c7056f8e6949f884095e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031723-figurine-viewable-baf7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031730-clothes-sprinkled-a4e1@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,179 +111,133 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7ac45bc68f089887ab3a70358057edb7e6b6084e Mon Sep 17 00:00:00 2001
+From e44d2719225e618dde74c7056f8e6949f884095e Mon Sep 17 00:00:00 2001
 From: Adrian Hunter <adrian.hunter@intel.com>
-Date: Fri, 6 Mar 2026 09:24:48 +0200
-Subject: [PATCH] i3c: mipi-i3c-hci: Consolidate common xfer processing logic
+Date: Fri, 6 Mar 2026 09:24:49 +0200
+Subject: [PATCH] i3c: mipi-i3c-hci: Fix race in DMA error handling in
+ interrupt context
 
-Several parts of the MIPI I3C HCI driver duplicate the same sequence for
-queuing a transfer, waiting for completion, and handling timeouts. This
-logic appears in five separate locations and will be affected by an
-upcoming fix.
+The DMA ring halts whenever a transfer encounters an error. The interrupt
+handler previously attempted to detect this situation and restart the ring
+if a transfer completed at the same time. However, this restart logic runs
+entirely in interrupt context and is inherently racy: it interacts with
+other paths manipulating the ring state, and fully serializing it within
+the interrupt handler is not practical.
 
-Refactor the repeated code into a new helper, i3c_hci_process_xfer(), and
-store the timeout value in the hci_xfer structure so that callers do not
-need to pass it as a separate parameter.
+Move this error-recovery logic out of the interrupt handler and into the
+transfer-processing path (i3c_hci_process_xfer()), where serialization and
+state management are already controlled. Introduce a new optional I/O-ops
+callback, handle_error(), invoked when a completed transfer reports an
+error. For DMA operation, the implementation simply calls the existing
+dequeue function, which safely aborts and restarts the ring when needed.
 
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
+This removes the fragile ring-restart logic from the interrupt handler and
+centralizes error handling where proper sequencing can be ensured.
+
+Fixes: ccdb2e0e3b00d ("i3c: mipi-i3c-hci: Add Intel specific quirk to ring resuming")
 Cc: stable@vger.kernel.org
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-12-adrian.hunter@intel.com
+Link: https://patch.msgid.link/20260306072451.11131-13-adrian.hunter@intel.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-index 831a261f6c56..75d452d7f6af 100644
---- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
-@@ -331,12 +331,10 @@ static int hci_cmd_v1_daa(struct i3c_hci *hci)
- 			CMD_A0_ROC | CMD_A0_TOC;
- 		xfer->cmd_desc[1] = 0;
- 		xfer->completion = &done;
--		hci->io->queue_xfer(hci, xfer, 1);
--		if (!wait_for_completion_timeout(&done, HZ) &&
--		    hci->io->dequeue_xfer(hci, xfer, 1)) {
--			ret = -ETIMEDOUT;
-+		xfer->timeout = HZ;
-+		ret = i3c_hci_process_xfer(hci, xfer, 1);
-+		if (ret)
- 			break;
--		}
- 		if ((RESP_STATUS(xfer->response) == RESP_ERR_ADDR_HEADER ||
- 		     RESP_STATUS(xfer->response) == RESP_ERR_NACK) &&
- 		    RESP_DATA_LENGTH(xfer->response) == 1) {
-diff --git a/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c b/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
-index 054beee36da5..39eec26a363c 100644
---- a/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
-@@ -253,6 +253,7 @@ static int hci_cmd_v2_daa(struct i3c_hci *hci)
- 	xfer[0].rnw = true;
- 	xfer[0].cmd_desc[1] = CMD_A1_DATA_LENGTH(8);
- 	xfer[1].completion = &done;
-+	xfer[1].timeout = HZ;
- 
- 	for (;;) {
- 		ret = i3c_master_get_free_addr(&hci->master, next_addr);
-@@ -272,12 +273,9 @@ static int hci_cmd_v2_daa(struct i3c_hci *hci)
- 			CMD_A0_ASSIGN_ADDRESS(next_addr) |
- 			CMD_A0_ROC |
- 			CMD_A0_TOC;
--		hci->io->queue_xfer(hci, xfer, 2);
--		if (!wait_for_completion_timeout(&done, HZ) &&
--		    hci->io->dequeue_xfer(hci, xfer, 2)) {
--			ret = -ETIMEDOUT;
-+		ret = i3c_hci_process_xfer(hci, xfer, 2);
-+		if (ret)
- 			break;
--		}
- 		if (RESP_STATUS(xfer[0].response) != RESP_SUCCESS) {
- 			ret = 0;  /* no more devices to be assigned */
- 			break;
 diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
-index adf35b7fa498..4a80671536f0 100644
+index 4a80671536f0..b98952d12d7c 100644
 --- a/drivers/i3c/master/mipi-i3c-hci/core.c
 +++ b/drivers/i3c/master/mipi-i3c-hci/core.c
-@@ -213,6 +213,25 @@ void mipi_i3c_hci_dct_index_reset(struct i3c_hci *hci)
- 	reg_write(DCT_SECTION, FIELD_PREP(DCT_TABLE_INDEX, 0));
- }
+@@ -223,10 +223,21 @@ int i3c_hci_process_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int n)
+ 	if (ret)
+ 		return ret;
  
-+int i3c_hci_process_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int n)
-+{
-+	struct completion *done = xfer[n - 1].completion;
-+	unsigned long timeout = xfer[n - 1].timeout;
-+	int ret;
-+
-+	ret = hci->io->queue_xfer(hci, xfer, n);
-+	if (ret)
-+		return ret;
-+
-+	if (!wait_for_completion_timeout(done, timeout) &&
-+	    hci->io->dequeue_xfer(hci, xfer, n)) {
-+		dev_err(&hci->master.dev, "%s: timeout error\n", __func__);
-+		return -ETIMEDOUT;
+-	if (!wait_for_completion_timeout(done, timeout) &&
+-	    hci->io->dequeue_xfer(hci, xfer, n)) {
+-		dev_err(&hci->master.dev, "%s: timeout error\n", __func__);
+-		return -ETIMEDOUT;
++	if (!wait_for_completion_timeout(done, timeout)) {
++		if (hci->io->dequeue_xfer(hci, xfer, n)) {
++			dev_err(&hci->master.dev, "%s: timeout error\n", __func__);
++			return -ETIMEDOUT;
++		}
++		return 0;
 +	}
 +
-+	return 0;
++	if (hci->io->handle_error) {
++		bool error = false;
++
++		for (int i = 0; i < n && !error; i++)
++			error = RESP_STATUS(xfer[i].response);
++		if (error)
++			return hci->io->handle_error(hci, xfer, n);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 41b83f07fdab..e487ef52f6b4 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -609,6 +609,11 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
+ 	return did_unqueue;
+ }
+ 
++static int hci_dma_handle_error(struct i3c_hci *hci, struct hci_xfer *xfer_list, int n)
++{
++	return hci_dma_dequeue_xfer(hci, xfer_list, n) ? -EIO : 0;
 +}
 +
- static int i3c_hci_send_ccc_cmd(struct i3c_master_controller *m,
- 				struct i3c_ccc_cmd *ccc)
+ static void hci_dma_xfer_done(struct i3c_hci *hci, struct hci_rh_data *rh)
  {
-@@ -253,18 +272,14 @@ static int i3c_hci_send_ccc_cmd(struct i3c_master_controller *m,
- 	last = i - 1;
- 	xfer[last].cmd_desc[0] |= CMD_0_TOC;
- 	xfer[last].completion = &done;
-+	xfer[last].timeout = HZ;
- 
- 	if (prefixed)
- 		xfer--;
- 
--	ret = hci->io->queue_xfer(hci, xfer, nxfers);
-+	ret = i3c_hci_process_xfer(hci, xfer, nxfers);
- 	if (ret)
- 		goto out;
--	if (!wait_for_completion_timeout(&done, HZ) &&
--	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIMEDOUT;
--		goto out;
--	}
- 	for (i = prefixed; i < nxfers; i++) {
- 		if (ccc->rnw)
- 			ccc->dests[i - prefixed].payload.len =
-@@ -335,15 +350,11 @@ static int i3c_hci_i3c_xfers(struct i3c_dev_desc *dev,
- 	last = i - 1;
- 	xfer[last].cmd_desc[0] |= CMD_0_TOC;
- 	xfer[last].completion = &done;
-+	xfer[last].timeout = HZ;
- 
--	ret = hci->io->queue_xfer(hci, xfer, nxfers);
-+	ret = i3c_hci_process_xfer(hci, xfer, nxfers);
- 	if (ret)
- 		goto out;
--	if (!wait_for_completion_timeout(&done, HZ) &&
--	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIMEDOUT;
--		goto out;
--	}
- 	for (i = 0; i < nxfers; i++) {
- 		if (i3c_xfers[i].rnw)
- 			i3c_xfers[i].len = RESP_DATA_LENGTH(xfer[i].response);
-@@ -383,15 +394,11 @@ static int i3c_hci_i2c_xfers(struct i2c_dev_desc *dev,
- 	last = i - 1;
- 	xfer[last].cmd_desc[0] |= CMD_0_TOC;
- 	xfer[last].completion = &done;
-+	xfer[last].timeout = m->i2c.timeout;
- 
--	ret = hci->io->queue_xfer(hci, xfer, nxfers);
-+	ret = i3c_hci_process_xfer(hci, xfer, nxfers);
- 	if (ret)
- 		goto out;
--	if (!wait_for_completion_timeout(&done, m->i2c.timeout) &&
--	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
--		ret = -ETIMEDOUT;
--		goto out;
--	}
- 	for (i = 0; i < nxfers; i++) {
- 		if (RESP_STATUS(xfer[i].response) != RESP_SUCCESS) {
- 			ret = -EIO;
+ 	u32 op1_val, op2_val, resp, *ring_resp;
+@@ -870,29 +875,8 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci)
+ 			hci_dma_xfer_done(hci, rh);
+ 		if (status & INTR_RING_OP)
+ 			complete(&rh->op_done);
+-
+-		if (status & INTR_TRANSFER_ABORT) {
+-			u32 ring_status;
+-
+-			dev_notice_ratelimited(&hci->master.dev,
+-				"Ring %d: Transfer Aborted\n", i);
+-			mipi_i3c_hci_resume(hci);
+-			ring_status = rh_reg_read(RING_STATUS);
+-			if (!(ring_status & RING_STATUS_RUNNING) &&
+-			    status & INTR_TRANSFER_COMPLETION &&
+-			    status & INTR_TRANSFER_ERR) {
+-				/*
+-				 * Ring stop followed by run is an Intel
+-				 * specific required quirk after resuming the
+-				 * halted controller. Do it only when the ring
+-				 * is not in running state after a transfer
+-				 * error.
+-				 */
+-				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
+-				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
+-							   RING_CTRL_RUN_STOP);
+-			}
+-		}
++		if (status & INTR_TRANSFER_ABORT)
++			dev_dbg(&hci->master.dev, "Ring %d: Transfer Aborted\n", i);
+ 		if (status & INTR_IBI_RING_FULL)
+ 			dev_err_ratelimited(&hci->master.dev,
+ 				"Ring %d: IBI Ring Full Condition\n", i);
+@@ -908,6 +892,7 @@ const struct hci_io_ops mipi_i3c_hci_dma = {
+ 	.cleanup		= hci_dma_cleanup,
+ 	.queue_xfer		= hci_dma_queue_xfer,
+ 	.dequeue_xfer		= hci_dma_dequeue_xfer,
++	.handle_error		= hci_dma_handle_error,
+ 	.irq_handler		= hci_dma_irq_handler,
+ 	.request_ibi		= hci_dma_request_ibi,
+ 	.free_ibi		= hci_dma_free_ibi,
 diff --git a/drivers/i3c/master/mipi-i3c-hci/hci.h b/drivers/i3c/master/mipi-i3c-hci/hci.h
-index 9c63d80f7fc4..850016e3d4fe 100644
+index 850016e3d4fe..9ac9d0e342f4 100644
 --- a/drivers/i3c/master/mipi-i3c-hci/hci.h
 +++ b/drivers/i3c/master/mipi-i3c-hci/hci.h
-@@ -89,6 +89,7 @@ struct hci_xfer {
- 	unsigned int data_len;
- 	unsigned int cmd_tid;
- 	struct completion *completion;
-+	unsigned long timeout;
- 	union {
- 		struct {
- 			/* PIO specific */
-@@ -156,5 +157,6 @@ void mipi_i3c_hci_dct_index_reset(struct i3c_hci *hci);
- void amd_set_od_pp_timing(struct i3c_hci *hci);
- void amd_set_resp_buf_thld(struct i3c_hci *hci);
- void i3c_hci_sync_irq_inactive(struct i3c_hci *hci);
-+int i3c_hci_process_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int n);
- 
- #endif
+@@ -123,6 +123,7 @@ struct hci_io_ops {
+ 	bool (*irq_handler)(struct i3c_hci *hci);
+ 	int (*queue_xfer)(struct i3c_hci *hci, struct hci_xfer *xfer, int n);
+ 	bool (*dequeue_xfer)(struct i3c_hci *hci, struct hci_xfer *xfer, int n);
++	int (*handle_error)(struct i3c_hci *hci, struct hci_xfer *xfer, int n);
+ 	int (*request_ibi)(struct i3c_hci *hci, struct i3c_dev_desc *dev,
+ 			   const struct i3c_ibi_setup *req);
+ 	void (*free_ibi)(struct i3c_hci *hci, struct i3c_dev_desc *dev);
 
 
