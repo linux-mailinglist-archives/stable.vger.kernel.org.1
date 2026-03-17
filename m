@@ -1,255 +1,157 @@
-Return-Path: <stable+bounces-226884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LB8HQiYuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:06:00 +0100
+	id WEaON2uZuWn5KwIAu9opvQ
+	(envelope-from <stable+bounces-226885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:11:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761632B0985
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:05:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779382B0AD6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B619A305A33E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 050A73088249
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA88E36EABC;
-	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0D035A39C;
+	Tue, 17 Mar 2026 17:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Dw+IXUz+"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="qLMklQN4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511E1D61B7;
-	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B43280A21
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 17:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773769839; cv=none; b=IqtMcj9oFkNVMMWalfAHog9c8WyFV2dkHThg44aOSoDAIpKBUbKiJDExqPATlOZqM1HnnuMk3WocV6zQCIiBbq+SeML8/Y37sT7LpUFRxZocg2UvaGRDv8KPwXm0/gdgnmUIR0Qmk7uXTPNZZeKp6FT1YCMijDgm2BxM0jKD2Sk=
+	t=1773770389; cv=none; b=g4iXIIzwjsMezn1hAhEU8Vdo19IOC6GV+qJgH9jJon9vUP24HXZr9S5LRhQOxmJhtsSkdRz7ouyS0SlCsxt8m8M/mrlfQCYPUrTnB2TKyOZA71Aq4D33xdNiJAHevl9DJd5SuYDRIngH7aSVmw1P8zi88HilPUHZfiS5ZjuRzIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773769839; c=relaxed/simple;
-	bh=JoeRMth2SP3hnKCpiuI2Tr9ZfUxI2xy0dY73fpaJAhI=;
-	h=Date:To:From:Subject:Message-Id; b=jrXDbAA9s5SfCOygeyPiLbZrIfw1c5z3vHJtIQbD0NnHEpvOwjz8kPdIlpL97rhjgdmfYbD3iVM1OnSHNwTzWA6NwGbHjJMdmOUH+iS3R+KtWNaTCfsXJbcu2hBsTo+zTLUwrubwFboXpI30f4SdCjupJhUpuOB17QYleLkKcR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Dw+IXUz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D98CC4CEF7;
-	Tue, 17 Mar 2026 17:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773769839;
-	bh=JoeRMth2SP3hnKCpiuI2Tr9ZfUxI2xy0dY73fpaJAhI=;
-	h=Date:To:From:Subject:From;
-	b=Dw+IXUz+xBkhYumbtPGUTSSvlagWLRkGyMl0PUX3xR0QxF1v6pDf7BUSOl6KNBWYm
-	 wYPT/hqeC8Af0udU5XsAZy2oKnthUEFFTgME1hT2umj4pkOO34MZg0qlOX81kzNl+k
-	 EMRGryGOfLrpse5iQ+cc0d3WBxTGjpkW7H9rlIb4=
-Date: Tue, 17 Mar 2026 10:50:38 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,mboone@akamai.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260317175039.2D98CC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1773770389; c=relaxed/simple;
+	bh=qEp2sShqi1KgMVodMBiFhJfJPmr3G501i0+Nsr1r/70=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jUMhGwszUHBj/xkcD8EwMbwWttA773KnNW8sJveSOsJ0eIGwB309NgtWy1FnfdkNcga+iDAKIWqb8GLM+L3AWZ+GnvHi9a2DgYJMlOcy+Q62hwnMSGXowUQa+wZE4juvWVs+ZKi864+eZzn8LTyJdNUibxrGQgfsjQqszcM6N4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=qLMklQN4; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1773770352;
+	bh=dwHf63CrmgAOF+9cH5aTI2NFbzmXoNuZgytYJc9T92s=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=qLMklQN4ttGaVptIbhTIx66s/6/6HY6NQVt7HZFCq1O5scxI3RAFxoXSaaaQ+iPA4
+	 nfyDgeOZ8aZjLHJuZNhQSJkmpq8axN6RAIKFEeSjKpPyLBo9Dp0XLIArjUwmUQEoh2
+	 EMpgV38b9rm2ixAzsiu/WKHnOfrrOVIE1gukGm0k=
+X-QQ-mid: zesmtpip4t1773770344tea1b4c30
+X-QQ-Originating-IP: K5ac4WI8bp9cfw5clapaXR+RIF/6/c4o9JrjhC6KjGA=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 18 Mar 2026 01:59:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 10242624894791450285
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: brauner@kernel.org,
+	broonie@kernel.org,
+	davidgow@google.com,
+	gtucker@gtucker.io,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: kthread: consolidate kthread exit paths to prevent use-after-free
+Date: Wed, 18 Mar 2026 01:58:12 +0800
+Message-Id: <20260317175812.707723-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260317163006.067634764@linuxfoundation.org>
+References: <20260317163006.067634764@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: Mxh1r6NAWu99nW/jZC3dpUcMpD7RfQTxqIU+QF4jTo+jlUdm9ePbplyR
+	BYL6VUQPFwJvKj9GXRDAIstUyy1+Qto+e4BRrriYhJKRn/EWJlmOiWk3B/R4FcHOUcikjO9
+	qpmDH9JaBNvUQoNujS0ULDc8xgSOJ+91PzbA4ZcIG+CdQ7c8PKe+ExUlqHFZTRyRY2ghB8z
+	hFyKOZvI3LTeml04c9Y0astnfq+9I4y9UU+NKsFwuS1QYtxicD1jaA8hG+H0gcaGJWBxLgC
+	4hfEVYDyI3RxSyjZgQrq//khLXkX/cv4iOdlxmrEsooyuxPnQt1asim4EJZCL3A2XJkunbU
+	V7ymVZt4EIYBGiTHZDiSWXTzIOZthgXFxnKSrveix0kfGvrRZZhDqPVQIyamyT5ON94OCfm
+	5jkQXG5epBWc6ILN9XgvQW45jx0sLyM0dV4R9uW5nktVquSvvZW9TUjeAzbXmQ8Nd0SM3l5
+	BxRshISt8qtYIkMGmnYlJDeqGJ3BTMfvr4SXa0oPW+z7cN1AFaaxHHHqZgzHzcEPntHuLPk
+	SZ4Z5Ak/Xc/2nsHXjF5OT8mxGUwz3/dK/ZiNspSBkuW9Sny2oDI8utvSyDoy5X9dWc7w2Gl
+	3sYBSGRzph20y3697pj6ox0Yc3Eh9LYHGxB1SeSHOV0ZceMfJ1MEZBvo5w/WC0isDqqhvn9
+	4ESWQeIwVIDDpWfjFoufQyZo/IiL7vEHEtZyOJZyTqi6MB6PJGIKz1t8ViJhYBNi70WdjIp
+	EughS6OGgljbNjuOhjx3q3aL5hNXp6rvUBzAyhZTeqpDns77hzhJtW6G36LIA/DVD+8m5Ca
+	4UZO6A9kQXbUqFtySCF9WM8CjcWSVdKaMDpvWrwgU4kCA/XHxIIwjWrMpmp3T34U+N4/N4c
+	3p8kxhWRQW9xcDl8ysLuOsN1G/rJ4v4rB3JErrsqy43XF61uKQ2ZI05A0/28n4ap6S5m0WI
+	WppVFxHK9J7zR8yCzR2jq3PXFPz9GY1ezWFaFOVM/9EWPaOCUdmz4BuvgodBYLEkQ5ACkV9
+	G5WCK/0jNEsZ5EpEMl
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-226884-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-226885-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,akamai.com:email,suse.com:email]
-X-Rspamd-Queue-Id: 761632B0985
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 779382B0AD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello,
 
-The patch titled
-     Subject: mm/pagewalk: fix race between concurrent split and refault
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
+I want you know that need backport ("bpf: drop kthread_exit from noreturn_deny"),
+which commit 7fe44c4388146bdbb3c5932d81a26d9fa0fd3ec9 upstream,
+or will met "WARN: resolve_btfids: unresolved symbol kthread_exit" to cause build fail,
+I test v6.18.19-rc1 with the patch build ok for me.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
+BRs
+Wentao Guan
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Max Boone <mboone@akamai.com>
-Subject: mm/pagewalk: fix race between concurrent split and refault
-Date: Tue, 17 Mar 2026 15:03:04 +0100
-
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
-
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
-
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
-
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pmd_range().
-
-Link: https://lkml.kernel.org/r/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com
-Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/pagewalk.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
-
---- a/mm/pagewalk.c~mm-pagewalk-fix-race-between-concurrent-split-and-refault
-+++ a/mm/pagewalk.c
-@@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, un
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, un
- 	int err = 0;
- 	int depth = real_depth(3);
- 
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim. If we spot a PMD
-+	 * table, it cannot go away, so we can just walk it. However, if we find
-+	 * something else, we have to retry.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
-+
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, un
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
- 
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
-+
- 	} while (pud++, addr = next, addr != end);
- 
- 	return err;
-_
-
-Patches currently in -mm which might be from mboone@akamai.com are
-
-mm-pagewalk-fix-race-between-concurrent-split-and-refault.patch
-
+Log:
+ AR      drivers/gpu/built-in.a
+  AR      drivers/built-in.a
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+  GEN     .vmlinux.objs
+  MODPOST Module.symvers
+  CC      .vmlinux.export.o
+  UPD     include/generated/utsversion.h
+  CC      init/version-timestamp.o
+  KSYMS   .tmp_vmlinux0.kallsyms.S
+  AS      .tmp_vmlinux0.kallsyms.o
+  LD      .tmp_vmlinux1
+  BTF     .tmp_vmlinux1.btf.o
+  NM      .tmp_vmlinux1.syms
+  KSYMS   .tmp_vmlinux1.kallsyms.S
+  AS      .tmp_vmlinux1.kallsyms.o
+  LD      .tmp_vmlinux2
+  NM      .tmp_vmlinux2.syms
+  KSYMS   .tmp_vmlinux2.kallsyms.S
+  AS      .tmp_vmlinux2.kallsyms.o
+  LD      vmlinux.unstripped
+  BTFIDS  vmlinux.unstripped
+WARN: resolve_btfids: unresolved symbol kthread_exit
 
