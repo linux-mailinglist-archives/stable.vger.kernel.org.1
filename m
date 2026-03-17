@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-226251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PioDwiHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:28 +0100
+	id 4BIEDsGNuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48902AE95B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A772AF6CE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9B663081F21
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0103430BC316
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D3A3EBF2F;
-	Tue, 17 Mar 2026 16:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F58C3F65F7;
+	Tue, 17 Mar 2026 17:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKShB7mJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVvwDL//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A31E12B94;
-	Tue, 17 Mar 2026 16:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF773F54A5;
+	Tue, 17 Mar 2026 17:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765899; cv=none; b=XngnMp577mpv44Ninu/9SNfx3+WWRXK2zZ0GyyV0xjVL2fIEV0J+Ya9LKsD23YWKIw+nTBi/TS391fSxrXkMm5Cg0gPVFxFpcxcN/UD1nD2ycUg1xNR32z0PBGZNkBfTr1AEkz1p9kbww8WBX1Ulm/RDtzh2n7K4IIW551NrNZw=
+	t=1773767252; cv=none; b=SYc/wzycEOyVuIYc3xU4RGv8pQ2CGZ98Qsa6tjO08Z3tAy26CIckjt/BNzIYmhshlCshpeoVCYiWD84eJaUVFVYsSb6EE281XKPrb3rGoOb9HN8WUFXqSiRn7c44e8Fyoi4wbJXnqeynUPNUCvm/NANeKweSedMHxRGZXMjfjPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765899; c=relaxed/simple;
-	bh=trxxd65tUrsB0Dgn45ThrRHIHUe9744i5pNPXIjSNzs=;
+	s=arc-20240116; t=1773767252; c=relaxed/simple;
+	bh=oeufvtTD8AmbBwzJ8P5l53oeM3EjXxW/l4SExSSE0eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lfs7fZrIy1rDHEZQQ1p5wDRvAYTmppMW2txJh2kCQ3ORJ3rxhDrwQ37Scx4sjCmoOl4ieCDQkHMAcSXIDhmcKBs9dmADYw5AwoQDpCrD3JeyW/XRGZ/dTtt8dIfgm7Vt/6n5653WXLzAvx2VzcvbqGClGGSoy0wqetqxZDFD3t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKShB7mJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE95AC4CEF7;
-	Tue, 17 Mar 2026 16:44:58 +0000 (UTC)
+	 MIME-Version; b=m3/H7Rohz7YG6UbYkhMK3maglLBlKSl9DnexzS/7DeUdSbBqj0bCkjkuK/44vrTWmL1kuyzHbe9/hFjF/IF3ooQFKCjBVMORyES9iV0dlyfaT6pEKpRLb7tUbDE0qmcb3RQE+JvTB/a/cD5C7hGNU0JAK8A1Sxi5Wa1k9qrkd+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVvwDL//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1057C2BC86;
+	Tue, 17 Mar 2026 17:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765899;
-	bh=trxxd65tUrsB0Dgn45ThrRHIHUe9744i5pNPXIjSNzs=;
+	s=korg; t=1773767252;
+	bh=oeufvtTD8AmbBwzJ8P5l53oeM3EjXxW/l4SExSSE0eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKShB7mJo3y7//6bBdRmxq2xRrbMYplw0a3PBvxK0exIkqdPSXg6FCKWuEC3u8c4Z
-	 cm7eW+wrc0+Dac4eGIjkobdCL0PLp3xyVjRyl8fyBJn5tJUNGbEX7YbjRUEq6skM8j
-	 O8oT/qF6TwVpL+l1I96xmBoC17R7wmxySuT+nHXI=
+	b=uVvwDL//n+CJ+fDtCLUeL4gWElEaGuNNOSVopUGSTITskpHndvrVh3ij18ym0Cq9d
+	 MaJRpxw/et966tib8uMEy2NHEYKD4eraPiamvd/ACOS4NNFvRhD0o3+lgpYW5UtBIR
+	 UWY1EPWAeya0RzkPTuMEm79UQRmAHQXofj8m4jeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.19 120/378] can: gs_usb: gs_can_open(): always configure bitrates before starting device
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 048/333] net: spacemit: Fix error handling in emac_tx_mem_map()
 Date: Tue, 17 Mar 2026 17:31:17 +0100
-Message-ID: <20260317163011.433415469@linuxfoundation.org>
+Message-ID: <20260317163001.147523303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226251-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226565-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B48902AE95B
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 48A772AF6CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 upstream.
+[ Upstream commit 86292155bea578ebab0ca3b65d4d87ecd8a0e9ea ]
 
-So far the driver populated the struct can_priv::do_set_bittiming() and
-struct can_priv::fd::do_set_data_bittiming() callbacks.
+The DMA mappings were leaked on mapping error. Free them with the
+existing emac_free_tx_buf() function.
 
-Before bringing up the interface, user space has to configure the bitrates.
-With these callbacks the configuration is directly forwarded into the CAN
-hardware. Then the interface can be brought up.
-
-An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
-the bitrates in the CAN hardware. This leads to a problem with the
-CANable-2.5 [1] firmware, which resets the configured bit rates during
-ifdown.
-
-To fix the problem remove both bit timing callbacks and always configure
-the bitrates in the struct net_device_ops::ndo_open() callback.
-
-[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
-
-Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://patch.msgid.link/20260305-k1-ethernet-more-fixes-v2-2-e4e434d65055@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/spacemit/k1_emac.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -772,9 +772,8 @@ device_detach:
- 	}
- }
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index 5de69a105168a..d64ca7bbda9ea 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -750,7 +750,7 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
+ 	struct emac_desc tx_desc, *tx_desc_addr;
+ 	struct device *dev = &priv->pdev->dev;
+ 	struct emac_tx_desc_buffer *tx_buf;
+-	u32 head, old_head, frag_num, f;
++	u32 head, old_head, frag_num, f, i;
+ 	bool buf_idx;
  
--static int gs_usb_set_bittiming(struct net_device *netdev)
-+static int gs_usb_set_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -791,9 +790,8 @@ static int gs_usb_set_bittiming(struct n
- 				    GFP_KERNEL);
- }
+ 	frag_num = skb_shinfo(skb)->nr_frags;
+@@ -818,6 +818,15 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
  
--static int gs_usb_set_data_bittiming(struct net_device *netdev)
-+static int gs_usb_set_data_bittiming(struct gs_can *dev)
- {
--	struct gs_can *dev = netdev_priv(netdev);
- 	struct can_bittiming *bt = &dev->can.fd.data_bittiming;
- 	struct gs_device_bittiming dbt = {
- 		.prop_seg = cpu_to_le32(bt->prop_seg),
-@@ -1057,6 +1055,20 @@ static int gs_can_open(struct net_device
- 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
- 
-+	rc = gs_usb_set_bittiming(dev);
-+	if (rc) {
-+		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
-+		goto out_usb_kill_anchored_urbs;
+ err_free_skb:
+ 	dev_dstats_tx_dropped(priv->ndev);
++
++	i = old_head;
++	while (i != head) {
++		emac_free_tx_buf(priv, i);
++
++		if (++i == tx_ring->total_cnt)
++			i = 0;
 +	}
 +
-+	if (ctrlmode & CAN_CTRLMODE_FD) {
-+		rc = gs_usb_set_data_bittiming(dev);
-+		if (rc) {
-+			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
-+			goto out_usb_kill_anchored_urbs;
-+		}
-+	}
-+
- 	/* finally start device */
- 	dev->can.state = CAN_STATE_ERROR_ACTIVE;
- 	dm.flags = cpu_to_le32(flags);
-@@ -1370,7 +1382,6 @@ static struct gs_can *gs_make_candev(uns
- 	dev->can.state = CAN_STATE_STOPPED;
- 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
- 	dev->can.bittiming_const = &dev->bt_const;
--	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ 	dev_kfree_skb_any(skb);
+ }
  
- 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
- 
-@@ -1394,7 +1405,6 @@ static struct gs_can *gs_make_candev(uns
- 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
- 		 */
- 		dev->can.fd.data_bittiming_const = &dev->bt_const;
--		dev->can.fd.do_set_data_bittiming = gs_usb_set_data_bittiming;
- 	}
- 
- 	if (feature & GS_CAN_FEATURE_TERMINATION) {
+-- 
+2.51.0
+
 
 
 
