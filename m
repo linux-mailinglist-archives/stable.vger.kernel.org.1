@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NNEFNqLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:02 +0100
+	id 6PqRHNSGuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB22AF269
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76A72AE90A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68E3A3024B12
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 969CC306688F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0563F87E3;
-	Tue, 17 Mar 2026 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01F83EDADF;
+	Tue, 17 Mar 2026 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hutvFFYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbRqAhLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADE53F6600;
-	Tue, 17 Mar 2026 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619B53E716B;
+	Tue, 17 Mar 2026 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767371; cv=none; b=d8jb3i0W+gAJRclbMykVr/gaKupzpJPUlcTlmIpX/CnkSLYz5ZJYIF5Kj+1cgnLWeFN/+rJWqg7y1ap48yn5NY9g/GiFWtYh9BMWOy9kGjiwj/tFPBBs8CAfx4Soml6AdYevQ/4cLMhlaFh5eSDKt8S5uTOSh1y2CPTxfbHQH3s=
+	t=1773765867; cv=none; b=JqBOYCroPgWXmXkoik42zxLLKUGc+tuVe/yqbqXjt9fpJJtkFMDbMkMGsmsT8/7el91dxsjxhru/FAL4L1/hOy6+m+SwFPzueuxGisBtufWpaeBhk5t6H5ATc4VZwBC8zQgz1ppQSQDJ46VbJ8Sqsn9VSSBUx64j6NRVURLOcBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767371; c=relaxed/simple;
-	bh=jSxhKBB1w1rzQuwp8ix5nfDQqebiSOnBq1jthLxIb8k=;
+	s=arc-20240116; t=1773765867; c=relaxed/simple;
+	bh=85YVWs72PavWN4MSLox4ir6e8R4O+oAueCLUibd23Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHYUdD65gGA0mZVSpuGlALcxvx/0gg0OBGVm6PS1HFNu+BAqaZ280OTPz9QMEDnGF63HLO0BaVxfoGuKJGLYukwvcxKvievBxEHVmsUEiZHok7iGh8QXCVRuaQkUhnDtN5z/YKdNTm8xwbL4hfwtTH3h2e5vc6p1MzSt5elRIMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hutvFFYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA24CC2BC86;
-	Tue, 17 Mar 2026 17:09:30 +0000 (UTC)
+	 MIME-Version; b=Jk+K+gXkYRHg1p2r+kcivzNSm9IIawDmR9uPuBF68mjYOB6Yj1ATJP8ZLoUdaduKU+gh0ccA+RHDSRA1K4Jz7ysMP2f6H16mD5Ub3FA3D8ix44cH0aQrKQcfu1O7Xq6T84btnyLMDEhxlwTJQz0lqdPlZjrMzPkk8Ai9VbIdxXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbRqAhLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AE3C4CEF7;
+	Tue, 17 Mar 2026 16:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767371;
-	bh=jSxhKBB1w1rzQuwp8ix5nfDQqebiSOnBq1jthLxIb8k=;
+	s=korg; t=1773765867;
+	bh=85YVWs72PavWN4MSLox4ir6e8R4O+oAueCLUibd23Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hutvFFYqk7Lh0Hn2dEKDCCRMobf0xZ4ZEYrUMs7zELNcLUPGOpt2SdFbm/QKMliN6
-	 Q8FY8Lxom/bb8MNwEkLB8kCtXp/l71NlymchNB32sBJTYawzUgDwjY2+l+/hRj4hzw
-	 GWyTqH54rZIoWLU+HJqFUjVOHoN8W7+9UAu+a6fs=
+	b=KbRqAhLt6xpJT2z9X4MprjT+qyniU4X1z18Acuwcavig6RKIAteF1R9S6EW655zd2
+	 XPBNiz/OsIh6oe1vp7rXiIPPpnSK2UI0W8l8gWSNuoCeOi3uJqqNcTVqsErvt8n/OI
+	 b2HVU0RWWqPC+ZNowy3AG55fgFiV7uZKIl0bKHXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 040/333] net/mlx5: Fix crash when moving to switchdev mode
+Subject: [PATCH 6.19 112/378] iio: imu: inv-mpu9150: fix irq ack preventing irq storms
 Date: Tue, 17 Mar 2026 17:31:09 +0100
-Message-ID: <20260317163000.850028225@linuxfoundation.org>
+Message-ID: <20260317163011.135853772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226591-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226242-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,160 +86,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: F3FB22AF269
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C76A72AE90A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 24b2795f9683e092dc22a68f487e7aaaf2ddafea ]
+[ Upstream commit d23d763e00ace4e9c59f8d33e0713d401133ba88 ]
 
-When moving to switchdev mode when the device doesn't support IPsec,
-we try to clean up the IPsec resources anyway which causes the crash
-below, fix that by correctly checking for IPsec support before trying
-to clean up its resources.
+IRQ needs to be acked. for some odd reasons, reading from irq status does
+not reliable help, enable acking from any register to be on the safe side
+and read the irq status register. Comments in the code indicate a known
+unreliability with that register.
+The blamed commit was tested with mpu6050 in lg,p895 and lg,p880 according
+to Tested-bys. But with the MPU9150 in the Epson Moverio BT-200 this leads
+to irq storms without properly acking the irq.
 
-[27642.515799] WARNING: arch/x86/mm/fault.c:1276 at
-do_user_addr_fault+0x18a/0x680, CPU#4: devlink/6490
-[27642.517159] Modules linked in: xt_conntrack xt_MASQUERADE
-ip6table_nat ip6table_filter ip6_tables iptable_nat nf_nat xt_addrtype
-rpcsec_gss_krb5 auth_rpcgss oid_registry overlay mlx5_fwctl nfnetlink
-zram zsmalloc mlx5_ib fuse rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi
-scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_core
-ib_core
-[27642.521358] CPU: 4 UID: 0 PID: 6490 Comm: devlink Not tainted
-6.19.0-rc5_for_upstream_min_debug_2026_01_14_16_47 #1 NONE
-[27642.522923] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[27642.524528] RIP: 0010:do_user_addr_fault+0x18a/0x680
-[27642.525362] Code: ff 0f 84 75 03 00 00 48 89 ee 4c 89 e7 e8 5e b9 22
-00 49 89 c0 48 85 c0 0f 84 a8 02 00 00 f7 c3 60 80 00 00 74 22 31 c9 eb
-   ae <0f> 0b 48 83 c4 10 48 89 ea 48 89 de 4c 89 f7 5b 5d 41 5c 41 5d
-41
-[27642.528166] RSP: 0018:ffff88810770f6b8 EFLAGS: 00010046
-[27642.529038] RAX: 0000000000000000 RBX: 0000000000000002 RCX:
-ffff88810b980f00
-[27642.530158] RDX: 00000000000000a0 RSI: 0000000000000002 RDI:
-ffff88810770f728
-[27642.531270] RBP: 00000000000000a0 R08: 0000000000000000 R09:
-0000000000000000
-[27642.532383] R10: 0000000000000000 R11: 0000000000000000 R12:
-ffff888103f3c4c0
-[27642.533499] R13: 0000000000000000 R14: ffff88810770f728 R15:
-0000000000000000
-[27642.534614] FS:  00007f197c741740(0000) GS:ffff88856a94c000(0000)
-knlGS:0000000000000000
-[27642.535915] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[27642.536858] CR2: 00000000000000a0 CR3: 000000011334c003 CR4:
-0000000000172eb0
-[27642.537982] Call Trace:
-[27642.538466]  <TASK>
-[27642.538907]  exc_page_fault+0x76/0x140
-[27642.539583]  asm_exc_page_fault+0x22/0x30
-[27642.540282] RIP: 0010:_raw_spin_lock_irqsave+0x10/0x30
-[27642.541134] Code: 07 85 c0 75 11 ba ff 00 00 00 f0 0f b1 17 75 06 b8
-01 00 00 00 c3 31 c0 c3 90 0f 1f 44 00 00 53 9c 5b fa 31 c0 ba 01 00 00
-   00 <f0> 0f b1 17 75 05 48 89 d8 5b c3 89 c6 e8 7e 02 00 00 48 89 d8
-      5b
-[27642.543936] RSP: 0018:ffff88810770f7d8 EFLAGS: 00010046
-[27642.544803] RAX: 0000000000000000 RBX: 0000000000000202 RCX:
-ffff888113ad96d8
-[27642.545916] RDX: 0000000000000001 RSI: ffff88810770f818 RDI:
-00000000000000a0
-[27642.547027] RBP: 0000000000000098 R08: 0000000000000400 R09:
-ffff88810b980f00
-[27642.548140] R10: 0000000000000001 R11: ffff888101845a80 R12:
-00000000000000a8
-[27642.549263] R13: ffffffffa02a9060 R14: 00000000000000a0 R15:
-ffff8881130d8a40
-[27642.550379]  complete_all+0x20/0x90
-[27642.551010]  mlx5e_ipsec_disable_events+0xb6/0xf0 [mlx5_core]
-[27642.552022]  mlx5e_nic_disable+0x12d/0x220 [mlx5_core]
-[27642.552929]  mlx5e_detach_netdev+0x66/0xf0 [mlx5_core]
-[27642.553822]  mlx5e_netdev_change_profile+0x5b/0x120 [mlx5_core]
-[27642.554821]  mlx5e_vport_rep_load+0x419/0x590 [mlx5_core]
-[27642.555757]  ? xa_load+0x53/0x90
-[27642.556361]  __esw_offloads_load_rep+0x54/0x70 [mlx5_core]
-[27642.557328]  mlx5_esw_offloads_rep_load+0x45/0xd0 [mlx5_core]
-[27642.558320]  esw_offloads_enable+0xb4b/0xc90 [mlx5_core]
-[27642.559247]  mlx5_eswitch_enable_locked+0x34e/0x4f0 [mlx5_core]
-[27642.560257]  ? mlx5_rescan_drivers_locked+0x222/0x2d0 [mlx5_core]
-[27642.561284]  mlx5_devlink_eswitch_mode_set+0x5ac/0x9c0 [mlx5_core]
-[27642.562334]  ? devlink_rate_set_ops_supported+0x21/0x3a0
-[27642.563220]  devlink_nl_eswitch_set_doit+0x67/0xe0
-[27642.564026]  genl_family_rcv_msg_doit+0xe0/0x130
-[27642.564816]  genl_rcv_msg+0x183/0x290
-[27642.565466]  ? __devlink_nl_pre_doit.isra.0+0x160/0x160
-[27642.566329]  ? devlink_nl_eswitch_get_doit+0x290/0x290
-[27642.567181]  ? devlink_nl_pre_doit_parent_dev_optional+0x20/0x20
-[27642.568147]  ? genl_family_rcv_msg_dumpit+0xf0/0xf0
-[27642.568966]  netlink_rcv_skb+0x4b/0xf0
-[27642.569629]  genl_rcv+0x24/0x40
-[27642.570215]  netlink_unicast+0x255/0x380
-[27642.570901]  ? __alloc_skb+0xfa/0x1e0
-[27642.571560]  netlink_sendmsg+0x1f3/0x420
-[27642.572249]  __sock_sendmsg+0x38/0x60
-[27642.572911]  __sys_sendto+0x119/0x180
-[27642.573561]  ? __sys_recvmsg+0x5c/0xb0
-[27642.574227]  __x64_sys_sendto+0x20/0x30
-[27642.574904]  do_syscall_64+0x55/0xc10
-[27642.575554]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[27642.576391] RIP: 0033:0x7f197c85e807
-[27642.577050] Code: c7 c0 ff ff ff ff eb be 66 2e 0f 1f 84 00 00 00 00
-00 90 f3 0f 1e fa 80 3d 45 08 0d 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f
-   05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d
-      d0
-[27642.579846] RSP: 002b:00007ffebd4e2248 EFLAGS: 00000202 ORIG_RAX:
-000000000000002c
-[27642.581082] RAX: ffffffffffffffda RBX: 000055cfcd9cd2a0 RCX:
-00007f197c85e807
-[27642.582200] RDX: 0000000000000038 RSI: 000055cfcd9cd490 RDI:
-0000000000000003
-[27642.583320] RBP: 00007ffebd4e2290 R08: 00007f197c942200 R09:
-000000000000000c
-[27642.584437] R10: 0000000000000000 R11: 0000000000000202 R12:
-0000000000000000
-[27642.585555] R13: 000055cfcd9cd490 R14: 00007ffebd4e45d1 R15:
-000055cfcd9cd2a0
-[27642.586671]  </TASK>
-[27642.587121] ---[ end trace 0000000000000000 ]---
-[27642.587910] BUG: kernel NULL pointer dereference, address:
-00000000000000a0
-
-Fixes: 664f76be38a1 ("net/mlx5: Fix IPsec cleanup over MPV device")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305142634.1813208-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0a3b517c8089 ("iio: imu: inv_mpu6050: fix interrupt status read for old buggy chips")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 8 ++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     | 2 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 ++++-
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index feef86fff4bfd..91cfabc450325 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -2912,7 +2912,7 @@ void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
- 		goto out;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index b2fa1f4957a5b..5796896d54cd8 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1943,6 +1943,14 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 			irq_type);
+ 		return -EINVAL;
+ 	}
++
++	/*
++	 * Acking interrupts by status register does not work reliably
++	 * but seem to work when this bit is set.
++	 */
++	if (st->chip_type == INV_MPU9150)
++		st->irq_mask |= INV_MPU6050_INT_RD_CLEAR;
++
+ 	device_set_wakeup_capable(dev, true);
  
- 	peer_priv = mlx5_devcom_get_next_peer_data(priv->devcom, &tmp);
--	if (peer_priv)
-+	if (peer_priv && peer_priv->ipsec)
- 		complete_all(&peer_priv->ipsec->comp);
+ 	st->vdd_supply = devm_regulator_get(dev, "vdd");
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index 211901f8b8eb6..6239b1a803f77 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -390,6 +390,8 @@ struct inv_mpu6050_state {
+ /* enable level triggering */
+ #define INV_MPU6050_LATCH_INT_EN	0x20
+ #define INV_MPU6050_BIT_BYPASS_EN	0x2
++/* allow acking interrupts by any register read */
++#define INV_MPU6050_INT_RD_CLEAR	0x10
  
- 	mlx5_devcom_for_each_peer_end(priv->devcom);
+ /* Allowed timestamp period jitter in percent */
+ #define INV_MPU6050_TS_PERIOD_JITTER	4
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 10a4733420759..22c1ce66f99ee 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -248,7 +248,6 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+ 	switch (st->chip_type) {
+ 	case INV_MPU6000:
+ 	case INV_MPU6050:
+-	case INV_MPU9150:
+ 		/*
+ 		 * WoM is not supported and interrupt status read seems to be broken for
+ 		 * some chips. Since data ready is the only interrupt, bypass interrupt
+@@ -257,6 +256,10 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+ 		wom_bits = 0;
+ 		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
+ 		goto data_ready_interrupt;
++	case INV_MPU9150:
++		/* IRQ needs to be acked */
++		wom_bits = 0;
++		break;
+ 	case INV_MPU6500:
+ 	case INV_MPU6515:
+ 	case INV_MPU6880:
 -- 
 2.51.0
 
