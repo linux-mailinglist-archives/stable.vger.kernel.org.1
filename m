@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G9bI4yNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:16 +0100
+	id AI2KLp6FuWkPJAIAu9opvQ
+	(envelope-from <stable+bounces-226208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53742AF5FC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F012AE6A8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B6467304A26A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AAB9830523E6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02673F23DD;
-	Tue, 17 Mar 2026 17:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DB13ECBF9;
+	Tue, 17 Mar 2026 16:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bI+klEAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DDoNK9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639193E8C49;
-	Tue, 17 Mar 2026 17:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC213ED5A8;
+	Tue, 17 Mar 2026 16:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767198; cv=none; b=EkEPZsNtAiL0k6NqepjJodlkCqwsFSNgT1/VCgWGC7rqYfm15/ysG2nTKDnZyHJNscEJKOGXaM+ffRb++yMdWIUeWJZKMatLTzJCZoZeIL6jVqCnUXExKFWKVAIbVKan2RKEIvX+7iM/FwmvuaQhqWPYG/WhcwKA8AZUY4ev1Ok=
+	t=1773765717; cv=none; b=UmF6g2Sy3GfXMDXUZPANVe+rgbAzwDZyZl8KzMgb2EOun6uQ6Ebkekp4qZidj9F7GgXzuhyKatNCi9tvZqg0C6mvXt638WD465EDwacnCWfvITIfjt1MelyVIcNL58vwYHduUCn8r7N/MklFD1/EEKgrPyh5m+OJ1QuXBMj/mWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767198; c=relaxed/simple;
-	bh=YIkRD+ZKuRC3jIz+wp+vdEhoN1QfxsiChOPecSE+A4g=;
+	s=arc-20240116; t=1773765717; c=relaxed/simple;
+	bh=/zWSWyMnM6slBGajMfpw057eYFiXSXThzp9hk8Qxgxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrnY12iOWztHKSrY79CQ8FJqY8r5wxooWN1ods8HXEkk3XVI8baslx5DgL2s9pmg9qQF4wCIM3VseYMvXVo+1Gn3wQcYW/a/UIB9ZHAnpeHGkPdnZw2d3QOUyGY7Ga/J3HvjkLlLUDY48UtLoq3pOfBuqcseyPzRdyuWf2VOTXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bI+klEAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE69C4CEF7;
-	Tue, 17 Mar 2026 17:06:37 +0000 (UTC)
+	 MIME-Version; b=e4JjESDR8WAaVZMzhNLYBORslgUllGBbOkVTSoOXu2nj93h9QDW35zAUbHsm3dWBqdpkh6q76j0h8ZTLl87RwJPnqhVgVIsGwFH09nmCz3yGDTZ9BXv+7IjDtS8dtBw8+vPFlabl5RsIA2QoY5t0LiODz5ZOms7+YTYPs5iL3W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DDoNK9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F9C4CEF7;
+	Tue, 17 Mar 2026 16:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767198;
-	bh=YIkRD+ZKuRC3jIz+wp+vdEhoN1QfxsiChOPecSE+A4g=;
+	s=korg; t=1773765717;
+	bh=/zWSWyMnM6slBGajMfpw057eYFiXSXThzp9hk8Qxgxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bI+klEAeMMemZJuRJCt1LzXQ2uNXO8Sr8EsW6Oevp7ijNWA+oLvWLNOmHpU7IdYjU
-	 fBCyGNnh++U2njxo5HtQWoj0/WkZ59Mmv4jrhMf/Lka/XSRAgwtHyAzZc3EgGCectK
-	 IGgcU0UzbyP+cJiuveYt7Agx5CpIVwDquTp9KtmU=
+	b=1DDoNK9pDFQTNdehG4JGbhrjeRTXXfEkzFzxeeI4Pmm/Slq15X1JIG5P7rd0GJEOO
+	 oUw4GVseZ7o+fhgeTUWiXsWhxtk/bUNRsuObYGNsZ9iPSojJX6FcXV5GajVGAQGUc1
+	 P7zvS1C6HXVTmOcefZ/bwlJUvKFNUcLsrgnIojPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.com>,
-	Sean Rhodes <sean@starlabs.systems>,
-	Takashi Iwai <tiwai@suse.de>,
+	David Dull <monderasdor@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 006/333] ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter
+Subject: [PATCH 6.19 078/378] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
 Date: Tue, 17 Mar 2026 17:30:35 +0100
-Message-ID: <20260317162959.591051737@linuxfoundation.org>
+Message-ID: <20260317163009.887111163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,130 +74,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226208-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226553-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,suse.de:email]
-X-Rspamd-Queue-Id: B53742AF5FC
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B5F012AE6A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 1cb3c20688fc8380c9b365d03aea7e84faf6a9fd ]
+[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
 
-On Star Labs StarFighter (Realtek ALC233/235), the internal speakers can
-emit an audible pop when entering or leaving runtime suspend.
+nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
+entry from the queue data structures, taking ownership of the entry.
+For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
+attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
+present but NFQA_VLAN_TCI missing), the function returns immediately
+without freeing the dequeued entry or its sk_buff.
 
-Mute the speaker output paths via snd_hda_gen_shutup_speakers() in the
-Realtek shutup callback before the codec is powered down.
+This leaks the nf_queue_entry, its associated sk_buff, and all held
+references (net_device refcounts, struct net refcount).  Repeated
+triggering exhausts kernel memory.
 
-This is enough to avoid the pop without special EAPD handling.
+Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
+on the error path, consistent with other error handling in this file.
 
-Test results:
-- runtime PM pop fixed
-- still reaches D3 (PCI 0000:00:1f.3 power_state=D3hot)
-- does not address pops on cold boot (G3 exit) or around display manager
-  start/shutdown
-
-journalctl -k (boot):
-- snd_hda_codec_alc269 hdaudioC0D0: ALC233: picked fixup for PCI SSID
-  7017:2014
-- snd_hda_codec_alc269 hdaudioC0D0: autoconfig for ALC233: line_outs=1
-  (0x1b/0x0/0x0/0x0/0x0) type:speaker
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Tested-by: Sean Rhodes <sean@starlabs.systems>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://patch.msgid.link/4d5fb71b132bb283fd41c622b8413770b2065242.1771532060.git.sean@starlabs.systems
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
+Reviewed-by: David Dull <monderasdor@gmail.com>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ net/netfilter/nfnetlink_queue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index f40e00a578d99..a32a966be8ba1 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -1017,6 +1017,24 @@ static int alc269_resume(struct hda_codec *codec)
- 	return 0;
- }
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 34548213f2f14..0b96d20bacb73 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -1549,8 +1549,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
  
-+#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
-+
-+static void starlabs_starfighter_shutup(struct hda_codec *codec)
-+{
-+	if (snd_hda_gen_shutup_speakers(codec))
-+		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
-+}
-+
-+static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
-+					      const struct hda_fixup *fix,
-+					      int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE)
-+		spec->shutup = starlabs_starfighter_shutup;
-+}
-+
- static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
- 						 const struct hda_fixup *fix, int action)
- {
-@@ -3931,6 +3949,7 @@ enum {
- 	ALC245_FIXUP_CLEVO_NOISY_MIC,
- 	ALC269_FIXUP_VAIO_VJFH52_MIC_NO_PRESENCE,
- 	ALC233_FIXUP_MEDION_MTL_SPK,
-+	ALC233_FIXUP_STARLABS_STARFIGHTER,
- 	ALC294_FIXUP_BASS_SPEAKER_15,
- 	ALC283_FIXUP_DELL_HP_RESUME,
- 	ALC294_FIXUP_ASUS_CS35L41_SPI_2,
-@@ -6380,6 +6399,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 			{ }
- 		},
- 	},
-+	[ALC233_FIXUP_STARLABS_STARFIGHTER] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc233_fixup_starlabs_starfighter,
-+	},
- 	[ALC294_FIXUP_BASS_SPEAKER_15] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc294_fixup_bass_speaker_15,
-@@ -7485,6 +7508,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x2782, 0x4900, "MEDION E15443", ALC233_FIXUP_MEDION_MTL_SPK),
-+	SND_PCI_QUIRK(0x7017, 0x2014, "Star Labs StarFighter", ALC233_FIXUP_STARLABS_STARFIGHTER),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
-@@ -7581,6 +7605,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC298_FIXUP_TPT470_DOCK_FIX, .name = "tpt470-dock-fix"},
- 	{.id = ALC298_FIXUP_TPT470_DOCK, .name = "tpt470-dock"},
- 	{.id = ALC233_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
-+	{.id = ALC233_FIXUP_STARLABS_STARFIGHTER, .name = "starlabs-starfighter"},
- 	{.id = ALC700_FIXUP_INTEL_REFERENCE, .name = "alc700-ref"},
- 	{.id = ALC269_FIXUP_SONY_VAIO, .name = "vaio"},
- 	{.id = ALC269_FIXUP_DELL_M101Z, .name = "dell-m101z"},
+ 	if (entry->state.pf == PF_BRIDGE) {
+ 		err = nfqa_parse_bridge(entry, nfqa);
+-		if (err < 0)
++		if (err < 0) {
++			nfqnl_reinject(entry, NF_DROP);
+ 			return err;
++		}
+ 	}
+ 
+ 	if (nfqa[NFQA_PAYLOAD]) {
 -- 
 2.51.0
 
