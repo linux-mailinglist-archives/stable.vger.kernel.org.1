@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-226332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBdLBNmIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:13 +0100
+	id sKMqMUSNuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9472AECBB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F0C2AF55F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DA0831499B5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D51683260F39
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EEA3EC2F1;
-	Tue, 17 Mar 2026 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEBA3F54DC;
+	Tue, 17 Mar 2026 17:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPGplEBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTPdcHNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44F357A4A;
-	Tue, 17 Mar 2026 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC1E3F54C2;
+	Tue, 17 Mar 2026 17:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766245; cv=none; b=WH/EpVzq1nW9NiRZff1vsi5ORMIkD83IGcmp9onsff9OmEYVFoDTEdqJgbG6wkIDc4keyMANFTTEJgqNUvmhxbHAZtwbSuO2sRC2xmjEjPKOJ0DbxBgX75zolb1ytDF1R1Bh9si5JakCPKukxJl613w+zD8h5WpYSEPZvrHch3k=
+	t=1773767494; cv=none; b=JDYB+2k3f+k78pwJO2fosVp+TzUY0XKVpl4sXAP3amHE0i11qJ5hJL1MsEjFuvCkSuciXJx4XH+8fmvqJoOiZJsp2efVBAxd3AMqhpA51ep24V1AMK0dO9xt72tg7Gvrzx1ZIyyC9nILpNEf8nUcOyzfp5MWd8ym2378bTkgric=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766245; c=relaxed/simple;
-	bh=8cI9cYvAc8odfd+DjkYyQYm6QZSH543E/9G839ga8rU=;
+	s=arc-20240116; t=1773767494; c=relaxed/simple;
+	bh=JFpC44vclqQTuzPx25jSZmZYxtGkIMSV/oaxlAVIDfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JU+xBrqcwq/AWRIDO72Liq0MoT4ztzsfSw1KOomygD/ZL7loIusYqSeITxjF9UzIz/Ulm8HkbihWeTrJFogVEpCHWY0zFtiiJFyb3/W2c2gRAGlDr/2Gq6rg1K1sG1NylccIEplfTQG0GOmTGsjHiFLbSQKQ3Hj7dmnfwu5+6Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPGplEBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60894C4CEF7;
-	Tue, 17 Mar 2026 16:50:44 +0000 (UTC)
+	 MIME-Version; b=X62EBXiRVgIAEFGnjEMOVU6YRkUGfMMhjYphmOGUd/GUhWhZT8db34OJOD1zREYfOcXB05JelSa1AE7ke4xHY1QMa+Xo/LT6zx3OmbqoKje054Efk2QhOANESgV8i4YrZ6kOGjkJW20ejQz4G9jcRcppB5kvEgZcW9ILdDhd+Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTPdcHNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD533C4CEF7;
+	Tue, 17 Mar 2026 17:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766245;
-	bh=8cI9cYvAc8odfd+DjkYyQYm6QZSH543E/9G839ga8rU=;
+	s=korg; t=1773767494;
+	bh=JFpC44vclqQTuzPx25jSZmZYxtGkIMSV/oaxlAVIDfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPGplEBI7hY2MWHg2z8xY5wR8zATpkR1Vs1OYt8KFuSBXOEE9+RAqOFGRts9ZlKwN
-	 w5AZfB9uwRRlantfxXoem8thlzH9yRH8kBvAiCj2CQSBqnLEFlh7nWUAi74J6fOJ02
-	 kevzQ7CVZ7slUVjHyKWx+DcSBGYiYEvGbIAYMmhw=
+	b=XTPdcHNc5Kt6QsgRkXKru3NwmdAz35WziaAQXoIcoylhc8UHDb2tkJPB9GJK45We5
+	 bLc5+d8Z2rOwLdCh5v7RlB3gHGqTHXgZYPPKe10ghxDGmIwbUTRTfNwwjrFxaQGVIL
+	 wEOxBInIDYo4si2rs4JUa6507jjaV489b3LhJ+Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.19 169/378] Revert "usb: gadget: u_ether: Add auto-cleanup helper for freeing net_device"
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 097/333] net: ti: am65-cpsw: move hw timestamping to ndo callback
 Date: Tue, 17 Mar 2026 17:32:06 +0100
-Message-ID: <20260317163013.227419779@linuxfoundation.org>
+Message-ID: <20260317163002.968489256@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,112 +70,175 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226619-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226332-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6F9472AECBB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 38F0C2AF55F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-commit 46662d3a1ad40282ba9f753cccc6f909ec4468cc upstream.
+[ Upstream commit ed5d5928bd54f66af19b71ad342ebf0947d50674 ]
 
-This reverts commit 0c0981126b99288ed354d3d414c8a5fd42ac9e25.
+Migrate driver to new API for HW timestamping.
 
-This commit is being reverted as part of a series-wide revert.
-
-By deferring the net_device allocation to the bind() phase, a single
-function instance will spawn multiple network devices if it is symlinked
-to multiple USB configurations.
-
-This causes regressions for userspace tools (like the postmarketOS DHCP
-daemon) that rely on reading the interface name (e.g., "usb0") from
-configfs. Currently, configfs returns the template "usb%d", causing the
-userspace network setup to fail.
-
-Crucially, because this patch breaks the 1:1 mapping between the
-function instance and the network device, this naming issue cannot
-simply be patched. Configfs only exposes a single 'ifname' attribute per
-instance, making it impossible to accurately report the actual interface
-name when multiple underlying network devices can exist for that single
-instance.
-
-All configurations tied to the same function instance are meant to share
-a single network device. Revert this change to restore the 1:1 mapping
-by allocating the network device at the instance level (alloc_inst).
-
-Reported-by: David Heidelberg <david@ixit.cz>
-Closes: https://lore.kernel.org/linux-usb/70b558ea-a12e-4170-9b8e-c951131249af@ixit.cz/
-Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-4-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20251016152515.3510991-2-vadim.fedorenko@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 840c9d13cb1c ("net: ethernet: ti: am65-cpsw-nuss: Fix rx_filter value for PTP support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_ether.c |   15 ---------------
- drivers/usb/gadget/function/u_ether.h |    2 --
- 2 files changed, 17 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 44 +++++++++++-------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
 
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -1125,21 +1125,6 @@ void gether_cleanup(struct eth_dev *dev)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 77c2cf61c1fb4..071a7c42caa9a 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1788,28 +1788,28 @@ static int am65_cpsw_nuss_ndo_slave_set_mac_address(struct net_device *ndev,
  }
- EXPORT_SYMBOL_GPL(gether_cleanup);
  
--void gether_unregister_free_netdev(struct net_device *net)
--{
--	if (!net)
--		return;
+ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+-				       struct ifreq *ifr)
++				       struct kernel_hwtstamp_config *cfg,
++				       struct netlink_ext_ack *extack)
+ {
+ 	struct am65_cpsw_port *port = am65_ndev_to_port(ndev);
+ 	u32 ts_ctrl, seq_id, ts_ctrl_ltype2, ts_vlan_ltype;
+-	struct hwtstamp_config cfg;
+ 
+-	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS))
++	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS)) {
++		NL_SET_ERR_MSG(extack, "Time stamping is not supported");
+ 		return -EOPNOTSUPP;
 -
--	struct eth_dev *dev = netdev_priv(net);
--
--	if (net->reg_state == NETREG_REGISTERED) {
--		unregister_netdev(net);
--		flush_work(&dev->work);
+-	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
+-		return -EFAULT;
++	}
+ 
+ 	/* TX HW timestamp */
+-	switch (cfg.tx_type) {
++	switch (cfg->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 	case HWTSTAMP_TX_ON:
+ 		break;
+ 	default:
++		NL_SET_ERR_MSG(extack, "TX mode is not supported");
+ 		return -ERANGE;
+ 	}
+ 
+-	switch (cfg.rx_filter) {
++	switch (cfg->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		port->rx_ts_enabled = false;
+ 		break;
+@@ -1826,17 +1826,19 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+ 		port->rx_ts_enabled = true;
+-		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
+ 		break;
+ 	case HWTSTAMP_FILTER_ALL:
+ 	case HWTSTAMP_FILTER_SOME:
+ 	case HWTSTAMP_FILTER_NTP_ALL:
++		NL_SET_ERR_MSG(extack, "RX filter is not supported");
+ 		return -EOPNOTSUPP;
+ 	default:
++		NL_SET_ERR_MSG(extack, "RX filter is not supported");
+ 		return -ERANGE;
+ 	}
+ 
+-	port->tx_ts_enabled = (cfg.tx_type == HWTSTAMP_TX_ON);
++	port->tx_ts_enabled = (cfg->tx_type == HWTSTAMP_TX_ON);
+ 
+ 	/* cfg TX timestamp */
+ 	seq_id = (AM65_CPSW_TS_SEQ_ID_OFFSET <<
+@@ -1872,25 +1874,24 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 	       AM65_CPSW_PORTN_REG_TS_CTL_LTYPE2);
+ 	writel(ts_ctrl, port->port_base + AM65_CPSW_PORTN_REG_TS_CTL);
+ 
+-	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
++	return 0;
+ }
+ 
+ static int am65_cpsw_nuss_hwtstamp_get(struct net_device *ndev,
+-				       struct ifreq *ifr)
++				       struct kernel_hwtstamp_config *cfg)
+ {
+ 	struct am65_cpsw_port *port = am65_ndev_to_port(ndev);
+-	struct hwtstamp_config cfg;
+ 
+ 	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS))
+ 		return -EOPNOTSUPP;
+ 
+-	cfg.flags = 0;
+-	cfg.tx_type = port->tx_ts_enabled ?
++	cfg->flags = 0;
++	cfg->tx_type = port->tx_ts_enabled ?
+ 		      HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
+-	cfg.rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
++	cfg->rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
+ 			HWTSTAMP_FILTER_PTP_V1_L4_EVENT : HWTSTAMP_FILTER_NONE;
+ 
+-	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
++	return 0;
+ }
+ 
+ static int am65_cpsw_nuss_ndo_slave_ioctl(struct net_device *ndev,
+@@ -1901,13 +1902,6 @@ static int am65_cpsw_nuss_ndo_slave_ioctl(struct net_device *ndev,
+ 	if (!netif_running(ndev))
+ 		return -EINVAL;
+ 
+-	switch (cmd) {
+-	case SIOCSHWTSTAMP:
+-		return am65_cpsw_nuss_hwtstamp_set(ndev, req);
+-	case SIOCGHWTSTAMP:
+-		return am65_cpsw_nuss_hwtstamp_get(ndev, req);
 -	}
--	free_netdev(net);
--}
--EXPORT_SYMBOL_GPL(gether_unregister_free_netdev);
 -
- /**
-  * gether_connect - notify network layer that USB link is active
-  * @link: the USB link, set up with endpoints, descriptors matching
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -283,8 +283,6 @@ int gether_get_ifname(struct net_device
- int gether_set_ifname(struct net_device *net, const char *name, int len);
+ 	return phylink_mii_ioctl(port->slave.phylink, req, cmd);
+ }
  
- void gether_cleanup(struct eth_dev *dev);
--void gether_unregister_free_netdev(struct net_device *net);
--DEFINE_FREE(free_gether_netdev, struct net_device *, gether_unregister_free_netdev(_T));
+@@ -1991,6 +1985,8 @@ static const struct net_device_ops am65_cpsw_nuss_netdev_ops = {
+ 	.ndo_set_tx_maxrate	= am65_cpsw_qos_ndo_tx_p0_set_maxrate,
+ 	.ndo_bpf		= am65_cpsw_ndo_bpf,
+ 	.ndo_xdp_xmit		= am65_cpsw_ndo_xdp_xmit,
++	.ndo_hwtstamp_get       = am65_cpsw_nuss_hwtstamp_get,
++	.ndo_hwtstamp_set       = am65_cpsw_nuss_hwtstamp_set,
+ };
  
- void gether_setup_opts_default(struct gether_opts *opts, const char *name);
- void gether_apply_opts(struct net_device *net, struct gether_opts *opts);
+ static void am65_cpsw_disable_phy(struct phy *phy)
+-- 
+2.51.0
+
 
 
 
