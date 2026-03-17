@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-226507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCjsCuyLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:20 +0100
+	id eBuKAL2PuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BC92AF298
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676922AFB78
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E25CA31F3B8B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:03:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCB4A315AFCE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D7A2FFDEA;
-	Tue, 17 Mar 2026 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B888D357A4A;
+	Tue, 17 Mar 2026 17:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNBYOQxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjxa/uI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3AD3F54B8;
-	Tue, 17 Mar 2026 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9EE2FFDEA;
+	Tue, 17 Mar 2026 17:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767009; cv=none; b=CEkCXy+mZ7+PWbT7Mf5hlx9Kpqr0ar9Ryt+ziDOj1mNySTa9FiSdGBcR2ret7LOksZgQD+fiTehARsIDNzsEJt9mENGis25L5O7d1RInIXV9pd1Ck4OeY2b/M6/Rz7Qo1BR2ZbGpufts4JmGnhK8cCEQZXCvmNHJ3sVRhxVn6K8=
+	t=1773767069; cv=none; b=s6FA8xe6RoX1IcfHat6x38tlBPMDGmqHI0c9hftA/SHciWtWNRDB4vwu8SHH0Lr3eLZNfGS/42vczxkeomVsfsAXa/ey3i5EYHguGtdkXdMe5bck1P4VoRV9YwCxN90LXPZv4frNtKsEvV8UTMNH1AlttPiRQfVoQcA3UZkFozI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767009; c=relaxed/simple;
-	bh=zfjNazBk7NtsPwbR3cvJsTru+kUFiSoQ4CiaGkm9bb0=;
+	s=arc-20240116; t=1773767069; c=relaxed/simple;
+	bh=qr4jz1e+eIMpGqOy1yNIsuymEUrME5D+B8yAXXaKDWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIUYRAEzYPFjp6w1piPN+wSdhrolrz1Nq6HUKRNqcrqS03015RG1qCRWQLzHVLl4SjAzNAkza8DMK+5gaWHwiadrQMvKBJJwoqdJnf0+vvRQF+KAxjZY7kGyprmGdcz3eS4ypOCNkaINNQwFRONDyYLBa3og/+t6t6KXzeXjdc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNBYOQxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F20C19424;
-	Tue, 17 Mar 2026 17:03:28 +0000 (UTC)
+	 MIME-Version; b=MTwZZzkTt7VvAJkBtSb8A71uPWf7EQfYWML7wUwnZc75G9LYrpX/V5P6K+t1WUrTqZEGGuxlE7pofF1sUPVfaCRoEUvuQcIcxcsvos8sHbmz+JLLDly0XDz2+DvEahSmIc7kZJgRl/37rZINGonyWFunnAdNmADIIflgWIN2wQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjxa/uI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8338BC19424;
+	Tue, 17 Mar 2026 17:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767009;
-	bh=zfjNazBk7NtsPwbR3cvJsTru+kUFiSoQ4CiaGkm9bb0=;
+	s=korg; t=1773767069;
+	bh=qr4jz1e+eIMpGqOy1yNIsuymEUrME5D+B8yAXXaKDWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNBYOQxrG3xkJI4xvFAkqwG/bNMQzflH7a8/iPSRbyLPTgYhJYzAiqv+DaBzyI1SX
-	 GPmOaHm6lsCOCEWenMcX96wGiS0Nh/6KrQew+42YOw8tPdX/2N+xbFXTBKv1CWv2l6
-	 i0jEhPyK8IaKXNqxOKWXzlGEVdTTQ8qz4RyN0dyQ=
+	b=mjxa/uI7sdiDOzDRZIluG85glZlabd5J8LRgEu5zj8TVaKT1ypRsSo3Wohcr0KKoz
+	 usOCUDDyk14J7GCk9RYhcwWKIk+Mw7AqjiBS2SqWnXZ/W7oGm2nitqVyxeQZRX3kYw
+	 t9PkAOSdKCn1edNpsFKttZe13S8lbBF2UXxjfnmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	SeongJae Park <sj@kernel.org>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 372/378] mm/damon: rename min_sz_region of damon_ctx to min_region_sz
-Date: Tue, 17 Mar 2026 17:35:29 +0100
-Message-ID: <20260317163020.664360270@linuxfoundation.org>
+Subject: [PATCH 6.19 373/378] mm/damon/core: disallow non-power of two min_region_sz
+Date: Tue, 17 Mar 2026 17:35:30 +0100
+Message-ID: <20260317163020.702207146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -73,25 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226521-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226507-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B9BC92AF298
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 676922AFB78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,418 +102,57 @@ X-Rspamd-Server: lfdr
 
 From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit cc1db8dff8e751ec3ab352483de366b7f23aefe2 ]
+[ Upstream commit c80f46ac228b48403866d65391ad09bdf0e8562a ]
 
-'min_sz_region' field of 'struct damon_ctx' represents the minimum size of
-each DAMON region for the context.  'struct damos_access_pattern' has a
-field of the same name.  It confuses readers and makes 'grep' less optimal
-for them.  Rename it to 'min_region_sz'.
+DAMON core uses min_region_sz parameter value as the DAMON region
+alignment.  The alignment is made using ALIGN() and ALIGN_DOWN(), which
+support only the power of two alignments.  But DAMON core API callers can
+set min_region_sz to an arbitrary number.  Users can also set it
+indirectly, using addr_unit.
 
-Link: https://lkml.kernel.org/r/20260117175256.82826-9-sj@kernel.org
+When the alignment is not properly set, DAMON behavior becomes difficult
+to expect and understand, makes it effectively broken.  It doesn't cause a
+kernel crash-like significant issue, though.
+
+Fix the issue by disallowing min_region_sz input that is not a power of
+two.  Add the check to damon_commit_ctx(), as all DAMON API callers who
+set min_region_sz uses the function.
+
+This can be a sort of behavioral change, but it does not break users, for
+the following reasons.  As the symptom is making DAMON effectively broken,
+it is not reasonable to believe there are real use cases of non-power of
+two min_region_sz.  There is no known use case or issue reports from the
+setup, either.
+
+In future, if we find real use cases of non-power of two alignments and we
+can support it with low enough overhead, we can consider moving the
+restriction.  But, for now, simply disallowing the corner case should be
+good enough as a hot fix.
+
+Link: https://lkml.kernel.org/r/20260214214124.87689-1-sj@kernel.org
+Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
 Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.18+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/damon.h |    8 ++---
- mm/damon/core.c       |   69 +++++++++++++++++++++++++-------------------------
- mm/damon/lru_sort.c   |    4 +-
- mm/damon/reclaim.c    |    4 +-
- mm/damon/stat.c       |    2 -
- mm/damon/sysfs.c      |    9 +++---
- 6 files changed, 49 insertions(+), 47 deletions(-)
+ mm/damon/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -769,7 +769,7 @@ struct damon_attrs {
-  *
-  * @ops:	Set of monitoring operations for given use cases.
-  * @addr_unit:	Scale factor for core to ops address conversion.
-- * @min_sz_region:		Minimum region size.
-+ * @min_region_sz:	Minimum region size.
-  * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
-  * @schemes:		Head of schemes (&damos) list.
-  */
-@@ -812,7 +812,7 @@ struct damon_ctx {
- 
- 	struct damon_operations ops;
- 	unsigned long addr_unit;
--	unsigned long min_sz_region;
-+	unsigned long min_region_sz;
- 
- 	struct list_head adaptive_targets;
- 	struct list_head schemes;
-@@ -901,7 +901,7 @@ static inline void damon_insert_region(s
- void damon_add_region(struct damon_region *r, struct damon_target *t);
- void damon_destroy_region(struct damon_region *r, struct damon_target *t);
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
--		unsigned int nr_ranges, unsigned long min_sz_region);
-+		unsigned int nr_ranges, unsigned long min_region_sz);
- void damon_update_region_access_rate(struct damon_region *r, bool accessed,
- 		struct damon_attrs *attrs);
- 
-@@ -968,7 +968,7 @@ int damos_walk(struct damon_ctx *ctx, st
- 
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end,
--				unsigned long min_sz_region);
-+				unsigned long min_region_sz);
- 
- #endif	/* CONFIG_DAMON */
- 
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -197,7 +197,7 @@ static int damon_fill_regions_holes(stru
-  * @t:		the given target.
-  * @ranges:	array of new monitoring target ranges.
-  * @nr_ranges:	length of @ranges.
-- * @min_sz_region:	minimum region size.
-+ * @min_region_sz:	minimum region size.
-  *
-  * This function adds new regions to, or modify existing regions of a
-  * monitoring target to fit in specific ranges.
-@@ -205,7 +205,7 @@ static int damon_fill_regions_holes(stru
-  * Return: 0 if success, or negative error code otherwise.
-  */
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
--		unsigned int nr_ranges, unsigned long min_sz_region)
-+		unsigned int nr_ranges, unsigned long min_region_sz)
- {
- 	struct damon_region *r, *next;
- 	unsigned int i;
-@@ -242,16 +242,16 @@ int damon_set_regions(struct damon_targe
- 			/* no region intersects with this range */
- 			newr = damon_new_region(
- 					ALIGN_DOWN(range->start,
--						min_sz_region),
--					ALIGN(range->end, min_sz_region));
-+						min_region_sz),
-+					ALIGN(range->end, min_region_sz));
- 			if (!newr)
- 				return -ENOMEM;
- 			damon_insert_region(newr, damon_prev_region(r), r, t);
- 		} else {
- 			/* resize intersecting regions to fit in this range */
- 			first->ar.start = ALIGN_DOWN(range->start,
--					min_sz_region);
--			last->ar.end = ALIGN(range->end, min_sz_region);
-+					min_region_sz);
-+			last->ar.end = ALIGN(range->end, min_region_sz);
- 
- 			/* fill possible holes in the range */
- 			err = damon_fill_regions_holes(first, last, t);
-@@ -546,7 +546,7 @@ struct damon_ctx *damon_new_ctx(void)
- 	ctx->attrs.max_nr_regions = 1000;
- 
- 	ctx->addr_unit = 1;
--	ctx->min_sz_region = DAMON_MIN_REGION_SZ;
-+	ctx->min_region_sz = DAMON_MIN_REGION_SZ;
- 
- 	INIT_LIST_HEAD(&ctx->adaptive_targets);
- 	INIT_LIST_HEAD(&ctx->schemes);
-@@ -1131,7 +1131,7 @@ static struct damon_target *damon_nth_ta
-  * If @src has no region, @dst keeps current regions.
-  */
- static int damon_commit_target_regions(struct damon_target *dst,
--		struct damon_target *src, unsigned long src_min_sz_region)
-+		struct damon_target *src, unsigned long src_min_region_sz)
- {
- 	struct damon_region *src_region;
- 	struct damon_addr_range *ranges;
-@@ -1148,7 +1148,7 @@ static int damon_commit_target_regions(s
- 	i = 0;
- 	damon_for_each_region(src_region, src)
- 		ranges[i++] = src_region->ar;
--	err = damon_set_regions(dst, ranges, i, src_min_sz_region);
-+	err = damon_set_regions(dst, ranges, i, src_min_region_sz);
- 	kfree(ranges);
- 	return err;
- }
-@@ -1156,11 +1156,11 @@ static int damon_commit_target_regions(s
- static int damon_commit_target(
- 		struct damon_target *dst, bool dst_has_pid,
- 		struct damon_target *src, bool src_has_pid,
--		unsigned long src_min_sz_region)
-+		unsigned long src_min_region_sz)
+@@ -1241,6 +1241,9 @@ int damon_commit_ctx(struct damon_ctx *d
  {
  	int err;
  
--	err = damon_commit_target_regions(dst, src, src_min_sz_region);
-+	err = damon_commit_target_regions(dst, src, src_min_region_sz);
++	if (!is_power_of_2(src->min_region_sz))
++		return -EINVAL;
++
+ 	err = damon_commit_schemes(dst, src);
  	if (err)
  		return err;
- 	if (dst_has_pid)
-@@ -1187,7 +1187,7 @@ static int damon_commit_targets(
- 			err = damon_commit_target(
- 					dst_target, damon_target_has_pid(dst),
- 					src_target, damon_target_has_pid(src),
--					src->min_sz_region);
-+					src->min_region_sz);
- 			if (err)
- 				return err;
- 		} else {
-@@ -1214,7 +1214,7 @@ static int damon_commit_targets(
- 			return -ENOMEM;
- 		err = damon_commit_target(new_target, false,
- 				src_target, damon_target_has_pid(src),
--				src->min_sz_region);
-+				src->min_region_sz);
- 		if (err) {
- 			damon_destroy_target(new_target, NULL);
- 			return err;
-@@ -1261,7 +1261,7 @@ int damon_commit_ctx(struct damon_ctx *d
- 	}
- 	dst->ops = src->ops;
- 	dst->addr_unit = src->addr_unit;
--	dst->min_sz_region = src->min_sz_region;
-+	dst->min_region_sz = src->min_region_sz;
- 
- 	return 0;
- }
-@@ -1294,8 +1294,8 @@ static unsigned long damon_region_sz_lim
- 
- 	if (ctx->attrs.min_nr_regions)
- 		sz /= ctx->attrs.min_nr_regions;
--	if (sz < ctx->min_sz_region)
--		sz = ctx->min_sz_region;
-+	if (sz < ctx->min_region_sz)
-+		sz = ctx->min_region_sz;
- 
- 	return sz;
- }
-@@ -1673,7 +1673,7 @@ static bool damos_valid_target(struct da
-  * @t:	The target of the region.
-  * @rp:	The pointer to the region.
-  * @s:	The scheme to be applied.
-- * @min_sz_region:	minimum region size.
-+ * @min_region_sz:	minimum region size.
-  *
-  * If a quota of a scheme has exceeded in a quota charge window, the scheme's
-  * action would applied to only a part of the target access pattern fulfilling
-@@ -1691,7 +1691,8 @@ static bool damos_valid_target(struct da
-  * Return: true if the region should be entirely skipped, false otherwise.
-  */
- static bool damos_skip_charged_region(struct damon_target *t,
--		struct damon_region **rp, struct damos *s, unsigned long min_sz_region)
-+		struct damon_region **rp, struct damos *s,
-+		unsigned long min_region_sz)
- {
- 	struct damon_region *r = *rp;
- 	struct damos_quota *quota = &s->quota;
-@@ -1713,11 +1714,11 @@ static bool damos_skip_charged_region(st
- 		if (quota->charge_addr_from && r->ar.start <
- 				quota->charge_addr_from) {
- 			sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
--					r->ar.start, min_sz_region);
-+					r->ar.start, min_region_sz);
- 			if (!sz_to_skip) {
--				if (damon_sz_region(r) <= min_sz_region)
-+				if (damon_sz_region(r) <= min_region_sz)
- 					return true;
--				sz_to_skip = min_sz_region;
-+				sz_to_skip = min_region_sz;
- 			}
- 			damon_split_region_at(t, r, sz_to_skip);
- 			r = damon_next_region(r);
-@@ -1743,7 +1744,7 @@ static void damos_update_stat(struct dam
- 
- static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos_filter *filter,
--		unsigned long min_sz_region)
-+		unsigned long min_region_sz)
- {
- 	bool matched = false;
- 	struct damon_target *ti;
-@@ -1760,8 +1761,8 @@ static bool damos_filter_match(struct da
- 		matched = target_idx == filter->target_idx;
- 		break;
- 	case DAMOS_FILTER_TYPE_ADDR:
--		start = ALIGN_DOWN(filter->addr_range.start, min_sz_region);
--		end = ALIGN_DOWN(filter->addr_range.end, min_sz_region);
-+		start = ALIGN_DOWN(filter->addr_range.start, min_region_sz);
-+		end = ALIGN_DOWN(filter->addr_range.end, min_region_sz);
- 
- 		/* inside the range */
- 		if (start <= r->ar.start && r->ar.end <= end) {
-@@ -1797,7 +1798,7 @@ static bool damos_filter_out(struct damo
- 
- 	s->core_filters_allowed = false;
- 	damos_for_each_core_filter(filter, s) {
--		if (damos_filter_match(ctx, t, r, filter, ctx->min_sz_region)) {
-+		if (damos_filter_match(ctx, t, r, filter, ctx->min_region_sz)) {
- 			if (filter->allow)
- 				s->core_filters_allowed = true;
- 			return !filter->allow;
-@@ -1932,7 +1933,7 @@ static void damos_apply_scheme(struct da
- 	if (c->ops.apply_scheme) {
- 		if (quota->esz && quota->charged_sz + sz > quota->esz) {
- 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
--					c->min_sz_region);
-+					c->min_region_sz);
- 			if (!sz)
- 				goto update_stat;
- 			damon_split_region_at(t, r, sz);
-@@ -1980,7 +1981,7 @@ static void damon_do_apply_schemes(struc
- 		if (quota->esz && quota->charged_sz >= quota->esz)
- 			continue;
- 
--		if (damos_skip_charged_region(t, &r, s, c->min_sz_region))
-+		if (damos_skip_charged_region(t, &r, s, c->min_region_sz))
- 			continue;
- 
- 		if (!damos_valid_target(c, t, r, s))
-@@ -2429,7 +2430,7 @@ static void damon_split_region_at(struct
- 
- /* Split every region in the given target into 'nr_subs' regions */
- static void damon_split_regions_of(struct damon_target *t, int nr_subs,
--				  unsigned long min_sz_region)
-+				  unsigned long min_region_sz)
- {
- 	struct damon_region *r, *next;
- 	unsigned long sz_region, sz_sub = 0;
-@@ -2439,13 +2440,13 @@ static void damon_split_regions_of(struc
- 		sz_region = damon_sz_region(r);
- 
- 		for (i = 0; i < nr_subs - 1 &&
--				sz_region > 2 * min_sz_region; i++) {
-+				sz_region > 2 * min_region_sz; i++) {
- 			/*
- 			 * Randomly select size of left sub-region to be at
- 			 * least 10 percent and at most 90% of original region
- 			 */
- 			sz_sub = ALIGN_DOWN(damon_rand(1, 10) *
--					sz_region / 10, min_sz_region);
-+					sz_region / 10, min_region_sz);
- 			/* Do not allow blank region */
- 			if (sz_sub == 0 || sz_sub >= sz_region)
- 				continue;
-@@ -2485,7 +2486,7 @@ static void kdamond_split_regions(struct
- 		nr_subregions = 3;
- 
- 	damon_for_each_target(t, ctx)
--		damon_split_regions_of(t, nr_subregions, ctx->min_sz_region);
-+		damon_split_regions_of(t, nr_subregions, ctx->min_region_sz);
- 
- 	last_nr_regions = nr_regions;
- }
-@@ -2855,7 +2856,7 @@ static bool damon_find_biggest_system_ra
-  * @t:		The monitoring target to set the region.
-  * @start:	The pointer to the start address of the region.
-  * @end:	The pointer to the end address of the region.
-- * @min_sz_region:	Minimum region size.
-+ * @min_region_sz:	Minimum region size.
-  *
-  * This function sets the region of @t as requested by @start and @end.  If the
-  * values of @start and @end are zero, however, this function finds the biggest
-@@ -2867,7 +2868,7 @@ static bool damon_find_biggest_system_ra
-  */
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 			unsigned long *start, unsigned long *end,
--			unsigned long min_sz_region)
-+			unsigned long min_region_sz)
- {
- 	struct damon_addr_range addr_range;
- 
-@@ -2880,7 +2881,7 @@ int damon_set_region_biggest_system_ram_
- 
- 	addr_range.start = *start;
- 	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1, min_sz_region);
-+	return damon_set_regions(t, &addr_range, 1, min_region_sz);
- }
- 
- /*
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -212,7 +212,7 @@ static int damon_lru_sort_apply_paramete
- 	if (!monitor_region_start && !monitor_region_end)
- 		addr_unit = 1;
- 	param_ctx->addr_unit = addr_unit;
--	param_ctx->min_sz_region = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-+	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
- 	if (!damon_lru_sort_mon_attrs.sample_interval) {
- 		err = -EINVAL;
-@@ -243,7 +243,7 @@ static int damon_lru_sort_apply_paramete
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
- 					&monitor_region_end,
--					param_ctx->min_sz_region);
-+					param_ctx->min_region_sz);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -208,7 +208,7 @@ static int damon_reclaim_apply_parameter
- 	if (!monitor_region_start && !monitor_region_end)
- 		addr_unit = 1;
- 	param_ctx->addr_unit = addr_unit;
--	param_ctx->min_sz_region = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-+	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
- 	if (!damon_reclaim_mon_attrs.aggr_interval) {
- 		err = -EINVAL;
-@@ -251,7 +251,7 @@ static int damon_reclaim_apply_parameter
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
- 					&monitor_region_end,
--					param_ctx->min_sz_region);
-+					param_ctx->min_region_sz);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -189,7 +189,7 @@ static struct damon_ctx *damon_stat_buil
- 		goto free_out;
- 	damon_add_target(ctx, target);
- 	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
--							ctx->min_sz_region))
-+							ctx->min_region_sz))
- 		goto free_out;
- 	return ctx;
- free_out:
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1365,7 +1365,7 @@ static int damon_sysfs_set_attrs(struct
- 
- static int damon_sysfs_set_regions(struct damon_target *t,
- 		struct damon_sysfs_regions *sysfs_regions,
--		unsigned long min_sz_region)
-+		unsigned long min_region_sz)
- {
- 	struct damon_addr_range *ranges = kmalloc_array(sysfs_regions->nr,
- 			sizeof(*ranges), GFP_KERNEL | __GFP_NOWARN);
-@@ -1387,7 +1387,7 @@ static int damon_sysfs_set_regions(struc
- 		if (ranges[i - 1].end > ranges[i].start)
- 			goto out;
- 	}
--	err = damon_set_regions(t, ranges, sysfs_regions->nr, min_sz_region);
-+	err = damon_set_regions(t, ranges, sysfs_regions->nr, min_region_sz);
- out:
- 	kfree(ranges);
- 	return err;
-@@ -1409,7 +1409,8 @@ static int damon_sysfs_add_target(struct
- 			return -EINVAL;
- 	}
- 	t->obsolete = sys_target->obsolete;
--	return damon_sysfs_set_regions(t, sys_target->regions, ctx->min_sz_region);
-+	return damon_sysfs_set_regions(t, sys_target->regions,
-+			ctx->min_region_sz);
- }
- 
- static int damon_sysfs_add_targets(struct damon_ctx *ctx,
-@@ -1469,7 +1470,7 @@ static int damon_sysfs_apply_inputs(stru
- 	ctx->addr_unit = sys_ctx->addr_unit;
- 	/* addr_unit is respected by only DAMON_OPS_PADDR */
- 	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
--		ctx->min_sz_region = max(
-+		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
 
 
 
