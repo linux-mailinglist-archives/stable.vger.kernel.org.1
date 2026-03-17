@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-226282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GSfF6+HuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:15 +0100
+	id aO4wDyGRuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD26E2AEA65
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AEF2AFD84
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7842931857C6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B59833130D73
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0AB3F23C7;
-	Tue, 17 Mar 2026 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C033F8810;
+	Tue, 17 Mar 2026 17:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGkCdZ6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzkmaTBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DA83F23B9;
-	Tue, 17 Mar 2026 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3C3CF679;
+	Tue, 17 Mar 2026 17:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766014; cv=none; b=tekQOeY/1IqnPcdHQn3RXfy+PWuvKz08xTDa/02Uw4xLwelcik1DDan5gb0k/ebeobOeA+1PKTwY5GWs7pRCV2Z3x6aOaZAweN1NMPUVpS74qPnYBQF7nx2B5eHk0GM6jGN1mKf7Zi+l2JrsfOlWrh7qicMw4y3D/mVC2AUv8ZM=
+	t=1773767399; cv=none; b=rD0IwuJ+B+vTcBgwwPVLufCXgrQ+9KZTppF/OW0W/9wRqFOyw3gsnnixO5yy2tHLxy6Qyef+T5McEvZHMhfJRho2XGOy5QbudOaqGoNuURKt4T2jhZiQR4FgrObNTi1fs46yOaB3QvakeiMPmTJJJ6IkhPu0kiBVGjQtoq6/d54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766014; c=relaxed/simple;
-	bh=QYmb/1DYB2jiRMW2vEbQ0EKanCLUXO6TgQc0vK9I6YA=;
+	s=arc-20240116; t=1773767399; c=relaxed/simple;
+	bh=NQaigXPtC2Bnc6HpoRENpdqG/ACtzUQqKkUVEuIPtNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inYgyXOkz1t+MMqYxjOV8zoWhi+2pgksBGnGWHpphNX68+IVsk1DkYta0sFu/mMce+Dx+twskfh7/TOjNx5OL1CfNuNYK3YrdHyqJ5UEqP3eVCwmzuEcz4ll01m2LUGuSeSYbmqrlRDv4RThTLSZuCbo0paQzJsFLDogNifkIM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGkCdZ6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C325C4CEF7;
-	Tue, 17 Mar 2026 16:46:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UTdlxJqCNp+oXV8fQPyknNfzcg5qZQFdDQZUeUoxaqzzL9cWu5AsrwV//jQ5RGBhSbKt5uubjfu2LB05lFAlopZAi94ohliIfz3Z2c/w5dm/tpN7rCLpFKhcp75UaYXtELEi7FjLyHYNyMkg1txUwAonoWpswzGSHCEvhB9t5Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzkmaTBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4910C4CEF7;
+	Tue, 17 Mar 2026 17:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766014;
-	bh=QYmb/1DYB2jiRMW2vEbQ0EKanCLUXO6TgQc0vK9I6YA=;
+	s=korg; t=1773767399;
+	bh=NQaigXPtC2Bnc6HpoRENpdqG/ACtzUQqKkUVEuIPtNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGkCdZ6+7iDEB+4S1WgBp/eFYqHJxQOmj4rxvKiShActnq1lulxK/qB9ohinQwcQu
-	 3LMSt0LCFg0ExMt9d4EH2qeQw8skAVqFs2JdWnujTyiL/XtZHvVJJ13HKSfIhub5cq
-	 2wBALlf1hLAHpzc+awAX6S544P/uKkvVUsq198F8=
+	b=gzkmaTBkyiKc2prF23/fZztjCSXu+H2tTe00ihJyy5mzZOVVtW6+EER5zMPgZ3BIL
+	 5MxsLLPt3SanV4HREG4foEFuITPKF0e4URvSOZT++qW3OF74Iazie2P5kre/lnXjSb
+	 6Mh/mmphi1n4PphCA7Pr4LCnZgd9McqBCIBNER5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.19 151/378] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+	Chao Shi <cshi008@fiu.edu>,
+	Weidong Zhu <weizhu@fiu.edu>,
+	Dave Tian <daveti@purdue.edu>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 079/333] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
 Date: Tue, 17 Mar 2026 17:31:48 +0100
-Message-ID: <20260317163012.568265822@linuxfoundation.org>
+Message-ID: <20260317163002.305438666@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +66,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	SEM_URIBL(3.50)[purdue.edu:email];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226282-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-226597-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_SPAM(0.00)[0.844];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BD26E2AEA65
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,purdue.edu:email,fiu.edu:email]
+X-Rspamd-Queue-Id: 95AEF2AFD84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
+[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
 
-Remove the error path from the usb_phy_roothub_set_mode() function.
-The code is clearly wrong, because phy_set_mode() calls can't be
-balanced with phy_power_off() calls.
+dev->online_queues is a count incremented in nvme_init_queue. Thus,
+valid indices are 0 through dev->online_queues − 1.
 
-Additionally, the usb_phy_roothub_set_mode() function is called only
-from usb_add_hcd() before it powers on the PHYs, so powering off those
-makes no sense anyway.
+This patch fixes the loop condition to ensure the index stays within the
+valid range. Index 0 is excluded because it is the admin queue.
 
-Presumably, the code is copy-pasted from the phy_power_on() function
-without adjusting the error handling.
+KASAN splat:
 
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: b97a31348379 ("usb: core: comply to PHY framework")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+==================================================================
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
+
+CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Workqueue: nvme-reset-wq nvme_reset_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xce/0x5d0 mm/kasan/report.c:482
+ kasan_report+0xdc/0x110 mm/kasan/report.c:595
+ __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
+ nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
+ nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
+ nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+Allocated by task 34 on cpu 1 at 4.241550s:
+ kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
+ kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
+ kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
+ kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
+ nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
+ nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
+ local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
+ pci_call_probe drivers/pci/pci-driver.c:392 [inline]
+ __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
+ pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
+ call_driver_probe drivers/base/dd.c:583 [inline]
+ really_probe+0x29b/0xb70 drivers/base/dd.c:661
+ __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
+ driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
+ __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
+ async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+The buggy address belongs to the object at ffff88800592a000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 244 bytes to the right of
+ allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
+page_type: f5(slab)
+raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
+head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                                                             ^
+ ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
+Acked-by: Chao Shi <cshi008@fiu.edu>
+Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Acked-by: Dave Tian <daveti@purdue.edu>
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/phy.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/phy.c
-+++ b/drivers/usb/core/phy.c
-@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_
- 	list_for_each_entry(roothub_entry, head, list) {
- 		err = phy_set_mode(roothub_entry->phy, mode);
- 		if (err)
--			goto err_out;
-+			return err;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 391c854428d3e..fe2343823e79e 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -388,7 +388,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
+ 		/* Free memory and continue on */
+ 		nvme_dbbuf_dma_free(dev);
+ 
+-		for (i = 1; i <= dev->online_queues; i++)
++		for (i = 1; i < dev->online_queues; i++)
+ 			nvme_dbbuf_free(&dev->queues[i]);
  	}
- 
- 	return 0;
--
--err_out:
--	list_for_each_entry_continue_reverse(roothub_entry, head, list)
--		phy_power_off(roothub_entry->phy);
--
--	return err;
  }
- EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
- 
+-- 
+2.51.0
+
 
 
 
