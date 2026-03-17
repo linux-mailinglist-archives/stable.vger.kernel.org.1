@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-226613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPnvIcWOuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:29 +0100
+	id ELHJLlqGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911A32AF8BB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA162AE838
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C824308FBD9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E57F2302924B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370473F54CD;
-	Tue, 17 Mar 2026 17:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9FE2E62B7;
+	Tue, 17 Mar 2026 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cF8aFG9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByCI8yXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA60373C18;
-	Tue, 17 Mar 2026 17:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F803EAC6F;
+	Tue, 17 Mar 2026 16:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767471; cv=none; b=rdQuovpkY790ELzxA5ZLlS3e7+VVqs6EiTQn/apl5Zr/72/F5k2bXW1L6Myc4GT3pPob27LM+sh4Z5LHkm8b+bF4X8625tsUHD9yDuXmoUeOiV4zaH5+kHlS0uokyvewKDkotHP8C/DQbagYlQx0mW1Ve8zfCneexbr0t2B8iDo=
+	t=1773766232; cv=none; b=KXbeXaJ+8DzLOKUH6iTJEU1UhYos1YUaD5OihiskhdeiUtQG6E3hdRW7FZn/v8KNSWfCHv7pUwNYRdYwZLsdAGCE0dHZc0YzNFgM57nSWhGsJwT6r5Vlk+YaDMNOZAP4ZUSAJ4x2+GMdhpPMwHOxd1weAQP9y49MtFv87cRgrmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767471; c=relaxed/simple;
-	bh=Mh5Ea09549Vh3S9AYIYEAS/AVIe1Y5+jftt3PoGhwJc=;
+	s=arc-20240116; t=1773766232; c=relaxed/simple;
+	bh=RQGNOHfEi0JmuzdbRSlLhqjOO/EVjlOVhYTiO2ZW3pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1H3927nwxqGBa14GyLzy2S8fAMT3ghEBjruuI9M+R/Ej6854rSZ2d6q+poo6gdF/6KguXQ6HELib9ezRkvxlbkeV8GLxIRuZh8kdDVSRGLSEVKJhruyGHa53pHehzsLUuOcDj13adPT472cZHvVMPSEAdoSuv0dGMsQQhYWT94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cF8aFG9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C298C4CEF7;
-	Tue, 17 Mar 2026 17:11:09 +0000 (UTC)
+	 MIME-Version; b=Co8wG8W/OMokJ1J3gyDJIbxB83RO9S0fmiwLTNdfBynyGjQNuZZ/9zL1431VptQPrT3Xg4LVRupsmNSAf2x1deX3os9B/fC5VmHPfIRoh8rfKRw9ZJnYnJDnNqJXI5u6MxELXVRAJbKd5kwespznifGyGknOniq7FWyR3iK8Ddw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByCI8yXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C69C4CEF7;
+	Tue, 17 Mar 2026 16:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767470;
-	bh=Mh5Ea09549Vh3S9AYIYEAS/AVIe1Y5+jftt3PoGhwJc=;
+	s=korg; t=1773766231;
+	bh=RQGNOHfEi0JmuzdbRSlLhqjOO/EVjlOVhYTiO2ZW3pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cF8aFG9GxDBGBlfC2FWJZXR3Xrs089k6ay9d9eDJI1z0wQ4kxe6JDhwnAJIrsIEtT
-	 F3UsLav3qDuSu23nFDxy5MxZzj5kpfecEdWCeIkqpn7FVNeSMM9gBmmTrVCAKAT1fD
-	 +lvqMJIPZp0tKpV6OxqUWvP1XLjdIa6juzkCZy34=
+	b=ByCI8yXw9KdD9VOEL+Yy/g9XohPm2t1QFv9WK7XDfg9OKN96dhMFH65qxdL0OBvNm
+	 PbXuSX8SGP0VrB/91xldVlJxuHn+IEEKQ8vIgUdHH7jKNv1KU+75jpU+iQMHaHwXLA
+	 FHpdcR8DMDDVT3BuiEG5WHC2kaB5/HpdbqbKmnDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/333] net: bonding: Fix nd_tbl NULL dereference when IPv6 is disabled
-Date: Tue, 17 Mar 2026 17:32:02 +0100
-Message-ID: <20260317163002.819659653@linuxfoundation.org>
+	stable@kernel.org,
+	kernel test robot <oliver.sang@intel.com>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.19 166/378] usb: legacy: ncm: Fix NPE in gncm_bind
+Date: Tue, 17 Mar 2026 17:32:03 +0100
+Message-ID: <20260317163013.117481515@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,suse.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226613-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226329-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 911A32AF8BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7DA162AE838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit 30021e969d48e5819d5ae56936c2f34c0f7ce997 ]
+commit fde0634ad9856b3943a2d1a8cc8de174a63ac840 upstream.
 
-When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. If bonding ARP/NS validation is enabled, an IPv6
-NS/NA packet received on a slave can reach bond_validate_na(), which
-calls bond_has_this_ip6(). That path calls ipv6_chk_addr() and can
-crash in __ipv6_chk_addr_and_flags().
+Commit 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle
+with bind/unbind") deferred the allocation of the net_device. This
+change leads to a NULL pointer dereference in the legacy NCM driver as
+it attempts to access the net_device before it's fully instantiated.
 
- BUG: kernel NULL pointer dereference, address: 00000000000005d8
- Oops: Oops: 0000 [#1] SMP NOPTI
- RIP: 0010:__ipv6_chk_addr_and_flags+0x69/0x170
- Call Trace:
-  <IRQ>
-  ipv6_chk_addr+0x1f/0x30
-  bond_validate_na+0x12e/0x1d0 [bonding]
-  ? __pfx_bond_handle_frame+0x10/0x10 [bonding]
-  bond_rcv_validate+0x1a0/0x450 [bonding]
-  bond_handle_frame+0x5e/0x290 [bonding]
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  __netif_receive_skb_core.constprop.0+0x3e8/0xe50
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? update_cfs_rq_load_avg+0x1a/0x240
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __enqueue_entity+0x5e/0x240
-  __netif_receive_skb_one_core+0x39/0xa0
-  process_backlog+0x9c/0x150
-  __napi_poll+0x30/0x200
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  net_rx_action+0x338/0x3b0
-  handle_softirqs+0xc9/0x2a0
-  do_softirq+0x42/0x60
-  </IRQ>
-  <TASK>
-  __local_bh_enable_ip+0x62/0x70
-  __dev_queue_xmit+0x2d3/0x1000
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? packet_parse_headers+0x10a/0x1a0
-  packet_sendmsg+0x10da/0x1700
-  ? kick_pool+0x5f/0x140
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? __queue_work+0x12d/0x4f0
-  __sys_sendto+0x1f3/0x220
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x101/0xf80
-  ? exc_page_fault+0x6e/0x170
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  </TASK>
+Store the provided qmult, host_addr, and dev_addr into the struct
+ncm_opts->net_opts during gncm_bind(). These values will be properly
+applied to the net_device when it is allocated and configured later in
+the binding process by the NCM function driver.
 
-Fix this by checking ipv6_mod_enabled() before dispatching IPv6 packets to
-bond_na_rcv(). If IPv6 is disabled, return early from bond_rcv_validate()
-and avoid the path to ipv6_chk_addr().
-
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260307-net-nd_tbl_fixes-v4-2-e2677e85628c@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
+Cc: stable@kernel.org
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202602181727.fd76c561-lkp@intel.com
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260221-legacy-ncm-v2-1-dfb891d76507@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/ncm.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 139ece7676c50..e8e261e0cb4e1 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3402,7 +3402,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
- 	} else if (is_arp) {
- 		return bond_arp_rcv(skb, bond, slave);
- #if IS_ENABLED(CONFIG_IPV6)
--	} else if (is_ipv6) {
-+	} else if (is_ipv6 && likely(ipv6_mod_enabled())) {
- 		return bond_na_rcv(skb, bond, slave);
- #endif
- 	} else {
--- 
-2.51.0
-
+--- a/drivers/usb/gadget/legacy/ncm.c
++++ b/drivers/usb/gadget/legacy/ncm.c
+@@ -15,8 +15,10 @@
+ /* #define DEBUG */
+ /* #define VERBOSE_DEBUG */
+ 
++#include <linux/hex.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/string.h>
+ #include <linux/usb/composite.h>
+ 
+ #include "u_ether.h"
+@@ -129,6 +131,7 @@ static int gncm_bind(struct usb_composit
+ 	struct usb_gadget	*gadget = cdev->gadget;
+ 	struct f_ncm_opts	*ncm_opts;
+ 	int			status;
++	u8			mac[ETH_ALEN];
+ 
+ 	f_ncm_inst = usb_get_function_instance("ncm");
+ 	if (IS_ERR(f_ncm_inst))
+@@ -136,11 +139,15 @@ static int gncm_bind(struct usb_composit
+ 
+ 	ncm_opts = container_of(f_ncm_inst, struct f_ncm_opts, func_inst);
+ 
+-	gether_set_qmult(ncm_opts->net, qmult);
+-	if (!gether_set_host_addr(ncm_opts->net, host_addr))
++	ncm_opts->net_opts.qmult = qmult;
++	if (host_addr && mac_pton(host_addr, mac)) {
++		memcpy(&ncm_opts->net_opts.host_mac, mac, ETH_ALEN);
+ 		pr_info("using host ethernet address: %s", host_addr);
+-	if (!gether_set_dev_addr(ncm_opts->net, dev_addr))
++	}
++	if (dev_addr && mac_pton(dev_addr, mac)) {
++		memcpy(&ncm_opts->net_opts.dev_mac, mac, ETH_ALEN);
+ 		pr_info("using self ethernet address: %s", dev_addr);
++	}
+ 
+ 	/* Allocate string descriptor numbers ... note that string
+ 	 * contents can be overridden by the composite_dev glue.
 
 
 
