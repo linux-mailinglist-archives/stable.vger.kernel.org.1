@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iK1tL7qFuWkPJAIAu9opvQ
-	(envelope-from <stable+bounces-226294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:54 +0100
+	id 0FhUD/2NuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECD92AE6EF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477742AF754
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A57DF3032894
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6EAF03046D8F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D373F54B6;
-	Tue, 17 Mar 2026 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210953F23DD;
+	Tue, 17 Mar 2026 17:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTJqemwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n175BTKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11043F23D6;
-	Tue, 17 Mar 2026 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89A33A4F46;
+	Tue, 17 Mar 2026 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766069; cv=none; b=YIto9DEq826jboXwH5jpL1xeH7QI6XFq985BRI5iSDWJ7o5uht0Kz4FYHlZhYU8IN3p7uGW7eeaejSD1v95g/oHAtNa+nOukgUNj3s5BKiZvkhHPs59ggxWk1Fr/M+s6je3AYC+qiSApACzA/PphXWlFbXZUlnX3KYGFohNlav4=
+	t=1773767308; cv=none; b=HT0iyJU+DMnWZ6xKngQYuXBa+y6p7iPBDFvkouLEE4aoB6ag9yb3NfUcakx29cvO40F7X8iYIyj8hCYfKqCLPWtJWpL+LXgxCJgX8uhB7TkM61ca5a6qYAkcF/jBL9EmzABenXKNYtB11eN6wYkgELlzRnQrX/QHiT3+ZAFzp6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766069; c=relaxed/simple;
-	bh=qOyrNyDKxZio8MVevgqcTt8QgY5YiK22ZYXf/zwUylM=;
+	s=arc-20240116; t=1773767308; c=relaxed/simple;
+	bh=aPw+eFrgZ6u1cFf4GscXJXLJOzLxux3ThCRj5v1admo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjXi/HqA/lJdHOzUUtBT/map9ONEApqHSe4Sm4n2HoCrkZ/XciGagX044BRy9OTGTuFmouRd68XLXVulUr+EmN7sXW01OWugnmm18J+SqTKcH5n0RVEvXcQki39mg2WsimiMUGvnccmVeF0GsSA1vjFZdEhuwJKF+AZ41KkDk8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTJqemwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E438C19424;
-	Tue, 17 Mar 2026 16:47:47 +0000 (UTC)
+	 MIME-Version; b=nAWSmVwGE2wUtlLSzxZNd41WYg9Db+vxVyEIBzrinMz7dcTegvDqQo/LFUK4q+JBwcxdGZlGywQ7rOWseadifjIu2GLPbSgW7UmGzvN4rSJrRpSazML4YwbNwTheI3+3ADkdCXSrb93gk0rDNsoVjL7ResZdE5PEUkihxTlxTDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n175BTKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55851C4CEF7;
+	Tue, 17 Mar 2026 17:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766068;
-	bh=qOyrNyDKxZio8MVevgqcTt8QgY5YiK22ZYXf/zwUylM=;
+	s=korg; t=1773767308;
+	bh=aPw+eFrgZ6u1cFf4GscXJXLJOzLxux3ThCRj5v1admo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTJqemwd15jKgPT8rS3FbC7xi5EPvexliXfXLMyXsqoelgYnY3vg7zsvzT/XhDUaD
-	 j+qKkP2BXIiFW8bVqXd1Cp+Kc4tuQuCF0G/eJ7Eaw+yJb1qC1ZJdi5OMS9cb5KsRRI
-	 BLWefiq6k+Y8lnx5zyEfOA3u8ZXw5FlbV2Oph3ZE=
+	b=n175BTKBz7EK5DkgoheTGkJT5llDzCPxCjIwvUIOiV6K/6KtP6tU/2rDcgsGlqzeh
+	 S3Kd9TZAxIKL5DsnsjFm878SX9bJh7v8r5i/sS4OPCCh2dXr+7/VnOl+PBLiRXnsXy
+	 PCg1gvDpr7eV5BKacBbmDASwV53ct4oVd5635BEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.19 130/378] rust: kbuild: allow `unused_features`
-Date: Tue, 17 Mar 2026 17:31:27 +0100
-Message-ID: <20260317163011.797146775@linuxfoundation.org>
+	Wenyuan Li <2063309626@qq.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 059/333] can: hi311x: hi3110_open(): add check for hi3110_power_enable() return value
+Date: Tue, 17 Mar 2026 17:31:28 +0100
+Message-ID: <20260317163001.558726208@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226577-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,pengutronix.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226294-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,garyguo.net:email]
-X-Rspamd-Queue-Id: 6ECD92AE6EF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pengutronix.de:email,qq.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 477742AF754
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Wenyuan Li <2063309626@qq.com>
 
-commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
+[ Upstream commit 47bba09b14fa21712398febf36cb14fd4fc3bded ]
 
-Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
-`rustc` introduces the new lint `unused_features` [1], which warns [2]:
+In hi3110_open(), the return value of hi3110_power_enable() is not checked.
+If power enable fails, the device may not function correctly, while the
+driver still returns success.
 
-    warning: feature `used_with_arg` is declared but not used
-     --> <crate attribute>:1:93
-      |
-    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
-      |                                                                                             ^^^^^^^^^^^^^
-      |
-      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
+Add a check for the return value and propagate the error accordingly.
 
-The original goal of using `-Zcrate-attr` automatically was that there
-is a consistent set of features enabled and managed globally for all
-Rust kernel code (modulo exceptions like the `rust/` crated).
-
-While we could require crates to enable features manually (even if we
-still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
-list), it is not really worth making all developers worry about it just
-for a new lint.
-
-The features are expected to eventually become stable anyway (most already
-did), and thus having to remove features in every file that may use them
-is not worth it either.
-
-Thus just allow the new lint globally.
-
-The lint actually existed for a long time, which is why `rustc` does
-not complain about an unknown lint in the stable versions we support,
-but it was "disabled" years ago [3], and now it was made to work again.
-
-For extra context, the new implementation of the lint has already been
-improved to avoid linting about features that became stable thanks to
-Benno's report and the ensuing discussion [4] [5], but while that helps,
-it is still the case that we may have features enabled that are not used
-for one reason or another in a particular crate.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/152164 [1]
-Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
-Link: https://github.com/rust-lang/rust/issues/44232 [3]
-Link: https://github.com/rust-lang/rust/issues/153523 [4]
-Link: https://github.com/rust-lang/rust/pull/153610 [5]
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenyuan Li <2063309626@qq.com>
+Link: https://patch.msgid.link/tencent_B5E2E7528BB28AA8A2A56E16C49BD58B8B07@qq.com
+Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
+[mkl: adjust subject, commit message and jump label]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/spi/hi311x.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -473,6 +473,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
- export rust_common_flags := --edition=2021 \
- 			    -Zbinary_dep_depinfo=y \
- 			    -Astable_features \
-+			    -Aunused_features \
- 			    -Dnon_ascii_idents \
- 			    -Dunsafe_op_in_unsafe_fn \
- 			    -Wmissing_docs \
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index 6d4b643e135fd..5f5a7e7e547eb 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -755,7 +755,9 @@ static int hi3110_open(struct net_device *net)
+ 		return ret;
+ 
+ 	mutex_lock(&priv->hi3110_lock);
+-	hi3110_power_enable(priv->transceiver, 1);
++	ret = hi3110_power_enable(priv->transceiver, 1);
++	if (ret)
++		goto out_close_candev;
+ 
+ 	priv->force_quit = 0;
+ 	priv->tx_skb = NULL;
+@@ -790,6 +792,7 @@ static int hi3110_open(struct net_device *net)
+ 	hi3110_hw_sleep(spi);
+  out_close:
+ 	hi3110_power_enable(priv->transceiver, 0);
++ out_close_candev:
+ 	close_candev(net);
+ 	mutex_unlock(&priv->hi3110_lock);
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
