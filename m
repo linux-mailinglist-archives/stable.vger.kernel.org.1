@@ -1,252 +1,204 @@
-Return-Path: <stable+bounces-226894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GcOIJywuWkkMQIAu9opvQ
-	(envelope-from <stable+bounces-226894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:50:52 +0100
+	id kOw9O+yxuWmDMQIAu9opvQ
+	(envelope-from <stable+bounces-226895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:56:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8312B1C03
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:50:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5102B1D40
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92C62301E9A6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:50:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7C6303AAA6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FED32F757;
-	Tue, 17 Mar 2026 19:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626501E5B68;
+	Tue, 17 Mar 2026 19:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOYH6QTs"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WTzcj9Dr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013014.outbound.protection.outlook.com [40.107.159.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8852D780C;
-	Tue, 17 Mar 2026 19:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773777049; cv=none; b=or0mhUXWdmHt7YfSv6iSj7qFAVWIbiVcjzs6gntVMAsOWviL7jRE8D7lEeJ7linGFsw3LRphNXep9wy3nknhQIqGFKcPJo/XrROtdEdzkBzpbI5+OmG8ZMRBB9wsnUxh4qBtV7RveTRF8mgKKZHlpxYllpmZDnzVeAxmVe7qLaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773777049; c=relaxed/simple;
-	bh=mQkLOI5TNoPpltWB54lOhE6wTEL1bBFRPzazbCe4zFo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRsRe80HykhIpdDf63pxSyGgHAcO7QtGUx0rYn91+f45D23YhEe3um8TaP+F2v9OGpf0H9ed33upBd2KFlywri2N2YhO5BEMATmAJX2o85xLik+/LW6Oh8YNwVhf7ux0vnCg3aoN1RqnAWSCzIXgWdSJPOtFwla6fpXA0M5Ymyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOYH6QTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC24C4CEF7;
-	Tue, 17 Mar 2026 19:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773777049;
-	bh=mQkLOI5TNoPpltWB54lOhE6wTEL1bBFRPzazbCe4zFo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TOYH6QTsSCQjeS0CZwGG+P+Li9eIPCNObFoyP0H0YVjiMGTjAQYqps3LU0WZmpyM9
-	 q0yb1ioqKvSMnkDb6wsWdmEVI2aIz81gE/A2aIjg3VrTZp/NgrczTlYhnz05hj/lU5
-	 fzGK3NpBU1+cRXxH3tBxHY4/uOhPVHAyKsWk6fg2cwNlJQaPoOOQO+680YniAR5p1K
-	 JD/asm4Cgqze5SA+Lmy3uZHGsUXqNPn/319O7ZPMq8gW+lgd53WplySRsUUqFu3A4C
-	 YBrQ7dmT/lebDW0zM2Fk+rsINNWZX5rmipB0qXogmM/AoUR82nyIjh6DVd/bNNil9D
-	 oikGW29bsvbtg==
-Message-ID: <153de0ae-fd1f-41af-b44e-13a4e9dc6a0b@kernel.org>
-Date: Tue, 17 Mar 2026 20:50:45 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CD5342C8B;
+	Tue, 17 Mar 2026 19:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773777112; cv=fail; b=KHJ2dmxH+Po/IXjqLjGwwYt0As3JXUWNCQlN32ocdz9COn7UgIhVgO+F0v6yb7qCwwHfmYcAS2etMR1T86nwzS/JaUpFz1jOO3cbuRVlChgnMOoTBS9d+NBYuv7o9vQsC/Rvj5KslMnkuN2VorTkRBB5o8mcB8XB9LozU5uBLZA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773777112; c=relaxed/simple;
+	bh=vnAk9tf4nNGuk+2iR2fhufbZLrCZYHlpI8QitenyjfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=haFf73txEG1xBXvPqHFCFIsqG7IE4M1xxqzLX1JtekQkC7cMKFgi/xSS5bMJ74r2laLKJ3POOb3XmPUhYor3yCjZQVmPEnnOlH4HanR8Evednwy9LndlAEhaB1xZfus8MaZ50JoBk1vObF/q6njGJGIondyun70ChoRPZLUTRSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WTzcj9Dr; arc=fail smtp.client-ip=40.107.159.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xm4vvxMGA7OLKoU0joG6OsejsuLh3hbrGIH1u+7dwKozfLAHK2j6vVcgCGNm5Da93mTvt8C1ZWSIl4notxwqvqJp0V4e81w/dQ3NDmkD+B29Wf4l4/hX7LNiEnUo3AbE8yEEheHA+CHpKALbWF0SossGKoyIXezcZ49jXto0MDBmLk6+ZpQJR/dAT3NtsKtklnSvsUep1fdNEj5sn8m5PvdhV0U7jW3imqlwwiJDlWPaDvlPNAAt/f6xqE+UfvEWk31MWufFyldmguuI20KeE3QZ6SWnuSL4tvxofe3tjWc/iU539qpiAoCBbNWZ0KePrO4SRrsEUQguUGA8mPzkpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cXLd88qfXMWqBjQiNVEXsEHV2Qg6fQx9DVXnrhELwe0=;
+ b=Ubdle5wM+fT4jGcdJOJTyVRIi8Uf6tNl4M6/KQbtAlXpRCaBj0ju0cOBdiU+SUxSfzxjJBQu+mVMIEhHAHsGsvXI5I9Puq99jV4Py+Ovh3SxprfQMVeOym+r/+35rJgjGhiu5d4BuYLerg34R5OCw5am6wVK+jNoVS22ke49lK1duldlxOj9Xh8q83OSrkBkjvJz2VqWH+8J24agv2h3IAj3UrNShfEZ7L/KS2gtLgflt0n+A69ieqo/0j8wC7gHROjV8yLWIfvmvP+DBC00UKkpID6slA9X1zv7cWNe/Uqd6dmaFj6bepJIUm17rI04J0Y/syDAqEriS27A7yZY0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cXLd88qfXMWqBjQiNVEXsEHV2Qg6fQx9DVXnrhELwe0=;
+ b=WTzcj9DrQXzaBcE9yxDntz8D/vDaSHMonF9M+j18A3y1pv9ZfSTo1xqdAL+vXw4+tQO1Hz3WCLMQH0kuLdmH67H27iG8dJU1zy5isG1hYxkGtO1W8m9ihwMT9L7AyRkRBjIu+eKwngY2HOVbzlRstPXQd85vLyy7ZPpTsVaa5AOc+kIqb9+6xv6HQtqPAKPptbbmBfRTMz7Rwj7Y2xF6HRQ8/4nBk80lsAEkQ7agE/s/LYqwA6E7npzmlTQkBD0j8Fx4ePQwmOdZn4pIA0GP0V30Ib7CEGDMfNJp9PLPBKJyiP5Q2BbUAdO3rwj0YH8RSkhR/UPfUn6EpSDxx0E7dw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB8PR04MB6938.eurprd04.prod.outlook.com (2603:10a6:10:117::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Tue, 17 Mar
+ 2026 19:51:46 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
+ 19:51:46 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Edge
+Date: Tue, 17 Mar 2026 14:51:16 -0500
+Message-ID: <20260317195116.2301985-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH8PR07CA0023.namprd07.prod.outlook.com
+ (2603:10b6:510:2cd::11) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: typec: fusb302: Switch to threaded IRQ handler
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Alexey Charkov <alchark@flipper.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yongbo Zhang <giraffesnn123@gmail.com>, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260311-fusb302-irq-v1-1-7e7105706629@flipper.net>
- <abKDG8wHJ-19c3AD@kuha> <63dfd90a-d54d-4d87-8c62-61a3c24d76fd@kernel.org>
- <20260312120418.99U0NPWL@linutronix.de>
- <22c94dd0-7bef-4682-acdb-905dd81f8083@kernel.org> <abmFHsVObD2GDquV@venus>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <abmFHsVObD2GDquV@venus>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB8PR04MB6938:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9859084-9710-4e0f-ef29-08de845e9eba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|366016|19092799006|1800799024|38350700014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	SuS1L6URa+KHth4aPBz/0XJFpow6zMi0zM8rqRwDaRk5IPv5RiNqeKF9zRGfdeNXeowmgJyrKkVYRWuOoOgyjjd4PWbSDsuVNukckKuZ9J3jt1sQLxDMvgHpSsi4d/Lp9yM9AJW1cf2WuUCjY0ips0NiZO2vGSj+BrrwTitOouGOS6D9UliykXBmE4f6XH+oOX6Ijqv3Gt3FUbWnrT1APdXdIPFToMapgCYuV9FJCs/6qaFcsuzkxS9R1v/NaWjE7U92vzoFfzv9ILdgBTQKfSq8pLPkkstt1Vn1RmJV7lT2s+t4v2+zOjfRmqH0ssAxRC3HahHHIt1R18qNkpM3GFxo6zIC8uarHDoOeW5DlqdWmdP7F2M6DNBF4bCuswwd3mSNPTq6NzV2pkmpDEfnn5x2qvMIcGoYxeWLzf3zY71hlOSIpHfU39aTkFeyz9Q+9tl0HTlBuUNVPmWIiAUZwQkf0YjlWMXmjGLDKbyLdMKQzpMRKxPTCWpyRofBSplKX+LDB6ExIDhNQkCA48FRMCxiJ5YdNg13c+5zxrYnbhzSPEEDTsCFLbnNLoPTxzbqZ7PO/JLNLo2Z/3BI+MtAiVwMI6JSEIsm4GwCk/bERKwzYzjLPlAWw0cjY5U2m5kck66rA5DBOpElwf6tJ8Q3j6puEB7Mx+/Xy55XjB8YV3nQB9zIAlFI4EP/8wVL2QKai4UHhooiTCXKaRrXpzWBsxMLwoNbb2CMFlz9h8uA2xcCBrzLvCoIRVB3fG3jgF0Fw5IgRQiOLhjBjtgreAdYq2K0UwP29AxfQw5oFk3BX20=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(19092799006)(1800799024)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?x10h4LqU4KrYwedA7gzxukvsQM2P4fWCLSIlVKBIKbAAXd50+DpBif5R4uGW?=
+ =?us-ascii?Q?x4h1ScaZjk5YIwOHUwSCMzMKQTdCXuqXjXKKFDgl5SgsEE8KzXP6pBszt6F3?=
+ =?us-ascii?Q?Yh3OPNo7WzQyryP0aPIPu4am1r1GJAkUYpHZmzVo36Hx4vnWn+HWTyc2xJyC?=
+ =?us-ascii?Q?NQx7PDXI+XbkNuwe58fKAH9b2bYaA9WNonkBH3xeQyZM0nJPu5agAogxfQKR?=
+ =?us-ascii?Q?02gRHoQLidhG7vO16RrKiihDTZdCxMdml9oZOe14vWBERTNGJNLxopVCbYKn?=
+ =?us-ascii?Q?zcr81BzOVOhd9c6Cuu5BqtPCbIT7CA/cMkBYvvEWw5bd+b3DvBwuNiWZOqjP?=
+ =?us-ascii?Q?8SHBAVzKksiP8Oa7a37pHpPDjFRZIylBFmZD/On8Xv6zRxBDCEFeM3oDAKU+?=
+ =?us-ascii?Q?f4GgyzeeOJ1UvGtppMs4uO4/xl40FCN3Z8cYbmLRViwFdr09bzoqQG6PMdZI?=
+ =?us-ascii?Q?3QbuP2oPdc4v0bAynZnMQnnH5MTVIysAjbLExW4yETb0yt7smCEvZXqQ9L0P?=
+ =?us-ascii?Q?cjjnWYFvHHfe0pJNyTZ9r8KVWKxfJ+yRGuyBAFVAgoN+y7hefJ0YUnhwUQOP?=
+ =?us-ascii?Q?5kXQanCJOyuH8guh3X1EEGCZm15LlRS/XgYrOoM4zKX2bMNtElJq/k5s+HgT?=
+ =?us-ascii?Q?D/eMGo2OdMUlpBSohQ4kRGdHXu5xqxPoMO170A9wDU1RRJ9L/y/muvI2v5J4?=
+ =?us-ascii?Q?9WM/1LZz8VVcObREdUDIWEBPk++mZ/3VgHnn9hNS+JLmtsS6jJkdrFZT9j3k?=
+ =?us-ascii?Q?5Z73W63M4aODIzM9asv6QS6DV+yWjAoeBeI6GshydEBeAz/8Gud2qxjoWdY5?=
+ =?us-ascii?Q?tmX4sJ7mLSn8Wlxrlm+dpSFD3XLM5IaruUjlPd/FW2XVx1p4lCRBXxqyLQen?=
+ =?us-ascii?Q?Bv+1uNmIk4RyL6wD2xLljmJzvyiewiqghIngVfTDEF7zAp1eXGfFupHtYghc?=
+ =?us-ascii?Q?C+4T9WNPWYcxP5Fcg3fHXPOrum5vaz6h3xpF6yjpDXC7VLck9Axl8o7svjVs?=
+ =?us-ascii?Q?ZSI9/3aDp3oA7HrfYWinWw0TwWO4Putr9jagC+4+617BYyTwX00CMU3W2TRs?=
+ =?us-ascii?Q?Q5n5Iv/Cce9FUbuVkXX3yNErXRDhYf04R8AYG468xLs10TcykhJ0boCt1Ay5?=
+ =?us-ascii?Q?T9iMMd+pGzcBg6Ija71QgG/rq1wBfvErLVTiH6G0jEFyHcF551ZVXaWH3aqn?=
+ =?us-ascii?Q?7933F+l+1SPg0QASra53m81GHgxvssMZ2Vv481UInIXQB15knAd03a+xXl6q?=
+ =?us-ascii?Q?6fSvvSW2/d3DQZ00dyx8IPjUc7ygFG1sVay0mBlrBClTrGwqi1VJp5xaeffv?=
+ =?us-ascii?Q?woVrEQSIe9Ev0DngTlmR1cgRJfHWpzIWli3uPva9jTn1c5drw562Tpi1PSak?=
+ =?us-ascii?Q?lfIpb2O9AVeQnVQYY+OJpycMxmlkt+WeXgmowKi+DqREIwTGIle+VlL7F/iI?=
+ =?us-ascii?Q?sdgE3+RKMnmGMCjTT/gBTrxC7VEx0pyCHhhIQzKFyH9+5+I0ZTFkr9X2nwQy?=
+ =?us-ascii?Q?/jDLSDDgMXGJsJ8LoZmpgUY12Xb2vn+zP6xJN0iRElau6oLyl2xV3X83Cw8T?=
+ =?us-ascii?Q?e+hW8rz/JGIJORS+WY0BEw0hZn8KtvFgDPlbQb+ptRudiDYxwvGVORblq4Wt?=
+ =?us-ascii?Q?2P4Z/ywxpuXfjyQimvTKLNU3jFA2EFTHcUehuRW9oT+o2pAo3nP5ZQEanHpS?=
+ =?us-ascii?Q?38wMl9/p13uVtpishTZ5NvqQNOkadkPKHf9fFyaRdDfEIGNdBpBSuALJus1m?=
+ =?us-ascii?Q?pVYlWsPPCQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9859084-9710-4e0f-ef29-08de845e9eba
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 19:51:46.0749
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tp4jQNFfWusVtFl77lC/1wauOKliFt/YNqyDHFRkP9GHb07U5ikbYU0ls0CAKTG9eF3F6mp3xOV7CkZ/7ZUvsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6938
+X-Spamd-Result: default: False [1.34 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linutronix.de,linux.intel.com,flipper.net,linuxfoundation.org,gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[pengutronix.de,gmail.com,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226894-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226895-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shenwei.wang@nxp.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D8312B1C03
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:dkim,nxp.com:email,nxp.com:mid]
+X-Rspamd-Queue-Id: 9C5102B1D40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
+trigger due to a hardware bug in the detection logic. Since the hardware
+does not support Both Edge wakeup, remap requests for Both Edge to Rising
+Edge by default to avoid hitting this issue.
 
-On 17-Mar-26 18:12, Sebastian Reichel wrote:
-> Hi,
-> 
-> On Fri, Mar 13, 2026 at 05:21:33PM +0100, Hans de Goede wrote:
->> Hi,
->>
->> On 12-Mar-26 13:04, Sebastian Andrzej Siewior wrote:
->>> On 2026-03-12 11:49:30 [+0100], Hans de Goede wrote:
->>>> Using a threaded interrupt handler should be ok, yes. This should
->>>> also fix the issue this patch tries to fix:
->>>>
->>>> https://lore.kernel.org/linux-usb/20260103083232.9510-4-linux.amoon@gmail.com
->>>
->>> This issue went away with commit a7fb84ea70aae ("usb: typec: fusb302:
->>> Remove IRQF_ONESHOT").
->>>
->>>> Normally an i2c device like this would use a threaded interrupt handler to
->>>> do all the work since I2C transfers can sleep combined with disabling the IRQ
->>>> on suspend to avoid the interrupt handler running while the parent i2c-adapter
->>>> may be suspended.
->>>>
->>>> The problem with the fusb302 is that it can be a wakeup source so we cannot
->>>> disable the IRQ. I worked around this in commit 207338ec5a2 ("usb: typec: fusb302:
->>>> Improve suspend/resume handling") by moving the actual work to a workqueue
->>>> and have a hard (non threaded) interrupt handler which disables the IRQ and
->>>> queues the work, with the work re-enabling the IRQ when done + special
->>>> handling for the suspended case. Basically our own manual oneshot.
->>>>
->>>> If we move the IRQ disabling to a threaded handler, which appears to be
->>>> necessary for some IRQ controllers (arguably a IRQ controller driver issue,
->>>> but this seems to be a re-occuring issue), then I wonder if we need
->>>> the ONESHOT flag again to avoid a level type IRQ re-triggering before
->>>> the threaded handler gets a chance to disable it (with the workqueue
->>>> item eventually re-enabling it).
->>>>
->>>> I think we need to re-add the ONESHOT flag, but maybe that is the default
->>>> with a primary NULL handler ?
->>>>
->>>> Sebastian Siewior I think you now the IRQ subsystem better then me,
->>>> any advice / remarks ?
->>
->> Sebastian, Thank you for your input.
->>
->>> You could do
->>> 	request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
->>> 			     IRQF_ONESHOT | IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
->>
->> Ok, that is good to know.
->>
->>> which would ensure that the handler runs as a thread and the interrupt
->>> line is disable while it is active.
->>
->> That is what we want, thank you.
->>
->>> Then you could let fusb302_irq_intn() do what fusb302_irq_work() does.
->>> Since it is a thread, mutex_lock() works here.
->>
->> Right, but the resume handler needs to also schedule the work when the
->> IRQ is initially ignored if the IRQ triggers before the i2c_client's
->> resume-handler is called to ensure that the parent i2c-adapter is
->> ready when the IRQ handling code does i2c accesses.
->>
->>> Last step would be to replace fusb302_chip::irq_suspended with
->>> disable_irq() in fusb302_pm_suspend() and enable_irq() in
->>> fusb302_pm_resume().
->>
->> That unfortunately is not possible because the fusb302 maybe
->> a wake-up source so it cannot be disabled unconditionally
->> and without the disable_irq() / enable_irq() pair the IRQ
->> may trigger before the parent i2c-adapter is resumed.
->>
->> This is why the IRQ handling in this driver is as convoluted
->> as it is in the first place. With the IRQ handler setting
->> an irq_while_suspended flag if the IRQ runs before the
->> i2c_client resume and then with resume checking that flag
->> + queuing the work do to the actual IRQ handling once the
->> parent i2c-adapter is ready (if we hit this race).
-> 
-> After re-checking everything, I don't see anything special about the
-> fusb302 and wondering a bit why this is not an issue with other
-> devices like e.g. i2c-hid (which can also be wakeup sources, see
-> e.g. HID devices on your Qualcomm T14s). Does that have the same
-> issue and we are just not running into the race condition?
+Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x platforms")
+cc: stable@vger.kernel.org
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+ drivers/gpio/gpio-mxc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-drivers/hid/i2c-hid/i2c-hid-core.c: i2c_hid_core_suspend()
-does a disable_irq() AFAIK that is not really allowed for
-a wakeup source. The wakeup source thingie likely still
-works on x86 because x86 hw has a whole separate event
-system in the hw for wakeup events.
-
-The i2c-hid-core.c drivers also seems to miss calls
-to enable_irq_wake() so they never configure the IRQ
-as a wakeup source, further suggesting the handling there
-is incomplete.
-
-But on pure s2idle systems where there is only the 1 IRQ
-mechanism disable_irq() will result in no wake-ups AFAIK
-(as well as enable_irq_wake() being necessary to avoid the
-IRQ getting disabled in the final stages of suspend).
-
-Note I'm not very familiar with all this, so the above
-could be very wrong ...
-
-> In that case it might be sensible to move the logic for "interrupt
-> function should only run after the device has been PM resumed" into
-> the IRQ core behind a flag and simplify the drivers?
-
-I do believe that having some sort of helpers for this,
-either in the IRQ core, or in some drivers/base code
-or some such, would be useful yes.
-
->> So as far as I can see the current state of fusb302 code
->> is good as is.
-> 
-> I think with the threaded irq handler, the code could be simplified
-> to no longer use a worker thread. Instead the thread and the irq
-> handler can be merged. It seems sensible to do this in a separate
-> patch, though.
-
-No that cannot be done, because the work will get scheduled
-from fsusb302_resume() if the IRQ ran (and set a flag) before
-fsusb302_resume() run and thus before the i2c-adapter parent
-was ready.
-
-One might be tempted to replace the queuing of the work
-in fsusb302_resume() with a direct call to the threaded
-interrupt handler. But the code relies on the workqueue
-mechanism to also ensure that the threaded interrupt
-handler does not run in parallel with itself.
-
-If we drop the disable_irq() + queue-work + work does
-enable_irq() pair currently done and instead bail early if
-not resumed for the threaded handler and still set the flag
-to redo the interrupt handling from the resume handler
-then we may end up with 2 threads running the interrupt
-handling in parallel.
-
-I guess we could take some mutex for the entire run
-of the threaded handler to deal with that but I'm not
-sure if that would be an improvement.
-
-Regards,
-
-Hans
-
+diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+index d7666fe9dbf8..f8300690ac05 100644
+--- a/drivers/gpio/gpio-mxc.c
++++ b/drivers/gpio/gpio-mxc.c
+@@ -589,7 +589,7 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_port *port, bool enable)
+ 		IMX_SCU_WAKEUP_OFF,		/* 0 */
+ 		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
+ 		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
+-		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
++		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
+ 		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
+ 		IMX_SCU_WAKEUP_OFF,		/* 5 */
+ 		IMX_SCU_WAKEUP_OFF,		/* 6 */
+-- 
+2.43.0
 
 
