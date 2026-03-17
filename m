@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ApcEsmHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:41 +0100
+	id WPFfBmqSuWl3KgIAu9opvQ
+	(envelope-from <stable+bounces-226687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1130E2AEA9E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B042B000D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 966AE303A3FA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B396332A8ABC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD3B3F23DD;
-	Tue, 17 Mar 2026 16:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8B1255F2C;
+	Tue, 17 Mar 2026 17:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydMDYddQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjwqcKz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4001F3C6612;
-	Tue, 17 Mar 2026 16:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F246F186E58;
+	Tue, 17 Mar 2026 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766543; cv=none; b=Px4oscGj8xQsMMuTNbj7lNl6w97Hn2wFY15zLKPgWdv4DEfygozc9Cal+wK4elvoD4a+tIsTp3nihGR0fq2SwiJ5WztSfYrTeCN+QL6ZCBqFoXb9gktj97IGmwhbO9Ux0twVk+zw8IB8UPNO1AtkQYewdYUbz4nKL1x9tQdKxrM=
+	t=1773767819; cv=none; b=GUpFrpHc8OSIYnW0MayQNmiugNjFBfzGOTbQOgvA+LZmsoH4Tg9tcKQjm/fykjZ7n4GCIzJnmzQ5LB9iajFofTt7HSmx6xaJ1sH12oDekhYip2uak5P1zPq4FNRmWT9E1qevjUWLMuhAG/45jEvk/gWdAroybVWIGqIjFb7woYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766543; c=relaxed/simple;
-	bh=iTt6g+lNFcFKMpjC+wpusJxpzaEE6eMz1panmuyTptU=;
+	s=arc-20240116; t=1773767819; c=relaxed/simple;
+	bh=B3y2VF+xQX6Z/t+/ipvXKciZCYnc/KqXke8m6BYjUKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B624fOkyBsNfH4HpseVpvLtzMKsJEhGPZJbpMTZ5M4KISNldz7KoHKCrz8k8rFLOS7cvCmb047mW9rwJWp2Io+kB+YeIH2jZZSdlw8jEYDDsBAgf/2yKQCPjyNy8MUN4D1hVVTGlxlTjlSJ+oEphepHsX6cgjQqB6w4MikIlBSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMDYddQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9892EC4CEF7;
-	Tue, 17 Mar 2026 16:55:42 +0000 (UTC)
+	 MIME-Version; b=jmIEwXPVHH3QQkhpKZIzIe7UBMA1Mg7MmW6rfB7IsL0XSbHAsO3c2ZdA6F8jlFvFqAOc42i6ZQ0aOa4OHThveEB6lnLy77rEvW46NfyvzaZYOGmetRasXWitgmRSZVC0x8MK3WbAlgjJMX32DjelmgX0LXVbQU27s/zMmS5CiNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjwqcKz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0803C4CEF7;
+	Tue, 17 Mar 2026 17:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766543;
-	bh=iTt6g+lNFcFKMpjC+wpusJxpzaEE6eMz1panmuyTptU=;
+	s=korg; t=1773767818;
+	bh=B3y2VF+xQX6Z/t+/ipvXKciZCYnc/KqXke8m6BYjUKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydMDYddQyK80g2sRzXJfakp+0zXxCsDp1ZLfzZS6gm3XRtUGRZ2n3ACcEc9Tr3GLv
-	 uXzNbqKg4Y7ekhihNdq6BIztIfqwNitGdu+w1pO5F67C21dyexr0cSZQ1XmJpzuwFb
-	 y/PasVpr61Eb3xb3nEM/foytNlOra8SQzIK/XOuM=
+	b=GjwqcKz9D/+N8Fw6QJ4WNkugQcAsIJtzgG0KTxQgYXIw7x2GiE+x0Q7WxJ1qpKo18
+	 woVL4wJ72I4lHpdH8q28vNxi31+d7FPIOZO0m81gmClZmRx+txzD6pmQv3oYRx0+vE
+	 SRjAwu2PSvaF7K90aU8DGFGAI1mhYUJltokwiO5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.19 236/378] device property: Allow secondary lookup in fwnode_get_next_child_node()
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 164/333] ceph: add a bunch of missing ceph_path_info initializers
 Date: Tue, 17 Mar 2026 17:33:13 +0100
-Message-ID: <20260317163015.695741681@linuxfoundation.org>
+Message-ID: <20260317163005.443994140@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +66,159 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226687-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226401-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1130E2AEA9E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 88B042B000D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
+commit 43323a5934b660afae687e8e4e95ac328615a5c4 upstream.
 
-When device_get_child_node_count() got split to the fwnode and device
-respective APIs, the fwnode didn't inherit the ability to traverse over
-the secondary fwnode. Hence any user, that switches from device to fwnode
-API misses this feature. In particular, this was revealed by the commit
-1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
-that effectively broke the GPIO enumeration on Intel Galileo boards.
-Fix this by moving the secondary lookup from device to fwnode API.
+ceph_mdsc_build_path() must be called with a zero-initialized
+ceph_path_info parameter, or else the following
+ceph_mdsc_free_path_info() may crash.
 
-Note, in general no device_*() API should go into the depth of the fwnode
-implementation.
+Example crash (on Linux 6.18.12):
 
-Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+  virt_to_cache: Object is not a Slab page!
+  WARNING: CPU: 184 PID: 2871736 at mm/slub.c:6732 kmem_cache_free+0x316/0x400
+  [...]
+  Call Trace:
+   [...]
+   ceph_open+0x13d/0x3e0
+   do_dentry_open+0x134/0x480
+   vfs_open+0x2a/0xe0
+   path_openat+0x9a3/0x1160
+  [...]
+  cache_from_obj: Wrong slab cache. names_cache but object is from ceph_inode_info
+  WARNING: CPU: 184 PID: 2871736 at mm/slub.c:6746 kmem_cache_free+0x2dd/0x400
+  [...]
+  kernel BUG at mm/slub.c:634!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  RIP: 0010:__slab_free+0x1a4/0x350
+
+Some of the ceph_mdsc_build_path() callers had initializers, but
+others had not, even though they were all added by commit 15f519e9f883
+("ceph: fix race condition validating r_parent before applying state").
+The ones without initializer are suspectible to random crashes.  (I can
+imagine it could even be possible to exploit this bug to elevate
+privileges.)
+
+Unfortunately, these Ceph functions are undocumented and its semantics
+can only be derived from the code.  I see that ceph_mdsc_build_path()
+initializes the structure only on success, but not on error.
+
+Calling ceph_mdsc_free_path_info() after a failed
+ceph_mdsc_build_path() call does not even make sense, but that's what
+all callers do, and for it to be safe, the structure must be
+zero-initialized.  The least intrusive approach to fix this is
+therefore to add initializers everywhere.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 15f519e9f883 ("ceph: fix race condition validating r_parent before applying state")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/property.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ fs/ceph/debugfs.c |    4 ++--
+ fs/ceph/dir.c     |    2 +-
+ fs/ceph/file.c    |    4 ++--
+ fs/ceph/inode.c   |    2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -797,7 +797,18 @@ struct fwnode_handle *
- fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
- 			   struct fwnode_handle *child)
- {
--	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
-+	struct fwnode_handle *next;
-+
-+	if (IS_ERR_OR_NULL(fwnode))
-+		return NULL;
-+
-+	/* Try to find a child in primary fwnode */
-+	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
-+	if (next)
-+		return next;
-+
-+	/* When no more children in primary, continue with secondary */
-+	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
- }
- EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
+--- a/fs/ceph/debugfs.c
++++ b/fs/ceph/debugfs.c
+@@ -79,7 +79,7 @@ static int mdsc_show(struct seq_file *s,
+ 		if (req->r_inode) {
+ 			seq_printf(s, " #%llx", ceph_ino(req->r_inode));
+ 		} else if (req->r_dentry) {
+-			struct ceph_path_info path_info;
++			struct ceph_path_info path_info = {0};
+ 			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
+ 			if (IS_ERR(path))
+ 				path = NULL;
+@@ -98,7 +98,7 @@ static int mdsc_show(struct seq_file *s,
+ 		}
  
-@@ -841,19 +852,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
- struct fwnode_handle *device_get_next_child_node(const struct device *dev,
- 						 struct fwnode_handle *child)
- {
--	const struct fwnode_handle *fwnode = dev_fwnode(dev);
--	struct fwnode_handle *next;
--
--	if (IS_ERR_OR_NULL(fwnode))
--		return NULL;
--
--	/* Try to find a child in primary fwnode */
--	next = fwnode_get_next_child_node(fwnode, child);
--	if (next)
--		return next;
--
--	/* When no more children in primary, continue with secondary */
--	return fwnode_get_next_child_node(fwnode->secondary, child);
-+	return fwnode_get_next_child_node(dev_fwnode(dev), child);
- }
- EXPORT_SYMBOL_GPL(device_get_next_child_node);
- 
+ 		if (req->r_old_dentry) {
+-			struct ceph_path_info path_info;
++			struct ceph_path_info path_info = {0};
+ 			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &path_info, 0);
+ 			if (IS_ERR(path))
+ 				path = NULL;
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1362,7 +1362,7 @@ static int ceph_unlink(struct inode *dir
+ 	if (!dn) {
+ 		try_async = false;
+ 	} else {
+-		struct ceph_path_info path_info;
++		struct ceph_path_info path_info = {0};
+ 		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			try_async = false;
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -397,7 +397,7 @@ int ceph_open(struct inode *inode, struc
+ 	if (!dentry) {
+ 		do_sync = true;
+ 	} else {
+-		struct ceph_path_info path_info;
++		struct ceph_path_info path_info = {0};
+ 		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			do_sync = true;
+@@ -807,7 +807,7 @@ int ceph_atomic_open(struct inode *dir,
+ 	if (!dn) {
+ 		try_async = false;
+ 	} else {
+-		struct ceph_path_info path_info;
++		struct ceph_path_info path_info = {0};
+ 		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			try_async = false;
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -2562,7 +2562,7 @@ int __ceph_setattr(struct mnt_idmap *idm
+ 	if (!dentry) {
+ 		do_sync = true;
+ 	} else {
+-		struct ceph_path_info path_info;
++		struct ceph_path_info path_info = {0};
+ 		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
+ 		if (IS_ERR(path)) {
+ 			do_sync = true;
 
 
 
