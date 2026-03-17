@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFIiKPCJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:52 +0100
+	id wKDrEhePuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CAF2AEEBA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99542AF999
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C073303DF78
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C271B301CFC2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310ED3F54B8;
-	Tue, 17 Mar 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A7C36405F;
+	Tue, 17 Mar 2026 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjeuYul4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5fyTngr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89DB3EDADD;
-	Tue, 17 Mar 2026 17:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D85336EF1;
+	Tue, 17 Mar 2026 17:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767065; cv=none; b=vCcUnECqFtIDl0W67yEyvz7Fqi9r7mOtaox54w+B8e4bI2XjPmbvOp6eHRXEwrMe7GAPUmM3AFwL1FeUafCXXR3/wH/0/r8OYGD3B3xOFGvPD26QLJFduOcnu47T+atFvxl4JfET93JlnDFcJMgD26JcGpv9667Mj+cG6yKpRog=
+	t=1773768427; cv=none; b=YWeMbykZvYToHp89HmO8IC1V7M8d/BmzcgMuolimPFtkVSfaQPaY95wJtLzEjPxUKlVkI3PpZ+xiOgLuS3sWgzITZb0JOhauRPdmFGHeygC46pRwC20fl9D29GzdfG+MFG5ATMUA6bgPbfP6H3Mx/YSC36GKlVzJdwENHTAKKoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767065; c=relaxed/simple;
-	bh=/mA03QDiWAnAfCiXLFQ9+phhRK5oskhd/xf0NlMcjc0=;
+	s=arc-20240116; t=1773768427; c=relaxed/simple;
+	bh=iqLfbxTLfyxp8z01K9ijVNn119m99wfMgxr9gZZfpNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5DCZQNw5kKxheXd4E/N0D2mafvf087xJJf1qVaku8J5kZmG5xTUFfQ7hWZxbQEelXA53Q8PIRlK1ZygpF4JuhWV6f1iBXWC3LOCmEJqX4o6DJlj/lpQ/mfFyieLcd2v0DHfo+XhJ7haKrjJEKhsTDB4WulV4HKu32mWy9fQRfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjeuYul4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBDFC4CEF7;
-	Tue, 17 Mar 2026 17:04:23 +0000 (UTC)
+	 MIME-Version; b=t+6cc0DYMPiXqG9eGgPYVT8o63JUi+COfKtYyemRsZ7NpkYGZ6qdxJUzJ86wKmOWYv+wBgTVcCAAZKYFedVOZJfaGMYoSLQtduBw2qmMSPyPtBSPzp1daxu+dvoGaKCtPwtlcEojYcx2fuyTFDEW/UKUCtUgQw77vhSlTsV/u6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5fyTngr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11016C19424;
+	Tue, 17 Mar 2026 17:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767064;
-	bh=/mA03QDiWAnAfCiXLFQ9+phhRK5oskhd/xf0NlMcjc0=;
+	s=korg; t=1773768426;
+	bh=iqLfbxTLfyxp8z01K9ijVNn119m99wfMgxr9gZZfpNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjeuYul4ZiWD2Fold6u39IW5soY71s+zVFGTSkh8GLUtue3M4Ssf192DndcJ+8NJ6
-	 WH8wgy+k3PEP7QCD1PZpYdPyxLWLKld79BlZojbHI2Dsq2TKCBFRqiLgSN75QZxDyS
-	 u61p2EHVuvocu1czZ/8ckHX5iBiyzL65f48ZMGO4=
+	b=m5fyTngrC1W+aMVmzQGHH9IDkkUXon3Mq4eY09721AgkHiWVbNZ6pQYmQIf2ZlZId
+	 8BoM6Bbiq/dKW763vF37uTRe0wBRxlgxrN/igQGhvDzch0alA5hD9uvnqlYcB3Pf7A
+	 CK/40Tkv9KP9lL4t2sa1wlDWe7m6JLD8iLivRtKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.19 378/378] cxl/acpi: Fix CXL_ACPI and CXL_PMEM Kconfig tristate mismatch
+	Yasin Lee <yasin.lee.x@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 306/333] iio: proximity: hx9023s: fix assignment order for __counted_by
 Date: Tue, 17 Mar 2026 17:35:35 +0100
-Message-ID: <20260317163020.886316423@linuxfoundation.org>
+Message-ID: <20260317163010.737212460@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +65,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226520-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-226841-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 11CAF2AEEBA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: B99542AF999
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Yasin Lee <yasin.lee.x@gmail.com>
 
-commit 93d0fcdddc9e7be9d4f42acbe57bc90dbb0fe75d upstream.
+commit 585b90c0161ab77416fe3acdbdc55b978e33e16c upstream.
 
-Commit e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to
-cxl_pmem.ko") moves devm_cxl_add_nvdimm_bridge() into the cxl_pmem file,
-which has independent config compile options for built-in or module. The
-call from cxl_acpi_probe() is guarded by IS_ENABLED(CONFIG_CXL_PMEM),
-which evaluates to true for both =y and =m.
+Initialize fw_size before copying firmware data into the flexible
+array member to match the __counted_by() annotation. This fixes the
+incorrect assignment order that triggers runtime safety checks.
 
-When CONFIG_CXL_PMEM=m, a built-in cxl_acpi attempts to reference a
-symbol exported by a module, which fails to link. CXL_PMEM cannot simply
-be promoted to =y in this configuration because it depends on LIBNVDIMM,
-which may itself be =m.
-
-Add a Kconfig dependency to prevent CXL_ACPI from being built-in when
-CXL_PMEM is a module. This contrains CXL_ACPI to =m when CXL_PMEM=m,
-while still allowing CXL_ACPI to be freely configured when CXL_PMEM is
-either built-in or disabled.
-
-[ dj: Fix up commit reference formatting. ]
-
-Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260305204057.1516948-1-kbusch@meta.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: e9ed97be4fcc ("iio: proximity: hx9023s: Added firmware file parsing functionality")
+Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/proximity/hx9023s.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -58,6 +58,7 @@ config CXL_ACPI
- 	tristate "CXL ACPI: Platform Support"
- 	depends on ACPI
- 	depends on ACPI_NUMA
-+	depends on CXL_PMEM || !CXL_PMEM
- 	default CXL_BUS
- 	select ACPI_TABLE_LIB
- 	select ACPI_HMAT
+--- a/drivers/iio/proximity/hx9023s.c
++++ b/drivers/iio/proximity/hx9023s.c
+@@ -1034,9 +1034,8 @@ static int hx9023s_send_cfg(const struct
+ 	if (!bin)
+ 		return -ENOMEM;
+ 
+-	memcpy(bin->data, fw->data, fw->size);
+-
+ 	bin->fw_size = fw->size;
++	memcpy(bin->data, fw->data, bin->fw_size);
+ 	bin->fw_ver = bin->data[FW_VER_OFFSET];
+ 	bin->reg_count = get_unaligned_le16(bin->data + FW_REG_CNT_OFFSET);
+ 
 
 
 
