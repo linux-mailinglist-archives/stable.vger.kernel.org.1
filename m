@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eG7qBn+VuWlcKwIAu9opvQ
-	(envelope-from <stable+bounces-226806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:11 +0100
+	id EEn4MLaJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC5B2B059A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365C12AEE3F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C17A3395D8C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4A33058E17
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7676A36606E;
-	Tue, 17 Mar 2026 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A98029D26C;
+	Tue, 17 Mar 2026 17:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK2qefQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwOssNQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AB1363C74;
-	Tue, 17 Mar 2026 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE65F3F54C2;
+	Tue, 17 Mar 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768264; cv=none; b=ZvXWbLlMo8VvXmfvDhTBhNBM6uMGL+BLN+kCHsMn02UyY2VF/aEkTZLUcSgYfMAnUrOMpX88RBePgdxz2XJJKKCbTTdcWSDI09cqms+NVrHCNkiFp4S2WFu5NdTnV4SU/3V/0QFWeA9NYKmxHAOCEXBtwaWfEPWvaK9QZXDKakc=
+	t=1773767024; cv=none; b=D1kXvwBhB4F5PNvIDxX72EK9phhQrAZgSUd0j6sT2QPEvSYaPRAcKXLIvGLYZJ+j3yi00DDzqZ4zPim4IV45uo/ygnHm1f7cDpVu/ReeomEL0Obr8Td+lxNtIHQLKc3PEcp5x5LZVwAJPybslKJyrtPCbQA1uz4F/VnNa2bPOvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768264; c=relaxed/simple;
-	bh=2B2/NunOo7PVNwiaaJjn0InVljN5NwKLrrx18SIWnKU=;
+	s=arc-20240116; t=1773767024; c=relaxed/simple;
+	bh=tuk4V/rYzR3gjXQ1tIgFK+UsBJuMf4B7JDhqpE3iYLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESrldRrejjXKQsCPR2SuATh9qA/wz+ZSu4iF79gjtIZdR5Y89DWzUCbrM6mMgUC5N3HvGmH0LyEbn1caf7pLZ9qBeB+PIxZMKiroSSOtmvrIfl8rF74SvdYyjI0ohmGgjLof9AnoJJfq0ENLfiEMeq5LveRWOxTSpYjOrSoeuQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK2qefQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6AFC2BC86;
-	Tue, 17 Mar 2026 17:24:23 +0000 (UTC)
+	 MIME-Version; b=oJ6Af1TMrRy4h6YlUOqiZCgj0gnor1cjk4V7VB+pbLtmYLYMVGENaV5cbauOzs31R85LGNr3PJGKCmwHLoN/RO80l3EgcJH/NFgQ6atfgdZ0rti3pvmqdUD616q7wNDsWjFrDD356d4f4a6WjXVtbZaEL1XyMELeR4HKo2JOZ/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwOssNQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA40C2BC86;
+	Tue, 17 Mar 2026 17:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768264;
-	bh=2B2/NunOo7PVNwiaaJjn0InVljN5NwKLrrx18SIWnKU=;
+	s=korg; t=1773767023;
+	bh=tuk4V/rYzR3gjXQ1tIgFK+UsBJuMf4B7JDhqpE3iYLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hK2qefQVZr3K5IHtHngB2+/T6jlYuiZSZWpDcTYeO9RJpBC1fBPAboo825DnOcQrI
-	 hPILclkvadI+XzR3hyB2GoprVqPsz30OyMa+c1BtCmIKUTvZ8Sbq5Nfblqqwy5G+UU
-	 WLV/cAwjsZG0xulrgrDMRtZHIwQl3lAYR4pYxrOA=
+	b=kwOssNQTfCofDIu4UvzZ8jGLbnDaNR7bQFtZJXXBpUUIjhROlNsnbhYsVOc8QRJBu
+	 quWV3xGsVc/Fq0fkHwWtIYp70TMeB5eIXSlg93xLexryKz3DWJC1OW+F0hwiM6m4I4
+	 8U9WIpPJGE0rUaDoN9geh7ZQS+1pMPeoLT6M5rHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.18 271/333] sched_ext: Fix enqueue_task_scx() truncation of upper enqueue flags
-Date: Tue, 17 Mar 2026 17:35:00 +0100
-Message-ID: <20260317163009.438566448@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	Bart Van Assche <bvanassche@acm.org>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.19 344/378] btrfs: add missing RCU unlock in error path in try_release_subpage_extent_buffer()
+Date: Tue, 17 Mar 2026 17:35:01 +0100
+Message-ID: <20260317163019.647352027@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226510-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226806-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: 8EC5B2B059A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,acm.org:email]
+X-Rspamd-Queue-Id: 365C12AEE3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 57ccf5ccdc56954f2a91a7f66684fd31c566bde5 upstream.
+commit b2840e33127ce0eea880504b7f133e780f567a9b upstream.
 
-enqueue_task_scx() takes int enq_flags from the sched_class interface.
-SCX enqueue flags starting at bit 32 (SCX_ENQ_PREEMPT and above) are
-silently truncated when passed through activate_task(). extra_enq_flags
-was added as a workaround - storing high bits in rq->scx.extra_enq_flags
-and OR-ing them back in enqueue_task_scx(). However, the OR target is
-still the int parameter, so the high bits are lost anyway.
+Call rcu_read_lock() before exiting the loop in
+try_release_subpage_extent_buffer() because there is a rcu_read_unlock()
+call past the loop.
 
-The current impact is limited as the only affected flag is SCX_ENQ_PREEMPT
-which is informational to the BPF scheduler - its loss means the scheduler
-doesn't know about preemption but doesn't cause incorrect behavior.
+This has been detected by the Clang thread-safety analyzer.
 
-Fix by renaming the int parameter to core_enq_flags and introducing a
-u64 enq_flags local that merges both sources. All downstream functions
-already take u64 enq_flags.
-
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: ad580dfa388f ("btrfs: fix subpage deadlock in try_release_subpage_extent_buffer()")
+CC: stable@vger.kernel.org # 6.18+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/btrfs/extent_io.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -1358,16 +1358,15 @@ static void clr_task_runnable(struct tas
- 		p->scx.flags |= SCX_TASK_RESET_RUNNABLE_AT;
- }
- 
--static void enqueue_task_scx(struct rq *rq, struct task_struct *p, int enq_flags)
-+static void enqueue_task_scx(struct rq *rq, struct task_struct *p, int core_enq_flags)
- {
- 	struct scx_sched *sch = scx_root;
- 	int sticky_cpu = p->scx.sticky_cpu;
-+	u64 enq_flags = core_enq_flags | rq->scx.extra_enq_flags;
- 
- 	if (enq_flags & ENQUEUE_WAKEUP)
- 		rq->scx.flags |= SCX_RQ_IN_WAKEUP;
- 
--	enq_flags |= rq->scx.extra_enq_flags;
--
- 	if (sticky_cpu >= 0)
- 		p->scx.sticky_cpu = -1;
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4475,6 +4475,7 @@ static int try_release_subpage_extent_bu
+ 		 */
+ 		if (!test_and_clear_bit(EXTENT_BUFFER_TREE_REF, &eb->bflags)) {
+ 			spin_unlock(&eb->refs_lock);
++			rcu_read_lock();
+ 			break;
+ 		}
  
 
 
