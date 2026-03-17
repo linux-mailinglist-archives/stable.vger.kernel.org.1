@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMRzODGSuWl3KgIAu9opvQ
-	(envelope-from <stable+bounces-226688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:05 +0100
+	id EAEFHHiJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A272AFF81
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59872AEDAC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23F97300D75E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CEE431F93E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EDF191F94;
-	Tue, 17 Mar 2026 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355003F54B8;
+	Tue, 17 Mar 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAaZq00/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxVGqwg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65D123D7E3;
-	Tue, 17 Mar 2026 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1083BFE59;
+	Tue, 17 Mar 2026 16:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767823; cv=none; b=oioBudMqXnH2DTTHlGOy9xeN6ItKvw/cafTCAI28ji1l1W9XU5VELXWNX3PkaI17V9261aZepGMmD+3WvTIuMqVqZuYeSFPinKRdT1GwBw5ZKjWhnREqSure55T4j9UAuyAdhVB8T9+tes1XZhaJFUh8L8GgBLXh1uTHtkoxn3g=
+	t=1773766548; cv=none; b=B4YCr6OTmIuCh8SBqIS1vYXHpWvS94nyzxv/hwub688EulVOJi5pTQ3/EQq61bftK5SihYWSBowQu0qYneyvFeZlxliimbjnx4yDvqbtKvgHSOO05zNeFSmvk+FWaE4yLVLBvbBQ59IwEJakuP1IJV/2x/Cd+E43e4pL8r/KCXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767823; c=relaxed/simple;
-	bh=0UQy0kxIHeFbAG5sh8FHpzGdExQrWnGlVhEM0BIOjbs=;
+	s=arc-20240116; t=1773766548; c=relaxed/simple;
+	bh=bbX8JaQOmW+1rBUbDhyjkV4f82ilhULX6cP/k3rCq8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKHVQtSYs1JkkAq5cQQ5n504MUecRVBzPaIWPw3p4Fvrqpxwj6HUef7UIVGU8CX+Mo5AFyXeQrWN7tCq5xFaWvlSM0ojZXmw5wbS83lWkP5kNd3lMezYUNfZviO9FMGV39snj8orTJv8zJ6rruNjJBIzApkZDuw8tUPN9XU6fqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAaZq00/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98206C4CEF7;
-	Tue, 17 Mar 2026 17:17:02 +0000 (UTC)
+	 MIME-Version; b=guqtg8yvgaK18yajA01lQhE4XosJi5JbSW2RlyLil9k8jTOaSUHTIdiZkL4OYKUFyxLJNOYGT6w1t423Qq6t5x/jpwvWDyO3STiFR5K+B3tRQOwDvM+Mm47WJZTxdNtG6WgUwwhxF/dfmxu9+V7z0RrACNy9mOQ8+HjMB2dVFlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxVGqwg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A74C4CEF7;
+	Tue, 17 Mar 2026 16:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767823;
-	bh=0UQy0kxIHeFbAG5sh8FHpzGdExQrWnGlVhEM0BIOjbs=;
+	s=korg; t=1773766547;
+	bh=bbX8JaQOmW+1rBUbDhyjkV4f82ilhULX6cP/k3rCq8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAaZq00/6vUk7FeRNoHqDQgDAc1t+xAsk8U742kijOeBYJZk9nfqQy8aJUyGeN39/
-	 9HtMe3cecU2fAd8+AwR65ayjerUnLq45TtT3TrTZ7xdHEVlkuhPLocabzbIEKBkxGE
-	 F9bI7ejYYMMBeR9SNUgjye4kU4djHutvPZqRLYos=
+	b=wxVGqwg6Zfl3Su4/lzAzsqN5jkllRgWT6aI0FXyPKmVYe8jHiAuZ4aTpz7D9H1B3F
+	 VwCRF796CboD1Bo0ofi1nJL2w95Cyzo/Sl5558saMih5TdBP5yl6lR2f20BWf8W+VR
+	 3efuoE3NwwvNDU+GddIbRVGEV18gpeRkPjM76z3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 165/333] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH 6.19 237/378] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
 Date: Tue, 17 Mar 2026 17:33:14 +0100
-Message-ID: <20260317163005.480264637@linuxfoundation.org>
+Message-ID: <20260317163015.733822836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,157 +67,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226688-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226402-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E6A272AFF81
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: C59872AEDAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Marc Zyngier <maz@kernel.org>
 
-commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
+commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
 
-This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
-that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
-ceph_handle_auth_reply(), the value of the payload_len field of such a
-message is stored in a variable of type int. A value greater than
-INT_MAX leads to an integer overflow and is interpreted as a negative
-value. This leads to decrementing the pointer address by this value and
-subsequently accessing it because ceph_decode_need() only checks that
-the memory access does not exceed the end address of the allocation.
+The ITS driver blindly assumes that EventIDs are in abundant supply, to the
+point where it never checks how many the hardware actually supports.
 
-This patch fixes the issue by changing the data type of payload_len to
-u32. Additionally, the data type of result_msg_len is changed to u32,
-as it is also a variable holding a non-negative length.
+It turns out that some pretty esoteric integrations make it so that only a
+few bits are available, all the way down to a single bit.
 
-Also, an additional layer of sanity checks is introduced, ensuring that
-directly after reading it from the message, payload_len and
-result_msg_len are not greater than the overall segment length.
+Enforce the advertised limitation at the point of allocating the device
+structure, and hope that the endpoint driver can deal with such limitation.
 
-BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
-Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
-
-CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: ceph-msgr ceph_con_workfn [libceph]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- print_report+0xd1/0x620
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? kasan_complete_mode_report_info+0x72/0x210
- kasan_report+0xe7/0x130
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- __asan_report_load_n_noabort+0xf/0x20
- ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- mon_dispatch+0x973/0x23d0 [libceph]
- ? apparmor_socket_recvmsg+0x6b/0xa0
- ? __pfx_mon_dispatch+0x10/0x10 [libceph]
- ? __kasan_check_write+0x14/0x30i
- ? mutex_unlock+0x7f/0xd0
- ? __pfx_mutex_unlock+0x10/0x10
- ? __pfx_do_recvmsg+0x10/0x10 [libceph]
- ceph_con_process_message+0x1f1/0x650 [libceph]
- process_message+0x1e/0x450 [libceph]
- ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
- ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
- ? save_fpregs_to_fpstate+0xb0/0x230
- ? raw_spin_rq_unlock+0x17/0xa0
- ? finish_task_switch.isra.0+0x13b/0x760
- ? __switch_to+0x385/0xda0
- ? __kasan_check_write+0x14/0x30
- ? mutex_lock+0x8d/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- ceph_con_workfn+0x248/0x10c0 [libceph]
- process_one_work+0x629/0xf80
- ? __kasan_check_write+0x14/0x30
- worker_thread+0x87f/0x1570
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? __pfx_try_to_wake_up+0x10/0x10
- ? kasan_print_address_stack_frame+0x1f7/0x280
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x396/0x830
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? __pfx_kthread+0x10/0x10
- ? __kasan_check_write+0x14/0x30
- ? recalc_sigpending+0x180/0x210
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x3f7/0x610
- ? __pfx_ret_from_fork+0x10/0x10
- ? __switch_to+0x385/0xda0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-[ idryomov: replace if statements with ceph_decode_need() for
-  payload_len and result_msg_len ]
-
+Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
+ include/linux/irqchip/arm-gic-v3.h |    1 +
+ 2 files changed, 5 insertions(+)
 
---- a/net/ceph/auth.c
-+++ b/net/ceph/auth.c
-@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
- 	s32 result;
- 	u64 global_id;
- 	void *payload, *payload_end;
--	int payload_len;
-+	u32 payload_len;
- 	char *result_msg;
--	int result_msg_len;
-+	u32 result_msg_len;
- 	int ret = -EINVAL;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3475,6 +3475,7 @@ static struct its_device *its_create_dev
+ 	int lpi_base;
+ 	int nr_lpis;
+ 	int nr_ites;
++	int id_bits;
+ 	int sz;
  
- 	mutex_lock(&ac->mutex);
-@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
- 	result = ceph_decode_32(&p);
- 	global_id = ceph_decode_64(&p);
- 	payload_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, payload_len, bad);
- 	payload = p;
- 	p += payload_len;
- 	ceph_decode_need(&p, end, sizeof(u32), bad);
- 	result_msg_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, result_msg_len, bad);
- 	result_msg = p;
- 	p += result_msg_len;
- 	if (p != end)
+ 	if (!its_alloc_device_table(its, dev_id))
+@@ -3486,7 +3487,10 @@ static struct its_device *its_create_dev
+ 	/*
+ 	 * Even if the device wants a single LPI, the ITT must be
+ 	 * sized as a power of two (and you need at least one bit...).
++	 * Also honor the ITS's own EID limit.
+ 	 */
++	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
++	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
+ 	nr_ites = max(2, nvecs);
+ 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN);
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -394,6 +394,7 @@
+ #define GITS_TYPER_VLPIS		(1UL << 1)
+ #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
+ #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
++#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
+ #define GITS_TYPER_IDBITS_SHIFT		8
+ #define GITS_TYPER_DEVBITS_SHIFT	13
+ #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
 
 
 
