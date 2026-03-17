@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-226423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA2FHaWKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:53 +0100
+	id 6BIpGFmIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F322AF08D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4ACC2AEBB7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 136AF30DDA31
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 517AA30451C2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34F93F7A8F;
-	Tue, 17 Mar 2026 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABE13F7AB0;
+	Tue, 17 Mar 2026 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBUalQRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSmSNA3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767933F7A8B;
-	Tue, 17 Mar 2026 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED103F7A9D;
+	Tue, 17 Mar 2026 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766642; cv=none; b=ibduE0uZbka1vXkWPI6+ZbyqvhHLzJ8Mk4QpJNjomLNs90e4ltbqnGDh6RkkEsEE11Nu3a/uTEjDj/pmk7wUSEVxSxmnUMdEq45Wj8aGOT2RHmli/KjWa3FJ9miaqxKFxrkXEXYl6Fp/0ge4zbB6yxhW1kqsIM1OnKYBWXgetW0=
+	t=1773766647; cv=none; b=fylH7og7+Kqf6SDd3kRBAfH3HFSnHHZn43b5QfC26h+I5TQRNsVaPd+B/im9A4U83eQyB53cZ4FVr62TvEezYvcQagpLfAW/Opf25aYfMQyenOaJaC2/YDrrsvmGQkwicbodZm0+lYxxk4H4qeF8gS1WavpBGdbad0dbHEb3YoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766642; c=relaxed/simple;
-	bh=4+BdIaJy6eQ7JGoHp/9V8gOwy/M4n91ScRarHkXfyHM=;
+	s=arc-20240116; t=1773766647; c=relaxed/simple;
+	bh=EvmKxSUMuTfBaadqsNg9zb6BLzBnTOFIWYUdlbqn/sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7HXrRLruw6tIPRC+ArbWBSQ3qA2IPjxUxcSPqyJ35ANvEyLr+v1wwLd4JNLZxCbGu4SS9zy9+/dpEwSuzap7AkON3Y1vrT4qARP8UPoO5YW2QcbRVXTXQh6XxH7nuqJUQVDFlDLrHYYu5YBEUCVLzurazv1Ioz48/XydeX7mYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBUalQRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA91C2BC86;
-	Tue, 17 Mar 2026 16:57:21 +0000 (UTC)
+	 MIME-Version; b=uDVxrHczvzsUdkO9SgG+sETI0h3vEq19bcA8aP4JCFeECyHTm7ttj5nbo5UXUDsGK75hgUCBhwUb7i/NeuTtwLZ8B4d5h7ICTL2FYHeNWgrenRkrXPlXvP9UYPNKQAN7F9T0OdHhtbdvJpxi5qDyC1gTW4/0j9a5luHQDXXDGWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSmSNA3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BDCC2BCB3;
+	Tue, 17 Mar 2026 16:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766642;
-	bh=4+BdIaJy6eQ7JGoHp/9V8gOwy/M4n91ScRarHkXfyHM=;
+	s=korg; t=1773766647;
+	bh=EvmKxSUMuTfBaadqsNg9zb6BLzBnTOFIWYUdlbqn/sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBUalQRUIB9/7i5ykWXf3nimv6VDtv3VIlVeTMVloND+X4FC1gVb3lDkbEgDL99hA
-	 f+1rFl7eKgtXmzXd2jjwfESVmWtZO7OyFPHinT/VU21rLEC+kyh7FpLis6YhlxKhwD
-	 5kPiVjws3H9HpMDsxW2hmZet8hDGo6ymO7nQyXWY=
+	b=nSmSNA3YrC6elzlYJVtk5QX9zn5AnaogBg6E/MetQop4W/liDVZbLu0Qlck5u/AMS
+	 p3Cq/pvBFh8H4q1mRPK5JQR34TDaXD5umP87V0VIQ2Pfy1/FzVrxOEMyfnK6/q/NUC
+	 VZjM6tN6dIiR3Mi485UPo/A3N9jHZUiP4mt95IEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Marios Makassikis <mmakassikis@freebox.fr>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 290/378] ksmbd: fix use-after-free in smb_lazy_parent_lease_break_close()
-Date: Tue, 17 Mar 2026 17:34:07 +0100
-Message-ID: <20260317163017.680403962@linuxfoundation.org>
+Subject: [PATCH 6.19 291/378] smb: server: fix use-after-free in smb2_open()
+Date: Tue, 17 Mar 2026 17:34:08 +0100
+Message-ID: <20260317163017.717052046@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226423-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226424-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 70F322AF08D
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E4ACC2AEBB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,42 +99,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit eac3361e3d5dd8067b3258c69615888eb45e9f25 upstream.
+commit 1e689a56173827669a35da7cb2a3c78ed5c53680 upstream.
 
-opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is being
-accessed after rcu_read_unlock() has been called. This creates a
-race condition where the memory could be freed by a concurrent
-writer between the unlock and the subsequent pointer dereferences
-(opinfo->is_lease, etc.), leading to a use-after-free.
+The opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is
+dereferenced after rcu_read_unlock(), creating a use-after-free
+window.
 
-Fixes: 5fb282ba4fef ("ksmbd: fix possible null-deref in smb_lazy_parent_lease_break_close")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1123,10 +1123,12 @@ void smb_lazy_parent_lease_break_close(s
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3616,10 +3616,8 @@ int smb2_open(struct ksmbd_work *work)
  
- 	rcu_read_lock();
- 	opinfo = rcu_dereference(fp->f_opinfo);
+ reconnected_fp:
+ 	rsp->StructureSize = cpu_to_le16(89);
+-	rcu_read_lock();
+-	opinfo = rcu_dereference(fp->f_opinfo);
++	opinfo = opinfo_get(fp);
+ 	rsp->OplockLevel = opinfo != NULL ? opinfo->level : 0;
 -	rcu_read_unlock();
+ 	rsp->Flags = 0;
+ 	rsp->CreateAction = cpu_to_le32(file_info);
+ 	rsp->CreationTime = cpu_to_le64(fp->create_time);
+@@ -3660,6 +3658,7 @@ reconnected_fp:
+ 		next_ptr = &lease_ccontext->Next;
+ 		next_off = conn->vals->create_lease_size;
+ 	}
++	opinfo_put(opinfo);
  
--	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2)
-+	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2) {
-+		rcu_read_unlock();
- 		return;
-+	}
-+	rcu_read_unlock();
- 
- 	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
- 	if (!p_ci)
+ 	if (maximal_access_ctxt) {
+ 		struct create_context *mxac_ccontext;
 
 
 
