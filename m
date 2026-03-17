@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-226064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIsrK8ppuWmZDwIAu9opvQ
-	(envelope-from <stable+bounces-226064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:48:42 +0100
+	id 8O8lO81ruWmvEQIAu9opvQ
+	(envelope-from <stable+bounces-226065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:57:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D51B2AC496
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:48:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6102AC7F2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E640B3039370
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:48:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7B7B315A124
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267983E3D81;
-	Tue, 17 Mar 2026 14:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FDC35CB75;
+	Tue, 17 Mar 2026 14:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+xN4ooq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HH+tC1PG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4AE35CB75
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3736D3E8660
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773758906; cv=none; b=fLEhHzjR90Nr/iymOXZ2hR57rHnM2AaEBqce0+S54PWnokLAH/+FCiq+BXLwQg2l4DnsdvpH/cPeDpkFOX+LHtSnvYizdIkaZlJ4Bbpe3OQJnqVXJHJJ8nLXt1XWqdZU8ztVn+JiGlASd5GupDpwIc5rghaYiVBYeODdJV/tPOY=
+	t=1773758911; cv=none; b=QAGTvgakZOnUgnQgiiukzXZn7dZFqwKAjeWDlQNUZHhxkdnOaGm3er6PxScQRDgJcVWGH2/3iqtqjuWRLw4Yn9KPWiJp9NB4uw5XfTAfd8ryORx89MiM6aVjA+oyBVgvh/k962k8+Ybiq566d/+6Nybtlr2RT9TXsxVYzQw4rlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773758906; c=relaxed/simple;
-	bh=vqcWK57jeGmPhAdh9uT77cNPcVwgMRi7VQmy0Jj49d0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kB1C6gfapdFkiteR42scxJ4zii42nwjtW1yjuRDmoQCPO2ETMqiHtLszd3/E4ULU4iZGZnGCBZTIr9TgN5Nd0a5m2cFRD/2r78N0RhjJjxUTHCrHDduvFZGBkCo4knTh50LlUTDrXm3u7+DkGfprUDzZh6Zl9tOkJh5yQqQhuKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+xN4ooq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F7FC4CEF7;
-	Tue, 17 Mar 2026 14:48:25 +0000 (UTC)
+	s=arc-20240116; t=1773758911; c=relaxed/simple;
+	bh=OAVATqui0l/iKfhxGrw/15JhbdTx+odYJoSb8wimBiM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SK6CuBzL6+H3KYjMzoBqN1wUSBjl/jOAO5SWjRkjbUnY9gNNoXhXXAWN6FbC4Tt85w86n+NdMKjgtDtybscANi3ClwyQ8E5nc5thzhsNGW2IpdYtZDZCgvYcD7WMamZ8Votdbrp7pAJE1DA0A0LhljsCIE0VbMS06b/ch21Eq1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HH+tC1PG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629FDC2BC86;
+	Tue, 17 Mar 2026 14:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773758906;
-	bh=vqcWK57jeGmPhAdh9uT77cNPcVwgMRi7VQmy0Jj49d0=;
+	s=korg; t=1773758910;
+	bh=OAVATqui0l/iKfhxGrw/15JhbdTx+odYJoSb8wimBiM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=x+xN4ooqxChLxEZhTbldfMxLP1BQprHi9/uyivGfffrnluba63FhcJ1idfrar5q5h
-	 Pyd6AFfkNn5FcMhTznYwIOeGH9K+RNOQ0wr343QIKBBmPMd330K98kd88xgfC7bgkB
-	 bnOqOwuQNm3Iz5bry3M2pnmALQYiMmqbz/tgBYQw=
-Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Fix race in DMA ring enqueue for parallel" failed to apply to 6.12-stable tree
+	b=HH+tC1PGDeNmMNmpGUiqf8flJI4YrGuUzYvOBXYHa38qeGRkyUhu/0M0amud0Uy2n
+	 uX9qXU1fNVktqigOeOn9Gq9T8B8xup+vGZ9LvU9bcNSHefvq3AYM4p0EfjMhyOGM3s
+	 UhCtS5TuFDrBOOcvByrtAZktBQU0UUWvrpVGnfBY=
+Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Fix race in DMA ring enqueue for parallel" failed to apply to 6.6-stable tree
 To: adrian.hunter@intel.com,Frank.Li@nxp.com,alexandre.belloni@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 15:48:11 +0100
-Message-ID: <2026031711-habitable-delta-8a9a@gregkh>
+Date: Tue, 17 Mar 2026 15:48:12 +0100
+Message-ID: <2026031712-santa-vessel-f65c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226064-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226065-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,gregkh:email,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,nxp.com:email]
-X-Rspamd-Queue-Id: 6D51B2AC496
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,gregkh:email,msgid.link:url,linuxfoundation.org:dkim,intel.com:email,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4E6102AC7F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4decbbc8a8cf0a69ab011d7c2c88ed3cd0a00ddd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031711-habitable-delta-8a9a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031712-santa-vessel-f65c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
