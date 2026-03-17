@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADlRJXSJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:48 +0100
+	id EPpVJ0SUuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080B92AEDA5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D652B0317
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EA0C31F687A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3951D32EFF10
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2F43F660F;
-	Tue, 17 Mar 2026 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2888030C63B;
+	Tue, 17 Mar 2026 17:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzRghdN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNGKeRef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615423F54D7;
-	Tue, 17 Mar 2026 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7372D73B8;
+	Tue, 17 Mar 2026 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766530; cv=none; b=jTqwnWmsewStnVx84Mw6xYaQxXBME17Pi15XjeP60lJsGqBcSTH4fwixPWXCkYdM0BGkjNpGHovnw8+KPpDP1kWHsKTCJux6z0wzv9Q9/Gs/n62G7Mpmuc/jM8UFENNMg6wM7npNmzNSaM27MwmnC8pMhiV0TGSS3f93a1a1L3w=
+	t=1773767927; cv=none; b=UXOqRHMUrG70QOAZbXSAUUx7YLyYhacCfJBmQwi7rqfY5fZBA47N6KhEc/XRQVWd0X8oVxO40pIMlT46viMwUsuJGBWaH1ATaFfywNBKa/VeMpUGbxGXIzYseXvQ/Ku2v9wBAYwMt8qg3RZUhTP3BHIJYwXn0b5sXp7ikOd+MHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766530; c=relaxed/simple;
-	bh=LBr+0j2Cu25FqgRbNo3WTr42ki9eS5Bor/46vYb+WBI=;
+	s=arc-20240116; t=1773767927; c=relaxed/simple;
+	bh=rixRaNXYwku7kccWbBSyz4i1uCf2skt3YgCBm0uAwcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcxNH3jS7GoOsDYJEiPb/wWqYFn4OsfFbKbFD4EXSTmmJcpDtueUMxqYIguUzGKM8PGDo+rAe4gHDH+yyOjVReZQuGl0v6lvHt+BAfNN5vB/SBWVtNMAHNpIKJ5oH6Gp/7R4LIBFQ2IfnWyL0ApYrmSgbElF3eJ0KF/8UD7rLcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzRghdN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC0AC2BC86;
-	Tue, 17 Mar 2026 16:55:27 +0000 (UTC)
+	 MIME-Version; b=B8L51wswvZr0dwC9SyEZCO1IfhU7GL06ClwvvBtyIq8uit/5kTaWcTkRs5fNb2EZlmeljObEI4dSvZQ62237ft8lUrKY/19LhiqPckM2w9nYtGoYHPQ0iE2I/m+dYzZxQ2BusYl7uMMkPGtP/2sidSPi5fbcyA3JqlADJsMEmCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNGKeRef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0153C4CEF7;
+	Tue, 17 Mar 2026 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766530;
-	bh=LBr+0j2Cu25FqgRbNo3WTr42ki9eS5Bor/46vYb+WBI=;
+	s=korg; t=1773767927;
+	bh=rixRaNXYwku7kccWbBSyz4i1uCf2skt3YgCBm0uAwcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzRghdN19d74uG6Qtjstj2Hsv1l45kgxoETsf84ChrWRihcpG9frJf4l8QZNvMAJ+
-	 VQkeqb0NEpjSKQ0VeV7kLgEcllV2Oli+Y4LoWd3kroLSjDjZAB7MwxmUzfABoxWoLv
-	 aygszwKQv+nLqkE2rbZx9+sQ55ksCxq7lshExNi8=
+	b=RNGKeRefCl1Rp91nwOVAjAmT5Ebxfe7LYXdE+KdElv64SleGi/tTQs90dq+9J/SbY
+	 q8gCNQ4VP0S8FPVFsXeAWWB2dd+6bxJOgbtp1b2xc3IJ6mIywFUNYI1nsiuFfNHlgE
+	 IxcOS/V2kncxFSSWu5rQCSc1h2WGtOUmI0WBkINQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 264/378] net/tcp-ao: Fix MAC comparison to be constant-time
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.18 192/333] nouveau/gsp: drop WARN_ON in ACPI probes
 Date: Tue, 17 Mar 2026 17:33:41 +0100
-Message-ID: <20260317163016.724607772@linuxfoundation.org>
+Message-ID: <20260317163006.477523428@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +65,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226398-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226714-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 080B92AEDA5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 39D652B0317
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 67edfec516d30d3e62925c397be4a1e5185802fc upstream.
+commit 9478c166c46934160135e197b049b5a05753f2ad upstream.
 
-To prevent timing attacks, MACs need to be compared in constant
-time.  Use the appropriate helper function for this.
+These WARN_ONs seem to trigger a lot, and we don't seem to have a
+plan to fix them, so just drop them, as they are most likely
+harmless.
 
-Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Link: https://patch.msgid.link/20260302203600.13561-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20241121014601.229391-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/Kconfig  |    1 +
- net/ipv4/tcp_ao.c |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/ipv4/Kconfig
-+++ b/net/ipv4/Kconfig
-@@ -748,6 +748,7 @@ config TCP_SIGPOOL
- config TCP_AO
- 	bool "TCP: Authentication Option (RFC5925)"
- 	select CRYPTO
-+	select CRYPTO_LIB_UTILS
- 	select TCP_SIGPOOL
- 	depends on 64BIT && IPV6 != m # seq-number extension needs WRITE_ONCE(u64)
- 	help
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -10,6 +10,7 @@
- #define pr_fmt(fmt) "TCP: " fmt
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+@@ -737,8 +737,8 @@ r535_gsp_acpi_caps(acpi_handle handle, C
+ 	if (!obj)
+ 		goto done;
  
- #include <crypto/hash.h>
-+#include <crypto/utils.h>
- #include <linux/inetdevice.h>
- #include <linux/tcp.h>
+-	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+-	    WARN_ON(obj->buffer.length != 4))
++	if (obj->type != ACPI_TYPE_BUFFER ||
++	    obj->buffer.length != 4)
+ 		goto done;
  
-@@ -922,7 +923,7 @@ tcp_ao_verify_hash(const struct sock *sk
- 	/* XXX: make it per-AF callback? */
- 	tcp_ao_hash_skb(family, hash_buf, key, sk, skb, traffic_key,
- 			(phash - (u8 *)th), sne);
--	if (memcmp(phash, hash_buf, maclen)) {
-+	if (crypto_memneq(phash, hash_buf, maclen)) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOBAD);
- 		atomic64_inc(&info->counters.pkt_bad);
- 		atomic64_inc(&key->pkt_bad);
+ 	caps->status = 0;
+@@ -773,8 +773,8 @@ r535_gsp_acpi_jt(acpi_handle handle, JT_
+ 	if (!obj)
+ 		goto done;
+ 
+-	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
+-	    WARN_ON(obj->buffer.length != 4))
++	if (obj->type != ACPI_TYPE_BUFFER ||
++	    obj->buffer.length != 4)
+ 		goto done;
+ 
+ 	jt->status = 0;
+@@ -861,8 +861,8 @@ r535_gsp_acpi_dod(acpi_handle handle, DO
+ 
+ 	_DOD = output.pointer;
+ 
+-	if (WARN_ON(_DOD->type != ACPI_TYPE_PACKAGE) ||
+-	    WARN_ON(_DOD->package.count > ARRAY_SIZE(dod->acpiIdList)))
++	if (_DOD->type != ACPI_TYPE_PACKAGE ||
++	    _DOD->package.count > ARRAY_SIZE(dod->acpiIdList))
+ 		return;
+ 
+ 	for (int i = 0; i < _DOD->package.count; i++) {
 
 
 
