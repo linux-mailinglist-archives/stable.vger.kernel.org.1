@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-226043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB6bIXRruWmvEQIAu9opvQ
-	(envelope-from <stable+bounces-226043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:55:48 +0100
+	id UFYgFn1ruWmvEQIAu9opvQ
+	(envelope-from <stable+bounces-226044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:55:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E927E2AC736
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3632AC74E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDAAC3096A77
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:45:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09C6430DA1C9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91D13C3BEE;
-	Tue, 17 Mar 2026 14:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76C63E51FF;
+	Tue, 17 Mar 2026 14:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzAIjBlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4n1NI8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664ED3E7177
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0553E7175
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773758706; cv=none; b=iyJGux6MVG7inYnXoTvHSKZiAO4OHeW5/ExWS+w1FVDOLbngyN1ZGZ2sInm8l8IAjtwwoa9rUII3joml2wqyx1tnlqo0AKxQiYa3Fpax9QeV4gBBVkhp75n51wBg0ch0my/Q4Hy/wcYE0WamDBomv9Q/Y4tpWlhsROIT++Ef1/c=
+	t=1773758713; cv=none; b=CzmqJC+gZfoJPit8Cfz1rY0QD6obYXgwVfLFBF7Y+XS2JfZIwbNSUBhc+xjQ+Y+wy+RoUCyFuWKGq9wBBi+cpoh1tl3md6g8Fe1m5QgkPmRg4TDTxuVkktWNiSwY+NkvV1XLR8uNjeUizfN9ye56AuiGtaO4ohCS4c6qHhbyyRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773758706; c=relaxed/simple;
-	bh=xaDJyTRMZDUIynIhNgwvv7IFSn8KNukEh5V9Ly52m2w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YgLzunw3CzyKc/xB0JbRq3t1eSf1a0JIputjI/MVpvK7rXjrg2pUDglOy+7aI5HUcQprJdRzFHAJ26eGtI1VTdp7Ish7fhswGbTagH7PJdjVbDNy3J/8Edy+QMAXD0L/x29V3wfXoGc8TKLFSdjmsdLqWOzna6/2MfHRSvZxwpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzAIjBlb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A488C19424;
-	Tue, 17 Mar 2026 14:45:05 +0000 (UTC)
+	s=arc-20240116; t=1773758713; c=relaxed/simple;
+	bh=6fa+588wv0bZh05lJiKHxlo6XVlQwfMBYNhm3caxsfo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aipulM+0A8xm68Qa4RqQQbcgU1uaMWzoxJJSXAe0LLQPJ7l9S8TNwpA/IYBplXXJkt17V2Y8COEtCZKi3efkce9+spwTxOszcCp525K19+8VzCCj1vpEux9EmQX9FTL09WNnRZehy3FMbkW7PzYsXe9WF7QWJZ/vHlcpRvngOIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4n1NI8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7534C4CEF7;
+	Tue, 17 Mar 2026 14:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773758706;
-	bh=xaDJyTRMZDUIynIhNgwvv7IFSn8KNukEh5V9Ly52m2w=;
+	s=korg; t=1773758713;
+	bh=6fa+588wv0bZh05lJiKHxlo6XVlQwfMBYNhm3caxsfo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dzAIjBlb4TUn/w+tqeAlCFEuE0ymC88tuWz3SSFyMIwIGFcO1EoIizfXW1VHsybaa
-	 ehp3VKOsdC7q6mV++pzCWQOT2MbrhtfR8pdogtGhA1qlw2FEBCBcnWbrIRJe6vl07V
-	 lM4bSdidldygqPnr5dk+ctfHnPQNOmLUEN+fFtVo=
-Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Factor out DMA mapping from queuing path" failed to apply to 6.1-stable tree
+	b=m4n1NI8QfYVl76Z/C/DJeBSX72x0LVqJh7FzeyBTqisGM4PaToP5t4ZxPVBAa+2Ae
+	 8m6+/g3m49GaZ6ZPjFEUVHiBeNIkGN03IN68e7CuCRikC8EbZkfjeUXaS94Axbocrz
+	 9mzFoOZHSr/3ufoJQ/v9izJUrmiArq7NgltpU4mA=
+Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Consolidate spinlocks" failed to apply to 6.12-stable tree
 To: adrian.hunter@intel.com,Frank.Li@nxp.com,alexandre.belloni@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 15:44:47 +0100
-Message-ID: <2026031747-economist-satirical-88fd@gregkh>
+Date: Tue, 17 Mar 2026 15:45:03 +0100
+Message-ID: <2026031703-plating-scope-7398@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226043-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226044-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.959];
+	NEURAL_HAM(-0.00)[-0.994];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
@@ -82,24 +82,24 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,gregkh:email,nxp.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: E927E2AC736
+X-Rspamd-Queue-Id: EA3632AC74E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x f3bcbfe1b8b0b836b772927f75f8cb6e759eb00a
+git cherry-pick -x fa12bb903bc3ed1826e355d267fe134bde95e23c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031747-economist-satirical-88fd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031703-plating-scope-7398@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,18 +111,19 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f3bcbfe1b8b0b836b772927f75f8cb6e759eb00a Mon Sep 17 00:00:00 2001
+From fa12bb903bc3ed1826e355d267fe134bde95e23c Mon Sep 17 00:00:00 2001
 From: Adrian Hunter <adrian.hunter@intel.com>
-Date: Fri, 6 Mar 2026 09:24:40 +0200
-Subject: [PATCH] i3c: mipi-i3c-hci: Factor out DMA mapping from queuing path
+Date: Fri, 6 Mar 2026 09:24:41 +0200
+Subject: [PATCH] i3c: mipi-i3c-hci: Consolidate spinlocks
 
-Prepare for fixing a race in the DMA ring enqueue path when handling
-parallel transfers.  Move all DMA mapping out of hci_dma_queue_xfer()
-and into a new helper that performs the mapping up front.
+The MIPI I3C HCI driver currently uses separate spinlocks for different
+contexts (PIO vs. DMA rings).  This split is unnecessary and complicates
+upcoming fixes.  The driver does not support concurrent PIO and DMA
+operation, and it only supports a single DMA ring, so a single lock is
+sufficient for all paths.
 
-This refactoring allows the upcoming fix to extend the spinlock coverage
-around the enqueue operation without performing DMA mapping under the
-spinlock.
+Introduce a unified spinlock in struct i3c_hci, switch both PIO and DMA
+code to use it, and remove the per-context locks.
 
 No functional change is intended in this patch.
 
@@ -130,96 +131,178 @@ Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-4-adrian.hunter@intel.com
+Link: https://patch.msgid.link/20260306072451.11131-5-adrian.hunter@intel.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
+diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
+index 4877a321edf9..faf5eae2409f 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/core.c
++++ b/drivers/i3c/master/mipi-i3c-hci/core.c
+@@ -926,6 +926,8 @@ static int i3c_hci_probe(struct platform_device *pdev)
+ 	if (!hci)
+ 		return -ENOMEM;
+ 
++	spin_lock_init(&hci->lock);
++
+ 	/*
+ 	 * Multi-bus instances share the same MMIO address range, but not
+ 	 * necessarily in separate contiguous sub-ranges. To avoid overlapping
 diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index b903a2da1fd1..ba451f026386 100644
+index ba451f026386..2442cedd5c2a 100644
 --- a/drivers/i3c/master/mipi-i3c-hci/dma.c
 +++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -439,6 +439,33 @@ static void hci_dma_unmap_xfer(struct i3c_hci *hci,
+@@ -131,7 +131,6 @@ struct hci_rh_data {
+ 	unsigned int xfer_struct_sz, resp_struct_sz, ibi_status_sz, ibi_chunk_sz;
+ 	unsigned int done_ptr, ibi_chunk_ptr;
+ 	struct hci_xfer **src_xfers;
+-	spinlock_t lock;
+ 	struct completion op_done;
+ };
+ 
+@@ -344,7 +343,6 @@ static int hci_dma_init(struct i3c_hci *hci)
+ 			goto err_out;
+ 		rh = &rings->headers[i];
+ 		rh->regs = hci->base_regs + offset;
+-		spin_lock_init(&rh->lock);
+ 		init_completion(&rh->op_done);
+ 
+ 		rh->xfer_entries = XFER_RING_ENTRIES;
+@@ -534,12 +532,12 @@ static int hci_dma_queue_xfer(struct i3c_hci *hci,
  	}
+ 
+ 	/* take care to update the hardware enqueue pointer atomically */
+-	spin_lock_irq(&rh->lock);
++	spin_lock_irq(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_CR_ENQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_CR_ENQ_PTR, enqueue_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock_irq(&rh->lock);
++	spin_unlock_irq(&hci->lock);
+ 
+ 	return 0;
+ }
+@@ -637,12 +635,12 @@ static void hci_dma_xfer_done(struct i3c_hci *hci, struct hci_rh_data *rh)
+ 	}
+ 
+ 	/* take care to update the software dequeue pointer atomically */
+-	spin_lock(&rh->lock);
++	spin_lock(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_CR_SW_DEQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_CR_SW_DEQ_PTR, done_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock(&rh->lock);
++	spin_unlock(&hci->lock);
  }
  
-+static struct i3c_dma *hci_dma_map_xfer(struct device *dev, struct hci_xfer *xfer)
-+{
-+	enum dma_data_direction dir = xfer->rnw ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
-+	bool need_bounce = device_iommu_mapped(dev) && xfer->rnw && (xfer->data_len & 3);
-+
-+	return i3c_master_dma_map_single(dev, xfer->data, xfer->data_len, need_bounce, dir);
-+}
-+
-+static int hci_dma_map_xfer_list(struct i3c_hci *hci, struct device *dev,
-+				 struct hci_xfer *xfer_list, int n)
-+{
-+	for (int i = 0; i < n; i++) {
-+		struct hci_xfer *xfer = xfer_list + i;
-+
-+		if (!xfer->data)
-+			continue;
-+
-+		xfer->dma = hci_dma_map_xfer(dev, xfer);
-+		if (!xfer->dma) {
-+			hci_dma_unmap_xfer(hci, xfer_list, i);
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int hci_dma_queue_xfer(struct i3c_hci *hci,
- 			      struct hci_xfer *xfer_list, int n)
- {
-@@ -446,6 +473,11 @@ static int hci_dma_queue_xfer(struct i3c_hci *hci,
- 	struct hci_rh_data *rh;
- 	unsigned int i, ring, enqueue_ptr;
- 	u32 op1_val, op2_val;
-+	int ret;
-+
-+	ret = hci_dma_map_xfer_list(hci, rings->sysdev, xfer_list, n);
-+	if (ret)
-+		return ret;
+ static int hci_dma_request_ibi(struct i3c_hci *hci, struct i3c_dev_desc *dev,
+@@ -823,12 +821,12 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
  
- 	/* For now we only use ring 0 */
- 	ring = 0;
-@@ -456,9 +488,6 @@ static int hci_dma_queue_xfer(struct i3c_hci *hci,
- 	for (i = 0; i < n; i++) {
- 		struct hci_xfer *xfer = xfer_list + i;
- 		u32 *ring_data = rh->xfer + rh->xfer_struct_sz * enqueue_ptr;
--		enum dma_data_direction dir = xfer->rnw ? DMA_FROM_DEVICE :
--							  DMA_TO_DEVICE;
--		bool need_bounce;
+ done:
+ 	/* take care to update the ibi dequeue pointer atomically */
+-	spin_lock(&rh->lock);
++	spin_lock(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_IBI_DEQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_IBI_DEQ_PTR, deq_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock(&rh->lock);
++	spin_unlock(&hci->lock);
  
- 		/* store cmd descriptor */
- 		*ring_data++ = xfer->cmd_desc[0];
-@@ -477,18 +506,6 @@ static int hci_dma_queue_xfer(struct i3c_hci *hci,
+ 	/* update the chunk pointer */
+ 	rh->ibi_chunk_ptr += ibi_chunks;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/hci.h b/drivers/i3c/master/mipi-i3c-hci/hci.h
+index 337b7ab1cb06..f1dd502c071f 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/hci.h
++++ b/drivers/i3c/master/mipi-i3c-hci/hci.h
+@@ -50,6 +50,7 @@ struct i3c_hci {
+ 	const struct hci_io_ops *io;
+ 	void *io_data;
+ 	const struct hci_cmd_ops *cmd;
++	spinlock_t lock;
+ 	atomic_t next_cmd_tid;
+ 	bool irq_inactive;
+ 	u32 caps;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/pio.c b/drivers/i3c/master/mipi-i3c-hci/pio.c
+index f8825ac81408..02866c2237fa 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/pio.c
++++ b/drivers/i3c/master/mipi-i3c-hci/pio.c
+@@ -123,7 +123,6 @@ struct hci_pio_ibi_data {
+ };
  
- 		/* 2nd and 3rd words of Data Buffer Descriptor Structure */
- 		if (xfer->data) {
--			need_bounce = device_iommu_mapped(rings->sysdev) &&
--				      xfer->rnw &&
--				      xfer->data_len != ALIGN(xfer->data_len, 4);
--			xfer->dma = i3c_master_dma_map_single(rings->sysdev,
--							      xfer->data,
--							      xfer->data_len,
--							      need_bounce,
--							      dir);
--			if (!xfer->dma) {
--				hci_dma_unmap_xfer(hci, xfer_list, i);
--				return -ENOMEM;
--			}
- 			*ring_data++ = lower_32_bits(xfer->dma->addr);
- 			*ring_data++ = upper_32_bits(xfer->dma->addr);
- 		} else {
-@@ -511,7 +528,7 @@ static int hci_dma_queue_xfer(struct i3c_hci *hci,
- 		op2_val = rh_reg_read(RING_OPERATION2);
- 		if (enqueue_ptr == FIELD_GET(RING_OP2_CR_DEQ_PTR, op2_val)) {
- 			/* the ring is full */
--			hci_dma_unmap_xfer(hci, xfer_list, i + 1);
-+			hci_dma_unmap_xfer(hci, xfer_list, n);
- 			return -EBUSY;
- 		}
+ struct hci_pio_data {
+-	spinlock_t lock;
+ 	struct hci_xfer *curr_xfer, *xfer_queue;
+ 	struct hci_xfer *curr_rx, *rx_queue;
+ 	struct hci_xfer *curr_tx, *tx_queue;
+@@ -212,7 +211,6 @@ static int hci_pio_init(struct i3c_hci *hci)
+ 		return -ENOMEM;
+ 
+ 	hci->io_data = pio;
+-	spin_lock_init(&pio->lock);
+ 
+ 	__hci_pio_init(hci, &size_val);
+ 
+@@ -631,7 +629,7 @@ static int hci_pio_queue_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int n)
+ 		xfer[i].data_left = xfer[i].data_len;
  	}
+ 
+-	spin_lock_irq(&pio->lock);
++	spin_lock_irq(&hci->lock);
+ 	prev_queue_tail = pio->xfer_queue;
+ 	pio->xfer_queue = &xfer[n - 1];
+ 	if (pio->curr_xfer) {
+@@ -645,7 +643,7 @@ static int hci_pio_queue_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int n)
+ 			pio_reg_read(INTR_STATUS),
+ 			pio_reg_read(INTR_SIGNAL_ENABLE));
+ 	}
+-	spin_unlock_irq(&pio->lock);
++	spin_unlock_irq(&hci->lock);
+ 	return 0;
+ }
+ 
+@@ -716,14 +714,14 @@ static bool hci_pio_dequeue_xfer(struct i3c_hci *hci, struct hci_xfer *xfer, int
+ 	struct hci_pio_data *pio = hci->io_data;
+ 	int ret;
+ 
+-	spin_lock_irq(&pio->lock);
++	spin_lock_irq(&hci->lock);
+ 	dev_dbg(&hci->master.dev, "n=%d status=%#x/%#x", n,
+ 		pio_reg_read(INTR_STATUS), pio_reg_read(INTR_SIGNAL_ENABLE));
+ 	dev_dbg(&hci->master.dev, "main_status = %#x/%#x",
+ 		readl(hci->base_regs + 0x20), readl(hci->base_regs + 0x28));
+ 
+ 	ret = hci_pio_dequeue_xfer_common(hci, pio, xfer, n);
+-	spin_unlock_irq(&pio->lock);
++	spin_unlock_irq(&hci->lock);
+ 	return ret;
+ }
+ 
+@@ -1016,13 +1014,13 @@ static bool hci_pio_irq_handler(struct i3c_hci *hci)
+ 	struct hci_pio_data *pio = hci->io_data;
+ 	u32 status;
+ 
+-	spin_lock(&pio->lock);
++	spin_lock(&hci->lock);
+ 	status = pio_reg_read(INTR_STATUS);
+ 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
+ 		status, pio->enabled_irqs);
+ 	status &= pio->enabled_irqs | STAT_LATENCY_WARNINGS;
+ 	if (!status) {
+-		spin_unlock(&pio->lock);
++		spin_unlock(&hci->lock);
+ 		return false;
+ 	}
+ 
+@@ -1058,7 +1056,7 @@ static bool hci_pio_irq_handler(struct i3c_hci *hci)
+ 	pio_reg_write(INTR_SIGNAL_ENABLE, pio->enabled_irqs);
+ 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
+ 		pio_reg_read(INTR_STATUS), pio_reg_read(INTR_SIGNAL_ENABLE));
+-	spin_unlock(&pio->lock);
++	spin_unlock(&hci->lock);
+ 	return true;
+ }
+ 
 
 
