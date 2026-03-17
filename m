@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-225735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMUgIkvDuGlWjAEAu9opvQ
-	(envelope-from <stable+bounces-225735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 03:58:19 +0100
+	id QBIJLNDHuGnTjAEAu9opvQ
+	(envelope-from <stable+bounces-225736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 04:17:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E052A2FAD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 03:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 153E32A318A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 04:17:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFE56303A91C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 02:56:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00B7B303FAF7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 03:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9ED2C234A;
-	Tue, 17 Mar 2026 02:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE03A2C21C0;
+	Tue, 17 Mar 2026 03:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JSt0fYRQ"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="FWpkc9nD"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0AB199949;
-	Tue, 17 Mar 2026 02:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632F2BDC1B;
+	Tue, 17 Mar 2026 03:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773716211; cv=none; b=ZQDx1ZCPpdLrPgCB/ViQuXfTK1g+rYrqKnKQvsPp8WS0KgDDP75NqGTyprso7czLRo28VWovxlWRz8X4jMueoPtqJT/6pVCxsOivpFuP8uvB5VhPWlkxN+3VARhIlURhqvzPs9ZXItfrMbvFqFd0cNKQpYZCLRmAuSnHEUGFmXs=
+	t=1773717179; cv=none; b=YoRBxBeBXdb2WfGmmtFUcY24QYGWj12+GVEohXVpcCx6s/tPI9XZiRzj7CzZVrdROBETJh252bstZ5yDYR/Os8xMjpXisb5JdSQ2MGb5y1x6N5sqRo/aiK3LbKVgS3YwVWEm7KoaIgYoie2C85b6N+GJCHv6NgMUOgBx227gPK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773716211; c=relaxed/simple;
-	bh=5idiaM5ya0ZMcmh4ZOciWJkmKYgEJKIeAs3Tkdo/yrw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CPhQbCWw/W/6dUY5+J1mXBpKD56HNRHNdwywhpwJ1pcm21NRF27K9mC1BHoEzH32bPYWa0811H9ZDr53mdpXA/hzkek7yhO9rluVzgms2clJrTdBl5baN1O3X3YuSV0tKlhHQtugazi4sWNrcX5t0WqmJ0l0v5cNvgw+/Z30rgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JSt0fYRQ; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fl
-	keyKELInxzqtQjTpvZ9iQ7lXdYqruNsdCwFkYgqcY=; b=JSt0fYRQKlXAbDM6x6
-	Gm4dzWkMV6CHbqnpeNGTgZX/tKxPDjUFLXZ1XHZQfRylBjlz2ZDIUUj2fqJSmwyD
-	bo/Vnkyq/q/NZMyectN09bBRkQmVsck8oLfxJRCg7L6zyIXdu3Ld4qK5njycu7l1
-	GOPj38a18WwZJ/P+0BBpQtSDQ=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3u1C+wrhphmaaBQ--.42197S2;
-	Tue, 17 Mar 2026 10:55:59 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>
-Cc: "Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	Tony Luck <tony.luck@intel.com>,
-	linux-hardening@vger.kernel.org,
-	Robert Garcia <rob_garcia@163.com>,
-	Anton Vorontsov <anton@enomsg.org>,
-	Colin Cross <ccross@android.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] pstore: inode: Only d_invalidate() is needed
-Date: Tue, 17 Mar 2026 10:55:58 +0800
-Message-Id: <20260317025558.1666400-1-rob_garcia@163.com>
+	s=arc-20240116; t=1773717179; c=relaxed/simple;
+	bh=wj0ephWw75cma3VIbZb9tR8D3DLhc/9vyNBrB+ptDgU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GZwSuyN8VWufiEvUo1wf9qETySht13/GZB9wiIzgm0lWS6MS42Nm27Sp0m8hhdFUICr4Gr760+kd9Z+yJrg21yiiPK8n4uEDiIwoxBcPhkns6CCC+TOfrSWlNM9mt+CFVX37uHIlnZcNve08yOQNruH0iIRD4bU6bJmbLgSudCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=FWpkc9nD; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 373255ad5;
+	Tue, 17 Mar 2026 11:12:44 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: slava.dubeyko@ibm.com
+Cc: akpm@linux-foundation.org,
+	frank.li@vivo.com,
+	glaubitz@physik.fu-berlin.de,
+	jianhao.xu@seu.edu.cn,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	slava@dubeyko.com,
+	sougata@tuxera.com,
+	stable@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: RE:  [PATCH] hfsplus: fix held lock freed on hfsplus_fill_super()
+Date: Tue, 17 Mar 2026 11:12:45 +0800
+Message-Id: <20260317031245.831887-1-zilin@seu.edu.cn>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <054d2ebe267ef9c13468a05557cb099c49a0b872.camel@ibm.com>
+References: <054d2ebe267ef9c13468a05557cb099c49a0b872.camel@ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,108 +62,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3u1C+wrhphmaaBQ--.42197S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur17CF17trWDWw4kuFy8Krg_yoW8Zw47pr
-	nxCw45ArW8Ka4Sgw48XF45Z345uFsYgw45XrZ7Ga1ftrnxKw4FqF43tFnIvFyrJrWruFZY
-	qr10kr1YvFyYyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRpVbDUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAR9o02m4wr9emAAA3P
+X-HM-Tid: 0a9cf9c8122d03a1kunm8ab794e511959d
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaSE8YVkIfTEkZT0lCHkoZGFYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUJCSU5LVUpLS1VKQk
+	tCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=FWpkc9nD8qAmzuJbeb8ccq/LAspAC8LDtljpSXjq8RnaUwiRetWMryAlmyGgj/WhGqsyctiMQHnR9kxNYO60Jj7M4xY0UXepH6F41ahsEXCQ1NG1c6twaEmdaKEUs03hvYkVpR1ZafuW9tVFos86646LF0y3N12RMiSXMGDcNqs=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=9BUCZsCXv6+UElY2CbN98RVfEfVtSh5fodPAhOqOzcg=;
+	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225735-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[igalia.com,intel.com,vger.kernel.org,163.com,enomsg.org,android.com];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225736-lists,stable=lfdr.de];
+	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linux.org.uk:email]
-X-Rspamd-Queue-Id: 17E052A2FAD
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 153E32A318A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kees Cook <keescook@chromium.org>
+On Mon, Mar 16, 2026 at 10:46:14PM +0000, Viacheslav Dubeyko wrote:
+> On Sat, 2026-03-14 at 11:36 +0800, Zilin Guan wrote:
+> > To make the helper completely correct, we face another issue: the original 
+> > code ignores all errors from hfs_brec_read() (which can return -ENOENT, 
+> > -EINVAL, -EIO, etc.), treating them as non-fatal.
+> > 
+> > If we combine the fatal setup functions and the non-fatal read function 
+> > into one helper, it cannot simply return a standard error code. It would 
+> > need to return three distinct states:
+> > 
+> > 1. Fatal error -> caller must abort mount.
+> > 2. Non-fatal read error -> caller must continue mount, but skip init.
+> > 3. Success -> caller must init hidden_dir.
+> > 
+> > To handle all these cases properly, the helper would have to look 
+> > something like this:
+> > 
+> > 	/* Returns < 0 on fatal error, 0 on missing/read error, 1 on success */
+> > 	static inline int hfsplus_get_hidden_dir_entry(struct super_block *sb,
+> > 						       hfsplus_cat_entry *entry) 
+> > 	{
+> > 		struct hfs_find_data fd;
+> > 		int err;
+> > 		int ret = 0;
+> > 		/* ... init str ... */
+> > 
+> > 		err = hfs_find_init(HFSPLUS_SB(sb)->cat_tree, &fd);
+> > 		if (err)
+> > 			return err; /* Fatal, fd not initialized */
+> > 		
+> > 		err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+> > 		if (unlikely(err < 0)) {
+> > 			ret = err;
+> > 			goto free_fd; /* Fatal */
+> > 		}
+> > 
+> > 		err = hfs_brec_read(&fd, entry, sizeof(*entry));
+> > 		if (err) {
+> > 			ret = 0; /* Non-fatal, but no entry to init */
+> > 			goto free_fd;
+> > 		}
+> > 		
+> > 		ret = 1; /* Success */
+> > 
+> > 	free_fd:
+> > 		hfs_find_exit(&fd);
+> > 		return ret;
+> > 	}
+> > 
+> > And the caller:
+> > 	
+> > 	err = hfsplus_get_hidden_dir_entry(sb, &entry);
+> > 	if (err < 0)
+> > 		goto out_put_root;
+> > 	if (err == 1) {
+> > 		/* ... init hidden_dir ... */
+> > 	}
+> > 
+> > We would have to invent a custom return state convention (1, 0, < 0) just to 
+> > hide a single hfs_find_exit() call.
+> > 
+> > Given this, I think the current inline logic in my patch is much cleaner 
+> > and avoids this convoluted error routing. 
+> > 
+> > What do you prefer?
+> > 
+> 
+> I don't quite follow to your trouble. Any function can return various error
+> codes and caller could process the different error codes by different logics:
+> 
+> err = hfsplus_get_hidden_dir_entry(sb, &entry);
+> if (err == -ENOENT) {
+>   <process -ENOENT>
+> } else if (err == -EINVAL) {
+>   <process -EINVAL>
+> } else if (err == -EIO) {
+>   <process -EIO>
+> } else if (err == <some other error>) {
+>   <process this case>
+> }
+> 
+> Does it solve your trouble?
+> 
+> Thanks,
+> Slava.
 
-[ Upstream commit a43e0fc5e9134a46515de2f2f8d4100b74e50de3 ]
+Hi Slava,
 
-Unloading a modular pstore backend with records in pstorefs would
-trigger the dput() double-drop warning:
+When considering the solution, my primary focus was to strictly preserve 
+the original execution logic. Therefore, I was focusing more on which 
+function returned the error rather than the specific error code itself.
 
-  WARNING: CPU: 0 PID: 2569 at fs/dcache.c:762 dput.part.0+0x3f3/0x410
+The issue with routing by error codes is that different functions can 
+return the same code but require different handling. For example, 
+both hfs_find_init() and hfs_brec_read() can return -ENOMEM 
+(the latter via __hfs_bnode_create).
 
-Using the combo of d_drop()/dput() (as mentioned in
-Documentation/filesystems/vfs.rst) isn't the right approach here, and
-leads to the reference counting problem seen above. Use d_invalidate()
-and update the code to not bother checking for error codes that can
-never happen.
+In the original code:
 
-Suggested-by: Alexander Viro <viro@zeniv.linux.org.uk>
-Fixes: 609e28bb139e ("pstore: Remove filesystem records when backend is unregistered")
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
-Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-hardening@vger.kernel.org
-[ Minor context change fixed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- fs/pstore/inode.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+- hfs_find_init() returning -ENOMEM is fatal (must abort mount).
+- hfs_brec_read() returning -ENOMEM is non-fatal (clean up and continue 
+mount).
 
-diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
-index 14658b009f1b..f56e0b105be7 100644
---- a/fs/pstore/inode.c
-+++ b/fs/pstore/inode.c
-@@ -312,7 +312,6 @@ int pstore_put_backend_records(struct pstore_info *psi)
- {
- 	struct pstore_private *pos, *tmp;
- 	struct dentry *root;
--	int rc = 0;
- 
- 	root = psinfo_lock_root();
- 	if (!root)
-@@ -322,11 +321,8 @@ int pstore_put_backend_records(struct pstore_info *psi)
- 	list_for_each_entry_safe(pos, tmp, &records_list, list) {
- 		if (pos->record->psi == psi) {
- 			list_del_init(&pos->list);
--			rc = simple_unlink(d_inode(root), pos->dentry);
--			if (WARN_ON(rc))
--				break;
--			d_drop(pos->dentry);
--			dput(pos->dentry);
-+			d_invalidate(pos->dentry);
-+			simple_unlink(d_inode(root), pos->dentry);
- 			pos->dentry = NULL;
- 		}
- 	}
-@@ -334,7 +330,7 @@ int pstore_put_backend_records(struct pstore_info *psi)
- 
- 	inode_unlock(d_inode(root));
- 
--	return rc;
-+	return 0;
- }
- 
- /*
--- 
-2.34.1
+If a helper simply returns err, the caller cannot distinguish which 
+function failed, making it impossible to safely decide whether to abort 
+or continue.
+
+Since the helper approach adds unnecessary complexity, wouldn't it be 
+better to stick with my original patch?
+
+Thanks,
+Zilin
 
 
