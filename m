@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-226634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHbTFe2PuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:25 +0100
+	id 7uqRDy6GuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496782AFBDD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D873D2AE7EA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35FA9308D6E1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:12:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 81EEE303300C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CC83F54A5;
-	Tue, 17 Mar 2026 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C4E3E5ED6;
+	Tue, 17 Mar 2026 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RANGS/Lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYHnd55N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEED23E6DCF;
-	Tue, 17 Mar 2026 17:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261BF179A3;
+	Tue, 17 Mar 2026 16:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767568; cv=none; b=fve4zjWsDseBOuoytx+CMZ7EEZSJ6A680VbCUxE2IoG/NDZVvBc3LiNbvuM6cYKKKQN/j/FMhXcKsTH3v7FFDa72Ei1NsRlAqhHJM//LLVsenDkqZfLiEKVTXASSzbStsspC0CRPdKUvvrHmpO8Iruqv/LOX2buzn2Cd/21Mrc4=
+	t=1773766177; cv=none; b=Gpe0I7akbYl+yJ4mPC+01q2+eDCsgjfykzOhWRCtm0UrMd3h6zqYNNd8xKUZkm1BsBkTylxatpq1QAvJhcv1AEMBIkuzQLn+j8WAE40pED2DfkYFJuQXJnBK4ydswMEpmqttB6nSO69zqu2z5+nOzmcKFNI+svGvfPGGarA5NwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767568; c=relaxed/simple;
-	bh=Hr4r2O/JpvSofGlmpnQjkcjUx+LWTZILwDEaCZBp0w8=;
+	s=arc-20240116; t=1773766177; c=relaxed/simple;
+	bh=rI1Lx3ezxJSWaBit2QPc0TebgZnuzCiXNLj2ctIPGBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiAiIB6Iv5YXUGUAQ0dtdhloUj38YdP6FcPSprEA9GHYf1oXueQVG0i/52qpR16Q+4CPvgnWmJozAaUA0krV683Cy6naUtPSqZBRb7U5h6iAZ3wIkUjx12xp/YlsQOo/emG1dV/73hofVuZotKhgts9jlTT0KnNC0yQkgtUBNEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RANGS/Lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05BAC4CEF7;
-	Tue, 17 Mar 2026 17:12:46 +0000 (UTC)
+	 MIME-Version; b=UftckR1My/xYC/jfa5CD2UbritSltkbJ5l1CAYqCw4G49+ng3pqEqeqA5FFJ0JHqH20gfS3bJXpsExXCgA/A7hJSghORWOPqbFopY17XzVQCebh/olu8d6YNhcrbjnqR787mjVMmLdcnS9+qdFgYkxMZFEpSN6RWfFq+xnQE7wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYHnd55N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46966C4CEF7;
+	Tue, 17 Mar 2026 16:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767567;
-	bh=Hr4r2O/JpvSofGlmpnQjkcjUx+LWTZILwDEaCZBp0w8=;
+	s=korg; t=1773766176;
+	bh=rI1Lx3ezxJSWaBit2QPc0TebgZnuzCiXNLj2ctIPGBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RANGS/LcHuBPQlgK03EWc490LQeG8S7+8ZyYZhL01FOY4KN2w+7ohqbgGXcf12D1M
-	 Vj88KtVKHM7f/FxlSAyhk4P7RtampZFuGSdv+trZUz8AU4ir632jO+bnNZA9A9xvoN
-	 csLUtRiWItij/sctwXTMqbu1swMM8KFmTjKra0qE=
+	b=vYHnd55NXUtpM/u+iuvm9Bkd6yh5odPZ0x4GGlwqWyxt1UtKdYCZe9vJp0W0SxGc8
+	 PJO9uf39XORwBHsdUknkjfCg03EP73bXcaCmuE4TTKTs+dr3+ISdHh0so8zy9XYsAC
+	 ZLLQ8+gsDLMqHM0kOP1GbZ4q17tIgw/j0Z0NDQ4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.18 114/333] rust_binder: fix oneway spam detection
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 186/378] sched/mmcid: Handle vfork()/CLONE_VM correctly
 Date: Tue, 17 Mar 2026 17:32:23 +0100
-Message-ID: <20260317163003.595276780@linuxfoundation.org>
+Message-ID: <20260317163013.849583054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,168 +70,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226634-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,args.pid:url]
-X-Rspamd-Queue-Id: 496782AFBDD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D873D2AE7EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 4fc87c240b8f30e22b7ebaae29d57105589e1c0b upstream.
+[ Upstream commit 28b5a1395036d6c7a6c8034d85ad3d7d365f192c ]
 
-The spam detection logic in TreeRange was executed before the current
-request was inserted into the tree. So the new request was not being
-factored in the spam calculation. Fix this by moving the logic after
-the new range has been inserted.
+Matthieu and Jiri reported stalls where a task endlessly loops in
+mm_get_cid() when scheduling in.
 
-Also, the detection logic for ArrayRange was missing altogether which
-meant large spamming transactions could get away without being detected.
-Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
+It turned out that the logic which handles vfork()'ed tasks is broken. It
+is invoked when the number of tasks associated to a process is smaller than
+the number of MMCID users. It then walks the task list to find the
+vfork()'ed task, but accounts all the already processed tasks as well.
 
-Note that I looked into centralizing this logic in RangeAllocator but
-iterating through 'state' and 'size' got a bit too complicated (for me)
-and I abandoned this effort.
+If that double processing brings the number of to be handled tasks to 0,
+the walk stops and the vfork()'ed task's CID is not fixed up. As a
+consequence a subsequent schedule in fails to acquire a (transitional) CID
+and the machine stalls.
 
-Cc: stable <stable@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260210232949.3770644-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cure this by removing the accounting condition and make the fixup always
+walk the full task list if it could not find the exact number of users in
+the process' thread list.
+
+Fixes: fbd0e71dc370 ("sched/mmcid: Provide CID ownership mode fixup functions")
+Closes: https://lore.kernel.org/b24ffcb3-09d5-4e48-9070-0b69bc654281@kernel.org
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260310202526.048657665@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder/range_alloc/array.rs |   35 ++++++++++++++++++++++++++--
- drivers/android/binder/range_alloc/mod.rs   |    4 +--
- drivers/android/binder/range_alloc/tree.rs  |   18 +++++++-------
- 3 files changed, 44 insertions(+), 13 deletions(-)
+ kernel/sched/core.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/android/binder/range_alloc/array.rs
-+++ b/drivers/android/binder/range_alloc/array.rs
-@@ -118,7 +118,7 @@ impl<T> ArrayRangeAllocator<T> {
-         size: usize,
-         is_oneway: bool,
-         pid: Pid,
--    ) -> Result<usize> {
-+    ) -> Result<(usize, bool)> {
-         // Compute new value of free_oneway_space, which is set only on success.
-         let new_oneway_space = if is_oneway {
-             match self.free_oneway_space.checked_sub(size) {
-@@ -146,7 +146,38 @@ impl<T> ArrayRangeAllocator<T> {
-             .ok()
-             .unwrap();
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index ca6e6e4b17eaf..24d607c78f119 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -10618,10 +10618,7 @@ static void mm_cid_do_fixup_tasks_to_cpus(struct mm_struct *mm)
+ 	for_each_process_thread(p, t) {
+ 		if (t == current || t->mm != mm)
+ 			continue;
+-		if (mm_cid_fixup_task_to_cpu(t, mm)) {
+-			if (--users == 0)
+-				return;
+-		}
++		mm_cid_fixup_task_to_cpu(t, mm);
+ 	}
+ }
  
--        Ok(insert_at_offset)
-+        // Start detecting spammers once we have less than 20%
-+        // of async space left (which is less than 10% of total
-+        // buffer size).
-+        //
-+        // (This will short-circuit, so `low_oneway_space` is
-+        // only called when necessary.)
-+        let oneway_spam_detected =
-+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
-+
-+        Ok((insert_at_offset, oneway_spam_detected))
-+    }
-+
-+    /// Find the amount and size of buffers allocated by the current caller.
-+    ///
-+    /// The idea is that once we cross the threshold, whoever is responsible
-+    /// for the low async space is likely to try to send another async transaction,
-+    /// and at some point we'll catch them in the act.  This is more efficient
-+    /// than keeping a map per pid.
-+    fn low_oneway_space(&self, calling_pid: Pid) -> bool {
-+        let mut total_alloc_size = 0;
-+        let mut num_buffers = 0;
-+
-+        // Warn if this pid has more than 50 transactions, or more than 50% of
-+        // async space (which is 25% of total buffer size). Oneway spam is only
-+        // detected when the threshold is exceeded.
-+        for range in &self.ranges {
-+            if range.state.is_oneway() && range.state.pid() == calling_pid {
-+                total_alloc_size += range.size;
-+                num_buffers += 1;
-+            }
-+        }
-+        num_buffers > 50 || total_alloc_size > self.size / 4
-     }
- 
-     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
---- a/drivers/android/binder/range_alloc/mod.rs
-+++ b/drivers/android/binder/range_alloc/mod.rs
-@@ -188,11 +188,11 @@ impl<T> RangeAllocator<T> {
-                 self.reserve_new(args)
-             }
-             Impl::Array(array) => {
--                let offset =
-+                let (offset, oneway_spam_detected) =
-                     array.reserve_new(args.debug_id, args.size, args.is_oneway, args.pid)?;
-                 Ok(ReserveNew::Success(ReserveNewSuccess {
-                     offset,
--                    oneway_spam_detected: false,
-+                    oneway_spam_detected,
-                     _empty_array_alloc: args.empty_array_alloc,
-                     _new_tree_alloc: args.new_tree_alloc,
-                     _tree_alloc: args.tree_alloc,
---- a/drivers/android/binder/range_alloc/tree.rs
-+++ b/drivers/android/binder/range_alloc/tree.rs
-@@ -164,15 +164,6 @@ impl<T> TreeRangeAllocator<T> {
-             self.free_oneway_space
-         };
- 
--        // Start detecting spammers once we have less than 20%
--        // of async space left (which is less than 10% of total
--        // buffer size).
--        //
--        // (This will short-circut, so `low_oneway_space` is
--        // only called when necessary.)
--        let oneway_spam_detected =
--            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
--
-         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
-             None => {
-                 pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
-@@ -203,6 +194,15 @@ impl<T> TreeRangeAllocator<T> {
-             self.free_tree.insert(free_tree_node);
-         }
- 
-+        // Start detecting spammers once we have less than 20%
-+        // of async space left (which is less than 10% of total
-+        // buffer size).
-+        //
-+        // (This will short-circuit, so `low_oneway_space` is
-+        // only called when necessary.)
-+        let oneway_spam_detected =
-+            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
-+
-         Ok((found_off, oneway_spam_detected))
-     }
- 
+-- 
+2.51.0
+
 
 
 
