@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IBVAsiHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:40 +0100
+	id SChKDqeNuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9462AEA97
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47182AF677
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA3C430379C0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3D3F308A94F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F0E3F54BE;
-	Tue, 17 Mar 2026 16:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB3D35A39C;
+	Tue, 17 Mar 2026 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gxbf6vX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTN0NHwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366A23C6612;
-	Tue, 17 Mar 2026 16:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E89A2FD69D;
+	Tue, 17 Mar 2026 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766539; cv=none; b=rM3aJsQj3+JHQoDYjCVJbnKO9iYfyhW+BDtdhAYdpI3ZSClIF9qnafz6HL8Slxd865yzxQgqv7BtS2vpGpBmtsBUZ5sNCH4oX+XJhpiXiwcL9II06lyif2Dlnc65vqZrh1Y0qtf9lf1yrS/MLtwEznZmjiQNBV/s2R6eLhpPX2M=
+	t=1773767938; cv=none; b=Ej7kU/RT6kXrAnHiNwmSqytHlG68zFYrJoucOI1RkHqFUsoFpzUhScUKjXvOqlEVZAMhQXDQiywCntdaYpA2t02y9iex4EhWMDUawsLBsWm2wAIXvJciMB5+tb+WCeo3I+rSeJS+kIuwdd9/6tSGQLvrBElUADEYmx0p3nYUss0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766539; c=relaxed/simple;
-	bh=QLTZza9WrUZ6zySGgWz+QDsVjiTLEpVrHnF5motGdcg=;
+	s=arc-20240116; t=1773767938; c=relaxed/simple;
+	bh=dFg9RGgAvxYAsIDIZRuDnQvIy2wvf9MbYnEVUCh+gy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b++onKgfEwW7QzIpfQiqEnHc4I35j9PSYCWkWYT6REJQU53m0W8e4HO1C4PinlH+RQm9TJ241Ln7ezONlwcpJvtKpvfy7h5pi7VoxPcGsWNL4qGTI8Xj0YYb2eQGzizw2lTQaF9fOu/+03bnTUrCesQevgCe/iG+OJ8XRNSD7bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gxbf6vX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB13DC4CEF7;
-	Tue, 17 Mar 2026 16:55:38 +0000 (UTC)
+	 MIME-Version; b=Omj67TszJufiiOWLE3rl5J4wJ0NpQt8MLwa0MfILJ5Qlbz3m8Q+nxmh/D/ecx9eUM12QhOgUdzhjKkskSClLsmO+eXGHmJct+bFGZwdHcqJ2zAaQRkXk3gOPSv7wciTSK2wSeayVlTwvMF60h6laFgSEUMeV//pv8+ZtIREqpoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTN0NHwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DB4C19424;
+	Tue, 17 Mar 2026 17:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766539;
-	bh=QLTZza9WrUZ6zySGgWz+QDsVjiTLEpVrHnF5motGdcg=;
+	s=korg; t=1773767938;
+	bh=dFg9RGgAvxYAsIDIZRuDnQvIy2wvf9MbYnEVUCh+gy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gxbf6vXE/tDmzTgCY9jhFR4PxkKsyyCWH3mFLQ0/lfVksF5jXGDRTlo4b5PPgubH
-	 2GhV2cKzYs+TwOMEbmkGHe15enZb3AENIRekSR/GvfDW73VSmLiTwSjVc7Ng0MhKYJ
-	 HYBZjc2cu6KeUxRj75Rns90kZbdI238h3KH1RptY=
+	b=OTN0NHwILeMsm3LL1o4symTkxJ2ZMZgeSJbK4E9M8YkOrJ7rGX//Xrr+So4b3M+tB
+	 DL/lo8VAGoVpTkypLLgRv9ZFeyELfYgS9882oUt/QZE4M/181I+ney6CiFy64p7vng
+	 1ucn9TzkHrU1oDGKIRjWqIvd7dkjP3h3vBNsufUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 266/378] net/tcp-md5: Fix MAC comparison to be constant-time
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.18 194/333] gpiolib: normalize the return value of gc->get() on behalf of buggy drivers
 Date: Tue, 17 Mar 2026 17:33:43 +0100
-Message-ID: <20260317163016.798471937@linuxfoundation.org>
+Message-ID: <20260317163006.551785572@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226400-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226718-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9C9462AEA97
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A47182AF677
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-commit 46d0d6f50dab706637f4c18a470aac20a21900d3 upstream.
+commit ec2cceadfae72304ca19650f9cac4b2a97b8a2fc upstream.
 
-To prevent timing attacks, MACs need to be compared in constant
-time.  Use the appropriate helper function for this.
+Commit 86ef402d805d ("gpiolib: sanitize the return value of
+gpio_chip::get()") started checking the return value of the .get()
+callback in struct gpio_chip. Now - almost a year later - it turns out
+that there are quite a few drivers in tree that can break with this
+change. Partially revert it: normalize the return value in GPIO core but
+also emit a warning.
 
-Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
-Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::get()")
+Reported-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Closes: https://lore.kernel.org/all/aZSkqGTqMp_57qC7@google.com/
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://patch.msgid.link/20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/Kconfig    |    1 +
- net/ipv4/tcp.c      |    3 ++-
- net/ipv4/tcp_ipv4.c |    3 ++-
- net/ipv6/tcp_ipv6.c |    3 ++-
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/Kconfig
-+++ b/net/ipv4/Kconfig
-@@ -762,6 +762,7 @@ config TCP_AO
- config TCP_MD5SIG
- 	bool "TCP: MD5 Signature Option support (RFC2385)"
- 	select CRYPTO_LIB_MD5
-+	select CRYPTO_LIB_UTILS
- 	help
- 	  RFC2385 specifies a method of giving MD5 protection to TCP sessions.
- 	  Its main (only?) use is to protect BGP sessions between core routers
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -244,6 +244,7 @@
- #define pr_fmt(fmt) "TCP: " fmt
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3249,8 +3249,12 @@ static int gpiochip_get(struct gpio_chip
  
- #include <crypto/md5.h>
-+#include <crypto/utils.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/types.h>
-@@ -4912,7 +4913,7 @@ tcp_inbound_md5_hash(const struct sock *
- 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
- 	else
- 		tp->af_specific->calc_md5_hash(newhash, key, NULL, skb);
--	if (memcmp(hash_location, newhash, 16) != 0) {
-+	if (crypto_memneq(hash_location, newhash, 16)) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
- 		trace_tcp_hash_md5_mismatch(sk, skb);
- 		return SKB_DROP_REASON_TCP_MD5FAILURE;
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -88,6 +88,7 @@
- #include <linux/skbuff_ref.h>
+ 	/* Make sure this is called after checking for gc->get(). */
+ 	ret = gc->get(gc, offset);
+-	if (ret > 1)
+-		ret = -EBADE;
++	if (ret > 1) {
++		gpiochip_warn(gc,
++			"invalid return value from gc->get(): %d, consider fixing the driver\n",
++			ret);
++		ret = !!ret;
++	}
  
- #include <crypto/md5.h>
-+#include <crypto/utils.h>
- 
- #include <trace/events/tcp.h>
- 
-@@ -838,7 +839,7 @@ static void tcp_v4_send_reset(const stru
- 			goto out;
- 
- 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
--		if (memcmp(md5_hash_location, newhash, 16) != 0)
-+		if (crypto_memneq(md5_hash_location, newhash, 16))
- 			goto out;
- 	}
- 
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -68,6 +68,7 @@
- #include <linux/seq_file.h>
- 
- #include <crypto/md5.h>
-+#include <crypto/utils.h>
- 
- #include <trace/events/tcp.h>
- 
-@@ -1043,7 +1044,7 @@ static void tcp_v6_send_reset(const stru
- 		key.type = TCP_KEY_MD5;
- 
- 		tcp_v6_md5_hash_skb(newhash, key.md5_key, NULL, skb);
--		if (memcmp(md5_hash_location, newhash, 16) != 0)
-+		if (crypto_memneq(md5_hash_location, newhash, 16))
- 			goto out;
- 	}
- #endif
+ 	return ret;
+ }
 
 
 
