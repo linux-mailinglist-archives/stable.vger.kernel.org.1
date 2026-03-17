@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-226569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJqEA9yKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:48 +0100
+	id 6IFnFdeMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A7D2AF10F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8C42AF48F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6607930612BA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA2CA32E6E8E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284EA3F65FB;
-	Tue, 17 Mar 2026 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD8E3F6611;
+	Tue, 17 Mar 2026 17:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaYhki/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLbZB5dx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095E2116F6;
-	Tue, 17 Mar 2026 17:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6A3F54CC;
+	Tue, 17 Mar 2026 17:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767272; cv=none; b=XsEWIUsjUfrejMjdFrhMfLBWvIQrKOqnBgUaLiroDVAGs+ZAkYHBYiKjNCkDggvfwFFMuZezVw+5tCQTeTPtOvYOVQEg24+X4CV/I+KwSsoLbdfGlZzBsYYtt0ozqzb0F7YG4m2ze11iNF9NP8GreT8T+4mQu5dxtwN5nGqt/+s=
+	t=1773767324; cv=none; b=AkI32dsjBwUAgOPoUtngFYx8F3yjOsi7hBhUH87GK2278I4QPrH0M/YSbjdq6A+NjTAkIEVumHYYoh03hzrVnEbLI9Jh541iVRX4u0M7BTBl/VhT//NwC3kE6Rn7ODqOsSOtN4zDSirVnGx570+7IKVU45tcPM9EXyxY336tAZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767272; c=relaxed/simple;
-	bh=foL7UGfF5c2X0mCpN2OZo5gJLVv37ePd5O4EjDCZAtc=;
+	s=arc-20240116; t=1773767324; c=relaxed/simple;
+	bh=HxaM9ZpUBD3+X4BpSE2R2m9Esme+ckxPY2mh5CsikLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8wxa7qHEAr7Ock7s+lQXjyvyDQiQaCo1c7PjiQGSedPF4MbEEpnceGo4qIzMJznFg+KIYrwBNX6LwDLwBgT+WX2kdlVWVVDtfNu8ACU91ckvM+Egbt0TrKle82xnk2X3XaGXq0ojSi3RGWPZdTTGTcy53djBxVtaqL+ut71eh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaYhki/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E022C4CEF7;
-	Tue, 17 Mar 2026 17:07:50 +0000 (UTC)
+	 MIME-Version; b=WQjddPvMaOIzcFJctH0+T0hg6sXYxZ5FNEHu3n1UhWtNClZlT+FQFIzGPgSgY9Zy9iUQxhhACYG2M5UmvStN+poN5oQonqXdAoJTKcK0fp386KyQ3kilny9hXnBKBhqGoaya9IyNVUwu/sOmjskiTNJBdbRjdhbVwcJ+CGSrEak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLbZB5dx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBF8C19424;
+	Tue, 17 Mar 2026 17:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767272;
-	bh=foL7UGfF5c2X0mCpN2OZo5gJLVv37ePd5O4EjDCZAtc=;
+	s=korg; t=1773767324;
+	bh=HxaM9ZpUBD3+X4BpSE2R2m9Esme+ckxPY2mh5CsikLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaYhki/XD2Jm3n0HEMF95K3l6aOUu1hM0PhFaPLBPPSktFLCmJvy2DL1FZOz/koox
-	 mQ4SvpYrhTuOiqK1pBG13ziMQec+fsM10XqsQz2jBszcShKzoEAwpN/uU20fR+4Wxn
-	 /qfprBiW1xnokCAUqzVm9CUld4HmgbF+gEAy2O58=
+	b=jLbZB5dxY/7n0fehX1g2zQfURMFbzk7xdXMhIg4rYUwahoBOc5aEiSuIMJkNyOQfb
+	 DtoQFwr8NdSvn8xzrQqbCaIaxqp19b40gebm5D5InihCnUlmhgoRyB+/AuiIbu3nQr
+	 9FlieYLM+AELHMfuh0E+t+touFyIpYxem7O9ua+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 034/333] drm/msm/dsi: fix pclk rate calculation for bonded dsi
-Date: Tue, 17 Mar 2026 17:31:03 +0100
-Message-ID: <20260317163000.627497886@linuxfoundation.org>
+Subject: [PATCH 6.18 035/333] drm/amd/pm: add missing od setting PP_OD_FEATURE_ZERO_FAN_BIT for smu v13
+Date: Tue, 17 Mar 2026 17:31:04 +0100
+Message-ID: <20260317163000.664483028@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -66,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226569-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226581-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 78A7D2AF10F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: AF8C42AF48F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,83 +99,52 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit e4eb11b34d6c84f398d8f08d7cb4d6c38e739dd2 ]
+[ Upstream commit cb47c882c31334aadc13ace80781728ed22a05ee ]
 
-Recently, we round up new_hdisplay once at most, for bonded dsi, we
-may need twice, since they are independent links, we should round up
-each half separately. This also aligns with the hdisplay we program
-later in dsi_timing_setup()
+add missing od setting PP_OD_FEATURE_ZERO_FAN_BIT for smu v13.0.0/13.0.7
 
-Example:
-	full_hdisplay = 1904, dsc_bpp = 8, bpc = 8
-	new_full_hdisplay = DIV_ROUND_UP(1904 * 8, 8 * 3) = 635
-
-if we use half display
-	new_half_hdisplay = DIV_ROUND_UP(952 * 8, 8 * 3) = 318
-	new_full_display = 636
-
-Fixes: 7c9e4a554d4a ("drm/msm/dsi: Reduce pclk rate for compression")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/709716/
-Link: https://lore.kernel.org/r/20260306163255.215456-1-mitltlatltl@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: cfffd980bf21 ("drm/amd/pm: add zero RPM OD setting support for SMU13")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/5018
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 576a10797b607ee9e4068218daf367b481564120)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 3 ++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index e8e83ee61eb09..db6da99375a18 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -584,13 +584,30 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
-  *  FIXME: Reconsider this if/when CMD mode handling is rewritten to use
-  *  transfer time and data overhead as a starting point of the calculations.
-  */
--static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mode *mode,
--		const struct drm_dsc_config *dsc)
-+static unsigned long
-+dsi_adjust_pclk_for_compression(const struct drm_display_mode *mode,
-+				const struct drm_dsc_config *dsc,
-+				bool is_bonded_dsi)
- {
--	int new_hdisplay = DIV_ROUND_UP(mode->hdisplay * drm_dsc_get_bpp_int(dsc),
--			dsc->bits_per_component * 3);
-+	int hdisplay, new_hdisplay, new_htotal;
- 
--	int new_htotal = mode->htotal - mode->hdisplay + new_hdisplay;
-+	/*
-+	 * For bonded DSI, split hdisplay across two links and round up each
-+	 * half separately, passing the full hdisplay would only round up once.
-+	 * This also aligns with the hdisplay we program later in
-+	 * dsi_timing_setup()
-+	 */
-+	hdisplay = mode->hdisplay;
-+	if (is_bonded_dsi)
-+		hdisplay /= 2;
-+
-+	new_hdisplay = DIV_ROUND_UP(hdisplay * drm_dsc_get_bpp_int(dsc),
-+				    dsc->bits_per_component * 3);
-+
-+	if (is_bonded_dsi)
-+		new_hdisplay *= 2;
-+
-+	new_htotal = mode->htotal - mode->hdisplay + new_hdisplay;
- 
- 	return mult_frac(mode->clock * 1000u, new_htotal, mode->htotal);
- }
-@@ -603,7 +620,7 @@ static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
- 	pclk_rate = mode->clock * 1000u;
- 
- 	if (dsc)
--		pclk_rate = dsi_adjust_pclk_for_compression(mode, dsc);
-+		pclk_rate = dsi_adjust_pclk_for_compression(mode, dsc, is_bonded_dsi);
- 
- 	/*
- 	 * For bonded DSI mode, the current DRM mode has the complete width of the
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 8d070a9ea2c10..651fe1926a698 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2289,7 +2289,8 @@ static int smu_v13_0_0_restore_user_od_settings(struct smu_context *smu)
+ 	user_od_table->OverDriveTable.FeatureCtrlMask = BIT(PP_OD_FEATURE_GFXCLK_BIT) |
+ 							BIT(PP_OD_FEATURE_UCLK_BIT) |
+ 							BIT(PP_OD_FEATURE_GFX_VF_CURVE_BIT) |
+-							BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
++							BIT(PP_OD_FEATURE_FAN_CURVE_BIT) |
++							BIT(PP_OD_FEATURE_ZERO_FAN_BIT);
+ 	res = smu_v13_0_0_upload_overdrive_table(smu, user_od_table);
+ 	user_od_table->OverDriveTable.FeatureCtrlMask = 0;
+ 	if (res == 0)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+index c96fa5e49ed65..87dfc3c3cd9c3 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2275,7 +2275,8 @@ static int smu_v13_0_7_restore_user_od_settings(struct smu_context *smu)
+ 	user_od_table->OverDriveTable.FeatureCtrlMask = BIT(PP_OD_FEATURE_GFXCLK_BIT) |
+ 							BIT(PP_OD_FEATURE_UCLK_BIT) |
+ 							BIT(PP_OD_FEATURE_GFX_VF_CURVE_BIT) |
+-							BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
++							BIT(PP_OD_FEATURE_FAN_CURVE_BIT) |
++							BIT(PP_OD_FEATURE_ZERO_FAN_BIT);
+ 	res = smu_v13_0_7_upload_overdrive_table(smu, user_od_table);
+ 	user_od_table->OverDriveTable.FeatureCtrlMask = 0;
+ 	if (res == 0)
 -- 
 2.51.0
 
