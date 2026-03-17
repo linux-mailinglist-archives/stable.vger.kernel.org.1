@@ -1,191 +1,151 @@
-Return-Path: <stable+bounces-225974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id c+j1NORQuWkoAgIAu9opvQ
-	(envelope-from <stable+bounces-225974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:02:28 +0100
+	id SNEHEeRRuWkoAgIAu9opvQ
+	(envelope-from <stable+bounces-225976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:06:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D349B2AA5D2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:02:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4222AA773
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 45B00303A276
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:00:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F6EA31EBFF3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC493C73C0;
-	Tue, 17 Mar 2026 12:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CFB3C73FE;
+	Tue, 17 Mar 2026 13:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="DL9Sr7Iv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ezk9mQf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48063C6A3D
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CE83C73DA
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773752382; cv=none; b=WJ8DyT3Qn0wSYPI3xkLSvSrLstnA/kRB1Ck1s3Ozd64GbbzksJtaw1WyV7GAooW/wVLiKOguN6ngrUcxUJat1y64ISFZgcCQpPzUZgDraFN50uU487Fo5T1oF7sG3DgZTKxFYmLQMd3bN0dN7UKJ+vzdGuxvCpe0OC0xDmdNM2k=
+	t=1773752405; cv=none; b=GtLGUOYUDsJRGwdFiavaXJcYAglvZM4rklLeHw65XNtsX4RZes0EDxqDsQdvvjuOL2lUDmufEMqoa4rDWHR/MnxfCiH8zhbzZGU7KMfefnaWHXjjS1O/26QKLz+iz/M25Hwt0YGgylVHc37QB6BjNuB4ONJ0CWLjY+MjQC4gfH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773752382; c=relaxed/simple;
-	bh=Lw1Q2KCCiz8nj6exr/Eke4nZYQruMtMWJGNy+TewuXg=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=Z07cq0hlhCr6nMnsVwRM8Sy4nUJXBFBkx2whSQw7vEnE+Hr4oPPFMU3+cmEIYnepUcYvK4PVT1mauYMWdmvtxWHiJ8WwFogY332eUryoK7lB3sXG6j6xxdgmLNyrfNHXij1X3lMJcRZ6HT0U17XGn76yEB7S9v3YmkxjuWv9LhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=DL9Sr7Iv; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-464bc03efd8so3749224b6e.2
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 05:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1773752380; x=1774357180; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BkwUmi/Ea5MAtsW8mnEudhJXDU7K3LG3tUiAJ0N2NeA=;
-        b=DL9Sr7IvtGsB5kOe0h8aRSwiu0wTWnaGTRiKezqiFlkgPU7EcItDiTgj7M84vlmpYd
-         XBwp6KM+z3Nq34Qb45B3QvzDVXEoSsARo8sVaPgazk9YsRVRU5dCLY0fiqhYMqEhZKI+
-         zGcie0/0b4DGmeMk/W16P7TtAN/1L2DBY8U/zi9WvbTCIoOshyIsoafnPws8hhDj9SHD
-         RFbeGidY5WF2OKRF9nYfMp6FaEQmXoBLRObmn9KzN48cOvgfjeXef1FPyUbgmN4RZ9dR
-         Mz8ptbWcznSTEl2geq7cuxUU7r5ODbmn8x0LYJzaF+h7vtFdM+Qcx5hJHr4ZWLYcnsSi
-         o6PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773752380; x=1774357180;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BkwUmi/Ea5MAtsW8mnEudhJXDU7K3LG3tUiAJ0N2NeA=;
-        b=WI/gob4A1Y3GlHo2w+1Pu3wOE+ksmHefSzQ3ZH5awh+dWQHMVUh/BhJ8A0qmuNNnIm
-         zuhBYeJ9oVaRsvDnc2kpT1L/yB88kDteS5grkMcjpMo9eLN3yjRKi6AW+DAsPLqczvdF
-         xhXC00ZxEqH4rljYFwXU/jw3mgfqXCxqa7M5zuCY6/ZPU4YEY7TOSKTpV+ZOnCYKEwPt
-         JS7nbrljJzFpCXKPWGHGWYT+0/GPHOpLvEoBwxwpvCqg7ZfmPCym1JG73SgOcKePfYiQ
-         eS8jnvzE5AkBbp+8adqUzY6XwnFo4NWcsJ2cojsGetZxIY8/AysTmKCrVten1aOw4C6i
-         VxFg==
-X-Gm-Message-State: AOJu0YwtUxdv/FlImqiQWbGPpsEh7VBK2uML2khQZHdOXOGRxZYTYOKX
-	kVm7M/2/G9WEh381o/wP54q0hhdzzbhhuEYJq+iv+Hf3tXIF6oxBNE/wGZ3ln7z9y1ttryW3ZYw
-	BSrcGG4Y=
-X-Gm-Gg: ATEYQzwwVIbpjA7yyzIGIq5i+Re3KRyDAHk9DgKcYWqKG2m+JUgtDqoyHDesBvRMaBd
-	CquMoEqd8+CQyscd4K2uPWTefJQrHcBLTS0TgiNjcS8NIush1C+/YiAztJkOf+nuMCMhmwX72+y
-	TQ/ShNcZm/HfUjiPr8xoiS/8OmEwJGwav7ZVJRWVTNtkWszg7YxfXzcJ2DE5pgxsc7efERtqYW+
-	GS2UxI4EjWyGzpARx+W8s5nGLb/D/AfhzLcYwydEhRN/OhAyFE9V1Y/UykUgaNocNETJIMtj77h
-	bLODyWNaz5EuarmMcd8rk0AaTTqMThxZrzEoYjb8oCvGiXl4O5XPEL0lrg8+gIF379QSd4QyL3t
-	bCfEJ4q2p511jyTzNt5ZMUZ2fkydzgLd0TrGDcIonrdPH783NbpNuzzol6IBJy/j8bb5BeTa2r6
-	8Z1/Qg8MIfuYCwSqIukoGdDVbjtAm6NWrlY7wUIcFenny96KEL7lJJv30B/0qY7UIjweiMECTiF
-	aSGof1IEgZNDEMFz592
-X-Received: by 2002:a05:6808:6414:b0:467:2418:cee2 with SMTP id 5614622812f47-4675757805cmr9315599b6e.56.1773752379572;
-        Tue, 17 Mar 2026 05:59:39 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-46744873a6asm10050879b6e.9.2026.03.17.05.59.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2026 05:59:38 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------tcqGXRUlHzbR3Jpp0u03xkRc"
-Message-ID: <4e1d07d8-73fe-41d2-a2a7-31f769f4503c@kernel.dk>
-Date: Tue, 17 Mar 2026 06:59:37 -0600
+	s=arc-20240116; t=1773752405; c=relaxed/simple;
+	bh=ZqBSIj4E2eK/RbcxcBUpYxbOUh98sQxWniwHtbYMcaI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G9AH6HsrjUXZEIWsUci+DoZtwK/smnAPsFvPFVDC8ftwZV7VdnpUEGohRpz1ekl9AtGqMejEpiVstw+f7B9eXMmILsxI7SNbd0fnesUkjvI20QkgrmbEthlil4HobhmR8sTcQu6voJVJ5rwl9vK+uAkBQKmUwOqQQ6Um29qb9gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ezk9mQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC763C19425;
+	Tue, 17 Mar 2026 13:00:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773752405;
+	bh=ZqBSIj4E2eK/RbcxcBUpYxbOUh98sQxWniwHtbYMcaI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0ezk9mQfeX8e/kpQ2d8UzOM2g0T1pBbFzRvA8dGj88RKNrSGMyjuRTqPaA5GK7M41
+	 2tSRv1+7oDmqF4JzeYH8L/+hrEU49ZX578fv89gdfKFrLsc94tq9U5XvSLbpY+llJS
+	 GRDhiyBvXK1sHnIvvBqBTBDUkTo8Ph+SyyxmX3M0=
+Subject: FAILED: patch "[PATCH] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()" failed to apply to 6.12-stable tree
+To: mhiramat@kernel.org,shicenci@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 14:00:01 +0100
+Message-ID: <2026031701-glider-ominous-ade9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/kbuf: check if target buffer list
- is still legacy on" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org, keenanat2000@gmail.com
-Cc: stable@vger.kernel.org
-References: <2026031700-vagrancy-doze-c356@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2026031700-vagrancy-doze-c356@gregkh>
-X-Spamd-Result: default: False [-0.56 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225974-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225976-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	HAS_ATTACHMENT(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,kernel.dk:mid,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D349B2AA5D2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: CC4222AA773
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is a multi-part message in MIME format.
---------------tcqGXRUlHzbR3Jpp0u03xkRc
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 3/17/26 6:55 AM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Here's a tested version for 6.12.
+To reproduce the conflict and resubmit, you may use the following commands:
 
--- 
-Jens Axboe
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5ef268cb7a0aac55521fd9881f1939fa94a8988e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031701-glider-ominous-ade9@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
---------------tcqGXRUlHzbR3Jpp0u03xkRc
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-kbuf-check-if-target-buffer-list-is-still-l.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-kbuf-check-if-target-buffer-list-is-still-l.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
+Possible dependencies:
 
-RnJvbSBkOWM5YjIyOTgzYWRlM2FiNTBjYjM2ZmY3ZDVmODg2NDczOTYzYWYyIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFRodSwgMTIgTWFyIDIwMjYgMDg6NTk6MjUgLTA2MDAKU3ViamVjdDogW1BBVENIXSBp
-b191cmluZy9rYnVmOiBjaGVjayBpZiB0YXJnZXQgYnVmZmVyIGxpc3QgaXMgc3RpbGwgbGVn
-YWN5IG9uCiByZWN5Y2xlCgpDb21taXQgYzJjMTg1YmU1Yzg1ZDM3MjE1Mzk3YzhlODc4MWFi
-ZjBhNjliZWMxZiB1cHN0cmVhbS4KClRoZXJlJ3MgYSBnYXAgYmV0d2VlbiB3aGVuIHRoZSBi
-dWZmZXIgd2FzIGdyYWJiZWQgYW5kIHdoZW4gaXQKcG90ZW50aWFsbHkgZ2V0cyByZWN5Y2xl
-ZCwgd2hlcmUgaWYgdGhlIGxpc3QgaXMgZW1wdHksIHNvbWVvbmUgY291bGQndmUKdXBncmFk
-ZWQgaXQgdG8gYSByaW5nIHByb3ZpZGVkIHR5cGUuIFRoaXMgY2FuIGhhcHBlbiBpZiB0aGUg
-cmVxdWVzdAppcyBmb3JjZWQgdmlhIGlvLXdxLiBUaGUgbGVnYWN5IHJlY3ljbGluZyBpcyBt
-aXNzaW5nIGNoZWNraW5nIGlmIHRoZQpidWZmZXJfbGlzdCBzdGlsbCBleGlzdHMsIGFuZCBp
-ZiBpdCdzIG9mIHRoZSBjb3JyZWN0IHR5cGUuIEFkZCB0aG9zZQpjaGVja3MuCgpDYzogc3Rh
-YmxlQHZnZXIua2VybmVsLm9yZwpGaXhlczogYzdmYjE5NDI4ZDY3ICgiaW9fdXJpbmc6IGFk
-ZCBzdXBwb3J0IGZvciByaW5nIG1hcHBlZCBzdXBwbGllZCBidWZmZXJzIikKUmVwb3J0ZWQt
-Ynk6IEtlZW5hbiBEb25nIDxrZWVuYW5hdDIwMDBAZ21haWwuY29tPgpTaWduZWQtb2ZmLWJ5
-OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0tLQogaW9fdXJpbmcva2J1Zi5jIHwg
-MTIgKysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pb191cmluZy9rYnVmLmMgYi9pb191cmluZy9r
-YnVmLmMKaW5kZXggOWJkMjdkZWVlZTZmLi4yNTU5N2YwNjI5ZjMgMTAwNjQ0Ci0tLSBhL2lv
-X3VyaW5nL2tidWYuYworKysgYi9pb191cmluZy9rYnVmLmMKQEAgLTYyLDkgKzYyLDE3IEBA
-IGJvb2wgaW9fa2J1Zl9yZWN5Y2xlX2xlZ2FjeShzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5z
-aWduZWQgaXNzdWVfZmxhZ3MpCiAKIAlidWYgPSByZXEtPmtidWY7CiAJYmwgPSBpb19idWZm
-ZXJfZ2V0X2xpc3QoY3R4LCBidWYtPmJnaWQpOwotCWxpc3RfYWRkKCZidWYtPmxpc3QsICZi
-bC0+YnVmX2xpc3QpOwotCXJlcS0+ZmxhZ3MgJj0gflJFUV9GX0JVRkZFUl9TRUxFQ1RFRDsK
-KwkvKgorCSAqIElmIHRoZSBidWZmZXIgbGlzdCB3YXMgdXBncmFkZWQgdG8gYSByaW5nLWJh
-c2VkIG9uZSwgb3IgcmVtb3ZlZCwKKwkgKiB3aGlsZSB0aGUgcmVxdWVzdCB3YXMgaW4tZmxp
-Z2h0IGluIGlvLXdxLCBkcm9wIGl0LgorCSAqLwogCXJlcS0+YnVmX2luZGV4ID0gYnVmLT5i
-Z2lkOworCWlmIChibCAmJiAhKGJsLT5mbGFncyAmIElPQkxfQlVGX1JJTkcpKQorCQlsaXN0
-X2FkZCgmYnVmLT5saXN0LCAmYmwtPmJ1Zl9saXN0KTsKKwllbHNlCisJCWttZW1fY2FjaGVf
-ZnJlZShpb19idWZfY2FjaGVwLCBidWYpOworCXJlcS0+ZmxhZ3MgJj0gflJFUV9GX0JVRkZF
-Ul9TRUxFQ1RFRDsKKwlyZXEtPmtidWYgPSBOVUxMOwogCiAJaW9fcmluZ19zdWJtaXRfdW5s
-b2NrKGN0eCwgaXNzdWVfZmxhZ3MpOwogCXJldHVybiB0cnVlOwotLSAKMi41My4wCgo=
 
---------------tcqGXRUlHzbR3Jpp0u03xkRc--
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5ef268cb7a0aac55521fd9881f1939fa94a8988e Mon Sep 17 00:00:00 2001
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Date: Fri, 13 Mar 2026 23:04:11 +0900
+Subject: [PATCH] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
+
+Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
+because all caller handled the error correctly.
+
+Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
+
+Reported-by: Zw Tang <shicenci@gmail.com>
+Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
+Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 025af57ad3ed..bfc89083daa9 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1144,12 +1144,12 @@ static int __arm_kprobe_ftrace(struct kprobe *p, struct ftrace_ops *ops,
+ 	lockdep_assert_held(&kprobe_mutex);
+ 
+ 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
+-	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++		if (ret < 0) {
+ 			/*
+ 			 * At this point, sinec ops is not registered, we should be sefe from
+ 			 * registering empty filter.
+
 
