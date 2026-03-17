@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIcODQ6PuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:42 +0100
+	id kFIiKPCJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DEF2AF972
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CAF2AEEBA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DA3D300B743
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C073303DF78
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9287331A64;
-	Tue, 17 Mar 2026 17:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310ED3F54B8;
+	Tue, 17 Mar 2026 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZA39LGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjeuYul4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF762D739D;
-	Tue, 17 Mar 2026 17:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89DB3EDADD;
+	Tue, 17 Mar 2026 17:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768422; cv=none; b=qUVnvAcjJk6EREqhbsrwVLShgOtgDKCD6xJz9GImR2oxyc14zrvVY14ksuXr38Zuw5T5I65RFTqdJ0QSiX2sJ32kbyOBL4VzyoCZnLV9k0u/z5sDxzfPOZ4Vv6SL52ERFCFx09Qh2F1ViCzDdl75+BJNfJ+nKkwCDI40MLdTWaE=
+	t=1773767065; cv=none; b=vCcUnECqFtIDl0W67yEyvz7Fqi9r7mOtaox54w+B8e4bI2XjPmbvOp6eHRXEwrMe7GAPUmM3AFwL1FeUafCXXR3/wH/0/r8OYGD3B3xOFGvPD26QLJFduOcnu47T+atFvxl4JfET93JlnDFcJMgD26JcGpv9667Mj+cG6yKpRog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768422; c=relaxed/simple;
-	bh=r2d/1OqHOQoK2zfUPW0cYLs/IcDSL5PsVpmUqAa5/gQ=;
+	s=arc-20240116; t=1773767065; c=relaxed/simple;
+	bh=/mA03QDiWAnAfCiXLFQ9+phhRK5oskhd/xf0NlMcjc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hghzBBlwKIFgZUzTBpfVY1dzwx4Xra/uIVwf5z6c/T4LoyhQBZC8rDJD+rg2mTGVRo3PA4od59ZQCtKjJo7FnhcSK8J2f6TPDYQ5k4Jl91G9M0up+nmXUqFKbvZfhr7CNkUGBTpJzNOzjGXxANH268AVR3sDoySbF9TXHGpRsOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZA39LGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7723CC4CEF7;
-	Tue, 17 Mar 2026 17:27:01 +0000 (UTC)
+	 MIME-Version; b=g5DCZQNw5kKxheXd4E/N0D2mafvf087xJJf1qVaku8J5kZmG5xTUFfQ7hWZxbQEelXA53Q8PIRlK1ZygpF4JuhWV6f1iBXWC3LOCmEJqX4o6DJlj/lpQ/mfFyieLcd2v0DHfo+XhJ7haKrjJEKhsTDB4WulV4HKu32mWy9fQRfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjeuYul4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBDFC4CEF7;
+	Tue, 17 Mar 2026 17:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768422;
-	bh=r2d/1OqHOQoK2zfUPW0cYLs/IcDSL5PsVpmUqAa5/gQ=;
+	s=korg; t=1773767064;
+	bh=/mA03QDiWAnAfCiXLFQ9+phhRK5oskhd/xf0NlMcjc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZA39LGkp/v/y1p7iDmgO6Cy3FqHHNsc/zLV09eTzCcVA3q3bekdcDEaoeZKG4lkD
-	 kXgSLcpOysOEXtzrxgMRqSGkDw7yyftUYQvDiMhdBXV+fwqw1LKtGnv6XtQ7T3wv4l
-	 t7A99cpe6VYndW4JhmAeXdYtlRrsgv8gLasL5VKI=
+	b=GjeuYul4ZiWD2Fold6u39IW5soY71s+zVFGTSkh8GLUtue3M4Ssf192DndcJ+8NJ6
+	 WH8wgy+k3PEP7QCD1PZpYdPyxLWLKld79BlZojbHI2Dsq2TKCBFRqiLgSN75QZxDyS
+	 u61p2EHVuvocu1czZ/8ckHX5iBiyzL65f48ZMGO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 305/333] iio: imu: inv_icm42600: fix odr switch when turning buffer off
-Date: Tue, 17 Mar 2026 17:35:34 +0100
-Message-ID: <20260317163010.700436856@linuxfoundation.org>
+	Keith Busch <kbusch@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 6.19 378/378] cxl/acpi: Fix CXL_ACPI and CXL_PMEM Kconfig tristate mismatch
+Date: Tue, 17 Mar 2026 17:35:35 +0100
+Message-ID: <20260317163020.886316423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,74 +74,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226840-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226520-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RBL_SEM_IPV6_FAIL(0.00)[2600:3c04:e001:36c::12fc:5321:query timed out];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tdk.com:email]
-X-Rspamd-Queue-Id: E2DEF2AF972
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 11CAF2AEEBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit ffd32db8263d2d785a2c419486a450dc80693235 upstream.
+commit 93d0fcdddc9e7be9d4f42acbe57bc90dbb0fe75d upstream.
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching odr and turning buffer off just afterward, we are
-losing the FIFO ODR change flag and ODR switch is blocked.
+Commit e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to
+cxl_pmem.ko") moves devm_cxl_add_nvdimm_bridge() into the cxl_pmem file,
+which has independent config compile options for built-in or module. The
+call from cxl_acpi_probe() is guarded by IS_ENABLED(CONFIG_CXL_PMEM),
+which evaluates to true for both =y and =m.
 
-Fix the issue by force applying any waiting ODR change when turning
-buffer off.
+When CONFIG_CXL_PMEM=m, a built-in cxl_acpi attempts to reference a
+symbol exported by a module, which fails to link. CXL_PMEM cannot simply
+be promoted to =y in this configuration because it depends on LIBNVDIMM,
+which may itself be =m.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Add a Kconfig dependency to prevent CXL_ACPI from being built-in when
+CXL_PMEM is a module. This contrains CXL_ACPI to =m when CXL_PMEM=m,
+while still allowing CXL_ACPI to be freely configured when CXL_PMEM is
+either built-in or disabled.
+
+[ dj: Fix up commit reference formatting. ]
+
+Fixes: e7e222ad73d9 ("cxl: Move devm_cxl_add_nvdimm_bridge() to cxl_pmem.ko")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260305204057.1516948-1-kbusch@meta.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/cxl/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -371,6 +371,8 @@ static int inv_icm42600_buffer_predisabl
- static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct inv_icm42600_sensor_state *sensor_st = iio_priv(indio_dev);
-+	struct inv_sensors_timestamp *ts = &sensor_st->ts;
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
-@@ -392,6 +394,8 @@ static int inv_icm42600_buffer_postdisab
- 
- 	mutex_lock(&st->lock);
- 
-+	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
- 	if (ret)
- 		goto out_unlock;
+--- a/drivers/cxl/Kconfig
++++ b/drivers/cxl/Kconfig
+@@ -58,6 +58,7 @@ config CXL_ACPI
+ 	tristate "CXL ACPI: Platform Support"
+ 	depends on ACPI
+ 	depends on ACPI_NUMA
++	depends on CXL_PMEM || !CXL_PMEM
+ 	default CXL_BUS
+ 	select ACPI_TABLE_LIB
+ 	select ACPI_HMAT
 
 
 
