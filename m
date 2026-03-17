@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMPjHTiPuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:24 +0100
+	id GEX7JNKJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEE22AF9F7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1EE2AEE64
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06878304A913
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6CE803043956
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F312332548B;
-	Tue, 17 Mar 2026 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88DE3F65E7;
+	Tue, 17 Mar 2026 16:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnx6GVWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSgJK/GN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FFB2459DC;
-	Tue, 17 Mar 2026 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDFC3F23DD;
+	Tue, 17 Mar 2026 16:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768307; cv=none; b=vDrJmQyQgnL8aZkuEk6NpsiVdfM5MLRxsoieBrRQzCQzSJqYFZHj4MJRKK4kMSyHqgJXCyuW8pvcnmX2hT5eHmkU9wpV96Hq8ChP7c5gySMDEeDC208Tvmb1caae/DQaqLzKIHw5ju5XDuAAND610FISLjDZbOXjetWVU2hp2Fs=
+	t=1773766774; cv=none; b=DExKcoD64D6EkEOTRm3AZzIZNFDtNneIUYaUrQtQPn2LHsIKxwQg9nJUNyoY1FxhgyqmKNQY/KUEB+87BKLjSW1puzREn84E24rgNXHkbOGUNMHhif3mdeqboZlQViCyhuJFbkZ5PkXpPo1eq9BYIxxudPtQ6cM7a0b7rXab+DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768307; c=relaxed/simple;
-	bh=5/huQM07TMQY0gazUe1K/o/lRuVEZlCFUWFGkHBbods=;
+	s=arc-20240116; t=1773766774; c=relaxed/simple;
+	bh=g2z9iGDrT+oXJ2lJlJs9DXUv9z5c0kYfj5teWWOCAZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuXR8CTbeGaYk9OOFutav+ZGJ3IFpIrpQZ3z1O3k/ohdRQdazexkinXEJ/q63YPPP4k+wxa2USOf+f9jgwyLT/XWMZJ21q5wOs6US6REXXsoFxDI6vcJvUzmJCeXhHNY4b1c8PZ3X0BE2b38TGI0cdskZHoRn+UGjIcqy46YUqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnx6GVWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97FCC4CEF7;
-	Tue, 17 Mar 2026 17:25:06 +0000 (UTC)
+	 MIME-Version; b=PvGDzeWlVBK/sZQKt3ktUv5Nbz2AF3FNEGxfROLTH4VfX6DmTwgOm4OIoljHTg6sRzduByXTwu3wOUPy8oa0fFCP0z8123593TD69wEPrfSFcp9GkV4CBewrp5jY8ZdHPUhFt8UM9cBsV7eLVCYz+A/g1ERolth3MpMvml5H91k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSgJK/GN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068B2C4CEF7;
+	Tue, 17 Mar 2026 16:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768307;
-	bh=5/huQM07TMQY0gazUe1K/o/lRuVEZlCFUWFGkHBbods=;
+	s=korg; t=1773766774;
+	bh=g2z9iGDrT+oXJ2lJlJs9DXUv9z5c0kYfj5teWWOCAZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnx6GVWTHqwglnBsGtrA3sXjluycc8+XxPd6ravGtqQbqHYJ1VdB0A82Lxh7NCeau
-	 gqulHfFRu8KZ5RBDAk/V/hIx6cAb0hNaGL3W6x4a56wHrM4p2MiEsorki0o3d1jkBA
-	 A8IjmgW5m23cCqEeftznqd/+0IHtvXJkHKJ7CD58=
+	b=gSgJK/GNz9bCkEXvfE/pIcZQ3XdAykakmJD6E9vZDqUgRS2KuBtnWfX6qqK2Mjt9y
+	 M7F1NzIBt7RQoV25lyc9jC+nlB0dYHB+RVVgrAERcXzn433NUXREyZbSj3TmsakD81
+	 paeuZwy2PcdHqZqLJ0pm7G815f5TvXq5Y4N1V71w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 247/333] net: ncsi: fix skb leak in error paths
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.19 319/378] xfs: fix integer overflow in bmap intent sort comparator
 Date: Tue, 17 Mar 2026 17:34:36 +0100
-Message-ID: <20260317163008.526490502@linuxfoundation.org>
+Message-ID: <20260317163018.725991316@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226815-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226452-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +87,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,bytedance.com:email]
-X-Rspamd-Queue-Id: 2EEE22AF9F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5B1EE2AEE64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Long Li <leo.lilong@huawei.com>
 
-commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
+commit 362c490980867930a098b99f421268fbd7ca05fd upstream.
 
-Early return paths in NCSI RX and AEN handlers fail to release
-the received skb, resulting in a memory leak.
+xfs_bmap_update_diff_items() sorts bmap intents by inode number using
+a subtraction of two xfs_ino_t (uint64_t) values, with the result
+truncated to int. This is incorrect when two inode numbers differ by
+more than INT_MAX (2^31 - 1), which is entirely possible on large XFS
+filesystems.
 
-Specifically, ncsi_aen_handler() returns on invalid AEN packets
-without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
-when failing to resolve the NCSI device, response handler, or
-request, leaving the skb unfreed.
+Fix this by replacing the subtraction with cmp_int().
 
-CC: stable@vger.kernel.org
-Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
-Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org> # v4.9
+Fixes: 9f3afb57d5f1 ("xfs: implement deferred bmbt map/unmap operations")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-aen.c |    3 ++-
- net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_bmap_item.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
- 	if (!nah) {
- 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
- 			    h->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto out;
- 	}
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -247,7 +247,7 @@ xfs_bmap_update_diff_items(
+ 	struct xfs_bmap_intent		*ba = bi_entry(a);
+ 	struct xfs_bmap_intent		*bb = bi_entry(b);
  
- 	ret = ncsi_validate_aen_pkt(h, nah->payload);
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	/* Find the NCSI device */
- 	nd = ncsi_find_dev(orig_dev);
- 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
--	if (!ndp)
--		return -ENODEV;
-+	if (!ndp) {
-+		ret = -ENODEV;
-+		goto err_free_skb;
-+	}
- 
- 	/* Check if it is AEN packet */
- 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
-@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	if (!nrh) {
- 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
- 			   hdr->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto err_free_skb;
- 	}
- 
- 	/* Associate with the request */
-@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	nr = &ndp->requests[hdr->id];
- 	if (!nr->used) {
- 		spin_unlock_irqrestore(&ndp->lock, flags);
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto err_free_skb;
- 	}
- 
- 	nr->rsp = skb;
-@@ -1261,4 +1265,8 @@ out_netlink:
- out:
- 	ncsi_free_request(nr);
- 	return ret;
-+
-+err_free_skb:
-+	kfree_skb(skb);
-+	return ret;
+-	return ba->bi_owner->i_ino - bb->bi_owner->i_ino;
++	return cmp_int(ba->bi_owner->i_ino, bb->bi_owner->i_ino);
  }
+ 
+ /* Log bmap updates in the intent item. */
 
 
 
