@@ -1,170 +1,171 @@
-Return-Path: <stable+bounces-226012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iD3zAEBWuWnYAgIAu9opvQ
-	(envelope-from <stable+bounces-226012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:25:20 +0100
+	id CFp0JE1WuWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-226013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:25:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7871F2AACEC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D652AACF3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18FC3306E842
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:24:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15DE130774E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F51D3CB2DB;
-	Tue, 17 Mar 2026 13:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E493CB2EA;
+	Tue, 17 Mar 2026 13:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EOOPImTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gK0xVL7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FDD3CA4AD
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C45B3CB2C3
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773753844; cv=none; b=AJGEvr3rYVPxdSQNm4eIOobmzdXN9H4gDiy68aXvmZp39M65ti0Mv5asBS1oz3ui39DCcQvshTEbV5ZA9GYZdaSaIcPEEocCoVVaICA/bOw+Gu454eBBY+Z0JWEXO60TPYYPEnr5+jxRBxpVszW3k6SXR9qAId+BUPhwBnqpbXA=
+	t=1773753845; cv=none; b=XCjEsBEY5B6o17TVp34cS3ntx2VsYoNn99scz+AflcTP4cMds2YhoRofVSUBO/IQ0KsvO2Cg2T1OA0+8iRMwvT5Uvt4PZGUDsdNHTUibq21EoDeh5gsgeGDn/IWExBQPdon7xaA8dfM7Ejzumz8U5dCHjXYqyszrgypM3fuIZ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773753844; c=relaxed/simple;
-	bh=z8G1n5vQc2o04ixmgah5UrTtAJ1uhTrusHN/zYpP0/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fm5mOiLvcHwTCnn/zCUNON6rB7yTVqjCU439pFot8UjHyEVkTMGEjf/xFWatKZOwudAztbR0Dn6vmAd8BDHlVn6yS9DAwa8KKCs4JMX01itwsAiut+PplLIQXsjSrLpiDrr2DwqY1v+QTtDEuUZPrv+OV61AnnU31P7AwkTWU+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EOOPImTM; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c73f12fe254so92967a12.1
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 06:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773753843; x=1774358643; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wDkHRlFyBw3AqbHZfo12ncQp76Cu27YWrL4/LonMVsI=;
-        b=EOOPImTMA9lgBOd5D+hv9oIDHL4RQv5tiW82djR/g8R9iVFjnSSB5sL4jxCV4ABLu4
-         W4hWAtG85RN3V7uk56hfYP+Uk+cKVOKUNV1fnByGdA3+HTMHCUcEy7rf88Md04EqztSg
-         MLICQlgjUDNXDZjMrqW7zt9ilmBhisc+TwrIel3V6FQkr7r4dZOT32OJV9prLLVi8Giq
-         COoY+jPfsuJNjCa+GsLSleKE4XJDqPWod91aEwRBkH/ZY696xVfMz+ZAq8a6oRXQRkFz
-         50AhPhu77bB51w3+yojIvUnmlHYpH9bMw4fUiLvCDwpzNsyC5x6vBWS1Z9NXC/vbowXn
-         38XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773753843; x=1774358643;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wDkHRlFyBw3AqbHZfo12ncQp76Cu27YWrL4/LonMVsI=;
-        b=blKKJXm1ZOh0KLmAEXFBlgbrjKly1l5EHHa4Gf9Z/Gkmy5BtEFkEGQ7S7JNIzLQI0H
-         iZTrO5yKqsR17P1jXWMpkv5cbYbA8b3V3IZxqbIjfNm4puaU4+XziE1sMHPzpbzf3OIF
-         g3qG4Ccy5FoB4Lm3wMv/F62WrdieftbMY6NQaFMQGDesuuVO/ZsldZ6PwMCe4QVBJU5H
-         MGBnZwDxCznTCS/XCkfZSXMbGYVDnk4PW54P/dnL/Ensf2nHrzc31yPYWBOuI0fSrePz
-         rmHz9j490UOvyhF6YMC+VzVAreuATbgiH29SG/VPLjkMPa3tnkpwpA+1RCQyughv0Dq/
-         zCCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXsSJJ5b5fWivGPb4mbVKS2ErjZitkPjpugwo6uVeicW/T+Q42h+eUs8XZ1VMXnuK28+Z/YR8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq5bMHgJPCRKtAjTC4mhHWQFAKoverLDAGyLwHGVgzzgoJm1ph
-	R02c2BxTlazbNE8luIN7mCHlt7l8Jk4LJLZ/6mWmtfVSMUnjUnxcWCVD
-X-Gm-Gg: ATEYQzxFgRvPRxcAQDNj9Tqqpgi3CWtSgNACyiMDUwIz/J4kaNiuoIHeMA1O0z9a/D6
-	W+J1fhcoWB6F/ElGD4+YTXQa4dysBGKdshLUYM+twB75nwMOzg2RT+Di02+rU0Cz5hq6hgbnZKv
-	r3EJQRJoehbC5epecB+5/BpowS5pTUNFtkKyhoCKrnamiLQZqqpH7K5n0SFsHbSPb77oC/VR/qD
-	GuTqXw+YmngV63ajmdk07lyMWdW6FaNnzY5AUhJDU6WmE1Mx5ff1U4uXrSazOFQvCxJeoEd2XfM
-	F7JZy7VeufIogZxojiTS+qlacj8Q5YOkwnJzWVKm9/lDhXbJTUDCJmHhdSzKE4xZPZTy3v8/96k
-	v9srNz+AJVYwVtC1Kzc/FDWl3cIwD9dnCZs2GOnHG50M1czzGiGXMAjtiAZkWmSeaf/TIdycqoo
-	7X9+wmGnatXdS4QC893C8pWzgMHKVr+mQX7N/bOCceZi43zy4kpYIG8zn+s1Y3UzUp6M7TWJc+2
-	MoqyfWjn5Ev13DaGM4Z49iQDobJMmAsHK2sIl+s6zDMHU9G
-X-Received: by 2002:a05:6a00:ae09:b0:82a:1589:311b with SMTP id d2e1a72fcca58-82a196bb525mr8149373b3a.1.1773753842708;
-        Tue, 17 Mar 2026 06:24:02 -0700 (PDT)
-Received: from DESKTOP-PU4IGQQ.localdomain ([117.203.246.41])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a072422desm17215042b3a.1.2026.03.17.06.24.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 06:24:02 -0700 (PDT)
-From: Utkal Singh <singhutkal015@gmail.com>
-To: linux-erofs@lists.ozlabs.org
-Cc: xiang@kernel.org,
-	yifan.yfzhao@gmail.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	singhutkal015@gmail.com
-Subject: [PATCH] erofs: harden h_shared_count in erofs_init_inode_xattrs()
-Date: Tue, 17 Mar 2026 13:23:56 +0000
-Message-ID: <20260317132356.15341-1-singhutkal015@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773753845; c=relaxed/simple;
+	bh=sSYgA3nAmktQXG2xBEPKnGK7z5pFaYVfx4e/SThqzm8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l0NuTPUXw+PyNmRj8y2zok1r3Z7xY4UrNlN/JFI9+sIoI3U11cS0OiBFoihDAy0ArP2D4XiHYoemIT6mLewr8bjzAlVBcASYKhTfamNxzmyOMaCEYh3bcywkpNqBn35jL0nxlSFAXSypSjD8XdcAknxdHarLfvYT8EPiQzFfwMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gK0xVL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6A6C19425;
+	Tue, 17 Mar 2026 13:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773753845;
+	bh=sSYgA3nAmktQXG2xBEPKnGK7z5pFaYVfx4e/SThqzm8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1gK0xVL7xDjdwt+JEaPK+gu6lbpuG7VmtSkghX3DmULD4KnAVcu86fy9IZUTPdTFd
+	 Sk4l0DV3qAl8aAvvvPwfPr9WlPUHXnvbG2wrXJS7Pn5deEcQSNS1Ieu2ZZVxPNtV73
+	 b92w+od9RwVwMACwO47AdHBcFlEbBtCWrdIQg6Qk=
+Subject: FAILED: patch "[PATCH] drm/i915/psr: Write DSC parameters on Selective Update in ET" failed to apply to 6.18-stable tree
+To: jouni.hogander@intel.com,ankit.k.nautiyal@intel.com,stable@vger.kernel.org,tursulin@ursulin.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 14:23:59 +0100
+Message-ID: <2026031759-ravine-derived-5582@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-226013-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226012-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[singhutkal015@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
+	RSPAMD_URIBL_FAIL(0.00)[gregkh:query timed out];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[ursulin.net:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7871F2AACEC
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 32D652AACF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-`u8 h_shared_count` indicates the shared xattr count of an inode. It is
-read from the on-disk xattr ibody header, which should be corrupted if
-the size of the shared xattr array exceeds the space available in
-`xattr_isize`.
 
-It does not cause harmful consequence (e.g. crashes), since the image is
-already considered corrupted, it indeed results in the silent processing
-of garbage metadata.
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Let's harden it to report -EFSCORRUPTED earlier.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 47e4937a4a7c ("erofs: move erofs out of staging")
-Cc: stable@vger.kernel.org
-Signed-off-by: Utkal Singh <singhutkal015@gmail.com>
----
- fs/erofs/xattr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5923a6e0459fdd3edac4ad5abccb24d777d8f1b6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031759-ravine-derived-5582@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-diff --git a/fs/erofs/xattr.c b/fs/erofs/xattr.c
-index c411df5d9dfc..aaac37c6bb78 100644
---- a/fs/erofs/xattr.c
-+++ b/fs/erofs/xattr.c
-@@ -85,6 +85,14 @@ static int erofs_init_inode_xattrs(struct inode *inode)
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5923a6e0459fdd3edac4ad5abccb24d777d8f1b6 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Wed, 4 Mar 2026 13:30:11 +0200
+Subject: [PATCH] drm/i915/psr: Write DSC parameters on Selective Update in ET
+ mode
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+There are slice row per frame and pic height parameters in DSC that needs
+to be configured on every Selective Update in Early Transport mode. Use
+helper provided by DSC code to configure these on Selective Update when in
+Early Transport mode. Also fill crtc_state->psr2_su_area with full frame
+area on full frame update for DSC calculation.
+
+v2: move psr2_su_area under skip_sel_fetch_set_loop label
+
+Bspec: 68927, 71709
+Fixes: 467e4e061c44 ("drm/i915/psr: Enable psr2 early transport as possible")
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patch.msgid.link/20260304113011.626542-5-jouni.hogander@intel.com
+(cherry picked from commit 3140af2fab505a4cd47d516284529bf1585628be)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 3848cd4fba0e..b7302a32ded4 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -2619,6 +2619,12 @@ void intel_psr2_program_trans_man_trk_ctl(struct intel_dsb *dsb,
+ 
+ 	intel_de_write_dsb(display, dsb, PIPE_SRCSZ_ERLY_TPT(crtc->pipe),
+ 			   crtc_state->pipe_srcsz_early_tpt);
++
++	if (!crtc_state->dsc.compression_enable)
++		return;
++
++	intel_dsc_su_et_parameters_configure(dsb, encoder, crtc_state,
++					     drm_rect_height(&crtc_state->psr2_su_area));
+ }
+ 
+ static void psr2_man_trk_ctl_calc(struct intel_crtc_state *crtc_state,
+@@ -3040,6 +3046,10 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
  	}
- 	vi->xattr_name_filter = le32_to_cpu(ih->h_name_filter);
- 	vi->xattr_shared_count = ih->h_shared_count;
-+	if ((u32)vi->xattr_shared_count * sizeof(__le32) >
-+	    vi->xattr_isize - sizeof(struct erofs_xattr_ibody_header)) {
-+		erofs_err(sb, "invalid h_shared_count %u in nid %llu",
-+			  vi->xattr_shared_count, vi->nid);
-+		erofs_put_metabuf(&buf);
-+		ret = -EFSCORRUPTED;
-+		goto out_unlock;
-+	}
- 	vi->xattr_shared_xattrs = kmalloc_objs(uint, vi->xattr_shared_count);
- 	if (!vi->xattr_shared_xattrs) {
- 		erofs_put_metabuf(&buf);
--- 
-2.43.0
+ 
+ skip_sel_fetch_set_loop:
++	if (full_update)
++		clip_area_update(&crtc_state->psr2_su_area, &crtc_state->pipe_src,
++				 &crtc_state->pipe_src);
++
+ 	psr2_man_trk_ctl_calc(crtc_state, full_update);
+ 	crtc_state->pipe_srcsz_early_tpt =
+ 		psr2_pipe_srcsz_early_tpt_calc(crtc_state, full_update);
 
 
