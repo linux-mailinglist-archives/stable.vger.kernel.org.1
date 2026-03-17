@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eK3QEzaMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:34 +0100
+	id OAqfCn6FuWkPJAIAu9opvQ
+	(envelope-from <stable+bounces-226205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADFA2AF31F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3052AE648
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C26131DACA3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29A60304BB93
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3CB3F54A5;
-	Tue, 17 Mar 2026 17:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34773ECBFC;
+	Tue, 17 Mar 2026 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx2KEvov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9bVL7jB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5241A3A4F46;
-	Tue, 17 Mar 2026 17:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1E3ED127;
+	Tue, 17 Mar 2026 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767189; cv=none; b=J/m2jOMPYzJA2y/wbOAfP5hmopSDz80GpV+xd3Ewz9HrZUeKwa/+AVUNOooy+/rpjKyzv6nv31OZkZql0eyuOrSflJJ3DpjBV6yQ8zGe37MJZg6jSo08OsWGNqb1zVoXQ8IX/FneKBfvHTJ2l00wqbbyft9B9ZlohrTqqX4RrK8=
+	t=1773765707; cv=none; b=VHkf+toNJLmGS/dvP4oyKWR8CiAB9HkSTqATtcju8Rd9FlSnbEBrZCIfuwyIzRpiH3pEooCwnudjdIUCkuGS+FPd8PgIxmfCGkwcAPvx4rDipP222eIFuxGJe+STNVV/Kgm8ZWufB0kHqvshE/l9WH3EWlaIycz9KMU/17rXcVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767189; c=relaxed/simple;
-	bh=iFkgmghY24rQr5Hlbm85jOFps7m32YY8fcv0T6kewxM=;
+	s=arc-20240116; t=1773765707; c=relaxed/simple;
+	bh=smk73aHlm4rjlrzbL+QyeQCUTO2veQ2paSBRWNinhns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATF4ALKNXO3hZasX0o48QmPrd6DqCKFegcBX9HsUdJcxXmNvBzWfKxSP8SafVIktV3x3Gy48Drpa/tj77+5Cvrxuuf1dToGzkDpB8Trd6AB9tgEZuQ82lbNqmS0hTurusJEvhcsB77lECkJRZbCjjgnjXKKIQ30DSjxJ9G/LEH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx2KEvov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ECDC4CEF7;
-	Tue, 17 Mar 2026 17:06:28 +0000 (UTC)
+	 MIME-Version; b=auhKGf84R7PJk70KKJCfN4zqE/gxUi/se0nq7QO/efiJ5d4KhKwFRJYT/cYz8DJuuKyzKhAkPQBI2kpBPaaBVlxrFSWYYNczNWlPXfRbp6PYtomtNeZXFTH9tigL7clTQs3Etke8Xr/4UJs6Z766ui+p7a9Ovi7XDj8NPr5LNsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9bVL7jB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D124AC4CEF7;
+	Tue, 17 Mar 2026 16:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767189;
-	bh=iFkgmghY24rQr5Hlbm85jOFps7m32YY8fcv0T6kewxM=;
+	s=korg; t=1773765707;
+	bh=smk73aHlm4rjlrzbL+QyeQCUTO2veQ2paSBRWNinhns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kx2KEvovyt3Pzzdru9pXgJCPiQunX373r1S37nIgM5s/Gg8/SfZjl2KqpIubxENaQ
-	 0kJ/WS3AIfy6t+7H9rV4LPZ0sANROSTEtgoWsnt7tgEvojmi9oWs+g0TZo0NEYUfuw
-	 WmbxDMFNsBrhi/lL7lNrthAzgA74oDJb+rENXpYA=
+	b=o9bVL7jBA7BP/QTwyiPlvTVOfu0IC4ha8oY8YeufCxL+McDC2coGhwarp2fvZPpDb
+	 COvcFgb1tlEHL+G7VUkByr6he3VgamJNqCNHroEAUmbrZ4H3JTaC97F1o9dTRI3QBM
+	 Lf2NNJhLUv683w5iEpJJiWTzYlNvaHMbFwex/DVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 004/333] fs: init flags_valid before calling vfs_fileattr_get
+Subject: [PATCH 6.19 076/378] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
 Date: Tue, 17 Mar 2026 17:30:33 +0100
-Message-ID: <20260317162959.518744860@linuxfoundation.org>
+Message-ID: <20260317163009.814330620@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226205-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226551-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7c31755f2cea07838b0c];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email]
-X-Rspamd-Queue-Id: 8ADFA2AF31F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C3052AE648
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit cb184dd19154fc486fa3d9e02afe70a97e54e055 ]
+[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
 
-syzbot reported a uninit-value bug in [1].
+pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
+to_offset argument on every iteration, including the last one where
+i == m->field_count - 1. This reads one element past the end of the
+stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
+with NFT_PIPAPO_MAX_FIELDS == 16).
 
-Similar to the "*get" context where the kernel's internal file_kattr
-structure is initialized before calling vfs_fileattr_get(), we should
-use the same mechanism when using fa.
+Although pipapo_unmap() returns early when is_last is true without
+using the to_offset value, the argument is evaluated at the call site
+before the function body executes, making this a genuine out-of-bounds
+stack read confirmed by KASAN:
 
-[1]
-BUG: KMSAN: uninit-value in fuse_fileattr_get+0xeb4/0x1450 fs/fuse/ioctl.c:517
- fuse_fileattr_get+0xeb4/0x1450 fs/fuse/ioctl.c:517
- vfs_fileattr_get fs/file_attr.c:94 [inline]
- __do_sys_file_getattr fs/file_attr.c:416 [inline]
+  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
+  Read of size 4 at addr ffff8000810e71a4
 
-Local variable fa.i created at:
- __do_sys_file_getattr fs/file_attr.c:380 [inline]
- __se_sys_file_getattr+0x8c/0xbd0 fs/file_attr.c:372
+  This frame has 1 object:
+   [32, 160) 'rulemap'
 
-Reported-by: syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7c31755f2cea07838b0c
-Tested-by: syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://patch.msgid.link/tencent_B6C4583771D76766D71362A368696EC3B605@qq.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+  The buggy address is at offset 164 -- exactly 4 bytes past the end
+  of the rulemap array.
+
+Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
+the out-of-bounds read.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file_attr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/file_attr.c b/fs/file_attr.c
-index 1dcec88c06805..9d3e177ad7d1d 100644
---- a/fs/file_attr.c
-+++ b/fs/file_attr.c
-@@ -379,7 +379,7 @@ SYSCALL_DEFINE5(file_getattr, int, dfd, const char __user *, filename,
- 	struct filename *name __free(putname) = NULL;
- 	unsigned int lookup_flags = 0;
- 	struct file_attr fattr;
--	struct file_kattr fa;
-+	struct file_kattr fa = { .flags_valid = true }; /* hint only */
- 	int error;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index d9b74d588c768..394b78a00a6a5 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1641,6 +1641,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	int i;
  
- 	BUILD_BUG_ON(sizeof(struct file_attr) < FILE_ATTR_SIZE_VER0);
+ 	nft_pipapo_for_each_field(f, i, m) {
++		bool last = i == m->field_count - 1;
+ 		int g;
+ 
+ 		for (g = 0; g < f->groups; g++) {
+@@ -1660,7 +1661,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 		}
+ 
+ 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
+-			     rulemap[i + 1].n, i == m->field_count - 1);
++			     last ? 0 : rulemap[i + 1].n, last);
+ 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
+ 			/* We can ignore this, a failure to shrink tables down
+ 			 * doesn't make tables invalid.
 -- 
 2.51.0
 
