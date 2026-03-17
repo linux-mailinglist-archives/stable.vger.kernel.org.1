@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDX+IQSIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:40 +0100
+	id wE4nLl2SuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B382AEB0F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00A62AFFEF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35311307C7CD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DB59302CC01
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2D23F54CC;
-	Tue, 17 Mar 2026 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356B12DEA9D;
+	Tue, 17 Mar 2026 17:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ajm8Um7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC5w5OU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE6C3F54C4;
-	Tue, 17 Mar 2026 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9422D5940;
+	Tue, 17 Mar 2026 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766294; cv=none; b=l4rEUMzTHJJtjhlH8mmVfrwLtmVEivXTgu+EjlXyg2HB4sfa6pd3haErC0LZbGrQy1Jynhlcy07oSLXOfL/nK6axVGlrkwHz6qZyMLRhvlXXkTF3GxUijaL3zgHS6Si+hF7/mgPBPLKyeQYP7CMCP3vq7iJVdBBijlycgFM3JRE=
+	t=1773767864; cv=none; b=Wf4i4hyCKB6e8NZRkp5qJTpz+s2iec8r7D/8IQj71Fawe91VyEBH+sPxyO6NEizBXHrjNE99X1jdC0k81hMoypyjRey7DU5y4jNFx8ZMRWzFdk/mXZZpTIbEGgvNzcZgEXO95+y49wH6iSUPaRDiounFqpVjKBCT2s5H0rpreHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766294; c=relaxed/simple;
-	bh=ZzOA64W1bTFuUKkz1MUv0k8hU6pQm6gr3mqqtMKFdQo=;
+	s=arc-20240116; t=1773767864; c=relaxed/simple;
+	bh=LQTaURo6SEdp7Dj8QI4CbwfqaDh/h66cT3FEqm7Ciko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgPmQAQZGhJQfbcvkRGC5A8NTiYDnsHwzyn28dJlRjjXyLae5A8PgD1RMcRZ/Ksj2w1kf01lxaYRpqYHRuuAapFB8RwLdmuuEjr6rkM6V9S04f2J7KA1fAEmpqKad6uVvysg+fFSaz/q0VA5IHyMHlqG3mqeXQo8m/hr/wb+VNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ajm8Um7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD65C4CEF7;
-	Tue, 17 Mar 2026 16:51:33 +0000 (UTC)
+	 MIME-Version; b=p6/I/PbX4rwUYWqS2z26jiQDRHFOkuq3xs4mr+emgiaM4/+CcOYZBOE4EHbw8LovIwciHde2G8wrngZTkmSA1Sw/e43Z3sSkhaGeRzEjIX3bw9dJjbBLdNX8Q+gDma5k/SJLJX47vHYS72eGcbAneeqzhIfbzuxPkwSXCixcLNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC5w5OU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292F4C4CEF7;
+	Tue, 17 Mar 2026 17:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766294;
-	bh=ZzOA64W1bTFuUKkz1MUv0k8hU6pQm6gr3mqqtMKFdQo=;
+	s=korg; t=1773767863;
+	bh=LQTaURo6SEdp7Dj8QI4CbwfqaDh/h66cT3FEqm7Ciko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ajm8Um7oHLwvU9NGFqZ/o9mOaP5vhQCOol9Lh45gesXP2Ru+mlDClouxtcZjydjz5
-	 mOZsaolMX2uHvOX9YLdyyB7Orut3C2EtMU6pqyAUqnfWvApMj/8KLu6nLrr5aWXZwf
-	 vmm2/4BSNsqOgLkP3TUw7kpN+PTL0z+WkBb3fL50=
+	b=fC5w5OU3XEqcpDHPNr7OxlCf83qmbeViyage8Mf1IjJXEVwg2Q1z/xtIBXwMTk3mS
+	 g1szixRzn8etJOkxLRMSNF/91G26/1WDjLUy8Qr9Ct+zVavmcxCNDKTEP3XM5fYaEZ
+	 yCSMZK9D4JJW3JkN1b4rUwQWidkUOTTjPLlDNfu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.19 213/378] nsfs: tighten permission checks for ns iteration ioctls
-Date: Tue, 17 Mar 2026 17:32:50 +0100
-Message-ID: <20260317163014.844304463@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH 6.18 142/333] usb: renesas_usbhs: fix use-after-free in ISR during device removal
+Date: Tue, 17 Mar 2026 17:32:51 +0100
+Message-ID: <20260317163004.626611734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226343-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226697-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,89 +89,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 78B382AEB0F
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,harvard.edu:email]
+X-Rspamd-Queue-Id: B00A62AFFEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit e6b899f08066e744f89df16ceb782e06868bd148 upstream.
+commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
 
-Even privileged services should not necessarily be able to see other
-privileged service's namespaces so they can't leak information to each
-other. Use may_see_all_namespaces() helper that centralizes this policy
-until the nstree adapts.
+In usbhs_remove(), the driver frees resources (including the pipe array)
+while the interrupt handler (usbhs_interrupt) is still registered. If an
+interrupt fires after usbhs_pipe_remove() but before the driver is fully
+unbound, the ISR may access freed memory, causing a use-after-free.
 
-Link: https://patch.msgid.link/20260226-work-visibility-fixes-v1-1-d2c2853313bd@kernel.org
-Fixes: a1d220d9dafa ("nsfs: iterate through mount namespaces")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@kernel.org # v6.12+
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix this by calling devm_free_irq() before freeing resources. This ensures
+the interrupt handler is both disabled and synchronized (waits for any
+running ISR to complete) before usbhs_pipe_remove() is called.
+
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Cc: stable <stable@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nsfs.c                 |   13 +++++++++++++
- include/linux/ns_common.h |    2 ++
- kernel/nscommon.c         |    6 ++++++
- 3 files changed, 21 insertions(+)
+ drivers/usb/renesas_usbhs/common.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -186,6 +186,17 @@ static bool nsfs_ioctl_valid(unsigned in
- 	return false;
- }
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -815,6 +815,15 @@ static void usbhs_remove(struct platform
  
-+static bool may_use_nsfs_ioctl(unsigned int cmd)
-+{
-+	switch (_IOC_NR(cmd)) {
-+	case _IOC_NR(NS_MNT_GET_NEXT):
-+		fallthrough;
-+	case _IOC_NR(NS_MNT_GET_PREV):
-+		return may_see_all_namespaces();
-+	}
-+	return true;
-+}
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+ 	reset_control_assert(priv->rsts);
 +
- static long ns_ioctl(struct file *filp, unsigned int ioctl,
- 			unsigned long arg)
- {
-@@ -201,6 +212,8 @@ static long ns_ioctl(struct file *filp,
- 
- 	if (!nsfs_ioctl_valid(ioctl))
- 		return -ENOIOCTLCMD;
-+	if (!may_use_nsfs_ioctl(ioctl))
-+		return -EPERM;
- 
- 	ns = get_proc_ns(file_inode(filp));
- 	switch (ioctl) {
---- a/include/linux/ns_common.h
-+++ b/include/linux/ns_common.h
-@@ -55,6 +55,8 @@ static __always_inline bool is_ns_init_i
- 
- #define ns_common_free(__ns) __ns_common_free(to_ns_common((__ns)))
- 
-+bool may_see_all_namespaces(void);
++	/*
++	 * Explicitly free the IRQ to ensure the interrupt handler is
++	 * disabled and synchronized before freeing resources.
++	 * devm_free_irq() calls free_irq() which waits for any running
++	 * ISR to complete, preventing UAF.
++	 */
++	devm_free_irq(&pdev->dev, priv->irq, priv);
 +
- static __always_inline __must_check int __ns_ref_active_read(const struct ns_common *ns)
- {
- 	return atomic_read(&ns->__ns_ref_active);
---- a/kernel/nscommon.c
-+++ b/kernel/nscommon.c
-@@ -309,3 +309,9 @@ void __ns_ref_active_get(struct ns_commo
- 			return;
- 	}
- }
-+
-+bool may_see_all_namespaces(void)
-+{
-+	return (task_active_pid_ns(current) == &init_pid_ns) &&
-+	       ns_capable_noaudit(init_pid_ns.user_ns, CAP_SYS_ADMIN);
-+}
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
 
 
 
