@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-226851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBwfON6UuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:30 +0100
+	id 0I6BBjePuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103FE2B0484
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943FC2AF9EF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92C8E30A6C5D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6CB831C0B94
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226CD1ACEDE;
-	Tue, 17 Mar 2026 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C13B377EDD;
+	Tue, 17 Mar 2026 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndszbEAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZouWrTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EB52D739D;
-	Tue, 17 Mar 2026 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6F2FFDEA;
+	Tue, 17 Mar 2026 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768473; cv=none; b=FSoUG/+SL5KnPO0CAG+wJcr4DBPuJ2I+UpDn0Na+FA2G47nC2ZNm1jNrV+5vF2LZtAfoL7Y2qYgPilgvZLfVNjxW4mmYAFDaD55ksIytaMG4rr4leRRsRSXVIiA3Vh+zvx41Bu+oSejpj04Rs4lGmIfWFpI9K/mA5IMiuWXovaE=
+	t=1773766940; cv=none; b=re95WaAcu0GsHwzhGXSnAI9O3Y2NqbwxQYk+1B5Qaow+3PgD/YRnnC+ESyZYcbDghjIcg3Hs1PMAuPb4gia+XSA2fjDrr537Htjn20FcYEciW8s8q7mDYRfwgWs3RwUzq6iHo14Mahx6VCgBZoc+jiC4ivwUkveh4CdWjA9R8rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768473; c=relaxed/simple;
-	bh=Dy/Y9mGI74ppeMnFnT4oEzeXIOlALgkKDus/fiuuleY=;
+	s=arc-20240116; t=1773766940; c=relaxed/simple;
+	bh=Mx3v8XKaeGTszUgXYXMMWUKzA/tchKnvvqgwWD0D8gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqXaP7pw6vDffPxWBJi3m7OZ8iXR+KoG/aMdz8hzkavtPVN6T2G0G9H10geEjRjG4e+sc2SjsAzCRY9z3ERQ0t6/IwZJiy8L/ExKvoSI16ccSAeMDv8jQ6A3hHMOIe6/WlUrv6NbaUUcn69gAoBl5D0Wo/4GOw1/ER2EqNgcx6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndszbEAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4472DC2BC86;
-	Tue, 17 Mar 2026 17:27:53 +0000 (UTC)
+	 MIME-Version; b=b24O5EwiG5DPPmWEcT+F2wd7I0EXdj0IkWxzMrnNeA+u38mpWAucj9dbu2cDEmUQxiHKuOMYODgYOoS0OHgmbIQedlDJ6GRFFgA+JvCysej0CcXXR1DffPT30l3vQBwNYq9duERveT0LmOeDOaJFUTcoSW2ZPJ8rpkzQY9ikmNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZouWrTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1C5C4CEF7;
+	Tue, 17 Mar 2026 17:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768473;
-	bh=Dy/Y9mGI74ppeMnFnT4oEzeXIOlALgkKDus/fiuuleY=;
+	s=korg; t=1773766940;
+	bh=Mx3v8XKaeGTszUgXYXMMWUKzA/tchKnvvqgwWD0D8gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndszbEARsFSWcVrTRMtpZU7Jcqd8F+3aHPQI2dsoqdRNj+uENjeReIR8iA34p2wZX
-	 QnskyRXIx94/eKzFMG8e5fzf3yAlQYSubVtNNmWJoEsXC2PuynZpbqQNKQQwZJGI6C
-	 u2hdwvOkCNfVxqneIjuuMsnV/8WCtzUaOXjYHD8Q=
+	b=TZouWrTWIxkyJ9TV1on0GWrgshKnnPr+r55jlRezGjKWl39Vml/c19pPrjxeiyGom
+	 ZV8X4PtQLlSe7zx6S875i2dKeXci7EjAHERG8v5lWKUhim69IFRUeY/fFgLz1yIANt
+	 xAegKvJWZTLkvb2Y7MQgGQyYADU8Q/beYEBF3jUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 284/333] smb: client: fix atomic open with O_DIRECT & O_SYNC
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 356/378] iio: gyro: mpu3050-i2c: fix pm_runtime error handling
 Date: Tue, 17 Mar 2026 17:35:13 +0100
-Message-ID: <20260317163009.922481556@linuxfoundation.org>
+Message-ID: <20260317163020.081159954@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,134 +68,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226851-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226489-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,talpey.com:email,suse.com:email]
-X-Rspamd-Queue-Id: 103FE2B0484
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 943FC2AF9EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 4a7d2729dc99437dbb880a64c47828c0d191b308 upstream.
+commit 91f950b4cbb1aa9ea4eb3999f1463e8044b717fb upstream.
 
-When user application requests O_DIRECT|O_SYNC along with O_CREAT on
-open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
-CREATE request when performing an atomic open, thus leading to
-potentially data integrity issues.
+The return value of pm_runtime_get_sync() is not checked, and the
+function always returns success. This allows I2C mux operations to
+proceed even when the device fails to resume.
 
-Fix this by setting those missing bits in CREATE request when
-O_DIRECT|O_SYNC has been specified in cifs_do_create().
+Use pm_runtime_resume_and_get() and propagate its return value to
+properly handle resume failures.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |   11 +++++++++++
- fs/smb/client/dir.c      |    1 +
- fs/smb/client/file.c     |   18 +++---------------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/iio/gyro/mpu3050-i2c.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -20,6 +20,7 @@
- #include <linux/utsname.h>
- #include <linux/sched/mm.h>
- #include <linux/netfs.h>
-+#include <linux/fcntl.h>
- #include "cifs_fs_sb.h"
- #include "cifsacl.h"
- #include <crypto/internal/hash.h>
-@@ -2396,4 +2397,14 @@ static inline void mid_execute_callback(
- 	 (le32_to_cpu((tcon)->fsAttrInfo.Attributes) & \
- 	  FILE_SUPPORTS_REPARSE_POINTS))
+--- a/drivers/iio/gyro/mpu3050-i2c.c
++++ b/drivers/iio/gyro/mpu3050-i2c.c
+@@ -19,8 +19,7 @@ static int mpu3050_i2c_bypass_select(str
+ 	struct mpu3050 *mpu3050 = i2c_mux_priv(mux);
  
-+static inline int cifs_open_create_options(unsigned int oflags, int opts)
-+{
-+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
-+	if (oflags & O_SYNC)
-+		opts |= CREATE_WRITE_THROUGH;
-+	if (oflags & O_DIRECT)
-+		opts |= CREATE_NO_BUFFER;
-+	return opts;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -307,6 +307,7 @@ static int cifs_do_create(struct inode *
- 		goto out;
- 	}
+ 	/* Just power up the device, that is all that is needed */
+-	pm_runtime_get_sync(mpu3050->dev);
+-	return 0;
++	return pm_runtime_resume_and_get(mpu3050->dev);
+ }
  
-+	create_options |= cifs_open_create_options(oflags, create_options);
- 	/*
- 	 * if we're not using unix extensions, see if we need to set
- 	 * ATTR_READONLY on the create call
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -584,15 +584,8 @@ static int cifs_nt_open(const char *full
-  *********************************************************************/
- 
- 	disposition = cifs_get_disposition(f_flags);
--
- 	/* BB pass O_SYNC flag through on file attributes .. BB */
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(f_flags, create_options);
- 
- retry_open:
- 	oparms = (struct cifs_open_parms) {
-@@ -1318,13 +1311,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
- 		rdwr_for_fscache = 1;
- 
- 	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (cfile->f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (cfile->f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(cfile->f_flags,
-+						   create_options);
- 
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
+ static int mpu3050_i2c_bypass_deselect(struct i2c_mux_core *mux, u32 chan_id)
 
 
 
