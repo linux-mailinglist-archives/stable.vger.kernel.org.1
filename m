@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAK3HViIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:04 +0100
+	id EJRWALGPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073732AEBB0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E28C42AFB54
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4058C30EBD52
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C63573050AAE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E782B3F54A6;
-	Tue, 17 Mar 2026 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD31226561A;
+	Tue, 17 Mar 2026 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgeGTtY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2YhUkSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACE43EDADD;
-	Tue, 17 Mar 2026 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDD32116F6;
+	Tue, 17 Mar 2026 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766106; cv=none; b=cq1/VrLkFs9prlwEg2deRcPPd+Z6zhRxJxHVsiVT4Jw1li2M2GtheHnDb/b3ZFrCBOgUSKOFh6jyFgo7arXJOgbbCivSWUNkYaQGah1WUhjuzOMn11emmb8BQc/vDDCytil3+NA7pIOT6E5hvxgm6YpwMYdUl1yDqmB2DDNOo4c=
+	t=1773767512; cv=none; b=bqiEruw21qlAPg89NWf96dkTuQmEguczLi86hGHCCob6XS7FIS1W0M0FWHsbWgl6AMeDkmcUaeWLJxAn9/LiD5pX2bQjqyP9iBVEAtuoQh5KrpS+eCBUSKDd67N2k2VcVwuLC5sto035qyfNJuQMtpy6B1GE3lhuCZLtLWB3FBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766106; c=relaxed/simple;
-	bh=VwGkISruhX6OYdOvYT4GzEtpedB5b7EcLo+tn2REUbg=;
+	s=arc-20240116; t=1773767512; c=relaxed/simple;
+	bh=pja1PipAzKHntvkg5euYJ4wI6YRy3w0ZWyQ9ikDW00w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQFNfAqDWtgz5GnrttdIE6ANYhX+8Z62u+FNcUP5+5hHiug+k1KyvupHfOT+xVYvmAtt2tTaOOKXIMo+KdnXnyMsqR64fnimE2R0XvBTkZ/4GgwMy3B81B4DQGqxDtkwyEJ4exQS8KRgihriHc2PqCn5pTlCTWP6VaeU/iGyA4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgeGTtY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA79C4CEF7;
-	Tue, 17 Mar 2026 16:48:25 +0000 (UTC)
+	 MIME-Version; b=JcSHZ8eRv/IacjsDOKB6ddeU1IKv24d2d8whhyDpKaDZz2L0yj7EmwHZ6cRECTY1SWYi9eb9UXBl0ujI5GcJYioH2Rq701VxCnfPOTmG16xvsmFOgdQfGaCMrezdH/MbW8J6JPWR7bMYKcXT5F63vYdwl8uL/+imjj5szg40c7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2YhUkSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D22C4CEF7;
+	Tue, 17 Mar 2026 17:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766106;
-	bh=VwGkISruhX6OYdOvYT4GzEtpedB5b7EcLo+tn2REUbg=;
+	s=korg; t=1773767512;
+	bh=pja1PipAzKHntvkg5euYJ4wI6YRy3w0ZWyQ9ikDW00w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgeGTtY0Hp2x+VqRdIbLSwZbc0DEqHw/WjEt1ZUN+QTM1KdpqnkKCxON+ELWVBJFC
-	 JgvFJ7xeh8kOhJFybXKvShFQ5G6rXbsSAMoTIGsxHRmW0XTI43UgTuwd2cPnVLmwE6
-	 N5+cePuylvSxdrZ2dQ0E3n8DyDay5n+TKCjCUaw0=
+	b=J2YhUkSzJ+IdVPYxyBqCk597xoDe0zZCc02j3I0sD68tTPgKw6fZFImyQvT24UJnC
+	 O72MD193eg0vALFyCQTavDFXv0dJIpfPZTpg9f86ofoVuRIH3M2Mc4oCJariukZAW4
+	 n9sBZ5gLjM7pOmqL54/tuHcROq7Kpk0toZIVSDpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.19 172/378] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 100/333] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
 Date: Tue, 17 Mar 2026 17:32:09 +0100
-Message-ID: <20260317163013.337193875@linuxfoundation.org>
+Message-ID: <20260317163003.079820801@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226622-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,221 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 073732AEBB0
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E28C42AFB54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit ec35c1969650e7cb6c8a91020e568ed46e3551b0 upstream.
+[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
 
-The network device outlived its parent gadget device during
-disconnection, resulting in dangling sysfs links and null pointer
-dereference problems.
+The NIX RAS health report path uses nix_af_rvu_err when handling the
+NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
+than the RAS interrupt status.
 
-A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
-was reverted due to power management ordering concerns and a NO-CARRIER
-regression.
+Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
 
-A subsequent attempt to defer net_device allocation to bind [2] broke
-1:1 mapping between function instance and network device, making it
-impossible for configfs to report the resolved interface name. This
-results in a regression where the DHCP server fails on pmOS.
-
-Use device_move to reparent the net_device between the gadget device and
-/sys/devices/virtual/ across bind/unbind cycles. This preserves the
-network interface across USB reconnection, allowing the DHCP server to
-retain their binding.
-
-Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
-__free(detach_gadget) macro to undo attachment on bind failure. The
-bind_count ensures device_move executes only on the first bind.
-
-[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
-[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c   |   38 ++++++++++++++++++++++------------
- drivers/usb/gadget/function/u_ether.c |   22 +++++++++++++++++++
- drivers/usb/gadget/function/u_ether.h |   26 +++++++++++++++++++++++
- drivers/usb/gadget/function/u_ncm.h   |    2 -
- 4 files changed, 74 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1439,6 +1439,7 @@ static int ncm_bind(struct usb_configura
- 	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
-@@ -1452,18 +1453,19 @@ static int ncm_bind(struct usb_configura
- 			return -ENOMEM;
- 	}
- 
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound) {
--		ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
--		status = gether_register_netdev(ncm_opts->net);
--	}
--	mutex_unlock(&ncm_opts->lock);
--
--	if (status)
--		return status;
--
--	ncm_opts->bound = true;
-+	scoped_guard(mutex, &ncm_opts->lock)
-+		if (ncm_opts->bind_count == 0) {
-+			if (!device_is_registered(&ncm_opts->net->dev)) {
-+				ncm_opts->net->mtu = (ncm_opts->max_segment_size - ETH_HLEN);
-+				gether_set_gadget(ncm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ncm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = ncm_opts->net;
-+		}
- 
- 	ncm_string_defs[1].s = ncm->ethaddr;
- 
-@@ -1564,6 +1566,9 @@ static int ncm_bind(struct usb_configura
- 	}
- 	ncm->notify_req = no_free_ptr(request);
- 
-+	ncm_opts->bind_count++;
-+	retain_and_null_ptr(net);
-+
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
-@@ -1655,7 +1660,7 @@ static void ncm_free_inst(struct usb_fun
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -1718,9 +1723,12 @@ static void ncm_free(struct usb_function
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ncm *ncm = func_to_ncm(f);
-+	struct f_ncm_opts *ncm_opts;
- 
- 	DBG(c->cdev, "ncm unbind\n");
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	hrtimer_cancel(&ncm->task_timer);
- 
- 	kfree(f->os_desc_table);
-@@ -1736,6 +1744,10 @@ static void ncm_unbind(struct usb_config
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm_opts->bind_count--;
-+	if (ncm_opts->bind_count == 0)
-+		gether_detach_gadget(ncm_opts->net);
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -896,6 +896,28 @@ void gether_set_gadget(struct net_device
- }
- EXPORT_SYMBOL_GPL(gether_set_gadget);
- 
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
-+{
-+	int ret;
-+
-+	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
-+	if (ret)
-+		return ret;
-+
-+	gether_set_gadget(net, g);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gether_attach_gadget);
-+
-+void gether_detach_gadget(struct net_device *net)
-+{
-+	struct eth_dev *dev = netdev_priv(net);
-+
-+	device_move(&net->dev, NULL, DPM_ORDER_NONE);
-+	dev->gadget = NULL;
-+}
-+EXPORT_SYMBOL_GPL(gether_detach_gadget);
-+
- int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
- {
- 	struct eth_dev *dev;
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -151,6 +151,32 @@ static inline struct net_device *gether_
- void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
- 
- /**
-+ * gether_attach_gadget - Reparent net_device to the gadget device.
-+ * @net: The network device to reparent.
-+ * @g: The target USB gadget device to parent to.
-+ *
-+ * This function moves the network device to be a child of the USB gadget
-+ * device in the device hierarchy. This is typically done when the function
-+ * is bound to a configuration.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
-+
-+/**
-+ * gether_detach_gadget - Detach net_device from its gadget parent.
-+ * @net: The network device to detach.
-+ *
-+ * This function moves the network device to be a child of the virtual
-+ * devices parent, effectively detaching it from the USB gadget device
-+ * hierarchy. This is typically done when the function is unbound
-+ * from a configuration but the instance is not yet freed.
-+ */
-+void gether_detach_gadget(struct net_device *net);
-+
-+DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
-+
-+/**
-  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
-  * @net: device representing this link
-  * @dev_addr: eth address of this device
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -18,7 +18,7 @@
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index 23f51fed4666d..5852a72b22306 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
+ 		rvu_report_pair_end(fmsg);
+ 		break;
+ 	case NIX_AF_RVU_RAS:
+-		intr_val = nix_event_context->nix_af_rvu_err;
++		intr_val = nix_event_context->nix_af_rvu_ras;
+ 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
+ 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
+-					  nix_event_context->nix_af_rvu_err);
++					  nix_event_context->nix_af_rvu_ras);
+ 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
+ 		if (intr_val & BIT_ULL(34))
+ 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
+-- 
+2.51.0
+
 
 
 
