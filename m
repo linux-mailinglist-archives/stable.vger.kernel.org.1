@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OV5K2KNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:34 +0100
+	id KCQ4CDKHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D802D2AF596
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA42AE9D7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 101F030437C8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC9C730AAAAB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EBD3F23B3;
-	Tue, 17 Mar 2026 17:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228E131F9B3;
+	Tue, 17 Mar 2026 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGDgRzux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e58OS0cl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DE12FFDEA;
-	Tue, 17 Mar 2026 17:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB5B3590B8;
+	Tue, 17 Mar 2026 16:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767161; cv=none; b=lsgg9YcXLVHOZv5f8IE5hNHLd6oJdpUhSCiq22DA6oVtKVdeMFTekwfLxCJHkSJZdQF+atGEOSBlfLasaampTjxGvJbtPQG89rr/fj7GJZsKzSnYe5ODrpeMSE0mqMdCEwDWsmHvY2jwVCZvlWN9vuJqDHUmZ9lzZ4rt9P4tyEI=
+	t=1773765943; cv=none; b=fpx2f0vkMHoKe1QFRO8KgHl3fhTK3uVcSt9RB0Qonlv2nZE8utJ3R/dDeq7H0qJT2/YuWhzQqxdGGcpyrfQMNtnmeGYAFUjN3fbVQ5iv98rFP+9NLCTmXIb//VJ5/fSIZS9D7GS27HCRwCg5TUeJ9JjYavxljtUy400nThbj/GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767161; c=relaxed/simple;
-	bh=cPOf2J3fg6ARnl6h3cAEoKs6SNN5hZtNnAEaK7uD/wY=;
+	s=arc-20240116; t=1773765943; c=relaxed/simple;
+	bh=sWsowVJjP+D85uX/59UWHtkQDhpp+SXF8++6rgBly1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BF3tOP4sNEkiMvqUiwpPO4OJwFlEWJtFV2Ej7kKvpdxIVNzL/sJkrN3MyVkRpWcEvU1jZ3TH+LSOdH1yGS8YLdE/FSZ0YHccQy3Kappg2Mh7Efc2+EhjHrBTac656KvZvMPJbRP0XNAfgLzpfcbcpgRjx26DXSK9y3VVHOloL68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGDgRzux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F926C4CEF7;
-	Tue, 17 Mar 2026 17:05:59 +0000 (UTC)
+	 MIME-Version; b=M7CggSFVuDr/1D+WbBWKAYu8GA2y5FJUTLwGORHbP3vr87hoXCwaHqqVDhiOoIELXdKKakA8F6CawvyGppFbJclm5IPI6C0gcHM9Nv+LMjZ1+493uc3BRcLJX2BsAz6ScA92d7gZWx9MPLsWu9wwRqSAE/E8RUlbJq2WMLQzE/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e58OS0cl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C03DC4CEF7;
+	Tue, 17 Mar 2026 16:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767160;
-	bh=cPOf2J3fg6ARnl6h3cAEoKs6SNN5hZtNnAEaK7uD/wY=;
+	s=korg; t=1773765943;
+	bh=sWsowVJjP+D85uX/59UWHtkQDhpp+SXF8++6rgBly1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGDgRzuxBD4eHoIkZ9VhiNTeQD+egjp+HucV3zuMZGHeFxQw+PfqmQmp1i+Z04fHy
-	 dqNP0KKuQ7HPu+eU0SfjT7h3DRmZiasBtZr9rzGoob9Q/mxoEtC7UCfbOfqk3FpFD2
-	 e36gj4bzhFpgeHOeegxAE6HCK265cjpuIqgujWWo=
+	b=e58OS0clOMARpaypFwgeCVz1V1b5CHJ5q6bNOsjkJz7qAaGRSR6UoyKSjdB4+IiLe
+	 17dP0n50/dW6uAdlbxsRHemueffFyVqPiqY2fSjU8lDwmn3wXB5A0W7JiOknIcVSho
+	 xi/cIQe/7zwpLj7t9KP81Gd9WoOJ2ao9c6hyHK1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Sierra <alex.sierra@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 027/333] drm/msm/dsi: fix hdisplay calculation when programming dsi registers
-Date: Tue, 17 Mar 2026 17:30:56 +0100
-Message-ID: <20260317163000.368791078@linuxfoundation.org>
+Subject: [PATCH 6.19 100/378] drm/amdkfd: Unreserve bo if queue update failed
+Date: Tue, 17 Mar 2026 17:30:57 +0100
+Message-ID: <20260317163010.696818772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +67,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226545-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226263-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,patchwork.freedesktop.org:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: D802D2AF596
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 8EBA42AE9D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit ac47870fd795549f03d57e0879fc730c79119f4b ]
+[ Upstream commit 2ce75a0b7e1bfddbcb9bc8aeb2e5e7fa99971acf ]
 
-Recently, the hdisplay calculation is working for 3:1 compressed ratio
-only. If we have a video panel with DSC BPP = 8, and BPC = 10, we still
-use the default bits_per_pclk = 24, then we get the wrong hdisplay. We
-can draw the conclusion by cross-comparing the calculation with the
-calculation in dsi_adjust_pclk_for_compression().
+Error handling path should unreserve bo then return failed.
 
-Since CMD mode does not use this, we can remove
-!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) safely.
-
-Fixes: efcbd6f9cdeb ("drm/msm/dsi: Enable widebus for DSI")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/704822/
-Link: https://lore.kernel.org/r/20260214105145.105308-1-mitltlatltl@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 305cd109b761 ("drm/amdkfd: Validate user queue update")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Alex Sierra <alex.sierra@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c24afed7de9ecce341825d8ab55a43a254348b33)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index e0de545d40775..e8e83ee61eb09 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -993,7 +993,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 7fbb5c274ccc4..7bf712032c52c 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -606,6 +606,7 @@ int pqm_update_queue_properties(struct process_queue_manager *pqm,
+ 					 p->queue_size)) {
+ 			pr_debug("ring buf 0x%llx size 0x%llx not mapped on GPU\n",
+ 				 p->queue_address, p->queue_size);
++			amdgpu_bo_unreserve(vm->root.bo);
+ 			return -EFAULT;
+ 		}
  
- 	if (msm_host->dsc) {
- 		struct drm_dsc_config *dsc = msm_host->dsc;
--		u32 bytes_per_pclk;
-+		u32 bits_per_pclk;
- 
- 		/* update dsc params with timing params */
- 		if (!dsc || !mode->hdisplay || !mode->vdisplay) {
-@@ -1015,7 +1015,9 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 
- 		/*
- 		 * DPU sends 3 bytes per pclk cycle to DSI. If widebus is
--		 * enabled, bus width is extended to 6 bytes.
-+		 * enabled, MDP always sends out 48-bit compressed data per
-+		 * pclk and on average, DSI consumes an amount of compressed
-+		 * data equivalent to the uncompressed pixel depth per pclk.
- 		 *
- 		 * Calculate the number of pclks needed to transmit one line of
- 		 * the compressed data.
-@@ -1027,12 +1029,12 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 		 * unused anyway.
- 		 */
- 		h_total -= hdisplay;
--		if (wide_bus_enabled && !(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
--			bytes_per_pclk = 6;
-+		if (wide_bus_enabled)
-+			bits_per_pclk = mipi_dsi_pixel_format_to_bpp(msm_host->format);
- 		else
--			bytes_per_pclk = 3;
-+			bits_per_pclk = 24;
- 
--		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc), bytes_per_pclk);
-+		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc) * 8, bits_per_pclk);
- 
- 		h_total += hdisplay;
- 		ha_end = ha_start + hdisplay;
 -- 
 2.51.0
 
