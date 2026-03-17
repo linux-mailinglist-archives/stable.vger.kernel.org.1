@@ -1,95 +1,65 @@
-Return-Path: <stable+bounces-225757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGuqHg4EuWmEnAEAu9opvQ
-	(envelope-from <stable+bounces-225757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:34:38 +0100
+	id ML7dKS4FuWmEnAEAu9opvQ
+	(envelope-from <stable+bounces-225758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:39:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB282A4DF8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5782A4F27
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0E5CF301DBA0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 07:34:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A46203012B5B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 07:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCE339150B;
-	Tue, 17 Mar 2026 07:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFD1391839;
+	Tue, 17 Mar 2026 07:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M47DaaOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeQYDe/l"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361A7390C9C;
-	Tue, 17 Mar 2026 07:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7421391505;
+	Tue, 17 Mar 2026 07:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773732871; cv=none; b=AT8U6GzwRrmL4oGkjVdeNcm+qZAvIiSPqIRwqbmN+TzKdkEzqwkTm3v1vpGJKIdpcafFHVyqhdKg/NEX3uwXOOmcIf6tW9HR3teeXXRIdXD3hBGCo5r5iY0DtatlF2VGi+Mauiu0K6B+KuGBwkpRoQVE6JBueylRTl2UOFDa8cU=
+	t=1773733161; cv=none; b=Av4vpnuOfQShBUK5RPEVY2FIndI42JOSX6o/rTBnjfComKurFXpnr9ID97z0iec993QnIdvfJ8ZJ1CDK4YYVV+jkIl0KeIT6kOjBm1TnoCoyGqboZABRxNdbdmPS+5U43z+Ixqt9SwXGr5lNy4+9eeUM3oVNPDgojjcerwg6wAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773732871; c=relaxed/simple;
-	bh=1OJtUNEamh5vO3iFIrEXYFak4q7SIt7T2aherzADZ/g=;
+	s=arc-20240116; t=1773733161; c=relaxed/simple;
+	bh=JRy7BlW+4YyMcr948u1R8Lh5p331m/L0Ornk6lRsZmk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJin+WTo6SOAFIl4SwBBsbdIFKa9iBGCt2nHp6VhL5V85uqBwzYYvY/ihKKrjGztu0gUI4eZx6rsxeqTSqcC8jji5t+EPv5ZQYztB362MPiwAbgoKrqdmp291Q44HSfO4DPJwVu97EbvDCSvFtwFcA4D7Vy30c2u4KuWdplLKRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M47DaaOu; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773732868; x=1805268868;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1OJtUNEamh5vO3iFIrEXYFak4q7SIt7T2aherzADZ/g=;
-  b=M47DaaOuSzsQO328WpCScWltYGD4pdgiPUxorGYboWTN4VdJ5bhV5HgK
-   ycgZqRjShABovIRAl9mbB1rplIl4VcZupB+COiK3gbIxCgaUvmCnRiLDW
-   14oPfBjsouJXU622gvO2BQcktn4jsCUgI8WY8nTWT5cqZTi+f8aJ2OIuu
-   laCc4bSV3biqHi/7v+LEiaHEwyolHZvj23jbbfU5KQWTc9OpxHY//aR+G
-   lg/1CmDhYBl0urV5JR+H+jn+fRM9jt7SZPoa74dmem/uDtsUDXX9ZPqP5
-   GsoD2FLbVK4j3eSdEXvncyrXjHlj8mzrZGGe8l0511L8OqNoGdwFv64PQ
-   A==;
-X-CSE-ConnectionGUID: 7mzbjog+TL636KIKxK2VyA==
-X-CSE-MsgGUID: RpLqQNvZTX2I+PG++Vj5oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74835520"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74835520"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 00:34:27 -0700
-X-CSE-ConnectionGUID: l6i/QyKCQ2+Qh0zbsAMaDQ==
-X-CSE-MsgGUID: E2hgBnOgTvOTItdc81+GLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="226306582"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 00:34:20 -0700
-Date: Tue, 17 Mar 2026 09:34:17 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abkD-VLprcbbEbB1@ashevche-desk.local>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
+	 Content-Type:Content-Disposition:In-Reply-To; b=g0cfsT0YuWHg+ZnRLl6IML7wCSlf+Tf3CXrEIY3M5rvCorjUtC+zYEsuc/yU2/VaFXzUQH5gbsvZriYxvJ0lakBQKt1qf8cIWpJnR7qGgBVhN5TIUJWNfvLdeLQ2+oevEHvkbS6dwovFNrk3xWvuiOtkZRH9BCopz5LcSo9n2Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeQYDe/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE380C19424;
+	Tue, 17 Mar 2026 07:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773733161;
+	bh=JRy7BlW+4YyMcr948u1R8Lh5p331m/L0Ornk6lRsZmk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NeQYDe/lv5rPotjsuUymvu6fKCCQDuUSo+4iAhsFkm1HyG4EkhUpe4MiaV5Luhz2b
+	 zU4z/tBzbDTMMx79QtyDURalBrdYrYC5yE/CvpQB7Koh3RZtkZAOWLXIDcoNm7tr13
+	 PKRAR/tSeE+IdC3PQbwiJDYQIt+CKyav41cDzhxM=
+Date: Tue, 17 Mar 2026 08:39:16 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 5.15 000/410] 5.15.202-rc2 review
+Message-ID: <2026031714-undusted-rambling-c2ae@gregkh>
+References: <20260302160955.2522727-1-sashal@kernel.org>
+ <20260305220801.GA3148061@ax162>
+ <20260316220533.GD1329928@ax162>
+ <abiuxFzZNLKbhz6F@laps>
+ <2026031738-glade-glamorous-eacd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,68 +68,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abkCPU3rxHI49N4_@shikoro>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-0.66 / 15.00];
+In-Reply-To: <2026031738-glade-glamorous-eacd@gregkh>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[chromium.org,linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,linux.intel.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-225757-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225758-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ashevche-desk.local:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: 5DB282A4DF8
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4B5782A4F27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 08:26:53AM +0100, Wolfram Sang wrote:
-
-...
-
-> Thanks for tackling this issue! I agree it should be fixed, just
-> wondered about one thing:
+On Tue, Mar 17, 2026 at 05:42:14AM +0100, Greg Kroah-Hartman wrote:
+> On Mon, Mar 16, 2026 at 09:30:44PM -0400, Sasha Levin wrote:
+> > On Mon, Mar 16, 2026 at 03:05:33PM -0700, Nathan Chancellor wrote:
+> > > On Thu, Mar 05, 2026 at 03:08:09PM -0700, Nathan Chancellor wrote:
+> > > > On Mon, Mar 02, 2026 at 11:09:55AM -0500, Sasha Levin wrote:
+> > > > > Jamie Iles (1):
+> > > > >   i3c: remove i2c board info from i2c_dev_desc
+> > > > 
+> > > > You missed commit 6cbf8b38dfe3 ("i3c: fix uninitialized variable use in
+> > > > i2c setup") as a fix for this one, as rightfully pointed out by clang:
+> > > > 
+> > > >   https://lore.kernel.org/177198114226.2577.15577566399399369654@d14e337afe00/
+> > > > 
+> > > >   $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper allmodconfig drivers/i3c/master.o
+> > > >   drivers/i3c/master.c:2203:3: error: variable 'i2cdev' is uninitialized when used here [-Werror,-Wuninitialized]
+> > > >    2203 |                 i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
+> > > >         |                 ^~~~~~
+> > > > 
+> > > > I guess that report was missed because it was not actually addressed to
+> > > > anyone?
+> > > > 
+> > > > FWIW, this patch appeared in a previous 5.15-rc release but Ben
+> > > > rightfully pointed out it really was not necessary and Greg said he
+> > > > would fix it up by hand:
+> > > > 
+> > > >   https://lore.kernel.org/2026011724-florist-brook-5f1f@gregkh/
+> > > > 
+> > > > Guess that never happened?
+> > > 
+> > > Ping? I don't see 6cbf8b38dfe3 queued up in 5.15 and this continues to
+> > > break our builds:
+> > > 
+> > >  https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/23093834605
+> > 
+> > Hm, I queued it up, but looks like Greg dropped it:
+> > 
+> > 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=7c0d6910ad
+> > 
+> > I'm not sure why.
 > 
-> > While flags are often modified while under the "fwnode_link_lock",
-> > this is not universally true.
-> 
-> Is it a possibility to use the lock in all code paths instead?
-> Because...
-> 
-> >  	struct list_head consumers;
-> > -	u8 flags;
-> > +	unsigned long flags;
-> 
-> ... this change costs some memory on every system. Maybe it can be
-> avoided?
+> I am guessing that it broke some type of build, and so I figured it was
+> safer to just drop them all.  I'll try it again later today, sorry about
+> that...
 
-How much memory does it cost? On most 64-bit architectures is +4 bytes,
-rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
-+0 bytes. I expect that 64-bit machines will cope with this bump.
+Wait, I removed them all, as that should have fixed the issue (I removed
+the offending commit that was originally causing the build problem
+here.)
 
--- 
-With Best Regards,
-Andy Shevchenko
+Nathan, what errors are you seeing now?  None of these changes are in a
+release, and I don't see any i3c patches in the current queue.
 
+confused,
 
+greg k-h
 
