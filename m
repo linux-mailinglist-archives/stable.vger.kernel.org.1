@@ -1,135 +1,177 @@
-Return-Path: <stable+bounces-225813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJsfNh85uWlYvwEAu9opvQ
-	(envelope-from <stable+bounces-225813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:21:03 +0100
+	id SHpkOBg8uWkowQEAu9opvQ
+	(envelope-from <stable+bounces-225814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:33:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B572A8A49
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:21:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F682A8E22
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3EC5A30488E4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 575E83047DF7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6436F37D106;
-	Tue, 17 Mar 2026 11:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EFA3ACA72;
+	Tue, 17 Mar 2026 11:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="au04Iwaq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBtgs+PF"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83AF3A6B87
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD9634F486;
+	Tue, 17 Mar 2026 11:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773746452; cv=none; b=P1bAHYfl5CNSkn+iyRgo2hYaMRshc3PFwZJcY9kehVp6wv/d8+ccovpiTrGNp2naAWBPKMTW8YsoCDHktXp51jz68IKN3k1Vmw7+iOrH3G+PcCNJJ2iOSR0Izy0exyXD3iMsWyKr6aU/EtSzltEjL53UI0w27AC5QmzzJLB1BM8=
+	t=1773747171; cv=none; b=BuQTb6Ky3iQxRUDBdB9e5FKaTMGv+wcpwh1RZ9xqv/55x8r85tGY9JFtv11pqD7dSqm0j5aFpe8KYN1A70QiQ1ixxpDcMCOFaBQLtuysye2YxLcD5T524NEIqF4tuAnhHK1HDHXeDnGMfxPvf5XREfKnjgN6bhGnOsi9sDChAqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773746452; c=relaxed/simple;
-	bh=pOAJ7gTT2gW3rIbyM1AFAzko/De87b7KJmIKhZOX4RU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HW2fQKCCLKdJlxh8dR1WxCbKpOlwMAHE+ySZKJu4qodvpXxHd0RCc/xJBZswn4lxGIVKPz2uWWORceTSSUc05oG1OGZjhyrw1NBt1GIl9u7nnx6LkJGTm8LWaLg3TFpWjBIPCIcDv4dqz5PJZqTyHLNJN6kFGryPeWVo9H2FDW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=au04Iwaq; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 17 Mar 2026 12:20:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773746438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fJ19JX+Fdfvgr+LNxpY/TOqvYP2YRwuZtSMmPJ3oyp4=;
-	b=au04IwaquZL/9L402rl9GkDbdHPdZDGzWMebJ8y0SVeq0gIrOG8fHY5jnHIxEQdMGRFUAF
-	Y2G10qY+H+5rOpeTEUsauUiBKBmfmyLqtIXq+EZ+34p0RmM33EGevjqIHUE/R6W8RzV+OQ
-	XOYEeugQEjPKVe+Vg4leqmT42xtW7qA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Kim Phillips <kim.phillips@freescale.com>,
-	Yuan Kang <Yuan.Kang@freescale.com>, stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] crypto: caam - remove HMAC key hex dumps from
- hash_digest_key
-Message-ID: <abk4_r-KUYIhvyNL@linux.dev>
-References: <20260306111204.302544-1-thorsten.blum@linux.dev>
- <abTqefme_iApfHZi@gondor.apana.org.au>
+	s=arc-20240116; t=1773747171; c=relaxed/simple;
+	bh=j8G42BMIwkJi1ZWkspY+1Bbp3gHjsqAQ1779Dfn5r6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jWE4nrSfPvhUAcDAhKBnyzHofjGXjYo3Ps1CmmFZ2kgmE+a+e0nIRuKVelIigs+7yFUwJWLNxp0IvkwCxkhT3Oyjc0l2UZiYsQGe7jwAlTt+YTtyHeAKUPN3DFSeizQA//pfzpdHU2+zdoyfDZhSiwNNST9sV26xomUZgRHvGvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBtgs+PF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A370C4CEF7;
+	Tue, 17 Mar 2026 11:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773747171;
+	bh=j8G42BMIwkJi1ZWkspY+1Bbp3gHjsqAQ1779Dfn5r6s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pBtgs+PF+oovxpeJf8d7GuIZhYXd2qICl8+vMByTgfcaML8P/tAFL/ela0+6XzETH
+	 3E0Mqof4RRV2UwtyFop5yCyWm67xI/7yR8jNL+MFhOT+pG3PcAllTgEMFJ/usdfMd4
+	 w5UzDpwPSkVfF7JBRlX+HxcvwWRYed8Qi7wnWKitEjPms+kA4TuT0i/6X5HuV1h9O/
+	 2zz5EzQ2J85EHT/yTPotLkkCRANezGJ81ghLOIzfQmiwx6tkxWKNAWn0iTE1ONlBKp
+	 h0sFu9lMDJ3Ot8Z2ZQYVDvaSd9m5c0QrR3ydCZel0VAZqTTTmH6DVjJf8ELBbtE5vB
+	 g7/VaW1YOx7Zg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Liucheng Lu <luliucheng100@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.1] ALSA: hda/realtek: add HP Laptop 14s-dr5xxx mute LED quirk
+Date: Tue, 17 Mar 2026 07:32:32 -0400
+Message-ID: <20260317113249.117771-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abTqefme_iApfHZi@gondor.apana.org.au>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225813-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[outlook.com,suse.de,kernel.org,perex.cz,suse.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225814-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
-X-Rspamd-Queue-Id: 94B572A8A49
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,outlook.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 60F682A8E22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 14, 2026 at 01:56:25PM +0900, Herbert Xu wrote:
-> On Fri, Mar 06, 2026 at 12:12:03PM +0100, Thorsten Blum wrote:
-> > Stop dumping sensitive HMAC key bytes (original and reduced keys) in
-> > hash_digest_key() to avoid leaking secrets when debug logging is
-> > enabled.
-> > 
-> > Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-> > Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> > ---
-> >  drivers/crypto/caam/caamalg_qi2.c | 5 -----
-> >  drivers/crypto/caam/caamhash.c    | 6 ------
-> >  2 files changed, 11 deletions(-)
-> 
-> What is the rationale for this? When debugging is enabled, all
-> sorts of things could be dumped, e.g., passwords.
+From: Liucheng Lu <luliucheng100@outlook.com>
 
-This is not specifically about caam, but (debug) logging of potentially
-sensitive key material should generally be avoided, imho. Some other
-recent examples:
+[ Upstream commit 178dd118c0f07fd63a9ed74cfbd8c31ae50e33af ]
 
-https://lore.kernel.org/lkml/20260227230008.858641-2-thorsten.blum@linux.dev/
-https://lore.kernel.org/lkml/20260303132552.65235-2-thorsten.blum@linux.dev/
-https://lore.kernel.org/lkml/20260303190350.78705-2-thorsten.blum@linux.dev/
+HP Laptop 14s-dr5xxx with ALC236 codec does not handle the toggling of
+the mute LED.
+This patch adds a quirk entry for subsystem ID 0x8a1f using
+ALC236_FIXUP_HP_MUTE_LED_COEFBIT2 fixup, enabling correct mute LED
+behavior.
 
-> Is there a scenario where production systems will run with debugging
-> enabled in caam?
+Signed-off-by: Liucheng Lu <luliucheng100@outlook.com>
+Link: https://patch.msgid.link/PAVPR03MB9774F3FCE9CCD181C585281AE37BA@PAVPR03MB9774.eurprd03.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-I don't know - possibly.
+LLM Generated explanations, may be completely bogus:
 
-Thanks,
-Thorsten
+## Analysis
+
+This is a textbook audio codec quirk addition — a single `SND_PCI_QUIRK`
+line added to the HDA Realtek quirk table for HP Laptop 14s-dr5xxx
+(subsystem ID `0x103c:0x8a1f`), using the existing
+`ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` fixup.
+
+**What it fixes:** The mute LED on HP Laptop 14s-dr5xxx doesn't toggle
+correctly without this quirk. This is a real hardware issue affecting
+users of this specific laptop model.
+
+**Scope and risk:** One line added to a quirk table. The fixup
+`ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` is already used by multiple other HP
+laptops in the same table (e.g., `0x89a0` "HP Laptop 15-dw4xxx",
+`0x8a20` "HP Laptop 15s-fq5xxx"). Zero risk of regression — it only
+matches the specific subsystem ID and applies an already-proven fixup
+chain.
+
+**Stable criteria:**
+- Obviously correct: Yes, trivial one-line quirk entry
+- Fixes a real bug: Yes, broken mute LED on specific hardware
+- Small and contained: Yes, single line
+- No new features: Correct, uses existing fixup
+- No new APIs: Correct
+
+This falls squarely into the "AUDIO CODEC QUIRKS" exception category
+explicitly listed as YES for stable.
+
+Verification:
+- Confirmed from the diff that `ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` is
+  already used by adjacent entries (lines for 0x89a0 and 0x8a20) in the
+  same quirk table
+- Confirmed the change is a single line addition with no other code
+  modifications
+- The commit was accepted by the HDA maintainer (Takashi Iwai) via the
+  standard patch process
+
+**YES**
+
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index f5719e630d28a..13d14c86569f9 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6917,6 +6917,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x89da, "HP Spectre x360 14t-ea100", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x89e7, "HP Elite x2 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8a1f, "HP Laptop 14s-dr5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a26, "HP Victus 16-d1xxx (MB 8A26)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+-- 
+2.51.0
+
 
