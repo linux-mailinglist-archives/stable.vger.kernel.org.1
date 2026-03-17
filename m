@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-226299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOOMNs6FuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:14 +0100
+	id MI8wGkOHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADEA62AE70D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E932AE9FB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1DFC0301FBAA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 219D2317141A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AAB3F54A6;
-	Tue, 17 Mar 2026 16:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B133F376464;
+	Tue, 17 Mar 2026 16:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0rdWo0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6K4i4K1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9343F23DD;
-	Tue, 17 Mar 2026 16:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741BE244694;
+	Tue, 17 Mar 2026 16:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766092; cv=none; b=E8w+wVnpq5Kqk/93+mgKLgsycabyru/fhaScxrC+xO3rVbqk8YUdYawZFeY4JiJqKem1GsHM0lIVoPZbOjewDdqA9spRDAk4m99bA5mQGQNLE+qNWt6iEjpCYdMuxSJd979FmyOYGQ0LeG2eBemyBjBbo5uyX8cB71KBf/gK8Jg=
+	t=1773765955; cv=none; b=esaaIHNTaDOj5V4ZjZD07CH8S5uG5jOrof2W2CrGMr7DDxUc/6SR25j2rYJzWDW0e9hpqQAD3Aw+cORufnK0qNM0PP5tnnGqlHQoOkAaOxA8+AfMHCehxt4UmIJVzeixuj7udNZq9w66P21x/ryo9qp7cRIbCWX7dRFnK3kUMKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766092; c=relaxed/simple;
-	bh=IX8XhHk9FuFshYtZ2mXPUWj6WRqcaVQ4bLHXuMP6LNk=;
+	s=arc-20240116; t=1773765955; c=relaxed/simple;
+	bh=uP4YDgKPqy4xYWPY5beT2HfKKuPJN15rS10aKjZCiGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZkO4S5733E18flu5Ma0m4lYM8SKDr8OigGUEOvXYQv+F9cVwmg+DxXkWiCRM+qQV8wDCRBO61nRs4BoEvb0h+ewr/4aR56e+wqWQlLduCikx+oDVZ+rNigbmdHumsa+f7HySgHRWrVoRJSTJZm8M6/yNhN4qewksFAwBlWn0sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0rdWo0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EEC4CEF7;
-	Tue, 17 Mar 2026 16:48:11 +0000 (UTC)
+	 MIME-Version; b=YmrSmSlzCmAvjZmr/ML/LFl2bgESv8MYI5GgWQakXK146tX0uu3jx4fh1wac27dehW3hAp7KFjDxcVUYYbLmK/U60B84FOU/JkKh9lwO96Nu0ZUf2KPP/SUqq12JJI4M9ZhaPMLQ5Uy6bwCbjVNaQqqnYX5VLAaFmxsRser/zys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6K4i4K1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECE1C4CEF7;
+	Tue, 17 Mar 2026 16:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766092;
-	bh=IX8XhHk9FuFshYtZ2mXPUWj6WRqcaVQ4bLHXuMP6LNk=;
+	s=korg; t=1773765955;
+	bh=uP4YDgKPqy4xYWPY5beT2HfKKuPJN15rS10aKjZCiGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0rdWo0xLErtOt+TKGWiMLnIpp7RvBPqFBWwSSiGK+IbUuXi37SSUvlspXbs4bYhj
-	 mnU9Q8ei/wcHvoJrLCDL+hdDVf8Q0NtAMnmeBhL3dClp1OZelDAvWheTYHKHFIEZBj
-	 gOa7OB5qfC5mvYLD52ZI78UdubrWdUVi4lwgEjGg=
+	b=z6K4i4K1AT+W9JILj0FF7Q0e9sboBwznW4VwAx2JzD5xI/lJY6xrW5o7vVEtT1R6R
+	 e2h10Ob6dLznb6twM7ffzp11XDKoP1IJ3tDVymuBCN8ntKPx+KY3gdba2dSe6dkjFC
+	 dvMTtv9E8D2Kv+FKTMSDsCuBKx5Ox8xsQd+X/jJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.19 135/378] KVM: arm64: Fix protected mode handling of pages larger than 4kB
-Date: Tue, 17 Mar 2026 17:31:32 +0100
-Message-ID: <20260317163011.982006007@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.19 136/378] KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM
+Date: Tue, 17 Mar 2026 17:31:33 +0100
+Message-ID: <20260317163012.017810337@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226299-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226266-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ADEA62AE70D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 01E932AE9FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,82 +99,109 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Jim Mattson <jmattson@google.com>
 
-commit 08f97454b7fa39bfcf82524955c771d2d693d6fe upstream.
+commit e2ffe85b6d2bb7780174b87aa4468a39be17eb81 upstream.
 
-Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
-pKVM tracks the memory that has been mapped into a guest in a
-side data structure. Crucially, it uses it to find out whether
-a page has already been mapped, and therefore refuses to map it
-twice. So far, so good.
+Add KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM to allow L1 to set
+FREEZE_IN_SMM in vmcs12's GUEST_IA32_DEBUGCTL field, as permitted
+prior to commit 6b1dd26544d0 ("KVM: VMX: Preserve host's
+DEBUGCTLMSR_FREEZE_IN_SMM while running the guest").  Enable the quirk
+by default for backwards compatibility (like all quirks); userspace
+can disable it via KVM_CAP_DISABLE_QUIRKS2 for consistency with the
+constraints on WRMSR(IA32_DEBUGCTL).
 
-However, this very patch completely breaks non-4kB page support,
-with guests being unable to boot. The most obvious symptom is that
-we take the same fault repeatedly, and not making forward progress.
-A quick investigation shows that this is because of the above
-rejection code.
+Note that the quirk only bypasses the consistency check.  The vmcs02 bit is
+still owned by the host, and PMCs are not frozen during virtualized SMM.
+In particular, if a host administrator decides that PMCs should not be
+frozen during physical SMM, then L1 has no say in the matter.
 
-As it turns out, there are multiple issues at play:
-
-- while the HPFAR_EL2 register gives you the faulting IPA minus
-  the bottom 12 bits, it will still give you the extra bits that
-  are part of the page offset for anything larger than 4kB,
-  even for a level-3 mapping
-
-- pkvm_pgtable_stage2_map() assumes that the address passed as
-  a parameter is aligned to the size of the intended mapping
-
-- the faulting address is only aligned for a non-page mapping
-
-When the planets are suitably aligned (pun intended), the guest
-faults on a page by accessing it past the bottom 4kB, and extra bits
-get set in the HPFAR_EL2 register. If this results in a page mapping
-(which is likely with large granule sizes), nothing aligns it further
-down, and pkvm_mapping_iter_first() finds an intersection that
-doesn't really exist. We assume this is a spurious fault and return
--EAGAIN. And again...
-
-This doesn't hit outside of the protected code, as the page table
-code always aligns the IPA down to a page boundary, hiding the issue
-for everyone else.
-
-Fix it by always forcing the alignment on vma_pagesize, irrespective
-of the value of vma_pagesize.
-
-Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Fuad Tabba <tabba@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://https://patch.msgid.link/20260222141000.3084258-1-maz@kernel.org
+Fixes: 095686e6fcb4 ("KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter")
 Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://patch.msgid.link/20260205231537.1278753-1-jmattson@google.com
+[sean: tag for stable@, clean-up and fix goofs in the comment and docs]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Rename quirk. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/mmu.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ Documentation/virt/kvm/api.rst  |    8 ++++++++
+ arch/x86/include/asm/kvm_host.h |    3 ++-
+ arch/x86/include/uapi/asm/kvm.h |    1 +
+ arch/x86/kvm/vmx/nested.c       |   22 ++++++++++++++++++----
+ 4 files changed, 29 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1753,14 +1753,12 @@ static int user_mem_abort(struct kvm_vcp
- 	}
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -8438,6 +8438,14 @@ KVM_X86_QUIRK_IGNORE_GUEST_PAT      By d
+                                     guest software, for example if it does not
+                                     expose a bochs graphics device (which is
+                                     known to have had a buggy driver).
++
++KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM   By default, KVM relaxes the consistency
++                                      check for GUEST_IA32_DEBUGCTL in vmcs12
++                                      to allow FREEZE_IN_SMM to be set.  When
++                                      this quirk is disabled, KVM requires this
++                                      bit to be cleared.  Note that the vmcs02
++                                      bit is still completely controlled by the
++                                      host, regardless of the quirk setting.
+ =================================== ============================================
  
- 	/*
--	 * Both the canonical IPA and fault IPA must be hugepage-aligned to
--	 * ensure we find the right PFN and lay down the mapping in the right
--	 * place.
-+	 * Both the canonical IPA and fault IPA must be aligned to the
-+	 * mapping size to ensure we find the right PFN and lay down the
-+	 * mapping in the right place.
- 	 */
--	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
--		fault_ipa &= ~(vma_pagesize - 1);
--		ipa &= ~(vma_pagesize - 1);
--	}
-+	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
-+	ipa = ALIGN_DOWN(ipa, vma_pagesize);
+ 7.32 KVM_CAP_MAX_VCPU_ID
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2470,7 +2470,8 @@ int memslot_rmap_alloc(struct kvm_memory
+ 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
+ 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
+ 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
+-	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
++	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
++	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM)
  
- 	gfn = ipa >> PAGE_SHIFT;
- 	mte_allowed = kvm_vma_mte_allowed(vma);
+ #define KVM_X86_CONDITIONAL_QUIRKS		\
+ 	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -476,6 +476,7 @@ struct kvm_sync_regs {
+ #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
+ #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
+ #define KVM_X86_QUIRK_IGNORE_GUEST_PAT		(1 << 9)
++#define KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (1 << 10)
+ 
+ #define KVM_STATE_NESTED_FORMAT_VMX	0
+ #define KVM_STATE_NESTED_FORMAT_SVM	1
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3292,10 +3292,24 @@ static int nested_vmx_check_guest_state(
+ 	if (CC(vmcs12->guest_cr4 & X86_CR4_CET && !(vmcs12->guest_cr0 & X86_CR0_WP)))
+ 		return -EINVAL;
+ 
+-	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
+-	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
+-	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
+-		return -EINVAL;
++	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
++		u64 debugctl = vmcs12->guest_ia32_debugctl;
++
++		/*
++		 * FREEZE_IN_SMM is not virtualized, but allow L1 to set it in
++		 * vmcs12's DEBUGCTL under a quirk for backwards compatibility.
++		 * Note that the quirk only relaxes the consistency check.  The
++		 * vmcc02 bit is still under the control of the host.  In
++		 * particular, if a host administrator decides to clear the bit,
++		 * then L1 has no say in the matter.
++		 */
++		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM))
++			debugctl &= ~DEBUGCTLMSR_FREEZE_IN_SMM;
++
++		if (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
++		    CC(!vmx_is_valid_debugctl(vcpu, debugctl, false)))
++			return -EINVAL;
++	}
+ 
+ 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
+ 	    CC(!kvm_pat_valid(vmcs12->guest_ia32_pat)))
 
 
 
