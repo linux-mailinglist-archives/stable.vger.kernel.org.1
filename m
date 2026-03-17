@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MB7H/qJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:02 +0100
+	id iOdMJYyNuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1026E2AEED8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D162AF5FD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FF78316C488
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB77932ACECF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA533EAC6F;
-	Tue, 17 Mar 2026 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94102DA756;
+	Tue, 17 Mar 2026 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLZlKaS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCGFU+c0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F413EDADB;
-	Tue, 17 Mar 2026 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33C1ACEDE;
+	Tue, 17 Mar 2026 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766397; cv=none; b=NwNjyXQAo7RqzYjHapX9JpP5AV51zLpxo/rlkqUxQdvBTJvd3CPW8+HRUdBbqtisezdNVWXIxU97HGkuu/wKnxAAsxh1jq/rqWrIC69QUdz0KqWv0TH+Ym+gOZg9p9heHIsdx/UnhUelhzNWJg1eAWwSzm6X9HhsyZW9TAQ0wIo=
+	t=1773767674; cv=none; b=NoLgYXqdL4QxP9YzhTjqy+WbtcI+7R1BB8BNV3apIzgG+cOHRd7GoZGZ/dTGYKfkyYq4n5KJUres8sDZXwrblbF6myRQmztGeFIpFWiUhHnQGTvG0OHfuTDXw9k+FWAIWMhZprRkis/CXPHwr/GBE4+CmHEtmbzymWXGq/xVEU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766397; c=relaxed/simple;
-	bh=ErhYhJMB72c9hEH6ySPPUi2rTO2uJ7N6Cnb/mV/LUhA=;
+	s=arc-20240116; t=1773767674; c=relaxed/simple;
+	bh=JrAS3a7N/zH57GERoGgWsRSucoQEVyf39WH6eXlaCjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0n2k+H477xgcveBoF9qQe7VX1LIX0ZDgZJgrnKbJVUsu6i6OX1du3If4Wpn8b6cpf0gdo6qNvdipeUO9UWcJXUCyxzhMJsyhSjwjdopFJcuwMhDwNfwSdjqy+baY3nnofYOtNgAlpk8FjrcvfUvk6scqPGClklVjjXfjqqLy0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLZlKaS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F05C4CEF7;
-	Tue, 17 Mar 2026 16:53:16 +0000 (UTC)
+	 MIME-Version; b=lRG7FMst4DbYeccGYyAP0wLGQjpIosCUYCiwesLFTXBvV1F1x8wCR31RoqLgHljb+unMjskyGd/dtTTOgNSbvk9NI/u2lMF1RQ+yYqW3KU36u3zjhzgMOLQwuL51EPH7bYFxpOLzCdKJPaeeLAqbMcgOadd2sE3sQFWx8KIWHww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCGFU+c0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1FAC4CEF7;
+	Tue, 17 Mar 2026 17:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766397;
-	bh=ErhYhJMB72c9hEH6ySPPUi2rTO2uJ7N6Cnb/mV/LUhA=;
+	s=korg; t=1773767674;
+	bh=JrAS3a7N/zH57GERoGgWsRSucoQEVyf39WH6eXlaCjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLZlKaS8FZ9Qdz7a8pPIM5S4sCWAMyzNzlueo/x3dtcL/5ejrEG6fW0GPaa0nZumQ
-	 f/dqmc4BMMIpVuQbU6lpc+IDxtrqyZFv1uR3HJ1irPQG5u7WfoH/J7VjO1t2SBUA52
-	 t/mcJT8k56hHPji3Xph8nNdBdjLXO0ife7roYu4c=
+	b=PCGFU+c09ujEIZLLm1QMDvTvmlPmstA9YtWweH0kPDxYGwXF3Vs/Gq0gbskYo+RJn
+	 g6BH4IwAO8kYsoR6nzGfnqW2uM7guGl04xT1IQ90iKi406consfG9lcfq1ntGbkbSO
+	 5wrJg0IcOWgJebjMm1EdXsttEa4N/sOjasEDKY+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.19 205/378] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
-Date: Tue, 17 Mar 2026 17:32:42 +0100
-Message-ID: <20260317163014.553076582@linuxfoundation.org>
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.18 134/333] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+Date: Tue, 17 Mar 2026 17:32:43 +0100
+Message-ID: <20260317163004.331421321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,8 +72,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226370-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-226657-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -82,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,132 +90,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1026E2AEED8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
+X-Rspamd-Queue-Id: 11D162AF5FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
+commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
 
-This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
-that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
-ceph_handle_auth_reply(), the value of the payload_len field of such a
-message is stored in a variable of type int. A value greater than
-INT_MAX leads to an integer overflow and is interpreted as a negative
-value. This leads to decrementing the pointer address by this value and
-subsequently accessing it because ceph_decode_need() only checks that
-the memory access does not exceed the end address of the allocation.
+Remove the error path from the usb_phy_roothub_set_mode() function.
+The code is clearly wrong, because phy_set_mode() calls can't be
+balanced with phy_power_off() calls.
 
-This patch fixes the issue by changing the data type of payload_len to
-u32. Additionally, the data type of result_msg_len is changed to u32,
-as it is also a variable holding a non-negative length.
+Additionally, the usb_phy_roothub_set_mode() function is called only
+from usb_add_hcd() before it powers on the PHYs, so powering off those
+makes no sense anyway.
 
-Also, an additional layer of sanity checks is introduced, ensuring that
-directly after reading it from the message, payload_len and
-result_msg_len are not greater than the overall segment length.
+Presumably, the code is copy-pasted from the phy_power_on() function
+without adjusting the error handling.
 
-BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
-Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
-
-CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: ceph-msgr ceph_con_workfn [libceph]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x76/0xa0
- print_report+0xd1/0x620
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? kasan_complete_mode_report_info+0x72/0x210
- kasan_report+0xe7/0x130
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- __asan_report_load_n_noabort+0xf/0x20
- ceph_handle_auth_reply+0x642/0x7a0 [libceph]
- mon_dispatch+0x973/0x23d0 [libceph]
- ? apparmor_socket_recvmsg+0x6b/0xa0
- ? __pfx_mon_dispatch+0x10/0x10 [libceph]
- ? __kasan_check_write+0x14/0x30i
- ? mutex_unlock+0x7f/0xd0
- ? __pfx_mutex_unlock+0x10/0x10
- ? __pfx_do_recvmsg+0x10/0x10 [libceph]
- ceph_con_process_message+0x1f1/0x650 [libceph]
- process_message+0x1e/0x450 [libceph]
- ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
- ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
- ? save_fpregs_to_fpstate+0xb0/0x230
- ? raw_spin_rq_unlock+0x17/0xa0
- ? finish_task_switch.isra.0+0x13b/0x760
- ? __switch_to+0x385/0xda0
- ? __kasan_check_write+0x14/0x30
- ? mutex_lock+0x8d/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- ceph_con_workfn+0x248/0x10c0 [libceph]
- process_one_work+0x629/0xf80
- ? __kasan_check_write+0x14/0x30
- worker_thread+0x87f/0x1570
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? __pfx_try_to_wake_up+0x10/0x10
- ? kasan_print_address_stack_frame+0x1f7/0x280
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x396/0x830
- ? __pfx__raw_spin_lock_irq+0x10/0x10
- ? __pfx_kthread+0x10/0x10
- ? __kasan_check_write+0x14/0x30
- ? recalc_sigpending+0x180/0x210
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x3f7/0x610
- ? __pfx_ret_from_fork+0x10/0x10
- ? __switch_to+0x385/0xda0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-[ idryomov: replace if statements with ceph_decode_need() for
-  payload_len and result_msg_len ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: b97a31348379 ("usb: core: comply to PHY framework")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/core/phy.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/net/ceph/auth.c
-+++ b/net/ceph/auth.c
-@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
- 	s32 result;
- 	u64 global_id;
- 	void *payload, *payload_end;
--	int payload_len;
-+	u32 payload_len;
- 	char *result_msg;
--	int result_msg_len;
-+	u32 result_msg_len;
- 	int ret = -EINVAL;
+--- a/drivers/usb/core/phy.c
++++ b/drivers/usb/core/phy.c
+@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_
+ 	list_for_each_entry(roothub_entry, head, list) {
+ 		err = phy_set_mode(roothub_entry->phy, mode);
+ 		if (err)
+-			goto err_out;
++			return err;
+ 	}
  
- 	mutex_lock(&ac->mutex);
-@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
- 	result = ceph_decode_32(&p);
- 	global_id = ceph_decode_64(&p);
- 	payload_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, payload_len, bad);
- 	payload = p;
- 	p += payload_len;
- 	ceph_decode_need(&p, end, sizeof(u32), bad);
- 	result_msg_len = ceph_decode_32(&p);
-+	ceph_decode_need(&p, end, result_msg_len, bad);
- 	result_msg = p;
- 	p += result_msg_len;
- 	if (p != end)
+ 	return 0;
+-
+-err_out:
+-	list_for_each_entry_continue_reverse(roothub_entry, head, list)
+-		phy_power_off(roothub_entry->phy);
+-
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
+ 
 
 
 
