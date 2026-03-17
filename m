@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-226345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBKfCqWGuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:49 +0100
+	id cEEJJ5+SuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D202AE8B0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B16E2B0084
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22DBA302C295
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1121132D707B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4223F23AA;
-	Tue, 17 Mar 2026 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A702D73B8;
+	Tue, 17 Mar 2026 17:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpX08jro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOm3YaMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8B3EAC6F;
-	Tue, 17 Mar 2026 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C835B255F2C;
+	Tue, 17 Mar 2026 17:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766303; cv=none; b=jmqzJq2bFFvEFtleqdUmmJNDtOkVPv1Y2JuXvk7+kRssOl7BqQqHV7Dym1bVHpjQFh22mbapb5f9/UqZrku1x4FBNqo4RYsD+cpX/DfEMfcb+nGN6UjiBe+HyKmXgOKeXYHvNMyOzPAXg4rj1rpSCc8pkSBtNrgRL3MElHJh9oU=
+	t=1773767870; cv=none; b=WbhvkbPCY98R5rayTFpVh9S86UPHABKyYPVzQj6+bU5lVEG8Ol7MoCHk7OqkRE+j2ZgUmJDV5vgpcl9we3CB05Y9KBZ0f13B9j8PnGBcmva9dzeYPZ9+LYIWUM8o2vYY2K3KvxxCynVR/CVH+4ncpOOU5JUia8Ijo1GZEIJfZLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766303; c=relaxed/simple;
-	bh=65hkiwFo17fr3Y0wrCczs03x61FtbAJxvMn56gBhS78=;
+	s=arc-20240116; t=1773767870; c=relaxed/simple;
+	bh=bMe1kEpP65MVaMlzxl4o7ayd+jYaV2owLLBlhw7guWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGNAfbNFTKLSUqLd3m2qcsjPuXxk0Fj1GZ9UK8NGNawm94yabFTHIunkztAHKQnq0jLcndUzm9BOYwWNvpsF2Aj35Pj7jevcFRT2NkTEaf6sw4isX355KZnAnXx1LfvPp0Q1DQHEz3NFlK4wezxJkbxpf7XRcN9CI/Ic1ket8qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpX08jro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D8FC4CEF7;
-	Tue, 17 Mar 2026 16:51:42 +0000 (UTC)
+	 MIME-Version; b=r5AQi7LzMyoB8KpOgqP/eNyCsWM9dfQvVrRRFnFbpgUKvE6QE6wqbfGn4PmIF+XWzlfBjnLfGnKmVPfzUr83+ZlqSHSOncDVOJjBr3mAfQSCu0294r6ZN1OXTRk1Udu5X/8V5owGv8CrWwDiHHOi2XTXQ7H02Gav3zy7qcn6RmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOm3YaMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53874C4CEF7;
+	Tue, 17 Mar 2026 17:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766303;
-	bh=65hkiwFo17fr3Y0wrCczs03x61FtbAJxvMn56gBhS78=;
+	s=korg; t=1773767870;
+	bh=bMe1kEpP65MVaMlzxl4o7ayd+jYaV2owLLBlhw7guWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MpX08jro96Zh5EVi1O2ioUMwZvxhpNOeLR7F5gu8seZng6MQEcFZZSs5vGwLQ+82p
-	 LhktO3rKq3E60rqs0FuNwovpZr9PS7LxVTQ9iI2MYqq0m1lGIIlcBxhh0Tu2IwnPMM
-	 ahzJD2JXPkm06GBH5tbNjgFni6+X1d1h46xEjH44=
+	b=bOm3YaMa4MrAxrztb5Ib5FgUoziyE9/e/ZBVQiu9TIcyCgdINKByoWlVGxUJzysec
+	 2fEVKffBDN0jGCSCrWD1JAmN1w1bQOeFveO2njpjomeC1t/w/OOTkZCYNR3Hd1nkOD
+	 fYQPVqt8HbqOdIPDd5uJ47DUT7w94NuizjBoIc6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Tucker <gtucker@gtucker.io>,
-	Mark Brown <broonie@kernel.org>,
-	David Gow <davidgow@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.19 215/378] kthread: consolidate kthread exit paths to prevent use-after-free
-Date: Tue, 17 Mar 2026 17:32:52 +0100
-Message-ID: <20260317163014.919132911@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 144/333] usb: mdc800: handle signal and read racing
+Date: Tue, 17 Mar 2026 17:32:53 +0100
+Message-ID: <20260317163004.699594146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,245 +67,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226345-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226699-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gtucker.io:email]
-X-Rspamd-Queue-Id: E7D202AE8B0
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B16E2B0084
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 28aaa9c39945b7925a1cc1d513c8f21ed38f5e4f upstream.
+commit 2d6d260e9a3576256fe9ef6d1f7930c9ec348723 upstream.
 
-Guillaume reported crashes via corrupted RCU callback function pointers
-during KUnit testing. The crash was traced back to the pidfs rhashtable
-conversion which replaced the 24-byte rb_node with an 8-byte rhash_head
-in struct pid, shrinking it from 160 to 144 bytes.
+If a signal arrives after a read has partially completed,
+we need to return the number of bytes read. -EINTR is correct
+only if that number is zero.
 
-struct kthread (without CONFIG_BLK_CGROUP) is also 144 bytes. With
-CONFIG_SLAB_MERGE_DEFAULT and SLAB_HWCACHE_ALIGN both round up to
-192 bytes and share the same slab cache. struct pid.rcu.func and
-struct kthread.affinity_node both sit at offset 0x78.
-
-When a kthread exits via make_task_dead() it bypasses kthread_exit() and
-misses the affinity_node cleanup. free_kthread_struct() frees the memory
-while the node is still linked into the global kthread_affinity_list. A
-subsequent list_del() by another kthread writes through dangling list
-pointers into the freed and reused memory, corrupting the pid's
-rcu.func pointer.
-
-Instead of patching free_kthread_struct() to handle the missed cleanup,
-consolidate all kthread exit paths. Turn kthread_exit() into a macro
-that calls do_exit() and add kthread_do_exit() which is called from
-do_exit() for any task with PF_KTHREAD set. This guarantees that
-kthread-specific cleanup always happens regardless of the exit path -
-make_task_dead(), direct do_exit(), or kthread_exit().
-
-Replace __to_kthread() with a new tsk_is_kthread() accessor in the
-public header. Export do_exit() since module code using the
-kthread_exit() macro now needs it directly.
-
-Reported-by: Guillaume Tucker <gtucker@gtucker.io>
-Tested-by: Guillaume Tucker <gtucker@gtucker.io>
-Tested-by: Mark Brown <broonie@kernel.org>
-Tested-by: David Gow <davidgow@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20260224-mittlerweile-besessen-2738831ae7f6@brauner
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Fixes: 4d13f4304fa4 ("kthread: Implement preferred affinity")
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260209142048.1503791-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kthread.h |   21 ++++++++++++++++++++-
- kernel/exit.c           |    6 ++++++
- kernel/kthread.c        |   41 +++++------------------------------------
- 3 files changed, 31 insertions(+), 37 deletions(-)
+ drivers/usb/image/mdc800.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/kthread.h
-+++ b/include/linux/kthread.h
-@@ -7,6 +7,24 @@
- 
- struct mm_struct;
- 
-+/* opaque kthread data */
-+struct kthread;
-+
-+/*
-+ * When "(p->flags & PF_KTHREAD)" is set the task is a kthread and will
-+ * always remain a kthread.  For kthreads p->worker_private always
-+ * points to a struct kthread.  For tasks that are not kthreads
-+ * p->worker_private is used to point to other things.
-+ *
-+ * Return NULL for any task that is not a kthread.
-+ */
-+static inline struct kthread *tsk_is_kthread(struct task_struct *p)
-+{
-+	if (p->flags & PF_KTHREAD)
-+		return p->worker_private;
-+	return NULL;
-+}
-+
- __printf(4, 5)
- struct task_struct *kthread_create_on_node(int (*threadfn)(void *data),
- 					   void *data,
-@@ -98,8 +116,9 @@ void *kthread_probe_data(struct task_str
- int kthread_park(struct task_struct *k);
- void kthread_unpark(struct task_struct *k);
- void kthread_parkme(void);
--void kthread_exit(long result) __noreturn;
-+#define kthread_exit(result) do_exit(result)
- void kthread_complete_and_exit(struct completion *, long) __noreturn;
-+void kthread_do_exit(struct kthread *, long);
- 
- int kthreadd(void *unused);
- extern struct task_struct *kthreadd_task;
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -896,11 +896,16 @@ static void synchronize_group_exit(struc
- void __noreturn do_exit(long code)
- {
- 	struct task_struct *tsk = current;
-+	struct kthread *kthread;
- 	int group_dead;
- 
- 	WARN_ON(irqs_disabled());
- 	WARN_ON(tsk->plug);
- 
-+	kthread = tsk_is_kthread(tsk);
-+	if (unlikely(kthread))
-+		kthread_do_exit(kthread, code);
-+
- 	kcov_task_exit(tsk);
- 	kmsan_task_exit(tsk);
- 
-@@ -1013,6 +1018,7 @@ void __noreturn do_exit(long code)
- 	lockdep_free_task(tsk);
- 	do_task_dead();
- }
-+EXPORT_SYMBOL(do_exit);
- 
- void __noreturn make_task_dead(int signr)
- {
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -85,24 +85,6 @@ static inline struct kthread *to_kthread
- 	return k->worker_private;
- }
- 
--/*
-- * Variant of to_kthread() that doesn't assume @p is a kthread.
-- *
-- * When "(p->flags & PF_KTHREAD)" is set the task is a kthread and will
-- * always remain a kthread.  For kthreads p->worker_private always
-- * points to a struct kthread.  For tasks that are not kthreads
-- * p->worker_private is used to point to other things.
-- *
-- * Return NULL for any task that is not a kthread.
-- */
--static inline struct kthread *__to_kthread(struct task_struct *p)
--{
--	void *kthread = p->worker_private;
--	if (kthread && !(p->flags & PF_KTHREAD))
--		kthread = NULL;
--	return kthread;
--}
--
- void get_kthread_comm(char *buf, size_t buf_size, struct task_struct *tsk)
- {
- 	struct kthread *kthread = to_kthread(tsk);
-@@ -193,7 +175,7 @@ EXPORT_SYMBOL_GPL(kthread_should_park);
- 
- bool kthread_should_stop_or_park(void)
- {
--	struct kthread *kthread = __to_kthread(current);
-+	struct kthread *kthread = tsk_is_kthread(current);
- 
- 	if (!kthread)
- 		return false;
-@@ -234,7 +216,7 @@ EXPORT_SYMBOL_GPL(kthread_freezable_shou
-  */
- void *kthread_func(struct task_struct *task)
- {
--	struct kthread *kthread = __to_kthread(task);
-+	struct kthread *kthread = tsk_is_kthread(task);
- 	if (kthread)
- 		return kthread->threadfn;
- 	return NULL;
-@@ -266,7 +248,7 @@ EXPORT_SYMBOL_GPL(kthread_data);
-  */
- void *kthread_probe_data(struct task_struct *task)
- {
--	struct kthread *kthread = __to_kthread(task);
-+	struct kthread *kthread = tsk_is_kthread(task);
- 	void *data = NULL;
- 
- 	if (kthread)
-@@ -309,19 +291,8 @@ void kthread_parkme(void)
- }
- EXPORT_SYMBOL_GPL(kthread_parkme);
- 
--/**
-- * kthread_exit - Cause the current kthread return @result to kthread_stop().
-- * @result: The integer value to return to kthread_stop().
-- *
-- * While kthread_exit can be called directly, it exists so that
-- * functions which do some additional work in non-modular code such as
-- * module_put_and_kthread_exit can be implemented.
-- *
-- * Does not return.
-- */
--void __noreturn kthread_exit(long result)
-+void kthread_do_exit(struct kthread *kthread, long result)
- {
--	struct kthread *kthread = to_kthread(current);
- 	kthread->result = result;
- 	if (!list_empty(&kthread->hotplug_node)) {
- 		mutex_lock(&kthreads_hotplug_lock);
-@@ -333,9 +304,7 @@ void __noreturn kthread_exit(long result
- 			kthread->preferred_affinity = NULL;
+--- a/drivers/usb/image/mdc800.c
++++ b/drivers/usb/image/mdc800.c
+@@ -707,7 +707,7 @@ static ssize_t mdc800_device_read (struc
+ 		if (signal_pending (current)) 
+ 		{
+ 			mutex_unlock(&mdc800->io_lock);
+-			return -EINTR;
++			return len == left ? -EINTR : len-left;
  		}
- 	}
--	do_exit(0);
- }
--EXPORT_SYMBOL(kthread_exit);
  
- /**
-  * kthread_complete_and_exit - Exit the current kthread.
-@@ -680,7 +649,7 @@ void kthread_set_per_cpu(struct task_str
- 
- bool kthread_is_per_cpu(struct task_struct *p)
- {
--	struct kthread *kthread = __to_kthread(p);
-+	struct kthread *kthread = tsk_is_kthread(p);
- 	if (!kthread)
- 		return false;
- 
+ 		sts=left > (mdc800->out_count-mdc800->out_ptr)?mdc800->out_count-mdc800->out_ptr:left;
 
 
 
