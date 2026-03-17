@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEj1BXyFuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:52 +0100
+	id eK3QEzaMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E04C2AE641
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADFA2AF31F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6C88304B756
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:41:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C26131DACA3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFC63ED12C;
-	Tue, 17 Mar 2026 16:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3CB3F54A5;
+	Tue, 17 Mar 2026 17:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TFCJJKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx2KEvov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925523ED110;
-	Tue, 17 Mar 2026 16:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5241A3A4F46;
+	Tue, 17 Mar 2026 17:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765703; cv=none; b=i3SjFfA9a+n5jVM0C2wCuc+EZ1aKIfafCZuFWJWA2fdsngjlu+g7ETP0P10i7KAnttlnqfKepX4Gt79NKG6QxFkEPvkCQC0gyOCpIKwfkaIes2jMRXA6OH5ez21Icj+w2eqvMaGnpZtLe+5hoFt+l/KnOctb0rmHlt4IX8Yht4w=
+	t=1773767189; cv=none; b=J/m2jOMPYzJA2y/wbOAfP5hmopSDz80GpV+xd3Ewz9HrZUeKwa/+AVUNOooy+/rpjKyzv6nv31OZkZql0eyuOrSflJJ3DpjBV6yQ8zGe37MJZg6jSo08OsWGNqb1zVoXQ8IX/FneKBfvHTJ2l00wqbbyft9B9ZlohrTqqX4RrK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765703; c=relaxed/simple;
-	bh=+ADILC2je+1E2YXsjsnZAUkE35UA1rEwJDIPUFIQGBo=;
+	s=arc-20240116; t=1773767189; c=relaxed/simple;
+	bh=iFkgmghY24rQr5Hlbm85jOFps7m32YY8fcv0T6kewxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3SP4w8eRcnVbM7DpRc0SsS0OQYZlSoJh119Tcoxzk51kmycR3RdUR9GVjq1iOvmOyTJ4ulSu9UI/9xRMvvw54ztSbZrIOtCKhQvf4oB5j4sbWUBbXSKy44LJUkVw0ir4VNmAOiichcavxPnzQx1SjQnfn7xQurIYK9YOLU16Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TFCJJKI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06348C4CEF7;
-	Tue, 17 Mar 2026 16:41:42 +0000 (UTC)
+	 MIME-Version; b=ATF4ALKNXO3hZasX0o48QmPrd6DqCKFegcBX9HsUdJcxXmNvBzWfKxSP8SafVIktV3x3Gy48Drpa/tj77+5Cvrxuuf1dToGzkDpB8Trd6AB9tgEZuQ82lbNqmS0hTurusJEvhcsB77lECkJRZbCjjgnjXKKIQ30DSjxJ9G/LEH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx2KEvov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ECDC4CEF7;
+	Tue, 17 Mar 2026 17:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765703;
-	bh=+ADILC2je+1E2YXsjsnZAUkE35UA1rEwJDIPUFIQGBo=;
+	s=korg; t=1773767189;
+	bh=iFkgmghY24rQr5Hlbm85jOFps7m32YY8fcv0T6kewxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TFCJJKI4VWYbKYSHbWFFzXorUj+F9xLKx0iDV3hKIN2pPC0Tlk6bxr3e8gcJfbgO
-	 xEcTSO3+fQ0Em09AYYAMmBlFBPozBi4FmY5xnoj4LF1WSsMp/jUHFqAn1law3wu5Gw
-	 ilXnQ5sS8cwpGfyRsbr3Mm9Kh/ewB2pQ/TnLfbis=
+	b=kx2KEvovyt3Pzzdru9pXgJCPiQunX373r1S37nIgM5s/Gg8/SfZjl2KqpIubxENaQ
+	 0kJ/WS3AIfy6t+7H9rV4LPZ0sANROSTEtgoWsnt7tgEvojmi9oWs+g0TZo0NEYUfuw
+	 WmbxDMFNsBrhi/lL7lNrthAzgA74oDJb+rENXpYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 075/378] netfilter: nf_tables: always walk all pending catchall elements
-Date: Tue, 17 Mar 2026 17:30:32 +0100
-Message-ID: <20260317163009.777154089@linuxfoundation.org>
+Subject: [PATCH 6.18 004/333] fs: init flags_valid before calling vfs_fileattr_get
+Date: Tue, 17 Mar 2026 17:30:33 +0100
+Message-ID: <20260317162959.518744860@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226204-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-226551-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,7c31755f2cea07838b0c];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2E04C2AE641
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,syzkaller.appspot.com:url,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email]
+X-Rspamd-Queue-Id: 8ADFA2AF31F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 ]
+[ Upstream commit cb184dd19154fc486fa3d9e02afe70a97e54e055 ]
 
-During transaction processing we might have more than one catchall element:
-1 live catchall element and 1 pending element that is coming as part of the
-new batch.
+syzbot reported a uninit-value bug in [1].
 
-If the map holding the catchall elements is also going away, its
-required to toggle all catchall elements and not just the first viable
-candidate.
+Similar to the "*get" context where the kernel's internal file_kattr
+structure is initialized before calling vfs_fileattr_get(), we should
+use the same mechanism when using fa.
 
-Otherwise, we get:
- WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
- RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
- [..]
- __nft_set_elem_destroy+0x106/0x380 [nf_tables]
- nf_tables_abort_release+0x348/0x8d0 [nf_tables]
- nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
- nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
+[1]
+BUG: KMSAN: uninit-value in fuse_fileattr_get+0xeb4/0x1450 fs/fuse/ioctl.c:517
+ fuse_fileattr_get+0xeb4/0x1450 fs/fuse/ioctl.c:517
+ vfs_fileattr_get fs/file_attr.c:94 [inline]
+ __do_sys_file_getattr fs/file_attr.c:416 [inline]
 
-Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Local variable fa.i created at:
+ __do_sys_file_getattr fs/file_attr.c:380 [inline]
+ __se_sys_file_getattr+0x8c/0xbd0 fs/file_attr.c:372
+
+Reported-by: syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7c31755f2cea07838b0c
+Tested-by: syzbot+7c31755f2cea07838b0c@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_B6C4583771D76766D71362A368696EC3B605@qq.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/file_attr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c75c2379d30bd..c9a76c760b17c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -828,7 +828,6 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
+diff --git a/fs/file_attr.c b/fs/file_attr.c
+index 1dcec88c06805..9d3e177ad7d1d 100644
+--- a/fs/file_attr.c
++++ b/fs/file_attr.c
+@@ -379,7 +379,7 @@ SYSCALL_DEFINE5(file_getattr, int, dfd, const char __user *, filename,
+ 	struct filename *name __free(putname) = NULL;
+ 	unsigned int lookup_flags = 0;
+ 	struct file_attr fattr;
+-	struct file_kattr fa;
++	struct file_kattr fa = { .flags_valid = true }; /* hint only */
+ 	int error;
  
- 		nft_set_elem_change_active(ctx->net, set, ext);
- 		nft_setelem_data_deactivate(ctx->net, set, catchall->elem);
--		break;
- 	}
- }
- 
-@@ -5873,7 +5872,6 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
- 
- 		nft_clear(ctx->net, ext);
- 		nft_setelem_data_activate(ctx->net, set, catchall->elem);
--		break;
- 	}
- }
- 
+ 	BUILD_BUG_ON(sizeof(struct file_attr) < FILE_ATTR_SIZE_VER0);
 -- 
 2.51.0
 
