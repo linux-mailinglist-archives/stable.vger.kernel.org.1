@@ -1,282 +1,176 @@
-Return-Path: <stable+bounces-225773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDWOK9YbuWkyrAEAu9opvQ
-	(envelope-from <stable+bounces-225773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:16:06 +0100
+	id wE+bLMYbuWkyrAEAu9opvQ
+	(envelope-from <stable+bounces-225772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:15:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4C02A65AD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:16:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7122A6569
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CEAA30817EB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9665430789ED
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D104835CB7C;
-	Tue, 17 Mar 2026 09:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DDC359A97;
+	Tue, 17 Mar 2026 09:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeSsBWqP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="etWGX5ji"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923F2359A9F;
-	Tue, 17 Mar 2026 09:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6A358394;
+	Tue, 17 Mar 2026 09:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738713; cv=none; b=Iiqw0LxhS7/QAm+/u00a1XOEpzIsaoVjy/rutXggGsTAVOsjmN7MB6ED2O1V5Row6+PrtlQkaZYz8tpfiobBfXJcijmNsPvC/cGp6phbgN/snqffiuJOFmF0YvGuw2sJtIvqUAg7WHNswD6dgk8SYNUSDdD62w0rixI4r4dSFEk=
+	t=1773738704; cv=none; b=OXQOVzhWEdLG9U5mKOJTF28LmSdzX5SA/oviHwz8mYWcrwIf910EiHTUO5EZ2BI4StHUlb+3FvJa0yet8TwpBQVNLOUIRy01kJi8DdP3dEVZ+9cQiv4BMzH52w6N6JWIdtyszoEF0KBA10kGirGK+tQbhdri68DlfFpcCvnQLWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738713; c=relaxed/simple;
-	bh=0l/t4CYYEEuOnqrcSlC1/kHh+SqwOHv3bW2imv6CkdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OFi2zweDrFsQvRV3ZaMgjAZRgHFwiOOxg/DwhxeFmnJBtFsQlpH73hR98RM3XREvSFsP6dOyTM6fVi18r0e+KLA1jjPZ/oXgYIZo2caVQIHGfEPzNjBCb+l2HoHLeNk9wm7G65Uz+YmD8CaPam4Y+Rv0EStrAhWpjdQtESQxPL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeSsBWqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6116C19425;
-	Tue, 17 Mar 2026 09:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773738713;
-	bh=0l/t4CYYEEuOnqrcSlC1/kHh+SqwOHv3bW2imv6CkdM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MeSsBWqPfpZBsUSt6TPTi+zNR+hwQIp/QBF9B/3XBvowELF+YzpAdZrkD3obDQQHS
-	 +i56lWkjYNVdH19g7cMhJ4rBuRVJkaEA/Gl/Tu/8l35vmdFpzXzvI3hCSm4sqIByW7
-	 dMpeYIn2znqMvGHuzI0Ybm682ety0XBWiesIUVa6jhQ41cGSfozzeZ1m/XwL6zUXVS
-	 ukKoj3oKMLxarbAsn3fLCuTGPWtitkncsDH/iuD5Vr2yu8fVZcL1An1j4stBo0vYKG
-	 fStdm1+ICXgFhc3+zJxr089Dr5YcFFBsi74hWvwbky4maXvCZuAeFQ1RgJqkxym2Fv
-	 hS6P5qsu5sTOA==
-Date: Tue, 17 Mar 2026 10:11:50 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
-	William Breathitt Gray <wbg@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-Message-ID: <abkX1ssLhkGxryfM@monoceros>
-References: <20260130122353.2263273-1-cosmin-gabriel.tanislav.xa@renesas.com>
- <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
- <aaqTVDQa7xn70bR_@monoceros>
- <TYRPR01MB156191C8E77BDA44AE23A7D4F857AA@TYRPR01MB15619.jpnprd01.prod.outlook.com>
- <TYRPR01MB156192CC838EC0B3DD66246158540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+	s=arc-20240116; t=1773738704; c=relaxed/simple;
+	bh=9zNCeRL4GHsn8w3mMwSC4KppE3LMlMGCnO3EZnFdpJA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FFehwM6xWHlTkMg+LJmJywu1zFkfUOGfWPAHWC4glfZAI0NrEOsBEUk5X1OmkzGfRFgh5B2vJe8IjCay0InidXUPs+pS6EagnNlL5suSDhNUUqfyF2vhJOce+OlG1ni0lP9WIhA8Tr3raRuaf9NZQr8++rLVV+26hnOENZslkrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=etWGX5ji; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773738703; x=1805274703;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=9zNCeRL4GHsn8w3mMwSC4KppE3LMlMGCnO3EZnFdpJA=;
+  b=etWGX5jiqeyDznvgB0hZ7GpBa7fBNqBD6sJWONLlIMJGSgsD9FahlH5n
+   M/Rmx+XnQfc3ViS80xQg9yNMvXGbtt17vwovR18cKboai5QixR+sdq3ST
+   WatspBHlikl+Ce8AbsAD1d6tgCgIJomOL+GYEbsUeGiDoiFdLG+P1DWsQ
+   OkoPpIxH7eigYeMOE3p+4KI6gnBlRLMvU00D1+9vh6tWj1sCR9K7oMZBW
+   vvXrYC10CSYRQtLejNL8hRd/XoM2jmeSUPvxJeILutYkkqz4RZKXp+0IN
+   GTcSn7B6BMO0ueq4N+GRlE974gD6f1AQIa/01mFRQUwn/3mk3R+YTMW5p
+   g==;
+X-CSE-ConnectionGUID: aelSSArtTRGPzRccYlVHdQ==
+X-CSE-MsgGUID: Jqy08LbaQkGEc4ta/0G4yg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="77375058"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="77375058"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 02:11:42 -0700
+X-CSE-ConnectionGUID: MbmakDKiS7ahMLDOA3G1Ew==
+X-CSE-MsgGUID: PdcyZTnyQ2OAOcRNOH1h6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="252696645"
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.245.84]) ([10.245.245.84])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 02:11:40 -0700
+Message-ID: <52c48bf9-7fee-4c87-bf06-a9a7ebc8536f@linux.intel.com>
+Date: Tue, 17 Mar 2026 11:11:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hkbpaws2c2rivpjg"
-Content-Disposition: inline
-In-Reply-To: <TYRPR01MB156192CC838EC0B3DD66246158540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: cs42l43-jack: Remove manual pm_runtime get/put from
+ tip_sense_work
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, david.rhodes@cirrus.com,
+ rf@opensource.cirrus.com, linux-sound@vger.kernel.org, stable@vger.kernel.org
+References: <20260316124924.31047-1-peter.ujfalusi@linux.intel.com>
+ <abgTWxI1Q9M1o+ka@opensource.cirrus.com>
+ <d5353ee4-1a3f-43a6-93ed-5127d666ad0b@linux.intel.com>
+ <abgyboHV1jaWDUul@opensource.cirrus.com>
+ <f461ba8a-4208-4dfa-aa70-e2c85ec2050a@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <f461ba8a-4208-4dfa-aa70-e2c85ec2050a@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225773-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[bp.renesas.com,kernel.org,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ukleinek@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1E4C02A65AD
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,cirrus.com,opensource.cirrus.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225772-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid]
+X-Rspamd-Queue-Id: 2B7122A6569
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---hkbpaws2c2rivpjg
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
- channel
-MIME-Version: 1.0
 
-Hello,
+On 17/03/2026 08:21, Péter Ujfalusi wrote:
+>> Fundamentally reseting a device right before checking what state
+>> it was in is always going to be hard, so would be awesome if you
+>> could have a look at how much of a problem removing that bus
+>> reset would be.
+> 
+> I'm still not sure if I get the whole picture, but by the hints it looks
+> like that on systems with cs42l43 we cannot suspend the DSP since the
+> codec cannot be suspended?
+> What is the difference between detecting the jack insert compared to
+> detecting the jack removal and/or the HS button detection?
+> Under the hood it is the same soundwire wake event then do what needs to
+> be done to read the cause of the event, right?
+> So, why it is OK to suspend the DSP when the jack is not inserted and it
+> is not OK if it is inserted?
 
-On Mon, Mar 16, 2026 at 03:49:35PM +0000, Cosmin-Gabriel Tanislav wrote:
-> What do you think about this setup for mapping from PWM to HW?
->=20
-> #define RZ_MTU3_PWM_IO(ch, secondary) \
-> 	(((ch) << 1) | (secondary))
->=20
-> #define RZ_MTU3_PWM_1_IO(ch) \
-> 	RZ_MTU3_PWM_IO(ch, 0)
->=20
-> #define RZ_MTU3_PWM_2_IO(ch) \
-> 	RZ_MTU3_PWM_IO(ch, 0), \
-> 	RZ_MTU3_PWM_IO(ch, 1)
->=20
-> static const u8 rz_mtu3_pwm_io_map[] =3D {
-> 	RZ_MTU3_PWM_2_IO(0), /* MTU0 */
-> 	RZ_MTU3_PWM_1_IO(1), /* MTU1 */
-> 	RZ_MTU3_PWM_1_IO(2), /* MTU2 */
-> 	RZ_MTU3_PWM_2_IO(3), /* MTU3 */
-> 	RZ_MTU3_PWM_2_IO(4), /* MTU4 */
-> 	RZ_MTU3_PWM_2_IO(5), /* MTU6 */
-> 	RZ_MTU3_PWM_2_IO(6), /* MTU7 */
-> };
-> static_assert(ARRAY_SIZE(rz_mtu3_pwm_io_map) =3D=3D RZ_MTU3_MAX_PWM_CHANN=
-ELS);
+Using UI shows what you might be referring to.
+with the codec powered on and pressing the button:
+snd_soc_cs42l43:cs42l43_button_press: cs42l43-codec cs42l43-codec:
+Detected button 0 at 8 Ohms
+...
+snd_soc_cs42l43:cs42l43_button_release: cs42l43-codec cs42l43-codec:
+Button release IRQ
 
-I think the RZ_MTU3_PWM_1_IO and RZ_MTU3_PWM_2_IO macros are a bit too
-magic and would use
+when the codec and DSP suspends when audio is idle:
+snd_soc_cs42l43:cs42l43_stop_button_detect: cs42l43-codec cs42l43-codec:
+Stop button detect
+...
+snd_soc_cs42l43:cs42l43_start_button_detect: cs42l43-codec
+cs42l43-codec: Start button detect
+...
+snd_soc_cs42l43:cs42l43_button_press: cs42l43-codec cs42l43-codec:
+Button ignored due to bias sense
+...
+snd_soc_cs42l43:cs42l43_button_release: cs42l43-codec cs42l43-codec:
+Button release IRQ
 
-static const u8 rz_mtu3_pwm_io_map[] =3D {
-	RZ_MTU3_PWM_IO(0, 0),
-	RZ_MTU3_PWM_IO(0, 1),
-	RZ_MTU3_PWM_IO(1, 0),
-	RZ_MTU3_PWM_IO(2, 0),
-	RZ_MTU3_PWM_IO(3, 0),
-	RZ_MTU3_PWM_IO(3, 1),
-	RZ_MTU3_PWM_IO(4, 0),
-	RZ_MTU3_PWM_IO(4, 1),
-	RZ_MTU3_PWM_IO(5, 0),
-	RZ_MTU3_PWM_IO(5, 1),
-	RZ_MTU3_PWM_IO(6, 0),
-	RZ_MTU3_PWM_IO(6, 1),
-};
+and the first button press is ignored  - which wakes the DSP, soundwire
+and codec up
 
-and then maybe just:
+So yes, there seams to be an issue with the headset button handling here.
 
-#define RZ_MTU3_NUM_PWM_CHANNELS ARRAY_SIZE(rz_mtu3_pwm_io_map)
+> 
+>>> Even then there is the issue of unbalance in runtime get on module
+>>> removal when the jack is connected...
+>>
+>> Yeah that is a good spot, if we stick with the current code I
+>> will get that fixed up.
+>>
+>> Thanks,
+>> Charles
+> 
 
-instead of the static_assert. But I guess this is mostly subjective and
-I won't try to convince you of my approach if you prefer your
-suggestion.
+-- 
+Péter
 
-> static unsigned int rz_mtu3_hwpwm_ch(u32 hwpwm)
-> {
-> 	return rz_mtu3_pwm_io_map[hwpwm] >> 1;
-> }
->=20
-> static bool rz_mtu3_hwpwm_is_primary(u32 hwpwm)
-> {
-> 	return !(rz_mtu3_pwm_io_map[hwpwm] & 1);
-> }
->=20
-> static struct rz_mtu3_pwm_channel *
-> rz_mtu3_get_channel(struct rz_mtu3_pwm_chip *rz_mtu3_pwm, u32 hwpwm)
-> {
-> 	unsigned int ch =3D rz_mtu3_hwpwm_ch(hwpwm);
->=20
-> 	return &rz_mtu3_pwm->channel_data[ch];
-> }
->=20
-> This gets rid of the loop inside rz_mtu3_get_channel() quite nicely.
->=20
-> priv->map->base_pwm_number =3D=3D hwpwm checks will in turn be reduced to
-> rz_mtu3_hwpwm_is_primary(hwpwm).
->=20
-> If you decide that we should keep the sibling check inside
-> rz_mtu3_pwm_config() as-is then we can do the following, without having
-> to encode the number of channels for each HW channel explicitly.
->=20
-> Please note that hwpwm + 1 is fine in this case as the last hwpwm of
-> rz_mtu3_pwm_io_map is never primary.
-
-This needs a comment plus (if possible) an assert.
-
-> static int rz_mtu3_sibling_hwpwm(u32 hwpwm, u32 *sibling_hwpwm)
-> {
-> 	if (!rz_mtu3_hwpwm_is_primary(hwpwm))
-> 		return hwpwm - 1;
->=20
-> 	if (rz_mtu3_hwpwm_is_primary(hwpwm + 1))
-> 		return -EINVAL;
->=20
-> 	return hwpwm + 1;
-> }
->=20
-> Although, I would much rather have the following logic rather than the
-> sibling check, which matches one of the alternatives you proposed earlier.
->=20
-> Hopefully, the comment explains the situation well.
-
-I got it, thanks.
-
-> static int rz_mtu3_pwm_config(struct pwm_chip *chip, struct pwm_device *p=
-wm,
-> 			      const struct pwm_state *state)
-> {
-> 	...
->=20
-> 	u32 enable_count;
->=20
-> 	...
->=20
-> 	/*
-> 	 * Account for the case where one IO is already enabled and this call
-> 	 * enables the second one, to prevent the prescale from being changed.
-> 	 * If this PWM is currently disabled it will be enabled by this call,
-> 	 * so include it in the enable count. If it is already enabled, it has
-> 	 * already been accounted for.
-> 	 */
-> 	enable_count =3D rz_mtu3_pwm->enable_count[ch] + (pwm->state.enabled ? 0=
- : 1);
->=20
-> 	...
->=20
-> 	if (enable_count > 1) {
-> 		if (rz_mtu3_pwm->prescale[ch] > prescale)
-> 			return -EBUSY;
->=20
-> 		prescale =3D rz_mtu3_pwm->prescale[ch];
-> 	}
->=20
-> Please let me know what you think so we can proceed with the work
-> internally.
-
-I'd prefer the `rz_mtu3_pwm->enable_count[ch] + (pwm->state.enabled ? 0 : 1=
-);`
-variant. I understand that this is also the variant you prefer, so
-that's great, but I wouldn't stop you using the sibling option.
-
-You can gain some extra points for not using pwm->state. This is a relic
-=66rom the legacy pwm abstraction and doesn't make much sense with the
-waveform callbacks. The alternative would be to check the hardware for
-being on or not. But there are many users of this member, that I also
-won't yell at you for also using it.
-
-Best regards
-Uwe
-
---hkbpaws2c2rivpjg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmm5GtQACgkQj4D7WH0S
-/k4Rwwf9Hut4P4Qx1G7RdoBINBH/21rIgc1qZkpDovIq6qmB1grJs2EFSNviWTp3
-7ANYEwouj4hNWBkQERzDT46d3kHkVqpxuP9Lqk5KmJpx1Qkt+zLBgL2Na30Nt1PP
-9U1YYQSCkLXOJXCH6RR+B/1GD0VU5pm4oxbBMlfBehFD1XXk3DJP2IJF1vFi/4FL
-EVBV0IIr63Vy9jKhTwB2qQl4KlowI/B6VPH3n7EFr6EyUR0dF6rlYbtJd16eoKJu
-EL1aNGKblInghfnbXd8r81ScCb3MuO/wmwIdJ5P5HJn+eAv2cDDGR5uDUu1XAfTI
-urSPuimscoRgY5KtF/soj0iroNek5Q==
-=6oTZ
------END PGP SIGNATURE-----
-
---hkbpaws2c2rivpjg--
 
