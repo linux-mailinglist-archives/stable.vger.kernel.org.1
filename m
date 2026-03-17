@@ -1,230 +1,132 @@
-Return-Path: <stable+bounces-225806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLd8B3suuWkYuAEAu9opvQ
-	(envelope-from <stable+bounces-225806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:35:39 +0100
+	id SOnIBe0uuWlzuAEAu9opvQ
+	(envelope-from <stable+bounces-225807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:37:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C41E2A7FF9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:35:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2732A806F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E1C330D6F3B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:28:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 794F83052D71
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40193A5E7B;
-	Tue, 17 Mar 2026 10:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817E53A6F19;
+	Tue, 17 Mar 2026 10:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifVa5RCk"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="eFh0XkAG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B853A168C
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BA1372B2D
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773743301; cv=none; b=hK0EjFOAbk2R8QYFhZIadI54ycC0LOM4AehdEySW9dpQwB0v13C/st6Vh8UuslVhaCm6ExQWkSQd2MsujqUafAlWBtSPaWrgdz4FZ3U+mhyu9mrvK8aXm37cXZ3DnDWk8zmUaxJv0tQauBBa4G7qrmkp3YvoYVKTiTl3fqrvijU=
+	t=1773743677; cv=none; b=p63pQxYfpscP5Zyj0O7X+cAW2dQPakIAKSTKbbXiMMu2qfxxkigk+jqwrNSyS0d3+uwkmBmXmeBWsnjSZ1A8z2PVsIdTCCApHPvLNyU+wmqO6mym7cWfabiG8p3Xdv5KR//2Ngcl5HeSz+KdaGSupfMxCJh6pDQI2OU6GNRAh2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773743301; c=relaxed/simple;
-	bh=eSDEhGnUS+hAx0HE05ggNscZBkEooyvYYY/Flhz53xo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nlyv0VwOhiJLFCgE/EDTzIy5x0+qyL/SsUqPa6W2VnE8HhvypTgdezQkLstvb+8yQ+5AsYGZPB9TTjLp+7ByreEFQHA25FIlv2CKQev4veGiMfwSGVzwdwkC2QQnsVz5aPv0w9yTZ3nvTzdFX/tNbw5eplEg9VIuJJCUAE8iAlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifVa5RCk; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82987437624so419416b3a.1
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 03:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773743300; x=1774348100; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+pmK7JMn7hogCUOpU9+zmNgnz8sS6V1SySHGsHErGw=;
-        b=ifVa5RCkHq3J7iBqZFgpszbffzRyHQUXSu1UsHGf5kbO0zsjV5jWZQhD+U/S5u5Q85
-         yscmsQbgaXTdPHv1CfErHGxJlyD/1YMd0puYXYuc1NK0rVzzZ8hFBIH9NC6RDxW2L0oT
-         BqLBPdq0kf+OY8R87kaVe6FVExcldzWXYyyusGepQJtjNgpe3oVHFolNYwovnYLeEaKy
-         gqia5Ic0UTqjqxj6x8qetNac3R29Nj0+4GCnza+v4h1KJGDBjxCoL/Rwls2Oq5tHktFb
-         dCdOLh0YTg+gw2Mgj10z4B2zaoAN8QUXe9odJugahb0DYO1M6t4WWq0/aZSA7iLqniMN
-         nw0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773743300; x=1774348100;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O+pmK7JMn7hogCUOpU9+zmNgnz8sS6V1SySHGsHErGw=;
-        b=ojREOoaTR4BKMDJlXr5xXyOw4o7QJo1GYFpDIie1wA03HwtD1U9exl8flvVBEuz9+7
-         +Bxe4tlvVNdQlDLSvyeyEgi0gICawr1hSORpwouHATsRhmxF/YUpBEpcZ6S3rZshCfbP
-         S7DqnsKNgiuuj/baVA+7tXmp/1KEeUyX4TIuQ4+Jap6K/jOBvzyiD0fZVmTbZ79CLnTK
-         PRH03+hwa1SZPn2X3Jk/KFwdFIZ0ZOFz8dC5flIQ64deJwkb6IrD3jzufyo4wpMxdYeN
-         QEzNuiWo2qR3+y6eI6T4nc873kRmd4SHabUX8845KE3ppdZxWB1heVGN68/NgP4diIMF
-         aBgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVeSJ/pGhOTFt9YbpA/425EIBRzLv+BWbvfQ8tj9K9CQVBd3FYJ+MLAaWCOt5qYbjA/RIoGKw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs3Z316QxOUXYJJ4kTENSYMvJO03GtqyeDtif2yYMpm5tAIBlt
-	dJHDZy08+YgY8Dx78+pf/JbT5tmpkGQ3qtuJoby1cHtS21zPBXTa91vd
-X-Gm-Gg: ATEYQzxL++0HHE6dhpJHeESym5JZ1rFXCDfAvreEz1Yis9MjwR0Cv2dkidwXsBJgJ3U
-	cKYe0SE6bmAfBUcaTk5Q68LACHM91k2ZlBz33pbTGuQc1rRXXwyTqmcs+aVXUzAqmwPKMEMTZEj
-	MEbFjTrcYdqzAAUL8mlO6jDKxeaM1hZ/n2rmsJt3YdmLwMmFjY2Oo6XCQkXBnloDR1J1OsXyAR3
-	ejD8tnHzdEQ3MJwtQOnrhqlydF0fu7Xjr6PhHxZibKxsIqZXt/3Cm4taCE7xvB36QClJ611agFs
-	Qw5r3qg0ANclXKYBrzr7Z+5yvksn6Huc9Bg7b3lefsWuODmyvpoZSIRHZ/LVGvZXeAcvmWKWemc
-	ostLu2lz3oFgGxWxCWu7IxbiAOmaIYNFD4g9yPlunM7LztIx4+TGWQw73Z/Q5Obv5+NgxlZm9jY
-	c9sYC1wZbriYjVXy81vdJRpDDen3eCamhIuh6xUwqguMjTbtkHZDAIdqTXeJitBfqR3KruAJI=
-X-Received: by 2002:a05:6a00:7083:b0:81f:5acb:55fc with SMTP id d2e1a72fcca58-82a56042489mr1971355b3a.10.1773743299558;
-        Tue, 17 Mar 2026 03:28:19 -0700 (PDT)
-Received: from kernel-fuzz.. ([103.172.183.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07287ef8sm18339705b3a.29.2026.03.17.03.28.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 03:28:18 -0700 (PDT)
-From: ZhengYuan Huang <gality369@gmail.com>
-To: tytso@mit.edu,
-	adilger.kernel@dilger.ca
-Cc: linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	zzzccc427@gmail.com,
-	ZhengYuan Huang <gality369@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ext4: xattr: fix size_t underflow in ext4_xattr_set_entry
-Date: Tue, 17 Mar 2026 18:28:10 +0800
-Message-ID: <20260317102810.2984100-1-gality369@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773743677; c=relaxed/simple;
+	bh=FlGrEkibMU7jAxa/nAeVCmJI/B374Ki2x5uFqqjET4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NAFFHmGJ2rdLIg32oHAQXO+UC3kZen1mXli3JIZ/kxZ2Eh30WBCIF6ZR/y6t50ckfsdsrmhFaoqIFSBdKm7BrB/SoLRAuhZfmBeGV6dPZhRR51+9CauJH+H7u4K3G+Snh55aHT6mzB5H5G6YFm9Vxz0tEkAjRRYgNGAmelUaDMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=eFh0XkAG; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=FlGr
+	EkibMU7jAxa/nAeVCmJI/B374Ki2x5uFqqjET4Q=; b=eFh0XkAGzMPNjtcmbgff
+	QOZPMTGhym26jBZOfBrQp5jdXXOXo7UUlMfNPmPoWR8Dxu7QTbJLJ6CzfclOrJ7N
+	5pAJufP17U/rg1k57+UhxOkrGs3RKsZLMRDmmhRWfZAznOWUisF92lPnxuozG5Q8
+	YCnIWrCduQMe+FABVERNeM8QN85Sby1Y4DRnhpRJ1T/wzRhpZFth+STBXAJpK7LD
+	RDtZgOlUxY0GXh+SiBHs6/pv7JDSeDyxsUCSD7HC+zgXPumwIsWLe14e5/TIKZcg
+	fkFC8tf3AZXbE2owx+TISJ6/NRNPs36iNKMwuQmFeYGCAWxM9hkc04XQIfij//Ds
+	QA==
+Received: (qmail 235590 invoked from network); 17 Mar 2026 11:34:30 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 11:34:30 +0100
+X-UD-Smtp-Session: l3s3148p1@pjNn4TVNpshSwmvS
+Date: Tue, 17 Mar 2026 11:34:30 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <abkuNpwmYGa6qJPZ@shikoro>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
+ <abkLEgrZbdb03VWg@ashevche-desk.local>
+ <abkLY4AAQuFlTRC7@ashevche-desk.local>
+ <abkT_jpjIki6pvX1@shikoro>
+ <abkqEni3phP8dqqw@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abkqEni3phP8dqqw@ashevche-desk.local>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-225806-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[sang-engineering.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225807-lists,stable=lfdr.de,renesas];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[chromium.org,linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,linux.intel.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sang-engineering.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5C41E2A7FF9
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ED2732A806F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[BUG]
-KASAN reports an out-of-bounds read with an astronomically large access
-size when ext4_xattr_set_entry() deletes a corrupted ibody xattr entry:
 
-  BUG: KASAN: out-of-bounds in ext4_xattr_set_entry+0x11a3/0x1f40 fs/ext4/xattr.c:1756
-  Read of size 18446744073709551600 at addr ffff8880179737cc
-  Call Trace:
-   ...
-   ext4_xattr_set_entry+0x11a3/0x1f40 fs/ext4/xattr.c:1756
-   ext4_xattr_ibody_set+0x396/0x5a0 fs/ext4/xattr.c:2268
-   ext4_destroy_inline_data_nolock+0x25e/0x560 fs/ext4/inline.c:463
-   ext4_convert_inline_data_nolock+0x186/0xa80 fs/ext4/inline.c:1105
-   ext4_try_add_inline_entry+0x58e/0x960 fs/ext4/inline.c:1224
-   ext4_add_entry+0x6d2/0xce0 fs/ext4/namei.c:2389
-   ext4_add_nondir+0x9c/0x280 fs/ext4/namei.c:2784
-   ext4_create+0x380/0x500 fs/ext4/namei.c:2830
-   ...
+> Like Danilo I am also not sure what lock protects fwnode accesses.
 
-The access size 18446744073709551600 equals (size_t)(-16), the result of
-a pointer arithmetic underflow.
+This is basically the question I asked to Doug. If he also don't see
+one, let's take this patch as is.
 
-The bug is reproducible on next-20260313 with our dynamic metadata
-fuzzing tool that corrupts ext4 metadata at runtime.
-
-[CAUSE]
-When deleting an ibody xattr entry (i->value == NULL), the code computes
-the memmove length as:
-
-  (void *)last - (void *)here + sizeof(__u32)
-
-where `last` is first the result of walking the xattr entry list to its
-terminating IS_LAST_ENTRY, and then stepped back by EXT4_XATTR_LEN(name_len):
-
-  last = ENTRY((void *)last - size);
-
-Consider a corrupted ibody xattr list where a spurious IS_LAST_ENTRY (four
-zero bytes) has been planted before the real target entry (e.g.,
-system.data used for inline data).  When ext4_xattr_ibody_find() calls
-xattr_find_entry() to locate the entry, the walk stops at the spurious
-terminator.  xattr_find_entry() returns -ENODATA and sets s->here to that
-terminator position; s->not_found is set to -ENODATA accordingly.
-
-Back in ext4_xattr_set_entry(), the entry-walking for loop starts from
-s->first and also stops at the same spurious IS_LAST_ENTRY, so
-last == here after the loop.  Because the "remove old value" block is
-guarded by (!s->not_found), it is skipped.  The delete-name path
-(if (!i->value)) is not guarded by s->not_found at all, so it runs
-unconditionally.  It then executes:
-
-  last = ENTRY((void *)last - size);  /* last = here - 20 */
-
-which places last before here.  The subsequent memmove() computes its
-length as:
-
-  (here - 20) - here + sizeof(__u32) = -16
-
-which wraps to (size_t)(-16) = 18446744073709551600 as an unsigned type,
-causing memmove() to attempt an enormous read.
-
-The load-time check_xattrs() call also stops at the first IS_LAST_ENTRY
-it encounters.  A spurious terminator inserted before the real entries
-silently truncates the range that check_xattrs() examines, so entries
-beyond it are never validated at load time.
-
-[FIX]
-After adjusting `last`, check that it has not moved before `here`. If it
-has, the xattr entry list is corrupted; reject it with -EFSCORRUPTED.
-
-After this fix, the code will detect the corrupted entry and reject it with
--EFSCORRUPTED, preventing the out-of-bounds access.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
----
-It might also be worth considering whether check_xattrs() needs a similar fix.
-I'm not deeply familiar with the ext4 codebase, so I'd appreciate any guidance
-from the maintainers and would be happy to update and resend the patch if needed.
----
- fs/ext4/xattr.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index ce7253b3f549..b8f1102972f0 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1753,6 +1753,11 @@ static int ext4_xattr_set_entry(struct ext4_xattr_info *i,
- 		size_t size = EXT4_XATTR_LEN(name_len);
- 
- 		last = ENTRY((void *)last - size);
-+		if ((void *)last < (void *)here) {
-+			EXT4_ERROR_INODE(inode, "corrupted xattr entries: last before here");
-+			ret = -EFSCORRUPTED;
-+			goto out;
-+		}
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
--- 
-2.43.0
 
