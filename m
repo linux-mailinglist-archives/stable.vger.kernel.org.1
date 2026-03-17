@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-226485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJvJAjWPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:21 +0100
+	id QLhODjiPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA3D2AF9E8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B821D2AF9F6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD4C831BA0CD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B361A31BC485
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF20357A4A;
-	Tue, 17 Mar 2026 17:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBB33A4F46;
+	Tue, 17 Mar 2026 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgeBLyR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOJP6ccO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDCB1ACEDE;
-	Tue, 17 Mar 2026 17:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BD22FFDEA;
+	Tue, 17 Mar 2026 17:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766924; cv=none; b=HVl+l71gR5FHFagJriEYpQBWOoX8T+eMV9xlzBpfOy2hTkQdnR6NRXNsAelyc6JQaphem+/2I8keWWpJjrL1Ih10gOjgQdea0gbNOuYW6pJvZULzXe5GIJdUG+VdLYZkGx6Kpjk1i6VPvOu/VTw9Dvn6O4YiAWZnWJLyB/l7vfE=
+	t=1773766928; cv=none; b=CibnSWhOXiNxeP8Xn59Waov8eWhZ6/HVtkQ8EMxOa5YKcJr2dvJOIjVobka10BdjtT62CuuN4+fwx+p0CWlvrHbE96+j2eggTumq1lrgY0FKyIaxaVQAHXof4xoeAo0VZySrMez/QsZcXW0asgi+D5jWsNhYEHvtGzgxPJ2rQOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766924; c=relaxed/simple;
-	bh=P5CFioy1Ga6Fj11eyUepJg5vH1d/ctq24Ujtt/LXiVs=;
+	s=arc-20240116; t=1773766928; c=relaxed/simple;
+	bh=2Op0Y71CeDSN0fqbNNdgACZjAuyZ6UgyJ4e1DTbbh68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUfIHZUWxgD9dT0zpKFGNLljLINW560z8zAAJFQikdy1w/sxHs6Ld+FHuG4tLiPqpqHsXA81OYbV+Sulk6wixB/dBrukQdtqfH8mG+c+S/kknqE9b/12FqBhx74p09/a7B37QNxYoeDLBRRfi5AFqrGcGQKw7WExAqoFRxaLONU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgeBLyR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0E1C4CEF7;
-	Tue, 17 Mar 2026 17:02:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dXxxkW3rC37q3qDVaYXZQzEekBmJERFlR8PIgWCuDCeyeSTQ3c5kUyQ2P57o2LWrQkp2g+YeMNEjeZUXAZsQiDnkcYWLHjOFbmCX2ix4u3tDEYvwURkWd6A5mKX0bgEZlAiOryuKomHHERPR3U/GPCJ4pz3OoMwQ3NpJsuH6xsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOJP6ccO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C5DC4CEF7;
+	Tue, 17 Mar 2026 17:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766923;
-	bh=P5CFioy1Ga6Fj11eyUepJg5vH1d/ctq24Ujtt/LXiVs=;
+	s=korg; t=1773766927;
+	bh=2Op0Y71CeDSN0fqbNNdgACZjAuyZ6UgyJ4e1DTbbh68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgeBLyR9gWibZXG6Wwp0kl8Pn2rpWW8+3s2+7LKkW30oNun4adumi0+0C1tnlSrXo
-	 vERMOvBKN7HfbQf9aqQCc4Wu/UyR2LIrdFuq766aa6dhf5BKHrgRYiIkvaP31LNNpH
-	 naG3trWRLsCm+RjXMS0/u0PdSTt8Dnta3gWNA5Mc=
+	b=SOJP6ccOoN6kbKDUOyLOkLmukOeS882tZ16/OBLTcu90fzxPsxw3dd47m11VJfb9g
+	 3NnLH/SYWjY54VBNRER5CWz7acpiVxT4+pXWMYE3ydmKkvKpPVvT3XbtU9YVwO4o0Y
+	 GL6GxJv1jy5/QlTSLaZcFbQvXMYH3hD3FI7K4gNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Spencer <spencercw@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 352/378] iio: chemical: bme680: Fix measurement wait duration calculation
-Date: Tue, 17 Mar 2026 17:35:09 +0100
-Message-ID: <20260317163019.936603711@linuxfoundation.org>
+Subject: [PATCH 6.19 353/378] iio: buffer: Fix wait_queue not being removed
+Date: Tue, 17 Mar 2026 17:35:10 +0100
+Message-ID: <20260317163019.974294398@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -63,36 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226485-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
+	TAGGED_FROM(0.00)[bounces-226486-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8FA3D2AF9E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email]
+X-Rspamd-Queue-Id: B821D2AF9F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,42 +100,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chris Spencer <spencercw@gmail.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
+commit 064234044056c93a3719d6893e6e5a26a94a61b6 upstream.
 
-This function refers to the Bosch BME680 API as the source of the
-calculation, but one of the constants does not match the Bosch
-implementation. This appears to be a simple transposition of two digits,
-resulting in a wait time that is too short. This can cause the following
-'device measurement cycle incomplete' check to occasionally fail, returning
-EBUSY to user space.
+In the edge case where the IIO device is unregistered while we're
+buffering, we were directly returning an error without removing the wait
+queue. Instead, set 'ret' and break out of the loop.
 
-Adjust the constant to match the Bosch implementation and resolve the EBUSY
-errors.
-
-Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
-Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
-Signed-off-by: Chris Spencer <spencercw@gmail.com>
-Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: stable@vger.kernel.org
+Fixes: 9eeee3b0bf19 ("iio: Add output buffer support")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/industrialio-buffer.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -613,7 +613,7 @@ static int bme680_wait_for_eoc(struct bm
- 	 * + heater duration
- 	 */
- 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
--			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   data->oversampling_humid) * 1963) + (477 * 4) +
- 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -228,8 +228,10 @@ static ssize_t iio_buffer_write(struct f
+ 	written = 0;
+ 	add_wait_queue(&rb->pollq, &wait);
+ 	do {
+-		if (!indio_dev->info)
+-			return -ENODEV;
++		if (!indio_dev->info) {
++			ret = -ENODEV;
++			break;
++		}
  
- 	fsleep(wait_eoc_us);
+ 		if (!iio_buffer_space_available(rb)) {
+ 			if (signal_pending(current)) {
 
 
 
