@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-226681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCpfFB2OuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:41 +0100
+	id kAczCMyJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44A12AF79C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFF72AEE56
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D43F336162C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4AE633032A83
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C865F2C11CD;
-	Tue, 17 Mar 2026 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B6B3F23B3;
+	Tue, 17 Mar 2026 16:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qelD90gm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEfCmPbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A3146A66;
-	Tue, 17 Mar 2026 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6D13BFE59;
+	Tue, 17 Mar 2026 16:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767795; cv=none; b=Iyq4YfNf5ES+vM7C9W/WgRaIcsuTY61G3irdG+b0b2sXWN7wyBd6tayblaBFFDPC5xfFm9WXmFanKjTGJPIPhi9qliHbhYvRRQ+cw4HD1dyz4z59CjlhGetJ2m7GRFnM7h4Qqsrn1yd0Wv3uieWOhks41HGVOdrFJvohuxTw848=
+	t=1773766571; cv=none; b=qVao15a1HvKvJSg1/5JcpeKJoSDUtelWuDNKN9TfvFJi1lmACGvblD1AgfvOBVgrmc4zaTy9bwSXH3PACb3UwE5VJ5AOow2PRA1QMnohbkcBybC02CgX/fp1ZfYB570sjsBTujQzD0RzkmS2f8hvHEAjq0nZ0TKVYjmCVPqa1S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767795; c=relaxed/simple;
-	bh=6LEST4Vvy79hdyVkiEhuVA6muvl9jLv6yxY4fV12FKw=;
+	s=arc-20240116; t=1773766571; c=relaxed/simple;
+	bh=pr7SntCU96RTPt5Uhk+82MEnQHuHEacJaohpwGLK9xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXp5CS6jhRjEK0q2CSxB3cJaHRx4JwfefwnKmWQQQOkMSGzamkDfs4k38h9xj2r+zso6/4nfwEiFFQzHIrtNFkO/rkNEpQU1b6nCEKr1xw0qIAHMZH/y/IbFX0tLdvh0X28qnnCdu4RjIFbRS0Dip6JsGMV/uRn+xQe/cM489YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qelD90gm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D5EC4CEF7;
-	Tue, 17 Mar 2026 17:16:34 +0000 (UTC)
+	 MIME-Version; b=fcyYRys+kJ8RFyhS7IiGK/087ega4PTqJHfovIFRagTU6easY8RilSf9DMdfOK/X6xhd4bPbGsNOUzegCMQ+0u9J+/B1xuktdeyhcT1eQ7qwFZQHCfjkN0v1rAPbXSUWruo17iM5jIv0LIpaws2FmMB+QmSD0FkzUbofSX/WaHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEfCmPbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17DFC4CEF7;
+	Tue, 17 Mar 2026 16:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767795;
-	bh=6LEST4Vvy79hdyVkiEhuVA6muvl9jLv6yxY4fV12FKw=;
+	s=korg; t=1773766571;
+	bh=pr7SntCU96RTPt5Uhk+82MEnQHuHEacJaohpwGLK9xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qelD90gm1BSNMcQH7abS7LyNh/tgf9tNGwhxELlN+5iwRBGPDbmEM/Arw9i5e6Wpz
-	 iSOrOcwsmA+9hNJtmi1JHMmGewHDZlzwB0+tAE6vRuaZGyL3NuvJr+14VsarjestJX
-	 qCrqGxfeHRQqwsbpMnjxgZUpN+CaB6r7XDo+OvTI=
+	b=kEfCmPbdoLbsxwkWW6KoHBW2kccIMVrRhya4SM0PSjeqg3AFTLNxuBlq2zapH0tiE
+	 RZexZ8zxhY8BgooP4jeRwgmRVdzZ3b3h2G8AnMWW9bZWPwALnXFzp+irG17InV+2A8
+	 LIbDdqiSbxeCem38Zv04UHS8Qz/+bcI/PcJebDjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 159/333] mm/kfence: disable KFENCE upon KASAN HW tags enablement
-Date: Tue, 17 Mar 2026 17:33:08 +0100
-Message-ID: <20260317163005.257027761@linuxfoundation.org>
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.19 232/378] s390/pfault: Fix virtual vs physical address confusion
+Date: Tue, 17 Mar 2026 17:33:09 +0100
+Message-ID: <20260317163015.545911765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +65,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226681-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,tugraz.at,kernel.org,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226407-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tugraz.at:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E44A12AF79C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2BFF72AEE56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-commit 09833d99db36d74456a4d13eb29c32d56ff8f2b6 upstream.
+commit d879ac6756b662a085a743e76023c768c3241579 upstream.
 
-KFENCE does not currently support KASAN hardware tags.  As a result, the
-two features are incompatible when enabled simultaneously.
+When Linux is running as guest, runs a user space process and the
+user space process accesses a page that the host has paged out,
+the guest gets a pfault interrupt and schedules a different process.
+Without this mechanism the host would have to suspend the whole
+virtual CPU until the page has been paged in.
 
-Given that MTE provides deterministic protection and KFENCE is a
-sampling-based debugging tool, prioritize the stronger hardware
-protections.  Disable KFENCE initialization and free the pre-allocated
-pool if KASAN hardware tags are detected to ensure the system maintains
-the security guarantees provided by MTE.
+To setup the pfault interrupt the real address of parameter list
+should be passed to DIAGNOSE 0x258, but a virtual address is passed
+instead.
 
-Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Marco Elver <elver@google.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+That has a performance impact, since the pfault setup never succeeds,
+the interrupt is never delivered to a guest and the whole virtual CPU
+is suspended as result.
+
+Cc: stable@vger.kernel.org
+Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
+Reported-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/s390/mm/pfault.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -13,6 +13,7 @@
- #include <linux/hash.h>
- #include <linux/irq_work.h>
- #include <linux/jhash.h>
-+#include <linux/kasan-enabled.h>
- #include <linux/kcsan-checks.h>
- #include <linux/kfence.h>
- #include <linux/kmemleak.h>
-@@ -883,6 +884,20 @@ void __init kfence_alloc_pool_and_metada
- 		return;
+--- a/arch/s390/mm/pfault.c
++++ b/arch/s390/mm/pfault.c
+@@ -62,7 +62,7 @@ int __pfault_init(void)
+ 		"0:	nopr	%%r7\n"
+ 		EX_TABLE(0b, 0b)
+ 		: [rc] "+d" (rc)
+-		: [refbk] "a" (&pfault_init_refbk), "m" (pfault_init_refbk)
++		: [refbk] "a" (virt_to_phys(&pfault_init_refbk)), "m" (pfault_init_refbk)
+ 		: "cc");
+ 	return rc;
+ }
+@@ -84,7 +84,7 @@ void __pfault_fini(void)
+ 		"0:	nopr	%%r7\n"
+ 		EX_TABLE(0b, 0b)
+ 		:
+-		: [refbk] "a" (&pfault_fini_refbk), "m" (pfault_fini_refbk)
++		: [refbk] "a" (virt_to_phys(&pfault_fini_refbk)), "m" (pfault_fini_refbk)
+ 		: "cc");
+ }
  
- 	/*
-+	 * If KASAN hardware tags are enabled, disable KFENCE, because it
-+	 * does not support MTE yet.
-+	 */
-+	if (kasan_hw_tags_enabled()) {
-+		pr_info("disabled as KASAN HW tags are enabled\n");
-+		if (__kfence_pool) {
-+			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-+			__kfence_pool = NULL;
-+		}
-+		kfence_sample_interval = 0;
-+		return;
-+	}
-+
-+	/*
- 	 * If the pool has already been initialized by arch, there is no need to
- 	 * re-allocate the memory pool.
- 	 */
 
 
 
