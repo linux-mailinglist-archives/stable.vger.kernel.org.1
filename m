@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLlMDdyRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:40 +0100
+	id eJq9L+6JuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988812AFEE9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202802AEEB3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 642A7326EE41
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E145E31D414A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BAD373C18;
-	Tue, 17 Mar 2026 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8C73F23DD;
+	Tue, 17 Mar 2026 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH3kqRN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgcJ6hyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45593E122D;
-	Tue, 17 Mar 2026 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16BD3F54BD;
+	Tue, 17 Mar 2026 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767642; cv=none; b=aqa+Zs6n+ag07mS6i8J40VZcIsldxHSAMtJg8lgCCWb9m62I/NzPbzskmNxBUgmB+RJ7Hjvx7D+ZK2HtNK8YMmZzEse9035fo6OcnnH478/vjeSFuiMF2MI2yeFu1I3rw29PtzmUUMW447mtYGSt6zMWHdY35Gh4PE4qOOFMFKk=
+	t=1773766378; cv=none; b=paTAXJ426aGoX5NabRZ98XE6WhSfwWkFY7i63y2CXwn7A514xgmYvBs6MLmQamjPGmaScXjZkuPz9xGXcSGeGUue7v5INBfLkJ87XLiSeOtLiWNDU0rtsXHqVysyT/yMu2miu7Ghyo79esUVqgLu3bHj+M1hlTK2RoTRCHHwSrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767642; c=relaxed/simple;
-	bh=f7Vyz9Wq4jTUeRMCaiZwwIGxDfbtf+lB/80pxAC5A4k=;
+	s=arc-20240116; t=1773766378; c=relaxed/simple;
+	bh=qjvgtGNVQLpKtUJDd/JyCoeST7OS96jeqomasgqQoEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5udIlOvZtnIP8vNVMep2GjeEiwBqc3ugDWiI3X59nJQqnnn+XEl1WvlFHLVkQblMqL3BuKDcJ+exR3psEibgRprHg8hnvvjUUAu6fYEF8KTGEm3AxvBN0L5yp8LZTI++FENp/DQKGMal0ApXKVYriKCEz86e2p2gaPOBXpPexc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH3kqRN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8358C4CEF7;
-	Tue, 17 Mar 2026 17:14:01 +0000 (UTC)
+	 MIME-Version; b=gGWbFbirk9w5DdExCf1Bm4NRR5y7K7j/DACHOFoSRMPw1fZBt8HLnxv9cOyiWRbMFxUkRTidUFjwVP199aFm61/yhcWOLeaFq2g1Gl6ypsKlSsBP1bK20jgEnczy3QkIKTzYWl5nu6W3MBvgoxqif/IMQk2kUbBzlbOAzi6gdvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgcJ6hyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2219AC2BC86;
+	Tue, 17 Mar 2026 16:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767642;
-	bh=f7Vyz9Wq4jTUeRMCaiZwwIGxDfbtf+lB/80pxAC5A4k=;
+	s=korg; t=1773766378;
+	bh=qjvgtGNVQLpKtUJDd/JyCoeST7OS96jeqomasgqQoEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH3kqRN/bhGzy2KmgfQeML3BQy0U/wNCieIZfKM2ENqJb9HzK48/2L06vsHS+P+N6
-	 GgbJasMZLPcWl12Fbkb5tPFYNNHHjcgFVBLoNJkM1E1/o4RAj73FOqY8e16D77tu8W
-	 OQfPY8hjU26XUS+THuzzucqoX4OTapL7xtHDrPQg=
+	b=xgcJ6hykHeooUOcSIpXNk79UVVYuPvzHckiZ3HGhRNeHXmMlWVBJATwx2uX4pIGDp
+	 HKXC0mA9Z5TvO0RK9d0h+ruvqJMkiWpiRSbFEJUrSeh3AdshT0M2sZaZAsJ4esdRuK
+	 UAkihcJM9V5+WZ2payIXF/ZLdGqooeyip/ndttG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.18 129/333] usb: xhci: Fix memory leak in xhci_disable_slot()
+	Mehul Rao <mehulrao@gmail.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 201/378] tipc: fix divide-by-zero in tipc_sk_filter_connect()
 Date: Tue, 17 Mar 2026 17:32:38 +0100
-Message-ID: <20260317163004.147754500@linuxfoundation.org>
+Message-ID: <20260317163014.397579146@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +66,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226366-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,est.tech,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226651-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 988812AFEE9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,est.tech:email]
+X-Rspamd-Queue-Id: 202802AEEB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Mehul Rao <mehulrao@gmail.com>
 
-commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
+commit 6c5a9baa15de240e747263aba435a0951da8d8d2 upstream.
 
-xhci_alloc_command() allocates a command structure and, when the
-second argument is true, also allocates a completion structure.
-Currently, the error handling path in xhci_disable_slot() only frees
-the command structure using kfree(), causing the completion structure
-to leak.
+A user can set conn_timeout to any value via
+setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+tipc_sk_filter_connect() executes:
 
-Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
-frees both the command structure and the associated completion structure.
-Since the command structure is allocated with zero-initialization,
-command->in_ctx is NULL and will not be erroneously freed by
-xhci_free_command().
+    delay %= (tsk->conn_timeout / 4);
 
-This bug was found using an experimental static analysis tool we are
-developing. The tool is based on the LLVM framework and is specifically
-designed to detect memory management issues. It is currently under
-active development and not yet publicly available, but we plan to
-open-source it after our research is published.
+If conn_timeout is in the range [0, 3], the integer division yields 0,
+and the modulo operation triggers a divide-by-zero exception, causing a
+kernel oops/panic.
 
-The bug was originally detected on v6.13-rc1 using our static analysis
-tool, and we have verified that the issue persists in the latest mainline
-kernel.
+Fix this by clamping conn_timeout to a minimum of 4 at the point of use
+in tipc_sk_filter_connect().
 
-We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
-Since triggering these error paths in xhci_disable_slot() requires specific
-hardware conditions or abnormal state, we were unable to construct a test
-case to reliably trigger these specific error paths at runtime.
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
+RIP: 0010:tipc_sk_filter_rcv (net/tipc/socket.c:2236 net/tipc/socket.c:2362)
+Call Trace:
+ tipc_sk_backlog_rcv (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:32 include/net/sock.h:2357 net/tipc/socket.c:2406)
+ __release_sock (include/net/sock.h:1185 net/core/sock.c:3213)
+ release_sock (net/core/sock.c:3797)
+ tipc_connect (net/tipc/socket.c:2570)
+ __sys_connect (include/linux/file.h:62 include/linux/file.h:83 net/socket.c:2098)
 
-Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
+Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20260310170730.28841-1-mehulrao@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tipc/socket.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -4139,7 +4139,7 @@ int xhci_disable_slot(struct xhci_hcd *x
- 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
- 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
- 		spin_unlock_irqrestore(&xhci->lock, flags);
--		kfree(command);
-+		xhci_free_command(xhci, command);
- 		return -ENODEV;
- 	}
- 
-@@ -4147,7 +4147,7 @@ int xhci_disable_slot(struct xhci_hcd *x
- 				slot_id);
- 	if (ret) {
- 		spin_unlock_irqrestore(&xhci->lock, flags);
--		kfree(command);
-+		xhci_free_command(xhci, command);
- 		return ret;
- 	}
- 	xhci_ring_cmd_db(xhci);
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2233,6 +2233,8 @@ static bool tipc_sk_filter_connect(struc
+ 		if (skb_queue_empty(&sk->sk_write_queue))
+ 			break;
+ 		get_random_bytes(&delay, 2);
++		if (tsk->conn_timeout < 4)
++			tsk->conn_timeout = 4;
+ 		delay %= (tsk->conn_timeout / 4);
+ 		delay = msecs_to_jiffies(delay + 100);
+ 		sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
 
 
 
