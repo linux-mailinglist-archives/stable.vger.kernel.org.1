@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-225854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EYLCeQ/uWkowQEAu9opvQ
-	(envelope-from <stable+bounces-225854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:49:56 +0100
+	id wMurGN1AuWmB9QEAu9opvQ
+	(envelope-from <stable+bounces-225855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:54:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D100A2A9387
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:49:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DDC2A9485
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 497D63028B48
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC789307BAAD
 	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3530B3AE6FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1091379EFE;
 	Tue, 17 Mar 2026 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOPs0psb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7RRzmBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBFD3AE6E7
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C613AE70B
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773748192; cv=none; b=q+7to/MJev/KOYpGQAO7xd7sCqSDlrlJ4kDQgfY53yPefUTled/pEWBCFqRX0LyvotG7FA/5zl1ggqhiung9znkFRFoI3eHxzkbZEt8hw+5PSiqTokLiZf7IQp6nP1eWSptqEbg/ocH1ygoriZRpowe4HtfauBjl7JGYztX474E=
+	t=1773748192; cv=none; b=rmWVZknBJOUrQhlUHXXC7E0yu/mmiS5CWkoCci4m9gK7E7bzvVNZHUNizJIgnjlHY79xw7BTJoKMQ+t0baPdc6XfIFRf26djFX2xgrSzYOQA6c3pKLdeW284WWSGudEaZLmZSyZGZ5fif3p8GcDD1FtNw5sFcMd4rQsJAN27Evw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773748192; c=relaxed/simple;
-	bh=d7XqbWK5olCQTgSa82eqq/M4fOTerJ1l2YXkU9JqrKA=;
+	bh=ElWfHroQIHg43juAArLvBER9My8/Tgzdi6OI2knhwoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDVyl89fe59kUNHltssLt3WRGR5Bga5DC+cRANhF6whw5YsxeCJdxU3K7lW22Vxci+s79sdhjct5eE8WbkR9BmOeCKqQE+5XWZiA2+Oi6RpsrVeQIi/Gb7yGK9lHMoLKVUyaHTLa9QErzotI6BN9drT2u89OWfcgaJZehZD7CVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOPs0psb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E35BC19425;
-	Tue, 17 Mar 2026 11:49:51 +0000 (UTC)
+	 MIME-Version; b=LFnOEornmJa/BpPFTt3PgifhaV00m/w/oiG5Nf91HCdIjDpkvU9HnFAZjxUEIyNAu7C1PpnpPpN/mH7OUnfJdlsCiFRQNSADdX+uyS6KsyniLcGh5unfAZuwKjizRHEdaTHluJOAHGDGiVkhP1R1WEqKURhPvlYk8DyPJMscU5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7RRzmBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE92C19425;
+	Tue, 17 Mar 2026 11:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773748191;
-	bh=d7XqbWK5olCQTgSa82eqq/M4fOTerJ1l2YXkU9JqrKA=;
+	s=k20201202; t=1773748192;
+	bh=ElWfHroQIHg43juAArLvBER9My8/Tgzdi6OI2knhwoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOPs0psbVdxozj9HdaYBV2v3iLjjtRgoZ7DNpIwBLlfkJG+ZO3WH5hrtLJsi4jWQv
-	 03Cv/eNq7k6Vk1rNiNxi/DW7nW4AoZKKjGHPYOrbyKaD5N82FhcjjH8cqc6wVemM+G
-	 x27VDbtLIXV/05bOwZdjpG6zraDQRqDQG52ookKQga1CMqMydAfe+QCmCz/q/PenVG
-	 iyz/jw3j2A1tnciN+geUkw+ydDt12ikrmS/IvPoO21+amOAWhQKa6tSnnrY+FdWLOd
-	 H/RTS6CtA7dLCm3qL5wARVD4qH5cLDWpFI3SAuS5EKRcmRukcwdARkUYH/RYY8ZWPa
-	 AvREXgi8HDweg==
+	b=t7RRzmBcsMc+zThr7YWVoEDjpcLqmCNAJXzmnkaJYGaiERVipf/svjVRzw5qh1Y85
+	 0UI1Wx6SUquwdFnJC6TcL+yvkeBIvIF4TDx5ct1EDp5RmZwf8uLwYD6UYnZazLUmEl
+	 Zy/SMdDGEVbdm2XvgP6LPgTlfAxTMtiE2d7gzmpslSUpzO0Gb3TPkX/rp8Ps1VzrPT
+	 3zFmu6zL9ooRME1E28qgkSD/NZWWEC5kInTQmcM95gqlZrXRO0DZAbTQsBsMRwVQIz
+	 N74ET0KKngO9+Wq0T+5OLRNtMN1EgVfzQjHVgYeesbDZpVGO9tsk6V9lxV1ew2d+QN
+	 pi3oRWF/APejA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/4] mmc: core: Drop redundant member in struct mmc host
-Date: Tue, 17 Mar 2026 07:49:46 -0400
-Message-ID: <20260317114949.126875-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/4] mmc: core: Drop superfluous validations in mmc_hw|sw_reset()
+Date: Tue, 17 Mar 2026 07:49:47 -0400
+Message-ID: <20260317114949.126875-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031713-defeat-mobster-d0a8@gregkh>
+In-Reply-To: <20260317114949.126875-1-sashal@kernel.org>
 References: <2026031713-defeat-mobster-d0a8@gregkh>
+ <20260317114949.126875-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,7 +69,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -76,9 +78,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225854-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-225855-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,39 +89,92 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: D100A2A9387
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: C4DDC2A9485
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 951f6ccfcbb7e4a18bf5fef1fb373d21e5831957 ]
+[ Upstream commit fefdd3c91e0a7b3cbb3f25925d93a57c45cb0f31 ]
 
-The Kconfig option to use the blk-mq support was removed in commit
-1bec43a3b181 ("mmc: core: Remove option not to use blk-mq"), but forgot to
-remove the use_blk_mq member in the struct mmc_host, let's fix it.
+The mmc_hw|sw_reset() APIs are designed to be called solely from upper
+layers, which means drivers that operates on top of the struct mmc_card,
+like the mmc block device driver and an SDIO functional driver.
+
+Additionally, as long as the struct mmc_host has a valid pointer to a
+struct mmc_card, the corresponding host->bus_ops pointer stays valid and
+assigned.
+
+For these reasons, let's drop the superfluous reference counting and the
+redundant validations in mmc_hw|sw_reset().
 
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20210202101924.69970-1-ulf.hansson@linaro.org
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20210212131532.236775-1-ulf.hansson@linaro.org
 Stable-dep-of: 901084c51a0a ("mmc: core: Avoid bitfield RMW for claim/retune flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmc/host.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/core/block.c |  2 +-
+ drivers/mmc/core/core.c  | 21 +--------------------
+ 2 files changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index dd3492f377d00..1c7b716c96f30 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -409,7 +409,6 @@ struct mmc_host {
- 	unsigned int		doing_retune:1;	/* re-tuning in progress */
- 	unsigned int		retune_now:1;	/* do re-tuning at next req */
- 	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
--	unsigned int		use_blk_mq:1;	/* use blk-mq */
- 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
- 	unsigned int		can_dma_map_merge:1; /* merging can be used */
- 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 71ecdb13477a5..2756a5f149f1d 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -987,7 +987,7 @@ static int mmc_blk_reset(struct mmc_blk_data *md, struct mmc_host *host,
+ 	md->reset_done |= type;
+ 	err = mmc_hw_reset(host);
+ 	/* Ensure we switch back to the correct partition */
+-	if (err != -EOPNOTSUPP) {
++	if (err) {
+ 		struct mmc_blk_data *main_md =
+ 			dev_get_drvdata(&host->card->dev);
+ 		int part_err;
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index d8169c8c3f405..cef46bae60b6a 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2096,18 +2096,7 @@ int mmc_hw_reset(struct mmc_host *host)
+ {
+ 	int ret;
+ 
+-	if (!host->card)
+-		return -EINVAL;
+-
+-	mmc_bus_get(host);
+-	if (!host->bus_ops || host->bus_dead || !host->bus_ops->hw_reset) {
+-		mmc_bus_put(host);
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	ret = host->bus_ops->hw_reset(host);
+-	mmc_bus_put(host);
+-
+ 	if (ret < 0)
+ 		pr_warn("%s: tried to HW reset card, got error %d\n",
+ 			mmc_hostname(host), ret);
+@@ -2120,18 +2109,10 @@ int mmc_sw_reset(struct mmc_host *host)
+ {
+ 	int ret;
+ 
+-	if (!host->card)
+-		return -EINVAL;
+-
+-	mmc_bus_get(host);
+-	if (!host->bus_ops || host->bus_dead || !host->bus_ops->sw_reset) {
+-		mmc_bus_put(host);
++	if (!host->bus_ops->sw_reset)
+ 		return -EOPNOTSUPP;
+-	}
+ 
+ 	ret = host->bus_ops->sw_reset(host);
+-	mmc_bus_put(host);
+-
+ 	if (ret)
+ 		pr_warn("%s: tried to SW reset card, got error %d\n",
+ 			mmc_hostname(host), ret);
 -- 
 2.51.0
 
