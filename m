@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-226268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAkzFEuHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:35 +0100
+	id IJ0HDgGRuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50352AEA09
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CC02AFD54
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FDA530A0010
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECF563229675
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF0B3EFD12;
-	Tue, 17 Mar 2026 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB743F7897;
+	Tue, 17 Mar 2026 17:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryWxTXZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ4mhFx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF2F3EF678;
-	Tue, 17 Mar 2026 16:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26083F54DE;
+	Tue, 17 Mar 2026 17:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765962; cv=none; b=MjUBICPr3RgktMt7F1yDL4u/aNI79E3Bb6JOZTnbqOnDf7lcKBC4tg5z5z4clekVj3Ujxycx4GGbd18tVgBl/Ta78T7zg63q2mkTXqxCE6nSy8L1SDBR3B/qXS5PJvZB0tZx2XeuWdlScwiP6CM0QmBwTCcbsgYX4dpIIo4shyI=
+	t=1773767348; cv=none; b=pL3CxbbkOl3rS7XVyLQ5BhdlMSWfwN4tshrYHM53yAQsiqjmrZI19szJsq05CmsoUzOuL6qMzpyob4KNFXI2p83Lrlu3juVlSW8eFPA8GEa/myrrgjGhDDFViC9VkP2R0dTMjST/T4dcGLPRNGebGryyM7niNw6yu9OZBSHc4sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765962; c=relaxed/simple;
-	bh=godUtRmVm3jLjM/n2AgvaMrk2MdEH6DpfMsLzM6Ebk4=;
+	s=arc-20240116; t=1773767348; c=relaxed/simple;
+	bh=rctog8/12so7nUHboPwJhvC5kWXPW6WFOETRIQ40RX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaA79sZoMAMHCv7tRJeNBphg6+i18nE/XdG/vGTrf5FsOaPOi5Lf30uO1TUbUreExOHBkBBL8ZfryNIG0b46CkMAfIhv+vIoHdZzkmy+1WnMT+KlxEBGJRum/LvS4uxu1b0BF3pU8DFixEvL6ECeg5TX71n2d69hP5jiBUDgxLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryWxTXZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B26C4CEF7;
-	Tue, 17 Mar 2026 16:46:01 +0000 (UTC)
+	 MIME-Version; b=jRf5dUlXVbE03SJmqWrTmP1J0CJHxj55kx0+jI7olEtpmTEKXWTHH35k7gnEK/aMiOc3qiNNztzxAKMRNhYrKb5IOz8IAHUrrCI5scZo3TU5cJrpdza8yD1gvwG8RP1Q7YcnvW1kOxoLfs9SvKQe5tHoBpQ93JzhJfVxUs73oko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ4mhFx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C24C4CEF7;
+	Tue, 17 Mar 2026 17:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765962;
-	bh=godUtRmVm3jLjM/n2AgvaMrk2MdEH6DpfMsLzM6Ebk4=;
+	s=korg; t=1773767348;
+	bh=rctog8/12so7nUHboPwJhvC5kWXPW6WFOETRIQ40RX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryWxTXZRy807X2Lxyddsm/svpA3iOOvxGuiL5Jlkgs+HSFnnmNnbD1a3GLSvVvhOQ
-	 t7hXz85X6RdLEDwEs/Quhv8MpB4kycUcAW+WVeSFF+4VM8I4U2g7HSyVB5nUDleOBX
-	 N8qJFenp5IuCn1U/1YCkaAUYbFVE8MmUNtLosmX4=
+	b=EQ4mhFx/GtQLbdwnuBRCcuBf5bPPWIOX+mL/ayfhceUQ0roeDt1BlkxK2zq0IXqnh
+	 k0JdTF4G+si9AxGxFD0qiNnGnu1eahnQBYTMmBTIacNATPDW1mMO1P4+MMCYfZe0Kc
+	 7HNkeILBETiOq1e31YRqN9BAPmGbzUESXD3Tz+G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.19 138/378] KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
+	Florian Westphal <fw@strlen.de>,
+	syzbot+bb9127e278fa198e110c@syzkaller.appspotmail.com,
+	Helen Koike <koike@igalia.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 066/333] netfilter: nf_tables: Fix for duplicate device in netdev hooks
 Date: Tue, 17 Mar 2026 17:31:35 +0100
-Message-ID: <20260317163012.090803529@linuxfoundation.org>
+Message-ID: <20260317163001.820166866@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +66,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-226586-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: E50352AEA09
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,bb9127e278fa198e110c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email]
+X-Rspamd-Queue-Id: 85CC02AFD54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Phil Sutter <phil@nwl.cc>
 
-commit 87d0f901a9bd8ae6be57249c737f20ac0cace93d upstream.
+[ Upstream commit b7cdc5a97d02c943f4bdde4d5767ad0c13cad92b ]
 
-Explicitly set/clear CR8 write interception when AVIC is (de)activated to
-fix a bug where KVM leaves the interception enabled after AVIC is
-activated.  E.g. if KVM emulates INIT=>WFS while AVIC is deactivated, CR8
-will remain intercepted in perpetuity.
+When handling NETDEV_REGISTER notification, duplicate device
+registration must be avoided since the device may have been added by
+nft_netdev_hook_alloc() already when creating the hook.
 
-On its own, the dangling CR8 intercept is "just" a performance issue, but
-combined with the TPR sync bug fixed by commit d02e48830e3f ("KVM: SVM:
-Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active"), the danging
-intercept is fatal to Windows guests as the TPR seen by hardware gets
-wildly out of sync with reality.
-
-Note, VMX isn't affected by the bug as TPR_THRESHOLD is explicitly ignored
-when Virtual Interrupt Delivery is enabled, i.e. when APICv is active in
-KVM's world.  I.e. there's no need to trigger update_cr8_intercept(), this
-is firmly an SVM implementation flaw/detail.
-
-WARN if KVM gets a CR8 write #VMEXIT while AVIC is active, as KVM should
-never enter the guest with AVIC enabled and CR8 writes intercepted.
-
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Squash fix to avic_deactivate_vmcb. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Reported-by: syzbot+bb9127e278fa198e110c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bb9127e278fa198e110c
+Fixes: a331b78a5525 ("netfilter: nf_tables: Respect NETDEV_REGISTER events")
+Tested-by: Helen Koike <koike@igalia.com>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c |    7 +++++--
- arch/x86/kvm/svm/svm.c  |    7 ++++---
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ net/netfilter/nf_tables_api.c    | 2 +-
+ net/netfilter/nft_chain_filter.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -189,12 +189,12 @@ static void avic_activate_vmcb(struct vc
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 598a9fe03fb0b..ed1d639fe34d7 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9841,7 +9841,7 @@ static int nft_flowtable_event(unsigned long event, struct net_device *dev,
+ 			break;
+ 		case NETDEV_REGISTER:
+ 			/* NOP if not matching or already registered */
+-			if (!match || (changename && ops))
++			if (!match || ops)
+ 				continue;
  
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
--
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
- 	vmcb->control.avic_physical_id |= avic_get_max_physical_id(vcpu);
--
- 	vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
+ 			ops = kzalloc(sizeof(struct nf_hook_ops),
+diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+index b16185e9a6dd7..041426e3bdbf1 100644
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -344,7 +344,7 @@ static int nft_netdev_event(unsigned long event, struct net_device *dev,
+ 			break;
+ 		case NETDEV_REGISTER:
+ 			/* NOP if not matching or already registered */
+-			if (!match || (changename && ops))
++			if (!match || ops)
+ 				continue;
  
-+	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
-+
- 	/*
- 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
- 	 * accesses, while interrupt injection to a running vCPU can be
-@@ -226,6 +226,9 @@ static void avic_deactivate_vmcb(struct
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
- 
-+	if (!sev_es_guest(svm->vcpu.kvm))
-+		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+
- 	/*
- 	 * If running nested and the guest uses its own MSR bitmap, there
- 	 * is no need to update L0's msr bitmap
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1032,8 +1032,7 @@ static void init_vmcb(struct kvm_vcpu *v
- 	svm_set_intercept(svm, INTERCEPT_CR0_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR3_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR4_WRITE);
--	if (!kvm_vcpu_apicv_active(vcpu))
--		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
- 
- 	set_dr_intercepts(svm);
- 
-@@ -2603,9 +2602,11 @@ static int dr_interception(struct kvm_vc
- 
- static int cr8_write_interception(struct kvm_vcpu *vcpu)
- {
-+	u8 cr8_prev = kvm_get_cr8(vcpu);
- 	int r;
- 
--	u8 cr8_prev = kvm_get_cr8(vcpu);
-+	WARN_ON_ONCE(kvm_vcpu_apicv_active(vcpu));
-+
- 	/* instruction emulation calls kvm_set_cr8() */
- 	r = cr_interception(vcpu);
- 	if (lapic_in_kernel(vcpu))
+ 			ops = kmemdup(&basechain->ops,
+-- 
+2.51.0
+
 
 
 
