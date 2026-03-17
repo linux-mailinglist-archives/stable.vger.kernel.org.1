@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJH7HRuKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:35 +0100
+	id GLaXNf2TuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502E72AEF29
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36E02B026F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 115003061ADC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6CD03065A1F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926AF3F54CB;
-	Tue, 17 Mar 2026 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BFD320CCF;
+	Tue, 17 Mar 2026 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViHI2zOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAgqk2ng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530093F23DD;
-	Tue, 17 Mar 2026 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B32730C63B;
+	Tue, 17 Mar 2026 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766861; cv=none; b=XKhfOlGR/JCJCguGY0+ERto+TTc1IhLa9gGD33d+GupNGCm/KI1cl/spsjSm2P89q6Gtm0wk8WI2zfwcn62m3Nr1SkQyB3EwS/cJuYfvnlMUlHVu7laY02UiLO4A0bFEsvmLGKaj64M4TsMrZRG5a6AmvWx11iBfvTSbMAtP+Cw=
+	t=1773768237; cv=none; b=leJCECQk0K8Kk/syHRjHLC0FJpxNcaEa/Kg5KlStgqwuApnASDBo5qISfn54QzNrbG4NZmrTQ/V/sqtPYjfEKnkz9bykLkf1LbpO7MRcJzMEKjz2Y35Fn83ZQl2naEkwBHqGmHglsEVgBDgg1n5Uj6a47LrG3tRi9qgg7eVr98s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766861; c=relaxed/simple;
-	bh=UdZZUpQtNtdeLV383KGGzHd/qRjNhmWRxMSfIJt1dXU=;
+	s=arc-20240116; t=1773768237; c=relaxed/simple;
+	bh=LaZLfIsAn3I6VbUGjyv0b2bvFkD1V8GdJqeAg2YTC9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkTstPxnl2mfolUIC4C4QfN1vgHmEJDbRhgw7c+J/xdLb/koxU9QDSUbn1CyYGP0vtDOLEIqOtK6hmWCtGgZ6hwig2jB8arWNFIkHxZR0aNqPYal8QZSjuc5ndK75vsZCJYJ0iMYWFv5m/e6M4yHbj49oObd+lq2jNN4+hqSM7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViHI2zOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A5FC4CEF7;
-	Tue, 17 Mar 2026 17:01:00 +0000 (UTC)
+	 MIME-Version; b=TrnN/c6PX/UxAbPs2rvbC/wnsZiIVhvzmwm/Y37vjepEQYM8FAMyxQMzZBpr2Yyx9QdRIR6wbOl79Dm/GWycuLeFVmOdTBEFdBnktOA6kZNlZ2ealIB6xK1wN5wRcuw+H+ZeiEu+kGFYcZxtleygqChH5mGJ9jQ8XsQVbeJRwac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAgqk2ng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6C2C19424;
+	Tue, 17 Mar 2026 17:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766861;
-	bh=UdZZUpQtNtdeLV383KGGzHd/qRjNhmWRxMSfIJt1dXU=;
+	s=korg; t=1773768237;
+	bh=LaZLfIsAn3I6VbUGjyv0b2bvFkD1V8GdJqeAg2YTC9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ViHI2zOE3pgOeRU3nNdx057x09NZdV3J8o74ATmZ0dJd67wwpEq33ysIMJ38wu67G
-	 5HEb3+Z6JmarUcbgqlYSOiWfn6ldy19hxNYJuDpMLMzklbLdJEMGT028doWVRCDGIL
-	 8AAET0kuWfk1QcwF9D33fF/316MY7Lpx6WjWfOkE=
+	b=JAgqk2ngwY2ICC2o+LgEvPyq3AhIUj002tjjW8HVXB7Z7LYDMCjfM1LM+XcUrI5aa
+	 0jZrKzsWmpjvTXz9Uh10Wnylsy2lazja45dZ9Rh8QOnHrRjIWMyYErt7HO88DizVlW
+	 bAGWkQE5wP3QGcy/HWTrXYaigzeSlvmHMzxUILaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.19 336/378] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+	Koen Vandeputte <koen.vandeputte@citymesh.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Laurent Vivier <lvivier@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 264/333] qmi_wwan: allow max_mtu above hard_mtu to control rx_urb_size
 Date: Tue, 17 Mar 2026 17:34:53 +0100
-Message-ID: <20260317163019.344329848@linuxfoundation.org>
+Message-ID: <20260317163009.160800033@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +69,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,citymesh.com,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226799-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226471-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 502E72AEF29
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,citymesh.com:email]
+X-Rspamd-Queue-Id: E36E02B026F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Laurent Vivier <lvivier@redhat.com>
 
-commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
+commit 55f854dd5bdd8e19b936a00ef1f8d776ac32c7b0 upstream.
 
-snprintf() returns the number of characters that would have been
-written excluding the NUL terminator.  Output is truncated when the
-return value is >= the buffer size, not just > the buffer size.
+Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+capped net->max_mtu to the device's hard_mtu in usbnet_probe(). While
+this correctly prevents oversized packets on standard USB network
+devices, it breaks the qmi_wwan driver.
 
-When ret == size, the current code takes the non-truncated path,
-advancing buf by ret and reducing size to 0.  This is wrong because
-the output was actually truncated (the last character was replaced by
-NUL).  Fix by using >= so the truncation path is taken correctly.
+qmi_wwan relies on userspace (e.g. ModemManager) setting a large MTU on
+the wwan0 interface to configure rx_urb_size via usbnet_change_mtu().
+QMI modems negotiate USB transfer sizes of 16,383 or 32,767 bytes, and
+the USB receive buffers must be sized accordingly. With max_mtu capped
+to hard_mtu (~1500 bytes), userspace can no longer raise the MTU, the
+receive buffers remain small, and download speeds drop from >300 Mbps
+to ~0.8 Mbps.
 
-Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
+Introduce a FLAG_NOMAXMTU driver flag that allows individual usbnet
+drivers to opt out of the max_mtu cap. Set this flag in qmi_wwan's
+driver_info structures to restore the previous behavior for QMI devices,
+while keeping the safety fix in place for all other usbnet drivers.
 
-Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
+Fixes: c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/lkml/CAPh3n803k8JcBPV5qEzUB-oKzWkAs-D5CU7z=Vd_nLRCr5ZqQg@mail.gmail.com/
+Reported-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
+Tested-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Link: https://patch.msgid.link/20260304134338.1785002-1-lvivier@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    4 ++--
+ drivers/net/usb/usbnet.c   |    7 ++++---
+ include/linux/usb/usbnet.h |    1 +
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -316,7 +316,7 @@ int __init xbc_node_compose_key_after(st
- 			       depth ? "." : "");
- 		if (ret < 0)
- 			return ret;
--		if (ret > size) {
-+		if (ret >= size) {
- 			size = 0;
- 		} else {
- 			size -= ret;
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -928,7 +928,7 @@ err:
+ 
+ static const struct driver_info	qmi_wwan_info = {
+ 	.description	= "WWAN/QMI device",
+-	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
++	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
+ 	.bind		= qmi_wwan_bind,
+ 	.unbind		= qmi_wwan_unbind,
+ 	.manage_power	= qmi_wwan_manage_power,
+@@ -937,7 +937,7 @@ static const struct driver_info	qmi_wwan
+ 
+ static const struct driver_info	qmi_wwan_info_quirk_dtr = {
+ 	.description	= "WWAN/QMI device",
+-	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
++	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
+ 	.bind		= qmi_wwan_bind,
+ 	.unbind		= qmi_wwan_unbind,
+ 	.manage_power	= qmi_wwan_manage_power,
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1803,11 +1803,12 @@ usbnet_probe (struct usb_interface *udev
+ 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+ 			net->flags |= IFF_NOARP;
+ 
+-		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
++		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
++		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
+ 			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+ 
+-		if (net->mtu > net->max_mtu)
+-			net->mtu = net->max_mtu;
++		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
++			net->mtu = dev->hard_mtu - net->hard_header_len;
+ 
+ 	} else if (!info->in || !info->out)
+ 		status = usbnet_get_endpoints (dev, udev);
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -130,6 +130,7 @@ struct driver_info {
+ #define FLAG_MULTI_PACKET	0x2000
+ #define FLAG_RX_ASSEMBLE	0x4000	/* rx packets may span >1 frames */
+ #define FLAG_NOARP		0x8000	/* device can't do ARP */
++#define FLAG_NOMAXMTU		0x10000	/* allow max_mtu above hard_mtu */
+ 
+ 	/* init device ... can sleep, or cause probe() failure */
+ 	int	(*bind)(struct usbnet *, struct usb_interface *);
 
 
 
