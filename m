@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-226239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNwwBMGGuWncJAIAu9opvQ
-	(envelope-from <stable+bounces-226239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:17 +0100
+	id gE0MCNSLuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582A52AE8F3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B212AF262
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E2263161ED9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DFF03004D3D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B57C3EE1CB;
-	Tue, 17 Mar 2026 16:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AC73F87ED;
+	Tue, 17 Mar 2026 17:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWj5BwAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPuUIlLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF84536C0B9;
-	Tue, 17 Mar 2026 16:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA9D3F65EF;
+	Tue, 17 Mar 2026 17:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765853; cv=none; b=HjSo+vwHIj484UCl1f2F9UmhasFZc+FsobebdN6RQuyxNlLTfO4Esvw0vG8RTE3GzzcJwTg+pcQhCA3ZoNbXxj/ygVo1TeNJNWkBg9TRFChiZ11ykyiqbpZyLGCsDu9/mPvgWOvDgOrxezcxHndwE6PXxgLTa2VEr96j8/k7O1s=
+	t=1773767367; cv=none; b=LGy6WGwBJ1dzKmEWuUKhf1wOOXYI0o8Kpj66PNhJlffkMApLzVkTOdBOuwsgiY6MnHWOUP0OUbkdILtxqMapv/tXYKUtBfvdQvl9U3ijOSx9/DjnQSrgfBWZKzLr3aR1xppzpYZCrsL9akGo0APyOdJh6Zqxk/MElH4pjF8MO2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765853; c=relaxed/simple;
-	bh=8wcz3Jo78JjnLPh1ih8DMQgLQ+QlqW2ePZ+HbKiD32A=;
+	s=arc-20240116; t=1773767367; c=relaxed/simple;
+	bh=MG39nkjJlbMjVP8d1ZJ6mcg48Qcaj0TSb+ThGWsrXVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiciPzdQDUrqIzjuVEODkEJaEBUAmnLXKBJ3RvkAx+/AwXw46SJP9nwdrGOYu+RcZ0M/uzzel0Wd7yplbKzIao1FssPJbFkeVVJsau5yyGiXPPX0DjtJ/3Rqc3SKgBrDF3Z0Uh0PYH5+gi76c+Yt1cGANIXzD+Act9q/GaC3E74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWj5BwAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40FBC4CEF7;
-	Tue, 17 Mar 2026 16:44:12 +0000 (UTC)
+	 MIME-Version; b=dpYFKGiHJoFLi0ho7wXykQY1l4qb0DKADIhxcone+5JGLH/u6RXtjgfCeHcAzT7e1HxhQKsHVV+8EhXHiZnP5+fO0NqiD5W4vZIJ7i/AcrHpwijcUKS4592sBpYLKBVQjx2bwJ1Bp/O9K2U3a3TMWQtocRgZVDuo9PEHMAh3j/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPuUIlLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CEEC4CEF7;
+	Tue, 17 Mar 2026 17:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765853;
-	bh=8wcz3Jo78JjnLPh1ih8DMQgLQ+QlqW2ePZ+HbKiD32A=;
+	s=korg; t=1773767367;
+	bh=MG39nkjJlbMjVP8d1ZJ6mcg48Qcaj0TSb+ThGWsrXVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWj5BwAiLWDOVXoDXShinweycThD8zOSRB4D6MEg90QhcuBQb5TcHjQtxvdmSjV/F
-	 4NpSVJ4xIWiXBne/iD4XQBdTFOzFzGgXs0Y8V5r9+8RepszTbbfT2hdGJe7vpzlFRx
-	 CA/PvlBrCsxMQE648Sqi6F/uzw7/W1VS2Sw2H0yE=
+	b=tPuUIlLX1C9g3wMLq0d0pvqV+o3qtbDoPHWv4rWlMryP4SpV5s8rIURDSAGFDA2EM
+	 cXudCnKIeYv5LQQLehdC6uAD+FJi248xoG+IP29jbKGIxZV6GjtC6iKeJc9V9ndoHe
+	 2Q8J7VkGBae14VW6Elt7lxuls/iA9evSej7mMc1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 110/378] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
-Date: Tue, 17 Mar 2026 17:31:07 +0100
-Message-ID: <20260317163011.062817572@linuxfoundation.org>
+Subject: [PATCH 6.18 039/333] net/mlx5: Fix deadlock between devlink lock and esw->wq
+Date: Tue, 17 Mar 2026 17:31:08 +0100
+Message-ID: <20260317163000.812894454@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +72,181 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226590-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226239-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 582A52AE8F3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: B3B212AF262
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
+[ Upstream commit aed763abf0e905b4b8d747d1ba9e172961572f57 ]
 
-The NIX RAS health report path uses nix_af_rvu_err when handling the
-NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
-than the RAS interrupt status.
+esw->work_queue executes esw_functions_changed_event_handler ->
+esw_vfs_changed_event_handler and acquires the devlink lock.
 
-Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
+.eswitch_mode_set (acquires devlink lock in devlink_nl_pre_doit) ->
+mlx5_devlink_eswitch_mode_set -> mlx5_eswitch_disable_locked ->
+mlx5_eswitch_event_handler_unregister -> flush_workqueue deadlocks
+when esw_vfs_changed_event_handler executes.
 
-Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
+Fix that by no longer flushing the work to avoid the deadlock, and using
+a generation counter to keep track of work relevance. This avoids an old
+handler manipulating an esw that has undergone one or more mode changes:
+- the counter is incremented in mlx5_eswitch_event_handler_unregister.
+- the counter is read and passed to the ephemeral mlx5_host_work struct.
+- the work handler takes the devlink lock and bails out if the current
+  generation is different than the one it was scheduled to operate on.
+- mlx5_eswitch_cleanup does the final draining before destroying the wq.
+
+No longer flushing the workqueue has the side effect of maybe no longer
+cancelling pending vport_change_handler work items, but that's ok since
+those are disabled elsewhere:
+- mlx5_eswitch_disable_locked disables the vport eq notifier.
+- mlx5_esw_vport_disable disarms the HW EQ notification and marks
+  vport->enabled under state_lock to false to prevent pending vport
+  handler from doing anything.
+- mlx5_eswitch_cleanup destroys the workqueue and makes sure all events
+  are disabled/finished.
+
+Fixes: f1bc646c9a06 ("net/mlx5: Use devl_ API in mlx5_esw_offloads_devlink_port_register")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260305081019.1811100-1-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c  |  7 ++++---
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h  |  2 ++
+ .../mellanox/mlx5/core/eswitch_offloads.c      | 18 +++++++++++++-----
+ 3 files changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index fa6ca4f41b59a..2a715872e9edf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
- 		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_RAS:
--		intr_val = nix_event_context->nix_af_rvu_err;
-+		intr_val = nix_event_context->nix_af_rvu_ras;
- 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
- 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
--					  nix_event_context->nix_af_rvu_err);
-+					  nix_event_context->nix_af_rvu_ras);
- 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
- 		if (intr_val & BIT_ULL(34))
- 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index e2ffb87b94cbe..49bc409d7dbb0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1081,10 +1081,11 @@ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+ 
+ static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
+ {
+-	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
++	if (esw->mode == MLX5_ESWITCH_OFFLOADS &&
++	    mlx5_eswitch_is_funcs_handler(esw->dev)) {
+ 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
+-
+-	flush_workqueue(esw->work_queue);
++		atomic_inc(&esw->esw_funcs.generation);
++	}
+ }
+ 
+ static void mlx5_eswitch_clear_vf_vports_info(struct mlx5_eswitch *esw)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 2d91f77b01601..558055d214e10 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -331,10 +331,12 @@ struct esw_mc_addr { /* SRIOV only */
+ struct mlx5_host_work {
+ 	struct work_struct	work;
+ 	struct mlx5_eswitch	*esw;
++	int			work_gen;
+ };
+ 
+ struct mlx5_esw_functions {
+ 	struct mlx5_nb		nb;
++	atomic_t		generation;
+ 	bool			host_funcs_disabled;
+ 	u16			num_vfs;
+ 	u16			num_ec_vfs;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 8c0e812f13c3f..1ff6c3d502e9b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3451,22 +3451,28 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
+ }
+ 
+ static void
+-esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
++esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, int work_gen,
++			      const u32 *out)
+ {
+ 	struct devlink *devlink;
+ 	bool host_pf_disabled;
+ 	u16 new_num_vfs;
+ 
++	devlink = priv_to_devlink(esw->dev);
++	devl_lock(devlink);
++
++	/* Stale work from one or more mode changes ago. Bail out. */
++	if (work_gen != atomic_read(&esw->esw_funcs.generation))
++		goto unlock;
++
+ 	new_num_vfs = MLX5_GET(query_esw_functions_out, out,
+ 			       host_params_context.host_num_of_vfs);
+ 	host_pf_disabled = MLX5_GET(query_esw_functions_out, out,
+ 				    host_params_context.host_pf_disabled);
+ 
+ 	if (new_num_vfs == esw->esw_funcs.num_vfs || host_pf_disabled)
+-		return;
++		goto unlock;
+ 
+-	devlink = priv_to_devlink(esw->dev);
+-	devl_lock(devlink);
+ 	/* Number of VFs can only change from "0 to x" or "x to 0". */
+ 	if (esw->esw_funcs.num_vfs > 0) {
+ 		mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
+@@ -3481,6 +3487,7 @@ esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
+ 		}
+ 	}
+ 	esw->esw_funcs.num_vfs = new_num_vfs;
++unlock:
+ 	devl_unlock(devlink);
+ }
+ 
+@@ -3497,7 +3504,7 @@ static void esw_functions_changed_event_handler(struct work_struct *work)
+ 	if (IS_ERR(out))
+ 		goto out;
+ 
+-	esw_vfs_changed_event_handler(esw, out);
++	esw_vfs_changed_event_handler(esw, host_work->work_gen, out);
+ 	kvfree(out);
+ out:
+ 	kfree(host_work);
+@@ -3517,6 +3524,7 @@ int mlx5_esw_funcs_changed_handler(struct notifier_block *nb, unsigned long type
+ 	esw = container_of(esw_funcs, struct mlx5_eswitch, esw_funcs);
+ 
+ 	host_work->esw = esw;
++	host_work->work_gen = atomic_read(&esw_funcs->generation);
+ 
+ 	INIT_WORK(&host_work->work, esw_functions_changed_event_handler);
+ 	queue_work(esw->work_queue, &host_work->work);
 -- 
 2.51.0
 
