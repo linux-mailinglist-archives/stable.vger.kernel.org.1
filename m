@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-226822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEwUEWOPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:07 +0100
+	id mJvJAjWPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA43B2AFA81
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA3D2AF9E8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBD553008266
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD4C831BA0CD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC1E2DECC6;
-	Tue, 17 Mar 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF20357A4A;
+	Tue, 17 Mar 2026 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1sgn6ry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgeBLyR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F42221D5B0;
-	Tue, 17 Mar 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDCB1ACEDE;
+	Tue, 17 Mar 2026 17:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768341; cv=none; b=BzNshwbLOkkgEtLDUxewvFwCiZKn8d2OhvgkgYCkuWYi2d7gbafgPnf9P8Y208Apc8HJ1B7fJiUIrIFDPFxC7EvShi8ChDm78ihsNA93Zv17nx0L4oZUuujIvHZsczuBXOOmtsbwdy+5I0KbDY95GYGaP5z0hU858lW8RH0Zrxg=
+	t=1773766924; cv=none; b=HVl+l71gR5FHFagJriEYpQBWOoX8T+eMV9xlzBpfOy2hTkQdnR6NRXNsAelyc6JQaphem+/2I8keWWpJjrL1Ih10gOjgQdea0gbNOuYW6pJvZULzXe5GIJdUG+VdLYZkGx6Kpjk1i6VPvOu/VTw9Dvn6O4YiAWZnWJLyB/l7vfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768341; c=relaxed/simple;
-	bh=KJR401HqCDifkeGfh9amWEqwn9XbIGaV/3/rf9wWxVQ=;
+	s=arc-20240116; t=1773766924; c=relaxed/simple;
+	bh=P5CFioy1Ga6Fj11eyUepJg5vH1d/ctq24Ujtt/LXiVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJB6VyUrLBVmDki+AL91Vp0qkFqFcJT2Lu/YGade2P3pCH1rj0MSHqeQW9khGolXU0cUW0PCBCEtMYB54HJKpsTISnR2yOyvSCdAdvIhc3SEljXtmmoJ8Tu4RovEM7pnUPcdjJy8gyxeZpt7xQGZIqwU48gTLd6yuzJ/BLRM3hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1sgn6ry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE64DC4CEF7;
-	Tue, 17 Mar 2026 17:25:39 +0000 (UTC)
+	 MIME-Version; b=NUfIHZUWxgD9dT0zpKFGNLljLINW560z8zAAJFQikdy1w/sxHs6Ld+FHuG4tLiPqpqHsXA81OYbV+Sulk6wixB/dBrukQdtqfH8mG+c+S/kknqE9b/12FqBhx74p09/a7B37QNxYoeDLBRRfi5AFqrGcGQKw7WExAqoFRxaLONU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgeBLyR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0E1C4CEF7;
+	Tue, 17 Mar 2026 17:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768341;
-	bh=KJR401HqCDifkeGfh9amWEqwn9XbIGaV/3/rf9wWxVQ=;
+	s=korg; t=1773766923;
+	bh=P5CFioy1Ga6Fj11eyUepJg5vH1d/ctq24Ujtt/LXiVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1sgn6rygFCXCxkJ4WoeV0tsKF8/ULsRB+pAMBKoYGH5ZPCZGydD1xzty8jt1Uw5S
-	 wSewxWf7+3YifiFs6k6GuE1jvAbG7SYhT2NSbC8K50Rsdb4Jzr2wR7iNWxf4JJrPj2
-	 EIalwo2RSzR3evfZr83N3+Znx+XRXEMK4PUsZ3dI=
+	b=lgeBLyR9gWibZXG6Wwp0kl8Pn2rpWW8+3s2+7LKkW30oNun4adumi0+0C1tnlSrXo
+	 vERMOvBKN7HfbQf9aqQCc4Wu/UyR2LIrdFuq766aa6dhf5BKHrgRYiIkvaP31LNNpH
+	 naG3trWRLsCm+RjXMS0/u0PdSTt8Dnta3gWNA5Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.18 280/333] x86/apic: Disable x2apic on resume if the kernel expects so
+	Chris Spencer <spencercw@gmail.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 352/378] iio: chemical: bme680: Fix measurement wait duration calculation
 Date: Tue, 17 Mar 2026 17:35:09 +0100
-Message-ID: <20260317163009.776995911@linuxfoundation.org>
+Message-ID: <20260317163019.936603711@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,120 +66,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226485-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226822-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,alien8.de:email,sony.com:email]
-X-Rspamd-Queue-Id: DA43B2AFA81
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8FA3D2AF9E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
+From: Chris Spencer <spencercw@gmail.com>
 
-commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
+commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
 
-When resuming from s2ram, firmware may re-enable x2apic mode, which may have
-been disabled by the kernel during boot either because it doesn't support IRQ
-remapping or for other reasons. This causes the kernel to continue using the
-xapic interface, while the hardware is in x2apic mode, which causes hangs.
-This happens on defconfig + bare metal + s2ram.
+This function refers to the Bosch BME680 API as the source of the
+calculation, but one of the constants does not match the Bosch
+implementation. This appears to be a simple transposition of two digits,
+resulting in a wait time that is too short. This can cause the following
+'device measurement cycle incomplete' check to occasionally fail, returning
+EBUSY to user space.
 
-Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
-disabled, i.e. when x2apic_mode = 0.
+Adjust the constant to match the Bosch implementation and resolve the EBUSY
+errors.
 
-The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
-pre-sleep configuration or initial boot configuration for each CPU, including
-MSR state:
-
-  When executing from the power-on reset vector as a result of waking from an
-  S2 or S3 sleep state, the platform firmware performs only the hardware
-  initialization required to restore the system to either the state the
-  platform was in prior to the initial operating system boot, or to the
-  pre-sleep configuration state. In multiprocessor systems, non-boot
-  processors should be placed in the same state as prior to the initial
-  operating system boot.
-
-  (further ahead)
-
-  If this is an S2 or S3 wake, then the platform runtime firmware restores
-  minimum context of the system before jumping to the waking vector. This
-  includes:
-
-	CPU configuration. Platform runtime firmware restores the pre-sleep
-	configuration or initial boot configuration of each CPU (MSR, MTRR,
-	firmware update, SMBase, and so on). Interrupts must be disabled (for
-	IA-32 processors, disabled by CLI instruction).
-
-	(and other things)
-
-So at least as per the spec, re-enablement of x2apic by the firmware is
-allowed if "x2apic on" is a part of the initial boot configuration.
-
-  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
-
-  [ bp: Massage. ]
-
-Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
-Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
+Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
+Signed-off-by: Chris Spencer <spencercw@gmail.com>
+Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1890,6 +1890,7 @@ void __init check_x2apic(void)
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -613,7 +613,7 @@ static int bme680_wait_for_eoc(struct bm
+ 	 * + heater duration
+ 	 */
+ 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
+-			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   data->oversampling_humid) * 1963) + (477 * 4) +
+ 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
  
- static inline void try_to_enable_x2apic(int remap_mode) { }
- static inline void __x2apic_enable(void) { }
-+static inline void __x2apic_disable(void) { }
- #endif /* !CONFIG_X86_X2APIC */
- 
- void __init enable_IR_x2apic(void)
-@@ -2452,6 +2453,11 @@ static void lapic_resume(void)
- 	if (x2apic_mode) {
- 		__x2apic_enable();
- 	} else {
-+		if (x2apic_enabled()) {
-+			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
-+			__x2apic_disable();
-+		}
-+
- 		/*
- 		 * Make sure the APICBASE points to the right address
- 		 *
+ 	fsleep(wait_eoc_us);
 
 
 
