@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGduMdaOuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:46 +0100
+	id aEYbLBOPuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D9C2AF8F6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2690C2AF98A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09E373095E47
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CABB314CED1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199DE2F7462;
-	Tue, 17 Mar 2026 17:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F7A3F54B8;
+	Tue, 17 Mar 2026 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d74W1OPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFledsBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07DB2D739D;
-	Tue, 17 Mar 2026 17:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1413F54D1;
+	Tue, 17 Mar 2026 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768217; cv=none; b=hqimy7nWczDNlrpcZgx2udFXiG3M4AynREFBAKWO5dBJgG/dGPjpf6UfXhM01rpXFKumHQ9BCoC0mwfWgGavm20HHd0g5lGoDSv5Ewcmn7mqney77QM3ldBSbylZw06+yopbwr0wK2GA9X8ki8WlUDcelV0Sd+D8UlVgEEeYaf0=
+	t=1773766849; cv=none; b=Lr2spGl4pflFo1NOlHRN+WA2mjNVsh7vkeDKPwRmRfRTIIPqco86abIaMpCngVuqiOSColgpoR6fsx1tq5ZzaJTUondifo3BUwuUotJ3m5gpZ/9++HaMLZBjvMZuTX7naPQ4oB5RXLjEsqQ/lX0GcFY3Jp/RftUVfwiXj6TL+9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768217; c=relaxed/simple;
-	bh=mA6HIoCs5IlvLShF4NvVboifBuS7XTyq9vfwpLcCIGQ=;
+	s=arc-20240116; t=1773766849; c=relaxed/simple;
+	bh=XHo0PN3wAFVPLbZPAEOeq2+favWG7ik349uW1Ta53JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnW+ioTpPVEq5vBQkLgDr4+UpVkepMk2d2KEN9MfOTCOMehBpWeg70bV+vdIthIppoKkmJrq04A5KWGi0R40dnOS011HFE0gWe5rkvut1lPqUK6giueUeqf48ihrJun33ZDI6RPhWUJ464PSZpEIMLJptl8BdGrb1C+cJzCx0Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d74W1OPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5527EC4CEF7;
-	Tue, 17 Mar 2026 17:23:37 +0000 (UTC)
+	 MIME-Version; b=s4BRoqlpA+5LZILfMcln5LuGPJxAI9FBmh0OyNr4T8yz2bO2ISOhhFko07mJw7SG9OEkySy/L61SBh6dmx8Rl3Vs6p4G4xkCKbtyEi7eFqGpRdpqWk6Ou03fmET0eEA12bwXMiOUHGIxIRMjg6gZ4L8ySjSSYCqo/Z8M9RLyDNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFledsBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20D7C4CEF7;
+	Tue, 17 Mar 2026 17:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768217;
-	bh=mA6HIoCs5IlvLShF4NvVboifBuS7XTyq9vfwpLcCIGQ=;
+	s=korg; t=1773766849;
+	bh=XHo0PN3wAFVPLbZPAEOeq2+favWG7ik349uW1Ta53JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d74W1OPnXLMZAmf5cz/9b3x3N3qvLcebNFTbCb/Q9GXARV7bnWrUYY7MuLJaHBYYQ
-	 JE+ZO3uT1n3UpE1MTiRiMvvApGt4893EdewJdVa2TfTe2awpd3oXidAhwA3Bj57FEQ
-	 7niB3CTyqrZ8IRFisDHM9JK8dPRC6rR12DeZGbK8=
+	b=sFledsBp7sjfwvGcZDsaDfHMRz+TQOMuCCBI6ECgqGh+L/ibRjNpntlGstHf+ygFB
+	 Uo/cdtvZkoc53qc/Zj10S2aDEFhgn/J1WNb8zybUNLTzPkR11piEGwyVsEcAm9XIzx
+	 ub3iFx7LpKfoQpEsbw/Tqq2RFsLBtPoZm0bojxl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Yongxing Mou <yongxing.mou@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.18 260/333] drm/msm/dpu: Correct the SA8775P intr_underrun/intr_underrun index
-Date: Tue, 17 Mar 2026 17:34:49 +0100
-Message-ID: <20260317163009.011833421@linuxfoundation.org>
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.19 333/378] scsi: core: Fix error handling for scsi_alloc_sdev()
+Date: Tue, 17 Mar 2026 17:34:50 +0100
+Message-ID: <20260317163019.236610628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226793-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226468-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,54 +86,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,patchwork.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,quicinc.com:email]
-X-Rspamd-Queue-Id: 89D9C2AF8F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,acm.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: 2690C2AF98A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit 4ce71cea574658f5c5c7412b1a3cc54efe4f9b50 upstream.
+commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
 
-The intr_underrun and intr_vsync indices have been swapped, just simply
-corrects them.
+After scsi_sysfs_device_initialize() was called, error paths must call
+__scsi_remove_device().
 
+Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
 Cc: stable@vger.kernel.org
-Fixes: b139c80d181c ("drm/msm/dpu: Add SA8775P support")
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/709209/
-Link: https://lore.kernel.org/r/20260305-mdss_catalog-v5-2-06678ac39ac7@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_4_sa8775p.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/scsi_scan.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_4_sa8775p.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_4_sa8775p.h
-@@ -366,8 +366,8 @@ static const struct dpu_intf_cfg sa8775p
- 		.type = INTF_NONE,
- 		.controller_id = MSM_DP_CONTROLLER_0,	/* pair with intf_0 for DP MST */
- 		.prog_fetch_lines_worst_case = 24,
--		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17),
--		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16),
-+		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16),
-+		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17),
- 	}, {
- 		.name = "intf_7", .id = INTF_7,
- 		.base = 0x3b000, .len = 0x280,
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -360,12 +360,8 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * default device queue depth to figure out sbitmap shift
+ 	 * since we use this queue depth most of times.
+ 	 */
+-	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
+-		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+-		put_device(&starget->dev);
+-		kfree(sdev);
+-		goto out;
+-	}
++	if (scsi_realloc_sdev_budget_map(sdev, depth))
++		goto out_device_destroy;
+ 
+ 	scsi_change_queue_depth(sdev, depth);
+ 
 
 
 
