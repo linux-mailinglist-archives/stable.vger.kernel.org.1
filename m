@@ -1,199 +1,237 @@
-Return-Path: <stable+bounces-226902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJeSEsi9uWnJMQIAu9opvQ
-	(envelope-from <stable+bounces-226902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:47:04 +0100
+	id 6Hj/MO2/uWnJMQIAu9opvQ
+	(envelope-from <stable+bounces-226904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:56:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9E82B261C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:47:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7C52B2748
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6EC92304B71E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:47:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD24130731AD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2021238A732;
-	Tue, 17 Mar 2026 20:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C719938C41A;
+	Tue, 17 Mar 2026 20:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gNoejq0Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPGf1l5B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6A5346AE8
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 20:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6217438C2A5
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 20:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773780421; cv=pass; b=ri0LizaZu3at0gZ6c5jKCEnpdc2GSQlSoXISNjHcJ5WxPIlMNStcyjiPHXH5mT3s8RJJpYqCSV8sY8zw3r811aBvyjk4J47gWeV26Q064OvgaQolXqb1+w5OIuTy992j5DbvZCtFJwEG7c98MLJTHBdWyNd0T/Dxjf1+IZQNbX0=
+	t=1773780969; cv=pass; b=nSC35KSQbdu2svHUqMrsLB4yV5nhCy1Jcx327STFMUnN8BY0Ryf57adfsWGALYYtFASs+7jSEB8oUAep7Z2MOVIWIuKi+DVZEo/GHJ2fUIj6V/SQq383JkO6lfN4P/5FPN19mX6pasvlztRlP2MYuj5KBpggwOko2vszB95aukE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773780421; c=relaxed/simple;
-	bh=1UqOfPikprRq6BleZK7camV+7IT1c8k2nbOkIlVFbsg=;
+	s=arc-20240116; t=1773780969; c=relaxed/simple;
+	bh=30L/GqxGwE4ij2te62giWC36PYHpNRvdg86xgyioZ2Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ATfZwJjGCRD9MAeN9kSQLRpcuNVlbJs15I589l3I6sMDP/yIlrfRGslvRojSBIeTd69R1BLdaH/KPFFwmc7GRLsHNQDr/RUSvKOefLxKhbHcbtEXUvF3kennrg6LfwsJqW7Sya/kZCXH7ZepTSS/FQWbIV+jdtDZKiof2b3S6RE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gNoejq0Z; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-509069a7a7fso163281cf.0
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:47:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773780420; cv=none;
+	 To:Cc:Content-Type; b=RokSUSN1hRQYvnJ1wvuRmHtBUBI7Ia9hsxYzv8CatrbigtuZ7hJ2r9L9xf4tQ6QOiCQDQJvnk46wAu0J13+J7X3BZW4aucmfFyZLgB3I6Xp4OmcOLVgRnKPKaHeVMbONsUlEUyKdRJ0HMTDhYdoHfXaKFX8KtoC3sz/OI75c9TE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPGf1l5B; arc=pass smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso55981675e9.2
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:56:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773780966; cv=none;
         d=google.com; s=arc-20240605;
-        b=fMl7NyLP6Ruzd3lt2ebuRZQNBArm5GRF0jDw7Fbxgp+RL911VB1zdixSXtYjnE/J8Z
-         SZ5vhTJPc/WtljiYTzgCOxTDfrY9eJulJmREAv0TUnWk82JYg0P+L/T2Dgs9xqHgklP6
-         eCVio1zLRtuPqJA+pajGmmoz8RExxbv6CFcF6K2n9PWdRN/P/fMxaJHw6+ym+Zzwpupo
-         4bV9coJTjWBdurtYFrt1HtCAebv3+SJ09hU13hazIEwBPBNcIuo8UkOLYy7XTCC87xrS
-         xSPbDeo28TU+s/PcAORh+mIbaPQBK5kuOmtzZx9ZOYrraBsl/jDDyYRbuBOXjy6Q90/X
-         t7eA==
+        b=AQlsSzQA5RnEEQKI4lppVt0urndM4oduKljpukYIXyGWkdqAyh0ZCkpLFcd+my1rs5
+         8eeVSAHY2TGNwX6nsflAwizbxs8ehn6DyYIGAOXYTfYi9VPrJ3JJxOoB/+zi+SBMApxX
+         daEQg6GDyB3iHsgtnTK0W1SnGNhLrE2ka5oMl5+TBXqCCNkZjsLdKsuBT81Lt+Wv+iZN
+         X2LyF3bRCvpBYvchrKOYrTQLEMd7pHt5Vt5JbOm7zjthTRiiHayLbLowXL5sHYoM/G7t
+         R3dqVwi2U9wmfgeVSsv1vjMxw0pBofZ5/pqR7l/xNx82DQjDkGFWAhm2/3L0d4Fii8eO
+         HBBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=U0g7Ha5KuBuAQFnpUh5T9xFIsqyLN9o7sep6G8COfJE=;
-        fh=CVatutRDrtbBj1Nql4DaLaFEVW29aX+y7PHp8gKg71M=;
-        b=Bz260uWs6LjTERzNz66cn+tZ4mIO9NZpmJLsbeuL9jlfPnLDvMUGti6MIQX+DL5kxN
-         e4dIx1WIZIxbIybkWRDPOSouPWthOgCs1W2S405To6hmGjKcEOTIZd7F6wy2dw+CLaka
-         NU7+Idl9FCwUoBE+GJHua3Yn5BLCPTFtKU5aDEz3d+6Z+gj+vImpBmRr1c89V74H3j6f
-         RRWkQ6ReTvZAwKKS1h8moXPDhLAwBLYHr+RatuKPR5XcwJffs5JKc+wyZKShPlFOJjNA
-         bQGFjWRzz6XA/1dOFZMJKnIu61tXsjR2rxxDRIG6EQvLftS5WTOFDck6RhVVlS3+I2Mm
-         UvZw==;
+        bh=sGcAEBR21UBhl/W8wjEjj1w1vEEv5juI/qX/znq8GGk=;
+        fh=B0A/OVeo55Air6jojfmjUPrGiDd5gnN7NdjJ67hukCM=;
+        b=K37Pbbqi3OOL20GfLkhASG2w9E5JI9w69s7V2bfM1YEf9zb3C5/AlXdlrZVMVrpiT/
+         9/ZUsHsYTL7s8vTAR4eNLT269t24dyuSxbKfsy4HVuQoLYmUXuiBNto3XjvMGZmGbYHt
+         xlkG0MiqrY3flLv4sdLr/gfdKcyOH3e/i2WTtpZYea70ThQ33xLCGrdbMRB0lSlYSUjK
+         dokxfpcq8ojEJYHvGfotL6mj8l7CZlajoaXZ3imzUi0SmyfRt5D/T1zHm2nHTXwwYv70
+         ipX4kQmEkbWbJmmVeSSTPvP5sB3itrema28UaeThBDVMCcycoWpgAogW7Q3ZAGYpKdta
+         o6jg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773780420; x=1774385220; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773780966; x=1774385766; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U0g7Ha5KuBuAQFnpUh5T9xFIsqyLN9o7sep6G8COfJE=;
-        b=gNoejq0Z+ZXNvAA5pW0oniBO5yuME5HQ4XIGsvFBArbL6ePhitEA13RlgvbVHhnius
-         7MHZlWHdtLf12aMb0ljZQrWB/qFRoHV2husE81T4bo0KgkKQ3wqL3yCoAcowpbfTaQ4N
-         X6l7i4bnrz5MPK6jvOKNbTkxt/kvAdCEMqTS53dHJT53XtUP3ddwHX/eCDHN0u6rRiV8
-         NEsLPevI2mYkTBz6ffT6IdAFpSat0CPqLogKNVOCD7WfLv+mg+DAcOsalGjeu2bspjIU
-         mDISn5QbIg3L1wWUqPqQzm1N9jvUttl/zxV9RvE1+UfJgnGL6/JItzovDUcvRMpx8Qol
-         RAYA==
+        bh=sGcAEBR21UBhl/W8wjEjj1w1vEEv5juI/qX/znq8GGk=;
+        b=mPGf1l5BbKVePuSU7ZV7Z4BsbjEa1tsNgZOJgmenpIIuwLMrq7xLu6lfR3D4TQrsTw
+         duJClHuFjDenoUKj4x/0jsyLYe63f8pIlUrEaObfO6PBTJ5jTF6GZStNLtpgSVHlT1KO
+         wFflu7i1OvYannsi/rceSNpcHX6K12Ms5CKRSV1GTsgR9Q8acd6VPPzC4eG3W9WV9y6X
+         oyJIhhmF/JhtaZQVx1Apa+rPEMEDi2b2gZu7KV5Ptbr5Ti15HIHGjZWGGit3HOTxXdRL
+         FZiMYA781eIRU58ip0rxue5nm7vhOWN9WVchhUIEShnVBBas9uyEd2iMReWSoKls6ghI
+         mEQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773780420; x=1774385220;
+        d=1e100.net; s=20251104; t=1773780966; x=1774385766;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=U0g7Ha5KuBuAQFnpUh5T9xFIsqyLN9o7sep6G8COfJE=;
-        b=BUZMCsPB/wwWvZwvUNqByHMKw+/SuxlBRugoBmwrdGFcWVliq4ZSjhz8SyhbPJ5YUZ
-         pQTQS739aRvX0gxfuPm6On1HzEy6ICpqSjwUBEt3uYpNlC3Xh7DFHl+rAXHeuH21uEwD
-         OP0FzBU8UhP8LIAV/Xy7KsPy9u3cJRCUceyAC0OUkhaJLu5RcZ4GZuoCmk7sWnUEHAvM
-         Min7QNZYqIcfVt5DHu19dKFnHg0tI59AuAH6P09OPQyUuzCs5JBwBHfeRtYnx3JnibKI
-         S95btqzqCaMLDdTunjSmfuNOyKPYY0AxvJoTdJXvWpFY8xJiqSFfBhhqlRs8/pECc9Iz
-         x2yg==
-X-Forwarded-Encrypted: i=1; AJvYcCVx/pgpYd+pqoyw1Df4KZ1c5k31Tc7+CPpmm0ntZpyVZXogx9e01+qz38sJniBTLHeYGwptHB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZTP19okFggUTpNDPpmDEjT265sESAd7q9O0B6OLOUVjoK3iuA
-	sFWZfNd3f/Ss8jWJVqAw8Hq603WMOzlHO4PTgCy2KHgIuYWVNNyghBYKY8oY5d1E+pwF9yvYS/2
-	weLi4lzCZJNTNjVhzygNtyBQQ701VnoTheP8lHNU3
-X-Gm-Gg: ATEYQzxEC40+hQzV/otxb30qsg5ttrv4TTg7u9uOWwBQC1NUnCcDTZyToZhau/22Cxs
-	7dNuKbsRWGn1VQf5okv7auJFARa6N1DP8aEHNRrxfxIIv84jnDWwzTnXLL7FVn7wE46WXgocLRz
-	VgC2gFI2RWds2EpOPxvGaBE7s9vHIgoT3u3WsI80oB1La6zkIhaUmoLUxlewaYIgYMsLwF8zEpt
-	li1z9CErTwUZIhaJ6vtOxVwYd0K6JEN+Iq1sOBB2enBBgILD/QpgE0WZ58QB0yy2mPpsivggQTL
-	pu36DQ==
-X-Received: by 2002:a05:622a:452:b0:509:25d8:9991 with SMTP id
- d75a77b69052e-50b148afba4mr3544991cf.16.1773780419110; Tue, 17 Mar 2026
- 13:46:59 -0700 (PDT)
+        bh=sGcAEBR21UBhl/W8wjEjj1w1vEEv5juI/qX/znq8GGk=;
+        b=pg73yIUzPZ6nTfpdB2b/4idR3m++MYts7pR5tKnOhbzh8DsVJArvYMtmNXepVOSKgz
+         pZVkglChwpmvYeDc0gHOlPkvJlm4Y3jpC1q3fLc2/TsjZ9edoroN4zUkTFO6KSNIejtR
+         W4DCrK4+cU/h2JMhiv8IrCsZq7HNXXy2c3eE/zjL66BXnXI/XL6LsmIDGoYEP7b4rrPG
+         KXggisjI3VRi+guvnBJm+g5pqRjpN68My0OJQU5WnqFuCQXaVQ8lfUPJvKMdhkyLjtx/
+         M/P1SKAnlvqUVVfOuxezLkcAYdSvf8xJ+Mp+ULe/PM7ASvuPNUhYCID/FOTQbGljtjpS
+         St9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWttrPDfI+9wEsSX8Ld47IWD1rA9fq6zM9KpULmsZr4KlYiFJNFXRQU2QmlibWKxjZSBjTatTI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAkpt6vj9qzxBzZmD/7WKzLVxmMTUgjcPaGEVAuSgobsf3a+n7
+	fw7vT9RcwzXh2WMNNJmPe+OjXsulIYdHz8edPJKPhyxt9xrjuOJAPBW4itEFaPakKnGJuD+XrUK
+	6V7ZI2UMQZ6hNWYojGiP4442SV9eYRBs=
+X-Gm-Gg: ATEYQzxqnmevfMs8M79i3Ra9wzYdvQJCmFZOddQPVYsXZlHD0NHUX3qQXtW8DOLu29p
+	IPISkPu2PZCEFmmj8T0dv4JA9eMz/H9K4BI0uf9bdAJc8yhRhyXZpluWsPLdqKG1U0VPQ6xSX4O
+	AgMkydojiGywZoSLHBXHMGnpEzeU7dsog6Xfo6EopNrROJ0cF3p5SwAO2VY8RTMnG04/0Doix5D
+	mQgz8ym7aKm5Cj9vqWWvB0YOUBAsZvWlaX+/AwR+zEiNJVDMnJAOC4PbNpHb28GZa+g5oxf7HUN
+	cA9I4Q==
+X-Received: by 2002:a05:600c:a08b:b0:485:39d1:b500 with SMTP id
+ 5b1f17b1804b1-486f445315dmr16500215e9.16.1773780965545; Tue, 17 Mar 2026
+ 13:56:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260309022205.28136-1-guanyulin@google.com> <20260309022205.28136-3-guanyulin@google.com>
- <2026031115-unboxed-spouse-1dcd@gregkh> <CAOuDEK3k6nyiHxhcL1kv=QNQaZMF6ms=sLerSZ5JBc5WBd7nAw@mail.gmail.com>
-In-Reply-To: <CAOuDEK3k6nyiHxhcL1kv=QNQaZMF6ms=sLerSZ5JBc5WBd7nAw@mail.gmail.com>
-From: Guan-Yu Lin <guanyulin@google.com>
-Date: Tue, 17 Mar 2026 16:45:00 -0400
-X-Gm-Features: AaiRm52oebfHWYMuJ454hQral2Qma88MIrRh798G5MT3B5G2QN7X35-2OnybgKY
-Message-ID: <CAOuDEK2pyt4nKWxXXwtzgRuP6u9kvi_Joe8Ec8qDDHVzSue1rg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ALSA: usb: qcom: manage offload device usage
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: mathias.nyman@intel.com, perex@perex.cz, tiwai@suse.com, 
-	quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
-	christophe.jaillet@wanadoo.fr, xiaopei01@kylinos.cn, 
-	wesley.cheng@oss.qualcomm.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20260317203935.830549-1-joannelkoong@gmail.com>
+In-Reply-To: <20260317203935.830549-1-joannelkoong@gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 17 Mar 2026 13:55:54 -0700
+X-Gm-Features: AaiRm53wUE27CrAaPdpinpr9TjQa0y7_Qnc3aVfdqtm8WwV7AAtfKLnauwMTyo4
+Message-ID: <CAJnrk1Y_LmQ0kZrKSGTWTXa-fQy550mwULqzUhSZWB8d9qqvUA@mail.gmail.com>
+Subject: Re: [PATCH v1] iomap: fix invalid folio access when i_blkbits differs
+ from I/O granularity
+To: brauner@kernel.org
+Cc: djwong@kernel.org, hch@infradead.org, willy@infradead.org, 
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>, stable@vger.kernel.org, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226902-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226904-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,perex.cz,suse.com,quicinc.com,kernel.org,arndb.de,wanadoo.fr,kylinos.cn,oss.qualcomm.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0B9E82B261C
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3F7C52B2748
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On Wed, Mar 11, 2026 at 5:31=E2=80=AFAM Greg KH <gregkh@linuxfoundation.o=
-rg> wrote:
-> >
-> > You have multiple levels of locks here, which is always a sign that
-> > something has gone really wrong.  This looks even more fragile and easy
-> > to get wrong than before.  Are you _SURE_ this is the only way to solve
-> > this?  The whole usb_offload_get() api seems more wrong to me than
-> > before (and I didn't like it even then...)
-> >
-> > In other words, this patch set feels rough, and adds more complexity
-> > overall, requiring a reviewer to "know" where locks are held and not
-> > held while before they did not.  That's a lot to push onto us for
-> > something that feels like is due to a broken hardware design?
-> >
-> > thanks,
-> >
-> > greg k-h
+On Tue, Mar 17, 2026 at 1:47=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
+m> wrote:
+>
+> Commit aa35dd5cbc06 ("iomap: fix invalid folio access after
+> folio_end_read()") partially addressed invalid folio access for folios
+> without an ifs attached, but it did not handle the case where
+> 1 << inode->i_blkbits matches the folio size but is different from the
+> granularity used for the IO, which means IO can be submitted for less
+> than the full folio for the !ifs case.
+>
+> In this case, the condition:
+>
+>   if (*bytes_submitted =3D=3D folio_len)
+>     ctx->cur_folio =3D NULL;
+>
+> in iomap_read_folio_iter() will not invalidate ctx->cur_folio, and
+> iomap_read_end() will still be called on the folio even though the IO
+> helper owns it and will finish the read on it.
+>
+> Fix this by unconditionally invalidating ctx->cur_folio for the !ifs
+> case.
+>
+> Reported-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+> Tested-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+> Link: https://lore.kernel.org/linux-fsdevel/b3dfe271-4e3d-4922-b618-e7373=
+1242bca@wdc.com/
+> Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and r=
+eadahead")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>  fs/iomap/buffered-io.c | 15 ++++++++++-----
+>  1 file changed, 10 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> index 3cf93ab2e38a..e4b6886e5c3c 100644
+> --- a/fs/iomap/buffered-io.c
+> +++ b/fs/iomap/buffered-io.c
+> @@ -514,6 +514,7 @@ static int iomap_read_folio_iter(struct iomap_iter *i=
+ter,
+>         loff_t length =3D iomap_length(iter);
+>         struct folio *folio =3D ctx->cur_folio;
+>         size_t folio_len =3D folio_size(folio);
+> +       struct iomap_folio_state *ifs;
+>         size_t poff, plen;
+>         loff_t pos_diff;
+>         int ret;
+> @@ -525,7 +526,7 @@ static int iomap_read_folio_iter(struct iomap_iter *i=
+ter,
+>                 return iomap_iter_advance(iter, length);
+>         }
+>
+> -       ifs_alloc(iter->inode, folio, iter->flags);
+> +       ifs =3D ifs_alloc(iter->inode, folio, iter->flags);
+>
+>         length =3D min_t(loff_t, length, folio_len - offset_in_folio(foli=
+o, pos));
+>         while (length) {
+> @@ -560,11 +561,15 @@ static int iomap_read_folio_iter(struct iomap_iter =
+*iter,
+>
+>                         *bytes_submitted +=3D plen;
+>                         /*
+> -                        * If the entire folio has been read in by the IO
+> -                        * helper, then the helper owns the folio and wil=
+l end
+> -                        * the read on it.
+> +                        * Hand off folio ownership to the IO helper when=
+:
+> +                        * 1) The entire folio has been submitted for IO,=
+ or
+> +                        * 2) There is no ifs attached to the folio
+> +                        *
+> +                        * Case (2) occurs when 1 << i_blkbits matches th=
+e folio
+> +                        * size but the underlying filesystem or block de=
+vice
+> +                        * uses a smaller granularity for IO.
+>                          */
+> -                       if (*bytes_submitted =3D=3D folio_len)
+> +                       if (*bytes_submitted =3D=3D folio_len || !ifs)
+>                                 ctx->cur_folio =3D NULL;
+>                 }
+>
+> --
+> 2.52.0
 >
 
-Hi Greg,
-
-Thank you for the feedback. I understand the concern regarding locking
-complexity and the reviewer burden. The usb_offload_get/put functions
-track sideband activity that runtime PM cannot reflect. This is
-necessary to prevent the USB stack from suspending the device while a
-sideband stream is active. Ensuring atomicity requires orchestrating
-three asynchronous subsystems: System PM, Runtime PM, and USB Core.
-
-To address the concerns effectively in the next iteration, I would
-appreciate clarification on your primary concern:
-1. Preference for fine-grained locking:
-Using USB device lock ensures atomicity across these subsystems, which
-is inherently a device-wide requirement. A fine-grained approach risks
-races during concurrent software events, such as a reset occurring
-during a runtime suspend transition.
-2. Preference for improved transparency:
-If the coarse lock is acceptable but the implementation is too opaque,
-I will refactor the next version to be more explicit. I plan to
-include device_lock_assert() calls, __must_hold() macros, and add a
-"Locking Hierarchy" comment block documenting the vendor-mutex and
-USB-core lock interactions.
-
-To clarify the "broken hardware" point: this isn't a hardware bug.
-These races are triggered by standard software events, such as a reset
-occurring while a sideband stream is active. Please let me know which
-direction you think is more appropriate for the kernel, and I will
-refactor the next version accordingly.
-
-Regards,
-Guan-Yu
+Forgot to add 'linux-fsdevel@vger.kernel.org' to the cc list, adding that n=
+ow
 
