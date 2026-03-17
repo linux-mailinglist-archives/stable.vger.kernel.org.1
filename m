@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-226563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BuHHp6KuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:46 +0100
+	id KNW3Ip+KuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29CF2AF078
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221ED2AF07F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5CB30304A904
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76AE3304AAC0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2E63F54C2;
-	Tue, 17 Mar 2026 17:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFCA3F65FB;
+	Tue, 17 Mar 2026 17:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEYYTU6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOafZNVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C83E8C49;
-	Tue, 17 Mar 2026 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843273F54D1;
+	Tue, 17 Mar 2026 17:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767243; cv=none; b=Woc1B6sfLrwFlczDXKc5BKLLEWsZ48taCGKzJXE1sR8YHO6eH8AlyFk05rw6fD9XzrqHTxcu6tkyLZU+BQY4lBf3ef8U4SLvuawz/OqxMF/88We9oRcsDHDYyjTxQfEk5mIYp9fqXe6GSzPqrMZ4va6zyr/WqUAxFzQJq8uTeic=
+	t=1773767248; cv=none; b=Jl2uKq/QNntqWtPDeX6i733CHyuf74nZPFfJjklkK3kzCJythXOuxjp477uSHO0EFT7wzPw8+RzRzKR8oM5mKmRz00aAByVO7dvt+ls16+py7idfzTBKVX4t+UvOHFW25rtb4K2Nzo5iRjwOJAzSt07feP3aHXL91RQm/msp1vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767243; c=relaxed/simple;
-	bh=bPR/DQl0BJCScCrLah9+5RjxQlTmDIjd51TP1a4WCac=;
+	s=arc-20240116; t=1773767248; c=relaxed/simple;
+	bh=vnJQMFqME26BWeZ3i1cYiIixKTfpOqE4Mk0JJGouG2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC5W8sbB1F+VEj3tkehicMAj5M6T7vVp+RHMqgi/BgTCs+h7+WoHZ9VqMzcVP8mkf688J8ZQ1eMvOI5WBNBoH1GCmrOzRBohtWNNoKNFlAxkHnX0/UsStAmTyrf/pLzD11NNnlBQreG4+/Bs2qkuOEsaUuwT1Sj/R9++qPsHGAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEYYTU6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F47C4CEF7;
-	Tue, 17 Mar 2026 17:07:22 +0000 (UTC)
+	 MIME-Version; b=M3lHJL7qUR1HD3m+aVFyXoZbTV5sEpytk7v5m8oOjnmtTMCB4uCj3O/tj/UbnFkBeO+cUAmF8CF9DpGhy8bY2tHpSA6VCDHNtk4TNrxpiBJPHX3D0FlOadsOfyqCEDFZ5ZYLpacpPvK3Mir3uIn62JTZDDT02NWgorw/m5NImCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOafZNVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A15AC4CEF7;
+	Tue, 17 Mar 2026 17:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767243;
-	bh=bPR/DQl0BJCScCrLah9+5RjxQlTmDIjd51TP1a4WCac=;
+	s=korg; t=1773767248;
+	bh=vnJQMFqME26BWeZ3i1cYiIixKTfpOqE4Mk0JJGouG2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEYYTU6qloQEkXwB8R2s7NaZMlZlNwcf7FwVMXZeedHFzJ9oplSA/GMoxZkC2y9ob
-	 hXJ2+/94A3o2vBPTmLcqXuiD9DiE+U1Vmp81IY16sniEvj35CAV8YqDb59SoIBt5QU
-	 EZpZffLKXM8N823KsSOy3wLSYbUosWGSYzW0uWFY=
+	b=tOafZNVRrlrXW/yErfSxMa7SWIk3a2Fi6XcaWesBpKpXONT5W0VX9CbE7KcfFMK6Z
+	 Us+dQwvGmmzVPBpWXX8Y1aDmffUnIUVI7mHogCHXd5oF9eyKtKPkxyNw5crZlUR1/z
+	 gY5r3rQEhpwnoyYMhocL/cO1wgsqNe5Qfz1FGv4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 046/333] rxrpc, afs: Fix missing error pointer check after rxrpc_kernel_lookup_peer()
-Date: Tue, 17 Mar 2026 17:31:15 +0100
-Message-ID: <20260317163001.073712937@linuxfoundation.org>
+Subject: [PATCH 6.18 047/333] net: spacemit: Fix error handling in emac_alloc_rx_desc_buffers()
+Date: Tue, 17 Mar 2026 17:31:16 +0100
+Message-ID: <20260317163001.110962977@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -72,31 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-226563-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-226564-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,auristor.com:email]
-X-Rspamd-Queue-Id: F29CF2AF078
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 221ED2AF07F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,92 +99,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit 4245a79003adf30e67f8e9060915bd05cb31d142 ]
+[ Upstream commit 3aa1417803c1833cbd5bacb7e6a6489a196f2519 ]
 
-rxrpc_kernel_lookup_peer() can also return error pointers in addition to
-NULL, so just checking for NULL is not sufficient.
+Even if we get a dma_mapping_error() while mapping an RX buffer, we
+should still update rx_ring->head to ensure that the buffers we were
+able to allocate and map are used. Fix this by breaking out to the
+existing code after the loop, analogous to the existing handling for skb
+allocation failure.
 
-Fix this by:
-
- (1) Changing rxrpc_kernel_lookup_peer() to return -ENOMEM rather than NULL
-     on allocation failure.
-
- (2) Making the callers in afs use IS_ERR() and PTR_ERR() to pass on the
-     error code returned.
-
-Fixes: 72904d7b9bfb ("rxrpc, afs: Allow afs to pin rxrpc_peer objects")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Co-developed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/368272.1772713861@warthog.procyon.org.uk
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://patch.msgid.link/20260305-k1-ethernet-more-fixes-v2-1-e4e434d65055@iscas.ac.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/addr_list.c   | 8 ++++----
- net/rxrpc/af_rxrpc.c | 8 +++++---
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/spacemit/k1_emac.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/fs/afs/addr_list.c b/fs/afs/addr_list.c
-index e941da5b6dd92..b1704de3d95f5 100644
---- a/fs/afs/addr_list.c
-+++ b/fs/afs/addr_list.c
-@@ -298,8 +298,8 @@ int afs_merge_fs_addr4(struct afs_net *net, struct afs_addr_list *alist,
- 	srx.transport.sin.sin_addr.s_addr = xdr;
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index b49c4708bf9eb..5de69a105168a 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -582,7 +582,9 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
+ 						  DMA_FROM_DEVICE);
+ 		if (dma_mapping_error(&priv->pdev->dev, rx_buf->dma_addr)) {
+ 			dev_err_ratelimited(&ndev->dev, "Mapping skb failed\n");
+-			goto err_free_skb;
++			dev_kfree_skb_any(skb);
++			rx_buf->skb = NULL;
++			break;
+ 		}
  
- 	peer = rxrpc_kernel_lookup_peer(net->socket, &srx, GFP_KERNEL);
--	if (!peer)
--		return -ENOMEM;
-+	if (IS_ERR(peer))
-+		return PTR_ERR(peer);
+ 		rx_desc_addr = &((struct emac_desc *)rx_ring->desc_addr)[i];
+@@ -607,10 +609,6 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
  
- 	for (i = 0; i < alist->nr_ipv4; i++) {
- 		if (peer == alist->addrs[i].peer) {
-@@ -342,8 +342,8 @@ int afs_merge_fs_addr6(struct afs_net *net, struct afs_addr_list *alist,
- 	memcpy(&srx.transport.sin6.sin6_addr, xdr, 16);
- 
- 	peer = rxrpc_kernel_lookup_peer(net->socket, &srx, GFP_KERNEL);
--	if (!peer)
--		return -ENOMEM;
-+	if (IS_ERR(peer))
-+		return PTR_ERR(peer);
- 
- 	for (i = alist->nr_ipv4; i < alist->nr_addrs; i++) {
- 		if (peer == alist->addrs[i].peer) {
-diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
-index 36df0274d7b74..d369e37525388 100644
---- a/net/rxrpc/af_rxrpc.c
-+++ b/net/rxrpc/af_rxrpc.c
-@@ -267,12 +267,13 @@ static int rxrpc_listen(struct socket *sock, int backlog)
-  * Lookup or create a remote transport endpoint record for the specified
-  * address.
-  *
-- * Return: The peer record found with a reference, %NULL if no record is found
-- * or a negative error code if the address is invalid or unsupported.
-+ * Return: The peer record found with a reference or a negative error code if
-+ * the address is invalid or unsupported.
-  */
- struct rxrpc_peer *rxrpc_kernel_lookup_peer(struct socket *sock,
- 					    struct sockaddr_rxrpc *srx, gfp_t gfp)
- {
-+	struct rxrpc_peer *peer;
- 	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
- 	int ret;
- 
-@@ -280,7 +281,8 @@ struct rxrpc_peer *rxrpc_kernel_lookup_peer(struct socket *sock,
- 	if (ret < 0)
- 		return ERR_PTR(ret);
- 
--	return rxrpc_lookup_peer(rx->local, srx, gfp);
-+	peer = rxrpc_lookup_peer(rx->local, srx, gfp);
-+	return peer ?: ERR_PTR(-ENOMEM);
+ 	rx_ring->head = i;
+ 	return;
+-
+-err_free_skb:
+-	dev_kfree_skb_any(skb);
+-	rx_buf->skb = NULL;
  }
- EXPORT_SYMBOL(rxrpc_kernel_lookup_peer);
  
+ /* Returns number of packets received */
 -- 
 2.51.0
 
