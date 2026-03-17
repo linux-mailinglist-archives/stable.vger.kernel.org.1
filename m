@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KAZAhiNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:20 +0100
+	id SAg+AxeJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7B62AF517
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CD62AED2A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A2D9304296C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB42430500CD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A142FD69D;
-	Tue, 17 Mar 2026 17:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476FF3F54C2;
+	Tue, 17 Mar 2026 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEtVkqWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfUCtQ8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A872303A32;
-	Tue, 17 Mar 2026 17:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F803EAC6F;
+	Tue, 17 Mar 2026 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767890; cv=none; b=b1Ob1ki7Zntii/AxfTdt6YIiRvRKplV1x6PolXQani/8mJoLCVxMrippeQNIF08o6JbSTqj45CUUPefgAxz4cnTDWKr7m1eAJd/3Ml+5zIuL2mqJoEWtroxgtyy8lF+b6fE0dKU/fLBcRsvn3rxrrnSZ7Mfxy3v9NcE3adF12NE=
+	t=1773766435; cv=none; b=Xhs2r1nuj7/cgAL0FeGxMKc2jZOWa19PvmZ9gA4AnAsa0IBU2vkQIf/mVHgQQhx9Vkpf6BExy7KzQ3uuZJcHmVsKGzZZyHrz4EcKVLrQqMx3mMIda1CP7FcJmen78k+mhUbp6IVBmn5z6aFOCnq9too3lvB98uU6E8ngOXNvsck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767890; c=relaxed/simple;
-	bh=ATfZ/1XNfiZmCghPtRJ0eksf3sEGAx7sIlkv6S/RljU=;
+	s=arc-20240116; t=1773766435; c=relaxed/simple;
+	bh=lgZ6BtE4Zkx7yrMPJEfYnuaMH82MfBhsipDte/7J42Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBOsKRSu5s1kF/V8+msjJBFoy4IylxH3LJb0jWZftWhtjPC9c6pdmn2buMPsj4fw2/TLgGRxqPPQx+1s4lr8X2iMKFEM1VavVZq36fwZQPSjE7ooOzUzrP278lJgbCF2THFkAQ0fbUJbta4oCrBB6aIsAGqcNGaxgKWgKSnBKDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEtVkqWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C14C4CEF7;
-	Tue, 17 Mar 2026 17:18:09 +0000 (UTC)
+	 MIME-Version; b=OqZaMiPH9QsnVfSXFy5SzLKQjWUWgWMQMeeSS102mIUZ6bpS2Rd/GeB0n8IIDMnbTQ/BcBGe3Y/RoCf3C9UFzciy9sBsd+2JfogkWDr+P9id9Yu8h5Mt47g0d1kikk+ZUvTmu0ZETIosDx2r6GP3lU77mw2AhKRhb6HiS86PwDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfUCtQ8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A2EC19424;
+	Tue, 17 Mar 2026 16:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767890;
-	bh=ATfZ/1XNfiZmCghPtRJ0eksf3sEGAx7sIlkv6S/RljU=;
+	s=korg; t=1773766434;
+	bh=lgZ6BtE4Zkx7yrMPJEfYnuaMH82MfBhsipDte/7J42Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEtVkqWgrsnIaMlSJPJSwFCHIn8d7w5tsKfs60GgAeUUbzSkjPulrPRmuNuzp3MFy
-	 MZC2UsRiAw+y+zTUrYVwSTHfqTNIGN4YSyYh4AZjzmTNa8Izt+K/8M3rhHBDvZ7p07
-	 4qT/qWjj/wNr4NLyT6rtfW6We1RiW5oFxqBBFyEE=
+	b=nfUCtQ8FYglS101z1gBk05XI6f5HcDY/XI1SeT+xiWRPPhoZ0nlSpwBuLYfD0yF9W
+	 XdT25zqoKfXq6KWowNY1C7goPx5SsqaQWJnrSjOVO6wFtTrHAy6tf3QKg71bRmLy5s
+	 N0NZnJl2VeFzu+NzRT34rVTxkFTLCutzziK04sj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/333] time/jiffies: Mark jiffies_64_to_clock_t() notrace
+	David Gow <david@davidgow.net>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.19 246/378] kunit: irq: Ensure timer doesnt fire too frequently
 Date: Tue, 17 Mar 2026 17:33:23 +0100
-Message-ID: <20260317163005.809942590@linuxfoundation.org>
+Message-ID: <20260317163016.072809363@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226704-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226378-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,52 +86,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goodmis.org:email]
-X-Rspamd-Queue-Id: 6C7B62AF517
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,davidgow.net:email]
+X-Rspamd-Queue-Id: 40CD62AED2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 755a648e78f12574482d4698d877375793867fa1 ]
+commit 201ceb94aa1def0024a7c18ce643e5f65026be06 upstream.
 
-The trace_clock_jiffies() function that handles the "uptime" clock for
-tracing calls jiffies_64_to_clock_t(). This causes the function tracer to
-constantly recurse when the tracing clock is set to "uptime". Mark it
-notrace to prevent unnecessary recursion when using the "uptime" clock.
+Fix a bug where kunit_run_irq_test() could hang if the system is too
+slow.  This was noticed with the crypto library tests in certain VMs.
 
-Fixes: 58d4e21e50ff3 ("tracing: Fix wraparound problems in "uptime" trace clock")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260306212403.72270bb2@robin
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Specifically, if kunit_irq_test_timer_func() and the associated hrtimer
+code took over 5us to run, then the CPU would spend all its time
+executing that code in hardirq context.  As a result, the task executing
+kunit_run_irq_test() never had a chance to run, exit the loop, and
+cancel the timer.
+
+To fix it, make kunit_irq_test_timer_func() increase the timer interval
+when the other contexts aren't having a chance to run.
+
+Fixes: 950a81224e8b ("lib/crypto: tests: Add hash-test-template.h and gen-hash-testvecs.py")
+Cc: stable@vger.kernel.org
+Reviewed-by: David Gow <david@davidgow.net>
+Link: https://lore.kernel.org/r/20260224033751.97615-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/kunit/run-in-irq-context.h |   44 +++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 0ba8e3c50d625..155cf7def9146 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -702,7 +702,7 @@ EXPORT_SYMBOL(clock_t_to_jiffies);
-  *
-  * Return: jiffies_64 value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
-  */
--u64 jiffies_64_to_clock_t(u64 x)
-+notrace u64 jiffies_64_to_clock_t(u64 x)
+--- a/include/kunit/run-in-irq-context.h
++++ b/include/kunit/run-in-irq-context.h
+@@ -12,16 +12,16 @@
+ #include <linux/hrtimer.h>
+ #include <linux/workqueue.h>
+ 
+-#define KUNIT_IRQ_TEST_HRTIMER_INTERVAL us_to_ktime(5)
+-
+ struct kunit_irq_test_state {
+ 	bool (*func)(void *test_specific_state);
+ 	void *test_specific_state;
+ 	bool task_func_reported_failure;
+ 	bool hardirq_func_reported_failure;
+ 	bool softirq_func_reported_failure;
++	atomic_t task_func_calls;
+ 	atomic_t hardirq_func_calls;
+ 	atomic_t softirq_func_calls;
++	ktime_t interval;
+ 	struct hrtimer timer;
+ 	struct work_struct bh_work;
+ };
+@@ -30,14 +30,25 @@ static enum hrtimer_restart kunit_irq_te
  {
- #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
- # if HZ < USER_HZ
--- 
-2.51.0
-
+ 	struct kunit_irq_test_state *state =
+ 		container_of(timer, typeof(*state), timer);
++	int task_calls, hardirq_calls, softirq_calls;
+ 
+ 	WARN_ON_ONCE(!in_hardirq());
+-	atomic_inc(&state->hardirq_func_calls);
++	task_calls = atomic_read(&state->task_func_calls);
++	hardirq_calls = atomic_inc_return(&state->hardirq_func_calls);
++	softirq_calls = atomic_read(&state->softirq_func_calls);
++
++	/*
++	 * If the timer is firing too often for the softirq or task to ever have
++	 * a chance to run, increase the timer interval.  This is needed on very
++	 * slow systems.
++	 */
++	if (hardirq_calls >= 20 && (softirq_calls == 0 || task_calls == 0))
++		state->interval = ktime_add_ns(state->interval, 250);
+ 
+ 	if (!state->func(state->test_specific_state))
+ 		state->hardirq_func_reported_failure = true;
+ 
+-	hrtimer_forward_now(&state->timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL);
++	hrtimer_forward_now(&state->timer, state->interval);
+ 	queue_work(system_bh_wq, &state->bh_work);
+ 	return HRTIMER_RESTART;
+ }
+@@ -86,10 +97,14 @@ static inline void kunit_run_irq_test(st
+ 	struct kunit_irq_test_state state = {
+ 		.func = func,
+ 		.test_specific_state = test_specific_state,
++		/*
++		 * Start with a 5us timer interval.  If the system can't keep
++		 * up, kunit_irq_test_timer_func() will increase it.
++		 */
++		.interval = us_to_ktime(5),
+ 	};
+ 	unsigned long end_jiffies;
+-	int hardirq_calls, softirq_calls;
+-	bool allctx = false;
++	int task_calls, hardirq_calls, softirq_calls;
+ 
+ 	/*
+ 	 * Set up a hrtimer (the way we access hardirq context) and a work
+@@ -104,21 +119,18 @@ static inline void kunit_run_irq_test(st
+ 	 * and hardirq), or 1 second, whichever comes first.
+ 	 */
+ 	end_jiffies = jiffies + HZ;
+-	hrtimer_start(&state.timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL,
+-		      HRTIMER_MODE_REL_HARD);
+-	for (int task_calls = 0, calls = 0;
+-	     ((calls < max_iterations) || !allctx) &&
+-	     !time_after(jiffies, end_jiffies);
+-	     task_calls++) {
++	hrtimer_start(&state.timer, state.interval, HRTIMER_MODE_REL_HARD);
++	do {
+ 		if (!func(test_specific_state))
+ 			state.task_func_reported_failure = true;
+ 
++		task_calls = atomic_inc_return(&state.task_func_calls);
+ 		hardirq_calls = atomic_read(&state.hardirq_func_calls);
+ 		softirq_calls = atomic_read(&state.softirq_func_calls);
+-		calls = task_calls + hardirq_calls + softirq_calls;
+-		allctx = (task_calls > 0) && (hardirq_calls > 0) &&
+-			 (softirq_calls > 0);
+-	}
++	} while ((task_calls + hardirq_calls + softirq_calls < max_iterations ||
++		  (task_calls == 0 || hardirq_calls == 0 ||
++		   softirq_calls == 0)) &&
++		 !time_after(jiffies, end_jiffies));
+ 
+ 	/* Cancel the timer and work. */
+ 	hrtimer_cancel(&state.timer);
 
 
 
