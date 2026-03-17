@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-226756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AF8/IMaUuWk2KwIAu9opvQ
-	(envelope-from <stable+bounces-226756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:06 +0100
+	id eMxXDuWIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40602B0446
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D812AECCC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71A8832B2265
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1993C30452E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89A42EF67A;
-	Tue, 17 Mar 2026 17:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1383F6607;
+	Tue, 17 Mar 2026 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXTA4kUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WleeeYFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8D71AA7A6;
-	Tue, 17 Mar 2026 17:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17413F7A83;
+	Tue, 17 Mar 2026 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768071; cv=none; b=KHoxRLigW+vqkffabmFL9gtG4EsU6RvO5W/4eAKPUGBPzKodaQli7hC2AiNNFtWgXtV/N++BqIwPiLnZBwxzuJSWENbJwMZqeNIsXoJ98OllvSsNeBJ/UQb4fNcPMc/r3PuXkdk+s4UFisucBG7HKamL+HbsC7f7Kxs01nBZK4I=
+	t=1773766678; cv=none; b=q7gV3dAnOKpCDLpCdVrhGxU7kgvSEwUb7lTXbInGuFtkvaw0NaP1ZJEpuKRQ0Te3ZKTc4I/LrwB0hNS+qtlU7ldGuu2RPkB4qCc5cZXyA7I1Fh28rhwJ/EeZpbtJjJFxGKbWQDbdfGWAhk7GAuxoaXY5EKb7xVVbR88t459A4nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768071; c=relaxed/simple;
-	bh=R0oY3W65lb2I8UGcVAzGv1a64xbpOUgeaYIzFkzej5k=;
+	s=arc-20240116; t=1773766678; c=relaxed/simple;
+	bh=dI2kkIMT6JvmyUAaM/J6tdjVDQud9ot/rTkDDhR2Hrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNsHdMSz73fQVcF0FL3PGhsi99CF7ccVEn2dFOyO/19TineWlkXOSDSVovTilDUtmqKac+DsI3uWinFZNI1zphY7vl6yMz5XAIlEwfv80IfIrU89zBCAXih/5rSNRchUTZOgyJ7Mc9BElWxQg1mTfWcous2bbDFcStsH9XG0AZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXTA4kUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B56C4CEF7;
-	Tue, 17 Mar 2026 17:21:10 +0000 (UTC)
+	 MIME-Version; b=q5g8VegOXBsi5hZReYrv9sMpveih8y5gNFVjBr0cNmpgurvf103ooE2aQX+pMau8/tJcv871rblaBvITNOPzuc4+6yu+xfJisKUl4jSWFwOKsqOafSDRFgmo5BjPnqv2Jo5Oqpd+TfvSAycmX+BOzj3MIzxF8COfKH0hV2looYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WleeeYFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C07C19424;
+	Tue, 17 Mar 2026 16:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768071;
-	bh=R0oY3W65lb2I8UGcVAzGv1a64xbpOUgeaYIzFkzej5k=;
+	s=korg; t=1773766678;
+	bh=dI2kkIMT6JvmyUAaM/J6tdjVDQud9ot/rTkDDhR2Hrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXTA4kUPTInHpyE/rRd0W54BZ74u9l2++CaqxrURHhsA9lRC0SqTcXhVheUlhcOLl
-	 uwrKaFFOMU7/sVZKW+iuwm0IUjboebPBbgISXtMcaXLSBP1KCYEZWTNO3teDMAmdLw
-	 Zib+V/aCTry6ZRNFudsYBhKg2cgk07K3dPCy/DQw=
+	b=WleeeYFyoRvVnizlGyNzjzBCfySt8S2J+eKVzOmMr2aBeVwQZixvo0Hn5UVX5po3K
+	 TJkjnQJftmoClN+xohKiaq21H6BTvxqDV/HQwB0Ccvl1jgEhitMIyGtNVHFT9Gp6up
+	 H8SGY8AVEGGIp8M6myrM5hq9zaUZR2ZgkAY9e2XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Will Deacon <will@kernel.org>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 225/333] arm64: mm: Add PTE_DIRTY back to PAGE_KERNEL* to fix kexec/hibernation
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 297/378] net: ethernet: arc: emac: quiesce interrupts before requesting IRQ
 Date: Tue, 17 Mar 2026 17:34:14 +0100
-Message-ID: <20260317163007.708170404@linuxfoundation.org>
+Message-ID: <20260317163017.934633670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +67,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226756-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226431-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,windriver.com:email]
-X-Rspamd-Queue-Id: F40602B0446
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 27D812AECCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit c25c4aa3f79a488cc270507935a29c07dc6bddfc upstream.
+commit 2503d08f8a2de618e5c3a8183b250ff4a2e2d52c upstream.
 
-Commit 143937ca51cc ("arm64, mm: avoid always making PTE dirty in
-pte_mkwrite()") changed pte_mkwrite_novma() to only clear PTE_RDONLY
-when PTE_DIRTY is set. This was to allow writable-clean PTEs for swap
-pages that haven't actually been written.
+Normal RX/TX interrupts are enabled later, in arc_emac_open(), so probe
+should not see interrupt delivery in the usual case. However, hardware may
+still present stale or latched interrupt status left by firmware or the
+bootloader.
 
-However, this broke kexec and hibernation for some platforms. Both go
-through trans_pgd_create_copy() -> _copy_pte(), which calls
-pte_mkwrite_novma() to make the temporary linear-map copy fully
-writable. With the updated pte_mkwrite_novma(), read-only kernel pages
-(without PTE_DIRTY) remain read-only in the temporary mapping.
-While such behaviour is fine for user pages where hardware DBM or
-trapping will make them writeable, subsequent in-kernel writes by the
-kexec relocation code will fault.
+If probe later unwinds after devm_request_irq() has installed the handler,
+such a stale interrupt can still reach arc_emac_intr() during teardown and
+race with release of the associated net_device.
 
-Add PTE_DIRTY back to all _PAGE_KERNEL* protection definitions. This was
-the case prior to 5.4, commit aa57157be69f ("arm64: Ensure
-VM_WRITE|VM_SHARED ptes are clean by default"). With the kernel
-linear-map PTEs always having PTE_DIRTY set, pte_mkwrite_novma()
-correctly clears PTE_RDONLY.
+Avoid that window by putting the device into a known quiescent state before
+requesting the IRQ: disable all EMAC interrupt sources and clear any
+pending EMAC interrupt status bits. This keeps the change hardware-focused
+and minimal, while preventing spurious IRQ delivery from leftover state.
 
-Fixes: 143937ca51cc ("arm64, mm: avoid always making PTE dirty in pte_mkwrite()")
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: e4f2379db6c6 ("ethernet/arc/arc_emac - Add new driver")
 Cc: stable@vger.kernel.org
-Reported-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Link: https://lore.kernel.org/r/20251204062722.3367201-1-jianpeng.chang.cn@windriver.com
-Cc: Will Deacon <will@kernel.org>
-Cc: Huang, Ying <ying.huang@linux.alibaba.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260309132409.584966-1-fanwu01@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable-prot.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/arc/emac_main.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -50,11 +50,11 @@
+--- a/drivers/net/ethernet/arc/emac_main.c
++++ b/drivers/net/ethernet/arc/emac_main.c
+@@ -934,6 +934,17 @@ int arc_emac_probe(struct net_device *nd
+ 	/* Set poll rate so that it polls every 1 ms */
+ 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
  
- #define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
++	/*
++	 * Put the device into a known quiescent state before requesting
++	 * the IRQ. Clear only EMAC interrupt status bits here; leave the
++	 * MDIO completion bit alone and avoid writing TXPL_MASK, which is
++	 * used to force TX polling rather than acknowledge interrupts.
++	 */
++	arc_reg_set(priv, R_ENABLE, 0);
++	arc_reg_set(priv, R_STATUS, RXINT_MASK | TXINT_MASK | ERR_MASK |
++		    TXCH_MASK | MSER_MASK | RXCR_MASK |
++		    RXFR_MASK | RXFL_MASK);
++
+ 	ndev->irq = irq;
+ 	dev_info(dev, "IRQ is %d\n", ndev->irq);
  
--#define _PAGE_KERNEL		(PROT_NORMAL)
--#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
--#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
--#define _PAGE_KERNEL_EXEC	(PROT_NORMAL & ~PTE_PXN)
--#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
-+#define _PAGE_KERNEL		(PROT_NORMAL | PTE_DIRTY)
-+#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC	((PROT_NORMAL & ~PTE_PXN) | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT | PTE_DIRTY)
- 
- #define _PAGE_SHARED		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
- #define _PAGE_SHARED_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
 
 
 
