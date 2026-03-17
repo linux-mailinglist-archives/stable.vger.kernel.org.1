@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DkONvCNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:56 +0100
+	id yHHNJeCOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B682AF745
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E816B2AF90C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE662309E79B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5184A3123DC6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA65E334C08;
-	Tue, 17 Mar 2026 17:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B5C3F99CA;
+	Tue, 17 Mar 2026 16:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAV7QwAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioPjJEeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C92B3246F8;
-	Tue, 17 Mar 2026 17:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F23F54CD;
+	Tue, 17 Mar 2026 16:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767970; cv=none; b=E62ZS/omLAmQkmmIQzlSSKe7/K1EVaoilnIYLX2oOrTR/BRLuV0DLfY0+y9jjdX3FsGQ+17+46ltxHxV/r410ppYXjn55qCB6MiVSLq20L6vVWSR6LK+UGkOtYWfWx44J2dSp0BpISdT7XAN2G3CkOxbQpA9tKbsNh2B8IjZQas=
+	t=1773766718; cv=none; b=Pm1RqLSX2+7Mo3bhT7667oQ2cLaS7a3uGaj8s0LGjTyCclqqfyfWyDDhA6sdnZpBA8/IKbdzDaLz9sgUpTA3fgOvPlneEPTfp84VYsBmcDaOa5hasTci9HizVObYq02AuByxVM136/KxbQO6uf9cd5YYeNxJRPqity8QCMapCiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767970; c=relaxed/simple;
-	bh=z3NYWMXo1sGa/C88qRQ4VGG9larvGWNfOdEt+Ly3Iug=;
+	s=arc-20240116; t=1773766718; c=relaxed/simple;
+	bh=yn46xAo5/YVb9aSQMbDY/jAseZjyBBN4VnPlPgriwpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cz//SorVGG/gc/bXKACy/wJMXi0XagnomO3zUOcusR2nWQkEAlAjE7b7hft5w6tVm1qQN1UydWeKmI1lBMGzzf9eo2xGWYoSwRUQpRvG5qtMrC/bF5MmYkb4c+ehrGytiN0otQrtyonfKsEVTaxXjI0OgkVISNnf1i94p3EtbvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAV7QwAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC07C2BCB1;
-	Tue, 17 Mar 2026 17:19:29 +0000 (UTC)
+	 MIME-Version; b=A/9ritrXTjMbcDhrDffOEyyj2UtRrviKAXdnTGn4LEokob2hF5YMDa0I9L/Icf/wIrEa3YUfAnMfhPFw2auGATzT0kYgZMvLidbRZxshLuWHlrcKoMusSVkVJvBafi1Tzf1vQg8UbA77E4NGUkQIEgJPhSPBzJVSXa7aOJAgDPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioPjJEeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E92C19424;
+	Tue, 17 Mar 2026 16:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767970;
-	bh=z3NYWMXo1sGa/C88qRQ4VGG9larvGWNfOdEt+Ly3Iug=;
+	s=korg; t=1773766718;
+	bh=yn46xAo5/YVb9aSQMbDY/jAseZjyBBN4VnPlPgriwpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAV7QwAsYLB7uMY1pom+i4xpD3pPPtHTMMPrtVHpsKnIwL7w0vA9muDT8odYYNsEh
-	 WYbN/WRxgMG1NwXnzDRTecP0g+MYo+Wzu35+1eO3RbbzQgPp2PQQu9lCQC3lQ1EnJV
-	 p6l/AH3tIQouUjJoLx85hmHVlTjbTUxuExEsNtWE=
+	b=ioPjJEeQEFrGFegFTun2dqMEDwpl7v3OgnWG7CEEmBJrBxJH80eOBu81PfDmz3AKy
+	 pvs/CTepO8Hhvea+Ni45FkW4bGKclY5WZ+SoDAakYsVIX48WC/BsGK6HIXtnoHy+bS
+	 lQvsqThxq12mOCnUdFiXBuaqLOxjMma1KQyfIWjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH 6.18 202/333] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.19 274/378] io_uring/zcrx: use READ_ONCE with user shared RQEs
 Date: Tue, 17 Mar 2026 17:33:51 +0100
-Message-ID: <20260317163006.847267822@linuxfoundation.org>
+Message-ID: <20260317163017.088470256@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226726-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226439-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 53B682AF745
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E816B2AF90C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
+commit 531bb98a030cc1073bd7ed9a502c0a3a781e92ee upstream.
 
-The ITS driver blindly assumes that EventIDs are in abundant supply, to the
-point where it never checks how many the hardware actually supports.
+Refill queue entries are shared with the user space, use READ_ONCE when
+reading them.
 
-It turns out that some pretty esoteric integrations make it so that only a
-few bits are available, all the way down to a single bit.
-
-Enforce the advertised limitation at the point of allocating the device
-structure, and hope that the endpoint driver can deal with such limitation.
-
-Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
+Fixes: 34a3e60821ab9 ("io_uring/zcrx: implement zerocopy receive pp memory provider");
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
- include/linux/irqchip/arm-gic-v3.h |    1 +
- 2 files changed, 5 insertions(+)
+ io_uring/zcrx.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3475,6 +3475,7 @@ static struct its_device *its_create_dev
- 	int lpi_base;
- 	int nr_lpis;
- 	int nr_ites;
-+	int id_bits;
- 	int sz;
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -898,11 +898,12 @@ static inline bool io_parse_rqe(struct i
+ 				struct io_zcrx_ifq *ifq,
+ 				struct net_iov **ret_niov)
+ {
++	__u64 off = READ_ONCE(rqe->off);
+ 	unsigned niov_idx, area_idx;
+ 	struct io_zcrx_area *area;
  
- 	if (!its_alloc_device_table(its, dev_id))
-@@ -3486,7 +3487,10 @@ static struct its_device *its_create_dev
- 	/*
- 	 * Even if the device wants a single LPI, the ITT must be
- 	 * sized as a power of two (and you need at least one bit...).
-+	 * Also honor the ITS's own EID limit.
- 	 */
-+	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
-+	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
- 	nr_ites = max(2, nvecs);
- 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
- 	sz = max(sz, ITS_ITT_ALIGN);
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -394,6 +394,7 @@
- #define GITS_TYPER_VLPIS		(1UL << 1)
- #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
- #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
-+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
- #define GITS_TYPER_IDBITS_SHIFT		8
- #define GITS_TYPER_DEVBITS_SHIFT	13
- #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+-	area_idx = rqe->off >> IORING_ZCRX_AREA_SHIFT;
+-	niov_idx = (rqe->off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
++	area_idx = off >> IORING_ZCRX_AREA_SHIFT;
++	niov_idx = (off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
+ 
+ 	if (unlikely(rqe->__pad || area_idx))
+ 		return false;
 
 
 
