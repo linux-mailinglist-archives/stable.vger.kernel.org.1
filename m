@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EIxDCSFuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:45:24 +0100
+	id eC5OBoKMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC982AE588
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:45:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5CB2AF3C0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 53AD430255CF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80528317FC10
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720E2FE053;
-	Tue, 17 Mar 2026 16:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB1F3F54CD;
+	Tue, 17 Mar 2026 17:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bImQ/wm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdYwqDbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFA02DF132;
-	Tue, 17 Mar 2026 16:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0872E3F65E5;
+	Tue, 17 Mar 2026 17:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765921; cv=none; b=WjZg9iAs4JOpKl98QGkk1GURTcE65XyK/I+1rbPbwU7OeRH1QQnn2eXRjbrvNvQLc+KgfiStouqGTBN7U/yCFYxt2BLQcrjFWAGJyaRsAw/LTY3z45Phr8JlxW6gkCg3uDG4GkpAX3JYsBLniUSCPbQDaYwC+2DNgdoVJTOjeKE=
+	t=1773767286; cv=none; b=svNOP+Yv1xRMnLsuiqZoYRsAnjVHhnDGqSdNpPpRHIgdKohp2Zgee7cFmY0NXZHG6qNrmGuWiHGqIMxYLv6xdeZVfdR5vqnSTQHl78kJ+edwaIl4u2AxW7mqGLIjQfR6cKfwsz4D34SlZ01IV8AVpE1U2JrK2rOahVP3TPlui6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765921; c=relaxed/simple;
-	bh=DIO67tpfSx2E5W9EBjcjsZym9e2iXO+2bBM/JFThLZQ=;
+	s=arc-20240116; t=1773767286; c=relaxed/simple;
+	bh=udPCMbVi5E4u5CNMlysqBAj4DKHZDn+qe4enQarmbwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKO2/AJzV0uTcppC/n3R5qivKacM40CmgaF17scZuDG8izBy1gGtT1EHT3/QEQKVmKKtOI653u+JKFFq7H9PfZ2H84Qhd+w/C/trOqFGjsHHRgRDxYDyWzZXlzuyY0/OZ1jw7Tnjx+tVOeuuHzn5/d0CxPVOwkxovsMpc7LOW24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bImQ/wm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5019BC4CEF7;
-	Tue, 17 Mar 2026 16:45:21 +0000 (UTC)
+	 MIME-Version; b=K4YtnkMKxxz7E6L1/5YleWCp+GfQ9yvJ4vvY27S9WjmVqXZDzRDdBn+ihR0O7BgITcbETIcSP1zNfiex+be1hiHyMnmpdU8skzBWHp6EeInH/19pmnVWLrnU88zMEwCRafmEOd8HomjFhcOdvERGCK9nl1EnVVmvS5CSvbLVTwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdYwqDbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C36C2BC86;
+	Tue, 17 Mar 2026 17:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765921;
-	bh=DIO67tpfSx2E5W9EBjcjsZym9e2iXO+2bBM/JFThLZQ=;
+	s=korg; t=1773767285;
+	bh=udPCMbVi5E4u5CNMlysqBAj4DKHZDn+qe4enQarmbwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bImQ/wmb41S4UyulGkJI46L1tQQ21LkonebTHoKqC/ewbUu+Muvsm4P6IQthlqT0
-	 ktnk+64+HnzmIdtPN+tB3zUF7eQ3eDS3nSfseYGK8j32Fs2Tmy4XxsAoH6FdZRMDTe
-	 5Ef6OocUsRPhfhRefoWRLom0HPUWoWUKp5+fN5yY=
+	b=XdYwqDbqgywNc9QgLti4pBKt+LIYyLoTI1NavfYby1Qq/TYj9ZbXXEiGieoLGV3n4
+	 PaJFCqqCzzS9uGsAMlUpH1b0+h6/YTILuAMAtMrv4TfQ/40urz2xGnGez+khC+YOxH
+	 69Bzpi/hYZDJhcB6B/zxXfnm7KxE6iuMwDHniFm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
-	stable <stable@kernel.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.19 125/378] gpib: lpvo_usb: fix unintended binding of FTDI 8U232AM devices
-Date: Tue, 17 Mar 2026 17:31:22 +0100
-Message-ID: <20260317163011.613841642@linuxfoundation.org>
+	Sen Wang <sen@ti.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 054/333] ASoC: simple-card-utils: fix graph_util_is_ports0() for DT overlays
+Date: Tue, 17 Mar 2026 17:31:23 +0100
+Message-ID: <20260317163001.371565222@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +67,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226257-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226572-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DFC982AE588
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,0.0.0.1:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,renesas.com:email]
+X-Rspamd-Queue-Id: 6B5CB2AF3C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sen Wang <sen@ti.com>
 
-commit 163cc462dea7d5b75be4db49ca78a2b99c55375e upstream.
+[ Upstream commit 4185b95f8a42d92d68c49289b4644546b51e252b ]
 
-The LPVO USB GPIB adapter apparently uses an FTDI 8U232AM with the
-default PID, but this device id is already handled by the ftdi_sio
-serial driver.
+graph_util_is_ports0() identifies DPCM front-end (ports@0) vs back-end
+(ports@1) by calling of_get_child_by_name() to find the first "ports"
+child and comparing pointers. This relies on child iteration order
+matching DTS source order.
 
-Stop binding to the default PID to avoid breaking existing setups with
-FTDI 8U232AM.
+When the DPCM topology comes from a DT overlay, __of_attach_node()
+inserts new children at the head of the sibling list, reversing the
+order. of_get_child_by_name() then returns ports@1 instead of ports@0,
+causing all front-end links to be classified as back-ends. The card
+registers with no PCM devices.
 
-Anyone using this driver should blacklist the ftdi_sio driver and add
-the device id manually through sysfs (e.g. using udev rules).
+Fix this by matching the unit address directly from the node name
+instead of relying on sibling order.
 
-Fixes: fce79512a96a ("staging: gpib: Add LPVO DIY USB GPIB driver")
-Fixes: e6ab504633e4 ("staging: gpib: Destage gpib")
-Cc: Dave Penkler <dpenkler@gmail.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260305151729.10501-2-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92939252458f ("ASoC: simple-card-utils: add asoc_graph_is_ports0()")
+Signed-off-by: Sen Wang <sen@ti.com>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20260309042109.2576612-1-sen@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-+++ b/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
-@@ -38,8 +38,10 @@ MODULE_DESCRIPTION("GPIB driver for LPVO
- /*
-  * Table of devices that work with this driver.
-  *
-- * Currently, only one device is known to be used in the
-- * lpvo_usb_gpib adapter (FTDI 0403:6001).
-+ * Currently, only one device is known to be used in the lpvo_usb_gpib
-+ * adapter (FTDI 0403:6001) but as this device id is already handled by the
-+ * ftdi_sio USB serial driver the LPVO driver must not bind to it by default.
-+ *
-  * If your adapter uses a different chip, insert a line
-  * in the following table with proper <Vendor-id>, <Product-id>.
-  *
-@@ -50,7 +52,6 @@ MODULE_DESCRIPTION("GPIB driver for LPVO
-  */
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index bdc02e85b089f..9e5be0eaa77f3 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1038,11 +1038,15 @@ int graph_util_is_ports0(struct device_node *np)
+ 	else
+ 		port = np;
  
- static const struct usb_device_id skel_table[] = {
--	{ USB_DEVICE(0x0403, 0x6001) },
- 	{ }					   /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, skel_table);
+-	struct device_node *ports  __free(device_node) = of_get_parent(port);
+-	struct device_node *top    __free(device_node) = of_get_parent(ports);
+-	struct device_node *ports0 __free(device_node) = of_get_child_by_name(top, "ports");
++	struct device_node *ports __free(device_node) = of_get_parent(port);
++	const char *at = strchr(kbasename(ports->full_name), '@');
+ 
+-	return ports0 == ports;
++	/*
++	 * Since child iteration order may differ
++	 * between a base DT and DT overlays,
++	 * string match "ports" or "ports@0" in the node name instead.
++	 */
++	return !at || !strcmp(at, "@0");
+ }
+ EXPORT_SYMBOL_GPL(graph_util_is_ports0);
+ 
+-- 
+2.51.0
+
 
 
 
