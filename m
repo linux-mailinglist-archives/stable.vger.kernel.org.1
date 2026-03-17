@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-226845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJMpIjeWuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:15 +0100
+	id kHayDzmWuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF8B2B06A7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF212B06AF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3991231C5E53
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BD513146241
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3142F7478;
-	Tue, 17 Mar 2026 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EDC3246F8;
+	Tue, 17 Mar 2026 17:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1llV+APL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+FpIFeG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105222D739D;
-	Tue, 17 Mar 2026 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC5D15E5BB;
+	Tue, 17 Mar 2026 17:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768445; cv=none; b=MuhXYys1KhzDRasJ5C666yQOxcAY5Ie78rNLGntsgt+cIGyw2e2gbQ8UzK3glv6OdohCi8r4iANcG+s1SEa5QW34FieR/2K2vWiFXGB6c+4Pfp7AVsp9Yr+Rox+BaH1z+EOCVCB4T3f+DVHYVjhHC0CUmNVeiHwO87s79/BHKFc=
+	t=1773768449; cv=none; b=HqQWiNxtlQIfjtRWU+BGtDJObK1jC3DdGcMa/AvTBeNpfJNZt3MSYTURaIAUuYWEfbRWaeH2/FD9LRQGG0qeqffq4DC1cbdWvtaRHyseOctzbt/cHlQk3xUHkqlgNfVAoh3IQwQmMwFcb6HeDrUj6MExA6ZzczsXpt62pEX+d/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768445; c=relaxed/simple;
-	bh=d/MJ3Eo+HuFV0v2G/ok7w04V7D+KOBLr4y8Flxkje1g=;
+	s=arc-20240116; t=1773768449; c=relaxed/simple;
+	bh=DshOTbRqoZatMIcgzvwi/3b4EdQupbxjekQOynSWz88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r++G9VLai2mLLZpPZJqyUpqCB2+YrHUO6cZBWEFttuGBQE8FKNi7GDsE8v3POpDRMEx1N8DQmlJSm5jYxJNuRzzhLXhL0f8XvDBbVYPoG4LB1VbI5pwnoEKVk/lGfYZ7JvUZgqZvw0OIkH2G4Bv0l+g/gsquvJON966lFTwu1s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1llV+APL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C0CC4CEF7;
-	Tue, 17 Mar 2026 17:27:24 +0000 (UTC)
+	 MIME-Version; b=q5w/HW623CnQ8awKEO8xpfOTCoDH5sMbCrcKKHTUc+oYqux36w6fgzBMWhzDmPcDr1m/OvEm4iTXhwuBXYw/DOxj3g5XJXYLM9ot1jm60TqlU5cGv3s2xIWeab8P1E93Y5drYIJt9G9WVGPoEqTZGiKVyWEi0sMNJrYACQwUIpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+FpIFeG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4FAC4CEF7;
+	Tue, 17 Mar 2026 17:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768444;
-	bh=d/MJ3Eo+HuFV0v2G/ok7w04V7D+KOBLr4y8Flxkje1g=;
+	s=korg; t=1773768449;
+	bh=DshOTbRqoZatMIcgzvwi/3b4EdQupbxjekQOynSWz88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1llV+APLXoe1XJ6yVrqvkZphKHJif4vN8LaYUB14DxX0ifeTpSx2EZ4lY2w4cPE1m
-	 ZFAifNVahYjZ2wU1kW8TrekLrJhN9yeimuX25nBhJqX5ZJf91R+so0krKj9L0iGFoG
-	 1ffFJhTczKgG/PEBbfgPQ327t32FmWZ/jddqiGBg=
+	b=O+FpIFeG9BMc8Omm7/cN7CSHUKR1fNNuXs4IQdMlriKwuknO8KHuDT7nbbK6TgfeG
+	 keILD2RM9bKHPemQ6sSBuXDbziqbh92ICGnFJD64k4vaNWc8/OEgygDblAjPvr03iX
+	 SftEoLCkwr079C4zIRsYbFmTca4XFb2h2/fd1mss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.18 309/333] i3c: mipi-i3c-hci: Factor out DMA mapping from queuing path
-Date: Tue, 17 Mar 2026 17:35:38 +0100
-Message-ID: <20260317163010.845903993@linuxfoundation.org>
+Subject: [PATCH 6.18 310/333] i3c: mipi-i3c-hci: Consolidate spinlocks
+Date: Tue, 17 Mar 2026 17:35:39 +0100
+Message-ID: <20260317163010.882121610@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226845-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226846-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,bootlin.com:email,intel.com:email]
-X-Rspamd-Queue-Id: EDF8B2B06A7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,bootlin.com:email,intel.com:email]
+X-Rspamd-Queue-Id: CEF212B06AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,15 +101,16 @@ X-Rspamd-Server: lfdr
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit f3bcbfe1b8b0b836b772927f75f8cb6e759eb00a upstream.
+commit fa12bb903bc3ed1826e355d267fe134bde95e23c upstream.
 
-Prepare for fixing a race in the DMA ring enqueue path when handling
-parallel transfers.  Move all DMA mapping out of hci_dma_queue_xfer()
-and into a new helper that performs the mapping up front.
+The MIPI I3C HCI driver currently uses separate spinlocks for different
+contexts (PIO vs. DMA rings).  This split is unnecessary and complicates
+upcoming fixes.  The driver does not support concurrent PIO and DMA
+operation, and it only supports a single DMA ring, so a single lock is
+sufficient for all paths.
 
-This refactoring allows the upcoming fix to extend the spinlock coverage
-around the enqueue operation without performing DMA mapping under the
-spinlock.
+Introduce a unified spinlock in struct i3c_hci, switch both PIO and DMA
+code to use it, and remove the per-context locks.
 
 No functional change is intended in this patch.
 
@@ -117,99 +118,178 @@ Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-4-adrian.hunter@intel.com
+Link: https://patch.msgid.link/20260306072451.11131-5-adrian.hunter@intel.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c |   49 ++++++++++++++++++++++------------
- 1 file changed, 33 insertions(+), 16 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/core.c |    2 ++
+ drivers/i3c/master/mipi-i3c-hci/dma.c  |   14 ++++++--------
+ drivers/i3c/master/mipi-i3c-hci/hci.h  |    1 +
+ drivers/i3c/master/mipi-i3c-hci/pio.c  |   16 +++++++---------
+ 4 files changed, 16 insertions(+), 17 deletions(-)
 
+--- a/drivers/i3c/master/mipi-i3c-hci/core.c
++++ b/drivers/i3c/master/mipi-i3c-hci/core.c
+@@ -631,6 +631,8 @@ static int i3c_hci_init(struct i3c_hci *
+ 	if (ret)
+ 		return ret;
+ 
++	spin_lock_init(&hci->lock);
++
+ 	/*
+ 	 * Now let's reset the hardware.
+ 	 * SOFT_RST must be clear before we write to it.
 --- a/drivers/i3c/master/mipi-i3c-hci/dma.c
 +++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -375,6 +375,33 @@ static void hci_dma_unmap_xfer(struct i3
+@@ -133,7 +133,6 @@ struct hci_rh_data {
+ 	unsigned int xfer_struct_sz, resp_struct_sz, ibi_status_sz, ibi_chunk_sz;
+ 	unsigned int done_ptr, ibi_chunk_ptr;
+ 	struct hci_xfer **src_xfers;
+-	spinlock_t lock;
+ 	struct completion op_done;
+ };
+ 
+@@ -240,7 +239,6 @@ static int hci_dma_init(struct i3c_hci *
+ 			goto err_out;
+ 		rh = &rings->headers[i];
+ 		rh->regs = hci->base_regs + offset;
+-		spin_lock_init(&rh->lock);
+ 		init_completion(&rh->op_done);
+ 
+ 		rh->xfer_entries = XFER_RING_ENTRIES;
+@@ -470,12 +468,12 @@ static int hci_dma_queue_xfer(struct i3c
  	}
+ 
+ 	/* take care to update the hardware enqueue pointer atomically */
+-	spin_lock_irq(&rh->lock);
++	spin_lock_irq(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_CR_ENQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_CR_ENQ_PTR, enqueue_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock_irq(&rh->lock);
++	spin_unlock_irq(&hci->lock);
+ 
+ 	return 0;
+ }
+@@ -573,12 +571,12 @@ static void hci_dma_xfer_done(struct i3c
+ 	}
+ 
+ 	/* take care to update the software dequeue pointer atomically */
+-	spin_lock(&rh->lock);
++	spin_lock(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_CR_SW_DEQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_CR_SW_DEQ_PTR, done_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock(&rh->lock);
++	spin_unlock(&hci->lock);
  }
  
-+static struct i3c_dma *hci_dma_map_xfer(struct device *dev, struct hci_xfer *xfer)
-+{
-+	enum dma_data_direction dir = xfer->rnw ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
-+	bool need_bounce = device_iommu_mapped(dev) && xfer->rnw && (xfer->data_len & 3);
-+
-+	return i3c_master_dma_map_single(dev, xfer->data, xfer->data_len, need_bounce, dir);
-+}
-+
-+static int hci_dma_map_xfer_list(struct i3c_hci *hci, struct device *dev,
-+				 struct hci_xfer *xfer_list, int n)
-+{
-+	for (int i = 0; i < n; i++) {
-+		struct hci_xfer *xfer = xfer_list + i;
-+
-+		if (!xfer->data)
-+			continue;
-+
-+		xfer->dma = hci_dma_map_xfer(dev, xfer);
-+		if (!xfer->dma) {
-+			hci_dma_unmap_xfer(hci, xfer_list, i);
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int hci_dma_queue_xfer(struct i3c_hci *hci,
- 			      struct hci_xfer *xfer_list, int n)
- {
-@@ -382,6 +409,11 @@ static int hci_dma_queue_xfer(struct i3c
- 	struct hci_rh_data *rh;
- 	unsigned int i, ring, enqueue_ptr;
- 	u32 op1_val, op2_val;
-+	int ret;
-+
-+	ret = hci_dma_map_xfer_list(hci, rings->sysdev, xfer_list, n);
-+	if (ret)
-+		return ret;
+ static int hci_dma_request_ibi(struct i3c_hci *hci, struct i3c_dev_desc *dev,
+@@ -759,12 +757,12 @@ static void hci_dma_process_ibi(struct i
  
- 	/* For now we only use ring 0 */
- 	ring = 0;
-@@ -392,9 +424,6 @@ static int hci_dma_queue_xfer(struct i3c
- 	for (i = 0; i < n; i++) {
- 		struct hci_xfer *xfer = xfer_list + i;
- 		u32 *ring_data = rh->xfer + rh->xfer_struct_sz * enqueue_ptr;
--		enum dma_data_direction dir = xfer->rnw ? DMA_FROM_DEVICE :
--							  DMA_TO_DEVICE;
--		bool need_bounce;
+ done:
+ 	/* take care to update the ibi dequeue pointer atomically */
+-	spin_lock(&rh->lock);
++	spin_lock(&hci->lock);
+ 	op1_val = rh_reg_read(RING_OPERATION1);
+ 	op1_val &= ~RING_OP1_IBI_DEQ_PTR;
+ 	op1_val |= FIELD_PREP(RING_OP1_IBI_DEQ_PTR, deq_ptr);
+ 	rh_reg_write(RING_OPERATION1, op1_val);
+-	spin_unlock(&rh->lock);
++	spin_unlock(&hci->lock);
  
- 		/* store cmd descriptor */
- 		*ring_data++ = xfer->cmd_desc[0];
-@@ -413,18 +442,6 @@ static int hci_dma_queue_xfer(struct i3c
+ 	/* update the chunk pointer */
+ 	rh->ibi_chunk_ptr += ibi_chunks;
+--- a/drivers/i3c/master/mipi-i3c-hci/hci.h
++++ b/drivers/i3c/master/mipi-i3c-hci/hci.h
+@@ -45,6 +45,7 @@ struct i3c_hci {
+ 	const struct hci_io_ops *io;
+ 	void *io_data;
+ 	const struct hci_cmd_ops *cmd;
++	spinlock_t lock;
+ 	atomic_t next_cmd_tid;
+ 	u32 caps;
+ 	unsigned int quirks;
+--- a/drivers/i3c/master/mipi-i3c-hci/pio.c
++++ b/drivers/i3c/master/mipi-i3c-hci/pio.c
+@@ -124,7 +124,6 @@ struct hci_pio_ibi_data {
+ };
  
- 		/* 2nd and 3rd words of Data Buffer Descriptor Structure */
- 		if (xfer->data) {
--			need_bounce = device_iommu_mapped(rings->sysdev) &&
--				      xfer->rnw &&
--				      xfer->data_len != ALIGN(xfer->data_len, 4);
--			xfer->dma = i3c_master_dma_map_single(rings->sysdev,
--							      xfer->data,
--							      xfer->data_len,
--							      need_bounce,
--							      dir);
--			if (!xfer->dma) {
--				hci_dma_unmap_xfer(hci, xfer_list, i);
--				return -ENOMEM;
--			}
- 			*ring_data++ = lower_32_bits(xfer->dma->addr);
- 			*ring_data++ = upper_32_bits(xfer->dma->addr);
- 		} else {
-@@ -447,7 +464,7 @@ static int hci_dma_queue_xfer(struct i3c
- 		op2_val = rh_reg_read(RING_OPERATION2);
- 		if (enqueue_ptr == FIELD_GET(RING_OP2_CR_DEQ_PTR, op2_val)) {
- 			/* the ring is full */
--			hci_dma_unmap_xfer(hci, xfer_list, i + 1);
-+			hci_dma_unmap_xfer(hci, xfer_list, n);
- 			return -EBUSY;
- 		}
+ struct hci_pio_data {
+-	spinlock_t lock;
+ 	struct hci_xfer *curr_xfer, *xfer_queue;
+ 	struct hci_xfer *curr_rx, *rx_queue;
+ 	struct hci_xfer *curr_tx, *tx_queue;
+@@ -146,7 +145,6 @@ static int hci_pio_init(struct i3c_hci *
+ 		return -ENOMEM;
+ 
+ 	hci->io_data = pio;
+-	spin_lock_init(&pio->lock);
+ 
+ 	size_val = pio_reg_read(QUEUE_SIZE);
+ 	dev_info(&hci->master.dev, "CMD/RESP FIFO = %ld entries\n",
+@@ -609,7 +607,7 @@ static int hci_pio_queue_xfer(struct i3c
+ 		xfer[i].data_left = xfer[i].data_len;
  	}
+ 
+-	spin_lock_irq(&pio->lock);
++	spin_lock_irq(&hci->lock);
+ 	prev_queue_tail = pio->xfer_queue;
+ 	pio->xfer_queue = &xfer[n - 1];
+ 	if (pio->curr_xfer) {
+@@ -623,7 +621,7 @@ static int hci_pio_queue_xfer(struct i3c
+ 			pio_reg_read(INTR_STATUS),
+ 			pio_reg_read(INTR_SIGNAL_ENABLE));
+ 	}
+-	spin_unlock_irq(&pio->lock);
++	spin_unlock_irq(&hci->lock);
+ 	return 0;
+ }
+ 
+@@ -694,14 +692,14 @@ static bool hci_pio_dequeue_xfer(struct
+ 	struct hci_pio_data *pio = hci->io_data;
+ 	int ret;
+ 
+-	spin_lock_irq(&pio->lock);
++	spin_lock_irq(&hci->lock);
+ 	dev_dbg(&hci->master.dev, "n=%d status=%#x/%#x", n,
+ 		pio_reg_read(INTR_STATUS), pio_reg_read(INTR_SIGNAL_ENABLE));
+ 	dev_dbg(&hci->master.dev, "main_status = %#x/%#x",
+ 		readl(hci->base_regs + 0x20), readl(hci->base_regs + 0x28));
+ 
+ 	ret = hci_pio_dequeue_xfer_common(hci, pio, xfer, n);
+-	spin_unlock_irq(&pio->lock);
++	spin_unlock_irq(&hci->lock);
+ 	return ret;
+ }
+ 
+@@ -994,13 +992,13 @@ static bool hci_pio_irq_handler(struct i
+ 	struct hci_pio_data *pio = hci->io_data;
+ 	u32 status;
+ 
+-	spin_lock(&pio->lock);
++	spin_lock(&hci->lock);
+ 	status = pio_reg_read(INTR_STATUS);
+ 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
+ 		status, pio->enabled_irqs);
+ 	status &= pio->enabled_irqs | STAT_LATENCY_WARNINGS;
+ 	if (!status) {
+-		spin_unlock(&pio->lock);
++		spin_unlock(&hci->lock);
+ 		return false;
+ 	}
+ 
+@@ -1036,7 +1034,7 @@ static bool hci_pio_irq_handler(struct i
+ 	pio_reg_write(INTR_SIGNAL_ENABLE, pio->enabled_irqs);
+ 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
+ 		pio_reg_read(INTR_STATUS), pio_reg_read(INTR_SIGNAL_ENABLE));
+-	spin_unlock(&pio->lock);
++	spin_unlock(&hci->lock);
+ 	return true;
+ }
+ 
 
 
 
