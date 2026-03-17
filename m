@@ -1,160 +1,302 @@
-Return-Path: <stable+bounces-225758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ML7dKS4FuWmEnAEAu9opvQ
-	(envelope-from <stable+bounces-225758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:39:26 +0100
+	id AO1kCNkFuWmEnAEAu9opvQ
+	(envelope-from <stable+bounces-225759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:42:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5782A4F27
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:39:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F73F2A4FCE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A46203012B5B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 07:39:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 002E3302E42D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 07:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFD1391839;
-	Tue, 17 Mar 2026 07:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeQYDe/l"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFDD392803;
+	Tue, 17 Mar 2026 07:41:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7421391505;
-	Tue, 17 Mar 2026 07:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706A039184A
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 07:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773733161; cv=none; b=Av4vpnuOfQShBUK5RPEVY2FIndI42JOSX6o/rTBnjfComKurFXpnr9ID97z0iec993QnIdvfJ8ZJ1CDK4YYVV+jkIl0KeIT6kOjBm1TnoCoyGqboZABRxNdbdmPS+5U43z+Ixqt9SwXGr5lNy4+9eeUM3oVNPDgojjcerwg6wAY=
+	t=1773733301; cv=none; b=aepGgSqaEU4K317wyt+fiFfZlniHMRRSLpifE8pBni3q21ACwTr5R9UPKxlC0evxOjh+wtqTDhKj2XBK5Ps9tPb/qfHA6TC2oIWK6E7mcPYXprD4CIw0JPj3DF9mVUBaqMHYv/SIH78Dvds2tYDyI2P/I7+kdnFlNkYtelmPS/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773733161; c=relaxed/simple;
-	bh=JRy7BlW+4YyMcr948u1R8Lh5p331m/L0Ornk6lRsZmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g0cfsT0YuWHg+ZnRLl6IML7wCSlf+Tf3CXrEIY3M5rvCorjUtC+zYEsuc/yU2/VaFXzUQH5gbsvZriYxvJ0lakBQKt1qf8cIWpJnR7qGgBVhN5TIUJWNfvLdeLQ2+oevEHvkbS6dwovFNrk3xWvuiOtkZRH9BCopz5LcSo9n2Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeQYDe/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE380C19424;
-	Tue, 17 Mar 2026 07:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773733161;
-	bh=JRy7BlW+4YyMcr948u1R8Lh5p331m/L0Ornk6lRsZmk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NeQYDe/lv5rPotjsuUymvu6fKCCQDuUSo+4iAhsFkm1HyG4EkhUpe4MiaV5Luhz2b
-	 zU4z/tBzbDTMMx79QtyDURalBrdYrYC5yE/CvpQB7Koh3RZtkZAOWLXIDcoNm7tr13
-	 PKRAR/tSeE+IdC3PQbwiJDYQIt+CKyav41cDzhxM=
-Date: Tue, 17 Mar 2026 08:39:16 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 5.15 000/410] 5.15.202-rc2 review
-Message-ID: <2026031714-undusted-rambling-c2ae@gregkh>
-References: <20260302160955.2522727-1-sashal@kernel.org>
- <20260305220801.GA3148061@ax162>
- <20260316220533.GD1329928@ax162>
- <abiuxFzZNLKbhz6F@laps>
- <2026031738-glade-glamorous-eacd@gregkh>
+	s=arc-20240116; t=1773733301; c=relaxed/simple;
+	bh=dSuh0XGDD08NZescQpfCZLlePKs4U6tTx44DRNO9gMY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GvcaC/h90Wx4HY7edjkYmqXhfoxT4qbOs1PuwX8o3kDHBKwO8d1/1hphIvhFYcwadiVWYmG/BbFsINqJRw8OLJDqg0uIgPUDRVYH8jTulfuFzJGjoaRO0vFWWcCNOd/InVQtEMFxgtH3DOPUh9l4CM7fVQBRV7PzgqPgi1KmJN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1773733285-1eb14e06eb19130001-OJig3u
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id 9X4X25efAB785esd; Tue, 17 Mar 2026 15:41:25 +0800 (CST)
+X-Barracuda-Envelope-From: tonywwang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+Received: from [10.32.64.22] ([10.32.64.22] [10.32.64.22])
+	by zhaoxin.com (f222c4) with ESMTP6c05a99c6414fc5606ccb28fbfcd5031
+	Tue, 17 Mar 2026 15:41:24 +0800
+X-Eyou-Smtpauth: tonywwangoc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.22
+X-Eyou-EnvelopeSender: tonywwang-oc@zhaoxin.com
+Message-ID: <08c3f1d4-326b-4a04-968c-23dd8ed14d0f@zhaoxin.com>
+Date: Tue, 17 Mar 2026 15:41:21 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026031738-glade-glamorous-eacd@gregkh>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
+ C4600
+To: Dave Hansen <dave.hansen@intel.com>, me@ziyao.cc
+X-ASG-Orig-Subj: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
+ C4600
+Cc: andrew.cooper3@citrix.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org, lukelin@viacpu.com,
+ "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>, cooperyan@zhaoxin.com,
+ benjaminpan@viatech.com, QiyuanWang@zhaoxin.com, HerryYang@zhaoxin.com,
+ "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
+References: <20260228173704.62460-1-me@ziyao.cc>
+ <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
+ <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
+ <b16bda4b-c7cb-4e7f-ac71-57c0032c6633@zhaoxin.com>
+ <03a03ec8-4309-42ac-a13d-2fcc8396d547@intel.com>
+Content-Language: en-US
+From: Tony W Wang-oc <tonywwang-oc@zhaoxin.com>
+In-Reply-To: <03a03ec8-4309-42ac-a13d-2fcc8396d547@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Eyou-Sender: <tonywwangoc@zhaoxin.com>
+X-Vid: 1aec4b22d37663b9264c8e8fd355e1a900@zhaoxin.com
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1773733285
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 5997
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.155970
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225758-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225759-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[zhaoxin.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4B5782A4F27
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tonywwang-oc@zhaoxin.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.947];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zhaoxin.com:email,zhaoxin.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7F73F2A4FCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 05:42:14AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Mar 16, 2026 at 09:30:44PM -0400, Sasha Levin wrote:
-> > On Mon, Mar 16, 2026 at 03:05:33PM -0700, Nathan Chancellor wrote:
-> > > On Thu, Mar 05, 2026 at 03:08:09PM -0700, Nathan Chancellor wrote:
-> > > > On Mon, Mar 02, 2026 at 11:09:55AM -0500, Sasha Levin wrote:
-> > > > > Jamie Iles (1):
-> > > > >   i3c: remove i2c board info from i2c_dev_desc
-> > > > 
-> > > > You missed commit 6cbf8b38dfe3 ("i3c: fix uninitialized variable use in
-> > > > i2c setup") as a fix for this one, as rightfully pointed out by clang:
-> > > > 
-> > > >   https://lore.kernel.org/177198114226.2577.15577566399399369654@d14e337afe00/
-> > > > 
-> > > >   $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper allmodconfig drivers/i3c/master.o
-> > > >   drivers/i3c/master.c:2203:3: error: variable 'i2cdev' is uninitialized when used here [-Werror,-Wuninitialized]
-> > > >    2203 |                 i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
-> > > >         |                 ^~~~~~
-> > > > 
-> > > > I guess that report was missed because it was not actually addressed to
-> > > > anyone?
-> > > > 
-> > > > FWIW, this patch appeared in a previous 5.15-rc release but Ben
-> > > > rightfully pointed out it really was not necessary and Greg said he
-> > > > would fix it up by hand:
-> > > > 
-> > > >   https://lore.kernel.org/2026011724-florist-brook-5f1f@gregkh/
-> > > > 
-> > > > Guess that never happened?
-> > > 
-> > > Ping? I don't see 6cbf8b38dfe3 queued up in 5.15 and this continues to
-> > > break our builds:
-> > > 
-> > >  https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/23093834605
-> > 
-> > Hm, I queued it up, but looks like Greg dropped it:
-> > 
-> > 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=7c0d6910ad
-> > 
-> > I'm not sure why.
-> 
-> I am guessing that it broke some type of build, and so I figured it was
-> safer to just drop them all.  I'll try it again later today, sorry about
-> that...
 
-Wait, I removed them all, as that should have fixed the issue (I removed
-the offending commit that was originally causing the build problem
-here.)
+On 2026/3/12 23:52, Dave Hansen wrote:
+> On 3/11/26 19:14, Tony W Wang-oc wrote:
+>>
+>> +       if (c->x86 == 6 && c->x86_model == 15 && c->x86_stepping >= 14) {
+>> +               native_rdmsr(0x1232, dummy, chip_pf);
+>> +               chip_pf = (chip_pf >> 15) & 0x7;
+>> +               c->microcode = intel_get_microcode_revision();
+>> +
+>> +               if ((chip_pf == 0 && c->microcode < 0x20e) ||
+>> +                       (chip_pf == 1 && c->microcode < 0x208)) {
+>> +                       pr_warn_once("CPU has broken FSGSBASE support;
+>> clear FSGSBASE feature\n");
+>> +                       setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
+>> +               }
+>> +       }
+> So, I'm sorry but that's not really consistent how we're doing things
+> these days.
+>
+> The model needs a symbolic name.
+>
+> The MSR you're reading is completely undocumented and unnamed.
+Sorry, MSR 0x1232 is a Zhaoxin private MSR. Currently, this MSR is not 
+documented in any public specification. It is used to store CPU 
+manufacturing information.
+>
+> "chip_pf" is nonsensical and unexplained.
+chip_pf retrieved from MSR 0x1232 represents the CPU product version.
+>
+> Code is duplicated across the centaur and zhaoxin files.
+>
+> Once you have all of that fixed, you should have a simple:
+>
+> #define CENTAUR_MODEL_FOO VFM_MAKE(X86_VENDOR_CENTAUR, 6, 15)
+> #define ZHAOXIN_MODEL_BAR VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 25)
+>
+> in a central header, plus:
+>
+> struct x86_cpu_id *naughty_list[] = {
+> 	X86_MATCH_VFM_STEPS(CENTAUR_MODEL_FOO,       14, MAX_STEP, 0),
+> 	X86_MATCH_VFM_STEPS(ZHAOXIN_MODEL_BAR, MIN_STEP,        3, 0),
+> 	{}
+> };
+>
+> void check_fsgsbase_bugs()
+> {
+> 	u32 fixed_ucode;
+>
+> 	if (!cpu_feature_enabled(X86_FEATURE_FSGSBASE))
+> 		return;
+>
+> 	c = x86_match_cpu(naughty_list);
+> 	if (!c)
+> 		return;
+>
+> 	chip_pf = ...
+> 	if (chip_pf == 0)
+> 		fixed_ucode = 0x20e;
+> 	if (chip_pf == 1)
+> 		fixed_ucode = 0x208;
+>
+> 	if (intel_get_microcode_revision() >= fixed_ucode)
+> 		return;
+>
+> 	pr_warn_once("Broken FSGSBASE support, clearing feature\n");
+> 	setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
+> }
+>
+> Then check_fsgsbase_bugs() can pretty much be called anywhere. It can
+> even be in generic code.
+>
+> We are also getting some new matching fields in 'x86_cpu_id'. I suspect
+> 'chip_pf' can be stored in there where Intel has the platform_id right
+> now. But you don't have to do that now.
+>
+> Could you please go this route rather than copy-and-pasted chunks of
+> code sprinkled with a healthy dose of magic numbers?
+Thank you for providing the example code.
 
-Nathan, what errors are you seeing now?  None of these changes are in a
-release, and I don't see any i3c patches in the current queue.
+Could you please take another look at the following patch to see if it's 
+acceptable?
 
-confused,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 364f0bec8748..42093a794056 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29168,6 +29168,7 @@ ZHAOXIN PROCESSOR SUPPORT
+  M:    Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+  L:    linux-kernel@vger.kernel.org
+  S:    Maintained
++F:    arch/x86/include/asm/zhaoxin.h
+  F:    arch/x86/kernel/cpu/zhaoxin.c
 
-greg k-h
+  ZONED BLOCK DEVICE (BLOCK LAYER)
+diff --git a/arch/x86/include/asm/msr-index.h 
+b/arch/x86/include/asm/msr-index.h
+index be3e3cc963b2..dc71a4adc776 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -1306,5 +1306,7 @@
+                          * disabling x2APIC will cause
+                          * a #GP
+                          */
++/* ZHAOXIN defined MSRs*/
++#define MSR_ZHAOXIN_MFGID        0x00001232
+
+  #endif /* _ASM_X86_MSR_INDEX_H */
+diff --git a/arch/x86/include/asm/zhaoxin.h b/arch/x86/include/asm/zhaoxin.h
+new file mode 100644
+index 000000000000..a3883bb149b4
+--- /dev/null
++++ b/arch/x86/include/asm/zhaoxin.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_ZHAOXIN_H
++#define _ASM_X86_ZHAOXIN_H
++
++#include <asm/cpu_device_id.h>
++#include <asm/microcode.h>
++
++#define    ZHAOXIN_MODEL_ZXC    VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 25)
++#define    CENTAUR_MODEL_ZXC    VFM_MAKE(X86_VENDOR_CENTAUR, 6, 15)
++
++struct x86_cpu_id naughty_list[] = {
++    X86_MATCH_VFM_STEPS(ZHAOXIN_MODEL_ZXC, 0, 3, 0),
++    X86_MATCH_VFM_STEPS(CENTAUR_MODEL_ZXC, 14, 15, 0),
++    {}
++};
++
++void check_fsgsbase_bugs(void);
++
++void check_fsgsbase_bugs(void)
++{
++
++    u32 chip_pf, dummy, fixed_ucode;
++
++    if (!cpu_feature_enabled(X86_FEATURE_FSGSBASE))
++        return;
++
++    if (!x86_match_cpu(naughty_list))
++        return;
++
++    native_rdmsr(MSR_ZHAOXIN_MFGID, dummy, chip_pf);
++
++    /* chip_pf represents product version flag */
++    chip_pf = (chip_pf >> 15) & 0x7;
++
++    if (chip_pf == 0)
++        fixed_ucode = 0x20e;
++    if (chip_pf == 1)
++        fixed_ucode = 0x208;
++
++    if (intel_get_microcode_revision() >= fixed_ucode)
++        return;
++
++    pr_warn_once("Broken FSGSBASE support, clearing feature\n");
++    setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
++}
++
++#endif
++
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 1c3261cae40c..fe24830a47aa 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -73,6 +73,7 @@
+  #include <asm/tdx.h>
+  #include <asm/posted_intr.h>
+  #include <asm/runtime-const.h>
++#include <asm/zhaoxin.h>
+
+  #include "cpu.h"
+
+@@ -2047,6 +2048,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+      setup_umip(c);
+      setup_lass(c);
+
++    check_fsgsbase_bugs();
++
+      /* Enable FSGSBASE instructions if available. */
+      if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+          cr4_set_bits(X86_CR4_FSGSBASE);
+
 
