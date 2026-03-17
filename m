@@ -1,172 +1,167 @@
-Return-Path: <stable+bounces-226094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AL8uNatvuWm8EgIAu9opvQ
-	(envelope-from <stable+bounces-226094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:13:47 +0100
+	id WEKKHDBxuWm8EgIAu9opvQ
+	(envelope-from <stable+bounces-226095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:20:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D22C2ACC2F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:13:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E384D2ACE4F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7114A3098595
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:07:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29A5130DBED3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC833EB813;
-	Tue, 17 Mar 2026 15:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9C93EB7EF;
+	Tue, 17 Mar 2026 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJkiIDO4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFzYzubu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FEC3AB273;
-	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD63EAC78
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 15:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773760068; cv=none; b=RH4cCoItKWW027BuLMhowZHPjkGx17OjLe5s1hrIS0jb3BKBroD4lw2wJWu4SaZtgaczA57WpErHago+6QqysrkoFsySHH4zfxh2Px/TZyfoodfc3p4edXbslDmeYW1GpIoPgW03Gckp7l/aMefZXaBMS6CkeVT9vQWi+Qzd0/s=
+	t=1773760358; cv=none; b=ZwWIZCD8ixrC3UBwV/ei1yP0/xXQlrnkWt9PMG/fD81UlZ080SyFnLR/lJL6kN5q7XYAMbUXhBEB8je0soOLZyNHG1gEpyjbxMCPAVhzI+HkseJioIcefaH6BZP5sY3rb7YghS2DZaCdZnqNWl6Kpp0rkrbK058mhW7lNliru90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773760068; c=relaxed/simple;
-	bh=AAkLl6I8DEWD0DH3jFQPg+HmOR+tfYeIuPntrROUHX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=I+guvtAf3UCEChCVKLKhPQS1lxnZE2FIFEh28OTPcGkNmani7mRYvc1gqxWGxmom11rAMpAUspRjNLrujFLd7yf3AKSc1nFoEfoZHcWciZQpJosTguIKkBiXXM5OcDnIs2VAaLkr8f7WyOjUD+MS2bNfeQ/NAwnTCnlfOSxBGW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJkiIDO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2EB0FC2BCB3;
-	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
+	s=arc-20240116; t=1773760358; c=relaxed/simple;
+	bh=oXss1Qhz5NOqCruVAuKSAobY8d1H+KGulKPdY3vvH4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hM845yaUd/rWsqrHgGBmeIxkDH9IWFjVORsT9DjIG6PaA3q5aLTQ+blnvOWcRdfumrF2qFRpo8fV7hG/Wpn4bHarjwUqO44EjPtotcUds9TBCxYGDKUW8dWZFys4bGRL9Owl/Qc7Z7v6cVPwAvdPTka9Tp4ldvJ5cr43mCCDJ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFzYzubu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC3EC2BC86;
+	Tue, 17 Mar 2026 15:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773760068;
-	bh=AAkLl6I8DEWD0DH3jFQPg+HmOR+tfYeIuPntrROUHX0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=CJkiIDO4+q3revlyLViqNBCHkB/zglhH9iZF+KJap2fLvMkWzLxZeq/XuwC5TqL3Y
-	 g3c8rNhhwNQD1FHScpHpi5zD2n2yKN3Y1/CKPC9JyygzZcaMBfrOk7kXcyDUTeEDuD
-	 1swlZiNsmJIKv+9HJ48VRYX8erFPqBjkMCVRPr6tQTo4/ya1ICkDkivBww6p4UCetw
-	 m+rz29rngqqZw4AESbYyxoHBYoptfHTwNt3vcDyw+W0QTW94DMgm980KL0FiLECLHE
-	 vNMxpwNk9NKLC77dHRD8gE/faAqJ1qdmaYvArtjYfR1rLV0894mPDjF0Y5xq4QkHj3
-	 bByHAQm4+vNoQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D4AFED9E4;
-	Tue, 17 Mar 2026 15:07:48 +0000 (UTC)
-From: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
-Date: Tue, 17 Mar 2026 16:07:45 +0100
-Subject: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
- zapped
+	s=k20201202; t=1773760357;
+	bh=oXss1Qhz5NOqCruVAuKSAobY8d1H+KGulKPdY3vvH4k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZFzYzubutCmeOQDGMuJwCuWQ/FomCS25AxeMrAQqWpwAavXRd/EvjbE8d96s/YKMG
+	 VqO/SpkbZ4ReUtE0NxDQIkaIRG6fyysQUlPE1mrQDn2+Unhy/d5mbjuuHp+z6vPjBW
+	 vF+Dj7fLxeX6tZFkPK75mud47AZjAAOZJJuWTreQX9YHrrMVwUf9VlqNFnJNroW+wo
+	 g6/NAYozxF2yTuxiACnWFF4vLBz8h6E3UU2fMcTP4A4AvMg5nQibGH3O9dTzs9SWbm
+	 f00VTGD8G1Eovr6YC/ak8zdWbv4DIA4l89DhWXbsrVTVd7u9RSdsVkJ9JO2I2R1Z/j
+	 IVqizxGWf8u7w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>,
+	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] mm/kfence: fix KASAN hardware tag faults during late enablement
+Date: Tue, 17 Mar 2026 11:12:34 -0400
+Message-ID: <20260317151234.185462-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031730-shucking-dreaded-e3cf@gregkh>
+References: <2026031730-shucking-dreaded-e3cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
-X-B4-Tracking: v=1; b=H4sIAEBuuWkC/x3MQQqDMBAF0KvIrB3QCLZ6FXGhyU87UGOY2KKId
- zd0+TbvpAQVJOqLkxQ/SbKGjLosyL6n8AKLyyZTmbZq6gcrNj04SuA1ZNjPJAscx69j5+cOpsX
- 8tJ5yEBVe9n8+jNd1A2Wt4g5sAAAA
-X-Change-ID: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
-To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Max Boone <mboone@akamai.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773760067; l=2028;
- i=mboone@akamai.com; s=20260317; h=from:subject:message-id;
- bh=b2j73waNF0S5HuzVon7vQ+MYHgI3mNVa+AVmFCvIi3w=;
- b=7xTZNEDX40oqQAxYCRx209sugRRIcmmUHTQXOgPlFSP+GvJ/znoV8z5HCrd3iwy17TATbR+ZE
- Scmbbbu2iNSAQegKpxl0SkrHLBDsmcOHOjVj1zVDbbLDnYUY6mHcsFZ
-X-Developer-Key: i=mboone@akamai.com; a=ed25519;
- pk=jWdC/h5H2KWQCiC2kpr/puMVX0mJmP9W5sM8YTGBXA4=
-X-Endpoint-Received: by B4 Relay for mboone@akamai.com/20260317 with
- auth_id=685
-X-Original-From: Max Boone <mboone@akamai.com>
-Reply-To: mboone@akamai.com
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226094-lists,stable=lfdr.de,mboone.akamai.com];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,tugraz.at,gmail.com,linuxfoundation.org,kernel.org,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226095-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[mboone@akamai.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,akamai.com:email,akamai.com:replyto,akamai.com:mid]
-X-Rspamd-Queue-Id: 7D22C2ACC2F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tugraz.at:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: E384D2ACE4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Max Boone <mboone@akamai.com>
+From: Alexander Potapenko <glider@google.com>
 
-A race between page table walking (e.g. via procfs numa_maps) and VFIO DMA
-pinning can lead to temporary failures in follow_pfnmap_start(). When a
-PUD entry is split and concurrently refaulted, the PFNMAP mapping may be
-temporarily zapped, causing follow_pfnmap_start() to return an error.
+[ Upstream commit d155aab90fffa00f93cea1f107aef0a3d548b2ff ]
 
-Although follow_pfnmap_start() returns an -EINVAL this is not due to
-invalid parameters, but rather because of the pfnmap being non-present.
-Treat it as such, and retry by returning -EAGAIN, similar to how GUP
-handles such races.
+When KASAN hardware tags are enabled, re-enabling KFENCE late (via
+/sys/module/kfence/parameters/sample_interval) causes KASAN faults.
 
-This avoids propagating an unexpected -EINVAL to userspace, like follows:
-[dma_map]
-dma_map iova=0x000000000000 size=0x000004000000 vaddr=0x00007f7800000000
-dma_map FAILED iova=0x020000000000: [Errno 22] Invalid argument
-dma_map iova=0x040000000000 size=0x000002000000 vaddr=0x00007f5780000000
+This happens because the KFENCE pool and metadata are allocated via the
+page allocator, which tags the memory, while KFENCE continues to access it
+using untagged pointers during initialization.
 
-Which would've succeeded on a retry.
+Use __GFP_SKIP_KASAN for late KFENCE pool and metadata allocations to
+ensure the memory remains untagged, consistent with early allocations from
+memblock.  To support this, add __GFP_SKIP_KASAN to the allowlist in
+__alloc_contig_verify_gfp_mask().
 
-Cc: stable@vger.kernel.org
-Fixes: a77f9489f1d7 ("vfio: use the new follow_pfnmap API")
-Signed-off-by: Max Boone <mboone@akamai.com>
+Link: https://lkml.kernel.org/r/20260220144940.2779209-1-glider@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Suggested-by: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ expand __GFP_SKIP_KASAN + nr_pages_pool => nr_pages ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/kfence/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 5167bec14..3a0d0bbb9 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -559,9 +559,17 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
- 		if (ret)
- 			return ret;
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index edf6deb382b67..bdb864384f2af 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -897,7 +897,8 @@ static int kfence_init_late(void)
+ #ifdef CONFIG_CONTIG_ALLOC
+ 	struct page *pages;
  
-+		/*
-+		 * follow_pfnmap_start() returns -EINVAL for
-+		 * invalid parameters and non-present entries.
-+		 * If that happens here after a successful
-+		 * fixup_user_fault(), it is likely that the
-+		 * pfnmap has been zapped. Retry instead of
-+		 * failing.
-+		 */
- 		ret = follow_pfnmap_start(&args);
- 		if (ret)
--			return ret;
-+			return -EAGAIN;
+-	pages = alloc_contig_pages(nr_pages, GFP_KERNEL, first_online_node, NULL);
++	pages = alloc_contig_pages(nr_pages, GFP_KERNEL | __GFP_SKIP_KASAN_UNPOISON |
++				   __GFP_SKIP_KASAN_POISON, first_online_node, NULL);
+ 	if (!pages)
+ 		return -ENOMEM;
+ 	__kfence_pool = page_to_virt(pages);
+@@ -906,7 +907,9 @@ static int kfence_init_late(void)
+ 		pr_warn("KFENCE_NUM_OBJECTS too large for buddy allocator\n");
+ 		return -EINVAL;
  	}
- 
- 	if (write_fault && !args.writable) {
-
----
-base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
-change-id: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
-
-Best regards,
+-	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
++	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL |
++					  __GFP_SKIP_KASAN_UNPOISON |
++					  __GFP_SKIP_KASAN_POISON);
+ 	if (!__kfence_pool)
+ 		return -ENOMEM;
+ #endif
 -- 
-Max Boone <mboone@akamai.com>
-
+2.51.0
 
 
