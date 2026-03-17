@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-226782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LpkFbeOuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:15 +0100
+	id 4ADWKiqIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FFB2AF897
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2163B2AEB5A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E79863030DA1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D790C3046968
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EE237BE8B;
-	Tue, 17 Mar 2026 17:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD7F3F7887;
+	Tue, 17 Mar 2026 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joEvDdV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMMEFo9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E937B3F6;
-	Tue, 17 Mar 2026 17:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8063B3F787D;
+	Tue, 17 Mar 2026 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768177; cv=none; b=D/2MOU9htjhj5NgxkhYvputw99yq+/a6bPKGfybPyNFqWzeWAyDbuq65CIMDyXprJPxmfRr4Z1etAIL/hzWd3yPtPuh7j3G3Q3NqpMR/9ZdWnNfc5R5o4Pqn7MZGQhvLFNiwpude3WcF7/yvQL8p+5QYizfg27Yl1hKvHA17CI8=
+	t=1773766638; cv=none; b=SVWQSddO7iwNHmZhm9Fh5CLhvoGlfhy4epsX47fyrmzsgLitaJzpRMtwngpX2rGLah9JuN2aXa+K98piSTmCV8yq0cBs4n25E4NxZ8SuPoVQEWrufOBfoU6EZXc14nJJJYX+pLk/+nl9zMERCC9d8YA+8/yPDfeTX4lcc+5xLrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768177; c=relaxed/simple;
-	bh=TJmGLVF7UFQbGOxZIK33wtZW1gXhVwQ4wD6tYfuemec=;
+	s=arc-20240116; t=1773766638; c=relaxed/simple;
+	bh=+aSi36l/qgHBTfUJjn4Ul8bQEYbGe4XQ3zdfNZ+qJM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpGEfCQ/DoZReG0gCxQ+Xnm/usCCRAylkp6arCa8rWdS65dPiN1FjEQCbCocTpdKNQfQuwljtR95MHai18jC4iJQyuP2UkH/KfpmQsLLXlSUcgS2L9Afn8a23ACpS7fePW7XTrmqK4nMV0WaADj7HodwUU4zbfhEw0q+yRzLlzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joEvDdV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339B1C4CEF7;
-	Tue, 17 Mar 2026 17:22:56 +0000 (UTC)
+	 MIME-Version; b=jwLlbnBbgdOmLE4oHQ907ZdH2xyJoG0xNMGVrW2QSTb6vOGFhcKkJILGWoX7PFhHM+pA2RLFNIBpAeYhyFFrf86gaznihQ3ayfdKtFmBlnedTD4jZQaarn6i6mDDFMCB61AZT/iAybRbTap6xVIozyvc3ByAVaejyu3snVQ2Pto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMMEFo9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF39C2BCB0;
+	Tue, 17 Mar 2026 16:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768176;
-	bh=TJmGLVF7UFQbGOxZIK33wtZW1gXhVwQ4wD6tYfuemec=;
+	s=korg; t=1773766638;
+	bh=+aSi36l/qgHBTfUJjn4Ul8bQEYbGe4XQ3zdfNZ+qJM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joEvDdV+k690MDx7HJmeZkz+SXueGQeqTnvlRQGxkLVoPtf/2Ri+3vA8S4ULCHu5O
-	 ZeYTf5sLEW4F9mn+XGzZ97Yq8BKQy+s3vbCtxkiPjDmGXq8Hc04wIM2QvJmk/oQf3O
-	 DiBjoFowPrJ430Ni38+sxZUi18kmeuGioxpPhqvA=
+	b=xMMEFo9VwMQMkI163Rz7lwgS8r4KCCCL9oYJzY6bSjIDKx9LwF6d8mipg2+d+bnw4
+	 JNaWafbcO5E62JOmijlJIeLg9ntZ6kC/ZG48WQEeGECpJoFS4FockiL/WdCMrmagId
+	 RmX8un5S8vymQ9JMQLQoiHbPinG3j6DxKKHz0sKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 216/333] net: mana: Ring doorbell at 4 CQ wraparounds
-Date: Tue, 17 Mar 2026 17:34:05 +0100
-Message-ID: <20260317163007.373345597@linuxfoundation.org>
+	Hao Li <hao.li@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Vlastimil Babka <vbabka@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 289/378] memcg: fix slab accounting in refill_obj_stock() trylock path
+Date: Tue, 17 Mar 2026 17:34:06 +0100
+Message-ID: <20260317163017.644134495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226782-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226422-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,101 +92,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 19FFB2AF897
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux.dev:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,cmpxchg.org:email]
+X-Rspamd-Queue-Id: 2163B2AEB5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Hao Li <hao.li@linux.dev>
 
-commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
+commit dccd5ee2625d50239510bcd73ed78559005e00a3 upstream.
 
-MANA hardware requires at least one doorbell ring every 8 wraparounds
-of the CQ. The driver rings the doorbell as a form of flow control to
-inform hardware that CQEs have been consumed.
+In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should use
+the real alloc/free bytes (i.e., nr_acct) for accounting, rather than
+nr_bytes.
 
-The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
-poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
-has fewer than 512 entries, a single poll call can process more than
-4 wraparounds without ringing the doorbell. The doorbell threshold
-check also uses ">" instead of ">=", delaying the ring by one extra
-CQE beyond 4 wraparounds. Combined, these issues can cause the driver
-to exceed the 8-wraparound hardware limit, leading to missed
-completions and stalled queues.
+The user-visible impact is that the NR_SLAB_RECLAIMABLE_B and
+NR_SLAB_UNRECLAIMABLE_B stats can end up being incorrect.
 
-Fix this by capping the number of CQEs polled per call to 4 wraparounds
-of the CQ in both TX and RX paths. Also change the doorbell threshold
-from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
-reached.
+For example, if a user allocates a 6144-byte object, then before this
+fix efill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=2048), even
+though it should account for 6144 bytes (i.e., nr_acct).
 
-Cc: stable@vger.kernel.org
-Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When the user later frees the same object with kfree(),
+refill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=6144).  This
+ends up adding 6144 to the stats, but it should be applying -6144
+(i.e., nr_acct) since the object is being freed.
+
+Link: https://lkml.kernel.org/r/20260226115145.62903-1-hao.li@linux.dev
+Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
+Signed-off-by: Hao Li <hao.li@linux.dev>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ mm/memcontrol.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1645,8 +1645,14 @@ static void mana_poll_tx_cq(struct mana_
- 	ndev = txq->ndev;
- 	apc = netdev_priv(ndev);
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3052,7 +3052,7 @@ static void refill_obj_stock(struct obj_
  
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
--				    CQE_POLLING_BUFFER);
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 
- 	if (comp_read < 1)
- 		return;
-@@ -2031,7 +2037,14 @@ static void mana_poll_rx_cq(struct mana_
- 	struct mana_rxq *rxq = cq->rxq;
- 	int comp_read, i;
- 
--	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
-+	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
- 	rxq->xdp_flush = false;
-@@ -2076,11 +2089,11 @@ static int mana_cq_handler(void *context
- 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
- 		cq->work_done_since_doorbell = 0;
- 		napi_complete_done(&cq->napi, w);
--	} else if (cq->work_done_since_doorbell >
--		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+	} else if (cq->work_done_since_doorbell >=
-+		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
- 		/* MANA hardware requires at least one doorbell ring every 8
- 		 * wraparounds of CQ even if there is no need to arm the CQ.
--		 * This driver rings the doorbell as soon as we have exceeded
-+		 * This driver rings the doorbell as soon as it has processed
- 		 * 4 wraparounds.
- 		 */
- 		mana_gd_ring_cq(gdma_queue, 0);
+ 	if (!local_trylock(&obj_stock.lock)) {
+ 		if (pgdat)
+-			mod_objcg_mlstate(objcg, pgdat, idx, nr_bytes);
++			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
+ 		nr_pages = nr_bytes >> PAGE_SHIFT;
+ 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+ 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
 
 
 
