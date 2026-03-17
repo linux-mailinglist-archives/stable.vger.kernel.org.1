@@ -1,266 +1,206 @@
-Return-Path: <stable+bounces-226910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIuOK9nHuWl/NgIAu9opvQ
-	(envelope-from <stable+bounces-226910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:30:01 +0100
+	id uMjiHuTHuWl/NgIAu9opvQ
+	(envelope-from <stable+bounces-226911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:30:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0892B2B36
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:30:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07AA2B2B44
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 22:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 299513145829
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:27:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C42E530B7717
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 21:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B360039184A;
-	Tue, 17 Mar 2026 21:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C08392822;
+	Tue, 17 Mar 2026 21:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="Eyh9soFx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tlswbjuq"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761123859D7;
-	Tue, 17 Mar 2026 21:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773782820; cv=none; b=bQGVpwfLWpA/LHlBXqv74NqorhcyuMzT3nk4xxVBvIFOCVnK/jFz4SlhB0s5MNH3bryrOcp5DsaPR5VszwgM3PILZ3usbc7aZ9i9ZTPs6R4IZn2qSoWVMmriT85N/V34xI2F79XK2N0k2m1a7fY0c46wEbgfW1xZbaxjh3DCAIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773782820; c=relaxed/simple;
-	bh=LCAw327GeX32SPS6pBsHNJ6xiqVstVI2j6KTNBf+JyU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=enzz9O93ucm0RBY48VFO+KQxwJWBAiUVqX+hXId8I1Ibb6xAmfEAnVysOMTZTxoilrPag+QdY/UR6YePtCnuv4X8OHbRpxkxleWHzhhSYB6eOzRM+In4l+Fv53gjFiNEf34Ci0ckSm1asIdUiMlhNb6ELQOHijFEJcY1XdXzRBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=Eyh9soFx; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1773782814; x=1774387614; i=quwenruo.btrfs@gmx.com;
-	bh=826oPLNa2wqAwk9+enUB+Bj+j5ZtLLCl078gMG10Sug=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Eyh9soFxrDTMWenG8lxL0JYJMt5YtXuMRviPjdgam7ArZmPwicpMTcMgbH4JXLK3
-	 StXz6hMzfr6x4b+2M+FEif0SNjhRmtLnxZgdRZHOrqpYKixYp/TLQMV5b5EobS+ak
-	 qZlPAjm7QLBYAC2m4bBwRtGbFliJfdfsSxrzkjEGA0MN84gXZBUNeH8VEWA3geAg5
-	 qG87r7eW7Nc45Mq64HNWlGbdyzEGgRvcWd5NdYsBPvOHMWNUOK+XjKkkQCpxRlZLE
-	 jvC2LQ8CTfpSA775gNZqoyQWohYCSnOSQchELefp8NaZP+4ZmXvqGjsyedy98TcGb
-	 d6M78AJSRghlAMsn4A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1M26vL-1w08xg3TZp-00DBLB; Tue, 17
- Mar 2026 22:26:54 +0100
-Message-ID: <b44dfabe-32fc-4ced-a000-cd05893b00e8@gmx.com>
-Date: Wed, 18 Mar 2026 07:56:49 +1030
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B484A392818
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 21:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773782836; cv=pass; b=JkHpBvEolcP9UdpF7zG45rFckCG9LVpljO4rnVv/meMHU8k9IuZPIXuHCwKMVVne5LRzcwHSdvvUpGcor2ifTwFy8Crz12hZglWZJfCuI7eLflrjH42V60ZwoZQiif8bEjaK9L2VOoVkCpPMNoOth9BFSy0Gt2LK352hBmmvT/k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773782836; c=relaxed/simple;
+	bh=wGd+thudyV9Nv0l5oAVAN331H+viWPRkQfv3V3ltlVE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=USuactAnyHg9KQy8i1OXrDhnfkdzpla/uEab+F5l7AZzG5DRnYQWhajin3bP/q3/jXIZGgQvZwfsxywiajRKuzxqOrXHZhk/KBwQ3QtE+kSGDUTWPYZ3MtrXn2RCaadYid9BKyEk4v5fu2eTdBolO+/M152mkr5B8fgAIeusiMI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tlswbjuq; arc=pass smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8c6f21c2d81so621196785a.2
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:27:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773782832; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZE0PM5Fjot8dZNfMzrW2VUZNNI15G+/I2jwq72uz2I4bDiu/NfVF1JPuZmpAsMAmY4
+         4aq6Pi0sFRPr5VZGmAwNEBBF/PitafYLmWvzPFO+fDimRrkmA/RSTxKAMLr5e8g0HV33
+         ggQON5AYGrPahwfs49mmR/lMVeu3C2OkL4iYjnPwv5kfrjLDqj7pYA6mFPOnmi/kETnE
+         JqIoCuV7v4wyuiebhjLmb+LQ00AUBN3oO5O7nIyNIiU1h1Jv8Rg3cdShHYETdOxfxHyO
+         FX2+AJ1zBvy9bcq5+Wmx8RgBv6iQAs8hTLGT6Cx7hqFCFX4/smrtUqNCsNjEyVi3pfld
+         OTMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WJn2bqD1oL1nPEOJJHpHZSbhMDi7B8umwU+fF6DGIU4=;
+        fh=MHHqimSqCTzr/wBO5QzghpQkj1HRHdaZkEF5fbBQ40Q=;
+        b=Pp5WwSLXz+iRNEBYrlFV6XV2qLPosoEOZzHa+3uMebr8R1LXIcCw2T0SzcJpq3deHY
+         8HMRmZRQJSqEWN9hksXatgO7wUX/Ig+ZqooflwC+WPbJznMgn3AcFqLBcmN9B/cwz+jA
+         pvXTX3lf21hWQSuskQ1FlWebODHFsKmMF4mm3VNw8ALrMnIQtArDh5oz4Ozn9xxFc3CH
+         tUad2xRC5jsKbEHUw7J3WTPXoRIbSTZ0rKEj3C1k1eglO/EZktjMer3elw6ebdJkl1FQ
+         8M6PN+N3Dknm879LMr2sKbxPsvesyK0fvMVGfCRI6f8kTXiVbdYeQkfRAethkkNtq814
+         Udzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773782832; x=1774387632; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WJn2bqD1oL1nPEOJJHpHZSbhMDi7B8umwU+fF6DGIU4=;
+        b=TlswbjuqlWcgMinNXf6X34agjZPdaPTsvDlhYTuE57y7F6BhRxhOdipFC09j9JfOQ7
+         eLCvVFNSP27/g8QYHDKu14HCOk5B6KzeVrfJ+00hpTIJAZGK0nQzUbQaZxt0eoYDa8vM
+         7inJMSvB1xWOh1jCeHCcwO/1qg2mXEJonUnX+TvLE8HjccgHLuazsH/GeCAUVzK15aYO
+         km+jGZolDoe9t3uUKirvMuCHXjBrNM7rogBy1kka6xdKbCzgVnSKnnAxgEKh049rS7Qq
+         lYExJUYaWy1D22wo/FD0+YuxY6B+4889qhXTLkw3cGKqJ+nqguOQwdQVmx+KUuaF8QXu
+         s64g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773782832; x=1774387632;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WJn2bqD1oL1nPEOJJHpHZSbhMDi7B8umwU+fF6DGIU4=;
+        b=CBbUUXo0PigTabWbGFh0XwFDM4vseYlSwTawYR7ljt64yTm2+VIyen7GxK0YY26kDW
+         XDSdcXrbWIVajvj3kY7UOYOiQ6EOcM5jKOQusupBzPcAGFtWSB82l92qNLItt9uji2Hv
+         OvIZxwBTWfuXnzKOgNG14r4kXH85KaQcUOBeoUIy5HFbwBsZwXu1ddTS54osAE8S9PBe
+         QCU7rRo3gFB1xxk6dbyvM9GUbiBOeqVKs9kfJ5CkqCTNINo5KCXtgGcdV1YfO996clpv
+         oleNjtEUsgK/l0AfhC+Jer3QhDwAuZmZUupIMO3cPbytjL+167OSskBY6vGaK5DirBu8
+         kY1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUIxZC9hcWp7wtWMhl24QumtagwSdNtv+TZGN4oZToyepcgnWlZnuK/0pMO2mE44/HtpPrtors=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykCZbX804uGhjXJ/ClVcKCzDBzAg3jrDABWtKPBqI7GC6jgl4L
+	E7Y6geNt4045f8UKdCH1QTEjzykH04/Hh6cHgjXAvbqUsg3Yn6UK4qeJUB/hlbKofCnS9wsGhKh
+	3wcYT+rxCZHaz1xFgdxGups+pDtPmKaLmDF/3
+X-Gm-Gg: ATEYQzwLuNaHUAH71V8318vkXUWLmyapWDNbV3x/+UU9O4EtIsTRIcLsk99zXdQsvuN
+	/6V4qzdMdz34W6KxTBqsp6SFYA2NyC5vmGRKjjKwqyfIoxusrZP5TfxqSL5nZNfrgtmMWyOngkb
+	zZff5G0Qf6zs27+avu8TlvPSVMba+uq2+9N81HqtavEvabGj/VhUW/qe9knoOE7+kEKacpQZrkq
+	EmXJ8E+27yskCUu2tg5+UouM1IupEfUz+tLsZaMwMt4EpH8KIkDdG7bUXeGyhnR+sVoJQRRz2sQ
+	IqYf/Pb3IXZMjGtUHKm88pTExyyWNRx1F62aZ4J+rjOUBlF/LkPq9Nad+dwgncXWh9jdNgONH2d
+	UIhsaKHsjOpgq5YxtggR7fHHGxerqnxDeb/7OmyCBAG+uSL9BvQvdAGU/dver4A==
+X-Received: by 2002:a05:6214:590e:b0:899:f9f5:97a9 with SMTP id
+ 6a1803df08f44-89c6b58deb7mr18079006d6.37.1773782832437; Tue, 17 Mar 2026
+ 14:27:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: zlib: handle page aligned compressed size
- correctly
-To: dsterba@suse.cz, Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
- David Sterba <dsterba@suse.com>,
- Jean-Christophe Guillain <jean-christophe@guillain.net>
-References: <ab5c12312b275589abd42c47a0c34b7e68375407.1773389056.git.wqu@suse.com>
- <20260317101157.GS5735@twin.jikos.cz>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <20260317101157.GS5735@twin.jikos.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20260317065253.1743552-1-werner@verivus.com> <435dda9f-93f5-41db-9d21-70371d31857b@chenxiaosong.com>
+In-Reply-To: <435dda9f-93f5-41db-9d21-70371d31857b@chenxiaosong.com>
+From: Steve French <smfrench@gmail.com>
+Date: Tue, 17 Mar 2026 16:27:00 -0500
+X-Gm-Features: AaiRm505a8UyoMHPlnBXec4AZ4qil-1PSoZze-n4iJ1WCJq2H-I9vKg9CjSnNpE
+Message-ID: <CAH2r5mvRpUJpXSgeQdQ_ssjz=skeFAFPKQ3u1YZ9Z1jtsjf87A@mail.gmail.com>
+Subject: Re: [PATCH v3] ksmbd: fix use-after-free and NULL deref in smb_grant_oplock()
+To: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+Cc: Werner Kasselman <werner@verivus.ai>, 
+	"linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>, 
+	"linkinjeon@kernel.org" <linkinjeon@kernel.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:d8F1TOhxVAczqYkvh01PFDzGyEhmqtB/A39Hbf0+jYF0Pq8rlx1
- roBXkT7FkEVmIp5JJguRjgxYhmodxteOJFt1yMyqCdIKqXndAo/+eaXSlMAQWLiUS0qR51I
- Y9ZTqiqBUygV+gdUQ/EwwfOG9JwqSt1SGJo8u6IFx85GQ1jk9nWcgVTfHMyxhcjuYRDDEMN
- bH7ghQYcbP3EfnvdIVd/A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cPguwzXBKbo=;8SyvCtxeoztN8yGoEZcjCWdcbZb
- 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
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmx.com:s=s31663417];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226910-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmx.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226911-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[quwenruo.btrfs@gmx.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.com:dkim,gmx.com:mid]
-X-Rspamd-Queue-Id: 5A0892B2B36
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chenxiaosong.com:email,kylinos.cn:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,verivus.com:email,sashiko.dev:url]
+X-Rspamd-Queue-Id: E07AA2B2B44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+I see some AI review comments from Sashiko:
+https://sashiko.dev/#/patchset/20260317065253.1743552-1-werner%40verivus.co=
+m
+
+On Tue, Mar 17, 2026 at 3:17=E2=80=AFAM ChenXiaoSong
+<chenxiaosong@chenxiaosong.com> wrote:
+>
+> Looks good to me so far. Others can continue the review.
+>
+> Thanks,
+> ChenXiaoSong <chenxiaosong@kylinos.cn>
+>
+> On 3/17/26 14:52, Werner Kasselman wrote:
+> > smb_grant_oplock() has two issues in the oplock publication sequence:
+> >
+> > 1) opinfo is linked into ci->m_op_list (via opinfo_add) before
+> >     add_lease_global_list() is called.  If add_lease_global_list()
+> >     fails (kmalloc returns NULL), the error path frees the opinfo
+> >     via __free_opinfo() while it is still linked in ci->m_op_list.
+> >     Concurrent m_op_list readers (opinfo_get_list, or direct iteration
+> >     in smb_break_all_levII_oplock) dereference the freed node.
+> >
+> > 2) opinfo->o_fp is assigned after add_lease_global_list() publishes
+> >     the opinfo on the global lease list.  A concurrent
+> >     find_same_lease_key() can walk the lease list and dereference
+> >     opinfo->o_fp->f_ci while o_fp is still NULL.
+> >
+> > Fix by restructuring the publication sequence to eliminate post-publish
+> > failure:
+> >
+> > - Set opinfo->o_fp before any list publication (fixes NULL deref).
+> > - Preallocate lease_table via alloc_lease_table() before opinfo_add()
+> >    so add_lease_global_list() becomes infallible after publication.
+> > - Keep the original m_op_list publication order (opinfo_add before
+> >    lease list) so concurrent opens via same_client_has_lease() and
+> >    opinfo_get_list() still see the in-flight grant.
+> > - Use opinfo_put() instead of __free_opinfo() on err_out so that
+> >    the RCU-deferred free path is used.
+> >
+> > This also requires splitting add_lease_global_list() to take a
+> > preallocated lease_table and changing its return type from int to void,
+> > since it can no longer fail.
+> >
+> > Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+> > Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for=
+ oplock_info")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Werner Kasselman <werner@verivus.com>
 
 
-=E5=9C=A8 2026/3/17 20:41, David Sterba =E5=86=99=E9=81=93:
-> On Fri, Mar 13, 2026 at 06:35:26PM +1030, Qu Wenruo wrote:
-[...]
->> diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
->> index 1a5093525e32..147c92a4dd04 100644
->> --- a/fs/btrfs/zlib.c
->> +++ b/fs/btrfs/zlib.c
->> @@ -308,7 +308,9 @@ int zlib_compress_bio(struct list_head *ws, struct =
-compressed_bio *cb)
->>   	}
->>   	/* Queue the remaining part of the folio. */
->=20
-> Maybe update this comment with brief description of the tricky case.
 
-To be honest, the tricky case is not tricky at all.
-
-It's myself considering large folios and bs > ps cases too much.
-
-The new code is in fact more straightforward, if there are new output,=20
-total_out - bi_size is exactly the length of the new output.
-
-And the output length is already limited by folio_size, there is no need=
-=20
-and shouldn't use offset_in_folio().
-The offset_in_folio() looks sane on a quick glance, but if you put all=20
-the corner values (0, and folio_size) into it, it only passes the 0 case=
-=20
-but not the folio_size case.
-
-So there is no tricky case in the first place, it's all my fault making=20
-things way too complex and shoot myself in the foot.
-
+--=20
 Thanks,
-Qu
 
-
->=20
->>   	if (workspace->strm.total_out > bio->bi_iter.bi_size) {
->> -		u32 cur_len =3D offset_in_folio(out_folio, workspace->strm.total_out=
-);
->> +		const u32 cur_len =3D workspace->strm.total_out - bio->bi_iter.bi_si=
-ze;
->> +
->> +		ASSERT(cur_len <=3D folio_size(out_folio));
->>  =20
->>   		if (!bio_add_folio(bio, out_folio, cur_len, 0)) {
->>   			ret =3D -E2BIG;
->> --=20
->> 2.53.0
->>
->=20
-
+Steve
 
