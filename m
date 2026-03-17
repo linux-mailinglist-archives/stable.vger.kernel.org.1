@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-226752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPRbEfKSuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:18 +0100
+	id uAMpKnqIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34A92B010A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C4D2AEBFB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30BEA33923F8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9AF63303C4E6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73E82DF132;
-	Tue, 17 Mar 2026 17:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57C03F7E81;
+	Tue, 17 Mar 2026 16:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We2rdJAb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzAZV0ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994F43346A0;
-	Tue, 17 Mar 2026 17:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990C63F7E7C;
+	Tue, 17 Mar 2026 16:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768052; cv=none; b=hA6NIqoyKqhSBpuHL6DDDe85I/J8AY+Ug2PCPP99utE8IAbUihdrbHT5PmFheYTCHaj9gWhyiQw2tBFx7BVaPdg2m+F1DmOwUlMFBtzJxRIlSoDBf7mnpXntrF5L6y85l3xEaf4HI0cx8U3lr+uncJJIQ+EYFHkk5qI6u8AAdGE=
+	t=1773766655; cv=none; b=eE/XT4kIU60ZxI9OpRMztcFzTUJuGuKyNP8P0Mry8LkQ28Mxu4B8mbxr1kspSZ7x1wYqigRBcLgmYqO8zjsPFcDKAWYvfX/J2X2DZFxYd7kr2FQ76EJdCmTlbbc2RkgOI8IA4YXNIQDFz9jIhiMS4TVqVipSuyiyLVDHxGQwO7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768052; c=relaxed/simple;
-	bh=DJ4Fgm01AT+hPNjZsIl2ITUtlbZ2t6zWNIJnZwCXqPs=;
+	s=arc-20240116; t=1773766655; c=relaxed/simple;
+	bh=t0crC08jydjWAgvJY9WvPubZYnlUF2omTeOJ/e8DXns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3d5PPJCKv+XuyYBzMk0ffT0ijcRPMN8cspELk3wK/kJf3kqH8hbw9on/eec838fHYpLbjc+myL5umY958kiqhngOZzi1flTnrUl03TZo/eOklDHGgR+pCfwypWMIhk6E5Xg9TsBXwGM5D9m8D4QQMLbVLP6s2whvgK4U5HYAIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We2rdJAb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016DBC2BC86;
-	Tue, 17 Mar 2026 17:20:51 +0000 (UTC)
+	 MIME-Version; b=BefRqFLi42HUQQkn7gSsFzAB7yJGThxURH94aCWMoXwulYX6e0TQk1y2KweVgidGkxCw8KPGL7D2HA/gey9UTjw+6x7Doa3388wg97XXnhUOCxIh4ZL/QOUXiOc3CeDiiklhngf1HGVSDEFxyPyLMu2X3jSpQSE+jkhakDZUdM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzAZV0ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9607C2BCB0;
+	Tue, 17 Mar 2026 16:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768052;
-	bh=DJ4Fgm01AT+hPNjZsIl2ITUtlbZ2t6zWNIJnZwCXqPs=;
+	s=korg; t=1773766655;
+	bh=t0crC08jydjWAgvJY9WvPubZYnlUF2omTeOJ/e8DXns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=We2rdJAbR3fO7P7UrNVaKXhzdi6ggd+GkgKI7xbi/JoOPx63eJoPGvx5PM7sfsaC6
-	 TZSIZyxh8gCBZs9yQalUgpPdX4AP6MeuzYmgt/Ao1sDJnJnNnyctE3BNX1WuD/m8TP
-	 zURUpUh6rQprFYMJyuMrDhtmONzhI9F83GogDbeo=
+	b=vzAZV0ih8iNgpsDaoyjadiPdVVjve1xpsdliS9zem95wSYt/q3pksI+xzB6ZhVbwL
+	 QEn7e8iNcA9XZnguDsuEn5w8/jJkHxYRKO4gDu0K6vqcfwMSlbNSx5LlJ/gUD2Jkz1
+	 nT4zOfevtuegz2RDpsp72tNNa1f5YvR5r7GqYrvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.18 221/333] drm/xe/xe2_hpg: Correct implementation of Wa_16025250150
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.19 293/378] ksmbd: fix use-after-free by using call_rcu() for oplock_info
 Date: Tue, 17 Mar 2026 17:34:10 +0100
-Message-ID: <20260317163007.560290664@linuxfoundation.org>
+Message-ID: <20260317163017.788939866@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +67,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226752-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226426-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A34A92B010A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 49C4D2AEBFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 89865e6dc8487b627302bdced3f965cd0c406835 upstream.
+commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
 
-Wa_16025250150 asks us to set five register fields of the register to
-0x1 each.  However we were just OR'ing this into the existing register
-value (which has a default of 0x4 for each nibble-sized field) resulting
-in final field values of 0x5 instead of the desired 0x1.  Correct the
-RTP programming (use FIELD_SET instead of SET) to ensure each field is
-assigned to exactly the value we want.
+ksmbd currently frees oplock_info immediately using kfree(), even
+though it is accessed under RCU read-side critical sections in places
+like opinfo_get() and proc_show_files().
 
-Cc: Aradhya Bhatia <aradhya.bhatia@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: stable@vger.kernel.org # v6.16+
-Fixes: 7654d51f1fd8 ("drm/xe/xe2hpg: Add Wa_16025250150")
-Reviewed-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
-Link: https://patch.msgid.link/20260227164341.3600098-2-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit d139209ef88e48af1f6731cd45440421c757b6b5)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Since there is no RCU grace period delay between nullifying the pointer
+and freeing the memory, a reader can still access oplock_info
+structure after it has been freed. This can leads to a use-after-free
+especially in opinfo_get() where atomic_inc_not_zero() is called on
+already freed memory.
+
+Fix this by switching to deferred freeing using call_rcu().
+
+Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_wa.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
+ fs/smb/server/oplock.h |    5 +++--
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -255,12 +255,13 @@ static const struct xe_rtp_entry_sr gt_w
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
+ 	kfree(lease);
+ }
  
- 	{ XE_RTP_NAME("16025250150"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION(2001)),
--	  XE_RTP_ACTIONS(SET(LSN_VC_REG2,
--			     LSN_LNI_WGT(1) |
--			     LSN_LNE_WGT(1) |
--			     LSN_DIM_X_WGT(1) |
--			     LSN_DIM_Y_WGT(1) |
--			     LSN_DIM_Z_WGT(1)))
-+	  XE_RTP_ACTIONS(FIELD_SET(LSN_VC_REG2,
-+				   LSN_LNI_WGT_MASK | LSN_LNE_WGT_MASK |
-+				   LSN_DIM_X_WGT_MASK | LSN_DIM_Y_WGT_MASK |
-+				   LSN_DIM_Z_WGT_MASK,
-+				   LSN_LNI_WGT(1) | LSN_LNE_WGT(1) |
-+				   LSN_DIM_X_WGT(1) | LSN_DIM_Y_WGT(1) |
-+				   LSN_DIM_Z_WGT(1)))
- 	},
+-static void free_opinfo(struct oplock_info *opinfo)
++static void __free_opinfo(struct oplock_info *opinfo)
+ {
+ 	if (opinfo->is_lease)
+ 		free_lease(opinfo);
+@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
+ 	kfree(opinfo);
+ }
  
- 	/* Xe2_HPM */
++static void free_opinfo_rcu(struct rcu_head *rcu)
++{
++	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
++
++	__free_opinfo(opinfo);
++}
++
++static void free_opinfo(struct oplock_info *opinfo)
++{
++	call_rcu(&opinfo->rcu, free_opinfo_rcu);
++}
++
+ struct oplock_info *opinfo_get(struct ksmbd_file *fp)
+ {
+ 	struct oplock_info *opinfo;
+@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
+ 	free_opinfo(opinfo);
+ }
+ 
+-static void opinfo_add(struct oplock_info *opinfo)
++static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
+ {
+-	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
++	struct ksmbd_inode *ci = fp->f_ci;
+ 
+ 	down_write(&ci->m_lock);
+ 	list_add(&opinfo->op_entry, &ci->m_op_list);
+@@ -1279,20 +1291,21 @@ set_lev:
+ 	set_oplock_level(opinfo, req_op_level, lctx);
+ 
+ out:
+-	rcu_assign_pointer(fp->f_opinfo, opinfo);
+-	opinfo->o_fp = fp;
+-
+ 	opinfo_count_inc(fp);
+-	opinfo_add(opinfo);
++	opinfo_add(opinfo, fp);
++
+ 	if (opinfo->is_lease) {
+ 		err = add_lease_global_list(opinfo);
+ 		if (err)
+ 			goto err_out;
+ 	}
+ 
++	rcu_assign_pointer(fp->f_opinfo, opinfo);
++	opinfo->o_fp = fp;
++
+ 	return 0;
+ err_out:
+-	free_opinfo(opinfo);
++	__free_opinfo(opinfo);
+ 	return err;
+ }
+ 
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -69,8 +69,9 @@ struct oplock_info {
+ 	struct lease		*o_lease;
+ 	struct list_head        op_entry;
+ 	struct list_head        lease_entry;
+-	wait_queue_head_t oplock_q; /* Other server threads */
+-	wait_queue_head_t oplock_brk; /* oplock breaking wait */
++	wait_queue_head_t	oplock_q; /* Other server threads */
++	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
++	struct rcu_head		rcu;
+ };
+ 
+ struct lease_break_info {
 
 
 
