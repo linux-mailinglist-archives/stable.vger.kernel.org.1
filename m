@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-226303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFQnEE6IuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:54 +0100
+	id QE1vCGKRuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E602AEB93
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E1E2AFE32
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 112BA319E22E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25553326AF78
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1173F54B8;
-	Tue, 17 Mar 2026 16:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD1F31815D;
+	Tue, 17 Mar 2026 17:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+n/UtCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeDQvDzM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3AB3F54B5;
-	Tue, 17 Mar 2026 16:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE4926FD9B;
+	Tue, 17 Mar 2026 17:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766111; cv=none; b=iWHucBCgoSRmPslgFgz6d4ujFwvGo4GfAbNqv0I09qilN8dy0zWGUN1U78rlUBc4LQaSo1UbmixvHKjMwoA03TUgVncsZ4ba6PqwuQLXkbvY52fxsTWJDI+IumlC860SEl0iL0C06go+V40l3kchLN+4OBf5hyhIvN7hdikPYm8=
+	t=1773767516; cv=none; b=SkYf5hkd+ERG5yaErqS98DVozXGAuNKVazXc1ugN+Km2zyKtz9wG0eVGOf0+AYt9EJju7fN8wOUPQx5799yx/btfjn9aOb4ILHV1X54B6pqoY5QJj1L+Fxb57lsRYmU2y5aoxSUwvzqqWxJOLw/QeRf+zHsGqjrk+OlEKztv2/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766111; c=relaxed/simple;
-	bh=6NJuyC76BW6a7T9a/AWBNo9oFPKb4jq29ZuS9oEu3EM=;
+	s=arc-20240116; t=1773767516; c=relaxed/simple;
+	bh=7biJQf+letdU5ffW1U7ceOu7gLQmt1+obeGazCOvYUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVokoNdTXDIcLDUdnBhEIXm09N9XXe91MISl0copoHWnzV6l7varnRqW7f8DsI+DVLBXq7SgvxIClHKLs02kNhFrSK4bPey8ULaHMdlyrBEwAPPrJqTNRvT/ahqVIYkIugLLRntbL4EElyeOlv/8r+HnODFbdiA8lvAx4A8WPaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+n/UtCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469B3C4CEF7;
-	Tue, 17 Mar 2026 16:48:30 +0000 (UTC)
+	 MIME-Version; b=JXjqPEGUlRgHKVS6peeI1JmaMpC/2s0MpHRWJNOwKUG9X4Q3X/WxIXr3ouz2LiBThZxWtvl6Flzn3SC31Iihcz2C62TA9TGSRs+rBlCn0mejexLgwuzYVf9eqit5LPw8gaOCr1Q8/a/ID1r17tLc//KpxWX2J5zAuVO1VPSXXbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeDQvDzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F080BC4CEF7;
+	Tue, 17 Mar 2026 17:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766111;
-	bh=6NJuyC76BW6a7T9a/AWBNo9oFPKb4jq29ZuS9oEu3EM=;
+	s=korg; t=1773767516;
+	bh=7biJQf+letdU5ffW1U7ceOu7gLQmt1+obeGazCOvYUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+n/UtCzZGF2oWcwsD+iwJ7kQnWzk9iiZuWK1fqzATu6vSKCvuuYExDflSWjElJdH
-	 GhkLUlwfgb9639vQJyQz284R7eYr4Gon0BqfZ2UoG74XdPPG1+KTsD9LalnaKDsqIa
-	 i5AJUKNcqu64eIkaUlo3KffoNVEPz8OUe3iTyFGY=
+	b=LeDQvDzMEggOCPpqWIBSOVBehmUHNcgu3IsPJoD0bkMn3maUXnTn34jpEH7W+Vwyu
+	 qsErABVemp2sYkgWpweVCFXV4MsHDaz6Jr8UnbgHWwQM5Bn8GWWStTmPVmoRNIggpE
+	 04s72hVb/P4fbRuZ+bmE7tDv2Hf9YjveKsT5XG2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	SeongJae Park <sj@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 173/378] mm/tracing: rss_stat: ensure curr is false from kthread context
+	Eric Dumazet <edumazet@google.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 101/333] net: prevent NULL deref in ip[6]tunnel_xmit()
 Date: Tue, 17 Mar 2026 17:32:10 +0100
-Message-ID: <20260317163013.373825659@linuxfoundation.org>
+Message-ID: <20260317163003.116355657@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,106 +74,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226623-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226303-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92E602AEB93
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 83E1E2AFE32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh Singh <kaleshsingh@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 079c24d5690262e83ee476e2a548e416f3237511 upstream.
+[ Upstream commit c38b8f5f791ecce13ab77e2257f8fd2444ba80f6 ]
 
-The rss_stat trace event allows userspace tools, like Perfetto [1], to
-inspect per-process RSS metric changes over time.
+Blamed commit missed that both functions can be called with dev == NULL.
 
-The curr field was introduced to rss_stat in commit e4dcad204d3a
-("rss_stat: add support to detect RSS updates of external mm").  Its
-intent is to indicate whether the RSS update is for the mm_struct of the
-current execution context; and is set to false when operating on a remote
-mm_struct (e.g., via kswapd or a direct reclaimer).
+Also add unlikely() hints for these conditions that only fuzzers can hit.
 
-However, an issue arises when a kernel thread temporarily adopts a user
-process's mm_struct.  Kernel threads do not have their own mm_struct and
-normally have current->mm set to NULL.  To operate on user memory, they
-can "borrow" a memory context using kthread_use_mm(), which sets
-current->mm to the user process's mm.
-
-This can be observed, for example, in the USB Function Filesystem (FFS)
-driver.  The ffs_user_copy_worker() handles AIO completions and uses
-kthread_use_mm() to copy data to a user-space buffer.  If a page fault
-occurs during this copy, the fault handler executes in the kthread's
-context.
-
-At this point, current is the kthread, but current->mm points to the user
-process's mm.  Since the rss_stat event (from the page fault) is for that
-same mm, the condition current->mm == mm becomes true, causing curr to be
-incorrectly set to true when the trace event is emitted.
-
-This is misleading because it suggests the mm belongs to the kthread,
-confusing userspace tools that track per-process RSS changes and
-corrupting their mm_id-to-process association.
-
-Fix this by ensuring curr is always false when the trace event is emitted
-from a kthread context by checking for the PF_KTHREAD flag.
-
-Link: https://lkml.kernel.org/r/20260219233708.1971199-1-kaleshsingh@google.com
-Link: https://perfetto.dev/ [1]
-Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>	[5.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+CC: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260312043908.2790803-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/kmem.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/net/ip6_tunnel.h  | 10 ++++++----
+ net/ipv4/ip_tunnel_core.c | 10 ++++++----
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
---- a/include/trace/events/kmem.h
-+++ b/include/trace/events/kmem.h
-@@ -440,7 +440,13 @@ TRACE_EVENT(rss_stat,
+diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
+index 1253cbb4b0a45..359b595f1df93 100644
+--- a/include/net/ip6_tunnel.h
++++ b/include/net/ip6_tunnel.h
+@@ -156,10 +156,12 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
+ {
+ 	int pkt_len, err;
  
- 	TP_fast_assign(
- 		__entry->mm_id = mm_ptr_to_hash(mm);
--		__entry->curr = !!(current->mm == mm);
-+		/*
-+		 * curr is true if the mm matches the current task's mm_struct.
-+		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
-+		 * but can borrow one via kthread_use_mm(), we must filter them
-+		 * out to avoid incorrectly attributing the RSS update to them.
-+		 */
-+		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
- 		__entry->member = member;
- 		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
+-	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
+-		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
+-				     dev->name);
+-		DEV_STATS_INC(dev, tx_errors);
++	if (unlikely(dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT)) {
++		if (dev) {
++			net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++					     dev->name);
++			DEV_STATS_INC(dev, tx_errors);
++		}
+ 		kfree_skb(skb);
+ 		return;
+ 	}
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index b1b6bf949f65a..5683c328990f4 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -58,10 +58,12 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
+ 	struct iphdr *iph;
+ 	int err;
+ 
+-	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
+-		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
+-				     dev->name);
+-		DEV_STATS_INC(dev, tx_errors);
++	if (unlikely(dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT)) {
++		if (dev) {
++			net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++					     dev->name);
++			DEV_STATS_INC(dev, tx_errors);
++		}
+ 		ip_rt_put(rt);
+ 		kfree_skb(skb);
+ 		return;
+-- 
+2.51.0
+
 
 
 
