@@ -1,159 +1,336 @@
-Return-Path: <stable+bounces-225802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDuAJvUquWmVtQEAu9opvQ
-	(envelope-from <stable+bounces-225802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:37 +0100
+	id sCovN6gruWmVtQEAu9opvQ
+	(envelope-from <stable+bounces-225803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:23:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101442A7BF7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:20:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E010C2A7CE7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4985305B597
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:19:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4823D303638F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB613A4F37;
-	Tue, 17 Mar 2026 10:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31433A257C;
+	Tue, 17 Mar 2026 10:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yRoEmxVM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IHDUxvmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+a9A/1v"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D7E3A2576;
-	Tue, 17 Mar 2026 10:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB23387353
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773742738; cv=none; b=pvIvAg/EKeev5Tz+hxfHvKseYEb5FHCBjCb1JFb+CpgJuLbs60IHgqMUz2Qz+zkmdsH8zfn/UwzEiU2xKpHspz5k4RfzuTrbByuAapnZ0SxErlpjqV8Ks2P7emaYSn3o5ur7M7oQVFt3LEvhAJVLegsiawwUC3wma83cv+Zfr1Q=
+	t=1773742773; cv=none; b=QzSu9+WMOzP8erzb4Imc1KhHCc1n+D80jlNnSYCW8XfEbHfViK8OOJ4APG6XQwKNXuy+YGn2QbvghigipDmof0J0hJtChiZzk/pQi+0ViWei2kRUB/TdL0Yf7lgePFtqsOSxm2LGvRP8IJXRtRdZjGm05c2+Jr4uvfwGYfSZFvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773742738; c=relaxed/simple;
-	bh=jPnYWUdNEjc9kUZMOXRUxrepSYhE+tXXV3PPmUEzhts=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IpPQNbcadzqRegYyMTQaQxVDsU9lJHXIaSgrzDPYhmhe+oo0n2GTsYbUnWFY1tPHEiKa0jf6bXeATJ5vDMQbe9zTCTxhqgmmhz90h7SlBH83yUggz0f3IRwnnpXkPimYTL/O+HxBXkktFIETGdxaMpQY+4lCPjnrjUJq50J6C7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yRoEmxVM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IHDUxvmp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 17 Mar 2026 10:18:52 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1773742733;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AwtexRlYAbh2H4NdKQSY59V2rxetHEziyTG51wy+FcA=;
-	b=yRoEmxVMOhf5tixRI9lK/V3B6grfVnSgNNO9h1zMdrSwhX9vYXYkuGRtb5fw7EfxzbQZw6
-	RenloPS5y+IfyY/XdHystIS1pbrl3NXpKOIU41cdsQmmMmtGgNd6azZzwYt7snYqofwEb0
-	wSPUlBEHZBcLwqZPwNPKml0TV9vvACOUUJaTM15hll1unFn3y5D5ILYy1FqJXExPd6cgzt
-	ty6Ic0KFtiApqOzbWCE8ECfQ1uc7OQDB+jnaelM5Y+VkoaJgof/iujj4D/Omhokg15m0vb
-	1jRtwPZsmu0+yh3JCf9jEbQlsVfWySIqL6VHzkEwuiq4nKL++ySRHz+GNi2ozA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1773742733;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AwtexRlYAbh2H4NdKQSY59V2rxetHEziyTG51wy+FcA=;
-	b=IHDUxvmp6CLePqKJB1+xAH/kb2DLdo95kS67rNcmkwp/4vliD2/toSJ0Wb1FudwKAGkOL+
-	e3T00oj26NufBOAQ==
-From: "tip-bot2 for Felix Gu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/riscv-rpmi-sysmsi: Fix mailbox channel leak
- in rpmi_sysmsi_probe()
-Cc: Felix Gu <ustc.gu@gmail.com>, Thomas Gleixner <tglx@kernel.org>,
- stable@vger.kernel.org, Rahul Pathak <rahul@summations.net>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com>
-References: <20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com>
+	s=arc-20240116; t=1773742773; c=relaxed/simple;
+	bh=+UYckGZZN6NQTl2c2cTydojNQQNAcGEPsx+c2KwR6Bg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kPOAIFMngwcdHsJvNXsoULYnSBY/73E56KdONxU7dHHoWRl6VYkH+XDbu6Lb1Vg0tKUDt//0K1fWwFBmszizMobwAteZH/J7cnsgyU1+etLcaehP2DQDo7JkvoZZXr2v26LD/wpvDyVC7PvFUfu0rpwlNS+k/D4gJSXibNUQSCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+a9A/1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A2C4CEF7;
+	Tue, 17 Mar 2026 10:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773742773;
+	bh=+UYckGZZN6NQTl2c2cTydojNQQNAcGEPsx+c2KwR6Bg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=L+a9A/1vMNF+0hewIbC5FwIRVZSEJwyTV9tmrDbwdj0anC6t966wqIrlkGmfGNZo0
+	 pLumgsO4AxzziUuEpaaiQWEzIP8+SZ6n5ITzNkcCs1NyZ4gJOCvf/dk0zmuawt0apI
+	 NMNVCrtum7ECl502xTSSgAfpItxlw76psPYy+qYE=
+Subject: FAILED: patch "[PATCH] mm: Fix a hmm_range_fault() livelock / starvation problem" failed to apply to 6.18-stable tree
+To: thomas.hellstrom@linux.intel.com,akpm@linux-foundation.org,apopple@nvidia.com,dri-devel@lists.freedesktop.org,hch@lst.de,jgg@mellanox.com,jgg@ziepe.ca,jhubbard@nvidia.com,leon@kernel.org,matthew.brost@intel.com,rcampbell@nvidia.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 11:19:27 +0100
+Message-ID: <2026031727-elective-spilt-6870@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177374273228.1647592.6158346179399854363.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225802-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225803-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org,summations.net];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,summations.net:email]
-X-Rspamd-Queue-Id: 101442A7BF7
+	NEURAL_HAM(-0.00)[-0.995];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E010C2A7CE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     76f0930d6e809234904cf9f0f5f42ee6c1dc694e
-Gitweb:        https://git.kernel.org/tip/76f0930d6e809234904cf9f0f5f42ee6c1d=
-c694e
-Author:        Felix Gu <ustc.gu@gmail.com>
-AuthorDate:    Sun, 15 Mar 2026 15:17:54 +08:00
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Tue, 17 Mar 2026 11:16:15 +01:00
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-irqchip/riscv-rpmi-sysmsi: Fix mailbox channel leak in rpmi_sysmsi_probe()
+To reproduce the conflict and resubmit, you may use the following commands:
 
-When riscv_acpi_get_gsi_info() fails, the mailbox channel previously
-requested via mbox_request_channel() is not freed. Add the missing
-mbox_free_channel() call to prevent the resource leak.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x b570f37a2ce480be26c665345c5514686a8a0274
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031727-elective-spilt-6870@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-Fixes: 4752b0cfbc37 ("irqchip/riscv-rpmi-sysmsi: Add ACPI support")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Rahul Pathak <rahul@summations.net>
-Link: https://patch.msgid.link/20260315-sysmsi-v1-1-5f090c86c2ca@gmail.com
----
- drivers/irqchip/irq-riscv-rpmi-sysmsi.c | 1 +
- 1 file changed, 1 insertion(+)
+Possible dependencies:
 
-diff --git a/drivers/irqchip/irq-riscv-rpmi-sysmsi.c b/drivers/irqchip/irq-ri=
-scv-rpmi-sysmsi.c
-index 5c74c56..612f397 100644
---- a/drivers/irqchip/irq-riscv-rpmi-sysmsi.c
-+++ b/drivers/irqchip/irq-riscv-rpmi-sysmsi.c
-@@ -250,6 +250,7 @@ static int rpmi_sysmsi_probe(struct platform_device *pdev)
- 		rc =3D riscv_acpi_get_gsi_info(fwnode, &priv->gsi_base, &id,
- 					     &nr_irqs, NULL);
- 		if (rc) {
-+			mbox_free_channel(priv->chan);
- 			dev_err(dev, "failed to find GSI mapping\n");
- 			return rc;
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b570f37a2ce480be26c665345c5514686a8a0274 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Date: Tue, 10 Feb 2026 12:56:53 +0100
+Subject: [PATCH] mm: Fix a hmm_range_fault() livelock / starvation problem
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
+
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
+
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
+
+Rename migration_entry_wait_on_locked() to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in hmm_range_fault(),
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+v5:
+- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+  version of softleaf_entry_wait_on_locked().
+- Modify wording around function names in the commit message
+  (Andrew Morton)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Link: https://patch.msgid.link/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit a69d1ab971a624c6f112cea61536569d579c3215)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..d5af2b7f577b 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
+ 
+ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 		struct folio *dst, struct folio *src);
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 		__releases(ptl);
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
+ }
+ 
++static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6cd7974d4ada..406cef06b684 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+  * This follows the same logic as folio_wait_bit_common() so see the comments
+  * there.
+  */
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	__releases(ptl)
+ {
+ 	struct wait_page_queue wait_page;
+@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 07778814b4a8..2f815a34d924 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4763,7 +4763,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 1bf2cf8c44dd..2c3d489ecf51 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -500,7 +500,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+ 	if (!softleaf_is_migration(entry))
+ 		goto out;
+ 
+-	migration_entry_wait_on_locked(entry, ptl);
++	softleaf_entry_wait_on_locked(entry, ptl);
+ 	return;
+ out:
+ 	spin_unlock(ptl);
+@@ -532,10 +532,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
+ 		 * If migration entry existed, safe to release vma lock
+ 		 * here because the pgtable page won't be freed without the
+ 		 * pgtable lock released.  See comment right above pgtable
+-		 * lock release in migration_entry_wait_on_locked().
++		 * lock release in softleaf_entry_wait_on_locked().
+ 		 */
+ 		hugetlb_vma_unlock_read(vma);
+-		migration_entry_wait_on_locked(entry, ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
+ 		return;
+ 	}
+ 
+@@ -553,7 +553,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (!pmd_is_migration_entry(*pmd))
+ 		goto unlock;
+-	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
++	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+ 	return;
+ unlock:
+ 	spin_unlock(ptl);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 0a8b31939640..8079676c8f1f 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
  		}
+ 
+ 		if (softleaf_is_migration(entry)) {
+-			migration_entry_wait_on_locked(entry, ptl);
++			softleaf_entry_wait_on_locked(entry, ptl);
+ 			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+
 
