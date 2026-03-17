@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEqeJqOMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:23 +0100
+	id 8CxjAjyGuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7B12AF411
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B965B2AE813
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 46E0330748A4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7275030354B6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FAB2DA756;
-	Tue, 17 Mar 2026 17:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289223F54B4;
+	Tue, 17 Mar 2026 16:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp8nzPPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiyac0UG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5951E2116F6;
-	Tue, 17 Mar 2026 17:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDD93EDADD;
+	Tue, 17 Mar 2026 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767592; cv=none; b=uhHNQVxTDjdYaosUTqi4mwF37iMHxuXEGh9nrWon2LSjzLjmE589HeAgl+m2QmOrOYal1748kPlJKzp4Dm6CZvoEaKFZ+o9lnw1Djrvt3JOCSbiiZmwoGUuMD/KN3MjgDS7V8bUvLUGJ/5/uGkk6AQMUZ5zObvBTUitlbJZAgxE=
+	t=1773766198; cv=none; b=djlANrhc2NIm9uMsvjfefiu+SCx2duAlXPP8HvEuGgEXDPvx/lcBZRrUjHr4P3WmjFrmDxlXKTeBtwOVogSRvlh9QJfdJ3/U1Th/37fK44r3geoDpwyYA/M1DvOCs8GbBEXbuwhEeNVn0w2MUGVDKWqqYcId3if+opK8xqV4ZUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767592; c=relaxed/simple;
-	bh=iibeBrn/3Jix+macebIUjbuAQkdSrUFJkeIiUojg/uE=;
+	s=arc-20240116; t=1773766198; c=relaxed/simple;
+	bh=T4AjEnrJtTrwp+MNyBuXre9XF1YEGbibWqLFJRELy4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTSDTLcfPK4TTwDv/4vdzPhGZp/BWAtqCHySbIJaG2HbiJ7l4FHjFnM6A/70zLMAizDAlTQyRJ6bk7wtAgr5Q9ssJ/uf77xdBYszK5rXWedStGxyuAJbSQaeFAhuCHxvA7SLrCk9H5mO+Pe7FTgbB+PJeZCcfq9wyKGffv2ib0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp8nzPPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBFEC4CEF7;
-	Tue, 17 Mar 2026 17:13:11 +0000 (UTC)
+	 MIME-Version; b=MBAwb6KIPc1EW9z0M5qibC9f0n9bYMjk1e+NGqqME/NW4ZrKl9aeZQxivYA7wvYBJn4j4rOHkCnHrHt8mVAwzJQfnJAjgh/y9DIJK5pnJqoyVt3YsNeV6nsNPMi2BKSOBLEplHABUb+5APxs5tXwj93Di+oY+pqcc6EsdOHb6TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiyac0UG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371CAC4CEF7;
+	Tue, 17 Mar 2026 16:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767592;
-	bh=iibeBrn/3Jix+macebIUjbuAQkdSrUFJkeIiUojg/uE=;
+	s=korg; t=1773766198;
+	bh=T4AjEnrJtTrwp+MNyBuXre9XF1YEGbibWqLFJRELy4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp8nzPPehQMJHD0Vu9nfxJRVq5OVCJXmmEYvZYum5bBZeTOK1pYUy3L44bf3+zxlQ
-	 4Y3X+xylXoaYvrjKKMrJwLplff33Zj9YMzHmviw+8DpjyG7f3NAT1FwQ1HgX+FVYmb
-	 aCUQ8bMz1Km79FnPU/T8iRyqtOXbYARh5ehLNLSU=
+	b=hiyac0UGIDEcK+8THDk1/vlxfHO35vvMCFPRAj6qoIxXVM2YmPbt9s4Ea04WabufO
+	 FgnDxqVIozt9IBDF0rcdiuf1EHyJHismSTeRKlIGzkLBnO8u7WkCchetR9/ZiyQqU1
+	 bu35hwjBBAcZ/iqDOuoDDBLEwK8zKQPQ04QfHwEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 119/333] rust: str: make NullTerminatedFormatter public
+	Bean Huo <beanhuo@iokpp.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Wang Shuaiwei <wangshuaiwei1@xiaomi.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 191/378] scsi: ufs: core: Fix SError in ufshcd_rtc_work() during UFS suspend
 Date: Tue, 17 Mar 2026 17:32:28 +0100
-Message-ID: <20260317163003.780625088@linuxfoundation.org>
+Message-ID: <20260317163014.033428964@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226640-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226322-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,74 +89,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6C7B12AF411
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,xiaomi.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,acm.org:email,iokpp.de:email]
+X-Rspamd-Queue-Id: B965B2AE813
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Wang Shuaiwei <wangshuaiwei1@xiaomi.com>
 
-commit 3ac88a9948792b092a4b11323e2abd1ecbe0cc68 upstream.
+[ Upstream commit b0bd84c39289ef6a6c3827dd52c875659291970a ]
 
-If `CONFIG_BLOCK` is disabled, the following warnings are displayed
-during build:
+In __ufshcd_wl_suspend(), cancel_delayed_work_sync() is called to cancel
+the UFS RTC work, but it is placed after ufshcd_vops_suspend(hba, pm_op,
+POST_CHANGE). This creates a race condition where ufshcd_rtc_work() can
+still be running while ufshcd_vops_suspend() is executing. When
+UFSHCD_CAP_CLK_GATING is not supported, the condition
+!hba->clk_gating.active_reqs is always true, causing ufshcd_update_rtc()
+to be executed. Since ufshcd_vops_suspend() typically performs clock
+gating operations, executing ufshcd_update_rtc() at that moment triggers
+an SError. The kernel panic trace is as follows:
 
-  warning: struct `NullTerminatedFormatter` is never constructed
-    --> ../rust/kernel/str.rs:667:19
-      |
-  667 | pub(crate) struct NullTerminatedFormatter<'a> {
-      |                   ^^^^^^^^^^^^^^^^^^^^^^^
-      |
-      = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+Kernel panic - not syncing: Asynchronous SError Interrupt
+Call trace:
+ dump_backtrace+0xec/0x128
+ show_stack+0x18/0x28
+ dump_stack_lvl+0x40/0xa0
+ dump_stack+0x18/0x24
+ panic+0x148/0x374
+ nmi_panic+0x3c/0x8c
+ arm64_serror_panic+0x64/0x8c
+ do_serror+0xc4/0xc8
+ el1h_64_error_handler+0x34/0x4c
+ el1h_64_error+0x68/0x6c
+ el1_interrupt+0x20/0x58
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x68/0x6c
+ ktime_get+0xc4/0x12c
+ ufshcd_mcq_sq_stop+0x4c/0xec
+ ufshcd_mcq_sq_cleanup+0x64/0x1dc
+ ufshcd_clear_cmd+0x38/0x134
+ ufshcd_issue_dev_cmd+0x298/0x4d0
+ ufshcd_exec_dev_cmd+0x1a4/0x1c4
+ ufshcd_query_attr+0xbc/0x19c
+ ufshcd_rtc_work+0x10c/0x1c8
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x120/0x1d8
+ ret_from_fork+0x10/0x20
 
-  warning: associated function `new` is never used
-    --> ../rust/kernel/str.rs:673:19
-      |
-  671 | impl<'a> NullTerminatedFormatter<'a> {
-      | ------------------------------------ associated function in this implementation
-  672 |     /// Create a new [`Self`] instance.
-  673 |     pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
+Fix this by moving cancel_delayed_work_sync() before the call to
+ufshcd_vops_suspend(hba, pm_op, PRE_CHANGE), ensuring the UFS RTC work is
+fully completed or cancelled at that point.
 
-Fix them by making `NullTerminatedFormatter` public, as it could be
-useful for drivers anyway.
-
-Fixes: cdde7a1951ff ("rust: str: introduce `NullTerminatedFormatter`")
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bean Huo <beanhuo@iokpp.de>
+Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Wang Shuaiwei <wangshuaiwei1@xiaomi.com>
+Link: https://patch.msgid.link/20260307035128.3419687-1-wangshuaiwei1@xiaomi.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/str.rs |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -880,13 +880,13 @@ impl fmt::Write for Formatter<'_> {
- ///
- /// * The first byte of `buffer` is always zero.
- /// * The length of `buffer` is at least 1.
--pub(crate) struct NullTerminatedFormatter<'a> {
-+pub struct NullTerminatedFormatter<'a> {
-     buffer: &'a mut [u8],
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 2048ebc86590e..5038b8428fc30 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10061,6 +10061,7 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 	}
  
- impl<'a> NullTerminatedFormatter<'a> {
-     /// Create a new [`Self`] instance.
--    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-+    pub fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-         *(buffer.first_mut()?) = 0;
+ 	flush_work(&hba->eeh_work);
++	cancel_delayed_work_sync(&hba->ufs_rtc_update_work);
  
-         // INVARIANT:
+ 	ret = ufshcd_vops_suspend(hba, pm_op, PRE_CHANGE);
+ 	if (ret)
+@@ -10115,7 +10116,6 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 	if (ret)
+ 		goto set_link_active;
+ 
+-	cancel_delayed_work_sync(&hba->ufs_rtc_update_work);
+ 	goto out;
+ 
+ set_link_active:
+-- 
+2.51.0
+
 
 
 
