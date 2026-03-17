@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CfNIP+JuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:07 +0100
+	id wJR6Oo6NuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1786A2AEEEE
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552572AF60C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24BF93164EED
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A58D329D046
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AB53EAC6F;
-	Tue, 17 Mar 2026 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F3E2DF132;
+	Tue, 17 Mar 2026 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk9glvDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjFMtpUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962143EDADB;
-	Tue, 17 Mar 2026 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A53426FD9B;
+	Tue, 17 Mar 2026 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766402; cv=none; b=C28bvJ6088O4HMWV41394pxCbh67KSVCIwFgBdNHbNT9ZBBGo4qpfuu97Bsmmhj3h/7TPqe4QPr7LD5lDC+6lR0q1nLhLp3Xfn0Rn8ciNnZxYo/q15mB8SINYfM2X7cK21ji8bxh510Yz2BW7cMmfHhFyGiYmXG0/LWA9+gvdTQ=
+	t=1773767684; cv=none; b=msc5TciXnfZSPjhK8fuD27OYeSYjXSOI1yez81WSVDdnIVhWOzNqn//pLv+vmWNxAlOtewUn4CVaQkETbq/S19Q8BqD6rpUfxltSi2DB+Yxghp61lhSobWRLhLA/m43OURS9lNd5rPAsrFdoJanSWy9Ue+tQrOoCmGiCqOEUqJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766402; c=relaxed/simple;
-	bh=tA1f66WkLPSmk/T9UzgNETdzT6D7/a5P1q+BjCeuFTQ=;
+	s=arc-20240116; t=1773767684; c=relaxed/simple;
+	bh=sRV24jaom7yU2b6xCCmbLIstivvWhsC7iNV0vVROVpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCdrJC0xYMMt7utn071I++dbd5+ObUJoRiZV/EBUD7MIFFY+rU1wdF12e8DGRfuuFUJXHtHYOYIxq4ccghxvbo2tXcr8DGxyOQ+DlaAJF9KpTpnPZi3OyzPZ5fkg48T0fPF8tGPLqisndaOZ+XGZvaSiESB4CejBNkLPxxJwH6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk9glvDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913EFC4CEF7;
-	Tue, 17 Mar 2026 16:53:21 +0000 (UTC)
+	 MIME-Version; b=rTWmcS/4TAM9hwT5elgEFzMbDD8+FltJ9E2yLLL10v4we6hUy5qoDyVzNxUTOQY0lJ3Gthqy3UjUBDZNDytdLC6L58pshbcONBgqrduckIqxudBWUJ1yrJrGpuKu8LdnSBxjmvoOIdsGrW5uiJRq+ZSHF1EHcHAml3Nt1FBTHII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjFMtpUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA06BC4CEF7;
+	Tue, 17 Mar 2026 17:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766402;
-	bh=tA1f66WkLPSmk/T9UzgNETdzT6D7/a5P1q+BjCeuFTQ=;
+	s=korg; t=1773767684;
+	bh=sRV24jaom7yU2b6xCCmbLIstivvWhsC7iNV0vVROVpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rk9glvDYWHAenRfVOII2OPWwxIr2egGkOOnC9LGtgiBlFD2HdXPcziv6AGSOO48yj
-	 04F2VneL3MZ7IugMEmmpuAp+pwBIypwVAaVis8ZXR9L8oImdZG1ww28EMRV0riXh2D
-	 fVkia98FCj4BK7hkgwHjzz8xTOGE/GqngPb+v3Ow=
+	b=jjFMtpUmRne73mTcUZpZVwOwRMEDVYF0btpJPZeZntG+rUS2uA6hjCD93l5KD+FVp
+	 RITWganEXAh4eJFhauNeQdZUYManhRPUHa4GJvnFJVJCe0nPS9ar5xXX4DTjTVgW70
+	 0dMwecVWcwcYv/EAxmD1nPZu4G9jwb/zrCCy7WkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>
-Subject: [PATCH 6.19 206/378] libceph: reject preamble if control segment is empty
-Date: Tue, 17 Mar 2026 17:32:43 +0100
-Message-ID: <20260317163014.589520419@linuxfoundation.org>
+	Marc Zyngier <maz@kernel.org>,
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.18 135/333] usb: cdc-acm: Restore CAP_BRK functionnality to CH343
+Date: Tue, 17 Mar 2026 17:32:44 +0100
+Message-ID: <20260317163004.368552282@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +66,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226371-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226658-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1786A2AEEEE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 552572AF60C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit c4c22b846eceff05b1129b8844a80310e55a7f87 upstream.
+commit 14ae24cba291bddfdc296bbcbfd00cd09d0498ef upstream.
 
-While head_onwire_len() has a branch to handle ctrl_len == 0 case,
-prepare_read_control() always sets up a kvec for the CRC meaning that
-a non-empty control segment is effectively assumed.  All frames that
-clients deal with meet that assumption, so let's make it official and
-treat the preamble with an empty control segment as malformed.
+The CH343 USB/serial adapter is as buggy as it is popular (very).
+One of its quirks is that despite being capable of signalling a
+BREAK condition, it doesn't advertise it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+This used to work nonetheless until 66aad7d8d3ec5 ("usb: cdc-acm:
+return correct error code on unsupported break") applied some
+reasonable restrictions, preventing breaks from being emitted on
+devices that do not advertise CAP_BRK.
+
+Add a quirk for this particular device, so that breaks can still
+be produced on some of my machines attached to my console server.
+
+Fixes: 66aad7d8d3ec5 ("usb: cdc-acm: return correct error code on unsupported break")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable <stable@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20260301124440.1192752-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/messenger_v2.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/usb/class/cdc-acm.c |    5 +++++
+ drivers/usb/class/cdc-acm.h |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/net/ceph/messenger_v2.c
-+++ b/net/ceph/messenger_v2.c
-@@ -392,7 +392,7 @@ static int head_onwire_len(int ctrl_len,
- 	int head_len;
- 	int rem_len;
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1379,6 +1379,8 @@ made_compressed_probe:
+ 		acm->ctrl_caps = h.usb_cdc_acm_descriptor->bmCapabilities;
+ 	if (quirks & NO_CAP_LINE)
+ 		acm->ctrl_caps &= ~USB_CDC_CAP_LINE;
++	if (quirks & MISSING_CAP_BRK)
++		acm->ctrl_caps |= USB_CDC_CAP_BRK;
+ 	acm->ctrlsize = ctrlsize;
+ 	acm->readsize = readsize;
+ 	acm->rx_buflimit = num_rx_buf;
+@@ -2002,6 +2004,9 @@ static const struct usb_device_id acm_id
+ 	.driver_info = IGNORE_DEVICE,
+ 	},
  
--	BUG_ON(ctrl_len < 0 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
-+	BUG_ON(ctrl_len < 1 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
- 
- 	if (secure) {
- 		head_len = CEPH_PREAMBLE_SECURE_LEN;
-@@ -401,9 +401,7 @@ static int head_onwire_len(int ctrl_len,
- 			head_len += padded_len(rem_len) + CEPH_GCM_TAG_LEN;
- 		}
- 	} else {
--		head_len = CEPH_PREAMBLE_PLAIN_LEN;
--		if (ctrl_len)
--			head_len += ctrl_len + CEPH_CRC_LEN;
-+		head_len = CEPH_PREAMBLE_PLAIN_LEN + ctrl_len + CEPH_CRC_LEN;
- 	}
- 	return head_len;
- }
-@@ -528,11 +526,16 @@ static int decode_preamble(void *p, stru
- 		desc->fd_aligns[i] = ceph_decode_16(&p);
- 	}
- 
--	if (desc->fd_lens[0] < 0 ||
-+	/*
-+	 * This would fire for FRAME_TAG_WAIT (it has one empty
-+	 * segment), but we should never get it as client.
-+	 */
-+	if (desc->fd_lens[0] < 1 ||
- 	    desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
- 		pr_err("bad control segment length %d\n", desc->fd_lens[0]);
- 		return -EINVAL;
- 	}
++	/* CH343 supports CAP_BRK, but doesn't advertise it */
++	{ USB_DEVICE(0x1a86, 0x55d3), .driver_info = MISSING_CAP_BRK, },
 +
- 	if (desc->fd_lens[1] < 0 ||
- 	    desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
- 		pr_err("bad front segment length %d\n", desc->fd_lens[1]);
-@@ -549,10 +552,6 @@ static int decode_preamble(void *p, stru
- 		return -EINVAL;
- 	}
- 
--	/*
--	 * This would fire for FRAME_TAG_WAIT (it has one empty
--	 * segment), but we should never get it as client.
--	 */
- 	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
- 		pr_err("last segment empty, segment count %d\n",
- 		       desc->fd_seg_cnt);
+ 	/* control interfaces without any protocol set */
+ 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
+ 		USB_CDC_PROTO_NONE) },
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -113,3 +113,4 @@ struct acm {
+ #define CLEAR_HALT_CONDITIONS		BIT(5)
+ #define SEND_ZERO_PACKET		BIT(6)
+ #define DISABLE_ECHO			BIT(7)
++#define MISSING_CAP_BRK			BIT(8)
 
 
 
