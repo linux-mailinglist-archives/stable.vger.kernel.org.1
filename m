@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-226287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFccI/yFuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:00 +0100
+	id SCtkFM+KuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251B32AE753
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BDE2AF0EB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B60030120DC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3F8C0303E870
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870E83F54BE;
-	Tue, 17 Mar 2026 16:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4665C373C1F;
+	Tue, 17 Mar 2026 17:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+nY6Udb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8wenCfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3DA3F54B6;
-	Tue, 17 Mar 2026 16:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BC42116F6;
+	Tue, 17 Mar 2026 17:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766036; cv=none; b=Pgk8uAgcxT4DqC9SRECko33eehl0MvTVZeu6fZEHmMsTMqQ95y2cRYr4oFF6HTDXPH3Tgsx2lcgKHGYEVNlHncL+27CGKF7uUDEDiYbAf7YQZyK0zK6MeqhMSZi3tJ36jnE5AtIOOZiCxkNCkPFymUeBxymv1XZMm3RxynQjQYc=
+	t=1773767300; cv=none; b=T8gcquQhMFtCd3Cpwtoyw0KqozmAKblhc7pxuFZEjR/OtbBguq8jVd4Ydl5SeKziwcXJK3Kit8ZW2Ze/0ewdV2hVkg5Zti9IWiSNMLv+86Du0OCl0xtkRk6DcNNzcwLy2+L2AyTQVkBSmTRyUic8smwrU7dGaI+Ng7ezbV4zwpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766036; c=relaxed/simple;
-	bh=t2zxRUBIRIFP2lgdJQEKIFFTwUREEQ+jWiojO84Blx0=;
+	s=arc-20240116; t=1773767300; c=relaxed/simple;
+	bh=Qbw19ktFmwTcg9ud73JMrp/YLFViTmO8ceIaPYld8nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkhVvzzZ3fAnDeqzivrnulUIaNKhM8ANPNFLmnfT5Em+QcMIqA4EFwyl6Wm2p8GylyTHS/jYvtVHLxpROIC466/NTRPd6Djqkrp1rylF4CdgwptuNdydgl9e3slplp5PWqg2iXzRwZPPJpQBYuWkB4eKpE5DMJ73wSgnPMJcU3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+nY6Udb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDE5C4CEF7;
-	Tue, 17 Mar 2026 16:47:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WYfhM1RI0Bj3uIqUj592yUlrdK9INb8MkpubUDZvznxYmfBDaabJSw3AJ6ufbAh10sHTxEoK/mzSyBNE3r4ls2UUrFUO5NlKD4yF6lb+1+a/gDdZLCR4rcJAVzKPQHkqAQyHktgPqdhKgUvj1pd+COrsnSJlFUyQTXvUfIylSu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8wenCfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63709C4CEF7;
+	Tue, 17 Mar 2026 17:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766036;
-	bh=t2zxRUBIRIFP2lgdJQEKIFFTwUREEQ+jWiojO84Blx0=;
+	s=korg; t=1773767299;
+	bh=Qbw19ktFmwTcg9ud73JMrp/YLFViTmO8ceIaPYld8nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+nY6Udbb+/cp/zwt+uqgiG+jbzbZIowCKfnLCTKGIRhzqkWmDv7uIo9avHeYRe4q
-	 DaqUIx2oMGLjnPeZiKQUfHzVNgWPi8OfYl8400dDELY+hxGcjnw8dzR5az0iNCgj6i
-	 C4dO143IarmeF+aad5d9jqxfiPsVNkIU5r4Xrf7g=
+	b=h8wenCfeziysYQbUtbSNOCLHs18IQMVxnwTEdHZ34QYY8ZQlCgETVpmTtg3mgTrvV
+	 x+vUPx69219lf0Yqge/V2a0yd467oCMgqqpkcrLht1F0gi3b0EEQY1nwL0q7ZVNozm
+	 ZFg6vEh+gL/dtEf5B3y/8ia9fEfrVnlDKGZw5/94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH 6.19 129/378] rust_binder: call set_notification_done() without proc lock
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 057/333] bnxt_en: Fix RSS table size check when changing ethtool channels
 Date: Tue, 17 Mar 2026 17:31:26 +0100
-Message-ID: <20260317163011.760686909@linuxfoundation.org>
+Message-ID: <20260317163001.485018622@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +66,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226287-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c8287e65a57a89e7fb72];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,garyguo.net:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 251B32AE753
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,broadcom.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 15BDE2AF0EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-commit 2e303f0febb65a434040774b793ba8356698802b upstream.
+[ Upstream commit 0d9a60a0618d255530ca56072c5f39eb58e1ed4a ]
 
-Consider the following sequence of events on a death listener:
-1. The remote process dies and sends a BR_DEAD_BINDER message.
-2. The local process invokes the BC_CLEAR_DEATH_NOTIFICATION command.
-3. The local process then invokes the BC_DEAD_BINDER_DONE.
-Then, the kernel will reply to the BC_DEAD_BINDER_DONE command with a
-BR_CLEAR_DEATH_NOTIFICATION_DONE reply using push_work_if_looper().
+When changing channels, the current check in bnxt_set_channels()
+is not checking for non-default RSS contexts when the RSS table size
+changes. The current check for IFF_RXFH_CONFIGURED is only sufficient
+for the default RSS context. Expand the check to include the presence
+of any non-default RSS contexts.
 
-However, this can result in a deadlock if the current thread is not a
-looper. This is because dead_binder_done() still holds the proc lock
-during set_notification_done(), which called push_work_if_looper().
-Normally, push_work_if_looper() takes the thread lock, which is fine to
-take under the proc lock. But if the current thread is not a looper,
-then it falls back to delivering the reply to the process work queue,
-which involves taking the proc lock. Since the proc lock is already
-held, this is a deadlock.
+Allowing such change will result in incorrect configuration of the
+context's RSS table when the table size changes.
 
-Fix this by releasing the proc lock during set_notification_done(). It
-was not intentional that it was held during that function to begin with.
-
-I don't think this ever happens in Android because BC_DEAD_BINDER_DONE
-is only invoked in response to BR_DEAD_BINDER messages, and the kernel
-always delivers BR_DEAD_BINDER to a looper. So there's no scenario where
-Android userspace will call BC_DEAD_BINDER_DONE on a non-looper thread.
-
-Cc: stable <stable@kernel.org>
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Reported-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
-Tested-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://patch.msgid.link/20260224-binder-dead-binder-done-proc-lock-v1-1-bbe1b8a6e74a@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b3d0083caf9a ("bnxt_en: Support RSS contexts in ethtool .{get|set}_rxfh()")
+Reported-by: Björn Töpel <bjorn@kernel.org>
+Link: https://lore.kernel.org/netdev/20260303181535.2671734-1-bjorn@kernel.org/
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20260306225854.3575672-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder/process.rs |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1289,7 +1289,8 @@ impl Process {
-     }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index df4f0d15dd3d8..3237515f0e7ec 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -973,8 +973,8 @@ static int bnxt_set_channels(struct net_device *dev,
  
-     pub(crate) fn dead_binder_done(&self, cookie: u64, thread: &Thread) {
--        if let Some(death) = self.inner.lock().pull_delivered_death(cookie) {
-+        let death = self.inner.lock().pull_delivered_death(cookie);
-+        if let Some(death) = death {
-             death.set_notification_done(thread);
-         }
-     }
+ 	if (bnxt_get_nr_rss_ctxs(bp, req_rx_rings) !=
+ 	    bnxt_get_nr_rss_ctxs(bp, bp->rx_nr_rings) &&
+-	    netif_is_rxfh_configured(dev)) {
+-		netdev_warn(dev, "RSS table size change required, RSS table entries must be default to proceed\n");
++	    (netif_is_rxfh_configured(dev) || bp->num_rss_ctx)) {
++		netdev_warn(dev, "RSS table size change required, RSS table entries must be default (with no additional RSS contexts present) to proceed\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
