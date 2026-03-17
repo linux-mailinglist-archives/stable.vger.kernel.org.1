@@ -1,71 +1,60 @@
-Return-Path: <stable+bounces-226382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GP7ICyJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:36 +0100
+	id sPQCK/eSuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCE82AED48
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE8B2B0119
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D4EB33051E1F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CE303030DE9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57323F23B3;
-	Tue, 17 Mar 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC0E328B61;
+	Tue, 17 Mar 2026 17:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPtC1mbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxAN1hAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB83EAC6F;
-	Tue, 17 Mar 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805DE2459DC;
+	Tue, 17 Mar 2026 17:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766453; cv=none; b=Y5h4BVR5+V0F4BxAUPngayPWjSciTCgxTNwx11peX2hJNDpW9ORJlr1vJZcRHx5SdU5fCNGs+WhS+f7x93Kyio8JI/R5cnD4F+QJMczSd/G1vRfnJrgOnNa6a7QVrzkjI98SXy+pPAMn4N2J4ojl/sbRahm1icLkSLW4raCrvqQ=
+	t=1773768006; cv=none; b=XbcTm4frwUoW9WpU9Xf6fYsCkCHjRZPKanazc8rm4sx3uOHu71XVlXRkn5ZXajSyqjjtCkYUMnsvElg83qmxBy9GXC88OcE3fU8Bw1tKxpiMjPdgAS3syYW7Qe+eDaV6RhSi1jEhU7vqEsZVrh0x66UeCbIwT2bplnrssgb++Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766453; c=relaxed/simple;
-	bh=/mRxv3ngUcaOhejzejuPvPvwDZ8J+0jsM8JaEnyGivY=;
+	s=arc-20240116; t=1773768006; c=relaxed/simple;
+	bh=on5swE40lk77nrjwtErnVPt3tVQWrsjUgnqjSc4s9HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzC2J3zm31WnRPmRil/WTly34O9HKU+6LY7opN6zlAH78iHdIHfgzDqZ7ouafas13Q6h4Z6noYGm7femh17BUoGjlkjlApmrFJJKGi3zG8VN66wrmGUzM3GyAQP85lT8LlrLVol/6iL+wzoifcuQ125CkScSEtIGgiusEIq/xIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPtC1mbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA5AC4CEF7;
-	Tue, 17 Mar 2026 16:54:12 +0000 (UTC)
+	 MIME-Version; b=bw0egnAxz6gXBx16K1J+TQyRtdhRhfik4E1w5oWRCn28zKL4TNx+SXhQXAGyP+txJgtJnCqRSD2NJzmdI8s8VfGGUw2ln8Tj+hBdHQdd98EgvQVGuMfvMPHzkl5prfUbFvnQhrpc70KTgFZGJa5lO30vv6i9C1ddzg9COdkgYF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxAN1hAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE28C19424;
+	Tue, 17 Mar 2026 17:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766453;
-	bh=/mRxv3ngUcaOhejzejuPvPvwDZ8J+0jsM8JaEnyGivY=;
+	s=korg; t=1773768006;
+	bh=on5swE40lk77nrjwtErnVPt3tVQWrsjUgnqjSc4s9HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPtC1mbK+FMrukN/iQKjUd5V5xxceLg4LAO/KLCBtMZHsK5kh7hcOdRUUZo4YOr5H
-	 RU9L3blLsCpm2H5spcSuMGPRU/3OiJGPRAKTNEHx9oB1+6tywWAr6mOP0FF77af0Jf
-	 xkseiPHoU1tXRofQK/RSaiDNQIvbrPvXWpoGahN8=
+	b=AxAN1hAvOksNVO9J+Sg/cpOvicdkSlNeYVWU+vTIgO5XXu8x9cGGMUC1C6DshyA/F
+	 BeAp/AWE/vr3eGQPo1fe3kSimd0cjSi8/AY6Ye6T/nuwJTGAaEtKW53WyFubvKSuB3
+	 XyNP35NpbP8MXoVjBnRUJQTaw5lSyUGjlEkckZW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Bas van Dijk <bas@dfinity.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 250/378] mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+	Xingui Yang <yangxingui@huawei.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 178/333] scsi: hisi_sas: Fix NULL pointer exception during user_scan()
 Date: Tue, 17 Mar 2026 17:33:27 +0100
-Message-ID: <20260317163016.217245867@linuxfoundation.org>
+Message-ID: <20260317163005.956482239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,170 +65,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-226382-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,dfinity.org,linux.dev,oracle.com,gmail.com,linux.alibaba.com,kernel.org,arm.com,google.com,infradead.org,redhat.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226742-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CDCE82AED48
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: DBE8B2B0119
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-commit 577a1f495fd78d8fb61b67ac3d3b595b01f6fcb0 upstream.
+[ Upstream commit 8ddc0c26916574395447ebf4cff684314f6873a9 ]
 
-During a pagecache folio split, the values in the related xarray should
-not be changed from the original folio at xarray split time until all
-after-split folios are well formed and stored in the xarray.  Current use
-of xas_try_split() in __split_unmapped_folio() lets some after-split
-folios show up at wrong indices in the xarray.  When these misplaced
-after-split folios are unfrozen, before correct folios are stored via
-__xa_store(), and grabbed by folio_try_get(), they are returned to
-userspace at wrong file indices, causing data corruption.  More detailed
-explanation is at the bottom.
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to shost->max_channel)
+via scsi_scan_host_selected() in commit 37c4e72b0651 ("scsi: Fix
+sas_user_scan() to handle wildcard and multi-channel scans"). However,
+hisi_sas supports only one channel, and the current value of max_channel is
+1. sas_user_scan() for channel 1 will trigger the following NULL pointer
+exception:
 
-The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
-It
-1. creates a memfd,
-2. forks,
-3. in the child process, maps the file with large folios (via shmem code
-   path) and reads the mapped file continuously with 16 threads,
-4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
-   large folio.
+[  441.554662] Unable to handle kernel NULL pointer dereference at virtual address 00000000000008b0
+[  441.554699] Mem abort info:
+[  441.554710]   ESR = 0x0000000096000004
+[  441.554718]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  441.554723]   SET = 0, FnV = 0
+[  441.554726]   EA = 0, S1PTW = 0
+[  441.554730]   FSC = 0x04: level 0 translation fault
+[  441.554735] Data abort info:
+[  441.554737]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[  441.554742]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  441.554747]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  441.554752] user pgtable: 4k pages, 48-bit VAs, pgdp=00000828377a6000
+[  441.554757] [00000000000008b0] pgd=0000000000000000, p4d=0000000000000000
+[  441.554769] Internal error: Oops: 0000000096000004 [#1]  SMP
+[  441.629589] Modules linked in: arm_spe_pmu arm_smmuv3_pmu tpm_tis_spi hisi_uncore_sllc_pmu hisi_uncore_pa_pmu hisi_uncore_l3c_pmu hisi_uncore_hha_pmu hisi_uncore_ddrc_pmu hisi_uncore_cpa_pmu hns3_pmu hisi_ptt hisi_pcie_pmu tpm_tis_core spidev spi_hisi_sfc_v3xx hisi_uncore_pmu spi_dw_mmio fuse hclge hclge_common hisi_sec2 hisi_hpre hisi_zip hisi_qm hns3 hisi_sas_v3_hw sm3_ce sbsa_gwdt hnae3 hisi_sas_main uacce hisi_dma i2c_hisi dm_mirror dm_region_hash dm_log dm_mod
+[  441.670819] CPU: 46 UID: 0 PID: 6994 Comm: bash Kdump: loaded Not tainted 7.0.0-rc2+ #84 PREEMPT
+[  441.691327] pstate: 81400009 (Nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[  441.698277] pc : sas_find_dev_by_rphy+0x44/0x118
+[  441.702896] lr : sas_find_dev_by_rphy+0x3c/0x118
+[  441.707502] sp : ffff80009abbba40
+[  441.710805] x29: ffff80009abbba40 x28: ffff082819a40008 x27: ffff082810c37c08
+[  441.717930] x26: ffff082810c37c28 x25: ffff082819a40290 x24: ffff082810c37c00
+[  441.725054] x23: 0000000000000000 x22: 0000000000000001 x21: ffff082819a40000
+[  441.732179] x20: ffff082819a40290 x19: 0000000000000000 x18: 0000000000000020
+[  441.739304] x17: 0000000000000000 x16: ffffb5dad6bda690 x15: 00000000ffffffff
+[  441.746428] x14: ffff082814c3b26c x13: 00000000ffffffff x12: ffff082814c3b26a
+[  441.753553] x11: 00000000000000c0 x10: 000000000000003a x9 : ffffb5dad5ea94f4
+[  441.760678] x8 : 000000000000003a x7 : ffff80009abbbab0 x6 : 0000000000000030
+[  441.767802] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[  441.774926] x2 : ffff08280f35a300 x1 : ffffb5dad7127180 x0 : 0000000000000000
+[  441.782053] Call trace:
+[  441.784488]  sas_find_dev_by_rphy+0x44/0x118 (P)
+[  441.789095]  sas_target_alloc+0x24/0xb0
+[  441.792920]  scsi_alloc_target+0x290/0x330
+[  441.797010]  __scsi_scan_target+0x88/0x258
+[  441.801096]  scsi_scan_channel+0x74/0xb8
+[  441.805008]  scsi_scan_host_selected+0x170/0x188
+[  441.809615]  sas_user_scan+0xfc/0x148
+[  441.813267]  store_scan+0x10c/0x180
+[  441.816743]  dev_attr_store+0x20/0x40
+[  441.820398]  sysfs_kf_write+0x84/0xa8
+[  441.824054]  kernfs_fop_write_iter+0x130/0x1c8
+[  441.828487]  vfs_write+0x2c0/0x370
+[  441.831880]  ksys_write+0x74/0x118
+[  441.835271]  __arm64_sys_write+0x24/0x38
+[  441.839182]  invoke_syscall+0x50/0x120
+[  441.842919]  el0_svc_common.constprop.0+0xc8/0xf0
+[  441.847611]  do_el0_svc+0x24/0x38
+[  441.850913]  el0_svc+0x38/0x158
+[  441.854043]  el0t_64_sync_handler+0xa0/0xe8
+[  441.858214]  el0t_64_sync+0x1ac/0x1b0
+[  441.861865] Code: aa1303e0 97ff70a8 34ffff80 d10a4273 (f9445a75)
+[  441.867946] ---[ end trace 0000000000000000 ]---
 
-Data corruption can be observed without the fix.  Basically, data from a
-wrong page->index is returned.
+Therefore, set max_channel to 0.
 
-Fix it by using the original folio in xas_try_split() calls, so that
-folio_try_get() can get the right after-split folios after the original
-folio is unfrozen.
-
-Uniform split, split_huge_page*(), is not affected, since it uses
-xas_split_alloc() and xas_split() only once and stores the original folio
-in the xarray.  Change xas_split() used in uniform split branch to use the
-original folio to avoid confusion.
-
-Fixes below points to the commit introduces the code, but folio_split() is
-used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-truncate operation").
-
-More details:
-
-For example, a folio f is split non-uniformly into f, f2, f3, f4 like
-below:
-+----------------+---------+----+----+
-|       f        |    f2   | f3 | f4 |
-+----------------+---------+----+----+
-but the xarray would look like below after __split_unmapped_folio() is
-done:
-+----------------+---------+----+----+
-|       f        |    f2   | f3 | f3 |
-+----------------+---------+----+----+
-
-After __split_unmapped_folio(), the code changes the xarray and unfreezes
-after-split folios:
-
-1. unfreezes f2, __xa_store(f2)
-2. unfreezes f3, __xa_store(f3)
-3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
-4. unfreezes f.
-
-Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
-xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
-f3 is wrongly returned to user.
-
-After the fix, the xarray looks like below after __split_unmapped_folio():
-+----------------+---------+----+----+
-|       f        |    f    | f  | f  |
-+----------------+---------+----+----+
-so that the race window no longer exists.
-
-[ziy@nvidia.com: move comment, per David]
-  Link: https://lkml.kernel.org/r/5C9FA053-A4C6-4615-BE05-74E47A6462B3@nvidia.com
-Link: https://lkml.kernel.org/r/20260302203159.3208341-1-ziy@nvidia.com
-Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: Bas van Dijk <bas@dfinity.org>
-Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e21fe3a52692 ("scsi: hisi_sas: add initialisation for v3 pci-based controller")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Link: https://patch.msgid.link/20260305064039.4096775-1-liyihang9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c  | 2 +-
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3631,6 +3631,7 @@ static int __split_unmapped_folio(struct
- 	const bool is_anon = folio_test_anon(folio);
- 	int old_order = folio_order(folio);
- 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
-+	struct folio *old_folio = folio;
- 	int split_order;
- 
- 	/*
-@@ -3651,12 +3652,16 @@ static int __split_unmapped_folio(struct
- 			 * uniform split has xas_split_alloc() called before
- 			 * irq is disabled to allocate enough memory, whereas
- 			 * non-uniform split can handle ENOMEM.
-+			 * Use the to-be-split folio, so that a parallel
-+			 * folio_try_get() waits on it until xarray is updated
-+			 * with after-split folios and the original one is
-+			 * unfrozen.
- 			 */
--			if (split_type == SPLIT_TYPE_UNIFORM)
--				xas_split(xas, folio, old_order);
--			else {
-+			if (split_type == SPLIT_TYPE_UNIFORM) {
-+				xas_split(xas, old_folio, old_order);
-+			} else {
- 				xas_set_order(xas, folio->index, split_order);
--				xas_try_split(xas, folio, old_order);
-+				xas_try_split(xas, old_folio, old_order);
- 				if (xas_error(xas))
- 					return xas_error(xas);
- 			}
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index 30a9c66126513..c2b082f1252c3 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -2578,7 +2578,7 @@ int hisi_sas_probe(struct platform_device *pdev,
+ 	shost->transportt = hisi_sas_stt;
+ 	shost->max_id = HISI_SAS_MAX_DEVICES;
+ 	shost->max_lun = ~0;
+-	shost->max_channel = 1;
++	shost->max_channel = 0;
+ 	shost->max_cmd_len = HISI_SAS_MAX_CDB_LEN;
+ 	if (hisi_hba->hw->slot_index_alloc) {
+ 		shost->can_queue = HISI_SAS_MAX_COMMANDS;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 2f9e01717ef38..f69efc6494b8e 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4993,7 +4993,7 @@ hisi_sas_v3_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	shost->transportt = hisi_sas_stt;
+ 	shost->max_id = HISI_SAS_MAX_DEVICES;
+ 	shost->max_lun = ~0;
+-	shost->max_channel = 1;
++	shost->max_channel = 0;
+ 	shost->max_cmd_len = HISI_SAS_MAX_CDB_LEN;
+ 	shost->can_queue = HISI_SAS_UNRESERVED_IPTT;
+ 	shost->cmd_per_lun = HISI_SAS_UNRESERVED_IPTT;
+-- 
+2.51.0
+
 
 
 
