@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-226678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LwULheOuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:35 +0100
+	id mK+bF+OJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3C62AF788
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8CB2AEEA3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C0FB329F231
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 041883163B66
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DBD2DEA9D;
-	Tue, 17 Mar 2026 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950DD3F54B4;
+	Tue, 17 Mar 2026 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfU8tS9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQgnqYsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C0C255F2C;
-	Tue, 17 Mar 2026 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C563F23DD;
+	Tue, 17 Mar 2026 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767781; cv=none; b=Qb6a42BupA1uP8Q1jA3I3zmQ0rkSZKockCfo63Vt5GC6OrFselbWJTGxDGGf4HTivGSW13j8ZMVKrpDRFiObd9f+UxyWHCHl4jau52Z/CCNoznyRqSc4cO3SeP0nEvdVUpxVHDIk6T7bY3j+D42SaLYMqpk3CAxG5f9pAuWdBHs=
+	t=1773766371; cv=none; b=ZsgWevfm27IMXTafsuqmmXG+8/2ec2mHQ2xNGDOcU6UhVYS6D6ONW8r3udq4eU1ADN/bS1DE+pcn8++EFF+GtJaIFnVpSiFPCyCITMno4PGSeqBn1GCaFWod/UTe25Ox7x/qfson8QChXazhNZ3A4mIsLkLu/kOVhU6uPJniajo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767781; c=relaxed/simple;
-	bh=XjipR3gl1dC+jGnjsZ461aSZavw9cYUdGqLSw2d9p6U=;
+	s=arc-20240116; t=1773766371; c=relaxed/simple;
+	bh=ivthcyBx1UX4mfPBhFnkuLT6yIG/mOO3O1TJCLB9rq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewycZ5GnXzh/N836A5ma9XXgmtEcNxF8S1vgtFJiB8uKMmVyuPKDOeJ/C+sYyljaX1QF/f/Vq7tzvnBopFzUApgTucSfbESMGhBARq3s3Yx+74PgD1tro7DZCdTvh7/gkee7fI760K7cGgHts3ThGpcnrDvZ74xBrtJqsRRjUbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfU8tS9T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC49C4CEF7;
-	Tue, 17 Mar 2026 17:16:19 +0000 (UTC)
+	 MIME-Version; b=DuSZDlT2ZGjtUBaTaoYhpzTSNC73HxiQP1+3whjbt+RLsh07DA8b3SY/j8iBeGJJviaMpgzCfi10G1asw8EP/DuYs7RBue6WdRNwRjFVvN9DX5ZPYVJMjeEYlIQp6XEyXFxcYhTkKXRa6qy4mCn7gA4JF7MPlZel2LafFmep0/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQgnqYsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4A6C4CEF7;
+	Tue, 17 Mar 2026 16:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767781;
-	bh=XjipR3gl1dC+jGnjsZ461aSZavw9cYUdGqLSw2d9p6U=;
+	s=korg; t=1773766371;
+	bh=ivthcyBx1UX4mfPBhFnkuLT6yIG/mOO3O1TJCLB9rq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yfU8tS9TIwKNcjHr4hbZG0U0BaU0qoCelZsB/Z1dGgJYF/aD2R7tWxuH5oWQjZKgK
-	 FCwmQsgwq4FiR897+XsxpBhkHvUu7MwNDEew5ZWYaWPLGUWP/210ev1zqUIBP2tVyC
-	 HggkpI6gT2j4dUzOD51qpc8oTICRS6RqpcHK1kzU=
+	b=vQgnqYsUrWimRWI+ZrSVCQl42PMnLxawRt/RtnoKP+lUMVZTHJouiQrH7Ixr5pc4y
+	 CXiD7kmGcE6yrF0L8x4fdWiTibLijsYlz5OliWqPa2Dj4aeHjjc+uvLcjpg4K/NAcM
+	 Z/bgKZQscOmfPFcA+bKPgFPNYjZzh4ps1RLgWYaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 157/333] mm/kfence: fix KASAN hardware tag faults during late enablement
-Date: Tue, 17 Mar 2026 17:33:06 +0100
-Message-ID: <20260317163005.182713939@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.19 230/378] drm/xe/sync: Fix user fence leak on alloc failure
+Date: Tue, 17 Mar 2026 17:33:07 +0100
+Message-ID: <20260317163015.472404626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226678-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,tugraz.at,gmail.com,kernel.org,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226364-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tugraz.at:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 0B3C62AF788
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE8CB2AEEA3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit d155aab90fffa00f93cea1f107aef0a3d548b2ff upstream.
+commit 0879c3f04f67e2a1677c25dcc24669ce21eb6a6c upstream.
 
-When KASAN hardware tags are enabled, re-enabling KFENCE late (via
-/sys/module/kfence/parameters/sample_interval) causes KASAN faults.
+When dma_fence_chain_alloc() fails, properly release the user fence
+reference to prevent a memory leak.
 
-This happens because the KFENCE pool and metadata are allocated via the
-page allocator, which tags the memory, while KFENCE continues to access it
-using untagged pointers during initialization.
-
-Use __GFP_SKIP_KASAN for late KFENCE pool and metadata allocations to
-ensure the memory remains untagged, consistent with early allocations from
-memblock.  To support this, add __GFP_SKIP_KASAN to the allowlist in
-__alloc_contig_verify_gfp_mask().
-
-Link: https://lkml.kernel.org/r/20260220144940.2779209-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0995c2fc39b0 ("drm/xe: Enforce correct user fence signaling order using")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260219233516.2938172-6-shuicheng.lin@intel.com
+(cherry picked from commit a5d5634cde48a9fcd68c8504aa07f89f175074a0)
+Cc: stable@vger.kernel.org
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   14 ++++++++------
- mm/page_alloc.c  |    3 ++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -951,14 +951,14 @@ static int kfence_init_late(void)
- #ifdef CONFIG_CONTIG_ALLOC
- 	struct page *pages;
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -200,8 +200,10 @@ int xe_sync_entry_parse(struct xe_device
+ 			if (XE_IOCTL_DBG(xe, IS_ERR(sync->ufence)))
+ 				return PTR_ERR(sync->ufence);
+ 			sync->ufence_chain_fence = dma_fence_chain_alloc();
+-			if (!sync->ufence_chain_fence)
+-				return -ENOMEM;
++			if (!sync->ufence_chain_fence) {
++				err = -ENOMEM;
++				goto free_sync;
++			}
+ 			sync->ufence_syncobj = ufence_syncobj;
+ 		}
  
--	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (!pages)
- 		return -ENOMEM;
- 
- 	__kfence_pool = page_to_virt(pages);
--	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (pages)
- 		kfence_metadata_init = page_to_virt(pages);
- #else
-@@ -968,11 +968,13 @@ static int kfence_init_late(void)
- 		return -EINVAL;
- 	}
- 
--	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
-+	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE,
-+					  GFP_KERNEL | __GFP_SKIP_KASAN);
- 	if (!__kfence_pool)
- 		return -ENOMEM;
- 
--	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE, GFP_KERNEL);
-+	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE,
-+						 GFP_KERNEL | __GFP_SKIP_KASAN);
- #endif
- 
- 	if (!kfence_metadata_init)
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6888,7 +6888,8 @@ static int __alloc_contig_verify_gfp_mas
- {
- 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
- 	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
--				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
-+				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO |
-+				  __GFP_SKIP_KASAN;
- 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
- 
- 	/*
 
 
 
