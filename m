@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-226743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GATsEJSUuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:51:16 +0100
+	id SOFoMSaOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADEF02B03CC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:51:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFE92AF7AD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E86A2328920C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFBF830A1DE4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC9B2FFDEA;
-	Tue, 17 Mar 2026 17:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86081AA7A6;
+	Tue, 17 Mar 2026 17:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15XllwnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXXd/yOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EED2D5940;
-	Tue, 17 Mar 2026 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF812459DC;
+	Tue, 17 Mar 2026 17:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768010; cv=none; b=eg8HOqsJWQ2m0ruJadtTSw1abWOAFkbMY7ceGzMQ5C2JRpFZaoCIzmKmPRQr4vv1/5tPcz/959qU4nnEptyBSiGCMYs+fBt2YplTkTlWLe6q8uNyIGrhufbBCjhmJxZVKEnk/n+VIKnSBd4buy+JtUI4NSsZJFctDB8mY2E9oPg=
+	t=1773768015; cv=none; b=swQG1PmshsTcOvjLurOaHyODQeFoz9PaVn9kMkh7NVRwng+Tw3QcEhyyKVqrb67ADUFeSr1gXZX5+Qx2CvyMb6ALhAJZOSfYkngL85e2mAefSa73lncsG7riO43jLmLy6IufpV1BVLQPcXxzwKAqyKq2WHrVMtJTfLq9FWzhVaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768010; c=relaxed/simple;
-	bh=azwFhMgl+Ps0g7fsy1LQoOfJR74rXC0TNSqXVYpf424=;
+	s=arc-20240116; t=1773768015; c=relaxed/simple;
+	bh=9wsOM5YZP6I/p/RoCaOSsSlVZwbDv9kcDA5iiw8lY8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTXmgOT/VyN2WI9epE/CRBRaPO8w+oVd/4ZZGiD/Ex+sjDPcJi3LcBjtVPhODflgZT0qULW34DlbvPMlrk+NJCalBsPlrnAbar/eBb/YqJmkZkVQKGRnxr1EPAXlgoStqSnlX2iSInpVuuBoD9iZH8c0CHezWJiY4/nd57ovGbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15XllwnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C96EC19424;
-	Tue, 17 Mar 2026 17:20:09 +0000 (UTC)
+	 MIME-Version; b=AGox9k4t/rAGKEQXXZ+N5vlPlJFRIjkzqmdd2iWstUAkaf4dB6nO/VvxyPJI66xtyEo2mUyGG1jFdkRWWWH7nEkfBmimbnMpcxi7/nj5W2tIV/zeShdXKQI0I4gNIj4uZkyvHpR+e6djHfzRnZMQLKyTSwHOUsXuQAyC6yVd8H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXXd/yOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE2C4CEF7;
+	Tue, 17 Mar 2026 17:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768010;
-	bh=azwFhMgl+Ps0g7fsy1LQoOfJR74rXC0TNSqXVYpf424=;
+	s=korg; t=1773768015;
+	bh=9wsOM5YZP6I/p/RoCaOSsSlVZwbDv9kcDA5iiw8lY8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15XllwnXXRVXMqM+IktQIrSujSC+X1gCEQe0LAM4OQDXqEEIG/gpyxWCmPUWCetIh
-	 iIqqm/A0WdYwLC5FxZevFg6Ltgv1WZZ4ouyI99aCI40HEJwfU1tfh6AZu/XC6JIHcO
-	 oFr9W0V0KYNAY03Fzb6FPU3LDATgamZew7G+swRw=
+	b=UXXd/yOeB9+lP+04haCzDFE6ZT5k2nd78M1ZiXeHp9ZXYMFzj7Q33cVQgqAjDtfwi
+	 qMAfg1TGV/moKQ/KDm92iVJxdc21+8k7HTJGjYTvyHpc1XnBuMMzMRhl64eesse5L5
+	 EHkF1ouRqJ2T9KoW8evVp2GPHtsYkx4d4WwAlXik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Arnaud Ferraris <arnaud.ferraris@collabora.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.18 179/333] Revert "tcpm: allow looking for role_sw device in the main node"
-Date: Tue, 17 Mar 2026 17:33:28 +0100
-Message-ID: <20260317163005.993001694@linuxfoundation.org>
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 180/333] Revert "ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()"
+Date: Tue, 17 Mar 2026 17:33:29 +0100
+Message-ID: <20260317163006.030793941@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -65,34 +76,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226743-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-226744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,linux.dev,cmpxchg.org,gmail.com,kernel.org,oracle.com,infradead.org,suse.com,suse.cz,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: ADEF02B03CC
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3FFE92AF7AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +113,84 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Axel Rasmussen <axelrasmussen@google.com>
 
-commit 6b275bfaa16be3fb1689fa6794e445ecd127a1b4 upstream.
+commit 2d28ed588f8d7d0d41b0a4fad7f0d05e4bbf1797 upstream.
 
-This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
+This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+But, these two APIs are not interchangeable: the lruvec version also
+increments memcg stats, in addition to "global" pgdat stats.
 
-The fwnode_usb_role_switch_get() returns NULL only if no connection is
-found, returns ERR_PTR(-EPROBE_DEFER) if connection is found but deferred
-probe is needed, or a valid pointer of usb_role_switch.
+So after this change, the "pagetables" memcg stat in memory.stat always
+yields "0", which is a userspace visible regression.
 
-When switching from a NULL check to IS_ERR_OR_NULL(), usb_role_switch_get()
-returns NULL and overwrites the ERR_PTR(-EPROBE_DEFER) returned by
-fwnode_usb_role_switch_get(). This causes the deferred probe indication to
-be lost, preventing the USB role switch from ever being retrieved.
+I tried to look for a refactor where we add a variant of
+lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a folio,
+to try to adhere to the spirit of the original patch.  But at the end of
+the day this just means we have to call folio_memcg(ptdesc_folio(ptdesc))
+anyway, which doesn't really accomplish much.
 
-Fixes: 1366cd228b0c ("tcpm: allow looking for role_sw device in the main node")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260309074313.2809867-2-xu.yang_2@nxp.com
+This regression is visible in master as well as 6.18 stable, so CC stable
+too.
+
+Link: https://lkml.kernel.org/r/20260225002434.2953895-1-axelrasmussen@google.com
+Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
+Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mm.h |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -7877,7 +7877,7 @@ struct tcpm_port *tcpm_register_port(str
- 	port->partner_desc.identity = &port->partner_ident;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3138,26 +3138,21 @@ static inline bool ptlock_init(struct pt
+ static inline void ptlock_free(struct ptdesc *ptdesc) {}
+ #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
  
- 	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
--	if (IS_ERR_OR_NULL(port->role_sw))
-+	if (!port->role_sw)
- 		port->role_sw = usb_role_switch_get(port->dev);
- 	if (IS_ERR(port->role_sw)) {
- 		err = PTR_ERR(port->role_sw);
+-static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+-{
+-	return compound_nr(ptdesc_page(ptdesc));
+-}
+-
+ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ {
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct folio *folio = ptdesc_folio(ptdesc);
+ 
+-	__SetPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
++	__folio_set_pgtable(folio);
++	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+ }
+ 
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+ {
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct folio *folio = ptdesc_folio(ptdesc);
+ 
+ 	ptlock_free(ptdesc);
+-	__ClearPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
++	__folio_clear_pgtable(folio);
++	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+ }
+ 
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
 
 
 
