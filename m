@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eC5OBoKMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:50 +0100
+	id sCd7IBSHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5CB2AF3C0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6252AE978
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80528317FC10
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8CE0F302CC1F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB1F3F54CD;
-	Tue, 17 Mar 2026 17:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387B3F54A4;
+	Tue, 17 Mar 2026 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdYwqDbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLBZDWbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0872E3F65E5;
-	Tue, 17 Mar 2026 17:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B5D3164B5;
+	Tue, 17 Mar 2026 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767286; cv=none; b=svNOP+Yv1xRMnLsuiqZoYRsAnjVHhnDGqSdNpPpRHIgdKohp2Zgee7cFmY0NXZHG6qNrmGuWiHGqIMxYLv6xdeZVfdR5vqnSTQHl78kJ+edwaIl4u2AxW7mqGLIjQfR6cKfwsz4D34SlZ01IV8AVpE1U2JrK2rOahVP3TPlui6c=
+	t=1773766096; cv=none; b=ex2XWS+nEfuyqKlT6Uv4+HmdvTlrZulkJePVMjrKLQbTkBYx2jse+HmtRpVtc21LAFDYa92EbmwyapBX8X859y30TAGQvuN/0jy9JUled3GDIo6yQtHOoLNyccEZ5LwGUaUUfozFf41zLa9rdJybPAiX/lnbP/Swj1RV+od6ZT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767286; c=relaxed/simple;
-	bh=udPCMbVi5E4u5CNMlysqBAj4DKHZDn+qe4enQarmbwQ=;
+	s=arc-20240116; t=1773766096; c=relaxed/simple;
+	bh=V6Hxa1xBOGncamyFrnMyegGlU+KVndYKBwnfFpIcly4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4YtnkMKxxz7E6L1/5YleWCp+GfQ9yvJ4vvY27S9WjmVqXZDzRDdBn+ihR0O7BgITcbETIcSP1zNfiex+be1hiHyMnmpdU8skzBWHp6EeInH/19pmnVWLrnU88zMEwCRafmEOd8HomjFhcOdvERGCK9nl1EnVVmvS5CSvbLVTwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdYwqDbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C36C2BC86;
-	Tue, 17 Mar 2026 17:08:04 +0000 (UTC)
+	 MIME-Version; b=I2CYkgBIyHsTLC9eVF1CrqNeSTjDrbNHy5vcDzt6Qq7s6CkS3SqZl/JTpVHbf/uHe1fTGGpgnkpR9o1P2IHduhvIgNb6jat/qtLqa5XnHyPoSWURzPp0KHCOziNTjpBzApQwEt2UjScucNeJ3zSFTICnznFRthJ6Gj2Xra9rOdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLBZDWbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C42C4CEF7;
+	Tue, 17 Mar 2026 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767285;
-	bh=udPCMbVi5E4u5CNMlysqBAj4DKHZDn+qe4enQarmbwQ=;
+	s=korg; t=1773766096;
+	bh=V6Hxa1xBOGncamyFrnMyegGlU+KVndYKBwnfFpIcly4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdYwqDbqgywNc9QgLti4pBKt+LIYyLoTI1NavfYby1Qq/TYj9ZbXXEiGieoLGV3n4
-	 PaJFCqqCzzS9uGsAMlUpH1b0+h6/YTILuAMAtMrv4TfQ/40urz2xGnGez+khC+YOxH
-	 69Bzpi/hYZDJhcB6B/zxXfnm7KxE6iuMwDHniFm0=
+	b=JLBZDWbWJv2gXltEqVQqc4hpe5tNgMoJdPBW/NK5hoQs3a2b2PzuZmiDHbvEc9b8V
+	 xW31VjM1DYWADpV0lpnnva3MlBsmwJxg93iiAPHmOKJl2Qxt4Ezgt7E5P5tsmzY6g7
+	 UxIu4xEITVD8647UdBOIz7AIhPVvJzRBlKF3bafU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sen Wang <sen@ti.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 054/333] ASoC: simple-card-utils: fix graph_util_is_ports0() for DT overlays
+	stable <stable@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.19 126/378] rust_binder: fix oneway spam detection
 Date: Tue, 17 Mar 2026 17:31:23 +0100
-Message-ID: <20260317163001.371565222@linuxfoundation.org>
+Message-ID: <20260317163011.650411247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +68,168 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226572-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226300-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,0.0.0.1:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,renesas.com:email]
-X-Rspamd-Queue-Id: 6B5CB2AF3C0
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AD6252AE978
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sen Wang <sen@ti.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 4185b95f8a42d92d68c49289b4644546b51e252b ]
+commit 4fc87c240b8f30e22b7ebaae29d57105589e1c0b upstream.
 
-graph_util_is_ports0() identifies DPCM front-end (ports@0) vs back-end
-(ports@1) by calling of_get_child_by_name() to find the first "ports"
-child and comparing pointers. This relies on child iteration order
-matching DTS source order.
+The spam detection logic in TreeRange was executed before the current
+request was inserted into the tree. So the new request was not being
+factored in the spam calculation. Fix this by moving the logic after
+the new range has been inserted.
 
-When the DPCM topology comes from a DT overlay, __of_attach_node()
-inserts new children at the head of the sibling list, reversing the
-order. of_get_child_by_name() then returns ports@1 instead of ports@0,
-causing all front-end links to be classified as back-ends. The card
-registers with no PCM devices.
+Also, the detection logic for ArrayRange was missing altogether which
+meant large spamming transactions could get away without being detected.
+Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
 
-Fix this by matching the unit address directly from the node name
-instead of relying on sibling order.
+Note that I looked into centralizing this logic in RangeAllocator but
+iterating through 'state' and 'size' got a bit too complicated (for me)
+and I abandoned this effort.
 
-Fixes: 92939252458f ("ASoC: simple-card-utils: add asoc_graph_is_ports0()")
-Signed-off-by: Sen Wang <sen@ti.com>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/20260309042109.2576612-1-sen@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260210232949.3770644-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/generic/simple-card-utils.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/android/binder/range_alloc/array.rs |   35 ++++++++++++++++++++++++++--
+ drivers/android/binder/range_alloc/mod.rs   |    4 +--
+ drivers/android/binder/range_alloc/tree.rs  |   18 +++++++-------
+ 3 files changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index bdc02e85b089f..9e5be0eaa77f3 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1038,11 +1038,15 @@ int graph_util_is_ports0(struct device_node *np)
- 	else
- 		port = np;
+--- a/drivers/android/binder/range_alloc/array.rs
++++ b/drivers/android/binder/range_alloc/array.rs
+@@ -118,7 +118,7 @@ impl<T> ArrayRangeAllocator<T> {
+         size: usize,
+         is_oneway: bool,
+         pid: Pid,
+-    ) -> Result<usize> {
++    ) -> Result<(usize, bool)> {
+         // Compute new value of free_oneway_space, which is set only on success.
+         let new_oneway_space = if is_oneway {
+             match self.free_oneway_space.checked_sub(size) {
+@@ -146,7 +146,38 @@ impl<T> ArrayRangeAllocator<T> {
+             .ok()
+             .unwrap();
  
--	struct device_node *ports  __free(device_node) = of_get_parent(port);
--	struct device_node *top    __free(device_node) = of_get_parent(ports);
--	struct device_node *ports0 __free(device_node) = of_get_child_by_name(top, "ports");
-+	struct device_node *ports __free(device_node) = of_get_parent(port);
-+	const char *at = strchr(kbasename(ports->full_name), '@');
+-        Ok(insert_at_offset)
++        // Start detecting spammers once we have less than 20%
++        // of async space left (which is less than 10% of total
++        // buffer size).
++        //
++        // (This will short-circuit, so `low_oneway_space` is
++        // only called when necessary.)
++        let oneway_spam_detected =
++            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
++
++        Ok((insert_at_offset, oneway_spam_detected))
++    }
++
++    /// Find the amount and size of buffers allocated by the current caller.
++    ///
++    /// The idea is that once we cross the threshold, whoever is responsible
++    /// for the low async space is likely to try to send another async transaction,
++    /// and at some point we'll catch them in the act.  This is more efficient
++    /// than keeping a map per pid.
++    fn low_oneway_space(&self, calling_pid: Pid) -> bool {
++        let mut total_alloc_size = 0;
++        let mut num_buffers = 0;
++
++        // Warn if this pid has more than 50 transactions, or more than 50% of
++        // async space (which is 25% of total buffer size). Oneway spam is only
++        // detected when the threshold is exceeded.
++        for range in &self.ranges {
++            if range.state.is_oneway() && range.state.pid() == calling_pid {
++                total_alloc_size += range.size;
++                num_buffers += 1;
++            }
++        }
++        num_buffers > 50 || total_alloc_size > self.size / 4
+     }
  
--	return ports0 == ports;
-+	/*
-+	 * Since child iteration order may differ
-+	 * between a base DT and DT overlays,
-+	 * string match "ports" or "ports@0" in the node name instead.
-+	 */
-+	return !at || !strcmp(at, "@0");
- }
- EXPORT_SYMBOL_GPL(graph_util_is_ports0);
+     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
+--- a/drivers/android/binder/range_alloc/mod.rs
++++ b/drivers/android/binder/range_alloc/mod.rs
+@@ -188,11 +188,11 @@ impl<T> RangeAllocator<T> {
+                 self.reserve_new(args)
+             }
+             Impl::Array(array) => {
+-                let offset =
++                let (offset, oneway_spam_detected) =
+                     array.reserve_new(args.debug_id, args.size, args.is_oneway, args.pid)?;
+                 Ok(ReserveNew::Success(ReserveNewSuccess {
+                     offset,
+-                    oneway_spam_detected: false,
++                    oneway_spam_detected,
+                     _empty_array_alloc: args.empty_array_alloc,
+                     _new_tree_alloc: args.new_tree_alloc,
+                     _tree_alloc: args.tree_alloc,
+--- a/drivers/android/binder/range_alloc/tree.rs
++++ b/drivers/android/binder/range_alloc/tree.rs
+@@ -164,15 +164,6 @@ impl<T> TreeRangeAllocator<T> {
+             self.free_oneway_space
+         };
  
--- 
-2.51.0
-
+-        // Start detecting spammers once we have less than 20%
+-        // of async space left (which is less than 10% of total
+-        // buffer size).
+-        //
+-        // (This will short-circut, so `low_oneway_space` is
+-        // only called when necessary.)
+-        let oneway_spam_detected =
+-            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
+-
+         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
+             None => {
+                 pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
+@@ -203,6 +194,15 @@ impl<T> TreeRangeAllocator<T> {
+             self.free_tree.insert(free_tree_node);
+         }
+ 
++        // Start detecting spammers once we have less than 20%
++        // of async space left (which is less than 10% of total
++        // buffer size).
++        //
++        // (This will short-circuit, so `low_oneway_space` is
++        // only called when necessary.)
++        let oneway_spam_detected =
++            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
++
+         Ok((found_off, oneway_spam_detected))
+     }
+ 
 
 
 
