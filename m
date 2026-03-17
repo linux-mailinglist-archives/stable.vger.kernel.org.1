@@ -1,271 +1,151 @@
-Return-Path: <stable+bounces-226019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YC8yKo5auWnYAgIAu9opvQ
-	(envelope-from <stable+bounces-226019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:43:42 +0100
+	id SL29D/1auWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-226020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:45:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120522AB21E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:43:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA61C2AB292
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B0DD30B701A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:40:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9EB3306E61B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBAA2BCF5D;
-	Tue, 17 Mar 2026 13:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5052EB87D;
+	Tue, 17 Mar 2026 13:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2NuFAr0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iy0TnZX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F7C2C1595
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78E22D592E;
+	Tue, 17 Mar 2026 13:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773754854; cv=none; b=tMlArpiXRU2PSDBbxdbGTgjvjYr2D4osibvT2Ccyi8eDlXpgcTfKPfeAmr50PErNOfcuFct58yQl16HsIJkcRxGvE++AOnE8QQZsli7Z08EGjPUpvUwZsQe40XvYp+hNxXvx1IahfYJCsfPrxQf3oQQ9oar72jzJ0XdSFFEGF04=
+	t=1773754971; cv=none; b=KmvzHXMr5b+ChXiV7PmTvbGDO6E6hRfF4WoTIkos76IpaKk2Oe84ZMbD49x/1IyBPS0D+0eOu8+KoOf3xflnvsPctpJIxS6pvNQz24QColWtnbMagZUxryd1rKtUu62B/87qYw3bkwB859eMaBOJ4WP8Q38XZkiqESJUSBdc3sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773754854; c=relaxed/simple;
-	bh=NlqjEjxHyvGIuPxHZj6i+9LpMdiPyI6UTfTO9+ZR4KA=;
+	s=arc-20240116; t=1773754971; c=relaxed/simple;
+	bh=cvWFM54q957EernSWzHaK9Acqjw396q6QTQo5GDsp5Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LvrosXjSkvl0mBz9665L2MWeWL9+U/oAXAkVJQ9A75DaE917QpzFnM9oyQbnqOrrmpCgrBC7/mI4zloaO9RLQdhFVWIfUDawIcMxbgdMmbgKSvS6NBwsR0QQDvG7MsviURdQlupc1lFP018AtvjdF96q2JM2RU0qF/W4XZ+OMnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2NuFAr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29554C4CEF7;
-	Tue, 17 Mar 2026 13:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773754854;
-	bh=NlqjEjxHyvGIuPxHZj6i+9LpMdiPyI6UTfTO9+ZR4KA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=ShsouSxVeTlqZmV5yn4M8HKQaEZJ/s8m4zxE8C0Awnynqj5TO3kgHmVFhY58N1GaYx7wcyb0sXFU/tx5mRtID4AiAjJVR6JdHVHH217005vGPp310rWJdaeoPKPSfMQDsrILEbUPr32zxogHJP3cypCfV4gLqs36328SoEX12vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iy0TnZX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDBEC4CEF7;
+	Tue, 17 Mar 2026 13:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773754971;
+	bh=cvWFM54q957EernSWzHaK9Acqjw396q6QTQo5GDsp5Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H2NuFAr0NWIzZqFogJiNLJLsmgZOzlLrRiQOdLpcDQj8i9tUFnHrwvPJnxEWDf7Qd
-	 h0dtyFLuT4DWC8OSDx61qJcnxegxIuQlkJRGeQ9k3mASG89h9v8DGF1+BY4wJyWQnn
-	 l+zkeY92li871rp5o1mF5XM4AWJSY3Dpdpf5TMwo=
-Date: Tue, 17 Mar 2026 14:34:57 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Werner Kasselman <werner@verivus.ai>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] ksmbd: fix use-after-free and NULL deref in
- smb_grant_oplock()
-Message-ID: <2026031747-tiptoeing-fifty-9cc8@gregkh>
-References: <20260317130554.2609496-1-werner@verivus.com>
+	b=Iy0TnZX5T2xqw3wl38rgvtDR9JClrVeBVTwEjQZgZeUSC1mQWBqW/7QANTOB+ItEh
+	 ShMuJXNtUDliwfJuOm40uaMs7VLacYFs4/xaeXEHuP0wSrirTRQUbkPVUIy5LQqRBg
+	 5FqbbtdDB6HEelqWDfyEDYrGwjyJR0xK/vDSLyQP0VRdzNtsewmCWmBhZdxRCQKhwX
+	 UtjL/WYWVKM3oGNCuTfxvKwt4ApwDU0XE1YwK32qPu1CzE06K8OSKaNNjr+SM99ctm
+	 IwndBkfvV/zVMP64fw2nCwDX4++guZiEpwi6CnKsiGxnn9bHiy/g4fHTg6er0m7Tod
+	 qyBGCOjWy60qA==
+Date: Tue, 17 Mar 2026 13:42:42 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	devicetree@vger.kernel.org, driver-core@lists.linux.dev,
+	imx@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <94dcb275-4af0-4ca1-9b4a-5769bcc2c777@sirena.org.uk>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CESacuQ0/LxRTmli"
 Content-Disposition: inline
-In-Reply-To: <20260317130554.2609496-1-werner@verivus.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+X-Cookie: Must be over 18.
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226020-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226019-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,linux.intel.com,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,sang-engineering.com,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,verivus.com:email]
-X-Rspamd-Queue-Id: 120522AB21E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: EA61C2AB292
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 01:05:56PM +0000, Werner Kasselman wrote:
-> smb_grant_oplock() has two issues in the oplock publication sequence:
-> 
-> 1) opinfo is linked into ci->m_op_list (via opinfo_add) before
->    add_lease_global_list() is called.  If add_lease_global_list()
->    fails (kmalloc returns NULL), the error path frees the opinfo
->    via __free_opinfo() while it is still linked in ci->m_op_list.
->    Concurrent m_op_list readers (opinfo_get_list, or direct iteration
->    in smb_break_all_levII_oplock) dereference the freed node.
-> 
-> 2) opinfo->o_fp is assigned after add_lease_global_list() publishes
->    the opinfo on the global lease list.  A concurrent
->    find_same_lease_key() can walk the lease list and dereference
->    opinfo->o_fp->f_ci while o_fp is still NULL.
-> 
-> Fix by restructuring the publication sequence to eliminate post-publish
-> failure:
-> 
-> - Set opinfo->o_fp before any list publication (fixes NULL deref).
-> - Preallocate lease_table via alloc_lease_table() before opinfo_add()
->   so add_lease_global_list() becomes infallible after publication.
-> - Keep the original m_op_list publication order (opinfo_add before
->   lease list) so concurrent opens via same_client_has_lease() and
->   opinfo_get_list() still see the in-flight grant.
-> - Use opinfo_put() instead of __free_opinfo() on err_out so that
->   the RCU-deferred free path is used.
-> 
-> This also requires splitting add_lease_global_list() to take a
-> preallocated lease_table and changing its return type from int to void,
-> since it can no longer fail.
-> 
-> Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-> Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Werner Kasselman <werner@verivus.com>
-> ---
->  fs/smb/server/oplock.c | 72 ++++++++++++++++++++++++++----------------
->  1 file changed, 45 insertions(+), 27 deletions(-)
-> 
-> diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-> index 393a4ae47cc1..9b2bb8764a80 100644
-> --- a/fs/smb/server/oplock.c
-> +++ b/fs/smb/server/oplock.c
-> @@ -82,11 +82,19 @@ static void lease_del_list(struct oplock_info *opinfo)
->  	spin_unlock(&lb->lb_lock);
->  }
->  
-> -static void lb_add(struct lease_table *lb)
-> +static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
->  {
-> -	write_lock(&lease_list_lock);
-> -	list_add(&lb->l_entry, &lease_table_list);
-> -	write_unlock(&lease_list_lock);
-> +	struct lease_table *lb;
-> +
-> +	lb = kmalloc_obj(struct lease_table, KSMBD_DEFAULT_GFP);
-> +	if (!lb)
-> +		return NULL;
-> +
-> +	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-> +	       SMB2_CLIENT_GUID_SIZE);
-> +	INIT_LIST_HEAD(&lb->lease_list);
-> +	spin_lock_init(&lb->lb_lock);
-> +	return lb;
->  }
->  
->  static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
-> @@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
->  	lease2->version = lease1->version;
->  }
->  
-> -static int add_lease_global_list(struct oplock_info *opinfo)
-> +static void add_lease_global_list(struct oplock_info *opinfo,
-> +				  struct lease_table *new_lb)
->  {
->  	struct lease_table *lb;
->  
-> -	read_lock(&lease_list_lock);
-> +	write_lock(&lease_list_lock);
->  	list_for_each_entry(lb, &lease_table_list, l_entry) {
->  		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
->  			    SMB2_CLIENT_GUID_SIZE)) {
->  			opinfo->o_lease->l_lb = lb;
->  			lease_add_list(opinfo);
-> -			read_unlock(&lease_list_lock);
-> -			return 0;
-> +			write_unlock(&lease_list_lock);
-> +			kfree(new_lb);
-> +			return;
->  		}
->  	}
-> -	read_unlock(&lease_list_lock);
->  
-> -	lb = kmalloc_obj(struct lease_table, KSMBD_DEFAULT_GFP);
-> -	if (!lb)
-> -		return -ENOMEM;
-> -
-> -	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
-> -	       SMB2_CLIENT_GUID_SIZE);
-> -	INIT_LIST_HEAD(&lb->lease_list);
-> -	spin_lock_init(&lb->lb_lock);
-> -	opinfo->o_lease->l_lb = lb;
-> +	opinfo->o_lease->l_lb = new_lb;
->  	lease_add_list(opinfo);
-> -	lb_add(lb);
-> -	return 0;
-> +	list_add(&new_lb->l_entry, &lease_table_list);
-> +	write_unlock(&lease_list_lock);
->  }
->  
->  static void set_oplock_level(struct oplock_info *opinfo, int level,
-> @@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
->  	int err = 0;
->  	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
->  	struct ksmbd_inode *ci = fp->f_ci;
-> +	struct lease_table *new_lb = NULL;
->  	bool prev_op_has_lease;
->  	__le32 prev_op_state = 0;
->  
-> @@ -1291,21 +1293,37 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
->  	set_oplock_level(opinfo, req_op_level, lctx);
->  
->  out:
-> -	opinfo_count_inc(fp);
-> -	opinfo_add(opinfo, fp);
-> -
-> +	/*
-> +	 * Set o_fp before any publication so that concurrent readers
-> +	 * (e.g. find_same_lease_key() on the lease list) that
-> +	 * dereference opinfo->o_fp don't hit a NULL pointer.
-> +	 *
-> +	 * Keep the original publication order so concurrent opens can
-> +	 * still observe the in-flight grant via ci->m_op_list, but make
-> +	 * everything after opinfo_add() no-fail by preallocating any new
-> +	 * lease_table first.
-> +	 */
-> +	opinfo->o_fp = fp;
->  	if (opinfo->is_lease) {
-> -		err = add_lease_global_list(opinfo);
-> -		if (err)
-> +		new_lb = alloc_lease_table(opinfo);
-> +		if (!new_lb) {
-> +			err = -ENOMEM;
->  			goto err_out;
-> +		}
->  	}
->  
-> +	opinfo_count_inc(fp);
-> +	opinfo_add(opinfo, fp);
-> +
-> +	if (opinfo->is_lease)
-> +		add_lease_global_list(opinfo, new_lb);
-> +
->  	rcu_assign_pointer(fp->f_opinfo, opinfo);
-> -	opinfo->o_fp = fp;
->  
->  	return 0;
->  err_out:
-> -	__free_opinfo(opinfo);
-> +	kfree(new_lb);
-> +	opinfo_put(opinfo);
->  	return err;
->  }
->  
-> -- 
-> 2.43.0
-> 
-> 
 
-<formletter>
+--CESacuQ0/LxRTmli
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+On Mon, Mar 16, 2026 at 03:42:06PM -0700, Douglas Anderson wrote:
+> In various places in the kernel, we modify the fwnode "flags" member
+> by doing either:
+>   fwnode->flags |= SOME_FLAG;
+>   fwnode->flags &= ~SOME_FLAG;
 
-</formletter>
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--CESacuQ0/LxRTmli
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm5WlEACgkQJNaLcl1U
+h9DSgAf6Ap5hH7yRkuhE3ZUXEU9Sw0nRKEWLWHq9c0Jd+k0j/ZH4K6YAePaTKleT
+VU3Fsx4siP9rbVq9sWIZ4qtL2ChJw3LgqNNMe88HKsb5MLrcpbCzUEXe9mZHg9ke
+tucJZVfd79aIWfTHelxkhI1ZuW+JNDId0+0NrI427Jrhou3kPYT7+gJmYXuMbWik
+Pmc0B/+HNSZ5wx+ETM7Ki9+Yj+BY15QaBoNID1YqUpzKd6xrtRs/Ep414//xibo9
+92kpTPrKdt92+B4iMU/YWQvPyUelIpmWR7aJ9I823NnLKHA5yvoEy1ff5WloKA6Q
+MxtC9dhuaD1HfwqImmlLKtm0H6/ABQ==
+=PgWz
+-----END PGP SIGNATURE-----
+
+--CESacuQ0/LxRTmli--
 
