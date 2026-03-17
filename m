@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HRsGJOTuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:59 +0100
+	id YCmAMlSMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46332B020F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06D42AF376
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12B23335311E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 914FF3028C1F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6EB331A64;
-	Tue, 17 Mar 2026 17:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0223F65F7;
+	Tue, 17 Mar 2026 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0SJqW2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXd7se/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8141129DB88;
-	Tue, 17 Mar 2026 17:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2C346797;
+	Tue, 17 Mar 2026 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768191; cv=none; b=RAydDEEbcQVB+OikmwiGZy4JSJlmHIkDNx+FurIu1vzJhCXOWY9jlwm7a1YDrSohR+OCHYMxayBWVdaSzt/lXjXbr1s2AdA1lNMN3TPtrKMqjWWzhs9Z69BDRIpBXe/7izy5CxeFYyY4AjEVSZPq34oiJFPrIuD5d9eRjtXRYEI=
+	t=1773766805; cv=none; b=dA+GLjik3fEiAW1ckAqhF5wWcY5e/Hf5Z81+z269t+tnU5bSw+5pABEgchmzy78xRhlmJgaxEd1TGM+KsUpcsxziuwbUheISnad9PVJ+6cE0sXJIulq0N2WIMkHfcIhRCFW990yh9v+Qw7dJ2eJ7IOZ3mIfJLNn13j3lxuZd034=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768191; c=relaxed/simple;
-	bh=n9dTfo0zXUV8m9mpoUsH4+Z1PWYKUumpbcyLfxrzKvU=;
+	s=arc-20240116; t=1773766805; c=relaxed/simple;
+	bh=SFCTu99rM1UzNCRisFts/dasUZvrRzVrQYepDl2exYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnXvA1XfpBYNkSis+rqRlCzrIk3PbOAn/tOFvti1iKbYISWJQo/03hmP81b3iepx7fwDSvRQ0/mencGIb1spzHheGO6uePuqNHiok3ZCbQqX+iA76/9WqqCbkutSzRlZM6AxuFyrWOtD0ayF/gEBME2/6OfEQ3nf7OPDDbAdCSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0SJqW2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9154CC4CEF7;
-	Tue, 17 Mar 2026 17:23:10 +0000 (UTC)
+	 MIME-Version; b=ZpqpKAdV52nN4hCJrqOTikZeZBgsm/LDbQy47lFyLX1T0lRuShu8HOJXL5m24J/W9tULYVrJpqOx23fN4N3Acd5ZQkVVmtwfSVC7IJ8Wj2egH/O5t6iveaNUMgirzcgcIURhYKgjesVAgsMGLVl0XUaxVz7Gmq+MUWiDEBe/3wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXd7se/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FA0C4CEF7;
+	Tue, 17 Mar 2026 17:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768191;
-	bh=n9dTfo0zXUV8m9mpoUsH4+Z1PWYKUumpbcyLfxrzKvU=;
+	s=korg; t=1773766805;
+	bh=SFCTu99rM1UzNCRisFts/dasUZvrRzVrQYepDl2exYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0SJqW2PFI0vSL0NV6oRxWNz7tK40s7pRJuKWNr52Ug4QjQvd7oVyACaKj22qiof5
-	 LJ2uzarJl5Bj8AQuz6r9bLhg+GAvu+g4hvHpLlRaNdPOJM5tTWEAKPkvK+WlSaA3jX
-	 ZjYzKg8IZdM7q+yQta01qLmWs/QAtdjsW5tiUkf0=
+	b=sXd7se/xeYHMMxU3hoY9RuqBlijSaCWFimJWmRYZdFHFxpbIX3bijUoNLEHIDTgkk
+	 OYwJqiZ6a9nx+4eqAE6z4KW20N6biXLxHfE64KVwrIbGtWeuRRtxn1GTkro3h8xo6k
+	 hYjDVb97Py8qgoYpHKnv+VTUNDnJgxshekWum+Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.18 253/333] drm/amd: Fix NULL pointer dereference in device cleanup
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.19 325/378] dt-bindings: display: msm: Fix reg ranges and clocks on Glymur
 Date: Tue, 17 Mar 2026 17:34:42 +0100
-Message-ID: <20260317163008.750874490@linuxfoundation.org>
+Message-ID: <20260317163018.946125353@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226786-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226459-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,65 +87,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E46332B020F
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ae90000:email,af54000:email]
+X-Rspamd-Queue-Id: D06D42AF376
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
 
-commit 062ea905fff7756b2e87143ffccaece5cdb44267 upstream.
+commit 7403e87c138475a74e5176176778f391d847f42d upstream.
 
-When GPU initialization fails due to an unsupported HW block
-IP blocks may have a NULL version pointer. During cleanup in
-amdgpu_device_fini_hw, the code calls amdgpu_device_set_pg_state and
-amdgpu_device_set_cg_state which iterate over all IP blocks and access
-adev->ip_blocks[i].version without NULL checks, leading to a kernel
-NULL pointer dereference.
+The Glymur platform has four DisplayPort controllers. The hardware
+supports four streams (MST) per controller. However, on Glymur the first
+three controllers only have two streams wired to the display subsystem,
+while the fourth controller operates in single-stream mode.
 
-Add NULL checks for adev->ip_blocks[i].version in both
-amdgpu_device_set_cg_state and amdgpu_device_set_pg_state to prevent
-dereferencing NULL pointers during GPU teardown when initialization has
-failed.
+Add a dedicated clause for the Glymur compatible to require the register
+ranges for all four stream blocks, while allowing either one pixel clock
+(for the single-stream controller) or two pixel clocks (for the remaining
+controllers).
 
-Fixes: 39fc2bc4da00 ("drm/amdgpu: Protect GPU register accesses in powergated state in some paths")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7ac77468cda92eecae560b05f62f997a12fe2f2)
-Cc: stable@vger.kernel.org
+Update the Glymur MDSS schema example by adding the missing p2, p3,
+mst2link and mst3link register blocks. Without these, the bindings
+validation fails. Also replace the made-up register addresses with the
+actual addresses from the first controller to match the SoC devicetree
+description.
+
+Cc: stable@vger.kernel.org # v6.19
+Fixes: 8f63bf908213 ("dt-bindings: display: msm: Document the Glymur DiplayPort controller")
+Fixes: 1aee577bbc60 ("dt-bindings: display: msm: Document the Glymur Mobile Display SubSystem")
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/708518/
+Link: https://lore.kernel.org/r/20260303-glymur-fix-dp-bindings-reg-clocks-v4-1-1ebd9c7c2cee@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../bindings/display/msm/dp-controller.yaml   | 21 ++++++++++++++++++-
+ .../display/msm/qcom,glymur-mdss.yaml         | 16 ++++++++------
+ 2 files changed, 30 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3375,6 +3375,8 @@ int amdgpu_device_set_cg_state(struct am
- 		i = state == AMD_CG_STATE_GATE ? j : adev->num_ip_blocks - j - 1;
- 		if (!adev->ip_blocks[i].status.late_initialized)
- 			continue;
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		/* skip CG for GFX, SDMA on S0ix */
- 		if (adev->in_s0ix &&
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
-@@ -3414,6 +3416,8 @@ int amdgpu_device_set_pg_state(struct am
- 		i = state == AMD_PG_STATE_GATE ? j : adev->num_ip_blocks - j - 1;
- 		if (!adev->ip_blocks[i].status.late_initialized)
- 			continue;
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		/* skip PG for GFX, SDMA on S0ix */
- 		if (adev->in_s0ix &&
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
+diff --git a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
+index ebda78db87a6..02ddfaab5f56 100644
+--- a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
++++ b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
+@@ -253,7 +253,6 @@ allOf:
+             enum:
+               # these platforms support 2 streams MST on some interfaces,
+               # others are SST only
+-              - qcom,glymur-dp
+               - qcom,sc8280xp-dp
+               - qcom,x1e80100-dp
+     then:
+@@ -310,6 +309,26 @@ allOf:
+           minItems: 6
+           maxItems: 8
+ 
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              # these platforms support 2 streams MST on some interfaces,
++              # others are SST only, but all controllers have 4 ports
++              - qcom,glymur-dp
++    then:
++      properties:
++        reg:
++          minItems: 9
++          maxItems: 9
++        clocks:
++          minItems: 5
++          maxItems: 6
++        clocks-names:
++          minItems: 5
++          maxItems: 6
++
+ unevaluatedProperties: false
+ 
+ examples:
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.yaml
+index 2329ed96e6cb..64dde43373ac 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,glymur-mdss.yaml
+@@ -176,13 +176,17 @@ examples:
+                 };
+             };
+ 
+-            displayport-controller@ae90000 {
++            displayport-controller@af54000 {
+                 compatible = "qcom,glymur-dp";
+-                reg = <0xae90000 0x200>,
+-                      <0xae90200 0x200>,
+-                      <0xae90400 0x600>,
+-                      <0xae91000 0x400>,
+-                      <0xae91400 0x400>;
++                reg = <0xaf54000 0x200>,
++                      <0xaf54200 0x200>,
++                      <0xaf55000 0xc00>,
++                      <0xaf56000 0x400>,
++                      <0xaf57000 0x400>,
++                      <0xaf58000 0x400>,
++                      <0xaf59000 0x400>,
++                      <0xaf5a000 0x600>,
++                      <0xaf5b000 0x600>;
+ 
+                 interrupt-parent = <&mdss>;
+                 interrupts = <12>;
+-- 
+2.53.0
+
 
 
 
