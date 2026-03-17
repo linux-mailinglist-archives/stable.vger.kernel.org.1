@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAczCMyJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:16 +0100
+	id kFoCO+SNuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFF72AEE56
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFAE52AF730
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4AE633032A83
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:56:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CA8E030471DD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B6B3F23B3;
-	Tue, 17 Mar 2026 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D42191F94;
+	Tue, 17 Mar 2026 17:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEfCmPbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcK9ReHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6D13BFE59;
-	Tue, 17 Mar 2026 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9463146A66;
+	Tue, 17 Mar 2026 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766571; cv=none; b=qVao15a1HvKvJSg1/5JcpeKJoSDUtelWuDNKN9TfvFJi1lmACGvblD1AgfvOBVgrmc4zaTy9bwSXH3PACb3UwE5VJ5AOow2PRA1QMnohbkcBybC02CgX/fp1ZfYB570sjsBTujQzD0RzkmS2f8hvHEAjq0nZ0TKVYjmCVPqa1S8=
+	t=1773767800; cv=none; b=m9k+kUlgRJvVWFr8TGhneGAEQbMmDO39yZo7kCGj5x1y1lrfBYJCVCoe70eUYUqaAqGHNHDgXOihPj3Sy5g0VZeqA8ftPz2ut6Zj67hBJXOjb6dVKocUQ2xdooKa3r3KriLTcFRjppkgh6DbZWJHJE4BixF8sS1O/d040d8tXsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766571; c=relaxed/simple;
-	bh=pr7SntCU96RTPt5Uhk+82MEnQHuHEacJaohpwGLK9xY=;
+	s=arc-20240116; t=1773767800; c=relaxed/simple;
+	bh=hk2y3F7wOJtUhPdQ1bJLurR1PQtNC3Ba8N8oEmIy66g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fcyYRys+kJ8RFyhS7IiGK/087ega4PTqJHfovIFRagTU6easY8RilSf9DMdfOK/X6xhd4bPbGsNOUzegCMQ+0u9J+/B1xuktdeyhcT1eQ7qwFZQHCfjkN0v1rAPbXSUWruo17iM5jIv0LIpaws2FmMB+QmSD0FkzUbofSX/WaHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEfCmPbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17DFC4CEF7;
-	Tue, 17 Mar 2026 16:56:10 +0000 (UTC)
+	 MIME-Version; b=XQVnhna2cJRkc08eOh2lcLRoNlWT87g3Q0PmtWSG+j0RGYCXCsuKkvX0XVGkhNtvcEE6M3eKBeHCAVN+mgc0mEITbFBfmfbNc5q2l+KIXu8f10PbIdXBSCSJDHtXDDDVX3iJ1+psiZmP2I/WU9U3BViUU/fhn0AoFjf9KOKcxxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcK9ReHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC215C4CEF7;
+	Tue, 17 Mar 2026 17:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766571;
-	bh=pr7SntCU96RTPt5Uhk+82MEnQHuHEacJaohpwGLK9xY=;
+	s=korg; t=1773767800;
+	bh=hk2y3F7wOJtUhPdQ1bJLurR1PQtNC3Ba8N8oEmIy66g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEfCmPbdoLbsxwkWW6KoHBW2kccIMVrRhya4SM0PSjeqg3AFTLNxuBlq2zapH0tiE
-	 RZexZ8zxhY8BgooP4jeRwgmRVdzZ3b3h2G8AnMWW9bZWPwALnXFzp+irG17InV+2A8
-	 LIbDdqiSbxeCem38Zv04UHS8Qz/+bcI/PcJebDjE=
+	b=HcK9ReHz3Q9A0k3v77dcZ/3IN81xai0JysssIxW8KtdDUktB3uBYa5m1leE6MMjTU
+	 knxL7uhjv70a+VnQ2Vy0sGlyklWuNGl0tqYDVbCeSpAQajlf4q0H5AEwsH0hebHwWB
+	 lJ/V6mtnwR69sMkLMJ5jBXYm6uQHIs62bnZn4cgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.19 232/378] s390/pfault: Fix virtual vs physical address confusion
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Penghe Geng <pgeng@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 160/333] mmc: core: Avoid bitfield RMW for claim/retune flags
 Date: Tue, 17 Mar 2026 17:33:09 +0100
-Message-ID: <20260317163015.545911765@linuxfoundation.org>
+Message-ID: <20260317163005.294835159@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +68,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226407-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226682-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2BFF72AEE56
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AFAE52AF730
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Penghe Geng <pgeng@nvidia.com>
 
-commit d879ac6756b662a085a743e76023c768c3241579 upstream.
+commit 901084c51a0a8fb42a3f37d2e9c62083c495f824 upstream.
 
-When Linux is running as guest, runs a user space process and the
-user space process accesses a page that the host has paged out,
-the guest gets a pfault interrupt and schedules a different process.
-Without this mechanism the host would have to suspend the whole
-virtual CPU until the page has been paged in.
+Move claimed and retune control flags out of the bitfield word to
+avoid unrelated RMW side effects in asynchronous contexts.
 
-To setup the pfault interrupt the real address of parameter list
-should be passed to DIAGNOSE 0x258, but a virtual address is passed
-instead.
+The host->claimed bit shared a word with retune flags. Writes to claimed
+in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
+other bits when concurrent updates happen in other contexts, triggering
+spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
+retune_now and retune_paused to bool to remove shared-word coupling.
 
-That has a performance impact, since the pfault setup never succeeds,
-the interrupt is never delivered to a guest and the whole virtual CPU
-is suspended as result.
-
+Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
+Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
 Cc: stable@vger.kernel.org
-Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
-Reported-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/pfault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/mmc/host.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/s390/mm/pfault.c
-+++ b/arch/s390/mm/pfault.c
-@@ -62,7 +62,7 @@ int __pfault_init(void)
- 		"0:	nopr	%%r7\n"
- 		EX_TABLE(0b, 0b)
- 		: [rc] "+d" (rc)
--		: [refbk] "a" (&pfault_init_refbk), "m" (pfault_init_refbk)
-+		: [refbk] "a" (virt_to_phys(&pfault_init_refbk)), "m" (pfault_init_refbk)
- 		: "cc");
- 	return rc;
- }
-@@ -84,7 +84,7 @@ void __pfault_fini(void)
- 		"0:	nopr	%%r7\n"
- 		EX_TABLE(0b, 0b)
- 		:
--		: [refbk] "a" (&pfault_fini_refbk), "m" (pfault_fini_refbk)
-+		: [refbk] "a" (virt_to_phys(&pfault_fini_refbk)), "m" (pfault_fini_refbk)
- 		: "cc");
- }
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -486,14 +486,12 @@ struct mmc_host {
  
+ 	struct mmc_ios		ios;		/* current io bus settings */
+ 
++	bool			claimed;	/* host exclusively claimed */
++
+ 	/* group bitfields together to minimize padding */
+ 	unsigned int		use_spi_crc:1;
+-	unsigned int		claimed:1;	/* host exclusively claimed */
+ 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
+-	unsigned int		can_retune:1;	/* re-tuning can be used */
+ 	unsigned int		doing_retune:1;	/* re-tuning in progress */
+-	unsigned int		retune_now:1;	/* do re-tuning at next req */
+-	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
+ 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+@@ -508,6 +506,9 @@ struct mmc_host {
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
+ 
++	bool			can_retune;	/* re-tuning can be used */
++	bool			retune_now;	/* do re-tuning at next req */
++	bool			retune_paused;	/* re-tuning is temporarily disabled */
+ 	int			need_retune;	/* re-tuning is needed */
+ 	int			hold_retune;	/* hold off re-tuning */
+ 	unsigned int		retune_period;	/* re-tuning period in secs */
 
 
 
