@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGztNBqGuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:30 +0100
+	id qNNvFNSPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CECC2AE7B6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85FC2AFBA6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4567E310A04B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0649C315EACB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4765E376BCA;
-	Tue, 17 Mar 2026 16:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A2A29D26C;
+	Tue, 17 Mar 2026 17:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTKiisfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSgynMln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FC3EDADB;
-	Tue, 17 Mar 2026 16:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3758D3E3DB1;
+	Tue, 17 Mar 2026 17:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765746; cv=none; b=t7GbTKwKAH9KxiPWiFZXFQztA/FxwdQjiv49VWmT2o1muaX1VZ9j7DLjOxgJUyAJ3yMHeIrGgAzpldeA0jCIEvDkod3RkbE2EsqPsHz38njbwjBenqEfN+ipTj+xVqGIJh+EoDKakIMIDCje4KCkadclMr/+3bjkY/cjZZ13wTU=
+	t=1773767093; cv=none; b=dC1DvzHwXXubfZuO/DzFIHQKCt0XA13mXaCXdR4iLKIoRDCliRBLHnQh8pqhyvSj5wvHW+7Kp7cjM10mhIhhC4LpEaojuj2ie4+pJHbiAIgtJPLeShQB0FyTxkuCD6TnnB5+yznwAmd/YknIJuRNA7ZlhA9cSZDmJXKjPA7OU8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765746; c=relaxed/simple;
-	bh=9izNEn4/BweWIdsvM25m9BFUBohTdFcaArcB1QDu9Vg=;
+	s=arc-20240116; t=1773767093; c=relaxed/simple;
+	bh=oNzy6M8fgg9C3NPfVOhGCKQgIwNrWv/+7ndxJJ4zVXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bi+j7zsVWWzox3QvydbWPP08fhpH037/vfn31Nqqqm76ZuN1oXmV5mGXp4M+usJw5XWaSHhXh5JZlqR/1exnDrlIlfYKJrR8KeBr+uiToeBLkyEukP+wL9GisKtGhGW0iOAbgPCp0y2sAKMygtsN3WT7uHfF/TU3lXl8YM8Npag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTKiisfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5DDC4CEF7;
-	Tue, 17 Mar 2026 16:42:25 +0000 (UTC)
+	 MIME-Version; b=rjQjZoNbQpaHrUis8OX3Uik5q80dYimv2bn+yjAc3M2v/dPbEYFHfFbF+iRMrLN2jQc/5lK2zaVHLCEdb6jW7Zw50ZttsGOzU3sn1S3AbDROydqs158yc/5h+VfWUe+9QgwGWue3gvOCB5PI1Gg52ViMW/pIxx6UDnpiTxl6QAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSgynMln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2F3C4CEF7;
+	Tue, 17 Mar 2026 17:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765746;
-	bh=9izNEn4/BweWIdsvM25m9BFUBohTdFcaArcB1QDu9Vg=;
+	s=korg; t=1773767093;
+	bh=oNzy6M8fgg9C3NPfVOhGCKQgIwNrWv/+7ndxJJ4zVXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTKiisfiIJVpJVH4AIPOZrEfli7wqq04WBnr/KYBVQq8FmzF6isHZlYuBu4AAzRHv
-	 XVNMTDSWd7ifiiFZJBhIuUPGL71EEFVKIxZgMNWW69czae3AZHQdqxjXOVsa/Haml0
-	 dViGW2EbNqvWKZ3jCwyZVK1e0ABIvyO7cjCZvq5U=
+	b=nSgynMlnISIbqykE1jf3y5ZLkappiGLp9bZCUnbEqpGtO5uManU2CMgEppme6dogD
+	 Ok3Aavn5Tpjmf7nKocvQzn93afKn7ujEMyWH3p2bhfGGRF4X1wJtgkz+tqNbFgGblB
+	 mCJsVq727baNfbuPAAdzoJ6pouy8Q2RtgSfmr5gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 085/378] sched: idle: Make skipping governor callbacks more consistent
+Subject: [PATCH 6.18 013/333] scsi: ufs: core: Fix possible NULL pointer dereference in ufshcd_add_command_trace()
 Date: Tue, 17 Mar 2026 17:30:42 +0100
-Message-ID: <20260317163010.142868871@linuxfoundation.org>
+Message-ID: <20260317162959.851718550@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226215-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226528-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,91 +86,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 3CECC2AE7B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,acm.org:email,msgid.link:url,mediatek.com:email]
+X-Rspamd-Queue-Id: A85FC2AFBA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
+[ Upstream commit 30df81f2228d65bddf492db3929d9fcaffd38fc5 ]
 
-If the cpuidle governor .select() callback is skipped because there
-is only one idle state in the cpuidle driver, the .reflect() callback
-should be skipped as well, at least for consistency (if not for
-correctness), so do it.
+The kernel log indicates a crash in ufshcd_add_command_trace, due to a NULL
+pointer dereference when accessing hwq->id.  This can happen if
+ufshcd_mcq_req_to_hwq() returns NULL.
 
-Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
+This patch adds a NULL check for hwq before accessing its id field to
+prevent a kernel crash.
+
+Kernel log excerpt:
+[<ffffffd5d192dc4c>] notify_die+0x4c/0x8c
+[<ffffffd5d1814e58>] __die+0x60/0xb0
+[<ffffffd5d1814d64>] die+0x4c/0xe0
+[<ffffffd5d181575c>] die_kernel_fault+0x74/0x88
+[<ffffffd5d1864db4>] __do_kernel_fault+0x314/0x318
+[<ffffffd5d2a3cdf8>] do_page_fault+0xa4/0x5f8
+[<ffffffd5d2a3cd34>] do_translation_fault+0x34/0x54
+[<ffffffd5d1864524>] do_mem_abort+0x50/0xa8
+[<ffffffd5d2a297dc>] el1_abort+0x3c/0x64
+[<ffffffd5d2a29718>] el1h_64_sync_handler+0x44/0xcc
+[<ffffffd5d181133c>] el1h_64_sync+0x80/0x88
+[<ffffffd5d255c1dc>] ufshcd_add_command_trace+0x23c/0x320
+[<ffffffd5d255bad8>] ufshcd_compl_one_cqe+0xa4/0x404
+[<ffffffd5d2572968>] ufshcd_mcq_poll_cqe_lock+0xac/0x104
+[<ffffffd5d11c7460>] ufs_mtk_mcq_intr+0x54/0x74 [ufs_mediatek_mod]
+[<ffffffd5d19ab92c>] __handle_irq_event_percpu+0xc8/0x348
+[<ffffffd5d19abca8>] handle_irq_event+0x3c/0xa8
+[<ffffffd5d19b1f0c>] handle_fasteoi_irq+0xf8/0x294
+[<ffffffd5d19aa778>] generic_handle_domain_irq+0x54/0x80
+[<ffffffd5d18102bc>] gic_handle_irq+0x1d4/0x330
+[<ffffffd5d1838210>] call_on_irq_stack+0x44/0x68
+[<ffffffd5d183af30>] do_interrupt_handler+0x78/0xd8
+[<ffffffd5d2a29c00>] el1_interrupt+0x48/0xa8
+[<ffffffd5d2a29ba8>] el1h_64_irq_handler+0x14/0x24
+[<ffffffd5d18113c4>] el1h_64_irq+0x80/0x88
+[<ffffffd5d2527fb4>] arch_local_irq_enable+0x4/0x1c
+[<ffffffd5d25282e4>] cpuidle_enter+0x34/0x54
+[<ffffffd5d195a678>] do_idle+0x1dc/0x2f8
+[<ffffffd5d195a7c4>] cpu_startup_entry+0x30/0x3c
+[<ffffffd5d18155c4>] secondary_start_kernel+0x134/0x1ac
+[<ffffffd5d18640bc>] __secondary_switched+0xc4/0xcc
+
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223065657.2432447-1-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle.c | 10 ----------
- kernel/sched/idle.c       | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/ufs/core/ufshcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 65fbb8e807b97..c7876e9e024f9 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -359,16 +359,6 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
- int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		   bool *stop_tick)
- {
--	/*
--	 * If there is only a single idle state (or none), there is nothing
--	 * meaningful for the governor to choose. Skip the governor and
--	 * always use state 0 with the tick running.
--	 */
--	if (drv->state_count <= 1) {
--		*stop_tick = false;
--		return 0;
--	}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 4f7fc28207245..403f8989b1448 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -516,8 +516,8 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
+ 
+ 	if (hba->mcq_enabled) {
+ 		struct ufs_hw_queue *hwq = ufshcd_mcq_req_to_hwq(hba, rq);
 -
- 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
- }
- 
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index abf8f15d60c9e..69c70d509e1cf 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -221,7 +221,7 @@ static void cpuidle_idle_call(void)
- 
- 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
- 		call_cpuidle(drv, dev, next_state);
--	} else {
-+	} else if (drv->state_count > 1) {
- 		bool stop_tick = true;
- 
- 		/*
-@@ -239,6 +239,15 @@ static void cpuidle_idle_call(void)
- 		 * Give the governor an opportunity to reflect on the outcome
- 		 */
- 		cpuidle_reflect(dev, entered_state);
-+	} else {
-+		tick_nohz_idle_retain_tick();
-+
-+		/*
-+		 * If there is only a single idle state (or none), there is
-+		 * nothing meaningful for the governor to choose.  Skip the
-+		 * governor and always use state 0.
-+		 */
-+		call_cpuidle(drv, dev, 0);
+-		hwq_id = hwq->id;
++		if (hwq)
++			hwq_id = hwq->id;
+ 	} else {
+ 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
  	}
- 
- exit_idle:
 -- 
 2.51.0
 
