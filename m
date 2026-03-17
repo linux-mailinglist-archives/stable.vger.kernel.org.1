@@ -1,120 +1,276 @@
-Return-Path: <stable+bounces-226022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CxnK49buWnYAgIAu9opvQ
-	(envelope-from <stable+bounces-226022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:47:59 +0100
+	id YD5cLdtbuWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-226023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3232AB343
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:47:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF25B2AB396
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4F84300F594
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:47:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B89A3300250F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACDD319601;
-	Tue, 17 Mar 2026 13:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657FA3ACA51;
+	Tue, 17 Mar 2026 13:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="LsMKAMfa"
 X-Original-To: stable@vger.kernel.org
-Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61FE30F547
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.187.169.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DECF35F166
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773755277; cv=none; b=f752xFVNde4vXKzyr46DYYRapELqiYnHYWUmRfdEuWCtSXfJbYQVsrJm/aD8XrAwSxvvPbFfCkMb7suycd0kk8ARRgx0RTjjzT+3u3veXfPun+5lQ1tqt1ndPzMQin3PoEddXyFwfmQtEphdJ3FSw+wWMU4M34N60sOEogQxdoQ=
+	t=1773755343; cv=none; b=LsTtgacQ4BHEHJmLq2DmlQZH9I7EuuFek+1LEMGP1fTmQR+5CuWQIjP5/lAEZ+WusEim88M7xMjSdb4bvIHUrO8sCZSuaRofm10Z0H/ru4xQzXs3kMfS7E4ZqlPWo7PBhuxyfKNCynwH30Fhq6wo1ol8Fy90Ei18ANeD+tX3WII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773755277; c=relaxed/simple;
-	bh=XYjZHTppgKs5SbL5+cLw3qL+6wVoZ+Un/E4/O0lTWOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0jziWW3fY7Fq/pWsEUrZRQMOmxPALubJsBV8sm8HjBPKB37t3Lye/rZs+vAzC+UujaUbDvMZ1/2k7lTF7ifI6Fle5TX1XEw35UhTb1qzg8vWQqhKG0NQTdlLk0kalmT3NigbqozPp74E5N9eLek4QHzhBmJnBXJVcRK/0Sdm2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass smtp.mailfrom=hogyros.de; arc=none smtp.client-ip=185.187.169.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hogyros.de
-Received: from localhost.localdomain (unknown [IPv6:2400:2410:b120:f200:2e09:4dff:fe00:2e9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id CD71D48ADA;
-	Tue, 17 Mar 2026 14:47:52 +0100 (CET)
-From: Simon Richter <Simon.Richter@hogyros.de>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: Simon Richter <Simon.Richter@hogyros.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm/xe: allow request_irq on GSC interrupt
-Date: Tue, 17 Mar 2026 22:47:17 +0900
-Message-ID: <20260317134741.3420-2-Simon.Richter@hogyros.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260317134741.3420-1-Simon.Richter@hogyros.de>
-References: <20260317134741.3420-1-Simon.Richter@hogyros.de>
+	s=arc-20240116; t=1773755343; c=relaxed/simple;
+	bh=o2oQEuqnYm1+FKuVuI8ESWgkSqRlhQsBcEr84I8A/W0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R6cNF8xNjQQBnS36NHmo3BS1Zhwjh//FkA0fPNksWaRzTfARTIg3H+aztlfGVRSfuY+NwAjA9inyzkR5gXQePGqC3IEJwOIXqgZLh/TUNtL+iiChpwQzzcZPS9JCZhW8OPz2Tfcqs1xb2Ilvs0KV4OfubQ1aDsMcYzIQNv15rSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=LsMKAMfa; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+Message-ID: <7ecf9af4-096a-45f5-9d00-fc7ae750e7db@chenxiaosong.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
+	s=key1; t=1773755337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s3NtXWb1T5GNs3GjnylfVd2bcf08rb/CyD3OMTHUf4w=;
+	b=LsMKAMfaieIOLp48o8vu5XywAIr/1+MZ1WjK5pLYEKzFlKMJeohFt4Ip5qXEmDuhGmknVF
+	FUcSvqcjy4hJQRPlw+imCROPcSg7zHrpMlnUf4VgjI3wmI8Lr3+6mNQ/dyC9ivzKaZwlIm
+	9O92/jI9qOQAvvUsB+6rDgSQUFDngidkmCJqP4wnY19XJyfuT9Nwf7UEhhRwg/RsQQ9YGZ
+	MgXm+AYV9RrUxtcTBRs0I95tamNFgiIKZj0fG2EgX3MKyb19lQzG6L0Qiz5HEenyvnXHJG
+	SWWZT9L/Rv7NnhA7fxiLqDD4ZP0/96hFMxC7bLUAiimXWAmD80jbhCcZFGTg7Q==
+Date: Tue, 17 Mar 2026 21:48:04 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
+Subject: Re: [PATCH] ksmbd: fix use-after-free and NULL deref in
+ smb_grant_oplock()
+To: Werner Kasselman <werner@verivus.ai>
+Cc: "sfrench@samba.org" <sfrench@samba.org>,
+ "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linkinjeon@kernel.org" <linkinjeon@kernel.org>
+References: <20260317130008.2609025-1-werner@verivus.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+In-Reply-To: <20260317130008.2609025-1-werner@verivus.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[chenxiaosong.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[chenxiaosong.com:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226022-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[hogyros.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[Simon.Richter@hogyros.de,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.935];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-226023-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hogyros.de:email,hogyros.de:mid]
-X-Rspamd-Queue-Id: 4A3232AB343
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenxiaosong@chenxiaosong.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[chenxiaosong.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,verivus.com:email,kylinos.cn:email]
+X-Rspamd-Queue-Id: BF25B2AB396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The default flags for freshly allocated interrupts are platform dependent,
-and apparently powerpc and arm set IRQ_NOREQUEST by default.
+This patch seems to be identical to v3. Why did you resend it?
 
-The normal path is to clear this flag from irq_domain_associate_locked(),
-which wraps the irq domain's "map" function, but the xe driver does not
-define an irq domain and instead allocates the irq descriptor directly, so
-the flags need to be set up manually as well.
+v3: 
+https://lore.kernel.org/linux-cifs/435dda9f-93f5-41db-9d21-70371d31857b@chenxiaosong.com/T/#t
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6468
-Fixes: 87a4c85d3a3ed579c86fd2612715ccb94c4001ff
-Cc: <stable@vger.kernel.org> # v6.7+
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
----
- drivers/gpu/drm/xe/xe_heci_gsc.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks,
+ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-diff --git a/drivers/gpu/drm/xe/xe_heci_gsc.c b/drivers/gpu/drm/xe/xe_heci_gsc.c
-index 5af8903e10af..3c4972a9922c 100644
---- a/drivers/gpu/drm/xe/xe_heci_gsc.c
-+++ b/drivers/gpu/drm/xe/xe_heci_gsc.c
-@@ -39,6 +39,7 @@ static int heci_gsc_irq_init(int irq)
- 	irq_set_chip_and_handler_name(irq, &heci_gsc_irq_chip,
- 				      handle_simple_irq, "heci_gsc_irq_handler");
- 
-+	irq_modify_status(irq, IRQ_NOREQUEST | IRQ_NOAUTOEN, IRQ_NOPROBE);
- 	return irq_set_chip_data(irq, NULL);
- }
- 
--- 
-2.47.3
+On 3/17/26 21:00, Werner Kasselman wrote:
+> smb_grant_oplock() has two issues in the oplock publication sequence:
+> 
+> 1) opinfo is linked into ci->m_op_list (via opinfo_add) before
+>     add_lease_global_list() is called.  If add_lease_global_list()
+>     fails (kmalloc returns NULL), the error path frees the opinfo
+>     via __free_opinfo() while it is still linked in ci->m_op_list.
+>     Concurrent m_op_list readers (opinfo_get_list, or direct iteration
+>     in smb_break_all_levII_oplock) dereference the freed node.
+> 
+> 2) opinfo->o_fp is assigned after add_lease_global_list() publishes
+>     the opinfo on the global lease list.  A concurrent
+>     find_same_lease_key() can walk the lease list and dereference
+>     opinfo->o_fp->f_ci while o_fp is still NULL.
+> 
+> Fix by restructuring the publication sequence to eliminate post-publish
+> failure:
+> 
+> - Set opinfo->o_fp before any list publication (fixes NULL deref).
+> - Preallocate lease_table via alloc_lease_table() before opinfo_add()
+>    so add_lease_global_list() becomes infallible after publication.
+> - Keep the original m_op_list publication order (opinfo_add before
+>    lease list) so concurrent opens via same_client_has_lease() and
+>    opinfo_get_list() still see the in-flight grant.
+> - Use opinfo_put() instead of __free_opinfo() on err_out so that
+>    the RCU-deferred free path is used.
+> 
+> This also requires splitting add_lease_global_list() to take a
+> preallocated lease_table and changing its return type from int to void,
+> since it can no longer fail.
+> 
+> Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+> Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Werner Kasselman <werner@verivus.com>
+> ---
+>   fs/smb/server/oplock.c | 72 ++++++++++++++++++++++++++----------------
+>   1 file changed, 45 insertions(+), 27 deletions(-)
+> 
+> diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+> index 393a4ae47cc1..9b2bb8764a80 100644
+> --- a/fs/smb/server/oplock.c
+> +++ b/fs/smb/server/oplock.c
+> @@ -82,11 +82,19 @@ static void lease_del_list(struct oplock_info *opinfo)
+>   	spin_unlock(&lb->lb_lock);
+>   }
+>   
+> -static void lb_add(struct lease_table *lb)
+> +static struct lease_table *alloc_lease_table(struct oplock_info *opinfo)
+>   {
+> -	write_lock(&lease_list_lock);
+> -	list_add(&lb->l_entry, &lease_table_list);
+> -	write_unlock(&lease_list_lock);
+> +	struct lease_table *lb;
+> +
+> +	lb = kmalloc_obj(struct lease_table, KSMBD_DEFAULT_GFP);
+> +	if (!lb)
+> +		return NULL;
+> +
+> +	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
+> +	       SMB2_CLIENT_GUID_SIZE);
+> +	INIT_LIST_HEAD(&lb->lease_list);
+> +	spin_lock_init(&lb->lb_lock);
+> +	return lb;
+>   }
+>   
+>   static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
+> @@ -1042,34 +1050,27 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
+>   	lease2->version = lease1->version;
+>   }
+>   
+> -static int add_lease_global_list(struct oplock_info *opinfo)
+> +static void add_lease_global_list(struct oplock_info *opinfo,
+> +				  struct lease_table *new_lb)
+>   {
+>   	struct lease_table *lb;
+>   
+> -	read_lock(&lease_list_lock);
+> +	write_lock(&lease_list_lock);
+>   	list_for_each_entry(lb, &lease_table_list, l_entry) {
+>   		if (!memcmp(lb->client_guid, opinfo->conn->ClientGUID,
+>   			    SMB2_CLIENT_GUID_SIZE)) {
+>   			opinfo->o_lease->l_lb = lb;
+>   			lease_add_list(opinfo);
+> -			read_unlock(&lease_list_lock);
+> -			return 0;
+> +			write_unlock(&lease_list_lock);
+> +			kfree(new_lb);
+> +			return;
+>   		}
+>   	}
+> -	read_unlock(&lease_list_lock);
+>   
+> -	lb = kmalloc_obj(struct lease_table, KSMBD_DEFAULT_GFP);
+> -	if (!lb)
+> -		return -ENOMEM;
+> -
+> -	memcpy(lb->client_guid, opinfo->conn->ClientGUID,
+> -	       SMB2_CLIENT_GUID_SIZE);
+> -	INIT_LIST_HEAD(&lb->lease_list);
+> -	spin_lock_init(&lb->lb_lock);
+> -	opinfo->o_lease->l_lb = lb;
+> +	opinfo->o_lease->l_lb = new_lb;
+>   	lease_add_list(opinfo);
+> -	lb_add(lb);
+> -	return 0;
+> +	list_add(&new_lb->l_entry, &lease_table_list);
+> +	write_unlock(&lease_list_lock);
+>   }
+>   
+>   static void set_oplock_level(struct oplock_info *opinfo, int level,
+> @@ -1189,6 +1190,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+>   	int err = 0;
+>   	struct oplock_info *opinfo = NULL, *prev_opinfo = NULL;
+>   	struct ksmbd_inode *ci = fp->f_ci;
+> +	struct lease_table *new_lb = NULL;
+>   	bool prev_op_has_lease;
+>   	__le32 prev_op_state = 0;
+>   
+> @@ -1291,21 +1293,37 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+>   	set_oplock_level(opinfo, req_op_level, lctx);
+>   
+>   out:
+> -	opinfo_count_inc(fp);
+> -	opinfo_add(opinfo, fp);
+> -
+> +	/*
+> +	 * Set o_fp before any publication so that concurrent readers
+> +	 * (e.g. find_same_lease_key() on the lease list) that
+> +	 * dereference opinfo->o_fp don't hit a NULL pointer.
+> +	 *
+> +	 * Keep the original publication order so concurrent opens can
+> +	 * still observe the in-flight grant via ci->m_op_list, but make
+> +	 * everything after opinfo_add() no-fail by preallocating any new
+> +	 * lease_table first.
+> +	 */
+> +	opinfo->o_fp = fp;
+>   	if (opinfo->is_lease) {
+> -		err = add_lease_global_list(opinfo);
+> -		if (err)
+> +		new_lb = alloc_lease_table(opinfo);
+> +		if (!new_lb) {
+> +			err = -ENOMEM;
+>   			goto err_out;
+> +		}
+>   	}
+>   
+> +	opinfo_count_inc(fp);
+> +	opinfo_add(opinfo, fp);
+> +
+> +	if (opinfo->is_lease)
+> +		add_lease_global_list(opinfo, new_lb);
+> +
+>   	rcu_assign_pointer(fp->f_opinfo, opinfo);
+> -	opinfo->o_fp = fp;
+>   
+>   	return 0;
+>   err_out:
+> -	__free_opinfo(opinfo);
+> +	kfree(new_lb);
+> +	opinfo_put(opinfo);
+>   	return err;
+>   }
+>   
 
 
