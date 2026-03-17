@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIImIvSLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:28 +0100
+	id aHc1DoGHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B8B2AF29F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C05C2AEA4C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D062305752F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A78C31743BC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638503F87FE;
-	Tue, 17 Mar 2026 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68EB3EFD39;
+	Tue, 17 Mar 2026 16:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PghUPrnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noB5ujLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C93F6605;
-	Tue, 17 Mar 2026 17:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8681D3EFD14;
+	Tue, 17 Mar 2026 16:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767385; cv=none; b=EDboKH16LeXNeYZDoUxw3d7ZNuSqS9VvjJ8dEAfb7WKTMK6AYUfro2OB8sxndeKFEiSlHBgB4b6TthDWnV9f3nPUD1glWx9U8mSiaG+Q34QWPRl5fBmwGz6jxEy/rmHFcCevQ9aNVpP2YWIh3dpadtbiPgPHeqVri9lxT5TQ0uY=
+	t=1773765969; cv=none; b=rvgwukkBWXXL8przl25lHKD2U+7D3pSsIwVWg5nTiVcM6m+uGgGd0o13vnvuM+tpGHjmuBgsx7eV8JppDdSeFpKJzDbnwQTJchsIgOMuFcS0jIEYZAChRa4ChdDO950pO3CVyt3x8lVIbKLxRfNS6J6IgcfrzbgLHSLesHWJj8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767385; c=relaxed/simple;
-	bh=SHocelXTFFsDk3SgcaPfYIEvwATlhqhWrRFM0DAof48=;
+	s=arc-20240116; t=1773765969; c=relaxed/simple;
+	bh=b6j9txLksLrteUW8Vc2UYFh62eOO7F7ty38eqi4go4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBcGk1mCEPh0+6e+j2AZEd/EftjSlxVp9Z8hRSVmh27h8yU+XzdZjuIsbWPH00N7VKv9Q3ZfJ6r7HZ4SqTEvwwChMZNvCn/SSwSWG0Tk5VPjafZKLBIsEjRDSHOHjaMM3X6/kgQImN6Ctd0MRdvHKQBWTe2K4hpjc5Yuq1GIhJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PghUPrnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE9CC19424;
-	Tue, 17 Mar 2026 17:09:43 +0000 (UTC)
+	 MIME-Version; b=A/UrqUxpYmERfZhCQChwNGdP//plAoEhpfQTlUKOsmzR7vgPSzbiO07wzJhpAi2O5YWxCvAs51UHHAEna7MD6QwGOAlKD3rmuY0YMPPPZo/zB8m470Faj3PrAbf82T7gLDrYJNzJfiJxaFNBE8O6DbzqdVLav/cP8vB2ZfTtvM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noB5ujLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067E3C4CEF7;
+	Tue, 17 Mar 2026 16:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767384;
-	bh=SHocelXTFFsDk3SgcaPfYIEvwATlhqhWrRFM0DAof48=;
+	s=korg; t=1773765969;
+	bh=b6j9txLksLrteUW8Vc2UYFh62eOO7F7ty38eqi4go4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PghUPrnDF9jRvB4Z27ub50nyYKSzAsMyXHmJrIfG/Rf26VZownB6GxQIoiIK3Ksck
-	 2B5oYnjtxGIYBJToANvIEUc9URfWwLuUCcX8U+WMgUbo0ERk2qC0m8Z1l3B4zPv0BE
-	 mHyGnwzZ0cSxxh3fDLOYNA+jVxLpQ2VPUqah7QMA=
+	b=noB5ujLoHmWYFq4lFBGgN4821nNBzVRlJ3coI56yxTKZXycMJwjs8t6O6T/ImkPjZ
+	 Y3d5HlU6n95yi13dvJgcodxEoeuQB1AWgj63B7k7EW4TrlONb/uDRk4VJ/MWMeEU8W
+	 gGAdPFAGQI4tYyLRWqWFtBgMsQvePG5qQYZTfORc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 068/333] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
+	Valentine Burley <valentine.burley@collabora.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.19 140/378] KVM: arm64: vgic: Pick EOIcount deactivations from AP-list tail
 Date: Tue, 17 Mar 2026 17:31:37 +0100
-Message-ID: <20260317163001.899058237@linuxfoundation.org>
+Message-ID: <20260317163012.163591932@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +65,165 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226594-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226270-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 45B8B2AF29F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,collabora.com:email]
+X-Rspamd-Queue-Id: 8C05C2AEA4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
+commit 6da5e537f5afe091658e846da1949d7e557d2ade upstream.
 
-pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
-to_offset argument on every iteration, including the last one where
-i == m->field_count - 1. This reads one element past the end of the
-stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
-with NFT_PIPAPO_MAX_FIELDS == 16).
+Valentine reports that their guests fail to boot correctly, losing
+interrupts, and indicates that the wrong interrupt gets deactivated.
 
-Although pipapo_unmap() returns early when is_last is true without
-using the to_offset value, the argument is evaluated at the call site
-before the function body executes, making this a genuine out-of-bounds
-stack read confirmed by KASAN:
+What happens here is that if the maintenance interrupt is slow enough
+to kick us out of the guest, extra interrupts can be activated from
+the LRs. We then exit and proceed to handle EOIcount deactivations,
+picking active interrupts from the AP list. But we start from the
+top of the list, potentially deactivating interrupts that were in
+the LRs, while EOIcount only denotes deactivation of interrupts that
+are not present in an LR.
 
-  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
-  Read of size 4 at addr ffff8000810e71a4
+Solve this by tracking the last interrupt that made it in the LRs,
+and start the EOIcount deactivation walk *after* that interrupt.
+Since this only makes sense while the vcpu is loaded, stash this
+in the per-CPU host state.
 
-  This frame has 1 object:
-   [32, 160) 'rulemap'
+Huge thanks to Valentine for doing all the detective work and
+providing an initial patch.
 
-  The buggy address is at offset 164 -- exactly 4 bytes past the end
-  of the rulemap array.
-
-Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
-the out-of-bounds read.
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3cfd59f81e0f3 ("KVM: arm64: GICv3: Handle LR overflow when EOImode==0")
+Fixes: 281c6c06e2a7b ("KVM: arm64: GICv2: Handle LR overflow when EOImode==0")
+Reported-by: Valentine Burley <valentine.burley@collabora.com>
+Tested-by: Valentine Burley <valentine.burley@collabora.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20260307115955.369455-1-valentine.burley@collabora.com
+Link: https://patch.msgid.link/20260307191151.3781182-1-maz@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/kvm_host.h |    3 +++
+ arch/arm64/kvm/vgic/vgic-v2.c     |    4 ++--
+ arch/arm64/kvm/vgic/vgic-v3.c     |   12 ++++++------
+ arch/arm64/kvm/vgic/vgic.c        |    6 ++++++
+ 4 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index d9b74d588c768..394b78a00a6a5 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1641,6 +1641,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
- 	int i;
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -760,6 +760,9 @@ struct kvm_host_data {
+ 	/* Number of debug breakpoints/watchpoints for this CPU (minus 1) */
+ 	unsigned int debug_brps;
+ 	unsigned int debug_wrps;
++
++	/* Last vgic_irq part of the AP list recorded in an LR */
++	struct vgic_irq *last_lr_irq;
+ };
  
- 	nft_pipapo_for_each_field(f, i, m) {
-+		bool last = i == m->field_count - 1;
- 		int g;
+ struct kvm_host_psci_config {
+--- a/arch/arm64/kvm/vgic/vgic-v2.c
++++ b/arch/arm64/kvm/vgic/vgic-v2.c
+@@ -115,7 +115,7 @@ void vgic_v2_fold_lr_state(struct kvm_vc
+ 	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
+ 	struct vgic_v2_cpu_if *cpuif = &vgic_cpu->vgic_v2;
+ 	u32 eoicount = FIELD_GET(GICH_HCR_EOICOUNT, cpuif->vgic_hcr);
+-	struct vgic_irq *irq;
++	struct vgic_irq *irq = *host_data_ptr(last_lr_irq);
  
- 		for (g = 0; g < f->groups; g++) {
-@@ -1660,7 +1661,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	DEBUG_SPINLOCK_BUG_ON(!irqs_disabled());
+ 
+@@ -123,7 +123,7 @@ void vgic_v2_fold_lr_state(struct kvm_vc
+ 		vgic_v2_fold_lr(vcpu, cpuif->vgic_lr[lr]);
+ 
+ 	/* See the GICv3 equivalent for the EOIcount handling rationale */
+-	list_for_each_entry(irq, &vgic_cpu->ap_list_head, ap_list) {
++	list_for_each_entry_continue(irq, &vgic_cpu->ap_list_head, ap_list) {
+ 		u32 lr;
+ 
+ 		if (!eoicount) {
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -148,7 +148,7 @@ void vgic_v3_fold_lr_state(struct kvm_vc
+ 	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
+ 	struct vgic_v3_cpu_if *cpuif = &vgic_cpu->vgic_v3;
+ 	u32 eoicount = FIELD_GET(ICH_HCR_EL2_EOIcount, cpuif->vgic_hcr);
+-	struct vgic_irq *irq;
++	struct vgic_irq *irq = *host_data_ptr(last_lr_irq);
+ 
+ 	DEBUG_SPINLOCK_BUG_ON(!irqs_disabled());
+ 
+@@ -158,12 +158,12 @@ void vgic_v3_fold_lr_state(struct kvm_vc
+ 	/*
+ 	 * EOIMode=0: use EOIcount to emulate deactivation. We are
+ 	 * guaranteed to deactivate in reverse order of the activation, so
+-	 * just pick one active interrupt after the other in the ap_list,
+-	 * and replay the deactivation as if the CPU was doing it. We also
+-	 * rely on priority drop to have taken place, and the list to be
+-	 * sorted by priority.
++	 * just pick one active interrupt after the other in the tail part
++	 * of the ap_list, past the LRs, and replay the deactivation as if
++	 * the CPU was doing it. We also rely on priority drop to have taken
++	 * place, and the list to be sorted by priority.
+ 	 */
+-	list_for_each_entry(irq, &vgic_cpu->ap_list_head, ap_list) {
++	list_for_each_entry_continue(irq, &vgic_cpu->ap_list_head, ap_list) {
+ 		u64 lr;
+ 
+ 		/*
+--- a/arch/arm64/kvm/vgic/vgic.c
++++ b/arch/arm64/kvm/vgic/vgic.c
+@@ -814,6 +814,9 @@ retry:
+ 
+ static inline void vgic_fold_lr_state(struct kvm_vcpu *vcpu)
+ {
++	if (!*host_data_ptr(last_lr_irq))
++		return;
++
+ 	if (kvm_vgic_global_state.type == VGIC_V2)
+ 		vgic_v2_fold_lr_state(vcpu);
+ 	else
+@@ -960,10 +963,13 @@ static void vgic_flush_lr_state(struct k
+ 	if (irqs_outside_lrs(&als))
+ 		vgic_sort_ap_list(vcpu);
+ 
++	*host_data_ptr(last_lr_irq) = NULL;
++
+ 	list_for_each_entry(irq, &vgic_cpu->ap_list_head, ap_list) {
+ 		scoped_guard(raw_spinlock,  &irq->irq_lock) {
+ 			if (likely(vgic_target_oracle(irq) == vcpu)) {
+ 				vgic_populate_lr(vcpu, irq, count++);
++				*host_data_ptr(last_lr_irq) = irq;
+ 			}
  		}
  
- 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
--			     rulemap[i + 1].n, i == m->field_count - 1);
-+			     last ? 0 : rulemap[i + 1].n, last);
- 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
- 			/* We can ignore this, a failure to shrink tables down
- 			 * doesn't make tables invalid.
--- 
-2.51.0
-
 
 
 
