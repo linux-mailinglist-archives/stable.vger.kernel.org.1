@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EcaEfSPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:32 +0100
+	id WEl/LyyGuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43F82AFC07
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C971E2AE7E1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77A0131CA75F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5C813037FCD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E93A4F46;
-	Tue, 17 Mar 2026 17:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43C03EE1CB;
+	Tue, 17 Mar 2026 16:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPI8F/y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl5M6k0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E2B2FFDEA;
-	Tue, 17 Mar 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83F83446DA;
+	Tue, 17 Mar 2026 16:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767133; cv=none; b=m7D3ZIx33WVwYlNAC4OahUqWJroqBUTvoXPtG0+aHQqZUF9f8LflcLIxDZqFtMoY+rVBH7nxqqM3tsG5RaE143t/J9beNrlILT0NTL4obf/BiJKnx0Z8daIZyOcvca6ISo+ki3OtT0DiceG3XZdQQlSLN7F59pmrM0mpDy+FhpE=
+	t=1773765858; cv=none; b=ZFLdYIK+NR9YRjS3ibtZANsJ4R1e9ZjO+bFHsWdq+24YQ+DGbC9GmRylb3jXMo8sk7/Qbi7OY7o8zKYiimA6mbiFWvrGws+S0dSz5qG8E3gUeQ2HcrxWiogsAAApr+f2q06d1kIl5Fetc6R8e8RtKfcdwUNvtTBxqXOtBSrAxr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767133; c=relaxed/simple;
-	bh=13CM0XThkCTHlt9uvhoYpLV0KYhmXkyF9dmqUPRAj6c=;
+	s=arc-20240116; t=1773765858; c=relaxed/simple;
+	bh=Yd3RNwr2AfdpS8kcYDN8Td5qyUWMn3k/wcNXcuRxHBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgLmahtOlhZ+8t2l4zz2jfNnoUqm9kzHhBoTQy/P91sSQc539rD6aTn1yVE4Ev8d1lyP3ewIC1fXajybSnlVw4OrgPqgmOnwrigjQg+mRxBQzInNp9ndmQ+jNAv2k9QJSeOs0WdUixmn53HdJThWCtUjTAAf1B4EeGJ1ODjXSZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPI8F/y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E799C4CEF7;
-	Tue, 17 Mar 2026 17:05:32 +0000 (UTC)
+	 MIME-Version; b=P3hNBE5RHVQIb6Rq9AAyoEprmiVLvtW2vTd27jTnyiGXRqONC9KouY4SjMYhR2Ypf0rmQFQ5chXl2MJUcFzZ2NTwlrsQD2Fur/sHC96trGTdwgwM0EGrhvlMXNaSpiGHBOe9BjVPTNR9MZz0/VrLRlQzoDZeLvHw5/tbNrIIMc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yl5M6k0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1A1C4CEF7;
+	Tue, 17 Mar 2026 16:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767133;
-	bh=13CM0XThkCTHlt9uvhoYpLV0KYhmXkyF9dmqUPRAj6c=;
+	s=korg; t=1773765858;
+	bh=Yd3RNwr2AfdpS8kcYDN8Td5qyUWMn3k/wcNXcuRxHBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPI8F/y+qa9EztIw5/bub2AkJkh9hsoi4NJPQmUkmNcptMU5IYr02g9Ht77/zApzP
-	 2zgsUf59nNCENAuCNQ6SkS+iPCeNGgPU+pSQnZFGqQghFhKY8EYo4jBd0usq5vCM+x
-	 cjulLiKX+J/Wy53rlfuCpyO1aFyjxI/T0NzGC9f4=
+	b=yl5M6k0DEaohBEe/03JPf/RiVJTOupZgy1V0vf3DbM4o5siyTXpShVNhv8qsrbSJK
+	 wIZ7uCvb3FFsMmggTWtU81p7MJhtHT3z3khIofAiPYMCxftVbnHJLn1nzVG0aucXHP
+	 C2SB0R7zccmKv56Ac562tTAD6cJrGzbCuVVaT1zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/333] powerpc/crash: adjust the elfcorehdr size
+Subject: [PATCH 6.19 093/378] i40e: fix src IP mask checks and memcpy argument names in cloud filter
 Date: Tue, 17 Mar 2026 17:30:50 +0100
-Message-ID: <20260317163000.146891694@linuxfoundation.org>
+Message-ID: <20260317163010.439214006@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226538-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226240-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,79 +87,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D43F82AFC07
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,mpg.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: C971E2AE7E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 04e707cb77c272cb0bb2e2e3c5c7f844d804a089 ]
+[ Upstream commit e809085f492842ce7a519c9ef72d40f4bca89c13 ]
 
-With crash hotplug support enabled, additional memory is allocated to
-the elfcorehdr kexec segment to accommodate resources added during
-memory hotplug events. However, the kdump FDT is not updated with the
-same size, which can result in elfcorehdr corruption in the kdump
-kernel.
+Fix following issues in the IPv4 and IPv6 cloud filter handling logic in
+both the add and delete paths:
 
-Update elf_headers_sz (the kimage member representing the size of the
-elfcorehdr kexec segment) to reflect the total memory allocated for the
-elfcorehdr segment instead of the elfcorehdr buffer size at the time of
-kdump load. This allows of_kexec_alloc_and_setup_fdt() to reserve the
-full elfcorehdr memory in the kdump FDT and prevents elfcorehdr
-corruption.
+- The source-IP mask check incorrectly compares mask.src_ip[0] against
+  tcf.dst_ip[0]. Update it to compare against tcf.src_ip[0]. This likely
+  goes unnoticed because the check is in an "else if" path that only
+  executes when dst_ip is not set, most cloud filter use cases focus on
+  destination-IP matching, and the buggy condition can accidentally
+  evaluate true in some cases.
 
-Fixes: 849599b702ef8 ("powerpc/crash: add crash memory hotplug support")
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260227171801.2238847-1-sourabhjain@linux.ibm.com
+- memcpy() for the IPv4 source address incorrectly uses
+  ARRAY_SIZE(tcf.dst_ip) instead of ARRAY_SIZE(tcf.src_ip), although
+  both arrays are the same size.
+
+- The IPv4 memcpy operations used ARRAY_SIZE(tcf.dst_ip) and ARRAY_SIZE
+  (tcf.src_ip), Update these to use sizeof(cfilter->ip.v4.dst_ip) and
+  sizeof(cfilter->ip.v4.src_ip) to ensure correct and explicit copy size.
+
+- In the IPv6 delete path, memcmp() uses sizeof(src_ip6) when comparing
+  dst_ip6 fields. Replace this with sizeof(dst_ip6) to make the intent
+  explicit, even though both fields are struct in6_addr.
+
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index e7ef8b2a25546..5f6d50e4c3d45 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -450,6 +450,11 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
- 	kbuf->bufsz = headers_sz;
-+
-+	/*
-+	 * Account for extra space required to accommodate additional memory
-+	 * ranges in elfcorehdr due to memory hotplug events.
-+	 */
- 	kbuf->memsz = headers_sz + kdump_extra_elfcorehdr_size(cmem);
- 	kbuf->top_down = false;
- 
-@@ -460,7 +465,14 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	}
- 
- 	image->elf_load_addr = kbuf->mem;
--	image->elf_headers_sz = headers_sz;
-+
-+	/*
-+	 * If CONFIG_CRASH_HOTPLUG is enabled, the elfcorehdr kexec segment
-+	 * memsz can be larger than bufsz. Always initialize elf_headers_sz
-+	 * with memsz. This ensures the correct size is reserved for elfcorehdr
-+	 * memory in the FDT prepared for kdump.
-+	 */
-+	image->elf_headers_sz = kbuf->memsz;
- 	image->elf_headers = headers;
- out:
- 	kfree(cmem);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 1fa877b52f618..5a383ed09f790 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3833,10 +3833,10 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter.n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter.ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter.ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter.ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter.ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter.n_proto = ETH_P_IPV6;
+@@ -3891,7 +3891,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		/* for ipv6, mask is set for all sixteen bytes (4 words) */
+ 		if (cfilter.n_proto == ETH_P_IPV6 && mask.dst_ip[3])
+ 			if (memcmp(&cfilter.ip.v6.dst_ip6, &cf->ip.v6.dst_ip6,
+-				   sizeof(cfilter.ip.v6.src_ip6)))
++				   sizeof(cfilter.ip.v6.dst_ip6)))
+ 				continue;
+ 		if (mask.vlan_id)
+ 			if (cfilter.vlan_id != cf->vlan_id)
+@@ -3979,10 +3979,10 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter->n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter->ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter->ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter->ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter->ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter->n_proto = ETH_P_IPV6;
 -- 
 2.51.0
 
