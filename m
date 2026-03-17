@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDr4BaWKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:53 +0100
+	id AHQECg2HuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BAD2AF08E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67392AE969
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 602DA304012D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 251B931682C8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D573F54CE;
-	Tue, 17 Mar 2026 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25353590B8;
+	Tue, 17 Mar 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luMhOWOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYR0NN2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051853F54CC;
-	Tue, 17 Mar 2026 17:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C972DF12E;
+	Tue, 17 Mar 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767257; cv=none; b=fAjVR5qwPjJQag8E+yDV27gC/Ho3STEI62++2k8Y6P6tIhNDEI93yyndM658PWj/Q3WeICo3EaQgbybtwqinz+3KJ4E/fjUWtpwWsBsOEwYrEOKd5X9wp8tuGISMYh56KwjzzDKqBtLsP+qLMMIFISeiCn0tmmtaXrqCuYp1w7o=
+	t=1773765906; cv=none; b=BPdJ/C3teyyQaMuMbATUbGhRclpl0epGnuHfo9EbZsoLV8NCRX7HkSJ7wnDiGnd5UPTbgoJMwb2039S6fReB21QPEtkBqvNwcfyS5oc6wbLIPh4s6oRaLq6il0SgLw6Ure7cgOEUjzEg4q4X19SQjZzaaQuCZ8nNPAMD0hgQtrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767257; c=relaxed/simple;
-	bh=L06UK78W4Chihhu98aKPBY7sNR3egVNvrof7lSmNKxA=;
+	s=arc-20240116; t=1773765906; c=relaxed/simple;
+	bh=jkPJq5KyQD0olE4NRMLONKm20Kg8zXNHzDTUF+IOcbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCCeqUlAonTaE/AdVtRs6iWnPpGiKIrSYjjL+76dCGnb5ZT0K0nmCm4vpIwzpn6a5c4J5bTViuchTEJEaTPOsaBJxikkJpJ2OL5r3Bd84hRPbvVrKF3Z4ZybZzSI947MPVvl3jzxmHWGhbkU/ATT4+ZnM3ntQDy7JiatLo5YPvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luMhOWOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EE0C4CEF7;
-	Tue, 17 Mar 2026 17:07:35 +0000 (UTC)
+	 MIME-Version; b=iseSLcGOVCQsup9qB69IieB6in/exU8m1ZBYxCgvlhX1OQJ8jYdSXVDbbqsb6P4jyzvgT9stE++ke4v5QCqicOEyr5iPKvilUCMC+spYMHJD1pn37tIauoCiYi7nvrGRJXF6/58rQi/XIMMT1aMJsOFkKEpa1TvvKTC4CxKO6gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYR0NN2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABE3C4CEF7;
+	Tue, 17 Mar 2026 16:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767256;
-	bh=L06UK78W4Chihhu98aKPBY7sNR3egVNvrof7lSmNKxA=;
+	s=korg; t=1773765906;
+	bh=jkPJq5KyQD0olE4NRMLONKm20Kg8zXNHzDTUF+IOcbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luMhOWOZ044KpymjM8mEaCS4zDlZ37MHq+ZaobkjnvPz3d4X5dFCeqaUpFv9g2Jjw
-	 JZmodd2Iqol+GG3UyYDeXsBtOD8LTaJTfzal8Z9vksqVqnHurmDCTkpgEAKsDMm5ze
-	 ucI1Tb/yd39fNqnIU726c6DVlHkTqjl2caDOlikA=
+	b=yYR0NN2cg/r7sl7FqxdIVYpPxZwE1skogSrPsMzf+csQsLYtPcM62PPfo+07rwFgo
+	 n/QARQexHdTQ16pjQUB7u2JWQd11L7tNV/el1SIBO+WLZmyE5m+0b8xFx6K2wW8r0q
+	 H99k9msJXSiaIo1JqMcLcPdDoILLI3fmLncIj38g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/333] drm/sitronix/st7586: fix bad pixel data due to byte swap
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 121/378] net: usb: lan78xx: fix silent drop of packets with checksum errors
 Date: Tue, 17 Mar 2026 17:31:18 +0100
-Message-ID: <20260317163001.183762430@linuxfoundation.org>
+Message-ID: <20260317163011.469109050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +67,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226566-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226253-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email,baylibre.com:email]
-X-Rspamd-Queue-Id: D4BAD2AF08E
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A67392AE969
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 46d8a07b4ae262e2fec6ce2aa454e06243661265 ]
+commit e4f774a0cc955ce762aec91c66915a6e15087ab7 upstream.
 
-Correctly set dbi->write_memory_bpw for the ST7586 driver. This driver
-is for a monochrome display that has an unusual data format, so the
-default value set in mipi_dbi_spi_init() is not correct simply because
-this controller is non-standard.
+Do not drop packets with checksum errors at the USB driver level;
+pass them to the network stack.
 
-Previously, we were using dbi->swap_bytes to make the same sort of
-workaround, but it was removed in the same commit that added
-dbi->write_memory_bpw, so we need to use the latter now to have the
-correct behavior.
+Previously, the driver dropped all packets where the 'Receive Error
+Detected' (RED) bit was set, regardless of the specific error type. This
+caused packets with only IP or TCP/UDP checksum errors to be dropped
+before reaching the kernel, preventing the network stack from accounting
+for them or performing software fallback.
 
-This fixes every 3 columns of pixels being swapped on the display. There
-are 3 pixels per byte, so the byte swap caused this effect.
+Add a mask for hard hardware errors to safely drop genuinely corrupt
+frames, while allowing checksum-errored frames to pass with their
+ip_summed field explicitly set to CHECKSUM_NONE.
 
-Fixes: df3fb27a74a4 ("drm/mipi-dbi: Make bits per word configurable for pixel transfers")
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20260228-drm-mipi-dbi-fix-st7586-byte-swap-v1-1-e78f6c24cd28@baylibre.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260305143429.530909-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sitronix/st7586.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/net/usb/lan78xx.c |    4 +++-
+ drivers/net/usb/lan78xx.h |    3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/sitronix/st7586.c b/drivers/gpu/drm/sitronix/st7586.c
-index a29672d84eded..055383497aae7 100644
---- a/drivers/gpu/drm/sitronix/st7586.c
-+++ b/drivers/gpu/drm/sitronix/st7586.c
-@@ -346,6 +346,12 @@ static int st7586_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -3829,6 +3829,7 @@ static void lan78xx_rx_csum_offload(stru
+ 	 */
+ 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
+ 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
++	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
+ 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
+ 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
+ 		skb->ip_summed = CHECKSUM_NONE;
+@@ -3901,7 +3902,8 @@ static int lan78xx_rx(struct lan78xx_net
+ 			return 0;
+ 		}
  
-+	/*
-+	 * Override value set by mipi_dbi_spi_init(). This driver is a bit
-+	 * non-standard, so best to set it explicitly here.
-+	 */
-+	dbi->write_memory_bpw = 8;
+-		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
++		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
++		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
+ 			netif_dbg(dev, rx_err, dev->net,
+ 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
+ 		} else {
+--- a/drivers/net/usb/lan78xx.h
++++ b/drivers/net/usb/lan78xx.h
+@@ -74,6 +74,9 @@
+ #define RX_CMD_A_ICSM_			(0x00004000)
+ #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
+ 
++#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
++	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
 +
- 	/* Cannot read from this controller via SPI */
- 	dbi->read_commands = NULL;
- 
-@@ -355,15 +361,6 @@ static int st7586_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * we are using 8-bit data, so we are not actually swapping anything,
--	 * but setting mipi->swap_bytes makes mipi_dbi_typec3_command() do the
--	 * right thing and not use 16-bit transfers (which results in swapped
--	 * bytes on little-endian systems and causes out of order data to be
--	 * sent to the display).
--	 */
--	dbi->swap_bytes = true;
--
- 	drm_mode_config_reset(drm);
- 
- 	ret = drm_dev_register(drm, 0);
--- 
-2.51.0
-
+ /* Rx Command B */
+ #define RX_CMD_B_CSUM_SHIFT_		(16)
+ #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
 
 
 
