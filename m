@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDUNAliKuWkjJwIAu9opvQ
-	(envelope-from <stable+bounces-226540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:36 +0100
+	id YBwONGmGuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA382AEFC2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20192AE851
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A7FC30205E7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1BC4C3041BB9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650E03F23B3;
-	Tue, 17 Mar 2026 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EED3EBF2F;
+	Tue, 17 Mar 2026 16:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0S5b4n+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RriOMEvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270AB3F54A5;
-	Tue, 17 Mar 2026 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594613590B8;
+	Tue, 17 Mar 2026 16:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767143; cv=none; b=r9ziHbQjIx3Ug1now9nKi98rtqTeyNFMzybToMy4NbOA7+Jb5U5dm7eoL/F5NrHgUjMTrLM0j7iCh1bFQ7GeOhQzUmZ1RBXxUfyWEJSdZz67NTVe2aTiJ/j1rhOaXUKwIUkKwKv2aHUc3/YMIfiKhMRVuZKALth3RyjhrdStKrE=
+	t=1773765929; cv=none; b=PbP6N/FY46oRtVC+g+KI10XlHI3lNw/lj+qQVEjfcoSgCCTkqUkc4MyXic9A8SLZwDKt/Ed5VP84PAu6E3aeIMtwtn4AhvgOhej21uvV4Hs9zhuEKO2BFVP4I+sDQC2t3aMYEpCQVi7HRLw31t7chDGyPS62hpIElfro3fFj+0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767143; c=relaxed/simple;
-	bh=9LlLLHP3mJ5gOwBSlDZapc7iGKPsRQgsaPod3lOkYmo=;
+	s=arc-20240116; t=1773765929; c=relaxed/simple;
+	bh=ZVlXG5qwvxFDlQaBDiU84MzdMJH3YwgdqGUPHO+KJOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pu0yfOTrNzuXqvAmPNnFA2AvvYnG9WxvjUlLwRYKrj49pXkfvxKeWgyOW5P/ohJrpYoS2v80EpfMeSDRIPXFcxFQKjbfzO+B2PVyZeIIXuwXioHizsMx6YKrHEVg0CTH8t/c0XMm246P5Q6kzBXUg9P7yTKYMWB8XwymJi2mU7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0S5b4n+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA1EC2BCAF;
-	Tue, 17 Mar 2026 17:05:42 +0000 (UTC)
+	 MIME-Version; b=A36jaizvO+34jSrZ8JrwCiv39/7bWQCyOn9QOKHgU9DEljgNyUfWbqv0L8hoE3MJQWXGfQvTKeqmjsX834+77ciY8Axu5IcVDy0TOm8EeJBAHnJ9dTui+wRI2wwyHXagHRPXqFd98meksZxAJSrvt5zN8Y8jJVQWfy9o6RIBUIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RriOMEvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A9BC4CEF7;
+	Tue, 17 Mar 2026 16:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767143;
-	bh=9LlLLHP3mJ5gOwBSlDZapc7iGKPsRQgsaPod3lOkYmo=;
+	s=korg; t=1773765929;
+	bh=ZVlXG5qwvxFDlQaBDiU84MzdMJH3YwgdqGUPHO+KJOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0S5b4n+6Hm1X0CyWpE2bKMvsQI21LENkZWWfCEFZcRoPX1eTwfhEW4oLe+OUk+qp+
-	 zf+HcFdks2F5N6UFw3A9DVXXXQ98lU7rcdanquHixgNxrnYFUyIO1zKJvKmY1YSev/
-	 vsbQUoi6Bp/4/zknXcxTBXcGljBpGbWVHJQNCSy4=
+	b=RriOMEvKeDM6ireVlC69s1IrV3fP8SYk3RQfydaVjUVBbGZlHFhUZ/63E3p4yuwoD
+	 f8HZhB8e1IVced9yq2pK1CZ0X6uiOFIjFRE7/yZUcrTLtO4Y8g/hMDkYxxYLYEGRzz
+	 TWJkDEWxhWbSfV/DQ+GQ5LvIwxVoTvMp2HuC17DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/333] remoteproc: mediatek: Unprepare SCP clock during system suspend
-Date: Tue, 17 Mar 2026 17:30:52 +0100
-Message-ID: <20260317163000.220803149@linuxfoundation.org>
+Subject: [PATCH 6.19 096/378] net: bcmgenet: fix broken EEE by converting to phylib-managed state
+Date: Tue, 17 Mar 2026 17:30:53 +0100
+Message-ID: <20260317163010.549589477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226540-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226259-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,110 +87,215 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8EA382AEFC2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email,msgid.link:url,lunn.ch:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E20192AE851
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Nicolai Buchwitz <nb@tipi-net.de>
 
-[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
+[ Upstream commit 908c344d5cfac4160f49715da9efacdf5b6a28bd ]
 
-Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
-dependency to prepare_lock"), `scp->clk` was prepared and enabled only
-when it needs to communicate with the SCP.  The commit d935187cfb27
-moved the prepare operation to remoteproc's prepare(), keeping the clock
-prepared as long as the SCP is running.
+The bcmgenet EEE implementation is broken in several ways.
+phy_support_eee() is never called, so the PHY never advertises EEE
+and phylib never sets phydev->enable_tx_lpi.  bcmgenet_mac_config()
+checks priv->eee.eee_enabled to decide whether to enable the MAC
+LPI logic, but that field is never initialised to true, so the MAC
+never enters Low Power Idle even when EEE is negotiated - wasting
+the power savings EEE is designed to provide.  The only way to get
+EEE working at all is a manual 'ethtool --set-eee eth0 eee on' after
+every link-up, and even then bcmgenet_get_eee() immediately clobbers
+the reported state because phy_ethtool_get_eee() overwrites
+eee_enabled and tx_lpi_enabled with the uninitialised PHY eee_cfg
+values.  Finally, bcmgenet_mac_config() is only called on link-up,
+so EEE is never disabled in hardware on link-down.
 
-The power consumption due to the prolonged clock preparation can be
-negligible when the system is running, as SCP is designed to be a very
-power efficient processor.
+Fix all of this by removing the MAC-side EEE state tracking
+(priv->eee) and aligning with the pattern used by other non-phylink
+MAC drivers such as FEC.
 
-However, the clock remains prepared even when the system enters system
-suspend.  This prevents the underlying clock controller (and potentially
-the parent PLLs) from shutting down, which increases power consumption
-and may block the system from entering deep sleep states.
+Call phy_support_eee() in bcmgenet_mii_probe() so the PHY advertises
+EEE link modes and phylib tracks negotiation state.  Move the EEE
+hardware control to bcmgenet_mii_setup(), which is called on every
+link event, and drive it directly from phydev->enable_tx_lpi - the
+flag phylib sets when EEE is negotiated and the user has not disabled
+it.  This enables EEE automatically once the link partner agrees and
+disables it cleanly on link-down.
 
-Add suspend and resume callbacks.  Unprepare the clock in suspend() if
-it was active and re-prepare it in resume() to ensure the clock is
-properly disabled during system suspend, while maintaining the "always
-prepared" semantics while the system is active.  The driver doesn't
-implement .attach() callback, hence it only checks for RPROC_RUNNING.
+Make bcmgenet_get_eee() and bcmgenet_set_eee() pure passthroughs to
+phy_ethtool_get_eee() and phy_ethtool_set_eee(), with the MAC
+hardware register read/written for tx_lpi_timer.  Drop struct
+ethtool_keee eee from struct bcmgenet_priv.
 
-Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: fe0d4fd9285e ("net: phy: Keep track of EEE configuration")
+Link: https://lore.kernel.org/netdev/d352039f-4cbb-41e6-9aeb-0b4f3941b54c@lunn.ch/
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260310054935.1238594-1-nb@tipi-net.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 31 +++++++------------
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |  5 +--
+ drivers/net/ethernet/broadcom/genet/bcmmii.c  | 10 +++---
+ 3 files changed, 18 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index 2aeb0ded165cf..eb8908ea3bab0 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1544,12 +1544,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 05512aa10c209..1c2fdaca14f9b 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1342,8 +1342,7 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
+ 	}
+ }
  
-+static int __maybe_unused scp_suspend(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
+-void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
+-			     bool tx_lpi_enabled)
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	u32 off = priv->hw_params->tbuf_offset + TBUF_ENERGY_CTRL;
+@@ -1363,7 +1362,7 @@ void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
+ 
+ 	/* Enable EEE and switch to a 27Mhz clock automatically */
+ 	reg = bcmgenet_readl(priv->base + off);
+-	if (tx_lpi_enabled)
++	if (enable)
+ 		reg |= TBUF_EEE_EN | TBUF_PM_EN;
+ 	else
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+@@ -1382,14 +1381,12 @@ void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
+ 		priv->clk_eee_enabled = false;
+ 	}
+ 
+-	priv->eee.eee_enabled = enable;
+-	priv->eee.tx_lpi_enabled = tx_lpi_enabled;
+ }
+ 
+ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_keee *e)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+-	struct ethtool_keee *p = &priv->eee;
++	int ret;
+ 
+ 	if (GENET_IS_V1(priv))
+ 		return -EOPNOTSUPP;
+@@ -1397,17 +1394,21 @@ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_keee *e)
+ 	if (!dev->phydev)
+ 		return -ENODEV;
+ 
+-	e->tx_lpi_enabled = p->tx_lpi_enabled;
++	ret = phy_ethtool_get_eee(dev->phydev, e);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * Only unprepare if the SCP is running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
++	/* tx_lpi_timer is maintained by the MAC hardware register; the
++	 * PHY-level eee_cfg timer is not set for GENET.
 +	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		clk_unprepare(scp->clk);
+ 	e->tx_lpi_timer = bcmgenet_umac_readl(priv, UMAC_EEE_LPI_TIMER);
+ 
+-	return phy_ethtool_get_eee(dev->phydev, e);
 +	return 0;
-+}
-+
-+static int __maybe_unused scp_resume(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
-+
-+	/*
-+	 * Only prepare if the SCP was running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
-+	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		return clk_prepare(scp->clk);
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops scp_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
-+};
-+
- static struct platform_driver mtk_scp_driver = {
- 	.probe = scp_probe,
- 	.remove = scp_remove,
- 	.driver = {
- 		.name = "mtk-scp",
- 		.of_match_table = mtk_scp_of_match,
-+		.pm = &scp_pm_ops,
- 	},
+ }
+ 
+ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_keee *e)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+-	struct ethtool_keee *p = &priv->eee;
+-	bool active;
+ 
+ 	if (GENET_IS_V1(priv))
+ 		return -EOPNOTSUPP;
+@@ -1415,15 +1416,7 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_keee *e)
+ 	if (!dev->phydev)
+ 		return -ENODEV;
+ 
+-	p->eee_enabled = e->eee_enabled;
+-
+-	if (!p->eee_enabled) {
+-		bcmgenet_eee_enable_set(dev, false, false);
+-	} else {
+-		active = phy_init_eee(dev->phydev, false) >= 0;
+-		bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
+-		bcmgenet_eee_enable_set(dev, active, e->tx_lpi_enabled);
+-	}
++	bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
+ 
+ 	return phy_ethtool_set_eee(dev->phydev, e);
+ }
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 5ec3979779ece..9e4110c7fdf6f 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -665,8 +665,6 @@ struct bcmgenet_priv {
+ 	u8 sopass[SOPASS_MAX];
+ 
+ 	struct bcmgenet_mib_counters mib;
+-
+-	struct ethtool_keee eee;
  };
+ 
+ static inline bool bcmgenet_has_40bits(struct bcmgenet_priv *priv)
+@@ -749,7 +747,6 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
+ int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
+ 			      enum bcmgenet_power_mode mode);
+ 
+-void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
+-			     bool tx_lpi_enabled);
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable);
+ 
+ #endif /* __BCMGENET_H__ */
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+index 38f854b94a799..a4e0d5a682687 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -29,7 +29,6 @@ static void bcmgenet_mac_config(struct net_device *dev)
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	struct phy_device *phydev = dev->phydev;
+ 	u32 reg, cmd_bits = 0;
+-	bool active;
+ 
+ 	/* speed */
+ 	if (phydev->speed == SPEED_1000)
+@@ -90,10 +89,6 @@ static void bcmgenet_mac_config(struct net_device *dev)
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
+ 	spin_unlock_bh(&priv->reg_lock);
+ 
+-	active = phy_init_eee(phydev, 0) >= 0;
+-	bcmgenet_eee_enable_set(dev,
+-				priv->eee.eee_enabled && active,
+-				priv->eee.tx_lpi_enabled);
+ }
+ 
+ /* setup netdev link state when PHY link status change and
+@@ -113,6 +108,8 @@ void bcmgenet_mii_setup(struct net_device *dev)
+ 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
+ 	}
+ 
++	bcmgenet_eee_enable_set(dev, phydev->enable_tx_lpi);
++
+ 	phy_print_status(phydev);
+ }
+ 
+@@ -412,6 +409,9 @@ int bcmgenet_mii_probe(struct net_device *dev)
+ 	/* Indicate that the MAC is responsible for PHY PM */
+ 	dev->phydev->mac_managed_pm = true;
+ 
++	if (!GENET_IS_V1(priv))
++		phy_support_eee(dev->phydev);
++
+ 	return 0;
+ }
  
 -- 
 2.51.0
