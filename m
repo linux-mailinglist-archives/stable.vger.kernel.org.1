@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-226547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEovBJuKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:43 +0100
+	id uMKRAnKGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765342AF06A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFEB2AE860
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F227304946D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A02743156924
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E2E3F54C6;
-	Tue, 17 Mar 2026 17:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379EE3ED5C7;
+	Tue, 17 Mar 2026 16:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWdvssyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZVCp1rr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF92D3F54A5;
-	Tue, 17 Mar 2026 17:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6D3357A4A;
+	Tue, 17 Mar 2026 16:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767169; cv=none; b=X1eUPGseOmgyxe1KsOuzJ6TgtsXamOELrzng1mCXUudxHH0xnH3ERUMw+XXNIPPk3TiZp8TFVukUf4SEV7C55HXxqaebgVhu1GXwy9zhK3cmsNSAVdik49K8L+bf9moikABsJvo25gEXNK+lroLDR2U6buyT6LGzVWvWdUwXMZg=
+	t=1773765814; cv=none; b=Rl24+vmTXiwbX1OkEnL/web2z0WL82y/DySN1ViL46pPPRCDzFwDf42+8ic2AXnn/w0pDaY7alzwlB4JwtYwpU1KqvU93gBLc2wm6zCdS6D1+W8JGudlHAHeidUbfxB8pZ7DFxS+henHKWIyOi1NeB98P1GjpZ5iJs8LNdfzQ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767169; c=relaxed/simple;
-	bh=v6tsxp/5ORbd2UGaa7+NA+72Oac702V5pAztdj+QreY=;
+	s=arc-20240116; t=1773765814; c=relaxed/simple;
+	bh=eZlp9FLz+nEfeJu+Fn+ivc27BOSJERbfAlVo/wGdl0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/xaBOMDC/RXBFjDF11pVI+Yu30i8aYsUkcVD4jHS7k/e9Cljld05w9KFIJYGnCv+c7P91e6LKt2fCFAQP2KYPcXLsOO8O2YPreCCYb5xOlXNovPFzZbIAP8Yyzw3fnFQ2HlZqEv0eOlHfhKIj7G3n3P1NuXU/OAx1y+UQByhwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWdvssyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D44C4CEF7;
-	Tue, 17 Mar 2026 17:06:08 +0000 (UTC)
+	 MIME-Version; b=a6Dtr9foL+QlLZ2S+xsvnZwbPnMWTddfLFk5v3DUSrPx8dzI42Enk5ovlZOnPAHkiRAXM7IAfJ/h/EzALIpqn6oLGW8VrVHlKtoTeIcTXh/Hr2EadFApkBZEBfdZImbB/cWeE1vRqgaplbDKn/JiIspsZxXjB7A9ZUg23jPW9iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZVCp1rr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738BFC4CEF7;
+	Tue, 17 Mar 2026 16:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767169;
-	bh=v6tsxp/5ORbd2UGaa7+NA+72Oac702V5pAztdj+QreY=;
+	s=korg; t=1773765813;
+	bh=eZlp9FLz+nEfeJu+Fn+ivc27BOSJERbfAlVo/wGdl0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWdvssybA1KNJs1jjsgiudY3af28bdokWDPobJ4FVPqkKil67HGrgXLmwimU0HPvr
-	 h4nPknxfF+DumfTXe4K8l+h/01Ssx8DIPGHJm0o9bRRr4543ziBW1t5EtFHIeQ6hLk
-	 QW+HQoIl3tO55ghi3pnMX8LhwsteJoeSRnPrzMvw=
+	b=0ZVCp1rr4kAVB516lGOuhveg3zMLwqAFl8n8WTGVY6ql5j7P9eersJRANZ0S68UkL
+	 MAXzzZXnaP/JiUvPD2/N7DEjrg/iHP+L15jrLVUS5vS2ToX0jz4TccN/wBAxiUnQsL
+	 v5u9Yd/zihWH5BPwiq0Man+LkuXNI6cGLQdY+L0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Boris Burkov <boris@bur.io>,
-	Sun YangKai <sunk67188@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 029/333] btrfs: hold space_info->lock when clearing periodic reclaim ready
+Subject: [PATCH 6.19 101/378] ASoC: amd: acp-mach-common: Add missing error check for clock acquisition
 Date: Tue, 17 Mar 2026 17:30:58 +0100
-Message-ID: <20260317163000.442527705@linuxfoundation.org>
+Message-ID: <20260317163010.733731334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,79 +68,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,meta.com,bur.io,gmail.com,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226547-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-226230-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,meta.com:email,suse.com:email,bur.io:email]
-X-Rspamd-Queue-Id: 765342AF06A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 6EFEB2AE860
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sun YangKai <sunk67188@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit b8883b61f2fc50dcf22938cbed40fec05020552f ]
+[ Upstream commit 30c64fb9839949f085c8eb55b979cbd8a4c51f00 ]
 
-btrfs_set_periodic_reclaim_ready() requires space_info->lock to be held,
-as enforced by lockdep_assert_held(). However, btrfs_reclaim_sweep() was
-calling it after do_reclaim_sweep() returns, at which point
-space_info->lock is no longer held.
+The acp_card_rt5682_init() and acp_card_rt5682s_init() functions did not
+check the return values of clk_get(). This could lead to a kernel crash
+when the invalid pointers are later dereferenced by clock core
+functions.
 
-Fix this by explicitly acquiring space_info->lock before clearing the
-periodic reclaim ready flag in btrfs_reclaim_sweep().
+Fix this by:
+1. Changing clk_get() to the device-managed devm_clk_get().
+2. Adding IS_ERR() checks immediately after each clock acquisition.
 
-Reported-by: Chris Mason <clm@meta.com>
-Link: https://lore.kernel.org/linux-btrfs/20260208182556.891815-1-clm@meta.com/
-Fixes: 19eff93dc738 ("btrfs: fix periodic reclaim condition")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Sun YangKai <sunk67188@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 8b7256266848 ("ASoC: amd: acp: Add support for RT5682-VS codec")
+Fixes: d4c750f2c7d4 ("ASoC: amd: acp: Add generic machine driver support for ACP cards")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260310044327.2582018-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/space-info.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-mach-common.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-index 6b64691034de4..194f590201658 100644
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -2171,8 +2171,11 @@ void btrfs_reclaim_sweep(const struct btrfs_fs_info *fs_info)
- 		if (!btrfs_should_periodic_reclaim(space_info))
- 			continue;
- 		for (raid = 0; raid < BTRFS_NR_RAID_TYPES; raid++) {
--			if (do_reclaim_sweep(space_info, raid))
-+			if (do_reclaim_sweep(space_info, raid)) {
-+				spin_lock(&space_info->lock);
- 				btrfs_set_periodic_reclaim_ready(space_info, false);
-+				spin_unlock(&space_info->lock);
-+			}
- 		}
+diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
+index 4d99472c75baf..09f6c9a2c0410 100644
+--- a/sound/soc/amd/acp/acp-mach-common.c
++++ b/sound/soc/amd/acp/acp-mach-common.c
+@@ -127,8 +127,13 @@ static int acp_card_rt5682_init(struct snd_soc_pcm_runtime *rtd)
+ 	if (drvdata->hs_codec_id != RT5682)
+ 		return -EINVAL;
+ 
+-	drvdata->wclk = clk_get(component->dev, "rt5682-dai-wclk");
+-	drvdata->bclk = clk_get(component->dev, "rt5682-dai-bclk");
++	drvdata->wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
++	if (IS_ERR(drvdata->wclk))
++		return PTR_ERR(drvdata->wclk);
++
++	drvdata->bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
++	if (IS_ERR(drvdata->bclk))
++		return PTR_ERR(drvdata->bclk);
+ 
+ 	ret = snd_soc_dapm_new_controls(dapm, rt5682_widgets,
+ 					ARRAY_SIZE(rt5682_widgets));
+@@ -370,8 +375,13 @@ static int acp_card_rt5682s_init(struct snd_soc_pcm_runtime *rtd)
+ 		return -EINVAL;
+ 
+ 	if (!drvdata->soc_mclk) {
+-		drvdata->wclk = clk_get(component->dev, "rt5682-dai-wclk");
+-		drvdata->bclk = clk_get(component->dev, "rt5682-dai-bclk");
++		drvdata->wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
++		if (IS_ERR(drvdata->wclk))
++			return PTR_ERR(drvdata->wclk);
++
++		drvdata->bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
++		if (IS_ERR(drvdata->bclk))
++			return PTR_ERR(drvdata->bclk);
  	}
- }
+ 
+ 	ret = snd_soc_dapm_new_controls(dapm, rt5682s_widgets,
 -- 
 2.51.0
 
