@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFjPIoaFuWkPJAIAu9opvQ
-	(envelope-from <stable+bounces-226278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:02 +0100
+	id aGwKEoGRuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616B42AE665
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C4E2AFE74
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F12813034B12
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 731A3327AB4C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06B33F0A9D;
-	Tue, 17 Mar 2026 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E803CF679;
+	Tue, 17 Mar 2026 17:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGtf4aUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHEnsF+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997CA3F20EA;
-	Tue, 17 Mar 2026 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB0F2FFDEA;
+	Tue, 17 Mar 2026 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765998; cv=none; b=gasHKg244Nhk76jxezJMBstKn6JHvYbOcU+jDZ6rnSEJvkXRkiFukkoIDSejOYVU21rjDwgcyiKilSRgUEi4xbwB8ug/dX3whz/fC02FFhrAZY0G7L2l4GYmgpDAj+2rGryIVTSq2+/u8jZoVwSD/LXud8HuyeLWqH/5Av/0iy4=
+	t=1773767538; cv=none; b=p4mohg/JR82zTS//wlmv/kA+SqNMIb7fGiuSeYpn1Vg3KUCGycdsfJMtRF2j9Z32VvSP+nnIzs9BT/HxyT15xm7TwxE11kenTuhlmzQJ4saCdp+PWBgf09tEm1Hn8EcVultimmks1eNo7LbMz3S/3chhKznAHvqZ4txXLQGt3Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765998; c=relaxed/simple;
-	bh=3qGey2JqZsu30LFIzIse/O+QxZqX+NsyBin6oxJPkCU=;
+	s=arc-20240116; t=1773767538; c=relaxed/simple;
+	bh=Lrpve8x1iUlwSV9aG+96a7+Wt+fUmMnCE5HUUsvep30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjXJ2cLunjRbNRcEOv2bXMnCO1XHFTfCKwr4sickwGDhj/B5QkVorUDt7IMTYhYf/s63zTWD4RwhdQ5DOxcgeBe34ieJR7OG6o1riaAr8mzkfzasUMduOo8MkFTKHq0nxox1hIl0UE+QoAc4oWNcwwvcKWcidcvFk1AHnGKC1mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGtf4aUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4A1C4CEF7;
-	Tue, 17 Mar 2026 16:46:37 +0000 (UTC)
+	 MIME-Version; b=J7k9L6ZHVmmbD1wqGk5evsbMSYCTHJjwFrsjOxbMspLcaxMuZRx1+kdzup4zKq4Z6qYmdmn6p22c1rfA0xAHae7bsgDX1oDe6Bc0m2GrLnbyubDUNNuM6427NciJgyRJxMfYfxcgvE/hl1Ye1ijwrj7zJPQXDThOl5eeUK5OF/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHEnsF+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46493C4CEF7;
+	Tue, 17 Mar 2026 17:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765998;
-	bh=3qGey2JqZsu30LFIzIse/O+QxZqX+NsyBin6oxJPkCU=;
+	s=korg; t=1773767538;
+	bh=Lrpve8x1iUlwSV9aG+96a7+Wt+fUmMnCE5HUUsvep30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGtf4aUHIKPWk/R+GLhLVU0znF092ku5kvUrmZpnzXjptVfIix4nXaLcagDy5E7GL
-	 iWqSsB7Ft8Cy3MPGIiyw9/TVbO7IVqU6OrDz2vWh41+OxP4DlE4fSOel5FND7JR1uT
-	 +CC9m7cx3LSCGhVF0KGYlK0mkskKy+TFqE+N/4rY=
+	b=XHEnsF+Lmi+qWGjaGOSjee0xR0RdIK5SPAlUC5zrXagIdN9uQwKWVkMOFIeeSL29F
+	 hPr/+x4iasism9n/ZWZh+/Ez3j701qS92BPRYMfqf9Fk/NRv9LgDiacNpVZ452hPaD
+	 mKqVS57oE2H4kN7kxx/O4rsvgyog/8AC13ZIWWOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.19 147/378] xhci: Fix NULL pointer dereference when reading portli debugfs files
+	Martijn de Gouw <martijn.de.gouw@prodrive-technologies.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 075/333] regulator: pca9450: Add support for setting debounce settings
 Date: Tue, 17 Mar 2026 17:31:44 +0100
-Message-ID: <20260317163012.422365698@linuxfoundation.org>
+Message-ID: <20260317163002.157355107@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,294 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226278-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226628-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 616B42AE665
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,prodrive-technologies.com:email]
+X-Rspamd-Queue-Id: A2C4E2AFE74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Martijn de Gouw <martijn.de.gouw@prodrive-technologies.com>
 
-commit ae4ff9dead5efa2025eddfcdb29411432bf40a7c upstream.
+[ Upstream commit d9d0be59be2580f2c5e4b7217aafb980e8c371cf ]
 
-Michal reported and debgged a NULL pointer dereference bug in the
-recently added portli debugfs files
+Make the different debounce timers configurable from the devicetree.
+Depending on the board design, these have to be set different than the
+default register values.
 
-Oops is caused when there are more port registers counted in
-xhci->max_ports than ports reported by Supported Protocol capabilities.
-This is possible if max_ports is more than maximum port number, or
-if there are gaps between ports of different speeds the 'Supported
-Protocol' capabilities.
-
-In such cases port->rhub will be NULL so we can't reach xhci behind it.
-Add an explicit NULL check for this case, and print portli in hex
-without dereferencing port->rhub.
-
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/20260304103856.48b785fd.michal.pecio@gmail.com
-Fixes: 384c57ec7205 ("usb: xhci: Add debugfs support for xHCI Port Link Info (PORTLI) register.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260304223639.3882398-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Martijn de Gouw <martijn.de.gouw@prodrive-technologies.com>
+Link: https://patch.msgid.link/20251117202215.1936139-2-martijn.de.gouw@prodrive-technologies.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 21b3fb7dc19c ("regulator: pca9450: Correct probed name for PCA9452")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-debugfs.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/regulator/pca9450-regulator.c | 158 ++++++++++++++++++++++----
+ include/linux/regulator/pca9450.h     |  32 ++++++
+ 2 files changed, 171 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-debugfs.c b/drivers/usb/host/xhci-debugfs.c
-index 890fc5e892f1..ade178ab34a7 100644
---- a/drivers/usb/host/xhci-debugfs.c
-+++ b/drivers/usb/host/xhci-debugfs.c
-@@ -386,11 +386,19 @@ static const struct file_operations port_fops = {
- static int xhci_portli_show(struct seq_file *s, void *unused)
- {
- 	struct xhci_port	*port = s->private;
--	struct xhci_hcd		*xhci = hcd_to_xhci(port->rhub->hcd);
-+	struct xhci_hcd		*xhci;
- 	u32			portli;
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 086ea88413828..95632b1e8ce4c 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -1117,6 +1117,143 @@ static int pca9450_i2c_restart_handler(struct sys_off_data *data)
+ 	return 0;
+ }
  
- 	portli = readl(&port->port_reg->portli);
- 
-+	/* port without protocol capability isn't added to a roothub */
-+	if (!port->rhub) {
-+		seq_printf(s, "0x%08x\n", portli);
-+		return 0;
++static int pca9450_of_init(struct pca9450 *pca9450)
++{
++	struct i2c_client *i2c = container_of(pca9450->dev, struct i2c_client, dev);
++	int ret;
++	unsigned int val;
++	unsigned int reset_ctrl;
++	unsigned int rstb_deb_ctrl;
++	unsigned int t_on_deb, t_off_deb;
++	unsigned int t_on_step, t_off_step;
++	unsigned int t_restart;
++
++	if (of_property_read_bool(i2c->dev.of_node, "nxp,wdog_b-warm-reset"))
++		reset_ctrl = WDOG_B_CFG_WARM;
++	else
++		reset_ctrl = WDOG_B_CFG_COLD_LDO12;
++
++	/* Set reset behavior on assertion of WDOG_B signal */
++	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_RESET_CTRL,
++				 WDOG_B_CFG_MASK, reset_ctrl);
++	if (ret)
++		return dev_err_probe(&i2c->dev, ret, "Failed to set WDOG_B reset behavior\n");
++
++	ret = of_property_read_u32(i2c->dev.of_node, "npx,pmic-rst-b-debounce-ms", &val);
++	if (ret == -EINVAL)
++		rstb_deb_ctrl = T_PMIC_RST_DEB_50MS;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 10: rstb_deb_ctrl = T_PMIC_RST_DEB_10MS; break;
++		case 50: rstb_deb_ctrl = T_PMIC_RST_DEB_50MS; break;
++		case 100: rstb_deb_ctrl = T_PMIC_RST_DEB_100MS; break;
++		case 500: rstb_deb_ctrl = T_PMIC_RST_DEB_500MS; break;
++		case 1000: rstb_deb_ctrl = T_PMIC_RST_DEB_1S; break;
++		case 2000: rstb_deb_ctrl = T_PMIC_RST_DEB_2S; break;
++		case 4000: rstb_deb_ctrl = T_PMIC_RST_DEB_4S; break;
++		case 8000: rstb_deb_ctrl = T_PMIC_RST_DEB_8S; break;
++		default: return -EINVAL;
++		}
++	}
++	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_RESET_CTRL,
++				 T_PMIC_RST_DEB_MASK, rstb_deb_ctrl);
++	if (ret)
++		return dev_err_probe(&i2c->dev, ret, "Failed to set PMIC_RST_B debounce time\n");
++
++	ret = of_property_read_u32(i2c->dev.of_node, "nxp,pmic-on-req-on-debounce-us", &val);
++	if (ret == -EINVAL)
++		t_on_deb = T_ON_DEB_20MS;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 120: t_on_deb = T_ON_DEB_120US; break;
++		case 20000: t_on_deb = T_ON_DEB_20MS; break;
++		case 100000: t_on_deb = T_ON_DEB_100MS; break;
++		case 750000: t_on_deb = T_ON_DEB_750MS; break;
++		default: return -EINVAL;
++		}
 +	}
 +
-+	xhci = hcd_to_xhci(port->rhub->hcd);
++	ret = of_property_read_u32(i2c->dev.of_node, "nxp,pmic-on-req-off-debounce-us", &val);
++	if (ret == -EINVAL)
++		t_off_deb = T_OFF_DEB_120US;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 120: t_off_deb = T_OFF_DEB_120US; break;
++		case 2000: t_off_deb = T_OFF_DEB_2MS; break;
++		default: return -EINVAL;
++		}
++	}
 +
- 	/* PORTLI fields are valid if port is a USB3 or eUSB2V2 port */
- 	if (port->rhub == &xhci->usb3_rhub)
- 		seq_printf(s, "0x%08x LEC=%u RLC=%u TLC=%u\n", portli,
++	ret = of_property_read_u32(i2c->dev.of_node, "nxp,power-on-step-ms", &val);
++	if (ret == -EINVAL)
++		t_on_step = T_ON_STEP_2MS;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 1: t_on_step = T_ON_STEP_1MS; break;
++		case 2: t_on_step = T_ON_STEP_2MS; break;
++		case 4: t_on_step = T_ON_STEP_4MS; break;
++		case 8: t_on_step = T_ON_STEP_8MS; break;
++		default: return -EINVAL;
++		}
++	}
++
++	ret = of_property_read_u32(i2c->dev.of_node, "nxp,power-down-step-ms", &val);
++	if (ret == -EINVAL)
++		t_off_step = T_OFF_STEP_8MS;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 2: t_off_step = T_OFF_STEP_2MS; break;
++		case 4: t_off_step = T_OFF_STEP_4MS; break;
++		case 8: t_off_step = T_OFF_STEP_8MS; break;
++		case 16: t_off_step = T_OFF_STEP_16MS; break;
++		default: return -EINVAL;
++		}
++	}
++
++	ret = of_property_read_u32(i2c->dev.of_node, "nxp,restart-ms", &val);
++	if (ret == -EINVAL)
++		t_restart = T_RESTART_250MS;
++	else if (ret)
++		return ret;
++	else {
++		switch (val) {
++		case 250: t_restart = T_RESTART_250MS; break;
++		case 500: t_restart = T_RESTART_500MS; break;
++		default: return -EINVAL;
++		}
++	}
++
++	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_PWRCTRL,
++				 T_ON_DEB_MASK | T_OFF_DEB_MASK | T_ON_STEP_MASK |
++				 T_OFF_STEP_MASK | T_RESTART_MASK,
++				 t_on_deb | t_off_deb | t_on_step |
++				 t_off_step | t_restart);
++	if (ret)
++		return dev_err_probe(&i2c->dev, ret,
++				     "Failed to set PWR_CTRL debounce configuration\n");
++
++	if (of_property_read_bool(i2c->dev.of_node, "nxp,i2c-lt-enable")) {
++		/* Enable I2C Level Translator */
++		ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_CONFIG2,
++					 I2C_LT_MASK, I2C_LT_ON_STANDBY_RUN);
++		if (ret)
++			return dev_err_probe(&i2c->dev, ret,
++					     "Failed to enable I2C level translator\n");
++	}
++
++	return 0;
++}
++
+ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ {
+ 	enum pca9450_chip_type type = (unsigned int)(uintptr_t)
+@@ -1126,7 +1263,6 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	struct regulator_dev *ldo5;
+ 	struct pca9450 *pca9450;
+ 	unsigned int device_id, i;
+-	unsigned int reset_ctrl;
+ 	int ret;
+ 
+ 	pca9450 = devm_kzalloc(&i2c->dev, sizeof(struct pca9450), GFP_KERNEL);
+@@ -1224,25 +1360,9 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	if (ret)
+ 		return dev_err_probe(&i2c->dev, ret,  "Failed to clear PRESET_EN bit\n");
+ 
+-	if (of_property_read_bool(i2c->dev.of_node, "nxp,wdog_b-warm-reset"))
+-		reset_ctrl = WDOG_B_CFG_WARM;
+-	else
+-		reset_ctrl = WDOG_B_CFG_COLD_LDO12;
+-
+-	/* Set reset behavior on assertion of WDOG_B signal */
+-	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_RESET_CTRL,
+-				 WDOG_B_CFG_MASK, reset_ctrl);
++	ret = pca9450_of_init(pca9450);
+ 	if (ret)
+-		return dev_err_probe(&i2c->dev, ret, "Failed to set WDOG_B reset behavior\n");
+-
+-	if (of_property_read_bool(i2c->dev.of_node, "nxp,i2c-lt-enable")) {
+-		/* Enable I2C Level Translator */
+-		ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_CONFIG2,
+-					 I2C_LT_MASK, I2C_LT_ON_STANDBY_RUN);
+-		if (ret)
+-			return dev_err_probe(&i2c->dev, ret,
+-					     "Failed to enable I2C level translator\n");
+-	}
++		return dev_err_probe(&i2c->dev, ret, "Unable to parse OF data\n");
+ 
+ 	/*
+ 	 * For LDO5 we need to be able to check the status of the SD_VSEL input in
+diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/pca9450.h
+index 85b4fecc10d82..0df8b3c48082f 100644
+--- a/include/linux/regulator/pca9450.h
++++ b/include/linux/regulator/pca9450.h
+@@ -223,12 +223,44 @@ enum {
+ #define IRQ_THERM_105			0x02
+ #define IRQ_THERM_125			0x01
+ 
++/* PCA9450_REG_PWRCTRL bits */
++#define T_ON_DEB_MASK			0xC0
++#define T_ON_DEB_120US			(0 << 6)
++#define T_ON_DEB_20MS			(1 << 6)
++#define T_ON_DEB_100MS			(2 << 6)
++#define T_ON_DEB_750MS			(3 << 6)
++#define T_OFF_DEB_MASK			0x20
++#define T_OFF_DEB_120US			(0 << 5)
++#define T_OFF_DEB_2MS			(1 << 5)
++#define T_ON_STEP_MASK			0x18
++#define T_ON_STEP_1MS			(0 << 3)
++#define T_ON_STEP_2MS			(1 << 3)
++#define T_ON_STEP_4MS			(2 << 3)
++#define T_ON_STEP_8MS			(3 << 3)
++#define T_OFF_STEP_MASK			0x06
++#define T_OFF_STEP_2MS			(0 << 1)
++#define T_OFF_STEP_4MS			(1 << 1)
++#define T_OFF_STEP_8MS			(2 << 1)
++#define T_OFF_STEP_16MS			(3 << 1)
++#define T_RESTART_MASK			0x01
++#define T_RESTART_250MS			0
++#define T_RESTART_500MS			1
++
+ /* PCA9450_REG_RESET_CTRL bits */
+ #define WDOG_B_CFG_MASK			0xC0
+ #define WDOG_B_CFG_NONE			0x00
+ #define WDOG_B_CFG_WARM			0x40
+ #define WDOG_B_CFG_COLD_LDO12		0x80
+ #define WDOG_B_CFG_COLD			0xC0
++#define T_PMIC_RST_DEB_MASK		0x07
++#define T_PMIC_RST_DEB_10MS		0x00
++#define T_PMIC_RST_DEB_50MS		0x01
++#define T_PMIC_RST_DEB_100MS		0x02
++#define T_PMIC_RST_DEB_500MS		0x03
++#define T_PMIC_RST_DEB_1S		0x04
++#define T_PMIC_RST_DEB_2S		0x05
++#define T_PMIC_RST_DEB_4S		0x06
++#define T_PMIC_RST_DEB_8S		0x07
+ 
+ /* PCA9450_REG_CONFIG2 bits */
+ #define I2C_LT_MASK			0x03
 -- 
-2.53.0
+2.51.0
 
 
 
