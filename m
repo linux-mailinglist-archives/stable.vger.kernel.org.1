@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-226342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGcNKACIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:36 +0100
+	id QJdpABeSuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:40:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988372AEB04
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13412AFF54
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AF08307BEF2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94ADD30A8211
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6B23F54C1;
-	Tue, 17 Mar 2026 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7845225A38;
+	Tue, 17 Mar 2026 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGVc1Xt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kF14OS5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFF8357A4A;
-	Tue, 17 Mar 2026 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAFE1A9B58;
+	Tue, 17 Mar 2026 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766289; cv=none; b=ENlgoCBsc+F3PGpou0E4VWe2+xQAc8yG/lUFz6FeDO/TrdYtX2CCeI2/OSpS/bYlt0C8i1S5G0vLweS1B0sEPcEhgQXLn/4qbQIK8XLsCbPJ/HBUs8P6ajudGv8Sow+bkQGsSYgk2IbzU4jCpjdzcLGzv5/oHFRylyuKNHdn2IQ=
+	t=1773767786; cv=none; b=guE3ge5xZ6yCuTsoWr58qczDMyKxuNlVDiAV7GzBEczTRuRJLjg8afn89HQH+3mK4noU4Ms7tXHdbipUyKYkvEWc6cCqy1yh6VfytjUqMbS5lNpvWJrkJ/E0nCJ8WDEueXw25ihKibXHeDfH2UsW0CiurHfUndotbUjjDBN9ZuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766289; c=relaxed/simple;
-	bh=YkXEYIH74A56mhfHo8kocYF0waTbnTtPT4gCDq7DILc=;
+	s=arc-20240116; t=1773767786; c=relaxed/simple;
+	bh=F7v3h2L+CuNrzERvcSyT8Nv2XUQz9mpCHdA60b90dqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGH0uUG2N6SwfuMIocD2r5IgpzthfFOg2Q/45RhT/cUfWeKOo2ISO7ec7TrYvlYRdzD1a8R1WS0e2GBWyxvWVuSaXVSjzEiTMz4xeMdWJ3sjAPbxeHdsa+ovirMKLDJRLbUfGKZD38NPhotMHxB9hfV4UWR+PT4yADWFqwQKWjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGVc1Xt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3219C4CEF7;
-	Tue, 17 Mar 2026 16:51:28 +0000 (UTC)
+	 MIME-Version; b=K90cIfloi1vVXjgg2Hnca1yikNoaPix6VnA6ODKXAdEX38/LjZ4NQSDCU2Wie9IX80Igm56HIZu5LeRwglyUyj5DhIqMVuzWPqnT/Ervl+knmc3adJApzHWq3gsbpDQI+sg+s+5pvmo7QMowthtzwNBfcysL3EevI+/Lk3mz0PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kF14OS5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1FBC4CEF7;
+	Tue, 17 Mar 2026 17:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766289;
-	bh=YkXEYIH74A56mhfHo8kocYF0waTbnTtPT4gCDq7DILc=;
+	s=korg; t=1773767786;
+	bh=F7v3h2L+CuNrzERvcSyT8Nv2XUQz9mpCHdA60b90dqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGVc1Xt8VNAQFCNx6mZFG9maV6EngS7Ao5CWcaJY7AD+jHgO+vgoCCjZZY8d0ZN1V
-	 Ts12XZk6SkA0C1v/EHxgaUDsQWEFcGQNrPa44yUsFSxsRKzd62S/15F6NjPX96wOUC
-	 5/IYPdfey4inKNiQa6VqbrApyOcLik4yvzuv8PMc=
+	b=kF14OS5uzPAyanxvtTNuNVUQrj+cvn5qckGG3H6ok+Lcxqr6Z1XSvIWu06DkUVBo3
+	 MHiiR9gIasieKeUbLw9G7mpQORE/gHwaWcnvsLaSlFEYRpa4oeVHSF+Rq28JAAshoa
+	 UindT9TpR7iJcGi3Ppeqem8R61fKRB1macvb5OSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Popple <apopple@nvidia.com>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jason Gunthorpe <jgg@mellanox.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.19 212/378] mm: Fix a hmm_range_fault() livelock / starvation problem
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.18 140/333] USB: core: Limit the length of unkillable synchronous timeouts
 Date: Tue, 17 Mar 2026 17:32:49 +0100
-Message-ID: <20260317163014.806356728@linuxfoundation.org>
+Message-ID: <20260317163004.553222385@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,257 +61,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226342-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226679-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 988372AEB04
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: F13412AFF54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit b570f37a2ce480be26c665345c5514686a8a0274 upstream.
+commit 1015c27a5e1a63efae2b18a9901494474b4d1dc3 upstream.
 
-If hmm_range_fault() fails a folio_trylock() in do_swap_page,
-trying to acquire the lock of a device-private folio for migration,
-to ram, the function will spin until it succeeds grabbing the lock.
+The usb_control_msg(), usb_bulk_msg(), and usb_interrupt_msg() APIs in
+usbcore allow unlimited timeout durations.  And since they use
+uninterruptible waits, this leaves open the possibility of hanging a
+task for an indefinitely long time, with no way to kill it short of
+unplugging the target device.
 
-However, if the process holding the lock is depending on a work
-item to be completed, which is scheduled on the same CPU as the
-spinning hmm_range_fault(), that work item might be starved and
-we end up in a livelock / starvation situation which is never
-resolved.
+To prevent this sort of problem, enforce a maximum limit on the length
+of these unkillable timeouts.  The limit chosen here, somewhat
+arbitrarily, is 60 seconds.  On many systems (although not all) this
+is short enough to avoid triggering the kernel's hung-task detector.
 
-This can happen, for example if the process holding the
-device-private folio lock is stuck in
-   migrate_device_unmap()->lru_add_drain_all()
-sinc lru_add_drain_all() requires a short work-item
-to be run on all online cpus to complete.
+In addition, clear up the ambiguity of negative timeout values by
+treating them the same as 0, i.e., using the maximum allowed timeout.
 
-A prerequisite for this to happen is:
-a) Both zone device and system memory folios are considered in
-   migrate_device_unmap(), so that there is a reason to call
-   lru_add_drain_all() for a system memory folio while a
-   folio lock is held on a zone device folio.
-b) The zone device folio has an initial mapcount > 1 which causes
-   at least one migration PTE entry insertion to be deferred to
-   try_to_migrate(), which can happen after the call to
-   lru_add_drain_all().
-c) No or voluntary only preemption.
-
-This all seems pretty unlikely to happen, but indeed is hit by
-the "xe_exec_system_allocator" igt test.
-
-Resolve this by waiting for the folio to be unlocked if the
-folio_trylock() fails in do_swap_page().
-
-Rename migration_entry_wait_on_locked() to
-softleaf_entry_wait_unlock() and update its documentation to
-indicate the new use-case.
-
-Future code improvements might consider moving
-the lru_add_drain_all() call in migrate_device_unmap() to be
-called *after* all pages have migration entries inserted.
-That would eliminate also b) above.
-
-v2:
-- Instead of a cond_resched() in hmm_range_fault(),
-  eliminate the problem by waiting for the folio to be unlocked
-  in do_swap_page() (Alistair Popple, Andrew Morton)
-v3:
-- Add a stub migration_entry_wait_on_locked() for the
-  !CONFIG_MIGRATION case. (Kernel Test Robot)
-v4:
-- Rename migrate_entry_wait_on_locked() to
-  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
-v5:
-- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
-  version of softleaf_entry_wait_on_locked().
-- Modify wording around function names in the commit message
-  (Andrew Morton)
-
-Suggested-by: Alistair Popple <apopple@nvidia.com>
-Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
-Cc: Ralph Campbell <rcampbell@nvidia.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org
-Cc: <dri-devel@lists.freedesktop.org>
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Link: https://patch.msgid.link/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
-(cherry picked from commit a69d1ab971a624c6f112cea61536569d579c3215)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/15fc9773-a007-47b0-a703-df89a8cf83dd@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/migrate.h |   10 +++++++++-
- mm/filemap.c            |   15 ++++++++++-----
- mm/memory.c             |    3 ++-
- mm/migrate.c            |    8 ++++----
- mm/migrate_device.c     |    2 +-
- 5 files changed, 26 insertions(+), 12 deletions(-)
+ drivers/usb/core/message.c |   27 +++++++++++++--------------
+ include/linux/usb.h        |    3 +++
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/include/linux/migrate.h
-+++ b/include/linux/migrate.h
-@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio
- 
- int migrate_huge_page_move_mapping(struct address_space *mapping,
- 		struct folio *dst, struct folio *src);
--void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 		__releases(ptl);
- void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
- int folio_migrate_mapping(struct address_space *mapping,
-@@ -97,6 +97,14 @@ static inline int set_movable_ops(const
- 	return -ENOSYS;
- }
- 
-+static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+	__releases(ptl)
-+{
-+	WARN_ON_ONCE(1);
-+
-+	spin_unlock(ptl);
-+}
-+
- #endif /* CONFIG_MIGRATION */
- 
- #ifdef CONFIG_NUMA_BALANCING
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1379,14 +1379,16 @@ repeat:
- 
- #ifdef CONFIG_MIGRATION
- /**
-- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
-- * @entry: migration swap entry.
-+ * softleaf_entry_wait_on_locked - Wait for a migration entry or
-+ * device_private entry to be removed.
-+ * @entry: migration or device_private swap entry.
-  * @ptl: already locked ptl. This function will drop the lock.
-  *
-- * Wait for a migration entry referencing the given page to be removed. This is
-+ * Wait for a migration entry referencing the given page, or device_private
-+ * entry referencing a dvice_private page to be unlocked. This is
-  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
-  * this can be called without taking a reference on the page. Instead this
-- * should be called while holding the ptl for the migration entry referencing
-+ * should be called while holding the ptl for @entry referencing
-  * the page.
-  *
-  * Returns after unlocking the ptl.
-@@ -1394,7 +1396,7 @@ repeat:
-  * This follows the same logic as folio_wait_bit_common() so see the comments
-  * there.
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -45,6 +45,8 @@ static void usb_api_blocking_completion(
+  * Starts urb and waits for completion or timeout.
+  * Whether or not the wait is killable depends on the flag passed in.
+  * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
++ *
++ * For non-killable waits, we enforce a maximum limit on the timeout value.
   */
--void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 	__releases(ptl)
- {
- 	struct wait_page_queue wait_page;
-@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(soft
- 	 * If a migration entry exists for the page the migration path must hold
- 	 * a valid reference to the page, and it must take the ptl to remove the
- 	 * migration entry. So the page is valid until the ptl is dropped.
-+	 * Similarly any path attempting to drop the last reference to a
-+	 * device-private page needs to grab the ptl to remove the device-private
-+	 * entry.
- 	 */
- 	spin_unlock(ptl);
- 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault
- 				unlock_page(vmf->page);
- 				put_page(vmf->page);
- 			} else {
--				pte_unmap_unlock(vmf->pte, vmf->ptl);
-+				pte_unmap(vmf->pte);
-+				softleaf_entry_wait_on_locked(entry, vmf->ptl);
- 			}
- 		} else if (softleaf_is_hwpoison(entry)) {
- 			ret = VM_FAULT_HWPOISON;
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_stru
- 	if (!softleaf_is_migration(entry))
+ static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
+ 		bool killable)
+@@ -61,7 +63,9 @@ static int usb_start_wait_urb(struct urb
+ 	if (unlikely(retval))
  		goto out;
  
--	migration_entry_wait_on_locked(entry, ptl);
-+	softleaf_entry_wait_on_locked(entry, ptl);
- 	return;
- out:
- 	spin_unlock(ptl);
-@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm
- 		 * If migration entry existed, safe to release vma lock
- 		 * here because the pgtable page won't be freed without the
- 		 * pgtable lock released.  See comment right above pgtable
--		 * lock release in migration_entry_wait_on_locked().
-+		 * lock release in softleaf_entry_wait_on_locked().
- 		 */
- 		hugetlb_vma_unlock_read(vma);
--		migration_entry_wait_on_locked(entry, ptl);
-+		softleaf_entry_wait_on_locked(entry, ptl);
- 		return;
- 	}
+-	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
++	if (!killable && (timeout <= 0 || timeout > USB_MAX_SYNCHRONOUS_TIMEOUT))
++		timeout = USB_MAX_SYNCHRONOUS_TIMEOUT;
++	expire = (timeout > 0) ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+ 	if (killable)
+ 		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
+ 	else
+@@ -127,8 +131,7 @@ static int usb_internal_control_msg(stru
+  * @index: USB message index value
+  * @data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -183,8 +186,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -242,8 +244,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_send);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to be filled in by the message
+  * @size: length in bytes of the data to be received
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -314,8 +315,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_recv);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -347,8 +347,7 @@ EXPORT_SYMBOL_GPL(usb_interrupt_msg);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -408,12 +407,12 @@ EXPORT_SYMBOL_GPL(usb_bulk_msg);
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+  * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ *	timing out (if <= 0, the wait is as long as possible)
+  *
+  * Context: task context, might sleep.
+  *
+- * This function is just like usb_blk_msg() except that it waits in a
+- * killable state.
++ * This function is just like usb_blk_msg(), except that it waits in a
++ * killable state and there is no limit on the timeout length.
+  *
+  * Return:
+  * If successful, 0. Otherwise a negative error number. The number of actual
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1863,6 +1863,9 @@ void usb_free_noncoherent(struct usb_dev
+  *                         SYNCHRONOUS CALL SUPPORT                  *
+  *-------------------------------------------------------------------*/
  
-@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_
- 	ptl = pmd_lock(mm, pmd);
- 	if (!pmd_is_migration_entry(*pmd))
- 		goto unlock;
--	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
-+	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
- 	return;
- unlock:
- 	spin_unlock(ptl);
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(
- 		}
- 
- 		if (softleaf_is_migration(entry)) {
--			migration_entry_wait_on_locked(entry, ptl);
-+			softleaf_entry_wait_on_locked(entry, ptl);
- 			spin_unlock(ptl);
- 			return -EAGAIN;
- 		}
++/* Maximum value allowed for timeout in synchronous routines below */
++#define USB_MAX_SYNCHRONOUS_TIMEOUT		60000	/* ms */
++
+ extern int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 	__u8 request, __u8 requesttype, __u16 value, __u16 index,
+ 	void *data, __u16 size, int timeout);
 
 
 
