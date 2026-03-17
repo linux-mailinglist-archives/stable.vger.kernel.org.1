@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFltLbOKuWl6JwIAu9opvQ
-	(envelope-from <stable+bounces-226415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:07 +0100
+	id sLjuL72TuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:47:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5789F2AF0BF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43612B022E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AE4B318609C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:56:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FA1130F0364
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1463BFE59;
-	Tue, 17 Mar 2026 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EC131E841;
+	Tue, 17 Mar 2026 17:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2vyZhVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rm7rD1et"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630DA179A3;
-	Tue, 17 Mar 2026 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A78F21D5B0;
+	Tue, 17 Mar 2026 17:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766607; cv=none; b=hSimilA+DUZMk+EvZd9yPD02p2JMY4LBvlwb8MUz2c42Bl4C6GrRXzUQP9x+WWuHf/nfp3T/6zKxKJh/NRedR//ThotIzY3Xl/sQqFjR8HQ/+LP9hrmPw9MqHCalDVT9wAJKjaLEc3xdpclrtTgu7NvmpW/TqV684v4kk7ra2sA=
+	t=1773768162; cv=none; b=DB4LThH5GGX5brjZlXAZSdlYgQ9UMCGw7XWpkKmYcXr+gzmdepfM4A/HTAlZMSqTNU4X6UiMUCBRsFMBbR2qYa6JweMLYhYuLbWgIzAZxK3jN2dgYW4lUHLrRUSQI6uX+JzE3jZKKqeYv4lLRbKUTks6AN0/kpz7He2A5ML0WNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766607; c=relaxed/simple;
-	bh=qlOvRG0/9vAVARPEXmUSlqPumdszi8vTsoSU7mdoi7Y=;
+	s=arc-20240116; t=1773768162; c=relaxed/simple;
+	bh=GP2uet8fKYRBg1kPrD/u1b4XSl+xJ5dnqCkP/AF2QU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ev3AEntftCA2+AV2Su7s8xeOChJCxZ+Lp4buo8kQ1P7LguFwphjPVENyaXFQAc+CuIV7s1UvOEkylJ0SqbwcpxgSed9hdl2EZsw++Q/MFMT4B8ETlftSf+sg9+689AIMbbWQHk3fXIcz4QQxfjbgbgFD9ai4Tn7F3xXGkyv5VvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2vyZhVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0B6C4CEF7;
-	Tue, 17 Mar 2026 16:56:46 +0000 (UTC)
+	 MIME-Version; b=SESXJBg3CcICEFHytzNInKBBXSLUNW2P2DqdBu7rDVZGeyZNZvHctFfpD3jakzzLqi4jVU4C3t0HAaI0n+1QEZR4+RR2NJ1oQoZHmpHXqB0HAEI3He+XGXhXFdNqc3gqCmRpGjANQVNTuvo28vCKbeoJlhQy7UBsbYCFAnU5534=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rm7rD1et; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9E3C2BCAF;
+	Tue, 17 Mar 2026 17:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766607;
-	bh=qlOvRG0/9vAVARPEXmUSlqPumdszi8vTsoSU7mdoi7Y=;
+	s=korg; t=1773768162;
+	bh=GP2uet8fKYRBg1kPrD/u1b4XSl+xJ5dnqCkP/AF2QU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2vyZhVehsjKY9y6Sax+phqGBWDayy1fnP9cFKR/RxtFtvvdtf9U8sXv7yFUJs6YH
-	 K8VTE/lykOJpfD5lWQpecLa2y1n2lDHqenNuO9mWajQlX4nCc45YMXpf3K7vKA+jvY
-	 k4RqibWG0pg0LO+vRf6qBxQWdR+KkPpoJrikHopQ=
+	b=Rm7rD1et5wBrloO3TSGD+1P8ymjR1fT8GFl7ZI1yqBN4rWzzbNJfAKEOC5qLdfXWk
+	 /JTRgolxyvfscl90doaddkIpE5oVr9PiSGUlNmbplca39EVo5c1UFx9ZP4qKpAYZM8
+	 7HhEOhbpQCSASo1ejGl515Sg7F3UBfPAqfn4nAhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.19 283/378] s390/stackleak: Fix __stackleak_poison() inline assembly constraint
-Date: Tue, 17 Mar 2026 17:34:00 +0100
-Message-ID: <20260317163017.415351048@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.18 212/333] staging: rtl8723bs: fix potential out-of-bounds read in rtw_restruct_wmm_ie
+Date: Tue, 17 Mar 2026 17:34:01 +0100
+Message-ID: <20260317163007.225592717@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226415-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226778-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,55 +87,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5789F2AF0BF
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux.dev:email]
+X-Rspamd-Queue-Id: C43612B022E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-commit 674c5ff0f440a051ebf299d29a4c013133d81a65 upstream.
+commit a75281626fc8fa6dc6c9cc314ee423e8bc45203b upstream.
 
-The __stackleak_poison() inline assembly comes with a "count" operand where
-the "d" constraint is used. "count" is used with the exrl instruction and
-"d" means that the compiler may allocate any register from 0 to 15.
+The current code checks 'i + 5 < in_len' at the end of the if statement.
+However, it accesses 'in_ie[i + 5]' before that check, which can lead
+to an out-of-bounds read. Move the length check to the beginning of the
+conditional to ensure the index is within bounds before accessing the
+array.
 
-If the compiler would allocate register 0 then the exrl instruction would
-not or the value of "count" into the executed instruction - resulting in a
-stackframe which is only partially poisoned.
-
-Use the correct "a" constraint, which excludes register 0 from register
-allocation.
-
-Fixes: 2a405f6bb3a5 ("s390/stackleak: provide fast __stackleak_poison() implementation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20260302133500.1560531-4-hca@linux.ibm.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20260224132647.11642-2-luka.gejak@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/processor.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -158,7 +158,7 @@ static __always_inline void __stackleak_
- 		"	j	4f\n"
- 		"3:	mvc	8(1,%[addr]),0(%[addr])\n"
- 		"4:"
--		: [addr] "+&a" (erase_low), [count] "+&d" (count), [tmp] "=&a" (tmp)
-+		: [addr] "+&a" (erase_low), [count] "+&a" (count), [tmp] "=&a" (tmp)
- 		: [poison] "d" (poison)
- 		: "memory", "cc"
- 		);
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -2008,7 +2008,10 @@ int rtw_restruct_wmm_ie(struct adapter *
+ 	while (i < in_len) {
+ 		ielength = initial_out_len;
+ 
+-		if (in_ie[i] == 0xDD && in_ie[i+2] == 0x00 && in_ie[i+3] == 0x50  && in_ie[i+4] == 0xF2 && in_ie[i+5] == 0x02 && i+5 < in_len) { /* WMM element ID and OUI */
++		if (i + 5 < in_len &&
++		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
++		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
++		    in_ie[i + 5] == 0x02) {
+ 			for (j = i; j < i + 9; j++) {
+ 				out_ie[ielength] = in_ie[j];
+ 				ielength++;
 
 
 
