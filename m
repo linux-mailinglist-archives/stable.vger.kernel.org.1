@@ -1,146 +1,299 @@
-Return-Path: <stable+bounces-226024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAbbIOhcuWnYAgIAu9opvQ
-	(envelope-from <stable+bounces-226024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:53:44 +0100
+	id sFJlHyJVuWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-226008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:20:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39482AB42B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:53:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6F02AABA4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D45EF301A292
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:53:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82B4230571AB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18083B9D9B;
-	Tue, 17 Mar 2026 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5013CB2C3;
+	Tue, 17 Mar 2026 13:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv2y7qx8"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21A33B774C;
-	Tue, 17 Mar 2026 13:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28753C661F
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773755619; cv=none; b=NM8l6G6FkdEUyEF/K4nl4318SbZ3FBiP+O6u9rp7FC38/EFi4f08KXKXcU+9nDLLOrKWnITOmc5VisZsfpnON2tiQt+v4Bg4bKEQpUKqB5+G+jXLdmSEcLHgQv4yx2ZvwLMZ4MZg5lVy4rgDA+RC1/y4f0Jq4kr/Y8wAqfJwe1U=
+	t=1773753432; cv=none; b=WTxoISC2/7VoERDka0BGm4jei7v6GvwwtipxFzPqN/PLZCcTZNpPs27WPD9o5SDnzSq1kWjWx4VCCV9XsINMCOW5B8OVKpAIxZK5yCwWhVAFCUDbVa19uGjsLDaH6Pj9qdI10Xi6lSLjyULYu2XvRyo9p5dzR/GDYgyWkhqZah8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773755619; c=relaxed/simple;
-	bh=jOnqU2pxeS1YuTq37zznl574bvgZiKbsUlEk6l+BmQQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iYqnE95tRXcCd3pZ5JN2NFh5zQXNwB/fNapKp0ZwqOal/10FoilooByXjk+mJ8yt8c188BNUSsw4N6m6V13P7aqsLQUu7xz+qMe5ZZa41//FUfYZJ1Clq4ukM53+1gUcDULEpU/X23ll5AvbTF4Q2uuX/B+5g1nIPq3/Ilr4m8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w2UF3-000YSW-29;
-	Tue, 17 Mar 2026 13:13:48 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1w2UF1-00000000tBy-11Cj;
-	Tue, 17 Mar 2026 14:13:47 +0100
-Message-ID: <f7285cc36ec39c4a6cef633add170518f2e34b3a.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 005/147] i3c: remove i2c board info from
- i2c_dev_desc
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev
-Cc: Jamie Iles <quic_jiles@quicinc.com>, Alexandre Belloni
-	 <alexandre.belloni@bootlin.com>, stable <stable@vger.kernel.org>
-Date: Tue, 17 Mar 2026 14:13:42 +0100
-In-Reply-To: <20260228181736.1605592-5-sashal@kernel.org>
-References: <20260228181736.1605592-1-sashal@kernel.org>
-	 <20260228181736.1605592-5-sashal@kernel.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-gnA3NBkeQBiX2stB0NEf"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1773753432; c=relaxed/simple;
+	bh=vLVFKWiJZ6HDuHUiHrdVVHAxITWDIS2oD+S4yMEvLHQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TLcoTPRH4bI/r+ZxBczbc3UAhIsKjqQ8Qoxbky0B6IQ79tagIeea20MXC2KrDAfSgPGuL1gwWOcb3yfC95/aQrHCCQ2Gx/XuRjcOKOhmMjSrq6C8MM1SdS3zf+4Xxo6W6ASV7Wdu5TGYJRdkMxARQmPl38MKZgGC8U2HkrZW0sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv2y7qx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDDEC4CEF7;
+	Tue, 17 Mar 2026 13:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773753432;
+	bh=vLVFKWiJZ6HDuHUiHrdVVHAxITWDIS2oD+S4yMEvLHQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Zv2y7qx8xHliNdTXl9surfQjZBcwlJjkRx5aut9QHC1LHgE8XF09cs75l3ZrCtNy7
+	 bRWT8Rtw1yiO8FbB5wnBGqo4dQuXTQ0eiC9t9WlnA49x0VLz/g1+AsG6ms74wgwP3u
+	 Bwj/KeVrS1+BoYedP4GsV7zWqD69ey9v5A1ghyg8=
+Subject: FAILED: patch "[PATCH] btrfs: fix transaction abort on file creation due to name" failed to apply to 6.6-stable tree
+To: fdmanana@suse.com,boris@bur.io,dsterba@suse.com,wqu@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 14:14:21 +0100
+Message-ID: <2026031721-flask-submersed-ea9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226008-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,quicinc.com:email]
-X-Rspamd-Queue-Id: F39482AB42B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CD6F02AABA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---=-gnA3NBkeQBiX2stB0NEf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Sat, 2026-02-28 at 13:15 -0500, Sasha Levin wrote:
-> From: Jamie Iles <quic_jiles@quicinc.com>
->=20
-> [ Upstream commit 31b9887c7258ca47d9c665a80f19f006c86756b1 ]
->=20
-> I2C board info is only required during adapter setup so there is no
-> requirement to keeping a pointer to it once running.  To support dynamic
-> device addition we can't rely on board info - user-space creation
-> through sysfs won't have a boardinfo.
-[...]
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This was broken and needs commit 6cbf8b38dfe3 "i3c: fix uninitialized
-variable use in i2c setup" as a follow-up.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2d1ababdedd4ba38867c2500eb7f95af5ddeeef7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031721-flask-submersed-ea9b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Ben.
+Possible dependencies:
 
 
---=20
-Ben Hutchings
-For every complex problem
-there is a solution that is simple, neat, and wrong.
 
---=-gnA3NBkeQBiX2stB0NEf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+thanks,
 
------BEGIN PGP SIGNATURE-----
+greg k-h
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmm5U4YACgkQ57/I7JWG
-EQkSRw//U4sQc9VYDDtfrS1DgkSqANo5M2DSrtpG20cRiAyfbz13tx4uZSeC3Llw
-/xK3ZRW1oIhbkEkqSNrA1MJpYUIiRklIRXToLrf/9lmvK/yKdiHIFmdUt7XM24qx
-Z08gc7hZO/uI0rUxeiya5sItaOV+GJDB9068oGSmCAt+7aNZndK2lRowTdPDPFdF
-6teA1PVB4rD5Vv7w1LsDxHhW0hBAb68LZP3cYC06b053tlMgpyn4mpfuiwMyxRuO
-Zl3xAmpd+KldlSZTWfY0ULi1vynCOpOAXVkoO6OLI33hJFH1Dn3enBS9bst+NZ+G
-r6tJrBwlb66YfNPg61rUNeW55Iz/EptWwOiAGO0+ayGBXnsk4n0Hx12SbpSrBDzK
-OlyMx/AHmsAriMSPo6A7f0KqaUHjPYUon0d8yBUH/5bn1nuMeZD6Mr2kS2rutFSl
-Z3k8Yg1957d5Oiul2hUp9y9XlcljvPAw4CUDewKAhy7vkwcwuZNe88aDzEPJW+pn
-Nv8SiTVM7/zDubJOzaHlqX9nYwfbhnR5gv5fstdRDNuIojBSut5JqACg0XDGHkZc
-CUaAi2zih9u05B1r7S4MWhtSRKLftVJRFRC6y2ys18/oBs+fE7WlFXSjYDDVUQyu
-21w0ECfTWNMOm09JUljmazNWfm5/AG3qBAvjC0e6LQglZzafebs=
-=jmul
------END PGP SIGNATURE-----
+------------------ original commit in Linus's tree ------------------
 
---=-gnA3NBkeQBiX2stB0NEf--
+From 2d1ababdedd4ba38867c2500eb7f95af5ddeeef7 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Thu, 26 Feb 2026 11:05:43 +0000
+Subject: [PATCH] btrfs: fix transaction abort on file creation due to name
+ hash collision
+
+If we attempt to create several files with names that result in the same
+hash, we have to pack them in same dir item and that has a limit inherent
+to the leaf size. However if we reach that limit, we trigger a transaction
+abort and turns the filesystem into RO mode. This allows for a malicious
+user to disrupt a system, without the need to have administration
+privileges/capabilities.
+
+Reproducer:
+
+  $ cat exploit-hash-collisions.sh
+  #!/bin/bash
+
+  DEV=/dev/sdi
+  MNT=/mnt/sdi
+
+  # Use smallest node size to make the test faster and require fewer file
+  # names that result in hash collision.
+  mkfs.btrfs -f --nodesize 4K $DEV
+  mount $DEV $MNT
+
+  # List of names that result in the same crc32c hash for btrfs.
+  declare -a names=(
+   'foobar'
+   '%a8tYkxfGMLWRGr55QSeQc4PBNH9PCLIvR6jZnkDtUUru1t@RouaUe_L:@xGkbO3nCwvLNYeK9vhE628gss:T$yZjZ5l-Nbd6CbC$M=hqE-ujhJICXyIxBvYrIU9-TDC'
+   'AQci3EUB%shMsg-N%frgU:02ByLs=IPJU0OpgiWit5nexSyxZDncY6WB:=zKZuk5Zy0DD$Ua78%MelgBuMqaHGyKsJUFf9s=UW80PcJmKctb46KveLSiUtNmqrMiL9-Y0I_l5Fnam04CGIg=8@U:Z'
+   'CvVqJpJzueKcuA$wqwePfyu7VxuWNN3ho$p0zi2H8QFYK$7YlEqOhhb%:hHgjhIjW5vnqWHKNP4'
+   'ET:vk@rFU4tsvMB0$C_p=xQHaYZjvoF%-BTc%wkFW8yaDAPcCYoR%x$FH5O:'
+   'HwTon%v7SGSP4FE08jBwwiu5aot2CFKXHTeEAa@38fUcNGOWvE@Mz6WBeDH_VooaZ6AgsXPkVGwy9l@@ZbNXabUU9csiWrrOp0MWUdfi$EZ3w9GkIqtz7I_eOsByOkBOO'
+   'Ij%2VlFGXSuPvxJGf5UWy6O@1svxGha%b@=%wjkq:CIgE6u7eJOjmQY5qTtxE2Rjbis9@us'
+   'KBkjG5%9R8K9sOG8UTnAYjxLNAvBmvV5vz3IiZaPmKuLYO03-6asI9lJ_j4@6Xo$KZicaLWJ3Pv8XEwVeUPMwbHYWwbx0pYvNlGMO9F:ZhHAwyctnGy%_eujl%WPd4U2BI7qooOSr85J-C2V$LfY'
+   'NcRfDfuUQ2=zP8K3CCF5dFcpfiOm6mwenShsAb_F%n6GAGC7fT2JFFn:c35X-3aYwoq7jNX5$ZJ6hI3wnZs$7KgGi7wjulffhHNUxAT0fRRLF39vJ@NvaEMxsMO'
+   'Oj42AQAEzRoTxa5OuSKIr=A_lwGMy132v4g3Pdq1GvUG9874YseIFQ6QU'
+   'Ono7avN5GjC:_6dBJ_'
+   'WHmN2gnmaN-9dVDy4aWo:yNGFzz8qsJyJhWEWcud7$QzN2D9R0efIWWEdu5kwWr73NZm4=@CoCDxrrZnRITr-kGtU_cfW2:%2_am'
+   'WiFnuTEhAG9FEC6zopQmj-A-$LDQ0T3WULz%ox3UZAPybSV6v1Z$b4L_XBi4M4BMBtJZpz93r9xafpB77r:lbwvitWRyo$odnAUYlYMmU4RvgnNd--e=I5hiEjGLETTtaScWlQp8mYsBovZwM2k'
+   'XKyH=OsOAF3p%uziGF_ZVr$ivrvhVgD@1u%5RtrV-gl_vqAwHkK@x7YwlxX3qT6WKKQ%PR56NrUBU2dOAOAdzr2=5nJuKPM-T-$ZpQfCL7phxQbUcb:BZOTPaFExc-qK-gDRCDW2'
+   'd3uUR6OFEwZr%ns1XH_@tbxA@cCPmbBRLdyh7p6V45H$P2$F%w0RqrD3M0g8aGvWpoTFMiBdOTJXjD:JF7=h9a_43xBywYAP%r$SPZi%zDg%ql-KvkdUCtF9OLaQlxmd'
+   'ePTpbnit%hyNm@WELlpKzNZYOzOTf8EQ$sEfkMy1VOfIUu3coyvIr13-Y7Sv5v-Ivax2Go_GQRFMU1b3362nktT9WOJf3SpT%z8sZmM3gvYQBDgmKI%%RM-G7hyrhgYflOw%z::ZRcv5O:lDCFm'
+   'evqk743Y@dvZAiG5J05L_ROFV@$2%rVWJ2%3nxV72-W7$e$-SK3tuSHA2mBt$qloC5jwNx33GmQUjD%akhBPu=VJ5g$xhlZiaFtTrjeeM5x7dt4cHpX0cZkmfImndYzGmvwQG:$euFYmXn$_2rA9mKZ'
+   'gkgUtnihWXsZQTEkrMAWIxir09k3t7jk_IK25t1:cy1XWN0GGqC%FrySdcmU7M8MuPO_ppkLw3=Dfr0UuBAL4%GFk2$Ma10V1jDRGJje%Xx9EV2ERaWKtjpwiZwh0gCSJsj5UL7CR8RtW5opCVFKGGy8Cky'
+   'hNgsG_8lNRik3PvphqPm0yEH3P%%fYG:kQLY=6O-61Wa6nrV_WVGR6TLB09vHOv%g4VQRP8Gzx7VXUY1qvZyS'
+   'isA7JVzN12xCxVPJZ_qoLm-pTBuhjjHMvV7o=F:EaClfYNyFGlsfw-Kf%uxdqW-kwk1sPl2vhbjyHU1A6$hz'
+   'kiJ_fgcdZFDiOptjgH5PN9-PSyLO4fbk_:u5_2tz35lV_iXiJ6cx7pwjTtKy-XGaQ5IefmpJ4N_ZqGsqCsKuqOOBgf9LkUdffHet@Wu'
+   'lvwtxyhE9:%Q3UxeHiViUyNzJsy:fm38pg_b6s25JvdhOAT=1s0$pG25x=LZ2rlHTszj=gN6M4zHZYr_qrB49i=pA--@WqWLIuX7o1S_SfS@2FSiUZN'
+   'rC24cw3UBDZ=5qJBUMs9e$=S4Y94ni%Z8639vnrGp=0Hv4z3dNFL0fBLmQ40=EYIY:Z=SLc@QLMSt2zsss2ZXrP7j4='
+   'uwGl2s-fFrf@GqS=DQqq2I0LJSsOmM%xzTjS:lzXguE3wChdMoHYtLRKPvfaPOZF2fER@j53evbKa7R%A7r4%YEkD=kicJe@SFiGtXHbKe4gCgPAYbnVn'
+   'UG37U6KKua2bgc:IHzRs7BnB6FD:2Mt5Cc5NdlsW%$1tyvnfz7S27FvNkroXwAW:mBZLA1@qa9WnDbHCDmQmfPMC9z-Eq6QT0jhhPpqyymaD:R02ghwYo%yx7SAaaq-:x33LYpei$5g8DMl3C'
+   'y2vjek0FE1PDJC0qpfnN:x8k2wCFZ9xiUF2ege=JnP98R%wxjKkdfEiLWvQzmnW'
+   '8-HCSgH5B%K7P8_jaVtQhBXpBk:pE-$P7ts58U0J@iR9YZntMPl7j$s62yAJO@_9eanFPS54b=UTw$94C-t=HLxT8n6o9P=QnIxq-f1=Ne2dvhe6WbjEQtc'
+   'YPPh:IFt2mtR6XWSmjHptXL_hbSYu8bMw-JP8@PNyaFkdNFsk$M=xfL6LDKCDM-mSyGA_2MBwZ8Dr4=R1D%7-mCaaKGxb990jzaagRktDTyp'
+   '9hD2ApKa_t_7x-a@GCG28kY:7$M@5udI1myQ$x5udtggvagmCQcq9QXWRC5hoB0o-_zHQUqZI5rMcz_kbMgvN5jr63LeYA4Cj-c6F5Ugmx6DgVf@2Jqm%MafecpgooqreJ53P-QTS'
+  )
+
+  # Now create files with all those names in the same parent directory.
+  # It should not fail since a 4K leaf has enough space for them.
+  for name in "${names[@]}"; do
+       touch $MNT/$name
+  done
+
+  # Now add one more file name that causes a crc32c hash collision.
+  # This should fail, but it should not turn the filesystem into RO mode
+  # (which could be exploited by malicious users) due to a transaction
+  # abort.
+  touch $MNT/'W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt'
+
+  # Check that we are able to create another file, with a name that does not cause
+  # a crc32c hash collision.
+  echo -n "hello world" > $MNT/baz
+
+  # Unmount and mount again, verify file baz exists and with the right content.
+  umount $MNT
+  mount $DEV $MNT
+  echo "File baz content: $(cat $MNT/baz)"
+
+  umount $MNT
+
+When running the reproducer:
+
+  $ ./exploit-hash-collisions.sh
+  (...)
+  touch: cannot touch '/mnt/sdi/W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt': Value too large for defined data type
+  ./exploit-hash-collisions.sh: line 57: /mnt/sdi/baz: Read-only file system
+  cat: /mnt/sdi/baz: No such file or directory
+  File baz content:
+
+And the transaction abort stack trace in dmesg/syslog:
+
+  $ dmesg
+  (...)
+  [758240.509761] ------------[ cut here ]------------
+  [758240.510668] BTRFS: Transaction aborted (error -75)
+  [758240.511577] WARNING: fs/btrfs/inode.c:6854 at btrfs_create_new_inode+0x805/0xb50 [btrfs], CPU#6: touch/888644
+  [758240.513513] Modules linked in: btrfs dm_zero (...)
+  [758240.523221] CPU: 6 UID: 0 PID: 888644 Comm: touch Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [758240.524621] Tainted: [W]=WARN
+  [758240.525037] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [758240.526331] RIP: 0010:btrfs_create_new_inode+0x80b/0xb50 [btrfs]
+  [758240.527093] Code: 0f 82 cf (...)
+  [758240.529211] RSP: 0018:ffffce64418fbb48 EFLAGS: 00010292
+  [758240.529935] RAX: 00000000ffffffd3 RBX: 0000000000000000 RCX: 00000000ffffffb5
+  [758240.531040] RDX: 0000000d04f33e06 RSI: 00000000ffffffb5 RDI: ffffffffc0919dd0
+  [758240.531920] RBP: ffffce64418fbc10 R08: 0000000000000000 R09: 00000000ffffffb5
+  [758240.532928] R10: 0000000000000000 R11: ffff8e52c0000000 R12: ffff8e53eee7d0f0
+  [758240.533818] R13: ffff8e57f70932a0 R14: ffff8e5417629568 R15: 0000000000000000
+  [758240.534664] FS:  00007f1959a2a740(0000) GS:ffff8e5b27cae000(0000) knlGS:0000000000000000
+  [758240.535821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [758240.536644] CR2: 00007f1959b10ce0 CR3: 000000012a2cc005 CR4: 0000000000370ef0
+  [758240.537517] Call Trace:
+  [758240.537828]  <TASK>
+  [758240.538099]  btrfs_create_common+0xbf/0x140 [btrfs]
+  [758240.538760]  path_openat+0x111a/0x15b0
+  [758240.539252]  do_filp_open+0xc2/0x170
+  [758240.539699]  ? preempt_count_add+0x47/0xa0
+  [758240.540200]  ? __virt_addr_valid+0xe4/0x1a0
+  [758240.540800]  ? __check_object_size+0x1b3/0x230
+  [758240.541661]  ? alloc_fd+0x118/0x180
+  [758240.542315]  do_sys_openat2+0x70/0xd0
+  [758240.543012]  __x64_sys_openat+0x50/0xa0
+  [758240.543723]  do_syscall_64+0x50/0xf20
+  [758240.544462]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [758240.545397] RIP: 0033:0x7f1959abc687
+  [758240.546019] Code: 48 89 fa (...)
+  [758240.548522] RSP: 002b:00007ffe16ff8690 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
+  [758240.566278] RAX: ffffffffffffffda RBX: 00007f1959a2a740 RCX: 00007f1959abc687
+  [758240.567068] RDX: 0000000000000941 RSI: 00007ffe16ffa333 RDI: ffffffffffffff9c
+  [758240.567860] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  [758240.568707] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000561eec7c4b90
+  [758240.569712] R13: 0000561eec7c311f R14: 00007ffe16ffa333 R15: 0000000000000000
+  [758240.570758]  </TASK>
+  [758240.571040] ---[ end trace 0000000000000000 ]---
+  [758240.571681] BTRFS: error (device sdi state A) in btrfs_create_new_inode:6854: errno=-75 unknown
+  [758240.572899] BTRFS info (device sdi state EA): forced readonly
+
+Fix this by checking for hash collision, and if the adding a new name is
+possible, early in btrfs_create_new_inode() before we do any tree updates,
+so that we don't need to abort the transaction if we cannot add the new
+name due to the leaf size limit.
+
+A test case for fstests will be sent soon.
+
+Fixes: caae78e03234 ("btrfs: move common inode creation code into btrfs_create_new_inode()")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index d28d55beaacd..b409efe1857e 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -6610,6 +6610,25 @@ int btrfs_create_new_inode(struct btrfs_trans_handle *trans,
+ 	int ret;
+ 	bool xa_reserved = false;
+ 
++	if (!args->orphan && !args->subvol) {
++		/*
++		 * Before anything else, check if we can add the name to the
++		 * parent directory. We want to avoid a dir item overflow in
++		 * case we have an existing dir item due to existing name
++		 * hash collisions. We do this check here before we call
++		 * btrfs_add_link() down below so that we can avoid a
++		 * transaction abort (which could be exploited by malicious
++		 * users).
++		 *
++		 * For subvolumes we already do this in btrfs_mksubvol().
++		 */
++		ret = btrfs_check_dir_item_collision(BTRFS_I(dir)->root,
++						     btrfs_ino(BTRFS_I(dir)),
++						     name);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
+
 
