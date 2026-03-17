@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCTKLDCJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:40 +0100
+	id UH9MEdWVuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:56:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409BE2AED57
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACD62B05F1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36C8E300564A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8CDF30F2A47
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF8D3A4F46;
-	Tue, 17 Mar 2026 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FC536EAB9;
+	Tue, 17 Mar 2026 17:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScEan8Xo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPKm4hxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AFC29D26C;
-	Tue, 17 Mar 2026 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8D135A39A;
+	Tue, 17 Mar 2026 17:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766958; cv=none; b=FL/M+N0NDI9G1bcCiyc+I8dhv+DhyskM2ezMp//0PC/bieNgYT8cxowRv2yM55j4sR/3itqNMHp2q7IpOTOWTI//poXQWGW9hOfrCUVmt85kH3iUwkXxJ71v/gwuXRUk/fTo0IIuXhVQ5uBMyJBpN+tm8uyu7rAFPXpAAvZDtHY=
+	t=1773768346; cv=none; b=RK+ymSWvQfEVccnCXf3ZffWH0vpWk+aLgN8aKdwslxUDE8gM92pXFjPZUAC7PzAqL/ywd7SewEtHotddFKBEFU1zoOMLFv2bdA5AowFibewQ6yF8odM599mfFcfznN1jYGwivPs4JMTznW6UJ8j0cxbKPd2HDemJEgPumW0ocs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766958; c=relaxed/simple;
-	bh=UlTuts0CMaxx8GzByYTF85MO11xJz0I94h887xj6DtA=;
+	s=arc-20240116; t=1773768346; c=relaxed/simple;
+	bh=Ueo7ZOU4UZgfC/3KPxILel9bjezFqX5g4xhjaaADom4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acCLWk7LE238tDRsfiBRQP++o++YJ3O5kv5Xe2qbivrJV+1qRIanMoZgNQdCJO9zGpA6wEMKCYvKGgc95iUTeDwQyPfNpkq90/O33ASRyJIFlJmnAa1HXd7eeku4sBqHfU8EvhB0ItHj8zBb4gyCPB3cV8MXLrWiO65iBMojOZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScEan8Xo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BDBC4CEF7;
-	Tue, 17 Mar 2026 17:02:37 +0000 (UTC)
+	 MIME-Version; b=jhJpVoDlHsdL666dA9eB+8CHRUPSRV3IGJfaHXZkLgeyey25jRcz5qv9OlM2GjJxA922z4gWlSh0vO9OlfSoa1Nfu+GwkVQF3Afl1ZnzFkbAb23hNosrsN49Cni1rE84oRky4PWqgwuBk7h4aR6DMzby91OdOYo/CMB7F7HwZtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPKm4hxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734DBC19424;
+	Tue, 17 Mar 2026 17:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766958;
-	bh=UlTuts0CMaxx8GzByYTF85MO11xJz0I94h887xj6DtA=;
+	s=korg; t=1773768346;
+	bh=Ueo7ZOU4UZgfC/3KPxILel9bjezFqX5g4xhjaaADom4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ScEan8XotISgyfMpNHFuvuL3qcFPgK+nXfhmpEdMuv/gW3iAuwB021wQi+0ehhlxl
-	 oE0GfDrbr1V1P+lDA0tbNRG33xD89PyNdO6FqDV6vqmqc5i78Mp3ENaENm7bvfoR+4
-	 VI3OGVFnISCcr43ySJHQsyVzdb9LA3skoBOizpnY=
+	b=vPKm4hxlbd+tolOFTAML4I5/VGu8bk7g6HxoziaTI7StOoEmb8HwjMrkwmvS6jVlg
+	 1GCqWkmrH8OdZ47xylk6/pdwnC5uZmrIbrbeRZ7JXi4GMk6xWU6BgpePSGpkaDj5Jn
+	 M/SqDv17Xo/BXel05Myp/2CoWVXyd4iWi8d7QNFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.19 360/378] iio: imu: inv_icm42600: fix odr switch to the same value
-Date: Tue, 17 Mar 2026 17:35:17 +0100
-Message-ID: <20260317163020.224562824@linuxfoundation.org>
+	Anand Jain <asj@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.18 289/333] btrfs: fix transaction abort on set received ioctl due to item overflow
+Date: Tue, 17 Mar 2026 17:35:18 +0100
+Message-ID: <20260317163010.109858731@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226494-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226823-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,62 +87,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 409BE2AED57
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9ACD62B05F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit c9f3a593137d862d424130343e77d4b5260a4f5a upstream.
+commit 87f2c46003fce4d739138aab4af1942b1afdadac upstream.
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching to the same odr value, we end up waiting for a
-FIFO ODR flag that is never happening.
+If the set received ioctl fails due to an item overflow when attempting to
+add the BTRFS_UUID_KEY_RECEIVED_SUBVOL we have to abort the transaction
+since we did some metadata updates before.
 
-Fix the issue by doing nothing and exiting properly when we are
-switching to the same ODR value.
+This means that if a user calls this ioctl with the same received UUID
+field for a lot of subvolumes, we will hit the overflow, trigger the
+transaction abort and turn the filesystem into RO mode. A malicious user
+could exploit this, and this ioctl does not even requires that a user
+has admin privileges (CAP_SYS_ADMIN), only that he/she owns the subvolume.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix this by doing an early check for item overflow before starting a
+transaction. This is also race safe because we are holding the subvol_sem
+semaphore in exclusive (write) mode.
+
+A test case for fstests will follow soon.
+
+Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
+CC: stable@vger.kernel.org # 3.12+
+Reviewed-by: Anand Jain <asj@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 ++
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 ++
- 2 files changed, 4 insertions(+)
+ fs/btrfs/ioctl.c     |   21 +++++++++++++++++++--
+ fs/btrfs/uuid-tree.c |   38 ++++++++++++++++++++++++++++++++++++++
+ fs/btrfs/uuid-tree.h |    2 ++
+ 3 files changed, 59 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -651,6 +651,8 @@ static int inv_icm42600_accel_write_odr(
- 		return -EINVAL;
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3984,6 +3984,25 @@ static long _btrfs_ioctl_set_received_su
+ 		goto out;
+ 	}
  
- 	conf.odr = inv_icm42600_accel_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.accel.odr)
++	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
++				       BTRFS_UUID_SIZE);
++
++	/*
++	 * Before we attempt to add the new received uuid, check if we have room
++	 * for it in case there's already an item. If the size of the existing
++	 * item plus this root's ID (u64) exceeds the maximum item size, we can
++	 * return here without the need to abort a transaction. If we don't do
++	 * this check, the btrfs_uuid_tree_add() call below would fail with
++	 * -EOVERFLOW and result in a transaction abort. Malicious users could
++	 * exploit this to turn the fs into RO mode.
++	 */
++	if (received_uuid_changed && !btrfs_is_empty_uuid(sa->uuid)) {
++		ret = btrfs_uuid_tree_check_overflow(fs_info, sa->uuid,
++						     BTRFS_UUID_KEY_RECEIVED_SUBVOL);
++		if (ret < 0)
++			goto out;
++	}
++
+ 	/*
+ 	 * 1 - root item
+ 	 * 2 - uuid items (received uuid + subvol uuid)
+@@ -3999,8 +4018,6 @@ static long _btrfs_ioctl_set_received_su
+ 	sa->rtime.sec = ct.tv_sec;
+ 	sa->rtime.nsec = ct.tv_nsec;
+ 
+-	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
+-				       BTRFS_UUID_SIZE);
+ 	if (received_uuid_changed &&
+ 	    !btrfs_is_empty_uuid(root_item->received_uuid)) {
+ 		ret = btrfs_uuid_tree_remove(trans, root_item->received_uuid,
+--- a/fs/btrfs/uuid-tree.c
++++ b/fs/btrfs/uuid-tree.c
+@@ -227,6 +227,44 @@ out:
+ 	return ret;
+ }
+ 
++/*
++ * Check if we can add one root ID to a UUID key.
++ * If the key does not yet exists, we can, otherwise only if extended item does
++ * not exceeds the maximum item size permitted by the leaf size.
++ *
++ * Returns 0 on success, negative value on error.
++ */
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   const u8 *uuid, u8 type)
++{
++	BTRFS_PATH_AUTO_FREE(path);
++	int ret;
++	u32 item_size;
++	struct btrfs_key key;
++
++	if (WARN_ON_ONCE(!fs_info->uuid_root))
++		return -EINVAL;
++
++	path = btrfs_alloc_path();
++	if (!path)
++		return -ENOMEM;
++
++	btrfs_uuid_to_key(uuid, type, &key);
++	ret = btrfs_search_slot(NULL, fs_info->uuid_root, &key, path, 0, 0);
++	if (ret < 0)
++		return ret;
++	if (ret > 0)
 +		return 0;
- 
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -358,6 +358,8 @@ static int inv_icm42600_gyro_write_odr(s
- 		return -EINVAL;
- 
- 	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.gyro.odr)
-+		return 0;
- 
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
++
++	item_size = btrfs_item_size(path->nodes[0], path->slots[0]);
++
++	if (sizeof(struct btrfs_item) + item_size + sizeof(u64) >
++	    BTRFS_LEAF_DATA_SIZE(fs_info))
++		return -EOVERFLOW;
++
++	return 0;
++}
++
+ static int btrfs_uuid_iter_rem(struct btrfs_root *uuid_root, u8 *uuid, u8 type,
+ 			       u64 subid)
+ {
+--- a/fs/btrfs/uuid-tree.h
++++ b/fs/btrfs/uuid-tree.h
+@@ -12,6 +12,8 @@ int btrfs_uuid_tree_add(struct btrfs_tra
+ 			u64 subid);
+ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, const u8 *uuid, u8 type,
+ 			u64 subid);
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   const u8 *uuid, u8 type);
+ int btrfs_uuid_tree_iterate(struct btrfs_fs_info *fs_info);
+ int btrfs_create_uuid_tree(struct btrfs_fs_info *fs_info);
+ int btrfs_uuid_scan_kthread(void *data);
 
 
 
