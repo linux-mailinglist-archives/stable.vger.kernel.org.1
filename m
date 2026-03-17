@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNIJMMuFuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:11 +0100
+	id yC6JDHKOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9D12AE705
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DE62AF812
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D9403028B51
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7B5763105151
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29C3F54B5;
-	Tue, 17 Mar 2026 16:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB06A3F7869;
+	Tue, 17 Mar 2026 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnfJGzrR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vtb/kafD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02823F23DD;
-	Tue, 17 Mar 2026 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED51373C18;
+	Tue, 17 Mar 2026 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766087; cv=none; b=WDBUx2pDDzl+mxptiKSn5az4ACvjIA6ZmZPr6U8BfMWfaSSYVHQDmpDtUXhoDDZpxjYOoTW/e82T5245r/8toJV+XwJdEMwB18v0AlXlFuODoYvNVqMiKZQPk5PqnbJgjhSgd5pqaA4HbC2DvSD4k+x8sfpAh9vJS5x4hPr3eek=
+	t=1773767329; cv=none; b=dZmPyvB/+23g6zk4ekj5sJvM6TqxTrxeviIfOcIDpQmFAxesmBmPhKVFkHh1aX4WD+Bs5T5ZoQEAYBTfNowyNIsVdnPYqu2Hn+Df1dyv9IxNSi2EWpkFljJ/z+MyNimYtWu4MEilTa6MUKQe3CBGcH6spXgY+fZF/QoP6Q3U6OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766087; c=relaxed/simple;
-	bh=Vpzd5vCZaO49Q75X4gu14LIWsXCxwlX5M/Ph5Uhr71A=;
+	s=arc-20240116; t=1773767329; c=relaxed/simple;
+	bh=cydZVptwjyMJxhQPQyd1HKWQ0LlfLzVXglsSfRmld+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP1Gsi5w791oOvwdG91OgwOGLxAMXDSd+pT/TeLIvwG5MEqW+SfohiGJZpoBup4TYGuQGz7X3udqtn1LjN4Az12VSWRyr/tWXHUMLYkaQeLGaYtnN8B1YkHGU5uCBr10K67guvBu4sUgi4D3iSYmlig5rSpUhDJS6ogyeUlvUPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnfJGzrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B75C4CEF7;
-	Tue, 17 Mar 2026 16:48:06 +0000 (UTC)
+	 MIME-Version; b=QL0SwanSqo6h1ustx2IJWo25J3YZb4GFb4otTmwmr0LBZfQsC6jUhd8m5nr5FdHZp1doEDRePmvA8/9HyqGJp50FuDLfcF+R9tQritSrb/6u2SP59BJ2xjq5p9aBphEHVC3SfZCW6pImo15L3SQCx6QgLnOiRDbkxab2snoWSbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vtb/kafD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF9CC4CEF7;
+	Tue, 17 Mar 2026 17:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766087;
-	bh=Vpzd5vCZaO49Q75X4gu14LIWsXCxwlX5M/Ph5Uhr71A=;
+	s=korg; t=1773767329;
+	bh=cydZVptwjyMJxhQPQyd1HKWQ0LlfLzVXglsSfRmld+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnfJGzrRaXUxhh787I1uajbsvX6CTmhW5/dyD3fMylxw0M0qe7YRtB+8K4a61VsY4
-	 WPRWiN4dvYHcuaG6MA/SHbnfjZlLnejRTFwB+CJo9ABm+fXNjKCde+cGFh8lojVnDJ
-	 byhN0zBi3/yUdsAj0CYNz3hXA2ee0MnhKjrtsuf8=
+	b=Vtb/kafDseyO7jM5wGD6MWD9N/MdLK2yDSCZiZ2PhB86zw+PZMrbJS698Eq3idHPE
+	 2nl6ht/+qsg8pvcyXoS4Rq6qe0N3vnM4oB08cMsCA52mJWsr2jz8bFzWrcj8aMhAk0
+	 m0yjowfzf97DXFnpS6Vpg4MwXUPZId32BqEofcMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.19 134/378] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK PM1503CDA
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 062/333] mctp: route: hold key->lock in mctp_flow_prepare_output()
 Date: Tue, 17 Mar 2026 17:31:31 +0100
-Message-ID: <20260317163011.944714627@linuxfoundation.org>
+Message-ID: <20260317163001.670540479@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226582-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226298-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 5E9D12AE705
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 33DE62AF812
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 325291b20f8a6f14b9c82edbf5d12e4e71f6adaa upstream.
+[ Upstream commit 7d86aa41c073c4e7eb75fd2e674f1fd8f289728a ]
 
-Add a DMI quirk for the ASUS EXPERTBOOK PM1503CDA fixing the
-issue where the internal microphone was not detected.
+mctp_flow_prepare_output() checks key->dev and may call
+mctp_dev_set_key(), but it does not hold key->lock while doing so.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221070
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260304063255.139331-1-zhangheng@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+mctp_dev_set_key() and mctp_dev_release_key() are annotated with
+__must_hold(&key->lock), so key->dev access is intended to be
+serialized by key->lock. The mctp_sendmsg() transmit path reaches
+mctp_flow_prepare_output() via mctp_local_output() -> mctp_dst_output()
+without holding key->lock, so the check-and-set sequence is racy.
+
+Example interleaving:
+
+  CPU0                                  CPU1
+  ----                                  ----
+  mctp_flow_prepare_output(key, devA)
+    if (!key->dev)  // sees NULL
+                                        mctp_flow_prepare_output(
+                                            key, devB)
+                                          if (!key->dev)  // still NULL
+                                          mctp_dev_set_key(devB, key)
+                                            mctp_dev_hold(devB)
+                                            key->dev = devB
+    mctp_dev_set_key(devA, key)
+      mctp_dev_hold(devA)
+      key->dev = devA   // overwrites devB
+
+Now both devA and devB references were acquired, but only the final
+key->dev value is tracked for release. One reference can be lost,
+causing a resource leak as mctp_dev_release_key() would only decrease
+the reference on one dev.
+
+Fix by taking key->lock around the key->dev check and
+mctp_dev_set_key() call.
+
+Fixes: 67737c457281 ("mctp: Pass flow data & flow release events to drivers")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://patch.msgid.link/20260306031402.857224-1-dg573847474@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mctp/route.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -710,6 +710,13 @@ static const struct dmi_system_id yc_acp
- 			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK BM1503CDA"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "PM1503CDA"),
-+		}
-+	},
- 	{}
- };
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 2ac4011a953ff..bee225c821ed8 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -359,6 +359,7 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
+ {
+ 	struct mctp_sk_key *key;
+ 	struct mctp_flow *flow;
++	unsigned long flags;
  
+ 	flow = skb_ext_find(skb, SKB_EXT_MCTP);
+ 	if (!flow)
+@@ -366,12 +367,14 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
+ 
+ 	key = flow->key;
+ 
+-	if (key->dev) {
++	spin_lock_irqsave(&key->lock, flags);
++
++	if (!key->dev)
++		mctp_dev_set_key(dev, key);
++	else
+ 		WARN_ON(key->dev != dev);
+-		return;
+-	}
+ 
+-	mctp_dev_set_key(dev, key);
++	spin_unlock_irqrestore(&key->lock, flags);
+ }
+ #else
+ static void mctp_skb_set_flow(struct sk_buff *skb, struct mctp_sk_key *key) {}
+-- 
+2.51.0
+
 
 
 
