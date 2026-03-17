@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAtLLhKIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:54 +0100
+	id +LpkFbeOuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A81C2AEB3D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FFB2AF897
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77A9B3040FE7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E79863030DA1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF473F0778;
-	Tue, 17 Mar 2026 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EE237BE8B;
+	Tue, 17 Mar 2026 17:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Atf4ByIp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joEvDdV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36FB3F54B8;
-	Tue, 17 Mar 2026 16:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E937B3F6;
+	Tue, 17 Mar 2026 17:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766633; cv=none; b=Usw87qRjW1PeU2ygpV/2h5dMVbWWXpmC6v5CCR4/gvgKIXc8pQEK2rXtjpYhrUciA9/Eu1psYNd8WaWLsfcPza2RbywXxLNzX4ulji4+X9EYD6kaUpcveSb/7FCQxXrhtRUKT417DR1715LXm1WGRF/Xy9zhn9/extP0L1XHcC0=
+	t=1773768177; cv=none; b=D/2MOU9htjhj5NgxkhYvputw99yq+/a6bPKGfybPyNFqWzeWAyDbuq65CIMDyXprJPxmfRr4Z1etAIL/hzWd3yPtPuh7j3G3Q3NqpMR/9ZdWnNfc5R5o4Pqn7MZGQhvLFNiwpude3WcF7/yvQL8p+5QYizfg27Yl1hKvHA17CI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766633; c=relaxed/simple;
-	bh=kJBcu3hVyXcpBcpBTddZP+6NC0Ry3e8b7yapqhyAAaE=;
+	s=arc-20240116; t=1773768177; c=relaxed/simple;
+	bh=TJmGLVF7UFQbGOxZIK33wtZW1gXhVwQ4wD6tYfuemec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qm2GVkzQRJgA32dyZXUUgcsf+RrYrmQWLb7Ca9aogpPbyrRSX3NB8NXNWn/tmjfjcFxeP6Ayo8g9XJkaAJ74VnFsLuQfD+FH8IUi8PZgKRh3GDoxj/wor367mcakR3ee/QvVj5v8+q6Xh+FgHgVV3lzvy1m2NYxKu0GjG1GBGGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Atf4ByIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32295C4CEF7;
-	Tue, 17 Mar 2026 16:57:11 +0000 (UTC)
+	 MIME-Version; b=YpGEfCQ/DoZReG0gCxQ+Xnm/usCCRAylkp6arCa8rWdS65dPiN1FjEQCbCocTpdKNQfQuwljtR95MHai18jC4iJQyuP2UkH/KfpmQsLLXlSUcgS2L9Afn8a23ACpS7fePW7XTrmqK4nMV0WaADj7HodwUU4zbfhEw0q+yRzLlzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joEvDdV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339B1C4CEF7;
+	Tue, 17 Mar 2026 17:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766632;
-	bh=kJBcu3hVyXcpBcpBTddZP+6NC0Ry3e8b7yapqhyAAaE=;
+	s=korg; t=1773768176;
+	bh=TJmGLVF7UFQbGOxZIK33wtZW1gXhVwQ4wD6tYfuemec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Atf4ByIp/Qv3sYY7fPnCjCtvAJK+T4Bcy0KVthtxvv7TSkxfb3wgTvQ1ZNaaGlV7H
-	 JtLLu/kKd5z4Q1OtkpC72X528Jcj7JpwrGS854Kta3/zfmk7k9okZDR/6/m9dTs2QN
-	 2qcJcdm3LvATjYZzQCrsMh6NVBajq6roTUG/bT2U=
+	b=joEvDdV+k690MDx7HJmeZkz+SXueGQeqTnvlRQGxkLVoPtf/2Ri+3vA8S4ULCHu5O
+	 ZeYTf5sLEW4F9mn+XGzZ97Yq8BKQy+s3vbCtxkiPjDmGXq8Hc04wIM2QvJmk/oQf3O
+	 DiBjoFowPrJ430Ni38+sxZUi18kmeuGioxpPhqvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Hao Li <hao.li@linux.dev>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH 6.19 288/378] slab: distinguish lock and trylock for sheaf_flush_main()
+	Long Li <longli@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 216/333] net: mana: Ring doorbell at 4 CQ wraparounds
 Date: Tue, 17 Mar 2026 17:34:05 +0100
-Message-ID: <20260317163017.606702276@linuxfoundation.org>
+Message-ID: <20260317163007.373345597@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226421-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226782-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,136 +86,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,oracle.com:email,msgid.link:url,suse.cz:email]
-X-Rspamd-Queue-Id: 5A81C2AEB3D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 19FFB2AF897
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Long Li <longli@microsoft.com>
 
-commit 48647d3f9a644d1e81af6558102d43cdb260597b upstream.
+commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
 
-sheaf_flush_main() can be called from __pcs_replace_full_main() where
-it's fine if the trylock fails, and pcs_flush_all() where it's not
-expected to and for some flush callers (when destroying the cache or
-memory hotremove) it would be actually a problem if it failed and left
-the main sheaf not flushed. The flush callers can however safely use
-local_lock() instead of trylock.
+MANA hardware requires at least one doorbell ring every 8 wraparounds
+of the CQ. The driver rings the doorbell as a form of flow control to
+inform hardware that CQEs have been consumed.
 
-The trylock failure should not happen in practice on !PREEMPT_RT, but
-can happen on PREEMPT_RT. The impact is limited in practice because when
-a trylock fails in the kmem_cache_destroy() path, it means someone is
-using the cache while destroying it, which is a bug on its own. The memory
-hotremove path is unlikely to be employed in a production RT config, but
-it's possible.
+The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
+poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
+has fewer than 512 entries, a single poll call can process more than
+4 wraparounds without ringing the doorbell. The doorbell threshold
+check also uses ">" instead of ">=", delaying the ring by one extra
+CQE beyond 4 wraparounds. Combined, these issues can cause the driver
+to exceed the 8-wraparound hardware limit, leading to missed
+completions and stalled queues.
 
-To fix this, split the function into sheaf_flush_main() (using
-local_lock()) and sheaf_try_flush_main() (using local_trylock()) where
-both call __sheaf_flush_main_batch() to flush a single batch of objects.
-This will also allow lockdep to verify our context assumptions.
+Fix this by capping the number of CQEs polled per call to 4 wraparounds
+of the CQ in both TX and RX paths. Also change the doorbell threshold
+from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
+reached.
 
-The problem was raised in an off-list question by Marcelo.
-
-Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
 Cc: stable@vger.kernel.org
-Reported-by: Marcelo Tosatti <mtosatti@redhat.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Hao Li <hao.li@linux.dev>
-Link: https://patch.msgid.link/20260211-b4-sheaf-flush-v1-1-4e7f492f0055@suse.cz
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   47 +++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 37 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2730,19 +2730,19 @@ static void __kmem_cache_free_bulk(struc
-  * object pointers are moved to a on-stack array under the lock. To bound the
-  * stack usage, limit each batch to PCS_BATCH_MAX.
-  *
-- * returns true if at least partially flushed
-+ * Must be called with s->cpu_sheaves->lock locked, returns with the lock
-+ * unlocked.
-+ *
-+ * Returns how many objects are remaining to be flushed
-  */
--static bool sheaf_flush_main(struct kmem_cache *s)
-+static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	unsigned int batch, remaining;
- 	void *objects[PCS_BATCH_MAX];
- 	struct slab_sheaf *sheaf;
--	bool ret = false;
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1645,8 +1645,14 @@ static void mana_poll_tx_cq(struct mana_
+ 	ndev = txq->ndev;
+ 	apc = netdev_priv(ndev);
  
--next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
--		return ret;
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
+ 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
+-				    CQE_POLLING_BUFFER);
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
  
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 	sheaf = pcs->main;
-@@ -2760,10 +2760,37 @@ next_batch:
+ 	if (comp_read < 1)
+ 		return;
+@@ -2031,7 +2037,14 @@ static void mana_poll_rx_cq(struct mana_
+ 	struct mana_rxq *rxq = cq->rxq;
+ 	int comp_read, i;
  
- 	stat_add(s, SHEAF_FLUSH, batch);
+-	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
++	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
+ 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
  
--	ret = true;
-+	return remaining;
-+}
- 
--	if (remaining)
--		goto next_batch;
-+static void sheaf_flush_main(struct kmem_cache *s)
-+{
-+	unsigned int remaining;
-+
-+	do {
-+		local_lock(&s->cpu_sheaves->lock);
-+
-+		remaining = __sheaf_flush_main_batch(s);
-+
-+	} while (remaining);
-+}
-+
-+/*
-+ * Returns true if the main sheaf was at least partially flushed.
-+ */
-+static bool sheaf_try_flush_main(struct kmem_cache *s)
-+{
-+	unsigned int remaining;
-+	bool ret = false;
-+
-+	do {
-+		if (!local_trylock(&s->cpu_sheaves->lock))
-+			return ret;
-+
-+		ret = true;
-+		remaining = __sheaf_flush_main_batch(s);
-+
-+	} while (remaining);
- 
- 	return ret;
- }
-@@ -6215,7 +6242,7 @@ alloc_empty:
- 	if (put_fail)
- 		 stat(s, BARN_PUT_FAIL);
- 
--	if (!sheaf_flush_main(s))
-+	if (!sheaf_try_flush_main(s))
- 		return NULL;
- 
- 	if (!local_trylock(&s->cpu_sheaves->lock))
+ 	rxq->xdp_flush = false;
+@@ -2076,11 +2089,11 @@ static int mana_cq_handler(void *context
+ 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
+ 		cq->work_done_since_doorbell = 0;
+ 		napi_complete_done(&cq->napi, w);
+-	} else if (cq->work_done_since_doorbell >
+-		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
++	} else if (cq->work_done_since_doorbell >=
++		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
+ 		/* MANA hardware requires at least one doorbell ring every 8
+ 		 * wraparounds of CQ even if there is no need to arm the CQ.
+-		 * This driver rings the doorbell as soon as we have exceeded
++		 * This driver rings the doorbell as soon as it has processed
+ 		 * 4 wraparounds.
+ 		 */
+ 		mana_gd_ring_cq(gdma_queue, 0);
 
 
 
