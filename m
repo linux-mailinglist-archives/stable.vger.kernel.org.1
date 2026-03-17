@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MM6eOjeMuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:35 +0100
+	id eHpdMg2GuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD65A2AF326
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664CE2AE788
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 94A3C304E00D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C88D53025F7D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC9C3F7A8F;
-	Tue, 17 Mar 2026 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E5B3F54A4;
+	Tue, 17 Mar 2026 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCD8yCs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRsFpZQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C71F3F65E5;
-	Tue, 17 Mar 2026 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA23F23AA;
+	Tue, 17 Mar 2026 16:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767433; cv=none; b=e4efBJOlDDTLH87fObrt92XDbEDP/l8XEHwqWQSvTL+TVDmVaeaT+8+jgru5+Yt83ijIh4JYhMbBxJCtm3+MJjo3JO8WyMCbwbw4bOgG0webGxB41dY7UgezCr6Bl70zHwgU4570BUPdIh2XRKFqlRjc5msq0Ow4hshsROaWQK4=
+	t=1773766049; cv=none; b=CYkQXtDxcV9cI06LRogzsuXH0frQwjvbv/TbsNkbZB9IaKR/+j4QZuaVp5Jdlxtol8LLkaJDSWb2OcRQslUF8tXkaxDGUybXvgCIzKyCFkH/pWQlGs1DF0BHQ/+KxR7ICiS1PW3P4BvbBdXzxhSOOe6apbIjxufEJjWWjNO1/qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767433; c=relaxed/simple;
-	bh=pzjilJBNekxCzc+lxO0W0x/HB3VCS9g9s+5GRQVM8Ts=;
+	s=arc-20240116; t=1773766049; c=relaxed/simple;
+	bh=1Rxn++yDybGH0fo0VOUF4JQsHBtGXoWe+tZM3898Gro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpKfg7MeoBLOjSgbvD4LUDl/E4+Fj4dDi2qWiDr4bymOKZOe3l2aYkiMhojhDIpBTgwTFkih7OQdpgJrLEmLfwvDySQ2Shyi0O450wZy4mLzd62DyB2ExqMhZ6VNLh+uO83XWbMXEobeCqhvi6Wp2eUAsLgkUH0enElukE+myVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCD8yCs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6B9C2BC86;
-	Tue, 17 Mar 2026 17:10:32 +0000 (UTC)
+	 MIME-Version; b=Vqs/uoyoSswglFGJwEcUsrsOYdbH9YqDCgWLDqdgH0QSOpoiw0FwjIajW7DVHpOXc82sVRT7qm2EsZrJgz+ZyvsLva7AyoIzlUUNp3qgncPVssw80mCcHGB1bIlPBmBHWiPTYnvTv/DF/PVNOmqBejxO4glkuU9Wy4BFX/WC8Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRsFpZQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546FBC4CEF7;
+	Tue, 17 Mar 2026 16:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767433;
-	bh=pzjilJBNekxCzc+lxO0W0x/HB3VCS9g9s+5GRQVM8Ts=;
+	s=korg; t=1773766049;
+	bh=1Rxn++yDybGH0fo0VOUF4JQsHBtGXoWe+tZM3898Gro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCD8yCs16jCj7PghG5LJwurdAl4EGY2c/r46/D11iZPpej5XAXNT9pmFqq92as5tm
-	 y+lZG9RRIwMQ6csWcgX+XGRhAtDIr5mSogYg2oluXKTi9k/BTY5giJLF9MoTFUK9zS
-	 rx0QdMTdd4Gzsa+F8FTr+i62tarIzdcI6WiIkiGE=
+	b=eRsFpZQnZxH0xbNXFqxgczSIZnvlXzcE6idy8gMaogR5Oi14Lcc24A7Smx63frGxr
+	 ndaHy1tpUMuVfwUYDDY6xFofvlqpnLJTf+8Z2NIkATKWhzeE4uR6kMIW31pWrKH6co
+	 6mCF7SRJUqIeviIlT8ab1X7xfmbWcE3f9mNFdskI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 086/333] page_pool: store detach_time as ktime_t to avoid false-negatives
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH 6.19 158/378] usb: class: cdc-wdm: fix reordering issue in read code path
 Date: Tue, 17 Mar 2026 17:31:55 +0100
-Message-ID: <20260317163002.563818565@linuxfoundation.org>
+Message-ID: <20260317163012.824759125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226290-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226604-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BD65A2AF326
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,suse.com:email]
+X-Rspamd-Queue-Id: 664CE2AE788
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 28b225282d44e2ef40e7f46cfdbd5d1b20b8874f ]
+commit 8df672bfe3ec2268c2636584202755898e547173 upstream.
 
-While testing other changes in vng I noticed that
-nl_netdev.page_pool_check flakes. This never happens in real CI.
+Quoting the bug report:
 
-Turns out vng may boot and get to that test in less than a second.
-page_pool_detached() records the detach time in seconds, so if
-vng is fast enough detach time is set to 0. Other code treats
-0 as "not detached". detach_time is only used to report the state
-to the user, so it's not a huge deal in practice but let's fix it.
-Store the raw ktime_t (nanoseconds) instead. A nanosecond value
-of 0 is practically impossible.
+Due to compiler optimization or CPU out-of-order execution, the
+desc->length update can be reordered before the memmove. If this
+happens, wdm_read() can see the new length and call copy_to_user() on
+uninitialized memory. This also violates LKMM data race rules [1].
 
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Fixes: 69cb4952b6f6 ("net: page_pool: report when page pool was destroyed")
-Link: https://patch.msgid.link/20260310003907.3540019-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by using WRITE_ONCE and memory barriers.
+
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Closes: https://lore.kernel.org/linux-usb/CALbr=LbrUZn_cfp7CfR-7Z5wDTHF96qeuM=3fO2m-q4cDrnC4A@mail.gmail.com/
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260304130116.1721682-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/page_pool/types.h | 2 +-
- net/core/page_pool_user.c     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/class/cdc-wdm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 1509a536cb855..fb4f03ccd6156 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -246,7 +246,7 @@ struct page_pool {
- 	/* User-facing fields, protected by page_pools_lock */
- 	struct {
- 		struct hlist_node list;
--		u64 detach_time;
-+		ktime_t detach_time;
- 		u32 id;
- 	} user;
- };
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index c82a95beceff8..ee5060d8eec0e 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -245,7 +245,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		goto err_cancel;
- 	if (pool->user.detach_time &&
- 	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_DETACH_TIME,
--			 pool->user.detach_time))
-+			 ktime_divns(pool->user.detach_time, NSEC_PER_SEC)))
- 		goto err_cancel;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -225,7 +225,8 @@ static void wdm_in_callback(struct urb *
+ 		/* we may already be in overflow */
+ 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
+ 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
+-			desc->length += length;
++			smp_wmb(); /* against wdm_read() */
++			WRITE_ONCE(desc->length, desc->length + length);
+ 		}
+ 	}
+ skip_error:
+@@ -533,6 +534,7 @@ static ssize_t wdm_read
+ 		return -ERESTARTSYS;
  
- 	if (pool->mp_ops && pool->mp_ops->nl_fill(pool->mp_priv, rsp, NULL))
-@@ -337,7 +337,7 @@ int page_pool_list(struct page_pool *pool)
- void page_pool_detached(struct page_pool *pool)
- {
- 	mutex_lock(&page_pools_lock);
--	pool->user.detach_time = ktime_get_boottime_seconds();
-+	pool->user.detach_time = ktime_get_boottime();
- 	netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_CHANGE_NTF);
- 	mutex_unlock(&page_pools_lock);
- }
--- 
-2.51.0
-
+ 	cntr = READ_ONCE(desc->length);
++	smp_rmb(); /* against wdm_in_callback() */
+ 	if (cntr == 0) {
+ 		desc->read = 0;
+ retry:
 
 
 
