@@ -1,176 +1,255 @@
-Return-Path: <stable+bounces-226892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJkwABqwuWkkMQIAu9opvQ
-	(envelope-from <stable+bounces-226892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:48:42 +0100
+	id OOWUJZ2xuWmDMQIAu9opvQ
+	(envelope-from <stable+bounces-226893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:55:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9788C2B1BA0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:48:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FEB2B1CEB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 20:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 00D4F300BBA9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:48:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05267314BD0C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 19:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C2D325714;
-	Tue, 17 Mar 2026 19:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133312DAFAF;
+	Tue, 17 Mar 2026 19:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WeNbeeS1"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KgFVURgq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0CB285C88
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 19:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773776918; cv=pass; b=srjzMj6zIxmD2rNiu3Nhz3EgQv+T/ibKoIsiEvIo5D8SB6bRxRi4Ab8/ZsmdRPLDOGbDOZKdZ66VDwl/bhNfpmHVIDrEgJL/aEoxZhKC0BdHzm6PRi8d3GKI2g17zsfWBx6mHksyiCSTq8nS8Mz6V2BaLCvOkYxmjP+o8ShTpcY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773776918; c=relaxed/simple;
-	bh=at1k0kn6fTTPQA+HIlCY+DsBGv8Sub72wHsmakW5ET8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i6mq80LpNpBKcwHgvxFuwUMKSRwdaf6yX9hVCPaTFM/ET8v/My7Ed1YUtwjaB8zFdDNrWngW20XKvzbfkyPAyyEXGG8CPX3mN+h5yCwoE0hvIjhsbeQaBktUHoKqaflao6I6QW1SZKMS5QbjPk7WTbLQYh3ARDrDnt+680ZVKng=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WeNbeeS1; arc=pass smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-128b9b7e3edso109556c88.0
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:48:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773776916; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b3T5xNM38xnuIxf77LCCKVBLzMXkhvBBcjhFRGWjpjG0Nx6hVxW7Wv/58QpMkMoL50
-         xIUgW7A9o5gN0JgCA8VepW7Yy/s3XGcmRRUoQpA1XiJlrDlIT6Y2nZaYkRlAKUD+JuNj
-         iQ9PSTOZV8ae+K6piB3gMGJAbndF5248gcoh4VVrvG27KjCtVXB/VVm9B5Ov2Q+oLcG8
-         TagMamX1s6fTyXLbhGrZe3mzKWRo+s++RUV8HJXCIQqYPej2h3sMF05kys90mv58AF7+
-         5yRLU6865jnxJ7SExI2aRAZ0Dj/qo9GqtNkaLxihtIgZx5DBzwSmOngfOzyRc+fc94/4
-         YunA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OZR68tqLqYaTbBWC4ZvIpqSiIjzkYBPYPzLDQM+z3q0=;
-        fh=ERthpobYDTklzUnp2NF3uTvndaH+JYUR/FCslmfhikw=;
-        b=QKlCFjQDI3mFlXaUMRp7Q/YZKDc2ViKh8JYclTcW5xRws2j61OW22x3q3r1IhpFhHI
-         yI+o3caPpesXxvF4ve9vfmxsnShY0XyQIGecaltNwlajoeTsy/TnUlRCY/b+/oXBMfDF
-         p72T7e2T+fYip5fce0hVNPzno4NVV414KIlMwxOHk+EnWKOBUrSup0a//2lezLq28nj6
-         eZBvlCXqNITHJgpPvV+BbSGk9l3AXqvOk+DPstz2BzodVJ9+fi3OQusceioDO4ZSWPyz
-         K+y2fb20fsFNiZlbReJjVO+IfrcoA+VthCptlbbn4VyGoAsz7h5Qrg+Wtt5hrnF3wpgb
-         I8ww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773776916; x=1774381716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OZR68tqLqYaTbBWC4ZvIpqSiIjzkYBPYPzLDQM+z3q0=;
-        b=WeNbeeS18DXloST+3zj0LIqtOnaOlwx+UePsxO9z8O1k8pyUucRmxBzWFVrwqlbYIT
-         dyLZn/heIKGXYS+tE9pIIhawteiy3jHD7g4DVmCl5OvYjk2Mx6keFwIYZWjDHAl4PNgm
-         4MkuAfDhza68M+N6APFuvoQ1AvsfBhZLyWgivNGTGKFApG7IE72pphw6lRaNHvl07VP/
-         2rePJxQ216466V+b4iaakEt7lC/xds+Y3KWlFvdDR/6hBJnhSqvv2vcL9QQQxsljzIat
-         MutLuCdLMZ/k5FxuY5zNlWZqd1FaSxvuvQCrABKk0AocCkBFObRWmFTBY+U+TOC2pnfu
-         NjzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773776916; x=1774381716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OZR68tqLqYaTbBWC4ZvIpqSiIjzkYBPYPzLDQM+z3q0=;
-        b=QCzQ6H1BRAwvfpcUiVjfrexWZhT/+8j01w4ITJByBtb8xPLWoLtu5y1ZIdbVPFNo8y
-         X2eiyXnRw1W9RF67+f9FBrnRrv32mNXt7TJIXYnNu1q1d6+X4Vrel+/Zxigksgxbnk2F
-         2BI8wqqEiCeH6cVFKFQMwoX4eSeLo7PrkHtQygWaJFkRFEc820DPrj8U9Zq03bVzm8V0
-         Vk6YigQGm0DC5O4QRj5Nf5hytqe4Y+g09HEnSEx+lq0L0u5dHOqj+JvVR8vvMTidNDhj
-         ONZxncc9cpmIHos4AtZAvuubgRLf3x2/qZ6fss9TXiOBWYKfhg/Q5y5wUycPlVfGoffw
-         EeRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVyOkBrAx4RO326r33fv00PNeSa1bL1dpQQAUpf9/Ppxfp3KV1JWbCfKVIPpbrUvFXq5OULeRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKdh3etnMhrv0Pik4au8+mZK698xFk9XRszO60VYvmnWrS0cTq
-	1p3tWTw6T7+0lvjEwSJgQrutInjTij/9hD1lUhmNZruYRICSII91r9xjZxc/8aEwmnKPJ9kDvdB
-	ZZQtX0v5YHsYoe7ezT351s2uQMe+uBas=
-X-Gm-Gg: ATEYQzyUyLiJ4N5O+Pwm8payKBFt/gk5fHfL/JmlmlXnuoUhiA/no1dVlkMw5qhScGO
-	KMoj3B2IwGGfXTJW1sHZtGdb+VlmUhjtWgFNagvglQ5gp/mVCFsKm+CUvYAFSz22uCE44RDPecL
-	k9LrxIa3tRf/hTvOZKnkUyfCZldCharymgCYcvUruG5GQI35QcQd0/+2ompETPZuwuAs/RtqeYn
-	zhgfI67TC5wH0RbV3xt/Sa44tyPeLQH544sV7/l5GSQ52cgzCwDXlX0ImDoZ4bawFkApVOx6Lkg
-	wA9C0Lg=
-X-Received: by 2002:a05:7022:6088:b0:128:d24a:a5c1 with SMTP id
- a92af1059eb24-129a71b42cfmr402951c88.28.1773776916013; Tue, 17 Mar 2026
- 12:48:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA25815624B;
+	Tue, 17 Mar 2026 19:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773777032; cv=none; b=Dg5UjnaV2yQR0GMUpAVHG1MuflUNwU/xAaY3+C/C/fLCtmttYHQbd++sE5bUjkwEvCjfOfsrBJjlJ3uIwCyGb9+BpK2iTMsXOGD407OfTQU4Ncx2H6RFZxeRyOBK4HJMR+mKTeKrE/6bG/0ILwIDgim+3wyMK/tAtH/ycJieeCw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773777032; c=relaxed/simple;
+	bh=mw3UWYrIDInNC8rvnn2qTkNDP7Ch20Xwj37cxzUohtk=;
+	h=Date:To:From:Subject:Message-Id; b=jB/cf6Km94/lNaAlGNXw250c6UGhtljyDC6LiSCIjqHMkwidaiI44KP27u+HVATaA9jkxBxCKmVrfC+chPpGyiTiutGPemJwAFtTyFv3GRMS28hr8QpwyLpOgW7fimtHOLJFTlZ9bPEXwYscfRCIpZbx9aZq8Hahx8Do9JYw948=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KgFVURgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F203C4CEF7;
+	Tue, 17 Mar 2026 19:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773777032;
+	bh=mw3UWYrIDInNC8rvnn2qTkNDP7Ch20Xwj37cxzUohtk=;
+	h=Date:To:From:Subject:From;
+	b=KgFVURgqQ8+N4q+TtkyzBG42r3+eBPcCZ8GDavBlqFmtjk+5lVlQP53p/mjDXtSwH
+	 CK9BuiigGCAuB6aNOjsw1PXgUty15cq8TkgLoUW3wzdIvaKScyvivxQJk3rrc/0k1P
+	 pta2Gn2QYGaOGaydPkdSgR0Rc3sQA85QFxCgS6vo=
+Date: Tue, 17 Mar 2026 12:50:31 -0700
+To: mm-commits@vger.kernel.org,xiangzao@linux.alibaba.com,willy@infradead.org,stable@vger.kernel.org,p.raghav@samsung.com,mcgrof@kernel.org,lorenzo.stoakes@oracle.com,kas@kernel.org,hare@suse.de,djwong@kernel.org,dhowells@redhat.com,dchinner@redhat.com,david@kernel.org,da.gomez@samsung.com,brauner@kernel.org,baolin.wang@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260317195032.5F203C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260315232500.251088-1-CFSworks@gmail.com> <bbc55ded3e226cee35e04a071400981e2069eb3e.camel@ibm.com>
- <CAH5Ym4j6gPCR9UhM1ywkDmvcDAccNrL72LFLy468T4PfPTxU7Q@mail.gmail.com>
- <cebd075d8e2e7e926fbcb56b19ec43fe7dec6ef1.camel@ibm.com> <CAH5Ym4hjSxtVG1v58Yd83FYeU+8+S_1M2_5pPJmMs=_fHb7orA@mail.gmail.com>
-In-Reply-To: <CAH5Ym4hjSxtVG1v58Yd83FYeU+8+S_1M2_5pPJmMs=_fHb7orA@mail.gmail.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Tue, 17 Mar 2026 20:48:24 +0100
-X-Gm-Features: AaiRm50NvrjdiizwGHwwvI76QCvgHLwjqKbJM9xXqNl3BgKYYWVZdHXFwxQ0QAw
-Message-ID: <CAOi1vP88hEdnZXyib+toGumicWzoH+_iYbfFUut8Mvq+s_3xRA@mail.gmail.com>
-Subject: Re: [REGRESSION] [PATCH] ceph: fix num_ops OBOE when crypto
- allocation fails
-To: Sam Edwards <cfsworks@gmail.com>
-Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>, Xiubo Li <xiubli@redhat.com>, 
-	"slava@dubeyko.com" <slava@dubeyko.com>, 
-	"ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alex Markuze <amarkuze@redhat.com>, 
-	"jlayton@kernel.org" <jlayton@kernel.org>, Milind Changire <mchangir@redhat.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226893-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226892-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[idryomov@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9788C2B1BA0
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 10FEB2B1CEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 8:13=E2=80=AFPM Sam Edwards <cfsworks@gmail.com> wr=
-ote:
-> > I think that it makes sense to create the issue in Ceph tracker and to =
-add
-> > Closes to the fix.
->
-> I don't currently have a Ceph tracker account and don't think I can
-> add anything of substance to an issue report. Feel free to create the
-> issue on my behalf if it's important for Ceph's processes, and I can
-> Closes: tag it in v2.
 
-Hi Sam,
+The patch titled
+     Subject: mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch
 
-It's not important.  A tracker ticket is useful for when the issue is
-purely reported as the placeholder for investigation, log attachments,
-etc.  In this case you both reported the issue and proposed a fix for
-it, so the patch description is the only thing that matters.  Creating
-a tracker ticket just for the sake of it isn't needed.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch
 
-Thanks,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-                Ilya
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: mm: filemap: fix nr_pages calculation overflow in filemap_map_pages()
+Date: Tue, 17 Mar 2026 17:29:55 +0800
+
+When running stress-ng on my Arm64 machine with v7.0-rc3 kernel, I
+encountered some very strange crash issues showing up as "Bad page state":
+
+"
+[  734.496287] BUG: Bad page state in process stress-ng-env  pfn:415735fb
+[  734.496427] page: refcount:0 mapcount:1 mapping:0000000000000000 index:0x4cf316 pfn:0x415735fb
+[  734.496434] flags: 0x57fffe000000800(owner_2|node=1|zone=2|lastcpupid=0x3ffff)
+[  734.496439] raw: 057fffe000000800 0000000000000000 dead000000000122 0000000000000000
+[  734.496440] raw: 00000000004cf316 0000000000000000 0000000000000000 0000000000000000
+[  734.496442] page dumped because: nonzero mapcount
+"
+
+After analyzing this page's state, it is hard to understand why the
+mapcount is not 0 while the refcount is 0, since this page is not where
+the issue first occurred.  By enabling the CONFIG_DEBUG_VM config, I can
+reproduce the crash as well and captured the first warning where the issue
+appears:
+
+"
+[  734.469226] page: refcount:33 mapcount:0 mapping:00000000bef2d187 index:0x81a0 pfn:0x415735c0
+[  734.469304] head: order:5 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  734.469315] memcg:ffff000807a8ec00
+[  734.469320] aops:ext4_da_aops ino:100b6f dentry name(?):"stress-ng-mmaptorture-9397-0-2736200540"
+[  734.469335] flags: 0x57fffe400000069(locked|uptodate|lru|head|node=1|zone=2|lastcpupid=0x3ffff)
+......
+[  734.469364] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1),
+const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *:
+(struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+[  734.469390] ------------[ cut here ]------------
+[  734.469393] WARNING: ./include/linux/rmap.h:351 at folio_add_file_rmap_ptes+0x3b8/0x468,
+CPU#90: stress-ng-mlock/9430
+[  734.469551]  folio_add_file_rmap_ptes+0x3b8/0x468 (P)
+[  734.469555]  set_pte_range+0xd8/0x2f8
+[  734.469566]  filemap_map_folio_range+0x190/0x400
+[  734.469579]  filemap_map_pages+0x348/0x638
+[  734.469583]  do_fault_around+0x140/0x198
+......
+[  734.469640]  el0t_64_sync+0x184/0x188
+"
+
+The code that triggers the warning is: "VM_WARN_ON_FOLIO(page_folio(page +
+nr_pages - 1) != folio, folio)", which indicates that set_pte_range()
+tried to map beyond the large folio's size.
+
+By adding more debug information, I found that 'nr_pages' had overflowed
+in filemap_map_pages(), causing set_pte_range() to establish mappings for
+a range exceeding the folio size, potentially corrupting fields of pages
+that do not belong to this folio (e.g., page->_mapcount).
+
+After above analysis, I think the possible race is as follows:
+
+CPU 0                                                  CPU 1
+filemap_map_pages()                                   ext4_setattr()
+   //get and lock folio with old inode->i_size
+   next_uptodate_folio()
+
+                                                          .......
+                                                          //shrink the inode->i_size
+                                                          i_size_write(inode, attr->ia_size);
+
+   //calculate the end_pgoff with the new inode->i_size
+   file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+   end_pgoff = min(end_pgoff, file_end);
+
+   ......
+   //nr_pages can be overflowed, cause xas.xa_index > end_pgoff
+   end = folio_next_index(folio) - 1;
+   nr_pages = min(end, end_pgoff) - xas.xa_index + 1;
+
+   ......
+   //map large folio
+   filemap_map_folio_range()
+                                                          ......
+                                                          //truncate folios
+                                                          truncate_pagecache(inode, inode->i_size);
+
+To fix this issue, move the 'end_pgoff' calculation before
+next_uptodate_folio(), so the retrieved folio stays consistent with the
+file end to avoid 'nr_pages' calculation overflow.  After this patch, the
+crash issue is gone.
+
+Link: https://lkml.kernel.org/r/1cf1ac59018fc647a87b0dad605d4056a71c14e4.1773739704.git.baolin.wang@linux.alibaba.com
+Fixes: 743a2753a02e ("filemap: cap PTE range to be created to allowed zero fill in folio_map_range()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Tested-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <dchinner@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/filemap.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+--- a/mm/filemap.c~mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages
++++ a/mm/filemap.c
+@@ -3883,14 +3883,19 @@ vm_fault_t filemap_map_pages(struct vm_f
+ 	unsigned int nr_pages = 0, folio_type;
+ 	unsigned short mmap_miss = 0, mmap_miss_saved;
+ 
++	/*
++	 * Recalculate end_pgoff based on file_end before calling
++	 * next_uptodate_folio() to avoid races with concurrent
++	 * truncation.
++	 */
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
+ 	rcu_read_lock();
+ 	folio = next_uptodate_folio(&xas, mapping, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	end_pgoff = min(end_pgoff, file_end);
+-
+ 	/*
+ 	 * Do not allow to map with PMD across i_size to preserve
+ 	 * SIGBUS semantics.
+_
+
+Patches currently in -mm which might be from baolin.wang@linux.alibaba.com are
+
+mm-filemap-fix-nr_pages-calculation-overflow-in-filemap_map_pages.patch
+mm-use-inline-helper-functions-instead-of-ugly-macros.patch
+mm-rename-ptep-pmdp_clear_young_notify-to-ptep-pmdp_test_and_clear_young_notify.patch
+mm-rmap-add-a-zone_device-folio-warning-in-folio_referenced.patch
+mm-add-a-batched-helper-to-clear-the-young-flag-for-large-folios.patch
+mm-support-batched-checking-of-the-young-flag-for-mglru.patch
+arm64-mm-implement-the-architecture-specific-test_and_clear_young_ptes.patch
+
 
