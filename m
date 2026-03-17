@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-226244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IECDMNKGuWncJAIAu9opvQ
-	(envelope-from <stable+bounces-226244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:34 +0100
+	id 4MUXM5WKuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499B92AE902
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D72D2AF053
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0C7B3162EB2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0F643048916
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD6A3ED5BD;
-	Tue, 17 Mar 2026 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6D53F7860;
+	Tue, 17 Mar 2026 17:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gji1QmpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVHpk9YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDD3E716B;
-	Tue, 17 Mar 2026 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7A93F65E2;
+	Tue, 17 Mar 2026 17:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765876; cv=none; b=puIEZF0L9KQpcW1kO5zd7a2LlNxrq+SdS84bT6r2GfYvKc34DFNXqL168dzxzPW2ky8vLS41XTvqLXgPE5wAWHFRPrErdHJtQUwqhN9JGQyyUctZjpkhfmcPl0vt+xxuyRm40mKtcSE1kJI9W5wlLyncANoSgITTjK/2Er7OgsM=
+	t=1773767230; cv=none; b=HAKKHu2Novo6Rk4MH1DFihvJ2d9RlwikDPQnJNv0quE0ACM6gBM298RjD8dDwQRvvXKQ+GckRcMpZtmsEpW7OCH00mR5ErXAwpR3RBTym6ATYl5twZQNORv1cDDk5M+ed2YrMYRGn1aJmguu9N37nc2sKVn3wSCU6wEWMc/39qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765876; c=relaxed/simple;
-	bh=2sHMn0eqS6E0Ox7pbL9GsVNDDAN+5gu2R5dUwWSSnnA=;
+	s=arc-20240116; t=1773767230; c=relaxed/simple;
+	bh=+vlvdvt62dL/gsDnfx+TpigW+EY+6ngtLtjjyIJ2IYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Su1HTaUZkFwAKJolEOm49Zqxh26n7XBe14DzVni1LTCCWya1rxfZ8Pj/6Udu81YUhLDAAp4QiE9t0+PmDE4RjTbPPbJzdGy9aHnjXveIZPjTJHITbrYH34MVAaUHf2YxzDf0w0QKh49DSd+8b8N8aKtDWJGkoajXGrGXvFXcdYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gji1QmpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79335C4CEF7;
-	Tue, 17 Mar 2026 16:44:35 +0000 (UTC)
+	 MIME-Version; b=S8Q45pEcvwiG/jjVKd/GtZDdX+LZCKESHQdOwoE2LUSXyqihodTLBuvQdkVkL6YuEhtdLvhzilhaXBKn0YroVuOL4+G6Rx5hvF6vqSWqDMLmQ0HnJrlDmuESU7k+5msp8lAVZ8CfQKJX3k3Lv5g12FVe0GYeqqU1HBRHErS+gtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVHpk9YG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAE7C4CEF7;
+	Tue, 17 Mar 2026 17:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765876;
-	bh=2sHMn0eqS6E0Ox7pbL9GsVNDDAN+5gu2R5dUwWSSnnA=;
+	s=korg; t=1773767230;
+	bh=+vlvdvt62dL/gsDnfx+TpigW+EY+6ngtLtjjyIJ2IYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gji1QmpTWrL4mBVDhtPHP/m1wSzDc1L9X2aFdfiIt0tG060gZcnDLwvkxp2y0xv31
-	 +EaqlrYuZJfvzcJFfkyqYZgA6KiBZL5I12CNnMgnFpwRlLZ4/l1m8f3AMCJivSv0mA
-	 jWUeKqPWObKiE3AF+bNCovpn536feAo+Q0xAYYH0=
+	b=kVHpk9YGqyuJraG5fTAgKuJI6kIbxdJElf+jzV0brlLHY1aDkqlo7JNmhh5MvgL8s
+	 ATbeSU9PkQP0GT8WXznunXmttZ9r2Y6XWLuXHyLFRdUKxSi3tpGTD2VhlPAvKWXkV3
+	 cLgOn2WmJfN715nwNossgV+J7OIPFESZZkgdwPUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Perry Yuan <perry.yuan@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Simon Liebold <simonlie@amazon.de>
-Subject: [PATCH 6.19 114/378] drm/amdgpu: ensure no_hw_access is visible before MMIO
-Date: Tue, 17 Mar 2026 17:31:11 +0100
-Message-ID: <20260317163011.208625545@linuxfoundation.org>
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 043/333] net/mlx5e: RX, Fix XDP multi-buf frag counting for striding RQ
+Date: Tue, 17 Mar 2026 17:31:12 +0100
+Message-ID: <20260317163000.961816826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,67 +71,175 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226560-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226244-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,amazon.de:email]
-X-Rspamd-Queue-Id: 499B92AE902
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,qemu.org:url,nvidia.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9D72D2AF053
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Perry Yuan <perry.yuan@amd.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 31b153315b8702d0249aa44d83d9fbf42c5c7a79 upstream.
+[ Upstream commit db25c42c2e1f9c0d136420fff5e5700f7e771a6f ]
 
-Add a full memory barrier after clearing no_hw_access in
-amdgpu_device_mode1_reset() so subsequent PCI state restore
-access cannot observe stale state on other CPUs.
+XDP multi-buf programs can modify the layout of the XDP buffer when the
+program calls bpf_xdp_pull_data() or bpf_xdp_adjust_tail(). The
+referenced commit in the fixes tag corrected the assumption in the mlx5
+driver that the XDP buffer layout doesn't change during a program
+execution. However, this fix introduced another issue: the dropped
+fragments still need to be counted on the driver side to avoid page
+fragment reference counting issues.
 
-Fixes: 7edb503fe4b6 ("drm/amd/pm: Disable MMIO access during SMU Mode 1 reset")
-Signed-off-by: Perry Yuan <perry.yuan@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Simon Liebold <simonlie@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue was discovered by the drivers/net/xdp.py selftest,
+more specifically the test_xdp_native_tx_mb:
+- The mlx5 driver allocates a page_pool page and initializes it with
+  a frag counter of 64 (pp_ref_count=64) and the internal frag counter
+  to 0.
+- The test sends one packet with no payload.
+- On RX (mlx5e_skb_from_cqe_mpwrq_nonlinear()), mlx5 configures the XDP
+  buffer with the packet data starting in the first fragment which is the
+  page mentioned above.
+- The XDP program runs and calls bpf_xdp_pull_data() which moves the
+  header into the linear part of the XDP buffer. As the packet doesn't
+  contain more data, the program drops the tail fragment since it no
+  longer contains any payload (pp_ref_count=63).
+- mlx5 device skips counting this fragment. Internal frag counter
+  remains 0.
+- mlx5 releases all 64 fragments of the page but page pp_ref_count is
+  63 => negative reference counting error.
+
+Resulting splat during the test:
+
+  WARNING: CPU: 0 PID: 188225 at ./include/net/page_pool/helpers.h:297 mlx5e_page_release_fragmented.isra.0+0xbd/0xe0 [mlx5_core]
+  Modules linked in: [...]
+  CPU: 0 UID: 0 PID: 188225 Comm: ip Not tainted 6.18.0-rc7_for_upstream_min_debug_2025_12_08_11_44 #1 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:mlx5e_page_release_fragmented.isra.0+0xbd/0xe0 [mlx5_core]
+  [...]
+  Call Trace:
+   <TASK>
+   mlx5e_free_rx_mpwqe+0x20a/0x250 [mlx5_core]
+   mlx5e_dealloc_rx_mpwqe+0x37/0xb0 [mlx5_core]
+   mlx5e_free_rx_descs+0x11a/0x170 [mlx5_core]
+   mlx5e_close_rq+0x78/0xa0 [mlx5_core]
+   mlx5e_close_queues+0x46/0x2a0 [mlx5_core]
+   mlx5e_close_channel+0x24/0x90 [mlx5_core]
+   mlx5e_close_channels+0x5d/0xf0 [mlx5_core]
+   mlx5e_safe_switch_params+0x2ec/0x380 [mlx5_core]
+   mlx5e_change_mtu+0x11d/0x490 [mlx5_core]
+   mlx5e_change_nic_mtu+0x19/0x30 [mlx5_core]
+   netif_set_mtu_ext+0xfc/0x240
+   do_setlink.isra.0+0x226/0x1100
+   rtnl_newlink+0x7a9/0xba0
+   rtnetlink_rcv_msg+0x220/0x3c0
+   netlink_rcv_skb+0x4b/0xf0
+   netlink_unicast+0x255/0x380
+   netlink_sendmsg+0x1f3/0x420
+   __sock_sendmsg+0x38/0x60
+   ____sys_sendmsg+0x1e8/0x240
+   ___sys_sendmsg+0x7c/0xb0
+   [...]
+   __sys_sendmsg+0x5f/0xb0
+   do_syscall_64+0x55/0xc70
+
+The problem applies for XDP_PASS as well which is handled in a different
+code path in the driver.
+
+This patch fixes the issue by doing page frag counting on all the
+original XDP buffer fragments for all relevant XDP actions (XDP_TX ,
+XDP_REDIRECT and XDP_PASS). This is basically reverting to the original
+counting before the commit in the fixes tag.
+
+As frag_page is still pointing to the original tail, the nr_frags
+parameter to xdp_update_skb_frags_info() needs to be calculated
+in a different way to reflect the new nr_frags.
+
+Fixes: 87bcef158ac1 ("net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for striding RQ")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Amery Hung <ameryhung@gmail.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260305142634.1813208-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5878,6 +5878,9 @@ int amdgpu_device_mode1_reset(struct amd
- 	/* enable mmio access after mode 1 reset completed */
- 	adev->no_hw_access = false;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 687cf123211d7..348c451473cd6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2118,14 +2118,13 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
  
-+	/* ensure no_hw_access is updated before we access hw */
-+	smp_mb();
-+
- 	amdgpu_device_load_pci_state(adev->pdev);
- 	ret = amdgpu_psp_wait_for_bootloader(adev);
- 	if (ret)
+ 	if (prog) {
+ 		u8 nr_frags_free, old_nr_frags = sinfo->nr_frags;
++		u8 new_nr_frags;
+ 		u32 len;
+ 
+ 		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
+ 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flags)) {
+ 				struct mlx5e_frag_page *pfp;
+ 
+-				frag_page -= old_nr_frags - sinfo->nr_frags;
+-
+ 				for (pfp = head_page; pfp < frag_page; pfp++)
+ 					pfp->frags++;
+ 
+@@ -2136,13 +2135,12 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 			return NULL; /* page/packet was consumed by XDP */
+ 		}
+ 
+-		nr_frags_free = old_nr_frags - sinfo->nr_frags;
+-		if (unlikely(nr_frags_free)) {
+-			frag_page -= nr_frags_free;
++		new_nr_frags = sinfo->nr_frags;
++		nr_frags_free = old_nr_frags - new_nr_frags;
++		if (unlikely(nr_frags_free))
+ 			truesize -= (nr_frags_free - 1) * PAGE_SIZE +
+ 				ALIGN(pg_consumed_bytes,
+ 				      BIT(rq->mpwqe.log_stride_sz));
+-		}
+ 
+ 		len = mxbuf->xdp.data_end - mxbuf->xdp.data;
+ 
+@@ -2164,7 +2162,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+ 			struct mlx5e_frag_page *pagep;
+ 
+ 			/* sinfo->nr_frags is reset by build_skb, calculate again. */
+-			xdp_update_skb_frags_info(skb, frag_page - head_page,
++			xdp_update_skb_frags_info(skb, new_nr_frags,
+ 						  sinfo->xdp_frags_size,
+ 						  truesize,
+ 						  xdp_buff_get_skb_flags(&mxbuf->xdp));
+-- 
+2.51.0
+
 
 
 
