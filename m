@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-226762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOgOLlWTuWnKKgIAu9opvQ
-	(envelope-from <stable+bounces-226762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:45:57 +0100
+	id 2HJMBPaIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD502B0199
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:45:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA2B2AED00
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5528A30C3500
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42E2D3005177
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA592EF67A;
-	Tue, 17 Mar 2026 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58567357A4A;
+	Tue, 17 Mar 2026 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+noKPYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESLrL4i5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED39330D54;
-	Tue, 17 Mar 2026 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3121ACEDE;
+	Tue, 17 Mar 2026 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768099; cv=none; b=tJvFFGHHuJAx+bPM5GniJvSxl1exRyc+XydK1nHlqG4+1onObsslyL9GR2VTQIz+wqZhaVtc/uL8tNoZzGvqYTlNUHZIef5RaFksGGeeZngnOwL0fXAD0dQo8OSyOb8Bnq52DaVj8oO0Oc4n3XPkmxkMHP6NDIbdmsKST6URvW8=
+	t=1773766898; cv=none; b=CbmH4NX6o1iGNUMNfX27ipZ4lGdyEag0836LIT4EkOe5+EZujm6vOsLxeBORCzR+Ss46LZIBd+UWN47LJsfeC+wbG0gFgJ9ZG29XqhYVYv6/jgW0armA/iMhRbBD1kfVgl9IxqkrPsA0GE0oVam9wX/Wols2ORlX8LIGg6fFszs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768099; c=relaxed/simple;
-	bh=akz0jFoEzmhI6iPzE7c3A0uKjoxcx7ZxmgzYPD4wIwM=;
+	s=arc-20240116; t=1773766898; c=relaxed/simple;
+	bh=qY4emrirqOfVNkuZaTnXRzz61eKbPkQLO+JZEG72gE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+naS5zoCvP3hPXLLe2yCTwbNXNeQqzWJ0Idit99L6qc3BNxNw64cx/b6bwjBT6XbQbbOVrQUFG0X+yL6rd2XxPLUJcyXKLRFc7irM+vcPAero3O1DtoNndrtRvFoqaCiOgE2m4g8uzQEQ/BWs2WLcHM3ahEMP2q1sWXMPNkIeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+noKPYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B427CC2BCB1;
-	Tue, 17 Mar 2026 17:21:38 +0000 (UTC)
+	 MIME-Version; b=fe+Fi5olU4HJ1c4GaYcbEuoK65V3nzTbbLix2LZQpBQJ+Eypzya/j5bkKjNprDrPxely1wkXcQQ/hy/ceCaC4URNM1Sz+DOtYO2attTQ8Ck3CMvRbS/VjeQKfn+UzdRCPl2ICG4vo2evcdcLIhB2+2AH3iH8VUzeuprTccEKTDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESLrL4i5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E60C4CEF7;
+	Tue, 17 Mar 2026 17:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768099;
-	bh=akz0jFoEzmhI6iPzE7c3A0uKjoxcx7ZxmgzYPD4wIwM=;
+	s=korg; t=1773766898;
+	bh=qY4emrirqOfVNkuZaTnXRzz61eKbPkQLO+JZEG72gE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+noKPYpj3Ka03UTvlCX1bhek96LUPvXKx2aFO0Ydew7JdgqRIlRgteYcjupEZGvJ
-	 7GfWa2Ue9/qkueNNRvnww7bPnNkqTvcEj3kriIvQT/iqHQVKA3HH/r5rzbwptWj5Zr
-	 GItD0LeaSM3eLfilgSq3E66UyP849NP685Nl2eXc=
+	b=ESLrL4i5i+cMIToWA7JmleBGiKvrYN8KMfNYeqNUKnRld2bhyO0n+mtYzJYlwOJID
+	 zcQljv2YJ2BV3W9bG8ymG4ZxTqbbWztszj5+L2mtVU/9Fg1Zuxh991BycMBvX6f/qz
+	 wB4cXftK8rrc9kjjD0NuLPMk2TYktN6ZTNXxTozE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 230/333] parisc: Check kernel mapping earlier at bootup
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 302/378] drm/amd: Set num IP blocks to 0 if discovery fails
 Date: Tue, 17 Mar 2026 17:34:19 +0100
-Message-ID: <20260317163007.894376697@linuxfoundation.org>
+Message-ID: <20260317163018.114888425@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +66,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226762-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226479-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:email]
-X-Rspamd-Queue-Id: BCD502B0199
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4BA2B2AED00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 17c144f1104bfc29a3ce3f7d0931a1bfb7a3558c upstream.
+commit 3646ff28780b4c52c5b5081443199e7a430110e5 upstream.
 
-The check if the initial mapping is sufficient needs to happen much
-earlier during bootup. Move this test directly to the start_parisc()
-function and use native PDC iodc functions to print the warning, because
-panic() and printk() are not functional yet.
+If discovery has failed for any reason (such as no support for a block)
+then there is no need to unwind all the IP blocks in fini. In this
+condition there can actually be failures during the unwind too.
 
-This fixes boot when enabling various KALLSYSMS options which need
-much more space.
+Reset num_ip_blocks to zero during failure path and skip the unnecessary
+cleanup path.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fae5984296b981c8cc3acca35b701c1f332a6cd8)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/setup.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 +++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c    |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/kernel/setup.c
-+++ b/arch/parisc/kernel/setup.c
-@@ -120,14 +120,6 @@ void __init setup_arch(char **cmdline_p)
- #endif
- 	printk(KERN_CONT ".\n");
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2843,8 +2843,10 @@ static int amdgpu_device_ip_early_init(s
+ 		break;
+ 	default:
+ 		r = amdgpu_discovery_set_ip_blocks(adev);
+-		if (r)
++		if (r) {
++			adev->num_ip_blocks = 0;
+ 			return r;
++		}
+ 		break;
+ 	}
  
--	/*
--	 * Check if initial kernel page mappings are sufficient.
--	 * panic early if not, else we may access kernel functions
--	 * and variables which can't be reached.
--	 */
--	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
--		panic("KERNEL_INITIAL_ORDER too small!");
--
- #ifdef CONFIG_64BIT
- 	if(parisc_narrow_firmware) {
- 		printk(KERN_INFO "Kernel is using PDC in 32-bit mode.\n");
-@@ -279,6 +271,18 @@ void __init start_parisc(void)
- 	int ret, cpunum;
- 	struct pdc_coproc_cfg coproc_cfg;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -83,7 +83,7 @@ void amdgpu_driver_unload_kms(struct drm
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
  
-+	/*
-+	 * Check if initial kernel page mapping is sufficient.
-+	 * Print warning if not, because we may access kernel functions and
-+	 * variables which can't be reached yet through the initial mappings.
-+	 * Note that the panic() and printk() functions are not functional
-+	 * yet, so we need to use direct iodc() firmware calls instead.
-+	 */
-+	const char warn1[] = "CRITICAL: Kernel may crash because "
-+			     "KERNEL_INITIAL_ORDER is too small.\n";
-+	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
-+		pdc_iodc_print(warn1, sizeof(warn1) - 1);
-+
- 	/* check QEMU/SeaBIOS marker in PAGE0 */
- 	running_on_qemu = (memcmp(&PAGE0->pad0, "SeaBIOS", 8) == 0);
+-	if (adev == NULL)
++	if (adev == NULL || !adev->num_ip_blocks)
+ 		return;
  
+ 	amdgpu_unregister_gpu_instance(adev);
 
 
 
