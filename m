@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-226654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMytIE+QuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:03 +0100
+	id 6EZyO6uNuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841912AFC84
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780C72AF68E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F12C30DC9DE
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 451F531E5BE6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7553F54BD;
-	Tue, 17 Mar 2026 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED083F788D;
+	Tue, 17 Mar 2026 17:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZcXl8VP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6fu3zYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419952116F6;
-	Tue, 17 Mar 2026 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54A63F7884;
+	Tue, 17 Mar 2026 17:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767658; cv=none; b=RqpWzhYTo4sW+mlWGUx8Lu1lVUeHkS4pFHreUuBbOSMiWdSDQZNRbMcaHA4rkaa9lxMSe0vN6+ZKm+GHhfN2wxcY2OhrJGb0dLzKToNTwbRHAN0Sm0rM828rk/GF1vO+58PrUFHvsLxElQWoeoM9TK6elXLmIzhR217jWGNeqmY=
+	t=1773767700; cv=none; b=InT2Q2F48E0RAKb4P8O5R6ezKJzJoaJwyNNiYS4092dKlSWZAiN2mmoZuHSFP+2c/gWsASvKV9B2Cnw/XRmGV3WDz4U62H1Ctobj+c/uAookl6l7VOMiSwN4KMfrBKE0TSZfEOlXHLnT6mA3n1Ybb5QXlfPULDL2w72t7dAOuus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767658; c=relaxed/simple;
-	bh=a1HCh8SWVtv3H0zIbHMXZ4muC1kJD79FWa3dJzqesso=;
+	s=arc-20240116; t=1773767700; c=relaxed/simple;
+	bh=BkKBaTxdKaNxSNVxH67B6XjXDqndxpcL18su2/ACDvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjuwGWV5pDs0fYPH6GifYiZzZbeZpXDWsMMNlXHhUz7DAh0NXUrO5hAzgW/97/kivm7fL1NN9AMmKICeJ6MzyR/thtqW0VcjdB92J+XwHRRTf7jAlwZMTb1MW+6ivZV33XCIy0Y1CvQpi5dCpYt/zqs8koPjOTlv+by7401V0DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZcXl8VP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C82C4CEF7;
-	Tue, 17 Mar 2026 17:14:17 +0000 (UTC)
+	 MIME-Version; b=V3QAkRKvTba21+3pnYvPPkQngVY8xloPvq4DyS09co1lu2KHSJuJ3/irhj4CwgmpeF46k6ACYk5aqJ3x+a+vfe24v/sN7bJMoBnOWINH5ZSIHImMd5yPbHgE+WQ7i589pYpFAcPmuqb3PxWyEz1cR/4MetCqHdEPQExrE/w+9kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6fu3zYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CA1C2BC86;
+	Tue, 17 Mar 2026 17:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767657;
-	bh=a1HCh8SWVtv3H0zIbHMXZ4muC1kJD79FWa3dJzqesso=;
+	s=korg; t=1773767699;
+	bh=BkKBaTxdKaNxSNVxH67B6XjXDqndxpcL18su2/ACDvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZcXl8VPtRgMIzH5iKIHBzW3q+BruQHZQRz86Jy7fgeX2COPo0JWpanBPAAhC1aAi
-	 5fTOcjTKCH+kEVytfXkB+KDUpUR+8vLeRl/siIWjkmLKgkI3HdtzTm09zY7SLsvYQB
-	 6bScyVP6+q2cRBLmnsA6KekjmqqVBdE+PWw/m+X0=
+	b=t6fu3zYDYeEOrbSX3KYJCQHdVAEtsVMazV9o+d/Yme+ckuXicMD/3UcULbxRpwwC8
+	 mgdx1bnNBpHhvMWwhw7xVk/NW8ZlkC7fNs1cfB90BQ4DbUz62yEtyoNnzLVbEIxSqU
+	 2rSBZulob3Mkw09eTN/hMdhd/DadvSCmAOoaAmI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingye Zhao <zhaoqingye@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Cheng-Yang Chou <yphbchou0911@gmail.com>,
+	Andrea Righi <arighi@nvidia.com>,
 	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.18 105/333] cgroup: fix race between task migration and iteration
-Date: Tue, 17 Mar 2026 17:32:14 +0100
-Message-ID: <20260317163003.262179000@linuxfoundation.org>
+Subject: [PATCH 6.18 106/333] sched_ext: Remove redundant css_put() in scx_cgroup_init()
+Date: Tue, 17 Mar 2026 17:32:15 +0100
+Message-ID: <20260317163003.299883167@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -63,35 +63,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226654-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226661-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,honor.com:email]
-X-Rspamd-Queue-Id: 841912AFC84
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 780C72AF68E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,82 +100,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Qingye Zhao <zhaoqingye@honor.com>
+From: Cheng-Yang Chou <yphbchou0911@gmail.com>
 
-commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
+commit 1336b579f6079fb8520be03624fcd9ba443c930b upstream.
 
-When a task is migrated out of a css_set, cgroup_migrate_add_task()
-first moves it from cset->tasks to cset->mg_tasks via:
+The iterator css_for_each_descendant_pre() walks the cgroup hierarchy
+under cgroup_lock(). It does not increment the reference counts on
+yielded css structs.
 
-    list_move_tail(&task->cg_list, &cset->mg_tasks);
+According to the cgroup documentation, css_put() should only be used
+to release a reference obtained via css_get() or css_tryget_online().
+Since the iterator does not use either of these to acquire a reference,
+calling css_put() in the error path of scx_cgroup_init() causes a
+refcount underflow.
 
-If a css_task_iter currently has it->task_pos pointing to this task,
-css_set_move_task() calls css_task_iter_skip() to keep the iterator
-valid. However, since the task has already been moved to ->mg_tasks,
-the iterator is advanced relative to the mg_tasks list instead of the
-original tasks list. As a result, remaining tasks on cset->tasks, as
-well as tasks queued on cset->mg_tasks, can be skipped by iteration.
+Remove the unbalanced css_put() to prevent a potential Use-After-Free
+(UAF) vulnerability.
 
-Fix this by calling css_set_skip_task_iters() before unlinking
-task->cg_list from cset->tasks. This advances all active iterators to
-the next task on cset->tasks, so iteration continues correctly even
-when a task is concurrently being migrated.
-
-This race is hard to hit in practice without instrumentation, but it
-can be reproduced by artificially slowing down cgroup_procs_show().
-For example, on an Android device a temporary
-/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
-into cgroup_procs_show(), and then:
-
-  1) Spawn three long-running tasks (PIDs 101, 102, 103).
-  2) Create a test cgroup and move the tasks into it.
-  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
-  4) In one shell, read cgroup.procs from the test cgroup.
-  5) Within the delay window, in another shell migrate PID 102 by
-     writing it to a different cgroup.procs file.
-
-Under this setup, cgroup.procs can intermittently show only PID 101
-while skipping PID 103. Once the migration completes, reading the
-file again shows all tasks as expected.
-
-Note that this change does not allow removing the existing
-css_set_skip_task_iters() call in css_set_move_task(). The new call
-in cgroup_migrate_add_task() only handles iterators that are racing
-with migration while the task is still on cset->tasks. Iterators may
-also start after the task has been moved to cset->mg_tasks. If we
-dropped css_set_skip_task_iters() from css_set_move_task(), such
-iterators could keep task_pos pointing to a migrating task, causing
-css_task_iter_advance() to malfunction on the destination css_set,
-up to and including crashes or infinite loops.
-
-The race window between migration and iteration is very small, and
-css_task_iter is not on a hot path. In the worst case, when an
-iterator is positioned on the first thread of the migrating process,
-cgroup_migrate_add_task() may have to skip multiple tasks via
-css_set_skip_task_iters(). However, this only happens when migration
-and iteration actually race, so the performance impact is negligible
-compared to the correctness fix provided here.
-
-Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/ext.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2611,6 +2611,7 @@ static void cgroup_migrate_add_task(stru
- 
- 	mgctx->tset.nr_tasks++;
- 
-+	css_set_skip_task_iters(cset, task);
- 	list_move_tail(&task->cg_list, &cset->mg_tasks);
- 	if (list_empty(&cset->mg_node))
- 		list_add_tail(&cset->mg_node,
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3450,7 +3450,6 @@ static int scx_cgroup_init(struct scx_sc
+ 		ret = SCX_CALL_OP_RET(sch, SCX_KF_UNLOCKED, cgroup_init, NULL,
+ 				      css->cgroup, &args);
+ 		if (ret) {
+-			css_put(css);
+ 			scx_error(sch, "ops.cgroup_init() failed (%d)", ret);
+ 			return ret;
+ 		}
 
 
 
