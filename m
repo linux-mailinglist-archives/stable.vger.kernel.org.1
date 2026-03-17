@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBuKAL2PuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:37 +0100
+	id 0CdTFH+PuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676922AFB78
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100762AFAF7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCB4A315AFCE
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ABBFD304CA77
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B888D357A4A;
-	Tue, 17 Mar 2026 17:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3041280A21;
+	Tue, 17 Mar 2026 17:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjxa/uI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFa+jE1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9EE2FFDEA;
-	Tue, 17 Mar 2026 17:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84080346797;
+	Tue, 17 Mar 2026 17:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767069; cv=none; b=s6FA8xe6RoX1IcfHat6x38tlBPMDGmqHI0c9hftA/SHciWtWNRDB4vwu8SHH0Lr3eLZNfGS/42vczxkeomVsfsAXa/ey3i5EYHguGtdkXdMe5bck1P4VoRV9YwCxN90LXPZv4frNtKsEvV8UTMNH1AlttPiRQfVoQcA3UZkFozI=
+	t=1773768404; cv=none; b=fqaSdb36pn9caeDEqNaWz1xoQbEb24o/BnqzEisErUffxcXCSrLKgVm5wanQxjjQnkBmfoHrGMm4tmsa/9zcd33RWLLP07fA3nqWjxDxY+qK8NFUrfisSAGHkxytsN0oSEVsM78bvgvHktGD2VvtnLQfW5OV3dC0vzihrZQrIP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767069; c=relaxed/simple;
-	bh=qr4jz1e+eIMpGqOy1yNIsuymEUrME5D+B8yAXXaKDWk=;
+	s=arc-20240116; t=1773768404; c=relaxed/simple;
+	bh=TjiWg/aDvSpQHeQjrR5MFe+20aXbmewHHvxK6oSnFEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTwZZzkTt7VvAJkBtSb8A71uPWf7EQfYWML7wUwnZc75G9LYrpX/V5P6K+t1WUrTqZEGGuxlE7pofF1sUPVfaCRoEUvuQcIcxcsvos8sHbmz+JLLDly0XDz2+DvEahSmIc7kZJgRl/37rZINGonyWFunnAdNmADIIflgWIN2wQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjxa/uI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8338BC19424;
-	Tue, 17 Mar 2026 17:04:28 +0000 (UTC)
+	 MIME-Version; b=cGNFkBGUV+xhzreWMtIn5ZiuiLXfdXCNMMxDQCLri/zZCbETfuct6kRDiHqZ90vAZXGLanvDHEWkLTMQPE0S91/+xV/VXyEnDbhUu3+1QfRefxoKzkxr50Kdy+2qnrNiDcifBjrivoKRpu+sjuq+EzpgwHlo4icMKFFDPwYrSaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFa+jE1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B151BC2BCAF;
+	Tue, 17 Mar 2026 17:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767069;
-	bh=qr4jz1e+eIMpGqOy1yNIsuymEUrME5D+B8yAXXaKDWk=;
+	s=korg; t=1773768404;
+	bh=TjiWg/aDvSpQHeQjrR5MFe+20aXbmewHHvxK6oSnFEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjxa/uI7sdiDOzDRZIluG85glZlabd5J8LRgEu5zj8TVaKT1ypRsSo3Wohcr0KKoz
-	 usOCUDDyk14J7GCk9RYhcwWKIk+Mw7AqjiBS2SqWnXZ/W7oGm2nitqVyxeQZRX3kYw
-	 t9PkAOSdKCn1edNpsFKttZe13S8lbBF2UXxjfnmE=
+	b=dFa+jE1pXvo46FC3Lv7BNsYrgyc3yTwlotzTCXFWs8XefLUK+oIZV6Pa5ftL6lifI
+	 uXYNIIPa6U0F/XsdNezVmiqM1Z/cm9itbF5E/y2keXa6m3W/yuk/cWJ0m/fR4fzf2S
+	 vk/ShFvpqU7dzXfIZCq6CiSxF6b/754A0zsKdt+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 373/378] mm/damon/core: disallow non-power of two min_region_sz
+	Radu Sabau <radu.sabau@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 301/333] iio: imu: adis: Fix NULL pointer dereference in adis_init
 Date: Tue, 17 Mar 2026 17:35:30 +0100
-Message-ID: <20260317163020.702207146@linuxfoundation.org>
+Message-ID: <20260317163010.554717061@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226521-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226836-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,73 +87,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 676922AFB78
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 100762AFAF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Radu Sabau <radu.sabau@analog.com>
 
-[ Upstream commit c80f46ac228b48403866d65391ad09bdf0e8562a ]
+commit 9990cd4f8827bd1ae3fb6eb7407630d8d463c430 upstream.
 
-DAMON core uses min_region_sz parameter value as the DAMON region
-alignment.  The alignment is made using ALIGN() and ALIGN_DOWN(), which
-support only the power of two alignments.  But DAMON core API callers can
-set min_region_sz to an arbitrary number.  Users can also set it
-indirectly, using addr_unit.
+The adis_init() function dereferences adis->ops to check if the
+individual function pointers (write, read, reset) are NULL, but does
+not first check if adis->ops itself is NULL.
 
-When the alignment is not properly set, DAMON behavior becomes difficult
-to expect and understand, makes it effectively broken.  It doesn't cause a
-kernel crash-like significant issue, though.
+Drivers like adis16480, adis16490, adis16545 and others do not set
+custom ops and rely on adis_init() assigning the defaults. Since struct
+adis is zero-initialized by devm_iio_device_alloc(), adis->ops is NULL
+when adis_init() is called, causing a NULL pointer dereference:
 
-Fix the issue by disallowing min_region_sz input that is not a power of
-two.  Add the check to damon_commit_ctx(), as all DAMON API callers who
-set min_region_sz uses the function.
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+    pc : adis_init+0xc0/0x118
+    Call trace:
+     adis_init+0xc0/0x118
+     adis16480_probe+0xe0/0x670
 
-This can be a sort of behavioral change, but it does not break users, for
-the following reasons.  As the symptom is making DAMON effectively broken,
-it is not reasonable to believe there are real use cases of non-power of
-two min_region_sz.  There is no known use case or issue reports from the
-setup, either.
+Fix this by checking if adis->ops is NULL before dereferencing it,
+falling through to assign the default ops in that case.
 
-In future, if we find real use cases of non-power of two alignments and we
-can support it with low enough overhead, we can consider moving the
-restriction.  But, for now, simply disallowing the corner case should be
-good enough as a hot fix.
-
-Link: https://lkml.kernel.org/r/20260214214124.87689-1-sj@kernel.org
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3b29bcee8f6f ("iio: imu: adis: Add custom ops struct")
+Signed-off-by: Radu Sabau <radu.sabau@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/imu/adis.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1241,6 +1241,9 @@ int damon_commit_ctx(struct damon_ctx *d
- {
- 	int err;
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index d160147cce0b..a2bc1d14ed91 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -526,7 +526,7 @@ int adis_init(struct adis *adis, struct iio_dev *indio_dev,
  
-+	if (!is_power_of_2(src->min_region_sz))
-+		return -EINVAL;
-+
- 	err = damon_commit_schemes(dst, src);
- 	if (err)
- 		return err;
+ 	adis->spi = spi;
+ 	adis->data = data;
+-	if (!adis->ops->write && !adis->ops->read && !adis->ops->reset)
++	if (!adis->ops)
+ 		adis->ops = &adis_default_ops;
+ 	else if (!adis->ops->write || !adis->ops->read || !adis->ops->reset)
+ 		return -EINVAL;
+-- 
+2.53.0
+
 
 
 
