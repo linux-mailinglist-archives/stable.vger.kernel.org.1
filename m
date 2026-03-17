@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-226639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAmmOrKPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:26 +0100
+	id wCMII6GIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116492AFB5B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8082AEC6A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2EA1431A5211
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B6FA3123CD9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546C3E122D;
-	Tue, 17 Mar 2026 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E393EDADD;
+	Tue, 17 Mar 2026 16:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eP61UZ8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1mh94bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DEF2DA756;
-	Tue, 17 Mar 2026 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6653E5ED6;
+	Tue, 17 Mar 2026 16:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767588; cv=none; b=aR8XOKMJol1g+kmHFJ2u3n7+virAJUKSDRCT1ROY1nk3rcnUMC7rGFe9eFRKxSSUCX6mKKKNQwlvnrrHCfF1zXFSH14udsbv8URtYNM96MbV2dE0hiyQhtGudZdAp2e4lQfKWJt1ozxIRW0hmHXBwnz/sWcR4Q5agORZZa2ntOg=
+	t=1773766194; cv=none; b=YaRsUdprmXsstlhmrdz7IAfoW0/WMY93W9PU9QAEzVys0R1Rk2DPxKVvfF6kYVuo5Ja5G1ndpZC7sABsezpTqGDjfLy+XYqGF21gtx/fn3nVE5Vt8HsZjggGAQQbfnuMyuV1/QcTHKmDYjR4seT/XqPs5dT52yXGQmpeJ/HAFzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767588; c=relaxed/simple;
-	bh=apu4o1aCE3FBL5xpZOITqNQ7FVs73j437iDa2kygjkM=;
+	s=arc-20240116; t=1773766194; c=relaxed/simple;
+	bh=6zcBuNPPg/qPZGMi35GJGNhwQO7aMJ35JqScTu7CEzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlsRkJGaC3zjUroCAwavPk089kbvJFre3a0QibM/bEP8EVWbR2N3+TfnS0cOqJyogAfNIXJdlR7SlTltXDCN8jsXoiap1FOMVMiuEx4fjrOGgfMuroMylwMx6UlWI2LuHBWgg5SrJJNNjVUSkwimE2BkKI4zk55oXhZx+A6gKbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eP61UZ8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B352C4CEF7;
-	Tue, 17 Mar 2026 17:13:07 +0000 (UTC)
+	 MIME-Version; b=jL/1zKn6RPR3Jv3t867Yn6RySh3RPbkOygB7UWYTlUPSaWTBzPR0PF1eYfF4BOtx46bg7VXXy7ybkF6QfTkirBwlLjMQB0kKPxckKS9b7PYiiSPvZpJ/z6a5gGe7kn8W8qs5zbWH5i/pCSk6WbTNk9+ez9I35HPjv7HW0zkJc0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1mh94bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0895CC4CEF7;
+	Tue, 17 Mar 2026 16:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767587;
-	bh=apu4o1aCE3FBL5xpZOITqNQ7FVs73j437iDa2kygjkM=;
+	s=korg; t=1773766194;
+	bh=6zcBuNPPg/qPZGMi35GJGNhwQO7aMJ35JqScTu7CEzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eP61UZ8DUhM87FURUbu4XS+mOfAi53YYHz2ZJrFg1iR4MekOGcbECH3NSNVEcPxTy
-	 wXyWNQKIctaLQYhi0pYaPYUg+/ccJDJc2si6lrmXK9tlap9HRHA4MruqneU2ZvMlOv
-	 VcX4oMTe8EA6C1tHeleVcxCluzAuk2VauUtmKVLY=
+	b=H1mh94bRSmlChQOxm09qv1Z5irne+WAkYD5ncrves3MvIwnlrGNz02VYFvWx23AMG
+	 F5ztKHJz+zLiYu5q57HyJ0VG6Fo0che+psiRaS0fvz+8PawGaBvPD2Q5o0HgOWaTgn
+	 54AYfASRoWOn2e/srWuj8NGYLbNu45zAAumV83No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 118/333] rust: kbuild: allow `unused_features`
+	Viktor Malik <vmalik@redhat.com>,
+	Qiao Zhao <qzhao@redhat.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 190/378] powerpc, perf: Check that current->mm is alive before getting user callchain
 Date: Tue, 17 Mar 2026 17:32:27 +0100
-Message-ID: <20260317163003.742998390@linuxfoundation.org>
+Message-ID: <20260317163013.997557153@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +71,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226321-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226639-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,garyguo.net:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 116492AFB5B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D8082AEC6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Viktor Malik <vmalik@redhat.com>
 
-commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
+[ Upstream commit e9bbfb4bfa86c6b5515b868d6982ac60505d7e39 ]
 
-Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
-`rustc` introduces the new lint `unused_features` [1], which warns [2]:
+It may happen that mm is already released, which leads to kernel panic.
+This adds the NULL check for current->mm, similarly to
+commit 20afc60f892d ("x86, perf: Check that current->mm is alive before getting user callchain").
 
-    warning: feature `used_with_arg` is declared but not used
-     --> <crate attribute>:1:93
-      |
-    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
-      |                                                                                             ^^^^^^^^^^^^^
-      |
-      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
+I was getting this panic when running a profiling BPF program
+(profile.py from bcc-tools):
 
-The original goal of using `-Zcrate-attr` automatically was that there
-is a consistent set of features enabled and managed globally for all
-Rust kernel code (modulo exceptions like the `rust/` crated).
+    [26215.051935] Kernel attempted to read user page (588) - exploit attempt? (uid: 0)
+    [26215.051950] BUG: Kernel NULL pointer dereference on read at 0x00000588
+    [26215.051952] Faulting instruction address: 0xc00000000020fac0
+    [26215.051957] Oops: Kernel access of bad area, sig: 11 [#1]
+    [...]
+    [26215.052049] Call Trace:
+    [26215.052050] [c000000061da6d30] [c00000000020fc10] perf_callchain_user_64+0x2d0/0x490 (unreliable)
+    [26215.052054] [c000000061da6dc0] [c00000000020f92c] perf_callchain_user+0x1c/0x30
+    [26215.052057] [c000000061da6de0] [c0000000005ab2a0] get_perf_callchain+0x100/0x360
+    [26215.052063] [c000000061da6e70] [c000000000573bc8] bpf_get_stackid+0x88/0xf0
+    [26215.052067] [c000000061da6ea0] [c008000000042258] bpf_prog_16d4ab9ab662f669_do_perf_event+0xf8/0x274
+    [...]
 
-While we could require crates to enable features manually (even if we
-still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
-list), it is not really worth making all developers worry about it just
-for a new lint.
+In addition, move storing the top-level stack entry to generic
+perf_callchain_user to make sure the top-evel entry is always captured,
+even if current->mm is NULL.
 
-The features are expected to eventually become stable anyway (most already
-did), and thus having to remove features in every file that may use them
-is not worth it either.
-
-Thus just allow the new lint globally.
-
-The lint actually existed for a long time, which is why `rustc` does
-not complain about an unknown lint in the stable versions we support,
-but it was "disabled" years ago [3], and now it was made to work again.
-
-For extra context, the new implementation of the lint has already been
-improved to avoid linting about features that became stable thanks to
-Benno's report and the ensuing discussion [4] [5], but while that helps,
-it is still the case that we may have features enabled that are not used
-for one reason or another in a particular crate.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/152164 [1]
-Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
-Link: https://github.com/rust-lang/rust/issues/44232 [3]
-Link: https://github.com/rust-lang/rust/issues/153523 [4]
-Link: https://github.com/rust-lang/rust/pull/153610 [5]
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 20002ded4d93 ("perf_counter: powerpc: Add callchain support")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Tested-by: Qiao Zhao <qzhao@redhat.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+[Maddy: fixed message to avoid checkpatch format style error]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260309144045.169427-1-vmalik@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/perf/callchain.c    | 5 +++++
+ arch/powerpc/perf/callchain_32.c | 1 -
+ arch/powerpc/perf/callchain_64.c | 1 -
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -473,6 +473,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
- export rust_common_flags := --edition=2021 \
- 			    -Zbinary_dep_depinfo=y \
- 			    -Astable_features \
-+			    -Aunused_features \
- 			    -Dnon_ascii_idents \
- 			    -Dunsafe_op_in_unsafe_fn \
- 			    -Wmissing_docs \
+diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+index 26aa26482c9ac..992cc5c982144 100644
+--- a/arch/powerpc/perf/callchain.c
++++ b/arch/powerpc/perf/callchain.c
+@@ -103,6 +103,11 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+ void
+ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+ {
++	perf_callchain_store(entry, perf_arch_instruction_pointer(regs));
++
++	if (!current->mm)
++		return;
++
+ 	if (!is_32bit_task())
+ 		perf_callchain_user_64(entry, regs);
+ 	else
+diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
+index ddcc2d8aa64a5..0de21c5d272c2 100644
+--- a/arch/powerpc/perf/callchain_32.c
++++ b/arch/powerpc/perf/callchain_32.c
+@@ -142,7 +142,6 @@ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
+ 
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned int __user *) (unsigned long) sp;
+diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
+index 115d1c105e8a8..30fb61c5f0cb0 100644
+--- a/arch/powerpc/perf/callchain_64.c
++++ b/arch/powerpc/perf/callchain_64.c
+@@ -77,7 +77,6 @@ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
+ 
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned long __user *) sp;
+-- 
+2.51.0
+
 
 
 
