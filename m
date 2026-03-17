@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6N+jOdSOuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:44 +0100
+	id eJmKOxOKuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27C32AF8EF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C352AEF0D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E16E7304CA5E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BF6FF306091F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9753793C9;
-	Tue, 17 Mar 2026 17:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4616E3F54DC;
+	Tue, 17 Mar 2026 17:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNL19uSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnKmJFxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4182A36EABC;
-	Tue, 17 Mar 2026 17:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CFA3F54B8;
+	Tue, 17 Mar 2026 17:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768214; cv=none; b=lV7PLl1JNrvrRVjv449rumQ5c3hVV5gO1uuXGdmddLNjcCrHopVRNcMsJ9Aq25RFM2cmhdYxy/8BJ+IIC2e72xzJLCOZ/amUup/05whkASpI7NffguypIAHr7jglasM5i1Q2YyzWVYSxIS7MXnHKOwSlOTvTnY7dcURrPITG0o0=
+	t=1773766845; cv=none; b=W+/XGNCYGy4+S0nBrWFy2jy23/JopCU9dFbkUO2b8z9E7CW5ilh+lN9qm0d9gYLDBbw1LWYQOKQ73VBn6miRtxnrpUBqfNFwlyGkuQDplUlEQ/Eh+SZH6xdxgqO6pkwLSiR6ICDvr4p6F7DHEABDY60CAHy5NPAqtfpYvnQoe7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768214; c=relaxed/simple;
-	bh=TW50JkB5zydTbsiLTm7aQp7GLIm3cpZDg9BHaggENTg=;
+	s=arc-20240116; t=1773766845; c=relaxed/simple;
+	bh=1tUVjkcuashVR9JQWGF2gYdoY8Q9otAHlj9IbEv3ZL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6d/nnrjgXJi1nShBGunyniAiMNC7CZT3ZP00vIweL39I4j+SbjCt5rcLrg8xneWEI+JqADzLvtVnmHscMdtdxfi4lDiyV4SjdOy9fxJVVBhuP8uyzD6b/2mweR2DlqdCEB4ognVqg2VtKDfKlfK/N0N1gz1ZBNlyCCq9L0zf5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNL19uSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71DEC4CEF7;
-	Tue, 17 Mar 2026 17:23:33 +0000 (UTC)
+	 MIME-Version; b=YfOEcFibwEFnqV5WRbyzKh1S/l65OElH56ranNzxYbMJV+O7PsQptHoP3anLLB7t9Oi6RZEhH/fzlqHCHKICzxSeeDxan3XOpjc7NdweCNarVDQDD6zdLY+HpYGyo2FuW2FCYYDYCotxk6oHaKKm9r55W4mIte2up/hqpLvi78Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnKmJFxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA9DC4CEF7;
+	Tue, 17 Mar 2026 17:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768214;
-	bh=TW50JkB5zydTbsiLTm7aQp7GLIm3cpZDg9BHaggENTg=;
+	s=korg; t=1773766844;
+	bh=1tUVjkcuashVR9JQWGF2gYdoY8Q9otAHlj9IbEv3ZL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNL19uSSHwyXY6Q6ymd4oiLLK3LAK3AhAPGkTdkCCiwZg7XuQrk/cTHNbuEyanAuv
-	 8shpwrAuSS8E8yALh81pcuryFN/DcyST2cWCWETgaZ79x83FTPl4bWBjAK8/jLeHii
-	 tcLIjEljO14IGtxJJX8nIR8guEUitPFfXrX23UBc=
+	b=ZnKmJFxLR+dAuITyXA7PtkadOf7yIA6CPntSciTtrKmS6EthxHJMepesCExCKm9f9
+	 6WPr8gdzSxwg0HCjtgMiMsxRgUNzyS2aFOFfF5C3LJlARn9DAn9wOzTQCQDK3iqPD1
+	 QgkbCPAolmc6Mv0xN34Q68AB2TtNi5XUlwxfgzFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.18 259/333] drm/amd: Fix a few more NULL pointer dereference in device cleanup
-Date: Tue, 17 Mar 2026 17:34:48 +0100
-Message-ID: <20260317163008.975448294@linuxfoundation.org>
+	Josh Law <objecting@objecting.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.19 332/378] lib/bootconfig: fix off-by-one in xbc_verify_tree() unclosed brace error
+Date: Tue, 17 Mar 2026 17:34:49 +0100
+Message-ID: <20260317163019.201186775@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226792-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226467-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,67 +87,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B27C32AF8EF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,goodmis.org:email]
+X-Rspamd-Queue-Id: A8C352AEF0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Josh Law <objecting@objecting.org>
 
-commit 72ecb1dae72775fa9fea0159d8445d620a0a2295 upstream.
+commit 39ebc8d7f561e1b64eca87353ef9b18e2825e591 upstream.
 
-I found a few more paths that cleanup fails due to a NULL version pointer
-on unsupported hardware.
+__xbc_open_brace() pushes entries with post-increment
+(open_brace[brace_index++]), so brace_index always points one past
+the last valid entry.  xbc_verify_tree() reads open_brace[brace_index]
+to report which brace is unclosed, but this is one past the last
+pushed entry and contains stale/zero data, causing the error message
+to reference the wrong node.
 
-Add NULL checks as applicable.
+Use open_brace[brace_index - 1] to correctly identify the unclosed
+brace.  brace_index is known to be > 0 here since we are inside the
+if (brace_index) guard.
 
-Fixes: 39fc2bc4da00 ("drm/amdgpu: Protect GPU register accesses in powergated state in some paths")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f5a05f8414fc10f307eb965f303580c7778f8dd2)
+Link: https://lore.kernel.org/all/20260312191143.28719-2-objecting@objecting.org/
+
+Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
 Cc: stable@vger.kernel.org
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3625,6 +3625,8 @@ static int amdgpu_device_ip_fini_early(s
- 	int i, r;
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -791,7 +791,7 @@ static int __init xbc_verify_tree(void)
  
- 	for (i = 0; i < adev->num_ip_blocks; i++) {
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		if (!adev->ip_blocks[i].version->funcs->early_fini)
- 			continue;
- 
-@@ -3687,6 +3689,8 @@ static int amdgpu_device_ip_fini(struct
- 		if (!adev->ip_blocks[i].status.sw)
- 			continue;
- 
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC) {
- 			amdgpu_ucode_free_bo(adev);
- 			amdgpu_free_static_csa(&adev->virt.csa_obj);
-@@ -3713,6 +3717,8 @@ static int amdgpu_device_ip_fini(struct
- 	for (i = adev->num_ip_blocks - 1; i >= 0; i--) {
- 		if (!adev->ip_blocks[i].status.late_initialized)
- 			continue;
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		if (adev->ip_blocks[i].version->funcs->late_fini)
- 			adev->ip_blocks[i].version->funcs->late_fini(&adev->ip_blocks[i]);
- 		adev->ip_blocks[i].status.late_initialized = false;
+ 	/* Brace closing */
+ 	if (brace_index) {
+-		n = &xbc_nodes[open_brace[brace_index]];
++		n = &xbc_nodes[open_brace[brace_index - 1]];
+ 		return xbc_parse_error("Brace is not closed",
+ 					xbc_node_get_data(n));
+ 	}
 
 
 
