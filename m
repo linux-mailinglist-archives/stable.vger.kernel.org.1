@@ -1,264 +1,379 @@
-Return-Path: <stable+bounces-225724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iH7vLDWfuGnIggEAu9opvQ
-	(envelope-from <stable+bounces-225724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:24:21 +0100
+	id OKhTNQSjuGmkgwEAu9opvQ
+	(envelope-from <stable+bounces-225725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:40:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D83B2A23F8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:24:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255E22A24F2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67F21301D05B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:24:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 116A73016B22
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B3A35972;
-	Tue, 17 Mar 2026 00:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637F32222AA;
+	Tue, 17 Mar 2026 00:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="Z65J/hZO"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="rfRQi3DS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011024.outbound.protection.outlook.com [52.103.72.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D69A24B28
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 00:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773707048; cv=none; b=Xr+yn7B4ARvKXMMOjZHKTERp4KM8ZUiz6mkOoFamzMpMu66V7fGPZfF1BhmOFdd6MX74v6CLEe8uOYZrBaV1oycxgpxK5e5R/jkYZDwSwMr9pulvda4BOaz/xHP2Xn8zev2ytX9+ai9C8HC+3x5PrLB1cA5ORK4RG5zV41aQq0s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773707048; c=relaxed/simple;
-	bh=6IRs8tlqiAf4ieBRKO7C5hhLcs5yHFDoucg9tQ3elOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SfDZ25MG0O7gxnWWQ7pYt10ZNIgI4hEs2zLUIEIPN9IU6GV6GV1Ma7w2YhZn4tgqXEIvR8cI5CJbPr4llEBHkxB/kmEf6GsmoAG5KjAavbP48tWjsAvWfICW4vn7KHuYn95YKumtLIRTbt54cGFLDOIOD2AyV8NjWvu8//+yQh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=Z65J/hZO; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cd79e43da3so541668285a.1
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 17:24:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1773707046; x=1774311846; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tpTXvukljXQ4iNyJC/zaPdjtYHdHgquyGmKXKgxE1Rs=;
-        b=Z65J/hZOi7ZtqNfTpn6MIWXfnWXYT98KAARPzKZ/Db/wBKxfDy8qv3+3ou90OMP3hJ
-         gZZzSGJfX3vMb09quwzZyOmdq8+pt0gDdpOHrS3e33T1hEH6iFG+15FlN/m1dbA/04Do
-         gBPINl9A22CGnOA8bCbaYZf6Pu8pnvnQJ6HEklD+rR7LITfILG4fdLKydvFojj/OtVAS
-         vdiL9qYoVhEfQVhMWQHVWheCYtMkt9pVhZO2UJW4T8Tq3iMwmPnWbmKrNk7svfg9ZTnp
-         gc+fzhaiVFuuUzqdd4aK50FB1AknodCRWX+v+tHmQ2xlFPIkmdlL0pGef3aOyODup0kR
-         nssA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773707046; x=1774311846;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tpTXvukljXQ4iNyJC/zaPdjtYHdHgquyGmKXKgxE1Rs=;
-        b=NtY9rNSwbLOc4nrDsZ8zje2gkbUPG0X23H15ZWVN1e8ST5lDvgcx1WLKG6O6K01+pM
-         0qtWwLqSOOTUkavC6S8tkOhRXHzy6UWpQ2HhzLkBj7V1VXYP6cEAiUincwaaQRR8vYA+
-         sm3OrGMh83hkonZfEkBQ+GALPMhsYsvIMUFaENgLCItDbKWGYrqd/wCcPExlAQQ+sU7V
-         DlYulLwozt3F7M3b9K5rK49UlzNbf08s4cdT5les+umQiry2bM+LF82WLGoJT/sUgIRZ
-         K+iW9OLTtKRDvoLkhvIH3GoVohf1CqJL46xjY2Zlz7RZyQhuAlSPcu9x06FSMu2z/WDc
-         XO+g==
-X-Gm-Message-State: AOJu0YzKJ5v38vq7s5lhdjvOeRDnJA03vvA4kxCrBPp5IrTAsmX0etww
-	1HT+5RS02dYE5v3nZMUB/61sAhknWWLdo5dbVxPydR6oNLdXLqrd24FTjLgMSRqsZhU=
-X-Gm-Gg: ATEYQzyLQ7Df/BiuEbsIj3Uyx3kZ8sQ+n4vnD9Yihy8X1d/IwS8VPaBzwCz4EY2pUkL
-	OG6uL0GOeIYxemfimqHoti98/3IxaxkifQhscday3mEn5vSp8xPJUULhP494Q3oTmATg0DgQbWc
-	MrIHK8m88c8xKq15gK2jgLJhAMCOMpCtf7pMboyDEmyRiiPQVHjBMOUcJfMxTHCWGnQZW8PwoE9
-	djcx7Uc78EkI5/2uIIMo8xkjFYitdF7lbbxJuHU5PYtnaJY0RyeNskbd9ym6gH5dCYlGZ1QDgpV
-	x8lHq3sCCuTloRbRaqvkgpOrbw0GcpYZdRq6Idr7W6ePHFTKwBiR5DkDuhD0qCG/PcRj9Uy6RGI
-	xbtYSoTRnaGUHwuh7T69fkJPO+Jr9DZH+U7hhHg5jrSSocRv5+Q+z8H/wB40pnfNRYEV5vPuguj
-	Y0G4wjv8oToqyIsRrPJkncG+INhA==
-X-Received: by 2002:a05:620a:294a:b0:8ca:3d7c:e74a with SMTP id af79cd13be357-8cdb5b6eef9mr1894858485a.56.1773707045762;
-        Mon, 16 Mar 2026 17:24:05 -0700 (PDT)
-Received: from localhost ([2603:6080:7702:ce00:96ef:dc7e:bb84:bc5a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda211518esm1384850785a.27.2026.03.16.17.24.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 17:24:05 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] scsi: target: tcm_loop: drain commands in target_reset handler
-Date: Mon, 16 Mar 2026 20:23:29 -0400
-Message-ID: <27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8686621257E;
+	Tue, 17 Mar 2026 00:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773708031; cv=fail; b=igi87Q/AvUEgp6C1k5bBVuA3qO0mIMSQ0ZPcVj5aDz2t8xTSUNr7ZbwVS7VhzZTCGbM8gCP1gIsDDhbgsZmtCISsrorWCmJTa24TMklgG0ReUTSOwsKcBS4rrisC5b/Leh7c5gNDZhAM6ImW6/otlk3rPaXzGRHYDY5UPAeLamc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773708031; c=relaxed/simple;
+	bh=l3U32+ueWs/ItYFnplOGr1EswLeG8dJIlmQVlgMLb1k=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=s5xJ8lkrfp3z+cnr1sCk4eAUvpMmgrnLaKmsS28XCmwEH2iNx03VX6yPVa5u0Op/E6nzUwUkwtq/riTwIxugBVbN7gQLtLkGlieAZSsOvNVE9c6WrurfOeEwajA3ZZO9sWPeFpNzbYyv75VNwZO99QQ7IUznS/vyLiK637IURVo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=rfRQi3DS; arc=fail smtp.client-ip=52.103.72.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vOoD5y/cEyvdhx+TXM4beNruClG/6lBYNYFUlcrCjCsumh4xDpWP27rZxmqcnqFP2ZjdXaHhQww1fy0o6XRn1lTmQLqRazLBp8r7JS052cF2t2PN/tV26Q5W0M1XZnt/lIvjZAZOsRR1571q1fFlXO02qByH78dNORUUIxTy2TobAhaJdULEEl9WYwxGQ4rVHrOus7qTILxIsSMWQMNsTp0q0E816hSZt8aLsMJ0050cdCyRg1ZTCnqOAFASpmt+B59Ekn1LULh4ZGu71ijdX5jXHMq467lH8muIwaUBJgetVeKiX86SpYuSgNpQXjmSiNiNcGaVGVYiXI+WIFTCkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ANIkp0Q1Goa+5ZF18T59zLT5TxIxj/7Ofdixavt1xkg=;
+ b=UaZ2cTOeMYsBFzBeK8nV/FLS++mjcC72IHubNjWCkjLfeUIEj2T+R3XMw5wLDrfu1skyln1Ix85qen+CcgqJyoZRtuIntz9vGJRluWLv8g3h/k8KgEpnvOZSbbePJTcLpJamlBUIJd2obW0LorhdQQppPjHtgvtAH+HQOSl02JhkvcFsw2z4Pp9smmwg/q6nMmeO/JarEGHQCniz6/6bNtgvr7J1h6mA+zEg57VIYFH7ybHY+vNgxhUyx480pqg8izlzjG/Qg4f9eRpSAdBtQypYyzRRcuc8jRawo6MvrTgH80EAV7wcTa2rkr8BQIfJyDdU5s5z2aXoAl86TjpZkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ANIkp0Q1Goa+5ZF18T59zLT5TxIxj/7Ofdixavt1xkg=;
+ b=rfRQi3DSX4PB5zYABxqEpBwGA91x6k5GTuxjGvTU4eGMxOxcLHw/Q8RlOp0VT+K5G9/fNNoqxCQRfApmqI28lPApCf/XbpmF+TzOeXCmhREXSQuIIo5Go4YOUBjzqdGNF4o2wUATs9uiZAEqtVEYoSq0lWrdnN0E5nQf17FK9MwuLV18T3CORMnrbWfUHKawu3VyNnM1py4bE1kkPPBPMW26Mbhol+yjaP1qHI3AaIzvjlmvuJASQacnOl1Jv4zg/732sG8N7qdB2mOWfhYZnstgILe0fpTsyG/a9NcxzKlCKhE1/LVMqQ6SaOybc06s/bk0cbvEMxHOhzXGjcy9+w==
+Received: from SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:27f::18)
+ by SY7P300MB0276.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:236::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Tue, 17 Mar
+ 2026 00:40:19 +0000
+Received: from SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::bdb1:7cdc:238d:2bda]) by SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::bdb1:7cdc:238d:2bda%4]) with mapi id 15.20.9723.018; Tue, 17 Mar 2026
+ 00:40:19 +0000
+Message-ID:
+ <SY0P300MB07691E08E5283FE074C81BE2C641A@SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM>
+Date: Tue, 17 Mar 2026 08:40:10 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v3] bpf: do not use kmalloc_nolock when
+ !HAVE_CMPXCHG_DOUBLE
+To: Amery Hung <ameryhung@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260315-bpf-kmalloc-nolock-v3-1-91c72bf91902@outlook.com>
+ <CAMB2axN9xYPzAJVQVywx3sxYa5ViRxt2oktt1LFXsSD_XsuJrA@mail.gmail.com>
+Content-Language: en-US
+From: Levi Zim <rsworktech@outlook.com>
+In-Reply-To: <CAMB2axN9xYPzAJVQVywx3sxYa5ViRxt2oktt1LFXsSD_XsuJrA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2P153CA0045.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::14)
+ To SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:27f::18)
+X-Microsoft-Original-Message-ID:
+ <dddc67af-23cf-426c-b957-a7038f69269d@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[toxicpanda.com:s=google];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB0769:EE_|SY7P300MB0276:EE_
+X-MS-Office365-Filtering-Correlation-Id: 030df721-7f3d-42ec-42b8-08de83bdc357
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799012|41001999006|23021999003|51005399006|6090799003|461199028|8060799015|19110799012|5072599009|10035399007|440099028|3412199025|4302099013|12091999003|1602099012|40105399003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OWozeHhsVXhmZjAxa1YvdW8zRXp3V2c5bklWQU1MdS9YTFk1Tm84Q1pNaEtB?=
+ =?utf-8?B?cTlSbnpOdWR0cUFERHRCWmw1RmdPT0lQR2VLVE5zdDlLZEEvTVFiUGRKUmVE?=
+ =?utf-8?B?U05IU3hGN0dWMnBUdUNqalJmSm4rekZRRGFBUWJiK21Rbm84bnZPWENLNEdB?=
+ =?utf-8?B?UjVmNERoZGZveGc3RzdRTURSRUpHK042SXJxV0FZc3VVQUE5TVcxMkVLWWtz?=
+ =?utf-8?B?TjJmVGVCdStXWHF2cWdOVlZSSDFzRWNnc1ZYamJqQittdy9JMlJteWhOMGFC?=
+ =?utf-8?B?dS82elp2bnYzd3IySGtFZnlmZ0RDaWtiQks2dTdqSHZvWkxjd0I0OFJ5RjhQ?=
+ =?utf-8?B?R1BPRnFNdzFBSUtRU095S0pHbnJBa3plcmRTaWo1SnVwczl5NnE4UXNVMWhU?=
+ =?utf-8?B?R1FvWGpiZys2clQrZm9oR3pUTnBUYTc3UnUrMEV0YUVIM2FRYzBPMTZPQ2M0?=
+ =?utf-8?B?NnBCQ0JrVGgyY3JUdE9ZU25ydy8xTWx6UTRuL3V3R0w3cy9ZMGpzWDA1RXlN?=
+ =?utf-8?B?T21MV0ZXVW9LNGJ6ODJmQWFBSVN3RC9EWXNmditGdnNsSWtUMFVXTDNRdlJU?=
+ =?utf-8?B?UHIyc3h6TWx0NThseEJLUEZvRmxTL2lmM3Z6Mms0aFpwNlpkUzhUZTRnMGQr?=
+ =?utf-8?B?eTlqbjRKYXhqSlRVbUxHTkd4cjRzUExwY0FnTm5JZ3ZaY0VDNlFLRWdGQmlz?=
+ =?utf-8?B?b0hHVWJ0VzN2V1JSQThENFpoTFhXQlJrdUtXcFpOTzJhYXpBUjNNYnhJOFJs?=
+ =?utf-8?B?VWluaWFSQ0dqVmlDd0dSMGN5WityUnNFWk1HbmR0UFBaRUNkUytkZC9ENS84?=
+ =?utf-8?B?T3JZK2J2Tkh4MlAzQ2VBV1RqYjFkQzQ0K0dhT1pEK1haS09zbVFkSktJejVp?=
+ =?utf-8?B?MXgwTDFkcUJZeGVCR1ppelM5U3JEU3lxTUFXNkhhbnJBamErQjNnRnd4RTM1?=
+ =?utf-8?B?RDN5L3o4RmFwZ3dvNGV4R2EwQXMyQ2dqMzRGcHc2K2gvTVZZRnpRbVJnOWZG?=
+ =?utf-8?B?c29xUVdLZXlNalVMcUFxRkNLa1ZiTFBlR3lVWjgxY3NXdTh2bGs0ZVByMmh1?=
+ =?utf-8?B?N2NndWxWRUpPdzU4THFCNDZBZlJSdTFJWDB1UUczQjNzRVZsZlFVcnNCS2o1?=
+ =?utf-8?B?QjlsRUdkUC9qYStzTlVmbUlWRG9kcVVBYzlGK2lHKzJkL3E2eUFkc3VOR3lr?=
+ =?utf-8?B?Y0trZFJmelh4c2pTb29SSy8waURickxZbnJtVUwwaWlJYlFuRkZtUHcxV0ov?=
+ =?utf-8?B?M1QxZ3dtaHRheUxUT1Q0dERjQktCNmJNTHdCRE5Ha2VxeWFnRGJReEtLRFVJ?=
+ =?utf-8?B?RlB4TXo4Ykw0eTF2dHllUUJ2STZ4eS9IUEg5aHRZWTNlV3JYZGs4bDR6d1ll?=
+ =?utf-8?B?WVdFSFZiQ3oyRWNLQWRwc1FHcXowVWZvbUpTSWlBaHliRVFsT3VDdzl5THdX?=
+ =?utf-8?B?a1RBYXh4U1U3WitMb0NkZlRvZklmakRhbW9sQTBnPT0=?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0NiNjNWY2F3d2FKRFRwUmtKOUxJSUNzUnF2Q3hETm5aWjIyLzF5SUI1Mlho?=
+ =?utf-8?B?cE5MQTVrUEpRd09UdldwRllHNjFpWDFsd1ZxMEFEN25EWEFLNTcvaGYyVnhN?=
+ =?utf-8?B?K2t6Ti9tRHh2QkVBdTlneEM3VlRGR3ZqbnBuUkQvSVZLdWV5RzJibk5Ga2M3?=
+ =?utf-8?B?WENFaDNpd0VmUGQvendyeWgzNG9WemsvMTA3ZUdmVGJTcTBvZ0FGZVFzK2tw?=
+ =?utf-8?B?dkhsNEF1N0FidHNOOFdEcGhjOWZ5V0VXYzh0dEp2K2FRM2pKaDRqTXFqVjdh?=
+ =?utf-8?B?WFRSNTlFTjMzMkJJaTMrS1I3UzFnR1MrN1MrckZUS3V0YmlHWEo0QTlVM2hC?=
+ =?utf-8?B?YWNmNlBoUDlEcFJxOWFERVdlOHl2cVFudEZKditLeGxva3hIZWlmNmNCNU9p?=
+ =?utf-8?B?VU8rdU9FOUpNeXhWY01rWXVXQWxqNjZpRXJhTHdyVmpNMjIrcEU3MUdmUS8v?=
+ =?utf-8?B?U0NIOTRpMTkwNU90NGlTNkV4QkErVlVtMEI5QmxXMVhJUXFtN2Z0aC85bytI?=
+ =?utf-8?B?bnpBQlVKSEoxKy9aVFptY1U0T0t1TE1pS3BGekdrZXN2RVFRcVVpakR5NFA3?=
+ =?utf-8?B?TUUzWEJvaXkxdnlJVWZ0R2ZDenBMYnUzZjFTOGp2NnBreW1zdjVMSzc2c3Y3?=
+ =?utf-8?B?eU0yQzJUT3JPd0pkY250dkUzcnlXL1B2MDZNS1dUOGhlUm94OVNDdzZ2ZHoy?=
+ =?utf-8?B?dlpaQk0rZUoxZWtqcm5QT2JDcDhVQUUvUmJrejRQSU9XdTFVYXpCTnpRVTN6?=
+ =?utf-8?B?dFVNZEtrOXZwSFVrRUlhWmxmaWhxV2FoTHRDVmo0TWdpdVNYVnlVblBlM2JY?=
+ =?utf-8?B?VjUwOExyQ2MzOElFVVV4dzlJd1hFMXViTzhLTFJqUUtodXU5MG9xMVpDUE9z?=
+ =?utf-8?B?clJva09Lc3ZPK1cvQXFWdlEwN3hpWWN5K2FNSzlZUm4rZFo3bjdmRlZZMTQy?=
+ =?utf-8?B?Yko2MWpEWlpxUmJkSWpmZTE3YjNEOU40ODJScWd2NUpYNytLTVN1em1HODlV?=
+ =?utf-8?B?UUlHcnlaTGc4Y1BhWW9JS1JTNVdLMHNaSUs4N2VKQXpVTXluWnNiaS9LbUgz?=
+ =?utf-8?B?OE42TW9QYXNSck81c0F1am5NMkp6Q1R3V1VwZ0xVNUMxeXN5ODZ5ZVlCNXk2?=
+ =?utf-8?B?SGw3eTk1cTBST0FMZVhES1kzQlpSSVJleHQyRjFJM204NWhiTDd0bU5yb0xV?=
+ =?utf-8?B?Q05ia24yZ0hmUU9WcnZxY015RXN1VjcvT1VVNFpiSTJXTFEwOUc4ZlN4aTZX?=
+ =?utf-8?B?b2V4MlN1WmNEaGNtUnJNSmFoNDVvN2hCdUgzS3RBS0xNcEpiQzVkRVFEd0Z4?=
+ =?utf-8?B?MXlQVVJDVm01Sk8yWEdwTU4yZ2VaWS9jWWxidGVNaTcrdUUwMWhyQ0VqcGkx?=
+ =?utf-8?B?T0plL3dTQXFDM3pEOXBueDdab3dBcHR1NmEwdlMzcTVkR2E0eVA0OUVLOUkr?=
+ =?utf-8?B?eElIZDUzL0pFYkdDNjNsbzZiMWQ2dXpsUmQyNm42bWI4R2IxTzlldTZueEpP?=
+ =?utf-8?B?Q1dGTTNaVm1UWGQyT29hQk5PQ1R4d3U2N0MySmhkTjUyU3JaeGFTdEpkRGQ1?=
+ =?utf-8?B?VTZmZzV1TWY1WElYZkVNVlVsUS9Nblo0TTNyZUVDb3pXcnFmSWxoNHdZUlF5?=
+ =?utf-8?B?aHRBa0RDNGlqRmxQaC9JSlh4eWhwTDVaZzd2bll0aWpsOW1zUVo1MmZsaWIr?=
+ =?utf-8?B?cW45cFRtalR0STVqRzNRQWdKYmxMcEhGNzBFbDRPTlVXLzM3MWZqK2VEa0hr?=
+ =?utf-8?B?dVZSSkhUWXlnSHJkV3dnUWpDMlN1RTcwMlJsTnlRa3ZybDREVXg3cDN3RVlV?=
+ =?utf-8?B?aWNOSTJKOTUxcTV1N0U1RjJBeTk2MnU4ZkxPM1IrbnpwWEF6MmdRblRidEVO?=
+ =?utf-8?B?aU5RR1NqT21hdHVpR0VoK1JPRnZ4S3FEUDFxdklaRHBqTHc9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 030df721-7f3d-42ec-42b8-08de83bdc357
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 00:40:18.7497
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7P300MB0276
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_MUA_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[toxicpanda.com];
-	TAGGED_FROM(0.00)[bounces-225724-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[toxicpanda.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,google.com,linutronix.de,goodmis.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,lists.infradead.org,vger.kernel.org,lists.linux.dev];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[josef@toxicpanda.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[rsworktech@outlook.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225725-lists,stable=lfdr.de];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[toxicpanda.com:dkim,toxicpanda.com:email,toxicpanda.com:mid]
-X-Rspamd-Queue-Id: 1D83B2A23F8
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:email]
+X-Rspamd-Queue-Id: 255E22A24F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-tcm_loop_target_reset() violates the SCSI EH contract: it returns
-SUCCESS without draining any in-flight commands.  The SCSI EH
-documentation (scsi_eh.rst) requires that when a reset handler returns
-SUCCESS the driver has made lower layers "forget about timed out scmds"
-and is ready for new commands.  Every other SCSI LLD (virtio_scsi,
-mpt3sas, ipr, scsi_debug, mpi3mr) enforces this by draining or
-completing outstanding commands before returning SUCCESS.
 
-Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses
-in-flight scsi_cmnd structures for recovery commands (e.g. TUR) while
-the target core still has async completion work queued for the old
-se_cmd.  The memset in queuecommand zeroes se_lun and lun_ref_active,
-causing transport_lun_remove_cmd() to skip its percpu_ref_put().  The
-leaked LUN reference prevents transport_clear_lun_ref() from
-completing, hanging configfs LUN unlink forever in D-state:
 
-  INFO: task rm:264 blocked for more than 122 seconds.
-  rm              D    0   264    258 0x00004000
-  Call Trace:
-   __schedule+0x3d0/0x8e0
-   schedule+0x36/0xf0
-   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
-   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
-   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
-   configfs_unlink+0x156/0x1f0 [configfs]
-   vfs_unlink+0x109/0x290
-   do_unlinkat+0x1d5/0x2d0
+On 3/17/26 3:53 AM, Amery Hung wrote:
+> On Sat, Mar 14, 2026 at 9:02 AM Levi Zim via B4 Relay
+> <devnull+rsworktech.outlook.com@kernel.org> wrote:
+>>
+>> From: Levi Zim <rsworktech@outlook.com>
+>>
+>> kmalloc_nolock always fails for architectures that lack cmpxchg16b.
+>> For example, this causes bpf_task_storage_get with flag
+>> BPF_LOCAL_STORAGE_GET_F_CREATE to fails on riscv64 6.19 kernel.
+>>
+>> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
+>> But leave the PREEMPT_RT case as is because it requires kmalloc_nolock
+>> for correctness. Add a comment about this limitation that architecture's
+>> lack of CMPXCHG_DOUBLE combined with PREEMPT_RT could make
+>> bpf_local_storage_alloc always fail.
+> 
+> Let's not do this.
+> 
+> This re-introduces deadlock to local storage. In addition, local
+> storage will switch to using kmalloc_nolock() entirely.
 
-Fix this by making tcm_loop_target_reset() actually drain commands:
+I noticed the PREEMPT_RT case needs kmalloc_nolock for correctness and didn't
+disable kmalloc_nolock in that code path when !HAVE_CMPXCHG_DOUBLE.
 
-1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands
-   that the target core knows about (those not yet CMD_T_COMPLETE).
+But in the original series [1], It appears that switching to kmalloc_nolock
+is purely for performance benefits and not for fixing deadlocks in local storage.
+And I didn't see any "Fixes" tag in [1].
 
-2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
-   flush_work() on each se_cmd — this drains any deferred completion
-   work for commands that already had CMD_T_COMPLETE set before the
-   TMR (which the TMR skips via __target_check_io_state()).  This is
-   the same pattern used by mpi3mr, scsi_debug, and libsas to drain
-   outstanding commands during reset.
+Could you provide a more detailed explanation? Thanks!
 
-Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
-- I have a reproducer for this that you can run if you'd like, but it's Claude
-  generated so it's a bit special, but definitely triggers the issue every time
-  and this patch resolved it. We're hitting it in production quite a bit.
+[1]: https://lore.kernel.org/all/20251114201329.3275875-1-ameryhung@gmail.com/
 
- drivers/target/loopback/tcm_loop.c | 52 ++++++++++++++++++++++++++----
- 1 file changed, 46 insertions(+), 6 deletions(-)
+> For riscv hardware without zacas extension, I think a workaround with
+> some performance overhead is to enable CONFIG_SLUB_DEBUG and
+> slub_debug options.
 
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index d668bd19fd4a..528883d989b8 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -26,6 +26,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/configfs.h>
-+#include <linux/blk-mq.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_tcq.h>
- #include <scsi/scsi_host.h>
-@@ -269,15 +270,27 @@ static int tcm_loop_device_reset(struct scsi_cmnd *sc)
- 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
- }
- 
-+static bool tcm_loop_flush_work_iter(struct request *rq, void *data)
-+{
-+	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
-+	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
-+	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
-+
-+	flush_work(&se_cmd->work);
-+	return true;
-+}
-+
- static int tcm_loop_target_reset(struct scsi_cmnd *sc)
- {
- 	struct tcm_loop_hba *tl_hba;
- 	struct tcm_loop_tpg *tl_tpg;
-+	struct Scsi_Host *sh = sc->device->host;
-+	int ret;
- 
- 	/*
- 	 * Locate the tcm_loop_hba_t pointer
- 	 */
--	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
-+	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
- 	if (!tl_hba) {
- 		pr_err("Unable to perform device reset without active I_T Nexus\n");
- 		return FAILED;
-@@ -286,11 +299,38 @@ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
- 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
- 	 */
- 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
--	if (tl_tpg) {
--		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
--		return SUCCESS;
--	}
--	return FAILED;
-+	if (!tl_tpg)
-+		return FAILED;
-+
-+	/*
-+	 * Issue a LUN_RESET to drain all commands that the target core
-+	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
-+	 */
-+	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
-+	if (ret != TMR_FUNCTION_COMPLETE)
-+		return FAILED;
-+
-+	/*
-+	 * Flush any deferred target core completion work that may still be
-+	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
-+	 * are skipped by the TMR drain, but their async completion work
-+	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
-+	 * may still be pending in target_completion_wq.
-+	 *
-+	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
-+	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
-+	 * if deferred work is still pending, the memset in queuecommand would
-+	 * zero the se_cmd while the work accesses it, leaking the LUN
-+	 * percpu_ref and hanging configfs unlink forever.
-+	 *
-+	 * Use blk_mq_tagset_busy_iter() to find all started requests and
-+	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
-+	 * and other SCSI drivers to drain outstanding commands during reset.
-+	 */
-+	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
-+
-+	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
-+	return SUCCESS;
- }
- 
- static const struct scsi_host_template tcm_loop_driver_template = {
--- 
-2.53.0
+There is a patch [2] that enables HAVE_CMPXCHG_DOUBLE for riscv so I think
+it will not be a problem for riscv in the future, even for hardware without zacas
+extension because the kernel has fallback implementation for zacas.
+
+However, this would still be an issue for other architectures. Currently only
+x86, arm64, s390 and loongarch have HAVE_CMPXCHG_DOUBLE in 7.0-rc4.
+I don't think letting users enable slub_debug would be a reasonable workaround.
+
+[2]: https://patchew.org/linux/20260220074449.8526-1-mssola@mssola.com/
+
+Best regards,
+Levi
+
+>>
+>> Fixes: f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock() in local storage")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Levi Zim <rsworktech@outlook.com>
+>> ---
+>> I find that bpf_task_storage_get with flag BPF_LOCAL_STORAGE_GET_F_CREATE
+>> always fails for me on 6.19 kernel on riscv64 and bisected it.
+>>
+>> In f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock()
+>> in local storage"), bpf memory allocator is replaced with kmalloc_nolock.
+>> This approach is problematic for architectures that lack CMPXCHG_DOUBLE
+>> because kmalloc_nolock always fails in this case:
+>>
+>> In function kmalloc_nolock (kmalloc_nolock_noprof):
+>>
+>>         if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+>>                 /*
+>>                  * kmalloc_nolock() is not supported on architectures that
+>>                  * don't implement cmpxchg16b, but debug caches don't use
+>>                  * per-cpu slab and per-cpu partial slabs. They rely on
+>>                  * kmem_cache_node->list_lock, so kmalloc_nolock() can
+>>                  * attempt to allocate from debug caches by
+>>                  * spin_trylock_irqsave(&n->list_lock, ...)
+>>                  */
+>>                 return NULL;
+>>
+>> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
+>> (But not for a PREEMPT_RT case as explained in the comment and commitmsg)
+>>
+>> Note for stable: this only needs to be picked into v6.19 if the patch
+>> makes it into 7.0.
+>> ---
+>> Changes in v3:
+>> - Use macro instead of const static variable to avoid triggering
+>>   warnings.
+>> - Wrap lines at 80 columns
+>> - Link to v2: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v2-1-576e33e4fa67@outlook.com
+>>
+>> Changes in v2:
+>> - Drop the modification to the PREEMPT_RT case as it requires
+>>   kmalloc_nolock for correctness.
+>> - Add a comment to the PREEMPT_RT case about the limitation when
+>>   not HAVE_CMPXCHG_DOUBLE but enables PREEMPT_RT.
+>> - Link to v1: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v1-1-24abf3f75a9f@outlook.com
+>> ---
+>>  include/linux/bpf_local_storage.h | 1 +
+>>  kernel/bpf/bpf_cgrp_storage.c     | 3 ++-
+>>  kernel/bpf/bpf_local_storage.c    | 4 ++++
+>>  kernel/bpf/bpf_task_storage.c     | 3 ++-
+>>  4 files changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_local_storage.h
+>> index 8157e8da61d40..d8f2c5d63a80e 100644
+>> --- a/include/linux/bpf_local_storage.h
+>> +++ b/include/linux/bpf_local_storage.h
+>> @@ -18,6 +18,7 @@
+>>  #include <asm/rqspinlock.h>
+>>
+>>  #define BPF_LOCAL_STORAGE_CACHE_SIZE   16
+>> +#define KMALLOC_NOLOCK_SUPPORTED IS_ENABLED(CONFIG_HAVE_CMPXCHG_DOUBLE)
+>>
+>>  struct bpf_local_storage_map_bucket {
+>>         struct hlist_head list;
+>> diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+>> index c2a2ead1f466d..cd18193c44058 100644
+>> --- a/kernel/bpf/bpf_cgrp_storage.c
+>> +++ b/kernel/bpf/bpf_cgrp_storage.c
+>> @@ -114,7 +114,8 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
+>>
+>>  static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
+>>  {
+>> -       return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
+>> +       return bpf_local_storage_map_alloc(attr, &cgroup_cache,
+>> +                                          KMALLOC_NOLOCK_SUPPORTED);
+>>  }
+>>
+>>  static void cgroup_storage_map_free(struct bpf_map *map)
+>> diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+>> index 9c96a4477f81a..a6c240da87668 100644
+>> --- a/kernel/bpf/bpf_local_storage.c
+>> +++ b/kernel/bpf/bpf_local_storage.c
+>> @@ -893,6 +893,10 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
+>>         /* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
+>>          * preemptible context. Thus, enforce all storages to use
+>>          * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
+>> +        *
+>> +        * However, kmalloc_nolock would fail on architectures that do not
+>> +        * have CMPXCHG_DOUBLE. On such architectures with PREEMPT_RT,
+>> +        * bpf_local_storage_alloc would always fail.
+>>          */
+>>         smap->use_kmalloc_nolock = IS_ENABLED(CONFIG_PREEMPT_RT) ? true : use_kmalloc_nolock;
+>>
+>> diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_storage.c
+>> index 605506792b5b4..6e8597edea314 100644
+>> --- a/kernel/bpf/bpf_task_storage.c
+>> +++ b/kernel/bpf/bpf_task_storage.c
+>> @@ -212,7 +212,8 @@ static int notsupp_get_next_key(struct bpf_map *map, void *key, void *next_key)
+>>
+>>  static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
+>>  {
+>> -       return bpf_local_storage_map_alloc(attr, &task_cache, true);
+>> +       return bpf_local_storage_map_alloc(attr, &task_cache,
+>> +                                          KMALLOC_NOLOCK_SUPPORTED);
+>>  }
+>>
+>>  static void task_storage_map_free(struct bpf_map *map)
+>>
+>> ---
+>> base-commit: e06e6b8001233241eb5b2e2791162f0585f50f4b
+>> change-id: 20260314-bpf-kmalloc-nolock-60da80e613de
+>>
+>> Best regards,
+>> --
+>> Levi Zim <rsworktech@outlook.com>
+>>
+>>
 
 
