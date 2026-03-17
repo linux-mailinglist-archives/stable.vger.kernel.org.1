@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEzVBs2UuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:13 +0100
+	id cISDN56LuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795FD2B044E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59ED2AF1FC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A9F03226539
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2EA1330ECE51
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077B73176FD;
-	Tue, 17 Mar 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D7E3F54DE;
+	Tue, 17 Mar 2026 16:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTBs0ny3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4s7aLjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA272DF132;
-	Tue, 17 Mar 2026 17:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87083F6600;
+	Tue, 17 Mar 2026 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768075; cv=none; b=CZyQaewbvRmxtBvJwLfDurb9DCZZdnU575oN0KzJs0xChCt6dNV2GEQ4ZTRdfTuU5NLKduIjjdfc2WJgP2+1KX42JOVVBNPs9LtNKMWmI0gdj7/Dy868KgKsnNl/vEGCdkIaCelM6Vg1urwsbpwdkhImnwTxQfyxAOHCxMcMqSQ=
+	t=1773766688; cv=none; b=etcGLeZL1ecfKpWfjGhnsdlmUUskSAV91KV1ooXSMaI11sm1tn0Sa5OwfcLKF5Gc09KsxBi2bWs00vpYGdyNHxsvQ3+dw6Bp2wh8+NRkrY6PicxPncFe685KnH/FrPzylgA+IRnHAfetxLl780gBBnzkeU6w9WK5Vy4i6n43as4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768075; c=relaxed/simple;
-	bh=aylVh0kTZM8na+VERSW9EtDDhlAhrzoE7H0ZI57T7E0=;
+	s=arc-20240116; t=1773766688; c=relaxed/simple;
+	bh=/JxGq33vblV3gtrs5b6xd7s4NLJy1MFHw5SNm3ub+bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0sFWuI6128g14JSSsCvLK6Oy0falQt/BNf1e+KAn2cUtB1D5jM0En4bpyW0tmQJOel7pdY3e4Fm+MJGhbIGjIEQRAs2wkmvjyEy6OJwMQAStAsBeOX8Ut55rKmENTbizCMT5vhg1PUvydWC32+xfWaMrecyqpbS+UaFl9gdKeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTBs0ny3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B30C4CEF7;
-	Tue, 17 Mar 2026 17:21:14 +0000 (UTC)
+	 MIME-Version; b=J22FDTm9EiiRVaPVaD169BI7BbBXj6faqcWa1uNCmW8llbIotw8+gF5k4HW1EaGLHVn3HDyLoIZv3dYUKpyculhZeOj/tsO8AunnIL5nIxe3JQlAblzIfH5E56n5ahKwb7Q4Sqj8g4RkCGd7v7lHJTz4+KlNGCK+GfSgp6o1JGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4s7aLjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE55C2BC86;
+	Tue, 17 Mar 2026 16:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768075;
-	bh=aylVh0kTZM8na+VERSW9EtDDhlAhrzoE7H0ZI57T7E0=;
+	s=korg; t=1773766688;
+	bh=/JxGq33vblV3gtrs5b6xd7s4NLJy1MFHw5SNm3ub+bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTBs0ny30ZXsO4MA8eBZ1vJV/SoqA3BEcuVk4lHkWmvfFHgbjeGUhVx10VqumIahq
-	 KIC+wlyuQgKoUaya2hwAD4yLc1wzn8KzXXXV248S6B4gwo6y0L4bCgQLZqf5gId5Tl
-	 IMKZkqzoW21af+/Vojqx2jKZKZ6WJPmH8YyIgRDk=
+	b=l4s7aLjIJrFa3WLUtH5rTs2mINq/9QSVsSdBxk4p2iU6GMuwiJ2bsrylpE0IEyWJo
+	 tMYELSk9N6PD29XDVGj/NVvSf8ASyuJQeAPkZb9NK5KhC3N3fA/whXBEsLSotJmmFl
+	 fgN1/HS4UiFqBuD45gOYJl8UNn7LMzvGvIG9KdqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 226/333] hwmon: (pmbus/q54sj108a2) fix stack overflow in debugfs read
-Date: Tue, 17 Mar 2026 17:34:15 +0100
-Message-ID: <20260317163007.746756635@linuxfoundation.org>
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 299/378] net: macb: Shuffle the tx ring before enabling tx
+Date: Tue, 17 Mar 2026 17:34:16 +0100
+Message-ID: <20260317163018.007193555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +69,217 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226433-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226757-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 795FD2B044E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[windriver.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E59ED2AF1FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 25dd70a03b1f5f3aa71e1a5091ecd9cd2a13ee43 upstream.
+commit 881a0263d502e1a93ebc13a78254e9ad19520232 upstream.
 
-The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
-due to incorrect arguments passed to bin2hex(). The function currently
-passes 'data' as the destination and 'data_char' as the source.
+Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
+the rootfs may take an extended time to recover after a suspend.
+Upon investigation, it was determined that the issue originates from a
+problem in the macb driver.
 
-Because bin2hex() converts each input byte into two hex characters, a
-32-byte block read results in 64 bytes of output. Since 'data' is only
-34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
-of the buffer onto the stack.
+According to the Zynq UltraScale TRM [1], when transmit is disabled,
+the transmit buffer queue pointer resets to point to the address
+specified by the transmit buffer queue base address register.
 
-Additionally, the arguments were swapped: it was reading from the
-zero-initialized 'data_char' and writing to 'data', resulting in
-all-zero output regardless of the actual I2C read.
+In the current implementation, the code merely resets `queue->tx_head`
+and `queue->tx_tail` to '0'. This approach presents several issues:
 
-Fix this by:
-1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
-2. Correcting the bin2hex() argument order and using the actual read count.
-3. Using a pointer to select the correct output buffer for the final
-   simple_read_from_buffer call.
+- Packets already queued in the tx ring are silently lost,
+  leading to memory leaks since the associated skbs cannot be released.
 
-Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
+- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
+  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
+  are reset to '0'.
+
+- The transmission may become stuck on a packet that has already been sent
+  out, with its 'TX_USED' bit set, but has not yet been processed. However,
+  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
+  `macb_tx_poll()` incorrectly assumes there are no packets to handle
+  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
+  when a new packet is placed at this position. This is the root cause of
+  the prolonged recovery time observed for the NFS root filesystem.
+
+To resolve this issue, shuffle the tx ring and tx skb array so that
+the first unsent packet is positioned at the start of the tx ring.
+Additionally, ensure that updates to `queue->tx_head` and
+`queue->tx_tail` are properly protected with the appropriate lock.
+
+[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
+
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260304235116.1045-1-sanman.p211993@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/q54sj108a2.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   98 ++++++++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/pmbus/q54sj108a2.c
-+++ b/drivers/hwmon/pmbus/q54sj108a2.c
-@@ -78,7 +78,8 @@ static ssize_t q54sj108a2_debugfs_read(s
- 	int idx = *idxp;
- 	struct q54sj108a2_data *psu = to_psu(idxp, idx);
- 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
--	char data_char[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
-+	char data_char[I2C_SMBUS_BLOCK_MAX * 2 + 2] = { 0 };
-+	char *out = data;
- 	char *res;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -36,6 +36,7 @@
+ #include <linux/tcp.h>
+ #include <linux/types.h>
+ #include <linux/udp.h>
++#include <linux/gcd.h>
+ #include <net/pkt_sched.h>
+ #include "macb.h"
  
- 	switch (idx) {
-@@ -149,27 +150,27 @@ static ssize_t q54sj108a2_debugfs_read(s
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 32);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	case Q54SJ108A2_DEBUGFS_FLASH_KEY:
- 		rc = i2c_smbus_read_block_data(psu->client, PMBUS_FLASH_KEY_WRITE, data);
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 4);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
--	data[rc] = '\n';
-+	out[rc] = '\n';
- 	rc += 2;
- 
--	return simple_read_from_buffer(buf, count, ppos, data, rc);
-+	return simple_read_from_buffer(buf, count, ppos, out, rc);
+@@ -668,6 +669,97 @@ static void macb_mac_link_down(struct ph
+ 	netif_tx_stop_all_queues(ndev);
  }
  
- static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *buf,
++/* Use juggling algorithm to left rotate tx ring and tx skb array */
++static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
++{
++	unsigned int head, tail, count, ring_size, desc_size;
++	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
++	struct macb_dma_desc *desc_curr, *desc_next;
++	unsigned int i, cycles, shift, curr, next;
++	struct macb *bp = queue->bp;
++	unsigned char desc[24];
++	unsigned long flags;
++
++	desc_size = macb_dma_desc_get_size(bp);
++
++	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
++		return;
++
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++	head = queue->tx_head;
++	tail = queue->tx_tail;
++	ring_size = bp->tx_ring_size;
++	count = CIRC_CNT(head, tail, ring_size);
++
++	if (!(tail % ring_size))
++		goto unlock;
++
++	if (!count) {
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
++		goto unlock;
++	}
++
++	shift = tail % ring_size;
++	cycles = gcd(ring_size, shift);
++
++	for (i = 0; i < cycles; i++) {
++		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
++		memcpy(&tx_skb, macb_tx_skb(queue, i),
++		       sizeof(struct macb_tx_skb));
++
++		curr = i;
++		next = (curr + shift) % ring_size;
++
++		while (next != i) {
++			desc_curr = macb_tx_desc(queue, curr);
++			desc_next = macb_tx_desc(queue, next);
++
++			memcpy(desc_curr, desc_next, desc_size);
++
++			if (next == ring_size - 1)
++				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++			if (curr == ring_size - 1)
++				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++
++			skb_curr = macb_tx_skb(queue, curr);
++			skb_next = macb_tx_skb(queue, next);
++			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
++
++			curr = next;
++			next = (curr + shift) % ring_size;
++		}
++
++		desc_curr = macb_tx_desc(queue, curr);
++		memcpy(desc_curr, &desc, desc_size);
++		if (i == ring_size - 1)
++			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++		if (curr == ring_size - 1)
++			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++		memcpy(macb_tx_skb(queue, curr), &tx_skb,
++		       sizeof(struct macb_tx_skb));
++	}
++
++	queue->tx_head = count;
++	queue->tx_tail = 0;
++
++	/* Make descriptor updates visible to hardware */
++	wmb();
++
++unlock:
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
++}
++
++/* Rotate the queue so that the tail is at index 0 */
++static void gem_shuffle_tx_rings(struct macb *bp)
++{
++	struct macb_queue *queue;
++	int q;
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
++		gem_shuffle_tx_one_ring(queue);
++}
++
+ static void macb_mac_link_up(struct phylink_config *config,
+ 			     struct phy_device *phy,
+ 			     unsigned int mode, phy_interface_t interface,
+@@ -706,8 +798,6 @@ static void macb_mac_link_up(struct phyl
+ 			ctrl |= MACB_BIT(PAE);
+ 
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-			queue->tx_head = 0;
+-			queue->tx_tail = 0;
+ 			queue_writel(queue, IER,
+ 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
+ 		}
+@@ -721,8 +811,10 @@ static void macb_mac_link_up(struct phyl
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+ 		macb_set_tx_clk(bp, speed);
++		gem_shuffle_tx_rings(bp);
++	}
+ 
+ 	/* Enable Rx and Tx; Enable PTP unicast */
+ 	ctrl = macb_readl(bp, NCR);
 
 
 
