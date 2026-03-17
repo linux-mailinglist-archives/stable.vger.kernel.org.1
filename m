@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAZMFY+RuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:23 +0100
+	id SP4hAU+HuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C029D2AFE7C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AB42AEA10
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BC2F3280738
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:12:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B27030965FA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF2531815D;
-	Tue, 17 Mar 2026 17:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E463EFD36;
+	Tue, 17 Mar 2026 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4ek63OT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXo1V6pp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315929D26C;
-	Tue, 17 Mar 2026 17:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DECB3EFD18;
+	Tue, 17 Mar 2026 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767549; cv=none; b=BvIOMEAelf89kSew6GeicqtUtxdgZVGkxCgKd1o4U5gtfkdZiSjy70luOLfW9gLdsYH4rX63jIpyGeEQCk3lAgUqaRFSNcCpqEnkn2IjICHisaBTjr9PykHhUTY3RMvhv5gO+qQHoQ/al65Tosqd3pttBOBDkp9bhMkivC491JQ=
+	t=1773765966; cv=none; b=PLdVSzaYatKu5imZyXIl9FR8Pi33FcAKvgNN6TV90x8rCUPd5tFEJu8QyBOqd23pDTs0Bnuh3lfia5DB0+ZE5Fsp1qDaoQ8Po4rYHCKNUYU8kmKyS7VAEjyqEEZ9XcoaJOV5OfLFoZRFOlL9V+KSCE4wQ271zKfpGKO1lFJQwa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767549; c=relaxed/simple;
-	bh=Rb0uEowrt/SR8AHuhb66IyotDmYE6cLq9YTXXaKPj2o=;
+	s=arc-20240116; t=1773765966; c=relaxed/simple;
+	bh=IeCCt3GEgbQZFZSaZXQtkwcOC3clHuMd1q6PRPZ3OJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovVTy/Jg7LCHVhZ2Bsdk8B4xfs4jii5WI6F8uVRqucJZoRKeDJ2E0lD86y01bYrkZj9eRW9GQGL1s4kGJ+dt99JcUKrw1WU0uB9oyPRzsccKiBF96jlOZ3/xT88e2+xZ9uDKq0oJYJxBicOQ5WVaDsEy3k3349BN9MIX8Q7ikYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4ek63OT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649C6C4CEF7;
-	Tue, 17 Mar 2026 17:12:28 +0000 (UTC)
+	 MIME-Version; b=sm4k4Xkcq7I9y5yrHkK66J1xvwtQz8ohUnGYupAjEx3afk3V4uM9In2Jf/OyJMwsziHEjge9ZkcUBBxn6hY7jU3c1wV/n8/4hmK0vlOzPmiT+CYoY7vTWtsBIriXo/cQ6fFQBZM4237o2gtjTHE8OMNi1Hwiq11l2alUQsHNVEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXo1V6pp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6BBC4CEF7;
+	Tue, 17 Mar 2026 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767549;
-	bh=Rb0uEowrt/SR8AHuhb66IyotDmYE6cLq9YTXXaKPj2o=;
+	s=korg; t=1773765966;
+	bh=IeCCt3GEgbQZFZSaZXQtkwcOC3clHuMd1q6PRPZ3OJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4ek63OT3oge4B1A/dZGWhb8A08PwVk4UAe7qL+oSmk9rIomk3QjrY+vnVdk3CTa0
-	 akdgHot/5Ilj5ym60GZyPhBJXpy9hicY40KnqqvZqNq+pCnkEbSLG689aMwfyc+m8q
-	 JOSe/BE7aDGAKmp/qELeBxB56PCyfcaZU8LIv18k=
+	b=hXo1V6ppOh3oJP0Sv4K3ikXBU6fNM1lTmGcAdb8d63X3fbgVFbfYshel6z4V5xqgG
+	 AqrPh2yxEr29orALPMft1Txfa38ALWXmMWDk1woUbN4TvSaH03ao5vvxmn+ZQWmK/l
+	 eaEOxT0rhMHrJr/XqfalMdOY8mMkasGNnDm+0p/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 067/333] netfilter: nf_tables: always walk all pending catchall elements
+	Quentin Perret <qperret@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.19 139/378] KVM: arm64: pkvm: Fallback to level-3 mapping on host stage-2 fault
 Date: Tue, 17 Mar 2026 17:31:36 +0100
-Message-ID: <20260317163001.860959443@linuxfoundation.org>
+Message-ID: <20260317163012.126713959@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226630-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226269-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C029D2AFE7C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 86AB42AEA10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 ]
+commit 8531d5a83d8eb8affb5c0249b466c28d94192603 upstream.
 
-During transaction processing we might have more than one catchall element:
-1 live catchall element and 1 pending element that is coming as part of the
-new batch.
+If, for any odd reason, we cannot converge to mapping size that is
+completely contained in a memblock region, we fail to install a S2
+mapping and go back to the faulting instruction. Rince, repeat.
 
-If the map holding the catchall elements is also going away, its
-required to toggle all catchall elements and not just the first viable
-candidate.
+This happens when faulting in regions that are smaller than a page
+or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
+an O6 board that refuses to boot in protected mode).
 
-Otherwise, we get:
- WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
- RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
- [..]
- __nft_set_elem_destroy+0x106/0x380 [nf_tables]
- nf_tables_abort_release+0x348/0x8d0 [nf_tables]
- nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
- nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
+In this situation, fallback to using a PAGE_SIZE mapping anyway --
+it isn't like we can go any lower.
 
-Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
+Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
+Cc: stable@vger.kernel.org
+Cc: Quentin Perret <qperret@google.com>
+Reviewed-by: Quentin Perret <qperret@google.com>
+Link: https://patch.msgid.link/20260305132751.2928138-1-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ed1d639fe34d7..b6a575ec33159 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -828,7 +828,6 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
- 
- 		nft_set_elem_change_active(ctx->net, set, ext);
- 		nft_setelem_data_deactivate(ctx->net, set, catchall->elem);
--		break;
- 	}
- }
- 
-@@ -5928,7 +5927,6 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
- 
- 		nft_clear(ctx->net, ext);
- 		nft_setelem_data_activate(ctx->net, set, catchall->elem);
--		break;
- 	}
- }
- 
--- 
-2.51.0
-
+--- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
++++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+@@ -516,7 +516,7 @@ static int host_stage2_adjust_range(u64
+ 		granule = kvm_granule_size(level);
+ 		cur.start = ALIGN_DOWN(addr, granule);
+ 		cur.end = cur.start + granule;
+-		if (!range_included(&cur, range))
++		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
+ 			continue;
+ 		*range = cur;
+ 		return 0;
 
 
 
