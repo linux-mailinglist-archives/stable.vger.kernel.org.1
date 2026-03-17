@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE4nLl2SuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:49 +0100
+	id MDLAD6SGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00A62AFFEF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCF32AE8A8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:51:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9DB59302CC01
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F087C3037060
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356B12DEA9D;
-	Tue, 17 Mar 2026 17:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5133A3F54A4;
+	Tue, 17 Mar 2026 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC5w5OU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQs0Diht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9422D5940;
-	Tue, 17 Mar 2026 17:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C953EDADB;
+	Tue, 17 Mar 2026 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767864; cv=none; b=Wf4i4hyCKB6e8NZRkp5qJTpz+s2iec8r7D/8IQj71Fawe91VyEBH+sPxyO6NEizBXHrjNE99X1jdC0k81hMoypyjRey7DU5y4jNFx8ZMRWzFdk/mXZZpTIbEGgvNzcZgEXO95+y49wH6iSUPaRDiounFqpVjKBCT2s5H0rpreHM=
+	t=1773766299; cv=none; b=C1q8CuYsv2u1YLoaSNrut4JF+aJ0JkPselwIKNnzmSAztD9O0e5EIYYjAsAE+TMk0B9Ifyr1HtqZbGHDexuJ0ndc5EmByMCgM6HHTPbB7mq/sK4C+MEIlfqoJ3YGuUJ4XgQrejaBk2EGSitTYx8LAlCcgrSJgz+8yMkeP8sS4Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767864; c=relaxed/simple;
-	bh=LQTaURo6SEdp7Dj8QI4CbwfqaDh/h66cT3FEqm7Ciko=;
+	s=arc-20240116; t=1773766299; c=relaxed/simple;
+	bh=89CPsaG7S40w0PQBGl//7B9panRDtVTeZeCB/OZOhbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6/I/PbX4rwUYWqS2z26jiQDRHFOkuq3xs4mr+emgiaM4/+CcOYZBOE4EHbw8LovIwciHde2G8wrngZTkmSA1Sw/e43Z3sSkhaGeRzEjIX3bw9dJjbBLdNX8Q+gDma5k/SJLJX47vHYS72eGcbAneeqzhIfbzuxPkwSXCixcLNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC5w5OU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292F4C4CEF7;
-	Tue, 17 Mar 2026 17:17:42 +0000 (UTC)
+	 MIME-Version; b=dXv9PWoO2cN36VbS6s0Mq2WJRAxZAZlzOsdiZXTZZ1oqRkh4VBsCXczXZd69AZMljs6LHV3l+9b2tIstdcFSN4LbXaOOivifaG3/+KhagtONBbfyeb1WIPf6HdzKGXZHFStqHSS41yOO4IOUlryKaoKBebL4UohW5Bry/QODHpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQs0Diht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A22C4CEF7;
+	Tue, 17 Mar 2026 16:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767863;
-	bh=LQTaURo6SEdp7Dj8QI4CbwfqaDh/h66cT3FEqm7Ciko=;
+	s=korg; t=1773766299;
+	bh=89CPsaG7S40w0PQBGl//7B9panRDtVTeZeCB/OZOhbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fC5w5OU3XEqcpDHPNr7OxlCf83qmbeViyage8Mf1IjJXEVwg2Q1z/xtIBXwMTk3mS
-	 g1szixRzn8etJOkxLRMSNF/91G26/1WDjLUy8Qr9Ct+zVavmcxCNDKTEP3XM5fYaEZ
-	 yCSMZK9D4JJW3JkN1b4rUwQWidkUOTTjPLlDNfu0=
+	b=tQs0Dihtezr5IifKWAuMPQfSfskiEnHuTRXdOX03UpWJOwDvfo4lRxVP+ZyA75Uog
+	 bGshKWpcd8NF9iefWEavG85IBag2TtgLIA/a411vVhDgxsHa09DOrzMT17TxbFzAn1
+	 FT3w2oSc3FRNPOspPjLNUW+gvrAajHArg2C1qAhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH 6.18 142/333] usb: renesas_usbhs: fix use-after-free in ISR during device removal
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 214/378] liveupdate: luo_file: remember retrieve() status
 Date: Tue, 17 Mar 2026 17:32:51 +0100
-Message-ID: <20260317163004.626611734@linuxfoundation.org>
+Message-ID: <20260317163014.882532487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +69,240 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226344-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226697-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,harvard.edu:email]
-X-Rspamd-Queue-Id: B00A62AFFEF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,soleen.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email]
+X-Rspamd-Queue-Id: DFCF32AE8A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
+commit f85b1c6af5bc3872f994df0a5688c1162de07a62 upstream.
 
-In usbhs_remove(), the driver frees resources (including the pipe array)
-while the interrupt handler (usbhs_interrupt) is still registered. If an
-interrupt fires after usbhs_pipe_remove() but before the driver is fully
-unbound, the ISR may access freed memory, causing a use-after-free.
+LUO keeps track of successful retrieve attempts on a LUO file.  It does so
+to avoid multiple retrievals of the same file.  Multiple retrievals cause
+problems because once the file is retrieved, the serialized data
+structures are likely freed and the file is likely in a very different
+state from what the code expects.
 
-Fix this by calling devm_free_irq() before freeing resources. This ensures
-the interrupt handler is both disabled and synchronized (waits for any
-running ISR to complete) before usbhs_pipe_remove() is called.
+The retrieve boolean in struct luo_file keeps track of this, and is passed
+to the finish callback so it knows what work was already done and what it
+has left to do.
 
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
+All this works well when retrieve succeeds.  When it fails,
+luo_retrieve_file() returns the error immediately, without ever storing
+anywhere that a retrieve was attempted or what its error code was.  This
+results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
+but nothing prevents it from trying this again.
+
+The retry is problematic for much of the same reasons listed above.  The
+file is likely in a very different state than what the retrieve logic
+normally expects, and it might even have freed some serialization data
+structures.  Attempting to access them or free them again is going to
+break things.
+
+For example, if memfd managed to restore 8 of its 10 folios, but fails on
+the 9th, a subsequent retrieve attempt will try to call
+kho_restore_folio() on the first folio again, and that will fail with a
+warning since it is an invalid operation.
+
+Apart from the retry, finish() also breaks.  Since on failure the
+retrieved bool in luo_file is never touched, the finish() call on session
+close will tell the file handler that retrieve was never attempted, and it
+will try to access or free the data structures that might not exist, much
+in the same way as the retry attempt.
+
+There is no sane way of attempting the retrieve again.  Remember the error
+retrieve returned and directly return it on a retry.  Also pass this
+status code to finish() so it can make the right decision on the work it
+needs to do.
+
+This is done by changing the bool to an integer.  A value of 0 means
+retrieve was never attempted, a positive value means it succeeded, and a
+negative value means it failed and the error code is the value.
+
+Link: https://lkml.kernel.org/r/20260216132221.987987-1-pratyush@kernel.org
+Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/liveupdate.h   |    9 ++++++---
+ kernel/liveupdate/luo_file.c |   41 +++++++++++++++++++++++++----------------
+ mm/memfd_luo.c               |    7 ++++++-
+ 3 files changed, 37 insertions(+), 20 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -815,6 +815,15 @@ static void usbhs_remove(struct platform
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -20,8 +20,11 @@ struct file;
+ /**
+  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
+  * @handler:          The file handler being called.
+- * @retrieved:        The retrieve status for the 'can_finish / finish'
+- *                    operation.
++ * @retrieve_status:  The retrieve status for the 'can_finish / finish'
++ *                    operation. A value of 0 means the retrieve has not been
++ *                    attempted, a positive value means the retrieve was
++ *                    successful, and a negative value means the retrieve failed,
++ *                    and the value is the error code of the call.
+  * @file:             The file object. For retrieve: [OUT] The callback sets
+  *                    this to the new file. For other ops: [IN] The caller sets
+  *                    this to the file being operated on.
+@@ -37,7 +40,7 @@ struct file;
+  */
+ struct liveupdate_file_op_args {
+ 	struct liveupdate_file_handler *handler;
+-	bool retrieved;
++	int retrieve_status;
+ 	struct file *file;
+ 	u64 serialized_data;
+ 	void *private_data;
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -133,9 +133,12 @@ static LIST_HEAD(luo_file_handler_list);
+  *                 state that is not preserved. Set by the handler's .preserve()
+  *                 callback, and must be freed in the handler's .unpreserve()
+  *                 callback.
+- * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
++ * @retrieve_status: Status code indicating whether a user/kernel in the new kernel has
+  *                 successfully called retrieve() on this file. This prevents
+- *                 multiple retrieval attempts.
++ *                 multiple retrieval attempts. A value of 0 means a retrieve()
++ *                 has not been attempted, a positive value means the retrieve()
++ *                 was successful, and a negative value means the retrieve()
++ *                 failed, and the value is the error code of the call.
+  * @mutex:         A mutex that protects the fields of this specific instance
+  *                 (e.g., @retrieved, @file), ensuring that operations like
+  *                 retrieving or finishing a file are atomic.
+@@ -160,7 +163,7 @@ struct luo_file {
+ 	struct file *file;
+ 	u64 serialized_data;
+ 	void *private_data;
+-	bool retrieved;
++	int retrieve_status;
+ 	struct mutex mutex;
+ 	struct list_head list;
+ 	u64 token;
+@@ -293,7 +296,6 @@ int luo_preserve_file(struct luo_file_se
+ 	luo_file->file = file;
+ 	luo_file->fh = fh;
+ 	luo_file->token = token;
+-	luo_file->retrieved = false;
+ 	mutex_init(&luo_file->mutex);
  
- 	usbhs_platform_call(priv, hardware_exit, pdev);
- 	reset_control_assert(priv->rsts);
+ 	args.handler = fh;
+@@ -569,7 +571,12 @@ int luo_retrieve_file(struct luo_file_se
+ 		return -ENOENT;
+ 
+ 	guard(mutex)(&luo_file->mutex);
+-	if (luo_file->retrieved) {
++	if (luo_file->retrieve_status < 0) {
++		/* Retrieve was attempted and it failed. Return the error code. */
++		return luo_file->retrieve_status;
++	}
 +
++	if (luo_file->retrieve_status > 0) {
+ 		/*
+ 		 * Someone is asking for this file again, so get a reference
+ 		 * for them.
+@@ -582,16 +589,19 @@ int luo_retrieve_file(struct luo_file_se
+ 	args.handler = luo_file->fh;
+ 	args.serialized_data = luo_file->serialized_data;
+ 	err = luo_file->fh->ops->retrieve(&args);
+-	if (!err) {
+-		luo_file->file = args.file;
+-
+-		/* Get reference so we can keep this file in LUO until finish */
+-		get_file(luo_file->file);
+-		*filep = luo_file->file;
+-		luo_file->retrieved = true;
++	if (err) {
++		/* Keep the error code for later use. */
++		luo_file->retrieve_status = err;
++		return err;
+ 	}
+ 
+-	return err;
++	luo_file->file = args.file;
++	/* Get reference so we can keep this file in LUO until finish */
++	get_file(luo_file->file);
++	*filep = luo_file->file;
++	luo_file->retrieve_status = 1;
++
++	return 0;
+ }
+ 
+ static int luo_file_can_finish_one(struct luo_file_set *file_set,
+@@ -607,7 +617,7 @@ static int luo_file_can_finish_one(struc
+ 		args.handler = luo_file->fh;
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+-		args.retrieved = luo_file->retrieved;
++		args.retrieve_status = luo_file->retrieve_status;
+ 		can_finish = luo_file->fh->ops->can_finish(&args);
+ 	}
+ 
+@@ -624,7 +634,7 @@ static void luo_file_finish_one(struct l
+ 	args.handler = luo_file->fh;
+ 	args.file = luo_file->file;
+ 	args.serialized_data = luo_file->serialized_data;
+-	args.retrieved = luo_file->retrieved;
++	args.retrieve_status = luo_file->retrieve_status;
+ 
+ 	luo_file->fh->ops->finish(&args);
+ }
+@@ -779,7 +789,6 @@ int luo_file_deserialize(struct luo_file
+ 		luo_file->file = NULL;
+ 		luo_file->serialized_data = file_ser[i].data;
+ 		luo_file->token = file_ser[i].token;
+-		luo_file->retrieved = false;
+ 		mutex_init(&luo_file->mutex);
+ 		list_add_tail(&luo_file->list, &file_set->files_list);
+ 	}
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -326,7 +326,12 @@ static void memfd_luo_finish(struct live
+ 	struct memfd_luo_folio_ser *folios_ser;
+ 	struct memfd_luo_ser *ser;
+ 
+-	if (args->retrieved)
 +	/*
-+	 * Explicitly free the IRQ to ensure the interrupt handler is
-+	 * disabled and synchronized before freeing resources.
-+	 * devm_free_irq() calls free_irq() which waits for any running
-+	 * ISR to complete, preventing UAF.
++	 * If retrieve was successful, nothing to do. If it failed, retrieve()
++	 * already cleaned up everything it could. So nothing to do there
++	 * either. Only need to clean up when retrieve was not called.
 +	 */
-+	devm_free_irq(&pdev->dev, priv->irq, priv);
-+
- 	usbhs_mod_remove(priv);
- 	usbhs_fifo_remove(priv);
- 	usbhs_pipe_remove(priv);
++	if (args->retrieve_status)
+ 		return;
+ 
+ 	ser = phys_to_virt(args->serialized_data);
 
 
 
