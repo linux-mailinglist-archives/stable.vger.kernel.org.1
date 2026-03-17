@@ -1,245 +1,288 @@
-Return-Path: <stable+bounces-225995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AZkKFlRuWmuAQIAu9opvQ
-	(envelope-from <stable+bounces-225995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:04:25 +0100
+	id 8Na3EgFTuWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-225996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:11:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1812AA679
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:04:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B60F2AA941
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:11:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89F7E3068A24
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:03:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6BED43041DBB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA873C7DE8;
-	Tue, 17 Mar 2026 13:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9123C6A4E;
+	Tue, 17 Mar 2026 13:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4TdVwSW"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="weverUiA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530BF3C73FF
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08990390CB5
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773752589; cv=none; b=e3thAYUFIsF2hIDf8YvlfnhZQLOOJzEh8nj31s5QvOSkRAj8xDrhe68NP1KSuDYh5b7T+7menp96gJk80oxMsm9PtTQ1j5FPk8LFnUhcKE7t/7ZF1/gTnqqN4DeSUNn0muqkCNA3taUcN/HZPx+0vT65oMqnRhgbJlE6ceVjwBk=
+	t=1773752592; cv=none; b=cD2x4YnOZgOxkqYxMrJ5jrUCaRAq7sUcBNrF2U5Fh6OA1uDQUCW3pUDJPDSYiFX+EATB6nuhR//SnFIUDa4CJHO8WCch+H1OrAGfQPWVTqYh967oihSf9UIy97zOkRXnspd5w45DiM2ZTkHFFM/DAdkDQ5R+WjKNvoG7cLMCrqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773752589; c=relaxed/simple;
-	bh=Z0m/0IXSoKk7fy4DVE7F6I1astLIDdXntRNq2S8DmtA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M4quo83guTSsvAODLfWRwp4OxmC43Ho9AfjaEb7cKcVp1VtAOHxC7uGUs7MNCeM+zoy7993xv6zLp+b6qCOVBm3yLlvdzRDKIxVt3SaLoeVYcc/VDRg+AGAGWn4ErW71aaaf6D0IgztKsAcLq7389A67ShasIKKd/v/64ya0cds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4TdVwSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DE0C2BCAF;
-	Tue, 17 Mar 2026 13:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773752588;
-	bh=Z0m/0IXSoKk7fy4DVE7F6I1astLIDdXntRNq2S8DmtA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=v4TdVwSWU56ZlcI2JXIKVKAKsV3Py4zNe6HQkHOotDEHmUgW9ul4klcOxCumzeOfv
-	 vSeEMuGK/xOKv7cE27Xpsla7UUEIooI1I5/XQ7ku+DnB+PHRY1ngE5HsD0wV9d7Ic5
-	 OiaMeQgQ83nUxxP26JzoLTatiuMg84TbCHRX9WbQ=
-Subject: FAILED: patch "[PATCH] btrfs: fix transaction abort on set received ioctl due to" failed to apply to 5.10-stable tree
-To: fdmanana@suse.com,asj@kernel.org,dsterba@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 14:02:53 +0100
-Message-ID: <2026031753-musket-tidiness-7d03@gregkh>
+	s=arc-20240116; t=1773752592; c=relaxed/simple;
+	bh=u0BgBwVmTO0HkP+qg2VbnO33yIzy4x34YiCYhS5xYWc=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=eKh35LGtXyLG9dlycdtsIDtIzQKdS1+OuJdu74oFujTqZcMoi5hF4pwKxGP9aazZ5MWq5Z7wQyHIX4pqMcyodcB6rz0Tjyo18nJAqKs4mwxkbBtjb/pNq81CUfxSgnzDe9Bzi/48G6FhsFTidw6S3sz+d/1GIffBdfNlUkj/c0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=weverUiA; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-408778a8ec4so3446093fac.0
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 06:03:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1773752590; x=1774357390; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rvTidA9mOZV8Vf/fKE6vbNdjSBJoW2hEOgq7l+k5SNg=;
+        b=weverUiAMfpTqFWu7ZFJBaO4Di6zCkbvDnk0uUCkceZl1YwkM6QexU8Gop/eiMeGY6
+         FxKGBru0yifN+fIgCvAdYOEdQCIt9iy8OXSxgjMFRXQPNHDHKnAC/oJ8yAK1zvSU1w8J
+         rWRg0QIIhx5OfHqF2YTulSheK3Qxx0kS02iUJqe1vrV/+hk1l0/WHwA2yMSwIcCzVqEN
+         GH8272+673Dj3FZVBUrW8X7pCGrjgLGZ1M1Ipe+UReK0LYJSadZjQcGzInibOY23t6hr
+         XoZG+ajWuo8BHxz3G45y5achOExfeuFBeG8UCILQ/d+XWB+bhoA+ORrbquiZGCrNhs6n
+         UvnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773752590; x=1774357390;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rvTidA9mOZV8Vf/fKE6vbNdjSBJoW2hEOgq7l+k5SNg=;
+        b=Nfn8O4H/O94cVOofCl38amklg11yjGFQmTIz/4AQ9tK/YAjAyGujeKV2YEkwzl4bCl
+         DxI6/hajQS8/9yVCv5WBvn1IEhu3llU5ApZJvs+MhfxsAvatxwu87HBYJhSDrFhDRpU8
+         2qppgN9bD91FhULuznomLgo2TLDq0Ep+uo2cHK/mBHzLObxlTJbS+Uvkjk/NAxwYRryJ
+         dbhoIOXanK9qOantJnz4bczHC87qWxdeTP29lVtSmmDh7uiaEVRebMCSQyMAvwTgRpwM
+         +Cl92aHi0Gzw+Y/zflXxHS/Kiw61ESRZ5G4D98Ixm/wjBxGaZ7I54zaGTB8tRE/09bAD
+         vYxA==
+X-Gm-Message-State: AOJu0Yx3nLl+oiAARrUyUHJ4vAbzZD8UxfIXUbLoov1zrbQPLZ4BmXzh
+	w2hm/GQlCY//spIUGC7xRl1gyQo07Ii4vDUVeaksuUgJi0RA3rtcHCG+QkXHmZ3ABaw=
+X-Gm-Gg: ATEYQzw3M+np2sI9fHSrU6pjorcstXA9PcariWNLWgS4oqx1vAyeAXJPmfQizIosPUF
+	zFgqdF+sb2p1gl5usuYfJVw69TIzF5aE0AzRsflCypYCEBJgqfvcs6fFBKP/Cfr3qIJvnz9cPV8
+	Kn8SY03p9iVCxE+jrA/B5hB0QnzUp63fXvOoijBdlzYjNep3vLzoquFgSnZKsiWtjSik0Z0ZEvm
+	VkIVYexq/E43zl6GIfXHW+dw+f7f5uc0Rh/WDZqTKoYvoQ2lNBTfrgNMBpZgORDegwFPXPnHaTA
+	gX0/cBOChJrNU7st40kdmg4eOWHqiBvWMZI1DjW541jUyGsGUDkhMBWiSbdAjj8E8Rb3xAo1bkS
+	7YOQ6ConRQz2OyMlfApIh4xTrPNQWbg1A2gZ6w5mPEk26z5Fzd45VM1dhsqqFgg7Q81YXLwAlnF
+	KpzWgftr9IH3Z8jWxsLux7xxVARrCOvAWAAJGut6kuPthSgOJW/UIYYWK2TUc439lEBXyzf7fVc
+	YKVoNUyoQ==
+X-Received: by 2002:a05:6870:8318:b0:36e:8381:db00 with SMTP id 586e51a60fabf-417b902b7eemr10219350fac.9.1773752589727;
+        Tue, 17 Mar 2026 06:03:09 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e5e8185sm19337678fac.12.2026.03.17.06.03.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 06:03:08 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------dlB35gz0zpTHxRjRY50NcXbg"
+Message-ID: <07f88e01-d7d7-4e13-88de-76f460f60c50@kernel.dk>
+Date: Tue, 17 Mar 2026 07:03:07 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring: ensure ctx->rings is stable for
+ task work flags" failed to apply to 6.18-stable tree
+To: gregkh@linuxfoundation.org, asml.silence@gmail.com, naup96721@gmail.com
+Cc: stable@vger.kernel.org
+References: <2026031718-sulfur-overflow-96fd@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2026031718-sulfur-overflow-96fd@gregkh>
+X-Spamd-Result: default: False [0.94 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225995-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-225996-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	DMARC_NA(0.00)[kernel.dk];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	HAS_ATTACHMENT(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4C1812AA679
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel-dk.20230601.gappssmtp.com:dkim,kernel.dk:email,kernel.dk:mid]
+X-Rspamd-Queue-Id: 4B60F2AA941
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+This is a multi-part message in MIME format.
+--------------dlB35gz0zpTHxRjRY50NcXbg
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 3/17/26 6:55 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.18-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This one and the following one, for 6.18.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 87f2c46003fce4d739138aab4af1942b1afdadac
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031753-musket-tidiness-7d03@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+-- 
+Jens Axboe
 
-Possible dependencies:
+--------------dlB35gz0zpTHxRjRY50NcXbg
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0002-io_uring-eventfd-use-ctx-rings_rcu-for-flags-checkin.patch"
+Content-Disposition: attachment;
+ filename*0="0002-io_uring-eventfd-use-ctx-rings_rcu-for-flags-checkin.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBmMzk4OTlkMmMwYjMxYTRmNWM5NzQyZWRjZTBmN2VmZjQ0MTQ4MzNiIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IE1vbiwgOSBNYXIgMjAyNiAxNDozNTo0OSAtMDYwMApTdWJqZWN0OiBbUEFUQ0ggMi8y
+XSBpb191cmluZy9ldmVudGZkOiB1c2UgY3R4LT5yaW5nc19yY3UgZm9yIGZsYWdzIGNoZWNr
+aW5nCgpDb21taXQgMTc3YzY5NDMyMTYxZjZlNGJhYjA3Y2NhY2Y4YTE3NDhhNjg5OGE2YiB1
+cHN0cmVhbS4KClNpbWlsYXJseSB0byB3aGF0IGNvbW1pdCBlNzhmN2I3MGU4MzcgZGlkIGZv
+ciBsb2NhbCB0YXNrIHdvcmsgYWRkaXRpb25zLAp1c2UgLT5yaW5nc19yY3UgdW5kZXIgUkNV
+IHJhdGhlciB0aGFuIGRlcmVmZXJlbmNlIC0+cmluZ3MgZGlyZWN0bHkuIFNlZQp0aGF0IGNv
+bW1pdCBmb3IgbW9yZSBkZXRhaWxzLgoKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKRml4
+ZXM6IDc5Y2ZlOWU1OWMyYSAoImlvX3VyaW5nL3JlZ2lzdGVyOiBhZGQgSU9SSU5HX1JFR0lT
+VEVSX1JFU0laRV9SSU5HUyIpClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtl
+cm5lbC5kaz4KLS0tCiBpb191cmluZy9ldmVudGZkLmMgfCAxMCArKysrKysrLS0tCiAxIGZp
+bGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL2lvX3VyaW5nL2V2ZW50ZmQuYyBiL2lvX3VyaW5nL2V2ZW50ZmQuYwppbmRleCA3OGY4
+YWI3ZGIxMDQuLmFiNzg5ZTFlYmU5MSAxMDA2NDQKLS0tIGEvaW9fdXJpbmcvZXZlbnRmZC5j
+CisrKyBiL2lvX3VyaW5nL2V2ZW50ZmQuYwpAQCAtNzYsMTEgKzc2LDE1IEBAIHZvaWQgaW9f
+ZXZlbnRmZF9zaWduYWwoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsIGJvb2wgY3FlX2V2ZW50
+KQogewogCWJvb2wgc2tpcCA9IGZhbHNlOwogCXN0cnVjdCBpb19ldl9mZCAqZXZfZmQ7Ci0K
+LQlpZiAoUkVBRF9PTkNFKGN0eC0+cmluZ3MtPmNxX2ZsYWdzKSAmIElPUklOR19DUV9FVkVO
+VEZEX0RJU0FCTEVEKQotCQlyZXR1cm47CisJc3RydWN0IGlvX3JpbmdzICpyaW5nczsKIAog
+CWd1YXJkKHJjdSkoKTsKKworCXJpbmdzID0gcmN1X2RlcmVmZXJlbmNlKGN0eC0+cmluZ3Nf
+cmN1KTsKKwlpZiAoIXJpbmdzKQorCQlyZXR1cm47CisJaWYgKFJFQURfT05DRShyaW5ncy0+
+Y3FfZmxhZ3MpICYgSU9SSU5HX0NRX0VWRU5URkRfRElTQUJMRUQpCisJCXJldHVybjsKIAll
+dl9mZCA9IHJjdV9kZXJlZmVyZW5jZShjdHgtPmlvX2V2X2ZkKTsKIAkvKgogCSAqIENoZWNr
+IGFnYWluIGlmIGV2X2ZkIGV4aXN0cyBpbiBjYXNlIGFuIGlvX2V2ZW50ZmRfdW5yZWdpc3Rl
+ciBjYWxsCi0tIAoyLjUzLjAKCg==
+--------------dlB35gz0zpTHxRjRY50NcXbg
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-ensure-ctx-rings-is-stable-for-task-work-fl.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-ensure-ctx-rings-is-stable-for-task-work-fl.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBmNzlhNmQwODg5MzE4ZGNlNzliMTY5MWIyZTdlOTRiOGQ3ODlmZTM2IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IE1vbiwgOSBNYXIgMjAyNiAxNDoyMTozNyAtMDYwMApTdWJqZWN0OiBbUEFUQ0ggMS8y
+XSBpb191cmluZzogZW5zdXJlIGN0eC0+cmluZ3MgaXMgc3RhYmxlIGZvciB0YXNrIHdvcmsg
+ZmxhZ3MKIG1hbmlwdWxhdGlvbgoKQ29tbWl0IDk2MTg5MDgwMjY1ZTZiYjVkZGUzYTRhZmJh
+Zjk0N2FmNDkzZTNmODIgdXBzdHJlYW0uCgpJZiBERUZFUl9UQVNLUlVOIHwgU0VUVVBfVEFT
+S1JVTiBpcyB1c2VkIGFuZCB0YXNrIHdvcmsgaXMgYWRkZWQgd2hpbGUKdGhlIHJpbmcgaXMg
+YmVpbmcgcmVzaXplZCwgaXQncyBwb3NzaWJsZSBmb3IgdGhlIE9SJ2luZyBvZgpJT1JJTkdf
+U1FfVEFTS1JVTiB0byBoYXBwZW4gaW4gdGhlIHNtYWxsIHdpbmRvdyBvZiBzd2FwcGluZyBp
+bnRvIHRoZQpuZXcgcmluZ3MgYW5kIHRoZSBvbGQgcmluZ3MgYmVpbmcgZnJlZWQuCgpQcmV2
+ZW50IHRoaXMgYnkgYWRkaW5nIGEgMm5kIC0+cmluZ3MgcG9pbnRlciwgLT5yaW5nc19yY3Us
+IHdoaWNoIGlzCnByb3RlY3RlZCBieSBSQ1UuIFRoZSB0YXNrIHdvcmsgZmxhZ3MgbWFuaXB1
+bGF0aW9uIGlzIGluc2lkZSBSQ1UKYWxyZWFkeSwgYW5kIGlmIHRoZSByZXNpemUgcmluZyBm
+cmVlaW5nIGlzIGRvbmUgcG9zdCBhbiBSQ1Ugc3luY2hyb25pemUsCnRoZW4gdGhlcmUncyBu
+byBuZWVkIHRvIGFkZCBsb2NraW5nIHRvIHRoZSBmYXN0IHBhdGggb2YgdGFzayB3b3JrCmFk
+ZGl0aW9ucy4KCk5vdGU6IHRoaXMgaXMgb25seSBkb25lIGZvciBERUZFUl9UQVNLUlVOLCBh
+cyB0aGF0J3MgdGhlIG9ubHkgc2V0dXAgbW9kZQp0aGF0IHN1cHBvcnRzIHJpbmcgcmVzaXpp
+bmcuIElmIHRoaXMgZXZlciBjaGFuZ2VzLCB0aGVuIHRoZXkgdG9vIG5lZWQgdG8KdXNlIHRo
+ZSBpb19jdHhfbWFya190YXNrcnVuKCkgaGVscGVyLgoKTGluazogaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvaW8tdXJpbmcvMjAyNjAzMDkwNjI3NTkuNDgyMjEwLTEtbmF1cDk2NzIxQGdt
+YWlsLmNvbS8KQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKRml4ZXM6IDc5Y2ZlOWU1OWMy
+YSAoImlvX3VyaW5nL3JlZ2lzdGVyOiBhZGQgSU9SSU5HX1JFR0lTVEVSX1JFU0laRV9SSU5H
+UyIpClJlcG9ydGVkLWJ5OiBIYW8tWXUgWWFuZyA8bmF1cDk2NzIxQGdtYWlsLmNvbT4KU3Vn
+Z2VzdGVkLWJ5OiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdtYWlsLmNvbT4KU2ln
+bmVkLW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0KIGluY2x1ZGUv
+bGludXgvaW9fdXJpbmdfdHlwZXMuaCB8ICAxICsKIGlvX3VyaW5nL2lvX3VyaW5nLmMgICAg
+ICAgICAgICB8IDI1ICsrKysrKysrKysrKysrKysrKysrKystLS0KIGlvX3VyaW5nL3JlZ2lz
+dGVyLmMgICAgICAgICAgICB8IDExICsrKysrKysrKysrCiAzIGZpbGVzIGNoYW5nZWQsIDM0
+IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9s
+aW51eC9pb191cmluZ190eXBlcy5oIGIvaW5jbHVkZS9saW51eC9pb191cmluZ190eXBlcy5o
+CmluZGV4IGI0ZDhhY2EzZTc4Ni4uM2YzNTA2MDU2YjlhIDEwMDY0NAotLS0gYS9pbmNsdWRl
+L2xpbnV4L2lvX3VyaW5nX3R5cGVzLmgKKysrIGIvaW5jbHVkZS9saW51eC9pb191cmluZ190
+eXBlcy5oCkBAIC0zNzIsNiArMzcyLDcgQEAgc3RydWN0IGlvX3JpbmdfY3R4IHsKIAkgKiBy
+ZWd1bGFybHkgYm91bmNlIGIvdyBDUFVzLgogCSAqLwogCXN0cnVjdCB7CisJCXN0cnVjdCBp
+b19yaW5ncwlfX3JjdQkqcmluZ3NfcmN1OwogCQlzdHJ1Y3QgbGxpc3RfaGVhZAl3b3JrX2xs
+aXN0OwogCQlzdHJ1Y3QgbGxpc3RfaGVhZAlyZXRyeV9sbGlzdDsKIAkJdW5zaWduZWQgbG9u
+ZwkJY2hlY2tfY3E7CmRpZmYgLS1naXQgYS9pb191cmluZy9pb191cmluZy5jIGIvaW9fdXJp
+bmcvaW9fdXJpbmcuYwppbmRleCA2NWFmNDdiOTEzNWIuLmQxMGEzOGM5ZGJmYiAxMDA2NDQK
+LS0tIGEvaW9fdXJpbmcvaW9fdXJpbmcuYworKysgYi9pb191cmluZy9pb191cmluZy5jCkBA
+IC0xMjM4LDYgKzEyMzgsMjEgQEAgdm9pZCB0Y3R4X3Rhc2tfd29yayhzdHJ1Y3QgY2FsbGJh
+Y2tfaGVhZCAqY2IpCiAJV0FSTl9PTl9PTkNFKHJldCk7CiB9CiAKKy8qCisgKiBTZXRzIElP
+UklOR19TUV9UQVNLUlVOIGluIHRoZSBzcV9mbGFncyBzaGFyZWQgd2l0aCB1c2Vyc3BhY2Us
+IHVzaW5nIHRoZQorICogUkNVIHByb3RlY3RlZCByaW5ncyBwb2ludGVyIHRvIGJlIHNhZmUg
+YWdhaW5zdCBjb25jdXJyZW50IHJpbmcgcmVzaXppbmcuCisgKi8KK3N0YXRpYyB2b2lkIGlv
+X2N0eF9tYXJrX3Rhc2tydW4oc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgpCit7CisJbG9ja2Rl
+cF9hc3NlcnRfaW5fcmN1X3JlYWRfbG9jaygpOworCisJaWYgKGN0eC0+ZmxhZ3MgJiBJT1JJ
+TkdfU0VUVVBfVEFTS1JVTl9GTEFHKSB7CisJCXN0cnVjdCBpb19yaW5ncyAqcmluZ3MgPSBy
+Y3VfZGVyZWZlcmVuY2UoY3R4LT5yaW5nc19yY3UpOworCisJCWF0b21pY19vcihJT1JJTkdf
+U1FfVEFTS1JVTiwgJnJpbmdzLT5zcV9mbGFncyk7CisJfQorfQorCiBzdGF0aWMgdm9pZCBp
+b19yZXFfbG9jYWxfd29ya19hZGQoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGZs
+YWdzKQogewogCXN0cnVjdCBpb19yaW5nX2N0eCAqY3R4ID0gcmVxLT5jdHg7CkBAIC0xMjky
+LDggKzEzMDcsNyBAQCBzdGF0aWMgdm9pZCBpb19yZXFfbG9jYWxfd29ya19hZGQoc3RydWN0
+IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGZsYWdzKQogCSAqLwogCiAJaWYgKCFoZWFkKSB7
+Ci0JCWlmIChjdHgtPmZsYWdzICYgSU9SSU5HX1NFVFVQX1RBU0tSVU5fRkxBRykKLQkJCWF0
+b21pY19vcihJT1JJTkdfU1FfVEFTS1JVTiwgJmN0eC0+cmluZ3MtPnNxX2ZsYWdzKTsKKwkJ
+aW9fY3R4X21hcmtfdGFza3J1bihjdHgpOwogCQlpZiAoY3R4LT5oYXNfZXZmZCkKIAkJCWlv
+X2V2ZW50ZmRfc2lnbmFsKGN0eCwgZmFsc2UpOwogCX0KQEAgLTEzMTcsNiArMTMzMSwxMCBA
+QCBzdGF0aWMgdm9pZCBpb19yZXFfbm9ybWFsX3dvcmtfYWRkKHN0cnVjdCBpb19raW9jYiAq
+cmVxKQogCWlmICghbGxpc3RfYWRkKCZyZXEtPmlvX3Rhc2tfd29yay5ub2RlLCAmdGN0eC0+
+dGFza19saXN0KSkKIAkJcmV0dXJuOwogCisJLyoKKwkgKiBEb2Vzbid0IG5lZWQgdG8gdXNl
+IC0+cmluZ3NfcmN1LCBhcyByZXNpemluZyBpc24ndCBzdXBwb3J0ZWQgZm9yCisJICogIURF
+RkVSX1RBU0tSVU4uCisJICovCiAJaWYgKGN0eC0+ZmxhZ3MgJiBJT1JJTkdfU0VUVVBfVEFT
+S1JVTl9GTEFHKQogCQlhdG9taWNfb3IoSU9SSU5HX1NRX1RBU0tSVU4sICZjdHgtPnJpbmdz
+LT5zcV9mbGFncyk7CiAKQEAgLTI3NzQsNiArMjc5Miw3IEBAIHN0YXRpYyB2b2lkIGlvX3Jp
+bmdzX2ZyZWUoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgpCiAJaW9fZnJlZV9yZWdpb24oY3R4
+LCAmY3R4LT5zcV9yZWdpb24pOwogCWlvX2ZyZWVfcmVnaW9uKGN0eCwgJmN0eC0+cmluZ19y
+ZWdpb24pOwogCWN0eC0+cmluZ3MgPSBOVUxMOworCVJDVV9JTklUX1BPSU5URVIoY3R4LT5y
+aW5nc19yY3UsIE5VTEwpOwogCWN0eC0+c3Ffc3FlcyA9IE5VTEw7CiB9CiAKQEAgLTM2Mjcs
+NyArMzY0Niw3IEBAIHN0YXRpYyBfX2NvbGQgaW50IGlvX2FsbG9jYXRlX3NjcV91cmluZ3Mo
+c3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsCiAJaWYgKHJldCkKIAkJcmV0dXJuIHJldDsKIAlj
+dHgtPnJpbmdzID0gcmluZ3MgPSBpb19yZWdpb25fZ2V0X3B0cigmY3R4LT5yaW5nX3JlZ2lv
+bik7Ci0KKwlyY3VfYXNzaWduX3BvaW50ZXIoY3R4LT5yaW5nc19yY3UsIHJpbmdzKTsKIAlp
+ZiAoIShjdHgtPmZsYWdzICYgSU9SSU5HX1NFVFVQX05PX1NRQVJSQVkpKQogCQljdHgtPnNx
+X2FycmF5ID0gKHUzMiAqKSgoY2hhciAqKXJpbmdzICsgc3FfYXJyYXlfb2Zmc2V0KTsKIApk
+aWZmIC0tZ2l0IGEvaW9fdXJpbmcvcmVnaXN0ZXIuYyBiL2lvX3VyaW5nL3JlZ2lzdGVyLmMK
+aW5kZXggZGI1M2U2NjQzNDhkLi5mYWE0NGRkMzJjZDUgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5n
+L3JlZ2lzdGVyLmMKKysrIGIvaW9fdXJpbmcvcmVnaXN0ZXIuYwpAQCAtNTU2LDcgKzU1Niwx
+NSBAQCBzdGF0aWMgaW50IGlvX3JlZ2lzdGVyX3Jlc2l6ZV9yaW5ncyhzdHJ1Y3QgaW9fcmlu
+Z19jdHggKmN0eCwgdm9pZCBfX3VzZXIgKmFyZykKIAljdHgtPnNxX2VudHJpZXMgPSBwLnNx
+X2VudHJpZXM7CiAJY3R4LT5jcV9lbnRyaWVzID0gcC5jcV9lbnRyaWVzOwogCisJLyoKKwkg
+KiBKdXN0IG1hcmsgYW55IGZsYWcgd2UgbWF5IGhhdmUgbWlzc2VkIGFuZCB0aGF0IHRoZSBh
+cHBsaWNhdGlvbgorCSAqIHNob3VsZCBhY3Qgb24gdW5jb25kaXRpb25hbGx5LiBXb3JzdCBj
+YXNlIGl0J2xsIGJlIGFuIGV4dHJhCisJICogc3lzY2FsbC4KKwkgKi8KKwlhdG9taWNfb3Io
+SU9SSU5HX1NRX1RBU0tSVU4gfCBJT1JJTkdfU1FfTkVFRF9XQUtFVVAsICZuLnJpbmdzLT5z
+cV9mbGFncyk7CiAJY3R4LT5yaW5ncyA9IG4ucmluZ3M7CisJcmN1X2Fzc2lnbl9wb2ludGVy
+KGN0eC0+cmluZ3NfcmN1LCBuLnJpbmdzKTsKKwogCWN0eC0+c3Ffc3FlcyA9IG4uc3Ffc3Fl
+czsKIAlzd2FwX29sZChjdHgsIG8sIG4sIHJpbmdfcmVnaW9uKTsKIAlzd2FwX29sZChjdHgs
+IG8sIG4sIHNxX3JlZ2lvbik7CkBAIC01NjUsNiArNTczLDkgQEAgc3RhdGljIGludCBpb19y
+ZWdpc3Rlcl9yZXNpemVfcmluZ3Moc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsIHZvaWQgX191
+c2VyICphcmcpCiBvdXQ6CiAJc3Bpbl91bmxvY2soJmN0eC0+Y29tcGxldGlvbl9sb2NrKTsK
+IAltdXRleF91bmxvY2soJmN0eC0+bW1hcF9sb2NrKTsKKwkvKiBXYWl0IGZvciBjb25jdXJy
+ZW50IGlvX2N0eF9tYXJrX3Rhc2tydW4oKSAqLworCWlmICh0b19mcmVlID09ICZvKQorCQlz
+eW5jaHJvbml6ZV9yY3VfZXhwZWRpdGVkKCk7CiAJaW9fcmVnaXN0ZXJfZnJlZV9yaW5ncyhj
+dHgsICZwLCB0b19mcmVlKTsKIAogCWlmIChjdHgtPnNxX2RhdGEpCi0tIAoyLjUzLjAKCg==
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 87f2c46003fce4d739138aab4af1942b1afdadac Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Thu, 26 Feb 2026 23:41:07 +0000
-Subject: [PATCH] btrfs: fix transaction abort on set received ioctl due to
- item overflow
-
-If the set received ioctl fails due to an item overflow when attempting to
-add the BTRFS_UUID_KEY_RECEIVED_SUBVOL we have to abort the transaction
-since we did some metadata updates before.
-
-This means that if a user calls this ioctl with the same received UUID
-field for a lot of subvolumes, we will hit the overflow, trigger the
-transaction abort and turn the filesystem into RO mode. A malicious user
-could exploit this, and this ioctl does not even requires that a user
-has admin privileges (CAP_SYS_ADMIN), only that he/she owns the subvolume.
-
-Fix this by doing an early check for item overflow before starting a
-transaction. This is also race safe because we are holding the subvol_sem
-semaphore in exclusive (write) mode.
-
-A test case for fstests will follow soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Anand Jain <asj@kernel.org>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 1d22c5c05b50..56d17eedaf90 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3929,6 +3929,25 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
- 		goto out;
- 	}
- 
-+	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
-+				       BTRFS_UUID_SIZE);
-+
-+	/*
-+	 * Before we attempt to add the new received uuid, check if we have room
-+	 * for it in case there's already an item. If the size of the existing
-+	 * item plus this root's ID (u64) exceeds the maximum item size, we can
-+	 * return here without the need to abort a transaction. If we don't do
-+	 * this check, the btrfs_uuid_tree_add() call below would fail with
-+	 * -EOVERFLOW and result in a transaction abort. Malicious users could
-+	 * exploit this to turn the fs into RO mode.
-+	 */
-+	if (received_uuid_changed && !btrfs_is_empty_uuid(sa->uuid)) {
-+		ret = btrfs_uuid_tree_check_overflow(fs_info, sa->uuid,
-+						     BTRFS_UUID_KEY_RECEIVED_SUBVOL);
-+		if (ret < 0)
-+			goto out;
-+	}
-+
- 	/*
- 	 * 1 - root item
- 	 * 2 - uuid items (received uuid + subvol uuid)
-@@ -3944,8 +3963,6 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
- 	sa->rtime.sec = ct.tv_sec;
- 	sa->rtime.nsec = ct.tv_nsec;
- 
--	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
--				       BTRFS_UUID_SIZE);
- 	if (received_uuid_changed &&
- 	    !btrfs_is_empty_uuid(root_item->received_uuid)) {
- 		ret = btrfs_uuid_tree_remove(trans, root_item->received_uuid,
-diff --git a/fs/btrfs/uuid-tree.c b/fs/btrfs/uuid-tree.c
-index f24c14b9bb2f..43c17a1d3451 100644
---- a/fs/btrfs/uuid-tree.c
-+++ b/fs/btrfs/uuid-tree.c
-@@ -199,6 +199,44 @@ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, const u8 *uuid, u8
- 	return 0;
- }
- 
-+/*
-+ * Check if we can add one root ID to a UUID key.
-+ * If the key does not yet exists, we can, otherwise only if extended item does
-+ * not exceeds the maximum item size permitted by the leaf size.
-+ *
-+ * Returns 0 on success, negative value on error.
-+ */
-+int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
-+				   const u8 *uuid, u8 type)
-+{
-+	BTRFS_PATH_AUTO_FREE(path);
-+	int ret;
-+	u32 item_size;
-+	struct btrfs_key key;
-+
-+	if (WARN_ON_ONCE(!fs_info->uuid_root))
-+		return -EINVAL;
-+
-+	path = btrfs_alloc_path();
-+	if (!path)
-+		return -ENOMEM;
-+
-+	btrfs_uuid_to_key(uuid, type, &key);
-+	ret = btrfs_search_slot(NULL, fs_info->uuid_root, &key, path, 0, 0);
-+	if (ret < 0)
-+		return ret;
-+	if (ret > 0)
-+		return 0;
-+
-+	item_size = btrfs_item_size(path->nodes[0], path->slots[0]);
-+
-+	if (sizeof(struct btrfs_item) + item_size + sizeof(u64) >
-+	    BTRFS_LEAF_DATA_SIZE(fs_info))
-+		return -EOVERFLOW;
-+
-+	return 0;
-+}
-+
- static int btrfs_uuid_iter_rem(struct btrfs_root *uuid_root, u8 *uuid, u8 type,
- 			       u64 subid)
- {
-diff --git a/fs/btrfs/uuid-tree.h b/fs/btrfs/uuid-tree.h
-index c60ad20325cc..02b235a3653f 100644
---- a/fs/btrfs/uuid-tree.h
-+++ b/fs/btrfs/uuid-tree.h
-@@ -12,6 +12,8 @@ int btrfs_uuid_tree_add(struct btrfs_trans_handle *trans, const u8 *uuid, u8 typ
- 			u64 subid);
- int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, const u8 *uuid, u8 type,
- 			u64 subid);
-+int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
-+				   const u8 *uuid, u8 type);
- int btrfs_uuid_tree_iterate(struct btrfs_fs_info *fs_info);
- int btrfs_create_uuid_tree(struct btrfs_fs_info *fs_info);
- int btrfs_uuid_scan_kthread(void *data);
-
+--------------dlB35gz0zpTHxRjRY50NcXbg--
 
