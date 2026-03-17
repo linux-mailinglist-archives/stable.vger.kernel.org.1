@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C76M5KQuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:34:10 +0100
+	id iK1tL7qFuWkPJAIAu9opvQ
+	(envelope-from <stable+bounces-226294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A5A2AFCCF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:34:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECD92AE6EF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76F86317ED52
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A57DF3032894
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C11E3BFE59;
-	Tue, 17 Mar 2026 17:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D373F54B6;
+	Tue, 17 Mar 2026 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpuQ7W2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTJqemwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C336A2F60A7;
-	Tue, 17 Mar 2026 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11043F23D6;
+	Tue, 17 Mar 2026 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767304; cv=none; b=nJaQ6rkCQ7fN3UgLGY5jwTvkT/XHlA3gAzniORUwgNsbqB6bpIg484KQIgarPRIsMEay/HZ0RdLQmOx9En1OaQrWioa2fpspGc7JV0ycIDgN160N3B8jXrmTXaAwIjcrv5hfBvxFjXV6698kywtqOsF/PKoRAEHEHMiIfOSkVLI=
+	t=1773766069; cv=none; b=YIto9DEq826jboXwH5jpL1xeH7QI6XFq985BRI5iSDWJ7o5uht0Kz4FYHlZhYU8IN3p7uGW7eeaejSD1v95g/oHAtNa+nOukgUNj3s5BKiZvkhHPs59ggxWk1Fr/M+s6je3AYC+qiSApACzA/PphXWlFbXZUlnX3KYGFohNlav4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767304; c=relaxed/simple;
-	bh=GdDdqyakRiCmHHa4mPmjW/sWIYtlt4Tk8+UGoujpfVw=;
+	s=arc-20240116; t=1773766069; c=relaxed/simple;
+	bh=qOyrNyDKxZio8MVevgqcTt8QgY5YiK22ZYXf/zwUylM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcahMzO6BtHgoYLDNEXol/UozW4vtl4bHTxWVsZILeMsZhnQTWVBboLBfQVMkFUq5Uh/CchtSkgIVd3r5gNBuTpHWu23tuMoSxjg2M+CH5c8dYq6imJF8T5PIcHYJE9eUi3RdUolqNJ0HDru6dXMnH8JwhPAPxA6oKwdsxW7xzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpuQ7W2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF778C4CEF7;
-	Tue, 17 Mar 2026 17:08:23 +0000 (UTC)
+	 MIME-Version; b=gjXi/HqA/lJdHOzUUtBT/map9ONEApqHSe4Sm4n2HoCrkZ/XciGagX044BRy9OTGTuFmouRd68XLXVulUr+EmN7sXW01OWugnmm18J+SqTKcH5n0RVEvXcQki39mg2WsimiMUGvnccmVeF0GsSA1vjFZdEhuwJKF+AZ41KkDk8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTJqemwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E438C19424;
+	Tue, 17 Mar 2026 16:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767304;
-	bh=GdDdqyakRiCmHHa4mPmjW/sWIYtlt4Tk8+UGoujpfVw=;
+	s=korg; t=1773766068;
+	bh=qOyrNyDKxZio8MVevgqcTt8QgY5YiK22ZYXf/zwUylM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpuQ7W2KqhsTXg104UDPPPm7/n2NuSpPUnXq+JdIb1YroFVc1BX4defjNBo44yFtv
-	 s+0Xr6njwRXuiCxOSDmv+TVug3aIFszS9G878Ter0IcfggtS7TYYEgDPgxIPlLnMTU
-	 KzfJkhdqXiRU7AENR0NeeUY/DDYhzOdQhnsrOd5M=
+	b=CTJqemwd15jKgPT8rS3FbC7xi5EPvexliXfXLMyXsqoelgYnY3vg7zsvzT/XhDUaD
+	 j+qKkP2BXIiFW8bVqXd1Cp+Kc4tuQuCF0G/eJ7Eaw+yJb1qC1ZJdi5OMS9cb5KsRRI
+	 BLWefiq6k+Y8lnx5zyEfOA3u8ZXw5FlbV2Oph3ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyue Wang <haiyuewa@163.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 058/333] mctp: i2c: fix skb memory leak in receive path
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.19 130/378] rust: kbuild: allow `unused_features`
 Date: Tue, 17 Mar 2026 17:31:27 +0100
-Message-ID: <20260317163001.521705126@linuxfoundation.org>
+Message-ID: <20260317163011.797146775@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +66,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226576-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226294-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 36A5A2AFCCF
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,garyguo.net:email]
+X-Rspamd-Queue-Id: 6ECD92AE6EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyue Wang <haiyuewa@163.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit e3f5e0f22cfc2371e7471c9fd5b4da78f9df7c69 ]
+commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
 
-When 'midev->allow_rx' is false, the newly allocated skb isn't consumed
-by netif_rx(), it needs to free the skb directly.
+Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
+`rustc` introduces the new lint `unused_features` [1], which warns [2]:
 
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Signed-off-by: Haiyue Wang <haiyuewa@163.com>
-Link: https://patch.msgid.link/20260305143240.97592-1-haiyuewa@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    warning: feature `used_with_arg` is declared but not used
+     --> <crate attribute>:1:93
+      |
+    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
+      |                                                                                             ^^^^^^^^^^^^^
+      |
+      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
+
+The original goal of using `-Zcrate-attr` automatically was that there
+is a consistent set of features enabled and managed globally for all
+Rust kernel code (modulo exceptions like the `rust/` crated).
+
+While we could require crates to enable features manually (even if we
+still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
+list), it is not really worth making all developers worry about it just
+for a new lint.
+
+The features are expected to eventually become stable anyway (most already
+did), and thus having to remove features in every file that may use them
+is not worth it either.
+
+Thus just allow the new lint globally.
+
+The lint actually existed for a long time, which is why `rustc` does
+not complain about an unknown lint in the stable versions we support,
+but it was "disabled" years ago [3], and now it was made to work again.
+
+For extra context, the new implementation of the lint has already been
+improved to avoid linting about features that became stable thanks to
+Benno's report and the ensuing discussion [4] [5], but while that helps,
+it is still the case that we may have features enabled that are not used
+for one reason or another in a particular crate.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/152164 [1]
+Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
+Link: https://github.com/rust-lang/rust/issues/44232 [3]
+Link: https://github.com/rust-lang/rust/issues/153523 [4]
+Link: https://github.com/rust-lang/rust/pull/153610 [5]
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 1 +
+ Makefile |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index 8043b57bdf250..f138b0251313e 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -343,6 +343,7 @@ static int mctp_i2c_recv(struct mctp_i2c_dev *midev)
- 	} else {
- 		status = NET_RX_DROP;
- 		spin_unlock_irqrestore(&midev->lock, flags);
-+		kfree_skb(skb);
- 	}
- 
- 	if (status == NET_RX_SUCCESS) {
--- 
-2.51.0
-
+--- a/Makefile
++++ b/Makefile
+@@ -473,6 +473,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+ export rust_common_flags := --edition=2021 \
+ 			    -Zbinary_dep_depinfo=y \
+ 			    -Astable_features \
++			    -Aunused_features \
+ 			    -Dnon_ascii_idents \
+ 			    -Dunsafe_op_in_unsafe_fn \
+ 			    -Wmissing_docs \
 
 
 
