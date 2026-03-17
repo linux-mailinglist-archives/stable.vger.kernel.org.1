@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-226082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JOgGQdquWmZDwIAu9opvQ
-	(envelope-from <stable+bounces-226082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:49:43 +0100
+	id MK/wB+pruWl6EgIAu9opvQ
+	(envelope-from <stable+bounces-226083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:57:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27ACC2AC511
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:49:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DEC12AC833
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89E473020522
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 18168313AAC9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF2C3E867C;
-	Tue, 17 Mar 2026 14:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B8B3E7154;
+	Tue, 17 Mar 2026 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YXQ+Zi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orMZDzfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F00D3E716D
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793413C1996
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773758981; cv=none; b=sVK40/5MUK235QteJ3oWhFzVOSM2SGKpkUgTAmjUCLY6x6B4DrjcEK0Li6ticJeLO/gjQcJZJhXplXFV0XiAQP9Okvgv5l+JxsCV9zWqZLyyjWB0Z05J/01n5TTPiHjir5mSMR6HjhDJ1RURCEZoQ3BRl1mzARsMOyX1LrUIp9Y=
+	t=1773758985; cv=none; b=bUtshAXi++RUcfVxzv1GR+QAuaAu3cddRCQdCjRUO18KIPJsKv9iYwpYeHLGI+GTLXVkxOF6241cwq/rR2NbUZ1W62PICiDE3GKeXiGFZcuW3KsSrZXxRsdBBKn6VDGZrbQHwPQOBd6K/n6jEpZYlDVYtYqrBNhNqgD6dChy9tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773758981; c=relaxed/simple;
-	bh=njrTxY22RxnC/jg7QIUKJMQP0vtQRaDAF8ft25Nqv1M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MsLWJk7hhkFvx5E75EtP8EhXL7aFYFO1UXFI+bCsVYGYUKSqIxOPb19Ba/e4wKWBApQASapaG4KzZk3/RcqATj7+0xRswanSPQ3vL+uBg7iXKuhKVAxnraWZXTKIFF4jd2ASz1cFDsi04liK4kRC/J3Abbp6OJeGs8cBYuOYlKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YXQ+Zi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08EEC4CEF7;
-	Tue, 17 Mar 2026 14:49:40 +0000 (UTC)
+	s=arc-20240116; t=1773758985; c=relaxed/simple;
+	bh=uN4rdppP7Z98gBZgNvY9qWB1QK47uL7rx3ZlVw0J82U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SUIB0bsjPV8Bl9aynWGLxdLGAlymquI/ZHuKZlsBkLZK9eY6/OElTaMFPOGki2/ZF4xeZe+RcHlWYQRmkQyptlz/VfaYOTDK4QZCzpJs/VEON0fgAhNG0JZXHlx2+/vs053JyuA0045OhcUAq8xS56wwEee6sVk7LTRYSfPXI/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orMZDzfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8483C4CEF7;
+	Tue, 17 Mar 2026 14:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773758981;
-	bh=njrTxY22RxnC/jg7QIUKJMQP0vtQRaDAF8ft25Nqv1M=;
+	s=korg; t=1773758985;
+	bh=uN4rdppP7Z98gBZgNvY9qWB1QK47uL7rx3ZlVw0J82U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2YXQ+Zi4Zy9wVkpN6rCCnZiinYkxs7M99NErKWQtmKpz4PnJ/dH4pSFh6fy5s7D79
-	 nm9okicd5eQB+eyq44JIFcqguMd7Jnr51p2hYoekQxuSZ15vMuQVTd5dYETG63vgp6
-	 tw4szKgH1tWQhqmD7S70EugxQ033YQzmVPc7HX0Y=
-Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Fix race between DMA ring dequeue and" failed to apply to 5.15-stable tree
+	b=orMZDzfDXvDbTY5pjxF87oYmi5jpd//8RluwRrgPFQK1OPLNNvjRq8JPf7ZZ7gSNM
+	 RhkCJGNqav/ax+mEcB6nkvAqDE55FYXFBb8NZAQvmQfmjaqM6G6m7J5gyMcSTUx3NY
+	 nIMgM8V3sng1nZ012jLTUPDv85TXst+/NDfHEoa8=
+Subject: FAILED: patch "[PATCH] i3c: mipi-i3c-hci: Fallback to software reset when bus" failed to apply to 6.19-stable tree
 To: adrian.hunter@intel.com,Frank.Li@nxp.com,alexandre.belloni@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 15:48:41 +0100
-Message-ID: <2026031741-survive-storm-9df0@gregkh>
+Date: Tue, 17 Mar 2026 15:48:46 +0100
+Message-ID: <2026031746-zealous-snazzy-e3fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226082-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226083-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,33 +73,33 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,nxp.com:email,msgid.link:url,linuxfoundation.org:dkim,bootlin.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 27ACC2AC511
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,nxp.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: 8DEC12AC833
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x f0b5159637ca0b8feaaa95de0f5ea38f1ba26729
+git cherry-pick -x 9a258d1336f7ff3add8b92d566d3a421f03bf4d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031741-survive-storm-9df0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031746-zealous-snazzy-e3fb@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,138 +111,130 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f0b5159637ca0b8feaaa95de0f5ea38f1ba26729 Mon Sep 17 00:00:00 2001
+From 9a258d1336f7ff3add8b92d566d3a421f03bf4d2 Mon Sep 17 00:00:00 2001
 From: Adrian Hunter <adrian.hunter@intel.com>
-Date: Fri, 6 Mar 2026 09:24:44 +0200
-Subject: [PATCH] i3c: mipi-i3c-hci: Fix race between DMA ring dequeue and
- interrupt handler
+Date: Fri, 6 Mar 2026 09:24:51 +0200
+Subject: [PATCH] i3c: mipi-i3c-hci: Fallback to software reset when bus
+ disable fails
 
-The DMA ring bookkeeping in the MIPI I3C HCI driver is updated from two
-contexts: the DMA ring dequeue path (hci_dma_dequeue_xfer()) and the
-interrupt handler (hci_dma_xfer_done()).  Both modify the ring's
-in-flight transfer state - specifically rh->src_xfers[] and
-xfer->ring_entry - but without any serialization.  This allows the two
-paths to race, potentially leading to inconsistent ring state.
+Disruption of the MIPI I3C HCI controller's internal state can cause
+i3c_hci_bus_disable() to fail when attempting to shut down the bus.
 
-Serialize access to the shared ring state by extending the existing
-spinlock to cover the DMA dequeue path and the entire interrupt handler.
-Since the core IRQ handler now holds this lock, remove the per-function
-locking from the PIO and DMA sub-handlers.
+In the code paths where bus disable is invoked - bus clean-up and runtime
+suspend - the controller does not need to remain operational afterward, so
+a full controller reset is a safe recovery mechanism.
 
-Additionally, clear the completed entry in rh->src_xfers[] in
-hci_dma_xfer_done() so it cannot be matched or completed again.
+Add a fallback to issue a software reset when disabling the bus fails.
+This ensures the bus is reliably halted even if the controller's state
+machine is stuck or unresponsive.
 
-Finally, place the ring restart sequence under the same lock in
-hci_dma_dequeue_xfer() to avoid concurrent enqueue or completion
-operations while the ring state is being modified.
+The fallback is used both during bus clean-up and in the runtime suspend
+path.  In the latter case, ensure interrupts are quiesced after reset.
 
 Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-8-adrian.hunter@intel.com
+Link: https://patch.msgid.link/20260306072451.11131-15-adrian.hunter@intel.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
 diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
-index 061e84a5c412..adf35b7fa498 100644
+index d5e91af7d569..284f3ed7af8c 100644
 --- a/drivers/i3c/master/mipi-i3c-hci/core.c
 +++ b/drivers/i3c/master/mipi-i3c-hci/core.c
-@@ -567,6 +567,8 @@ static irqreturn_t i3c_hci_irq_handler(int irq, void *dev_id)
- 	irqreturn_t result = IRQ_NONE;
- 	u32 val;
- 
-+	guard(spinlock)(&hci->lock);
-+
- 	/*
- 	 * The IRQ can be shared, so the handler may be called when the IRQ is
- 	 * due to a different device. That could happen when runtime suspended,
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index f7d411e5e11f..d7840ff69e59 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -560,6 +560,8 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
- 		WARN_ON(1);
- 	}
- 
-+	spin_lock_irq(&hci->lock);
-+
- 	for (i = 0; i < n; i++) {
- 		struct hci_xfer *xfer = xfer_list + i;
- 		int idx = xfer->ring_entry;
-@@ -593,6 +595,8 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
- 	/* restart the ring */
- 	rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
- 
-+	spin_unlock_irq(&hci->lock);
-+
- 	return did_unqueue;
+@@ -181,6 +181,34 @@ static int i3c_hci_bus_disable(struct i3c_hci *hci)
+ 	return ret;
  }
  
-@@ -618,6 +622,7 @@ static void hci_dma_xfer_done(struct i3c_hci *hci, struct hci_rh_data *rh)
- 			dev_dbg(&hci->master.dev, "orphaned ring entry");
- 		} else {
- 			hci_dma_unmap_xfer(hci, xfer, 1);
-+			rh->src_xfers[done_ptr] = NULL;
- 			xfer->ring_entry = -1;
- 			xfer->response = resp;
- 			if (tid != xfer->cmd_tid) {
-@@ -635,14 +640,11 @@ static void hci_dma_xfer_done(struct i3c_hci *hci, struct hci_rh_data *rh)
- 		done_cnt += 1;
- 	}
++static int i3c_hci_software_reset(struct i3c_hci *hci)
++{
++	u32 regval;
++	int ret;
++
++	/*
++	 * SOFT_RST must be clear before we write to it.
++	 * Then we must wait until it clears again.
++	 */
++	ret = readx_poll_timeout(reg_read, RESET_CONTROL, regval,
++				 !(regval & SOFT_RST), 0, 10 * USEC_PER_MSEC);
++	if (ret) {
++		dev_err(&hci->master.dev, "%s: Software reset stuck\n", __func__);
++		return ret;
++	}
++
++	reg_write(RESET_CONTROL, SOFT_RST);
++
++	ret = readx_poll_timeout(reg_read, RESET_CONTROL, regval,
++				 !(regval & SOFT_RST), 0, 10 * USEC_PER_MSEC);
++	if (ret) {
++		dev_err(&hci->master.dev, "%s: Software reset failed\n", __func__);
++		return ret;
++	}
++
++	return 0;
++}
++
+ void i3c_hci_sync_irq_inactive(struct i3c_hci *hci)
+ {
+ 	struct platform_device *pdev = to_platform_device(hci->master.dev.parent);
+@@ -196,7 +224,8 @@ static void i3c_hci_bus_cleanup(struct i3c_master_controller *m)
+ {
+ 	struct i3c_hci *hci = to_i3c_hci(m);
  
--	/* take care to update the software dequeue pointer atomically */
--	spin_lock(&hci->lock);
- 	rh->xfer_space += done_cnt;
- 	op1_val = rh_reg_read(RING_OPERATION1);
- 	op1_val &= ~RING_OP1_CR_SW_DEQ_PTR;
- 	op1_val |= FIELD_PREP(RING_OP1_CR_SW_DEQ_PTR, done_ptr);
- 	rh_reg_write(RING_OPERATION1, op1_val);
--	spin_unlock(&hci->lock);
+-	i3c_hci_bus_disable(hci);
++	if (i3c_hci_bus_disable(hci))
++		i3c_hci_software_reset(hci);
+ 	hci->io->cleanup(hci);
  }
  
- static int hci_dma_request_ibi(struct i3c_hci *hci, struct i3c_dev_desc *dev,
-@@ -822,13 +824,10 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
- 	i3c_master_queue_ibi(dev, slot);
+@@ -626,34 +655,6 @@ static irqreturn_t i3c_hci_irq_handler(int irq, void *dev_id)
+ 	return result;
+ }
  
- done:
--	/* take care to update the ibi dequeue pointer atomically */
--	spin_lock(&hci->lock);
- 	op1_val = rh_reg_read(RING_OPERATION1);
- 	op1_val &= ~RING_OP1_IBI_DEQ_PTR;
- 	op1_val |= FIELD_PREP(RING_OP1_IBI_DEQ_PTR, deq_ptr);
- 	rh_reg_write(RING_OPERATION1, op1_val);
--	spin_unlock(&hci->lock);
- 
- 	/* update the chunk pointer */
- 	rh->ibi_chunk_ptr += ibi_chunks;
-diff --git a/drivers/i3c/master/mipi-i3c-hci/pio.c b/drivers/i3c/master/mipi-i3c-hci/pio.c
-index 02866c2237fa..8f48a81e65ab 100644
---- a/drivers/i3c/master/mipi-i3c-hci/pio.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/pio.c
-@@ -1014,15 +1014,12 @@ static bool hci_pio_irq_handler(struct i3c_hci *hci)
- 	struct hci_pio_data *pio = hci->io_data;
- 	u32 status;
- 
--	spin_lock(&hci->lock);
- 	status = pio_reg_read(INTR_STATUS);
- 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
- 		status, pio->enabled_irqs);
- 	status &= pio->enabled_irqs | STAT_LATENCY_WARNINGS;
--	if (!status) {
--		spin_unlock(&hci->lock);
-+	if (!status)
- 		return false;
+-static int i3c_hci_software_reset(struct i3c_hci *hci)
+-{
+-	u32 regval;
+-	int ret;
+-
+-	/*
+-	 * SOFT_RST must be clear before we write to it.
+-	 * Then we must wait until it clears again.
+-	 */
+-	ret = readx_poll_timeout(reg_read, RESET_CONTROL, regval,
+-				 !(regval & SOFT_RST), 0, 10 * USEC_PER_MSEC);
+-	if (ret) {
+-		dev_err(&hci->master.dev, "%s: Software reset stuck\n", __func__);
+-		return ret;
 -	}
+-
+-	reg_write(RESET_CONTROL, SOFT_RST);
+-
+-	ret = readx_poll_timeout(reg_read, RESET_CONTROL, regval,
+-				 !(regval & SOFT_RST), 0, 10 * USEC_PER_MSEC);
+-	if (ret) {
+-		dev_err(&hci->master.dev, "%s: Software reset failed\n", __func__);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+ static inline bool is_version_1_1_or_newer(struct i3c_hci *hci)
+ {
+ 	return hci->version_major > 1 || (hci->version_major == 1 && hci->version_minor > 0);
+@@ -764,8 +765,12 @@ static int i3c_hci_runtime_suspend(struct device *dev)
+ 	int ret;
  
- 	if (status & STAT_IBI_STATUS_THLD)
- 		hci_pio_process_ibi(hci, pio);
-@@ -1056,7 +1053,6 @@ static bool hci_pio_irq_handler(struct i3c_hci *hci)
- 	pio_reg_write(INTR_SIGNAL_ENABLE, pio->enabled_irqs);
- 	dev_dbg(&hci->master.dev, "PIO_INTR_STATUS %#x/%#x",
- 		pio_reg_read(INTR_STATUS), pio_reg_read(INTR_SIGNAL_ENABLE));
--	spin_unlock(&hci->lock);
- 	return true;
- }
+ 	ret = i3c_hci_bus_disable(hci);
+-	if (ret)
++	if (ret) {
++		/* Fall back to software reset to disable the bus */
++		ret = i3c_hci_software_reset(hci);
++		i3c_hci_sync_irq_inactive(hci);
+ 		return ret;
++	}
+ 
+ 	hci->io->suspend(hci);
  
 
 
