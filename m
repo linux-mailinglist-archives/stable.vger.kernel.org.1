@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDmKBhCPuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:44 +0100
+	id 6N+jOdSOuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E672AF981
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27C32AF8EF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F5F53267EE8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E16E7304CA5E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916833F7E98;
-	Tue, 17 Mar 2026 17:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9753793C9;
+	Tue, 17 Mar 2026 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBV5nFT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNL19uSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537A33F54CD;
-	Tue, 17 Mar 2026 17:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4182A36EABC;
+	Tue, 17 Mar 2026 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766836; cv=none; b=Y7AyKZl7lOF+tEFz9GONOW8t82Tmd342vkIIQf7/Ba9pZt76JBhah0u5os1gtXnXOMrQQ2/6gt/ZS3s8CDOprsf7C70HdzvNo+XOjB2pm6ec4y/xcK1gOipUrjyBVK3Z7Bu12oHoHA/Qw9rYnX6bQNCAvSCsW/iWPtHKkaafTKk=
+	t=1773768214; cv=none; b=lV7PLl1JNrvrRVjv449rumQ5c3hVV5gO1uuXGdmddLNjcCrHopVRNcMsJ9Aq25RFM2cmhdYxy/8BJ+IIC2e72xzJLCOZ/amUup/05whkASpI7NffguypIAHr7jglasM5i1Q2YyzWVYSxIS7MXnHKOwSlOTvTnY7dcURrPITG0o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766836; c=relaxed/simple;
-	bh=kbm8SRPp+bpXflixv8d7WhsYEyGahbvwzlmr+0XoLss=;
+	s=arc-20240116; t=1773768214; c=relaxed/simple;
+	bh=TW50JkB5zydTbsiLTm7aQp7GLIm3cpZDg9BHaggENTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIFzg4FW55LxbN/j1rW8CzmPLZ6SugZHdHs2dzrNyrVUCjAdTDSHOdc9BDG1gUdRmfE366C5O/PZpSmcd3OObieS+esN3HGNcVGibwyMjmPoDV3o9kS/l8WforrYkj89ZjgKIgOtFEoZzePiT7vnKGFJsTclkReuKQiDp5P5aM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBV5nFT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C337C4CEF7;
-	Tue, 17 Mar 2026 17:00:34 +0000 (UTC)
+	 MIME-Version; b=F6d/nnrjgXJi1nShBGunyniAiMNC7CZT3ZP00vIweL39I4j+SbjCt5rcLrg8xneWEI+JqADzLvtVnmHscMdtdxfi4lDiyV4SjdOy9fxJVVBhuP8uyzD6b/2mweR2DlqdCEB4ognVqg2VtKDfKlfK/N0N1gz1ZBNlyCCq9L0zf5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNL19uSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71DEC4CEF7;
+	Tue, 17 Mar 2026 17:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766836;
-	bh=kbm8SRPp+bpXflixv8d7WhsYEyGahbvwzlmr+0XoLss=;
+	s=korg; t=1773768214;
+	bh=TW50JkB5zydTbsiLTm7aQp7GLIm3cpZDg9BHaggENTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBV5nFT4X9jNrb9JKmxU1YjIhbnthANZNxM8zQ7V/kBZxmrXBCaV6B2EmzMRQDnbL
-	 y1CE/yANHcWQu+7Ee4fBlX9yMYiWLCaeudiu2vGej90qGBDWKicZmTdATtyrgpGmGo
-	 16XJLoUD2uTRubxyuekM2tMlzASwnIOKJkpmZSLA=
+	b=qNL19uSSHwyXY6Q6ymd4oiLLK3LAK3AhAPGkTdkCCiwZg7XuQrk/cTHNbuEyanAuv
+	 8shpwrAuSS8E8yALh81pcuryFN/DcyST2cWCWETgaZ79x83FTPl4bWBjAK8/jLeHii
+	 tcLIjEljO14IGtxJJX8nIR8guEUitPFfXrX23UBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Dubey <adubey@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.19 331/378] powerpc64/bpf: fix the address returned by bpf_get_func_ip
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.18 259/333] drm/amd: Fix a few more NULL pointer dereference in device cleanup
 Date: Tue, 17 Mar 2026 17:34:48 +0100
-Message-ID: <20260317163019.166136359@linuxfoundation.org>
+Message-ID: <20260317163008.975448294@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +67,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226465-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226792-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 73E672AF981
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B27C32AF8EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 157820264ac3dadfafffad63184b883eb28f9ae0 upstream.
+commit 72ecb1dae72775fa9fea0159d8445d620a0a2295 upstream.
 
-bpf_get_func_ip() helper function returns the address of the traced
-function. It relies on the IP address stored at ctx - 16 by the bpf
-trampoline. On 64-bit powerpc, this address is recovered from LR
-accounting for OOL trampoline. But the address stored here was off
-by 4-bytes. Ensure the address is the actual start of the traced
-function.
+I found a few more paths that cleanup fails due to a NULL version pointer
+on unsupported hardware.
 
-Reported-by: Abhishek Dubey <adubey@linux.ibm.com>
-Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+Add NULL checks as applicable.
+
+Fixes: 39fc2bc4da00 ("drm/amdgpu: Protect GPU register accesses in powergated state in some paths")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f5a05f8414fc10f307eb965f303580c7778f8dd2)
 Cc: stable@vger.kernel.org
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-3-hbathini@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/net/bpf_jit_comp.c |   28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -722,9 +722,9 @@ static int __arch_prepare_bpf_trampoline
- 	 *       retval_off             [ return value      ]
- 	 *                              [ reg argN          ]
- 	 *                              [ ...               ]
--	 *       regs_off               [ reg_arg1          ] prog ctx context
--	 *       nregs_off              [ args count        ]
--	 *       ip_off                 [ traced function   ]
-+	 *       regs_off               [ reg_arg1          ] prog_ctx
-+	 *       nregs_off              [ args count        ] ((u64 *)prog_ctx)[-1]
-+	 *       ip_off                 [ traced function   ] ((u64 *)prog_ctx)[-2]
- 	 *                              [ ...               ]
- 	 *       run_ctx_off            [ bpf_tramp_run_ctx ]
- 	 *                              [ reg argN          ]
-@@ -824,7 +824,7 @@ static int __arch_prepare_bpf_trampoline
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3625,6 +3625,8 @@ static int amdgpu_device_ip_fini_early(s
+ 	int i, r;
  
- 	bpf_trampoline_save_args(image, ctx, func_frame_offset, nr_regs, regs_off);
+ 	for (i = 0; i < adev->num_ip_blocks; i++) {
++		if (!adev->ip_blocks[i].version)
++			continue;
+ 		if (!adev->ip_blocks[i].version->funcs->early_fini)
+ 			continue;
  
--	/* Save our return address */
-+	/* Save our LR/return address */
- 	EMIT(PPC_RAW_MFLR(_R3));
- 	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
- 		EMIT(PPC_RAW_STL(_R3, _R1, alt_lr_off));
-@@ -832,24 +832,34 @@ static int __arch_prepare_bpf_trampoline
- 		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
+@@ -3687,6 +3689,8 @@ static int amdgpu_device_ip_fini(struct
+ 		if (!adev->ip_blocks[i].status.sw)
+ 			continue;
  
- 	/*
--	 * Save ip address of the traced function.
--	 * We could recover this from LR, but we will need to address for OOL trampoline,
--	 * and optional GEP area.
-+	 * Derive IP address of the traced function.
-+	 * In case of CONFIG_PPC_FTRACE_OUT_OF_LINE or BPF program, LR points to the instruction
-+	 * after the 'bl' instruction in the OOL stub. Refer to ftrace_init_ool_stub() and
-+	 * bpf_arch_text_poke() for OOL stub of kernel functions and bpf programs respectively.
-+	 * Relevant stub sequence:
-+	 *
-+	 *               bl <tramp>
-+	 *   LR (R3) =>  mtlr r0
-+	 *               b <func_addr+4>
-+	 *
-+	 * Recover kernel function/bpf program address from the unconditional
-+	 * branch instruction at the end of OOL stub.
- 	 */
- 	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) || flags & BPF_TRAMP_F_IP_ARG) {
- 		EMIT(PPC_RAW_LWZ(_R4, _R3, 4));
- 		EMIT(PPC_RAW_SLWI(_R4, _R4, 6));
- 		EMIT(PPC_RAW_SRAWI(_R4, _R4, 6));
- 		EMIT(PPC_RAW_ADD(_R3, _R3, _R4));
--		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
- 	}
- 
- 	if (flags & BPF_TRAMP_F_IP_ARG)
- 		EMIT(PPC_RAW_STL(_R3, _R1, ip_off));
- 
--	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-+	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
- 		/* Fake our LR for unwind */
-+		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
- 		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
-+	}
- 
- 	/* Save function arg count -- see bpf_get_func_arg_cnt() */
- 	EMIT(PPC_RAW_LI(_R3, nr_regs));
++		if (!adev->ip_blocks[i].version)
++			continue;
+ 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC) {
+ 			amdgpu_ucode_free_bo(adev);
+ 			amdgpu_free_static_csa(&adev->virt.csa_obj);
+@@ -3713,6 +3717,8 @@ static int amdgpu_device_ip_fini(struct
+ 	for (i = adev->num_ip_blocks - 1; i >= 0; i--) {
+ 		if (!adev->ip_blocks[i].status.late_initialized)
+ 			continue;
++		if (!adev->ip_blocks[i].version)
++			continue;
+ 		if (adev->ip_blocks[i].version->funcs->late_fini)
+ 			adev->ip_blocks[i].version->funcs->late_fini(&adev->ip_blocks[i]);
+ 		adev->ip_blocks[i].status.late_initialized = false;
 
 
 
