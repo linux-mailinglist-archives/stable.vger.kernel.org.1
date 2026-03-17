@@ -1,148 +1,192 @@
-Return-Path: <stable+bounces-226121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OC5YAJl/uWmxHAIAu9opvQ
-	(envelope-from <stable+bounces-226121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:45 +0100
+	id MMknDCWCuWmxHAIAu9opvQ
+	(envelope-from <stable+bounces-226124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:32:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33C32ADDA0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A64B2AE08D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0E32C303E1D9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:21:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F1F4304B398
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5B230EF84;
-	Tue, 17 Mar 2026 16:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C053D3161A6;
+	Tue, 17 Mar 2026 16:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWwY5lgx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A4IjZ6zH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABCD246BC6;
-	Tue, 17 Mar 2026 16:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3B9221265
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773764459; cv=none; b=qX9kp40zmpemQqZW2PyQaT96F5T0eRXHgntyDLP9LY8n/kSMsdJuZ1VS7qyCjwqGjwYk6GUmr5bRTpPz6Czi6CTkNN+HcmH8lnFtv0w9fedg5VZHWcyLze8huwbYDMnHw8N1fXSmiG9o2Zg4GsmM3CdFMNiUeasJznRSb8z27Lk=
+	t=1773764774; cv=none; b=AvhIlSwZSfEBvyitX/aTkjM0ahKS4R+p7r2yNV+kODCkyV5ize27gOY50HzMCxfstDJfgTJfojDScbkQ852IP9DD04J2+oE1z8PB+4eI8E3LZ7zTqqAcp3YdFoig5nZWPwYeYBT4qhuiJvtyvX3sXS8vF9Cdesbz+7j8/cW+7AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773764459; c=relaxed/simple;
-	bh=e0BPQ1p0UdfRCxCsTaN9DCxBuEgVgdYt0iMgNM1/M1A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lM6F9T6KjNSF8AEUBkVzYqrsemHZ1PxYuN2/jTdip5ent0NDgyWaIq37SNaIiHpdSf7APqytHVunhINr8GonVg6fIfGTEqHaOKSmWGBrBxwBi252MrMPTyj+ib7o3ZIikPeiFVCwlHFHDkyH543ZgYUl9IFMJ+KNd4sDfRgRS2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWwY5lgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775A7C4CEF7;
-	Tue, 17 Mar 2026 16:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773764458;
-	bh=e0BPQ1p0UdfRCxCsTaN9DCxBuEgVgdYt0iMgNM1/M1A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KWwY5lgxEUOSMGbdv+aQWxJp08HLMO7z3TQgBQ1a0RAkOkA+HhoC66RreUnEdoqVv
-	 f/Cj0g3xYmLRHrgQZGCWbPRlyy12meMkzl61LsRz54Zu073r6Ct7QpcsIhxHEwwEYd
-	 tpszZOw4aqVoCCSO8A1hDIi7Cx2lQ1cniaOFqORXExZjrvwcId9xfPi9od081znGp0
-	 j3AlD3Vxh84yMQGKBBsYSIgnfRb2FPxk0OmYjc2c+6MctKviHVjF5wfUby36SiQxnP
-	 zVQJz5jotHJhQosIBbAGv0xdxeJq969llKUbN+YrfDoOUB7H3IvqF6IK1UiyqIqhT+
-	 ThoDGXHmVugpA==
-Message-ID: <0f92ab73-5996-4977-9ada-e8a26957110c@kernel.org>
-Date: Tue, 17 Mar 2026 17:20:51 +0100
+	s=arc-20240116; t=1773764774; c=relaxed/simple;
+	bh=cE6v11F5b/JFuNRNrI8MMtt9RfeQ0jpqwY9MsYGJwnw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PCaDF8wLdTSnPY/xMS+juhQ6lYdWz9m9bxCsOPXBrWTQW8jcmAD+XpYaxcnocu1LnodMh0Vp90JzxFkW3nhHuOQtTvGzTPyAGtKdH2PKjhWKlpM9uT1dz4BDmcL4/gdkoNWqEtkQETsy1KDnIehdV0hLiHboOI+Lep3KtABl28g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A4IjZ6zH; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773764773; x=1805300773;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cE6v11F5b/JFuNRNrI8MMtt9RfeQ0jpqwY9MsYGJwnw=;
+  b=A4IjZ6zHg0WLrRxUftA9FLdWPxPvCMkneHlxxz3yxzK23Ogm4sInQpju
+   cdTvKZgdGwrxH/igkXdEyF7GaLwx+kD0YRMahMYRHb6qZy4JAHSQ5Hg+f
+   kfP9qv0kQQc0UnhrSk/m5MnZtHptvbJsfDhlx4AIg6/sDlxICSlMwimBp
+   RW0dR4XnNwaKfm2Uh59gQwxzmtKkLy3KI8Ti16ycm5K8Q0Bt8qox2FUCA
+   aiY8HCCcLzr0aGKnN2EFM0p+Mgw8fO8er15RrJh3cdrP4s3iQIUI23Zcz
+   6JM3FdtLRAOZE49An32uDHfVJxMZWXCxh9fGuDowCozqGTKOxsw/loC/3
+   Q==;
+X-CSE-ConnectionGUID: alPq17f7S9SFLuGQLn0y8A==
+X-CSE-MsgGUID: db+LROvUQ6m3okxI6n9XBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74718013"
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="74718013"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 09:26:12 -0700
+X-CSE-ConnectionGUID: KbkTKm5XT5uio39gciEP+w==
+X-CSE-MsgGUID: CpS6j0XsQGWApD7xns33+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,126,1770624000"; 
+   d="scan'208";a="226455869"
+Received: from shosgclin.sh.intel.com ([10.112.232.103])
+  by orviesa003.jf.intel.com with ESMTP; 17 Mar 2026 09:26:11 -0700
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: stable@vger.kernel.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12.y] drm/xe/sync: Cleanup partially initialized sync on parse failure
+Date: Tue, 17 Mar 2026 16:22:21 +0000
+Message-ID: <20260317162220.1774730-2-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2026031732-size-unfasten-2bf3@gregkh>
+References: <2026031732-size-unfasten-2bf3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
- thread safe
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mark Brown <broonie@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn
- <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Saravana Kannan <saravanak@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
- driver-core@lists.linux.dev, imx@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, netdev@vger.kernel.org
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226121-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[chromium.org,linuxfoundation.org,vger.kernel.org,linux.intel.com,kernel.org,sang-engineering.com,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[33];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226124-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shuicheng.lin@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:email,sang-engineering.com:email]
-X-Rspamd-Queue-Id: D33C32ADDA0
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9A64B2AE08D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/17/2026 5:11 PM, Rafael J. Wysocki wrote:
-> On Tue, Mar 17, 2026 at 5:04 PM Douglas Anderson <dianders@chromium.org> wrote:
->>
->> In various places in the kernel, we modify the fwnode "flags" member
->> by doing either:
->>   fwnode->flags |= SOME_FLAG;
->>   fwnode->flags &= ~SOME_FLAG;
->>
->> This type of modification is not thread-safe. If two threads are both
->> mucking with the flags at the same time then one can clobber the
->> other.
->>
->> While flags are often modified while under the "fwnode_link_lock",
->> this is not universally true.
->>
->> Create some accessor functions for setting, clearing, and testing the
->> FWNODE flags and move all users to these accessor functions. New
->> accessor functions use set_bit() and clear_bit(), which are
->> thread-safe.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Acked-by: Mark Brown <broonie@kernel.org>
->> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
->> Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> 
-> Rafael J. Wysocki (Intel) <rafael@kernel.org>
+xe_sync_entry_parse() can allocate references (syncobj, fence, chain fence,
+or user fence) before hitting a later failure path. Several of those paths
+returned directly, leaving partially initialized state and leaking refs.
 
-ACK or RB?
+Route these error paths through a common free_sync label and call
+xe_sync_entry_cleanup(sync) before returning the error.
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260219233516.2938172-5-shuicheng.lin@intel.com
+(cherry picked from commit f939bdd9207a5d1fc55cced5459858480686ce22)
+Cc: stable@vger.kernel.org
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 1bfd7575092420ba5a0b944953c95b74a5646ff8)
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+---
+ drivers/gpu/drm/xe/xe_sync.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index dd7bd766ae18..6affdd0a8095 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -142,8 +142,10 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+ 
+ 		if (!signal) {
+ 			sync->fence = drm_syncobj_fence_get(sync->syncobj);
+-			if (XE_IOCTL_DBG(xe, !sync->fence))
+-				return -EINVAL;
++			if (XE_IOCTL_DBG(xe, !sync->fence)) {
++				err = -EINVAL;
++				goto free_sync;
++			}
+ 		}
+ 		break;
+ 
+@@ -163,17 +165,21 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+ 
+ 		if (signal) {
+ 			sync->chain_fence = dma_fence_chain_alloc();
+-			if (!sync->chain_fence)
+-				return -ENOMEM;
++			if (!sync->chain_fence) {
++				err = -ENOMEM;
++				goto free_sync;
++			}
+ 		} else {
+ 			sync->fence = drm_syncobj_fence_get(sync->syncobj);
+-			if (XE_IOCTL_DBG(xe, !sync->fence))
+-				return -EINVAL;
++			if (XE_IOCTL_DBG(xe, !sync->fence)) {
++				err = -EINVAL;
++				goto free_sync;
++			}
+ 
+ 			err = dma_fence_chain_find_seqno(&sync->fence,
+ 							 sync_in.timeline_value);
+ 			if (err)
+-				return err;
++				goto free_sync;
+ 		}
+ 		break;
+ 
+@@ -207,6 +213,10 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
+ 	sync->timeline_value = sync_in.timeline_value;
+ 
+ 	return 0;
++
++free_sync:
++	xe_sync_entry_cleanup(sync);
++	return err;
+ }
+ 
+ int xe_sync_entry_add_deps(struct xe_sync_entry *sync, struct xe_sched_job *job)
+-- 
+2.50.1
+
 
