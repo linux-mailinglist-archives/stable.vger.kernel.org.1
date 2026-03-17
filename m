@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFFjKruLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100
+	id AEguINKOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2CD2AF23F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266B32AF8DA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18211325E2B8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0FF6D3093E2D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6583F7E84;
-	Tue, 17 Mar 2026 17:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD4378825;
+	Tue, 17 Mar 2026 17:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQfWyDgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+gmIWl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29183F7E66;
-	Tue, 17 Mar 2026 17:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F482F6160;
+	Tue, 17 Mar 2026 17:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766827; cv=none; b=jhooMr6aN57+vvd4OH8U9/+fX0HHSs+Sf39rDhYrhHljnpTA4GDesfysXHvUh6iFgeORbR2hI5vcAXCOGNUo7BQnbyaQ7z8qZjBB7b6BGN7ny0irCl+xzrOQq93hBwlzPJuCO0YdL5/HOniFbB2Zy+X+8bE8At+bmX7tGynTulo=
+	t=1773768207; cv=none; b=WwNIBHP0+6TyVZCQqrlTY0yve/W2GzZRxsj0AwakdHjpogH8i0Rn8rMF3Ghwa+y8IDjwessqxboSjhGCbw/XphKtmh2hUZvIbmi0mRdYQ2Ddpr1bmYyhE2v5EnPq3h/OCsZdnuF1IE88WmfcMK44fGo98zesepoNzKLj6tz8lQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766827; c=relaxed/simple;
-	bh=tddEdZ35J/EFIyQUMMQ6a+CqYdBXIfhNy2RxJi4w404=;
+	s=arc-20240116; t=1773768207; c=relaxed/simple;
+	bh=dtDimHzr4B9POLXeeI1CKlbgK5oFXULF2kWsNfnX+Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLBTYvnyMEFhdRDbKa2R5lgFQJjELn/nNgceUat3MclC696ECzhJ6IIV52AVY2KKZHQxrzfxvQEK1ZWTKknL7Dx1Y3rJ4bwe8u02keUZTZQcnuahjv62QwGDMmKKcgPGLySA4oJWfQcxpPZFW8Qp99/+AWWo6sLcCk/WtS836N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQfWyDgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17241C4CEF7;
-	Tue, 17 Mar 2026 17:00:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iZc3eIE2VdnZYucMQEEPiXMjxAmUOBZN+4Zh/Uw3O8/GKUzgVki+l3OtPow53ZkmTlYue2BqCz/hc7xYzZzV086UyFI32sBbr8CtnpffHKBO1QNypBYPtGR8+8RrAJBLu5OlBDo4aB263tdCkzTwQ6hK57CNZzk4MZIXANGnd6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+gmIWl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66372C19424;
+	Tue, 17 Mar 2026 17:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766827;
-	bh=tddEdZ35J/EFIyQUMMQ6a+CqYdBXIfhNy2RxJi4w404=;
+	s=korg; t=1773768206;
+	bh=dtDimHzr4B9POLXeeI1CKlbgK5oFXULF2kWsNfnX+Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQfWyDgjTCjBR+HU4pW6HN4U+0yhJ2hAsbhsOj06zSWJYW4fVvVPYtP+FD3DZwq5O
-	 Dk8Rnhd/ygzIA3k1G+YDAYLznD5H5gOEgNu/TOFWAFGRlN2MDHXO7Y65wSsddQjb7k
-	 gbr4w53y+LDKRZiOdg9lRP19bcjQLNIRi4TSDweY=
+	b=u+gmIWl5BaOs/tWU856Gq2RfdKji2xmV5N/BL8sZULrdgt68PiohZH7os9eaiNAbu
+	 8ECXdyV9L0NzsAHGvTKaZiZJSYfyVG7F8qY02oRY0tcRz484R6GZRSPjBo5m6sRoQw
+	 SpUfFKrv4xXNPbpFgbx4v+vgHvrmiOy+KZMiZsUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.19 329/378] powerpc/pseries: Correct MSI allocation tracking
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.18 257/333] drm/i915/psr: Repeat Selective Update area alignment
 Date: Tue, 17 Mar 2026 17:34:46 +0100
-Message-ID: <20260317163019.092913040@linuxfoundation.org>
+Message-ID: <20260317163008.899702213@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226463-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226790-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:email]
-X-Rspamd-Queue-Id: 2D2CD2AF23F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ursulin.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 266B32AF8DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit 35e4f2a17eb40288f9bcdb09549fa04a63a96279 upstream.
+commit 1be2fca84f520105413d0d89ed04bb0ff742ab16 upstream.
 
-The per-device MSI allocation calculation in pseries_irq_domain_alloc()
-is clearly wrong. It can still happen to work when nr_irqs is 1.
+Currently we are aligning Selective Update area to cover cursor fully if
+needed only once. It may happen that cursor is in Selective Update area
+after pipe alignment and after that covering cursor plane only
+partially. Fix this by looping alignment as long as alignment isn't needed
+anymore.
 
-Correct it.
+v2:
+  - do not unecessarily loop if cursor was already fully covered
+  - rename aligned as su_area_changed
 
-Fixes: c0215e2d72de ("powerpc/pseries: Fix MSI-X allocation failure when quota is exceeded")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-[maddy: Fixed Nilay's reviewed-by tag]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260302003948.1452016-1-namcao@linutronix.de
+Fixes: 1bff93b8bc27 ("drm/i915/psr: Extend SU area to cover cursor fully if needed")
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patch.msgid.link/20260304113011.626542-2-jouni.hogander@intel.com
+(cherry picked from commit 681e12440d8b110350a5709101169f319e10ccbb)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_psr.c |   50 +++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -605,7 +605,7 @@ static int pseries_irq_domain_alloc(stru
- 					      &pseries_msi_irq_chip, pseries_dev);
- 	}
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -2559,11 +2559,12 @@ static void clip_area_update(struct drm_
+ 		overlap_damage_area->y2 = damage_area->y2;
+ }
  
--	pseries_dev->msi_used++;
-+	pseries_dev->msi_used += nr_irqs;
- 	return 0;
+-static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
++static bool intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_display *display = to_intel_display(crtc_state);
+ 	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
+ 	u16 y_alignment;
++	bool su_area_changed = false;
  
- out:
+ 	/* ADLP aligns the SU region to vdsc slice height in case dsc is enabled */
+ 	if (crtc_state->dsc.compression_enable &&
+@@ -2572,10 +2573,18 @@ static void intel_psr2_sel_fetch_pipe_al
+ 	else
+ 		y_alignment = crtc_state->su_y_granularity;
+ 
+-	crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
+-	if (crtc_state->psr2_su_area.y2 % y_alignment)
++	if (crtc_state->psr2_su_area.y1 % y_alignment) {
++		crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
++		su_area_changed = true;
++	}
++
++	if (crtc_state->psr2_su_area.y2 % y_alignment) {
+ 		crtc_state->psr2_su_area.y2 = ((crtc_state->psr2_su_area.y2 /
+ 						y_alignment) + 1) * y_alignment;
++		su_area_changed = true;
++	}
++
++	return su_area_changed;
+ }
+ 
+ /*
+@@ -2708,7 +2717,7 @@ int intel_psr2_sel_fetch_update(struct i
+ 	struct intel_crtc_state *crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
+ 	struct intel_plane_state *new_plane_state, *old_plane_state;
+ 	struct intel_plane *plane;
+-	bool full_update = false, cursor_in_su_area = false;
++	bool full_update = false, su_area_changed;
+ 	int i, ret;
+ 
+ 	if (!crtc_state->enable_psr2_sel_fetch)
+@@ -2815,15 +2824,32 @@ int intel_psr2_sel_fetch_update(struct i
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * Adjust su area to cover cursor fully as necessary (early
+-	 * transport). This needs to be done after
+-	 * drm_atomic_add_affected_planes to ensure visible cursor is added into
+-	 * affected planes even when cursor is not updated by itself.
+-	 */
+-	intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
++	do {
++		bool cursor_in_su_area;
+ 
+-	intel_psr2_sel_fetch_pipe_alignment(crtc_state);
++		/*
++		 * Adjust su area to cover cursor fully as necessary
++		 * (early transport). This needs to be done after
++		 * drm_atomic_add_affected_planes to ensure visible
++		 * cursor is added into affected planes even when
++		 * cursor is not updated by itself.
++		 */
++		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
++
++		su_area_changed = intel_psr2_sel_fetch_pipe_alignment(crtc_state);
++
++		/*
++		 * If the cursor was outside the SU area before
++		 * alignment, the alignment step (which only expands
++		 * SU) may pull the cursor partially inside, so we
++		 * must run ET alignment again to fully cover it. But
++		 * if the cursor was already fully inside before
++		 * alignment, expanding the SU area won't change that,
++		 * so no further work is needed.
++		 */
++		if (cursor_in_su_area)
++			break;
++	} while (su_area_changed);
+ 
+ 	/*
+ 	 * Now that we have the pipe damaged area check if it intersect with
 
 
 
