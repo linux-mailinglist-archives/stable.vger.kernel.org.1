@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEYbLBOPuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:47 +0100
+	id WO9lDFyVuWlcKwIAu9opvQ
+	(envelope-from <stable+bounces-226794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2690C2AF98A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF5B2B0546
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CABB314CED1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3AB43377010
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F7A3F54B8;
-	Tue, 17 Mar 2026 17:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0DD30C63B;
+	Tue, 17 Mar 2026 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFledsBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZscHh7W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1413F54D1;
-	Tue, 17 Mar 2026 17:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F802DECC6;
+	Tue, 17 Mar 2026 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766849; cv=none; b=Lr2spGl4pflFo1NOlHRN+WA2mjNVsh7vkeDKPwRmRfRTIIPqco86abIaMpCngVuqiOSColgpoR6fsx1tq5ZzaJTUondifo3BUwuUotJ3m5gpZ/9++HaMLZBjvMZuTX7naPQ4oB5RXLjEsqQ/lX0GcFY3Jp/RftUVfwiXj6TL+9U=
+	t=1773768222; cv=none; b=vBYeY+jPtxGALxWXQyklav5exsPsITRw3aFrI6+yjsLVYDw+fKmGSKn7bwPuKeWi3irw4FOco1Iv/BLPdgxqIdePjFdBGeFbjzU+EXUuNQ0TH0BmqTO7Ro9sM+MpOkM9GxkvrO61m7l3/TX6C3n6MN9Gy7P2VzpoDsBUm5Ir3aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766849; c=relaxed/simple;
-	bh=XHo0PN3wAFVPLbZPAEOeq2+favWG7ik349uW1Ta53JE=;
+	s=arc-20240116; t=1773768222; c=relaxed/simple;
+	bh=sinkKH5kMEc/NP4LhgbP45TeW6ldarB3rNqLPxCMHak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4BRoqlpA+5LZILfMcln5LuGPJxAI9FBmh0OyNr4T8yz2bO2ISOhhFko07mJw7SG9OEkySy/L61SBh6dmx8Rl3Vs6p4G4xkCKbtyEi7eFqGpRdpqWk6Ou03fmET0eEA12bwXMiOUHGIxIRMjg6gZ4L8ySjSSYCqo/Z8M9RLyDNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFledsBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20D7C4CEF7;
-	Tue, 17 Mar 2026 17:00:48 +0000 (UTC)
+	 MIME-Version; b=X46OAPkDeFjv61Y1vIDDONw3kCBemUKzy2TsggycloER/n/RGmXA1AtCZrr8HSMJoleqRj1nkLJHbQWvBaIPDxxJhC7AjBWzd4VonUgFBEcAr3XOazEyONPKQ1LsNwXVG0ZHVGzvj/We3HBFSFnbEjE086BkqsVLUQPz8V7Y1Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZscHh7W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DB6C4CEF7;
+	Tue, 17 Mar 2026 17:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766849;
-	bh=XHo0PN3wAFVPLbZPAEOeq2+favWG7ik349uW1Ta53JE=;
+	s=korg; t=1773768221;
+	bh=sinkKH5kMEc/NP4LhgbP45TeW6ldarB3rNqLPxCMHak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFledsBp7sjfwvGcZDsaDfHMRz+TQOMuCCBI6ECgqGh+L/ibRjNpntlGstHf+ygFB
-	 Uo/cdtvZkoc53qc/Zj10S2aDEFhgn/J1WNb8zybUNLTzPkR11piEGwyVsEcAm9XIzx
-	 ub3iFx7LpKfoQpEsbw/Tqq2RFsLBtPoZm0bojxl4=
+	b=ZscHh7W1hlXDv+7j3g6r/ce7gQW2DBlsLxRkbNTG0wXyAFICtz3XrIZHSQPQupB8C
+	 iBu4pBLcqCGCcNSfoTNBGMnTxVVfdyqFuV8pMJQxsGf0mRctpUYOaP5RPI5wcaUJq2
+	 wiRH1vly06oAVhmee8zmgZTtZZH3aHDdOHWROZB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.19 333/378] scsi: core: Fix error handling for scsi_alloc_sdev()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.18 261/333] tracing: Fix enabling multiple events on the kernel command line and bootconfig
 Date: Tue, 17 Mar 2026 17:34:50 +0100
-Message-ID: <20260317163019.236610628@linuxfoundation.org>
+Message-ID: <20260317163009.048168259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226468-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226794-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,50 +91,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,acm.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: 2690C2AF98A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,efficios.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: 8AF5B2B0546
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
 
-commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
+commit 3b1679e086bb869ca02722f6bd29b3573a6a0e7e upstream.
 
-After scsi_sysfs_device_initialize() was called, error paths must call
-__scsi_remove_device().
+Multiple events can be enabled on the kernel command line via a comma
+separator. But if the are specified one at a time, then only the last
+event is enabled. This is because the event names are saved in a temporary
+buffer, and each call by the init cmdline code will reset that buffer.
 
-Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
+This also affects names in the boot config file, as it may call the
+callback multiple times with an example of:
+
+  kernel.trace_event = ":mod:rproc_qcom_common", ":mod:qrtr", ":mod:qcom_aoss"
+
+Change the cmdline callback function to append a comma and the next value
+if the temporary buffer already has content.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260302-trace-events-allow-multiple-modules-v1-1-ce4436e37fb8@oss.qualcomm.com
+Signed-off-by: Andrei-Alexandru Tachici <andrei-alexandru.tachici@oss.qualcomm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_scan.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/trace/trace_events.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -360,12 +360,8 @@ static struct scsi_device *scsi_alloc_sd
- 	 * default device queue depth to figure out sbitmap shift
- 	 * since we use this queue depth most of times.
- 	 */
--	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
--		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
--		put_device(&starget->dev);
--		kfree(sdev);
--		goto out;
--	}
-+	if (scsi_realloc_sdev_budget_map(sdev, depth))
-+		goto out_device_destroy;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -4342,7 +4342,11 @@ static char bootup_event_buf[COMMAND_LIN
  
- 	scsi_change_queue_depth(sdev, depth);
+ static __init int setup_trace_event(char *str)
+ {
+-	strscpy(bootup_event_buf, str, COMMAND_LINE_SIZE);
++	if (bootup_event_buf[0] != '\0')
++		strlcat(bootup_event_buf, ",", COMMAND_LINE_SIZE);
++
++	strlcat(bootup_event_buf, str, COMMAND_LINE_SIZE);
++
+ 	trace_set_ring_buffer_expanded(NULL);
+ 	disable_tracing_selftest("running event tracing");
  
 
 
