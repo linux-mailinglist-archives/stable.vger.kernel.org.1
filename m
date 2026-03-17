@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-226281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GxYF7+HuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:31 +0100
+	id 4BDOHfeLuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6D12AEA81
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D882AF2AD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBBA73049271
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 018D9309C46A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CD83F23C7;
-	Tue, 17 Mar 2026 16:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA193F660E;
+	Tue, 17 Mar 2026 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb13A0pR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6znX5Y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2A73F23BF;
-	Tue, 17 Mar 2026 16:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EC23F54CE;
+	Tue, 17 Mar 2026 17:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766010; cv=none; b=P4vck+oSaw9CJyZKlvfn23S55lt0UhWUG1q7T7zFHgaqjswEQwurWwhj8EJRsGE/z+ysDi1stYEOMUKg4k8N0M3badXD8p27mEwlxsl5ICs+lV/6PwAY3hscS50n6mf0VCzbODFoTAEjWGuoB/AGRm/tR31qhN4PkCFTfELEu2E=
+	t=1773767395; cv=none; b=kGWWV3keeVez83pblUsF4pXNuQW1lVQmA9+MHai4LB6v/H9bx2zDyQTPZcyJ4WVCOScwoVVngXuj22D/rnk7SnD5NrlC69U5yeLEOtggSwU+iHampUawHNOCJtlpubQKafOGvQOS8yvHpZsQvgD+Qa8D03MD+BefLvQLePEBWJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766010; c=relaxed/simple;
-	bh=8K/GtWjbLIZ401ULQQKI54G/4LDswNruLDtScETX5PY=;
+	s=arc-20240116; t=1773767395; c=relaxed/simple;
+	bh=IWzJhA58+jzzu5F1n033G8LGztQDC7rmdd2LKJdIvYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X797B+l9VnHBCI+YZSS7mFe6CAvQe8lgT6JVm/X+UpCgALis0WP9SwVmT5YbDp9YtUPgC23aDxG9Ethk83nv0+8n2tAp0G2jI5lydh5DrUwcDeQ80+IZcpwYjTYG9KUTwESC8/inLTKrLgqQ/2sgPQ75LqPm8//EXWlfx7orAyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb13A0pR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1A9C4CEF7;
-	Tue, 17 Mar 2026 16:46:49 +0000 (UTC)
+	 MIME-Version; b=eo4Oj/1w9pw6m0LYsKxP90XCN49UpY03mr21yhsL8bNPpNw84DKZcrs/7Wro9d7PWQaFh9i6LDWdcolqrMO/klVKfol9w/6+rvI6CdAfbcdUk1wUUv0ZwYaYkyLMacp/LTT51aP9zkX4XTK5Je4u3hFbVRBmYYgQOjKxTkFjcjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6znX5Y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D3BC4CEF7;
+	Tue, 17 Mar 2026 17:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766009;
-	bh=8K/GtWjbLIZ401ULQQKI54G/4LDswNruLDtScETX5PY=;
+	s=korg; t=1773767394;
+	bh=IWzJhA58+jzzu5F1n033G8LGztQDC7rmdd2LKJdIvYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wb13A0pRfbETsG92GPsoqCunAc+uvV4lc60T18wxopazD55ApSeP2NcvSa/gWuaSg
-	 SgLyVNmMT1l1h8K+j7olSNBzJY1fnosbFByhd5qIYAliL18jBN1YjbECydv2u0P/U7
-	 PDdzemjarV+HGFacxggzc1J1rFgJbT8ueZfS5Pqk=
+	b=r6znX5Y3YPWtrCf15CdIsnsTJx6kh7WbydidFs0gebfKmQDhE0WYntqlDHYT0Cqt1
+	 9piD7RsfhsEXe8XnIdq75Bz82BMwo7IDWX0oe2P6fzSYbK5tjjautOMlHpm3UgFX12
+	 b52NtBLDW9JHyWVdTfLeLLghNyzLNqPWoBcpep4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 150/378] usb: misc: uss720: properly clean up reference in uss720_probe()
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 078/333] sched: idle: Make skipping governor callbacks more consistent
 Date: Tue, 17 Mar 2026 17:31:47 +0100
-Message-ID: <20260317163012.531457338@linuxfoundation.org>
+Message-ID: <20260317163002.268874790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +70,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226281-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226596-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: CE6D12AEA81
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 24D882AF2AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 45dba8011efac11a2f360383221b541f5ea53ce5 upstream.
+[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
 
-If get_1284_register() fails, the usb device reference count is
-incorrect and needs to be properly dropped before returning.  That will
-happen when the kref is dropped in the call to destroy_priv(), so jump
-to that error path instead of returning directly.
+If the cpuidle governor .select() callback is skipped because there
+is only one idle state in the cpuidle driver, the .reflect() callback
+should be skipped as well, at least for consistency (if not for
+correctness), so do it.
 
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Link: https://patch.msgid.link/2026022342-smokiness-stove-d792@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/uss720.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle.c | 10 ----------
+ kernel/sched/idle.c       | 11 ++++++++++-
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -736,7 +736,7 @@ static int uss720_probe(struct usb_inter
- 	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
- 	if (ret < 0)
--		return ret;
-+		goto probe_abort;
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index 8950796a493de..56132e843c991 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -357,16 +357,6 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
+ int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		   bool *stop_tick)
+ {
+-	/*
+-	 * If there is only a single idle state (or none), there is nothing
+-	 * meaningful for the governor to choose. Skip the governor and
+-	 * always use state 0 with the tick running.
+-	 */
+-	if (drv->state_count <= 1) {
+-		*stop_tick = false;
+-		return 0;
+-	}
+-
+ 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
+ }
  
- 	ret = usb_find_last_int_in_endpoint(interface, &epd);
- 	if (!ret) {
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index ac9690805be4f..d9c515da328e5 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -219,7 +219,7 @@ static void cpuidle_idle_call(void)
+ 
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+-	} else {
++	} else if (drv->state_count > 1) {
+ 		bool stop_tick = true;
+ 
+ 		/*
+@@ -237,6 +237,15 @@ static void cpuidle_idle_call(void)
+ 		 * Give the governor an opportunity to reflect on the outcome
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
++	} else {
++		tick_nohz_idle_retain_tick();
++
++		/*
++		 * If there is only a single idle state (or none), there is
++		 * nothing meaningful for the governor to choose.  Skip the
++		 * governor and always use state 0.
++		 */
++		call_cpuidle(drv, dev, 0);
+ 	}
+ 
+ exit_idle:
+-- 
+2.51.0
+
 
 
 
