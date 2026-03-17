@@ -1,71 +1,59 @@
-Return-Path: <stable+bounces-226744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOFoMSaOuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:50 +0100
+	id sIK8JEeHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFE92AF7AD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:23:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429E62AEA02
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EFBF830A1DE4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91052300CA0D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86081AA7A6;
-	Tue, 17 Mar 2026 17:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5993F23DD;
+	Tue, 17 Mar 2026 16:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXXd/yOe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRR8w/Yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF812459DC;
-	Tue, 17 Mar 2026 17:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7106B2DE70D;
+	Tue, 17 Mar 2026 16:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768015; cv=none; b=swQG1PmshsTcOvjLurOaHyODQeFoz9PaVn9kMkh7NVRwng+Tw3QcEhyyKVqrb67ADUFeSr1gXZX5+Qx2CvyMb6ALhAJZOSfYkngL85e2mAefSa73lncsG7riO43jLmLy6IufpV1BVLQPcXxzwKAqyKq2WHrVMtJTfLq9FWzhVaQ=
+	t=1773766466; cv=none; b=HkC4SO17feWR0gLDFO1kTDBS2BUrPbvg/fXxebebGyB8deK5+HGRaeU3RvEYApgKT2RUSD4K+VRNiNSjDO8ZznrXwglntuWzocQtTZLdbjdoJwQa3KWDtxDpxoZ+MisEjOVnNhgd/EBjL7eQqgieEdiHqWTCVoNPty5BKQxlcO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768015; c=relaxed/simple;
-	bh=9wsOM5YZP6I/p/RoCaOSsSlVZwbDv9kcDA5iiw8lY8U=;
+	s=arc-20240116; t=1773766466; c=relaxed/simple;
+	bh=D+TBFfG/ngyS7n95019FfmXQ8FoEgUWsBaddZSgIsOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGox9k4t/rAGKEQXXZ+N5vlPlJFRIjkzqmdd2iWstUAkaf4dB6nO/VvxyPJI66xtyEo2mUyGG1jFdkRWWWH7nEkfBmimbnMpcxi7/nj5W2tIV/zeShdXKQI0I4gNIj4uZkyvHpR+e6djHfzRnZMQLKyTSwHOUsXuQAyC6yVd8H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXXd/yOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE2C4CEF7;
-	Tue, 17 Mar 2026 17:20:14 +0000 (UTC)
+	 MIME-Version; b=BWlsI1/uHoi9QB3b8horQa/cGlfTQLsfbgAjrU91kJxy9xBUJsYRm01twR9Fa/gx+SuHsTF3d76XoxTu+7bWngbrq8wqmkNZn9RnGggrbtefepRuh4H+3nrwjqPlSGMJYEmpqWUPWVb9ks8/cmXOnvJastKwpJ7hiznNAILlvds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRR8w/Yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16E1C4CEF7;
+	Tue, 17 Mar 2026 16:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768015;
-	bh=9wsOM5YZP6I/p/RoCaOSsSlVZwbDv9kcDA5iiw8lY8U=;
+	s=korg; t=1773766466;
+	bh=D+TBFfG/ngyS7n95019FfmXQ8FoEgUWsBaddZSgIsOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXXd/yOeB9+lP+04haCzDFE6ZT5k2nd78M1ZiXeHp9ZXYMFzj7Q33cVQgqAjDtfwi
-	 qMAfg1TGV/moKQ/KDm92iVJxdc21+8k7HTJGjYTvyHpc1XnBuMMzMRhl64eesse5L5
-	 EHkF1ouRqJ2T9KoW8evVp2GPHtsYkx4d4WwAlXik=
+	b=XRR8w/Yfu0wlC2Il1TO2ps6p87FMbrNVHZ+jV4EV126f3rDwLxpUQb04hRepZHq4U
+	 7KdwPBheRMWCAwGlqoteeJsV2DnpBKWb3rxO4PwFc1rRHbQEEjTDituxDn3P+AiMDm
+	 6J4lxGxgnmsTC27TUqLeL/bvnkBbxppAV+0wlfLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 180/333] Revert "ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()"
+	Zw Tang <shicenci@gmail.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH 6.19 252/378] mm/slab: fix an incorrect check in obj_exts_alloc_size()
 Date: Tue, 17 Mar 2026 17:33:29 +0100
-Message-ID: <20260317163006.030793941@linuxfoundation.org>
+Message-ID: <20260317163016.292600622@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,121 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-226744-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,linux.dev,cmpxchg.org,gmail.com,kernel.org,oracle.com,infradead.org,suse.com,suse.cz,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226385-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3FFE92AF7AD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 429E62AEA02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Rasmussen <axelrasmussen@google.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-commit 2d28ed588f8d7d0d41b0a4fad7f0d05e4bbf1797 upstream.
+commit 8dafa9f5900c4855a65dbfee51e3bd00636deee1 upstream.
 
-This change swapped out mod_node_page_state for lruvec_stat_add_folio.
-But, these two APIs are not interchangeable: the lruvec version also
-increments memcg stats, in addition to "global" pgdat stats.
+obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
+array from the same cache, to avoid creating slabs that are never freed.
 
-So after this change, the "pagetables" memcg stat in memory.stat always
-yields "0", which is a userspace visible regression.
+There is one mistake that returns the original size when memory
+allocation profiling is disabled. The assumption was that
+memcg-triggered slabobj_ext allocation is always served from
+KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
+both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
+allocation is served from normal kmalloc. This is because kmalloc_type()
+prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
+KMALLOC_RECLAIM with KMALLOC_NORMAL.
 
-I tried to look for a refactor where we add a variant of
-lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a folio,
-to try to adhere to the spirit of the original patch.  But at the end of
-the day this just means we have to call folio_memcg(ptdesc_folio(ptdesc))
-anyway, which doesn't really accomplish much.
+As a result, the recursion guard is bypassed and the problematic slabs
+can be created. Fix this by removing the mem_alloc_profiling_enabled()
+check entirely. The remaining is_kmalloc_normal() check is still
+sufficient to detect whether the cache is of KMALLOC_NORMAL type and
+avoid bumping the size if it's not.
 
-This regression is visible in master as well as 6.18 stable, so CC stable
-too.
+Without SLUB_TINY, no functional change intended.
+With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
+now allocate a larger array if the sizes equal.
 
-Link: https://lkml.kernel.org/r/20260225002434.2953895-1-axelrasmussen@google.com
-Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
-Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Zw Tang <shicenci@gmail.com>
+Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from its own slab")
+Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260309072219.22653-1-harry.yoo@oracle.com
+Tested-by: Zw Tang <shicenci@gmail.com>
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ mm/slub.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3138,26 +3138,21 @@ static inline bool ptlock_init(struct pt
- static inline void ptlock_free(struct ptdesc *ptdesc) {}
- #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2113,13 +2113,6 @@ static inline size_t obj_exts_alloc_size
+ 	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+ 	struct kmem_cache *obj_exts_cache;
  
--static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
--{
--	return compound_nr(ptdesc_page(ptdesc));
--}
+-	/*
+-	 * slabobj_ext array for KMALLOC_CGROUP allocations
+-	 * are served from KMALLOC_NORMAL caches.
+-	 */
+-	if (!mem_alloc_profiling_enabled())
+-		return sz;
 -
- static inline void __pagetable_ctor(struct ptdesc *ptdesc)
- {
--	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-+	struct folio *folio = ptdesc_folio(ptdesc);
+ 	if (sz > KMALLOC_MAX_CACHE_SIZE)
+ 		return sz;
  
--	__SetPageTable(ptdesc_page(ptdesc));
--	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
-+	__folio_set_pgtable(folio);
-+	lruvec_stat_add_folio(folio, NR_PAGETABLE);
- }
- 
- static inline void pagetable_dtor(struct ptdesc *ptdesc)
- {
--	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-+	struct folio *folio = ptdesc_folio(ptdesc);
- 
- 	ptlock_free(ptdesc);
--	__ClearPageTable(ptdesc_page(ptdesc));
--	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
-+	__folio_clear_pgtable(folio);
-+	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
- static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
 
 
 
