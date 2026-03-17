@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECbMIJqVuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:38 +0100
+	id oPrgJDCPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C222B05BF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9422AF9E1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6312132231FC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D122931B8F07
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A047B320CCF;
-	Tue, 17 Mar 2026 17:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12432377EDD;
+	Tue, 17 Mar 2026 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUEs0Gcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqA0d61Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636AA255F2C;
-	Tue, 17 Mar 2026 17:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ECE1ACEDE;
+	Tue, 17 Mar 2026 17:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768302; cv=none; b=Jkv/ncTz+TSGyG+GJVcs7Xil1gbQwq9NzxyblXS+4wcg4f9bRYyC0OR7AeWmsy4gldxFLgQqU0nZb5jaaSnP3AI1SNuFuRRC1VjVTZOeP7RT0CpQT5zZcoB26khImQLBGeiJ5kUZhYZGeDhcxGhsa9Orsdjr5U/4RvR50KGawuQ=
+	t=1773766918; cv=none; b=G52+N3ALyr9ZNG8zBMRda0LerLkYvD+4MzQpz3sWw1XZ1caVIC5hgpyNJ7l05xzPPhhFYXbSqdBb1DPhBSDgfLgB2ynit0hcdz7xPuZ3EZZSF2EDCfGp/LRao6TveIfovRwxOwcDn+JgNPQZXwu5eGQ165dr8ve0SjNheZ3tzSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768302; c=relaxed/simple;
-	bh=6eiPEGgpAUQurugTJlZroVbcgJOjv4XiLr7A1m439tk=;
+	s=arc-20240116; t=1773766918; c=relaxed/simple;
+	bh=kPn8Pe3o4g4I+J5O8T6Ge7FxZ8CeRg9YU69aUSH1/Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QO6YwbpXzsau2dWbdqnZvZjEYKh3b9EOttc7ycdHiQQJK5TsZQkKwGYyMiXUnqJakfxvSnHSwPEdpNro2a0idVcBhHFZKsVTX/ZzEbznAHU4ere89s61skACP391T3BfBJ8MoHo0V+3GWWllDAs/UqAWB1Ku53OdIcsL/T+W4nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUEs0Gcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A951C4CEF7;
-	Tue, 17 Mar 2026 17:25:01 +0000 (UTC)
+	 MIME-Version; b=DP7CUXNPGzwBudI0noBtO8ZP7SnB3uawyv/L/AzX7MTs4lj6AfFexE58fE4zNVFuNVm/a8kafooXbXhxTg28bimC+ZJRe51PztGJJvtJOk8NSlM/XooWehFpQ2e2bb+vY/2gC9GJu3Sl9b8V4VlVcvGX8wAfZQQboVKeXsvmXBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqA0d61Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263F4C2BC86;
+	Tue, 17 Mar 2026 17:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768302;
-	bh=6eiPEGgpAUQurugTJlZroVbcgJOjv4XiLr7A1m439tk=;
+	s=korg; t=1773766918;
+	bh=kPn8Pe3o4g4I+J5O8T6Ge7FxZ8CeRg9YU69aUSH1/Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUEs0Gcf/YxYEdFCguCcUQHhumC0T/7hONeKsa4gkf9zjU1vzUx0TxYgkQU2t9lKi
-	 l+n01vxmOWHrA7fgfT+keYNr2BvjAnoYrSUUJlg5SXdg6DZLqQSQgTewNSPn7EEO+l
-	 C4Pl7Ho0LqT4mZd0idlIWV4gIFVFTdgO1ITy86ts=
+	b=cqA0d61QPnZjvYPdZlVbuNjuSCWi2vtleKiomj4LIL25E+nKAwfD4lH/Ss1sslm3g
+	 GhD0AjWGZ7+EXOG0SM0+nEcXCBj8B3XG0ya7PCoIvYl1rqjuqlZerN5QqN4lR1X5GR
+	 cVI2PMgIWPtpIOpognhnnahhdqfse0ii+EOyPko4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.18 278/333] lib/bootconfig: fix off-by-one in xbc_verify_tree() unclosed brace error
-Date: Tue, 17 Mar 2026 17:35:07 +0100
-Message-ID: <20260317163009.703743020@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lukas Schmid <lukas.schmid@netcube.li>
+Subject: [PATCH 6.19 351/378] iio: potentiometer: mcp4131: fix double application of wiper shift
+Date: Tue, 17 Mar 2026 17:35:08 +0100
+Message-ID: <20260317163019.899960956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226484-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,53 +90,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[objecting.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9C222B05BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netcube.li:email]
+X-Rspamd-Queue-Id: DB9422AF9E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Lukas Schmid <lukas.schmid@netcube.li>
 
-commit 39ebc8d7f561e1b64eca87353ef9b18e2825e591 upstream.
+commit 85e4614524dca6c0a43874f475a17de2b9725648 upstream.
 
-__xbc_open_brace() pushes entries with post-increment
-(open_brace[brace_index++]), so brace_index always points one past
-the last valid entry.  xbc_verify_tree() reads open_brace[brace_index]
-to report which brace is unclosed, but this is one past the last
-pushed entry and contains stale/zero data, causing the error message
-to reference the wrong node.
+The MCP4131 wiper address is shifted twice when preparing the SPI
+command in mcp4131_write_raw().
 
-Use open_brace[brace_index - 1] to correctly identify the unclosed
-brace.  brace_index is known to be > 0 here since we are inside the
-if (brace_index) guard.
+The address is already shifted when assigned to the local variable
+"address", but is then shifted again when written to data->buf[0].
+This results in an incorrect command being sent to the device and
+breaks wiper writes to the second channel.
 
-Link: https://lore.kernel.org/all/20260312191143.28719-2-objecting@objecting.org/
+Remove the second shift and use the pre-shifted address directly
+when composing the SPI transfer.
 
-Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 22d199a53910 ("iio: potentiometer: add driver for Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X")
+Signed-off-by: Lukas Schmid <lukas.schmid@netcube.li>#
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
+ drivers/iio/potentiometer/mcp4131.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -791,7 +791,7 @@ static int __init xbc_verify_tree(void)
+--- a/drivers/iio/potentiometer/mcp4131.c
++++ b/drivers/iio/potentiometer/mcp4131.c
+@@ -221,7 +221,7 @@ static int mcp4131_write_raw(struct iio_
  
- 	/* Brace closing */
- 	if (brace_index) {
--		n = &xbc_nodes[open_brace[brace_index]];
-+		n = &xbc_nodes[open_brace[brace_index - 1]];
- 		return xbc_parse_error("Brace is not closed",
- 					xbc_node_get_data(n));
- 	}
+ 	mutex_lock(&data->lock);
+ 
+-	data->buf[0] = address << MCP4131_WIPER_SHIFT;
++	data->buf[0] = address;
+ 	data->buf[0] |= MCP4131_WRITE | (val >> 8);
+ 	data->buf[1] = val & 0xFF; /* 8 bits here */
+ 
 
 
 
