@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-226812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFAZBZaVuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:34 +0100
+	id gJLwKSWPuWnQKQIAu9opvQ
+	(envelope-from <stable+bounces-226481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4482B05B8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142492AF9B6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB8A331A3CDF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9909A3153F6A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C00533986F;
-	Tue, 17 Mar 2026 17:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5172377EDD;
+	Tue, 17 Mar 2026 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZnlk8Ho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9HMSEB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED7A320CCF;
-	Tue, 17 Mar 2026 17:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6956E1ACEDE;
+	Tue, 17 Mar 2026 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768293; cv=none; b=bckuhUZsyOJfWBBUcc76hNv0sXlUP7IbZHg0UCNl9syWATdxXvzyKMAwS4FnXcWRgAZXMv9wlauFBB6yF+hgFg6loCwFWptO1fRfZ5OA1pP2EcxRv1t+kizEK1PgPOAw77Q9EBHDrjelL3tXT/C2L/O+aZA3N0K8x4O8WNj4ElE=
+	t=1773766906; cv=none; b=q9R7dAKVJy1tDkzJ/yH+M1BnFE7fFjqdKtYj2KyurIVGqtFKLM+a47Od9cuTRUsw4hT4qdDkHp55PJQ7oU1GFI9jCULIxOxovccFMWuPBuvg8OsSOlwlfdqcriBX1e16G1QVpXwaAzGGdpsdziSs4bqcW7k1oUkHTezOiF4T88g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768293; c=relaxed/simple;
-	bh=79ejhxgrMEmXGp25+mvGdKh6rtBjE0+0pfYNPRmlYXc=;
+	s=arc-20240116; t=1773766906; c=relaxed/simple;
+	bh=Wwisc8fP9J8C5AoMsszGqBpYGFcaDrcVe+mq++HI95Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJFN2ndauzQum0oIsky00PdWKYlWTs5vagwTyHBlgYsmHnmAi2lqxpQvxRIqE0lL8MvwvwKIpH15ISgYW854EVniE2M4sbgOdTrGPG6OUGgX+eApsdqMI2LYOGwL50HVl9sPAZr/GkGOw2wENhOx9ohnl6BT4i2xsUDkpufpuZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZnlk8Ho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A31C4CEF7;
-	Tue, 17 Mar 2026 17:24:52 +0000 (UTC)
+	 MIME-Version; b=IFX+tDuAxy63uk4M5Ds72O7PjJhrvIEpjwhi2FLG4u6rR5N+iG2MjzbB+YjWrwfEIMx8i2TXctzbq2Rj09cKlL0Z/59DGwl8DMK11Tcszd89WCdggSzYcF9LCv4etk24MGocDvaCNTxjOVlohKjqo2oCwN26qYZmfUxP01pPDlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9HMSEB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941B0C4CEF7;
+	Tue, 17 Mar 2026 17:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768293;
-	bh=79ejhxgrMEmXGp25+mvGdKh6rtBjE0+0pfYNPRmlYXc=;
+	s=korg; t=1773766906;
+	bh=Wwisc8fP9J8C5AoMsszGqBpYGFcaDrcVe+mq++HI95Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZnlk8HoWSPkrL5lXayCmQb3potD8zXKJ9r8xsi5wSOqf1Kcwu89DJKbM2MeYjM7f
-	 BGtVG7hQE5+yThbZUjoRFcpakwnBohfZRmpTqRjJ5XK+N2/UF/9Vsiywp8Wt4iwtMw
-	 Bsfz9fHSDab+CKGfNle3p9eHFIzC4JK9md3WUrOM=
+	b=W9HMSEB5muJkSIpHo0U2GraMK57XkCqfRBcxEixHyPhvf7QdrZbDf8o1TsCM2+jSk
+	 iroq3pm53WHQnWnyJA0lPtLvMCCHQ06ew9oFYycnyDrj68PmeVyzQLHvyk0B4SCfkz
+	 Te2JCa1VmWwEPxWHXruNfeqqdkzmSzmtVa5yBzww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.18 276/333] powerpc64/bpf: fix kfunc call support
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 348/378] iio: chemical: sps30_serial: fix buffer size in sps30_serial_read_meas()
 Date: Tue, 17 Mar 2026 17:35:05 +0100
-Message-ID: <20260317163009.631877612@linuxfoundation.org>
+Message-ID: <20260317163019.792364666@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,199 +70,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	TAGGED_FROM(0.00)[bounces-226481-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226812-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6B4482B05B8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
+X-Rspamd-Queue-Id: 142492AF9B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 01b6ac72729610ae732ca2a66e3a642e23f6cd60 upstream.
+commit c3914ce1963c4db25e186112c90fa5d2361e9e0a upstream.
 
-Commit 61688a82e047 ("powerpc/bpf: enable kfunc call") inadvertently
-enabled kfunc call support for 32-bit powerpc but that support will
-not be possible until ABI mismatch between 32-bit powerpc and eBPF is
-handled in 32-bit powerpc JIT code. Till then, advertise support only
-for 64-bit powerpc. Also, in powerpc ABI, caller needs to extend the
-arguments properly based on signedness. The JIT code is responsible
-for handling this explicitly for kfunc calls as verifier can't handle
-this for each architecture-specific ABI needs. But this was not taken
-care of while kfunc call support was enabled for powerpc. Fix it by
-handling this with bpf_jit_find_kfunc_model() and using zero_extend()
-& sign_extend() helper functions.
+sizeof(num) evaluates to sizeof(size_t) which is 8 bytes on 64-bit,
+but the buffer elements are only 4 bytes. The same function already
+uses sizeof(*meas) on line 312, making the mismatch evident. Use
+sizeof(*meas) consistently.
 
-Fixes: 61688a82e047 ("powerpc/bpf: enable kfunc call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-7-hbathini@linux.ibm.com
+Fixes: b2e171f5a5c6 ("iio: sps30: add support for serial interface")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/net/bpf_jit_comp.c   |    2 
- arch/powerpc/net/bpf_jit_comp64.c |  101 ++++++++++++++++++++++++++++++++++----
- 2 files changed, 94 insertions(+), 9 deletions(-)
+ drivers/iio/chemical/sps30_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -437,7 +437,7 @@ void bpf_jit_free(struct bpf_prog *fp)
+--- a/drivers/iio/chemical/sps30_serial.c
++++ b/drivers/iio/chemical/sps30_serial.c
+@@ -303,7 +303,7 @@ static int sps30_serial_read_meas(struct
+ 	if (msleep_interruptible(1000))
+ 		return -EINTR;
  
- bool bpf_jit_supports_kfunc_call(void)
- {
--	return true;
-+	return IS_ENABLED(CONFIG_PPC64);
- }
- 
- bool bpf_jit_supports_arena(void)
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -319,6 +319,83 @@ int bpf_jit_emit_func_call_rel(u32 *imag
- 	return 0;
- }
- 
-+static int zero_extend(u32 *image, struct codegen_context *ctx, u32 src_reg, u32 dst_reg, u32 size)
-+{
-+	switch (size) {
-+	case 1:
-+		 /* zero-extend 8 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 56));
-+		return 0;
-+	case 2:
-+		 /* zero-extend 16 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 48));
-+		return 0;
-+	case 4:
-+		 /* zero-extend 32 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 32));
-+		fallthrough;
-+	case 8:
-+		/* Nothing to do */
-+		return 0;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+static int sign_extend(u32 *image, struct codegen_context *ctx, u32 src_reg, u32 dst_reg, u32 size)
-+{
-+	switch (size) {
-+	case 1:
-+		 /* sign-extend 8 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
-+		return 0;
-+	case 2:
-+		 /* sign-extend 16 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
-+		return 0;
-+	case 4:
-+		 /* sign-extend 32 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSW(dst_reg, src_reg));
-+		fallthrough;
-+	case 8:
-+		/* Nothing to do */
-+		return 0;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+/*
-+ * Handle powerpc ABI expectations from caller:
-+ *   - Unsigned arguments are zero-extended.
-+ *   - Signed arguments are sign-extended.
-+ */
-+static int prepare_for_kfunc_call(const struct bpf_prog *fp, u32 *image,
-+				  struct codegen_context *ctx,
-+				  const struct bpf_insn *insn)
-+{
-+	const struct btf_func_model *m = bpf_jit_find_kfunc_model(fp, insn);
-+	int i;
-+
-+	if (!m)
-+		return -1;
-+
-+	for (i = 0; i < m->nr_args; i++) {
-+		/* Note that BPF ABI only allows up to 5 args for kfuncs */
-+		u32 reg = bpf_to_ppc(BPF_REG_1 + i), size = m->arg_size[i];
-+
-+		if (!(m->arg_flags[i] & BTF_FMODEL_SIGNED_ARG)) {
-+			if (zero_extend(image, ctx, reg, reg, size))
-+				return -1;
-+		} else {
-+			if (sign_extend(image, ctx, reg, reg, size))
-+				return -1;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
- {
- 	/*
-@@ -931,14 +1008,16 @@ int bpf_jit_build_body(struct bpf_prog *
- 				/* special mov32 for zext */
- 				EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 0, 31));
- 				break;
--			} else if (off == 8) {
--				EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
--			} else if (off == 16) {
--				EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
--			} else if (off == 32) {
--				EMIT(PPC_RAW_EXTSW(dst_reg, src_reg));
--			} else if (dst_reg != src_reg)
--				EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+			}
-+			if (off == 0) {
-+				/* MOV */
-+				if (dst_reg != src_reg)
-+					EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+			} else {
-+				/* MOVSX: dst = (s8,s16,s32)src (off = 8,16,32) */
-+				if (sign_extend(image, ctx, src_reg, dst_reg, off / 8))
-+					return -1;
-+			}
- 			goto bpf_alu32_trunc;
- 		case BPF_ALU | BPF_MOV | BPF_K: /* (u32) dst = imm */
- 		case BPF_ALU64 | BPF_MOV | BPF_K: /* dst = (s64) imm */
-@@ -1395,6 +1474,12 @@ emit_clear:
- 			if (ret < 0)
- 				return ret;
- 
-+			/* Take care of powerpc ABI requirements before kfunc call */
-+			if (insn[i].src_reg == BPF_PSEUDO_KFUNC_CALL) {
-+				if (prepare_for_kfunc_call(fp, image, ctx, &insn[i]))
-+					return -1;
-+			}
-+
- 			ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
- 			if (ret)
- 				return ret;
+-	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(num));
++	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(*meas));
+ 	if (ret < 0)
+ 		return ret;
+ 	/* if measurements aren't ready sensor returns empty frame */
 
 
 
