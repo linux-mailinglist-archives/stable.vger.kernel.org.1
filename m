@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BDKJ4ySuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:36 +0100
+	id ACRAHmiHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982142B0051
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B8B2AEA2D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 242CC302F4D9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62D253036775
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA28C2DEA9D;
-	Tue, 17 Mar 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58B23F23AA;
+	Tue, 17 Mar 2026 16:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wst3W59H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+BvAmZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95328B7DB;
-	Tue, 17 Mar 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9870A3F54DB;
+	Tue, 17 Mar 2026 16:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767901; cv=none; b=RRiNEIMKNjWJjod5x30h1044sBl6fIhJwukrEJ5QFT+ICKUUwlAcutEPAPfdCne7sgGo4+Wpeq5gLzAptohQDvXoKW3Lyzmg18R6Oca13t8GA9VJQ5GVQwI5vp30hQyzQCqdNHOvC41ry4TI0GFbi7TTXzjGLnH9fwLnWO7r/iE=
+	t=1773766491; cv=none; b=TsZV9vn4K1Xp4c2r6a3JSGV2VuBtqTMVKDADekIeQ4cZhY9H3ml8BnAlFCFoR06KJh68YsN0csyA/kvPvYLmPYYjikYfLEH37VY9cS+6skcuN35/zTAU5r7xEFFPvfKN4N6gk+ab/4HiYzhQSbiNdq43HWw/CGGil25IUS05C60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767901; c=relaxed/simple;
-	bh=nRC8kkjNKP7NplvOmBcxC5Brtf02xKo9XTHuXrz1HmU=;
+	s=arc-20240116; t=1773766491; c=relaxed/simple;
+	bh=pZh/Vm3LDywhWtQrwRyWVTkRbMKDxySmvf1KxmUvJ/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=acg2LvMqCC4HxA6QRBm//kbVEHxZoFXEIwnxLk6hSTsYfXKOV+6H9G6s6uuIf1b3BE67fcCdZ1iynlqXIO5jxX4ByN0Xca1HFGomrrKmeSVNOmqKnHIuxc2Txeos+vkJhJ01IpyhaQkfIAa/I7tJqPFSOKmeX0btnh7B1Nu1hx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wst3W59H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B288BC4CEF7;
-	Tue, 17 Mar 2026 17:18:20 +0000 (UTC)
+	 MIME-Version; b=aiDAmKrMztcOL3nd5C8uzzIOuHURrSNrsOdYodze4Fua5feZh7/dH92V0yIaqyN4Z72C2KvUWSnFKHBlpqNqW33Qkp+46eEnZ/p8SZypdPCt40gFu5QRUnNCSFdqHi+lMMewaLTje9RE/uf8uAMp3fm2QjU87xPfzmDx3v/ggx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+BvAmZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12291C4AF09;
+	Tue, 17 Mar 2026 16:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767901;
-	bh=nRC8kkjNKP7NplvOmBcxC5Brtf02xKo9XTHuXrz1HmU=;
+	s=korg; t=1773766491;
+	bh=pZh/Vm3LDywhWtQrwRyWVTkRbMKDxySmvf1KxmUvJ/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wst3W59HKUxBUPy1u3q1b8y4NOP26fpMgtfr7liWnuVROML46uLtTXCKCiXt1kN3L
-	 NYYm5nxcIUCq3TPIrerPXj29N5Ztyqcbi3iFCslfI24a3eSXGmImeDy2RZeU3Thwu/
-	 najoRJCFlOQl+EDl4I+u3UxwISdFDwmV6uSPVX0k=
+	b=x+BvAmZ3ck2CczZY0dIqgWc1M/aL5aXPR6f42x6KWbr/aVXTVJznki2mlgXFTJ0/h
+	 uekjUZg5ILWN/Uv7oJCvOB9Av3vSNaBRvex6hgShnMwdbShIQF7AZAbkWcUE/N6y1t
+	 ZgR7fnNwt3sAHRB1otG8wfwlMA1QC8KEglg6aA7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 185/333] drm/amdgpu: add upper bound check on user inputs in wait ioctl
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.19 257/378] selftests: fix mntns iteration selftests
 Date: Tue, 17 Mar 2026 17:33:34 +0100
-Message-ID: <20260317163006.216154779@linuxfoundation.org>
+Message-ID: <20260317163016.470804170@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226707-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226390-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 982142B0051
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 19B8B2AEA2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil Khatri <sunil.khatri@amd.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 64ac7c09fc44985ec9bb6a9db740899fa40ca613 upstream.
+commit 4c7b2ec23cc5d880e3ffe35e8c2aad686b67723a upstream.
 
-Huge input values in amdgpu_userq_wait_ioctl can lead to a OOM and
-could be exploited.
+Now that we changed permission checking make sure that we reflect that
+in the selftests.
 
-So check these input value against AMDGPU_USERQ_MAX_HANDLES
-which is big enough value for genuine use cases and could
-potentially avoid OOM.
-
-v2: squash in Srini's fix
-
-Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fcec012c664247531aed3e662f4280ff804d1476)
-Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226-work-visibility-fixes-v1-4-d2c2853313bd@kernel.org
+Fixes: 9d87b1067382 ("selftests: add tests for mntns iteration")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@kernel.org # v6.14+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/filesystems/nsfs/iterate_mntns.c |   25 +++++++++------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-@@ -667,6 +667,11 @@ int amdgpu_userq_wait_ioctl(struct drm_d
- 	if (!amdgpu_userq_enabled(dev))
- 		return -ENOTSUPP;
+--- a/tools/testing/selftests/filesystems/nsfs/iterate_mntns.c
++++ b/tools/testing/selftests/filesystems/nsfs/iterate_mntns.c
+@@ -37,17 +37,20 @@ FIXTURE(iterate_mount_namespaces) {
+ 	__u64 mnt_ns_id[MNT_NS_COUNT];
+ };
  
-+	if (wait_info->num_syncobj_handles > AMDGPU_USERQ_MAX_HANDLES ||
-+	    wait_info->num_bo_write_handles > AMDGPU_USERQ_MAX_HANDLES ||
-+	    wait_info->num_bo_read_handles > AMDGPU_USERQ_MAX_HANDLES)
-+		return -EINVAL;
++static inline bool mntns_in_list(__u64 *mnt_ns_id, struct mnt_ns_info *info)
++{
++	for (int i = 0; i < MNT_NS_COUNT; i++) {
++		if (mnt_ns_id[i] == info->mnt_ns_id)
++			return true;
++	}
++	return false;
++}
 +
- 	num_read_bo_handles = wait_info->num_bo_read_handles;
- 	bo_handles_read = memdup_user(u64_to_user_ptr(wait_info->bo_read_handles),
- 				      size_mul(sizeof(u32), num_read_bo_handles));
+ FIXTURE_SETUP(iterate_mount_namespaces)
+ {
+ 	for (int i = 0; i < MNT_NS_COUNT; i++)
+ 		self->fd_mnt_ns[i] = -EBADF;
+ 
+-	/*
+-	 * Creating a new user namespace let's us guarantee that we only see
+-	 * mount namespaces that we did actually create.
+-	 */
+-	ASSERT_EQ(unshare(CLONE_NEWUSER), 0);
+-
+ 	for (int i = 0; i < MNT_NS_COUNT; i++) {
+ 		struct mnt_ns_info info = {};
+ 
+@@ -75,13 +78,15 @@ TEST_F(iterate_mount_namespaces, iterate
+ 	fd_mnt_ns_cur = fcntl(self->fd_mnt_ns[0], F_DUPFD_CLOEXEC);
+ 	ASSERT_GE(fd_mnt_ns_cur, 0);
+ 
+-	for (;; count++) {
++	for (;;) {
+ 		struct mnt_ns_info info = {};
+ 		int fd_mnt_ns_next;
+ 
+ 		fd_mnt_ns_next = ioctl(fd_mnt_ns_cur, NS_MNT_GET_NEXT, &info);
+ 		if (fd_mnt_ns_next < 0 && errno == ENOENT)
+ 			break;
++		if (mntns_in_list(self->mnt_ns_id, &info))
++			count++;
+ 		ASSERT_GE(fd_mnt_ns_next, 0);
+ 		ASSERT_EQ(close(fd_mnt_ns_cur), 0);
+ 		fd_mnt_ns_cur = fd_mnt_ns_next;
+@@ -96,13 +101,15 @@ TEST_F(iterate_mount_namespaces, iterate
+ 	fd_mnt_ns_cur = fcntl(self->fd_mnt_ns[MNT_NS_LAST_INDEX], F_DUPFD_CLOEXEC);
+ 	ASSERT_GE(fd_mnt_ns_cur, 0);
+ 
+-	for (;; count++) {
++	for (;;) {
+ 		struct mnt_ns_info info = {};
+ 		int fd_mnt_ns_prev;
+ 
+ 		fd_mnt_ns_prev = ioctl(fd_mnt_ns_cur, NS_MNT_GET_PREV, &info);
+ 		if (fd_mnt_ns_prev < 0 && errno == ENOENT)
+ 			break;
++		if (mntns_in_list(self->mnt_ns_id, &info))
++			count++;
+ 		ASSERT_GE(fd_mnt_ns_prev, 0);
+ 		ASSERT_EQ(close(fd_mnt_ns_cur), 0);
+ 		fd_mnt_ns_cur = fd_mnt_ns_prev;
+@@ -125,7 +132,6 @@ TEST_F(iterate_mount_namespaces, iterate
+ 		ASSERT_GE(fd_mnt_ns_next, 0);
+ 		ASSERT_EQ(close(fd_mnt_ns_cur), 0);
+ 		fd_mnt_ns_cur = fd_mnt_ns_next;
+-		ASSERT_EQ(info.mnt_ns_id, self->mnt_ns_id[i]);
+ 	}
+ }
+ 
+@@ -144,7 +150,6 @@ TEST_F(iterate_mount_namespaces, iterate
+ 		ASSERT_GE(fd_mnt_ns_prev, 0);
+ 		ASSERT_EQ(close(fd_mnt_ns_cur), 0);
+ 		fd_mnt_ns_cur = fd_mnt_ns_prev;
+-		ASSERT_EQ(info.mnt_ns_id, self->mnt_ns_id[i]);
+ 	}
+ }
+ 
 
 
 
