@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-226427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMlzNxaLuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:46 +0100
+	id KEVfC/mSuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91F42AF151
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A143A2B0121
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1A2233103D39
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:58:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDB833319A1D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D97B3F7E95;
-	Tue, 17 Mar 2026 16:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478F73176FD;
+	Tue, 17 Mar 2026 17:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpDAXafY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMh8ELoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DAB3F7E8D;
-	Tue, 17 Mar 2026 16:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABC71AA7A6;
+	Tue, 17 Mar 2026 17:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766660; cv=none; b=WQ56sKU2gtF0JIcYvDUfzEz/hX5qSj4lPm/5KF4vH0l2zMYZwLlEPM1qABeiaGsZ6TVv5fIYHUD1PCpZsEjge/i9jfyGxdBxXzs0lDe2VLFE4v5IoxZzHvg36W+Lc0y9UR9pkkZJTAC6VxpOZnDhQ2Hv9lcqLHILzWNiWfgoISw=
+	t=1773768062; cv=none; b=S2uMuysJ4tPWm6K5ZkAnqbWVDuGwgoWqPnZS60rBBEaXiMx6WGkKevmnyPlCg2uZFiXqK8wgrTSw/bDtd6NO6/pT5iZu6y0SOzhweiOXuBpklQoglYV75/LoPDIY0JJvlqAuYXFgcc5Mb73v9eCG6Dnv+0JJwDZbEzHTIjlV+OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766660; c=relaxed/simple;
-	bh=fxE/6O+N7XYFVt7ru6RjfX9Esbgf38slIKL91Lm2BfM=;
+	s=arc-20240116; t=1773768062; c=relaxed/simple;
+	bh=E9ouidIsFguRQ/kUdvOVfQjcFY7186X8O671v77PNiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCFZC6vPneHgbSA2M04LtAvqsBjYGT6jU4U8nIioqWbGeXWETAUYTXsdOHTY7kj6YpE2a3FzGoOfj5RaOfH/cPq/nLSQd+v1dt3BCEvnbq72fMGchAVS/I83jabhXXbkf8Y3WnpRpS9myMADkULnBxyE2BiJFc0LVuwrY4Kn0ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpDAXafY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF9DC2BC86;
-	Tue, 17 Mar 2026 16:57:39 +0000 (UTC)
+	 MIME-Version; b=Cqm+UZuWQ4u4pruOL1/qmmNj1OUWwi/gznj3mI1acH8cxDu92uM7dHWVk2tAvO2+G6Mk2ZyjAukd3xFrfOUqwyHxhDlU3qOQonr3Rh3qgwY+3KkbmjC/pkVwpNwLN9qfZ8czfW2ilLoEI7bzeNgrVErgSETjIzih8p1Shji+czU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMh8ELoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7ECC4CEF7;
+	Tue, 17 Mar 2026 17:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766660;
-	bh=fxE/6O+N7XYFVt7ru6RjfX9Esbgf38slIKL91Lm2BfM=;
+	s=korg; t=1773768061;
+	bh=E9ouidIsFguRQ/kUdvOVfQjcFY7186X8O671v77PNiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpDAXafYGGFQlKqayFNbfwJMDPdqlsKZQ5yHW3HfI7v5glbqZchekMpc8F3CrVE/c
-	 gGSraa8RGWO6OhlHUW11BkksLVZp5F0iTbdRovaful1voG1Hvz/h0aItT+vztPYE9/
-	 i+cW2JTGpcFTWDaKjgfhdkXFqFyTpkw/9zhvat5s=
+	b=nMh8ELoEJy7qjBaaDrcV/8mDt+5K2RyCuFGbFQw7x3hKyy5FXJNrSpUdWHtV2RWPZ
+	 US86sjKimuHOITg2+2ERW8IcdJuhlmeCCMrX0D9Kd+eFxjJGe/BpTN+tMuYmvz58Gx
+	 8W9zLnp1rv32M7Lbi9JK6jHUipVHUnNWT/qp4A58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 294/378] net: mctp: fix device leak on probe failure
-Date: Tue, 17 Mar 2026 17:34:11 +0100
-Message-ID: <20260317163017.825007925@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.18 223/333] parisc: Increase initial mapping to 64 MB with KALLSYMS
+Date: Tue, 17 Mar 2026 17:34:12 +0100
+Message-ID: <20260317163007.633517545@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +64,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226427-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226754-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,codeconstruct.com.au:email]
-X-Rspamd-Queue-Id: E91F42AF151
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: A143A2B0121
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 224a0d284c3caf1951302d1744a714784febed71 upstream.
+commit 8e732934fb81282be41602550e7e07baf265e972 upstream.
 
-Driver core holds a reference to the USB interface and its parent USB
-device while the interface is bound to a driver and there is no need to
-take additional references unless the structures are needed after
-disconnect.
+The 32MB initial kernel mapping can become too small when CONFIG_KALLSYMS
+is used. Increase the mapping to 64 MB in this case.
 
-This driver takes a reference to the USB device during probe but does
-not to release it on probe failures.
-
-Drop the redundant device reference to fix the leak, reduce cargo
-culting, make it easier to spot drivers where an extra reference is
-needed, and reduce the risk of further memory leaks.
-
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Cc: stable@vger.kernel.org	# 6.15
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260305104549.16110-1-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/parisc/include/asm/pgtable.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -329,7 +329,7 @@ static int mctp_usb_probe(struct usb_int
- 	SET_NETDEV_DEV(netdev, &intf->dev);
- 	dev = netdev_priv(netdev);
- 	dev->netdev = netdev;
--	dev->usbdev = usb_get_dev(interface_to_usbdev(intf));
-+	dev->usbdev = interface_to_usbdev(intf);
- 	dev->intf = intf;
- 	usb_set_intfdata(intf, dev);
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -85,7 +85,7 @@ extern void __update_cache(pte_t pte);
+ 	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, (unsigned long)pgd_val(e))
  
-@@ -365,7 +365,6 @@ static void mctp_usb_disconnect(struct u
- 	mctp_unregister_netdev(dev->netdev);
- 	usb_free_urb(dev->tx_urb);
- 	usb_free_urb(dev->rx_urb);
--	usb_put_dev(dev->usbdev);
- 	free_netdev(dev->netdev);
- }
- 
+ /* This is the size of the initially mapped kernel memory */
+-#if defined(CONFIG_64BIT)
++#if defined(CONFIG_64BIT) || defined(CONFIG_KALLSYMS)
+ #define KERNEL_INITIAL_ORDER	26	/* 1<<26 = 64MB */
+ #else
+ #define KERNEL_INITIAL_ORDER	25	/* 1<<25 = 32MB */
 
 
 
