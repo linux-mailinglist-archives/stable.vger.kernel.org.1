@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-226531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJg0GN2PuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:09 +0100
+	id 8NzfIDOGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F512AFBBC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129882AE7FD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:49:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C273331B887D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2426731255D8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7132FFDEA;
-	Tue, 17 Mar 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD653ED5C7;
+	Tue, 17 Mar 2026 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3ASgb66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqjF8kTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14A83E3DB1;
-	Tue, 17 Mar 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC453EC2F7;
+	Tue, 17 Mar 2026 16:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767106; cv=none; b=YJ2R9PwJ+4BpyYZIJn5atj3xxnXZN8gvaC4pslpIu+cye5Lzx1nF3zlqy4YVLwRMxmV7tDitYMy1Thfmke0jrUF8AzEPWuBauGiG8DkCo8LzozD45t/UWdEv0Vi1EtToyS9OuVOAV/Jqte6rcghlppFshxEktMwT05Um3wjS2W0=
+	t=1773765769; cv=none; b=nHLjPeLsX+Y11IfyEvlRCib9IBkMI0PT0OKhEZ5ed0zfpcNY3rroU90t1Q0MFFFar//JQDeVkc76QBAI+7qBuUdXRXM3uJOuLazhZ50MNjJ+WLt3f/birEPlROJWvUg3rv47nt/4qRN+zof5RlIR+AYvDmjDSeacyP1ZeoJdgRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767106; c=relaxed/simple;
-	bh=YDdJABeX1E5tOS2RUEd3GMgtzFkWj2hlvS2f5wYhtCQ=;
+	s=arc-20240116; t=1773765769; c=relaxed/simple;
+	bh=ond3atuvWelPXWx4OpNxbkcW07yHFjVC5ynuOwKfiN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2Sr5eNjwj6Akw5I2kHWo2EnTUh9JfvR/g7o267Vjt7la5dYbL+t7AqxiPV16U23rKmlQFeIs6N1pQ3zB7VVvtaRvTvbnJqH5CRtljzNM8qqovEgRW62JMm2rvMS/sk5l4qSnojRzIt0fxMEun8dBcLMVGlhHMcRQp5g5JJjhBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3ASgb66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE84C4CEF7;
-	Tue, 17 Mar 2026 17:05:05 +0000 (UTC)
+	 MIME-Version; b=YWGlpPxvI5+PI9pF4knTGUTxR/eSX1NBHvravwHpfxEqv9QPqaDnLcOmVZfkfFGt3Xs/eDdAKkFrvtIuF0TITTvtewcaDN6q/gSuR1vZRnykWVg3evcWLk5Z8iZnmlWzO19SSMME7sO2QmM0I+FzMAXYy6HNjUJLSnY1AFZ+ydA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqjF8kTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF7CC4CEF7;
+	Tue, 17 Mar 2026 16:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767106;
-	bh=YDdJABeX1E5tOS2RUEd3GMgtzFkWj2hlvS2f5wYhtCQ=;
+	s=korg; t=1773765768;
+	bh=ond3atuvWelPXWx4OpNxbkcW07yHFjVC5ynuOwKfiN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3ASgb66afWbd1Q66a+CK/jejPKQjMlxzH8Ps2lQKMZVTFlSfrc+FYZDkTsmbHLVI
-	 VJFnUv1a5gC0NCFFMzTungqL8zPchlz1Pn9t2dIXzdxlk3RU8HPGwjdehlaRu3X0W3
-	 2Y/PkgOOIRUZQBXKQmJSzb0jEP2rjwulIh+qxRFY=
+	b=MqjF8kTgjAr4MUCyK/cQtI0ywyMu2J0pe+Z3HNEagsi+7I5um7k2LFJPQcFHQ8GMr
+	 /9aIwURuJ6KIG9gATH15uuV1XkW8DC3b9Z6VXUCn1aN2yjFjvhDusPLlPVJcXzxlP2
+	 35uNi45cGmb4TLidhDgXkDRCxQwWuVPGnd0Z5T+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sguttula <suresh.guttula@amd.com>,
-	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Petr Oros <poros@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 016/333] drm/amdgpu/vcn5: Add SMU dpm interface type
-Date: Tue, 17 Mar 2026 17:30:45 +0100
-Message-ID: <20260317162959.962538128@linuxfoundation.org>
+Subject: [PATCH 6.19 089/378] iavf: fix PTP use-after-free during reset
+Date: Tue, 17 Mar 2026 17:30:46 +0100
+Message-ID: <20260317163010.291196848@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226531-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226220-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,52 +90,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: B4F512AFBBC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 129882AE7FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sguttula <suresh.guttula@amd.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit a5fe1a54513196e4bc8f9170006057dc31e7155e ]
+[ Upstream commit efc54fb13d79117a825fef17364315a58682c7ec ]
 
-This will set AMDGPU_VCN_SMU_DPM_INTERFACE_* smu_type
-based on soc type and fixing ring timeout issue seen
-for DPM enabled case.
+Commit 7c01dbfc8a1c5f ("iavf: periodically cache PHC time") introduced a
+worker to cache PHC time, but failed to stop it during reset or disable.
 
-Signed-off-by: sguttula <suresh.guttula@amd.com>
-Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f0f23c315b38c55e8ce9484cf59b65811f350630)
+This creates a race condition where `iavf_reset_task()` or
+`iavf_disable_vf()` free adapter resources (AQ) while the worker is still
+running. If the worker triggers `iavf_queue_ptp_cmd()` during teardown, it
+accesses freed memory/locks, leading to a crash.
+
+Fix this by calling `iavf_ptp_release()` before tearing down the adapter.
+This ensures `ptp_clock_unregister()` synchronously cancels the worker and
+cleans up the chardev before the backing resources are destroyed.
+
+Fixes: 7c01dbfc8a1c5f ("iavf: periodically cache PHC time")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c | 4 ++++
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-index 0202df5db1e12..6109124f852e5 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-@@ -174,6 +174,10 @@ static int vcn_v5_0_0_sw_init(struct amdgpu_ip_block *ip_block)
- 		fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
- 		fw_shared->sq.is_enabled = 1;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 53a0366fbf998..3625c70bc3292 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3040,6 +3040,8 @@ static void iavf_disable_vf(struct iavf_adapter *adapter)
  
-+		fw_shared->present_flag_0 |= cpu_to_le32(AMDGPU_VCN_SMU_DPM_INTERFACE_FLAG);
-+		fw_shared->smu_dpm_interface.smu_interface_type = (adev->flags & AMD_IS_APU) ?
-+			AMDGPU_VCN_SMU_DPM_INTERFACE_APU : AMDGPU_VCN_SMU_DPM_INTERFACE_DGPU;
+ 	adapter->flags |= IAVF_FLAG_PF_COMMS_FAILED;
+ 
++	iavf_ptp_release(adapter);
 +
- 		if (amdgpu_vcnfw_log)
- 			amdgpu_vcn_fwlog_init(&adev->vcn.inst[i]);
+ 	/* We don't use netif_running() because it may be true prior to
+ 	 * ndo_open() returning, so we can't assume it means all our open
+ 	 * tasks have finished, since we're not holding the rtnl_lock here.
+@@ -3215,6 +3217,8 @@ static void iavf_reset_task(struct work_struct *work)
+ 	iavf_change_state(adapter, __IAVF_RESETTING);
+ 	adapter->flags &= ~IAVF_FLAG_RESET_PENDING;
  
++	iavf_ptp_release(adapter);
++
+ 	/* free the Tx/Rx rings and descriptors, might be better to just
+ 	 * re-use them sometime in the future
+ 	 */
 -- 
 2.51.0
 
