@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JNxDLWSuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:43:17 +0100
+	id WFBqGsqGuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15A22B009C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:43:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5522AE8FB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B552132DE872
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 45A0A303C4CA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AA3225A38;
-	Tue, 17 Mar 2026 17:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25773F54BE;
+	Tue, 17 Mar 2026 16:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="if3WZjlJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McFLPJcl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088C128B7DB;
-	Tue, 17 Mar 2026 17:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C083EAC6F;
+	Tue, 17 Mar 2026 16:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767882; cv=none; b=MDKqp7GHfc0Yu+gtM5bicWYrkhcf2jk9Cj6la2dQ80xVpAekh6/faqbb09WJHN2xXtMvU6il5L28WF3u+2fpHwil5s6ea/dZTrRP4d2w+bKlOf7emGEfettH9zmrpI/zvLhVLQTIuY0fzKM+e/R7ogO28YSvTZK1m6A/ASK3H5Y=
+	t=1773766326; cv=none; b=RlvVm7p1tpC+uMk62O6/q81p28HMCNpHrTxTl8inO1UufY8j7knX99G6jM5fkyNhiy6pu5xHmoR2de/5EcluKnXFYh58IuRaiCmjV2OM7BlAV5TCs8z0RS6Wm6suKtFvufHDlI91WJ6pykX95GmrypjW3WC/ki4nOP0cbVpDpis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767882; c=relaxed/simple;
-	bh=xvSlDXXhcPu+qMbPOj2y3FYFzuTe+Yt+k9delgUcEEY=;
+	s=arc-20240116; t=1773766326; c=relaxed/simple;
+	bh=1h69ogrC1pkQ9ZF9z5qU1HYd7FLQIFnZ2s+zOfA0xtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tf3oyPbFxJ/elnybWgTAPlEeuo+64NH4AakedKWfISECYO1W/Gpo9IEXE1i8divAHHHuJtzwGCdFd4TWGi3vdcuLxcmcofHBJLcfALlb15tqHbVnZEb127ZYSGUqMx3SBrLKwWglv0ru7rsn1ly5BTV8PA6pZp1v8JicApSPBzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=if3WZjlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D28C19424;
-	Tue, 17 Mar 2026 17:18:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eJinLJAz9AS2hJZjCKSICLnl41Zg60lNhFWG5AsBSvrRFwRkVIuKppUk2s11uLVv3H/J9pB99rwTU8B/r/Vsa51ERCOpeNND7qqw5X/aqZIkWAwewq27qjHjKvZlqye+eM6f1qh+jgf+sXTEFQzkVL2ntFFzKYyzKMqdCK0ou4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McFLPJcl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDB9C4CEF7;
+	Tue, 17 Mar 2026 16:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767881;
-	bh=xvSlDXXhcPu+qMbPOj2y3FYFzuTe+Yt+k9delgUcEEY=;
+	s=korg; t=1773766326;
+	bh=1h69ogrC1pkQ9ZF9z5qU1HYd7FLQIFnZ2s+zOfA0xtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=if3WZjlJOHOU1cgFmKhvBTkfunkXZh00kvyUPuAS9cGunXtiyRu2dK5a2KzVXEezw
-	 DzhbO3vVH2uHTomJYT5q2ioY+RE1KdQCkMUHjVljHxTZqUR1I7/j1wDvA/6/N0nbd4
-	 E5CV4Pah8xdF+6eDKpkgqYkhoyBZ+8Edc2106hCI=
+	b=McFLPJcl/vj8BfqlzQfeFuGfi3QxjxsMmKH0UEET5uu7laWq5+V2JGc8t4nBcTMgW
+	 egBYWFQUDW1XfsX5yUlWI430cf0nDMSHlXGM2+2WhMl7oPFUTuixXvm0zG+zIIlPZS
+	 n8PHeHH80VILTeYFprkHMEF2TVIBl/FVwieNx3rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.18 147/333] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus handling
+	Sunil Khatri <sunil.khatri@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 219/378] drm/amdgpu: add upper bound check on user inputs in wait ioctl
 Date: Tue, 17 Mar 2026 17:32:56 +0100
-Message-ID: <20260317163004.809552210@linuxfoundation.org>
+Message-ID: <20260317163015.069374785@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226702-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,synopsys.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226352-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synopsys.com:email]
-X-Rspamd-Queue-Id: A15A22B009C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 2C5522AE8FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Sunil Khatri <sunil.khatri@amd.com>
 
-commit b9fde507355342a2d64225d582dc8b98ff5ecb19 upstream.
+commit 64ac7c09fc44985ec9bb6a9db740899fa40ca613 upstream.
 
-The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
-managed and tied to userspace configuration via ConfigFS. It can be
-NULL if the USB host sends requests before the nexus is fully
-established or immediately after it is dropped.
+Huge input values in amdgpu_userq_wait_ioctl can lead to a OOM and
+could be exploited.
 
-Currently, functions like `bot_submit_command()` and the data
-transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
-dereference `tv_nexus->tvn_se_sess` without any validation. If a
-malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
-command during this race window, it triggers a NULL pointer
-dereference, leading to a kernel panic (local DoS).
+So check these input value against AMDGPU_USERQ_MAX_HANDLES
+which is big enough value for genuine use cases and could
+potentially avoid OOM.
 
-This exposes an inconsistent API usage within the module, as peer
-functions like `usbg_submit_command()` and `bot_send_bad_response()`
-correctly implement a NULL check for `tv_nexus` before proceeding.
+v2: squash in Srini's fix
 
-Fix this by bringing consistency to the nexus handling. Add the
-missing `if (!tv_nexus)` checks to the vulnerable BOT command and
-request processing paths, aborting the command gracefully with an
-error instead of crashing the system.
-
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fcec012c664247531aed3e662f4280ff804d1476)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1222,6 +1222,13 @@ static void usbg_submit_cmd(struct usbg_
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -668,6 +668,11 @@ int amdgpu_userq_wait_ioctl(struct drm_d
+ 	if (!amdgpu_userq_enabled(dev))
+ 		return -ENOTSUPP;
+ 
++	if (wait_info->num_syncobj_handles > AMDGPU_USERQ_MAX_HANDLES ||
++	    wait_info->num_bo_write_handles > AMDGPU_USERQ_MAX_HANDLES ||
++	    wait_info->num_bo_read_handles > AMDGPU_USERQ_MAX_HANDLES)
++		return -EINVAL;
 +
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
-@@ -1482,6 +1489,13 @@ static void bot_cmd_work(struct work_str
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
+ 	num_read_bo_handles = wait_info->num_bo_read_handles;
+ 	bo_handles_read = memdup_user(u64_to_user_ptr(wait_info->bo_read_handles),
+ 				      size_mul(sizeof(u32), num_read_bo_handles));
 
 
 
