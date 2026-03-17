@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-226443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAtKFJCJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:16 +0100
+	id 0K6fDlmTuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9DC2AEDE7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E7F2B01A7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62822304B0CA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57B9B30B43EB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C353F65FB;
-	Tue, 17 Mar 2026 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EDA330D54;
+	Tue, 17 Mar 2026 17:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCbGdppn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYde+Pkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ADB3F54B8;
-	Tue, 17 Mar 2026 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC45726561A;
+	Tue, 17 Mar 2026 17:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766737; cv=none; b=lJvysiHCRqtNLi7ThL5rKzqdUEXp/Gf0R8Ocz/nIOCQP1BXTRXxHOrEKygKTWpEItS9irpmk7+qOH/TLgAQ7EYPI7D9iWFM7tVlm8S+uK8yI99lVxKG3Nym08TZQfcsnSmPMkEY9r5Q+0XVZH+KFDtqw/nNQoJpqbE3Q8hqmFnU=
+	t=1773768103; cv=none; b=astr8biCSkHIAujJr4mhxzOUCPh+Utgj485cb46bgfT4LM36bf6Bk4EPKmKtmqcNmBk9SNAV8ByBpFjecDRhCgIWMoAtz9BnXqHqItZmsfAVh6fZcpmuEyTGAZKDW1gJbSbfjxn1aQimgPYxuRxN8+P3y5QVErQXAxU54JnrWNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766737; c=relaxed/simple;
-	bh=CbZhMM63BONPtA0QsFU/Ti+I5D+kpBnX/nUdQ+RHte8=;
+	s=arc-20240116; t=1773768103; c=relaxed/simple;
+	bh=pLtlu/KmACZDZr8D6pK0P1fe1rZl51OoAcV99GoNBgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W70+VI7p0zEM3VKxTWNcR0fO05BhwN74j+DOSYyugZAvabUU1mq1vR6dPYr3FubD1y26lIciR/hqlufwXMggHhWTfiYWlbtQ4pq0UqjGIUVsGZ0XcA8OhtNr3P0C+keCyibWAzN+BnJdW3iFFv1w0NmlDU9Ho3A4kUFTm/oJXSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCbGdppn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C674C4CEF7;
-	Tue, 17 Mar 2026 16:58:55 +0000 (UTC)
+	 MIME-Version; b=P1tkowSBowQgBAIlE5RRoGYP4I6OI4gV+W7ne/JTVpyqOj/YwEfk8PuXfiGRsIs/QxATpE9qK+lqOBQI8vW3o6y88/47W95rguRK73yr5OX1RfUHKS+KiOcco+FA+9WrZ3h99X7r/TiJ9e69LOe3fZdvjkKupc/3cmny/sfd21k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYde+Pkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC9DC19424;
+	Tue, 17 Mar 2026 17:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766737;
-	bh=CbZhMM63BONPtA0QsFU/Ti+I5D+kpBnX/nUdQ+RHte8=;
+	s=korg; t=1773768103;
+	bh=pLtlu/KmACZDZr8D6pK0P1fe1rZl51OoAcV99GoNBgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCbGdppnwF6Pfijm8ZSSqQVshJEp2V0ook55lkbnuC+oQOz4A7CnnrvexQnJ+vQ36
-	 kD/hZvuv1xwOz62cI9m5aSLboaR2LhuxGtq6DmlKXU0se1372TK3x3TFGonQCK3BdC
-	 NAWRiynNqSPEKiUO2zsdfVbEsEaC5ry6IEwTxUqc=
+	b=sYde+PkwFmmpt5pERfIzReZKkEXlcdDheePC1tHz0kjBFOA0aPcDXAoLYgeC/1nAU
+	 9hVW4IOUcOnVf9Gc2UPvtde12sH2QWdecYZNJhnUMe6D/GtTTR4OUmCpc2JQr6O2PY
+	 CilsZ8T9q/wUMlkxCUHn1wVX51VquSdkBoH9R53I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.19 303/378] drm/amd: Fix NULL pointer dereference in device cleanup
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 231/333] io_uring/net: reject SEND_VECTORIZED when unsupported
 Date: Tue, 17 Mar 2026 17:34:20 +0100
-Message-ID: <20260317163018.151419340@linuxfoundation.org>
+Message-ID: <20260317163007.932156534@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226443-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226763-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 0F9DC2AEDE7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 63E7F2B01A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 062ea905fff7756b2e87143ffccaece5cdb44267 upstream.
+commit c36e28becd0586ac98318fd335e5e91d19cd2623 upstream.
 
-When GPU initialization fails due to an unsupported HW block
-IP blocks may have a NULL version pointer. During cleanup in
-amdgpu_device_fini_hw, the code calls amdgpu_device_set_pg_state and
-amdgpu_device_set_cg_state which iterate over all IP blocks and access
-adev->ip_blocks[i].version without NULL checks, leading to a kernel
-NULL pointer dereference.
+IORING_SEND_VECTORIZED with registered buffers is not implemented but
+could be. Don't silently ignore the flag in this case but reject it with
+an error. It only affects sendzc as normal sends don't support
+registered buffers.
 
-Add NULL checks for adev->ip_blocks[i].version in both
-amdgpu_device_set_cg_state and amdgpu_device_set_pg_state to prevent
-dereferencing NULL pointers during GPU teardown when initialization has
-failed.
-
-Fixes: 39fc2bc4da00 ("drm/amdgpu: Protect GPU register accesses in powergated state in some paths")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7ac77468cda92eecae560b05f62f997a12fe2f2)
+Fixes: 6f02527729bd3 ("io_uring/net: Allow to do vectorized send")
 Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ io_uring/net.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3404,6 +3404,8 @@ int amdgpu_device_set_cg_state(struct am
- 		i = state == AMD_CG_STATE_GATE ? j : adev->num_ip_blocks - j - 1;
- 		if (!adev->ip_blocks[i].status.late_initialized)
- 			continue;
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		/* skip CG for GFX, SDMA on S0ix */
- 		if (adev->in_s0ix &&
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
-@@ -3443,6 +3445,8 @@ int amdgpu_device_set_pg_state(struct am
- 		i = state == AMD_PG_STATE_GATE ? j : adev->num_ip_blocks - j - 1;
- 		if (!adev->ip_blocks[i].status.late_initialized)
- 			continue;
-+		if (!adev->ip_blocks[i].version)
-+			continue;
- 		/* skip PG for GFX, SDMA on S0ix */
- 		if (adev->in_s0ix &&
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -376,6 +376,8 @@ static int io_send_setup(struct io_kiocb
+ 		kmsg->msg.msg_namelen = addr_len;
+ 	}
+ 	if (sr->flags & IORING_RECVSEND_FIXED_BUF) {
++		if (sr->flags & IORING_SEND_VECTORIZED)
++			return -EINVAL;
+ 		req->flags |= REQ_F_IMPORT_BUFFER;
+ 		return 0;
+ 	}
 
 
 
