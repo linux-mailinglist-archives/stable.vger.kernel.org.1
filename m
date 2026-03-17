@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-226380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id pg8mJyeKuWkjJwIAu9opvQ
-	(envelope-from <stable+bounces-226380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:47 +0100
+	id YBZFKyWRuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1499C2AEF6A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8ACD2AFD92
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE9E431DFE92
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BC8B9302FBF9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1953D3EAC6F;
-	Tue, 17 Mar 2026 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E37B3246F8;
+	Tue, 17 Mar 2026 17:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfiVV0E7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJfATFyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BAE3F23AA;
-	Tue, 17 Mar 2026 16:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211703176FD;
+	Tue, 17 Mar 2026 17:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766443; cv=none; b=d86lm4W1ovJLWGz6L1g0j/jA0JLzJtqon+CfyxQuE+SmtD7h9H6BcE03ZQNXl3MvD7IwiTN09pUdoK/kLB6nKPWJg2JFc0viDHuovKOEaBjSlOXnlOP76vx55zhSC0Xk44cjlwfYkvpbYbCF/b586Mey2ZuPFqh2Sml8bQbLf0U=
+	t=1773767975; cv=none; b=uuYI8fHtnGBTzUh/VrIdP5LZmAlqJuyVb45MCSY7rgmJoV4QR88pHjgHeN0YBgwp5Zq3cpBvFOzUaC7W/4n/YkPitPbOzIOEJNstv6svTJDBbTtB2/CpxSsqt3Tyh4qd2ROwYb/n3HQYcWuMOxtOESQsmEdWpWloTzX1RffCcWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766443; c=relaxed/simple;
-	bh=IxWM7XapqTu/N1PQkZbsswifDkStzDx4qvefoRMwI5g=;
+	s=arc-20240116; t=1773767975; c=relaxed/simple;
+	bh=eWyE34w6F/XiCCRTWGN79RcvU+skf7lE/aMpnErSGJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGASj2GMCS3L3FgMTP9ifCvqNROZF282xcO7dfecHKV9LuJO7bayJZVuh2SVL2mCTKrbHT0USUpa2kcsGIpqSqp/qlXLIKCWPps8+9iEnoE0Ih35kVA+b7Pqi2fGzXplNOf+3aKTDqBi2ol3/3rYztq8/BkoAKwzcUTcIAmijLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfiVV0E7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFAEC19424;
-	Tue, 17 Mar 2026 16:54:02 +0000 (UTC)
+	 MIME-Version; b=RlwZXzxu6tSZMsQJ+iUo/T2UsTcCEtbo2viQREXqO11Vr2w7+MHs64OeLLf2HDrD/o03U/sq7QPt4SPVLTh/7UOHKJ0DjLQefZnr246rusEtQjiSv1DDRBWT9tl1QBlkzLO8/qQ02iFsCnzB0+duWbaboiD4gI4+Z1UX5YP2oLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJfATFyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA60C4CEF7;
+	Tue, 17 Mar 2026 17:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766443;
-	bh=IxWM7XapqTu/N1PQkZbsswifDkStzDx4qvefoRMwI5g=;
+	s=korg; t=1773767975;
+	bh=eWyE34w6F/XiCCRTWGN79RcvU+skf7lE/aMpnErSGJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfiVV0E75/j/Mz8Yf757uLU5gg6yStvLCSI1pKvSVPASL0OKlihMBGO9SOiTn5286
-	 0xqCz73A2uBBxRnq2tE5WRDyJS3UPI5cCDZNSn19MM3/eGOgmiLUY7OFN+f2merthW
-	 UMss8IWw9A2mTASo8w+kUjUQERehlbjCGC+u4Vj4=
+	b=sJfATFyMkBFyU96AKmlwcBaFKlziUm6j8fhwPf1Zh0d1Q9AUYu+dhwy1rKLWj/PPJ
+	 Xwv8e/CFQgr7oOsm4TD4EAdAxp3RGQ+ioLYRCa/v6/XRbJzepalAJdCKYhwIQU21Gx
+	 KaetJJzEtceUOcEGpRzT9uYDfGDkXrEfONjGO8tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 248/378] mm: memfd_luo: always make all folios uptodate
+	Viktor Malik <vmalik@redhat.com>,
+	Qiao Zhao <qzhao@redhat.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 176/333] powerpc, perf: Check that current->mm is alive before getting user callchain
 Date: Tue, 17 Mar 2026 17:33:25 +0100
-Message-ID: <20260317163016.144722662@linuxfoundation.org>
+Message-ID: <20260317163005.883312948@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226380-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226727-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,119 +88,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,soleen.com:email]
-X-Rspamd-Queue-Id: 1499C2AEF6A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B8ACD2AFD92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav (Google) <pratyush@kernel.org>
+From: Viktor Malik <vmalik@redhat.com>
 
-commit 50d7b4332f27762d24641970fc34bb68a2621926 upstream.
+[ Upstream commit e9bbfb4bfa86c6b5515b868d6982ac60505d7e39 ]
 
-Patch series "mm: memfd_luo: fixes for folio flag preservation".
+It may happen that mm is already released, which leads to kernel panic.
+This adds the NULL check for current->mm, similarly to
+commit 20afc60f892d ("x86, perf: Check that current->mm is alive before getting user callchain").
 
-This series contains a couple fixes for flag preservation for memfd live
-update.
+I was getting this panic when running a profiling BPF program
+(profile.py from bcc-tools):
 
-The first patch fixes memfd preservation when fallocate() was used to
-pre-allocate some pages.  For these memfds, all the writes to fallocated
-pages touched after preserve were lost.
+    [26215.051935] Kernel attempted to read user page (588) - exploit attempt? (uid: 0)
+    [26215.051950] BUG: Kernel NULL pointer dereference on read at 0x00000588
+    [26215.051952] Faulting instruction address: 0xc00000000020fac0
+    [26215.051957] Oops: Kernel access of bad area, sig: 11 [#1]
+    [...]
+    [26215.052049] Call Trace:
+    [26215.052050] [c000000061da6d30] [c00000000020fc10] perf_callchain_user_64+0x2d0/0x490 (unreliable)
+    [26215.052054] [c000000061da6dc0] [c00000000020f92c] perf_callchain_user+0x1c/0x30
+    [26215.052057] [c000000061da6de0] [c0000000005ab2a0] get_perf_callchain+0x100/0x360
+    [26215.052063] [c000000061da6e70] [c000000000573bc8] bpf_get_stackid+0x88/0xf0
+    [26215.052067] [c000000061da6ea0] [c008000000042258] bpf_prog_16d4ab9ab662f669_do_perf_event+0xf8/0x274
+    [...]
 
-The second patch fixes dirty flag tracking.  If the dirty flag is not
-tracked correctly, the next kernel might incorrectly reclaim some folios
-under memory pressure, losing user data.  This is a theoretical bug that I
-observed when reading the code, and haven't been able to reproduce it.
+In addition, move storing the top-level stack entry to generic
+perf_callchain_user to make sure the top-evel entry is always captured,
+even if current->mm is NULL.
 
-
-This patch (of 2):
-
-When a folio is added to a shmem file via fallocate, it is not zeroed on
-allocation.  This is done as a performance optimization since it is
-possible the folio will never end up being used at all.  When the folio is
-used, shmem checks for the uptodate flag, and if absent, zeroes the folio
-(and sets the flag) before returning to user.
-
-With LUO, the flags of each folio are saved at preserve time.  It is
-possible to have a memfd with some folios fallocated but not uptodate.
-For those, the uptodate flag doesn't get saved.  The folios might later
-end up being used and become uptodate.  They would get passed to the next
-kernel via KHO correctly since they did get preserved.  But they won't
-have the MEMFD_LUO_FOLIO_UPTODATE flag.
-
-This means that when the memfd is retrieved, the folios will be added to
-the shmem file without the uptodate flag.  They will be zeroed before
-first use, losing the data in those folios.
-
-Since we take a big performance hit in allocating, zeroing, and pinning
-all folios at prepare time anyway, take some more and zero all
-non-uptodate ones too.
-
-Later when there is a stronger need to make prepare faster, this can be
-optimized.
-
-To avoid racing with another uptodate operation, take the folio lock.
-
-Link: https://lkml.kernel.org/r/20260223173931.2221759-2-pratyush@kernel.org
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 20002ded4d93 ("perf_counter: powerpc: Add callchain support")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Tested-by: Qiao Zhao <qzhao@redhat.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+[Maddy: fixed message to avoid checkpatch format style error]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260309144045.169427-1-vmalik@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memfd_luo.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ arch/powerpc/perf/callchain.c    | 5 +++++
+ arch/powerpc/perf/callchain_32.c | 1 -
+ arch/powerpc/perf/callchain_64.c | 1 -
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index e485b828d173..1c9510289312 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(struct file *file,
- 		if (err)
- 			goto err_unpreserve;
+diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+index 26aa26482c9ac..992cc5c982144 100644
+--- a/arch/powerpc/perf/callchain.c
++++ b/arch/powerpc/perf/callchain.c
+@@ -103,6 +103,11 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+ void
+ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
+ {
++	perf_callchain_store(entry, perf_arch_instruction_pointer(regs));
++
++	if (!current->mm)
++		return;
++
+ 	if (!is_32bit_task())
+ 		perf_callchain_user_64(entry, regs);
+ 	else
+diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
+index ddcc2d8aa64a5..0de21c5d272c2 100644
+--- a/arch/powerpc/perf/callchain_32.c
++++ b/arch/powerpc/perf/callchain_32.c
+@@ -142,7 +142,6 @@ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
  
-+		folio_lock(folio);
-+
- 		if (folio_test_dirty(folio))
- 			flags |= MEMFD_LUO_FOLIO_DIRTY;
--		if (folio_test_uptodate(folio))
--			flags |= MEMFD_LUO_FOLIO_UPTODATE;
-+
-+		/*
-+		 * If the folio is not uptodate, it was fallocated but never
-+		 * used. Saving this flag at prepare() doesn't work since it
-+		 * might change later when someone uses the folio.
-+		 *
-+		 * Since we have taken the performance penalty of allocating,
-+		 * zeroing, and pinning all the folios in the holes, take a bit
-+		 * more and zero all non-uptodate folios too.
-+		 *
-+		 * NOTE: For someone looking to improve preserve performance,
-+		 * this is a good place to look.
-+		 */
-+		if (!folio_test_uptodate(folio)) {
-+			folio_zero_range(folio, 0, folio_size(folio));
-+			flush_dcache_folio(folio);
-+			folio_mark_uptodate(folio);
-+		}
-+		flags |= MEMFD_LUO_FOLIO_UPTODATE;
-+
-+		folio_unlock(folio);
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned int __user *) (unsigned long) sp;
+diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
+index 115d1c105e8a8..30fb61c5f0cb0 100644
+--- a/arch/powerpc/perf/callchain_64.c
++++ b/arch/powerpc/perf/callchain_64.c
+@@ -77,7 +77,6 @@ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+ 	next_ip = perf_arch_instruction_pointer(regs);
+ 	lr = regs->link;
+ 	sp = regs->gpr[1];
+-	perf_callchain_store(entry, next_ip);
  
- 		pfolio->pfn = folio_pfn(folio);
- 		pfolio->flags = flags;
+ 	while (entry->nr < entry->max_stack) {
+ 		fp = (unsigned long __user *) sp;
 -- 
-2.53.0
+2.51.0
 
 
 
