@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UG/2A4VDuWmK+QEAu9opvQ
-	(envelope-from <stable+bounces-225868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:05:25 +0100
+	id AA4OIIZDuWkk+QEAu9opvQ
+	(envelope-from <stable+bounces-225869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:05:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CCA2A97B1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E632A97BF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C99543081BD3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:01:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E3DC3052B9D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAFA346792;
-	Tue, 17 Mar 2026 12:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47DB3AE1B2;
+	Tue, 17 Mar 2026 12:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHsfe5d7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTUIOQTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1681FC0A
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883C1FC0A
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773748903; cv=none; b=ey8pV4DFFwBb9a12mcfPZFK5x0xCmJDEq3L71a5BRPqIfkH9ZmgJknu+02rekKK9TeAJBlEKgLbwDEmjuFObiSJkx1Yp4u8t7Wrh+XDWsOCt3Jrx7L4JPEwtDQIwbX7RaCQEsZkZxvybBifCxvgSa9yyH6CDYGLTwt6+Cmu9TEo=
+	t=1773748920; cv=none; b=VNVQHnhekJrwOeTggZG8cqTQGKKfE9v2YBY97QJIKgnvanfze9WvUB3nzESHYkBGurcZJkh8x89fV0l2Ao8hLuq1Vos+Nz1TRKCwzn76akbNp2NhZsmiYC8H6e0cSUG5Yk8VutwuDWn4OBb+B0zGYTPcf7sehYqMeVQNBlQuoOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773748903; c=relaxed/simple;
-	bh=okqSv7+u2cnHCbnPXJxbAJWALfr9D7Yg1BR1li6T6Mo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qPjCjTbhmQE5ibwgfRcpqre4C9GafJz2DWssA0XRRI0iiHsOMPqHDWpFdKOh/yfa7Bj5kxa+y4uAnt61gN8pFd5YGpsce6BKDukJ+mTjitAEtyh3CEpOyeQs17BNfNnX6yjBQVhYqJ01y949a73svgXFOBQKZBKY8scopkeonDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHsfe5d7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93F5C4CEF7;
-	Tue, 17 Mar 2026 12:01:42 +0000 (UTC)
+	s=arc-20240116; t=1773748920; c=relaxed/simple;
+	bh=HqFTRDaOnTPsjn3b1qx0cuUXinn4rfSVjzgvQ/fsXQ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eB2+fKO/GOpvdItgzLURG2MmBva7CEXDVfxkes/b5lbIgcs2V3P8UXJSxIGPJP5D1lNb4aJHqI5UY8E7yN51HAyMtiBSoRMJfQF2s8hrYxC9OhyfOwwFrmZccGkOYJ1SToc0U40G4SolMucbohy98w3UHVqZFIAlMi/Cj8dx6kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTUIOQTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFF3C4CEF7;
+	Tue, 17 Mar 2026 12:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773748903;
-	bh=okqSv7+u2cnHCbnPXJxbAJWALfr9D7Yg1BR1li6T6Mo=;
+	s=korg; t=1773748920;
+	bh=HqFTRDaOnTPsjn3b1qx0cuUXinn4rfSVjzgvQ/fsXQ8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jHsfe5d7jalzeb+wWKyHSmn0n4zRzR9ALrWpcRIfIvQlC1zI9T+wgzrPloVPdbFg+
-	 FDs2IlNuSSgNecS+O3ZOhs1H5xs18zH4s6OfDpKw7lZ2tpZKO8eTfKanJjnqxRiiDJ
-	 ADESwawiy9d09S0MBWYcq8J1rptGE6uBNLbum9/c=
-Subject: FAILED: patch "[PATCH] fgraph: Fix thresh_return nosleeptime double-adjust" failed to apply to 6.18-stable tree
-To: hu.shengming@zte.com.cn,mhiramat@kernel.org,rostedt@goodmis.org
+	b=oTUIOQTMneMeGCnBbi7XpcttVymo/Ca0BWTexSVjgk6ZTKw7M7J49Q2zrQm1CWHTL
+	 IbKh/DMmpH0lTQtdeUQvjgXxd2+H4q6dralL1IWbXR3+tXvj0XuCSS3DW1QPYojHXn
+	 oIAZU7xZ+n539QiH+jDNoUdIdPOKwBWdIDWIMZEM=
+Subject: FAILED: patch "[PATCH] net/tcp-md5: Fix MAC comparison to be constant-time" failed to apply to 6.18-stable tree
+To: ebiggers@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 13:01:39 +0100
-Message-ID: <2026031739-bride-reproduce-be1c@gregkh>
+Date: Tue, 17 Mar 2026 13:01:56 +0100
+Message-ID: <2026031756-likewise-lumpiness-6c88@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225868-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225869-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -76,13 +76,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-0.994];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,goodmis.org:email]
-X-Rspamd-Queue-Id: 67CCA2A97B1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 05E632A97BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x b96d0c59cdbb2a22b2545f6f3d5c6276b05761dd
+git cherry-pick -x 46d0d6f50dab706637f4c18a470aac20a21900d3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031739-bride-reproduce-be1c@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031756-likewise-lumpiness-6c88@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,62 +111,95 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b96d0c59cdbb2a22b2545f6f3d5c6276b05761dd Mon Sep 17 00:00:00 2001
-From: Shengming Hu <hu.shengming@zte.com.cn>
-Date: Sat, 21 Feb 2026 11:33:14 +0800
-Subject: [PATCH] fgraph: Fix thresh_return nosleeptime double-adjust
+From 46d0d6f50dab706637f4c18a470aac20a21900d3 Mon Sep 17 00:00:00 2001
+From: Eric Biggers <ebiggers@kernel.org>
+Date: Mon, 2 Mar 2026 12:34:09 -0800
+Subject: [PATCH] net/tcp-md5: Fix MAC comparison to be constant-time
 
-trace_graph_thresh_return() called handle_nosleeptime() and then delegated
-to trace_graph_return(), which calls handle_nosleeptime() again. When
-sleep-time accounting is disabled this double-adjusts calltime and can
-produce bogus durations (including underflow).
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Fix this by computing rettime once, applying handle_nosleeptime() only
-once, using the adjusted calltime for threshold comparison, and writing
-the return event directly via __trace_graph_return() when the threshold is
-met.
-
+Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
+Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260221113314048jE4VRwIyZEALiYByGK0My@zte.com.cn
-Fixes: 3c9880f3ab52b ("ftrace: Use a running sleeptime instead of saving on shadow stack")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
-index 817d0f1696b6..0d2d3a2ea7dd 100644
---- a/kernel/trace/trace_functions_graph.c
-+++ b/kernel/trace/trace_functions_graph.c
-@@ -403,8 +403,12 @@ static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
- 	unsigned long *task_var = fgraph_get_task_var(gops);
- 	struct fgraph_times *ftimes;
- 	struct trace_array *tr;
-+	unsigned int trace_ctx;
-+	u64 calltime, rettime;
- 	int size;
+diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
+index 3ab6247be585..df922f9f5289 100644
+--- a/net/ipv4/Kconfig
++++ b/net/ipv4/Kconfig
+@@ -762,6 +762,7 @@ config TCP_AO
+ config TCP_MD5SIG
+ 	bool "TCP: MD5 Signature Option support (RFC2385)"
+ 	select CRYPTO_LIB_MD5
++	select CRYPTO_LIB_UTILS
+ 	help
+ 	  RFC2385 specifies a method of giving MD5 protection to TCP sessions.
+ 	  Its main (only?) use is to protect BGP sessions between core routers
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 8cdc26e8ad68..202a4e57a218 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -244,6 +244,7 @@
+ #define pr_fmt(fmt) "TCP: " fmt
  
-+	rettime = trace_clock_local();
-+
- 	ftrace_graph_addr_finish(gops, trace);
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/types.h>
+@@ -4970,7 +4971,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const struct sk_buff *skb,
+ 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+ 	else
+ 		tp->af_specific->calc_md5_hash(newhash, key, NULL, skb);
+-	if (memcmp(hash_location, newhash, 16) != 0) {
++	if (crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		trace_tcp_hash_md5_mismatch(sk, skb);
+ 		return SKB_DROP_REASON_TCP_MD5FAILURE;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d53d39be291a..910c25cb24e1 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -88,6 +88,7 @@
+ #include <linux/skbuff_ref.h>
  
- 	if (*task_var & TRACE_GRAPH_NOTRACE) {
-@@ -419,11 +423,13 @@ static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
- 	tr = gops->private;
- 	handle_nosleeptime(tr, trace, ftimes, size);
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
  
--	if (tracing_thresh &&
--	    (trace_clock_local() - ftimes->calltime < tracing_thresh))
-+	calltime = ftimes->calltime;
-+
-+	if (tracing_thresh && (rettime - calltime < tracing_thresh))
- 		return;
--	else
--		trace_graph_return(trace, gops, fregs);
-+
-+	trace_ctx = tracing_gen_ctx();
-+	__trace_graph_return(tr, trace, trace_ctx, calltime, rettime);
- }
+ #include <trace/events/tcp.h>
  
- static struct fgraph_ops funcgraph_ops = {
+@@ -839,7 +840,7 @@ static void tcp_v4_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 			goto out;
+ 
+ 		tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+-		if (memcmp(md5_hash_location, newhash, 16) != 0)
++		if (crypto_memneq(md5_hash_location, newhash, 16))
+ 			goto out;
+ 	}
+ 
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e46a0efae012..5195a46b951e 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -68,6 +68,7 @@
+ #include <linux/seq_file.h>
+ 
+ #include <crypto/md5.h>
++#include <crypto/utils.h>
+ 
+ #include <trace/events/tcp.h>
+ 
+@@ -1048,7 +1049,7 @@ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
+ 		key.type = TCP_KEY_MD5;
+ 
+ 		tcp_v6_md5_hash_skb(newhash, key.md5_key, NULL, skb);
+-		if (memcmp(md5_hash_location, newhash, 16) != 0)
++		if (crypto_memneq(md5_hash_location, newhash, 16))
+ 			goto out;
+ 	}
+ #endif
 
 
