@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKH2IA+HuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:35 +0100
+	id yGn9OcWQuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:35:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849FC2AE970
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F922AFD11
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4CCBD304DD31
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 384803203F67
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C679A3F54A5;
-	Tue, 17 Mar 2026 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4753F87E3;
+	Tue, 17 Mar 2026 17:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIkJWn+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQddDyuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DA03164B5;
-	Tue, 17 Mar 2026 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5823F788B;
+	Tue, 17 Mar 2026 17:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766083; cv=none; b=E/8FSusPJOhCh5ixWrGSp1op4FHs0d5/B6N3NZIy8AktbtAUDj5WkRjFDTaC8WO6+sj20JUiwf/Z+yN6JLsuAhAMX7L2ciK7QMzq0cZKf7NCtBExIW1JeV7LBDiEHkVYTbY807cKoKv7xTW1dtBpcSgQhx40bv7iP0Adsbh9Neg=
+	t=1773767319; cv=none; b=ai+HKzzL3c4OubWliEV75iTnh8ToGxTFJYpELYUZ/c7VFDsNpzqKQgGjee86ewTnAtv1VtLRZ35VbTdAw5+sTz168u4NrXnmFOgBMiyg4rpVTL5yzWw8AcDScEoE6dgEvaZ61dBNOU65aEs7n4Cvy5DOn7eA+4UVF7nRycp4kZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766083; c=relaxed/simple;
-	bh=I+k6qkVRnALZQNQeveh7k0lh7VpZDJTmAmFBcNa0t1I=;
+	s=arc-20240116; t=1773767319; c=relaxed/simple;
+	bh=7umZ3xwWmASQpv0UBX8lCee6XY9PYlj28U8koN21Llk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twACLhc6vFiA0UVU6QBJ/b2zRE8BC076vSYYhY/UZpafHhUZW9eVKWtJNYeanH0eowZ/0BCcHAqB7yfgQZJIBBxDEse48DB64wyhLiP+mI7S1GT8FeudeNuBcNJao7+NTazJxEfdOAZ0RzpngwQHh6IRuzPN9Q+Gi6Teg5j9ed0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIkJWn+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82443C19424;
-	Tue, 17 Mar 2026 16:48:02 +0000 (UTC)
+	 MIME-Version; b=jtjSCJz23JxWbdqRgcNOfTNHxcRcdsPfSdNR5UDwXONYWUtqnJwcNmtqvRUZunQmFH7dOiowJnJ7SQxaxtFj0ZwlCIrsJ7SKlWWn2sz+il75jXCoO+d7nuqQAfcEePF1vPri/ygQWjXI3xipSY32hLRCGyV6FSZBGvmYi72I00w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQddDyuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC24C2BCB3;
+	Tue, 17 Mar 2026 17:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766083;
-	bh=I+k6qkVRnALZQNQeveh7k0lh7VpZDJTmAmFBcNa0t1I=;
+	s=korg; t=1773767319;
+	bh=7umZ3xwWmASQpv0UBX8lCee6XY9PYlj28U8koN21Llk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIkJWn+G/9O9MP+fVW46DdzTqLF6YeFHYs3sbgacQ3qfAf2yLJqFnxGIoQNqG+rD6
-	 YotA8t0S2JoCknChgpD7KCZEujxf90vfvoqqDeFbztRYebpU6UzdV893sSkSTvhCYU
-	 nOCa3RGLktIEV69zMOfgwGAtX4vpszMxQ5ezUuZI=
+	b=hQddDyuAoC6/6O7u2xMzoOZLLzbZIJF+oKVtXzpodOUdun1dOw0hRqrND/xibWF1Z
+	 o5iC32VKxh1By4F+zBfK0n6tLWvJULeKBeD+qA7yNfheEqqZhuiD09MczpPvTD1QTN
+	 dXK2Jg3znjiC2p889NBZBfGsAnr4JTuHBHaH561c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Falcato <pfalcato@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.19 133/378] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 061/333] bonding: fix type confusion in bond_setup_by_slave()
 Date: Tue, 17 Mar 2026 17:31:30 +0100
-Message-ID: <20260317163011.907854564@linuxfoundation.org>
+Message-ID: <20260317163001.633301528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226297-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226580-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,63 +87,166 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 849FC2AE970
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,jvosburgh.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email]
+X-Rspamd-Queue-Id: 02F922AFD11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pfalcato@suse.de>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit b92b0075ee1870f78f59ab1f7da7dbfdd718ad7a upstream.
+[ Upstream commit 950803f7254721c1c15858fbbfae3deaaeeecb11 ]
 
-Currently, whenever you boot with a QEMU drive over an AHCI interface,
-you get:
-[    1.632121] ata1.00: applying bridge limits
+kernel BUG at net/core/skbuff.c:2306!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:pskb_expand_head+0xa08/0xfe0 net/core/skbuff.c:2306
+RSP: 0018:ffffc90004aff760 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88807e3c8780 RCX: ffffffff89593e0e
+RDX: ffff88807b7c4900 RSI: ffffffff89594747 RDI: ffff88807b7c4900
+RBP: 0000000000000820 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000961a63e0 R11: 0000000000000000 R12: ffff88807e3c8780
+R13: 00000000961a6560 R14: dffffc0000000000 R15: 00000000961a63e0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe1a0ed8df0 CR3: 000000002d816000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ ipgre_header+0xdd/0x540 net/ipv4/ip_gre.c:900
+ dev_hard_header include/linux/netdevice.h:3439 [inline]
+ packet_snd net/packet/af_packet.c:3028 [inline]
+ packet_sendmsg+0x3ae5/0x53c0 net/packet/af_packet.c:3108
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa54/0xc30 net/socket.c:2592
+ ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+ __sys_sendmsg+0x170/0x220 net/socket.c:2678
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe1a0e6c1a9
 
-This happens due to the kernel not believing the given drive is SATA,
-since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
-a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
+When a non-Ethernet device (e.g. GRE tunnel) is enslaved to a bond,
+bond_setup_by_slave() directly copies the slave's header_ops to the
+bond device:
 
-QEMU has set word 93 erroneously for SATA drives but does not, in any
-way, emulate any of these real hardware details. There is no PATA
-drive and no SATA cable.
+    bond_dev->header_ops = slave_dev->header_ops;
 
-As such, add a BRIDGE_OK quirk for QEMU HARDDISK. Special care is taken
-to limit this quirk to "2.5+", to allow for fixed future versions.
+This causes a type confusion when dev_hard_header() is later called
+on the bond device. Functions like ipgre_header(), ip6gre_header(),all use
+netdev_priv(dev) to access their device-specific private data. When
+called with the bond device, netdev_priv() returns the bond's private
+data (struct bonding) instead of the expected type (e.g. struct
+ip_tunnel), leading to garbage values being read and kernel crashes.
 
-This results in the max_hw_sectors being limited solely by the
-controller interface's limits. Which, for AHCI controllers, takes it
-from 128KB to 32767KB.
+Fix this by introducing bond_header_ops with wrapper functions that
+delegate to the active slave's header_ops using the slave's own
+device. This ensures netdev_priv() in the slave's header functions
+always receives the correct device.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix is placed in the bonding driver rather than individual device
+drivers, as the root cause is bond blindly inheriting header_ops from
+the slave without considering that these callbacks expect a specific
+netdev_priv() layout.
+
+The type confusion can be observed by adding a printk in
+ipgre_header() and running the following commands:
+
+    ip link add dummy0 type dummy
+    ip addr add 10.0.0.1/24 dev dummy0
+    ip link set dummy0 up
+    ip link add gre1 type gre local 10.0.0.1
+    ip link add bond1 type bond mode active-backup
+    ip link set gre1 master bond1
+    ip link set gre1 up
+    ip link set bond1 up
+    ip addr add fe80::1/64 dev bond1
+
+Fixes: 1284cd3a2b74 ("bonding: two small fixes for IPoIB support")
+Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260306021508.222062-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_main.c | 47 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4228,6 +4228,7 @@ static const struct ata_dev_quirks_entry
- 	/* Devices that do not need bridging limits applied */
- 	{ "MTRON MSP-SATA*",		NULL,	ATA_QUIRK_BRIDGE_OK },
- 	{ "BUFFALO HD-QSU2/R5",		NULL,	ATA_QUIRK_BRIDGE_OK },
-+	{ "QEMU HARDDISK",		"2.5+",	ATA_QUIRK_BRIDGE_OK },
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8be99ae67b77f..139ece7676c50 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1476,6 +1476,50 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+ 	return features;
+ }
  
- 	/* Devices which aren't very happy with higher link speeds */
- 	{ "WD My Book",			NULL,	ATA_QUIRK_1_5_GBPS },
++static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
++			      unsigned short type, const void *daddr,
++			      const void *saddr, unsigned int len)
++{
++	struct bonding *bond = netdev_priv(bond_dev);
++	const struct header_ops *slave_ops;
++	struct slave *slave;
++	int ret = 0;
++
++	rcu_read_lock();
++	slave = rcu_dereference(bond->curr_active_slave);
++	if (slave) {
++		slave_ops = READ_ONCE(slave->dev->header_ops);
++		if (slave_ops && slave_ops->create)
++			ret = slave_ops->create(skb, slave->dev,
++						type, daddr, saddr, len);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++{
++	struct bonding *bond = netdev_priv(skb->dev);
++	const struct header_ops *slave_ops;
++	struct slave *slave;
++	int ret = 0;
++
++	rcu_read_lock();
++	slave = rcu_dereference(bond->curr_active_slave);
++	if (slave) {
++		slave_ops = READ_ONCE(slave->dev->header_ops);
++		if (slave_ops && slave_ops->parse)
++			ret = slave_ops->parse(skb, haddr);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static const struct header_ops bond_header_ops = {
++	.create	= bond_header_create,
++	.parse	= bond_header_parse,
++};
++
+ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 				struct net_device *slave_dev)
+ {
+@@ -1483,7 +1527,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 
+ 	dev_close(bond_dev);
+ 
+-	bond_dev->header_ops	    = slave_dev->header_ops;
++	bond_dev->header_ops	    = slave_dev->header_ops ?
++				      &bond_header_ops : NULL;
+ 
+ 	bond_dev->type		    = slave_dev->type;
+ 	bond_dev->hard_header_len   = slave_dev->hard_header_len;
+-- 
+2.51.0
+
 
 
 
