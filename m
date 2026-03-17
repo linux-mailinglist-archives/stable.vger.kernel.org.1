@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-226208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI2KLp6FuWkPJAIAu9opvQ
-	(envelope-from <stable+bounces-226208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:26 +0100
+	id AOWrLa6KuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F012AE6A8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:47:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDFE2AF0B8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AAB9830523E6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 330053053BCB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DB13ECBF9;
-	Tue, 17 Mar 2026 16:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEA93E8C49;
+	Tue, 17 Mar 2026 17:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DDoNK9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InCYFi4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC213ED5A8;
-	Tue, 17 Mar 2026 16:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2354E2FFDEA;
+	Tue, 17 Mar 2026 17:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765717; cv=none; b=UmF6g2Sy3GfXMDXUZPANVe+rgbAzwDZyZl8KzMgb2EOun6uQ6Ebkekp4qZidj9F7GgXzuhyKatNCi9tvZqg0C6mvXt638WD465EDwacnCWfvITIfjt1MelyVIcNL58vwYHduUCn8r7N/MklFD1/EEKgrPyh5m+OJ1QuXBMj/mWg=
+	t=1773767202; cv=none; b=KFfr4zvm8QdHD07cDiihQVo2ZqZNUdnhJ5rPT8kHM/buS2QsAmwd85/V0MGgvGtYMiwJCkp1AbwXrDaGHKEuO5IVE46AneT1Pqpylb6TUh+XfqWwbdqnnbMNJkQ9Rx/HZHCjg4vfDxBpQ+xNPi/XYqQPC9PYgbM6GkVSA5qUP40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765717; c=relaxed/simple;
-	bh=/zWSWyMnM6slBGajMfpw057eYFiXSXThzp9hk8Qxgxg=;
+	s=arc-20240116; t=1773767202; c=relaxed/simple;
+	bh=Lmeo+V3FstN6iRElIU9qXN+qdR+WmaZQNtTGcZvvwMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4JjESDR8WAaVZMzhNLYBORslgUllGBbOkVTSoOXu2nj93h9QDW35zAUbHsm3dWBqdpkh6q76j0h8ZTLl87RwJPnqhVgVIsGwFH09nmCz3yGDTZ9BXv+7IjDtS8dtBw8+vPFlabl5RsIA2QoY5t0LiODz5ZOms7+YTYPs5iL3W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DDoNK9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F9C4CEF7;
-	Tue, 17 Mar 2026 16:41:56 +0000 (UTC)
+	 MIME-Version; b=m9Dxza9VZncHS5QRO0VefCq5G12OjcLFqbM2jKnX7qn3xmhVdt/1jeXeR9q16vCrdzhjq983gflwm5VKtCultfhs9kbHladIT7Se9Q6PZ1lR6Q9mxpoSGVHVbFZzXqHXjkcrv399mhUNij/tUUAvARB0gYWD8rBNrtl2B31FFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InCYFi4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D08C4CEF7;
+	Tue, 17 Mar 2026 17:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765717;
-	bh=/zWSWyMnM6slBGajMfpw057eYFiXSXThzp9hk8Qxgxg=;
+	s=korg; t=1773767202;
+	bh=Lmeo+V3FstN6iRElIU9qXN+qdR+WmaZQNtTGcZvvwMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DDoNK9pDFQTNdehG4JGbhrjeRTXXfEkzFzxeeI4Pmm/Slq15X1JIG5P7rd0GJEOO
-	 oUw4GVseZ7o+fhgeTUWiXsWhxtk/bUNRsuObYGNsZ9iPSojJX6FcXV5GajVGAQGUc1
-	 P7zvS1C6HXVTmOcefZ/bwlJUvKFNUcLsrgnIojPQ=
+	b=InCYFi4LR6IRt3NpJfCQm0UrabBmfeIpEv1FJXpIwxUGnbeFzZaGDdwgc+/WSmfVb
+	 1qk5lIuxLqUAHTBnk/GaG2zB3oyoGF30kOjTBP9A+TiwyuWbZyXbGh2eJJtg0rjQP/
+	 23vLM1/rpD1vQpVXoMmZ1N68WXNSMV28BKi7kt4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Dull <monderasdor@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Waiman Long <longman@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 078/378] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
-Date: Tue, 17 Mar 2026 17:30:35 +0100
-Message-ID: <20260317163009.887111163@linuxfoundation.org>
+Subject: [PATCH 6.18 007/333] unshare: fix unshare_fs() handling
+Date: Tue, 17 Mar 2026 17:30:36 +0100
+Message-ID: <20260317162959.627276124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +69,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226208-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226554-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B5F012AE6A8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,linux.org.uk:email]
+X-Rspamd-Queue-Id: 3EDFE2AF0B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
+[ Upstream commit 6c4b2243cb6c0755159bd567130d5e12e7b10d9f ]
 
-nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
-entry from the queue data structures, taking ownership of the entry.
-For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
-attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
-present but NFQA_VLAN_TCI missing), the function returns immediately
-without freeing the dequeued entry or its sk_buff.
+There's an unpleasant corner case in unshare(2), when we have a
+CLONE_NEWNS in flags and current->fs hadn't been shared at all; in that
+case copy_mnt_ns() gets passed current->fs instead of a private copy,
+which causes interesting warts in proof of correctness]
 
-This leaks the nf_queue_entry, its associated sk_buff, and all held
-references (net_device refcounts, struct net refcount).  Repeated
-triggering exhausts kernel memory.
+> I guess if private means fs->users == 1, the condition could still be true.
 
-Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
-on the error path, consistent with other error handling in this file.
+Unfortunately, it's worse than just a convoluted proof of correctness.
+Consider the case when we have CLONE_NEWCGROUP in addition to CLONE_NEWNS
+(and current->fs->users == 1).
 
-Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
-Reviewed-by: David Dull <monderasdor@gmail.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+We pass current->fs to copy_mnt_ns(), all right.  Suppose it succeeds and
+flips current->fs->{pwd,root} to corresponding locations in the new namespace.
+Now we proceed to copy_cgroup_ns(), which fails (e.g. with -ENOMEM).
+We call put_mnt_ns() on the namespace created by copy_mnt_ns(), it's
+destroyed and its mount tree is dissolved, but...  current->fs->root and
+current->fs->pwd are both left pointing to now detached mounts.
+
+They are pinning those, so it's not a UAF, but it leaves the calling
+process with unshare(2) failing with -ENOMEM _and_ leaving it with
+pwd and root on detached isolated mounts.  The last part is clearly a bug.
+
+There is other fun related to that mess (races with pivot_root(), including
+the one between pivot_root() and fork(), of all things), but this one
+is easy to isolate and fix - treat CLONE_NEWNS as "allocate a new
+fs_struct even if it hadn't been shared in the first place".  Sure, we could
+go for something like "if both CLONE_NEWNS *and* one of the things that might
+end up failing after copy_mnt_ns() call in create_new_namespaces() are set,
+force allocation of new fs_struct", but let's keep it simple - the cost
+of copy_fs_struct() is trivial.
+
+Another benefit is that copy_mnt_ns() with CLONE_NEWNS *always* gets
+a freshly allocated fs_struct, yet to be attached to anything.  That
+seriously simplifies the analysis...
+
+FWIW, that bug had been there since the introduction of unshare(2) ;-/
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://patch.msgid.link/20260207082524.GE3183987@ZenIV
+Tested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 34548213f2f14..0b96d20bacb73 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -1549,8 +1549,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 3da0f08615a95..924a9e10106b3 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3040,7 +3040,7 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
+ 		return 0;
  
- 	if (entry->state.pf == PF_BRIDGE) {
- 		err = nfqa_parse_bridge(entry, nfqa);
--		if (err < 0)
-+		if (err < 0) {
-+			nfqnl_reinject(entry, NF_DROP);
- 			return err;
-+		}
- 	}
+ 	/* don't need lock here; in the worst case we'll do useless copy */
+-	if (fs->users == 1)
++	if (!(unshare_flags & CLONE_NEWNS) && fs->users == 1)
+ 		return 0;
  
- 	if (nfqa[NFQA_PAYLOAD]) {
+ 	*new_fsp = copy_fs_struct(fs);
 -- 
 2.51.0
 
