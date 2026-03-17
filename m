@@ -1,156 +1,146 @@
-Return-Path: <stable+bounces-226007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AQSOD9UuWkNBAIAu9opvQ
-	(envelope-from <stable+bounces-226007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:16:47 +0100
+	id qAbbIOhcuWnYAgIAu9opvQ
+	(envelope-from <stable+bounces-226024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:53:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D6A2AAAE9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:16:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39482AB42B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34DFA31E6DBE
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:09:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D45EF301A292
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9363C7DE9;
-	Tue, 17 Mar 2026 13:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QonAIgIA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18083B9D9B;
+	Tue, 17 Mar 2026 13:53:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F0039EF32
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 13:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21A33B774C;
+	Tue, 17 Mar 2026 13:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773752994; cv=none; b=VLtWDkDRp5HxH36GMjaTnbccQN6+XVm1HH6pqEoHRI+NY/HH2IXhTUlnQIMa8PNiX15u8kOtpID1YUefF/4c8sYNotCVhCZtUQ/BSjgj/UB648if+d72uJQHIq/vfQ1+UatgTolr47z9qRQcbX5Ty7QDaEj7JGh5iGZl0ApBfUo=
+	t=1773755619; cv=none; b=NM8l6G6FkdEUyEF/K4nl4318SbZ3FBiP+O6u9rp7FC38/EFi4f08KXKXcU+9nDLLOrKWnITOmc5VisZsfpnON2tiQt+v4Bg4bKEQpUKqB5+G+jXLdmSEcLHgQv4yx2ZvwLMZ4MZg5lVy4rgDA+RC1/y4f0Jq4kr/Y8wAqfJwe1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773752994; c=relaxed/simple;
-	bh=6lHFeo3CR7SyoPU3VErvC5WHd0S9SyLPSkqrIsm+6/I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ukC/6MMYfyz3NIVa17/R7esjQ8XCdH3F6R1qRRSnxKcmQh0vC7l1GzQxShEXAWYiKjDZ9JMWU8ut2BoG2P4jP6xLl6hQF9+02fqJjCIdG1jL5oeR2tZeUX5TEhF7q9V46CXBgu/lo7tEVEv0WLrPekOFGXcJPBqTfIb7X/97hD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QonAIgIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31747C4CEF7;
-	Tue, 17 Mar 2026 13:09:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773752993;
-	bh=6lHFeo3CR7SyoPU3VErvC5WHd0S9SyLPSkqrIsm+6/I=;
-	h=Subject:To:Cc:From:Date:From;
-	b=QonAIgIA1CT4hJtghwo1RcnQyxvd8jqhwNhR+c/eqESTrhyUIbw60NEGnMsh/mqdc
-	 ijduA3h6oTKxzwD/vAZ2dOImMegjGJglcJcZK7GIyv1WRsFMHBnZ0q6Ex+z07HMW9K
-	 mT1SnhR5AmDZCTdcHO5UOALiao6K2qwKLMihS9qI=
-Subject: FAILED: patch "[PATCH] iio: imu: inv_icm42600: fix odr switch when turning buffer" failed to apply to 6.1-stable tree
-To: jean-baptiste.maneyrol@tdk.com,Jonathan.Cameron@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 14:09:39 +0100
-Message-ID: <2026031739-putdown-harmony-6f22@gregkh>
+	s=arc-20240116; t=1773755619; c=relaxed/simple;
+	bh=jOnqU2pxeS1YuTq37zznl574bvgZiKbsUlEk6l+BmQQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iYqnE95tRXcCd3pZ5JN2NFh5zQXNwB/fNapKp0ZwqOal/10FoilooByXjk+mJ8yt8c188BNUSsw4N6m6V13P7aqsLQUu7xz+qMe5ZZa41//FUfYZJ1Clq4ukM53+1gUcDULEpU/X23ll5AvbTF4Q2uuX/B+5g1nIPq3/Ilr4m8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1w2UF3-000YSW-29;
+	Tue, 17 Mar 2026 13:13:48 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1w2UF1-00000000tBy-11Cj;
+	Tue, 17 Mar 2026 14:13:47 +0100
+Message-ID: <f7285cc36ec39c4a6cef633add170518f2e34b3a.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 005/147] i3c: remove i2c board info from
+ i2c_dev_desc
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev
+Cc: Jamie Iles <quic_jiles@quicinc.com>, Alexandre Belloni
+	 <alexandre.belloni@bootlin.com>, stable <stable@vger.kernel.org>
+Date: Tue, 17 Mar 2026 14:13:42 +0100
+In-Reply-To: <20260228181736.1605592-5-sashal@kernel.org>
+References: <20260228181736.1605592-1-sashal@kernel.org>
+	 <20260228181736.1605592-5-sashal@kernel.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-gnA3NBkeQBiX2stB0NEf"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226007-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-226024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DMARC_NA(0.00)[decadent.org.uk];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tdk.com:email,gregkh:email,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 68D6A2AAAE9
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.986];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,quicinc.com:email]
+X-Rspamd-Queue-Id: F39482AB42B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--=-gnA3NBkeQBiX2stB0NEf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Sat, 2026-02-28 at 13:15 -0500, Sasha Levin wrote:
+> From: Jamie Iles <quic_jiles@quicinc.com>
+>=20
+> [ Upstream commit 31b9887c7258ca47d9c665a80f19f006c86756b1 ]
+>=20
+> I2C board info is only required during adapter setup so there is no
+> requirement to keeping a pointer to it once running.  To support dynamic
+> device addition we can't rely on board info - user-space creation
+> through sysfs won't have a boardinfo.
+[...]
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x ffd32db8263d2d785a2c419486a450dc80693235
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031739-putdown-harmony-6f22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+This was broken and needs commit 6cbf8b38dfe3 "i3c: fix uninitialized
+variable use in i2c setup" as a follow-up.
 
-Possible dependencies:
+Ben.
 
 
+--=20
+Ben Hutchings
+For every complex problem
+there is a solution that is simple, neat, and wrong.
 
-thanks,
+--=-gnA3NBkeQBiX2stB0NEf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-greg k-h
+-----BEGIN PGP SIGNATURE-----
 
------------------- original commit in Linus's tree ------------------
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmm5U4YACgkQ57/I7JWG
+EQkSRw//U4sQc9VYDDtfrS1DgkSqANo5M2DSrtpG20cRiAyfbz13tx4uZSeC3Llw
+/xK3ZRW1oIhbkEkqSNrA1MJpYUIiRklIRXToLrf/9lmvK/yKdiHIFmdUt7XM24qx
+Z08gc7hZO/uI0rUxeiya5sItaOV+GJDB9068oGSmCAt+7aNZndK2lRowTdPDPFdF
+6teA1PVB4rD5Vv7w1LsDxHhW0hBAb68LZP3cYC06b053tlMgpyn4mpfuiwMyxRuO
+Zl3xAmpd+KldlSZTWfY0ULi1vynCOpOAXVkoO6OLI33hJFH1Dn3enBS9bst+NZ+G
+r6tJrBwlb66YfNPg61rUNeW55Iz/EptWwOiAGO0+ayGBXnsk4n0Hx12SbpSrBDzK
+OlyMx/AHmsAriMSPo6A7f0KqaUHjPYUon0d8yBUH/5bn1nuMeZD6Mr2kS2rutFSl
+Z3k8Yg1957d5Oiul2hUp9y9XlcljvPAw4CUDewKAhy7vkwcwuZNe88aDzEPJW+pn
+Nv8SiTVM7/zDubJOzaHlqX9nYwfbhnR5gv5fstdRDNuIojBSut5JqACg0XDGHkZc
+CUaAi2zih9u05B1r7S4MWhtSRKLftVJRFRC6y2ys18/oBs+fE7WlFXSjYDDVUQyu
+21w0ECfTWNMOm09JUljmazNWfm5/AG3qBAvjC0e6LQglZzafebs=
+=jmul
+-----END PGP SIGNATURE-----
 
-From ffd32db8263d2d785a2c419486a450dc80693235 Mon Sep 17 00:00:00 2001
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Date: Fri, 30 Jan 2026 17:10:23 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix odr switch when turning buffer
- off
-
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching odr and turning buffer off just afterward, we are
-losing the FIFO ODR change flag and ODR switch is blocked.
-
-Fix the issue by force applying any waiting ODR change when turning
-buffer off.
-
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index ada968be954d..68a395758031 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -371,6 +371,8 @@ static int inv_icm42600_buffer_predisable(struct iio_dev *indio_dev)
- static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct inv_icm42600_sensor_state *sensor_st = iio_priv(indio_dev);
-+	struct inv_sensors_timestamp *ts = &sensor_st->ts;
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
-@@ -392,6 +394,8 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- 
- 	mutex_lock(&st->lock);
- 
-+	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
- 	if (ret)
- 		goto out_unlock;
-
+--=-gnA3NBkeQBiX2stB0NEf--
 
