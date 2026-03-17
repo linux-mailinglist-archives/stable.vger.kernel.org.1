@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-226422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ADWKiqIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:18 +0100
+	id CDtOBY6TuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2163B2AEB5A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807832B01FA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D790C3046968
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2D42336F586
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD7F3F7887;
-	Tue, 17 Mar 2026 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABABB376BCD;
+	Tue, 17 Mar 2026 17:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMMEFo9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itX6TD/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8063B3F787D;
-	Tue, 17 Mar 2026 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF0632AAC5;
+	Tue, 17 Mar 2026 17:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766638; cv=none; b=SVWQSddO7iwNHmZhm9Fh5CLhvoGlfhy4epsX47fyrmzsgLitaJzpRMtwngpX2rGLah9JuN2aXa+K98piSTmCV8yq0cBs4n25E4NxZ8SuPoVQEWrufOBfoU6EZXc14nJJJYX+pLk/+nl9zMERCC9d8YA+8/yPDfeTX4lcc+5xLrk=
+	t=1773768180; cv=none; b=C7zIm2k4QUCiHvxH3p/ETEaPmvUj6y/pdCtuNKkHrb9oKSLeeiSIm1fZyuNFk6Lg3RCsjnOQZPZn201Xy73MdKOVKqJgPsepO1YOCSnwBX0DnaI5cJJO8O0OaZc7sSz/JvXXOB994fZWkMMhr2De9rtOXMbbPZ0DCGf7MRejW3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766638; c=relaxed/simple;
-	bh=+aSi36l/qgHBTfUJjn4Ul8bQEYbGe4XQ3zdfNZ+qJM8=;
+	s=arc-20240116; t=1773768180; c=relaxed/simple;
+	bh=RvVSca8EDZazC3MIXZYbw5gdCp22r8/lGnal/FHTr5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwLlbnBbgdOmLE4oHQ907ZdH2xyJoG0xNMGVrW2QSTb6vOGFhcKkJILGWoX7PFhHM+pA2RLFNIBpAeYhyFFrf86gaznihQ3ayfdKtFmBlnedTD4jZQaarn6i6mDDFMCB61AZT/iAybRbTap6xVIozyvc3ByAVaejyu3snVQ2Pto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMMEFo9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF39C2BCB0;
-	Tue, 17 Mar 2026 16:57:16 +0000 (UTC)
+	 MIME-Version; b=Eopb0Uod6qqA7fWgZWSUSHKRDVCslKnImrMc6/iM2NNIJz8l6OuMcgvipHxKZo+aw2uYioQV0R31qfLDXj9nTr03noWIKT+U8nkhZ6c67Nxsk3891CGG5WHA9EJJ6P4KDg07XQN6sffRYRJg1VoAM8cfzkEujmfBz7yMEDRmuPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itX6TD/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924DBC4CEF7;
+	Tue, 17 Mar 2026 17:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766638;
-	bh=+aSi36l/qgHBTfUJjn4Ul8bQEYbGe4XQ3zdfNZ+qJM8=;
+	s=korg; t=1773768180;
+	bh=RvVSca8EDZazC3MIXZYbw5gdCp22r8/lGnal/FHTr5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMMEFo9VwMQMkI163Rz7lwgS8r4KCCCL9oYJzY6bSjIDKx9LwF6d8mipg2+d+bnw4
-	 JNaWafbcO5E62JOmijlJIeLg9ntZ6kC/ZG48WQEeGECpJoFS4FockiL/WdCMrmagId
-	 RmX8un5S8vymQ9JMQLQoiHbPinG3j6DxKKHz0sKQ=
+	b=itX6TD/LumFXcKKdQ2JXogN+HVJ3R/+xQ3x9XLd1LHnFQe5FQSnCkPjiBZB24IaYh
+	 Q+P4gIraHc2mh6WUjhulU60joj5rcOi9kErrM2rL33H8ON/RSlG9SjM3rlBcorfLih
+	 2NwAdlxRKmYZGvAkHSMc+M4E+U7X8O0sb9GpEqkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Li <hao.li@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Vlastimil Babka <vbabka@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 289/378] memcg: fix slab accounting in refill_obj_stock() trylock path
+	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 217/333] ice: fix retry for AQ command 0x06EE
 Date: Tue, 17 Mar 2026 17:34:06 +0100
-Message-ID: <20260317163017.644134495@linuxfoundation.org>
+Message-ID: <20260317163007.410765836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226422-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226783-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,67 +89,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux.dev:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 2163B2AEB5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:url,mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 807832B01FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Li <hao.li@linux.dev>
+From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
 
-commit dccd5ee2625d50239510bcd73ed78559005e00a3 upstream.
+commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
 
-In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should use
-the real alloc/free bytes (i.e., nr_acct) for accounting, rather than
-nr_bytes.
+Executing ethtool -m can fail reporting a netlink I/O error while firmware
+link management holds the i2c bus used to communicate with the module.
 
-The user-visible impact is that the NR_SLAB_RECLAIMABLE_B and
-NR_SLAB_UNRECLAIMABLE_B stats can end up being incorrect.
+According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
+Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
+request should to be retried upon receiving EBUSY from firmware.
 
-For example, if a user allocates a 6144-byte object, then before this
-fix efill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=2048), even
-though it should account for 6144 bytes (i.e., nr_acct).
+Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+implemented it only for part of ice_get_module_eeprom(), leaving all other
+calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
+EBUSY without retrying.
 
-When the user later frees the same object with kfree(),
-refill_obj_stock() calls mod_objcg_mlstate(..., nr_bytes=6144).  This
-ends up adding 6144 to the stats, but it should be applying -6144
-(i.e., nr_acct) since the object is being freed.
+Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
+(AQ) command with opcode 0x06EE to the list of commands that should be
+retried on receiving EBUSY from firmware.
 
-Link: https://lkml.kernel.org/r/20260226115145.62903-1-hao.li@linux.dev
-Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
-Signed-off-by: Hao Li <hao.li@linux.dev>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_common.c  |    1 
+ drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3052,7 +3052,7 @@ static void refill_obj_stock(struct obj_
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -1854,6 +1854,7 @@ static bool ice_should_retry_sq_send_cmd
+ 	case ice_aqc_opc_lldp_stop:
+ 	case ice_aqc_opc_lldp_start:
+ 	case ice_aqc_opc_lldp_filter_ctrl:
++	case ice_aqc_opc_sff_eeprom:
+ 		return true;
+ 	}
  
- 	if (!local_trylock(&obj_stock.lock)) {
- 		if (pgdat)
--			mod_objcg_mlstate(objcg, pgdat, idx, nr_bytes);
-+			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
- 		nr_pages = nr_bytes >> PAGE_SHIFT;
- 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
- 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -4495,7 +4495,7 @@ ice_get_module_eeprom(struct net_device
+ 	struct ice_pf *pf = vsi->back;
+ 	struct ice_hw *hw = &pf->hw;
+ 	bool is_sfp = false;
+-	unsigned int i, j;
++	unsigned int i;
+ 	u16 offset = 0;
+ 	u8 page = 0;
+ 	int status;
+@@ -4537,26 +4537,19 @@ ice_get_module_eeprom(struct net_device
+ 		if (page == 0 || !(data[0x2] & 0x4)) {
+ 			u32 copy_len;
+ 
+-			/* If i2c bus is busy due to slow page change or
+-			 * link management access, call can fail. This is normal.
+-			 * So we retry this a few times.
+-			 */
+-			for (j = 0; j < 4; j++) {
+-				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
+-							   !is_sfp, value,
+-							   SFF_READ_BLOCK_SIZE,
+-							   0, NULL);
+-				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
+-					   addr, offset, page, is_sfp,
+-					   value[0], value[1], value[2], value[3],
+-					   value[4], value[5], value[6], value[7],
+-					   status);
+-				if (status) {
+-					usleep_range(1500, 2500);
+-					memset(value, 0, SFF_READ_BLOCK_SIZE);
+-					continue;
+-				}
+-				break;
++			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
++						   !is_sfp, value,
++						   SFF_READ_BLOCK_SIZE,
++						   0, NULL);
++			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
++				   addr, offset, page, is_sfp,
++				   value[0], value[1], value[2], value[3],
++				   value[4], value[5], value[6], value[7],
++				   ERR_PTR(status));
++			if (status) {
++				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
++					   __func__, ERR_PTR(status));
++				return status;
+ 			}
+ 
+ 			/* Make sure we have enough room for the new block */
 
 
 
