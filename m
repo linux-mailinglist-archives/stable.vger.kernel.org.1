@@ -1,146 +1,195 @@
-Return-Path: <stable+bounces-225764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB8QAkAOuWk/ngEAu9opvQ
-	(envelope-from <stable+bounces-225764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:18:08 +0100
+	id +Jo+OL4QuWmFowEAu9opvQ
+	(envelope-from <stable+bounces-225765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:28:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C597E2A56C2
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:18:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED5F2A5A9F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6FB83019539
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:17:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB30B3058E0D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 08:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E45833987F;
-	Tue, 17 Mar 2026 08:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="T9TSP0Hi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6A6396D2A;
+	Tue, 17 Mar 2026 08:23:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D6C188596
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 08:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD715395DB1
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 08:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773735454; cv=none; b=QE+lay7wska9/NQdTvYEBn8ZxAON78tTncG+NVMmtvUhWQ2c6a0BobJzUYFM9Hy2uP3SRzqSV4bZA00domhKxGPZyqGApYNpp59htxNkfng8PYJmcclFpqGmP6M4hiOEoUKUcl8GGjguiDwcCrjZnWtCvYsQwN9N5gp5PLVZPFU=
+	t=1773735826; cv=none; b=YkkYpaBKiDBwtUYmQw5Pecl/FDp3uDUFETAFXkvR4BLTkEnuKHc88Up9iU0wWLEueaMVCoeWUaT9tyfh7A4o86/SNGaTrUybuPk4Gjvo5djNIfYX1a7fmCXaW0sMQL4CLynL6/hKT6GBFS+nR0QQ3K9j9iTAf9Rk/LustWtqHqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773735454; c=relaxed/simple;
-	bh=yYgEP8ZrrvgXzoQLTggph68gLGGFqK4sWeEyRtComu8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BMaPJUn1IXKuYo8EXwCas8K7AfLMYb0v45gDbmLrmXJaF8G3Of2Xr+kXZjXwTyiICnwn2Hx0tKF6YuTdobGvF8IC/6HmA3g8KFgMm5+1qLN7wAqoFJ6x9EDdF2+sec1burXGd1SEKqLogH3jkLc1PaIdwYbRxHj9whFYDsxrz/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=T9TSP0Hi; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
-Message-ID: <435dda9f-93f5-41db-9d21-70371d31857b@chenxiaosong.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
-	s=key1; t=1773735447;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MMi0Pkwm8oH432o355wyu1dAmkX7OHBK57yXE4/m8TA=;
-	b=T9TSP0HiojO9cCYJ6g5IVHawoHY35KGKPyCmD6lNOVc2Gb0WIM+QdKmG5GyhRTn3qbrbnh
-	hWUkDqICp90wrMTs8Fq4hO8VgF6nvjLCckpF8nc1Pmp2UM7lJIJQmybGWntzBEE3urxG9U
-	9Knir49Xep3xxxg3fJnXZs7Ov696Kh7lStG2C67nxU0U06e6X9VyqQRHCVk9krF8v5W3LD
-	zT53SzpIJ9T/HC5h08RdXRqNkztMZm2MBnNX1ULmT2N1ix1aSMwwi+qVhOiVoJRxkNuy35
-	JN7Vx6V2zMIfNn7g9j1Ewx6EL/H8YU9zCfMMxB7kvd8EKO8V7bSwn1Q1aB+kvg==
-Date: Tue, 17 Mar 2026 16:16:37 +0800
+	s=arc-20240116; t=1773735826; c=relaxed/simple;
+	bh=aTR0ByVDp5twPVDF0We0yxjjtWE6HL5DaVZrXfqb4cU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WrqwiXsHIgC/w+Oa2ajRI7BaGWwmcaH3tQSnHpJdhM7MogF5OCU146nShdevzx2MMs+NLDJvYUgI9wdpDIB5s469Z0K2NKdmDGdJdE1eESBTU7wpaDaCKlQJQ079T2Cr32v0Q7GgA4s6suv2QWkhHh1In1iGrqAK/2x20hwGKv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-56b672c68dbso231328e0c.0
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 01:23:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773735825; x=1774340625;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/BWsLLpeb8S2Ruk3mIA0NNiewV90E5kBU5fFfxw9bA0=;
+        b=pi+kiJ0cG7AhdAmknU228Gqzx1tTHObtW00536/QO2bdOillEuH1wYEjQboA7l0ceW
+         IWiMlUEGLG0frb90YzcwrS38QUuqlMoXZwd/J1MFYLYL1VXZV7buxbjkS4kcojUKXF8/
+         JT07NdFOmk+qKH2smcZN/0/7Lkmu1Ps5kkeA8R4wsxEbfw5WZAGMF+IpYnrCVtdnloZQ
+         3VO7DuAarL5bt+b/8YfhdsHPZqjv12gqxklexLl66JpCFjQEtms39/ibI0eCGc1BOr+A
+         2PTjnbza+RYZlYSTk5lebkp+cbkoG3sqO3X77ifwn36EE36f9iOMOfZ+UlNc1/RnSMZk
+         MwOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnQujDRGdItooiPP4BMCLHrXuC8DJK1H88LR9FYbWdAEZrjWyREm5KankltS0EAi64RB6VMUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWhzYHfqnbrIEbs4lQxk7zAQyCLPCRrOlhpR8FpXzpT/p7LDuY
+	UKmwwhWhDEFoLZX73xA9E2jEcGqMvNp3I44HGXB42aoYrcTeAZo6r0tlK1C63Axh
+X-Gm-Gg: ATEYQzyua1p3fMeKbvbV9hdcRpd2xN3S8J/JvAycTt6a+VOVgtAYWroqHpOME4NvMQx
+	x7juiobq1hKOz5XH3TaCMOKrS/CXQ/DIdUaqEWJUGsJA3iUObDS5vTCr/jluqyVSjvbBCCcAwXz
+	LHyRA8Osrm793q4Phl53/U4rA/PeAf/MMgm08j0qMyAv1T1wKAaqzWTjYT7nTl5rEI/m/q31wzd
+	JULsA6inAPIPu6WcxB9lxBue3Rl5h+Y8IuFU23igZs5bXuZIBnWTYLIKAJgx1+CVVPEuQ3AVbFW
+	wwXmb02SaEkt1DoB53J4MBCKfnSN9JzWPZTdqXBEwcu2qcftdMNTXofIo48RnDeXJgGxhroCBpF
+	VMuiawsNsjkivHlZZvCoa8CFI0JUDMThYoPKhZwPv7e2P1Du+NxzfZHFE2Jwcrhjsxxh/PCsHSP
+	oBZQfpoQBbI1GLhjrLIDpl3IYu2/hY2b2dQV+3kjXEeGvC4wwSS0pZNBo6W5I69xcJtVnn9g0=
+X-Received: by 2002:a67:f252:0:b0:602:6ccd:7772 with SMTP id ada2fe7eead31-6026ccd7adamr348723137.2.1773735824644;
+        Tue, 17 Mar 2026 01:23:44 -0700 (PDT)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-601de6c9c9bsm8322749137.3.2026.03.17.01.23.44
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 01:23:44 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-94ac3958788so335314241.0
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 01:23:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVcWTUMnk0p5lt3Rxp3ObnKCFzLMrbWy/wg5K25OFNP+g/A2lqQy3SO+EdGX8kmEHnu6OKusDI=@vger.kernel.org
+X-Received: by 2002:a05:6102:38d4:b0:5ff:de83:3e46 with SMTP id
+ ada2fe7eead31-60263d8f933mr1167606137.7.1773735823847; Tue, 17 Mar 2026
+ 01:23:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] ksmbd: fix use-after-free and NULL deref in
- smb_grant_oplock()
-To: Werner Kasselman <werner@verivus.ai>,
- "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>
-Cc: "linkinjeon@kernel.org" <linkinjeon@kernel.org>,
- "smfrench@gmail.com" <smfrench@gmail.com>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260317065253.1743552-1-werner@verivus.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-In-Reply-To: <20260317065253.1743552-1-werner@verivus.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+References: <20260130122353.2263273-1-cosmin-gabriel.tanislav.xa@renesas.com>
+ <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
+ <aaqTVDQa7xn70bR_@monoceros> <TYRPR01MB156191C8E77BDA44AE23A7D4F857AA@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <TYRPR01MB156192CC838EC0B3DD66246158540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <CAMuHMdVqqGTmxiKRQBbphw8KmtG66HLaZhDVvtSK81cfiMsXcQ@mail.gmail.com> <TYRPR01MB156193245985A82B792817FE68540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+In-Reply-To: <TYRPR01MB156193245985A82B792817FE68540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 17 Mar 2026 09:23:32 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdV6c1F8eVOi6bQssq3qsBcpGnQ-cT1AeXLqXXYEgK4xrg@mail.gmail.com>
+X-Gm-Features: AaiRm50jZRADgQIXJgbrFUg4WeDPSzcNuPJxTTXR-hiMiTGwpkXr0IAMZW3mmeM
+Message-ID: <CAMuHMdV6c1F8eVOi6bQssq3qsBcpGnQ-cT1AeXLqXXYEgK4xrg@mail.gmail.com>
+Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd channel
+To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, William Breathitt Gray <wbg@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, 
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chenxiaosong.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[chenxiaosong.com:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225764-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,chromium.org,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,bp.renesas.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-225765-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-m68k.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chenxiaosong.com:+];
 	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenxiaosong@chenxiaosong.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.688];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,verivus.com:email,chenxiaosong.com:dkim,chenxiaosong.com:mid]
-X-Rspamd-Queue-Id: C597E2A56C2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linux-m68k.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,renesas.com:email]
+X-Rspamd-Queue-Id: 5ED5F2A5A9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Looks good to me so far. Others can continue the review.
+Hi Cosmin,
 
-Thanks,
-ChenXiaoSong <chenxiaosong@kylinos.cn>
+On Mon, 16 Mar 2026 at 20:13, Cosmin-Gabriel Tanislav
+<cosmin-gabriel.tanislav.xa@renesas.com> wrote:
+> > From: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Sent: Monday, March 16, 2026 8:26 PM
+> >
+> > Hi Cosmin,
+> >
+> > On Mon, 16 Mar 2026 at 16:52, Cosmin-Gabriel Tanislav
+> > <cosmin-gabriel.tanislav.xa@renesas.com> wrote:
+> > > static int rz_mtu3_sibling_hwpwm(u32 hwpwm, u32 *sibling_hwpwm)
+> >
+> > Unused sibling_hwpwm?
+> >
+> > > {
+> > >         if (!rz_mtu3_hwpwm_is_primary(hwpwm))
+> > >                 return hwpwm - 1;
+> > >
+> > >         if (rz_mtu3_hwpwm_is_primary(hwpwm + 1))
+> > >                 return -EINVAL;
+> > >
+> > >         return hwpwm + 1;
+> > > }
 
-On 3/17/26 14:52, Werner Kasselman wrote:
-> smb_grant_oplock() has two issues in the oplock publication sequence:
-> 
-> 1) opinfo is linked into ci->m_op_list (via opinfo_add) before
->     add_lease_global_list() is called.  If add_lease_global_list()
->     fails (kmalloc returns NULL), the error path frees the opinfo
->     via __free_opinfo() while it is still linked in ci->m_op_list.
->     Concurrent m_op_list readers (opinfo_get_list, or direct iteration
->     in smb_break_all_levII_oplock) dereference the freed node.
-> 
-> 2) opinfo->o_fp is assigned after add_lease_global_list() publishes
->     the opinfo on the global lease list.  A concurrent
->     find_same_lease_key() can walk the lease list and dereference
->     opinfo->o_fp->f_ci while o_fp is still NULL.
-> 
-> Fix by restructuring the publication sequence to eliminate post-publish
-> failure:
-> 
-> - Set opinfo->o_fp before any list publication (fixes NULL deref).
-> - Preallocate lease_table via alloc_lease_table() before opinfo_add()
->    so add_lease_global_list() becomes infallible after publication.
-> - Keep the original m_op_list publication order (opinfo_add before
->    lease list) so concurrent opens via same_client_has_lease() and
->    opinfo_get_list() still see the in-flight grant.
-> - Use opinfo_put() instead of __free_opinfo() on err_out so that
->    the RCU-deferred free path is used.
-> 
-> This also requires splitting add_lease_global_list() to take a
-> preallocated lease_table and changing its return type from int to void,
-> since it can no longer fail.
-> 
-> Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-> Fixes: 1dfd062caa16 ("ksmbd: fix use-after-free by using call_rcu() for oplock_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Werner Kasselman <werner@verivus.com>
+> It's funny how even after triple-checking the message I was about to
+> send, I didn't notice it.
+>
+> This should have been what I sent.
+>
+> static int rz_mtu3_sibling_hwpwm(u32 hwpwm, u32 *sibling_hwpwm)
+> {
+>         if (!rz_mtu3_hwpwm_is_primary(hwpwm)) {
+>                 *sibling_hwpwm = hwpwm - 1;
+>                 return 0;
+>         }
+>
+>         if (rz_mtu3_hwpwm_is_primary(hwpwm + 1))
+>                 return -EINVAL;
+>
+>         *sibling_hwpwm = hwpwm + 1;
+>
+>         return 0;
+> }
+
+Thanks, now I can see what you intended ;-)
+As the output parameter value is unsigned, and never very large,
+returning that value or a negative error code as the return value may
+be simpler (i.e. use the original "bad" version, and drop the unused
+output parameter)?
+
+
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
