@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJDmNoAguWkrrwEAu9opvQ
-	(envelope-from <stable+bounces-225790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:36:00 +0100
+	id aNdaGhkeuWmbrQEAu9opvQ
+	(envelope-from <stable+bounces-225791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:25:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B452A6E87
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:36:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB422A69F1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9289630E1439
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DDC8302C5D0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD60E35E946;
-	Tue, 17 Mar 2026 09:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A3B35B125;
+	Tue, 17 Mar 2026 09:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l28lA2cZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuKUZpTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD6037F74C
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7503382FA
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773739428; cv=none; b=doSdLwi/JjVRISvVFBqbDBxRNUGDadC0OzpTMRTzHKTTBWhAj7FNya2UhFaf+P7L5mpgiSFw7mzgclujuXMuqnjA+LG5UXueuNmKORDdBdIqTVKc+trzUeTugK8iJ53Ogt+ogatWakrptGhbdyyf2pPXiKdoGCkK65F+Iw22EAU=
+	t=1773739468; cv=none; b=Rio/dURnUgaKbClQ5Ap/NHsrpEU2NgkMhv9jYiFE/PBJSgcvkhPAO0Vlu3wO8GlFnXQHSy9SXpOC9PMgXiNwzY/k5PAs5I+CeoY/o2dKM3QRsfS6lrta/dhLSeDpb+vRa1HRXUg7Quuh0S9qYzUbHzszsKRUoqeFDnuTQrtJNps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773739428; c=relaxed/simple;
-	bh=6ecQGUgV275nsR7UI3ASybysUwo+CP/vm/F/N0BbbzU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n/19j76Gzp8uNbOwUWKny1xUXlZPfytR1U9ncvpFouRL25INi2SpEAcGd/zmzj6HN6pnQUN+7Fwm+b4sM73T62o7ngDSXA4YFzrtelpqcNVaVxlTTzsCvCKUZDHnL0TSnWh4tniy6fzZqX8EW0jre7i4M6P+oAfhGcZRFKTe9fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l28lA2cZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDBFC4CEF7;
-	Tue, 17 Mar 2026 09:23:47 +0000 (UTC)
+	s=arc-20240116; t=1773739468; c=relaxed/simple;
+	bh=CCuROrAn3XVubzVVrbej9SMAKqUmdiMN4Oo61vO/o5o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=haRUdm+i0Z3qDgSNntVB7sW5J5XNmIC6mR1Q92+HCU2Lh1VWp3XPLkRXLqgU9xuDS9FKLcdMTm5utGkfuMS9p9jH+qPF4OZGMXdJUEowCAHa//n7t18ra4rNCsmkBQMozXmR76ofd3IH49C5vntSdTvsWxAD76m7F2ppMFDkZ0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuKUZpTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57ACC4CEF7;
+	Tue, 17 Mar 2026 09:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773739428;
-	bh=6ecQGUgV275nsR7UI3ASybysUwo+CP/vm/F/N0BbbzU=;
+	s=korg; t=1773739468;
+	bh=CCuROrAn3XVubzVVrbej9SMAKqUmdiMN4Oo61vO/o5o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=l28lA2cZ551mDeGQxRcjSn7YQkBLtD6xuaDl4bsErIOYBgDtDdZc4rYGIsswhbxBI
-	 ai4R/Xh3t63L7JekqHlFo6Xac1VSkH8iShRcwaQHFbsmZ6d/WKdmQq41diNVvJkQ4c
-	 l5eu3zxKtcRt3lrh+57Mo8Wwhu173cDQzFawaZZk=
-Subject: FAILED: patch "[PATCH] mm/kfence: disable KFENCE upon KASAN HW tags enablement" failed to apply to 6.1-stable tree
-To: glider@google.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dvyukov@google.com,elver@google.com,ernesto.martinezgarcia@tugraz.at,gregkh@linuxfoundation.org,kees@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org
+	b=QuKUZpTtZNZ9D+EsEtr1enrUHgvga4Wedg2CYYM5g38LQ9H4IginQhuZGSPFrI9jp
+	 mUlyW8zv/s9heZXZDq6XBWNwwd2q9MA+5MTpytdK9RsiPN+J/lnH3cPJdxt9VsyFSh
+	 1Kr1Rp4gfpQNCjKA7l/bpoQfesb3sT22iPbqVtjs=
+Subject: FAILED: patch "[PATCH] mmc: dw_mmc-rockchip: Fix runtime PM support for internal" failed to apply to 6.18-stable tree
+To: shawn.lin@rock-chips.com,heiko@sntech.de,mschirrmeister@gmail.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 10:23:43 +0100
-Message-ID: <2026031743-sixth-control-6db4@gregkh>
+Date: Tue, 17 Mar 2026 10:24:24 +0100
+Message-ID: <2026031723-prologue-devotee-9062@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,23 +54,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225790-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-225791-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[google.com,linux-foundation.org,gmail.com,tugraz.at,linuxfoundation.org,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[rock-chips.com,sntech.de,gmail.com,linaro.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -78,30 +78,29 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,tugraz.at:email,linux-foundation.org:email,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 40B452A6E87
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,gregkh:email,linaro.org:email,linuxfoundation.org:dkim,rock-chips.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EAB422A69F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 09833d99db36d74456a4d13eb29c32d56ff8f2b6
+git cherry-pick -x 6465a8bbb0f6ad98aeb66dc9ea19c32c193a610b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031743-sixth-control-6db4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031723-prologue-devotee-9062@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,66 +112,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 09833d99db36d74456a4d13eb29c32d56ff8f2b6 Mon Sep 17 00:00:00 2001
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 13 Feb 2026 10:54:10 +0100
-Subject: [PATCH] mm/kfence: disable KFENCE upon KASAN HW tags enablement
+From 6465a8bbb0f6ad98aeb66dc9ea19c32c193a610b Mon Sep 17 00:00:00 2001
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Date: Fri, 16 Jan 2026 08:55:30 +0800
+Subject: [PATCH] mmc: dw_mmc-rockchip: Fix runtime PM support for internal
+ phase support
 
-KFENCE does not currently support KASAN hardware tags.  As a result, the
-two features are incompatible when enabled simultaneously.
+RK3576 is the first platform to introduce internal phase support, and
+subsequent platforms are expected to adopt a similar design. In this
+architecture, runtime suspend powers off the attached power domain, which
+resets registers, including vendor-specific ones such as SDMMC_TIMING_CON0,
+SDMMC_TIMING_CON1, and SDMMC_MISC_CON. These registers must be saved and
+restored, a requirement that falls outside the scope of the dw_mmc core.
 
-Given that MTE provides deterministic protection and KFENCE is a
-sampling-based debugging tool, prioritize the stronger hardware
-protections.  Disable KFENCE initialization and free the pre-allocated
-pool if KASAN hardware tags are detected to ensure the system maintains
-the security guarantees provided by MTE.
+Fixes: 59903441f5e4 ("mmc: dw_mmc-rockchip: Add internal phase support")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Marco Elver <elver@google.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index b4ea3262c925..b5aedf505cec 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -13,6 +13,7 @@
- #include <linux/hash.h>
- #include <linux/irq_work.h>
- #include <linux/jhash.h>
-+#include <linux/kasan-enabled.h>
- #include <linux/kcsan-checks.h>
- #include <linux/kfence.h>
- #include <linux/kmemleak.h>
-@@ -916,6 +917,20 @@ void __init kfence_alloc_pool_and_metadata(void)
- 	if (!kfence_sample_interval)
- 		return;
+diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
+index 4e3423a19bdf..ac069d0c42b2 100644
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -36,6 +36,8 @@ struct dw_mci_rockchip_priv_data {
+ 	int			default_sample_phase;
+ 	int			num_phases;
+ 	bool			internal_phase;
++	int                     sample_phase;
++	int                     drv_phase;
+ };
  
-+	/*
-+	 * If KASAN hardware tags are enabled, disable KFENCE, because it
-+	 * does not support MTE yet.
-+	 */
-+	if (kasan_hw_tags_enabled()) {
-+		pr_info("disabled as KASAN HW tags are enabled\n");
-+		if (__kfence_pool) {
-+			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-+			__kfence_pool = NULL;
-+		}
-+		kfence_sample_interval = 0;
-+		return;
+ /*
+@@ -573,9 +575,43 @@ static void dw_mci_rockchip_remove(struct platform_device *pdev)
+ 	dw_mci_pltfm_remove(pdev);
+ }
+ 
++static int dw_mci_rockchip_runtime_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct dw_mci *host = platform_get_drvdata(pdev);
++	struct dw_mci_rockchip_priv_data *priv = host->priv;
++
++	if (priv->internal_phase) {
++		priv->sample_phase = rockchip_mmc_get_phase(host, true);
++		priv->drv_phase = rockchip_mmc_get_phase(host, false);
 +	}
 +
- 	/*
- 	 * If the pool has already been initialized by arch, there is no need to
- 	 * re-allocate the memory pool.
++	return dw_mci_runtime_suspend(dev);
++}
++
++static int dw_mci_rockchip_runtime_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct dw_mci *host = platform_get_drvdata(pdev);
++	struct dw_mci_rockchip_priv_data *priv = host->priv;
++	int ret;
++
++	ret = dw_mci_runtime_resume(dev);
++	if (ret)
++		return ret;
++
++	if (priv->internal_phase) {
++		rockchip_mmc_set_phase(host, true, priv->sample_phase);
++		rockchip_mmc_set_phase(host, false, priv->drv_phase);
++		mci_writel(host, MISC_CON, MEM_CLK_AUTOGATE_ENABLE);
++	}
++
++	return ret;
++}
++
+ static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
+ 	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+-	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
++	RUNTIME_PM_OPS(dw_mci_rockchip_runtime_suspend, dw_mci_rockchip_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver dw_mci_rockchip_pltfm_driver = {
 
 
