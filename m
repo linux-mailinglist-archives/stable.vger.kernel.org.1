@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-226217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOm0G9uFuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:27 +0100
+	id GL0iMNmPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37002AE729
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:48:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E0D2AFBAD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD9A93061287
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:42:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33ACE31BA8B3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8593EE1D7;
-	Tue, 17 Mar 2026 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628483E8C49;
+	Tue, 17 Mar 2026 17:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBy/KNtO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOMynkaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A780A3ED5C7;
-	Tue, 17 Mar 2026 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B9332604;
+	Tue, 17 Mar 2026 17:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765756; cv=none; b=U9t26Ee9qtoWHP4K0GnP7N7m4UEnGV82vb+7zMt0JYtSTteCHrMpyZx1iypzeQnJ4KJB5FF1zlI40leuPMMX7jUbENNGK9Btu7B6rSM239DB8KthDBo3sh18GQQCZDfT76qkvXFUvY3yKuO5lXihwz58Ss23g+sMulNxJp/i8jw=
+	t=1773767102; cv=none; b=XrzbXnkjy4ZVSieb1oSZDbRnfE37jlaLnl/QIVSYbXdsvW9cKzedRccLCy/STuiHgv2FkB1wqKap2SO2QpP6rjJ4vEFqVi/jGuaG/12we7rKvv79txGjGNw4MX3TJ+NYSJ4Kr5pjGztuV6sRJsU5cnbiaB/RAK6UJPOehbHLGaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765756; c=relaxed/simple;
-	bh=XwmXJl0DseoIJILAt92LIptWIrMR5TFP52j+RuQqQHk=;
+	s=arc-20240116; t=1773767102; c=relaxed/simple;
+	bh=pLExz5N3BJ+X54xkMLh7+guTCPEr9vjs0rIXP0abisA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuDfXCmmhO9HqmMvXH4FEmn8ZLtXQ0GOf1kp77ZZ/pmxL9T3gSu+EsRs6Zs3Pkv5T0sbASw/+euefaX5ec9Qb5xcItPL0heMJtvoUfRJ/pKI7TykWhaxKGuQf7+sXh5yL01rj5SuKdZNz3HvHyh5w6pppD1pz0ptE5UApPbh4nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBy/KNtO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3712FC4CEF7;
-	Tue, 17 Mar 2026 16:42:34 +0000 (UTC)
+	 MIME-Version; b=sWEyGEAsNQqZvOx2TniERs9sWPo0bMgCgLKgYKaLHmFwetB+b/KQblNC869VF2vaz+T7ZESxNsCLRYmTJMgCPepcLi38WlbIf+JDvOH837BaGt4yLnROqQB0OeQqOK7LFceD/+6iYmo3UrCootx2iTmFYR7iDAU+3cWmHpsqxb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOMynkaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E92BC2BC86;
+	Tue, 17 Mar 2026 17:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765756;
-	bh=XwmXJl0DseoIJILAt92LIptWIrMR5TFP52j+RuQqQHk=;
+	s=korg; t=1773767102;
+	bh=pLExz5N3BJ+X54xkMLh7+guTCPEr9vjs0rIXP0abisA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBy/KNtO7M5qiR3uYP5ou5cpB4coQ3hHTYQMJRirYktH2mDwp1weoh61GOi6ec50d
-	 50oir6scOGdD6+lFS/nS+FLvVmMlEeffXextXDHu/I/XuitPfLKKxRG4PqR52oPKQj
-	 cCiTCo6KTeGBcp6anYEYHvovpY+V6lJu1QsY9+G0=
+	b=cOMynkaBc6mpmPIY/G+bZEfpr8jHc2+uxEFAsrmzuXGSYDmZ3BXRB2IjG4QYHK/UQ
+	 7wfyJlsAJjaExToWbYsPjvMFxE9t7eQrxTJDXeTD3MVtKBc/WI1V57uBAOZXvLbupH
+	 mi/ZqeU3xsIRpRTuIsaYBbJjIuBRle1zqJYz4hmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Christoph Hellwig <hch@lst.de>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 087/378] nvme-pci: Fix race bug in nvme_poll_irqdisable()
+Subject: [PATCH 6.18 015/333] ALSA: usb-audio: Avoid implicit feedback mode on DIYINHK USB Audio 2.0
 Date: Tue, 17 Mar 2026 17:30:44 +0100
-Message-ID: <20260317163010.216076511@linuxfoundation.org>
+Message-ID: <20260317162959.925849893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,157 +63,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[purdue.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226217-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.887];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226530-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fiu.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qemu.org:url]
-X-Rspamd-Queue-Id: E37002AE729
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 46E0D2AFBAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fc71f409b22ca831a9f87a2712eaa09ef2bb4a5e ]
+[ Upstream commit c5bf24c8aba1ff711226ee0f039ff01a5754692b ]
 
-In the following scenario, pdev can be disabled between (1) and (3) by
-(2). This sets pdev->msix_enabled = 0. Then, pci_irq_vector() will
-return MSI-X IRQ(>15) for (1) whereas return INTx IRQ(<=15) for (2).
-This causes IRQ warning because it tries to enable INTx IRQ that has
-never been disabled before.
+Although DIYINHK USB Audio 2.0 (ID 20b1:2009) shows the implicit
+feedback source for the capture stream, this would cause several
+problems for the playback.  Namely, the device can get wMaxPackSize
+1024 for 24/32 bit format with 6 channels, and when a high sample rate
+like 352.8kHz or 384kHz is played, the packet size overflows the max
+limit.  Also, the device has another two playback altsets, and those
+aren't properly handled with the implicit feedback.
 
-To fix this, save IRQ number into a local variable and ensure
-disable_irq() and enable_irq() operate on the same IRQ number.  Even if
-pci_free_irq_vectors() frees the IRQ concurrently, disable_irq() and
-enable_irq() on a stale IRQ number is still valid and safe, and the
-depth accounting reamins balanced.
+Since the device has been working well even before introducing the
+implicit feedback, we can assume that it works fine in the async mode.
+This patch adds the explicit skip of the implicit fb detection to make
+the playback running in the async mode.
 
-task 1:
-nvme_poll_irqdisable()
-  disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector)) ...(1)
-  enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector))  ...(3)
-
-task 2:
-nvme_reset_work()
-  nvme_dev_disable()
-    pdev->msix_enable = 0;  ...(2)
-
-crash log:
-
-------------[ cut here ]------------
-Unbalanced enable for IRQ 10
-WARNING: kernel/irq/manage.c:753 at __enable_irq+0x102/0x190 kernel/irq/manage.c:753, CPU#1: kworker/1:0H/26
-Modules linked in:
-CPU: 1 UID: 0 PID: 26 Comm: kworker/1:0H Not tainted 6.19.0-dirty #9 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: kblockd blk_mq_timeout_work
-RIP: 0010:__enable_irq+0x107/0x190 kernel/irq/manage.c:753
-Code: ff df 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 04 84 d2 75 79 48 8d 3d 2e 7a 3f 05 41 8b 74 24 2c <67> 48 0f b9 3a e8 ef b9 21 00 5b 41 5c 5d e9 46 54 66 03 e8 e1 b9
-RSP: 0018:ffffc900001bf550 EFLAGS: 00010046
-RAX: 0000000000000007 RBX: 0000000000000000 RCX: ffffffffb20c0e90
-RDX: 0000000000000000 RSI: 000000000000000a RDI: ffffffffb74b88f0
-RBP: ffffc900001bf560 R08: ffff88800197cf00 R09: 0000000000000001
-R10: 0000000000000003 R11: 0000000000000003 R12: ffff8880012a6000
-R13: 1ffff92000037eae R14: 000000000000000a R15: 0000000000000293
-FS:  0000000000000000(0000) GS:ffff8880b49f7000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555da4a25fa8 CR3: 00000000208e8000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- enable_irq+0x121/0x1e0 kernel/irq/manage.c:797
- nvme_poll_irqdisable+0x162/0x1c0 drivers/nvme/host/pci.c:1494
- nvme_timeout+0x965/0x14b0 drivers/nvme/host/pci.c:1744
- blk_mq_rq_timed_out block/blk-mq.c:1653 [inline]
- blk_mq_handle_expired+0x227/0x2d0 block/blk-mq.c:1721
- bt_iter+0x2fc/0x3a0 block/blk-mq-tag.c:292
- __sbitmap_for_each_set include/linux/sbitmap.h:269 [inline]
- sbitmap_for_each_set include/linux/sbitmap.h:290 [inline]
- bt_for_each block/blk-mq-tag.c:324 [inline]
- blk_mq_queue_tag_busy_iter+0x969/0x1e80 block/blk-mq-tag.c:536
- blk_mq_timeout_work+0x627/0x870 block/blk-mq.c:1763
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-irq event stamp: 74478
-hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
-hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] _raw_spin_unlock_irq+0x2c/0x60 kernel/locking/spinlock.c:202
-hardirqs last disabled at (74478): [<ffffffffb57207b5>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:108 [inline]
-hardirqs last disabled at (74478): [<ffffffffb57207b5>] _raw_spin_lock_irqsave+0x85/0xa0 kernel/locking/spinlock.c:162
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
----[ end trace 0000000000000000 ]---
-
-Fixes: fa059b856a59 (nvme-pci: Simplify nvme_poll_irqdisable)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221076
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260225085233.316306-4-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index ca86f85968708..3c83076a57e57 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1484,14 +1484,16 @@ static irqreturn_t nvme_irq_check(int irq, void *data)
- static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
- {
- 	struct pci_dev *pdev = to_pci_dev(nvmeq->dev->dev);
-+	int irq;
- 
- 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
- 
--	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
-+	irq = pci_irq_vector(pdev, nvmeq->cq_vector);
-+	disable_irq(irq);
- 	spin_lock(&nvmeq->cq_poll_lock);
- 	nvme_poll_cq(nvmeq, NULL);
- 	spin_unlock(&nvmeq->cq_poll_lock);
--	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
-+	enable_irq(irq);
- }
- 
- static int nvme_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index c411005cd4d87..fd50bf7c381d6 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2362,6 +2362,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x2040, 0x7281, /* Hauppauge HVR-950Q-MXL */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
++	DEVICE_FLG(0x20b1, 0x2009, /* XMOS Ltd DIYINHK USB Audio 2.0 */
++		   QUIRK_FLAG_SKIP_IMPLICIT_FB | QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x2040, 0x8200, /* Hauppauge Woodbury */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x21b4, 0x0081, /* AudioQuest DragonFly */
 -- 
 2.51.0
 
