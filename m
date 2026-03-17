@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAraHruLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100
+	id mGd9HlKVuWlcKwIAu9opvQ
+	(envelope-from <stable+bounces-226789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB352AF23E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AB22B053E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEF9531446CB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5ED336AB68
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994A52FFDEA;
-	Tue, 17 Mar 2026 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37F03176FD;
+	Tue, 17 Mar 2026 17:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvxI+lWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbnvVxam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C92F346797;
-	Tue, 17 Mar 2026 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67235372EE8;
+	Tue, 17 Mar 2026 17:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766819; cv=none; b=dAoL+XyxaCDj8PctVgFA15dUPv2KJNYTnBWpVF7+IwSGO+crSS4cjr6sdX5SXckWD0gjwjlzL/gqjeElpSqd94qclA4euuyKgteenssymW9txrCZxeKiT2KLfh6b/W93sNQjk+9PgRb3LO7nFjT43JoeVj/SlucxpvluEcAvPLQ=
+	t=1773768203; cv=none; b=FZhM4Jqy0gzn0+tkUOHEtxx2WZEGvKZBEBh1FIhvi0kWbDM2G9syV5BfQfbplSEJ5dxdxWUy/n4B/wrNCi2ikmqvjHT+ueiA2WQiuPz5dZGnjo8CtmJuQIVFty0yfsnoouzw2b0NQ2pEVfWbrLOczxZ399yzS70X32RlmqygU2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766819; c=relaxed/simple;
-	bh=/xG/mQNV+CHiPHxtgfr/eZoFEyKziawHdzA1mPv3pPE=;
+	s=arc-20240116; t=1773768203; c=relaxed/simple;
+	bh=HSlQT3UECw+OywlzjJh+0iHULAIYgVTW/13JR/g/l2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SldzwvGCJ49s5bQLMjfDNFLKiRruVSYZPmSQOI40R+kC/SacrcLYsKBWTfyRsaq2eMAofTYl+Obrheq7wF2Ywz5g5mVSuyFRgtUcD6xhRte7Tr8yEjLrew60Lkv8eOnRRD5HlafQdIWweUViFqz5ExsTUcaaHM7sLBb5FqaiGNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvxI+lWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94D3C4CEF7;
-	Tue, 17 Mar 2026 17:00:18 +0000 (UTC)
+	 MIME-Version; b=fKWQ83m4c8mfEyklFWgXQlhlIuFnaxQPKTbqHRyLtWEv0+l5/7m+kluElhb7mhCjCXmFX4soWlweD2bUCdU3LKWeH0qRx1CsVcUReq6dShlJK9XHYYiHrxjHu8YVuNvP80AXyXc0xq/mHKy9vSS48vfN8A+WFKiq1Yb8X/x84Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbnvVxam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3637C2BCB0;
+	Tue, 17 Mar 2026 17:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766819;
-	bh=/xG/mQNV+CHiPHxtgfr/eZoFEyKziawHdzA1mPv3pPE=;
+	s=korg; t=1773768203;
+	bh=HSlQT3UECw+OywlzjJh+0iHULAIYgVTW/13JR/g/l2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvxI+lWtRVJzeDnLBeAebQICTU6Sc6NcK01mSvZ0Vm3ea7Nv1bnZauXfvbPhScXBs
-	 umRTQ9/rHP5wzUdvFMk/7jpGw78BcsUyFUZEBDZd+bFd/GE+CpZs9Fc0Ksv/xvYXuT
-	 C1pwrrfCMtkPCsRCjhrQGBF3Y9jUTrCe7cgoxidY=
+	b=XbnvVxamGSRivBkwpYXBeAL6JFX2Y7u1JJ4VNE3ZW4n6GsylcyuISZRNPIz8Y0YRR
+	 wjSjv1gkKzUfxnv03r1jKN8za16BBec/KPZV244VbZkcUXV0tkM773WH4Y8rfyprt2
+	 h/TLGDZPExjDV/nd86UCOwXcVQRofddie/aL0S+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Eduard Shishkin <edward6@linux.ibm.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.19 328/378] s390/dasd: Copy detected format information to secondary device
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.18 256/333] drm/i915: Fix potential overflow of shmem scatterlist length
 Date: Tue, 17 Mar 2026 17:34:45 +0100
-Message-ID: <20260317163019.055292442@linuxfoundation.org>
+Message-ID: <20260317163008.861397009@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226462-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226789-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,89 +87,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kernel.dk:email]
-X-Rspamd-Queue-Id: 1AB352AF23E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ursulin.net:email]
+X-Rspamd-Queue-Id: D2AB22B053E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-commit 4c527c7e030672efd788d0806d7a68972a7ba3c1 upstream.
+commit 029ae067431ab9d0fca479bdabe780fa436706ea upstream.
 
-During online processing for a DASD device an IO operation is started to
-determine the format of the device. CDL format contains specifically
-sized blocks at the beginning of the disk.
+When a scatterlists table of a GEM shmem object of size 4 GB or more is
+populated with pages allocated from a folio, unsigned int .length
+attribute of a scatterlist may get overflowed if total byte length of
+pages allocated to that single scatterlist happens to reach or cross the
+4GB limit.  As a consequence, users of the object may suffer from hitting
+unexpected, premature end of the object's backing pages.
 
-For a PPRC secondary device no real IO operation is possible therefore
-this IO request can not be started and this step is skipped for online
-processing of secondary devices. This is generally fine since the
-secondary is a copy of the primary device.
+[278.780187] ------------[ cut here ]------------
+[278.780377] WARNING: CPU: 1 PID: 2326 at drivers/gpu/drm/i915/i915_mm.c:55 remap_sg+0x199/0x1d0 [i915]
+...
+[278.780654] CPU: 1 UID: 0 PID: 2326 Comm: gem_mmap_offset Tainted: G S   U              6.17.0-rc1-CI_DRM_16981-ged823aaa0607+ #1 PREEMPT(voluntary)
+[278.780656] Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+[278.780658] Hardware name: Intel Corporation Meteor Lake Client Platform/MTL-P LP5x T3 RVP, BIOS MTLPFWI1.R00.3471.D91.2401310918 01/31/2024
+[278.780659] RIP: 0010:remap_sg+0x199/0x1d0 [i915]
+...
+[278.780786] Call Trace:
+[278.780787]  <TASK>
+[278.780788]  ? __apply_to_page_range+0x3e6/0x910
+[278.780795]  ? __pfx_remap_sg+0x10/0x10 [i915]
+[278.780906]  apply_to_page_range+0x14/0x30
+[278.780908]  remap_io_sg+0x14d/0x260 [i915]
+[278.781013]  vm_fault_cpu+0xd2/0x330 [i915]
+[278.781137]  __do_fault+0x3a/0x1b0
+[278.781140]  do_fault+0x322/0x640
+[278.781143]  __handle_mm_fault+0x938/0xfd0
+[278.781150]  handle_mm_fault+0x12c/0x300
+[278.781152]  ? lock_mm_and_find_vma+0x4b/0x760
+[278.781155]  do_user_addr_fault+0x2d6/0x8e0
+[278.781160]  exc_page_fault+0x96/0x2c0
+[278.781165]  asm_exc_page_fault+0x27/0x30
+...
 
-In case of an additional partition detection that is run after a swap
-operation the format information is needed to properly drive partition
-detection IO.
+That issue was apprehended by the author of a change that introduced it,
+and potential risk even annotated with a comment, but then never addressed.
 
-Currently the information is not passed leading to IO errors during
-partition detection and a wrongly detected partition table which in turn
-might lead to data corruption on the disk with the wrong partition table.
+When adding folio pages to a scatterlist table, take care of byte length
+of any single scatterlist not exceeding max_segment.
 
-Fix by passing the format information from primary to secondary device.
-
-Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
-Cc: stable@vger.kernel.org #6.1
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Acked-by: Eduard Shishkin <edward6@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://patch.msgid.link/20260310142330.4080106-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 0b62af28f249b ("i915: convert shmem_sg_free_table() to use a folio_batch")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14809
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/20260224094944.2447913-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 06249b4e691a75694c014a61708c007fb5755f60)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_eckd.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -6135,6 +6135,7 @@ static void copy_pair_set_active(struct
- static int dasd_eckd_copy_pair_swap(struct dasd_device *device, char *prim_busid,
- 				    char *sec_busid)
- {
-+	struct dasd_eckd_private *prim_priv, *sec_priv;
- 	struct dasd_device *primary, *secondary;
- 	struct dasd_copy_relation *copy;
- 	struct dasd_block *block;
-@@ -6155,6 +6156,9 @@ static int dasd_eckd_copy_pair_swap(stru
- 	if (!secondary)
- 		return DASD_COPYPAIRSWAP_SECONDARY;
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -151,8 +151,12 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			}
+ 		} while (1);
  
-+	prim_priv = primary->private;
-+	sec_priv = secondary->private;
+-		nr_pages = min_t(unsigned long,
+-				folio_nr_pages(folio), page_count - i);
++		nr_pages = min_array(((unsigned long[]) {
++					folio_nr_pages(folio),
++					page_count - i,
++					max_segment / PAGE_SIZE,
++				      }), 3);
 +
- 	/*
- 	 * usually the device should be quiesced for swap
- 	 * for paranoia stop device and requeue requests again
-@@ -6187,6 +6191,13 @@ static int dasd_eckd_copy_pair_swap(stru
- 		dasd_device_remove_stop_bits(primary, DASD_STOPPED_QUIESCE);
- 	}
- 
-+	/*
-+	 * The secondary device never got through format detection, but since it
-+	 * is a copy of the primary device, the format is exactly the same;
-+	 * therefore, the detected layout can simply be copied.
-+	 */
-+	sec_priv->uses_cdl = prim_priv->uses_cdl;
+ 		if (!i ||
+ 		    sg->length >= max_segment ||
+ 		    folio_pfn(folio) != next_pfn) {
+@@ -162,7 +166,9 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			st->nents++;
+ 			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
+ 		} else {
+-			/* XXX: could overflow? */
++			nr_pages = min_t(unsigned long, nr_pages,
++					 (max_segment - sg->length) / PAGE_SIZE);
 +
- 	/* re-enable device */
- 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
- 	dasd_device_remove_stop_bits(secondary, DASD_STOPPED_PPRC);
+ 			sg->length += nr_pages * PAGE_SIZE;
+ 		}
+ 		next_pfn = folio_pfn(folio) + nr_pages;
 
 
 
