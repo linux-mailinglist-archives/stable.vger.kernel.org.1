@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDNkJgKHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:22 +0100
+	id OO2BIfmKuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F2C2AE94C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2C62AF12D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9282F302946F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F2DAC304B310
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C132D3F54B6;
-	Tue, 17 Mar 2026 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13453F65FF;
+	Tue, 17 Mar 2026 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKhbjThU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmK40EB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853DA3F54A5;
-	Tue, 17 Mar 2026 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B122A3F23B3;
+	Tue, 17 Mar 2026 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766078; cv=none; b=VodsacSRIRev1y01jH7r9BnYywgLAb0YOhVuQuLS8Jqf3SAw1H8l/Xx6jNV6/Nyi0m/R1gKakIdOR2H6x0rIeiMT27HdhbWywgRDuBeATz7fHTjOJUTolup14RQpWC+jWhoH/PIqPEszQzSvrfehZFTpoLx8yUL+3XSKF36X8yM=
+	t=1773767313; cv=none; b=eGE2j+wasosMUBKtsAAvnczCtK7bCfUWGJQnTQY0QIsveifRsdfTwMb9pFNcDdaS2eW7dacaTrSpVAQHx3RWVwuuNSOUygFhYAIlWR1leu2sW52Z/GS9eXW/Sj1LVlV5ZhXDNQudrCOga4embog56z8/zNXJ2GKs2UDe8Gc53OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766078; c=relaxed/simple;
-	bh=1mzh7Db2EriA8Blg8CdnjDNf8BAM0r/2ApDeIHsRb3M=;
+	s=arc-20240116; t=1773767313; c=relaxed/simple;
+	bh=pnOAVYl/IKSqKKyAuzZtJY9vXmYSy0z+FkgRyi8Rmwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdJIGetkdv/AAGSuD0x/AYIO3xMod1DCJdixGNs/b6eQKazWf+7gLEadCWw4dBu9WhGbaRwsRw4BYM2h9k7c0nlZbF9NRmXpwRti41Bu70RczKyNTUEllKp/9rlCctF3EFPRTxElAIrNExVO/qXhX/61v9OvS3bmlaCxGk1GyJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKhbjThU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82993C19424;
-	Tue, 17 Mar 2026 16:47:57 +0000 (UTC)
+	 MIME-Version; b=bNS+wccNPQkjEmq5vjX5GV4bjuruhvgLlzftF5KRsXteRuv+1IUCCwZCAr1eqgrAZSP2wlsRTNzm78Y4AAXMRd4Rl+ekL4jE5PrKZViie4z2IhcFAXfOZ0KYyTseYCC0v56oefj6j/7opMwqY//uveSmlEz+XIXciZV6WbYBME8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmK40EB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E3FC2BCB0;
+	Tue, 17 Mar 2026 17:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766078;
-	bh=1mzh7Db2EriA8Blg8CdnjDNf8BAM0r/2ApDeIHsRb3M=;
+	s=korg; t=1773767313;
+	bh=pnOAVYl/IKSqKKyAuzZtJY9vXmYSy0z+FkgRyi8Rmwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKhbjThUFS7Bv8FAhqh9i0Zhk7vx9btQf1sA7HLhIOgbfSuOqFRxrYbepMIe71U+L
-	 9dxPbPI+7jtcRoBqneeWYVKcxVE3icRT5tC4Q9Hgaqq28PPtEHcNyFwxujyeMwAgo8
-	 AP/8rn9G0dtqMNdRSG6Kri874g+JbvDNDadQp918=
+	b=RmK40EB4VfaW9DJo/E+lFm9tBXb4hfbrmnLKBEJFDnVNGzHfqw8LTdxJm7B0jO9GE
+	 quICNOZVDygIbaps+/WqtAKH5dEU/CV7aq6vdusokEbaUufKlLgOslfhLdxT/032Uz
+	 YnPXHpVmIqs4a3rfnOYW/5iF1DPzpjQ9CmoxIPgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.19 132/378] rust: str: make NullTerminatedFormatter public
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 060/333] bonding: use common function to compute the features
 Date: Tue, 17 Mar 2026 17:31:29 +0100
-Message-ID: <20260317163011.870520274@linuxfoundation.org>
+Message-ID: <20260317163001.596425705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +70,205 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226579-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226296-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nvidia.com:email]
-X-Rspamd-Queue-Id: 98F2C2AE94C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,queasysnail.net:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2B2C62AF12D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 3ac88a9948792b092a4b11323e2abd1ecbe0cc68 upstream.
+[ Upstream commit d4fde269a970666a30dd3abd0413273a06dd972d ]
 
-If `CONFIG_BLOCK` is disabled, the following warnings are displayed
-during build:
+Use the new functon netdev_compute_master_upper_features() to compute the bonding
+features.
 
-  warning: struct `NullTerminatedFormatter` is never constructed
-    --> ../rust/kernel/str.rs:667:19
-      |
-  667 | pub(crate) struct NullTerminatedFormatter<'a> {
-      |                   ^^^^^^^^^^^^^^^^^^^^^^^
-      |
-      = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+Note that bond_compute_features() currently uses bond_for_each_slave()
+to traverse the lower devices list, and that is just a macro wrapper of
+netdev_for_each_lower_private(). We use similar helper
+netdev_for_each_lower_dev() in netdev_compute_master_upper_features() to
+iterate the slave device, as there is not need to get the private data.
 
-  warning: associated function `new` is never used
-    --> ../rust/kernel/str.rs:673:19
-      |
-  671 | impl<'a> NullTerminatedFormatter<'a> {
-      | ------------------------------------ associated function in this implementation
-  672 |     /// Create a new [`Self`] instance.
-  673 |     pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
+No functional change intended.
 
-Fix them by making `NullTerminatedFormatter` public, as it could be
-useful for drivers anyway.
-
-Fixes: cdde7a1951ff ("rust: str: introduce `NullTerminatedFormatter`")
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260224-nullterminatedformatter-v1-1-5bef7b9b3d4c@nvidia.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251017034155.61990-3-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/str.rs |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 99 ++-------------------------------
+ 1 file changed, 4 insertions(+), 95 deletions(-)
 
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -664,13 +664,13 @@ impl fmt::Write for Formatter<'_> {
- ///
- /// * The first byte of `buffer` is always zero.
- /// * The length of `buffer` is at least 1.
--pub(crate) struct NullTerminatedFormatter<'a> {
-+pub struct NullTerminatedFormatter<'a> {
-     buffer: &'a mut [u8],
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 322f910b06fc8..8be99ae67b77f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1476,97 +1476,6 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+ 	return features;
  }
  
- impl<'a> NullTerminatedFormatter<'a> {
-     /// Create a new [`Self`] instance.
--    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-+    pub fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-         *(buffer.first_mut()?) = 0;
+-#define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+-				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
+-				 NETIF_F_GSO_ENCAP_ALL | \
+-				 NETIF_F_HIGHDMA | NETIF_F_LRO)
+-
+-#define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+-				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE | \
+-				 NETIF_F_GSO_PARTIAL)
+-
+-#define BOND_MPLS_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+-				 NETIF_F_GSO_SOFTWARE)
+-
+-#define BOND_GSO_PARTIAL_FEATURES (NETIF_F_GSO_ESP)
+-
+-
+-static void bond_compute_features(struct bonding *bond)
+-{
+-	netdev_features_t gso_partial_features = BOND_GSO_PARTIAL_FEATURES;
+-	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
+-					IFF_XMIT_DST_RELEASE_PERM;
+-	netdev_features_t vlan_features = BOND_VLAN_FEATURES;
+-	netdev_features_t enc_features  = BOND_ENC_FEATURES;
+-#ifdef CONFIG_XFRM_OFFLOAD
+-	netdev_features_t xfrm_features  = BOND_XFRM_FEATURES;
+-#endif /* CONFIG_XFRM_OFFLOAD */
+-	netdev_features_t mpls_features  = BOND_MPLS_FEATURES;
+-	struct net_device *bond_dev = bond->dev;
+-	struct list_head *iter;
+-	struct slave *slave;
+-	unsigned short max_hard_header_len = ETH_HLEN;
+-	unsigned int tso_max_size = TSO_MAX_SIZE;
+-	u16 tso_max_segs = TSO_MAX_SEGS;
+-
+-	if (!bond_has_slaves(bond))
+-		goto done;
+-
+-	vlan_features = netdev_base_features(vlan_features);
+-	mpls_features = netdev_base_features(mpls_features);
+-
+-	bond_for_each_slave(bond, slave, iter) {
+-		vlan_features = netdev_increment_features(vlan_features,
+-			slave->dev->vlan_features, BOND_VLAN_FEATURES);
+-
+-		enc_features = netdev_increment_features(enc_features,
+-							 slave->dev->hw_enc_features,
+-							 BOND_ENC_FEATURES);
+-
+-#ifdef CONFIG_XFRM_OFFLOAD
+-		xfrm_features = netdev_increment_features(xfrm_features,
+-							  slave->dev->hw_enc_features,
+-							  BOND_XFRM_FEATURES);
+-#endif /* CONFIG_XFRM_OFFLOAD */
+-
+-		gso_partial_features = netdev_increment_features(gso_partial_features,
+-								 slave->dev->gso_partial_features,
+-								 BOND_GSO_PARTIAL_FEATURES);
+-
+-		mpls_features = netdev_increment_features(mpls_features,
+-							  slave->dev->mpls_features,
+-							  BOND_MPLS_FEATURES);
+-
+-		dst_release_flag &= slave->dev->priv_flags;
+-		if (slave->dev->hard_header_len > max_hard_header_len)
+-			max_hard_header_len = slave->dev->hard_header_len;
+-
+-		tso_max_size = min(tso_max_size, slave->dev->tso_max_size);
+-		tso_max_segs = min(tso_max_segs, slave->dev->tso_max_segs);
+-	}
+-	bond_dev->hard_header_len = max_hard_header_len;
+-
+-done:
+-	bond_dev->gso_partial_features = gso_partial_features;
+-	bond_dev->vlan_features = vlan_features;
+-	bond_dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
+-				    NETIF_F_HW_VLAN_CTAG_TX |
+-				    NETIF_F_HW_VLAN_STAG_TX;
+-#ifdef CONFIG_XFRM_OFFLOAD
+-	bond_dev->hw_enc_features |= xfrm_features;
+-#endif /* CONFIG_XFRM_OFFLOAD */
+-	bond_dev->mpls_features = mpls_features;
+-	netif_set_tso_max_segs(bond_dev, tso_max_segs);
+-	netif_set_tso_max_size(bond_dev, tso_max_size);
+-
+-	bond_dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
+-	if ((bond_dev->priv_flags & IFF_XMIT_DST_RELEASE_PERM) &&
+-	    dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
+-		bond_dev->priv_flags |= IFF_XMIT_DST_RELEASE;
+-
+-	netdev_change_features(bond_dev);
+-}
+-
+ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 				struct net_device *slave_dev)
+ {
+@@ -2287,7 +2196,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	}
  
-         // INVARIANT:
+ 	bond->slave_cnt++;
+-	bond_compute_features(bond);
++	netdev_compute_master_upper_features(bond->dev, true);
+ 	bond_set_carrier(bond);
+ 
+ 	/* Needs to be called before bond_select_active_slave(), which will
+@@ -2542,7 +2451,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+ 		call_netdevice_notifiers(NETDEV_RELEASE, bond->dev);
+ 	}
+ 
+-	bond_compute_features(bond);
++	netdev_compute_master_upper_features(bond->dev, true);
+ 	if (!(bond_dev->features & NETIF_F_VLAN_CHALLENGED) &&
+ 	    (old_features & NETIF_F_VLAN_CHALLENGED))
+ 		slave_info(bond_dev, slave_dev, "last VLAN challenged slave left bond - VLAN blocking is removed\n");
+@@ -4050,7 +3959,7 @@ static int bond_slave_netdev_event(unsigned long event,
+ 	case NETDEV_FEAT_CHANGE:
+ 		if (!bond->notifier_ctx) {
+ 			bond->notifier_ctx = true;
+-			bond_compute_features(bond);
++			netdev_compute_master_upper_features(bond->dev, true);
+ 			bond->notifier_ctx = false;
+ 		}
+ 		break;
+@@ -6043,7 +5952,7 @@ void bond_setup(struct net_device *bond_dev)
+ 	 * capable
+ 	 */
+ 
+-	bond_dev->hw_features = BOND_VLAN_FEATURES |
++	bond_dev->hw_features = MASTER_UPPER_DEV_VLAN_FEATURES |
+ 				NETIF_F_HW_VLAN_CTAG_RX |
+ 				NETIF_F_HW_VLAN_CTAG_FILTER |
+ 				NETIF_F_HW_VLAN_STAG_RX |
+-- 
+2.51.0
+
 
 
 
