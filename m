@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDNJCFOGuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:27 +0100
+	id iPDMBVGMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFF52AE82A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33AB92AF368
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1F5B83039A74
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF157317143D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FCE3EF0B8;
-	Tue, 17 Mar 2026 16:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D06357A4A;
+	Tue, 17 Mar 2026 17:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNcAq8ES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBlWJnX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A73EE1F3;
-	Tue, 17 Mar 2026 16:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD13F54C6;
+	Tue, 17 Mar 2026 17:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765888; cv=none; b=WJ3g7rdAEbZi4uQRWRqv2jeZRzB/vMTDhBi9UaeiSXkO8EAyVhXloXGubrrregMZsdw7xo2TB5WBYUAWy+sXebmVuhb/78ITB5NPXROqsoUZIsfBGNYqreWg2znu59jdZJIR4rQd3AiAFt+iEIjaldoSfjSMbt6egqirdoUihgs=
+	t=1773767238; cv=none; b=T0T0Icg2rp/V0PZZOAeHdBUAo0mnapst23B/0xClsFjFNg3Th1M1ADSAsER40qCBRw0nNQjnr9VOtuK1JbQxI30v+QdivnhJvWcsUxUL4qeDaNXkMt2uiYRLHTQwEQeTMkHshjvahjXdQ1HCXNWum0i10ptDljmaMkHBI55OCog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765888; c=relaxed/simple;
-	bh=yHJb/SJNvGoQrXP597EolvGeHroQEV+/NzSe5sCY/D8=;
+	s=arc-20240116; t=1773767238; c=relaxed/simple;
+	bh=q/B3UertITIJNmO2FJ9fVymswYiXpVIkngBjT6F/yGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgH0e0S1XUKb/v4KhWfIxx0DrZs4l+dFkKJnaUSycsIRBSmIwP+K1VCvLaa5a2rpCHwy53N5+/Xgsgf0AqHP/tXF42lFKGdDifQzW0iyCGKmmDry+xsJ80junwl+58z0mtqTeY78bMQeSCjUVrS1LpkVjYGpNcHwh4Z/3zQFc8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNcAq8ES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CE6C4CEF7;
-	Tue, 17 Mar 2026 16:44:47 +0000 (UTC)
+	 MIME-Version; b=TL9c+0f9EVRShOj5Empjb/mAq66NrcQGQCntf5dqSPoGS31x/BC8xAHeFQ6eaHYnq3BfLSm7WrRWIcHzl1RUUry7l1hipEr9Z63qMtECt9mqGK75fAm3GGl9alZb+fiwzX/npu/LLYswB+baAztC+lP9CSMRDR3gDSUtfH79mFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBlWJnX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5FFC4CEF7;
+	Tue, 17 Mar 2026 17:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765888;
-	bh=yHJb/SJNvGoQrXP597EolvGeHroQEV+/NzSe5sCY/D8=;
+	s=korg; t=1773767238;
+	bh=q/B3UertITIJNmO2FJ9fVymswYiXpVIkngBjT6F/yGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNcAq8ESHo5vy1wVmvvjd+WSm1+eyY2u9l8JFs5fm31X00lt/iQ4HsCrOQ8daeH0n
-	 n3EjKBAM31B9XT31VxQfEEBvNVX6zYs9SvmoMQI4eAw2WIxWg4FKI84EWxTri4mpru
-	 9iVvoIcPxICZZ3upBYNM7mKwDIlznfRdr/sEWoiM=
+	b=dBlWJnX6bsOlNlXqcSytYeeF8HAwXlNiwSbFMyW+X374ZPsSwvz9aXEkOHeCD+FN7
+	 NG7hommv66y1pIfHTz1zhwEc8cxaUOIVnhbI89jYWr0Q4KCnQgVSfD9t0pqrqkAdSi
+	 x9q+3oxYVbO15X/LZTyedleYbi97qLd0Y+MxZ8KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.19 117/378] cgroup: Dont expose dead tasks in cgroup
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 045/333] net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit
 Date: Tue, 17 Mar 2026 17:31:14 +0100
-Message-ID: <20260317163011.321522918@linuxfoundation.org>
+Message-ID: <20260317163001.036330148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +67,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226248-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,linutronix.de,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226562-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linutronix.de:email]
-X-Rspamd-Queue-Id: 3BFF52AE82A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 33AB92AF368
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit a72f73c4dd9b209c53cf8b03b6e97fcefad4262c upstream.
+[ Upstream commit 0cc0c2e661af418bbf7074179ea5cfffc0a5c466 ]
 
-Once a task exits it has its state set to TASK_DEAD and then it is
-removed from the cgroup it belonged to. The last step happens on the task
-gets out of its last schedule() invocation and is delayed on PREEMPT_RT
-due to locking constraints.
+teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
+through slave devices, but does not update skb->dev to the slave device
+beforehand.
 
-As a result it is possible to receive a pid via waitpid() of a task
-which is still listed in cgroup.procs for the cgroup it belonged
-to. This is something that systemd does not expect and as a result it
-waits for its exit until a time out occurs.
-This can also be reproduced on !PREEMPT_RT kernel with a significant
-delay in do_exit() after exit_notify().
+When a gretap tunnel is a TEQL slave, the transmit path reaches
+iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
+master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
+function does:
 
-Hide the task from the output which have PF_EXITING set which is done
-before the parent is notified. Keeping zombies with live threads
-shouldn't break anything (suggested by Tejun).
+    get_cpu_ptr(dev->tstats)
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/all/20260219164648.3014-1-spasswolf@web.de/
-Tested-by: Bert Karwatzki <spasswolf@web.de>
-Fixes: 9311e6c29b34 ("cgroup: Fix sleeping from invalid context warning on PREEMPT_RT")
-Cc: stable@vger.kernel.org # v6.19+
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since teql_master_setup() does not set dev->pcpu_stat_type to
+NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
+for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
+NULL + __per_cpu_offset[cpu], resulting in a page fault.
+
+ BUG: unable to handle page fault for address: ffff8880e6659018
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ PGD 68bc067 P4D 68bc067 PUD 0
+ Oops: Oops: 0002 [#1] SMP KASAN PTI
+ RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
+ Call Trace:
+  <TASK>
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  __gre_xmit (net/ipv4/ip_gre.c:478)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  teql_master_xmit (net/sched/sch_teql.c:319)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  neigh_direct_output (net/core/neighbour.c:1660)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
+  ip_mc_output (net/ipv4/ip_output.c:369)
+  ip_send_skb (net/ipv4/ip_output.c:1508)
+  udp_send_skb (net/ipv4/udp.c:1195)
+  udp_sendmsg (net/ipv4/udp.c:1485)
+  inet_sendmsg (net/ipv4/af_inet.c:859)
+  __sys_sendto (net/socket.c:2206)
+
+Fix this by setting skb->dev = slave before calling
+netdev_start_xmit(), so that tunnel xmit functions see the correct
+slave device with properly allocated tstats.
+
+Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260304044216.3517851-3-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/sch_teql.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index be1d71dda317..01fc2a93f3ef 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5109,6 +5109,12 @@ static void css_task_iter_advance(struct css_task_iter *it)
- 		return;
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 6e4bdaa876ed6..783300d8b0197 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			if (__netif_tx_trylock(slave_txq)) {
+ 				unsigned int length = qdisc_pkt_len(skb);
  
- 	task = list_entry(it->task_pos, struct task_struct, cg_list);
-+	/*
-+	 * Hide tasks that are exiting but not yet removed. Keep zombie
-+	 * leaders with live threads visible.
-+	 */
-+	if ((task->flags & PF_EXITING) && !atomic_read(&task->signal->live))
-+		goto repeat;
- 
- 	if (it->flags & CSS_TASK_ITER_PROCS) {
- 		/* if PROCS, skip over tasks which aren't group leaders */
++				skb->dev = slave;
+ 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
 -- 
-2.53.0
+2.51.0
 
 
 
