@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNb8HFyRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:32 +0100
+	id +PP5BeaIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E573E2AFE23
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:37:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F3C2AECCD
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 118CD301DE00
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD271314DCF3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5D126FD9B;
-	Tue, 17 Mar 2026 17:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9648E3EDADD;
+	Tue, 17 Mar 2026 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xx2c4qzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFb+piwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610B52116F6;
-	Tue, 17 Mar 2026 17:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5890B357A4A;
+	Tue, 17 Mar 2026 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767508; cv=none; b=gCtKRPwGM/uTd4fZyuYFsijlzW3V3+3YmqxrMLb44kl9AroipOMWjpG/eFOhvV0cwOamd5k6P6qKTK6MQnLR/qIc2svURTKXKAnKdImn+8fYG3Wibx05WyD9qPzolGfVs4qdpH7s4qrZl42iR+uz+utWLOJnKwWT8/vFGTkf3Yk=
+	t=1773766253; cv=none; b=RYwNDveuDxsmTfz5G2h7RHIYvNJw3/L/UustjPFFHVB1ZFUdNDyDg228O/pX4zI6KRG5cWkSyA9QELLPJUoshrZFpytV+4l+DU5+I42k2xQqwkX/PVYEoVdG9uVkV8ZpLrEY76jXxXO971lNSUd5EcADfX4VcimrJ8Jbp+KrXgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767508; c=relaxed/simple;
-	bh=9GyASCNVXNbiJUwPPMmIHBlp/Z1+HsZmQlBL3T0aR2M=;
+	s=arc-20240116; t=1773766253; c=relaxed/simple;
+	bh=DRDF78o9YL3rPqeGqKXoKUiOcxg6UKjtciUtYJPpjOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EK8CkK8eYyE7kJ4tTAvgUfSVi00WsDh23aCgCuaFsfZ3CPQBrVnH2bwQb1LBS5xqbVt7Y56GyeNGeGjGWpn9ZY8qdhwkWkt7fV7TrBEmvHBA1ntUWsveNSlht5r4yhlvT0z7MfvRbWCxvFsemVuFvakAF5tRcGT4Q2QoZDyeD4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xx2c4qzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E4CC4CEF7;
-	Tue, 17 Mar 2026 17:11:47 +0000 (UTC)
+	 MIME-Version; b=bbSoe+Bx5rXQI58YW26xIwIdo8I+0FYC+eoVKAMa5QwEZKzquXvmS0C0WBwPcsyM2NkutoE3juBW7ShlU949IYGTiDhK+mBRdN19W+0D8UvPedCddTPK5XyyWjs2aBsOa1eXXJyAD76wAK0/9WB0xsKzh7eTRcbtd0MIYXlXRBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFb+piwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC31FC4CEF7;
+	Tue, 17 Mar 2026 16:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767508;
-	bh=9GyASCNVXNbiJUwPPMmIHBlp/Z1+HsZmQlBL3T0aR2M=;
+	s=korg; t=1773766253;
+	bh=DRDF78o9YL3rPqeGqKXoKUiOcxg6UKjtciUtYJPpjOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xx2c4qzbxupz8uiZ81BXnvLc/2bhk5v1bMZuW6zMJQf3JkJeulEIaSpuyU0TkmoGu
-	 3HRwm++kbG/XKup1Tu9u55Kdg/W3UpK/IVvynF5Hnfo6WeVgGKCZHW28XvQn1bdIVn
-	 XOxVPqHQ3fC9m8m9MEEyqdyxFZMbGZyQIS2g6izs=
+	b=QFb+piwKYUUy//Chg8YQK4V+WQxaMAlOGEIL2TLFJcTyb/fkTpoOJTnGsi9HKqKOj
+	 bl8HowcplAQQzdN7fmSG0KR0TmjMZTv9f4S5lzCqv9btJ9cSae94AorJS3eddXw2T+
+	 jOECwxjYnWtUJa9jYnUmO4gjKWqpNeBmlVs175ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/333] octeontx2-af: devlink: fix NIX RAS reporter recovery condition
+	David Heidelberg <david@ixit.cz>,
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.19 171/378] Revert "usb: gadget: u_ether: add gether_opts for config caching"
 Date: Tue, 17 Mar 2026 17:32:08 +0100
-Message-ID: <20260317163003.042751748@linuxfoundation.org>
+Message-ID: <20260317163013.300941537@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226621-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226334-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,52 +89,330 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E573E2AFE23
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B4F3C2AECCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit dc26ca99b835e21e76a58b1463b84adb0ca34f58 ]
+commit 3131c1aff7cdffb96239f06f98e16188cbc2083f upstream.
 
-The NIX RAS health reporter recovery routine checks nix_af_rvu_int to
-decide whether to re-enable NIX_AF_RAS interrupts. This is the RVU
-interrupt status field and is unrelated to RAS events, so the recovery
-flow may incorrectly skip re-enabling NIX_AF_RAS interrupts.
+This reverts commit e065c6a7e46c2ee9c677fdbf50035323d2de1215.
 
-Check nix_af_rvu_ras instead before writing NIX_AF_RAS_ENA_W1S.
+This commit is being reverted as part of a series-wide revert.
 
-Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20260310184824.1183651-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By deferring the net_device allocation to the bind() phase, a single
+function instance will spawn multiple network devices if it is symlinked
+to multiple USB configurations.
+
+This causes regressions for userspace tools (like the postmarketOS DHCP
+daemon) that rely on reading the interface name (e.g., "usb0") from
+configfs. Currently, configfs returns the template "usb%d", causing the
+userspace network setup to fail.
+
+Crucially, because this patch breaks the 1:1 mapping between the
+function instance and the network device, this naming issue cannot
+simply be patched. Configfs only exposes a single 'ifname' attribute per
+instance, making it impossible to accurately report the actual interface
+name when multiple underlying network devices can exist for that single
+instance.
+
+All configurations tied to the same function instance are meant to share
+a single network device. Revert this change to restore the 1:1 mapping
+by allocating the network device at the instance level (alloc_inst).
+
+Reported-by: David Heidelberg <david@ixit.cz>
+Closes: https://lore.kernel.org/linux-usb/70b558ea-a12e-4170-9b8e-c951131249af@ixit.cz/
+Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-6-ea2afbc7d9b2@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_ether.c          |   30 ----
+ drivers/usb/gadget/function/u_ether.h          |   28 ---
+ drivers/usb/gadget/function/u_ether_configfs.h |  176 -------------------------
+ 3 files changed, 234 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index 3735372539bd9..23f51fed4666d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -475,7 +475,7 @@ static int rvu_hw_nix_ras_recover(struct devlink_health_reporter *reporter,
- 	if (blkaddr < 0)
- 		return blkaddr;
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1039,36 +1039,6 @@ int gether_set_ifname(struct net_device
+ }
+ EXPORT_SYMBOL_GPL(gether_set_ifname);
  
--	if (nix_event_ctx->nix_af_rvu_int)
-+	if (nix_event_ctx->nix_af_rvu_ras)
- 		rvu_write64(rvu, blkaddr, NIX_AF_RAS_ENA_W1S, ~0ULL);
+-void gether_setup_opts_default(struct gether_opts *opts, const char *name)
+-{
+-	opts->qmult = QMULT_DEFAULT;
+-	snprintf(opts->name, sizeof(opts->name), "%s%%d", name);
+-	eth_random_addr(opts->dev_mac);
+-	opts->addr_assign_type = NET_ADDR_RANDOM;
+-	eth_random_addr(opts->host_mac);
+-}
+-EXPORT_SYMBOL_GPL(gether_setup_opts_default);
+-
+-void gether_apply_opts(struct net_device *net, struct gether_opts *opts)
+-{
+-	struct eth_dev *dev = netdev_priv(net);
+-
+-	dev->qmult = opts->qmult;
+-
+-	if (opts->ifname_set) {
+-		strscpy(net->name, opts->name, sizeof(net->name));
+-		dev->ifname_set = true;
+-	}
+-
+-	memcpy(dev->host_mac, opts->host_mac, sizeof(dev->host_mac));
+-
+-	if (opts->addr_assign_type == NET_ADDR_SET) {
+-		memcpy(dev->dev_mac, opts->dev_mac, sizeof(dev->dev_mac));
+-		net->addr_assign_type = opts->addr_assign_type;
+-	}
+-}
+-EXPORT_SYMBOL_GPL(gether_apply_opts);
+-
+ void gether_suspend(struct gether *link)
+ {
+ 	struct eth_dev *dev = link->ioport;
+--- a/drivers/usb/gadget/function/u_ether.h
++++ b/drivers/usb/gadget/function/u_ether.h
+@@ -38,31 +38,6 @@
  
- 	return 0;
--- 
-2.51.0
-
+ struct eth_dev;
+ 
+-/**
+- * struct gether_opts - Options for Ethernet gadget function instances
+- * @name: Pattern for the network interface name (e.g., "usb%d").
+- *        Used to generate the net device name.
+- * @qmult: Queue length multiplier for high/super speed.
+- * @host_mac: The MAC address to be used by the host side.
+- * @dev_mac: The MAC address to be used by the device side.
+- * @ifname_set: True if the interface name pattern has been set by userspace.
+- * @addr_assign_type: The method used for assigning the device MAC address
+- *                    (e.g., NET_ADDR_RANDOM, NET_ADDR_SET).
+- *
+- * This structure caches network-related settings provided through configfs
+- * before the net_device is fully instantiated. This allows for early
+- * configuration while deferring net_device allocation until the function
+- * is bound.
+- */
+-struct gether_opts {
+-	char			name[IFNAMSIZ];
+-	unsigned int		qmult;
+-	u8			host_mac[ETH_ALEN];
+-	u8			dev_mac[ETH_ALEN];
+-	bool			ifname_set;
+-	unsigned char		addr_assign_type;
+-};
+-
+ /*
+  * This represents the USB side of an "ethernet" link, managed by a USB
+  * function which provides control and (maybe) framing.  Two functions
+@@ -284,9 +259,6 @@ int gether_set_ifname(struct net_device
+ 
+ void gether_cleanup(struct eth_dev *dev);
+ 
+-void gether_setup_opts_default(struct gether_opts *opts, const char *name);
+-void gether_apply_opts(struct net_device *net, struct gether_opts *opts);
+-
+ void gether_suspend(struct gether *link);
+ void gether_resume(struct gether *link);
+ 
+--- a/drivers/usb/gadget/function/u_ether_configfs.h
++++ b/drivers/usb/gadget/function/u_ether_configfs.h
+@@ -13,12 +13,6 @@
+ #ifndef __U_ETHER_CONFIGFS_H
+ #define __U_ETHER_CONFIGFS_H
+ 
+-#include <linux/cleanup.h>
+-#include <linux/if_ether.h>
+-#include <linux/mutex.h>
+-#include <linux/netdevice.h>
+-#include <linux/rtnetlink.h>
+-
+ #define USB_ETHERNET_CONFIGFS_ITEM(_f_)					\
+ 	static void _f_##_attr_release(struct config_item *item)	\
+ 	{								\
+@@ -203,174 +197,4 @@ out:									\
+ 									\
+ 	CONFIGFS_ATTR(_f_##_opts_, _n_)
+ 
+-#define USB_ETHER_OPTS_ITEM(_f_)						\
+-	static void _f_##_attr_release(struct config_item *item)		\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-										\
+-		usb_put_function_instance(&opts->func_inst);			\
+-	}									\
+-										\
+-	static struct configfs_item_operations _f_##_item_ops = {		\
+-		.release	= _f_##_attr_release,				\
+-	}
+-
+-#define USB_ETHER_OPTS_ATTR_DEV_ADDR(_f_)					\
+-	static ssize_t _f_##_opts_dev_addr_show(struct config_item *item,	\
+-						char *page)			\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		return sysfs_emit(page, "%pM\n", opts->net_opts.dev_mac);	\
+-	}									\
+-										\
+-	static ssize_t _f_##_opts_dev_addr_store(struct config_item *item,	\
+-						 const char *page, size_t len)	\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		u8 new_addr[ETH_ALEN];						\
+-		const char *p = page;						\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		if (opts->refcnt)						\
+-			return -EBUSY;						\
+-										\
+-		for (int i = 0; i < ETH_ALEN; i++) {				\
+-			unsigned char num;					\
+-			if ((*p == '.') || (*p == ':'))				\
+-				p++;						\
+-			num = hex_to_bin(*p++) << 4;				\
+-			num |= hex_to_bin(*p++);				\
+-			new_addr[i] = num;					\
+-		}								\
+-		if (!is_valid_ether_addr(new_addr))				\
+-			return -EINVAL;						\
+-		memcpy(opts->net_opts.dev_mac, new_addr, ETH_ALEN);		\
+-		opts->net_opts.addr_assign_type = NET_ADDR_SET;			\
+-		return len;							\
+-	}									\
+-										\
+-	CONFIGFS_ATTR(_f_##_opts_, dev_addr)
+-
+-#define USB_ETHER_OPTS_ATTR_HOST_ADDR(_f_)					\
+-	static ssize_t _f_##_opts_host_addr_show(struct config_item *item,	\
+-						 char *page)			\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		return sysfs_emit(page, "%pM\n", opts->net_opts.host_mac);	\
+-	}									\
+-										\
+-	static ssize_t _f_##_opts_host_addr_store(struct config_item *item,	\
+-						  const char *page, size_t len)	\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		u8 new_addr[ETH_ALEN];						\
+-		const char *p = page;						\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		if (opts->refcnt)						\
+-			return -EBUSY;						\
+-										\
+-		for (int i = 0; i < ETH_ALEN; i++) {				\
+-			unsigned char num;					\
+-			if ((*p == '.') || (*p == ':'))				\
+-				p++;						\
+-			num = hex_to_bin(*p++) << 4;				\
+-			num |= hex_to_bin(*p++);				\
+-			new_addr[i] = num;					\
+-		}								\
+-		if (!is_valid_ether_addr(new_addr))				\
+-			return -EINVAL;						\
+-		memcpy(opts->net_opts.host_mac, new_addr, ETH_ALEN);		\
+-		return len;							\
+-	}									\
+-										\
+-	CONFIGFS_ATTR(_f_##_opts_, host_addr)
+-
+-#define USB_ETHER_OPTS_ATTR_QMULT(_f_)						\
+-	static ssize_t _f_##_opts_qmult_show(struct config_item *item,		\
+-					     char *page)			\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		return sysfs_emit(page, "%u\n", opts->net_opts.qmult);		\
+-	}									\
+-										\
+-	static ssize_t _f_##_opts_qmult_store(struct config_item *item,		\
+-					      const char *page, size_t len)	\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		u32 val;							\
+-		int ret;							\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		if (opts->refcnt)						\
+-			return -EBUSY;						\
+-										\
+-		ret = kstrtou32(page, 0, &val);					\
+-		if (ret)							\
+-			return ret;						\
+-										\
+-		opts->net_opts.qmult = val;					\
+-		return len;							\
+-	}									\
+-										\
+-	CONFIGFS_ATTR(_f_##_opts_, qmult)
+-
+-#define USB_ETHER_OPTS_ATTR_IFNAME(_f_)						\
+-	static ssize_t _f_##_opts_ifname_show(struct config_item *item,		\
+-					      char *page)			\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		const char *name;						\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		rtnl_lock();							\
+-		if (opts->net_opts.ifname_set)					\
+-			name = opts->net_opts.name;				\
+-		else if (opts->net)						\
+-			name = netdev_name(opts->net);				\
+-		else								\
+-			name = "(inactive net_device)";				\
+-		rtnl_unlock();							\
+-		return sysfs_emit(page, "%s\n", name);				\
+-	}									\
+-										\
+-	static ssize_t _f_##_opts_ifname_store(struct config_item *item,	\
+-					       const char *page, size_t len)	\
+-	{									\
+-		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		char tmp[IFNAMSIZ];						\
+-		const char *p;							\
+-		size_t c_len = len;						\
+-										\
+-		if (c_len > 0 && page[c_len - 1] == '\n')			\
+-			c_len--;						\
+-										\
+-		if (c_len >= sizeof(tmp))					\
+-			return -E2BIG;						\
+-										\
+-		strscpy(tmp, page, c_len + 1);					\
+-		if (!dev_valid_name(tmp))					\
+-			return -EINVAL;						\
+-										\
+-		/* Require exactly one %d */					\
+-		p = strchr(tmp, '%');						\
+-		if (!p || p[1] != 'd' || strchr(p + 2, '%'))			\
+-			return -EINVAL;						\
+-										\
+-		guard(mutex)(&opts->lock);					\
+-		if (opts->refcnt)						\
+-			return -EBUSY;						\
+-		strscpy(opts->net_opts.name, tmp, sizeof(opts->net_opts.name));	\
+-		opts->net_opts.ifname_set = true;				\
+-		return len;							\
+-	}									\
+-										\
+-	CONFIGFS_ATTR(_f_##_opts_, ifname)
+-
+ #endif /* __U_ETHER_CONFIGFS_H */
 
 
 
