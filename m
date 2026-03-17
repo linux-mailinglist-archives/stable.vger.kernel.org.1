@@ -1,198 +1,495 @@
-Return-Path: <stable+bounces-226117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBllMJp7uWmxHAIAu9opvQ
-	(envelope-from <stable+bounces-226117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:42 +0100
+	id 2Oj8FPZ+uWmxHAIAu9opvQ
+	(envelope-from <stable+bounces-226120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4052AD90A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:04:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521062ADCA5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E41530D546A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:01:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 952AD30988E0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A9B2F25F3;
-	Tue, 17 Mar 2026 16:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03FB3019C3;
+	Tue, 17 Mar 2026 16:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="J1XpSxLp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDeSP54l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D14C2F290A;
-	Tue, 17 Mar 2026 16:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9662FFF9D
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773763298; cv=none; b=O00gZsLtEy+mBfNzzth5P7nuvWpFzUlf56O/XtGJNnu8BsWFz99tbcItYu/4OZ3aKhj2xYYE+vKk3wdz6ZT0RAXEORa5yFRDzKuW1HeQxSl/fbX8cUDfay/its3jLoEKFyULlGJnc6kahAZf9vhie6zKIA5Ia24KjRFWQX2RtCg=
+	t=1773763894; cv=none; b=Comc8zR4kDYOkVC9qkNNvQA8MdfuJ+SvbQJD73vcLj7MSR/Sn/rahazacm59Y9LzruOtXyeEYMpLNUa4Y79owhGy4bTFzjNeVBjidB2jV+gcijDNY5jotCb68p4nfZDhIsJQT6g9zOcLYucdzEOf74R5XFXwm2zwt/7lmMsyK2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773763298; c=relaxed/simple;
-	bh=AWri0f85fFtB3abpuUnYuGybc0M2uT6xMVli4DkCchg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=FWg5WJoybuR/njXtk1XD1NWxecFWWVqP3XI/VCd/XJgLZUw4koInnmiirYFr3zoKLlfLqK/X33N7diHUgEmRmQqouaoAiodL/HHehkael8tDctkODqfTg1rVb/V/pnyTusnrvlVkwK5ZYSBH4pR5mAlSUthVYQ3e0qakyT8CVis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=J1XpSxLp; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 156554E42661;
-	Tue, 17 Mar 2026 16:01:35 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DE17C5FC9A;
-	Tue, 17 Mar 2026 16:01:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC8B710450632;
-	Tue, 17 Mar 2026 17:01:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773763289; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=HhGa/RXAuKajY3CB9WPbpFraNRpSzGcKk0rpLOk9Mjc=;
-	b=J1XpSxLpRI/XD/FmQLEO+CaWSguzlyViJsHQHVtkPzZXXxyWqzxYdr87o9UwbfdjcqZvgC
-	a5x0Tj0JuEECI9PzJCudsKdYuqqrz602RNFGy+359NCnr3GJwnkO57ff8hPvKVcq/j/hrT
-	5uZHOvIN/MtgMBDpfVbrnotteR2IOSYS8OyFVMAa1a6f7AwFOyVaKCJvPskjCs9Njetbqi
-	v4FPrj+WB8Cg/T9L18t3FE1Uf3VEwRrc79RfC1Dygs35MOjd/xv9qJGL5WUKob5kyB5Xan
-	Qjm8dyWubDfbZkgnrygNC51wqdCqdtiiDt2owJcyFZs7N83h/+3udq2sp3S99g==
+	s=arc-20240116; t=1773763894; c=relaxed/simple;
+	bh=nzwxYOO80KWgQ1fy0XQWz9XWOSGbd2wGhl81ulNq+wo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ahQbgb/Nbr7RgOJjfNBQdClWJKwt2F8pPOG2aFE8lv6kTKmYbBA2+Tfc9/zamYIboSwrAV7mdCEGp7HSJCjoSyDCuka4/PGIOomFd4Utiugs0iPFp993Q4ZO1wUjNTrrc6o7pj0/+J6XessZrWu55NyedClJT82cs0e9Tt3ZI4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDeSP54l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57314C2BC86
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773763894;
+	bh=nzwxYOO80KWgQ1fy0XQWz9XWOSGbd2wGhl81ulNq+wo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tDeSP54lblgAe4gAPJpRs0FNLI3Hq+2zAu9PK93D8JFchCPHS6L5Iy63P/UIk4sLP
+	 RR6fhfmcXG5RD2s8U87B+Ut9+H+jTlMx0z0Ef+fp95sAK17IgLTUMqHZ547bvyg8FJ
+	 +4oCkvEiAhidJnjZrwUK5FZRLtzBaY8247n5et6eUDmkU/ywSfDxYvjVkJnIw3yWSu
+	 0gdcF6/nONqG/1fBiXoDmlom763VQyfY7Qb6Wi4VL+cLW5xfO8HlfVO6UHrWB3Y+gs
+	 vHjLrd342c4RHvHvkCFNIc7kLXdWyT/br2hVbdoXWH20J4SWGXSwogMnXtFAibi4bs
+	 e2sCKn3FG1TPg==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-4672076355aso4055385b6e.2
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:11:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXgOR4N5tJ27SoiQu7msZk8ZlRdzz/D9eEzYLCXOP3ON2basR632yZsV95prxQFQdURGlvDpDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTtz4VCzTSaitTSXMuHfcW271BLi39BouPbD0n6K8zZ4imBHna
+	rotXWuaIyCNgdzkPoq8rbsvCwPvUhIJoRUBv6aNE6i9PD4GGh+FXFcM49nB5370/JVZG5ybNvJT
+	LgwmRCdtQTGMEnpCsqLP9CmHZ7krG1CQ=
+X-Received: by 2002:a05:6808:1c0e:b0:466:f60b:19d5 with SMTP id
+ 5614622812f47-46757095f03mr9065068b6e.8.1773763893289; Tue, 17 Mar 2026
+ 09:11:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 17 Mar 2026 17:11:21 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
+X-Gm-Features: AaiRm51lQf-iHD6frlt3I3LSvDXx3ABOuLoieA_7ZVlX8qAwmvP4Ouny8H-ujZo
+Message-ID: <CAJZ5v0hwO16=mP_vB=wi7x8CjROAw_Nd_Tq-hEohrDW3C58RbA@mail.gmail.com>
+Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
+ thread safe
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	devicetree@vger.kernel.org, driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 17:01:21 +0100
-Message-Id: <DH56LUJ9OPV1.1VVOD6J6PKUHJ@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net 1/2] net: macb: Move devm_{free,request}_irq() out
- of spin lock area
-Cc: <netdev@vger.kernel.org>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
- "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Vineeth Karumanchi"
- <vineeth.karumanchi@amd.com>, "Harini Katakam" <harini.katakam@amd.com>,
- <stable@vger.kernel.org>
-To: "Kevin Hao" <haokexin@gmail.com>, =?utf-8?q?Th=C3=A9o_Lebrun?=
- <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260315-macb-irq-v1-0-0154104cbf61@gmail.com>
- <20260315-macb-irq-v1-1-0154104cbf61@gmail.com>
- <DH4ER021HKCB.23RHADC1HSCTF@bootlin.com> <abitgDJLgpLiPgap@pek-khao-d3>
-In-Reply-To: <abitgDJLgpLiPgap@pek-khao-d3>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226117-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,bootlin.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226120-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,sang-engineering.com,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[34];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:mid,bootlin.com:email,bootlin.com:url]
-X-Rspamd-Queue-Id: 4B4052AD90A
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,sang-engineering.com:email,chromium.org:email]
+X-Rspamd-Queue-Id: 521062ADCA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue Mar 17, 2026 at 2:25 AM CET, Kevin Hao wrote:
-> On Mon, Mar 16, 2026 at 07:11:34PM +0100, Th=C3=A9o Lebrun wrote:
->> On Sun Mar 15, 2026 at 12:44 PM CET, Kevin Hao wrote:
->> > @@ -5962,6 +5962,7 @@ static int __maybe_unused macb_suspend(struct de=
+On Tue, Mar 17, 2026 at 5:04=E2=80=AFPM Douglas Anderson <dianders@chromium=
+.org> wrote:
+>
+> In various places in the kernel, we modify the fwnode "flags" member
+> by doing either:
+>   fwnode->flags |=3D SOME_FLAG;
+>   fwnode->flags &=3D ~SOME_FLAG;
+>
+> This type of modification is not thread-safe. If two threads are both
+> mucking with the flags at the same time then one can clobber the
+> other.
+>
+> While flags are often modified while under the "fwnode_link_lock",
+> this is not universally true.
+>
+> Create some accessor functions for setting, clearing, and testing the
+> FWNODE flags and move all users to these accessor functions. New
+> accessor functions use set_bit() and clear_bit(), which are
+> thread-safe.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+
+Rafael J. Wysocki (Intel) <rafael@kernel.org>
+
+> ---
+> While this patch is not known for sure to fix any specific issues, it
+> seems possible that it could fix some rare problems. I'm currently
+> trying to track down a hard-to-reproduce heisenbug and one (currently
+> unproven) theory I had was that the fwnode flags could be getting
+> messed up like this. Even if turns out not to fix my heisenbug,
+> though, this seems like a worthwhile change to take.
+>
+> Changes in v2:
+> - Add/use fwnode_assign_flag() (Andy).
+>
+>  drivers/base/core.c                 | 24 +++++++--------
+>  drivers/bus/imx-weim.c              |  2 +-
+>  drivers/i2c/i2c-core-of.c           |  2 +-
+>  drivers/net/phy/mdio_bus_provider.c |  4 +--
+>  drivers/of/base.c                   |  2 +-
+>  drivers/of/dynamic.c                |  2 +-
+>  drivers/of/platform.c               |  2 +-
+>  drivers/spi/spi.c                   |  2 +-
+>  include/linux/fwnode.h              | 45 +++++++++++++++++++++--------
+>  9 files changed, 53 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 791f9e444df8..f65492a4afc8 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -182,7 +182,7 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_=
+handle *fwnode)
+>         if (fwnode->dev)
+>                 return;
+>
+> -       fwnode->flags |=3D FWNODE_FLAG_NOT_DEVICE;
+> +       fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
+>         fwnode_links_purge_consumers(fwnode);
+>
+>         fwnode_for_each_available_child_node(fwnode, child)
+> @@ -228,7 +228,7 @@ static void __fw_devlink_pickup_dangling_consumers(st=
+ruct fwnode_handle *fwnode,
+>         if (fwnode->dev && fwnode->dev->bus)
+>                 return;
+>
+> -       fwnode->flags |=3D FWNODE_FLAG_NOT_DEVICE;
+> +       fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
+>         __fwnode_links_move_consumers(fwnode, new_sup);
+>
+>         fwnode_for_each_available_child_node(fwnode, child)
+> @@ -1012,7 +1012,7 @@ static void device_links_missing_supplier(struct de=
 vice *dev)
->> >  			/* write IP address into register */
->> >  			tmp |=3D MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
->> >  		}
->> > +		spin_unlock_irqrestore(&bp->lock, flags);
->> > =20
->> >  		/* Change interrupt handler and
->> >  		 * Enable WoL IRQ on queue 0
->> > @@ -5974,11 +5975,12 @@ static int __maybe_unused macb_suspend(struct =
-device *dev)
->> >  				dev_err(dev,
->> >  					"Unable to request IRQ %d (error %d)\n",
->> >  					bp->queues[0].irq, err);
->> > -				spin_unlock_irqrestore(&bp->lock, flags);
->> >  				return err;
->> >  			}
->> > +			spin_lock_irqsave(&bp->lock, flags);
->> >  			queue_writel(bp->queues, IER, GEM_BIT(WOL));
->> >  			gem_writel(bp, WOL, tmp);
->> > +			spin_unlock_irqrestore(&bp->lock, flags);
->> >  		} else {
->> >  			err =3D devm_request_irq(dev, bp->queues[0].irq, macb_wol_interrup=
-t,
->> >  					       IRQF_SHARED, netdev->name, bp->queues);
->> > @@ -5986,13 +5988,13 @@ static int __maybe_unused macb_suspend(struct =
-device *dev)
->> >  				dev_err(dev,
->> >  					"Unable to request IRQ %d (error %d)\n",
->> >  					bp->queues[0].irq, err);
->> > -				spin_unlock_irqrestore(&bp->lock, flags);
->> >  				return err;
->> >  			}
->> > +			spin_lock_irqsave(&bp->lock, flags);
->> >  			queue_writel(bp->queues, IER, MACB_BIT(WOL));
->> >  			macb_writel(bp, WOL, tmp);
->> > +			spin_unlock_irqrestore(&bp->lock, flags);
->> >  		}
->> > -		spin_unlock_irqrestore(&bp->lock, flags);
->> > =20
->> >  		enable_irq_wake(bp->queues[0].irq);
->> >  	}
->>=20
->> So it used to be that approximatively the whole macb_suspend() function
->> was ran under the bp->lock spinlock. Now you split it in two to avoid
->> calling IRQ functions in atomic context:
->>  - (1) the disable queues & silence IRQs part and,
->>  - (2) the enable WOL part (IER and WOL reg writes).
->>=20
->> Why do you need to grab bp->lock for the 2nd part? All queues are
->> disabled anyway and IRQs masked. BH features like our work queues are
->> disabled during the dev_pm_ops.suspend() calls anyway. Maybe I am
->> forgetting?
+>  static bool dev_is_best_effort(struct device *dev)
+>  {
+>         return (fw_devlink_best_effort && dev->can_match) ||
+> -               (dev->fwnode && (dev->fwnode->flags & FWNODE_FLAG_BEST_EF=
+FORT));
+> +               (dev->fwnode && (fwnode_test_flag(dev->fwnode, FWNODE_FLA=
+G_BEST_EFFORT)));
+>  }
 >
-> You are right. I agree that the lock may not be necessary in this scenari=
-o.
+>  static struct fwnode_handle *fwnode_links_check_suppliers(
+> @@ -1723,11 +1723,11 @@ bool fw_devlink_is_strict(void)
 >
->> Or this was just out of caution?
+>  static void fw_devlink_parse_fwnode(struct fwnode_handle *fwnode)
+>  {
+> -       if (fwnode->flags & FWNODE_FLAG_LINKS_ADDED)
+> +       if (fwnode_test_flag(fwnode, FWNODE_FLAG_LINKS_ADDED))
+>                 return;
 >
-> This is just out of cautious consideration. Do you think I should delete =
-these
-> spinlocks?
-
-Nah, after all no one is going to be bothered by those locks that
-almost never happen. They have been here for a while after all. The
-macb_resume() ones as well are probably useless because IRQs are
-disabled.
-
-Anyway, for this patch:
-
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+>         fwnode_call_int_op(fwnode, add_links);
+> -       fwnode->flags |=3D FWNODE_FLAG_LINKS_ADDED;
+> +       fwnode_set_flag(fwnode, FWNODE_FLAG_LINKS_ADDED);
+>  }
+>
+>  static void fw_devlink_parse_fwtree(struct fwnode_handle *fwnode)
+> @@ -1885,7 +1885,7 @@ static bool fwnode_init_without_drv(struct fwnode_h=
+andle *fwnode)
+>         struct device *dev;
+>         bool ret;
+>
+> -       if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
+> +       if (!(fwnode_test_flag(fwnode, FWNODE_FLAG_INITIALIZED)))
+>                 return false;
+>
+>         dev =3D get_dev_from_fwnode(fwnode);
+> @@ -2001,10 +2001,10 @@ static bool __fw_devlink_relax_cycles(struct fwno=
+de_handle *con_handle,
+>          * We aren't trying to find all cycles. Just a cycle between con =
+and
+>          * sup_handle.
+>          */
+> -       if (sup_handle->flags & FWNODE_FLAG_VISITED)
+> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_VISITED))
+>                 return false;
+>
+> -       sup_handle->flags |=3D FWNODE_FLAG_VISITED;
+> +       fwnode_set_flag(sup_handle, FWNODE_FLAG_VISITED);
+>
+>         /* Termination condition. */
+>         if (sup_handle =3D=3D con_handle) {
+> @@ -2074,7 +2074,7 @@ static bool __fw_devlink_relax_cycles(struct fwnode=
+_handle *con_handle,
+>         }
+>
+>  out:
+> -       sup_handle->flags &=3D ~FWNODE_FLAG_VISITED;
+> +       fwnode_clear_flag(sup_handle, FWNODE_FLAG_VISITED);
+>         put_device(sup_dev);
+>         put_device(con_dev);
+>         put_device(par_dev);
+> @@ -2127,7 +2127,7 @@ static int fw_devlink_create_devlink(struct device =
+*con,
+>          * When such a flag is set, we can't create device links where P =
+is the
+>          * supplier of C as that would delay the probe of C.
+>          */
+> -       if (sup_handle->flags & FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD &&
+> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NEEDS_CHILD_BOUND_ON=
+_ADD) &&
+>             fwnode_is_ancestor_of(sup_handle, con->fwnode))
+>                 return -EINVAL;
+>
+> @@ -2150,7 +2150,7 @@ static int fw_devlink_create_devlink(struct device =
+*con,
+>         else
+>                 flags =3D FW_DEVLINK_FLAGS_PERMISSIVE;
+>
+> -       if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
+> +       if (fwnode_test_flag(sup_handle, FWNODE_FLAG_NOT_DEVICE))
+>                 sup_dev =3D fwnode_get_next_parent_dev(sup_handle);
+>         else
+>                 sup_dev =3D get_dev_from_fwnode(sup_handle);
+> @@ -2162,7 +2162,7 @@ static int fw_devlink_create_devlink(struct device =
+*con,
+>                  * supplier device indefinitely.
+>                  */
+>                 if (sup_dev->links.status =3D=3D DL_DEV_NO_DRIVER &&
+> -                   sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
+> +                   fwnode_test_flag(sup_handle, FWNODE_FLAG_INITIALIZED)=
+) {
+>                         dev_dbg(con,
+>                                 "Not linking %pfwf - dev might never prob=
+e\n",
+>                                 sup_handle);
+> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+> index 83d623d97f5f..f735e0462c55 100644
+> --- a/drivers/bus/imx-weim.c
+> +++ b/drivers/bus/imx-weim.c
+> @@ -332,7 +332,7 @@ static int of_weim_notify(struct notifier_block *nb, =
+unsigned long action,
+>                          * fw_devlink doesn't skip adding consumers to th=
+is
+>                          * device.
+>                          */
+> -                       rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE=
+;
+> +                       fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NO=
+T_DEVICE);
+>                         if (!of_platform_device_create(rd->dn, NULL, &pde=
+v->dev)) {
+>                                 dev_err(&pdev->dev,
+>                                         "Failed to create child device '%=
+pOF'\n",
+> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> index eb7fb202355f..354a88d0599e 100644
+> --- a/drivers/i2c/i2c-core-of.c
+> +++ b/drivers/i2c/i2c-core-of.c
+> @@ -180,7 +180,7 @@ static int of_i2c_notify(struct notifier_block *nb, u=
+nsigned long action,
+>                  * Clear the flag before adding the device so that fw_dev=
+link
+>                  * doesn't skip adding consumers to this device.
+>                  */
+> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
+);
+>                 client =3D of_i2c_register_device(adap, rd->dn);
+>                 if (IS_ERR(client)) {
+>                         dev_err(&adap->dev, "failed to create client for =
+'%pOF'\n",
+> diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_b=
+us_provider.c
+> index 4b0637405740..fd691c5424ea 100644
+> --- a/drivers/net/phy/mdio_bus_provider.c
+> +++ b/drivers/net/phy/mdio_bus_provider.c
+> @@ -294,8 +294,8 @@ int __mdiobus_register(struct mii_bus *bus, struct mo=
+dule *owner)
+>                 return -EINVAL;
+>
+>         if (bus->parent && bus->parent->of_node)
+> -               bus->parent->of_node->fwnode.flags |=3D
+> -                                       FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_=
+ADD;
+> +               fwnode_set_flag(&bus->parent->of_node->fwnode,
+> +                               FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD);
+>
+>         WARN(bus->state !=3D MDIOBUS_ALLOCATED &&
+>              bus->state !=3D MDIOBUS_UNREGISTERED,
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 57420806c1a2..8d1972e18161 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -1915,7 +1915,7 @@ void of_alias_scan(void * (*dt_alloc)(u64 size, u64=
+ align))
+>                 if (name)
+>                         of_stdout =3D of_find_node_opts_by_path(name, &of=
+_stdout_options);
+>                 if (of_stdout)
+> -                       of_stdout->fwnode.flags |=3D FWNODE_FLAG_BEST_EFF=
+ORT;
+> +                       fwnode_set_flag(&of_stdout->fwnode, FWNODE_FLAG_B=
+EST_EFFORT);
+>         }
+>
+>         if (!of_aliases)
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index 1a06175def37..ade288372101 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -225,7 +225,7 @@ static void __of_attach_node(struct device_node *np)
+>         np->sibling =3D np->parent->child;
+>         np->parent->child =3D np;
+>         of_node_clear_flag(np, OF_DETACHED);
+> -       np->fwnode.flags |=3D FWNODE_FLAG_NOT_DEVICE;
+> +       fwnode_set_flag(&np->fwnode, FWNODE_FLAG_NOT_DEVICE);
+>
+>         raw_spin_unlock_irqrestore(&devtree_lock, flags);
+>
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index ba591fbceb56..7eeaf8e27b5b 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -742,7 +742,7 @@ static int of_platform_notify(struct notifier_block *=
+nb,
+>                  * Clear the flag before adding the device so that fw_dev=
+link
+>                  * doesn't skip adding consumers to this device.
+>                  */
+> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
+);
+>                 /* pdev_parent may be NULL when no bus platform device */
+>                 pdev_parent =3D of_find_device_by_node(parent);
+>                 pdev =3D of_platform_device_create(rd->dn, NULL,
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 61f7bde8c7fb..ba8098f1a88c 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -4938,7 +4938,7 @@ static int of_spi_notify(struct notifier_block *nb,=
+ unsigned long action,
+>                  * Clear the flag before adding the device so that fw_dev=
+link
+>                  * doesn't skip adding consumers to this device.
+>                  */
+> -               rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> +               fwnode_clear_flag(&rd->dn->fwnode, FWNODE_FLAG_NOT_DEVICE=
+);
+>                 spi =3D of_register_spi_device(ctlr, rd->dn);
+>                 put_device(&ctlr->dev);
+>
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 097be89487bf..c1ebcc6fd896 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -15,6 +15,7 @@
+>  #define _LINUX_FWNODE_H_
+>
+>  #include <linux/bits.h>
+> +#include <linux/bitops.h>
+>  #include <linux/err.h>
+>  #include <linux/list.h>
+>  #include <linux/types.h>
+> @@ -42,12 +43,12 @@ struct device;
+>   *             suppliers. Only enforce ordering with suppliers that have
+>   *             drivers.
+>   */
+> -#define FWNODE_FLAG_LINKS_ADDED                        BIT(0)
+> -#define FWNODE_FLAG_NOT_DEVICE                 BIT(1)
+> -#define FWNODE_FLAG_INITIALIZED                        BIT(2)
+> -#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD   BIT(3)
+> -#define FWNODE_FLAG_BEST_EFFORT                        BIT(4)
+> -#define FWNODE_FLAG_VISITED                    BIT(5)
+> +#define FWNODE_FLAG_LINKS_ADDED                        0
+> +#define FWNODE_FLAG_NOT_DEVICE                 1
+> +#define FWNODE_FLAG_INITIALIZED                        2
+> +#define FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD   3
+> +#define FWNODE_FLAG_BEST_EFFORT                        4
+> +#define FWNODE_FLAG_VISITED                    5
+>
+>  struct fwnode_handle {
+>         struct fwnode_handle *secondary;
+> @@ -57,7 +58,7 @@ struct fwnode_handle {
+>         struct device *dev;
+>         struct list_head suppliers;
+>         struct list_head consumers;
+> -       u8 flags;
+> +       unsigned long flags;
+>  };
+>
+>  /*
+> @@ -212,16 +213,36 @@ static inline void fwnode_init(struct fwnode_handle=
+ *fwnode,
+>         INIT_LIST_HEAD(&fwnode->suppliers);
+>  }
+>
+> +static inline void fwnode_set_flag(struct fwnode_handle *fwnode,
+> +                                  unsigned int bit)
+> +{
+> +       set_bit(bit, &fwnode->flags);
+> +}
+> +
+> +static inline void fwnode_clear_flag(struct fwnode_handle *fwnode,
+> +                                  unsigned int bit)
+> +{
+> +       clear_bit(bit, &fwnode->flags);
+> +}
+> +
+> +static inline void fwnode_assign_flag(struct fwnode_handle *fwnode,
+> +                                     unsigned int bit, bool value)
+> +{
+> +       assign_bit(bit, &fwnode->flags, value);
+> +}
+> +
+> +static inline bool fwnode_test_flag(struct fwnode_handle *fwnode,
+> +                                   unsigned int bit)
+> +{
+> +       return test_bit(bit, &fwnode->flags);
+> +}
+> +
+>  static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
+>                                           bool initialized)
+>  {
+>         if (IS_ERR_OR_NULL(fwnode))
+>                 return;
+> -
+> -       if (initialized)
+> -               fwnode->flags |=3D FWNODE_FLAG_INITIALIZED;
+> -       else
+> -               fwnode->flags &=3D ~FWNODE_FLAG_INITIALIZED;
+> +       fwnode_assign_flag(fwnode, FWNODE_FLAG_INITIALIZED, initialized);
+>  }
+>
+>  int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup=
+,
+> --
+> 2.53.0.851.ga537e3e6e9-goog
+>
+>
 
