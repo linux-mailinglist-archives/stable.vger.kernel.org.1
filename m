@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHBIGteJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:27 +0100
+	id WO7wIquVuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE702AEE81
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103C82B05D4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A8523057336
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A890B31AB25F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2C93F54DE;
-	Tue, 17 Mar 2026 16:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633132DECC6;
+	Tue, 17 Mar 2026 17:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHG/lYmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3B52pXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E85A357A4A;
-	Tue, 17 Mar 2026 16:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A27320CCF;
+	Tue, 17 Mar 2026 17:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766783; cv=none; b=I0uiQ1WwJKQYTUug6QXyU+lr617AY9HmmrSQhB1bifnJIa66ZyxNSPii+XDzc10/0ohTSZ3hHh8mdRLx6jinWtaJ8OExStvLwtxfS+rogmIjhsx58WZo6Mbsq5wVtcw2KetZD+n/6pqtAlPeKwpMgWzmyTbE5pdntm6EulLZ4dg=
+	t=1773768316; cv=none; b=BVBZ+FDbQzUVAJRONIhNxxwDa3pBRMIQ+uhB7JWJC2rpsRsdXnlgko2gjWqKF9RW2nulqY9iRifqtbqnXDOQtBQqxtlYF/ncFv+YGcAB2Vvk91MFYlKCdzkI/x30/PM96GyfYR5bB8vKU7hZX8twUKT2FLP82gelN+x0VXvPHqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766783; c=relaxed/simple;
-	bh=kpVvomIlLaS9tQl93XxYsP1DeR2Ee43brCw6FpvmwBY=;
+	s=arc-20240116; t=1773768316; c=relaxed/simple;
+	bh=QGNPpkhAFRM2z3ct6CjHdNl1X+FvIt98WaLjAd2KiXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5bOAB3YHkuBzQAQ3gscdfj5VXOM40qz2ghzRujl7rGAh6sB9pIV5BtV1+eDy+Ho5/PkiC/4NiCNkgBneYKGosDmasGqLsDJ44+0mJv6jl4dctINHaw9G/Gk2bi7QZPr0+4nY1EiHEgSls0zRf2DkqNTDmmNsqfjJn7AOHXykVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHG/lYmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC44C4CEF7;
-	Tue, 17 Mar 2026 16:59:41 +0000 (UTC)
+	 MIME-Version; b=CtIJpyXozYLPU9XBnHu3svpcC3yHrnG66U3c9LTNsgOM8hp/ysK3Dt1RrqPIGtBjx5IkrK7qo7sIH6oPT18kAIqXbLs+NaW80eguYPbJV8GHUcnvxU3byc7WM0fFUKZ3jhnm6rL4mHRSi6h607KORb463n++E2+27RJjLZOsqsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3B52pXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F0BC4CEF7;
+	Tue, 17 Mar 2026 17:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766782;
-	bh=kpVvomIlLaS9tQl93XxYsP1DeR2Ee43brCw6FpvmwBY=;
+	s=korg; t=1773768316;
+	bh=QGNPpkhAFRM2z3ct6CjHdNl1X+FvIt98WaLjAd2KiXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHG/lYmYIzQn8oqZZ2GOUXDmLk6lcUa8pmLiIYNq8AJfY3F2QunYs4XmcEH+4Mr6i
-	 7I46jFsRL4wP5K+0twiGeyEurgRDoSUKXmTaIv+NqFXEjh6/H7vTOlMJBjoWhn6Be3
-	 7gp+AzmBoQZYtXaExEB0Hq4hwC6ozTBz9HS+O4is=
+	b=e3B52pXGBqY2s2ZlFKfv5CqDaNTC6p0xHwLd9cgaIe92e5e1qsyOJvddkBOIVfGCf
+	 T333P4+BbIJsfSYILcbZ9HXfKUg8G34HwJDHgmWJtufuCN4DtziZn+zkLXmbpHBDEk
+	 SGbS9LoE7++GR+GaaOXMLRpeOJd65oFZ7LgqrVYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.19 321/378] xfs: fix undersized l_iclog_roundoff values
+	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 249/333] net: dsa: microchip: Fix error path in PTP IRQ setup
 Date: Tue, 17 Mar 2026 17:34:38 +0100
-Message-ID: <20260317163018.800140669@linuxfoundation.org>
+Message-ID: <20260317163008.599783103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-226817-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226454-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: 3AE702AEE81
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: 103C82B05D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-commit 52a8a1ba883defbfe3200baa22cf4cd21985d51a upstream.
+commit 99c8c16a4aad0b37293cae213e15957c573cf79b upstream.
 
-If the superblock doesn't list a log stripe unit, we set the incore log
-roundoff value to 512.  This leads to corrupt logs and unmountable
-filesystems in generic/617 on a disk with 4k physical sectors...
+If request_threaded_irq() fails during the PTP message IRQ setup, the
+newly created IRQ mapping is never disposed. Indeed, the
+ksz_ptp_irq_setup()'s error path only frees the mappings that were
+successfully set up.
 
-XFS (sda1): Mounting V5 Filesystem ff3121ca-26e6-4b77-b742-aaff9a449e1c
-XFS (sda1): Torn write (CRC failure) detected at log block 0x318e. Truncating head block from 0x3197.
-XFS (sda1): failed to locate log tail
-XFS (sda1): log mount/recovery failed: error -74
-XFS (sda1): log mount failed
-XFS (sda1): Mounting V5 Filesystem ff3121ca-26e6-4b77-b742-aaff9a449e1c
-XFS (sda1): Ending clean mount
+Dispose the newly created mapping if the associated
+request_threaded_irq() fails at setup.
 
-...on the current xfsprogs for-next which has a broken mkfs.  xfs_info
-shows this...
-
-meta-data=/dev/sda1              isize=512    agcount=4, agsize=644992 blks
-         =                       sectsz=4096  attr=2, projid32bit=1
-         =                       crc=1        finobt=1, sparse=1, rmapbt=1
-         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
-         =                       exchange=1   metadir=1
-data     =                       bsize=4096   blocks=2579968, imaxpct=25
-         =                       sunit=0      swidth=0 blks
-naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=1
-log      =internal log           bsize=4096   blocks=16384, version=2
-         =                       sectsz=4096  sunit=0 blks, lazy-count=1
-realtime =none                   extsz=4096   blocks=0, rtextents=0
-         =                       rgcount=0    rgsize=268435456 extents
-         =                       zoned=0      start=0 reserved=0
-
-...observe that the log section has sectsz=4096 sunit=0, which means
-that the roundoff factor is 512, not 4096 as you'd expect.  We should
-fix mkfs not to generate broken filesystems, but anyone can fuzz the
-ondisk superblock so we should be more cautious.  I think the inadequate
-logic predates commit a6a65fef5ef8d0, but that's clearly going to
-require a different backport.
-
-Cc: stable@vger.kernel.org # v5.14
-Fixes: a6a65fef5ef8d0 ("xfs: log stripe roundoff is a property of the log")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d0b8fec8ae505 ("net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()")
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20260309-ksz-ptp-irq-fix-v1-1-757b3b985955@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/microchip/ksz_ptp.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1399,6 +1399,8 @@ xlog_alloc_log(
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1095,6 +1095,7 @@ static int ksz_ptp_msg_irq_setup(struct
+ 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+ 	struct ksz_irq *ptpirq = &port->ptpirq;
+ 	struct ksz_ptp_irq *ptpmsg_irq;
++	int ret;
  
- 	if (xfs_has_logv2(mp) && mp->m_sb.sb_logsunit > 1)
- 		log->l_iclog_roundoff = mp->m_sb.sb_logsunit;
-+	else if (mp->m_sb.sb_logsectsize > 0)
-+		log->l_iclog_roundoff = mp->m_sb.sb_logsectsize;
- 	else
- 		log->l_iclog_roundoff = BBSIZE;
+ 	ptpmsg_irq = &port->ptpmsg_irq[n];
+ 	ptpmsg_irq->num = irq_create_mapping(ptpirq->domain, n);
+@@ -1106,9 +1107,13 @@ static int ksz_ptp_msg_irq_setup(struct
  
+ 	strscpy(ptpmsg_irq->name, name[n]);
+ 
+-	return request_threaded_irq(ptpmsg_irq->num, NULL,
+-				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+-				    ptpmsg_irq->name, ptpmsg_irq);
++	ret = request_threaded_irq(ptpmsg_irq->num, NULL,
++				   ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
++				   ptpmsg_irq->name, ptpmsg_irq);
++	if (ret)
++		irq_dispose_mapping(ptpmsg_irq->num);
++
++	return ret;
+ }
+ 
+ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
 
 
 
