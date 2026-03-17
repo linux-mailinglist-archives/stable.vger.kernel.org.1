@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-226326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNiUObyIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:44 +0100
+	id GoPsG9GRuWl3KgIAu9opvQ
+	(envelope-from <stable+bounces-226644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249ED2AEC92
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E5A2AFEC4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1C2D31315CC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACBFF3265181
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E553EDADD;
-	Tue, 17 Mar 2026 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E6D3F54B5;
+	Tue, 17 Mar 2026 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGCcxe36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+/jerf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8BC357A4A;
-	Tue, 17 Mar 2026 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498B12116F6;
+	Tue, 17 Mar 2026 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766218; cv=none; b=K5VY06+5LeCjBa0dz3dDull6+TOoU7m81O2bJfRyHljKAmYWX3LLGIE5imTvvH0zc3HgGHxw+Gq8Bhsm/20kQaDsYlS22DFdp3FRAoGwAaYOfNkeWPPbxWLGs4dKtUEQoCqaHWApk82HOG1sOWj8tLKZhEqp5I/FVEDEqs49dhU=
+	t=1773767610; cv=none; b=ZvV2OBJUuP6bdh+Xd6t15QwZUtTQ7eyfwu24DeoHZpt+MNRc/kDsR9m8BJ8+BT2rtfaQlgeidDs5vsgucbmEC/WUKHmOQLPrjkCSG0Vhy4ssCQOAke/T9p/dPaj+7TQbd5oOJWaDIIvK9Y56kUArjCG+zBhLGvFQxD4OSO/MfaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766218; c=relaxed/simple;
-	bh=1skMiiTjKLoH2xM1vWVPHh03JGJhGblWqJrSNNueyPQ=;
+	s=arc-20240116; t=1773767610; c=relaxed/simple;
+	bh=67sQdvUhJihgFQlRpkqthqAiRtrb5oHzHITmLvpmzlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hE4CSFcJljy91s56CxfMnQsEwcFhJjTpsEZwWkBmY9lazIQnYKoqbZ1pM4i/1hLyeMPQfMxxGqvDwPOoOVRrwaAfIP0Qd7jBb19uF2b1Lc8XBoXGjfmlLWFSobFw14kcOWQfYb7Jk8Vn+SYZppYmcKvZiE0i6QtoUq/x1ApA1Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGCcxe36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B39AC4CEF7;
-	Tue, 17 Mar 2026 16:50:17 +0000 (UTC)
+	 MIME-Version; b=MTcCqHlAKTWGE9PDSj602kMx3n1eODyLW5QPp/CVOwivqeMAbrZrG1dA0wBManZlDwh6kzH0seLrypdqwWEXx6QP3Co+4iIHUI0tsxSHRKYkJQYgFRs5BCNjMHoQOTXx4v/DFZ5XJsaZIsnTAISmj00JAfZ/uGWE7nxL7RX5Ss4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+/jerf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B119BC4CEF7;
+	Tue, 17 Mar 2026 17:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766218;
-	bh=1skMiiTjKLoH2xM1vWVPHh03JGJhGblWqJrSNNueyPQ=;
+	s=korg; t=1773767610;
+	bh=67sQdvUhJihgFQlRpkqthqAiRtrb5oHzHITmLvpmzlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGCcxe36AfQMkNRkUwsdkxRni5+1GimP+S4yrCiDnuyQlQhVSq8hqQV3iQJaZDo9J
-	 hgPCYgeMH2gJe0qTuqlHMucC3PCWE/R1wpkdBDw0w5xz/zHA9ZS5NZ41sfCqt/hPpA
-	 i08f33AYbUnKq1lBGVmNlLHuhkr+763M8o67HRbU=
+	b=F+/jerf/MiDZsOV69ckwiEd786ZHfrRnEmKnuMTe+RbaBmxgR3RMERykggklKeJuW
+	 2a2PzwU2R00cSLUH/XDNanOFuXDKW9f7XUaN9haOVftsU47ZJ4w3biDoiv0nnopT7i
+	 sKzbIBBxOQ/+yEb2EDURgyrt2c1mM04a9Dk/XxNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 194/378] mm/kfence: fix KASAN hardware tag faults during late enablement
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 122/333] KVM: arm64: Fix protected mode handling of pages larger than 4kB
 Date: Tue, 17 Mar 2026 17:32:31 +0100
-Message-ID: <20260317163014.142746981@linuxfoundation.org>
+Message-ID: <20260317163003.890762161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,127 +63,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,tugraz.at,gmail.com,kernel.org,linux-foundation.org];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226326-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226644-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[andreyknvl.gmail.com:server fail];
-	NEURAL_HAM(-0.00)[-0.990];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,tugraz.at:email]
-X-Rspamd-Queue-Id: 249ED2AEC92
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 07E5A2AFEC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit d155aab90fffa00f93cea1f107aef0a3d548b2ff upstream.
+commit 08f97454b7fa39bfcf82524955c771d2d693d6fe upstream.
 
-When KASAN hardware tags are enabled, re-enabling KFENCE late (via
-/sys/module/kfence/parameters/sample_interval) causes KASAN faults.
+Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
+pKVM tracks the memory that has been mapped into a guest in a
+side data structure. Crucially, it uses it to find out whether
+a page has already been mapped, and therefore refuses to map it
+twice. So far, so good.
 
-This happens because the KFENCE pool and metadata are allocated via the
-page allocator, which tags the memory, while KFENCE continues to access it
-using untagged pointers during initialization.
+However, this very patch completely breaks non-4kB page support,
+with guests being unable to boot. The most obvious symptom is that
+we take the same fault repeatedly, and not making forward progress.
+A quick investigation shows that this is because of the above
+rejection code.
 
-Use __GFP_SKIP_KASAN for late KFENCE pool and metadata allocations to
-ensure the memory remains untagged, consistent with early allocations from
-memblock.  To support this, add __GFP_SKIP_KASAN to the allowlist in
-__alloc_contig_verify_gfp_mask().
+As it turns out, there are multiple issues at play:
 
-Link: https://lkml.kernel.org/r/20260220144940.2779209-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+- while the HPFAR_EL2 register gives you the faulting IPA minus
+  the bottom 12 bits, it will still give you the extra bits that
+  are part of the page offset for anything larger than 4kB,
+  even for a level-3 mapping
+
+- pkvm_pgtable_stage2_map() assumes that the address passed as
+  a parameter is aligned to the size of the intended mapping
+
+- the faulting address is only aligned for a non-page mapping
+
+When the planets are suitably aligned (pun intended), the guest
+faults on a page by accessing it past the bottom 4kB, and extra bits
+get set in the HPFAR_EL2 register. If this results in a page mapping
+(which is likely with large granule sizes), nothing aligns it further
+down, and pkvm_mapping_iter_first() finds an intersection that
+doesn't really exist. We assume this is a spurious fault and return
+-EAGAIN. And again...
+
+This doesn't hit outside of the protected code, as the page table
+code always aligns the IPA down to a page boundary, hiding the issue
+for everyone else.
+
+Fix it by always forcing the alignment on vma_pagesize, irrespective
+of the value of vma_pagesize.
+
+Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://https://patch.msgid.link/20260222141000.3084258-1-maz@kernel.org
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   14 ++++++++------
- mm/page_alloc.c  |    3 ++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ arch/arm64/kvm/mmu.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -984,14 +984,14 @@ static int kfence_init_late(void)
- #ifdef CONFIG_CONTIG_ALLOC
- 	struct page *pages;
- 
--	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (!pages)
- 		return -ENOMEM;
- 
- 	__kfence_pool = page_to_virt(pages);
--	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (pages)
- 		kfence_metadata_init = page_to_virt(pages);
- #else
-@@ -1001,11 +1001,13 @@ static int kfence_init_late(void)
- 		return -EINVAL;
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1712,14 +1712,12 @@ static int user_mem_abort(struct kvm_vcp
  	}
  
--	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
-+	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE,
-+					  GFP_KERNEL | __GFP_SKIP_KASAN);
- 	if (!__kfence_pool)
- 		return -ENOMEM;
- 
--	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE, GFP_KERNEL);
-+	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE,
-+						 GFP_KERNEL | __GFP_SKIP_KASAN);
- #endif
- 
- 	if (!kfence_metadata_init)
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6941,7 +6941,8 @@ static int __alloc_contig_verify_gfp_mas
- {
- 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
- 	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
--				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
-+				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO |
-+				  __GFP_SKIP_KASAN;
- 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
- 
  	/*
+-	 * Both the canonical IPA and fault IPA must be hugepage-aligned to
+-	 * ensure we find the right PFN and lay down the mapping in the right
+-	 * place.
++	 * Both the canonical IPA and fault IPA must be aligned to the
++	 * mapping size to ensure we find the right PFN and lay down the
++	 * mapping in the right place.
+ 	 */
+-	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
+-		fault_ipa &= ~(vma_pagesize - 1);
+-		ipa &= ~(vma_pagesize - 1);
+-	}
++	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
++	ipa = ALIGN_DOWN(ipa, vma_pagesize);
+ 
+ 	gfn = ipa >> PAGE_SHIFT;
+ 	mte_allowed = kvm_vma_mte_allowed(vma);
 
 
 
