@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNVqA3yIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:40 +0100
+	id 2PUCJdqNuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068732AEC08
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461982AF722
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C68430492ED
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53A933049374
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FC53F65EF;
-	Tue, 17 Mar 2026 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F2830C63B;
+	Tue, 17 Mar 2026 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLPsmIOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wrj0AGFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8513F65EC;
-	Tue, 17 Mar 2026 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B332DF132;
+	Tue, 17 Mar 2026 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766338; cv=none; b=lzsNU+T5HJd/YmEhr/CPaz7MJksUdyPkdf9n50uPLtEJCQbZpVPjDZtEof0pUbsG8sRXM8nJzFIPCttcEU2ZvbY8sNVcgsFn0/i5p13oyAQMCHWWkWQzOGx+Ah7AfwSS9cc6zF6dB+XdyW1CiQAysEikdRsVsLA1FEjQ7jnG24A=
+	t=1773767750; cv=none; b=AkMvkagOSj5pLEFRLbgZCyIMPXEwrgIdlaCjNWNesNRovDkChe/eSvLnR1XosctJYE+joXfcV8ji6dKgLWgCDA3VyPqiZVqepPoAZoQCCu2ioEopxTtUTp5ZcmgA7GGp9vJsiRPsrAb/Q+nhYr0MXWZMeyUoXf6bBnLO7QVtV8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766338; c=relaxed/simple;
-	bh=ighv4/k353IEb97lfeZYObamKNQc3S7O0KJUR+sWj7w=;
+	s=arc-20240116; t=1773767750; c=relaxed/simple;
+	bh=QlDr2+HH6Ccgwzq3yC72ylVUhuxzknajjLfAq6NJQzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwB8fh7tySLS5NbqJoJymTwfFUSZyTd/3Vrp7vL2cPHgK2I8XWzHSw5tYn7VV7v5JcSuqSLV/DFPrHCXf0D1fsBez6qfUoYw4yEmXPSn2WmJRx4r7gEFt9crXQwS//EjxOh9/unstm0RuRFCQj1nQIr38Twr9CrfM7m7Axg8fck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLPsmIOl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECEAC4CEF7;
-	Tue, 17 Mar 2026 16:52:17 +0000 (UTC)
+	 MIME-Version; b=i+CjU4evcg9gw8UlhyasXXKwZmarbWkS4i6N62r2/y53DiMKp2j8eos1/gQLydzYIH/CdNGXiA0wtAcFNpigsNQ7suwb3CE8mlHOI0ozgVY3waMKYFuk2479RV3lJ5I2kVRMeilTtEA/WOo771U1SthrHaJSdvQODoTpGhA+HRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wrj0AGFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEA6C4CEF7;
+	Tue, 17 Mar 2026 17:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766338;
-	bh=ighv4/k353IEb97lfeZYObamKNQc3S7O0KJUR+sWj7w=;
+	s=korg; t=1773767749;
+	bh=QlDr2+HH6Ccgwzq3yC72ylVUhuxzknajjLfAq6NJQzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLPsmIOluJAb4W9r3QiONcwFwwEQR+kaPLXrtXhhVP+saVSUlpEbDtu/ZNPDlE94F
-	 TBaIOTdomSHHQpLNbEfOq3BIktgRxGqfJwQw2wZydUUBthoj4lfpjPNY2Rq0Tq9CNV
-	 N1vZ3Tgla09C/bssEI5pP8mR8Lpt4ZLWmPElyBAE=
+	b=Wrj0AGFlXwL1meNFqZyoAowu73hQgTC9rrj70FmWW/dGtmKpsViDrqbKT1Y9xLaX9
+	 BWKc5EfAvBu2C7thmqz+m9Vi7mfdEsswWJPoJvl6jXL5GVrRDElxpfxj+ZIXCHFcxx
+	 zZsxSBTRlw0jsYBl5NOu/heOefAznYH66itZOMEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Raits <igor@gooddata.com>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.19 222/378] ipmi:si: Use a long timeout when the BMC is misbehaving
+	David Heidelberg <david@ixit.cz>,
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.18 150/333] Revert "usb: gadget: f_ncm: Fix atomic context locking issue"
 Date: Tue, 17 Mar 2026 17:32:59 +0100
-Message-ID: <20260317163015.177486242@linuxfoundation.org>
+Message-ID: <20260317163004.920282858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226355-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226671-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,48 +87,168 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,minyard.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 068732AEC08
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ixit.cz:email]
+X-Rspamd-Queue-Id: 461982AF722
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit c3bb3295637cc9bf514f690941ca9a385bf30113 upstream.
+commit 11199720fac2debbe718aec11e026ab3330dc80d upstream.
 
-If the driver goes into HOSED state, don't reset the timeout to the
-short timeout in the timeout handler.
+This reverts commit 0d6c8144ca4d93253de952a5ea0028c19ed7ab68.
 
-Reported-by: Igor Raits <igor@gooddata.com>
-Closes: https://lore.kernel.org/linux-acpi/CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com/
-Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
-Cc: stable@vger.kernel.org # 4.18
-Signed-off-by: Corey Minyard <corey@minyard.net>
+This commit is being reverted as part of a series-wide revert.
+
+By deferring the net_device allocation to the bind() phase, a single
+function instance will spawn multiple network devices if it is symlinked
+to multiple USB configurations.
+
+This causes regressions for userspace tools (like the postmarketOS DHCP
+daemon) that rely on reading the interface name (e.g., "usb0") from
+configfs. Currently, configfs returns the template "usb%d", causing the
+userspace network setup to fail.
+
+Crucially, because this patch breaks the 1:1 mapping between the
+function instance and the network device, this naming issue cannot
+simply be patched. Configfs only exposes a single 'ifname' attribute per
+instance, making it impossible to accurately report the actual interface
+name when multiple underlying network devices can exist for that single
+instance.
+
+All configurations tied to the same function instance are meant to share
+a single network device. Revert this change to restore the 1:1 mapping
+by allocating the network device at the instance level (alloc_inst).
+
+Reported-by: David Heidelberg <david@ixit.cz>
+Closes: https://lore.kernel.org/linux-usb/70b558ea-a12e-4170-9b8e-c951131249af@ixit.cz/
+Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-1-ea2afbc7d9b2@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_ncm.c            |   29 ++++++++++++++-----------
+ drivers/usb/gadget/function/u_ether_configfs.h |   11 ++++++++-
+ drivers/usb/gadget/function/u_ncm.h            |    1 
+ 3 files changed, 28 insertions(+), 13 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -1113,7 +1113,9 @@ static void smi_timeout(struct timer_lis
- 		     * SI_USEC_PER_JIFFY);
- 	smi_result = smi_event_handler(smi_info, time_diff);
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -58,7 +58,6 @@ struct f_ncm {
+ 	u8				notify_state;
+ 	atomic_t			notify_count;
+ 	bool				is_open;
+-	bool				is_connected;
  
--	if ((smi_info->io.irq) && (!smi_info->interrupt_disabled)) {
-+	if (smi_info->si_state == SI_HOSED) {
-+		timeout = jiffies + SI_TIMEOUT_HOSED;
-+	} else if ((smi_info->io.irq) && (!smi_info->interrupt_disabled)) {
- 		/* Running with interrupts, only do long timeouts. */
- 		timeout = jiffies + SI_TIMEOUT_JIFFIES;
- 		smi_inc_stat(smi_info, long_timeouts);
+ 	const struct ndp_parser_opts	*parser_opts;
+ 	bool				is_crc;
+@@ -865,6 +864,7 @@ invalid:
+ static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
++	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
+ 
+ 	/* Control interface has only altsetting 0 */
+@@ -887,12 +887,13 @@ static int ncm_set_alt(struct usb_functi
+ 		if (alt > 1)
+ 			goto fail;
+ 
+-		if (ncm->is_connected) {
+-			DBG(cdev, "reset ncm\n");
+-			ncm->is_connected = false;
+-			gether_disconnect(&ncm->port);
+-			ncm_reset_values(ncm);
+-		}
++		scoped_guard(mutex, &opts->lock)
++			if (opts->net) {
++				DBG(cdev, "reset ncm\n");
++				opts->net = NULL;
++				gether_disconnect(&ncm->port);
++				ncm_reset_values(ncm);
++			}
+ 
+ 		/*
+ 		 * CDC Network only sends data in non-default altsettings.
+@@ -925,7 +926,8 @@ static int ncm_set_alt(struct usb_functi
+ 			net = gether_connect(&ncm->port);
+ 			if (IS_ERR(net))
+ 				return PTR_ERR(net);
+-			ncm->is_connected = true;
++			scoped_guard(mutex, &opts->lock)
++				opts->net = net;
+ 		}
+ 
+ 		spin_lock(&ncm->lock);
+@@ -1372,14 +1374,16 @@ err:
+ static void ncm_disable(struct usb_function *f)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
++	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
+ 
+ 	DBG(cdev, "ncm deactivated\n");
+ 
+-	if (ncm->is_connected) {
+-		ncm->is_connected = false;
+-		gether_disconnect(&ncm->port);
+-	}
++	scoped_guard(mutex, &opts->lock)
++		if (opts->net) {
++			opts->net = NULL;
++			gether_disconnect(&ncm->port);
++		}
+ 
+ 	if (ncm->notify->enabled) {
+ 		usb_ep_disable(ncm->notify);
+@@ -1683,6 +1687,7 @@ static struct usb_function_instance *ncm
+ 	if (!opts)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	opts->net = NULL;
+ 	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
+ 	gether_setup_opts_default(&opts->net_opts, "usb");
+ 
+--- a/drivers/usb/gadget/function/u_ether_configfs.h
++++ b/drivers/usb/gadget/function/u_ether_configfs.h
+@@ -326,9 +326,18 @@ out:									\
+ 					      char *page)			\
+ 	{									\
+ 		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
++		const char *name;						\
+ 										\
+ 		guard(mutex)(&opts->lock);					\
+-		return sysfs_emit(page, "%s\n", opts->net_opts.name);		\
++		rtnl_lock();							\
++		if (opts->net_opts.ifname_set)					\
++			name = opts->net_opts.name;				\
++		else if (opts->net)						\
++			name = netdev_name(opts->net);				\
++		else								\
++			name = "(inactive net_device)";				\
++		rtnl_unlock();							\
++		return sysfs_emit(page, "%s\n", name);				\
+ 	}									\
+ 										\
+ 	static ssize_t _f_##_opts_ifname_store(struct config_item *item,	\
+--- a/drivers/usb/gadget/function/u_ncm.h
++++ b/drivers/usb/gadget/function/u_ncm.h
+@@ -19,6 +19,7 @@
+ 
+ struct f_ncm_opts {
+ 	struct usb_function_instance	func_inst;
++	struct net_device		*net;
+ 
+ 	struct gether_opts		net_opts;
+ 	struct config_group		*ncm_interf_group;
 
 
 
