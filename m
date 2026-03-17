@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oB9/G76OuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:22 +0100
+	id 2DLGKeuHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1DB2AF8A6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210262AEAD9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0EE3C311908F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA41830DCAE1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D0F3F65EE;
-	Tue, 17 Mar 2026 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259963F54A4;
+	Tue, 17 Mar 2026 16:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhE9PC7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTk3ZIfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E1931815D;
-	Tue, 17 Mar 2026 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD22B3F23CC;
+	Tue, 17 Mar 2026 16:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767447; cv=none; b=UgYcd8n9k6JN1GSh+kBprHVWxDWV+EAAQlBB9aRnmGLfQltb3CeQtZ06ezQGZLXgx1P2Ic5vxZwf5XcVQaQUNFPJEZ9aaq6Q5y8W0KSem9nHxgFcZ/FnvE8A9UNKh1IP0j19Xt79nuwhKDf4rhw9t2UUntvPyg+84PtD3eFzt8g=
+	t=1773766059; cv=none; b=DweUJY4Mn/E61nLgZpEjfrGN/n7TabnEGwPbWqX1E8jimHpeUoJStD3rxDkzo+2CDVpyzN/tRJbIR2JoZjd2dfZEogzoetFWZcC9/ZNKOOiL3ln1EKMZHuhHlsACm0FeGrWPMBEV5s3x1ZR5IEL+M3nxm6Nnuej/SNciupyoN7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767447; c=relaxed/simple;
-	bh=8yz1xnnzqmy0QxdCvo8yJHvkZee3MqSijopnVjpl7OM=;
+	s=arc-20240116; t=1773766059; c=relaxed/simple;
+	bh=U90FjWCZBfaLmgBmdPjSRKA33gkTL30vjCIoy9IEj/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaMP1oOBx1E1IW/fj9OUMjAmDXOaf267P1uOYBmFKR2FA+Zke0sPZnZ6tywES9fW2kWYxk9Lfmx/JXKQbNfvYH7xPJFLpWImwqO8X/10bq/rZBFR4ipC7uY9xdDVjp5Mu5VePNOo/kkfp474GiYFVKma/yIgEdOAcUNGFk79zX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhE9PC7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17BBC4CEF7;
-	Tue, 17 Mar 2026 17:10:46 +0000 (UTC)
+	 MIME-Version; b=YQlEme5p5y3dPY3d2DuFvYnC6vXdfeSkX1Ny512//KGsM1tr6vPMKlbWGZt/CTGmk8eQgHlKZRK1baOAfSSlspdyMmt6GNll0j90e/YH4ljUDrCbC6sa16Od1o45age9YKcTVusvzZ7LzVqO/1kIu+pwkV1T7BIgFFdkLJDp6YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTk3ZIfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536F1C19424;
+	Tue, 17 Mar 2026 16:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767447;
-	bh=8yz1xnnzqmy0QxdCvo8yJHvkZee3MqSijopnVjpl7OM=;
+	s=korg; t=1773766059;
+	bh=U90FjWCZBfaLmgBmdPjSRKA33gkTL30vjCIoy9IEj/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhE9PC7FeQ1NRHXcwYxa5AKRZ6BOYG18XOg+rCmE2ZG8xCBApfXCDm+/Du02ucpMM
-	 g9ml21Sac5wleh7inh+xhlTNPmuHW9eLmQH4uTwFSaq7drmtJYJuiVxeze2bvqh9FR
-	 nzBJHpohelmouCahhvL6PkxT+BtHa76WJfClPLHo=
+	b=yTk3ZIfxxhPFEraMgdIZzBctfhrnFMdzXWxEi5bmeiiYHJtRd6bKXGpGW6dLcSfYm
+	 dKQzK381f4iFv+gA3lG/HhxssCBYTwkJmypxWGoYcnynN3XZVmDF1NSNKfjwxRVq/r
+	 NZEDonSxf6SU6zCueCHLaA+Yejx8CJYoRTcO4J4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/333] ACPI: OSL: fix __iomem type on return from acpi_os_map_generic_address()
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 6.19 160/378] usb: gadget: f_hid: fix SuperSpeed descriptors
 Date: Tue, 17 Mar 2026 17:31:57 +0100
-Message-ID: <20260317163002.635806785@linuxfoundation.org>
+Message-ID: <20260317163012.898956537@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226607-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226292-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,56 +89,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,codethink.co.uk:email]
-X-Rspamd-Queue-Id: 6A1DB2AF8A6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 210262AEAD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 393815f57651101f1590632092986d1d5a3a41bd ]
+commit 7f58b4148ef5d8ee0fb7d8113dcc38ff5374babc upstream.
 
-The pointer returned from acpi_os_map_generic_address() is
-tagged with __iomem, so make the rv it is returned to also
-of void __iomem * type.
+When adding dynamic configuration for bInterval, the value was removed
+from the static SuperSpeed endpoint descriptors but was not set from the
+configured value in hidg_bind().  Thus at SuperSpeed the interrupt
+endpoints have bInterval as zero which is not valid per the USB
+specification.
 
-Fixes the following sparse warning:
+Add the missing setting for SuperSpeed endpoints.
 
-drivers/acpi/osl.c:1686:20: warning: incorrect type in assignment (different address spaces)
-drivers/acpi/osl.c:1686:20:    expected void *rv
-drivers/acpi/osl.c:1686:20:    got void [noderef] __iomem *
-
-Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of acpi_os_map_generic_address() return value")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-[ rjw: Subject tweak, added Fixes tag ]
-Link: https://patch.msgid.link/20260311105835.463030-1-ben.dooks@codethink.co.uk
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ea34925f5b2ee ("usb: gadget: hid: allow dynamic interval configuration via configfs")
+Cc: stable <stable@kernel.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://patch.msgid.link/20260227111540.431521-1-jkeeping@inmusicbrands.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/osl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_hid.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 5ff343096ece0..fd3ac84b596fa 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -1681,7 +1681,7 @@ acpi_status __init acpi_os_initialize(void)
- 		 * Use acpi_os_map_generic_address to pre-map the reset
- 		 * register if it's in system memory.
- 		 */
--		void *rv;
-+		void __iomem *rv;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1207,9 +1207,11 @@ static int hidg_bind(struct usb_configur
+ 	if (!hidg->interval_user_set) {
+ 		hidg_fs_in_ep_desc.bInterval = 10;
+ 		hidg_hs_in_ep_desc.bInterval = 4;
++		hidg_ss_in_ep_desc.bInterval = 4;
+ 	} else {
+ 		hidg_fs_in_ep_desc.bInterval = hidg->interval;
+ 		hidg_hs_in_ep_desc.bInterval = hidg->interval;
++		hidg_ss_in_ep_desc.bInterval = hidg->interval;
+ 	}
  
- 		rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
- 		pr_debug("%s: Reset register mapping %s\n", __func__,
--- 
-2.51.0
-
+ 	hidg_ss_out_comp_desc.wBytesPerInterval =
+@@ -1239,9 +1241,11 @@ static int hidg_bind(struct usb_configur
+ 		if (!hidg->interval_user_set) {
+ 			hidg_fs_out_ep_desc.bInterval = 10;
+ 			hidg_hs_out_ep_desc.bInterval = 4;
++			hidg_ss_out_ep_desc.bInterval = 4;
+ 		} else {
+ 			hidg_fs_out_ep_desc.bInterval = hidg->interval;
+ 			hidg_hs_out_ep_desc.bInterval = hidg->interval;
++			hidg_ss_out_ep_desc.bInterval = hidg->interval;
+ 		}
+ 		status = usb_assign_descriptors(f,
+ 			    hidg_fs_descriptors_intout,
 
 
 
