@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +P/LNuyGuWncJAIAu9opvQ
-	(envelope-from <stable+bounces-226258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:00 +0100
+	id IDUNAliKuWkjJwIAu9opvQ
+	(envelope-from <stable+bounces-226540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C51F2AE92F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA382AEFC2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3115C3091FA5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:45:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2A7FC30205E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904643EB7E5;
-	Tue, 17 Mar 2026 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650E03F23B3;
+	Tue, 17 Mar 2026 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIULuldk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0S5b4n+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541232FFDEA;
-	Tue, 17 Mar 2026 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270AB3F54A5;
+	Tue, 17 Mar 2026 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765925; cv=none; b=DrK0HCq7lD2qhPmuhzkUal/g0qdzLK74jqH6O9Wbe0IWb4PwUZ0OqV1nSHX3fHF3lI6ZI9R7Kj1L+iL9kJnpkU3nG7moihEktRs0xAeDuF/pYRAguqMZJS4QR4D6+jnNDIbe7h7YxvpdOkxWpnNUIcfk1Xe0vSW/U7h3ngq3z0Q=
+	t=1773767143; cv=none; b=r9ziHbQjIx3Ug1now9nKi98rtqTeyNFMzybToMy4NbOA7+Jb5U5dm7eoL/F5NrHgUjMTrLM0j7iCh1bFQ7GeOhQzUmZ1RBXxUfyWEJSdZz67NTVe2aTiJ/j1rhOaXUKwIUkKwKv2aHUc3/YMIfiKhMRVuZKALth3RyjhrdStKrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765925; c=relaxed/simple;
-	bh=OlCBrCgrcM8mt3bZvLYuHdJoISquDWT+zoOmOodlskI=;
+	s=arc-20240116; t=1773767143; c=relaxed/simple;
+	bh=9LlLLHP3mJ5gOwBSlDZapc7iGKPsRQgsaPod3lOkYmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRJhLi5lynoe0kWLC2yodn4YMpJEB6rvAB2rj2uTU6aFB7UTUL3wp2k/+VB00PLU9r0V31C/CcPWXKvkzlEWcfsrPb1afHC8ir7CumIK8hq2fOaW+BAb/WFvMlnGXD9SnoA6Pn/1tc8GD32q4Sq+swFL4kg6ldHcBO85vpWePFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIULuldk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5463C4CEF7;
-	Tue, 17 Mar 2026 16:45:24 +0000 (UTC)
+	 MIME-Version; b=Pu0yfOTrNzuXqvAmPNnFA2AvvYnG9WxvjUlLwRYKrj49pXkfvxKeWgyOW5P/ohJrpYoS2v80EpfMeSDRIPXFcxFQKjbfzO+B2PVyZeIIXuwXioHizsMx6YKrHEVg0CTH8t/c0XMm246P5Q6kzBXUg9P7yTKYMWB8XwymJi2mU7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0S5b4n+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA1EC2BCAF;
+	Tue, 17 Mar 2026 17:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765925;
-	bh=OlCBrCgrcM8mt3bZvLYuHdJoISquDWT+zoOmOodlskI=;
+	s=korg; t=1773767143;
+	bh=9LlLLHP3mJ5gOwBSlDZapc7iGKPsRQgsaPod3lOkYmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIULuldknFjw9udpSOY+UhgWuTw/kAOoVljpAaj1CQGI53mVtPt1KSLolsRW/oL06
-	 LX1o2SuuBMPe4SySSCfHBmlcOUodq6MTmKIxu3xYJMhDyPHoSq6pGf1ME2TRReZY2W
-	 onft8OhAvcfTXEM1I/oaoyhL8utNXVNV1Lcp3L3M=
+	b=0S5b4n+6Hm1X0CyWpE2bKMvsQI21LENkZWWfCEFZcRoPX1eTwfhEW4oLe+OUk+qp+
+	 zf+HcFdks2F5N6UFw3A9DVXXXQ98lU7rcdanquHixgNxrnYFUyIO1zKJvKmY1YSev/
+	 vsbQUoi6Bp/4/zknXcxTBXcGljBpGbWVHJQNCSy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 095/378] page_pool: store detach_time as ktime_t to avoid false-negatives
+Subject: [PATCH 6.18 023/333] remoteproc: mediatek: Unprepare SCP clock during system suspend
 Date: Tue, 17 Mar 2026 17:30:52 +0100
-Message-ID: <20260317163010.512852973@linuxfoundation.org>
+Message-ID: <20260317163000.220803149@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +69,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226540-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226258-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 4C51F2AE92F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8EA382AEFC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 28b225282d44e2ef40e7f46cfdbd5d1b20b8874f ]
+[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
 
-While testing other changes in vng I noticed that
-nl_netdev.page_pool_check flakes. This never happens in real CI.
+Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
+dependency to prepare_lock"), `scp->clk` was prepared and enabled only
+when it needs to communicate with the SCP.  The commit d935187cfb27
+moved the prepare operation to remoteproc's prepare(), keeping the clock
+prepared as long as the SCP is running.
 
-Turns out vng may boot and get to that test in less than a second.
-page_pool_detached() records the detach time in seconds, so if
-vng is fast enough detach time is set to 0. Other code treats
-0 as "not detached". detach_time is only used to report the state
-to the user, so it's not a huge deal in practice but let's fix it.
-Store the raw ktime_t (nanoseconds) instead. A nanosecond value
-of 0 is practically impossible.
+The power consumption due to the prolonged clock preparation can be
+negligible when the system is running, as SCP is designed to be a very
+power efficient processor.
 
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Fixes: 69cb4952b6f6 ("net: page_pool: report when page pool was destroyed")
-Link: https://patch.msgid.link/20260310003907.3540019-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, the clock remains prepared even when the system enters system
+suspend.  This prevents the underlying clock controller (and potentially
+the parent PLLs) from shutting down, which increases power consumption
+and may block the system from entering deep sleep states.
+
+Add suspend and resume callbacks.  Unprepare the clock in suspend() if
+it was active and re-prepare it in resume() to ensure the clock is
+properly disabled during system suspend, while maintaining the "always
+prepared" semantics while the system is active.  The driver doesn't
+implement .attach() callback, hence it only checks for RPROC_RUNNING.
+
+Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/page_pool/types.h | 2 +-
- net/core/page_pool_user.c     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 1509a536cb855..fb4f03ccd6156 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -246,7 +246,7 @@ struct page_pool {
- 	/* User-facing fields, protected by page_pools_lock */
- 	struct {
- 		struct hlist_node list;
--		u64 detach_time;
-+		ktime_t detach_time;
- 		u32 id;
- 	} user;
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index 2aeb0ded165cf..eb8908ea3bab0 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -1544,12 +1544,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
  };
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index c82a95beceff8..ee5060d8eec0e 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -245,7 +245,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		goto err_cancel;
- 	if (pool->user.detach_time &&
- 	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_DETACH_TIME,
--			 pool->user.detach_time))
-+			 ktime_divns(pool->user.detach_time, NSEC_PER_SEC)))
- 		goto err_cancel;
+ MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
  
- 	if (pool->mp_ops && pool->mp_ops->nl_fill(pool->mp_priv, rsp, NULL))
-@@ -337,7 +337,7 @@ int page_pool_list(struct page_pool *pool)
- void page_pool_detached(struct page_pool *pool)
- {
- 	mutex_lock(&page_pools_lock);
--	pool->user.detach_time = ktime_get_boottime_seconds();
-+	pool->user.detach_time = ktime_get_boottime();
- 	netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_CHANGE_NTF);
- 	mutex_unlock(&page_pools_lock);
- }
++static int __maybe_unused scp_suspend(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only unprepare if the SCP is running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		clk_unprepare(scp->clk);
++	return 0;
++}
++
++static int __maybe_unused scp_resume(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only prepare if the SCP was running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		return clk_prepare(scp->clk);
++	return 0;
++}
++
++static const struct dev_pm_ops scp_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
++};
++
+ static struct platform_driver mtk_scp_driver = {
+ 	.probe = scp_probe,
+ 	.remove = scp_remove,
+ 	.driver = {
+ 		.name = "mtk-scp",
+ 		.of_match_table = mtk_scp_of_match,
++		.pm = &scp_pm_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
