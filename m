@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOtMABiKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:32 +0100
+	id sO0MLWWVuWlcKwIAu9opvQ
+	(envelope-from <stable+bounces-226796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A872AEF1B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172542B0566
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF92A3045659
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF3D332C78EA
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420FA3F54D7;
-	Tue, 17 Mar 2026 17:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C17376BCD;
+	Tue, 17 Mar 2026 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py7nmnMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYzUdqQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AA53F54D1;
-	Tue, 17 Mar 2026 17:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB78536EABD;
+	Tue, 17 Mar 2026 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766853; cv=none; b=alGHuvVcE6ViasbCJ6HUY26IQ8ir3+Mgckjghrtbod+9InxGKVslEm4Z98Nr5VjYQRmFo4yfrovE0T8GiMi7vIBkVa0LwwliFGic18orNiyp1CMrBf/1yGwwe7Rk1w3kYXFlshorR/7JRaZOcK3eG8boXfRx3klhVk2xeW5EVVU=
+	t=1773768225; cv=none; b=hHAP3qCipKRr0PALGl7zJsZjThU4ZDbfOqzu4Qnw5BEJVpIagVcOwddk0VAcLD4xmOFlJq3gOmlboQqZ/jeYoHvlOgIPTtcGKzgInbEfo4T34a6gANYgBulB4vPVEe3rHgWzBzJdcgi4AvMBPvBWeRQlJghRbwIV/q2KJgDEpAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766853; c=relaxed/simple;
-	bh=nWBzfWt92Mp0iwlvT7v+AnllqZuqHVdGZ3kuN46cvIc=;
+	s=arc-20240116; t=1773768225; c=relaxed/simple;
+	bh=y480c/RRMSGu8HFUvSNtmsS/b8a2GU8LGM8a+qY5OJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKupKa3YpFHItwFGNiS6WyjQie5bbdyNFsRdKoLklE+UHrZLPWbASlN0Mn4OL9xjPd+aDOjhfWsI7IrUfTEq23zv/YZBSp+ZDcIFOFJZFZNaKBynXKp52hw4XjByi+Gl0gfkyhVwbOmlAPmR3Tr+M1dkcGSUhRjeyt4Qb0VpgsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py7nmnMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634D8C4CEF7;
-	Tue, 17 Mar 2026 17:00:52 +0000 (UTC)
+	 MIME-Version; b=KQLZpdLB+/D5GVBjnLGZyW6BvPQRSWQW/zik7DuLILImm95rHftS0hVmiKlrgRte1whcEOpnqEO71uaKiXkm4X2Eo2QwK5IyM6hDiMdt63bmdyLfI0QjYjfv/tfPLF0MOnpFTgZ0txfaHDQmFFVcALJH9ZQ3LCBKOrfLMWkVk6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYzUdqQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E09C4CEF7;
+	Tue, 17 Mar 2026 17:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766852;
-	bh=nWBzfWt92Mp0iwlvT7v+AnllqZuqHVdGZ3kuN46cvIc=;
+	s=korg; t=1773768225;
+	bh=y480c/RRMSGu8HFUvSNtmsS/b8a2GU8LGM8a+qY5OJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py7nmnMieq2AsDelk6G0LD9XBijFEJC1s/u3NbQx3s1a9E3Hl2aOuHLZGl5qeRiOs
-	 QsbPrmK6vQHRE50Y0gf444/ZP5fW3Yc3M6QF9mSdG5DC25CB/YRxmWkSYz2O+s4Rcq
-	 8JJNmGhcXDgWQSQVubVXyiMKGDi724VSEX61snic=
+	b=vYzUdqQyJmbeCnnUaNxMui5AsKuOjv1MPjEHocQlVk29qSEo0/Wl5+k4iqfnesTpP
+	 /spE0YbC36GaVflqQo4AdZ2dOmoDpwvLK58V6nW1vX8cex4+5B5Uj73r92B/qYIcoM
+	 sD4n08zvJJJPpwtzdJzM7P4b/itL328CKEJBkS4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.19 334/378] x86/apic: Disable x2apic on resume if the kernel expects so
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Calvin Owens <calvin@wbinvd.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.18 262/333] tracing: Fix trace_buf_size= cmdline parameter with sizes >= 2G
 Date: Tue, 17 Mar 2026 17:34:51 +0100
-Message-ID: <20260317163019.272743517@linuxfoundation.org>
+Message-ID: <20260317163009.086450832@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226469-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226796-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,101 +86,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,alien8.de:email,uefi.org:url]
-X-Rspamd-Queue-Id: 97A872AEF1B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 172542B0566
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
+From: Calvin Owens <calvin@wbinvd.org>
 
-commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
+commit d008ba8be8984760e36d7dcd4adbd5a41a645708 upstream.
 
-When resuming from s2ram, firmware may re-enable x2apic mode, which may have
-been disabled by the kernel during boot either because it doesn't support IRQ
-remapping or for other reasons. This causes the kernel to continue using the
-xapic interface, while the hardware is in x2apic mode, which causes hangs.
-This happens on defconfig + bare metal + s2ram.
+Some of the sizing logic through tracer_alloc_buffers() uses int
+internally, causing unexpected behavior if the user passes a value that
+does not fit in an int (on my x86 machine, the result is uselessly tiny
+buffers).
 
-Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
-disabled, i.e. when x2apic_mode = 0.
+Fix by plumbing the parameter's real type (unsigned long) through to the
+ring buffer allocation functions, which already use unsigned long.
 
-The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
-pre-sleep configuration or initial boot configuration for each CPU, including
-MSR state:
+It has always been possible to create larger ring buffers via the sysfs
+interface: this only affects the cmdline parameter.
 
-  When executing from the power-on reset vector as a result of waking from an
-  S2 or S3 sleep state, the platform firmware performs only the hardware
-  initialization required to restore the system to either the state the
-  platform was in prior to the initial operating system boot, or to the
-  pre-sleep configuration state. In multiprocessor systems, non-boot
-  processors should be placed in the same state as prior to the initial
-  operating system boot.
-
-  (further ahead)
-
-  If this is an S2 or S3 wake, then the platform runtime firmware restores
-  minimum context of the system before jumping to the waking vector. This
-  includes:
-
-	CPU configuration. Platform runtime firmware restores the pre-sleep
-	configuration or initial boot configuration of each CPU (MSR, MTRR,
-	firmware update, SMBase, and so on). Interrupts must be disabled (for
-	IA-32 processors, disabled by CLI instruction).
-
-	(and other things)
-
-So at least as per the spec, re-enablement of x2apic by the firmware is
-allowed if "x2apic on" is a part of the initial boot configuration.
-
-  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
-
-  [ bp: Massage. ]
-
-Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
-Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/bff42a4288aada08bdf74da3f5b67a2c28b761f8.1772852067.git.calvin@wbinvd.org
+Fixes: 73c5162aa362 ("tracing: keep ring buffer to minimum size till used")
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1894,6 +1894,7 @@ void __init check_x2apic(void)
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9849,7 +9849,7 @@ static void setup_trace_scratch(struct t
+ }
  
- static inline void try_to_enable_x2apic(int remap_mode) { }
- static inline void __x2apic_enable(void) { }
-+static inline void __x2apic_disable(void) { }
- #endif /* !CONFIG_X86_X2APIC */
+ static int
+-allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
++allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, unsigned long size)
+ {
+ 	enum ring_buffer_flags rb_flags;
+ 	struct trace_scratch *tscratch;
+@@ -9904,7 +9904,7 @@ static void free_trace_buffer(struct arr
+ 	}
+ }
  
- void __init enable_IR_x2apic(void)
-@@ -2456,6 +2457,11 @@ static void lapic_resume(void *data)
- 	if (x2apic_mode) {
- 		__x2apic_enable();
- 	} else {
-+		if (x2apic_enabled()) {
-+			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
-+			__x2apic_disable();
-+		}
-+
- 		/*
- 		 * Make sure the APICBASE points to the right address
- 		 *
+-static int allocate_trace_buffers(struct trace_array *tr, int size)
++static int allocate_trace_buffers(struct trace_array *tr, unsigned long size)
+ {
+ 	int ret;
+ 
+@@ -11186,7 +11186,7 @@ __init static void enable_instances(void
+ 
+ __init static int tracer_alloc_buffers(void)
+ {
+-	int ring_buf_size;
++	unsigned long ring_buf_size;
+ 	int ret = -ENOMEM;
+ 
+ 
 
 
 
