@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCS9BqONuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:39 +0100
+	id aM7+MzeIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3552AF660
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A562AEB6F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9F1AE30660FB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:15:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26DFB310A048
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6B237A486;
-	Tue, 17 Mar 2026 17:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D099E3F23DD;
+	Tue, 17 Mar 2026 16:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f40IOhpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxThlu8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E529374174;
-	Tue, 17 Mar 2026 17:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F29A3E5ED6;
+	Tue, 17 Mar 2026 16:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767724; cv=none; b=OcjVAmYgp0+rsrei7/8HpAwi5gqdlQf2HC1ILcnQYL9Glc4f9+OFqcs13w7ot1p7LmMS1HJZ6O2waRz1vW/dKKZZdH+lG9P+3zql6nPUuqex0uSGITN+mlz4FShdqNS8C5xELvpss7tgBslF+0eQDackleVPwznxBFAlITwXCjk=
+	t=1773766163; cv=none; b=FgKeInNdgjHjYJB/hi9j3DHMmohkh9I+pnLgPqVJv0bxGByEAxZy9LzUTj9XKGoUnbvcHFSOe288bQ99AARuZ1lhmmEwuNbam4umuocqxPnilpaVu5dD5HUTHVQTl7L93Bqp0VtAZdO+BeXOFBOquiZF4+EH+KmAsQMrIemWltQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767724; c=relaxed/simple;
-	bh=KtXj5foikDc+a5Z8LeiFuxKHEtmUqDonFaOw2gSSqX4=;
+	s=arc-20240116; t=1773766163; c=relaxed/simple;
+	bh=1LQM42FAV7rMQACOHETfqaBJ9oXCGwTYv8Zo5SbBvm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKNrw6ANxicLC09E3JZnZzH0f1UDkwHHqd4aClhxkhMQGMvSRVolZhQmUVq0lHTMkDFS4RzRGS4etpDO5JNVLbh0qmG0hI2RtNn3TR53DoAw2ojIsTC0aFSd/etOhnqzhdGebSp6F+BxlBpY0SWqX4LfvBxvTTHzgAtcO9kbOlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f40IOhpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58C3C2BCB7;
-	Tue, 17 Mar 2026 17:15:22 +0000 (UTC)
+	 MIME-Version; b=j/Ms1M+JA8wTcCjc/o9Zf+C216XteAW696RfcS214NVEDGYVbpBl3edPcJhREE4WBS5c8rEGpQfrS8pYn+k8XiF+Dn3aFawJrj5c1RVwE6J+seK1JLSZsr/E11duM02fm9EJ1s1J1anM3qdhKxuWCmEPWbeZ9jIUxpmXTNQt+/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxThlu8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60ACC4CEF7;
+	Tue, 17 Mar 2026 16:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767723;
-	bh=KtXj5foikDc+a5Z8LeiFuxKHEtmUqDonFaOw2gSSqX4=;
+	s=korg; t=1773766163;
+	bh=1LQM42FAV7rMQACOHETfqaBJ9oXCGwTYv8Zo5SbBvm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f40IOhpfxH4TzeVUWngGi9eUexokxz5SSPVWKSbvqpENsQi2t4BmppQC46iVM6VWN
-	 yl4jRaWcaxR5uCypiZhQpry4wW2RTMIvKTYJBJUiWLxaScjxX/NWU3nvyxv/e3fpgy
-	 KJYMe0LsABdrfKpsar+OTM8ABN3d9EYTIz0D4rSs=
+	b=mxThlu8jz+ReaM+d3GJo6FtTUI1PRXzqadENsbpwbv9M0CymsyRCVeG8I1ZhzP2Gg
+	 Y8ULNgfjyxifpTHuZ39OsuSCn2sB7tjvb/h6gEUk/RjVQqIry0ihVYua8rP6dBtC4X
+	 W0LptnzAtsDwdT20jtyL0SVu2nyMmeph6LN1ur7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 111/333] net: usb: lan78xx: fix TX byte statistics for small packets
+	Jessica Liu <liu.xuemei1@zte.com.cn>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 183/378] irqchip/riscv-aplic: Register syscore operations only once
 Date: Tue, 17 Mar 2026 17:32:20 +0100
-Message-ID: <20260317163003.484185573@linuxfoundation.org>
+Message-ID: <20260317163013.740260526@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226666-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226314-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,56 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: AD3552AF660
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 31A562AEB6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jessica Liu <liu.xuemei1@zte.com.cn>
 
-commit 50988747c30df47b73b787f234f746027cb7ec6c upstream.
+[ Upstream commit b330fbfd34d7624bec62b99ad88dba2614326a19 ]
 
-Account for hardware auto-padding in TX byte counters to reflect actual
-wire traffic.
+Since commit 95a8ddde3660 ("irqchip/riscv-aplic: Preserve APLIC
+states across suspend/resume"), when multiple NUMA nodes exist
+and AIA is not configured as "none", aplic_probe() is called
+multiple times. This leads to register_syscore(&aplic_syscore)
+being invoked repeatedly, causing the following Oops:
 
-The LAN7850 hardware automatically pads undersized frames to the minimum
-Ethernet frame length (ETH_ZLEN, 60 bytes). However, the driver tracks
-the network statistics based on the unpadded socket buffer length. This
-results in the tx_bytes counter under-reporting the actual physical
-bytes placed on the Ethernet wire for small packets (like short ARP or
-ICMP requests).
+ list_add double add: new=ffffffffb91461f0, prev=ffffffffb91461f0, next=ffffffffb915c408.
+ [<ffffffffb7b5c8ca>] __list_add_valid_or_report+0x60/0xc0
+ [<ffffffffb7cc3236>] register_syscore+0x3e/0x70
+ [<ffffffffb7b8d61c>] aplic_probe+0xc6/0x112
 
-Use max_t() to ensure the transmission statistics accurately account for
-the hardware-generated padding.
+Fix this by registering syscore operations only once, using a static
+variable aplic_syscore_registered to track registration.
 
-Fixes: d383216a7efe ("lan78xx: Introduce Tx URB processing improvements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20260305143429.530909-3-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ tglx: Trim backtrace properly ]
+
+Fixes: 95a8ddde3660 ("irqchip/riscv-aplic: Preserve APLIC states across suspend/resume")
+Signed-off-by: Jessica Liu <liu.xuemei1@zte.com.cn>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260310141731145xMwLsyvXl9Gw-m6A4VRYj@zte.com.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-riscv-aplic-main.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4178,7 +4178,7 @@ static struct skb_data *lan78xx_tx_buf_f
- 		}
+diff --git a/drivers/irqchip/irq-riscv-aplic-main.c b/drivers/irqchip/irq-riscv-aplic-main.c
+index 8775f188ea4fc..9f53979b69625 100644
+--- a/drivers/irqchip/irq-riscv-aplic-main.c
++++ b/drivers/irqchip/irq-riscv-aplic-main.c
+@@ -116,6 +116,16 @@ static struct syscore aplic_syscore = {
+ 	.ops = &aplic_syscore_ops,
+ };
  
- 		tx_data += len;
--		entry->length += len;
-+		entry->length += max_t(unsigned int, len, ETH_ZLEN);
- 		entry->num_of_packet += skb_shinfo(skb)->gso_segs ?: 1;
++static bool aplic_syscore_registered __ro_after_init;
++
++static void aplic_syscore_init(void)
++{
++	if (!aplic_syscore_registered) {
++		register_syscore(&aplic_syscore);
++		aplic_syscore_registered = true;
++	}
++}
++
+ static int aplic_pm_notifier(struct notifier_block *nb, unsigned long action, void *data)
+ {
+ 	struct aplic_priv *priv = container_of(nb, struct aplic_priv, genpd_nb);
+@@ -379,7 +389,7 @@ static int aplic_probe(struct platform_device *pdev)
+ 		return rc;
+ 	}
  
- 		dev_kfree_skb_any(skb);
+-	register_syscore(&aplic_syscore);
++	aplic_syscore_init();
+ 
+ #ifdef CONFIG_ACPI
+ 	if (!acpi_disabled)
+-- 
+2.51.0
+
 
 
 
