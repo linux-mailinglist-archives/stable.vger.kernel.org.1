@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KkkNHqOuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:14 +0100
+	id GMlzNxaLuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734562AF838
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91F42AF151
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C084930B3DAB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1A2233103D39
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874DA32AAC5;
-	Tue, 17 Mar 2026 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D97B3F7E95;
+	Tue, 17 Mar 2026 16:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulHm6V3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpDAXafY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D6F2DF132;
-	Tue, 17 Mar 2026 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DAB3F7E8D;
+	Tue, 17 Mar 2026 16:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768057; cv=none; b=mbxtm1Jm6M9fvPuSN3JMLk+LZmgVY4wwafSsDQqVIjYpx0v03pDBDDL95zKR5XRXRDoktc7vqCnLuwx9hUlUGJ4em7e6uK3RRRFhkKKT6x0Agar4rM9e3X38u8cuu5rgLSwtV4E8tLlyXie/FVao3+DxH39uvmhAGOdA8kG21/w=
+	t=1773766660; cv=none; b=WQ56sKU2gtF0JIcYvDUfzEz/hX5qSj4lPm/5KF4vH0l2zMYZwLlEPM1qABeiaGsZ6TVv5fIYHUD1PCpZsEjge/i9jfyGxdBxXzs0lDe2VLFE4v5IoxZzHvg36W+Lc0y9UR9pkkZJTAC6VxpOZnDhQ2Hv9lcqLHILzWNiWfgoISw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768057; c=relaxed/simple;
-	bh=dGOdRmMSwHB1riDCOSb3gPsh6Q6QEXathuowAsFkWzU=;
+	s=arc-20240116; t=1773766660; c=relaxed/simple;
+	bh=fxE/6O+N7XYFVt7ru6RjfX9Esbgf38slIKL91Lm2BfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnW14KTShOG0JefWyNzB6yvB2zJUh0RigxUzKG3Gpq0zcBs8Nmcvyf3K7cu/ZnSUNZO8sGlvewU1B5xfSgdZ0wFDx9Dfg2BpjeSyi7IpK7WnxQRvgPcR3ahPJgVXwkaLS8sClm8Vua/GCQSAYwYKtc8YqM1t48uESE/KTb0jGH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulHm6V3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E6DC19424;
-	Tue, 17 Mar 2026 17:20:56 +0000 (UTC)
+	 MIME-Version; b=kCFZC6vPneHgbSA2M04LtAvqsBjYGT6jU4U8nIioqWbGeXWETAUYTXsdOHTY7kj6YpE2a3FzGoOfj5RaOfH/cPq/nLSQd+v1dt3BCEvnbq72fMGchAVS/I83jabhXXbkf8Y3WnpRpS9myMADkULnBxyE2BiJFc0LVuwrY4Kn0ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpDAXafY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF9DC2BC86;
+	Tue, 17 Mar 2026 16:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768057;
-	bh=dGOdRmMSwHB1riDCOSb3gPsh6Q6QEXathuowAsFkWzU=;
+	s=korg; t=1773766660;
+	bh=fxE/6O+N7XYFVt7ru6RjfX9Esbgf38slIKL91Lm2BfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulHm6V3dmlruxOKD4SAJRlefNibCJTOhE+Ppar93cYlwROTw90iMlvdGvy247NRGh
-	 dnXY8ZMAuW6LrGcgRZmHdsCOZwmN+g5MsjMJ//KOam4d77ku08WHchvoqgArHbNQkV
-	 HiueetKg763+BRUO63IJ/0rWlad0Vcl43mu7g9mw=
+	b=OpDAXafYGGFQlKqayFNbfwJMDPdqlsKZQ5yHW3HfI7v5glbqZchekMpc8F3CrVE/c
+	 gGSraa8RGWO6OhlHUW11BkksLVZp5F0iTbdRovaful1voG1Hvz/h0aItT+vztPYE9/
+	 i+cW2JTGpcFTWDaKjgfhdkXFqFyTpkw/9zhvat5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.18 222/333] pmdomain: rockchip: Fix PD_VCODEC for RK3588
+	Johan Hovold <johan@kernel.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 294/378] net: mctp: fix device leak on probe failure
 Date: Tue, 17 Mar 2026 17:34:11 +0100
-Message-ID: <20260317163007.597276357@linuxfoundation.org>
+Message-ID: <20260317163017.825007925@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +68,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226753-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226427-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
-X-Rspamd-Queue-Id: 734562AF838
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,codeconstruct.com.au:email]
+X-Rspamd-Queue-Id: E91F42AF151
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0fb59eaca18f1254ecdce34354eec3cb1b3b5e10 upstream.
+commit 224a0d284c3caf1951302d1744a714784febed71 upstream.
 
->From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
-PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-The panic looks like below:
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
-  ...
-  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
-  Workqueue: pm genpd_power_off_work_fn
-  Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x40/0x84
-  dump_stack+0x18/0x24
-  vpanic+0x1ec/0x4fc
-  vpanic+0x0/0x4fc
-  check_panic_on_warn+0x0/0x94
-  arm64_serror_panic+0x6c/0x78
-  do_serror+0xc4/0xcc
-  el1h_64_error_handler+0x3c/0x5c
-  el1h_64_error+0x6c/0x70
-  regmap_mmio_read32le+0x18/0x24 (P)
-  regmap_bus_reg_read+0xfc/0x130
-  regmap_read+0x188/0x1ac
-  regmap_read+0x54/0x78
-  rockchip_pd_power+0xcc/0x5f0
-  rockchip_pd_power_off+0x1c/0x4c
-  genpd_power_off+0x84/0x120
-  genpd_power_off+0x1b4/0x260
-  genpd_power_off_work_fn+0x38/0x58
-  process_scheduled_works+0x194/0x2c4
-  worker_thread+0x2ac/0x3d8
-  kthread+0x104/0x124
-  ret_from_fork+0x10/0x20
-  SMP: stopping secondary CPUs
-  Kernel Offset: disabled
-  CPU features: 0x3000000,000e0005,40230521,0400720b
-  Memory Limit: none
-  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
+This driver takes a reference to the USB device during probe but does
+not to release it on probe failures.
 
-Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
-the PD_VCODEC is enough.
+Drop the redundant device reference to fix the leak, reduce cargo
+culting, make it easier to spot drivers where an extra reference is
+needed, and reduce the risk of further memory leaks.
 
-[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-
-Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
-Cc: stable@vger.kernel.org
-Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
+Cc: stable@vger.kernel.org	# 6.15
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260305104549.16110-1-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/rockchip/pm-domains.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mctp/mctp-usb.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/pmdomain/rockchip/pm-domains.c
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -1286,7 +1286,7 @@ static const struct rockchip_domain_info
- static const struct rockchip_domain_info rk3588_pm_domains[] = {
- 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
- 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
--	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
-+	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
- 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
- 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
- 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -329,7 +329,7 @@ static int mctp_usb_probe(struct usb_int
+ 	SET_NETDEV_DEV(netdev, &intf->dev);
+ 	dev = netdev_priv(netdev);
+ 	dev->netdev = netdev;
+-	dev->usbdev = usb_get_dev(interface_to_usbdev(intf));
++	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
+ 	usb_set_intfdata(intf, dev);
+ 
+@@ -365,7 +365,6 @@ static void mctp_usb_disconnect(struct u
+ 	mctp_unregister_netdev(dev->netdev);
+ 	usb_free_urb(dev->tx_urb);
+ 	usb_free_urb(dev->rx_urb);
+-	usb_put_dev(dev->usbdev);
+ 	free_netdev(dev->netdev);
+ }
+ 
 
 
 
