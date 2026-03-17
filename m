@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHtRBfKIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:38 +0100
+	id +ABYMTOVuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:53:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9776E2AECF0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E742B04F2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F8C0300514B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DCE5335825B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DC1357A4A;
-	Tue, 17 Mar 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241163368AE;
+	Tue, 17 Mar 2026 17:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAV5VESB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSfULqYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6771ACEDE;
-	Tue, 17 Mar 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E6E21D5B0;
+	Tue, 17 Mar 2026 17:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766892; cv=none; b=i/SJ1NaBBH5XIiQ0iqArun7v2cWT64NFwMQv1pL+JxB9eSYwaYQ3AF0K/ySQNf9B9vbSGTlkKN1hjir/VlQz9k7jwCFfdvo/6C/wu7t8cm77BCtgVmORuT0GoEykALnCQ2nQlBW58/q0jEykT/Up/KB0Fd/Im6r4j8O/MHdL//k=
+	t=1773768148; cv=none; b=rT0G8zyLV9tYiiLlXI8y7faiTL5evs6yPpG6N3r2tEf1K29n1trDdQGUsaUZjtgx9WZy4d9va1s2S1+GidMx01bHlxQLjx7kWf/ersaib9MPE237aG/kNIfQPrZU4nXVZXvb6+wMKn+TQJoML1sNjsMATGQX4ow7LDppSuG1gf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766892; c=relaxed/simple;
-	bh=EB7vgOdQqGjyTvw+cvVeAuNRCumZE9g+7AzJAUTPBGU=;
+	s=arc-20240116; t=1773768148; c=relaxed/simple;
+	bh=NrSYe6YoHADkVE02cmup2foFWcBDjJE1q6bSRS2c5Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOCTK62MgaDiGslw+AX1uSc+2hyKwwe3DvvPk5aRBdnECwjFZuwGq5vFNM/mivkR/4u5vEBjXwr3MvMSH/Wny1b5yZdgtquyjNAoRipWc/8tEiMbMnYWdSBvWcMaxUj4kGkG7jO+vk6yMzePsJ0n1qRvy/vdohQvv0gHiGBK0+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAV5VESB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BDAC4CEF7;
-	Tue, 17 Mar 2026 17:01:31 +0000 (UTC)
+	 MIME-Version; b=tlUivPHRMqM3FQs/fRn9H5IDxqwhGN26TLxPdCh4Wrl9cFWUF1ixeiO77FialOf88lSMSMs4TAWzUq4YkupEC7WriWr0snXKsjQcPQq1SDLoy8JVZcLPyyCEzCmxF/LhEEN7gz54/kDRC4L1BQNSNxzjNkw73YxnWSkLHqTDgHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSfULqYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145EBC19424;
+	Tue, 17 Mar 2026 17:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766892;
-	bh=EB7vgOdQqGjyTvw+cvVeAuNRCumZE9g+7AzJAUTPBGU=;
+	s=korg; t=1773768148;
+	bh=NrSYe6YoHADkVE02cmup2foFWcBDjJE1q6bSRS2c5Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAV5VESBHCyoL3veDiLcFuCbOrK2Buk/WPmt2/lQxKUMXKiebPkCLV6hOD5PYyx8p
-	 +gFPmxAabBeTWbiWwXttdDx8/hnwq+hqDHcYBicWWSB8GDP3SqdlAszWhpx/yk2RMz
-	 gqdUbmycl+HFAD/B1XLZCZAa96FhWV9q4PtY2b8Q=
+	b=MSfULqYRHQh/FLS5GebYbivFrGmWiA2PIbec/AgvfiAwd2Sv8HNxHEosFm59uJFfC
+	 0gEzhaFadSVvT2t1s/l34rhbtwqySmCJYCSRhqGXZmE4/5WyBLLOX1TlKZbw7fP/wF
+	 Aw4OzkOVcYQoqwU7K+VNjAvZQh7cyq81NB0Ca1GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.19 311/378] drm/i915/vrr: Configure VRR timings after enabling TRANS_DDI_FUNC_CTL
-Date: Tue, 17 Mar 2026 17:34:28 +0100
-Message-ID: <20260317163018.439314505@linuxfoundation.org>
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Hao Li <hao.li@linux.dev>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH 6.18 240/333] slab: distinguish lock and trylock for sheaf_flush_main()
+Date: Tue, 17 Mar 2026 17:34:29 +0100
+Message-ID: <20260317163008.264468539@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +65,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-226478-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226775-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_EMAILBL_FAIL(0.00)[tursulin.ursulin.net:server fail];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,ursulin.net:email]
-X-Rspamd-Queue-Id: 9776E2AECF0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
+X-Rspamd-Queue-Id: 27E742B04F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit 237aab549676288d9255bb8dcc284738e56eaa31 upstream.
+commit 48647d3f9a644d1e81af6558102d43cdb260597b upstream.
 
-Apparently ICL may hang with an MCE if we write TRANS_VRR_VMAX/FLIPLINE
-before enabling TRANS_DDI_FUNC_CTL.
+sheaf_flush_main() can be called from __pcs_replace_full_main() where
+it's fine if the trylock fails, and pcs_flush_all() where it's not
+expected to and for some flush callers (when destroying the cache or
+memory hotremove) it would be actually a problem if it failed and left
+the main sheaf not flushed. The flush callers can however safely use
+local_lock() instead of trylock.
 
-Personally I was only able to reproduce a hang (on an Dell XPS 7390
-2-in-1) with an external display connected via a dock using a dodgy
-type-C cable that made the link training fail. After the failed
-link training the machine would hang. TGL seemed immune to the
-problem for whatever reason.
+The trylock failure should not happen in practice on !PREEMPT_RT, but
+can happen on PREEMPT_RT. The impact is limited in practice because when
+a trylock fails in the kmem_cache_destroy() path, it means someone is
+using the cache while destroying it, which is a bug on its own. The memory
+hotremove path is unlikely to be employed in a production RT config, but
+it's possible.
 
-BSpec does tell us to configure VRR after enabling TRANS_DDI_FUNC_CTL
-as well. The DMC firmware also does the VRR restore in two stages:
-- first stage seems to be unconditional and includes TRANS_VRR_CTL
-  and a few other VRR registers, among other things
-- second stage is conditional on the DDI being enabled,
-  and includes TRANS_DDI_FUNC_CTL and TRANS_VRR_VMAX/VMIN/FLIPLINE,
-  among other things
+To fix this, split the function into sheaf_flush_main() (using
+local_lock()) and sheaf_try_flush_main() (using local_trylock()) where
+both call __sheaf_flush_main_batch() to flush a single batch of objects.
+This will also allow lockdep to verify our context assumptions.
 
-So let's reorder the steps to match to avoid the hang, and
-toss in an extra WARN to make sure we don't screw this up later.
+The problem was raised in an off-list question by Marcelo.
 
-BSpec: 22243
+Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
 Cc: stable@vger.kernel.org
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reported-by: Benjamin Tissoires <bentiss@kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15777
-Tested-by: Benjamin Tissoires <bentiss@kernel.org>
-Fixes: dda7dcd9da73 ("drm/i915/vrr: Use fixed timings for platforms that support VRR")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260303095414.4331-1-ville.syrjala@linux.intel.com
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-(cherry picked from commit 93f3a267c3dd4d811b224bb9e179a10d81456a74)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Reported-by: Marcelo Tosatti <mtosatti@redhat.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Link: https://patch.msgid.link/20260211-b4-sheaf-flush-v1-1-4e7f492f0055@suse.cz
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |    1 -
- drivers/gpu/drm/i915/display/intel_vrr.c     |   14 ++++++++++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ mm/slub.c |   47 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -1614,7 +1614,6 @@ static void hsw_configure_cpu_transcoder
- 	}
- 
- 	intel_set_transcoder_timings(crtc_state);
--	intel_vrr_set_transcoder_timings(crtc_state);
- 
- 	if (cpu_transcoder != TRANSCODER_EDP)
- 		intel_de_write(display, TRANS_MULT(display, cpu_transcoder),
---- a/drivers/gpu/drm/i915/display/intel_vrr.c
-+++ b/drivers/gpu/drm/i915/display/intel_vrr.c
-@@ -529,6 +529,18 @@ void intel_vrr_set_transcoder_timings(co
- 		return;
- 
- 	/*
-+	 * Bspec says:
-+	 * "(note: VRR needs to be programmed after
-+	 *  TRANS_DDI_FUNC_CTL and before TRANS_CONF)."
-+	 *
-+	 * In practice it turns out that ICL can hang if
-+	 * TRANS_VRR_VMAX/FLIPLINE are written before
-+	 * enabling TRANS_DDI_FUNC_CTL.
-+	 */
-+	drm_WARN_ON(display->drm,
-+		    !(intel_de_read(display, TRANS_DDI_FUNC_CTL(display, cpu_transcoder)) & TRANS_DDI_FUNC_ENABLE));
-+
-+	/*
- 	 * This bit seems to have two meanings depending on the platform:
- 	 * TGL: generate VRR "safe window" for DSB vblank waits
- 	 * ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
-@@ -754,6 +766,8 @@ void intel_vrr_transcoder_enable(const s
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2713,19 +2713,19 @@ static void __kmem_cache_free_bulk(struc
+  * object pointers are moved to a on-stack array under the lock. To bound the
+  * stack usage, limit each batch to PCS_BATCH_MAX.
+  *
+- * returns true if at least partially flushed
++ * Must be called with s->cpu_sheaves->lock locked, returns with the lock
++ * unlocked.
++ *
++ * Returns how many objects are remaining to be flushed
+  */
+-static bool sheaf_flush_main(struct kmem_cache *s)
++static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s)
  {
- 	struct intel_display *display = to_intel_display(crtc_state);
+ 	struct slub_percpu_sheaves *pcs;
+ 	unsigned int batch, remaining;
+ 	void *objects[PCS_BATCH_MAX];
+ 	struct slab_sheaf *sheaf;
+-	bool ret = false;
  
-+	intel_vrr_set_transcoder_timings(crtc_state);
+-next_batch:
+-	if (!local_trylock(&s->cpu_sheaves->lock))
+-		return ret;
++	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	pcs = this_cpu_ptr(s->cpu_sheaves);
+ 	sheaf = pcs->main;
+@@ -2743,10 +2743,37 @@ next_batch:
+ 
+ 	stat_add(s, SHEAF_FLUSH, batch);
+ 
+-	ret = true;
++	return remaining;
++}
+ 
+-	if (remaining)
+-		goto next_batch;
++static void sheaf_flush_main(struct kmem_cache *s)
++{
++	unsigned int remaining;
 +
- 	if (!intel_vrr_possible(crtc_state))
- 		return;
++	do {
++		local_lock(&s->cpu_sheaves->lock);
++
++		remaining = __sheaf_flush_main_batch(s);
++
++	} while (remaining);
++}
++
++/*
++ * Returns true if the main sheaf was at least partially flushed.
++ */
++static bool sheaf_try_flush_main(struct kmem_cache *s)
++{
++	unsigned int remaining;
++	bool ret = false;
++
++	do {
++		if (!local_trylock(&s->cpu_sheaves->lock))
++			return ret;
++
++		ret = true;
++		remaining = __sheaf_flush_main_batch(s);
++
++	} while (remaining);
  
+ 	return ret;
+ }
+@@ -6140,7 +6167,7 @@ alloc_empty:
+ 	if (put_fail)
+ 		 stat(s, BARN_PUT_FAIL);
+ 
+-	if (!sheaf_flush_main(s))
++	if (!sheaf_try_flush_main(s))
+ 		return NULL;
+ 
+ 	if (!local_trylock(&s->cpu_sheaves->lock))
 
 
 
