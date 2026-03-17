@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPpVJ0SUuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:56 +0100
+	id UD3wNr2JuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D652B0317
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFB62AEE46
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3951D32EFF10
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3070630B284F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2888030C63B;
-	Tue, 17 Mar 2026 17:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FD93F65E7;
+	Tue, 17 Mar 2026 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNGKeRef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcV02Uum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7372D73B8;
-	Tue, 17 Mar 2026 17:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362033F23B3;
+	Tue, 17 Mar 2026 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767927; cv=none; b=UXOqRHMUrG70QOAZbXSAUUx7YLyYhacCfJBmQwi7rqfY5fZBA47N6KhEc/XRQVWd0X8oVxO40pIMlT46viMwUsuJGBWaH1ATaFfywNBKa/VeMpUGbxGXIzYseXvQ/Ku2v9wBAYwMt8qg3RZUhTP3BHIJYwXn0b5sXp7ikOd+MHM=
+	t=1773766535; cv=none; b=Pfxpq6ghXo8aQ0mjSoKc1Ivet8EuWEkCDijQNIelsYfaQfku+Uv1xzh09csxXdkGCdfxiaZlhICcUdXCHoAL1QaKGlJKT90gVQOrpndfBkFvUdcr/YTsnTHqpw3dl/XTOHKIL+dIZdk5DvM4hDIYBrAZzenUriduR7gUm9FlFHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767927; c=relaxed/simple;
-	bh=rixRaNXYwku7kccWbBSyz4i1uCf2skt3YgCBm0uAwcw=;
+	s=arc-20240116; t=1773766535; c=relaxed/simple;
+	bh=fvtuui02k6UJilAbeuOogXeub47zAPQB7HjVl2NgX1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8L51wswvZr0dwC9SyEZCO1IfhU7GL06ClwvvBtyIq8uit/5kTaWcTkRs5fNb2EZlmeljObEI4dSvZQ62237ft8lUrKY/19LhiqPckM2w9nYtGoYHPQ0iE2I/m+dYzZxQ2BusYl7uMMkPGtP/2sidSPi5fbcyA3JqlADJsMEmCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNGKeRef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0153C4CEF7;
-	Tue, 17 Mar 2026 17:18:46 +0000 (UTC)
+	 MIME-Version; b=nGXjzltuJwWbUpMKwve9H05c4GXCXNUL7GimqxqS51kJ62HQZKK7LKHxkezJD5yl3HLp5CeQfBHMKYUjyMKyY6PiQu5T70qenAL+v3knjhQx/bsoCFQux5bb7/EliO5XGTehClulHvczfFpq4zro+aBow+Sals9xVXqRBjsMsFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcV02Uum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF63C2BC86;
+	Tue, 17 Mar 2026 16:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767927;
-	bh=rixRaNXYwku7kccWbBSyz4i1uCf2skt3YgCBm0uAwcw=;
+	s=korg; t=1773766535;
+	bh=fvtuui02k6UJilAbeuOogXeub47zAPQB7HjVl2NgX1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNGKeRefCl1Rp91nwOVAjAmT5Ebxfe7LYXdE+KdElv64SleGi/tTQs90dq+9J/SbY
-	 q8gCNQ4VP0S8FPVFsXeAWWB2dd+6bxJOgbtp1b2xc3IJ6mIywFUNYI1nsiuFfNHlgE
-	 IxcOS/V2kncxFSSWu5rQCSc1h2WGtOUmI0WBkINQ=
+	b=LcV02Uum8nIm6pOPSEXm7ynwM/bKPzsScb3vjpSIY3NOC37V1o8lk6RiCdMRlwTO8
+	 rXPTuMgwF2ZvmTfbIKQPEipLM9Z32xCo+HQ4Geggf9auKTt0rd1G/RugmiQL9hpND5
+	 db9TaOcywwSwSig6dLki/R/70Gc6d/4BwAiCNOM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.18 192/333] nouveau/gsp: drop WARN_ON in ACPI probes
-Date: Tue, 17 Mar 2026 17:33:41 +0100
-Message-ID: <20260317163006.477523428@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shengming Hu <hu.shengming@zte.com.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.19 265/378] fgraph: Fix thresh_return nosleeptime double-adjust
+Date: Tue, 17 Mar 2026 17:33:42 +0100
+Message-ID: <20260317163016.762148030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226399-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,71 +87,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 39D652B0317
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,goodmis.org:email]
+X-Rspamd-Queue-Id: EAFB62AEE46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-commit 9478c166c46934160135e197b049b5a05753f2ad upstream.
+commit b96d0c59cdbb2a22b2545f6f3d5c6276b05761dd upstream.
 
-These WARN_ONs seem to trigger a lot, and we don't seem to have a
-plan to fix them, so just drop them, as they are most likely
-harmless.
+trace_graph_thresh_return() called handle_nosleeptime() and then delegated
+to trace_graph_return(), which calls handle_nosleeptime() again. When
+sleep-time accounting is disabled this double-adjusts calltime and can
+produce bogus durations (including underflow).
+
+Fix this by computing rettime once, applying handle_nosleeptime() only
+once, using the adjusted calltime for threshold comparison, and writing
+the return event directly via __trace_graph_return() when the threshold is
+met.
 
 Cc: stable@vger.kernel.org
-Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/20241121014601.229391-1-airlied@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260221113314048jE4VRwIyZEALiYByGK0My@zte.com.cn
+Fixes: 3c9880f3ab52b ("ftrace: Use a running sleeptime instead of saving on shadow stack")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/trace/trace_functions_graph.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
-@@ -737,8 +737,8 @@ r535_gsp_acpi_caps(acpi_handle handle, C
- 	if (!obj)
- 		goto done;
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -403,8 +403,12 @@ static void trace_graph_thresh_return(st
+ 	unsigned long *task_var = fgraph_get_task_var(gops);
+ 	struct fgraph_times *ftimes;
+ 	struct trace_array *tr;
++	unsigned int trace_ctx;
++	u64 calltime, rettime;
+ 	int size;
  
--	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
--	    WARN_ON(obj->buffer.length != 4))
-+	if (obj->type != ACPI_TYPE_BUFFER ||
-+	    obj->buffer.length != 4)
- 		goto done;
++	rettime = trace_clock_local();
++
+ 	ftrace_graph_addr_finish(gops, trace);
  
- 	caps->status = 0;
-@@ -773,8 +773,8 @@ r535_gsp_acpi_jt(acpi_handle handle, JT_
- 	if (!obj)
- 		goto done;
+ 	if (*task_var & TRACE_GRAPH_NOTRACE) {
+@@ -419,11 +423,13 @@ static void trace_graph_thresh_return(st
+ 	tr = gops->private;
+ 	handle_nosleeptime(tr, trace, ftimes, size);
  
--	if (WARN_ON(obj->type != ACPI_TYPE_BUFFER) ||
--	    WARN_ON(obj->buffer.length != 4))
-+	if (obj->type != ACPI_TYPE_BUFFER ||
-+	    obj->buffer.length != 4)
- 		goto done;
- 
- 	jt->status = 0;
-@@ -861,8 +861,8 @@ r535_gsp_acpi_dod(acpi_handle handle, DO
- 
- 	_DOD = output.pointer;
- 
--	if (WARN_ON(_DOD->type != ACPI_TYPE_PACKAGE) ||
--	    WARN_ON(_DOD->package.count > ARRAY_SIZE(dod->acpiIdList)))
-+	if (_DOD->type != ACPI_TYPE_PACKAGE ||
-+	    _DOD->package.count > ARRAY_SIZE(dod->acpiIdList))
+-	if (tracing_thresh &&
+-	    (trace_clock_local() - ftimes->calltime < tracing_thresh))
++	calltime = ftimes->calltime;
++
++	if (tracing_thresh && (rettime - calltime < tracing_thresh))
  		return;
+-	else
+-		trace_graph_return(trace, gops, fregs);
++
++	trace_ctx = tracing_gen_ctx();
++	__trace_graph_return(tr, trace, trace_ctx, calltime, rettime);
+ }
  
- 	for (int i = 0; i < _DOD->package.count; i++) {
+ static struct fgraph_ops funcgraph_ops = {
 
 
 
