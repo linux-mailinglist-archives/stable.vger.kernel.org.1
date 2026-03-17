@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEteMJCTuWnKKgIAu9opvQ
-	(envelope-from <stable+bounces-226785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:56 +0100
+	id 2PRlGKGJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6459C2B0201
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:46:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A06C2AEE14
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2A3731EEDCA
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CBCA303CEC0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C553333745;
-	Tue, 17 Mar 2026 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FDF3F788B;
+	Tue, 17 Mar 2026 16:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UP+suMP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMZEv6Xg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C310E2D73B8;
-	Tue, 17 Mar 2026 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92393F23B3;
+	Tue, 17 Mar 2026 16:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768187; cv=none; b=ZkZKh2GCWNidKGvyzhNRMF1TDLfcjH0wOwSZkEjhr1AxeVaX1EvTq1geYV8qe8/XUyFf/hiIqHtYcQXIke52EabK9O994/BwTaA8/fFVv5GvmcXYvBMrBnbzGdAWhPLQ7b54KxUKkVwBHKwM7UueQHXZeFTTOMNyjdrUn+8z35s=
+	t=1773766761; cv=none; b=Flb95O6VmxDv2Z3EZtt27W/7ZzHadWu8hSIC0OD6voGkWZXv+PaPHdiY0vpttKxNUpdUy7GHdv3ieZZI5cRtOQ8IKn8zsxm6umVGubY1WLrpdrF+1nbPniauJ54uDndfhSt77cgf/lJJEpINHs1Yil+qIjKpKr9uMzYxFRkVMZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768187; c=relaxed/simple;
-	bh=Xj3gR+o2/+yAXjLncW+2cUzFTmd0Lgb7PtLeP0RwJr4=;
+	s=arc-20240116; t=1773766761; c=relaxed/simple;
+	bh=VXD1vzjG817AaMyFHHf2NDX/Dcy4H7XTZnQl2CXbN2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4i58qoRuHykiU1styjpkd7UQ+acuaGOgOFMmgGdh9gt0HkeiXlPd2xZ1T5UImXEZ+cnBkT8eMs8WFRyfaK/i5Kyzaw5ClhassPqdars5dOR/riSYixS9aPeRBUMY0KuxNsFUS5AFnhuX7hhG00JjIR0rC10qQnmfyg51cv+OlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UP+suMP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB35C4CEF7;
-	Tue, 17 Mar 2026 17:23:06 +0000 (UTC)
+	 MIME-Version; b=nxeoT5LYReIeEhhtvTY35ypY1JlvwO2YxXlgXCf349bNqwdzkylQQsFbQPnLKhHMnJT+9ZV9tqXMLGbCbXn7PdSfROu3jmiM7ttrTqwR/+3IlZgJHMhvhfnNzjpqtM7yklYsIQYA/KdT3XSVZAoaOLey1kRel0aiIYSHF40GDxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMZEv6Xg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3A3C4CEF7;
+	Tue, 17 Mar 2026 16:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768187;
-	bh=Xj3gR+o2/+yAXjLncW+2cUzFTmd0Lgb7PtLeP0RwJr4=;
+	s=korg; t=1773766761;
+	bh=VXD1vzjG817AaMyFHHf2NDX/Dcy4H7XTZnQl2CXbN2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UP+suMP4J4BzJHBe9jorHGWijwSBeVpi/SP+1SF524fMC82E2QldcUfBNHu2Fyjw/
-	 7NNZLxLkO5Uv+7knXWQVKsVNjs7vLi/p30hez4NaRbRhAZAWdeHBzJLkaAyd+lI/AH
-	 kob0O9Lh9Np3ok2ccVdIu1p+pHsPuzXeRI0BwI1k=
+	b=hMZEv6XgKS0nBb9AzJK48KxceglS/y5kwJQcQ2u9YGTBE5XMGHa18wNt1IhTql1QM
+	 uXgr9dT45SNWV4qzdXwmO/oVjb9lOXBVsLC/Ka1RZD70uyIrDlMAMHZFMuPMlWJl9M
+	 QX+MKmwsI8mmK01ggn7FFCbHjxJQEVSOPRIS/uTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 244/333] ksmbd: fix use-after-free by using call_rcu() for oplock_info
+	Haibo Chen <haibo.chen@nxp.com>,
+	stable@kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.19 316/378] can: dev: keep the max bitrate error at 5%
 Date: Tue, 17 Mar 2026 17:34:33 +0100
-Message-ID: <20260317163008.412863354@linuxfoundation.org>
+Message-ID: <20260317163018.618383806@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226785-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226448-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,127 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6459C2B0201
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,nxp.com:email,msgid.link:url,pengutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A06C2AEE14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
+commit 1eea46908c57abb7109b1fce024f366ae6c69c4f upstream.
 
-ksmbd currently frees oplock_info immediately using kfree(), even
-though it is accessed under RCU read-side critical sections in places
-like opinfo_get() and proc_show_files().
+Commit b360a13d44db ("can: dev: print bitrate error with two decimal
+digits") changed calculation of the bit rate error from on-tenth of a
+percent to on-hundredth of a percent, but forgot to adjust the scale of the
+CAN_CALC_MAX_ERROR constant.
 
-Since there is no RCU grace period delay between nullifying the pointer
-and freeing the memory, a reader can still access oplock_info
-structure after it has been freed. This can leads to a use-after-free
-especially in opinfo_get() where atomic_inc_not_zero() is called on
-already freed memory.
+Keeping the existing logic unchanged: Only when the bitrate error exceeds
+5% should an error be returned. Otherwise, simply output a warning log.
 
-Fix this by switching to deferred freeing using call_rcu().
-
-Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b360a13d44db ("can: dev: print bitrate error with two decimal digits")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20260306-can-fix-v1-1-ac526cec6777@nxp.com
+Cc: stable@kernel.org
+[mkl: improve commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
- fs/smb/server/oplock.h |    5 +++--
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ drivers/net/can/dev/calc_bittiming.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
- 	kfree(lease);
- }
+diff --git a/drivers/net/can/dev/calc_bittiming.c b/drivers/net/can/dev/calc_bittiming.c
+index cc4022241553..42498e9d3f38 100644
+--- a/drivers/net/can/dev/calc_bittiming.c
++++ b/drivers/net/can/dev/calc_bittiming.c
+@@ -8,7 +8,7 @@
+ #include <linux/units.h>
+ #include <linux/can/dev.h>
  
--static void free_opinfo(struct oplock_info *opinfo)
-+static void __free_opinfo(struct oplock_info *opinfo)
- {
- 	if (opinfo->is_lease)
- 		free_lease(opinfo);
-@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
- 	kfree(opinfo);
- }
+-#define CAN_CALC_MAX_ERROR 50 /* in one-tenth of a percent */
++#define CAN_CALC_MAX_ERROR 500 /* max error 5% */
  
-+static void free_opinfo_rcu(struct rcu_head *rcu)
-+{
-+	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
-+
-+	__free_opinfo(opinfo);
-+}
-+
-+static void free_opinfo(struct oplock_info *opinfo)
-+{
-+	call_rcu(&opinfo->rcu, free_opinfo_rcu);
-+}
-+
- struct oplock_info *opinfo_get(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
-@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
- 	free_opinfo(opinfo);
- }
- 
--static void opinfo_add(struct oplock_info *opinfo)
-+static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
- {
--	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
- 	down_write(&ci->m_lock);
- 	list_add(&opinfo->op_entry, &ci->m_op_list);
-@@ -1279,20 +1291,21 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
--
- 	opinfo_count_inc(fp);
--	opinfo_add(opinfo);
-+	opinfo_add(opinfo, fp);
-+
- 	if (opinfo->is_lease) {
- 		err = add_lease_global_list(opinfo);
- 		if (err)
- 			goto err_out;
- 	}
- 
-+	rcu_assign_pointer(fp->f_opinfo, opinfo);
-+	opinfo->o_fp = fp;
-+
- 	return 0;
- err_out:
--	free_opinfo(opinfo);
-+	__free_opinfo(opinfo);
- 	return err;
- }
- 
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -69,8 +69,9 @@ struct oplock_info {
- 	struct lease		*o_lease;
- 	struct list_head        op_entry;
- 	struct list_head        lease_entry;
--	wait_queue_head_t oplock_q; /* Other server threads */
--	wait_queue_head_t oplock_brk; /* oplock breaking wait */
-+	wait_queue_head_t	oplock_q; /* Other server threads */
-+	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
-+	struct rcu_head		rcu;
- };
- 
- struct lease_break_info {
+ /* CiA recommended sample points for Non Return to Zero encoding. */
+ static int can_calc_sample_point_nrz(const struct can_bittiming *bt)
+-- 
+2.53.0
+
 
 
 
