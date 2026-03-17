@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIp8HCyUuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:32 +0100
+	id ADlRJXSJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0A62B02C6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:49:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080B92AEDA5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A386C32EEFA6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EA0C31F687A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6142DF132;
-	Tue, 17 Mar 2026 17:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2F43F660F;
+	Tue, 17 Mar 2026 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5wrd7v1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzRghdN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43EA191F94;
-	Tue, 17 Mar 2026 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615423F54D7;
+	Tue, 17 Mar 2026 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767924; cv=none; b=FEi8XONrqcoXjm3dAMcepGt/uzaFfO7ra4ab9CjsswrQuQ8LFuJXjzEVj2uEtZndQEM5FDPJMK5Igc6j701tFceG4RCKo3cJABvos3eZucXFFjJwPy8CG1T2iBysc/5UC9T/lZ/alNh7ul+ZV+VtAKR59Sv55HO8cIFSg28APJ8=
+	t=1773766530; cv=none; b=jTqwnWmsewStnVx84Mw6xYaQxXBME17Pi15XjeP60lJsGqBcSTH4fwixPWXCkYdM0BGkjNpGHovnw8+KPpDP1kWHsKTCJux6z0wzv9Q9/Gs/n62G7Mpmuc/jM8UFENNMg6wM7npNmzNSaM27MwmnC8pMhiV0TGSS3f93a1a1L3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767924; c=relaxed/simple;
-	bh=5LCcUk5CWPvW/vXfOJMGoseCSVLZbJJ+yNBPj+RVPtk=;
+	s=arc-20240116; t=1773766530; c=relaxed/simple;
+	bh=LBr+0j2Cu25FqgRbNo3WTr42ki9eS5Bor/46vYb+WBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SSvYKL9S50VttCwITb+evzR+HlOQ0o9/qzyK2p/mTttlBYBx7g3v5VEPQR3zfXHdEULRqTnKfQfMboRSYZmawGweYkk+jsTlsPE40N3/QGNoTzbrhKdw2kiFaVoru04dyPyAt9MjEXAZPcpybaFo6kGT+OO7zzE1wrqOQrqb1OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5wrd7v1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C241C4CEF7;
-	Tue, 17 Mar 2026 17:18:43 +0000 (UTC)
+	 MIME-Version; b=OcxNH3jS7GoOsDYJEiPb/wWqYFn4OsfFbKbFD4EXSTmmJcpDtueUMxqYIguUzGKM8PGDo+rAe4gHDH+yyOjVReZQuGl0v6lvHt+BAfNN5vB/SBWVtNMAHNpIKJ5oH6Gp/7R4LIBFQ2IfnWyL0ApYrmSgbElF3eJ0KF/8UD7rLcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzRghdN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC0AC2BC86;
+	Tue, 17 Mar 2026 16:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767923;
-	bh=5LCcUk5CWPvW/vXfOJMGoseCSVLZbJJ+yNBPj+RVPtk=;
+	s=korg; t=1773766530;
+	bh=LBr+0j2Cu25FqgRbNo3WTr42ki9eS5Bor/46vYb+WBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5wrd7v1tm/OynS4M+TQ9Gjsbz3nyjHyz3LhodjMlE5zLQCHjK846diNGpEu0LQJc
-	 ERbhRX2RggzTZNp9ocl57Fr1/m2ryL8dcTYb0g1IeO7hweDpZeD4gTcitXhHxWQNRw
-	 WlMn9ShgpllcvmdL44EBMfnFUtl0k4Gfmie4yD4Q=
+	b=BzRghdN19d74uG6Qtjstj2Hsv1l45kgxoETsf84ChrWRihcpG9frJf4l8QZNvMAJ+
+	 VQkeqb0NEpjSKQ0VeV7kLgEcllV2Oli+Y4LoWd3kroLSjDjZAB7MwxmUzfABoxWoLv
+	 aygszwKQv+nLqkE2rbZx9+sQ55ksCxq7lshExNi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.18 191/333] ipmi:si: Handle waiting messages when BMC failure detected
-Date: Tue, 17 Mar 2026 17:33:40 +0100
-Message-ID: <20260317163006.440213959@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 264/378] net/tcp-ao: Fix MAC comparison to be constant-time
+Date: Tue, 17 Mar 2026 17:33:41 +0100
+Message-ID: <20260317163016.724607772@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226398-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226713-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: BF0A62B02C6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 080B92AEDA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 52c9ee202edd21d0599ac3b5a6fe1da2a2f053e5 upstream.
+commit 67edfec516d30d3e62925c397be4a1e5185802fc upstream.
 
-If a BMC failure is detected, the current message is returned with an
-error.  However, if there was a waiting message, it would not be
-handled.
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Add a check for the waiting message after handling the current message.
-
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Reported-by: Rafael J. Wysocki <rafael@kernel.org>
-Closes: https://lore.kernel.org/linux-acpi/CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com/
-Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
-Cc: stable@vger.kernel.org # 4.18
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Link: https://patch.msgid.link/20260302203600.13561-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv4/Kconfig  |    1 +
+ net/ipv4/tcp_ao.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -810,6 +810,12 @@ restart:
- 			 */
- 			return_hosed_msg(smi_info, IPMI_BUS_ERR);
- 		}
-+		if (smi_info->waiting_msg != NULL) {
-+			/* Also handle if there was a message waiting. */
-+			smi_info->curr_msg = smi_info->waiting_msg;
-+			smi_info->waiting_msg = NULL;
-+			return_hosed_msg(smi_info, IPMI_BUS_ERR);
-+		}
- 		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
- 		goto out;
- 	}
+--- a/net/ipv4/Kconfig
++++ b/net/ipv4/Kconfig
+@@ -748,6 +748,7 @@ config TCP_SIGPOOL
+ config TCP_AO
+ 	bool "TCP: Authentication Option (RFC5925)"
+ 	select CRYPTO
++	select CRYPTO_LIB_UTILS
+ 	select TCP_SIGPOOL
+ 	depends on 64BIT && IPV6 != m # seq-number extension needs WRITE_ONCE(u64)
+ 	help
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -10,6 +10,7 @@
+ #define pr_fmt(fmt) "TCP: " fmt
+ 
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/inetdevice.h>
+ #include <linux/tcp.h>
+ 
+@@ -922,7 +923,7 @@ tcp_ao_verify_hash(const struct sock *sk
+ 	/* XXX: make it per-AF callback? */
+ 	tcp_ao_hash_skb(family, hash_buf, key, sk, skb, traffic_key,
+ 			(phash - (u8 *)th), sne);
+-	if (memcmp(phash, hash_buf, maclen)) {
++	if (crypto_memneq(phash, hash_buf, maclen)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOBAD);
+ 		atomic64_inc(&info->counters.pkt_bad);
+ 		atomic64_inc(&key->pkt_bad);
 
 
 
