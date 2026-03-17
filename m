@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGd9HlKVuWlcKwIAu9opvQ
-	(envelope-from <stable+bounces-226789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:26 +0100
+	id gFFjKruLuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2AB22B053E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2CD2AF23F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB5ED336AB68
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18211325E2B8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37F03176FD;
-	Tue, 17 Mar 2026 17:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6583F7E84;
+	Tue, 17 Mar 2026 17:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbnvVxam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQfWyDgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67235372EE8;
-	Tue, 17 Mar 2026 17:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29183F7E66;
+	Tue, 17 Mar 2026 17:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768203; cv=none; b=FZhM4Jqy0gzn0+tkUOHEtxx2WZEGvKZBEBh1FIhvi0kWbDM2G9syV5BfQfbplSEJ5dxdxWUy/n4B/wrNCi2ikmqvjHT+ueiA2WQiuPz5dZGnjo8CtmJuQIVFty0yfsnoouzw2b0NQ2pEVfWbrLOczxZ399yzS70X32RlmqygU2w=
+	t=1773766827; cv=none; b=jhooMr6aN57+vvd4OH8U9/+fX0HHSs+Sf39rDhYrhHljnpTA4GDesfysXHvUh6iFgeORbR2hI5vcAXCOGNUo7BQnbyaQ7z8qZjBB7b6BGN7ny0irCl+xzrOQq93hBwlzPJuCO0YdL5/HOniFbB2Zy+X+8bE8At+bmX7tGynTulo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768203; c=relaxed/simple;
-	bh=HSlQT3UECw+OywlzjJh+0iHULAIYgVTW/13JR/g/l2g=;
+	s=arc-20240116; t=1773766827; c=relaxed/simple;
+	bh=tddEdZ35J/EFIyQUMMQ6a+CqYdBXIfhNy2RxJi4w404=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKWQ83m4c8mfEyklFWgXQlhlIuFnaxQPKTbqHRyLtWEv0+l5/7m+kluElhb7mhCjCXmFX4soWlweD2bUCdU3LKWeH0qRx1CsVcUReq6dShlJK9XHYYiHrxjHu8YVuNvP80AXyXc0xq/mHKy9vSS48vfN8A+WFKiq1Yb8X/x84Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbnvVxam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3637C2BCB0;
-	Tue, 17 Mar 2026 17:23:22 +0000 (UTC)
+	 MIME-Version; b=oLBTYvnyMEFhdRDbKa2R5lgFQJjELn/nNgceUat3MclC696ECzhJ6IIV52AVY2KKZHQxrzfxvQEK1ZWTKknL7Dx1Y3rJ4bwe8u02keUZTZQcnuahjv62QwGDMmKKcgPGLySA4oJWfQcxpPZFW8Qp99/+AWWo6sLcCk/WtS836N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQfWyDgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17241C4CEF7;
+	Tue, 17 Mar 2026 17:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768203;
-	bh=HSlQT3UECw+OywlzjJh+0iHULAIYgVTW/13JR/g/l2g=;
+	s=korg; t=1773766827;
+	bh=tddEdZ35J/EFIyQUMMQ6a+CqYdBXIfhNy2RxJi4w404=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbnvVxamGSRivBkwpYXBeAL6JFX2Y7u1JJ4VNE3ZW4n6GsylcyuISZRNPIz8Y0YRR
-	 wjSjv1gkKzUfxnv03r1jKN8za16BBec/KPZV244VbZkcUXV0tkM773WH4Y8rfyprt2
-	 h/TLGDZPExjDV/nd86UCOwXcVQRofddie/aL0S+I=
+	b=qQfWyDgjTCjBR+HU4pW6HN4U+0yhJ2hAsbhsOj06zSWJYW4fVvVPYtP+FD3DZwq5O
+	 Dk8Rnhd/ygzIA3k1G+YDAYLznD5H5gOEgNu/TOFWAFGRlN2MDHXO7Y65wSsddQjb7k
+	 gbr4w53y+LDKRZiOdg9lRP19bcjQLNIRi4TSDweY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.18 256/333] drm/i915: Fix potential overflow of shmem scatterlist length
-Date: Tue, 17 Mar 2026 17:34:45 +0100
-Message-ID: <20260317163008.861397009@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.19 329/378] powerpc/pseries: Correct MSI allocation tracking
+Date: Tue, 17 Mar 2026 17:34:46 +0100
+Message-ID: <20260317163019.092913040@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226789-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226463-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,104 +88,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ursulin.net:email]
-X-Rspamd-Queue-Id: D2AB22B053E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:email]
+X-Rspamd-Queue-Id: 2D2CD2AF23F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 029ae067431ab9d0fca479bdabe780fa436706ea upstream.
+commit 35e4f2a17eb40288f9bcdb09549fa04a63a96279 upstream.
 
-When a scatterlists table of a GEM shmem object of size 4 GB or more is
-populated with pages allocated from a folio, unsigned int .length
-attribute of a scatterlist may get overflowed if total byte length of
-pages allocated to that single scatterlist happens to reach or cross the
-4GB limit.  As a consequence, users of the object may suffer from hitting
-unexpected, premature end of the object's backing pages.
+The per-device MSI allocation calculation in pseries_irq_domain_alloc()
+is clearly wrong. It can still happen to work when nr_irqs is 1.
 
-[278.780187] ------------[ cut here ]------------
-[278.780377] WARNING: CPU: 1 PID: 2326 at drivers/gpu/drm/i915/i915_mm.c:55 remap_sg+0x199/0x1d0 [i915]
-...
-[278.780654] CPU: 1 UID: 0 PID: 2326 Comm: gem_mmap_offset Tainted: G S   U              6.17.0-rc1-CI_DRM_16981-ged823aaa0607+ #1 PREEMPT(voluntary)
-[278.780656] Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
-[278.780658] Hardware name: Intel Corporation Meteor Lake Client Platform/MTL-P LP5x T3 RVP, BIOS MTLPFWI1.R00.3471.D91.2401310918 01/31/2024
-[278.780659] RIP: 0010:remap_sg+0x199/0x1d0 [i915]
-...
-[278.780786] Call Trace:
-[278.780787]  <TASK>
-[278.780788]  ? __apply_to_page_range+0x3e6/0x910
-[278.780795]  ? __pfx_remap_sg+0x10/0x10 [i915]
-[278.780906]  apply_to_page_range+0x14/0x30
-[278.780908]  remap_io_sg+0x14d/0x260 [i915]
-[278.781013]  vm_fault_cpu+0xd2/0x330 [i915]
-[278.781137]  __do_fault+0x3a/0x1b0
-[278.781140]  do_fault+0x322/0x640
-[278.781143]  __handle_mm_fault+0x938/0xfd0
-[278.781150]  handle_mm_fault+0x12c/0x300
-[278.781152]  ? lock_mm_and_find_vma+0x4b/0x760
-[278.781155]  do_user_addr_fault+0x2d6/0x8e0
-[278.781160]  exc_page_fault+0x96/0x2c0
-[278.781165]  asm_exc_page_fault+0x27/0x30
-...
+Correct it.
 
-That issue was apprehended by the author of a change that introduced it,
-and potential risk even annotated with a comment, but then never addressed.
-
-When adding folio pages to a scatterlist table, take care of byte length
-of any single scatterlist not exceeding max_segment.
-
-Fixes: 0b62af28f249b ("i915: convert shmem_sg_free_table() to use a folio_batch")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14809
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20260224094944.2447913-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 06249b4e691a75694c014a61708c007fb5755f60)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: c0215e2d72de ("powerpc/pseries: Fix MSI-X allocation failure when quota is exceeded")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+[maddy: Fixed Nilay's reviewed-by tag]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260302003948.1452016-1-namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -151,8 +151,12 @@ int shmem_sg_alloc_table(struct drm_i915
- 			}
- 		} while (1);
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -605,7 +605,7 @@ static int pseries_irq_domain_alloc(stru
+ 					      &pseries_msi_irq_chip, pseries_dev);
+ 	}
  
--		nr_pages = min_t(unsigned long,
--				folio_nr_pages(folio), page_count - i);
-+		nr_pages = min_array(((unsigned long[]) {
-+					folio_nr_pages(folio),
-+					page_count - i,
-+					max_segment / PAGE_SIZE,
-+				      }), 3);
-+
- 		if (!i ||
- 		    sg->length >= max_segment ||
- 		    folio_pfn(folio) != next_pfn) {
-@@ -162,7 +166,9 @@ int shmem_sg_alloc_table(struct drm_i915
- 			st->nents++;
- 			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
- 		} else {
--			/* XXX: could overflow? */
-+			nr_pages = min_t(unsigned long, nr_pages,
-+					 (max_segment - sg->length) / PAGE_SIZE);
-+
- 			sg->length += nr_pages * PAGE_SIZE;
- 		}
- 		next_pfn = folio_pfn(folio) + nr_pages;
+-	pseries_dev->msi_used++;
++	pseries_dev->msi_used += nr_irqs;
+ 	return 0;
+ 
+ out:
 
 
 
