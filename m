@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-226357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kP/aCPCGuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:04 +0100
+	id OA+IJomIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A968A2AE936
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08C42AEC30
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF924303CB27
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87A2B3049C92
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE943F54B8;
-	Tue, 17 Mar 2026 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93B63F23AA;
+	Tue, 17 Mar 2026 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBMtUE90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG1fjQBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D5F3EAC6F;
-	Tue, 17 Mar 2026 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB7A3EAC6F;
+	Tue, 17 Mar 2026 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766346; cv=none; b=OeL5Q/Y10jlu/U9rssXhxr4+8rRncirFXRKC6nH96VmtkNCsPgItrX8rdcahELDpoCgkZoqwd3xB1NpFdw0DnO2tri5DIgeScw30u8d1Taizray9WIpjttLI51MQHm9u/TPxz107rT//MqEQiV82DSp8WAFXwZvjbywxU/MyUhI=
+	t=1773766349; cv=none; b=T18AtL2fdwTc8prZwNPZ0vxCFw+OPKhDe6wE+K+CRaE6EfkcQ7rT22cXMDEs+1FBqV3Yf8WQmfbB+geosOa4cOmRfp/56y7XBB05vljKNxFbky42zPo/e3YAbQJMOVTiy1PkDmJ4j4X8EK2kV7q6HdSet1+2GsWMOaLXP8srOjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766346; c=relaxed/simple;
-	bh=xvnZ0k3Mp720xvn6VT2wMkf8h2pNmxjb97FdHdlrm08=;
+	s=arc-20240116; t=1773766349; c=relaxed/simple;
+	bh=rSlsDtDlBmQ3jhdcnL+znmtrmFtllkR0gYbd4fKlpEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hS3QWFA5mqFV9UauN2UyB16vh2sSI/+8rACcAl73y+3n83EXLi1XS8W1hA47VVpKhF4mOsl8lOwQxOUK1CdU1EtUdioSUuohbwgsn+t41hLmIRNuQOaM7JigdFWG/Uo3UM39S2awhoLWUEvyUw3cv0RaELnKkHdaFNw58+80xhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBMtUE90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72C0C4CEF7;
-	Tue, 17 Mar 2026 16:52:25 +0000 (UTC)
+	 MIME-Version; b=kfrQzDqkZKvrqwMKcYJH7iDmsmU2DC/h8sXwtDvJZMoGpS5/SRyzbNEzlmre/1Jw2VbmufNBFZx9ZCl+3WHefxg8Ov7zmBSI2VPVkg0+Dkibc7TJtYgIacFk0jB75ayvdDjcCEttv5UjKZOuIGJat/+lNoS3OIJIX/vN9Y7b0V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG1fjQBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04884C4CEF7;
+	Tue, 17 Mar 2026 16:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766346;
-	bh=xvnZ0k3Mp720xvn6VT2wMkf8h2pNmxjb97FdHdlrm08=;
+	s=korg; t=1773766349;
+	bh=rSlsDtDlBmQ3jhdcnL+znmtrmFtllkR0gYbd4fKlpEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBMtUE90tId+MgoVUS7Y7TDYG101rA3h4RZUSA5IH5p57HZo1T98ELkMMwjXbo1mb
-	 lCtkXwslVVjNsKqzQBpv3HS5WSF62frj8/zdga7rboRhVYoiYLF2NJ3ej7id/9EveE
-	 OCwXXkprDPItDMLAwn1UCzMj7QQYSKxdTJQuAMxo=
+	b=ZG1fjQBIEYYYw0n8wErWEOM38dOjBrnXPPN7+Fz0jGQlWXqXUvtl9ufkBmrhFnP+a
+	 eFxUMPz7Tv0twcW5SkNHw+eulFiIloKsMHRpMDeYP8V2Cf7IYIeYyJirwkn2JlBU1y
+	 qQ74UMwCFCluc9nv183qnnNnVq+T6w4ZGPNtGEBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Franz Schnyder <franz.schnyder@toradex.com>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.19 224/378] drm/bridge: ti-sn65dsi86: Enable HPD polling if IRQ is not used
-Date: Tue, 17 Mar 2026 17:33:01 +0100
-Message-ID: <20260317163015.250934040@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.19 225/378] ipmi:si: Handle waiting messages when BMC failure detected
+Date: Tue, 17 Mar 2026 17:33:02 +0100
+Message-ID: <20260317163015.287769023@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226357-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226358-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,chromium.org:email]
-X-Rspamd-Queue-Id: A968A2AE936
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,minyard.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email]
+X-Rspamd-Queue-Id: B08C42AEC30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,52 +99,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Franz Schnyder <franz.schnyder@toradex.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 0b87d51690dd5131cbe9fbd23746b037aab89815 upstream.
+commit 52c9ee202edd21d0599ac3b5a6fe1da2a2f053e5 upstream.
 
-Fallback to polling to detect hotplug events on systems without
-interrupts.
+If a BMC failure is detected, the current message is returned with an
+error.  However, if there was a waiting message, it would not be
+handled.
 
-On systems where the interrupt line of the bridge is not connected,
-the bridge cannot notify hotplug events. Only add the
-DRM_BRIDGE_OP_HPD flag if an interrupt has been registered
-otherwise remain in polling mode.
+Add a check for the waiting message after handling the current message.
 
-Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
-Cc: stable@vger.kernel.org # 6.16: 9133bc3f0564: drm/bridge: ti-sn65dsi86: Add
-Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-[dianders: Adjusted Fixes/stable line based on discussion]
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20260206123758.374555-1-fra.schnyder@gmail.com
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Rafael J. Wysocki <rafael@kernel.org>
+Closes: https://lore.kernel.org/linux-acpi/CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com/
+Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
+Cc: stable@vger.kernel.org # 4.18
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -1415,6 +1415,7 @@ static int ti_sn_bridge_probe(struct aux
- {
- 	struct ti_sn65dsi86 *pdata = dev_get_drvdata(adev->dev.parent);
- 	struct device_node *np = pdata->dev->of_node;
-+	const struct i2c_client *client = to_i2c_client(pdata->dev);
- 	int ret;
- 
- 	pdata->next_bridge = devm_drm_of_get_bridge(&adev->dev, np, 1, 0);
-@@ -1433,8 +1434,9 @@ static int ti_sn_bridge_probe(struct aux
- 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
- 
- 	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
--		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
--				    DRM_BRIDGE_OP_HPD;
-+		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
-+		if (client->irq)
-+			pdata->bridge.ops |= DRM_BRIDGE_OP_HPD;
- 		/*
- 		 * If comms were already enabled they would have been enabled
- 		 * with the wrong value of HPD_DISABLE. Update it now. Comms
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -809,6 +809,12 @@ restart:
+ 			 */
+ 			return_hosed_msg(smi_info, IPMI_BUS_ERR);
+ 		}
++		if (smi_info->waiting_msg != NULL) {
++			/* Also handle if there was a message waiting. */
++			smi_info->curr_msg = smi_info->waiting_msg;
++			smi_info->waiting_msg = NULL;
++			return_hosed_msg(smi_info, IPMI_BUS_ERR);
++		}
+ 		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
+ 		goto out;
+ 	}
 
 
 
