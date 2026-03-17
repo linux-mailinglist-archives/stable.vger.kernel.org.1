@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-226758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AZGLTyTuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:45:32 +0100
+	id mIsdLeeUuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C512B016B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:45:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139FD2B048C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 211BA304A4B6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 367B53329B79
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B79E30C63B;
-	Tue, 17 Mar 2026 17:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37EE32AAC5;
+	Tue, 17 Mar 2026 17:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBixH7Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tw3zVneR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27D82D73B8;
-	Tue, 17 Mar 2026 17:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867B730C63B;
+	Tue, 17 Mar 2026 17:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768080; cv=none; b=Y1gxt9BBC5Q8MFfmn0S4lSkGBzYE3AH1y3i3xX75zwe7Wbh3J/7XluIgEXUiUoUZ5Oo0Q482OPi2uS1SeiKjbpDVtquitI/lLUemo+kl46y3DjDuzULk6AxFhTppzpENSk7XK2iaFj6itZcwLFq1joIGK3RMF8b242yxOkgZC00=
+	t=1773768089; cv=none; b=GIC7lJKDp9Veur6E5C53VsqNKCBBgNv5ywcuiQNr9eEbXMAqm7xFFgP01jH4iR6eb8wWhqVCMfKK1OlixAsdMsUyCtf/ZPPM31rV4R3W3jPn/eNP86F+60slooQzJZ7FJKnUNasM5asd5hm595yqeSMjY+mMowhC/hUEpWlhWEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768080; c=relaxed/simple;
-	bh=ojfCWOaxbD5V5y4gIJ97OGfAJQPyUTyOsXskVa5wwL4=;
+	s=arc-20240116; t=1773768089; c=relaxed/simple;
+	bh=Fb0yfznBwMwNeaSfn44hfAzU/0h49t28RKhU8sdmYzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alCDnNhB/+kUmqPMpq/GKSqgs8KVtzfyqtk9qHX6Ip0q7JLblAxv8LEzW7HArjjDGO8ylClJF9bFQrXmNZ37XAHZAPipDFbEnjl4h1oV1gDxOqiBpb2ChpauagYWI4YJ6Yq6PrcFayr0NtmJnJvo5KSwHPD2E2zLbLdVp+ba/u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBixH7Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6043CC4CEF7;
-	Tue, 17 Mar 2026 17:21:19 +0000 (UTC)
+	 MIME-Version; b=ou8SLFDIP/YOs4vqCPmU1VLKXqee3O+aL5jNxFBUrjDzwnHn1WYc/cxbU4cmgY02ipvtXRk1qyuseteOr86HVOZF+7zOacaqz0Clu2kWuJFqa6YJIDNnkoBwHcIkCmf5ePWBqVZO8mtM1+mVLVMvu+l3EOf80u14vMbupbwOnNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tw3zVneR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CDBC19424;
+	Tue, 17 Mar 2026 17:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768079;
-	bh=ojfCWOaxbD5V5y4gIJ97OGfAJQPyUTyOsXskVa5wwL4=;
+	s=korg; t=1773768089;
+	bh=Fb0yfznBwMwNeaSfn44hfAzU/0h49t28RKhU8sdmYzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBixH7CjHtd9IzI3bgzcULlfc1LDx2PHoqtAORrz6zu4w3r6nsMKi26J1w/420OUa
-	 DzT3zvmEJN7kA7yUMM1fT1X75/qDCrIT7hZoBDeHNGY1IPXIrHGrWkF5oV35S5dWMG
-	 Gfphg6o/yN8hScCxqL9NFEKKD9uWFydfhzw4thto=
+	b=tw3zVneRy5FCtyIwDPM3DyASMSTRoIX/BKsFM4zBHmH4RciL/6veyKuVtE21Dkvpe
+	 PyWBu6v3pMq04MVjbq5S4wdt5Ef6pu2Ie6yGqK9RJ8r+09tVG7uwQb2spLTdZWzToo
+	 8H7qmkFW/9LAjYQ/ihRnkKXy5lNpQK1nA/gcl31Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 227/333] io_uring/zcrx: use READ_ONCE with user shared RQEs
-Date: Tue, 17 Mar 2026 17:34:16 +0100
-Message-ID: <20260317163007.782978784@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.18 228/333] parisc: Fix initial page table creation for boot
+Date: Tue, 17 Mar 2026 17:34:17 +0100
+Message-ID: <20260317163007.819333980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -63,36 +62,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226758-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226760-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email]
-X-Rspamd-Queue-Id: C1C512B016B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gmx.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 139FD2B048C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,39 +98,47 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 531bb98a030cc1073bd7ed9a502c0a3a781e92ee upstream.
+commit 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597 upstream.
 
-Refill queue entries are shared with the user space, use READ_ONCE when
-reading them.
+The KERNEL_INITIAL_ORDER value defines the initial size (usually 32 or
+64 MB) of the page table during bootup. Up until now the whole area was
+initialized with PTE entries, but there was no check if we filled too
+many entries.  Change the code to fill up with so many entries that the
+"_end" symbol can be reached by the kernel, but not more entries than
+actually fit into the initial PTE tables.
 
-Fixes: 34a3e60821ab9 ("io_uring/zcrx: implement zerocopy receive pp memory provider");
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/zcrx.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/head.S |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -767,11 +767,12 @@ static inline bool io_parse_rqe(struct i
- 				struct io_zcrx_ifq *ifq,
- 				struct net_iov **ret_niov)
- {
-+	__u64 off = READ_ONCE(rqe->off);
- 	unsigned niov_idx, area_idx;
- 	struct io_zcrx_area *area;
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -56,6 +56,7 @@ ENTRY(parisc_kernel_start)
  
--	area_idx = rqe->off >> IORING_ZCRX_AREA_SHIFT;
--	niov_idx = (rqe->off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
-+	area_idx = off >> IORING_ZCRX_AREA_SHIFT;
-+	niov_idx = (off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
+ 	.import __bss_start,data
+ 	.import __bss_stop,data
++	.import __end,data
  
- 	if (unlikely(rqe->__pad || area_idx))
- 		return false;
+ 	load32		PA(__bss_start),%r3
+ 	load32		PA(__bss_stop),%r4
+@@ -149,7 +150,11 @@ $cpu_ok:
+ 	 * everything ... it will get remapped correctly later */
+ 	ldo		0+_PAGE_KERNEL_RWX(%r0),%r3 /* Hardwired 0 phys addr start */
+ 	load32		(1<<(KERNEL_INITIAL_ORDER-PAGE_SHIFT)),%r11 /* PFN count */
+-	load32		PA(pg0),%r1
++	load32		PA(_end),%r1
++	SHRREG		%r1,PAGE_SHIFT,%r1  /* %r1 is PFN count for _end symbol */
++	cmpb,<<,n	%r11,%r1,1f
++	copy		%r1,%r11	/* %r1 PFN count smaller than %r11 */
++1:	load32		PA(pg0),%r1
+ 
+ $pgt_fill_loop:
+ 	STREGM          %r3,ASM_PTE_ENTRY_SIZE(%r1)
 
 
 
