@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHHNJeCOuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:56 +0100
+	id GEnYB3SUuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E816B2AF90C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:26:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A442B0382
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5184A3123DC6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7619D3251A6B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B5C3F99CA;
-	Tue, 17 Mar 2026 16:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C5D2FFDEA;
+	Tue, 17 Mar 2026 17:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioPjJEeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euLPIkza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F23F54CD;
-	Tue, 17 Mar 2026 16:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265C62DF132;
+	Tue, 17 Mar 2026 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766718; cv=none; b=Pm1RqLSX2+7Mo3bhT7667oQ2cLaS7a3uGaj8s0LGjTyCclqqfyfWyDDhA6sdnZpBA8/IKbdzDaLz9sgUpTA3fgOvPlneEPTfp84VYsBmcDaOa5hasTci9HizVObYq02AuByxVM136/KxbQO6uf9cd5YYeNxJRPqity8QCMapCiU=
+	t=1773767980; cv=none; b=UtbTnizJZMA4CZRtpAlLfxcw+pVWQCwT1zMM76hArOYld8qTsf1Ka8JKCgH+3Kgu2sFGuzrdjDpo0IDIhzPluaMXyXIunoD/Va5UhmTlAlRBvrLYiwkxsYHO2L/ozWr3L+xKglABNJoHeU0wXYfGEaP3VGlhqwdWNjs+esvwn6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766718; c=relaxed/simple;
-	bh=yn46xAo5/YVb9aSQMbDY/jAseZjyBBN4VnPlPgriwpI=;
+	s=arc-20240116; t=1773767980; c=relaxed/simple;
+	bh=HoQeP54Aq+Oqnpp49JodQlWj5cWrG4q8UocxXFJUWsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/9ritrXTjMbcDhrDffOEyyj2UtRrviKAXdnTGn4LEokob2hF5YMDa0I9L/Icf/wIrEa3YUfAnMfhPFw2auGATzT0kYgZMvLidbRZxshLuWHlrcKoMusSVkVJvBafi1Tzf1vQg8UbA77E4NGUkQIEgJPhSPBzJVSXa7aOJAgDPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioPjJEeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E92C19424;
-	Tue, 17 Mar 2026 16:58:37 +0000 (UTC)
+	 MIME-Version; b=cM4Lpvddaq5wxZa+xAqoU3zZxF1IM/86pc0rBiTqjyne/hFtpAF9Wao1p3ueagZuWUOy5Pd5/mBNd+1I1nmjruqdwj3JS6cF4drJZd1tmxhUcFuLCaugb6DL4ZiK/tHLPQWYz/vw1ws8HsyhPLLQnXs6iOrxVLBdnk/5M+aGEjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euLPIkza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E71C4CEF7;
+	Tue, 17 Mar 2026 17:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766718;
-	bh=yn46xAo5/YVb9aSQMbDY/jAseZjyBBN4VnPlPgriwpI=;
+	s=korg; t=1773767979;
+	bh=HoQeP54Aq+Oqnpp49JodQlWj5cWrG4q8UocxXFJUWsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ioPjJEeQEFrGFegFTun2dqMEDwpl7v3OgnWG7CEEmBJrBxJH80eOBu81PfDmz3AKy
-	 pvs/CTepO8Hhvea+Ni45FkW4bGKclY5WZ+SoDAakYsVIX48WC/BsGK6HIXtnoHy+bS
-	 lQvsqThxq12mOCnUdFiXBuaqLOxjMma1KQyfIWjU=
+	b=euLPIkzaYg/YIJ2kIea2TztH6wXu24NBRXyc3PtZ/0Q2AZW5GdxeqvqrRz2LsdTnv
+	 6KS+P/F6rDHEwm2Xb0HiQFoYp/6Mqu4X4tnXHfp0YknSvB1HnCttnOxxbS4eaMJnnX
+	 qGKws8d99pG87BrzUqgd2aNmvXI7kLxTV9LZqahc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.19 274/378] io_uring/zcrx: use READ_ONCE with user shared RQEs
-Date: Tue, 17 Mar 2026 17:33:51 +0100
-Message-ID: <20260317163017.088470256@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.18 203/333] btrfs: fix chunk map leak in btrfs_map_block() after btrfs_chunk_map_num_copies()
+Date: Tue, 17 Mar 2026 17:33:52 +0100
+Message-ID: <20260317163006.883543310@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226439-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226728-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E816B2AF90C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 83A442B0382
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Mark Harmstone <mark@harmstone.com>
 
-commit 531bb98a030cc1073bd7ed9a502c0a3a781e92ee upstream.
+commit f15fb3d41543244d1179f423da4a4832a55bc050 upstream.
 
-Refill queue entries are shared with the user space, use READ_ONCE when
-reading them.
+Fix a chunk map leak in btrfs_map_block(): if we return early with -EINVAL,
+we're not freeing the chunk map that we've just looked up.
 
-Fixes: 34a3e60821ab9 ("io_uring/zcrx: implement zerocopy receive pp memory provider");
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 0ae653fbec2b ("btrfs: reduce chunk_map lookups in btrfs_map_block()")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/zcrx.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/volumes.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -898,11 +898,12 @@ static inline bool io_parse_rqe(struct i
- 				struct io_zcrx_ifq *ifq,
- 				struct net_iov **ret_niov)
- {
-+	__u64 off = READ_ONCE(rqe->off);
- 	unsigned niov_idx, area_idx;
- 	struct io_zcrx_area *area;
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -6759,8 +6759,10 @@ int btrfs_map_block(struct btrfs_fs_info
+ 		return PTR_ERR(map);
  
--	area_idx = rqe->off >> IORING_ZCRX_AREA_SHIFT;
--	niov_idx = (rqe->off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
-+	area_idx = off >> IORING_ZCRX_AREA_SHIFT;
-+	niov_idx = (off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
+ 	num_copies = btrfs_chunk_map_num_copies(map);
+-	if (io_geom.mirror_num > num_copies)
+-		return -EINVAL;
++	if (io_geom.mirror_num > num_copies) {
++		ret = -EINVAL;
++		goto out;
++	}
  
- 	if (unlikely(rqe->__pad || area_idx))
- 		return false;
+ 	map_offset = logical - map->start;
+ 	io_geom.raid56_full_stripe_start = (u64)-1;
 
 
 
