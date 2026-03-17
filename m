@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-226667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EMhIESSuWl3KgIAu9opvQ
-	(envelope-from <stable+bounces-226667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:24 +0100
+	id yNvxI12IuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99EB2AFFB6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:41:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162C82AEBBE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 358CB335EEBC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D216C30F6502
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F7437C10E;
-	Tue, 17 Mar 2026 17:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440793F54B5;
+	Tue, 17 Mar 2026 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fStJv1OX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWj2MNV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD537C106;
-	Tue, 17 Mar 2026 17:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FCB3F23AA;
+	Tue, 17 Mar 2026 16:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767729; cv=none; b=LYOjqrnA62cHebKeTv4aIxpcfo+Tx0ZoRktGSswsM+Vh9diFK30Yk+K0xN+U9yeul3ssnXjUiRkPbA9IDDe0gENPWVgM5xUuIeqVwCckjsX0j94vML2V4OXaESDBa3s/jIlAWe3kMUlw5vXLluy7K5mfP8QpanQMoX/1T6lymfo=
+	t=1773766116; cv=none; b=AoQL2X4BG4+FthDH/i4J7zbRdj+PoCj7IrfiqNThcK+5WGrAWp2UGrztmEXYv6sIAhI4m77KqMKOMWGx1qMNBzkB87hBvZELNgOIlEAxKdK8dB7K9qdY8Fj1wM9FtbyLMFtjX5Aa7x/X7rshzqVO2nWTgZ1a9YaIGh9RpgqIRis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767729; c=relaxed/simple;
-	bh=Q3MIFg26rnUGD3bXVkpjtp7xP6zgZj86bRClnAAxSTQ=;
+	s=arc-20240116; t=1773766116; c=relaxed/simple;
+	bh=C7XSwJ296z9I1jN7oLAKQgxmzzj2Rgyhblmrhm/vKqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhL1EwIxThqhZl/GzW+NNrBYgWj9TTZVQDReTAn5xMm3slq91ALAe/WWDL5DGVgSHNEIESkgsnuIEAKQ0qKEGaGPSTJFBjJdSYmYE7D4Zj14MVjm/z+RgCAEOS+x162KIkODZ8Enjz+2y7d8f0jeKlBVR30ygA2RnppRCuwIg3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fStJv1OX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E2CC2BCC9;
-	Tue, 17 Mar 2026 17:15:28 +0000 (UTC)
+	 MIME-Version; b=ciLyNP0IrBAkACEmrpnN29g6rseRYzSMBHkPgogsgAJJNncty0iudrmD00MOsIfxoORgZk/9OKts6Y4yJ6OKMt/bv3a75Smi7+hf/EYe5PXEEcyjULpjRbuIw1giA3NNy84Mix3EBTYjQvccygpqbaW4VpgdbB/QyneJw2cTeV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWj2MNV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6F2C4CEF7;
+	Tue, 17 Mar 2026 16:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767729;
-	bh=Q3MIFg26rnUGD3bXVkpjtp7xP6zgZj86bRClnAAxSTQ=;
+	s=korg; t=1773766115;
+	bh=C7XSwJ296z9I1jN7oLAKQgxmzzj2Rgyhblmrhm/vKqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fStJv1OXX5wPCqfM1MTdzlHn3qkVxuI5vlr+gMYmw6zdhmgwppjTG+yRPcl7vh8QC
-	 HiHWSW+Vj9TTwHdwiYjvvVOkMI0oAGA4VWexoENpq+XzfOQ8j+R11kYGFj+qClynw9
-	 GEHTPQUfhNwLou1V0BTK+zOLTpbosp70MwVz9PJE=
+	b=MWj2MNV5toc+/5LkZnFBE+4B8/jD8+O9hgdQ8q2sHTxdD46fp1nJnadV7mO99RKH9
+	 zbGlpVIqrbLcnfTxXuwA5j3gHOG8TTvzCsV77rzvD+3Pjr4aN7R8kfRdLl0W9knlQE
+	 3m3yw5cHxBcMTD1ae0DFmQoTdhokQ/kpFw7+E2XE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 102/333] iio: imu: inv-mpu9150: fix irq ack preventing irq storms
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.19 174/378] ceph: fix i_nlink underrun during async unlink
 Date: Tue, 17 Mar 2026 17:32:11 +0100
-Message-ID: <20260317163003.152886652@linuxfoundation.org>
+Message-ID: <20260317163013.410567523@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,120 +66,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226304-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226667-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tdk.com:email]
-X-Rspamd-Queue-Id: D99EB2AFFB6
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ionos.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 162C82AEBBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit d23d763e00ace4e9c59f8d33e0713d401133ba88 ]
+commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
 
-IRQ needs to be acked. for some odd reasons, reading from irq status does
-not reliable help, enable acking from any register to be on the safe side
-and read the irq status register. Comments in the code indicate a known
-unreliability with that register.
-The blamed commit was tested with mpu6050 in lg,p895 and lg,p880 according
-to Tested-bys. But with the MPU9150 in the Epson Moverio BT-200 this leads
-to irq storms without properly acking the irq.
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-Fixes: 0a3b517c8089 ("iio: imu: inv_mpu6050: fix interrupt status read for old buggy chips")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
+
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
+
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
+
+The WARNING can be reproduced this way:
+
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 8 ++++++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     | 2 ++
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 ++++-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ fs/ceph/dir.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index b2fa1f4957a5b..5796896d54cd8 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1943,6 +1943,14 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 			irq_type);
- 		return -EINVAL;
- 	}
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1339,6 +1339,7 @@ static int ceph_unlink(struct inode *dir
+ 	struct ceph_client *cl = fsc->client;
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	struct dentry *dn;
+@@ -1424,7 +1425,19 @@ retry:
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
 +
-+	/*
-+	 * Acking interrupts by status register does not work reliably
-+	 * but seem to work when this bit is set.
-+	 */
-+	if (st->chip_type == INV_MPU9150)
-+		st->irq_mask |= INV_MPU6050_INT_RD_CLEAR;
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
 +
- 	device_set_wakeup_capable(dev, true);
- 
- 	st->vdd_supply = devm_regulator_get(dev, "vdd");
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index 211901f8b8eb6..6239b1a803f77 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -390,6 +390,8 @@ struct inv_mpu6050_state {
- /* enable level triggering */
- #define INV_MPU6050_LATCH_INT_EN	0x20
- #define INV_MPU6050_BIT_BYPASS_EN	0x2
-+/* allow acking interrupts by any register read */
-+#define INV_MPU6050_INT_RD_CLEAR	0x10
- 
- /* Allowed timestamp period jitter in percent */
- #define INV_MPU6050_TS_PERIOD_JITTER	4
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 10a4733420759..22c1ce66f99ee 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -248,7 +248,6 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
- 	switch (st->chip_type) {
- 	case INV_MPU6000:
- 	case INV_MPU6050:
--	case INV_MPU9150:
- 		/*
- 		 * WoM is not supported and interrupt status read seems to be broken for
- 		 * some chips. Since data ready is the only interrupt, bypass interrupt
-@@ -257,6 +256,10 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
- 		wom_bits = 0;
- 		int_status = INV_MPU6050_BIT_RAW_DATA_RDY_INT;
- 		goto data_ready_interrupt;
-+	case INV_MPU9150:
-+		/* IRQ needs to be acked */
-+		wom_bits = 0;
-+		break;
- 	case INV_MPU6500:
- 	case INV_MPU6515:
- 	case INV_MPU6880:
--- 
-2.51.0
-
+ 			d_delete(dentry);
+ 		} else {
+ 			spin_lock(&fsc->async_unlink_conflict_lock);
 
 
 
