@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-226155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMdTGaeEuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:43:19 +0100
+	id YBqqIbKEuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:43:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CD62AE45E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:43:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB932AE46C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8192309C4A8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:39:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66AF0309E7DB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE543EC2F1;
-	Tue, 17 Mar 2026 16:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88383EBF3F;
+	Tue, 17 Mar 2026 16:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSL+HWwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pf4FmZHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E7F3EBF00;
-	Tue, 17 Mar 2026 16:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC82C3EB7F1;
+	Tue, 17 Mar 2026 16:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765540; cv=none; b=TSn7cXv/Tv2s7skbSiUn9BUHkWQm4xnZEs05uoA7lW193OE3v2PVgzniZM1Kep2OSrQw5seBpTDjWPUMeJVHjUJ5tcTaW0tjpx2ELPFwEfmcXLYwiAf7QAsUaqRYdrD4Tsdkll5zvq/Nfdl3avHmNFn1dpZZoA8+RWk5TfTbHSw=
+	t=1773765544; cv=none; b=djJbGSqvyuZedeToYdtSprKE/hEGNbLzK52fPDnhIEiFO0jfaTG8WPuZzXos+KsaM9o5KgTodZZj6bM/BjbNzgJNLwL5XOfwBnjggT3lPvEYBbsxZA6K5sQW+ICegOCgI6Yvg+1rKmv1NkHfXX9msVwBUpnyBf6uUSGtMxj4GGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765540; c=relaxed/simple;
-	bh=bgIp18f0BOflQ+uuJ4eak6WjATKG96+OdeZE2V1veOY=;
+	s=arc-20240116; t=1773765544; c=relaxed/simple;
+	bh=KrrXn/9EkxXCzfkyPsUtAQn0/5L3nMfDkiyeUJwEMng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmZCeDSwUctM0/xm1wp7MZNr81rIg0iqmS5G28m/2CNYvQqYhTf29RgzlX+wlGiufiW7l1ds4u6a12ofO3/SYNuzwvE8/hhFeAsbHvZTWtWv9eE4NID6TWKbC4p+3ettOo/hYsy9GHfvlXrWM+2sYRXckNPm0kG+y6aPW0pwc8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSL+HWwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C80EC4CEF7;
-	Tue, 17 Mar 2026 16:38:59 +0000 (UTC)
+	 MIME-Version; b=XraDUfeZwZDwdeuxbwIfAsbwARC/cBqCd9ILmI+BDAfhkSN4f+5i2QUuMj2zUK6S5EVRsd6a3W6/5kAA95ZBpogxhWlmnpH8yQehxrz/2SWA0+q2XlEKZVPQsUiqghjkaoNZwRQYBQCIrxPFtYRsZKt2WC6fqrOX2R6DLY3eGU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pf4FmZHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17057C4CEF7;
+	Tue, 17 Mar 2026 16:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765540;
-	bh=bgIp18f0BOflQ+uuJ4eak6WjATKG96+OdeZE2V1veOY=;
+	s=korg; t=1773765544;
+	bh=KrrXn/9EkxXCzfkyPsUtAQn0/5L3nMfDkiyeUJwEMng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSL+HWwPzGp70nKyT84wxOUhIUlMifKNL6AySHDOkKTa6I9eIVWtT7k2i2JCG1XV8
-	 E6dFABcgNmM4lfTAUHIE7uBqUBh/GaDE2dLiFJTmrOfhXhHFHPrhcImXLtPkh905bs
-	 HUhm/zeuk/3Vu4ofe4BmnBc1XH5shj3squG0yxuE=
+	b=pf4FmZHujs/sRpjWAFrBh9UkUINj1XOqlRc0swflmd6lUBcqemobNBW7nG94RGUKd
+	 c1N8KrqXF0toqgQjqPRE0COSJMF56qV08KhvYSKJM+yqyzFRkOE3hJ1ircg55Bhgt7
+	 ved6J2NT4qXlgIiGbQAArkwICkajb+71WXpsJGjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 034/378] drm/msm/a8xx: Fix ubwc config related to swizzling
-Date: Tue, 17 Mar 2026 17:29:51 +0100
-Message-ID: <20260317163008.237603556@linuxfoundation.org>
+Subject: [PATCH 6.19 035/378] dt-bindings: display/msm: qcom,sm8750-mdss: Fix model typo
+Date: Tue, 17 Mar 2026 17:29:52 +0100
+Message-ID: <20260317163008.274542348@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -69,30 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226155-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226156-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 01CD62AE45E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EBB932AE46C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,52 +99,36 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit 7e459c41264fdd87b096ede8da796a302d569722 ]
+[ Upstream commit 4355b13d46f696d687f42b982efed7570e03e532 ]
 
-To disable l2/l3 swizzling in A8x, set the respective bits in both
-GRAS_NC_MODE_CNTL and RB_CCU_NC_MODE_CNTL registers. This is required
-for Glymur where it is recommended to keep l2/l3 swizzling disabled.
+Fix obvious model typo (SM8650->SM8750) in the description.
 
-Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Message-ID: <20260305-a8xx-ubwc-fix-v1-1-d99b6da4c5a9@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Fixes: 6b93840116df ("dt-bindings: display/msm: qcom,sm8750-mdss: Add SM8750")
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/707192/
+Link: https://lore.kernel.org/r/20260225173419.125565-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a8xx_gpu.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/display/msm/qcom,sm8750-mdss.yaml       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-index 30de078e9dfd2..3b17ddac07532 100644
---- a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-@@ -306,11 +306,21 @@ static void a8xx_set_ubwc_config(struct msm_gpu *gpu)
- 	hbb = cfg->highest_bank_bit - 13;
- 	hbb_hi = hbb >> 2;
- 	hbb_lo = hbb & 3;
--	a8xx_write_pipe(gpu, PIPE_BV, REG_A8XX_GRAS_NC_MODE_CNTL, hbb << 5);
--	a8xx_write_pipe(gpu, PIPE_BR, REG_A8XX_GRAS_NC_MODE_CNTL, hbb << 5);
-+
-+	a8xx_write_pipe(gpu, PIPE_BV, REG_A8XX_GRAS_NC_MODE_CNTL,
-+			hbb << 5 |
-+			level3_swizzling_dis << 4 |
-+			level2_swizzling_dis << 3);
-+
-+	a8xx_write_pipe(gpu, PIPE_BR, REG_A8XX_GRAS_NC_MODE_CNTL,
-+			hbb << 5 |
-+			level3_swizzling_dis << 4 |
-+			level2_swizzling_dis << 3);
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm8750-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm8750-mdss.yaml
+index d55fda9a523e2..a38c2261ef1ac 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,sm8750-mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,sm8750-mdss.yaml
+@@ -10,7 +10,7 @@ maintainers:
+   - Krzysztof Kozlowski <krzk@kernel.org>
  
- 	a8xx_write_pipe(gpu, PIPE_BR, REG_A8XX_RB_CCU_NC_MODE_CNTL,
- 			yuvnotcomptofc << 6 |
-+			level3_swizzling_dis << 5 |
-+			level2_swizzling_dis << 4 |
- 			hbb_hi << 3 |
- 			hbb_lo << 1);
+ description:
+-  SM8650 MSM Mobile Display Subsystem(MDSS), which encapsulates sub-blocks like
++  SM8750 MSM Mobile Display Subsystem(MDSS), which encapsulates sub-blocks like
+   DPU display controller, DSI and DP interfaces etc.
  
+ $ref: /schemas/display/msm/mdss-common.yaml#
 -- 
 2.51.0
 
