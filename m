@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-226644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GoPsG9GRuWl3KgIAu9opvQ
-	(envelope-from <stable+bounces-226644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:29 +0100
+	id oDNlA8OIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E5A2AFEC4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:39:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CCC2AECA6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACBFF3265181
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12AA43133063
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E6D3F54B5;
-	Tue, 17 Mar 2026 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3D43EDADD;
+	Tue, 17 Mar 2026 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+/jerf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qI1w5Zoa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498B12116F6;
-	Tue, 17 Mar 2026 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA123EAC6F;
+	Tue, 17 Mar 2026 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767610; cv=none; b=ZvV2OBJUuP6bdh+Xd6t15QwZUtTQ7eyfwu24DeoHZpt+MNRc/kDsR9m8BJ8+BT2rtfaQlgeidDs5vsgucbmEC/WUKHmOQLPrjkCSG0Vhy4ssCQOAke/T9p/dPaj+7TQbd5oOJWaDIIvK9Y56kUArjCG+zBhLGvFQxD4OSO/MfaQ=
+	t=1773766223; cv=none; b=mdQeaiFJAY5jLyhaPOx9lj+eCa2fSWmLT91bmearmvT7lEpXDPFKnfkdn8D8xcmsezvJ8vX3gRfY5uJQ7IlrWv18cmDes7dFZWs4y/PLxozAHldUMm8P4Kh6+48BItWxMOWwWWlyUeX+eJOc4anbJB+vyPFx7WU0jh7xhwc06c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767610; c=relaxed/simple;
-	bh=67sQdvUhJihgFQlRpkqthqAiRtrb5oHzHITmLvpmzlE=;
+	s=arc-20240116; t=1773766223; c=relaxed/simple;
+	bh=AdqGyu9wNPqu5eAoYgGVHXo/KdRRwgyR2NPVJrSUJqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTcCqHlAKTWGE9PDSj602kMx3n1eODyLW5QPp/CVOwivqeMAbrZrG1dA0wBManZlDwh6kzH0seLrypdqwWEXx6QP3Co+4iIHUI0tsxSHRKYkJQYgFRs5BCNjMHoQOTXx4v/DFZ5XJsaZIsnTAISmj00JAfZ/uGWE7nxL7RX5Ss4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+/jerf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B119BC4CEF7;
-	Tue, 17 Mar 2026 17:13:29 +0000 (UTC)
+	 MIME-Version; b=hAGZx7stcsIC4TQEyzEIKxPyDuv4YA0Bvz/iWT6SeswyQbhBINNvQELoo/BiCSBHyTKdJ2ZANpZGprVKz/zPDuJJ/HeoxjGMKg+gphwj7JWPdJ3TAKw027xutfTZlqpTowSIZdEi1sxOoOzUackm3q19qgs37dKP0hbpwsKASbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qI1w5Zoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788C3C4CEF7;
+	Tue, 17 Mar 2026 16:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767610;
-	bh=67sQdvUhJihgFQlRpkqthqAiRtrb5oHzHITmLvpmzlE=;
+	s=korg; t=1773766222;
+	bh=AdqGyu9wNPqu5eAoYgGVHXo/KdRRwgyR2NPVJrSUJqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+/jerf/MiDZsOV69ckwiEd786ZHfrRnEmKnuMTe+RbaBmxgR3RMERykggklKeJuW
-	 2a2PzwU2R00cSLUH/XDNanOFuXDKW9f7XUaN9haOVftsU47ZJ4w3biDoiv0nnopT7i
-	 sKzbIBBxOQ/+yEb2EDURgyrt2c1mM04a9Dk/XxNA=
+	b=qI1w5ZoaGoAgnlxSKbrngmv9CVWLAviAElNrZOUmOgO8gVghk7v3raS3IKJreBsbq
+	 mGVwoUG3zZpJNClfXq2VKfeGoPiqsk8OarhLgJLwx6dsdR8OQNsTwe4pavyhWLxY+c
+	 0uDzcyEAJCjsVs4R2XExmb3KRvPrk/Qthf7xs0Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 122/333] KVM: arm64: Fix protected mode handling of pages larger than 4kB
-Date: Tue, 17 Mar 2026 17:32:31 +0100
-Message-ID: <20260317163003.890762161@linuxfoundation.org>
+	Felix Gu <gu_0233@qq.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.19 195/378] mmc: mmci: Fix device_node reference leak in of_get_dml_pipe_index()
+Date: Tue, 17 Mar 2026 17:32:32 +0100
+Message-ID: <20260317163014.179743023@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +65,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226327-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226644-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07E5A2AFEC4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,dma_spec.np:url]
+X-Rspamd-Queue-Id: 14CCC2AECA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 08f97454b7fa39bfcf82524955c771d2d693d6fe upstream.
+commit af12e64ae0661546e8b4f5d30d55c5f53a11efe7 upstream.
 
-Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
-pKVM tracks the memory that has been mapped into a guest in a
-side data structure. Crucially, it uses it to find out whether
-a page has already been mapped, and therefore refuses to map it
-twice. So far, so good.
+When calling of_parse_phandle_with_args(), the caller is responsible
+to call of_node_put() to release the reference of device node.
+In of_get_dml_pipe_index(), it does not release the reference.
 
-However, this very patch completely breaks non-4kB page support,
-with guests being unable to boot. The most obvious symptom is that
-we take the same fault repeatedly, and not making forward progress.
-A quick investigation shows that this is because of the above
-rejection code.
-
-As it turns out, there are multiple issues at play:
-
-- while the HPFAR_EL2 register gives you the faulting IPA minus
-  the bottom 12 bits, it will still give you the extra bits that
-  are part of the page offset for anything larger than 4kB,
-  even for a level-3 mapping
-
-- pkvm_pgtable_stage2_map() assumes that the address passed as
-  a parameter is aligned to the size of the intended mapping
-
-- the faulting address is only aligned for a non-page mapping
-
-When the planets are suitably aligned (pun intended), the guest
-faults on a page by accessing it past the bottom 4kB, and extra bits
-get set in the HPFAR_EL2 register. If this results in a page mapping
-(which is likely with large granule sizes), nothing aligns it further
-down, and pkvm_mapping_iter_first() finds an intersection that
-doesn't really exist. We assume this is a spurious fault and return
--EAGAIN. And again...
-
-This doesn't hit outside of the protected code, as the page table
-code always aligns the IPA down to a page boundary, hiding the issue
-for everyone else.
-
-Fix it by always forcing the alignment on vma_pagesize, irrespective
-of the value of vma_pagesize.
-
-Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Fuad Tabba <tabba@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://https://patch.msgid.link/20260222141000.3084258-1-maz@kernel.org
+Fixes: 9cb15142d0e3 ("mmc: mmci: Add qcom dml support to the driver.")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/mmu.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/mmc/host/mmci_qcom_dml.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1712,14 +1712,12 @@ static int user_mem_abort(struct kvm_vcp
- 	}
+--- a/drivers/mmc/host/mmci_qcom_dml.c
++++ b/drivers/mmc/host/mmci_qcom_dml.c
+@@ -109,6 +109,7 @@ static int of_get_dml_pipe_index(struct
+ 				       &dma_spec))
+ 		return -ENODEV;
  
- 	/*
--	 * Both the canonical IPA and fault IPA must be hugepage-aligned to
--	 * ensure we find the right PFN and lay down the mapping in the right
--	 * place.
-+	 * Both the canonical IPA and fault IPA must be aligned to the
-+	 * mapping size to ensure we find the right PFN and lay down the
-+	 * mapping in the right place.
- 	 */
--	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
--		fault_ipa &= ~(vma_pagesize - 1);
--		ipa &= ~(vma_pagesize - 1);
--	}
-+	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
-+	ipa = ALIGN_DOWN(ipa, vma_pagesize);
++	of_node_put(dma_spec.np);
+ 	if (dma_spec.args_count)
+ 		return dma_spec.args[0];
  
- 	gfn = ipa >> PAGE_SHIFT;
- 	mte_allowed = kvm_vma_mte_allowed(vma);
 
 
 
