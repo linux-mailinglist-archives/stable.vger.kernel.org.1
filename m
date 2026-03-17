@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-226406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCYxEoyKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:28 +0100
+	id 8EoWDtmMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43AF2AF028
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A442AF498
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E7633182D11
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:56:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E2A5304D1C0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DD33F23DD;
-	Tue, 17 Mar 2026 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4933D2EF67A;
+	Tue, 17 Mar 2026 17:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HP+urtQE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/Ectbkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6A33C6612;
-	Tue, 17 Mar 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1E7225A38;
+	Tue, 17 Mar 2026 17:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766566; cv=none; b=ahjt3XwVTFBpWOR8zulF5WlUpVoxLQDP/Q8Od0pBiNIXSB1aN4Sa6PupiCfTdPW4lGw3kNehVds1aDXOfDp6ZYV24i8LiRybQWGpKktbhDWU1Vq9NFTPJVL0GwV68EcvfpjoOba6v7l9G4jdJTQTMVSeHVV6xgSseuY1dZJtwEE=
+	t=1773767845; cv=none; b=WY+Mx2yK6p51qGjlRXgbFHin770Z+e4Ywfd9TbKpZ43sd0FFgGncDqjT3047uGqGTZOn3yBGEwUhbPyUXdKLwVi08/1Q0cOkEZLgcPrrBn5gk2J5t17UjzZPTPupdlNKLKh60ZhKofJVX+a3OKwqb6eiMFzBV2mZwK+T1MjmV6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766566; c=relaxed/simple;
-	bh=GMM9GrWT2Ij+jwhabLf+uQyeWOfxgjONmn3dYGd/G0I=;
+	s=arc-20240116; t=1773767845; c=relaxed/simple;
+	bh=pUuM+usgE8KjqBx3xSArxwS54x1LcX6Hih8pIiKosMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVfCPniT332Hc3kxS6EmT4BeIlPsXwvkAMziviocNWFeCSyUT65yU3rTh+5mIuiCSpjKWzddPQ/Ovoz3q1EQqKprzlbgbW+/QyqKPpUopQptbQXs//OQzZhl/t3Pr4SKpE0tohHxjiR0Qeva5H7vdA8OyAG0KAidT+5K1c6840A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HP+urtQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6D1C4CEF7;
-	Tue, 17 Mar 2026 16:56:06 +0000 (UTC)
+	 MIME-Version; b=gjj50NlwxqRt8a6dc2U7DmVR4eiCYFznunQKZC+Lx25g80ADoRjVZq50dqYXGPFey9OtkE1om7OrM76DMKn5O7hRxr3QsOoe5cAOZvsjAghFLW0+hxSVUkhq6bpng2ty+Qw5/EiIuLGQb1jutZK4VQw5QPe/WeZxVkXSTsuzn1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/Ectbkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E2FC4CEF7;
+	Tue, 17 Mar 2026 17:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766566;
-	bh=GMM9GrWT2Ij+jwhabLf+uQyeWOfxgjONmn3dYGd/G0I=;
+	s=korg; t=1773767844;
+	bh=pUuM+usgE8KjqBx3xSArxwS54x1LcX6Hih8pIiKosMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HP+urtQEWOqAjxPfW5ravmZzNSi8d7ofwSY5x/jW1ochIVk96eFtyYOzYVoyy2icB
-	 HdTQBGdrYkKeY7/H77n3uBjLz2SQeam0uOi0i9i0X7YIn+lKILyP/ImKSfPmW5+Zmu
-	 ZzSwmVGP2+bgC53+mvmxtYoUnHI73s6yVGc7/Xpo=
+	b=U/EctbkjLO5WjumfdvTeGFYdkcyeOm4h7GRBVMrnihRcjqOg2DZS0ccwLMU3MXbAS
+	 75MMoz29EJIswJfG7bFJcmSMWZFQ+bz3XIqf01gVKJGOz5XI62CNXkm4CHesPY4EAI
+	 q4cKkE1A3iqzmFn7TSKkLR772s6T7bMGppd1UJO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Gao <wegao@suse.com>,
-	Sasha Levin <sashal@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.19 241/378] iomap: dont mark folio uptodate if read IO has bytes pending
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.18 169/333] libceph: admit message frames only in CEPH_CON_S_OPEN state
 Date: Tue, 17 Mar 2026 17:33:18 +0100
-Message-ID: <20260317163015.882463050@linuxfoundation.org>
+Message-ID: <20260317163005.627270442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,107 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-226406-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226693-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,ibm.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: C43AF2AF028
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8A442AF498
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit debc1a492b2695d05973994fb0f796dbd9ceaae6 upstream.
+commit a5a373705081d7cc6363e16990e2361b0b362314 upstream.
 
-If a folio has ifs metadata attached to it and the folio is partially
-read in through an async IO helper with the rest of it then being read
-in through post-EOF zeroing or as inline data, and the helper
-successfully finishes the read first, then post-EOF zeroing / reading
-inline will mark the folio as uptodate in iomap_set_range_uptodate().
+Similar checks are performed for all control frames, but an early check
+for message frames was missing.  process_message() is already set up to
+terminate the loop in case the state changes while con->ops->dispatch()
+handler is being executed.
 
-This is a problem because when the read completion path later calls
-iomap_read_end(), it will call folio_end_read(), which sets the uptodate
-bit using XOR semantics. Calling folio_end_read() on a folio that was
-already marked uptodate clears the uptodate bit.
-
-Fix this by not marking the folio as uptodate if the read IO has bytes
-pending. The folio uptodate state will be set in the read completion
-path through iomap_end_read() -> folio_end_read().
-
-Reported-by: Wei Gao <wegao@suse.com>
-Suggested-by: Sasha Levin <sashal@kernel.org>
-Tested-by: Wei Gao <wegao@suse.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Cc: stable@vger.kernel.org # v6.19
-Link: https://lore.kernel.org/linux-fsdevel/aYbmy8JdgXwsGaPP@autotest-wegao.qe.prg2.suse.org/
-Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and readahead")
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Link: https://patch.msgid.link/20260303233420.874231-2-joannelkoong@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ net/ceph/messenger_v2.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -79,18 +79,27 @@ static void iomap_set_range_uptodate(str
- {
- 	struct iomap_folio_state *ifs = folio->private;
- 	unsigned long flags;
--	bool uptodate = true;
-+	bool mark_uptodate = true;
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -2906,6 +2906,11 @@ static int __handle_control(struct ceph_
+ 	if (con->v2.in_desc.fd_tag != FRAME_TAG_MESSAGE)
+ 		return process_control(con, p, end);
  
- 	if (folio_test_uptodate(folio))
- 		return;
- 
- 	if (ifs) {
- 		spin_lock_irqsave(&ifs->state_lock, flags);
--		uptodate = ifs_set_range_uptodate(folio, ifs, off, len);
-+		/*
-+		 * If a read with bytes pending is in progress, we must not call
-+		 * folio_mark_uptodate(). The read completion path
-+		 * (iomap_read_end()) will call folio_end_read(), which uses XOR
-+		 * semantics to set the uptodate bit. If we set it here, the XOR
-+		 * in folio_end_read() will clear it, leaving the folio not
-+		 * uptodate.
-+		 */
-+		mark_uptodate = ifs_set_range_uptodate(folio, ifs, off, len) &&
-+				!ifs->read_bytes_pending;
- 		spin_unlock_irqrestore(&ifs->state_lock, flags);
- 	}
- 
--	if (uptodate)
-+	if (mark_uptodate)
- 		folio_mark_uptodate(folio);
- }
- 
++	if (con->state != CEPH_CON_S_OPEN) {
++		con->error_msg = "protocol error, unexpected message";
++		return -EINVAL;
++	}
++
+ 	ret = process_message_header(con, p, end);
+ 	if (ret < 0)
+ 		return ret;
 
 
 
