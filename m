@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-226833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGZQEmuPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:15 +0100
+	id 0GAWJzOWuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BF12AFAA5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:29:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29002B0695
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8D723033031
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:26:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3A831B10A6
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39192D739D;
-	Tue, 17 Mar 2026 17:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140002F6160;
+	Tue, 17 Mar 2026 17:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJUY0KIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5bl9nv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F8B21D5B0;
-	Tue, 17 Mar 2026 17:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC4415E5BB;
+	Tue, 17 Mar 2026 17:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768391; cv=none; b=YIaL5GGtZdADAPolA9HM9yr0L9Nq/QdGmspJTICKDmG6FYT9z7LwUhz9WFSF8kV6aHuk2++v2lBSGcMvhU84WscVgf8irr+4PLE0UTmGGb6gXAgx3ne/tiCjAio94HjtPRaZzgM8jvdoOwr1FE65S6EAUS47YFkLGoeUbtjFtRI=
+	t=1773768440; cv=none; b=UDx20q5yQDWrT1NpegLlaf8JAt+cM2a/uVq8bJqfiATBqmR2jEuZPIIYeZds+E8stUN/JsmC4f6waA59rdyOVsbysTVt1NtdBNTPVkEPNchWbmxHRNT7hfSrHqWVBLkKNhVUT7Bb1KpYTxrTr/vD9+rBkfq9zVB+1MN1Rq2xDD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768391; c=relaxed/simple;
-	bh=X4/K7fDr4zS0vhWle7Il3AWOQ30ay6LFIC5/kqI7UB4=;
+	s=arc-20240116; t=1773768440; c=relaxed/simple;
+	bh=wsgYCLc9nHSDRUo0ZLamb5hzsl5ad+6NzFGkQsB1DYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqQef4B2cRq0shMw82tLX+iobM+erpATbR7KWzJiDmm6lGYV1Lru1Qr9cFv+YX9BeGOQqGFQ/ikufa9Q7bjLS0XGTOPscyfO5U7p05+tLXh5tWwBsEmpWdc7iqVaUPXPhbyJVEaT7f7Ezg5f6Byq5BVs6KN4nlrkCamZJR6cNqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJUY0KIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6696BC4CEF7;
-	Tue, 17 Mar 2026 17:26:30 +0000 (UTC)
+	 MIME-Version; b=TlEedc2Tet4+GCR1Da+Jyxnmz86cyYylQRWs1fyTeSremNeUZL7pDk0wAF1g3OW19cMiUEmrgpiCaWkpwhi67Jz3ztfxE76mGcP14qCv+DXbbBTxPPaoN3HVpqfawtLkfzdYv3rSS3Sy3hfgOQI0c+u1OfvPNWxxBr7GlVJ9B8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5bl9nv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E65C4CEF7;
+	Tue, 17 Mar 2026 17:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768391;
-	bh=X4/K7fDr4zS0vhWle7Il3AWOQ30ay6LFIC5/kqI7UB4=;
+	s=korg; t=1773768440;
+	bh=wsgYCLc9nHSDRUo0ZLamb5hzsl5ad+6NzFGkQsB1DYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJUY0KIKF/7VnER7AD0rDge/vl03454nrDWCG2saalmss3ILSHvYgH8sYidMdmAkg
-	 99Krh1KCqkdS626CZ+iPao/hejFfdTa76BRjfwTcYDi8CtHfBD+iQVYAUbngq0JSKK
-	 AtqEJi+n+yu2A5jAyPIzEbEkenOWpADeeNVhFwGo=
+	b=x5bl9nv/2+Lnx4guydJ2TaGJGsmMMxzMaHZKg0r702s++/qB07DiI3zJs4MIkL1gq
+	 0KjXleeBfGeuNlilh6nBOzRu+lOYrc/6G0SNMrA7TijEckkeBVwSvjADdTyh2itp6+
+	 5gsrlIktjmxFeY0nKT5wnJhhy+ul/sbTmfDFVo98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zw Tang <shicenci@gmail.com>,
+	Josh Law <objecting@objecting.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.18 281/333] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
-Date: Tue, 17 Mar 2026 17:35:10 +0100
-Message-ID: <20260317163009.813640715@linuxfoundation.org>
+Subject: [PATCH 6.18 282/333] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+Date: Tue, 17 Mar 2026 17:35:11 +0100
+Message-ID: <20260317163009.849695174@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -65,33 +65,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226833-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226844-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 28BF12AFAA5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,objecting.org:email]
+X-Rspamd-Queue-Id: F29002B0695
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,42 +98,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Josh Law <objecting@objecting.org>
 
-commit 5ef268cb7a0aac55521fd9881f1939fa94a8988e upstream.
+commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
 
-Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
-because all caller handled the error correctly.
+snprintf() returns the number of characters that would have been
+written excluding the NUL terminator.  Output is truncated when the
+return value is >= the buffer size, not just > the buffer size.
 
-Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
+When ret == size, the current code takes the non-truncated path,
+advancing buf by ret and reducing size to 0.  This is wrong because
+the output was actually truncated (the last character was replaced by
+NUL).  Fix by using >= so the truncation path is taken correctly.
 
-Reported-by: Zw Tang <shicenci@gmail.com>
-Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
-Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
+Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
+
+Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Josh Law <objecting@objecting.org>
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1070,12 +1070,12 @@ static int __arm_kprobe_ftrace(struct kp
- 	lockdep_assert_held(&kprobe_mutex);
- 
- 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
--	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
-+	if (ret < 0)
- 		return ret;
- 
- 	if (*cnt == 0) {
- 		ret = register_ftrace_function(ops);
--		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
-+		if (ret < 0) {
- 			/*
- 			 * At this point, sinec ops is not registered, we should be sefe from
- 			 * registering empty filter.
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -316,7 +316,7 @@ int __init xbc_node_compose_key_after(st
+ 			       depth ? "." : "");
+ 		if (ret < 0)
+ 			return ret;
+-		if (ret > size) {
++		if (ret >= size) {
+ 			size = 0;
+ 		} else {
+ 			size -= ret;
 
 
 
