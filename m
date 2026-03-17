@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-226381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BWnBCaJuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:30 +0100
+	id CERrNIqUuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:51:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559BE2AED41
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:02:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE792B03A5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 548C4302D4AF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 839D4300C009
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FC13F23B3;
-	Tue, 17 Mar 2026 16:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039FC3246F8;
+	Tue, 17 Mar 2026 17:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDb+aW9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMFwnZrF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142832DE70D;
-	Tue, 17 Mar 2026 16:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2732FD69D;
+	Tue, 17 Mar 2026 17:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766449; cv=none; b=foZW/UMuyax5KIZuhayI+xXSncZ14FPTvnBXl4OpUg45ZSSyQTDQ+qRKGcWw1JwJqk3I8qPGg2Ylo7anH76VaPQbtNIZqiXvUfShkvxBLBFez65oTqUWYKhhTA9P7EzUqj7jl4/rcVhobFl3kNnu4ZDZTFEw2ijE8XP3yMYkRZg=
+	t=1773768001; cv=none; b=lsehnPZ+FmHO732vbk3cT8Y/TG8wpdy/Zc+7dxDkGhJhVl/SQP8LTdjK5cQvarUAMfoJEGW/z2Wq/M6LjgUilXJqKDTLPX70oBWrdBfCgUX5yXB737NHnAEiD+UXRrrM17/J4vmoT+O5ZNZG7GVvYWfcBfka7o/ej0vDzO5Rj+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766449; c=relaxed/simple;
-	bh=7GllyNPEf3NJTRZGQPMJjYIj/jZMSpv4bwjXgtAo4/w=;
+	s=arc-20240116; t=1773768001; c=relaxed/simple;
+	bh=BWSRA0MFaeyH+TzRTj6geyCFaCf28RX7EOUwK1WM59o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OF+xotbMVUeHw4Mph/PgjyibWJzbQ12lQxC2t04dgeGPmLcT++yf1EqxF7pvfKO4j9Ppv2BIKxliM/ZXu0LbrQfCIgOOwWub359NdJo4wo7GY3OjSXldu/uaLsAicYFKdBS3uBgM0smxfoU5RxgQZOto84Ektab3YC7D0K93RxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDb+aW9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F9BC4CEF7;
-	Tue, 17 Mar 2026 16:54:07 +0000 (UTC)
+	 MIME-Version; b=CDoVPcNJ9tAEp5zuYwqnTPG8Sh6GIHXnMnJsShgjK4VO9tX0dFLCxWM+EE6Bfe2rKFHCXb5Wro6MVrYZFgxEhvab2S82hGG4Rx5hE0HH32f0Zjh7wJypIYOykM65GlHnzwn90+DhS/QV5HcgkVUcJo2QxiBwGwPnboJ88grUtoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMFwnZrF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061F8C19424;
+	Tue, 17 Mar 2026 17:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766449;
-	bh=7GllyNPEf3NJTRZGQPMJjYIj/jZMSpv4bwjXgtAo4/w=;
+	s=korg; t=1773768001;
+	bh=BWSRA0MFaeyH+TzRTj6geyCFaCf28RX7EOUwK1WM59o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDb+aW9m8CnD/2vCF4dXlDSWnwltBV8f5VTxBDSLrbp/ZfVIhOEEtRO9EeagXLUTs
-	 q9ft4S0wBhEqKnY7qtY82KhC3RyiJ9E7vr/mw1rxgfNEJPxNDdwcCUL4LuiMYuJbxK
-	 nAVeMuWLiltJbrClxJkWdXtXaS7zBdnHz3C2sC+U=
+	b=yMFwnZrF7CO+bgrwklTjNAmI71PB5V8b43g2oeuTkUezFhDyq5yL5s+NS7uMnWPJU
+	 TsIZqBVrlaHWv5YpCueQazW09VQhmUC126M6XzGcQvUihZeu8xs2xXbLddLt87rojT
+	 MEI6wFyQWUg9x/Ro9vpNCR8z4eLIaLVtoOcbuxxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 249/378] mm: memfd_luo: always dirty all folios
+	Bean Huo <beanhuo@iokpp.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Wang Shuaiwei <wangshuaiwei1@xiaomi.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 177/333] scsi: ufs: core: Fix SError in ufshcd_rtc_work() during UFS suspend
 Date: Tue, 17 Mar 2026 17:33:26 +0100
-Message-ID: <20260317163016.181330127@linuxfoundation.org>
+Message-ID: <20260317163005.919746005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226381-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226738-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,117 +87,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,soleen.com:email]
-X-Rspamd-Queue-Id: 559BE2AED41
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,acm.org:email,xiaomi.com:email,iokpp.de:email]
+X-Rspamd-Queue-Id: 4DE792B03A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Yadav (Google) <pratyush@kernel.org>
+From: Wang Shuaiwei <wangshuaiwei1@xiaomi.com>
 
-commit 7e04bf1f33151a30e06a65b74b5f2c19fc2be128 upstream.
+[ Upstream commit b0bd84c39289ef6a6c3827dd52c875659291970a ]
 
-A dirty folio is one which has been written to.  A clean folio is its
-opposite.  Since a clean folio has no user data, it can be freed under
-memory pressure.
+In __ufshcd_wl_suspend(), cancel_delayed_work_sync() is called to cancel
+the UFS RTC work, but it is placed after ufshcd_vops_suspend(hba, pm_op,
+POST_CHANGE). This creates a race condition where ufshcd_rtc_work() can
+still be running while ufshcd_vops_suspend() is executing. When
+UFSHCD_CAP_CLK_GATING is not supported, the condition
+!hba->clk_gating.active_reqs is always true, causing ufshcd_update_rtc()
+to be executed. Since ufshcd_vops_suspend() typically performs clock
+gating operations, executing ufshcd_update_rtc() at that moment triggers
+an SError. The kernel panic trace is as follows:
 
-memfd preservation with LUO saves the flag at preserve().  This is
-problematic.  The folio might get dirtied later.  Saving it at freeze()
-also doesn't work, since the dirty bit from PTE is normally synced at
-unmap and there might still be mappings of the file at freeze().
+Kernel panic - not syncing: Asynchronous SError Interrupt
+Call trace:
+ dump_backtrace+0xec/0x128
+ show_stack+0x18/0x28
+ dump_stack_lvl+0x40/0xa0
+ dump_stack+0x18/0x24
+ panic+0x148/0x374
+ nmi_panic+0x3c/0x8c
+ arm64_serror_panic+0x64/0x8c
+ do_serror+0xc4/0xc8
+ el1h_64_error_handler+0x34/0x4c
+ el1h_64_error+0x68/0x6c
+ el1_interrupt+0x20/0x58
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x68/0x6c
+ ktime_get+0xc4/0x12c
+ ufshcd_mcq_sq_stop+0x4c/0xec
+ ufshcd_mcq_sq_cleanup+0x64/0x1dc
+ ufshcd_clear_cmd+0x38/0x134
+ ufshcd_issue_dev_cmd+0x298/0x4d0
+ ufshcd_exec_dev_cmd+0x1a4/0x1c4
+ ufshcd_query_attr+0xbc/0x19c
+ ufshcd_rtc_work+0x10c/0x1c8
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x120/0x1d8
+ ret_from_fork+0x10/0x20
 
-To see why this is a problem, say a folio is clean at preserve, but gets
-dirtied later.  The serialized state of the folio will mark it as clean.
-After retrieve, the next kernel will see the folio as clean and might try
-to reclaim it under memory pressure.  This will result in losing user
-data.
+Fix this by moving cancel_delayed_work_sync() before the call to
+ufshcd_vops_suspend(hba, pm_op, PRE_CHANGE), ensuring the UFS RTC work is
+fully completed or cancelled at that point.
 
-Mark all folios of the file as dirty, and always set the
-MEMFD_LUO_FOLIO_DIRTY flag.  This comes with the side effect of making all
-clean folios un-reclaimable.  This is a cost that has to be paid for
-participants of live update.  It is not expected to be a common use case
-to preserve a lot of clean folios anyway.
-
-Since the value of pfolio->flags is a constant now, drop the flags
-variable and set it directly.
-
-Link: https://lkml.kernel.org/r/20260223173931.2221759-3-pratyush@kernel.org
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bean Huo <beanhuo@iokpp.de>
+Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Wang Shuaiwei <wangshuaiwei1@xiaomi.com>
+Link: https://patch.msgid.link/20260307035128.3419687-1-wangshuaiwei1@xiaomi.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memfd_luo.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/ufs/core/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 1c9510289312..b8edb9f981d7 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -146,7 +146,6 @@ static int memfd_luo_preserve_folios(struct file *file,
- 	for (i = 0; i < nr_folios; i++) {
- 		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
- 		struct folio *folio = folios[i];
--		unsigned int flags = 0;
- 
- 		err = kho_preserve_folio(folio);
- 		if (err)
-@@ -154,8 +153,26 @@ static int memfd_luo_preserve_folios(struct file *file,
- 
- 		folio_lock(folio);
- 
--		if (folio_test_dirty(folio))
--			flags |= MEMFD_LUO_FOLIO_DIRTY;
-+		/*
-+		 * A dirty folio is one which has been written to. A clean folio
-+		 * is its opposite. Since a clean folio does not carry user
-+		 * data, it can be freed by page reclaim under memory pressure.
-+		 *
-+		 * Saving the dirty flag at prepare() time doesn't work since it
-+		 * can change later. Saving it at freeze() also won't work
-+		 * because the dirty bit is normally synced at unmap and there
-+		 * might still be a mapping of the file at freeze().
-+		 *
-+		 * To see why this is a problem, say a folio is clean at
-+		 * preserve, but gets dirtied later. The pfolio flags will mark
-+		 * it as clean. After retrieve, the next kernel might try to
-+		 * reclaim this folio under memory pressure, losing user data.
-+		 *
-+		 * Unconditionally mark it dirty to avoid this problem. This
-+		 * comes at the cost of making clean folios un-reclaimable after
-+		 * live update.
-+		 */
-+		folio_mark_dirty(folio);
- 
- 		/*
- 		 * If the folio is not uptodate, it was fallocated but never
-@@ -174,12 +191,11 @@ static int memfd_luo_preserve_folios(struct file *file,
- 			flush_dcache_folio(folio);
- 			folio_mark_uptodate(folio);
- 		}
--		flags |= MEMFD_LUO_FOLIO_UPTODATE;
- 
- 		folio_unlock(folio);
- 
- 		pfolio->pfn = folio_pfn(folio);
--		pfolio->flags = flags;
-+		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
- 		pfolio->index = folio->index;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index fe1425ea6718f..5371f173e28b9 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9925,6 +9925,7 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  	}
  
+ 	flush_work(&hba->eeh_work);
++	cancel_delayed_work_sync(&hba->ufs_rtc_update_work);
+ 
+ 	ret = ufshcd_vops_suspend(hba, pm_op, PRE_CHANGE);
+ 	if (ret)
+@@ -9979,7 +9980,6 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+ 	if (ret)
+ 		goto set_link_active;
+ 
+-	cancel_delayed_work_sync(&hba->ufs_rtc_update_work);
+ 	goto out;
+ 
+ set_link_active:
 -- 
-2.53.0
+2.51.0
 
 
 
