@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-226709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBvwOTyNuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:56 +0100
+	id 0Dz0A2iJuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CE12AF542
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:19:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF762AED84
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DD723015899
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D988302F8BE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85AA2DF132;
-	Tue, 17 Mar 2026 17:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCBB3F23AA;
+	Tue, 17 Mar 2026 16:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgQEdKPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqG5Du9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD952D73B8;
-	Tue, 17 Mar 2026 17:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F368330B15;
+	Tue, 17 Mar 2026 16:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767908; cv=none; b=BkUPFoEWUGS52jUB99jn8Yfv0Ae06j36t7AXotgwvTcpKuNlEJWnr/4H0Lk9ccwt71DN5R5HkaZiqyWD9xXT2ejQXUt7cPMQjAKSy58qZT9+S6IzvXpojeamuPaRddZIn1kfJrc9qAUzS2iKDMn0IdUQcbLd3ya+934uaZYtHeo=
+	t=1773766505; cv=none; b=jMQbuGQTDONEjqkUF//W/N2z2Przi9P3n1rOa/+RIY/wnIQhQBaTRmkqtPgxI5UD2k1LMwbJdzB6zVOoJwTP4NmarNe8/1toPfzutFEow45YzUnK4aysjVVzU/ko+lc9YiGledYmiwbgmv4ZGz6GFJWQs45KlzU+C6H/C2eeGNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767908; c=relaxed/simple;
-	bh=TA9EySaRAyvQp9md/CP5oWHmAIkrLJATXTuNzX+53AM=;
+	s=arc-20240116; t=1773766505; c=relaxed/simple;
+	bh=+csZbB5SRNaeLj5cKPUQN/g7ZlY+WzBylwhfIxkT9CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=einun07+FYHCyEwSPm3Xph1TXEX61wTd4YBPm7iQ3ishrtJm1R9EDeRQGuEUCljb8b0qukscPyqgxssTWsPuU8FV5BVXmqEWArJMHyku1agUNHzBp6TeGkoGUOJ9wigPZUUSjXUdUxbXJziXIV+HqMKDYjkFF46iqVNxKKmE1BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgQEdKPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C99CC4CEF7;
-	Tue, 17 Mar 2026 17:18:27 +0000 (UTC)
+	 MIME-Version; b=QD7umrZBRQclSd5stuKmOKXw7ZRw5zPbKkMH4ycCJE8SjS1lLObD4S7V2fqT8RqxQ1qKPGJOOh9RXvIvBreM+MG6k5eLHA+q8O7zuE85DcIsOYUy2VxnTBKIpqI+UzsAP3FakiJTVWAXZ1+273fLJ2GZdSxc6t1ND5DmHlHePRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqG5Du9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8911C4CEF7;
+	Tue, 17 Mar 2026 16:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767908;
-	bh=TA9EySaRAyvQp9md/CP5oWHmAIkrLJATXTuNzX+53AM=;
+	s=korg; t=1773766505;
+	bh=+csZbB5SRNaeLj5cKPUQN/g7ZlY+WzBylwhfIxkT9CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgQEdKPGqVxCDaNDwO39J0SzWVhgglK2vrB93Ea5qorwaahadjIegR4MVqHI2kFyA
-	 +HXq1R7xRGfNxBQF8Jvr/Zu+r+rQj1P1oon6die4/Go78jQKBzmVrQSxS8z/A4nFcs
-	 KwegQTbZk8tlsagk4SmGxOLTq7kSsw1nxYpXOASs=
+	b=FqG5Du9lDlhQl6lG/o+OwvaHaM1wPWwVsiGIQNgfboHfeYRHhpo728XRLkRPP1vGN
+	 juAR72RUX4eAHGuIJ9Z+Inu6O58khG0Kcb7DZePK4oNv2h0E63xjrOSYFepUJi4/xg
+	 rY78EbjpNlWs+XgsrFY4IV+nabn2mpD/iIgarVi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.18 187/333] ipmi:si: Dont block module unload if the BMC is messed up
-Date: Tue, 17 Mar 2026 17:33:36 +0100
-Message-ID: <20260317163006.288845343@linuxfoundation.org>
+	YiFei Zhu <zhuyifei@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.19 260/378] net: Fix rcu_tasks stall in threaded busypoll
+Date: Tue, 17 Mar 2026 17:33:37 +0100
+Message-ID: <20260317163016.580189688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226709-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226393-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,48 +87,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 86CE12AF542
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0DF762AED84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: YiFei Zhu <zhuyifei@google.com>
 
-commit f895e5df80316a308c2f7d64d13a78494630ea05 upstream.
+commit 1a86a1f7d88996085934139fa4c063b6299a2dd3 upstream.
 
-If the BMC is in a bad state, don't bother waiting for queues messages
-since there can't be any.  Otherwise the unload is blocked until the
-BMC is back in a good state.
+I was debugging a NIC driver when I noticed that when I enable
+threaded busypoll, bpftrace hangs when starting up. dmesg showed:
 
-Reported-by: Rafael J. Wysocki <rafael@kernel.org>
-Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
-Cc: stable@vger.kernel.org # 4.18
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+  rcu_tasks_wait_gp: rcu_tasks grace period number 85 (since boot) is 10658 jiffies old.
+  rcu_tasks_wait_gp: rcu_tasks grace period number 85 (since boot) is 40793 jiffies old.
+  rcu_tasks_wait_gp: rcu_tasks grace period number 85 (since boot) is 131273 jiffies old.
+  rcu_tasks_wait_gp: rcu_tasks grace period number 85 (since boot) is 402058 jiffies old.
+  INFO: rcu_tasks detected stalls on tasks:
+  00000000769f52cd: .N nvcsw: 2/2 holdout: 1 idle_cpu: -1/64
+  task:napi/eth2-8265  state:R  running task     stack:0     pid:48300 tgid:48300 ppid:2      task_flags:0x208040 flags:0x00004000
+  Call Trace:
+   <TASK>
+   ? napi_threaded_poll_loop+0x27c/0x2c0
+   ? __pfx_napi_threaded_poll+0x10/0x10
+   ? napi_threaded_poll+0x26/0x80
+   ? kthread+0xfa/0x240
+   ? __pfx_kthread+0x10/0x10
+   ? ret_from_fork+0x31/0x50
+   ? __pfx_kthread+0x10/0x10
+   ? ret_from_fork_asm+0x1a/0x30
+   </TASK>
+
+The cause is that in threaded busypoll, the main loop is in
+napi_threaded_poll rather than napi_threaded_poll_loop, where the
+latter rarely iterates more than once within its loop. For
+rcu_softirq_qs_periodic inside napi_threaded_poll_loop to report its
+qs state, the last_qs must be 100ms behind, and this can't happen
+because napi_threaded_poll_loop rarely iterates in threaded busypoll,
+and each time napi_threaded_poll_loop is called last_qs is reset to
+latest jiffies.
+
+This patch changes so that in threaded busypoll, last_qs is saved
+in the outer napi_threaded_poll, and whether busy_poll_last_qs
+is NULL indicates whether napi_threaded_poll_loop is called for
+busypoll. This way last_qs would not reset to latest jiffies on
+each invocation of napi_threaded_poll_loop.
+
+Fixes: c18d4b190a46 ("net: Extend NAPI threaded polling to allow kthread based busy polling")
+Cc: stable@vger.kernel.org
+Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Link: https://patch.msgid.link/20260227221937.1060857-1-zhuyifei@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_si_intf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/dev.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -2227,7 +2227,8 @@ static void wait_msg_processed(struct sm
- 	unsigned long jiffies_now;
- 	long time_diff;
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -7788,11 +7788,12 @@ static int napi_thread_wait(struct napi_
+ 	return -1;
+ }
  
--	while (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL)) {
-+	while (smi_info->si_state != SI_HOSED &&
-+		    (smi_info->curr_msg || (smi_info->si_state != SI_NORMAL))) {
- 		jiffies_now = jiffies;
- 		time_diff = (((long)jiffies_now - (long)smi_info->last_timeout_jiffies)
- 		     * SI_USEC_PER_JIFFY);
+-static void napi_threaded_poll_loop(struct napi_struct *napi, bool busy_poll)
++static void napi_threaded_poll_loop(struct napi_struct *napi,
++				    unsigned long *busy_poll_last_qs)
+ {
++	unsigned long last_qs = busy_poll_last_qs ? *busy_poll_last_qs : jiffies;
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+ 	struct softnet_data *sd;
+-	unsigned long last_qs = jiffies;
+ 
+ 	for (;;) {
+ 		bool repoll = false;
+@@ -7821,12 +7822,12 @@ static void napi_threaded_poll_loop(stru
+ 		/* When busy poll is enabled, the old packets are not flushed in
+ 		 * napi_complete_done. So flush them here.
+ 		 */
+-		if (busy_poll)
++		if (busy_poll_last_qs)
+ 			gro_flush_normal(&napi->gro, HZ >= 1000);
+ 		local_bh_enable();
+ 
+ 		/* Call cond_resched here to avoid watchdog warnings. */
+-		if (repoll || busy_poll) {
++		if (repoll || busy_poll_last_qs) {
+ 			rcu_softirq_qs_periodic(last_qs);
+ 			cond_resched();
+ 		}
+@@ -7834,11 +7835,15 @@ static void napi_threaded_poll_loop(stru
+ 		if (!repoll)
+ 			break;
+ 	}
++
++	if (busy_poll_last_qs)
++		*busy_poll_last_qs = last_qs;
+ }
+ 
+ static int napi_threaded_poll(void *data)
+ {
+ 	struct napi_struct *napi = data;
++	unsigned long last_qs = jiffies;
+ 	bool want_busy_poll;
+ 	bool in_busy_poll;
+ 	unsigned long val;
+@@ -7856,7 +7861,7 @@ static int napi_threaded_poll(void *data
+ 			assign_bit(NAPI_STATE_IN_BUSY_POLL, &napi->state,
+ 				   want_busy_poll);
+ 
+-		napi_threaded_poll_loop(napi, want_busy_poll);
++		napi_threaded_poll_loop(napi, want_busy_poll ? &last_qs : NULL);
+ 	}
+ 
+ 	return 0;
+@@ -13167,7 +13172,7 @@ static void run_backlog_napi(unsigned in
+ {
+ 	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
+ 
+-	napi_threaded_poll_loop(&sd->backlog, false);
++	napi_threaded_poll_loop(&sd->backlog, NULL);
+ }
+ 
+ static void backlog_napi_setup(unsigned int cpu)
 
 
 
