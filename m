@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-226584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMP8DS6PuWnQKQIAu9opvQ
-	(envelope-from <stable+bounces-226584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:14 +0100
+	id gPLCLpuLuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:12:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5479D2AF9D9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EC32AF1F5
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E2F63105F83
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA4DA3049E6C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DE53F788F;
-	Tue, 17 Mar 2026 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A3D3F7A8C;
+	Tue, 17 Mar 2026 17:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfmI1urd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNGetFEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EFA3F7864;
-	Tue, 17 Mar 2026 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6EF3F54BD;
+	Tue, 17 Mar 2026 17:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767339; cv=none; b=UFqCee4ZnHsPU6MdaXk0RlGTc6mZWpMpz0HTLBXJSwdutDsG0gt+ZKWKx4px7tIQazesWRsWDHb/w7bD2FsHtyzFdyhIKeC5cGHCG7EJkn6dxYK8MZHlrpjg+ymoTOFjDmVzYd6NnMSlaiEW3veRZmyMi+52J7kbHnvdS3YB3+U=
+	t=1773767344; cv=none; b=QjRXR3fceERzf+21bvz+mTHYFc/AmdJOafmcshFzIVk6GOLoorQF8+2K50KSnH+epXzOD9w3gvl/6aoQVPtlNAc5/XV5vFDAR7PCkA70H+8KkRSbCaLt4ZyqVnlx8WPXOMBtH5za/QB0Xo5pp0TFQKL02QfOqV8nX+atOjmuOEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767339; c=relaxed/simple;
-	bh=2S3BIdTYvQoQ1fJPqi8iKRQQ1fNMet760m8XsG0MySE=;
+	s=arc-20240116; t=1773767344; c=relaxed/simple;
+	bh=tP/5SOklNPE/06yPbt/aHXXEHk3Su3DtFsZ8/SYYidA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyYj7GtXL4p7tu6vuHdC0FcWYVpy6QU9eOnZ6lHTb5jFkcmPQJVLsc4TM5HxdTKHKKqkP0L3CPSpPYc1ozwqFQUefIT/4yjW6IzP65cmYi2Vm98qDVw8ckAnvTfnAiDCM9hhrKU/BIoJsAR0tj4myC7fDm3z/vDiLtPnyAKblF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfmI1urd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D03C2BC86;
-	Tue, 17 Mar 2026 17:08:58 +0000 (UTC)
+	 MIME-Version; b=XRwD/MTSMfO+U49YHS79qkXOFP3AKy1q8v6G81LrhA1jLZomtRjGur7a9NMnI+yvIMXgyby9EFUJVhsrGTJQGdfoBIx+SY8TyC+10PJRiLTACjzzlLOPVrFpdUbLOH3w3b94bYb1zfhiOuNUZr0rypw1e2mMJ0FIprQBzYwwA9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNGetFEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291E7C19424;
+	Tue, 17 Mar 2026 17:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767339;
-	bh=2S3BIdTYvQoQ1fJPqi8iKRQQ1fNMet760m8XsG0MySE=;
+	s=korg; t=1773767343;
+	bh=tP/5SOklNPE/06yPbt/aHXXEHk3Su3DtFsZ8/SYYidA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfmI1urdemMBlKDe91cXvfVk+Ael4iht8QFN005pex5N5qUwXCzJE6U1ZIxrbYW6S
-	 dsgeIkpl/hnrY8lYHB9doRQsNjbPzUHX6QMZogg4uk+yv2SWhJTeH+ILZpKxl4ibSN
-	 Qd4MgsVen8wHkFRD1VgaEQ1gbtLdPUrI9FY/GJG8=
+	b=hNGetFEEbMybokUQ5K09RSdondXJU6Xz/340rAft3jCOQp0+z3Yq7RrofOcAqF4eq
+	 Qe3n3OXqH+4MVzqxIktA2S8zyCBMwy+DCoRTq6fDgxnAqJPjWAdDCBgZBqU/4FllMe
+	 uPNEaoRQekp5JGX/SlyLykGkVDaAR7+wPaUi+NOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 064/333] amd-xgbe: prevent CRC errors during RX adaptation with AN disabled
-Date: Tue, 17 Mar 2026 17:31:33 +0100
-Message-ID: <20260317163001.744282305@linuxfoundation.org>
+Subject: [PATCH 6.18 065/333] net: add xmit recursion limit to tunnel xmit functions
+Date: Tue, 17 Mar 2026 17:31:34 +0100
+Message-ID: <20260317163001.782131311@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -68,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226585-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226584-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 5479D2AF9D9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asu.edu:email]
+X-Rspamd-Queue-Id: 59EC32AF1F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,165 +101,270 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 27a4dd0c702b3b2b9cf2c045d100cc2fe8720b81 ]
+[ Upstream commit 6f1a9140ecda3baba3d945b9a6155af4268aafc4 ]
 
-When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
-adaptation enabled, CRC errors can occur during the RX adaptation
-process. This happens because the driver continues transmitting and
-receiving packets while adaptation is in progress.
+Tunnel xmit functions (iptunnel_xmit, ip6tunnel_xmit) lack their own
+recursion limit. When a bond device in broadcast mode has GRE tap
+interfaces as slaves, and those GRE tunnels route back through the
+bond, multicast/broadcast traffic triggers infinite recursion between
+bond_xmit_broadcast() and ip_tunnel_xmit()/ip6_tnl_xmit(), causing
+kernel stack overflow.
 
-Fix this by stopping TX/RX immediately when the link goes down and RX
-adaptation needs to be re-triggered, and only re-enabling TX/RX after
-adaptation completes and the link is confirmed up. Introduce a flag to
-track whether TX/RX was disabled for adaptation so it can be restored
-correctly.
+The existing XMIT_RECURSION_LIMIT (8) in the no-qdisc path is not
+sufficient because tunnel recursion involves route lookups and full IP
+output, consuming much more stack per level. Use a lower limit of 4
+(IP_TUNNEL_RECURSION_LIMIT) to prevent overflow.
 
-This prevents packets from being transmitted or received during the RX
-adaptation window and avoids CRC errors from corrupted frames.
+Add recursion detection using dev_xmit_recursion helpers directly in
+iptunnel_xmit() and ip6tunnel_xmit() to cover all IPv4/IPv6 tunnel
+paths including UDP encapsulated tunnels (VXLAN, Geneve, etc.).
 
-The flag tracking the data path state is synchronized with hardware
-state in xgbe_start() to prevent stale state after device restarts.
-This ensures that after a restart cycle (where xgbe_stop disables
-TX/RX and xgbe_start re-enables them), the flag correctly reflects
-that the data path is active.
+Move dev_xmit_recursion helpers from net/core/dev.h to public header
+include/linux/netdevice.h so they can be used by tunnel code.
 
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-3-Raju.Rangoju@amd.com
+ BUG: KASAN: stack-out-of-bounds in blake2s.constprop.0+0xe7/0x160
+ Write of size 32 at addr ffff88810033fed0 by task kworker/0:1/11
+ Workqueue: mld mld_ifc_work
+ Call Trace:
+  <TASK>
+  __build_flow_key.constprop.0 (net/ipv4/route.c:515)
+  ip_rt_update_pmtu (net/ipv4/route.c:1073)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:84)
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  ip_output (net/ipv4/ip_output.c:438)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  ip_output (net/ipv4/ip_output.c:438)
+  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:86)
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  bond_dev_queue_xmit (drivers/net/bonding/bond_main.c:312)
+  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5279)
+  bond_start_xmit (drivers/net/bonding/bond_main.c:5530)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  __dev_queue_xmit (net/core/dev.c:4841)
+  mld_sendpack
+  mld_ifc_work
+  process_one_work
+  worker_thread
+  </TASK>
+
+Fixes: 745e20f1b626 ("net: add a recursion limit in xmit path")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260306160133.3852900-2-bestswngs@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
- drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
- 3 files changed, 69 insertions(+), 2 deletions(-)
+ include/linux/netdevice.h | 32 ++++++++++++++++++++++++++++++++
+ include/net/ip6_tunnel.h  | 12 ++++++++++++
+ include/net/ip_tunnels.h  |  7 +++++++
+ net/core/dev.h            | 35 -----------------------------------
+ net/ipv4/ip_tunnel_core.c | 13 +++++++++++++
+ 5 files changed, 64 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 89ece3dbd773a..fe4233fef3089 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1246,6 +1246,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8bb7b0e2c5438..0f425a1f80409 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3549,17 +3549,49 @@ struct page_pool_bh {
+ };
+ DECLARE_PER_CPU(struct page_pool_bh, system_page_pool);
  
- 	hw_if->enable_tx(pdata);
- 	hw_if->enable_rx(pdata);
-+	/* Synchronize flag with hardware state after enabling TX/RX.
-+	 * This prevents stale state after device restart cycles.
-+	 */
-+	pdata->data_path_stopped = false;
- 
- 	udp_tunnel_nic_reset_ntf(netdev);
- 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 92cb061c90ebc..20d19d5a4effd 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2016,6 +2016,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
- 	xgbe_rx_adaptation(pdata);
++#define XMIT_RECURSION_LIMIT	8
++
+ #ifndef CONFIG_PREEMPT_RT
+ static inline int dev_recursion_level(void)
+ {
+ 	return this_cpu_read(softnet_data.xmit.recursion);
+ }
++
++static inline bool dev_xmit_recursion(void)
++{
++	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
++			XMIT_RECURSION_LIMIT);
++}
++
++static inline void dev_xmit_recursion_inc(void)
++{
++	__this_cpu_inc(softnet_data.xmit.recursion);
++}
++
++static inline void dev_xmit_recursion_dec(void)
++{
++	__this_cpu_dec(softnet_data.xmit.recursion);
++}
+ #else
+ static inline int dev_recursion_level(void)
+ {
+ 	return current->net_xmit.recursion;
  }
  
-+/*
-+ * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
-+ * @pdata: driver private data
-+ *
-+ * This function stops the data path (TX and RX) to prevent packet
-+ * corruption during critical PHY operations like RX adaptation.
-+ * Must be called before initiating RX adaptation when link goes down.
-+ */
-+static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
++static inline bool dev_xmit_recursion(void)
 +{
-+	if (pdata->data_path_stopped)
-+		return;
-+
-+	/* Stop TX/RX to prevent packet corruption during RX adaptation */
-+	pdata->hw_if.disable_tx(pdata);
-+	pdata->hw_if.disable_rx(pdata);
-+	pdata->data_path_stopped = true;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "stopping data path for RX adaptation\n");
++	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
 +}
 +
-+/*
-+ * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
-+ * @pdata: driver private data
-+ *
-+ * This function re-enables the data path (TX and RX) after RX adaptation
-+ * has completed successfully. Only called when link is confirmed up.
-+ */
-+static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
++static inline void dev_xmit_recursion_inc(void)
 +{
-+	if (!pdata->data_path_stopped)
-+		return;
-+
-+	pdata->hw_if.enable_rx(pdata);
-+	pdata->hw_if.enable_tx(pdata);
-+	pdata->data_path_stopped = false;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "restarting data path after RX adaptation\n");
++	current->net_xmit.recursion++;
 +}
 +
- static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
++static inline void dev_xmit_recursion_dec(void)
++{
++	current->net_xmit.recursion--;
++}
+ #endif
+ 
+ void __netif_schedule(struct Qdisc *q);
+diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
+index 120db28658112..1253cbb4b0a45 100644
+--- a/include/net/ip6_tunnel.h
++++ b/include/net/ip6_tunnel.h
+@@ -156,6 +156,16 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
  {
- 	int reg;
-@@ -2809,13 +2851,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 	if (pdata->en_rx_adap) {
- 		/* if the link is available and adaptation is done,
- 		 * declare link up
-+		 *
-+		 * Note: When link is up and adaptation is done, we can
-+		 * safely re-enable the data path if it was stopped
-+		 * for adaptation.
- 		 */
--		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
-+		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
-+		}
- 		/* If either link is not available or adaptation is not done,
- 		 * retrigger the adaptation logic. (if the mode is not set,
- 		 * then issue mailbox command first)
- 		 */
-+
-+		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
-+		 * to prevent CRC errors from packets corrupted during
-+		 * the adaptation process. This is especially important
-+		 * when AN is OFF in 10G KR mode.
-+		 */
-+		xgbe_phy_stop_data_path(pdata);
-+
- 		if (pdata->mode_set) {
- 			xgbe_phy_rx_adaptation(pdata);
- 		} else {
-@@ -2823,8 +2879,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
- 		}
+ 	int pkt_len, err;
  
--		if (pdata->rx_adapt_done)
-+		if (pdata->rx_adapt_done) {
-+			/* Adaptation complete, safe to re-enable data path */
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
-+		}
- 	} else if (reg & MDIO_STAT1_LSTATUS)
- 		return 1;
++	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
++		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++				     dev->name);
++		DEV_STATS_INC(dev, tx_errors);
++		kfree_skb(skb);
++		return;
++	}
++
++	dev_xmit_recursion_inc();
++
+ 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
+ 	IP6CB(skb)->flags = ip6cb_flags;
+ 	pkt_len = skb->len - skb_inner_network_offset(skb);
+@@ -166,6 +176,8 @@ static inline void ip6tunnel_xmit(struct sock *sk, struct sk_buff *skb,
+ 			pkt_len = -1;
+ 		iptunnel_xmit_stats(dev, pkt_len);
+ 	}
++
++	dev_xmit_recursion_dec();
+ }
+ #endif
+ #endif
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 4021e6a73e32b..80662f8120803 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -27,6 +27,13 @@
+ #include <net/ip6_route.h>
+ #endif
  
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index 6fec51a065e22..ac0ba3d899dfd 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1242,6 +1242,10 @@ struct xgbe_prv_data {
- 	bool en_rx_adap;
- 	int rx_adapt_retries;
- 	bool rx_adapt_done;
-+	/* Flag to track if data path (TX/RX) was stopped for RX adaptation.
-+	 * This prevents packet corruption during the adaptation window.
-+	 */
-+	bool data_path_stopped;
- 	bool mode_set;
- };
++/* Recursion limit for tunnel xmit to detect routing loops.
++ * Unlike XMIT_RECURSION_LIMIT (8) used in the no-qdisc path, tunnel
++ * recursion involves route lookups and full IP output, consuming much
++ * more stack per level, so a lower limit is needed.
++ */
++#define IP_TUNNEL_RECURSION_LIMIT	4
++
+ /* Keep error state on tunnel for 30 sec */
+ #define IPTUNNEL_ERR_TIMEO	(30*HZ)
+ 
+diff --git a/net/core/dev.h b/net/core/dev.h
+index df8a90fe89f8f..b458e2777725e 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -358,41 +358,6 @@ static inline void napi_assert_will_not_race(const struct napi_struct *napi)
+ 
+ void kick_defer_list_purge(unsigned int cpu);
+ 
+-#define XMIT_RECURSION_LIMIT	8
+-
+-#ifndef CONFIG_PREEMPT_RT
+-static inline bool dev_xmit_recursion(void)
+-{
+-	return unlikely(__this_cpu_read(softnet_data.xmit.recursion) >
+-			XMIT_RECURSION_LIMIT);
+-}
+-
+-static inline void dev_xmit_recursion_inc(void)
+-{
+-	__this_cpu_inc(softnet_data.xmit.recursion);
+-}
+-
+-static inline void dev_xmit_recursion_dec(void)
+-{
+-	__this_cpu_dec(softnet_data.xmit.recursion);
+-}
+-#else
+-static inline bool dev_xmit_recursion(void)
+-{
+-	return unlikely(current->net_xmit.recursion > XMIT_RECURSION_LIMIT);
+-}
+-
+-static inline void dev_xmit_recursion_inc(void)
+-{
+-	current->net_xmit.recursion++;
+-}
+-
+-static inline void dev_xmit_recursion_dec(void)
+-{
+-	current->net_xmit.recursion--;
+-}
+-#endif
+-
+ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 			    struct kernel_hwtstamp_config *cfg,
+ 			    struct netlink_ext_ack *extack);
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index 2e61ac1371289..b1b6bf949f65a 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -58,6 +58,17 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
+ 	struct iphdr *iph;
+ 	int err;
+ 
++	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
++		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
++				     dev->name);
++		DEV_STATS_INC(dev, tx_errors);
++		ip_rt_put(rt);
++		kfree_skb(skb);
++		return;
++	}
++
++	dev_xmit_recursion_inc();
++
+ 	skb_scrub_packet(skb, xnet);
+ 
+ 	skb_clear_hash_if_not_l4(skb);
+@@ -88,6 +99,8 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
+ 			pkt_len = 0;
+ 		iptunnel_xmit_stats(dev, pkt_len);
+ 	}
++
++	dev_xmit_recursion_dec();
+ }
+ EXPORT_SYMBOL_GPL(iptunnel_xmit);
  
 -- 
 2.51.0
