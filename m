@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIZPL62KuWl6JwIAu9opvQ
-	(envelope-from <stable+bounces-226414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:01 +0100
+	id uM7IN3SOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2021E2AF0B1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:09:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C058C2AF821
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 460C43185E05
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:56:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D6273061C49
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDC53EF641;
-	Tue, 17 Mar 2026 16:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653B0335555;
+	Tue, 17 Mar 2026 17:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXxdi4/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm4i/UX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310C6346AC6;
-	Tue, 17 Mar 2026 16:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904B3176FD;
+	Tue, 17 Mar 2026 17:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766603; cv=none; b=g3oPNPXOdvPfEmpgw94Mc2rHvHPAhRLBhn8cD9BiEZ4z9jsO/PD3SdNvNWJmrfflM45Xifu4KXLw/kCwgypZl6l+GQYyOka9EcfZfqHqbxBlYoyfSyq+4I048emjag8PWZrZlmzsHYhyXCaPO6FN93WrbIL3JbBuHstt/YulIgI=
+	t=1773768136; cv=none; b=f+dbxR0L2hL34e2Auuuqg62BpUiIgL/TbGAMD3BNjm664d68gK1MGF6bs2zhYtBKfBfZRk0NeDP9cmjTmN7CJ96CfMij0doV8csvT07f8JuBdPhpZ94aw2TOw8bzwNjJDW4AYK1FTREzqx90sQl+kGZAZ/CMgB1tIER2PLBgwX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766603; c=relaxed/simple;
-	bh=tSkNcYw8hpTLyttWmXgWtJ/TcOhp+CfUYwVfT2ev5PY=;
+	s=arc-20240116; t=1773768136; c=relaxed/simple;
+	bh=zV+WFLKu6nlgo0ZW9kkRZC597CK4NoZZQ4Mjl5edDuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5okcAJf9OlnCIlnhqJ4mmnnoSd4oOP/VeOqV/fWGIl47WhsuMkb7VBNz84jCHXkapoJcKoyRbEliFbhHl4uKPQGd0ol++O2ldBfWt4q68JQo010AwG8RbJdURIpDhFzfNF0YCd74dOkLg8vN987UkKXJqBhq4+qS6cBg6CkDHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXxdi4/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E92C4CEF7;
-	Tue, 17 Mar 2026 16:56:41 +0000 (UTC)
+	 MIME-Version; b=kE7p4MNqZUN3qs4CVs6kVFBI1/Ktfl8oxN2xYBytKTrIJOtah7nVCs/lWJvMH7vHJOAqk8MM9vxynBC1MvVMQn6F9lRiED5uZ4Afl+ixMqVhp6J2fiQQQMDaMkSdq2BONA4uPWil00VthRwQg/GsvrWSMINyoSgZE8xeSCkJvag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm4i/UX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3D4C19424;
+	Tue, 17 Mar 2026 17:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766602;
-	bh=tSkNcYw8hpTLyttWmXgWtJ/TcOhp+CfUYwVfT2ev5PY=;
+	s=korg; t=1773768136;
+	bh=zV+WFLKu6nlgo0ZW9kkRZC597CK4NoZZQ4Mjl5edDuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXxdi4/0PhEaKfdJMKZQ+kZIgfFhmLCjcfF6+e69Ut46JNJB8vldQEosCKQk7dsDj
-	 EKJk+TEkULlcvWFf1nJAWJHbh16fvWFO3qIYkgOukOh2llV1QmQ2K56SvouXvwJJJn
-	 CghkUJr3Sw/CGewF98ly364Q0AdchZEDyPSHzHyA=
+	b=Lm4i/UX2SP88Rn7TxHjp4tZlK2YCgydVEiJU4yk+LseMt/phSS+REtCMHZG7ildoT
+	 kg0754nZSkcx1ux5Ck1fSiUuEyGYJKRq194+JJ/Ci6I29S3ZNV7jF/ppkr4dXvzeZY
+	 fmnRCg16BrwMg0FgAkc3gyp7DS9c/MbUrTDiMOZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.19 282/378] crypto: ccp - allow callers to use HV-Fixed page API when SEV is disabled
-Date: Tue, 17 Mar 2026 17:33:59 +0100
-Message-ID: <20260317163017.379604587@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Navaneeth K <knavaneeth786@gmail.com>
+Subject: [PATCH 6.18 211/333] staging: rtl8723bs: properly validate the data in rtw_get_ie_ex()
+Date: Tue, 17 Mar 2026 17:34:00 +0100
+Message-ID: <20260317163007.189076701@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +65,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226772-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226414-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
-X-Rspamd-Queue-Id: 2021E2AF0B1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C058C2AF821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8168a7b72bdee3790b126f63bd30306759206b15 upstream.
+commit f0109b9d3e1e455429279d602f6276e34689750a upstream.
 
-When SEV is disabled, the HV-Fixed page allocation call fails, which in
-turn causes SFS initialization to fail.
+Just like in commit 154828bf9559 ("staging: rtl8723bs: fix out-of-bounds
+read in rtw_get_ie() parser"), we don't trust the data in the frame so
+we should check the length better before acting on it
 
-Fix the HV-Fixed API so callers (for example, SFS) can use it even when
-SEV is disabled by performing normal page allocation and freeing.
-
-Fixes: e09701dcdd9c ("crypto: ccp - Add new HV-Fixed page allocation/free API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Tested-by: Navaneeth K <knavaneeth786@gmail.com>
+Reviewed-by: Navaneeth K <knavaneeth786@gmail.com>
+Link: https://patch.msgid.link/2026022336-arrange-footwork-6e54@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1105,15 +1105,12 @@ struct page *snp_alloc_hv_fixed_pages(un
- {
- 	struct psp_device *psp_master = psp_get_master_device();
- 	struct snp_hv_fixed_pages_entry *entry;
--	struct sev_device *sev;
- 	unsigned int order;
- 	struct page *page;
+--- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
++++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+@@ -187,20 +187,25 @@ u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len
  
--	if (!psp_master || !psp_master->sev_data)
-+	if (!psp_master)
- 		return NULL;
+ 	cnt = 0;
  
--	sev = psp_master->sev_data;
--
- 	order = get_order(PMD_SIZE * num_2mb_pages);
+-	while (cnt < in_len) {
++	while (cnt + 2 <= in_len) {
++		u8 ie_len = in_ie[cnt + 1];
++
++		if (cnt + 2 + ie_len > in_len)
++			break;
++
+ 		if (eid == in_ie[cnt]
+-			&& (!oui || !memcmp(&in_ie[cnt+2], oui, oui_len))) {
++			&& (!oui || (ie_len >= oui_len && !memcmp(&in_ie[cnt + 2], oui, oui_len)))) {
+ 			target_ie = &in_ie[cnt];
  
- 	/*
-@@ -1126,7 +1123,8 @@ struct page *snp_alloc_hv_fixed_pages(un
- 	 * This API uses SNP_INIT_EX to transition allocated pages to HV_Fixed
- 	 * page state, fail if SNP is already initialized.
- 	 */
--	if (sev->snp_initialized)
-+	if (psp_master->sev_data &&
-+	    ((struct sev_device *)psp_master->sev_data)->snp_initialized)
- 		return NULL;
+ 			if (ie)
+-				memcpy(ie, &in_ie[cnt], in_ie[cnt+1]+2);
++				memcpy(ie, &in_ie[cnt], ie_len + 2);
  
- 	/* Re-use freed pages that match the request */
-@@ -1162,7 +1160,7 @@ void snp_free_hv_fixed_pages(struct page
- 	struct psp_device *psp_master = psp_get_master_device();
- 	struct snp_hv_fixed_pages_entry *entry, *nentry;
+ 			if (ielen)
+-				*ielen = in_ie[cnt+1]+2;
++				*ielen = ie_len + 2;
  
--	if (!psp_master || !psp_master->sev_data)
-+	if (!psp_master)
- 		return;
+ 			break;
+ 		}
+-		cnt += in_ie[cnt+1]+2; /* goto next */
++		cnt += ie_len + 2; /* goto next */
+ 	}
  
- 	/*
+ 	return target_ie;
 
 
 
