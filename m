@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GAWJzOWuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:11 +0100
+	id GAaHBTyPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29002B0695
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:58:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF982AFA05
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3A831B10A6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:27:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A11A231BD7F3
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140002F6160;
-	Tue, 17 Mar 2026 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE91ACEDE;
+	Tue, 17 Mar 2026 17:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5bl9nv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOZMBGSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC4415E5BB;
-	Tue, 17 Mar 2026 17:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFDC357A4A;
+	Tue, 17 Mar 2026 17:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768440; cv=none; b=UDx20q5yQDWrT1NpegLlaf8JAt+cM2a/uVq8bJqfiATBqmR2jEuZPIIYeZds+E8stUN/JsmC4f6waA59rdyOVsbysTVt1NtdBNTPVkEPNchWbmxHRNT7hfSrHqWVBLkKNhVUT7Bb1KpYTxrTr/vD9+rBkfq9zVB+1MN1Rq2xDD0=
+	t=1773766932; cv=none; b=LvT8GOi1z7g94auKoRS9Fs01Rj4Ke0Q93YulTojeiUfbkt55Eozs1O6ZSLzqL3xqpse6H5GXYsqLt/0cYtoUBJicGa08keEQB8cX92g3h6U0ZWgIM17mMiXjvf5T1aHvr67qvVbXzfgYXe7y5AR4PDZ6btlBq5iM65yVlcjM7ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768440; c=relaxed/simple;
-	bh=wsgYCLc9nHSDRUo0ZLamb5hzsl5ad+6NzFGkQsB1DYg=;
+	s=arc-20240116; t=1773766932; c=relaxed/simple;
+	bh=03xPOeb/GrxwuuqC/OZgRVeFDKraVmCAiWGzRBW2RJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlEedc2Tet4+GCR1Da+Jyxnmz86cyYylQRWs1fyTeSremNeUZL7pDk0wAF1g3OW19cMiUEmrgpiCaWkpwhi67Jz3ztfxE76mGcP14qCv+DXbbBTxPPaoN3HVpqfawtLkfzdYv3rSS3Sy3hfgOQI0c+u1OfvPNWxxBr7GlVJ9B8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5bl9nv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E65C4CEF7;
-	Tue, 17 Mar 2026 17:27:19 +0000 (UTC)
+	 MIME-Version; b=ZAGTic56oOcFpGICdHfE9APu7ukb97XJlPg+M+9FcgmlgnQ0N0Em7ygBWlb5LIOXTPBnxL7No4RLee7iAbMUGFUyI1SDFxhwksbuj8JCv+Pj5DWWfjEk5+LyFzLlc14e5HZmiggJ4NkEGblzzC41bbXoaHi8SRVp6HGkQM1FguY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOZMBGSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C45C4CEF7;
+	Tue, 17 Mar 2026 17:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768440;
-	bh=wsgYCLc9nHSDRUo0ZLamb5hzsl5ad+6NzFGkQsB1DYg=;
+	s=korg; t=1773766931;
+	bh=03xPOeb/GrxwuuqC/OZgRVeFDKraVmCAiWGzRBW2RJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5bl9nv/2+Lnx4guydJ2TaGJGsmMMxzMaHZKg0r702s++/qB07DiI3zJs4MIkL1gq
-	 0KjXleeBfGeuNlilh6nBOzRu+lOYrc/6G0SNMrA7TijEckkeBVwSvjADdTyh2itp6+
-	 5gsrlIktjmxFeY0nKT5wnJhhy+ul/sbTmfDFVo98=
+	b=ZOZMBGSkQNdR6AhiBcsy7aQJB/ET2kvPDvHktrtnKpBwC2QKdPFxg1Z60Jrbj8+q8
+	 cfBFLD6aFVbL7Wh6oHYbLPYVkLAjViZOqx9J4yFd8WI10DkKyH7Ef8RZrpYZItfNWY
+	 qun59/+3WvLE+w2NpkyhjdYSmBfTv2JB3EIuMgn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.18 282/333] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+	Linus Walleij <linusw@kernel.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.19 354/378] iio: gyro: mpu3050-core: fix pm_runtime error handling
 Date: Tue, 17 Mar 2026 17:35:11 +0100
-Message-ID: <20260317163009.849695174@linuxfoundation.org>
+Message-ID: <20260317163020.010130558@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226487-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226844-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,objecting.org:email]
-X-Rspamd-Queue-Id: F29002B0695
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6EF982AFA05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
+commit acc3949aab3e8094641a9c7c2768de1958c88378 upstream.
 
-snprintf() returns the number of characters that would have been
-written excluding the NUL terminator.  Output is truncated when the
-return value is >= the buffer size, not just > the buffer size.
+The return value of pm_runtime_get_sync() is not checked, allowing
+the driver to access hardware that may fail to resume. The device
+usage count is also unconditionally incremented. Use
+pm_runtime_resume_and_get() which propagates errors and avoids
+incrementing the usage count on failure.
 
-When ret == size, the current code takes the non-truncated path,
-advancing buf by ret and reducing size to 0.  This is wrong because
-the output was actually truncated (the last character was replaced by
-NUL).  Fix by using >= so the truncation path is taken correctly.
+In preenable, add pm_runtime_put_autosuspend() on set_8khz_samplerate()
+failure since postdisable does not run when preenable fails.
 
-Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
-
-Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/gyro/mpu3050-core.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -316,7 +316,7 @@ int __init xbc_node_compose_key_after(st
- 			       depth ? "." : "");
- 		if (ret < 0)
- 			return ret;
--		if (ret > size) {
-+		if (ret >= size) {
- 			size = 0;
- 		} else {
- 			size -= ret;
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -322,7 +322,9 @@ static int mpu3050_read_raw(struct iio_d
+ 		}
+ 	case IIO_CHAN_INFO_RAW:
+ 		/* Resume device */
+-		pm_runtime_get_sync(mpu3050->dev);
++		ret = pm_runtime_resume_and_get(mpu3050->dev);
++		if (ret)
++			return ret;
+ 		mutex_lock(&mpu3050->lock);
+ 
+ 		ret = mpu3050_set_8khz_samplerate(mpu3050);
+@@ -647,14 +649,20 @@ out_trigger_unlock:
+ static int mpu3050_buffer_preenable(struct iio_dev *indio_dev)
+ {
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
++	int ret;
+ 
+-	pm_runtime_get_sync(mpu3050->dev);
++	ret = pm_runtime_resume_and_get(mpu3050->dev);
++	if (ret)
++		return ret;
+ 
+ 	/* Unless we have OUR trigger active, run at full speed */
+-	if (!mpu3050->hw_irq_trigger)
+-		return mpu3050_set_8khz_samplerate(mpu3050);
++	if (!mpu3050->hw_irq_trigger) {
++		ret = mpu3050_set_8khz_samplerate(mpu3050);
++		if (ret)
++			pm_runtime_put_autosuspend(mpu3050->dev);
++	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int mpu3050_buffer_postdisable(struct iio_dev *indio_dev)
 
 
 
