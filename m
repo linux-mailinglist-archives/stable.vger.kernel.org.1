@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-226867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNBRCsCPuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:40 +0100
+	id oJjYL8mDuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:39:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFD12AFB87
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:30:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802D52AE28C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D3613047355
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:28:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C73E530351F1
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D498315E5BB;
-	Tue, 17 Mar 2026 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B563ECBF0;
+	Tue, 17 Mar 2026 16:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwCzk9CU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs0A/jbs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974C13368AE;
-	Tue, 17 Mar 2026 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C247A3ECBE5
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 16:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768535; cv=none; b=bFvyfgqYaBTuNUkzXRyK0vu18Ovk1EFnFnFG+DRYZhvsHfM2gWbfJlk288/jcaw5wWDov24IShSqVQreJ4liETL7A+YbjT53aCQQaZnBoxzu0L49jCd5/KLXHPDSatdW116Zco9dCMYJkbGkkWijxW1hMSMJe77k6fLxWrXDGqA=
+	t=1773765567; cv=none; b=qpE/7QIbq/2hZtWZtdJwTgD8OYQsh+ZleDFWhx2Nm9KHwzIlXx41M7CHPqnCi1RSy73tNWWplrwB2G0RGyo372r44SHN8VklGUc1hF02FzAHEFftpgRyvxgjCGV705qM9SkfpW+JBTpVJyL5EXr2DOPtItByFEXTDBx8fw3k4y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768535; c=relaxed/simple;
-	bh=HIoGqXYkmGd1YhxQ7UuzB7MRFbdD0To6as+5s3Ccp2U=;
+	s=arc-20240116; t=1773765567; c=relaxed/simple;
+	bh=l7CmyKV/pY2bMq7ue7/pKa1AyaB5s4vfyL+5ScxnqbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h41C8kUPg7gMaWq8m2BFEeDzy8O1VjXKveThOQE5FF6kxZXdU/jrbSLq0JoHMV0qynDinMDRVbdYlG+Ow1tPLcWaw9j9hivupBFDWoIPnvIpJi4crmGDe/9kdAcS4m1hxMLkF16stW3kxnOwMRddTgYF3zpeimsftoBcx0h+Lbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwCzk9CU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB367C19424;
-	Tue, 17 Mar 2026 17:28:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768535;
-	bh=HIoGqXYkmGd1YhxQ7UuzB7MRFbdD0To6as+5s3Ccp2U=;
+	 MIME-Version; b=HoyhDWrkGE/n7ln5hEtLmonjwCFGMFy5iq+xEo9fZ7CFHCQ48gn04mM5xbEDX0Bpey/OWY5zJpYs73Akt5+YSrW2YjErhXdiQvIwyVtAKgfmtwM5by1o7fRJh7pgXk9UPInhsMhmYorsaeRzc4L5sNcvOQYHiAKK2O4bQ4gFejA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs0A/jbs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20F7C2BCB1;
+	Tue, 17 Mar 2026 16:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773765567;
+	bh=l7CmyKV/pY2bMq7ue7/pKa1AyaB5s4vfyL+5ScxnqbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwCzk9CUjU1XerflVvGQbjApsVZaClxFmCPvboI1xwR1OLWoi3b6rGecrRjmKshjZ
-	 U+EaK5hqgn4JrPbtX5OJJjgIFdzH8nr2qMQWYH51BF1OcEK+UJstZvU0/MyFG0gEs0
-	 mkyodDFpAlZlMTLHdYSGs/c+CuCK6/XJQ+vw+6H4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=Gs0A/jbswCMHnvZIvC2c86NvNnx96Ra1PjVz6whfY4KPNW5hzgplASv8NPNPWUEET
+	 Tof0Un8t6HIJw/vhrLi7gjUEu2auMJVkZTeHapb5AIqhNkUBOfijBW0RcJBAjAGHnq
+	 q9D7eZBaRf8uK05DlKByOTdEpreoiNIZvuYjDgcNIKfmjr8hJbV99B2wVpaFTL4nHc
+	 uUaAZLorsK/N4RYMpymEEp9aTuka3XCwnQ+o6ZqR2AN9XdzAGcBjQfwBJGvwIp9Mrr
+	 mR19sm2pSZ3qFZoq+rhjkzuafzgH9+pNeqFOntJTHzPG8hnVb5ClD86q6rXqO9Og3H
+	 GmBnR6VA5kRFQ==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: He Lugang <helugang@uniontech.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 333/333] mm/damon/core: disallow non-power of two min_region_sz
-Date: Tue, 17 Mar 2026 17:36:02 +0100
-Message-ID: <20260317163011.756447728@linuxfoundation.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Subject: [PATCH 6.12.y 1/8] drm/i915:Remove unused parameter in marco
+Date: Tue, 17 Mar 2026 12:39:17 -0400
+Message-ID: <20260317163924.220634-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031731-secret-rocket-af05@gregkh>
+References: <2026031731-secret-rocket-af05@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,95 +63,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226867-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226162-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,huawei.com:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: ABFD12AFB87
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,patchwork.freedesktop.org:url,uniontech.com:email]
+X-Rspamd-Queue-Id: 802D52AE28C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: He Lugang <helugang@uniontech.com>
 
-------------------
+[ Upstream commit 09b003ad1dd6a4bf1b364e8f03cba87b2de38d21 ]
 
-From: SeongJae Park <sj@kernel.org>
+The parameter dev_priv is actually not used in macro PORT_ALPM_CTL
+and PORT_ALPM_LFPS_CTL,so remove it to simplify the code.
 
-[ Upstream commit c80f46ac228b48403866d65391ad09bdf0e8562a ]
-
-DAMON core uses min_region_sz parameter value as the DAMON region
-alignment.  The alignment is made using ALIGN() and ALIGN_DOWN(), which
-support only the power of two alignments.  But DAMON core API callers can
-set min_region_sz to an arbitrary number.  Users can also set it
-indirectly, using addr_unit.
-
-When the alignment is not properly set, DAMON behavior becomes difficult
-to expect and understand, makes it effectively broken.  It doesn't cause a
-kernel crash-like significant issue, though.
-
-Fix the issue by disallowing min_region_sz input that is not a power of
-two.  Add the check to damon_commit_ctx(), as all DAMON API callers who
-set min_region_sz uses the function.
-
-This can be a sort of behavioral change, but it does not break users, for
-the following reasons.  As the symptom is making DAMON effectively broken,
-it is not reasonable to believe there are real use cases of non-power of
-two min_region_sz.  There is no known use case or issue reports from the
-setup, either.
-
-In future, if we find real use cases of non-power of two alignments and we
-can support it with low enough overhead, we can consider moving the
-restriction.  But, for now, simply disallowing the corner case should be
-good enough as a hot fix.
-
-Link: https://lkml.kernel.org/r/20260214214124.87689-1-sj@kernel.org
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ min_region_sz => min_sz_region ]
+Reviewed-by: Jani Nikula <jani.nikula@linux.intel.com>
+Signed-off-by: He Lugang <helugang@uniontech.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/6C2E07E089F0CB73+20240925064016.733173-1-helugang@uniontech.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Stable-dep-of: eb4a7139e973 ("drm/i915/alpm: ALPM disable fixes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_alpm.c     | 4 ++--
+ drivers/gpu/drm/i915/display/intel_psr.c      | 2 +-
+ drivers/gpu/drm/i915/display/intel_psr_regs.h | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1236,6 +1236,9 @@ int damon_commit_ctx(struct damon_ctx *d
- {
- 	int err;
+diff --git a/drivers/gpu/drm/i915/display/intel_alpm.c b/drivers/gpu/drm/i915/display/intel_alpm.c
+index 186cf4833f716..57afb25191bd9 100644
+--- a/drivers/gpu/drm/i915/display/intel_alpm.c
++++ b/drivers/gpu/drm/i915/display/intel_alpm.c
+@@ -330,7 +330,7 @@ static void lnl_alpm_configure(struct intel_dp *intel_dp,
+ 			ALPM_CTL_AUX_LESS_WAKE_TIME(intel_dp->alpm_parameters.aux_less_wake_lines);
  
-+	if (!is_power_of_2(src->min_sz_region))
-+		return -EINVAL;
-+
- 	err = damon_commit_schemes(dst, src);
- 	if (err)
- 		return err;
-
+ 		intel_de_write(display,
+-			       PORT_ALPM_CTL(display, port),
++			       PORT_ALPM_CTL(port),
+ 			       PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE |
+ 			       PORT_ALPM_CTL_MAX_PHY_SWING_SETUP(15) |
+ 			       PORT_ALPM_CTL_MAX_PHY_SWING_HOLD(0) |
+@@ -338,7 +338,7 @@ static void lnl_alpm_configure(struct intel_dp *intel_dp,
+ 				       intel_dp->alpm_parameters.silence_period_sym_clocks));
+ 
+ 		intel_de_write(display,
+-			       PORT_ALPM_LFPS_CTL(display, port),
++			       PORT_ALPM_LFPS_CTL(port),
+ 			       PORT_ALPM_LFPS_CTL_LFPS_CYCLE_COUNT(10) |
+ 			       PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION(
+ 				       intel_dp->alpm_parameters.lfps_half_cycle_num_of_syms) |
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 34d61e44c6bd9..16fd393de04fc 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -2118,7 +2118,7 @@ static void intel_psr_disable_locked(struct intel_dp *intel_dp)
+ 			     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
+ 
+ 		intel_de_rmw(display,
+-			     PORT_ALPM_CTL(display, cpu_transcoder),
++			     PORT_ALPM_CTL(cpu_transcoder),
+ 			     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
+ 	}
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_psr_regs.h b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+index 25c0424e34db2..8f2b3372bf6c9 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+@@ -295,7 +295,7 @@
+ 
+ #define _PORT_ALPM_CTL_A			0x16fa2c
+ #define _PORT_ALPM_CTL_B			0x16fc2c
+-#define PORT_ALPM_CTL(dev_priv, port)		_MMIO_PORT(port, _PORT_ALPM_CTL_A, _PORT_ALPM_CTL_B)
++#define PORT_ALPM_CTL(port)			_MMIO_PORT(port, _PORT_ALPM_CTL_A, _PORT_ALPM_CTL_B)
+ #define  PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE	REG_BIT(31)
+ #define  PORT_ALPM_CTL_MAX_PHY_SWING_SETUP_MASK	REG_GENMASK(23, 20)
+ #define  PORT_ALPM_CTL_MAX_PHY_SWING_SETUP(val)	REG_FIELD_PREP(PORT_ALPM_CTL_MAX_PHY_SWING_SETUP_MASK, val)
+@@ -306,7 +306,7 @@
+ 
+ #define _PORT_ALPM_LFPS_CTL_A					0x16fa30
+ #define _PORT_ALPM_LFPS_CTL_B					0x16fc30
+-#define PORT_ALPM_LFPS_CTL(dev_priv, port)			_MMIO_PORT(port, _PORT_ALPM_LFPS_CTL_A, _PORT_ALPM_LFPS_CTL_B)
++#define PORT_ALPM_LFPS_CTL(port)				_MMIO_PORT(port, _PORT_ALPM_LFPS_CTL_A, _PORT_ALPM_LFPS_CTL_B)
+ #define  PORT_ALPM_LFPS_CTL_LFPS_START_POLARITY			REG_BIT(31)
+ #define  PORT_ALPM_LFPS_CTL_LFPS_CYCLE_COUNT_MASK		REG_GENMASK(27, 24)
+ #define  PORT_ALPM_LFPS_CTL_LFPS_CYCLE_COUNT_MIN		7
+-- 
+2.51.0
 
 
