@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBXnJMmLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:45 +0100
+	id yIfnJ2uUuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CE82AF25B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CF52B036B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CD01C304CB7F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8999E3249DA0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC8F3F7E8B;
-	Tue, 17 Mar 2026 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB3B34FF47;
+	Tue, 17 Mar 2026 17:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKqfXM4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbGAWfs2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7182E3F54CB;
-	Tue, 17 Mar 2026 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3013346797;
+	Tue, 17 Mar 2026 17:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766714; cv=none; b=hL7vThG8nO9asbC0FEem3ynPAomu+YOAiFqUWDj9arJtjSQrH29stbE4YN/UFRIp2Cv+7nUEvEdCBJ2Sfs7K1O0KHmNa1oAK90R6T3WFH2LBTabIMrtUm0wfglhaYKKyS56KHPU2BG1w1HubCj5FEGOpoZyZOHufxZBuQNs2OaY=
+	t=1773767965; cv=none; b=oywJxiyTjsiypXtl8tV25RZEFQVn+AOoKPYW6ebOcY8rMX/ssRXLWw/Ajhn1wHykqnNVB+6RVbFqAxvrZCeMrgEDPBiyP1gJvYR5HRtjyKDXhUicKYJS+O90RolkKEtheVzL+9Z0PPT0Sg9NXUbhgFamLyWkFuoF9FjbMkNhVr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766714; c=relaxed/simple;
-	bh=S77KFc9zbnqNyWRVS91lJh9vxEjM/gkTxpBdjispMtQ=;
+	s=arc-20240116; t=1773767965; c=relaxed/simple;
+	bh=vcU711aL05sHZZ0YJEP2fgdN1Ff54bxaQ8OCd3t39s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwlplpgiI1fBbsJjlfF0TIQszXVpFJKh0/HHc1AZi39VkvPaO26dM7nZ/ah50Pi2Q4BFHnfV3HMUfUSWifbDMs8DUGeSqpiSVwwIBwnf93gCf2YkCa7bYi98jJIsNBbsE9i3w6MWePdlBL+5qqvUnzsE491Bi5hH2kfmIuT+jPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKqfXM4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921EDC2BC86;
-	Tue, 17 Mar 2026 16:58:33 +0000 (UTC)
+	 MIME-Version; b=HZIRYjXhWBVVoKnAtgX3ZRpQmK6oyPgb7Nn497LnEqy5fe1/07dogiII0ZMFpt9MoA88tBUWMolvQKIZkDS3xEUkXIBnnFlz+98OSjyJ0R/yM8uoaVKvEZNn0HHD7FNjxxti0NV0lX/gB0Xt+0kaqDJE/ISRkK0qZxX/Ni8Bbtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbGAWfs2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED00C4CEF7;
+	Tue, 17 Mar 2026 17:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766714;
-	bh=S77KFc9zbnqNyWRVS91lJh9vxEjM/gkTxpBdjispMtQ=;
+	s=korg; t=1773767965;
+	bh=vcU711aL05sHZZ0YJEP2fgdN1Ff54bxaQ8OCd3t39s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKqfXM4Z2raBBTqMV3cRdfYJUw2GXXrhzY9ior6pTdedeqhUfgXgtRrmA/OS6Lt/R
-	 tW4p/VnGkQ2ExnocJZX23GcX8ZMGQsaYJyVJ7AwLJNyz2cgDijGcwxZxsaKAYbsu75
-	 bPRVtrRBOwN8wMxd6hAdHdT1cMGPA6oIkrIbkvvY=
+	b=gbGAWfs2cG+UJJmNjw4vJIqB3iyl+HA2pTDu0domULjzaGwBxFvQPndU18+OqHWnc
+	 6u3W6iEgH1YZvx5NtMv9Ueb7mVt7/vUZv1q5IrLWSLMewTe9CPYPQfXvpHd/fGO3aH
+	 qO4xHIOKOqDZjtHmFnC4ieV+9DF192aJm3rUWR60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.19 273/378] hwmon: (pmbus/q54sj108a2) fix stack overflow in debugfs read
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.18 201/333] device property: Allow secondary lookup in fwnode_get_next_child_node()
 Date: Tue, 17 Mar 2026 17:33:50 +0100
-Message-ID: <20260317163017.052545767@linuxfoundation.org>
+Message-ID: <20260317163006.810295770@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +69,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226725-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226438-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,juniper.net:email]
-X-Rspamd-Queue-Id: 96CE82AF25B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 10CF52B036B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 25dd70a03b1f5f3aa71e1a5091ecd9cd2a13ee43 upstream.
+commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
 
-The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
-due to incorrect arguments passed to bin2hex(). The function currently
-passes 'data' as the destination and 'data_char' as the source.
+When device_get_child_node_count() got split to the fwnode and device
+respective APIs, the fwnode didn't inherit the ability to traverse over
+the secondary fwnode. Hence any user, that switches from device to fwnode
+API misses this feature. In particular, this was revealed by the commit
+1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+that effectively broke the GPIO enumeration on Intel Galileo boards.
+Fix this by moving the secondary lookup from device to fwnode API.
 
-Because bin2hex() converts each input byte into two hex characters, a
-32-byte block read results in 64 bytes of output. Since 'data' is only
-34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
-of the buffer onto the stack.
+Note, in general no device_*() API should go into the depth of the fwnode
+implementation.
 
-Additionally, the arguments were swapped: it was reading from the
-zero-initialized 'data_char' and writing to 'data', resulting in
-all-zero output regardless of the actual I2C read.
-
-Fix this by:
-1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
-2. Correcting the bin2hex() argument order and using the actual read count.
-3. Using a pointer to select the correct output buffer for the final
-   simple_read_from_buffer call.
-
-Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
+Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260304235116.1045-1-sanman.p211993@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/q54sj108a2.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/base/property.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/hwmon/pmbus/q54sj108a2.c
-+++ b/drivers/hwmon/pmbus/q54sj108a2.c
-@@ -78,7 +78,8 @@ static ssize_t q54sj108a2_debugfs_read(s
- 	int idx = *idxp;
- 	struct q54sj108a2_data *psu = to_psu(idxp, idx);
- 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
--	char data_char[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
-+	char data_char[I2C_SMBUS_BLOCK_MAX * 2 + 2] = { 0 };
-+	char *out = data;
- 	char *res;
- 
- 	switch (idx) {
-@@ -149,27 +150,27 @@ static ssize_t q54sj108a2_debugfs_read(s
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 32);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	case Q54SJ108A2_DEBUGFS_FLASH_KEY:
- 		rc = i2c_smbus_read_block_data(psu->client, PMBUS_FLASH_KEY_WRITE, data);
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 4);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
--	data[rc] = '\n';
-+	out[rc] = '\n';
- 	rc += 2;
- 
--	return simple_read_from_buffer(buf, count, ppos, data, rc);
-+	return simple_read_from_buffer(buf, count, ppos, out, rc);
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -797,7 +797,18 @@ struct fwnode_handle *
+ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+ 			   struct fwnode_handle *child)
+ {
+-	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	struct fwnode_handle *next;
++
++	if (IS_ERR_OR_NULL(fwnode))
++		return NULL;
++
++	/* Try to find a child in primary fwnode */
++	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	if (next)
++		return next;
++
++	/* When no more children in primary, continue with secondary */
++	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
  }
+ EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
  
- static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *buf,
+@@ -841,19 +852,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
+ {
+-	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	struct fwnode_handle *next;
+-
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return NULL;
+-
+-	/* Try to find a child in primary fwnode */
+-	next = fwnode_get_next_child_node(fwnode, child);
+-	if (next)
+-		return next;
+-
+-	/* When no more children in primary, continue with secondary */
+-	return fwnode_get_next_child_node(fwnode->secondary, child);
++	return fwnode_get_next_child_node(dev_fwnode(dev), child);
+ }
+ EXPORT_SYMBOL_GPL(device_get_next_child_node);
+ 
 
 
 
