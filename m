@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-226426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAMpKnqIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:38 +0100
+	id 0KkkNHqOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C4D2AEBFB
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734562AF838
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9AF63303C4E6
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:58:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C084930B3DAB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57C03F7E81;
-	Tue, 17 Mar 2026 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874DA32AAC5;
+	Tue, 17 Mar 2026 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzAZV0ih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulHm6V3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990C63F7E7C;
-	Tue, 17 Mar 2026 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D6F2DF132;
+	Tue, 17 Mar 2026 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766655; cv=none; b=eE/XT4kIU60ZxI9OpRMztcFzTUJuGuKyNP8P0Mry8LkQ28Mxu4B8mbxr1kspSZ7x1wYqigRBcLgmYqO8zjsPFcDKAWYvfX/J2X2DZFxYd7kr2FQ76EJdCmTlbbc2RkgOI8IA4YXNIQDFz9jIhiMS4TVqVipSuyiyLVDHxGQwO7I=
+	t=1773768057; cv=none; b=mbxtm1Jm6M9fvPuSN3JMLk+LZmgVY4wwafSsDQqVIjYpx0v03pDBDDL95zKR5XRXRDoktc7vqCnLuwx9hUlUGJ4em7e6uK3RRRFhkKKT6x0Agar4rM9e3X38u8cuu5rgLSwtV4E8tLlyXie/FVao3+DxH39uvmhAGOdA8kG21/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766655; c=relaxed/simple;
-	bh=t0crC08jydjWAgvJY9WvPubZYnlUF2omTeOJ/e8DXns=;
+	s=arc-20240116; t=1773768057; c=relaxed/simple;
+	bh=dGOdRmMSwHB1riDCOSb3gPsh6Q6QEXathuowAsFkWzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BefRqFLi42HUQQkn7gSsFzAB7yJGThxURH94aCWMoXwulYX6e0TQk1y2KweVgidGkxCw8KPGL7D2HA/gey9UTjw+6x7Doa3388wg97XXnhUOCxIh4ZL/QOUXiOc3CeDiiklhngf1HGVSDEFxyPyLMu2X3jSpQSE+jkhakDZUdM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzAZV0ih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9607C2BCB0;
-	Tue, 17 Mar 2026 16:57:34 +0000 (UTC)
+	 MIME-Version; b=MnW14KTShOG0JefWyNzB6yvB2zJUh0RigxUzKG3Gpq0zcBs8Nmcvyf3K7cu/ZnSUNZO8sGlvewU1B5xfSgdZ0wFDx9Dfg2BpjeSyi7IpK7WnxQRvgPcR3ahPJgVXwkaLS8sClm8Vua/GCQSAYwYKtc8YqM1t48uESE/KTb0jGH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulHm6V3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E6DC19424;
+	Tue, 17 Mar 2026 17:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766655;
-	bh=t0crC08jydjWAgvJY9WvPubZYnlUF2omTeOJ/e8DXns=;
+	s=korg; t=1773768057;
+	bh=dGOdRmMSwHB1riDCOSb3gPsh6Q6QEXathuowAsFkWzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzAZV0ih8iNgpsDaoyjadiPdVVjve1xpsdliS9zem95wSYt/q3pksI+xzB6ZhVbwL
-	 QEn7e8iNcA9XZnguDsuEn5w8/jJkHxYRKO4gDu0K6vqcfwMSlbNSx5LlJ/gUD2Jkz1
-	 nT4zOfevtuegz2RDpsp72tNNa1f5YvR5r7GqYrvI=
+	b=ulHm6V3dmlruxOKD4SAJRlefNibCJTOhE+Ppar93cYlwROTw90iMlvdGvy247NRGh
+	 dnXY8ZMAuW6LrGcgRZmHdsCOZwmN+g5MsjMJ//KOam4d77ku08WHchvoqgArHbNQkV
+	 HiueetKg763+BRUO63IJ/0rWlad0Vcl43mu7g9mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 293/378] ksmbd: fix use-after-free by using call_rcu() for oplock_info
-Date: Tue, 17 Mar 2026 17:34:10 +0100
-Message-ID: <20260317163017.788939866@linuxfoundation.org>
+	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 222/333] pmdomain: rockchip: Fix PD_VCODEC for RK3588
+Date: Tue, 17 Mar 2026 17:34:11 +0100
+Message-ID: <20260317163007.597276357@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,146 +69,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226753-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226426-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 49C4D2AEBFB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: 734562AF838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
+commit 0fb59eaca18f1254ecdce34354eec3cb1b3b5e10 upstream.
 
-ksmbd currently frees oplock_info immediately using kfree(), even
-though it is accessed under RCU read-side critical sections in places
-like opinfo_get() and proc_show_files().
+>From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
+PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
+be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
+The panic looks like below:
 
-Since there is no RCU grace period delay between nullifying the pointer
-and freeing the memory, a reader can still access oplock_info
-structure after it has been freed. This can leads to a use-after-free
-especially in opinfo_get() where atomic_inc_not_zero() is called on
-already freed memory.
+  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
+  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
+  ...
+  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
+  Workqueue: pm genpd_power_off_work_fn
+  Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x40/0x84
+  dump_stack+0x18/0x24
+  vpanic+0x1ec/0x4fc
+  vpanic+0x0/0x4fc
+  check_panic_on_warn+0x0/0x94
+  arm64_serror_panic+0x6c/0x78
+  do_serror+0xc4/0xcc
+  el1h_64_error_handler+0x3c/0x5c
+  el1h_64_error+0x6c/0x70
+  regmap_mmio_read32le+0x18/0x24 (P)
+  regmap_bus_reg_read+0xfc/0x130
+  regmap_read+0x188/0x1ac
+  regmap_read+0x54/0x78
+  rockchip_pd_power+0xcc/0x5f0
+  rockchip_pd_power_off+0x1c/0x4c
+  genpd_power_off+0x84/0x120
+  genpd_power_off+0x1b4/0x260
+  genpd_power_off_work_fn+0x38/0x58
+  process_scheduled_works+0x194/0x2c4
+  worker_thread+0x2ac/0x3d8
+  kthread+0x104/0x124
+  ret_from_fork+0x10/0x20
+  SMP: stopping secondary CPUs
+  Kernel Offset: disabled
+  CPU features: 0x3000000,000e0005,40230521,0400720b
+  Memory Limit: none
+  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
 
-Fix this by switching to deferred freeing using call_rcu().
+Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
+the PD_VCODEC is enough.
 
-Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
+[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
+
+Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
- fs/smb/server/oplock.h |    5 +++--
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ drivers/pmdomain/rockchip/pm-domains.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
- 	kfree(lease);
- }
- 
--static void free_opinfo(struct oplock_info *opinfo)
-+static void __free_opinfo(struct oplock_info *opinfo)
- {
- 	if (opinfo->is_lease)
- 		free_lease(opinfo);
-@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
- 	kfree(opinfo);
- }
- 
-+static void free_opinfo_rcu(struct rcu_head *rcu)
-+{
-+	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
-+
-+	__free_opinfo(opinfo);
-+}
-+
-+static void free_opinfo(struct oplock_info *opinfo)
-+{
-+	call_rcu(&opinfo->rcu, free_opinfo_rcu);
-+}
-+
- struct oplock_info *opinfo_get(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
-@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
- 	free_opinfo(opinfo);
- }
- 
--static void opinfo_add(struct oplock_info *opinfo)
-+static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
- {
--	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
- 	down_write(&ci->m_lock);
- 	list_add(&opinfo->op_entry, &ci->m_op_list);
-@@ -1279,20 +1291,21 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
--
- 	opinfo_count_inc(fp);
--	opinfo_add(opinfo);
-+	opinfo_add(opinfo, fp);
-+
- 	if (opinfo->is_lease) {
- 		err = add_lease_global_list(opinfo);
- 		if (err)
- 			goto err_out;
- 	}
- 
-+	rcu_assign_pointer(fp->f_opinfo, opinfo);
-+	opinfo->o_fp = fp;
-+
- 	return 0;
- err_out:
--	free_opinfo(opinfo);
-+	__free_opinfo(opinfo);
- 	return err;
- }
- 
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -69,8 +69,9 @@ struct oplock_info {
- 	struct lease		*o_lease;
- 	struct list_head        op_entry;
- 	struct list_head        lease_entry;
--	wait_queue_head_t oplock_q; /* Other server threads */
--	wait_queue_head_t oplock_brk; /* oplock breaking wait */
-+	wait_queue_head_t	oplock_q; /* Other server threads */
-+	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
-+	struct rcu_head		rcu;
- };
- 
- struct lease_break_info {
+--- a/drivers/pmdomain/rockchip/pm-domains.c
++++ b/drivers/pmdomain/rockchip/pm-domains.c
+@@ -1286,7 +1286,7 @@ static const struct rockchip_domain_info
+ static const struct rockchip_domain_info rk3588_pm_domains[] = {
+ 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
+ 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
+-	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
++	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
+ 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
+ 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
+ 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
 
 
 
