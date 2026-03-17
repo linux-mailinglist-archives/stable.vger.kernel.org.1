@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-226312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FB8GzaIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:30 +0100
+	id eG8VJrSHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49742AEB68
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:58:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55132AEA6D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE600310E4D8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:49:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8ED8C307A429
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431C43F65E5;
-	Tue, 17 Mar 2026 16:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA9E3F23DD;
+	Tue, 17 Mar 2026 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjaNUcr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DxUEF3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212A3EAC6F;
-	Tue, 17 Mar 2026 16:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9DB2E62B7;
+	Tue, 17 Mar 2026 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766154; cv=none; b=q9F3ioRmZZS51oP1d8LfdvmRNDXyLu/XSt+jKsB5bMRudNv0AM5QbgBqVYAfrCgF+wUio8HDdPuD/eoZF8ItIkr3WtfIwbUnE/rFIc1UOcAzx33ms+4FLIK1LmvpO/5oKM0oSaEDxX/T7YS+Bbtr3mI8zCVCvOkJ8LSd+0WzHzE=
+	t=1773766203; cv=none; b=Ba0RX9iei96ewEm2wYL8wC3pv58RGjStZusLON2aWf5CqF7EF5Opdphpg2nilIF4Fp+DR6nFzmHx8K/U2WG9AsRuFKYK8OBdfHTihnz7VK8cp3IdoS7fJ7ysZjz/nWjXDM/QxuHmksQ/IwtRPLZtMBq3eH99goBh5LOGR2+KXLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766154; c=relaxed/simple;
-	bh=DIIniBXaIyL68Q/qqQK94sXJOnNuvdrkZDaKvH/7Sag=;
+	s=arc-20240116; t=1773766203; c=relaxed/simple;
+	bh=/o240w/Gg2XkCQX7I1IH+ff9ScN9/g6wm6cDCSjE+no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fp7+n8tTDxxaU34HTpP1ltaFRlzTdTx9ObnfvYZYqDjqjjW/olOJfatEWzuzKcZ3Ox0iD+ynqIDxk14tw0uawx4qY4fh9BQm+pTpGh3nV7yExktwkUDir8SvXLc+/ePoNqUAtP6jq4PsFxwHaSwbTOMO0ikCsllcFRFH5gxTzLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjaNUcr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E4DC4CEF7;
-	Tue, 17 Mar 2026 16:49:13 +0000 (UTC)
+	 MIME-Version; b=RKs4m4XAy+FloHoo4zPt/FxxUVj22O/JwZkJTVr0U8imMCmssfDP+aGKLWk65CE8rVHX0RXebUr9iCCgUfQ3IpxHRqebEhVk/FjwGjJgdqaBcMluA2PagkvM03HntMctbYGmMbUsWaI/U1Fjw8ioIgGIQmD2cOMVgb/GZe+rkGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DxUEF3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16F9C4CEF7;
+	Tue, 17 Mar 2026 16:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766153;
-	bh=DIIniBXaIyL68Q/qqQK94sXJOnNuvdrkZDaKvH/7Sag=;
+	s=korg; t=1773766203;
+	bh=/o240w/Gg2XkCQX7I1IH+ff9ScN9/g6wm6cDCSjE+no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjaNUcr8UznfMlRehKIRh7vpX/2prBaKWvV8BsJKeiMnAidbRf9t9NGiHuQTRNb8E
-	 ljMDsKOr8wFTgfdMVuMKov3izW/oPjOX3ctKaXf52t1iVP0577JBIRyxzqJRpEGO68
-	 m++XFtbgsuOESM3D6lShtbUNzfe/+C1jso+2VJek=
+	b=0DxUEF3J14rMArMsimhIkqd8PlzgbT8BbiHRb4pm1af3jneR/pGOVSEfGGcyzNyYt
+	 jMWkwpOZXllg06lqaYkaN1doF2tjhSLRMxRMmDd58/aBqEqFl0ebwphY8CQmHTnHp4
+	 +n8arlrqfC/O1NTnlbL4zDuU23BWxSqxV34RrY/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.19 164/378] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus handling
-Date: Tue, 17 Mar 2026 17:32:01 +0100
-Message-ID: <20260317163013.044635303@linuxfoundation.org>
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.19 165/378] usb: gadget: f_ncm: Fix atomic context locking issue
+Date: Tue, 17 Mar 2026 17:32:02 +0100
+Message-ID: <20260317163013.081156128@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -66,33 +65,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226312-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,synopsys.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226323-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synopsys.com:email]
-X-Rspamd-Queue-Id: D49742AEB68
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B55132AEA6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,71 +98,154 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit b9fde507355342a2d64225d582dc8b98ff5ecb19 upstream.
+commit 0d6c8144ca4d93253de952a5ea0028c19ed7ab68 upstream.
 
-The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
-managed and tied to userspace configuration via ConfigFS. It can be
-NULL if the USB host sends requests before the nexus is fully
-established or immediately after it is dropped.
+The ncm_set_alt function was holding a mutex to protect against races
+with configfs, which invokes the might-sleep function inside an atomic
+context.
 
-Currently, functions like `bot_submit_command()` and the data
-transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
-dereference `tv_nexus->tvn_se_sess` without any validation. If a
-malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
-command during this race window, it triggers a NULL pointer
-dereference, leading to a kernel panic (local DoS).
+Remove the struct net_device pointer from the f_ncm_opts structure to
+eliminate the contention. The connection state is now managed by a new
+boolean flag to preserve the use-after-free fix from
+commit 6334b8e4553c ("usb: gadget: f_ncm: Fix UAF ncm object at re-bind
+after usb ep transport error").
 
-This exposes an inconsistent API usage within the module, as peer
-functions like `usbg_submit_command()` and `bot_send_bad_response()`
-correctly implement a NULL check for `tv_nexus` before proceeding.
+BUG: sleeping function called from invalid context
+Call Trace:
+ dump_stack_lvl+0x83/0xc0
+ dump_stack+0x14/0x16
+ __might_resched+0x389/0x4c0
+ __might_sleep+0x8e/0x100
+ ...
+ __mutex_lock+0x6f/0x1740
+ ...
+ ncm_set_alt+0x209/0xa40
+ set_config+0x6b6/0xb40
+ composite_setup+0x734/0x2b40
+ ...
 
-Fix this by bringing consistency to the nexus handling. Add the
-missing `if (!tv_nexus)` checks to the vulnerable BOT command and
-request processing paths, aborting the command gracefully with an
-error instead of crashing the system.
-
-Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
+Fixes: 56a512a9b410 ("usb: gadget: f_ncm: align net_device lifecycle with bind/unbind")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260221-legacy-ncm-v2-2-dfb891d76507@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/usb/gadget/function/f_ncm.c            |   29 ++++++++++---------------
+ drivers/usb/gadget/function/u_ether_configfs.h |   11 ---------
+ drivers/usb/gadget/function/u_ncm.h            |    1 
+ 3 files changed, 13 insertions(+), 28 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1222,6 +1222,13 @@ static void usbg_submit_cmd(struct usbg_
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -58,6 +58,7 @@ struct f_ncm {
+ 	u8				notify_state;
+ 	atomic_t			notify_count;
+ 	bool				is_open;
++	bool				is_connected;
+ 
+ 	const struct ndp_parser_opts	*parser_opts;
+ 	bool				is_crc;
+@@ -864,7 +865,6 @@ invalid:
+ static int ncm_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
+-	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
+ 
+ 	/* Control interface has only altsetting 0 */
+@@ -887,13 +887,12 @@ static int ncm_set_alt(struct usb_functi
+ 		if (alt > 1)
+ 			goto fail;
+ 
+-		scoped_guard(mutex, &opts->lock)
+-			if (opts->net) {
+-				DBG(cdev, "reset ncm\n");
+-				opts->net = NULL;
+-				gether_disconnect(&ncm->port);
+-				ncm_reset_values(ncm);
+-			}
++		if (ncm->is_connected) {
++			DBG(cdev, "reset ncm\n");
++			ncm->is_connected = false;
++			gether_disconnect(&ncm->port);
++			ncm_reset_values(ncm);
++		}
+ 
+ 		/*
+ 		 * CDC Network only sends data in non-default altsettings.
+@@ -926,8 +925,7 @@ static int ncm_set_alt(struct usb_functi
+ 			net = gether_connect(&ncm->port);
+ 			if (IS_ERR(net))
+ 				return PTR_ERR(net);
+-			scoped_guard(mutex, &opts->lock)
+-				opts->net = net;
++			ncm->is_connected = true;
+ 		}
+ 
+ 		spin_lock(&ncm->lock);
+@@ -1374,16 +1372,14 @@ err:
+ static void ncm_disable(struct usb_function *f)
+ {
+ 	struct f_ncm		*ncm = func_to_ncm(f);
+-	struct f_ncm_opts	*opts = func_to_ncm_opts(f);
+ 	struct usb_composite_dev *cdev = f->config->cdev;
+ 
+ 	DBG(cdev, "ncm deactivated\n");
+ 
+-	scoped_guard(mutex, &opts->lock)
+-		if (opts->net) {
+-			opts->net = NULL;
+-			gether_disconnect(&ncm->port);
+-		}
++	if (ncm->is_connected) {
++		ncm->is_connected = false;
++		gether_disconnect(&ncm->port);
 +	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
-@@ -1482,6 +1489,13 @@ static void bot_cmd_work(struct work_str
- 	se_cmd = &cmd->se_cmd;
- 	tpg = cmd->fu->tpg;
- 	tv_nexus = tpg->tpg_nexus;
-+	if (!tv_nexus) {
-+		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
-+
-+		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
-+		return;
-+	}
-+
- 	dir = get_cmd_dir(cmd->cmd_buf);
- 	if (dir < 0)
- 		goto out;
+ 
+ 	if (ncm->notify->enabled) {
+ 		usb_ep_disable(ncm->notify);
+@@ -1687,7 +1683,6 @@ static struct usb_function_instance *ncm
+ 	if (!opts)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	opts->net = NULL;
+ 	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
+ 	gether_setup_opts_default(&opts->net_opts, "usb");
+ 
+--- a/drivers/usb/gadget/function/u_ether_configfs.h
++++ b/drivers/usb/gadget/function/u_ether_configfs.h
+@@ -326,18 +326,9 @@ out:									\
+ 					      char *page)			\
+ 	{									\
+ 		struct f_##_f_##_opts *opts = to_f_##_f_##_opts(item);		\
+-		const char *name;						\
+ 										\
+ 		guard(mutex)(&opts->lock);					\
+-		rtnl_lock();							\
+-		if (opts->net_opts.ifname_set)					\
+-			name = opts->net_opts.name;				\
+-		else if (opts->net)						\
+-			name = netdev_name(opts->net);				\
+-		else								\
+-			name = "(inactive net_device)";				\
+-		rtnl_unlock();							\
+-		return sysfs_emit(page, "%s\n", name);				\
++		return sysfs_emit(page, "%s\n", opts->net_opts.name);		\
+ 	}									\
+ 										\
+ 	static ssize_t _f_##_opts_ifname_store(struct config_item *item,	\
+--- a/drivers/usb/gadget/function/u_ncm.h
++++ b/drivers/usb/gadget/function/u_ncm.h
+@@ -19,7 +19,6 @@
+ 
+ struct f_ncm_opts {
+ 	struct usb_function_instance	func_inst;
+-	struct net_device		*net;
+ 
+ 	struct gether_opts		net_opts;
+ 	struct config_group		*ncm_interf_group;
 
 
 
