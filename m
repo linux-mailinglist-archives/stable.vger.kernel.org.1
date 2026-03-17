@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-225788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHsBBJAfuWmergEAu9opvQ
-	(envelope-from <stable+bounces-225788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:32:00 +0100
+	id qMb9FbwfuWmergEAu9opvQ
+	(envelope-from <stable+bounces-225789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:32:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB2E2A6CA3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:31:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03EE2A6D1B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 10:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 58C01302D492
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:21:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD69030C454B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 09:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C994D375F62;
-	Tue, 17 Mar 2026 09:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CBA39EF02;
+	Tue, 17 Mar 2026 09:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVveG6wr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrHJOkq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6D2356A12
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848AD3A450A
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 09:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773739287; cv=none; b=G5NhzRSh43Y/3VnKdlMuOiUu1TMiMUkY5oeAN3upZUUefMmxhqUlL2MaOLj1j0AS9fowr8madQTCIIiJHdIyQ2C0/gl3ZE39wNZJUa1Wy2L52IVrIa1oTWSacMJrZ9TBwvIzhS/XQQ64b/rWpToP/MnGBQEVHxeTbYYaLG7LZKo=
+	t=1773739381; cv=none; b=GiMU1D4nrylvnFhXDNhtHryubYTtVS+MWJqHQ4SFajlVsV2Sm8YC+3dPPeaiNPkViny3cCB9HEAJ7VCQaD8SJu/aYL+1OfFNFZPKS09l0a8W7CmmADu8sb6bJNhCMA8ZZRv/ipOiwEhwTlzRmHzRUw7CykagVkkHHCCeREZpIiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773739287; c=relaxed/simple;
-	bh=t2FGsDCZW+5MCc2pXE/YltC4L7d5PKUXZODq0jE6rwI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JQ4cx1HtLUJaic313D9uXmLHa09JilVWcw33frz4XY+VpzJZIRSMqCIgCxT698SDcS+j4iOCYuvKrJVN4zMuKF/MlaHyJA7VaBLANMof42ZN6U20JVHux3CHs82ULPUiVpEolXKapkx6ALmgYuUwWV+H7IlYq14hLeOXIsunVHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVveG6wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCB4C2BC9E;
-	Tue, 17 Mar 2026 09:21:26 +0000 (UTC)
+	s=arc-20240116; t=1773739381; c=relaxed/simple;
+	bh=n/kMItrXsYx8CeUIPz3xOHs4T6tYczEmXAWGkjtYNZk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BNYNXY8cbiWkvfgpitbnQkOz5xY2jGK5XgsHXZnuLTrt8dKD2l1lozgt02mAOwmp803EnFi5QFZKeB60QWcu606nBhM1LtrkZJe7XWmGkPeI550OU6TuniU3joEFRzNLi/NJuq3R4eGyho3SV+J3Ia4aH8Qr3/jNWlS8oqJ80XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrHJOkq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD05EC19425;
+	Tue, 17 Mar 2026 09:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773739287;
-	bh=t2FGsDCZW+5MCc2pXE/YltC4L7d5PKUXZODq0jE6rwI=;
+	s=korg; t=1773739381;
+	bh=n/kMItrXsYx8CeUIPz3xOHs4T6tYczEmXAWGkjtYNZk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MVveG6wrWzu/0zmHQa6jmMmJnCU8pA9iTZB39tI0HG3Vclidmd1U8KJwkJZeJV+I5
-	 lwX1tWjNLFaL7xBfoi5bJdWHly+wRVFH6V/VINAHwfL2NYkvaVAqdNttQyEOaW47Cx
-	 lcLtm4xGSGdkjkTk06qqptaH2qP0XubeLxEqEmno=
-Subject: FAILED: patch "[PATCH] mm/damon/core: disallow non-power of two min_region_sz" failed to apply to 6.18-stable tree
-To: sj@kernel.org,akpm@linux-foundation.org,stable@vger.kernel.org,yanquanmin1@huawei.com
+	b=ZrHJOkq40S+dbwd7/mbbOPx1qSvfC63KT8NmUuopH5jAZSXzsJ7GCWbA3KVTSPiyu
+	 5RhxZqgeekabq+NxFusYg2sTBQpnHbNdOGP8xaHXwsKQSyi8AcYsq4Rx0XAQZUYDKE
+	 5GiSyN7dkS4/3wWF/g61IzzASvho7NadVxRbymo4=
+Subject: FAILED: patch "[PATCH] mm/kfence: disable KFENCE upon KASAN HW tags enablement" failed to apply to 5.15-stable tree
+To: glider@google.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dvyukov@google.com,elver@google.com,ernesto.martinezgarcia@tugraz.at,gregkh@linuxfoundation.org,kees@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 10:21:15 +0100
-Message-ID: <2026031715-scrutiny-refurbish-a751@gregkh>
+Date: Tue, 17 Mar 2026 10:22:57 +0100
+Message-ID: <2026031757-abreast-angling-34e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-225789-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225788-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[google.com,linux-foundation.org,gmail.com,tugraz.at,linuxfoundation.org,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 2FB2E2A6CA3
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email,linux-foundation.org:email,tugraz.at:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D03EE2A6D1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x c80f46ac228b48403866d65391ad09bdf0e8562a
+git cherry-pick -x 09833d99db36d74456a4d13eb29c32d56ff8f2b6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031715-scrutiny-refurbish-a751@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031757-abreast-angling-34e3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,56 +113,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c80f46ac228b48403866d65391ad09bdf0e8562a Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sat, 14 Feb 2026 13:41:21 -0800
-Subject: [PATCH] mm/damon/core: disallow non-power of two min_region_sz
+From 09833d99db36d74456a4d13eb29c32d56ff8f2b6 Mon Sep 17 00:00:00 2001
+From: Alexander Potapenko <glider@google.com>
+Date: Fri, 13 Feb 2026 10:54:10 +0100
+Subject: [PATCH] mm/kfence: disable KFENCE upon KASAN HW tags enablement
 
-DAMON core uses min_region_sz parameter value as the DAMON region
-alignment.  The alignment is made using ALIGN() and ALIGN_DOWN(), which
-support only the power of two alignments.  But DAMON core API callers can
-set min_region_sz to an arbitrary number.  Users can also set it
-indirectly, using addr_unit.
+KFENCE does not currently support KASAN hardware tags.  As a result, the
+two features are incompatible when enabled simultaneously.
 
-When the alignment is not properly set, DAMON behavior becomes difficult
-to expect and understand, makes it effectively broken.  It doesn't cause a
-kernel crash-like significant issue, though.
+Given that MTE provides deterministic protection and KFENCE is a
+sampling-based debugging tool, prioritize the stronger hardware
+protections.  Disable KFENCE initialization and free the pre-allocated
+pool if KASAN hardware tags are detected to ensure the system maintains
+the security guarantees provided by MTE.
 
-Fix the issue by disallowing min_region_sz input that is not a power of
-two.  Add the check to damon_commit_ctx(), as all DAMON API callers who
-set min_region_sz uses the function.
-
-This can be a sort of behavioral change, but it does not break users, for
-the following reasons.  As the symptom is making DAMON effectively broken,
-it is not reasonable to believe there are real use cases of non-power of
-two min_region_sz.  There is no known use case or issue reports from the
-setup, either.
-
-In future, if we find real use cases of non-power of two alignments and we
-can support it with low enough overhead, we can consider moving the
-restriction.  But, for now, simply disallowing the corner case should be
-good enough as a hot fix.
-
-Link: https://lkml.kernel.org/r/20260214214124.87689-1-sj@kernel.org
-Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.18+]
+Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Suggested-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 01eba1a547d4..adfc52fee9dc 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1252,6 +1252,9 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- {
- 	int err;
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index b4ea3262c925..b5aedf505cec 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -13,6 +13,7 @@
+ #include <linux/hash.h>
+ #include <linux/irq_work.h>
+ #include <linux/jhash.h>
++#include <linux/kasan-enabled.h>
+ #include <linux/kcsan-checks.h>
+ #include <linux/kfence.h>
+ #include <linux/kmemleak.h>
+@@ -916,6 +917,20 @@ void __init kfence_alloc_pool_and_metadata(void)
+ 	if (!kfence_sample_interval)
+ 		return;
  
-+	if (!is_power_of_2(src->min_region_sz))
-+		return -EINVAL;
++	/*
++	 * If KASAN hardware tags are enabled, disable KFENCE, because it
++	 * does not support MTE yet.
++	 */
++	if (kasan_hw_tags_enabled()) {
++		pr_info("disabled as KASAN HW tags are enabled\n");
++		if (__kfence_pool) {
++			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
++			__kfence_pool = NULL;
++		}
++		kfence_sample_interval = 0;
++		return;
++	}
 +
- 	err = damon_commit_schemes(dst, src);
- 	if (err)
- 		return err;
+ 	/*
+ 	 * If the pool has already been initialized by arch, there is no need to
+ 	 * re-allocate the memory pool.
 
 
