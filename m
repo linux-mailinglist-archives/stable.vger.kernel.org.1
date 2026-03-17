@@ -1,167 +1,264 @@
-Return-Path: <stable+bounces-225723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCuxJRmcuGkzggEAu9opvQ
-	(envelope-from <stable+bounces-225723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:11:05 +0100
+	id iH7vLDWfuGnIggEAu9opvQ
+	(envelope-from <stable+bounces-225724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:24:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254352A22C9
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:11:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D83B2A23F8
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 01:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2D22306ECBD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:09:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67F21301D05B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 00:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77945C0B;
-	Tue, 17 Mar 2026 00:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B3A35972;
+	Tue, 17 Mar 2026 00:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lg1wpstQ"
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="Z65J/hZO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAC4433AD
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 00:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773706174; cv=pass; b=CznSGlKyLf1vsj71FhbsyEQ6fWeuYs1i3qQvhL+PyF0kXX0GzwUJcHtH+/TC4U39SLSJSKRYpCgDRNN/t/eARyelvsy2XWGxelKwCnUnNcvW0+g9N+swivx2UO8be3r9rMxW+jpspMRFq971wvEYm9AsM/9QclI4Kigm+sFyS5k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773706174; c=relaxed/simple;
-	bh=hHH0zbsAVNkdVzk96SM2ZhuoyeFWcJYCO04DOXgNmMo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tny2/4+YK3zq062BrTyRIsjbT39toWhqUDKseFIFAwwsdpmy6T8MOJnsDAoYTshTCZHUxOiWBW0W8hA4jgq0qI4SoHJeoIOPrCyyK0Cvs+fF0n8cz1IfAnU/Hp26LHITPHgf3k07NnQVv/vF4qsopISgw1O5wGi8THXTmb9ckZ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lg1wpstQ; arc=pass smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b979d16dd0cso362406366b.1
-        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 17:09:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773706171; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z+ECDWWgO7NiaP8JnBVKOEoiUxRcIBdrjJYrtQa1g8zVLs/TlhcvVdc95qeUMfeUSV
-         p2GQiaMbxKHdVEI2GicFvzAkiGp7GA83qOo9Jo1G/u5LJJjmg2GmN6YXBt2fzzP2KH6Z
-         i9yRu7R8vNOOwUdDKchgyjNKdQ/d9/Fc78b63ukfA330P4z5kC0E3F8Yra6B8XBt7eAE
-         2NO9Z8FEItXVMRNX/D173I0GkQ3XthHD+Kw8oBXKivHuqdR7Aclv/Zc+CKi/mH4X/BtV
-         m4IY9WpVz3OrNfBGZSkD9/6RctqCIzUIq8kGwh96CK2bnVB8hJz8vz9lrxuvB6a9tCRl
-         a8SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hHH0zbsAVNkdVzk96SM2ZhuoyeFWcJYCO04DOXgNmMo=;
-        fh=wZSpTWgIP7NcmnT1dcOTsoD0LBzfynXwWuBnmNAkNOk=;
-        b=LXrKCcbD8k1crHAk+lCPdzWucKvUhvDRcZWap61jYd2PNoYye4D0SRntV+OzExRacj
-         sqjrcGCIfNl4vqu/MobEjBckhCYg5r1WVhxPCJccrRavRqMakY/fSRRuNeu69fEknIwJ
-         /mnwoHGZzfkKm2AFD3RkwiMXSDwzdfaGSQzSqU/vIWqNP5BQ6oixpBjPZZ0ZvJcBiIe8
-         xAPyG84MjvuY192QwAYdMM/Jhs7GEbzV+hUVPRyv7yU1gpNG1jbAv1flriI5JracJBtA
-         rg/knG2p9YT3Z3cAW7gE/0t6YMTTlN6SJ9H0jyN6yiyQ1bh8v/EtID2/S+ST8ukyVkGc
-         uCfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D69A24B28
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 00:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773707048; cv=none; b=Xr+yn7B4ARvKXMMOjZHKTERp4KM8ZUiz6mkOoFamzMpMu66V7fGPZfF1BhmOFdd6MX74v6CLEe8uOYZrBaV1oycxgpxK5e5R/jkYZDwSwMr9pulvda4BOaz/xHP2Xn8zev2ytX9+ai9C8HC+3x5PrLB1cA5ORK4RG5zV41aQq0s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773707048; c=relaxed/simple;
+	bh=6IRs8tlqiAf4ieBRKO7C5hhLcs5yHFDoucg9tQ3elOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SfDZ25MG0O7gxnWWQ7pYt10ZNIgI4hEs2zLUIEIPN9IU6GV6GV1Ma7w2YhZn4tgqXEIvR8cI5CJbPr4llEBHkxB/kmEf6GsmoAG5KjAavbP48tWjsAvWfICW4vn7KHuYn95YKumtLIRTbt54cGFLDOIOD2AyV8NjWvu8//+yQh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=Z65J/hZO; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cd79e43da3so541668285a.1
+        for <stable@vger.kernel.org>; Mon, 16 Mar 2026 17:24:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773706171; x=1774310971; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hHH0zbsAVNkdVzk96SM2ZhuoyeFWcJYCO04DOXgNmMo=;
-        b=lg1wpstQw5qLe0+ZJxVtqY1awPE/bYFmqRoPnSQoq1IDdO415Q51LvdA/UBlImgg4U
-         kaN4RCn3wz6g01DLUj4ABOPTAWGTpCS/YlsweG7BtweKV2h6N4CH87olHDmTj6SZYjaA
-         fUqI9fdde1tMVCFv+RzUyCXD8h2HDhZ7PqcjeIkH9FBjcQyRsFuhjotxTMPzK0VtEV++
-         eK6fb4VaWy34NyphWTYsWifHXBQZ2B5CFyi66S7W4V11skIAMU9UDdgIlMdyujIpVut5
-         fbiqWJitlA2/z1wF2LaF23fioc9KK4WTinmB4nnQ77kGyFk+L+jyJfaeWTGry2jEFJNR
-         o2aA==
+        d=toxicpanda.com; s=google; t=1773707046; x=1774311846; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tpTXvukljXQ4iNyJC/zaPdjtYHdHgquyGmKXKgxE1Rs=;
+        b=Z65J/hZOi7ZtqNfTpn6MIWXfnWXYT98KAARPzKZ/Db/wBKxfDy8qv3+3ou90OMP3hJ
+         gZZzSGJfX3vMb09quwzZyOmdq8+pt0gDdpOHrS3e33T1hEH6iFG+15FlN/m1dbA/04Do
+         gBPINl9A22CGnOA8bCbaYZf6Pu8pnvnQJ6HEklD+rR7LITfILG4fdLKydvFojj/OtVAS
+         vdiL9qYoVhEfQVhMWQHVWheCYtMkt9pVhZO2UJW4T8Tq3iMwmPnWbmKrNk7svfg9ZTnp
+         gc+fzhaiVFuuUzqdd4aK50FB1AknodCRWX+v+tHmQ2xlFPIkmdlL0pGef3aOyODup0kR
+         nssA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773706171; x=1774310971;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hHH0zbsAVNkdVzk96SM2ZhuoyeFWcJYCO04DOXgNmMo=;
-        b=H9F8APomQSoTGf5oKmacBtLPyjyH/ce+24Jtxw5w+ezLltaS+1yPISwoqtBJfCLxge
-         dcJ4DCZNaHKQqpo9Uh81SzdkABTga4seGRsS3Ra2+/Uy5QCFTOWqWEraExx2D38q6h8+
-         rc9ICVT69Dw/v1C1nIgZO0PmZA421SwO67UXpOjNJOekU74ynZzlMQG6VtGMBmzX2IUp
-         oWvD6YEtS5ZxBiRZE50RmODrNCg+0slI0VTqmvOzrsE7pVw2WYLuXz7y9Su/6D5268q4
-         U9SZPjSNkQWeQpYraSOinVw1Yq9R7rjsx7JcgdDZz66IOQWyswpj0Gdu7h0bTnICMOjE
-         GvZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHULu6PoOm+H7cwnzgf0lv37059Ov5jOqKd/g/bZgq0qPYttFRokJ/IZi/2AoJN07921cxmmg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZd4vJuoUonFrVcL0NddXUHvF011IKc5AXiJ2RjbhdvkhxQ10y
-	3+I+9dPUWmb03QAreysPVgJtg8Vc5MFAjbMxEicHwd4ToPUJxwTceqqj+fIcP2tAAuVzan2SGGs
-	qpJW/xx+6blCok5UWC4806uqgpXBYGGnbEltqu3dcf+9+
-X-Gm-Gg: ATEYQzzReDn0ti3VZBvg4y/FSbcXdT3bVsYXa8/LNuJ+O0/DUo+w579pn8JWv/VUnbZ
-	EDfx9mYY4YIl1BpuMb0QmNTc8cv0n36NcieLXvZp922E2Nix2dmzoHiAjQ6WvpWN4oNYW9qz4Dw
-	+XDOLZo3PU2RHQApaB+MGDW4AO6u6NvgYRQl09Dmy4agTAaaZd7qgpRfwYBfBelmgdj6K47nswB
-	+A6QVvWKuo+DvrwS/GfUvailj5+WCgyb+SiPDE6G9gTYimcgPLYIUfOh8ON8btpkCiP9lLnICtU
-	wFw5jM/MxSEXgjp3cs5GZJ1dBwXpKyA/ylZHsbTv1N3Mg31te7x0AdWiuyv1xVTwHiw82MQpbRv
-	w82Rwp9tlzOY=
-X-Received: by 2002:a17:907:3f9a:b0:b97:dcdd:615 with SMTP id
- a640c23a62f3a-b97dcdd101bmr46515066b.13.1773706170825; Mon, 16 Mar 2026
- 17:09:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773707046; x=1774311846;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tpTXvukljXQ4iNyJC/zaPdjtYHdHgquyGmKXKgxE1Rs=;
+        b=NtY9rNSwbLOc4nrDsZ8zje2gkbUPG0X23H15ZWVN1e8ST5lDvgcx1WLKG6O6K01+pM
+         0qtWwLqSOOTUkavC6S8tkOhRXHzy6UWpQ2HhzLkBj7V1VXYP6cEAiUincwaaQRR8vYA+
+         sm3OrGMh83hkonZfEkBQ+GALPMhsYsvIMUFaENgLCItDbKWGYrqd/wCcPExlAQQ+sU7V
+         DlYulLwozt3F7M3b9K5rK49UlzNbf08s4cdT5les+umQiry2bM+LF82WLGoJT/sUgIRZ
+         K+iW9OLTtKRDvoLkhvIH3GoVohf1CqJL46xjY2Zlz7RZyQhuAlSPcu9x06FSMu2z/WDc
+         XO+g==
+X-Gm-Message-State: AOJu0YzKJ5v38vq7s5lhdjvOeRDnJA03vvA4kxCrBPp5IrTAsmX0etww
+	1HT+5RS02dYE5v3nZMUB/61sAhknWWLdo5dbVxPydR6oNLdXLqrd24FTjLgMSRqsZhU=
+X-Gm-Gg: ATEYQzyLQ7Df/BiuEbsIj3Uyx3kZ8sQ+n4vnD9Yihy8X1d/IwS8VPaBzwCz4EY2pUkL
+	OG6uL0GOeIYxemfimqHoti98/3IxaxkifQhscday3mEn5vSp8xPJUULhP494Q3oTmATg0DgQbWc
+	MrIHK8m88c8xKq15gK2jgLJhAMCOMpCtf7pMboyDEmyRiiPQVHjBMOUcJfMxTHCWGnQZW8PwoE9
+	djcx7Uc78EkI5/2uIIMo8xkjFYitdF7lbbxJuHU5PYtnaJY0RyeNskbd9ym6gH5dCYlGZ1QDgpV
+	x8lHq3sCCuTloRbRaqvkgpOrbw0GcpYZdRq6Idr7W6ePHFTKwBiR5DkDuhD0qCG/PcRj9Uy6RGI
+	xbtYSoTRnaGUHwuh7T69fkJPO+Jr9DZH+U7hhHg5jrSSocRv5+Q+z8H/wB40pnfNRYEV5vPuguj
+	Y0G4wjv8oToqyIsRrPJkncG+INhA==
+X-Received: by 2002:a05:620a:294a:b0:8ca:3d7c:e74a with SMTP id af79cd13be357-8cdb5b6eef9mr1894858485a.56.1773707045762;
+        Mon, 16 Mar 2026 17:24:05 -0700 (PDT)
+Received: from localhost ([2603:6080:7702:ce00:96ef:dc7e:bb84:bc5a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cda211518esm1384850785a.27.2026.03.16.17.24.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2026 17:24:05 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] scsi: target: tcm_loop: drain commands in target_reset handler
+Date: Mon, 16 Mar 2026 20:23:29 -0400
+Message-ID: <27011aa34c8f6b1b94d2e3cf5655b6d037f53428.1773706803.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260316134640.2605237-1-gality369@gmail.com> <f3497ad9-8ee6-4185-b935-013e596e764d@suse.com>
-In-Reply-To: <f3497ad9-8ee6-4185-b935-013e596e764d@suse.com>
-From: ZhengYuan Huang <gality369@gmail.com>
-Date: Tue, 17 Mar 2026 08:09:19 +0800
-X-Gm-Features: AaiRm50tF6oYZiQBR8o55N2avJfUEiXBS-geZWxPXng4elSLAAsBYaYsERiaW1c
-Message-ID: <CAOmEq9VVwimgxYxhUaRUv+7es4xd6u7-ttYGCeHC-+_Z1V6jhg@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: balance: fix null-ptr-deref in btrfs_may_alloc_data_chunk
-To: Qu Wenruo <wqu@suse.com>
-Cc: dsterba@suse.com, clm@fb.com, bo.li.liu@oracle.com, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	baijiaju1990@gmail.com, r33s3n6@gmail.com, zzzccc427@gmail.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[toxicpanda.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-225723-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[suse.com,fb.com,oracle.com,vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gality369@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[toxicpanda.com];
+	TAGGED_FROM(0.00)[bounces-225724-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[toxicpanda.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[josef@toxicpanda.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 254352A22C9
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[toxicpanda.com:dkim,toxicpanda.com:email,toxicpanda.com:mid]
+X-Rspamd-Queue-Id: 1D83B2A23F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 4:46=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
-> I'd say adding a proper chunk/bg mapping check is the root fix.
->
-> Or you'll need to adhoc a lot of null pointer checks.
+tcm_loop_target_reset() violates the SCSI EH contract: it returns
+SUCCESS without draining any in-flight commands.  The SCSI EH
+documentation (scsi_eh.rst) requires that when a reset handler returns
+SUCCESS the driver has made lower layers "forget about timed out scmds"
+and is ready for new commands.  Every other SCSI LLD (virtio_scsi,
+mpt3sas, ipr, scsi_debug, mpi3mr) enforces this by draining or
+completing outstanding commands before returning SUCCESS.
 
-Thank you for the reminder. A patch addressing the root cause of this
-issue has already been submitted, but I am unsure if the solution is
-fully appropriate and would appreciate further guidance. The relevant
-patch series can be found here:
-https://lore.kernel.org/all/20260314123741.1439792-1-gality369@gmail.com/.
-Please take a look at the series.
+Because tcm_loop_target_reset() doesn't drain, the SCSI EH reuses
+in-flight scsi_cmnd structures for recovery commands (e.g. TUR) while
+the target core still has async completion work queued for the old
+se_cmd.  The memset in queuecommand zeroes se_lun and lun_ref_active,
+causing transport_lun_remove_cmd() to skip its percpu_ref_put().  The
+leaked LUN reference prevents transport_clear_lun_ref() from
+completing, hanging configfs LUN unlink forever in D-state:
 
-Since you are not directly responsible for this, I didn't CC you on
-the email to avoid causing any disruption. Apologies for any
-inconvenience this may have caused.
+  INFO: task rm:264 blocked for more than 122 seconds.
+  rm              D    0   264    258 0x00004000
+  Call Trace:
+   __schedule+0x3d0/0x8e0
+   schedule+0x36/0xf0
+   transport_clear_lun_ref+0x78/0x90 [target_core_mod]
+   core_tpg_remove_lun+0x28/0xb0 [target_core_mod]
+   target_fabric_port_unlink+0x50/0x60 [target_core_mod]
+   configfs_unlink+0x156/0x1f0 [configfs]
+   vfs_unlink+0x109/0x290
+   do_unlinkat+0x1d5/0x2d0
 
-Looking forward to your feedback,
-ZhengYuan Huang
+Fix this by making tcm_loop_target_reset() actually drain commands:
+
+1. Issue TMR_LUN_RESET via tcm_loop_issue_tmr() to drain all commands
+   that the target core knows about (those not yet CMD_T_COMPLETE).
+
+2. Use blk_mq_tagset_busy_iter() to iterate all started requests and
+   flush_work() on each se_cmd — this drains any deferred completion
+   work for commands that already had CMD_T_COMPLETE set before the
+   TMR (which the TMR skips via __target_check_io_state()).  This is
+   the same pattern used by mpi3mr, scsi_debug, and libsas to drain
+   outstanding commands during reset.
+
+Fixes: e0eb5d38b732 ("scsi: target: tcm_loop: Use block cmd allocator for se_cmds")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+---
+- I have a reproducer for this that you can run if you'd like, but it's Claude
+  generated so it's a bit special, but definitely triggers the issue every time
+  and this patch resolved it. We're hitting it in production quite a bit.
+
+ drivers/target/loopback/tcm_loop.c | 52 ++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
+index d668bd19fd4a..528883d989b8 100644
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -26,6 +26,7 @@
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/configfs.h>
++#include <linux/blk-mq.h>
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_tcq.h>
+ #include <scsi/scsi_host.h>
+@@ -269,15 +270,27 @@ static int tcm_loop_device_reset(struct scsi_cmnd *sc)
+ 	return (ret == TMR_FUNCTION_COMPLETE) ? SUCCESS : FAILED;
+ }
+ 
++static bool tcm_loop_flush_work_iter(struct request *rq, void *data)
++{
++	struct scsi_cmnd *sc = blk_mq_rq_to_pdu(rq);
++	struct tcm_loop_cmd *tl_cmd = scsi_cmd_priv(sc);
++	struct se_cmd *se_cmd = &tl_cmd->tl_se_cmd;
++
++	flush_work(&se_cmd->work);
++	return true;
++}
++
+ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
+ {
+ 	struct tcm_loop_hba *tl_hba;
+ 	struct tcm_loop_tpg *tl_tpg;
++	struct Scsi_Host *sh = sc->device->host;
++	int ret;
+ 
+ 	/*
+ 	 * Locate the tcm_loop_hba_t pointer
+ 	 */
+-	tl_hba = *(struct tcm_loop_hba **)shost_priv(sc->device->host);
++	tl_hba = *(struct tcm_loop_hba **)shost_priv(sh);
+ 	if (!tl_hba) {
+ 		pr_err("Unable to perform device reset without active I_T Nexus\n");
+ 		return FAILED;
+@@ -286,11 +299,38 @@ static int tcm_loop_target_reset(struct scsi_cmnd *sc)
+ 	 * Locate the tl_tpg pointer from TargetID in sc->device->id
+ 	 */
+ 	tl_tpg = &tl_hba->tl_hba_tpgs[sc->device->id];
+-	if (tl_tpg) {
+-		tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
+-		return SUCCESS;
+-	}
+-	return FAILED;
++	if (!tl_tpg)
++		return FAILED;
++
++	/*
++	 * Issue a LUN_RESET to drain all commands that the target core
++	 * knows about.  This handles commands not yet marked CMD_T_COMPLETE.
++	 */
++	ret = tcm_loop_issue_tmr(tl_tpg, sc->device->lun, 0, TMR_LUN_RESET);
++	if (ret != TMR_FUNCTION_COMPLETE)
++		return FAILED;
++
++	/*
++	 * Flush any deferred target core completion work that may still be
++	 * queued.  Commands that already had CMD_T_COMPLETE set before the TMR
++	 * are skipped by the TMR drain, but their async completion work
++	 * (transport_lun_remove_cmd → percpu_ref_put, release_cmd → scsi_done)
++	 * may still be pending in target_completion_wq.
++	 *
++	 * The SCSI EH will reuse in-flight scsi_cmnd structures for recovery
++	 * commands (e.g. TUR) immediately after this handler returns SUCCESS —
++	 * if deferred work is still pending, the memset in queuecommand would
++	 * zero the se_cmd while the work accesses it, leaking the LUN
++	 * percpu_ref and hanging configfs unlink forever.
++	 *
++	 * Use blk_mq_tagset_busy_iter() to find all started requests and
++	 * flush_work() on each — the same pattern used by mpi3mr, scsi_debug,
++	 * and other SCSI drivers to drain outstanding commands during reset.
++	 */
++	blk_mq_tagset_busy_iter(&sh->tag_set, tcm_loop_flush_work_iter, NULL);
++
++	tl_tpg->tl_transport_status = TCM_TRANSPORT_ONLINE;
++	return SUCCESS;
+ }
+ 
+ static const struct scsi_host_template tcm_loop_driver_template = {
+-- 
+2.53.0
+
 
