@@ -1,137 +1,223 @@
-Return-Path: <stable+bounces-226030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNd2GhdluWkyDgIAu9opvQ
-	(envelope-from <stable+bounces-226030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:28:39 +0100
+	id 0G/gOaxouWmZDwIAu9opvQ
+	(envelope-from <stable+bounces-226031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:43:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B172ABEE5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:28:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723BA2AC33A
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 15:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FEEB30259AC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:28:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78A0C31EC8FC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 14:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E0D3E5593;
-	Tue, 17 Mar 2026 14:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490823E5596;
+	Tue, 17 Mar 2026 14:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="bG2zxRXQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDY3/HHK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76FD3E556A
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD76F3E556F
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 14:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773757685; cv=none; b=lOyEadwmDUUXWaSWYW6ZxMsDeLRM6e/udkJj7v8H2OPlgBEgkHfgkmpNhZgrGQ4wJWUZ7Og3yn2xQ1Pl+yF8WUP2XIEEJjbm+8CEjdbpyW0k5UXBCLDbOA2ckD7T/i2ccZs0i8fDIPq6bIDn7iSJm/wdYpA6r0j1DSG9n0pjiFo=
+	t=1773757730; cv=none; b=XrmxUEh7/4eACeU/m+VkpUkr+ZTk9736AYgWE7mL1nMakJuXEAWSfxSoTuOkp0CMM2CNHAGWwqVKzeoVrWD1Mn1PCqOAfSn+em8361PUPnXmU80ay+5ZgosSlNptW5q/EasvnmOv6yYapLnPdeyYSuLNClR/7phF8pG7yOiIg4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773757685; c=relaxed/simple;
-	bh=XlJj6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HMAI6MYYWYkjoC9cFQteM1rT8A1QhTnpg2NXsgJUgpEhzPu1K4E4GpJGA3rcoJBETvZHS+megTldFBUj9ZFCz9P88KCv6+JuHMcf1u4FCyQi6/zppR4FGrWRgSwl4OF/fEBPyxVnfnA6/hg1VAOsUNyOLJ2RltvD1liBdCcog0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=bG2zxRXQ; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=XlJj
-	6+XtRnLs033bhaxlmEjesLS+qafeUVhuDo8ItlA=; b=bG2zxRXQ9Fu9bCPjNpx3
-	P7wgiIDoMXLCFMRPPmDltjPAhFzrIRxLaSxIF85pzMhW3YyHuUmEPHx4tFc4UUho
-	Wo06erk7gncW5uU46/3R7WWSOx6aUij0lMRTitWmNhEITS6dBlW5FTJQJ9Lann3s
-	dlppwJoBzJT5UfzY5GRapN/vktmt/GFIZqfQ7PYY1fBvA6Tbh+0RN0wBNuR0C9Z/
-	Xyd1b5tVvedLvdm7mrVbuvLIWeLiCjAeTKnuo2FG1hjxzOQTRhAzR5B4ebBzP+t3
-	vgcwphcy28vVhUjbhXw+mZaFWm3+CISUtLErtDSyofA6mcDgcyIeFO1eGKVh/IO/
-	FQ==
-Received: (qmail 312797 invoked from network); 17 Mar 2026 15:27:57 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 15:27:57 +0100
-X-UD-Smtp-Session: l3s3148p1@LnJGJDlN/LM+XdJ7
-Date: Tue, 17 Mar 2026 15:27:52 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <ablk6O2XMUc1EKK0@shikoro>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <abkF0GO01sMcOhvb@shikoro>
- <abkLEgrZbdb03VWg@ashevche-desk.local>
- <abkLY4AAQuFlTRC7@ashevche-desk.local>
- <abkT_jpjIki6pvX1@shikoro>
- <abkqEni3phP8dqqw@ashevche-desk.local>
- <abkuNpwmYGa6qJPZ@shikoro>
- <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
+	s=arc-20240116; t=1773757730; c=relaxed/simple;
+	bh=RiePVk6YY1FNsBRidGimMkD5mhQJ+CtHoXTyTa6fcJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NUCzkSbMhoCP7b7AoIUSVkcVdeXO8jjkzysjqnXiCt9vkEMb7yRnjQAn6apj+ow/pa+mYs8zpBb8d9UDYPXrGDCHBEaEFeQ9e+U2kx2dpT0kYcgpSwxcN+s+W71egsi2v+kbup0QddOaZT5TUwPhCyBRwOTci1NIui/Peq/PQaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDY3/HHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84F5C4CEF7;
+	Tue, 17 Mar 2026 14:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773757730;
+	bh=RiePVk6YY1FNsBRidGimMkD5mhQJ+CtHoXTyTa6fcJM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YDY3/HHKmJcsoZDfWJbwrcTa3xhegJcDNjVoe8+BR0lEvgCrohOHDisajuJGXN3Zm
+	 jiqLzASKr0YcnnnueycttpugsfIYdR067KDybYMfvafVaXf1XQ6w7mha7+L9rGeUfM
+	 WYWm7vnbK/spCN6rtwb2rlVGkZzM6Fe1DGNra+6e0dRnxIkfedUHm1b4smUMYhoV/C
+	 6dnU99QVQJijltXGfgWjviKNQdUdiFWQfrdAeCcyq0D1+exUHYIVo/Tfn31dD534tS
+	 kfBLRnwUlijYNV432znum0l1r37Y5Hme+iE256poIg+rOf29yeNItwkgYf2wLm2ovf
+	 KywPDLl0TMa2w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ruben Wauters <rubenru09@aol.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] drm/gud: rearrange gud_probe() to prepare for function splitting
+Date: Tue, 17 Mar 2026 10:28:46 -0400
+Message-ID: <20260317142847.165695-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031703-footpad-unpaved-0a7a@gregkh>
+References: <2026031703-footpad-unpaved-0a7a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g=_HW7i8-emNdTtw_0Kjqri8qTehHvms52u-w7jqG6bQ@mail.gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sang-engineering.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226030-lists,stable=lfdr.de,renesas];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.intel.com,chromium.org,linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
+	FREEMAIL_CC(0.00)[aol.com,suse.de,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226031-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sang-engineering.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 72B172ABEE5
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 723BA2AC33A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Ruben Wauters <rubenru09@aol.com>
 
-> I don't recall using any lock for this purpose.
+[ Upstream commit b9e5e9d2c187b849e050d59823e8c834f78475ab ]
 
-In that case:
+gud_probe() is currently very large and does many things, including
+pipeline setup and feature detection, as well as having USB functions.
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+This patch re-orders the code in gud_probe() to make it more organised
+and easier to split apart in the future.
 
-counts as an ack for i2c, too, of course.
+Signed-off-by: Ruben Wauters <rubenru09@aol.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20251020140147.5017-1-rubenru09@aol.com/
+Stable-dep-of: 7149be786da0 ("drm/gud: fix NULL crtc dereference on display disable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/gud/gud_drv.c | 45 +++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/gpu/drm/gud/gud_drv.c b/drivers/gpu/drm/gud/gud_drv.c
+index b7345c8d823de..42135a48d92ef 100644
+--- a/drivers/gpu/drm/gud/gud_drv.c
++++ b/drivers/gpu/drm/gud/gud_drv.c
+@@ -249,7 +249,7 @@ int gud_usb_set_u8(struct gud_device *gdrm, u8 request, u8 val)
+ 	return gud_usb_set(gdrm, request, 0, &val, sizeof(val));
+ }
+ 
+-static int gud_get_properties(struct gud_device *gdrm)
++static int gud_plane_add_properties(struct gud_device *gdrm)
+ {
+ 	struct gud_property_req *properties;
+ 	unsigned int i, num_properties;
+@@ -463,10 +463,6 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 		return PTR_ERR(gdrm);
+ 
+ 	drm = &gdrm->drm;
+-	drm->mode_config.funcs = &gud_mode_config_funcs;
+-	ret = drmm_mode_config_init(drm);
+-	if (ret)
+-		return ret;
+ 
+ 	gdrm->flags = le32_to_cpu(desc.flags);
+ 	gdrm->compression = desc.compression & GUD_COMPRESSION_LZ4;
+@@ -483,11 +479,28 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	if (ret)
+ 		return ret;
+ 
++	usb_set_intfdata(intf, gdrm);
++
++	dma_dev = usb_intf_get_dma_device(intf);
++	if (dma_dev) {
++		drm_dev_set_dma_dev(drm, dma_dev);
++		put_device(dma_dev);
++	} else {
++		dev_warn(dev, "buffer sharing not supported"); /* not an error */
++	}
++
++	/* Mode config init */
++	ret = drmm_mode_config_init(drm);
++	if (ret)
++		return ret;
++
+ 	drm->mode_config.min_width = le32_to_cpu(desc.min_width);
+ 	drm->mode_config.max_width = le32_to_cpu(desc.max_width);
+ 	drm->mode_config.min_height = le32_to_cpu(desc.min_height);
+ 	drm->mode_config.max_height = le32_to_cpu(desc.max_height);
++	drm->mode_config.funcs = &gud_mode_config_funcs;
+ 
++	/* Format init */
+ 	formats_dev = devm_kmalloc(dev, GUD_FORMATS_MAX_NUM, GFP_KERNEL);
+ 	/* Add room for emulated XRGB8888 */
+ 	formats = devm_kmalloc_array(dev, GUD_FORMATS_MAX_NUM + 1, sizeof(*formats), GFP_KERNEL);
+@@ -587,6 +600,7 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 			return -ENOMEM;
+ 	}
+ 
++	/* Pipeline init */
+ 	ret = drm_universal_plane_init(drm, &gdrm->plane, 0,
+ 				       &gud_plane_funcs,
+ 				       formats, num_formats,
+@@ -598,12 +612,9 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	drm_plane_helper_add(&gdrm->plane, &gud_plane_helper_funcs);
+ 	drm_plane_enable_fb_damage_clips(&gdrm->plane);
+ 
+-	devm_kfree(dev, formats);
+-	devm_kfree(dev, formats_dev);
+-
+-	ret = gud_get_properties(gdrm);
++	ret = gud_plane_add_properties(gdrm);
+ 	if (ret) {
+-		dev_err(dev, "Failed to get properties (error=%d)\n", ret);
++		dev_err(dev, "Failed to add properties (error=%d)\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -621,16 +632,7 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	}
+ 
+ 	drm_mode_config_reset(drm);
+-
+-	usb_set_intfdata(intf, gdrm);
+-
+-	dma_dev = usb_intf_get_dma_device(intf);
+-	if (dma_dev) {
+-		drm_dev_set_dma_dev(drm, dma_dev);
+-		put_device(dma_dev);
+-	} else {
+-		dev_warn(dev, "buffer sharing not supported"); /* not an error */
+-	}
++	drm_kms_helper_poll_init(drm);
+ 
+ 	drm_debugfs_add_file(drm, "stats", gud_stats_debugfs, NULL);
+ 
+@@ -638,7 +640,8 @@ static int gud_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	if (ret)
+ 		return ret;
+ 
+-	drm_kms_helper_poll_init(drm);
++	devm_kfree(dev, formats);
++	devm_kfree(dev, formats_dev);
+ 
+ 	drm_client_setup(drm, NULL);
+ 
+-- 
+2.51.0
 
 
