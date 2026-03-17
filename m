@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGVSIQeKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:15 +0100
+	id 2Iy3KVyUuWnKKgIAu9opvQ
+	(envelope-from <stable+bounces-226722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F80C2AEEFD
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA342B0356
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00EE1304584E
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:57:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 897D432F6410
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5E33F65ED;
-	Tue, 17 Mar 2026 16:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBBB2FFDEA;
+	Tue, 17 Mar 2026 17:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCF7kVhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRY/YkpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809813F54BD;
-	Tue, 17 Mar 2026 16:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43D2225A38;
+	Tue, 17 Mar 2026 17:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766625; cv=none; b=APdbB3eDjltkI0Zy384Nycbe3BGeF6MiJH7FmnZueL6gK/OjdtMv50wiSEFQtRj83WCtkLemgm864tTgT8YJsGvzwtHYvt4IFtkk/oReS50q1akEjlCuVAWPIwi3HT4KEjtvUiZRmbSfmaNb6ummzEtXfL6rMeuKbFCTjbpyvDg=
+	t=1773767953; cv=none; b=FnFKoZ0exR+gLKFdxFVccipW9/d1spbc1aSwxT18V5cJaBvS0CCyUaGD7tbXEIM5hgLhd1Cg3abdAfAR/ZN/lwx5SU4807R35Shx6R3yLyFYwU6WxmWyC5iWwqZwrBcGaGJbFvCzF5G6rceYUoeW87eyKhJ5gO/GheFqqkjsr4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766625; c=relaxed/simple;
-	bh=3Sv6leqd5b4ZhPgmDwj5jv0mNbh6lsgWOqvRhy4B+eU=;
+	s=arc-20240116; t=1773767953; c=relaxed/simple;
+	bh=2fJJJAeCeAtL+J/RBrjx0Q29GFyfq/0eqvhy3Btr0I4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzcoh174pszRJ4W0LxsgZ98B6NXvhfPPqi8PtJa4Gr62sRisuewsXv7fR4Wc4Muctb/wouIpWn18rA8n3oCulRKtB0VE0TmYAyK5h7cO3e16cpkP8C0u8W0Mv4Vn3hcSifsepobjHNujPlxpzqgpRGVd2UuJXvU1KFLl2ILxCLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCF7kVhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DB0C2BC86;
-	Tue, 17 Mar 2026 16:57:04 +0000 (UTC)
+	 MIME-Version; b=lWvRPghxl3SSWwqBniYGmpuFc5Q7xo0Yf3949lvwMtdArZy6pQbNO3RGiY0A3db/dHA9dPIzqxscJndIh0MXT3ot5+anX8a4HaK2OgSLLX8oWwePfAeasi9LNLMNPxhMOgs/oflt6JfakZI9hk+7WnkG69dlkxBO5PQ/BEhjlwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRY/YkpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544D2C2BCAF;
+	Tue, 17 Mar 2026 17:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766625;
-	bh=3Sv6leqd5b4ZhPgmDwj5jv0mNbh6lsgWOqvRhy4B+eU=;
+	s=korg; t=1773767952;
+	bh=2fJJJAeCeAtL+J/RBrjx0Q29GFyfq/0eqvhy3Btr0I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCF7kVhlWSF0Xuofo0p8G10vmpl9m3a+zpxqgsH8znPeKfIpqZG3qbtmhOl5MDwb7
-	 Kjmusd2XTz7DbTu1CDq3xvGlY7kHJetM7pmoLyNbCj5upUvWHH8P/ev0zOaaU2rqx6
-	 gPREjh4x6irP+OpLT/Gl0vom0+Dg0giMBEj2+jMo=
+	b=MRY/YkpVTK/txtnEUYnKlyvD4H1w22D4a880qVd3lPEBXvt2Ozife8iHUDgZNU5zx
+	 oHhtLqBatYZq0PEl2w89GE6mc2EccYs5P1rf9Bm6wAIPOGzVOHBIwpWW9FymwK+hYt
+	 UtIgu69Ef47uqch95UT6KeHxpP0egB+aLijSYY3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.19 269/378] pmdomain: rockchip: Fix PD_VCODEC for RK3588
-Date: Tue, 17 Mar 2026 17:33:46 +0100
-Message-ID: <20260317163016.908028714@linuxfoundation.org>
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.18 198/333] bpf: Fix kprobe_multi cookies access in show_fdinfo callback
+Date: Tue, 17 Mar 2026 17:33:47 +0100
+Message-ID: <20260317163006.699626981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +67,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226419-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226722-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linaro.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:email]
-X-Rspamd-Queue-Id: 8F80C2AEEFD
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4CA342B0356
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit 0fb59eaca18f1254ecdce34354eec3cb1b3b5e10 upstream.
+commit ad6fface76da42721c15e8fb281570aaa44a2c01 upstream.
 
->From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
-PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-The panic looks like below:
+We don't check if cookies are available on the kprobe_multi link
+before accessing them in show_fdinfo callback, we should.
 
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
-  ...
-  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
-  Workqueue: pm genpd_power_off_work_fn
-  Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x40/0x84
-  dump_stack+0x18/0x24
-  vpanic+0x1ec/0x4fc
-  vpanic+0x0/0x4fc
-  check_panic_on_warn+0x0/0x94
-  arm64_serror_panic+0x6c/0x78
-  do_serror+0xc4/0xcc
-  el1h_64_error_handler+0x3c/0x5c
-  el1h_64_error+0x6c/0x70
-  regmap_mmio_read32le+0x18/0x24 (P)
-  regmap_bus_reg_read+0xfc/0x130
-  regmap_read+0x188/0x1ac
-  regmap_read+0x54/0x78
-  rockchip_pd_power+0xcc/0x5f0
-  rockchip_pd_power_off+0x1c/0x4c
-  genpd_power_off+0x84/0x120
-  genpd_power_off+0x1b4/0x260
-  genpd_power_off_work_fn+0x38/0x58
-  process_scheduled_works+0x194/0x2c4
-  worker_thread+0x2ac/0x3d8
-  kthread+0x104/0x124
-  ret_from_fork+0x10/0x20
-  SMP: stopping secondary CPUs
-  Kernel Offset: disabled
-  CPU features: 0x3000000,000e0005,40230521,0400720b
-  Memory Limit: none
-  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
-
-Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
-the PD_VCODEC is enough.
-
-[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-
-Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
 Cc: stable@vger.kernel.org
-Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: da7e9c0a7fbc ("bpf: Add show_fdinfo for kprobe_multi")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20260225111249.186230-1-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/rockchip/pm-domains.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pmdomain/rockchip/pm-domains.c
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -1311,7 +1311,7 @@ static const struct rockchip_domain_info
- static const struct rockchip_domain_info rk3588_pm_domains[] = {
- 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
- 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
--	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
-+	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
- 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
- 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
- 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2441,8 +2441,10 @@ static void bpf_kprobe_multi_show_fdinfo
+ 					 struct seq_file *seq)
+ {
+ 	struct bpf_kprobe_multi_link *kmulti_link;
++	bool has_cookies;
+ 
+ 	kmulti_link = container_of(link, struct bpf_kprobe_multi_link, link);
++	has_cookies = !!kmulti_link->cookies;
+ 
+ 	seq_printf(seq,
+ 		   "kprobe_cnt:\t%u\n"
+@@ -2454,7 +2456,7 @@ static void bpf_kprobe_multi_show_fdinfo
+ 	for (int i = 0; i < kmulti_link->cnt; i++) {
+ 		seq_printf(seq,
+ 			   "%llu\t %pS\n",
+-			   kmulti_link->cookies[i],
++			   has_cookies ? kmulti_link->cookies[i] : 0,
+ 			   (void *)kmulti_link->addrs[i]);
+ 	}
+ }
 
 
 
