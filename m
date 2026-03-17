@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-226221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALXiOkWGuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:13 +0100
+	id iAE9IOSPuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7123C2AE81B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD712AFBD2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F177304B4D8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F4EB31C1E23
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF5A3EF0DE;
-	Tue, 17 Mar 2026 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141FD3E8C49;
+	Tue, 17 Mar 2026 17:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Blp8hXxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VP+iHi6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAEC3EF0CF;
-	Tue, 17 Mar 2026 16:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC35357A4A;
+	Tue, 17 Mar 2026 17:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765774; cv=none; b=bAIP4LfcyY4+EUapZZH/qUQpackV/0ABWIOQ6mfomsyNkXrm/7ukzE+0e7Es2yqpI8x6/GjXz5uad1/0MC8iDFpUe1tKp9Xlzv9aLaqfGfLIaGPw9ZL9k1ucS1/cesexJL95mlEaV88P0GbJmm+IOGBrBz4cOFAGQLAlv+AGC2M=
+	t=1773767115; cv=none; b=B6UPOJDtLLgYnbptOc4AUVxQgreEOKXz/0cwxe/41pYMP4V/HDDkxyTCD/e/7CaAmH62r/SGXZ18EEYxQ1H4KoyXvZ3yZggCwYj48bScmOo7Jgi6iUp4btdQdMJ1bVLdb5bVKsWIOsGrC+dEiDGF89kFjXvCMYZCBK+4voqOOK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765774; c=relaxed/simple;
-	bh=2MoQsx4RMp6fKebiCXSD8I0I96Mxcix4OdLlKkWExe0=;
+	s=arc-20240116; t=1773767115; c=relaxed/simple;
+	bh=VfpNCxGP85Hqk0B/64eiVbFICFC1wEr6TMO8v9Hz/kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXSQN5otASp3ojFi29PZQElp50BBZ06bbyzbD6ZPIsbJ8879zqWMDdCKmpuoIk7/UlKuPI+rTOq9jYOp5C8BClpQj05yUbb5VcC+8mO5nISpm++SzZy44NlxpEopQQO2XPdOLviiNdUtHdSu53VowB/HEHlC8PHTy13Izm1OI7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Blp8hXxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1389C19424;
-	Tue, 17 Mar 2026 16:42:53 +0000 (UTC)
+	 MIME-Version; b=O/pax8upWFDPqkYSrPXwH6IKcnGhj278Aga877a51Sjzd2iFABUsI8ouxZsTAh3ATq2fyibvp02yN4PeSM8ZChqSxNZYKEdV4gpnDhsoDSU157g+mf3ufx/BDprqkwpatU6EIP8IuiFRkOaJ/ZQZMDCds7Ihf/sZTV88untF6pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VP+iHi6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024E1C2BCAF;
+	Tue, 17 Mar 2026 17:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765774;
-	bh=2MoQsx4RMp6fKebiCXSD8I0I96Mxcix4OdLlKkWExe0=;
+	s=korg; t=1773767115;
+	bh=VfpNCxGP85Hqk0B/64eiVbFICFC1wEr6TMO8v9Hz/kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Blp8hXxAADtLzhbia3qjZM/GfFegTmuhNYbuZQkyO2nS36yRfXpNNX+ywfgMWqxTB
-	 +SOyrFwTSayVjN4jIs1akE4YnFil8jk5Xw6+z+W/GpqtOLOk3abGNydZCu3CT/Hqup
-	 Qpa5oiS4d8sfcjBYFGWNVdTAjvy08kY3U+FhNU9s=
+	b=VP+iHi6gXpE06oln2f8elDpTYAd4464/QM1tnPVHCMhx1vYf49qNtdmcCQI2uHQCr
+	 9U+4ala1oaZDgCWgIl4WTWFAj05PvhBy0AMLT8hj4IQkrCGg++hQVqyLxkuZa1gKxf
+	 55lLh44n5J7cmHU9trJIcxj0LqYcckztWMEsYtQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Petr Oros <poros@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 090/378] iavf: fix incorrect reset handling in callbacks
+Subject: [PATCH 6.18 018/333] powerpc/uaccess: Fix inline assembly for clang build on PPC32
 Date: Tue, 17 Mar 2026 17:30:47 +0100
-Message-ID: <20260317163010.328670517@linuxfoundation.org>
+Message-ID: <20260317163000.035849078@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226221-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226534-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,351 +89,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 7123C2AE81B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 0BD712AFBD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-[ Upstream commit fdadbf6e84c44df8dbb85cfdd38bc10e4431501d ]
+[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
 
-Three driver callbacks schedule a reset and wait for its completion:
-ndo_change_mtu(), ethtool set_ringparam(), and ethtool set_channels().
+Test robot reports the following error with clang-16.0.6:
 
-Waiting for reset in ndo_change_mtu() and set_ringparam() was added by
-commit c2ed2403f12c ("iavf: Wait for reset in callbacks which trigger
-it") to fix a race condition where adding an interface to bonding
-immediately after MTU or ring parameter change failed because the
-interface was still in __RESETTING state. The same commit also added
-waiting in iavf_set_priv_flags(), which was later removed by commit
-53844673d555 ("iavf: kill "legacy-rx" for good").
+   In file included from kernel/rseq.c:75:
+   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
+                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
+                   ^
+   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
+           arch_unsafe_get_user(x, ptr, local_label);      \
+           ^
+   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
+           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
+           ^
+   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
+           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
+           ^
+   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
+           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
+                   ^
+   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
+                   "       li %1+1,0\n"                    \
+                    ^
+   <inline asm>:7:5: note: instantiated into assembly here
+           li 31+1,0
+              ^
+   1 error generated.
 
-Waiting in set_channels() was introduced earlier by commit 4e5e6b5d9d13
-("iavf: Fix return of set the new channel count") to ensure the PF has
-enough time to complete the VF reset when changing channel count, and to
-return correct error codes to userspace.
+On PPC32, for 64 bits vars a pair of registers is used. Usually the
+lower register in the pair is the high part and the higher register is
+the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
 
-Commit ef490bbb2267 ("iavf: Add net_shaper_ops support") added
-net_shaper_ops to iavf, which required reset_task to use _locked NAPI
-variants (napi_enable_locked, napi_disable_locked) that need the netdev
-instance lock.
+In older kernel code inline assembly was using %1 and %1+1 to represent
+64 bits values. However here it looks like clang uses r31 as high part,
+allthough r32 doesn't exist hence the error.
 
-Later, commit 7e4d784f5810 ("net: hold netdev instance lock during
-rtnetlink operations") and commit 2bcf4772e45a ("net: ethtool: try to
-protect all callback with netdev instance lock") started holding the
-netdev instance lock during ndo and ethtool callbacks for drivers with
-net_shaper_ops.
+Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
+let's do the same here.
 
-Finally, commit 120f28a6f314 ("iavf: get rid of the crit lock")
-replaced the driver's crit_lock with netdev_lock in reset_task, causing
-incorrect behavior: the callback holds netdev_lock and waits for
-reset_task, but reset_task needs the same lock:
+With that change, the build doesn't fail anymore and a disassembly shows
+clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
+r30/r31:
 
-  Thread 1 (callback)               Thread 2 (reset_task)
-  -------------------               ---------------------
-  netdev_lock()                     [blocked on workqueue]
-  ndo_change_mtu() or ethtool op
-    iavf_schedule_reset()
-    iavf_wait_for_reset()           iavf_reset_task()
-      waiting...                      netdev_lock() <- blocked
+	Disassembly of section .fixup:
 
-This does not strictly deadlock because iavf_wait_for_reset() uses
-wait_event_interruptible_timeout() with a 5-second timeout. The wait
-eventually times out, the callback returns an error to userspace, and
-after the lock is released reset_task completes the reset. This leads to
-incorrect behavior: userspace sees an error even though the configuration
-change silently takes effect after the timeout.
+	00000000 <.fixup>:
+	   0:	38 a0 ff f2 	li      r5,-14
+	   4:	3a 20 00 00 	li      r17,0
+	   8:	3a 40 00 00 	li      r18,0
+	   c:	48 00 00 00 	b       c <.fixup+0xc>
+				c: R_PPC_REL24	.text+0xbc
+	  10:	38 a0 ff f2 	li      r5,-14
+	  14:	3b e0 00 00 	li      r31,0
+	  18:	39 c0 00 00 	li      r14,0
+	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
+				1c: R_PPC_REL24	.text+0x144
 
-Fix this by extracting the reset logic from iavf_reset_task() into a new
-iavf_reset_step() function that expects netdev_lock to be already held.
-The three callbacks now call iavf_reset_step() directly instead of
-scheduling the work and waiting, performing the reset synchronously in
-the caller's context which already holds netdev_lock. This eliminates
-both the incorrect error reporting and the need for
-iavf_wait_for_reset(), which is removed along with the now-unused
-reset_waitqueue.
-
-The workqueue-based iavf_reset_task() becomes a thin wrapper that
-acquires netdev_lock and calls iavf_reset_step(), preserving its use
-for PF-initiated resets.
-
-The callbacks may block for several seconds while iavf_reset_step()
-polls hardware registers, but this is acceptable since netdev_lock is a
-per-device mutex and only serializes operations on the same interface.
-
-v3:
-- Remove netif_running() guard from iavf_set_channels(). Unlike
-  set_ringparam where descriptor counts are picked up by iavf_open()
-  directly, num_req_queues is only consumed during
-  iavf_reinit_interrupt_scheme() in the reset path. Skipping the reset
-  on a down device would silently discard the channel count change.
-- Remove dead reset_waitqueue code (struct field, init, and all
-  wake_up calls) since iavf_wait_for_reset() was the only consumer.
-
-Fixes: 120f28a6f314 ("iavf: get rid of the crit lock")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
+Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  3 +-
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 19 ++---
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 77 ++++++-------------
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   |  1 -
- 4 files changed, 31 insertions(+), 69 deletions(-)
+ arch/powerpc/include/asm/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index a87e0c6d4017a..e9fb0a0919e37 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -260,7 +260,6 @@ struct iavf_adapter {
- 	struct work_struct adminq_task;
- 	struct work_struct finish_config;
- 	wait_queue_head_t down_waitqueue;
--	wait_queue_head_t reset_waitqueue;
- 	wait_queue_head_t vc_waitqueue;
- 	struct iavf_q_vector *q_vectors;
- 	struct list_head vlan_filter_list;
-@@ -626,5 +625,5 @@ void iavf_add_adv_rss_cfg(struct iavf_adapter *adapter);
- void iavf_del_adv_rss_cfg(struct iavf_adapter *adapter);
- struct iavf_mac_filter *iavf_add_filter(struct iavf_adapter *adapter,
- 					const u8 *macaddr);
--int iavf_wait_for_reset(struct iavf_adapter *adapter);
-+void iavf_reset_step(struct iavf_adapter *adapter);
- #endif /* _IAVF_H_ */
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 2cc21289a7077..6ff3842a1ff1f 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -492,7 +492,6 @@ static int iavf_set_ringparam(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 new_rx_count, new_tx_count;
--	int ret = 0;
- 
- 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
- 		return -EINVAL;
-@@ -537,13 +536,11 @@ static int iavf_set_ringparam(struct net_device *netdev,
- 	}
- 
- 	if (netif_running(netdev)) {
--		iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
--		ret = iavf_wait_for_reset(adapter);
--		if (ret)
--			netdev_warn(netdev, "Changing ring parameters timeout or interrupted waiting for reset");
-+		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+		iavf_reset_step(adapter);
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -1723,7 +1720,6 @@ static int iavf_set_channels(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 num_req = ch->combined_count;
--	int ret = 0;
- 
- 	if ((adapter->vf_res->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_ADQ) &&
- 	    adapter->num_tc) {
-@@ -1745,13 +1741,10 @@ static int iavf_set_channels(struct net_device *netdev,
- 
- 	adapter->num_req_queues = num_req;
- 	adapter->flags |= IAVF_FLAG_REINIT_ITR_NEEDED;
--	iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
-+	adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+	iavf_reset_step(adapter);
- 
--	ret = iavf_wait_for_reset(adapter);
--	if (ret)
--		netdev_warn(netdev, "Changing channel count timeout or interrupted waiting for reset");
--
--	return ret;
-+	return 0;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 3625c70bc3292..03ab2a4276bbf 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -185,31 +185,6 @@ static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
- 	return false;
- }
- 
--/**
-- * iavf_wait_for_reset - Wait for reset to finish.
-- * @adapter: board private structure
-- *
-- * Returns 0 if reset finished successfully, negative on timeout or interrupt.
-- */
--int iavf_wait_for_reset(struct iavf_adapter *adapter)
--{
--	int ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
--					!iavf_is_reset_in_progress(adapter),
--					msecs_to_jiffies(5000));
--
--	/* If ret < 0 then it means wait was interrupted.
--	 * If ret == 0 then it means we got a timeout while waiting
--	 * for reset to finish.
--	 * If ret > 0 it means reset has finished.
--	 */
--	if (ret > 0)
--		return 0;
--	else if (ret < 0)
--		return -EINTR;
--	else
--		return -EBUSY;
--}
--
- /**
-  * iavf_allocate_dma_mem_d - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-@@ -3117,18 +3092,16 @@ static void iavf_reconfig_qs_bw(struct iavf_adapter *adapter)
- }
- 
- /**
-- * iavf_reset_task - Call-back task to handle hardware reset
-- * @work: pointer to work_struct
-+ * iavf_reset_step - Perform the VF reset sequence
-+ * @adapter: board private structure
-  *
-- * During reset we need to shut down and reinitialize the admin queue
-- * before we can use it to communicate with the PF again. We also clear
-- * and reinit the rings because that context is lost as well.
-- **/
--static void iavf_reset_task(struct work_struct *work)
-+ * Requests a reset from PF, polls for completion, and reconfigures
-+ * the driver. Caller must hold the netdev instance lock.
-+ *
-+ * This can sleep for several seconds while polling HW registers.
-+ */
-+void iavf_reset_step(struct iavf_adapter *adapter)
- {
--	struct iavf_adapter *adapter = container_of(work,
--						      struct iavf_adapter,
--						      reset_task);
- 	struct virtchnl_vf_resource *vfres = adapter->vf_res;
- 	struct net_device *netdev = adapter->netdev;
- 	struct iavf_hw *hw = &adapter->hw;
-@@ -3139,7 +3112,7 @@ static void iavf_reset_task(struct work_struct *work)
- 	int i = 0, err;
- 	bool running;
- 
--	netdev_lock(netdev);
-+	netdev_assert_locked(netdev);
- 
- 	iavf_misc_irq_disable(adapter);
- 	if (adapter->flags & IAVF_FLAG_RESET_NEEDED) {
-@@ -3184,7 +3157,6 @@ static void iavf_reset_task(struct work_struct *work)
- 		dev_err(&adapter->pdev->dev, "Reset never finished (%x)\n",
- 			reg_val);
- 		iavf_disable_vf(adapter);
--		netdev_unlock(netdev);
- 		return; /* Do not attempt to reinit. It's dead, Jim. */
- 	}
- 
-@@ -3196,7 +3168,6 @@ static void iavf_reset_task(struct work_struct *work)
- 		iavf_startup(adapter);
- 		queue_delayed_work(adapter->wq, &adapter->watchdog_task,
- 				   msecs_to_jiffies(30));
--		netdev_unlock(netdev);
- 		return;
- 	}
- 
-@@ -3339,9 +3310,6 @@ static void iavf_reset_task(struct work_struct *work)
- 
- 	adapter->flags &= ~IAVF_FLAG_REINIT_ITR_NEEDED;
- 
--	wake_up(&adapter->reset_waitqueue);
--	netdev_unlock(netdev);
--
- 	return;
- reset_err:
- 	if (running) {
-@@ -3350,10 +3318,21 @@ static void iavf_reset_task(struct work_struct *work)
- 	}
- 	iavf_disable_vf(adapter);
- 
--	netdev_unlock(netdev);
- 	dev_err(&adapter->pdev->dev, "failed to allocate resources during reinit\n");
- }
- 
-+static void iavf_reset_task(struct work_struct *work)
-+{
-+	struct iavf_adapter *adapter = container_of(work,
-+						      struct iavf_adapter,
-+						      reset_task);
-+	struct net_device *netdev = adapter->netdev;
-+
-+	netdev_lock(netdev);
-+	iavf_reset_step(adapter);
-+	netdev_unlock(netdev);
-+}
-+
- /**
-  * iavf_adminq_task - worker thread to clean the admin queue
-  * @work: pointer to work_struct containing our data
-@@ -4619,22 +4598,17 @@ static int iavf_close(struct net_device *netdev)
- static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
--	int ret = 0;
- 
- 	netdev_dbg(netdev, "changing MTU from %d to %d\n",
- 		   netdev->mtu, new_mtu);
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
- 	if (netif_running(netdev)) {
--		iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
--		ret = iavf_wait_for_reset(adapter);
--		if (ret < 0)
--			netdev_warn(netdev, "MTU change interrupted waiting for reset");
--		else if (ret)
--			netdev_warn(netdev, "MTU change timed out waiting for reset");
-+		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+		iavf_reset_step(adapter);
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -5439,9 +5413,6 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* Setup the wait queue for indicating transition to down status */
- 	init_waitqueue_head(&adapter->down_waitqueue);
- 
--	/* Setup the wait queue for indicating transition to running state */
--	init_waitqueue_head(&adapter->reset_waitqueue);
--
- 	/* Setup the wait queue for indicating virtchannel events */
- 	init_waitqueue_head(&adapter->vc_waitqueue);
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 88156082a41da..a52c100dcbc56 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2736,7 +2736,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 	case VIRTCHNL_OP_ENABLE_QUEUES:
- 		/* enable transmits */
- 		iavf_irq_enable(adapter, true);
--		wake_up(&adapter->reset_waitqueue);
- 		adapter->flags &= ~IAVF_FLAG_QUEUES_DISABLED;
- 		break;
- 	case VIRTCHNL_OP_DISABLE_QUEUES:
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 3987a5c33558b..929f7050c73a6 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -253,7 +253,7 @@ __gus_failed:								\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"4:	li %0,%3\n"			\
+ 		"	li %1,0\n"			\
+-		"	li %1+1,0\n"			\
++		"	li %L1,0\n"			\
+ 		"	b 3b\n"				\
+ 		".previous\n"				\
+ 		EX_TABLE(1b, 4b)			\
 -- 
 2.51.0
 
