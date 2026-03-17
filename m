@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-226586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJ0HDgGRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:01 +0100
+	id wAZMFY+RuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CC02AFD54
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C029D2AFE7C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECF563229675
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:10:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BC2F3280738
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB743F7897;
-	Tue, 17 Mar 2026 17:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF2531815D;
+	Tue, 17 Mar 2026 17:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ4mhFx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4ek63OT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26083F54DE;
-	Tue, 17 Mar 2026 17:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315929D26C;
+	Tue, 17 Mar 2026 17:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767348; cv=none; b=pL3CxbbkOl3rS7XVyLQ5BhdlMSWfwN4tshrYHM53yAQsiqjmrZI19szJsq05CmsoUzOuL6qMzpyob4KNFXI2p83Lrlu3juVlSW8eFPA8GEa/myrrgjGhDDFViC9VkP2R0dTMjST/T4dcGLPRNGebGryyM7niNw6yu9OZBSHc4sQ=
+	t=1773767549; cv=none; b=BvIOMEAelf89kSew6GeicqtUtxdgZVGkxCgKd1o4U5gtfkdZiSjy70luOLfW9gLdsYH4rX63jIpyGeEQCk3lAgUqaRFSNcCpqEnkn2IjICHisaBTjr9PykHhUTY3RMvhv5gO+qQHoQ/al65Tosqd3pttBOBDkp9bhMkivC491JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767348; c=relaxed/simple;
-	bh=rctog8/12so7nUHboPwJhvC5kWXPW6WFOETRIQ40RX4=;
+	s=arc-20240116; t=1773767549; c=relaxed/simple;
+	bh=Rb0uEowrt/SR8AHuhb66IyotDmYE6cLq9YTXXaKPj2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRf5dUlXVbE03SJmqWrTmP1J0CJHxj55kx0+jI7olEtpmTEKXWTHH35k7gnEK/aMiOc3qiNNztzxAKMRNhYrKb5IOz8IAHUrrCI5scZo3TU5cJrpdza8yD1gvwG8RP1Q7YcnvW1kOxoLfs9SvKQe5tHoBpQ93JzhJfVxUs73oko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ4mhFx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C24C4CEF7;
-	Tue, 17 Mar 2026 17:09:07 +0000 (UTC)
+	 MIME-Version; b=ovVTy/Jg7LCHVhZ2Bsdk8B4xfs4jii5WI6F8uVRqucJZoRKeDJ2E0lD86y01bYrkZj9eRW9GQGL1s4kGJ+dt99JcUKrw1WU0uB9oyPRzsccKiBF96jlOZ3/xT88e2+xZ9uDKq0oJYJxBicOQ5WVaDsEy3k3349BN9MIX8Q7ikYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4ek63OT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649C6C4CEF7;
+	Tue, 17 Mar 2026 17:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767348;
-	bh=rctog8/12so7nUHboPwJhvC5kWXPW6WFOETRIQ40RX4=;
+	s=korg; t=1773767549;
+	bh=Rb0uEowrt/SR8AHuhb66IyotDmYE6cLq9YTXXaKPj2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQ4mhFx/GtQLbdwnuBRCcuBf5bPPWIOX+mL/ayfhceUQ0roeDt1BlkxK2zq0IXqnh
-	 k0JdTF4G+si9AxGxFD0qiNnGnu1eahnQBYTMmBTIacNATPDW1mMO1P4+MMCYfZe0Kc
-	 7HNkeILBETiOq1e31YRqN9BAPmGbzUESXD3Tz+G4=
+	b=e4ek63OT3oge4B1A/dZGWhb8A08PwVk4UAe7qL+oSmk9rIomk3QjrY+vnVdk3CTa0
+	 akdgHot/5Ilj5ym60GZyPhBJXpy9hicY40KnqqvZqNq+pCnkEbSLG689aMwfyc+m8q
+	 JOSe/BE7aDGAKmp/qELeBxB56PCyfcaZU8LIv18k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Yiming Qian <yimingqian591@gmail.com>,
 	Florian Westphal <fw@strlen.de>,
-	syzbot+bb9127e278fa198e110c@syzkaller.appspotmail.com,
-	Helen Koike <koike@igalia.com>,
-	Phil Sutter <phil@nwl.cc>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 066/333] netfilter: nf_tables: Fix for duplicate device in netdev hooks
-Date: Tue, 17 Mar 2026 17:31:35 +0100
-Message-ID: <20260317163001.820166866@linuxfoundation.org>
+Subject: [PATCH 6.18 067/333] netfilter: nf_tables: always walk all pending catchall elements
+Date: Tue, 17 Mar 2026 17:31:36 +0100
+Message-ID: <20260317163001.860959443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 References: <20260317162959.345812316@linuxfoundation.org>
@@ -66,35 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226630-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-226586-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,bb9127e278fa198e110c];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email]
-X-Rspamd-Queue-Id: 85CC02AFD54
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C029D2AFE7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,53 +100,55 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b7cdc5a97d02c943f4bdde4d5767ad0c13cad92b ]
+[ Upstream commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 ]
 
-When handling NETDEV_REGISTER notification, duplicate device
-registration must be avoided since the device may have been added by
-nft_netdev_hook_alloc() already when creating the hook.
+During transaction processing we might have more than one catchall element:
+1 live catchall element and 1 pending element that is coming as part of the
+new batch.
 
-Suggested-by: Florian Westphal <fw@strlen.de>
-Reported-by: syzbot+bb9127e278fa198e110c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bb9127e278fa198e110c
-Fixes: a331b78a5525 ("netfilter: nf_tables: Respect NETDEV_REGISTER events")
-Tested-by: Helen Koike <koike@igalia.com>
-Signed-off-by: Phil Sutter <phil@nwl.cc>
+If the map holding the catchall elements is also going away, its
+required to toggle all catchall elements and not just the first viable
+candidate.
+
+Otherwise, we get:
+ WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
+ RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
+ [..]
+ __nft_set_elem_destroy+0x106/0x380 [nf_tables]
+ nf_tables_abort_release+0x348/0x8d0 [nf_tables]
+ nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
+ nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c    | 2 +-
- net/netfilter/nft_chain_filter.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 598a9fe03fb0b..ed1d639fe34d7 100644
+index ed1d639fe34d7..b6a575ec33159 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -9841,7 +9841,7 @@ static int nft_flowtable_event(unsigned long event, struct net_device *dev,
- 			break;
- 		case NETDEV_REGISTER:
- 			/* NOP if not matching or already registered */
--			if (!match || (changename && ops))
-+			if (!match || ops)
- 				continue;
+@@ -828,7 +828,6 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
  
- 			ops = kzalloc(sizeof(struct nf_hook_ops),
-diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
-index b16185e9a6dd7..041426e3bdbf1 100644
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -344,7 +344,7 @@ static int nft_netdev_event(unsigned long event, struct net_device *dev,
- 			break;
- 		case NETDEV_REGISTER:
- 			/* NOP if not matching or already registered */
--			if (!match || (changename && ops))
-+			if (!match || ops)
- 				continue;
+ 		nft_set_elem_change_active(ctx->net, set, ext);
+ 		nft_setelem_data_deactivate(ctx->net, set, catchall->elem);
+-		break;
+ 	}
+ }
  
- 			ops = kmemdup(&basechain->ops,
+@@ -5928,7 +5927,6 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+ 
+ 		nft_clear(ctx->net, ext);
+ 		nft_setelem_data_activate(ctx->net, set, catchall->elem);
+-		break;
+ 	}
+ }
+ 
 -- 
 2.51.0
 
