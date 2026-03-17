@@ -1,196 +1,144 @@
-Return-Path: <stable+bounces-225861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD7eDjlAuWmB9QEAu9opvQ
-	(envelope-from <stable+bounces-225861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:51:21 +0100
+	id OP8UCRNBuWmB9QEAu9opvQ
+	(envelope-from <stable+bounces-225862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:54:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38252A93EF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:51:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2920C2A94C2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:54:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C4BF302BF62
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:51:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20E92302BB93
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 11:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910653B52E0;
-	Tue, 17 Mar 2026 11:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55FF3B0AF5;
+	Tue, 17 Mar 2026 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eX65buUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQamij4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8AC3B3BF8
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97283B0AE0
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773748261; cv=none; b=ueC/NYiaMl3lV0QWoyuGUHoytsx4hZeFlm2JSY6FqqVI3Uww6hnPTHJqbUbcrWfkHxt7AxRxrFsPypdqbD4Ubac1fgfnqkmhL4zuRj+EXETTQLPr+kC+ltQKv6ts4NorwRzBHQ/S8AnmczesRGQjshBzVXg6Cuu+Up4T95gbx1s=
+	t=1773748412; cv=none; b=rdMWRO35eh0geCveww9yhpLdeJUJQtzeayHPqZbMUM4yi4dF/V9dEH4Xh7V/JwFE8A5pdHQPb4sa68u8H//m94+6yjeONeGlRrlfgco00kLqthmDehZQOaWv+Y/HLqjvqetzZ7vn61N7fCM4HPCgFQA7K7kBmwYXRFySb7lSQ/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773748261; c=relaxed/simple;
-	bh=pcyhFKxxmQ7y1ClXS+RxDiQmjW2HNyRFc1CyBwQIGwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfBmM1Ecc+deTbAKDQmr+8KbRLrV9MaDM2PpQFyvHfnaQJRQS5Tn+R5v2bAtIPnYbr09ECqLzgTe+jp0aSF7V6EKkCLefYAHshT5maWLMGylYVsz7Ti/1HMNlLsPtN7FU3coar+mrUMCT9Gw+ajA7uBCV+lWLNYrUYfk4pvRPwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eX65buUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54961C4CEF7;
-	Tue, 17 Mar 2026 11:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773748261;
-	bh=pcyhFKxxmQ7y1ClXS+RxDiQmjW2HNyRFc1CyBwQIGwM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eX65buUjK5bj9t47H0iTdOKXOJ5KYjzkz5T0FAfPojzCEE1vlaBcY47r2z8/tqPzs
-	 9gHYpny99Abm4S5fiFRazoU6Pp8gClLaWCu7KT9bI4CVJ/T4f3Oib/9S4jXKC5e7y0
-	 i9Fo9RCnPST31e9HR4r1nyX5OHm/E1ouNBlUddj6ivMKoM7o7ty3knqIovTVLH4Iv3
-	 8SFnLtXj7R/zpWT399ooPlZtfyw+gj/OifFm9f+EaTF9ETGdAwFKWQCpXguDDmaSHy
-	 ujOlILwN/slqwfdkB0JlcTMCVWm0e5loKpp6Pwj6bIRPP+V4VqSrMEzo33tcf8Xuph
-	 Tfb+wR3OjwRRA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Alexander Potapenko <glider@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/4] mm/kfence: fix KASAN hardware tag faults during late enablement
-Date: Tue, 17 Mar 2026 07:50:54 -0400
-Message-ID: <20260317115054.127467-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260317115054.127467-1-sashal@kernel.org>
-References: <2026031724-slimness-shell-ed87@gregkh>
- <20260317115054.127467-1-sashal@kernel.org>
+	s=arc-20240116; t=1773748412; c=relaxed/simple;
+	bh=JiXk1IUFgHs49ScBpibqtEnwqAU9IwqUt7Amx+TV/xM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mgjlzha35cw0oTqD6zGanbPxif8CjXTOwVoyBq/kAl8RflmTkK31v51gFk1/trdwpXVpK7Pl3NXuoc85f0nq7wYZq3zcCDLeIcnAe/ie9gZKXJBJVcazo4IcqDjFDdHWFxSQFWZz1R53LHUOhchcXvKF2NUUSvCNQRyt+IhXiSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQamij4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56C8C4CEF7;
+	Tue, 17 Mar 2026 11:53:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773748412;
+	bh=JiXk1IUFgHs49ScBpibqtEnwqAU9IwqUt7Amx+TV/xM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=SQamij4VBdmMDBXCbHMtGXB8m94S7qMkNIaFDP4QgN4TrTqoauwzuPdflS2BGHmPQ
+	 JLQAAJzP9H4DZpgZoTYOIcm6j5mnFh47X66ULOfZ2wnw2JMSFljMQxhpYwjrn+ZZ1y
+	 BCVeL3/RXK1fmDSMsb/AY3q7vZC55QqwplK+Rg6E=
+Subject: FAILED: patch "[PATCH] nsfs: tighten permission checks for handle opening" failed to apply to 6.18-stable tree
+To: brauner@kernel.org,jlayton@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Mar 2026 12:53:28 +0100
+Message-ID: <2026031728-canteen-ramp-ec25@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[google.com,tugraz.at,gmail.com,linuxfoundation.org,kernel.org,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225861-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-225862-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: F38252A93EF
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2920C2A94C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit d155aab90fffa00f93cea1f107aef0a3d548b2ff ]
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When KASAN hardware tags are enabled, re-enabling KFENCE late (via
-/sys/module/kfence/parameters/sample_interval) causes KASAN faults.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This happens because the KFENCE pool and metadata are allocated via the
-page allocator, which tags the memory, while KFENCE continues to access it
-using untagged pointers during initialization.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x d2324a9317f00013facb0ba00b00440e19d2af5e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031728-canteen-ramp-ec25@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-Use __GFP_SKIP_KASAN for late KFENCE pool and metadata allocations to
-ensure the memory remains untagged, consistent with early allocations from
-memblock.  To support this, add __GFP_SKIP_KASAN to the allowlist in
-__alloc_contig_verify_gfp_mask().
+Possible dependencies:
 
-Link: https://lkml.kernel.org/r/20260220144940.2779209-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/kfence/core.c | 14 ++++++++------
- mm/page_alloc.c  |  3 ++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index b301ca3375086..7e7e0e4f1c10b 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -949,14 +949,14 @@ static int kfence_init_late(void)
- #ifdef CONFIG_CONTIG_ALLOC
- 	struct page *pages;
- 
--	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (!pages)
- 		return -ENOMEM;
- 
- 	__kfence_pool = page_to_virt(pages);
--	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL, first_online_node,
--				   NULL);
-+	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL | __GFP_SKIP_KASAN,
-+				   first_online_node, NULL);
- 	if (pages)
- 		kfence_metadata_init = page_to_virt(pages);
- #else
-@@ -966,11 +966,13 @@ static int kfence_init_late(void)
- 		return -EINVAL;
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d2324a9317f00013facb0ba00b00440e19d2af5e Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Thu, 26 Feb 2026 14:50:10 +0100
+Subject: [PATCH] nsfs: tighten permission checks for handle opening
+
+Even privileged services should not necessarily be able to see other
+privileged service's namespaces so they can't leak information to each
+other. Use may_see_all_namespaces() helper that centralizes this policy
+until the nstree adapts.
+
+Link: https://patch.msgid.link/20260226-work-visibility-fixes-v1-2-d2c2853313bd@kernel.org
+Fixes: 5222470b2fbb ("nsfs: support file handles")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@kernel.org # v6.18+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+diff --git a/fs/nsfs.c b/fs/nsfs.c
+index be36c10c38cf..c215878d55e8 100644
+--- a/fs/nsfs.c
++++ b/fs/nsfs.c
+@@ -627,7 +627,7 @@ static struct dentry *nsfs_fh_to_dentry(struct super_block *sb, struct fid *fh,
+ 		return ERR_PTR(-EOPNOTSUPP);
  	}
  
--	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
-+	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE,
-+					  GFP_KERNEL | __GFP_SKIP_KASAN);
- 	if (!__kfence_pool)
- 		return -ENOMEM;
- 
--	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE, GFP_KERNEL);
-+	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE,
-+						 GFP_KERNEL | __GFP_SKIP_KASAN);
- #endif
- 
- 	if (!kfence_metadata_init)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6eff98b22b3b6..b1a8abe5005e9 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6609,7 +6609,8 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- {
- 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
- 	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
--				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
-+				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO |
-+				  __GFP_SKIP_KASAN;
- 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
- 
- 	/*
--- 
-2.51.0
+-	if (owning_ns && !ns_capable(owning_ns, CAP_SYS_ADMIN)) {
++	if (owning_ns && !may_see_all_namespaces()) {
+ 		ns->ops->put(ns);
+ 		return ERR_PTR(-EPERM);
+ 	}
 
 
