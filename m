@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-226579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OO2BIfmKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:17 +0100
+	id EKH2IA+HuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2C62AF12D
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:10:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849FC2AE970
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2DAC304B310
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:08:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CCBD304DD31
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13453F65FF;
-	Tue, 17 Mar 2026 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C679A3F54A5;
+	Tue, 17 Mar 2026 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmK40EB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIkJWn+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B122A3F23B3;
-	Tue, 17 Mar 2026 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DA03164B5;
+	Tue, 17 Mar 2026 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767313; cv=none; b=eGE2j+wasosMUBKtsAAvnczCtK7bCfUWGJQnTQY0QIsveifRsdfTwMb9pFNcDdaS2eW7dacaTrSpVAQHx3RWVwuuNSOUygFhYAIlWR1leu2sW52Z/GS9eXW/Sj1LVlV5ZhXDNQudrCOga4embog56z8/zNXJ2GKs2UDe8Gc53OY=
+	t=1773766083; cv=none; b=E/8FSusPJOhCh5ixWrGSp1op4FHs0d5/B6N3NZIy8AktbtAUDj5WkRjFDTaC8WO6+sj20JUiwf/Z+yN6JLsuAhAMX7L2ciK7QMzq0cZKf7NCtBExIW1JeV7LBDiEHkVYTbY807cKoKv7xTW1dtBpcSgQhx40bv7iP0Adsbh9Neg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767313; c=relaxed/simple;
-	bh=pnOAVYl/IKSqKKyAuzZtJY9vXmYSy0z+FkgRyi8Rmwo=;
+	s=arc-20240116; t=1773766083; c=relaxed/simple;
+	bh=I+k6qkVRnALZQNQeveh7k0lh7VpZDJTmAmFBcNa0t1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNS+wccNPQkjEmq5vjX5GV4bjuruhvgLlzftF5KRsXteRuv+1IUCCwZCAr1eqgrAZSP2wlsRTNzm78Y4AAXMRd4Rl+ekL4jE5PrKZViie4z2IhcFAXfOZ0KYyTseYCC0v56oefj6j/7opMwqY//uveSmlEz+XIXciZV6WbYBME8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmK40EB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E3FC2BCB0;
-	Tue, 17 Mar 2026 17:08:32 +0000 (UTC)
+	 MIME-Version; b=twACLhc6vFiA0UVU6QBJ/b2zRE8BC076vSYYhY/UZpafHhUZW9eVKWtJNYeanH0eowZ/0BCcHAqB7yfgQZJIBBxDEse48DB64wyhLiP+mI7S1GT8FeudeNuBcNJao7+NTazJxEfdOAZ0RzpngwQHh6IRuzPN9Q+Gi6Teg5j9ed0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIkJWn+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82443C19424;
+	Tue, 17 Mar 2026 16:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767313;
-	bh=pnOAVYl/IKSqKKyAuzZtJY9vXmYSy0z+FkgRyi8Rmwo=;
+	s=korg; t=1773766083;
+	bh=I+k6qkVRnALZQNQeveh7k0lh7VpZDJTmAmFBcNa0t1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmK40EB4VfaW9DJo/E+lFm9tBXb4hfbrmnLKBEJFDnVNGzHfqw8LTdxJm7B0jO9GE
-	 quICNOZVDygIbaps+/WqtAKH5dEU/CV7aq6vdusokEbaUufKlLgOslfhLdxT/032Uz
-	 YnPXHpVmIqs4a3rfnOYW/5iF1DPzpjQ9CmoxIPgY=
+	b=GIkJWn+G/9O9MP+fVW46DdzTqLF6YeFHYs3sbgacQ3qfAf2yLJqFnxGIoQNqG+rD6
+	 YotA8t0S2JoCknChgpD7KCZEujxf90vfvoqqDeFbztRYebpU6UzdV893sSkSTvhCYU
+	 nOCa3RGLktIEV69zMOfgwGAtX4vpszMxQ5ezUuZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 060/333] bonding: use common function to compute the features
-Date: Tue, 17 Mar 2026 17:31:29 +0100
-Message-ID: <20260317163001.596425705@linuxfoundation.org>
+	Pedro Falcato <pfalcato@suse.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.19 133/378] ata: libata-core: Add BRIDGE_OK quirk for QEMU drives
+Date: Tue, 17 Mar 2026 17:31:30 +0100
+Message-ID: <20260317163011.907854564@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,205 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,queasysnail.net,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-226579-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226297-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,queasysnail.net:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2B2C62AF12D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.de:email]
+X-Rspamd-Queue-Id: 849FC2AE970
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Pedro Falcato <pfalcato@suse.de>
 
-[ Upstream commit d4fde269a970666a30dd3abd0413273a06dd972d ]
+commit b92b0075ee1870f78f59ab1f7da7dbfdd718ad7a upstream.
 
-Use the new functon netdev_compute_master_upper_features() to compute the bonding
-features.
+Currently, whenever you boot with a QEMU drive over an AHCI interface,
+you get:
+[    1.632121] ata1.00: applying bridge limits
 
-Note that bond_compute_features() currently uses bond_for_each_slave()
-to traverse the lower devices list, and that is just a macro wrapper of
-netdev_for_each_lower_private(). We use similar helper
-netdev_for_each_lower_dev() in netdev_compute_master_upper_features() to
-iterate the slave device, as there is not need to get the private data.
+This happens due to the kernel not believing the given drive is SATA,
+since word 93 of IDENTIFY (ATA_ID_HW_CONFIG) is non-zero. The result is
+a pretty severe limit in max_hw_sectors_kb, which limits our IO sizes.
 
-No functional change intended.
+QEMU has set word 93 erroneously for SATA drives but does not, in any
+way, emulate any of these real hardware details. There is no PATA
+drive and no SATA cable.
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20251017034155.61990-3-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As such, add a BRIDGE_OK quirk for QEMU HARDDISK. Special care is taken
+to limit this quirk to "2.5+", to allow for fixed future versions.
+
+This results in the max_hw_sectors being limited solely by the
+controller interface's limits. Which, for AHCI controllers, takes it
+from 128KB to 32767KB.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 99 ++-------------------------------
- 1 file changed, 4 insertions(+), 95 deletions(-)
+ drivers/ata/libata-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 322f910b06fc8..8be99ae67b77f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1476,97 +1476,6 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
- 	return features;
- }
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4228,6 +4228,7 @@ static const struct ata_dev_quirks_entry
+ 	/* Devices that do not need bridging limits applied */
+ 	{ "MTRON MSP-SATA*",		NULL,	ATA_QUIRK_BRIDGE_OK },
+ 	{ "BUFFALO HD-QSU2/R5",		NULL,	ATA_QUIRK_BRIDGE_OK },
++	{ "QEMU HARDDISK",		"2.5+",	ATA_QUIRK_BRIDGE_OK },
  
--#define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
--				 NETIF_F_GSO_ENCAP_ALL | \
--				 NETIF_F_HIGHDMA | NETIF_F_LRO)
--
--#define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE | \
--				 NETIF_F_GSO_PARTIAL)
--
--#define BOND_MPLS_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_GSO_SOFTWARE)
--
--#define BOND_GSO_PARTIAL_FEATURES (NETIF_F_GSO_ESP)
--
--
--static void bond_compute_features(struct bonding *bond)
--{
--	netdev_features_t gso_partial_features = BOND_GSO_PARTIAL_FEATURES;
--	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
--					IFF_XMIT_DST_RELEASE_PERM;
--	netdev_features_t vlan_features = BOND_VLAN_FEATURES;
--	netdev_features_t enc_features  = BOND_ENC_FEATURES;
--#ifdef CONFIG_XFRM_OFFLOAD
--	netdev_features_t xfrm_features  = BOND_XFRM_FEATURES;
--#endif /* CONFIG_XFRM_OFFLOAD */
--	netdev_features_t mpls_features  = BOND_MPLS_FEATURES;
--	struct net_device *bond_dev = bond->dev;
--	struct list_head *iter;
--	struct slave *slave;
--	unsigned short max_hard_header_len = ETH_HLEN;
--	unsigned int tso_max_size = TSO_MAX_SIZE;
--	u16 tso_max_segs = TSO_MAX_SEGS;
--
--	if (!bond_has_slaves(bond))
--		goto done;
--
--	vlan_features = netdev_base_features(vlan_features);
--	mpls_features = netdev_base_features(mpls_features);
--
--	bond_for_each_slave(bond, slave, iter) {
--		vlan_features = netdev_increment_features(vlan_features,
--			slave->dev->vlan_features, BOND_VLAN_FEATURES);
--
--		enc_features = netdev_increment_features(enc_features,
--							 slave->dev->hw_enc_features,
--							 BOND_ENC_FEATURES);
--
--#ifdef CONFIG_XFRM_OFFLOAD
--		xfrm_features = netdev_increment_features(xfrm_features,
--							  slave->dev->hw_enc_features,
--							  BOND_XFRM_FEATURES);
--#endif /* CONFIG_XFRM_OFFLOAD */
--
--		gso_partial_features = netdev_increment_features(gso_partial_features,
--								 slave->dev->gso_partial_features,
--								 BOND_GSO_PARTIAL_FEATURES);
--
--		mpls_features = netdev_increment_features(mpls_features,
--							  slave->dev->mpls_features,
--							  BOND_MPLS_FEATURES);
--
--		dst_release_flag &= slave->dev->priv_flags;
--		if (slave->dev->hard_header_len > max_hard_header_len)
--			max_hard_header_len = slave->dev->hard_header_len;
--
--		tso_max_size = min(tso_max_size, slave->dev->tso_max_size);
--		tso_max_segs = min(tso_max_segs, slave->dev->tso_max_segs);
--	}
--	bond_dev->hard_header_len = max_hard_header_len;
--
--done:
--	bond_dev->gso_partial_features = gso_partial_features;
--	bond_dev->vlan_features = vlan_features;
--	bond_dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
--				    NETIF_F_HW_VLAN_CTAG_TX |
--				    NETIF_F_HW_VLAN_STAG_TX;
--#ifdef CONFIG_XFRM_OFFLOAD
--	bond_dev->hw_enc_features |= xfrm_features;
--#endif /* CONFIG_XFRM_OFFLOAD */
--	bond_dev->mpls_features = mpls_features;
--	netif_set_tso_max_segs(bond_dev, tso_max_segs);
--	netif_set_tso_max_size(bond_dev, tso_max_size);
--
--	bond_dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
--	if ((bond_dev->priv_flags & IFF_XMIT_DST_RELEASE_PERM) &&
--	    dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
--		bond_dev->priv_flags |= IFF_XMIT_DST_RELEASE;
--
--	netdev_change_features(bond_dev);
--}
--
- static void bond_setup_by_slave(struct net_device *bond_dev,
- 				struct net_device *slave_dev)
- {
-@@ -2287,7 +2196,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	}
- 
- 	bond->slave_cnt++;
--	bond_compute_features(bond);
-+	netdev_compute_master_upper_features(bond->dev, true);
- 	bond_set_carrier(bond);
- 
- 	/* Needs to be called before bond_select_active_slave(), which will
-@@ -2542,7 +2451,7 @@ static int __bond_release_one(struct net_device *bond_dev,
- 		call_netdevice_notifiers(NETDEV_RELEASE, bond->dev);
- 	}
- 
--	bond_compute_features(bond);
-+	netdev_compute_master_upper_features(bond->dev, true);
- 	if (!(bond_dev->features & NETIF_F_VLAN_CHALLENGED) &&
- 	    (old_features & NETIF_F_VLAN_CHALLENGED))
- 		slave_info(bond_dev, slave_dev, "last VLAN challenged slave left bond - VLAN blocking is removed\n");
-@@ -4050,7 +3959,7 @@ static int bond_slave_netdev_event(unsigned long event,
- 	case NETDEV_FEAT_CHANGE:
- 		if (!bond->notifier_ctx) {
- 			bond->notifier_ctx = true;
--			bond_compute_features(bond);
-+			netdev_compute_master_upper_features(bond->dev, true);
- 			bond->notifier_ctx = false;
- 		}
- 		break;
-@@ -6043,7 +5952,7 @@ void bond_setup(struct net_device *bond_dev)
- 	 * capable
- 	 */
- 
--	bond_dev->hw_features = BOND_VLAN_FEATURES |
-+	bond_dev->hw_features = MASTER_UPPER_DEV_VLAN_FEATURES |
- 				NETIF_F_HW_VLAN_CTAG_RX |
- 				NETIF_F_HW_VLAN_CTAG_FILTER |
- 				NETIF_F_HW_VLAN_STAG_RX |
--- 
-2.51.0
-
+ 	/* Devices which aren't very happy with higher link speeds */
+ 	{ "WD My Book",			NULL,	ATA_QUIRK_1_5_GBPS },
 
 
 
