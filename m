@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-226247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO0UFf+EuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:47 +0100
+	id eB8vFl+QuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DF92AE531
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:44:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A965B2AFC8E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49B06302C28A
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80121317524C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D743EE1CB;
-	Tue, 17 Mar 2026 16:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00DF3F65EE;
+	Tue, 17 Mar 2026 17:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sllqlCjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrjKZgof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E942F12B94;
-	Tue, 17 Mar 2026 16:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842D33F54DC;
+	Tue, 17 Mar 2026 17:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765885; cv=none; b=iQBdTrpZNrB8HNYqxA77FVs+pvZFfK90FTAJsjEpISviinwQrQLjWgz6s3uQebkSVALX5rNOGCgTPPrF12jCjkDKFSsNH/xMUuVw4Zf46croeuEBlzXCrwgCeQEp1S02IsXSdqTXey1GtcqXXe0QBCzNgo5EFVd+GE5yeKAj2I0=
+	t=1773767234; cv=none; b=p1+Z455tNegbDP8BLiKZBjAGnyfW93nlhqRRXOCTcSSiz0qUX2PlgbesrT668Dn6kxIETSMWG9shLdJaVasAy2NndWaeD/rbb2rF+iCLBC97B6S74yW/4XBGyPOxpAqeKTQ4ce2SdqJBmQqJaNSM/mTZ773ACFExih8jPXf+/cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765885; c=relaxed/simple;
-	bh=uBjGPQqOLihfMJrKV+CJoJ9lTIn841ZugsFUh9F2BmI=;
+	s=arc-20240116; t=1773767234; c=relaxed/simple;
+	bh=1OQKPRCbHHj+u+KCGltK1C7daVhB2S0YWkHHygT4rFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4gKtukwhdQfKsRhfuCkMjmPA05tyjJK8Q+qMeGjp5TF6SXisxiA/K6/VhBmTWGCT1q5gB+EJOpfALxcQnjhlrSx7gDLE/RlnSDcg6NJRIvABGmIu4CA8m9UGLS5hNh4rVNK4LAIr3fojtS7RWEV6JQxSysIwhdbXTeHj0Tq7TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sllqlCjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5595FC4CEF7;
-	Tue, 17 Mar 2026 16:44:44 +0000 (UTC)
+	 MIME-Version; b=kO+T1WvJ08ewUD1YFdwkZrj0C/O4g5Kr5Te30nY2Z/whi3MbLAyUPJyvZAWxDZ/vsiB/d1w8WAhUlXCAEuXyiagqUXFTgnan3Em5+ihvtOG7+wMsYZIrn1EAsSoR/HqPA+1uMUuuesqZbRhcGB3RQppk+ieWa4l0Ocn7YTu3sns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrjKZgof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FFAC4CEF7;
+	Tue, 17 Mar 2026 17:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765884;
-	bh=uBjGPQqOLihfMJrKV+CJoJ9lTIn841ZugsFUh9F2BmI=;
+	s=korg; t=1773767234;
+	bh=1OQKPRCbHHj+u+KCGltK1C7daVhB2S0YWkHHygT4rFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sllqlCjrF0447+lcjyOrM6K9B39/SlpMgcnUYgOzq4EreWJ+qLeuXAMcGj8iuAqW/
-	 zuXifwWQRS9IqXs7ZVL/CklEJw0McnYXgC+yUtduXDUuZrkOmf4nv23l+NiDpRW4rc
-	 EUiR6h3xMvgEgmy6eedHTDsIhGH/0VmPJOMafrrs=
+	b=XrjKZgofnPFEYQt+QXnTdfzySlDU+XYFTWXa2nccU0vaVHloDbIQ8SFakRNyJYWT+
+	 Pn1Ck6lkbYieXXhQ8cKTx6vdJQUVIGLYfoZFpqAlQeJna4k93ed8aaPeG49kP9ZvB+
+	 Xbu2bopdCvTx/ZawbArhLi2XPJqdeG86X60gt5os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng-Yang Chou <yphbchou0911@gmail.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.19 116/378] sched_ext: Remove redundant css_put() in scx_cgroup_init()
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 044/333] net/mlx5e: RX, Fix XDP multi-buf frag counting for legacy RQ
 Date: Tue, 17 Mar 2026 17:31:13 +0100
-Message-ID: <20260317163011.283936440@linuxfoundation.org>
+Message-ID: <20260317163000.999432704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +68,162 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226247-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-226561-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E1DF92AE531
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qemu.org:url,nvidia.com:email]
+X-Rspamd-Queue-Id: A965B2AFC8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng-Yang Chou <yphbchou0911@gmail.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 1336b579f6079fb8520be03624fcd9ba443c930b upstream.
+[ Upstream commit a6413e6f6c9d9bb9833324cb3753582f7bc0f2fa ]
 
-The iterator css_for_each_descendant_pre() walks the cgroup hierarchy
-under cgroup_lock(). It does not increment the reference counts on
-yielded css structs.
+XDP multi-buf programs can modify the layout of the XDP buffer when the
+program calls bpf_xdp_pull_data() or bpf_xdp_adjust_tail(). The
+referenced commit in the fixes tag corrected the assumption in the mlx5
+driver that the XDP buffer layout doesn't change during a program
+execution. However, this fix introduced another issue: the dropped
+fragments still need to be counted on the driver side to avoid page
+fragment reference counting issues.
 
-According to the cgroup documentation, css_put() should only be used
-to release a reference obtained via css_get() or css_tryget_online().
-Since the iterator does not use either of these to acquire a reference,
-calling css_put() in the error path of scx_cgroup_init() causes a
-refcount underflow.
+Such issue can be observed with the
+test_xdp_native_adjst_tail_shrnk_data selftest when using a payload of
+3600 and shrinking by 256 bytes (an upcoming selftest patch): the last
+fragment gets released by the XDP code but doesn't get tracked by the
+driver. This results in a negative pp_ref_count during page release and
+the following splat:
 
-Remove the unbalanced css_put() to prevent a potential Use-After-Free
-(UAF) vulnerability.
+  WARNING: include/net/page_pool/helpers.h:297 at mlx5e_page_release_fragmented.isra.0+0x4a/0x50 [mlx5_core], CPU#12: ip/3137
+  Modules linked in: [...]
+  CPU: 12 UID: 0 PID: 3137 Comm: ip Not tainted 6.19.0-rc3+ #12 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:mlx5e_page_release_fragmented.isra.0+0x4a/0x50 [mlx5_core]
+  [...]
+  Call Trace:
+   <TASK>
+   mlx5e_dealloc_rx_wqe+0xcb/0x1a0 [mlx5_core]
+   mlx5e_free_rx_descs+0x7f/0x110 [mlx5_core]
+   mlx5e_close_rq+0x50/0x60 [mlx5_core]
+   mlx5e_close_queues+0x36/0x2c0 [mlx5_core]
+   mlx5e_close_channel+0x1c/0x50 [mlx5_core]
+   mlx5e_close_channels+0x45/0x80 [mlx5_core]
+   mlx5e_safe_switch_params+0x1a5/0x230 [mlx5_core]
+   mlx5e_change_mtu+0xf3/0x2f0 [mlx5_core]
+   netif_set_mtu_ext+0xf1/0x230
+   do_setlink.isra.0+0x219/0x1180
+   rtnl_newlink+0x79f/0xb60
+   rtnetlink_rcv_msg+0x213/0x3a0
+   netlink_rcv_skb+0x48/0xf0
+   netlink_unicast+0x24a/0x350
+   netlink_sendmsg+0x1ee/0x410
+   __sock_sendmsg+0x38/0x60
+   ____sys_sendmsg+0x232/0x280
+   ___sys_sendmsg+0x78/0xb0
+   __sys_sendmsg+0x5f/0xb0
+   [...]
+   do_syscall_64+0x57/0xc50
 
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fixes the issue by doing page frag counting on all the
+original XDP buffer fragments for all relevant XDP actions (XDP_TX ,
+XDP_REDIRECT and XDP_PASS). This is basically reverting to the original
+counting before the commit in the fixes tag.
+
+As frag_page is still pointing to the original tail, the nr_frags
+parameter to xdp_update_skb_frags_info() needs to be calculated
+in a different way to reflect the new nr_frags.
+
+Fixes: afd5ba577c10 ("net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for legacy RQ")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
+Link: https://patch.msgid.link/20260305142634.1813208-6-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3553,7 +3553,6 @@ static int scx_cgroup_init(struct scx_sc
- 		ret = SCX_CALL_OP_RET(sch, SCX_KF_UNLOCKED, cgroup_init, NULL,
- 				      css->cgroup, &args);
- 		if (ret) {
--			css_put(css);
- 			scx_error(sch, "ops.cgroup_init() failed (%d)", ret);
- 			return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 348c451473cd6..2ffa4e6b8c373 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -1759,6 +1759,7 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
+ 	struct skb_shared_info *sinfo;
+ 	u32 frag_consumed_bytes;
+ 	struct bpf_prog *prog;
++	u8 nr_frags_free = 0;
+ 	struct sk_buff *skb;
+ 	dma_addr_t addr;
+ 	u32 truesize;
+@@ -1801,15 +1802,13 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
+ 
+ 	prog = rcu_dereference(rq->xdp_prog);
+ 	if (prog) {
+-		u8 nr_frags_free, old_nr_frags = sinfo->nr_frags;
++		u8 old_nr_frags = sinfo->nr_frags;
+ 
+ 		if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
+ 			if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT,
+ 						 rq->flags)) {
+ 				struct mlx5e_wqe_frag_info *pwi;
+ 
+-				wi -= old_nr_frags - sinfo->nr_frags;
+-
+ 				for (pwi = head_wi; pwi < wi; pwi++)
+ 					pwi->frag_page->frags++;
+ 			}
+@@ -1817,10 +1816,8 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
  		}
+ 
+ 		nr_frags_free = old_nr_frags - sinfo->nr_frags;
+-		if (unlikely(nr_frags_free)) {
+-			wi -= nr_frags_free;
++		if (unlikely(nr_frags_free))
+ 			truesize -= nr_frags_free * frag_info->frag_stride;
+-		}
+ 	}
+ 
+ 	skb = mlx5e_build_linear_skb(
+@@ -1836,7 +1833,7 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq, struct mlx5e_wqe_frag_info *wi
+ 
+ 	if (xdp_buff_has_frags(&mxbuf->xdp)) {
+ 		/* sinfo->nr_frags is reset by build_skb, calculate again. */
+-		xdp_update_skb_frags_info(skb, wi - head_wi - 1,
++		xdp_update_skb_frags_info(skb, wi - head_wi - nr_frags_free - 1,
+ 					  sinfo->xdp_frags_size, truesize,
+ 					  xdp_buff_get_skb_flags(&mxbuf->xdp));
+ 
+-- 
+2.51.0
+
 
 
 
