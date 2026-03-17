@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-226386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNCrJT6KuWkjJwIAu9opvQ
-	(envelope-from <stable+bounces-226386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:10 +0100
+	id AEmDOOeSuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECEC2AEF8F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6126D2B00E4
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17A0A30A7254
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:54:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA01233067E7
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8E33F54B8;
-	Tue, 17 Mar 2026 16:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550BD30C63B;
+	Tue, 17 Mar 2026 17:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY+ML79Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6ur/ENU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FCE3ED5C7;
-	Tue, 17 Mar 2026 16:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B962DF132;
+	Tue, 17 Mar 2026 17:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766473; cv=none; b=pKS2cnaDjT67sdG610jVnnjhj7QdCKloiq4KXkN5CnBAj2mcYk5Iz7aaD8Xxr8/xR2y0uGTfg4GZb0OBYCBqwsQr/bOzEdJWPRFSxSxSmoTGmU0zO4tOhx78IQWATYJ3ZRFe4+3TwEUSJAsczZ9PrTX5M6N4b9/G3Ltcr7DWdcQ=
+	t=1773768020; cv=none; b=tae9ukVvPR58ND24l+xRw+hWwLH7Bi6OkOJRe3RC7ICpaU/RfdmrNAr4QfNcFA0eb9WTT+7/aOrH2K5oZvINzz1u6RkbfZdR272tdBkfoJUd4vPOEMdCm1O4V7dsu+zADSQusYX2oY8cGQvLtxtR5d85uBa8ChqSlk3X/GtNDzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766473; c=relaxed/simple;
-	bh=Isg1xUdh6DS37K2WfwObdNURRtNL57p3QGHMrNBANm4=;
+	s=arc-20240116; t=1773768020; c=relaxed/simple;
+	bh=14MxeKmiAsKwwvxyt8ihnjifIjW0WRvQm/mlNWzN/x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iu+HRoBL9XUMpCmEPv8R0MZOoiNZOgKUp9sDa+TWCVP1GDpiIqAar3CTA8BTNo3K/BEf+NLg7uyN2SNQUjF8cT6UmhZVfNJdfPipR7AVNyx6yD4nC1tFV5KydfR2bTaasgZSWFnucRyYwfgRgOJCb0CtvsurPXny48VeISmdcxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY+ML79Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54451C4CEF7;
-	Tue, 17 Mar 2026 16:54:31 +0000 (UTC)
+	 MIME-Version; b=pzgJ85JoHyTzanZqaUKzCF5otHYDb2XwogmJ6/hNuAuElN31gB3kP8+MFdRgS33MgmT0qBzmw8wgMOv1kQIAHInOx/+P26cfMH69024vJdDLoZ0gMkkwr3icYho5b1m+JwlL2vyqk1l7RF/injbmBdFaUQRjLu4qAKFfQOphYgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6ur/ENU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A832C4CEF7;
+	Tue, 17 Mar 2026 17:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766473;
-	bh=Isg1xUdh6DS37K2WfwObdNURRtNL57p3QGHMrNBANm4=;
+	s=korg; t=1773768019;
+	bh=14MxeKmiAsKwwvxyt8ihnjifIjW0WRvQm/mlNWzN/x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lY+ML79YeioDtNE0hTihKqZTQS7kDfHwDMxGZkhxRGNVxRqaOFpva4VRfk5DHQ7jG
-	 15Sves27d1MLoV3BPePn7ZR+1mGydM2Zs9B2pyWNdia8w1Fuq+Zcn4wvkjZGIzm9EY
-	 Yi3KOirfgp3Kj+/qNN520fLCUmGfC1yM1mlUaY5Q=
+	b=Q6ur/ENUR1tYCYZmHynBguFaVsu7lQeWNTBH8utwRpY+ZD7wZhE9HcDbP6cz6HKTX
+	 BnBLfNOARZ+ifpBKhqsMj20xHKt9iwDiwemNxqXAuxj2RGnoI4l56f8u51D3i3X4dx
+	 cV3y4KUN2S/oQf6+NZpXXnocPNUufUhFox+Jb/D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Lytkin <iprintercanon@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 253/378] staging: sm750fb: add missing pci_release_region on error and removal
+	Guillaume Tucker <gtucker@gtucker.io>,
+	Mark Brown <broonie@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.18 181/333] kthread: consolidate kthread exit paths to prevent use-after-free
 Date: Tue, 17 Mar 2026 17:33:30 +0100
-Message-ID: <20260317163016.329092658@linuxfoundation.org>
+Message-ID: <20260317163006.067634764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +68,246 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226386-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226745-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 1ECEC2AEF8F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gtucker.io:email]
+X-Rspamd-Queue-Id: 6126D2B00E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Lytkin <iprintercanon@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 8225489ddb900656cc21573b4e1b00c9181fd777 upstream.
+commit 28aaa9c39945b7925a1cc1d513c8f21ed38f5e4f upstream.
 
-hw_sm750_map() calls pci_request_region() but never releases the
-region on error paths or in lynxfb_pci_remove(). This causes a
-resource leak that prevents the PCI region from being mapped again
-after driver removal or a failed probe. A TODO comment in the code
-acknowledges this missing cleanup.
+Guillaume reported crashes via corrupted RCU callback function pointers
+during KUnit testing. The crash was traced back to the pidfs rhashtable
+conversion which replaced the 24-byte rb_node with an 8-byte rhash_head
+in struct pid, shrinking it from 160 to 144 bytes.
 
-Restructure the error handling in hw_sm750_map() to properly release
-the PCI region on ioremap failures, and add pci_release_region() to
-lynxfb_pci_remove().
+struct kthread (without CONFIG_BLK_CGROUP) is also 144 bytes. With
+CONFIG_SLAB_MERGE_DEFAULT and SLAB_HWCACHE_ALIGN both round up to
+192 bytes and share the same slab cache. struct pid.rcu.func and
+struct kthread.affinity_node both sit at offset 0x78.
 
-Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260216202038.1828-1-iprintercanon@gmail.com
+When a kthread exits via make_task_dead() it bypasses kthread_exit() and
+misses the affinity_node cleanup. free_kthread_struct() frees the memory
+while the node is still linked into the global kthread_affinity_list. A
+subsequent list_del() by another kthread writes through dangling list
+pointers into the freed and reused memory, corrupting the pid's
+rcu.func pointer.
+
+Instead of patching free_kthread_struct() to handle the missed cleanup,
+consolidate all kthread exit paths. Turn kthread_exit() into a macro
+that calls do_exit() and add kthread_do_exit() which is called from
+do_exit() for any task with PF_KTHREAD set. This guarantees that
+kthread-specific cleanup always happens regardless of the exit path -
+make_task_dead(), direct do_exit(), or kthread_exit().
+
+Replace __to_kthread() with a new tsk_is_kthread() accessor in the
+public header. Export do_exit() since module code using the
+kthread_exit() macro now needs it directly.
+
+Reported-by: Guillaume Tucker <gtucker@gtucker.io>
+Tested-by: Guillaume Tucker <gtucker@gtucker.io>
+Tested-by: Mark Brown <broonie@kernel.org>
+Tested-by: David Gow <davidgow@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/20260224-mittlerweile-besessen-2738831ae7f6@brauner
+Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 4d13f4304fa4 ("kthread: Implement preferred affinity")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/sm750fb/sm750.c    |    1 +
- drivers/staging/sm750fb/sm750_hw.c |   22 +++++++++++-----------
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ include/linux/kthread.h |   21 ++++++++++++++++++++-
+ kernel/exit.c           |    6 ++++++
+ kernel/kthread.c        |   41 +++++------------------------------------
+ 3 files changed, 31 insertions(+), 37 deletions(-)
 
---- a/drivers/staging/sm750fb/sm750.c
-+++ b/drivers/staging/sm750fb/sm750.c
-@@ -1123,6 +1123,7 @@ static void lynxfb_pci_remove(struct pci
+--- a/include/linux/kthread.h
++++ b/include/linux/kthread.h
+@@ -7,6 +7,24 @@
  
- 	iounmap(sm750_dev->pvReg);
- 	iounmap(sm750_dev->pvMem);
-+	pci_release_region(pdev, 1);
- 	kfree(g_settings);
+ struct mm_struct;
+ 
++/* opaque kthread data */
++struct kthread;
++
++/*
++ * When "(p->flags & PF_KTHREAD)" is set the task is a kthread and will
++ * always remain a kthread.  For kthreads p->worker_private always
++ * points to a struct kthread.  For tasks that are not kthreads
++ * p->worker_private is used to point to other things.
++ *
++ * Return NULL for any task that is not a kthread.
++ */
++static inline struct kthread *tsk_is_kthread(struct task_struct *p)
++{
++	if (p->flags & PF_KTHREAD)
++		return p->worker_private;
++	return NULL;
++}
++
+ __printf(4, 5)
+ struct task_struct *kthread_create_on_node(int (*threadfn)(void *data),
+ 					   void *data,
+@@ -98,8 +116,9 @@ void *kthread_probe_data(struct task_str
+ int kthread_park(struct task_struct *k);
+ void kthread_unpark(struct task_struct *k);
+ void kthread_parkme(void);
+-void kthread_exit(long result) __noreturn;
++#define kthread_exit(result) do_exit(result)
+ void kthread_complete_and_exit(struct completion *, long) __noreturn;
++void kthread_do_exit(struct kthread *, long);
+ 
+ int kthreadd(void *unused);
+ extern struct task_struct *kthreadd_task;
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -897,11 +897,16 @@ static void synchronize_group_exit(struc
+ void __noreturn do_exit(long code)
+ {
+ 	struct task_struct *tsk = current;
++	struct kthread *kthread;
+ 	int group_dead;
+ 
+ 	WARN_ON(irqs_disabled());
+ 	WARN_ON(tsk->plug);
+ 
++	kthread = tsk_is_kthread(tsk);
++	if (unlikely(kthread))
++		kthread_do_exit(kthread, code);
++
+ 	kcov_task_exit(tsk);
+ 	kmsan_task_exit(tsk);
+ 
+@@ -1008,6 +1013,7 @@ void __noreturn do_exit(long code)
+ 	lockdep_free_task(tsk);
+ 	do_task_dead();
+ }
++EXPORT_SYMBOL(do_exit);
+ 
+ void __noreturn make_task_dead(int signr)
+ {
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -85,24 +85,6 @@ static inline struct kthread *to_kthread
+ 	return k->worker_private;
  }
  
---- a/drivers/staging/sm750fb/sm750_hw.c
-+++ b/drivers/staging/sm750fb/sm750_hw.c
-@@ -36,16 +36,11 @@ int hw_sm750_map(struct sm750_dev *sm750
+-/*
+- * Variant of to_kthread() that doesn't assume @p is a kthread.
+- *
+- * When "(p->flags & PF_KTHREAD)" is set the task is a kthread and will
+- * always remain a kthread.  For kthreads p->worker_private always
+- * points to a struct kthread.  For tasks that are not kthreads
+- * p->worker_private is used to point to other things.
+- *
+- * Return NULL for any task that is not a kthread.
+- */
+-static inline struct kthread *__to_kthread(struct task_struct *p)
+-{
+-	void *kthread = p->worker_private;
+-	if (kthread && !(p->flags & PF_KTHREAD))
+-		kthread = NULL;
+-	return kthread;
+-}
+-
+ void get_kthread_comm(char *buf, size_t buf_size, struct task_struct *tsk)
+ {
+ 	struct kthread *kthread = to_kthread(tsk);
+@@ -193,7 +175,7 @@ EXPORT_SYMBOL_GPL(kthread_should_park);
  
- 	pr_info("mmio phyAddr = %lx\n", sm750_dev->vidreg_start);
+ bool kthread_should_stop_or_park(void)
+ {
+-	struct kthread *kthread = __to_kthread(current);
++	struct kthread *kthread = tsk_is_kthread(current);
  
--	/*
--	 * reserve the vidreg space of smi adaptor
--	 * if you do this, you need to add release region code
--	 * in lynxfb_remove, or memory will not be mapped again
--	 * successfully
--	 */
-+	/* reserve the vidreg space of smi adaptor */
- 	ret = pci_request_region(pdev, 1, "sm750fb");
- 	if (ret) {
- 		pr_err("Can not request PCI regions.\n");
--		goto exit;
-+		return ret;
- 	}
+ 	if (!kthread)
+ 		return false;
+@@ -234,7 +216,7 @@ EXPORT_SYMBOL_GPL(kthread_freezable_shou
+  */
+ void *kthread_func(struct task_struct *task)
+ {
+-	struct kthread *kthread = __to_kthread(task);
++	struct kthread *kthread = tsk_is_kthread(task);
+ 	if (kthread)
+ 		return kthread->threadfn;
+ 	return NULL;
+@@ -266,7 +248,7 @@ EXPORT_SYMBOL_GPL(kthread_data);
+  */
+ void *kthread_probe_data(struct task_struct *task)
+ {
+-	struct kthread *kthread = __to_kthread(task);
++	struct kthread *kthread = tsk_is_kthread(task);
+ 	void *data = NULL;
  
- 	/* now map mmio and vidmem */
-@@ -54,7 +49,7 @@ int hw_sm750_map(struct sm750_dev *sm750
- 	if (!sm750_dev->pvReg) {
- 		pr_err("mmio failed\n");
- 		ret = -EFAULT;
--		goto exit;
-+		goto err_release_region;
- 	}
- 	pr_info("mmio virtual addr = %p\n", sm750_dev->pvReg);
- 
-@@ -79,13 +74,18 @@ int hw_sm750_map(struct sm750_dev *sm750
- 	sm750_dev->pvMem =
- 		ioremap_wc(sm750_dev->vidmem_start, sm750_dev->vidmem_size);
- 	if (!sm750_dev->pvMem) {
--		iounmap(sm750_dev->pvReg);
- 		pr_err("Map video memory failed\n");
- 		ret = -EFAULT;
--		goto exit;
-+		goto err_unmap_reg;
- 	}
- 	pr_info("video memory vaddr = %p\n", sm750_dev->pvMem);
--exit:
-+
-+	return 0;
-+
-+err_unmap_reg:
-+	iounmap(sm750_dev->pvReg);
-+err_release_region:
-+	pci_release_region(pdev, 1);
- 	return ret;
+ 	if (kthread)
+@@ -309,19 +291,8 @@ void kthread_parkme(void)
  }
+ EXPORT_SYMBOL_GPL(kthread_parkme);
+ 
+-/**
+- * kthread_exit - Cause the current kthread return @result to kthread_stop().
+- * @result: The integer value to return to kthread_stop().
+- *
+- * While kthread_exit can be called directly, it exists so that
+- * functions which do some additional work in non-modular code such as
+- * module_put_and_kthread_exit can be implemented.
+- *
+- * Does not return.
+- */
+-void __noreturn kthread_exit(long result)
++void kthread_do_exit(struct kthread *kthread, long result)
+ {
+-	struct kthread *kthread = to_kthread(current);
+ 	kthread->result = result;
+ 	if (!list_empty(&kthread->hotplug_node)) {
+ 		mutex_lock(&kthreads_hotplug_lock);
+@@ -333,9 +304,7 @@ void __noreturn kthread_exit(long result
+ 			kthread->preferred_affinity = NULL;
+ 		}
+ 	}
+-	do_exit(0);
+ }
+-EXPORT_SYMBOL(kthread_exit);
+ 
+ /**
+  * kthread_complete_and_exit - Exit the current kthread.
+@@ -682,7 +651,7 @@ void kthread_set_per_cpu(struct task_str
+ 
+ bool kthread_is_per_cpu(struct task_struct *p)
+ {
+-	struct kthread *kthread = __to_kthread(p);
++	struct kthread *kthread = tsk_is_kthread(p);
+ 	if (!kthread)
+ 		return false;
  
 
 
