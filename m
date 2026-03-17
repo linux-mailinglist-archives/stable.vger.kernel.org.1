@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-225883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aO21JlNEuWmK+QEAu9opvQ
-	(envelope-from <stable+bounces-225883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:08:51 +0100
+	id IBHoHWpDuWkk+QEAu9opvQ
+	(envelope-from <stable+bounces-225884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:04:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D3E2A98B4
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:08:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168492A9773
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:04:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B587303FDF7
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:04:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 61170301E9AB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B013AC0CF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C3B3AE1AE;
 	Tue, 17 Mar 2026 12:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZm89670"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGsbERnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECCB1C69D
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2D73AE1A4
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773749095; cv=none; b=cXti+RHJc7WV2yS2PLIyPuHCV913HSp/Db8pbHQmksHP30Kzd+9QH6WgLW72cmUvNDuE67kdA6cPtg578DTJperXUntMcnRRD3w3VF9iJ3/RTr++LNZioEnpTF8b2iIMktCHs6m/D9LrWoiKi6Q7DVgWTS7klbX3TjgMaxULlJc=
+	t=1773749096; cv=none; b=XAwRMDHA1J8FyJ3d26e/HuHnrZIWJXQDanvrW1GYmUiiN7Hd+BJ/TMcyXyUTBm+oYxM56lblsaEsxCU0diwIlRUjaNihX118XUYnX+vrFTzKPwBoKOrbYcdbg5CTEs0VQVynORD+O11GhXReBNvln4o+08cOcrwCyKpF9I686qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773749095; c=relaxed/simple;
-	bh=XQ05WKrnUQdqIdcihTXbyUYM+2ARd8BuL+bA5y1hbPQ=;
+	s=arc-20240116; t=1773749096; c=relaxed/simple;
+	bh=T6rlTyeif5+7EvSUnpGCjmoZTsd0HFQYLxeS2bfaeJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0uUsQdrPcv/C5vAerCVE+tInrF9cDM/3PSHhLthU+ZlPPSuxwVBf9bFiXCGrdnE9zJsIyKd/g9ILnxvwnGt194mD6L0D/o9Ty6kM0ObnKNf0syM6fdG75wuqFrp+tD7BweYaXSC5B7n6Z5vqaJ+oZn5+F5XvGAon7wAhXXvhY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZm89670; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9612C4CEF7;
-	Tue, 17 Mar 2026 12:04:54 +0000 (UTC)
+	 MIME-Version; b=fICJW9+Xn7b44nIkAMK/QyMzVLJMlVof+GQuoeBkux7vCVkpUag2h7BxHSU8ZCTpOwTkSPoLuO7IZhmILxgXgDGQGpX2t0kzsqQuAaq+XYAWWguHTiXrqAK7rVmxF49oRkdNFMalY9YpOAukVM2AKhUbJ7JzBn/YD2GolKm3l8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGsbERnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD27C2BCAF;
+	Tue, 17 Mar 2026 12:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773749095;
-	bh=XQ05WKrnUQdqIdcihTXbyUYM+2ARd8BuL+bA5y1hbPQ=;
+	s=k20201202; t=1773749096;
+	bh=T6rlTyeif5+7EvSUnpGCjmoZTsd0HFQYLxeS2bfaeJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZm89670m8XpF7UVcEvuLS2DXxXTNKVXzm0c1CvKfyfaiSu5L1PazqBoqcsCtjawz
-	 x/egESnKpbvZYU9nqLkUfkDZgUNxIkxgLq0HivYXS1c3f72xTGlKIjh2Wld5diQEff
-	 gB4YMzRc28iWTO0wJY+tXGBPRn29HlrgBd5ulmmopTKFQ42R5SgTal0a9uQFVzLCVJ
-	 jDt/C17Pb7YTK0eluXW4C8O9TYJ4Wefi7A8tPrvY0oiSFAPvu4FsPctqu06cx64cQe
-	 FbvGHToRF25VqBLDujQONzZ7uYygH3aF03VIyOp7jUukJLSjTcQ5xwqOBnWFVhCDfD
-	 Kcc9muKGbsY8Q==
+	b=SGsbERnRUoyqyGWSBKBhBA6lIQNGaSfKHDZG1mGLaQGkXHvlIxno2kmr0FR8eVdkj
+	 kH/cTar6HG+BQ8cY1VnaUvsPhwiaXD8tPavSc+jKKZyDeO6X2bYhKIJvhkSVU/g6oE
+	 jFjCtHaScYM93pizWfRjf2cFp60uclagwhsIJgwHMMX8aiL8KK5q9X/9ZNz2TR/TR6
+	 h7MH7pAlS/myRBDseajQetAGEpn5CZwOVgz2i8sMIsLkhtoBw9IqE/fzdk4rVkbc6M
+	 EsfqbdVks8iGrIQVXn0JFBrAXSb9g2zvoEL7wvLIOi4uzyF00VU++XQho++MPO6FKv
+	 FIdfkCMvGw7cA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Marco Schirrmeister <mschirrmeister@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 1/2] mmc: dw_mmc-rockchip: Add memory clock auto-gating support
-Date: Tue, 17 Mar 2026 08:04:52 -0400
-Message-ID: <20260317120453.135633-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 2/2] mmc: dw_mmc-rockchip: Fix runtime PM support for internal phase support
+Date: Tue, 17 Mar 2026 08:04:53 -0400
+Message-ID: <20260317120453.135633-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031723-prologue-devotee-9062@gregkh>
+In-Reply-To: <20260317120453.135633-1-sashal@kernel.org>
 References: <2026031723-prologue-devotee-9062@gregkh>
+ <20260317120453.135633-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,19 +70,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[rock-chips.com,gmail.com,sntech.de,linaro.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-225884-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225883-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -87,59 +91,92 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,rock-chips.com:email]
-X-Rspamd-Queue-Id: 04D3E2A98B4
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sntech.de:email]
+X-Rspamd-Queue-Id: 168492A9773
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit ff6f0286c896f062853552097220dd93961be9c4 ]
+[ Upstream commit 6465a8bbb0f6ad98aeb66dc9ea19c32c193a610b ]
 
-Per design recommendations, the memory clock can be gated when there
-is no in-flight transfer, which helps save power. This feature is
-introduced alongside internal phase support, and this patch enables it.
+RK3576 is the first platform to introduce internal phase support, and
+subsequent platforms are expected to adopt a similar design. In this
+architecture, runtime suspend powers off the attached power domain, which
+resets registers, including vendor-specific ones such as SDMMC_TIMING_CON0,
+SDMMC_TIMING_CON1, and SDMMC_MISC_CON. These registers must be saved and
+restored, a requirement that falls outside the scope of the dw_mmc core.
 
+Fixes: 59903441f5e4 ("mmc: dw_mmc-rockchip: Add internal phase support")
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Tested-by: Marco Schirrmeister <mschirrmeister@gmail.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 6465a8bbb0f6 ("mmc: dw_mmc-rockchip: Fix runtime PM support for internal phase support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/dw_mmc-rockchip.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mmc/host/dw_mmc-rockchip.c | 38 +++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
-index 681354942e974..62c68cda1e214 100644
+index 62c68cda1e214..ff6a52d85e520 100644
 --- a/drivers/mmc/host/dw_mmc-rockchip.c
 +++ b/drivers/mmc/host/dw_mmc-rockchip.c
-@@ -19,6 +19,8 @@
- #define RK3288_CLKGEN_DIV		2
- #define SDMMC_TIMING_CON0		0x130
- #define SDMMC_TIMING_CON1		0x134
-+#define SDMMC_MISC_CON			0x138
-+#define MEM_CLK_AUTOGATE_ENABLE		BIT(5)
- #define ROCKCHIP_MMC_DELAY_SEL		BIT(10)
- #define ROCKCHIP_MMC_DEGREE_MASK	0x3
- #define ROCKCHIP_MMC_DEGREE_OFFSET	1
-@@ -470,6 +472,7 @@ static int dw_mci_rk3576_parse_dt(struct dw_mci *host)
+@@ -36,6 +36,8 @@ struct dw_mci_rockchip_priv_data {
+ 	int			default_sample_phase;
+ 	int			num_phases;
+ 	bool			internal_phase;
++	int                     sample_phase;
++	int                     drv_phase;
+ };
  
- static int dw_mci_rockchip_init(struct dw_mci *host)
- {
-+	struct dw_mci_rockchip_priv_data *priv = host->priv;
- 	int ret, i;
- 
- 	/* It is slot 8 on Rockchip SoCs */
-@@ -494,6 +497,9 @@ static int dw_mci_rockchip_init(struct dw_mci *host)
- 			dev_warn(host->dev, "no valid minimum freq: %d\n", ret);
- 	}
- 
-+	if (priv->internal_phase)
-+		mci_writel(host, MISC_CON, MEM_CLK_AUTOGATE_ENABLE);
-+
- 	return 0;
+ /*
+@@ -574,9 +576,43 @@ static void dw_mci_rockchip_remove(struct platform_device *pdev)
+ 	dw_mci_pltfm_remove(pdev);
  }
  
++static int dw_mci_rockchip_runtime_suspend(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct dw_mci *host = platform_get_drvdata(pdev);
++	struct dw_mci_rockchip_priv_data *priv = host->priv;
++
++	if (priv->internal_phase) {
++		priv->sample_phase = rockchip_mmc_get_phase(host, true);
++		priv->drv_phase = rockchip_mmc_get_phase(host, false);
++	}
++
++	return dw_mci_runtime_suspend(dev);
++}
++
++static int dw_mci_rockchip_runtime_resume(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct dw_mci *host = platform_get_drvdata(pdev);
++	struct dw_mci_rockchip_priv_data *priv = host->priv;
++	int ret;
++
++	ret = dw_mci_runtime_resume(dev);
++	if (ret)
++		return ret;
++
++	if (priv->internal_phase) {
++		rockchip_mmc_set_phase(host, true, priv->sample_phase);
++		rockchip_mmc_set_phase(host, false, priv->drv_phase);
++		mci_writel(host, MISC_CON, MEM_CLK_AUTOGATE_ENABLE);
++	}
++
++	return ret;
++}
++
+ static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
+ 	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+-	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
++	RUNTIME_PM_OPS(dw_mci_rockchip_runtime_suspend, dw_mci_rockchip_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver dw_mci_rockchip_pltfm_driver = {
 -- 
 2.51.0
 
