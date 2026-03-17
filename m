@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J5YL6SLuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:08 +0100
+	id QFz+D7KVuWlcKwIAu9opvQ
+	(envelope-from <stable+bounces-226818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:56:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E50B2AF212
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8222B05DB
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A284313BC46
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9CD63228C02
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E8C3F65EE;
-	Tue, 17 Mar 2026 16:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C88F320CCF;
+	Tue, 17 Mar 2026 17:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1dmjC3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzVsqoEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1CF3F54CC;
-	Tue, 17 Mar 2026 16:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504562459DC;
+	Tue, 17 Mar 2026 17:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766791; cv=none; b=K+KcXX7xCmah2VkldGX/+yB7GBA2cRKragSUvQgs0XzaGSxjkiIW4dtfpVbtMjlcj+tbgB2DLVhhW5TVo7BPyvZb4VXhmnI45EYFtjaeeSAZpkanTld7KVSjU4UoJpy4e1KBJh8UurBaD26QsL6rdHJj43rJyCFsaEJaOlklyuQ=
+	t=1773768320; cv=none; b=rTr1BEjzVJ6Uik9NR+YYqFBVRAV82/kB1ImL+w+m4UxF6dEf8S1PZ9dRvIPrHJkjganzfqg9ivyjLXBFz0wJN1P2i4v+UZLpw4z5jRCHzWqY4txIX1mwNF44TlKQKoMMjUwUZ7OQ8ir7wmTXk/gSdltEwkqhkkRI+l417c/YjtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766791; c=relaxed/simple;
-	bh=jiB9UI1nLyd5Uy7cAb+CMYbohVrDs1UmdnCd4WlUg7g=;
+	s=arc-20240116; t=1773768320; c=relaxed/simple;
+	bh=e9rBBDFFCuJSQzlx0qwQSBDooxOCdEN93m5O631pE3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCYQYOxUZuvSopwIe7vNkhVOoP4+213CrW6ecFtkx7Y3iM60jL31kt7KqY1N1r7bgl9nKn4bvP4fy0T8Lu8voDLEIO9oE0SXT2xiRZI3TxDz/52UXo+hoHER5V2h6nLf7fRDUbZekhtLp1EI4dKOUxcAF0svgGZnF0TSIqLbu/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1dmjC3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9243C4CEF7;
-	Tue, 17 Mar 2026 16:59:50 +0000 (UTC)
+	 MIME-Version; b=hCUL7PrS4K7Vo7zTJs/NCACxpUzW+EWI3dJhfn04voKYPz+cuKazsOTojFNBTsiz7DAriXA7x1ehz+yo7lVU/pezuDeob58Pfzc9vmAaUthwGjicq/SgYe5ZSfwd0k5d+XfZ7/QgHHqnNQoLBy6d0NiNGxLVjpiN3vV/aBpi4/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzVsqoEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB45C4CEF7;
+	Tue, 17 Mar 2026 17:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766791;
-	bh=jiB9UI1nLyd5Uy7cAb+CMYbohVrDs1UmdnCd4WlUg7g=;
+	s=korg; t=1773768320;
+	bh=e9rBBDFFCuJSQzlx0qwQSBDooxOCdEN93m5O631pE3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1dmjC3ulkiZMrgmS7pMonJ/+7Y5shylTGXx5hoNrcrsf/0Gb4+n9ATihVwNFTosO
-	 GY0qn8gbntDTboiSWAa4k9FeuaWxjhIDZp1LeS2YK9PbXf3bq2fm3HFCW8qs7IRApR
-	 9WU2SQ5OP2EgSzrKjPT4lMBzehVTh9ijfaVxW2Qg=
+	b=WzVsqoEMtkiyKNnSzHye3+19lZX1vjmNv5lE0YWhYKNDcRcU9ZBZ1mY7LNYqLt7kJ
+	 ULmPW1ciV65SxO1ZBosL++fGCZP69vmpVWCL8L81iUytpp6syLFoAJZK164wmRQ/vR
+	 ggaamrTGt6IbZ6ooXDP+RdC9x6j1Ps0Yn+ju6DF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.19 322/378] xfs: ensure dquot item is deleted from AIL only after log shutdown
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 250/333] drm/amd/pm: remove invalid gpu_metrics.energy_accumulator on smu v13.0.x
 Date: Tue, 17 Mar 2026 17:34:39 +0100
-Message-ID: <20260317163018.837034912@linuxfoundation.org>
+Message-ID: <20260317163008.636859664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,92 +72,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226456-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226818-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,lst.de:email]
-X-Rspamd-Queue-Id: 4E50B2AF212
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: DB8222B05DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-commit 186ac39b8a7d3ec7ce9c5dd45e5c2730177f375c upstream.
+commit 68785c5e79e0fc1eacf63026fbba32be3867f410 upstream.
 
-In xfs_qm_dqflush(), when a dquot flush fails due to corruption
-(the out_abort error path), the original code removed the dquot log
-item from the AIL before calling xfs_force_shutdown(). This ordering
-introduces a subtle race condition that can lead to data loss after
-a crash.
+v1:
+The metrics->EnergyAccumulator field has been deprecated on newer pmfw.
 
-The AIL tracks the oldest dirty metadata in the journal. The position
-of the tail item in the AIL determines the log tail LSN, which is the
-oldest LSN that must be preserved for crash recovery. When an item is
-removed from the AIL, the log tail can advance past the LSN of that item.
+v2:
+add smu 13.0.0/13.0.7/13.0.10 support.
 
-The race window is as follows: if the dquot item happens to be at
-the tail of the log, removing it from the AIL allows the log tail
-to advance. If a concurrent log write is sampling the tail LSN at
-the same time and subsequently writes a complete checkpoint (i.e.,
-one containing a commit record) to disk before the shutdown takes
-effect, the journal will no longer protect the dquot's last
-modification. On the next mount, log recovery will not replay the
-dquot changes, even though they were never written back to disk,
-resulting in silent data loss.
-
-Fix this by calling xfs_force_shutdown() before xfs_trans_ail_delete()
-in the out_abort path. Once the log is shut down, no new log writes
-can complete with an updated tail LSN, making it safe to remove the
-dquot item from the AIL.
-
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8de9edb35976fa56565dc8fbb5d1310e8e10187c)
 Cc: stable@vger.kernel.org
-Fixes: b707fffda6a3 ("xfs: abort consistently on dquot flush failure")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    8 +++++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    3 ++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1439,9 +1439,15 @@ xfs_qm_dqflush(
- 	return 0;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2109,6 +2109,7 @@ static ssize_t smu_v13_0_0_get_gpu_metri
+ 		(struct gpu_metrics_v1_3 *)smu_table->gpu_metrics_table;
+ 	SmuMetricsExternal_t metrics_ext;
+ 	SmuMetrics_t *metrics = &metrics_ext.SmuMetrics;
++	uint32_t mp1_ver = amdgpu_ip_version(smu->adev, MP1_HWIP, 0);
+ 	int ret = 0;
  
- out_abort:
-+	/*
-+	 * Shut down the log before removing the dquot item from the AIL.
-+	 * Otherwise, the log tail may advance past this item's LSN while
-+	 * log writes are still in progress, making these unflushed changes
-+	 * unrecoverable on the next mount.
-+	 */
-+	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
- 	xfs_trans_ail_delete(lip, 0);
--	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 	xfs_dqfunlock(dqp);
- 	return error;
- }
+ 	ret = smu_cmn_get_metrics_table(smu,
+@@ -2133,7 +2134,12 @@ static ssize_t smu_v13_0_0_get_gpu_metri
+ 					       metrics->Vcn1ActivityPercentage);
+ 
+ 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
+-	gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
++
++	if ((mp1_ver == IP_VERSION(13, 0, 0) && smu->smc_fw_version <= 0x004e1e00) ||
++	    (mp1_ver == IP_VERSION(13, 0, 10) && smu->smc_fw_version <= 0x00500800))
++		gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
++	else
++		gpu_metrics->energy_accumulator = UINT_MAX;
+ 
+ 	if (metrics->AverageGfxActivity <= SMU_13_0_0_BUSY_THRESHOLD)
+ 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPostDs;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2119,7 +2119,8 @@ static ssize_t smu_v13_0_7_get_gpu_metri
+ 					       metrics->Vcn1ActivityPercentage);
+ 
+ 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
+-	gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
++	gpu_metrics->energy_accumulator = smu->smc_fw_version <= 0x00521400 ?
++		metrics->EnergyAccumulator : UINT_MAX;
+ 
+ 	if (metrics->AverageGfxActivity <= SMU_13_0_7_BUSY_THRESHOLD)
+ 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPostDs;
 
 
 
