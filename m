@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-226274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WI2ND5KHuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:46 +0100
+	id WGbpIHGFuWkPJAIAu9opvQ
+	(envelope-from <stable+bounces-226275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768402AEA5B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26CDD2AE61D
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 127D8317C585
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32CB7302051B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C372C3F2114;
-	Tue, 17 Mar 2026 16:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586A43F23AC;
+	Tue, 17 Mar 2026 16:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyxV/IUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S95gP1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7173A3F2103;
-	Tue, 17 Mar 2026 16:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF6F3F20EA;
+	Tue, 17 Mar 2026 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765984; cv=none; b=bez1PSEftJEDuQL/sbEsgEYHCoEh5+Q6wsNfGY+JdKcvWktn0eWSB3pEyjp0VbQ5imwgZdhvfqgieoJtzNkZmcPuei6sV5Z0JGM6nA740RgPnOnJe/GFFff0Xm/EvC1K5hSJ89W3qB5QXt+nbx3iwb0QbDxEOuK0U/zgLLKyeSQ=
+	t=1773765988; cv=none; b=a3m5J56dFbrxbCJjAkamjAbQW3z+T4i5CQBQvHXOrEOBiu3OvGrCuNUtwX3Bv5N/TcWC2VxNdFgpe5qtBpYafnZK4lY3Vgss70+Puz6Hd6aMzrfsQDeaWIRHbvmmTxXDyOmNCz/nOL71YpLUsjdipHvGjukIanCDqxpN1ZXEvTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765984; c=relaxed/simple;
-	bh=W47H5bDcoBVItdOPbjzqsro59xe47r9FcTCui0VC9l0=;
+	s=arc-20240116; t=1773765988; c=relaxed/simple;
+	bh=xiIRrS9Xcri9MrZsJqAl+DVBW+EpvA2znOb5cIwBxtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1/BfYJ4/jKz82KLoGT92iL652IeErSP3oLFyMyW9K/HY9cogM4VFcuYnz/S7k1bWkMvE5NkQYJN492lJxAkyuHeq3Gc7rMHzQeGxbTrz9/FDohOOZulWNdCgVg3VFAjnDZWhQVSs68TYhkX5GCN3D4bDDZpvaqgKfjX1uRYbbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyxV/IUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA53C4CEF7;
-	Tue, 17 Mar 2026 16:46:23 +0000 (UTC)
+	 MIME-Version; b=Y6IMkOQ4naEMIiHA+ospqi3gDjqYkh3WCuc2ySEAFpXZsNXcZF2lQKIZPQyfv+jLj5QB3r3DE46ceadSTLkk0SRX6WEVdQG8nT1gJRiAJJEXxI6+PjZ4LaDChCGl5+1uYE404eIsJH5QjiMXDoIyhh5RADfMkfsTJ//5ZCEMEcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S95gP1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F7EC4CEF7;
+	Tue, 17 Mar 2026 16:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765984;
-	bh=W47H5bDcoBVItdOPbjzqsro59xe47r9FcTCui0VC9l0=;
+	s=korg; t=1773765987;
+	bh=xiIRrS9Xcri9MrZsJqAl+DVBW+EpvA2znOb5cIwBxtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyxV/IUDQiS7Y2T9J0nXFZjVsFK1SIT/dm354EcMWQvIAU+z2hrZRsHMoatIBsmcd
-	 hZJnOgSRiFChy5G5NdGH+jejOsbS0EmdRlrlVdjjVG7EyJuaEAieWova6SRm23xdup
-	 70WAKuR7H+mhyQh55E0+UI/KV+ZqR5uEmxWvph3U=
+	b=2S95gP1u1WqAIlpoWPTCpLrTRMB0GeYuO6OeZ3OdVb+RSRxL4Qt9wEwpJyzelZMvf
+	 0fkVuPGWmxhJdEOLfudCP86y/L7vaySKIDqp8nzzoo7vPKp96fpKKSZnVRVVdDkY4y
+	 svrjh1dlnyztC8n12MtrTQgbKlhw3yQf/agbwfjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Vahnenko <vahnenko2003@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 144/378] USB: ezcap401 needs USB_QUIRK_NO_BOS to function on 10gbs usb speed
-Date: Tue, 17 Mar 2026 17:31:41 +0100
-Message-ID: <20260317163012.314522580@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.19 145/378] usb: xhci: Fix memory leak in xhci_disable_slot()
+Date: Tue, 17 Mar 2026 17:31:42 +0100
+Message-ID: <20260317163012.350950766@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -65,33 +65,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226274-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226275-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 768402AEA5B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 26CDD2AE61D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,35 +98,67 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit d0d9b1f4f5391e6a00cee81d73ed2e8f98446d5f upstream.
+commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
 
-Add USB_QUIRK_NO_BOS for ezcap401 capture card, without it dmesg will show
-"unable to get BOS descriptor or descriptor too short" and "unable to
-read config index 0 descriptor/start: -71" errors and device will not
-able to work at full speed at 10gbs
+xhci_alloc_command() allocates a command structure and, when the
+second argument is true, also allocates a completion structure.
+Currently, the error handling path in xhci_disable_slot() only frees
+the command structure using kfree(), causing the completion structure
+to leak.
 
-Signed-off-by: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260313123638.20481-1-vahnenko2003@gmail.com
+Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
+frees both the command structure and the associated completion structure.
+Since the command structure is allocated with zero-initialization,
+command->in_ctx is NULL and will not be erroneously freed by
+xhci_free_command().
+
+This bug was found using an experimental static analysis tool we are
+developing. The tool is based on the LLVM framework and is specifically
+designed to detect memory management issues. It is currently under
+active development and not yet publicly available, but we plan to
+open-source it after our research is published.
+
+The bug was originally detected on v6.13-rc1 using our static analysis
+tool, and we have verified that the issue persists in the latest mainline
+kernel.
+
+We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
+Since triggering these error paths in xhci_disable_slot() requires specific
+hardware conditions or abnormal state, we were unable to construct a test
+case to reliably trigger these specific error paths at runtime.
+
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -588,6 +588,9 @@ static const struct usb_device_id usb_qu
- 	/* Alcor Link AK9563 SC Reader used in 2022 Lenovo ThinkPads */
- 	{ USB_DEVICE(0x2ce3, 0x9563), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -4146,7 +4146,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
+ 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return -ENODEV;
+ 	}
  
-+	/* ezcap401 - BOS descriptor fetch hangs at SuperSpeed Plus */
-+	{ USB_DEVICE(0x32ed, 0x0401), .driver_info = USB_QUIRK_NO_BOS },
-+
- 	/* DELL USB GEN2 */
- 	{ USB_DEVICE(0x413c, 0xb062), .driver_info = USB_QUIRK_NO_LPM | USB_QUIRK_RESET_RESUME },
- 
+@@ -4154,7 +4154,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 				slot_id);
+ 	if (ret) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return ret;
+ 	}
+ 	xhci_ring_cmd_db(xhci);
 
 
 
