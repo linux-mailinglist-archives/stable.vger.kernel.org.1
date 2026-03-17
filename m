@@ -1,379 +1,169 @@
-Return-Path: <stable+bounces-226683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KMaEwuRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:11 +0100
+	id 8PpSDVONuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558982AFD6B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919982AF578
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1481330A44D3
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:16:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41E40300B3D9
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3D02DF701;
-	Tue, 17 Mar 2026 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE082EF67A;
+	Tue, 17 Mar 2026 17:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WDZdws6o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkzzg1sD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF0E1A9B58
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 17:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767804; cv=pass; b=nQejEEXaXiHp3z8jmH5PXQkirYiH5aLLl6vJuAJH3l00zZByYFIB2mrrECrsNFxMpFee1kHw5LVqyLvyRV2YJeolvUtzCU3G5KUICHd8GfR4pQ10VV1ro15xPSsLxBaW66BGZNGINMYOBgN6S80reiNRwKV4lLwmeYKhcYTP+S0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767804; c=relaxed/simple;
-	bh=sNoN/Xh8CUgNjwW3bTkJAIWBkTvsjLmibZC6m+YJO2c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ughyWEVAvA063tH00f4hYIYEnDQ+ZVZeaGO2YxQuKPgoJoBAyXosHBYDAtRbJIWTRbe5N77Bx6QtUJV9971NkIY2BbcLsikFFhcNM+X8pt/qKYa4bTJTkpPQ0Rm7FnWcl2sC+9hxi8YhiipavOf9BUP/sJPMELYuW6ziM4nhkxY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WDZdws6o; arc=pass smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873F4225A38
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 17:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773767930; cv=none; b=f1aOBHs9X88txOJmpAeyT8MFiESo+CMoeKwcbtI3JTj1dirOn3jf0XqfpIjxaSVeKYdnllW6v1z6K/+ELfzBM3IF30kVr7H7c6FxGcUpbySi6Cp5mF4KjZU0y8AnVMqEjkV2e8FaFuF4epzbRcFBz+XXmGnKgMh1fYd7g8NN/RQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773767930; c=relaxed/simple;
+	bh=kX7K390Kjaem5bLOf92D3wE4xJDNY5+Fx3b9Q7pUlq4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jSp6zI6YAn+sacoCmxXqtrksqIqxFSb1Fv2t9rqElJKpvHwqta3OjyWXNXWbmOuUrLFpfr/Ngevz8e7dvqZaPqV8SeGuDO1NvSVkvk2yhrXGjL/qXm1xWhHfU2e4QVVFKCflSyxhv/NQLk/9+N2KS9IVb6WIuNnFORY32kkXGHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sobrie.be; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkzzg1sD; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sobrie.be
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ad46a44easo5814797d50.0
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:16:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773767802; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NYp32XocZhpoFzUe6mXFTjJPVB1jJyKM64Wbd75gm/m8bM6ILfhWK8ULrIJoSo3RfD
-         vnwNdSUu9U/JZWaH6SkVoNH8l5yEbw3PYJmC3Q0jatUHxsei45wFgqxa2ZA6zMuUGf2o
-         W4l4UeSoFNQFdii/hj8u29LpFsYT+mN11LrhRCKhh+Y4ylryXmyO+8nS6uHCxXN14LuR
-         6reWG46FbuTs8EZv89/Z4nXJKYp1V/4H++/X5dI2uekcrdqHY2HFanQtIpm7R6jdEMNg
-         WlRTnqASt8CM6bPZ4/IVfvBu/YvpZR161QqwbP8sUJJ5mqcHSD+GCNrKDw6sy9/gkR6F
-         UFdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q2zAeBs9zo2lv0T0WIuTbdsujf/BJxEymoy13o+3BzM=;
-        fh=26qpZgdmBTqf9rVy6boG4MyjUn5xmx5xISTRHpeUM6g=;
-        b=dly1CPzkg9G6QUgBCSFQIvbQdfedtQVnWw5bX9Y8+yLmlu255JBEmpOq6VwowvPxed
-         UrFMKmynScK+Qo5oZ/CcEKQPxaXBo4vts7xxoDcqst8xSaBY9zodpuZ00v5Cxp7Q5yl+
-         uIjyMCKO0Em7tZcWFQKULos/KPGaetcEOSnRa22bK5xWJl2vfwhahlmOUpjidFW3GXXG
-         ayQuo8Cxgwv83N1EiUZyzKptcRcSKwCKXHvDQqrega010Ps1ugLPfGK9M5lk++xH4gD+
-         rKS2SvLOMKclfHs38rTtfbMRzE/jFBuXn1qLjJEtlEjTdDMlzZmLyzz8M2GO3CReXwA7
-         UcTw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b97a9f4b4dcso353349366b.3
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 10:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773767802; x=1774372602; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q2zAeBs9zo2lv0T0WIuTbdsujf/BJxEymoy13o+3BzM=;
-        b=WDZdws6oWYibPv8VCzNsED4TQ3bvSZKG1FPSWVALzrEK94AumASStnR3Y/5H6Ep+oe
-         TMLNDjLxtYz8W2Wl/9Ek+o3kjMKzUw0WbbnfWZZ+HMSvG7GJbnyrtFrx7238XdJ02Vxq
-         9JXeKCQoKHJ1AFlpqSCXIUIhdL365yGnFI5qkPhXPscH1+Nh9SrhCkkunYNmnz67ICxG
-         mdQ+sYL/bXC36O1wyH9tB2/2gD1fqhJDqidmMXB9WNUM4PsjyNOFEB/GMY17HyP4Pmzc
-         UVImJWPJHEbsngz5n/YcloejxX/AOsEu3sSg4YhRGEPShejurxuI/zO0+4VrmS/8BvmS
-         vtzA==
+        d=gmail.com; s=20230601; t=1773767927; x=1774372727; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=x+NNnq7TQZcUH92fhtXl669qaHmWjEo80sBNFHMpXaQ=;
+        b=dkzzg1sDO431Qf7QBVZj/TBfI48o5Wc3B8O2OPayLUJ7lgn3zki4oCwpDw39QHTVD2
+         33M9iw2Bbos+dA/sM4u/9uCShWfDumSpZb+B81ZrWBC8IGanEvR/VKE8v4jt5HE5gRpf
+         sMh0+riMINMrgrz9zZS6DG5oYA2/Gp4EPqz3CLLFI7TRFIpyBjqiHmTA5vHU6gSOkw5W
+         KMHRnhLeOz3HBQbPYYDvlIzFqk1hXC9USaJwJww7IOY5uPD/QIeSWGPkErqjUjl7+4N9
+         JfCP5QKKx2dYuTX+7VTIAbtBdx1z4VWUjDLzB+PU05tcFmxUnEspWigNDTck8uXJSs+u
+         lh1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773767802; x=1774372602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q2zAeBs9zo2lv0T0WIuTbdsujf/BJxEymoy13o+3BzM=;
-        b=TFnMMD9dvw7indoZdFJwxnxN8rEmFX5c2e36EP3+qFw4fSGVnE4SBxC1idlMmXBFrI
-         9bRdKlcPWUhO/5wv+vRAVL7OIrxzLnmkGifGgcwbBELV+PQtyXTtYSbRg/tCRwrzuXeK
-         naOcU7rDkBrMFr4o1Q8udUfT5AIh7Fy8aNNooqQOUdlDkpj3idOaMEhX8ztGIwrAYeeL
-         Xt+TlhK/tBIIbklOaA5dcnpJwcx81/nrhPFDQq9wax50+wGq8XsykWtLDTvZSeyCFJsE
-         mBLdzHLXnvGlw835eMuRy5Zo4oXozB1iXANW5muOCaldrsbHIH37F7v9/ElMtxmDqOjM
-         HOSg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/LwGhKMK7DuVCb6LPfkehnnAsX4gFq8ha4nZbKZA9yk7m9Y+XygGAFlvdwc/su1YVlg+xzHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl34a8hUfY4+qsC7ssbVSR3sG0ZFQicKaZpBXuNqBh3/3jFhFb
-	8Mmgs6d70h2teDcXuxPf8H1AmCtvh3N4lhuQ1bH572QvGkvrqpXCQl3WtKjEViMg1+UT7dl1WoF
-	MKgP9eUCyV8Q+30gEW7ixw9V3sUjS1tA=
-X-Gm-Gg: ATEYQzy4AfkLf7FZujmFZvvcHE+QMP2UEnCIyXW7X5k0msSmvzeXtmKYKk7b4hC85Md
-	SKkiyyfSHgQEmcfk6Siq66bhqt65qE6hxRpMS/m7LC4YiwdcvsX/4tfufFBJn1cp/FATTD4Xngt
-	mmjxG1RSNN51/dVbn6p4ox0Qd04eX3/MSqlv+JBQV3SLUw9RpRFw55/SnxxrLFaS0PD4SMM7VEr
-	gzm4/oa0kA6iCQ9micZbFQCNF7G880wt1zcDKA6oKDj4TWlCZawGuYidVd1yw10rqJs2rTirE0s
-	Yq2AVv0vA/mFaJI2hhVl
-X-Received: by 2002:a53:be4b:0:b0:649:b31e:8f4e with SMTP id
- 956f58d0204a3-64e91619389mr343424d50.70.1773767801490; Tue, 17 Mar 2026
- 10:16:41 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773767927; x=1774372727;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x+NNnq7TQZcUH92fhtXl669qaHmWjEo80sBNFHMpXaQ=;
+        b=NyXMcN3Hbj2tj+FSh2NzkoQA1m7HBxYR0buWIZ57hSXp3B2mFcEYhOlxph2tmOMoTu
+         52h5kfp7thAqxdA5CIigu6B4SuqGUNy2ZdVf2y1IEO/6tEyfd013lfoN7MBu+pMSczIj
+         PIsYoaNMso5mWwl/mT0f9OYbfwtHTx+GDvcrQ9oY+WwpLa3gpVtnh6MG0rmmIgDfTM2s
+         Na+cU+9SLSiyZMmXH3/GxVwRTcpIBHFHBuhya+KhImTBj8H9iVyi/qlVtw3V3plqfszl
+         3AmjKzsGsRPpTS7pS47gal+HIoBu2jnc1/AaP8LZk8ROeLb8c9pFumhLMryC+JBm4f00
+         gjwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdMp6NDIbv0px1TvvBj4G5TOcHLTLW8AOqOFBxUUIsPW27oBww/1z7xX1YYZHT5uIBsO+00+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwykUmg+nV7k4+JscJ6S6k1Ix/ElKX4jy23cTKENj6JPJTfX5tz
+	XVLgGym27w8wEib4KbnVMeQzt6cYy8uHBdOIsglqhMbAxR7V/AYW795V
+X-Gm-Gg: ATEYQzwahodlHG3MvX60j5SOSB5YzNjg88nR+ALNfQEgar0YiDqo8nACDVETQF7yH1v
+	o34rT/4NvTMhtmN0HGvW7c884CvTnKDVELYxnuAaIsob8HlabuSq6SFnq3mKde4hZXvv1LVGO5p
+	U5mQ4lvaWwjQLTm8cdpRfum3k0wLbZgZ5v/TvAlrTCFYCY7yuOpoamSr1S6QOkLe8MxEDxAJm0a
+	QFFDP6zxlVxUKkn/5g2k7WHj72xO8w/Aqy+wciCcopFerAl/8PDjvgAysNKXmvjMeGqDIxSHVzf
+	lDozVNK5KYC8n48K5FZN6UcIdiE/FTkBrd7DilWod1d3tjW+qqGBK4xj2DJYchbm4B8RoRtXyn3
+	Depd6cjgMNYqXsTGgtQx6UrqDoB2hp8x56cPOw6EgbRIJrKrbO0tis/AOG9lz+wqVRM3/+SN3zf
+	gs4gIPeOG/MH563nxXaaq6d+xfwqGhlf/xWh3h7ER8
+X-Received: by 2002:a17:906:7955:b0:b97:6a2a:405b with SMTP id a640c23a62f3a-b976a2a48dcmr951610866b.37.1773767926595;
+        Tue, 17 Mar 2026 10:18:46 -0700 (PDT)
+Received: from localhost ([2a02:a03f:b7dc:2b00:a97a:8551:7733:cb60])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97f13edad8sm23641566b.6.2026.03.17.10.18.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 10:18:46 -0700 (PDT)
+Sender: Olivier Sobrie <olivier.sobrie@gmail.com>
+From: Olivier Sobrie <olivier@sobrie.be>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Michal Simek <michal.simek@amd.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Andrea Scian <andrea.scian@dave.eu>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mtd: rawnand: pl353: make sure optimal timings are applied
+Date: Tue, 17 Mar 2026 18:18:07 +0100
+Message-ID: <20260317171807.652642-1-olivier@sobrie.be>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260315-bpf-kmalloc-nolock-v3-1-91c72bf91902@outlook.com>
- <CAMB2axN9xYPzAJVQVywx3sxYa5ViRxt2oktt1LFXsSD_XsuJrA@mail.gmail.com> <SY0P300MB07691E08E5283FE074C81BE2C641A@SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM>
-In-Reply-To: <SY0P300MB07691E08E5283FE074C81BE2C641A@SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Tue, 17 Mar 2026 10:16:29 -0700
-X-Gm-Features: AaiRm51gOU8njsC2VoBSF2OL4VzOChb4st-LR63ZRP8xg4-IJKtd30ho-twlx18
-Message-ID: <CAMB2axOw_qZQ2ksTPSVb7LqAGv1sxjA9u+EyfE8ygd4Rxa9BGw@mail.gmail.com>
-Subject: Re: [PATCH bpf v3] bpf: do not use kmalloc_nolock when !HAVE_CMPXCHG_DOUBLE
-To: Levi Zim <rsworktech@outlook.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, stable@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-226715-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-226683-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ameryhung@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,google.com,linutronix.de,goodmis.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,lists.infradead.org,vger.kernel.org,lists.linux.dev];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[sobrie.be];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[olivier@sobrie.be,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,patchew.org:url]
-X-Rspamd-Queue-Id: 558982AFD6B
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sobrie.be:email,sobrie.be:mid]
+X-Rspamd-Queue-Id: 919982AF578
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 16, 2026 at 5:40=E2=80=AFPM Levi Zim <rsworktech@outlook.com> w=
-rote:
->
->
->
-> On 3/17/26 3:53 AM, Amery Hung wrote:
-> > On Sat, Mar 14, 2026 at 9:02=E2=80=AFAM Levi Zim via B4 Relay
-> > <devnull+rsworktech.outlook.com@kernel.org> wrote:
-> >>
-> >> From: Levi Zim <rsworktech@outlook.com>
-> >>
-> >> kmalloc_nolock always fails for architectures that lack cmpxchg16b.
-> >> For example, this causes bpf_task_storage_get with flag
-> >> BPF_LOCAL_STORAGE_GET_F_CREATE to fails on riscv64 6.19 kernel.
-> >>
-> >> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-> >> But leave the PREEMPT_RT case as is because it requires kmalloc_nolock
-> >> for correctness. Add a comment about this limitation that architecture=
-'s
-> >> lack of CMPXCHG_DOUBLE combined with PREEMPT_RT could make
-> >> bpf_local_storage_alloc always fail.
-> >
-> > Let's not do this.
-> >
-> > This re-introduces deadlock to local storage. In addition, local
-> > storage will switch to using kmalloc_nolock() entirely.
->
-> I noticed the PREEMPT_RT case needs kmalloc_nolock for correctness and di=
-dn't
-> disable kmalloc_nolock in that code path when !HAVE_CMPXCHG_DOUBLE.
->
+Timings of the nand are adjusted by pl35x_nfc_setup_interface() but
+actually applied by the pl35x_nand_select_target() function.
+If there is only one nand chip, the pl35x_nand_select_target() will only
+apply the timings once since the test at its beginning will always be true
+after the first call to this function. As a result, the hardware will
+keep using the default timings set at boot to detect the nand chip, not
+the optimal ones.
 
-It is also not correct to use kmalloc() on !PREEMPT_RT. A BPF program
-in NMI or tracing kmalloc internal that tries to allocate memory for
-local storage can deadlock.
+With this patch, we program directly the new timings when
+pl35x_nfc_setup_interface() is called.
 
-> But in the original series [1], It appears that switching to kmalloc_nolo=
-ck
-> is purely for performance benefits and not for fixing deadlocks in local =
-storage.
-> And I didn't see any "Fixes" tag in [1].
->
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Olivier Sobrie <olivier@sobrie.be>
+Cc: stable@vger.kernel.org
+---
+Changes in v2:
+  - added Fixes tag.
+  - added stable in Cc.
 
-There is no deadlock issue with BPF memory allocator and
-kmalloc_nolock(). For context, the patch you are referencing is part
-of a series of refactoring to
-- Move from BPF memory allocator to kmalloc_nolock() [1]
-- Remove percpu busy lock [2]
+ drivers/mtd/nand/raw/pl35x-nand-controller.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Please refer to the cover letter for the motivation and changes made
+diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+index 947fd86ac5fa..f2c65eb7a8d9 100644
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -862,6 +862,9 @@ static int pl35x_nfc_setup_interface(struct nand_chip *chip, int cs,
+ 			  PL35X_SMC_NAND_TAR_CYCLES(tmgs.t_ar) |
+ 			  PL35X_SMC_NAND_TRR_CYCLES(tmgs.t_rr);
+ 
++	writel(plnand->timings, nfc->conf_regs + PL35X_SMC_CYCLES);
++	pl35x_smc_update_regs(nfc);
++
+ 	return 0;
+ }
+ 
+-- 
+2.53.0
 
-[1] https://lore.kernel.org/bpf/20251112175939.2365295-1-ameryhung@gmail.co=
-m/
-[2] https://lore.kernel.org/bpf/20260205222916.1788211-1-ameryhung@gmail.co=
-m/
-
-
-> Could you provide a more detailed explanation? Thanks!
->
-> [1]: https://lore.kernel.org/all/20251114201329.3275875-1-ameryhung@gmail=
-.com/
->
-> > For riscv hardware without zacas extension, I think a workaround with
-> > some performance overhead is to enable CONFIG_SLUB_DEBUG and
-> > slub_debug options.
->
-> There is a patch [2] that enables HAVE_CMPXCHG_DOUBLE for riscv so I thin=
-k
-> it will not be a problem for riscv in the future, even for hardware witho=
-ut zacas
-> extension because the kernel has fallback implementation for zacas.
->
-> However, this would still be an issue for other architectures. Currently =
-only
-> x86, arm64, s390 and loongarch have HAVE_CMPXCHG_DOUBLE in 7.0-rc4.
-> I don't think letting users enable slub_debug would be a reasonable worka=
-round.
->
-> [2]: https://patchew.org/linux/20260220074449.8526-1-mssola@mssola.com/
->
-> Best regards,
-> Levi
->
-> >>
-> >> Fixes: f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_n=
-olock() in local storage")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Levi Zim <rsworktech@outlook.com>
-> >> ---
-> >> I find that bpf_task_storage_get with flag BPF_LOCAL_STORAGE_GET_F_CRE=
-ATE
-> >> always fails for me on 6.19 kernel on riscv64 and bisected it.
-> >>
-> >> In f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_noloc=
-k()
-> >> in local storage"), bpf memory allocator is replaced with kmalloc_nolo=
-ck.
-> >> This approach is problematic for architectures that lack CMPXCHG_DOUBL=
-E
-> >> because kmalloc_nolock always fails in this case:
-> >>
-> >> In function kmalloc_nolock (kmalloc_nolock_noprof):
-> >>
-> >>         if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
-> >>                 /*
-> >>                  * kmalloc_nolock() is not supported on architectures =
-that
-> >>                  * don't implement cmpxchg16b, but debug caches don't =
-use
-> >>                  * per-cpu slab and per-cpu partial slabs. They rely o=
-n
-> >>                  * kmem_cache_node->list_lock, so kmalloc_nolock() can
-> >>                  * attempt to allocate from debug caches by
-> >>                  * spin_trylock_irqsave(&n->list_lock, ...)
-> >>                  */
-> >>                 return NULL;
-> >>
-> >> Fix it by enabling use_kmalloc_nolock only when HAVE_CMPXCHG_DOUBLE.
-> >> (But not for a PREEMPT_RT case as explained in the comment and commitm=
-sg)
-> >>
-> >> Note for stable: this only needs to be picked into v6.19 if the patch
-> >> makes it into 7.0.
-> >> ---
-> >> Changes in v3:
-> >> - Use macro instead of const static variable to avoid triggering
-> >>   warnings.
-> >> - Wrap lines at 80 columns
-> >> - Link to v2: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v2=
--1-576e33e4fa67@outlook.com
-> >>
-> >> Changes in v2:
-> >> - Drop the modification to the PREEMPT_RT case as it requires
-> >>   kmalloc_nolock for correctness.
-> >> - Add a comment to the PREEMPT_RT case about the limitation when
-> >>   not HAVE_CMPXCHG_DOUBLE but enables PREEMPT_RT.
-> >> - Link to v1: https://lore.kernel.org/r/20260314-bpf-kmalloc-nolock-v1=
--1-24abf3f75a9f@outlook.com
-> >> ---
-> >>  include/linux/bpf_local_storage.h | 1 +
-> >>  kernel/bpf/bpf_cgrp_storage.c     | 3 ++-
-> >>  kernel/bpf/bpf_local_storage.c    | 4 ++++
-> >>  kernel/bpf/bpf_task_storage.c     | 3 ++-
-> >>  4 files changed, 9 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/include/linux/bpf_local_storage.h b/include/linux/bpf_loc=
-al_storage.h
-> >> index 8157e8da61d40..d8f2c5d63a80e 100644
-> >> --- a/include/linux/bpf_local_storage.h
-> >> +++ b/include/linux/bpf_local_storage.h
-> >> @@ -18,6 +18,7 @@
-> >>  #include <asm/rqspinlock.h>
-> >>
-> >>  #define BPF_LOCAL_STORAGE_CACHE_SIZE   16
-> >> +#define KMALLOC_NOLOCK_SUPPORTED IS_ENABLED(CONFIG_HAVE_CMPXCHG_DOUBL=
-E)
-> >>
-> >>  struct bpf_local_storage_map_bucket {
-> >>         struct hlist_head list;
-> >> diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_stora=
-ge.c
-> >> index c2a2ead1f466d..cd18193c44058 100644
-> >> --- a/kernel/bpf/bpf_cgrp_storage.c
-> >> +++ b/kernel/bpf/bpf_cgrp_storage.c
-> >> @@ -114,7 +114,8 @@ static int notsupp_get_next_key(struct bpf_map *ma=
-p, void *key, void *next_key)
-> >>
-> >>  static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
-> >>  {
-> >> -       return bpf_local_storage_map_alloc(attr, &cgroup_cache, true);
-> >> +       return bpf_local_storage_map_alloc(attr, &cgroup_cache,
-> >> +                                          KMALLOC_NOLOCK_SUPPORTED);
-> >>  }
-> >>
-> >>  static void cgroup_storage_map_free(struct bpf_map *map)
-> >> diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_sto=
-rage.c
-> >> index 9c96a4477f81a..a6c240da87668 100644
-> >> --- a/kernel/bpf/bpf_local_storage.c
-> >> +++ b/kernel/bpf/bpf_local_storage.c
-> >> @@ -893,6 +893,10 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
-> >>         /* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
-> >>          * preemptible context. Thus, enforce all storages to use
-> >>          * kmalloc_nolock() when CONFIG_PREEMPT_RT is enabled.
-> >> +        *
-> >> +        * However, kmalloc_nolock would fail on architectures that do=
- not
-> >> +        * have CMPXCHG_DOUBLE. On such architectures with PREEMPT_RT,
-> >> +        * bpf_local_storage_alloc would always fail.
-> >>          */
-> >>         smap->use_kmalloc_nolock =3D IS_ENABLED(CONFIG_PREEMPT_RT) ? t=
-rue : use_kmalloc_nolock;
-> >>
-> >> diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_stora=
-ge.c
-> >> index 605506792b5b4..6e8597edea314 100644
-> >> --- a/kernel/bpf/bpf_task_storage.c
-> >> +++ b/kernel/bpf/bpf_task_storage.c
-> >> @@ -212,7 +212,8 @@ static int notsupp_get_next_key(struct bpf_map *ma=
-p, void *key, void *next_key)
-> >>
-> >>  static struct bpf_map *task_storage_map_alloc(union bpf_attr *attr)
-> >>  {
-> >> -       return bpf_local_storage_map_alloc(attr, &task_cache, true);
-> >> +       return bpf_local_storage_map_alloc(attr, &task_cache,
-> >> +                                          KMALLOC_NOLOCK_SUPPORTED);
-> >>  }
-> >>
-> >>  static void task_storage_map_free(struct bpf_map *map)
-> >>
-> >> ---
-> >> base-commit: e06e6b8001233241eb5b2e2791162f0585f50f4b
-> >> change-id: 20260314-bpf-kmalloc-nolock-60da80e613de
-> >>
-> >> Best regards,
-> >> --
-> >> Levi Zim <rsworktech@outlook.com>
-> >>
-> >>
->
 
