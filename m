@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-226236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHaSGb+GuWncJAIAu9opvQ
-	(envelope-from <stable+bounces-226236-lists+stable=lfdr.de@vger.kernel.org>)
+	id 8DbRIL+GuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226237-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34632AE8E1
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5022AE8E2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47E38315E450
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7641E315F190
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9280F3ED5C7;
-	Tue, 17 Mar 2026 16:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68DA3EE1C1;
+	Tue, 17 Mar 2026 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HisNgucZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNrW6WrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C5736C0B9;
-	Tue, 17 Mar 2026 16:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA0C3446DA;
+	Tue, 17 Mar 2026 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765840; cv=none; b=o8An2UV5G9i0KzF0axvYDn+e8l74Mg/NzkE1Ikw6hom3QZqzr+gXwkqqLti791M+HqeZbFJj/tDL1PLhmTADsdWst/rzmTtJD0Ktu6OyfqtrCP5H1g79Z0JwoXbO4/RaNIJlEMQRaA1plE1CO5193LpByFkuk+xtknEcBPiOjbI=
+	t=1773765844; cv=none; b=Q+Nq+zUqiBlK51x3b6djKEroFKhaVAzEIFioOZTf4/IU9LHvFgPJQH6Y5J8BDYGtOe42ab+qn/kXY8Tbv/Df5+JA/WvaCezrrN0L34e0Yw2rfQRPF93gbm6OG/wyb3EPOeFAE3pcwABb3vNn8NEPgBdy5EGax3N4CHp/a0UKtmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765840; c=relaxed/simple;
-	bh=73UDHyLNPfxZ54E8bT9dhdd+OQRSs7ACpmRBFjCA5LU=;
+	s=arc-20240116; t=1773765844; c=relaxed/simple;
+	bh=bS1KdViKttQBjCOS2EGp5dqCK3fXu78TcCm62RvcWc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWAzEUvD9EB57kb0KnFH1TaUFPjbts8SrZRtBTXtSPGYdj2D7m5CpxyEHrKTe+OHI3haxErqxPMuUyznSfm6d7fdJLzv7bG0Oc67r38bpng/smbZVXxU3fb4jDLw/UMS5mx9jbwcFM/cVR6WlZEgChWRj/iRrH1z6pnXxT7BA3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HisNgucZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A233C4CEF7;
-	Tue, 17 Mar 2026 16:43:59 +0000 (UTC)
+	 MIME-Version; b=FSzDr4uQC5k3M2IzjQgPWfSqwvMSnPPEFYWyOzPpxq7l5SwysMO61aS9ps9ASui7wweJegEMmLHc1gwycQMJ4RGYZ6pCaaVvnUz0XR8vrEmQ5/9ydSOpqDJt2ubJnfW6ha3kAZmTqpiT2kkwuYcUn+nDK8CkHylQl4UJVBe8wE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNrW6WrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEDDC4CEF7;
+	Tue, 17 Mar 2026 16:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765840;
-	bh=73UDHyLNPfxZ54E8bT9dhdd+OQRSs7ACpmRBFjCA5LU=;
+	s=korg; t=1773765844;
+	bh=bS1KdViKttQBjCOS2EGp5dqCK3fXu78TcCm62RvcWc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HisNgucZp3KTrws6P8Wnqbehv4WD+zmQimDt2QBYv8wLouZpwbSqEM+kA5h6zkvvh
-	 oOO0099Yjp5CA0cbGBC/fs5lky84Ms3mJsqpVTRjhcDaUkF70179aB68vKE2J1z3Do
-	 LhIp7+AoSnyJhQ4VEWzGvrO0fnAKYw4+Qwd4fPns=
+	b=uNrW6WrRHzl9UMpqXrBWYXJI8kz6JSGBMSSkHCNp3PbI9A6OnazY3Vx/zRkEMYdcE
+	 0L/TS63WWX1Mql05pq/OQCEmZ5zKQu67qWSVNfNycUbk5qsj1ck9VbWsFROZfibU4X
+	 R14/ABrJB6u2AN5Xs9Or98TxZRmHrrHm4SAHmwMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
+	Chintan Vankar <c-vankar@ti.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 107/378] net/mana: Null service_wq on setup error to prevent double destroy
-Date: Tue, 17 Mar 2026 17:31:04 +0100
-Message-ID: <20260317163010.953287624@linuxfoundation.org>
+Subject: [PATCH 6.19 108/378] net: ethernet: ti: am65-cpsw-nuss: Fix rx_filter value for PTP support
+Date: Tue, 17 Mar 2026 17:31:05 +0100
+Message-ID: <20260317163010.990084398@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -70,31 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:query timed out];
-	TAGGED_FROM(0.00)[bounces-226236-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-226237-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: F34632AE8E1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email]
+X-Rspamd-Queue-Id: CA5022AE8E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,38 +99,97 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Shiraz Saleem <shirazsaleem@microsoft.com>
+From: Chintan Vankar <c-vankar@ti.com>
 
-[ Upstream commit 87c2302813abc55c46485711a678e3c312b00666 ]
+[ Upstream commit 840c9d13cb1ca96683a5307ee8e221be163a2c1e ]
 
-In mana_gd_setup() error path, set gc->service_wq to NULL after
-destroy_workqueue() to match the cleanup in mana_gd_cleanup().
-This prevents a use-after-free if the workqueue pointer is checked
-after a failed setup.
+The "rx_filter" member of "hwtstamp_config" structure is an enum field and
+does not support bitwise OR combination of multiple filter values. It
+causes error while linuxptp application tries to match rx filter version.
+Fix this by storing the requested filter type in a new port field.
 
-Fixes: f975a0955276 ("net: mana: Fix double destroy_workqueue on service rescan PCI path")
-Signed-off-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260309172443.688392-1-kotaranov@linux.microsoft.com
+Fixes: 97248adb5a3b ("net: ti: am65-cpsw: Update hw timestamping filter for PTPv1 RX packets")
+Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Link: https://patch.msgid.link/20260310160940.109822-1-c-vankar@ti.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 16 +++++++++-------
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h |  2 +-
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 3926d18f1840b..cbea0ea242c26 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1934,6 +1934,7 @@ static int mana_gd_setup(struct pci_dev *pdev)
- 	mana_gd_remove_irqs(pdev);
- free_workqueue:
- 	destroy_workqueue(gc->service_wq);
-+	gc->service_wq = NULL;
- 	dev_err(&pdev->dev, "%s failed (error %d)\n", __func__, err);
- 	return err;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 9679180504330..265ce5479915f 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1351,7 +1351,7 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
+ 	ndev_priv = netdev_priv(ndev);
+ 	am65_cpsw_nuss_set_offload_fwd_mark(skb, ndev_priv->offload_fwd_mark);
+ 	skb_put(skb, pkt_len);
+-	if (port->rx_ts_enabled)
++	if (port->rx_ts_filter)
+ 		am65_cpts_rx_timestamp(common->cpts, skb);
+ 	skb_mark_for_recycle(skb);
+ 	skb->protocol = eth_type_trans(skb, ndev);
+@@ -1811,11 +1811,14 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 
+ 	switch (cfg->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+-		port->rx_ts_enabled = false;
++		port->rx_ts_filter = HWTSTAMP_FILTER_NONE;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
++		port->rx_ts_filter = HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+@@ -1825,8 +1828,8 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+-		port->rx_ts_enabled = true;
+-		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
++		port->rx_ts_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
++		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+ 		break;
+ 	case HWTSTAMP_FILTER_ALL:
+ 	case HWTSTAMP_FILTER_SOME:
+@@ -1863,7 +1866,7 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
+ 		ts_ctrl |= AM65_CPSW_TS_TX_ANX_ALL_EN |
+ 			   AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN;
+ 
+-	if (port->rx_ts_enabled)
++	if (port->rx_ts_filter)
+ 		ts_ctrl |= AM65_CPSW_TS_RX_ANX_ALL_EN |
+ 			   AM65_CPSW_PN_TS_CTL_RX_VLAN_LT1_EN;
+ 
+@@ -1888,8 +1891,7 @@ static int am65_cpsw_nuss_hwtstamp_get(struct net_device *ndev,
+ 	cfg->flags = 0;
+ 	cfg->tx_type = port->tx_ts_enabled ?
+ 		      HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
+-	cfg->rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
+-			HWTSTAMP_FILTER_PTP_V1_L4_EVENT : HWTSTAMP_FILTER_NONE;
++	cfg->rx_filter = port->rx_ts_filter;
+ 
+ 	return 0;
  }
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+index 917c37e4e89bd..7750448e47468 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+@@ -52,7 +52,7 @@ struct am65_cpsw_port {
+ 	bool				disabled;
+ 	struct am65_cpsw_slave_data	slave;
+ 	bool				tx_ts_enabled;
+-	bool				rx_ts_enabled;
++	enum hwtstamp_rx_filters	rx_ts_filter;
+ 	struct am65_cpsw_qos		qos;
+ 	struct devlink_port		devlink_port;
+ 	struct bpf_prog			*xdp_prog;
 -- 
 2.51.0
 
