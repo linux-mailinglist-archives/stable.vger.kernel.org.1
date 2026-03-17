@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIAyBo6SuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:38 +0100
+	id kIKqEPaIuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EDE2B0059
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:42:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829FF2AECF2
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B11BB32C6040
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:17:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E3E3E3044250
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BD828B7DB;
-	Tue, 17 Mar 2026 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5190E2DE70D;
+	Tue, 17 Mar 2026 16:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6oAJlEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcI3dEV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76BC23D7E3;
-	Tue, 17 Mar 2026 17:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1344A3F23B3;
+	Tue, 17 Mar 2026 16:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767851; cv=none; b=Dfrb5h9ELrES3F1f6w4nUzDoZFeZZGuFE+Lb3yTUFwFX44mAz6BnGU3whTLBpyI8DOPTvVYe7zpGVyLY9aB19L56xb5q2LDx/eSfZr+56bG7ZxPmuJhH0Vyfa2YPQMwQ1naAP+iHV5Q7iRXIhOdD0s4Bk93TIi0aC+GA49T9Tvs=
+	t=1773766416; cv=none; b=TTyP+nIQOUQP1fQoRgRB22poFpGXrrMJqqptT0CLz+3tAV5/eGW1M0g74hY1Zp/G765l0peQyAj6yYVeJAFqplZSD9zBXbXJ2ZLoCZdyrDwnZTD/YIkVS6IPHdluETICcHl0sFcWKbE2KOyyKwPPKUw6s7Js+TSSNtAlEKi1UU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767851; c=relaxed/simple;
-	bh=iOena1xMNUHH+eSf9krs65TLnRlIKwYc+hb5RGRA1BU=;
+	s=arc-20240116; t=1773766416; c=relaxed/simple;
+	bh=gg35ijGjjfzG+Ra+9O2J1+eWkB1YT7MYfsIYexso43k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovN+/Zuj5F1QNdHOBdvSpXutQS+8FZABgKAe7oMp1sfS/+EwKZFKwMLDAxNsr2BBc+2P8bDx86lmeq/2HbLK9VMHIX+4Sgz+t7qKzLBBt+cu6r+3ZvWvsLpkZh27DouQDdBjC5bLaywAc3Q+iQ4qokOBvLD5QEcxekucuAsv+xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6oAJlEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D62CC4CEF7;
-	Tue, 17 Mar 2026 17:17:29 +0000 (UTC)
+	 MIME-Version; b=XQPvlQ7FC5VRdbbIdfNdJ8/L/85T5ygLCV73UwwKKiIpx9pa1Xu6xEsta39MqEhUcn0fdeGSr0dPH7Y1R+bgFUB6dXn00Qh/HknSBT3UuAJmd4jSjW8H9UUFS64lyxbrlecNO3hFijGwvQBIWlUZBrg2Hioobz+U/myRRrepw/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcI3dEV/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC14FC19424;
+	Tue, 17 Mar 2026 16:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767850;
-	bh=iOena1xMNUHH+eSf9krs65TLnRlIKwYc+hb5RGRA1BU=;
+	s=korg; t=1773766416;
+	bh=gg35ijGjjfzG+Ra+9O2J1+eWkB1YT7MYfsIYexso43k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6oAJlEX01hvJ6eaqxog78NcMTl8/BRwEYYf0a4Ny2UNUWYIB6ZwaqiXWLXpXR8aG
-	 brY6ClvHsrxbait6fWjJCtZhDodnaFMJuAtg0/2vj27elLDro3gp/WQIEykWpp9KIy
-	 4LfDZpVxlL/2dEoPYSoAEalHwCuMpIRn7NcrhU4Y=
+	b=CcI3dEV/7MwHrWDky1kl3p4GA9ErVuIWjoAKy8+iXavWqRT/KJ2jCQaK8RHkaUY0I
+	 4wC9bRaFw+IfmYLiD2oU597yhDSLtDTuorfrT9kB5h4WFgkm4a9nR6ft5w1+puCNra
+	 dJ81J3ZM6hIE4AT89cFHSFoWMBwPSd2+f65eEUJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 170/333] ceph: fix i_nlink underrun during async unlink
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.19 242/378] iomap: reject delalloc mappings during writeback
 Date: Tue, 17 Mar 2026 17:33:19 +0100
-Message-ID: <20260317163005.663862767@linuxfoundation.org>
+Message-ID: <20260317163015.920291346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,156 +67,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226694-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226374-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RSPAMD_EMAILBL_FAIL(0.00)[brauner.kernel.org:query timed out];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ionos.com:email]
-X-Rspamd-Queue-Id: 92EDE2B0059
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,lst.de:email]
+X-Rspamd-Queue-Id: 829FF2AECF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
+commit d320f160aa5ff36cdf83c645cca52b615e866e32 upstream.
 
-During async unlink, we drop the `i_nlink` counter before we receive
-the completion (that will eventually update the `i_nlink`) because "we
-assume that the unlink will succeed".  That is not a bad idea, but it
-races against deletions by other clients (or against the completion of
-our own unlink) and can lead to an underrun which emits a WARNING like
-this one:
+Filesystems should never provide a delayed allocation mapping to
+writeback; they're supposed to allocate the space before replying.
+This can lead to weird IO errors and crashes in the block layer if the
+filesystem is being malicious, or if it hadn't set iomap->dev because
+it's a delalloc mapping.
 
- WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
- Modules linked in:
- CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
- Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
- pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : drop_nlink+0x50/0x68
- lr : ceph_unlink+0x6c4/0x720
- sp : ffff80012173bc90
- x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
- x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
- x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
- x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
- x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
- x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
- x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
- x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
- x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
- Call trace:
-  drop_nlink+0x50/0x68 (P)
-  vfs_unlink+0xb0/0x2e8
-  do_unlinkat+0x204/0x288
-  __arm64_sys_unlinkat+0x3c/0x80
-  invoke_syscall.constprop.0+0x54/0xe8
-  do_el0_svc+0xa4/0xc8
-  el0_svc+0x18/0x58
-  el0t_64_sync_handler+0x104/0x130
-  el0t_64_sync+0x154/0x158
+Fix this by failing writeback on delalloc mappings.  Currently no
+filesystems actually misbehave in this manner, but we ought to be
+stricter about things like that.
 
-In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
-CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
-
-Meanwhile, between this call and the following drop_nlink() call, a
-worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
-just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
-completion).  These will lead to a set_nlink() call, updating the
-`i_nlink` counter to the value received from the MDS.  If that new
-`i_nlink` value happens to be zero, it is illegal to decrement it
-further.  But that is exactly what ceph_unlink() will do then.
-
-The WARNING can be reproduced this way:
-
-1. Force async unlink; only the async code path is affected.  Having
-   no real clue about Ceph internals, I was unable to find out why the
-   MDS wouldn't give me the "Fxr" capabilities, so I patched
-   get_caps_for_async_unlink() to always succeed.
-
-   (Note that the WARNING dump above was found on an unpatched kernel,
-   without this kludge - this is not a theoretical bug.)
-
-2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
-   completion gets handled by a worker thread before drop_nlink() is
-   called.  This guarantees that the `i_nlink` is already zero before
-   drop_nlink() runs.
-
-The solution is to skip the counter decrement when it is already zero,
-but doing so without a lock is still racy (TOCTOU).  Since
-ceph_fill_inode() and handle_cap_grant() both hold the
-`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
-seems like the proper lock to protect the `i_nlink` updates.
-
-I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
-`afs_vnode.cb_lock`).  All three have the zero check as well.
-
-Cc: stable@vger.kernel.org
-Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Cc: stable@vger.kernel.org # v5.5
+Fixes: 598ecfbaa742ac ("iomap: lift the xfs writeback code to iomap")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://patch.msgid.link/20260302173002.GL13829@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/dir.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ fs/iomap/ioend.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -1338,6 +1338,7 @@ static int ceph_unlink(struct inode *dir
- 	struct ceph_client *cl = fsc->client;
- 	struct ceph_mds_client *mdsc = fsc->mdsc;
- 	struct inode *inode = d_inode(dentry);
-+	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_mds_request *req;
- 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
- 	struct dentry *dn;
-@@ -1423,7 +1424,19 @@ retry:
- 			 * We have enough caps, so we assume that the unlink
- 			 * will succeed. Fix up the target inode and dcache.
- 			 */
--			drop_nlink(inode);
-+
-+			/*
-+			 * Protect the i_nlink update with i_ceph_lock
-+			 * to precent racing against ceph_fill_inode()
-+			 * handling our completion on a worker thread
-+			 * and don't decrement if i_nlink has already
-+			 * been updated to zero by this completion.
-+			 */
-+			spin_lock(&ci->i_ceph_lock);
-+			if (inode->i_nlink > 0)
-+				drop_nlink(inode);
-+			spin_unlock(&ci->i_ceph_lock);
-+
- 			d_delete(dentry);
- 		} else {
- 			spin_lock(&fsc->async_unlink_conflict_lock);
+--- a/fs/iomap/ioend.c
++++ b/fs/iomap/ioend.c
+@@ -163,17 +163,18 @@ ssize_t iomap_add_to_ioend(struct iomap_
+ 	WARN_ON_ONCE(!folio->private && map_len < dirty_len);
+ 
+ 	switch (wpc->iomap.type) {
+-	case IOMAP_INLINE:
+-		WARN_ON_ONCE(1);
+-		return -EIO;
++	case IOMAP_UNWRITTEN:
++		ioend_flags |= IOMAP_IOEND_UNWRITTEN;
++		break;
++	case IOMAP_MAPPED:
++		break;
+ 	case IOMAP_HOLE:
+ 		return map_len;
+ 	default:
+-		break;
++		WARN_ON_ONCE(1);
++		return -EIO;
+ 	}
+ 
+-	if (wpc->iomap.type == IOMAP_UNWRITTEN)
+-		ioend_flags |= IOMAP_IOEND_UNWRITTEN;
+ 	if (wpc->iomap.flags & IOMAP_F_SHARED)
+ 		ioend_flags |= IOMAP_IOEND_SHARED;
+ 	if (folio_test_dropbehind(folio))
 
 
 
