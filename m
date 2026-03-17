@@ -1,105 +1,105 @@
-Return-Path: <stable+bounces-225924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-225925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0J/+CYdOuWnj/wEAu9opvQ
-	(envelope-from <stable+bounces-225924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:52:23 +0100
+	id SGt4AQhPuWnj/wEAu9opvQ
+	(envelope-from <stable+bounces-225925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:54:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E13A2AA293
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:52:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F842AA321
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 13:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DA3730526C8
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:52:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D750B30A724B
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 12:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8113AE19B;
-	Tue, 17 Mar 2026 12:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9223AE19B;
+	Tue, 17 Mar 2026 12:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ2M2HTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUUr4lKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F51345CC0
-	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A4F345CC0
+	for <stable@vger.kernel.org>; Tue, 17 Mar 2026 12:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773751940; cv=none; b=Ssbx6wgKh4z2f5Va+Z/nzEpk+RxGhUffBU3yMtCZWITBbDPJRayyugqBf0p3hVCNhKCPOtCmaiTF8yqqb1cnVC+FeBzqqoVeNTtRPBlrejawlYNMWB7igp8MGreGsBfCzlUxQdVJ2kJiX6f4EBdUaMtpaQnFSye6Gk7hstY4aIM=
+	t=1773751944; cv=none; b=jH5fodD+hTBseSjxVoWbqCiGso6kcr2LNf+OT3EgQvrGDKXUCptG9g0ua3AMy76ercl3gOsurg+Q/lnJk/Re3ZB4cOa1ChN3nKFOEG8sFRUNLf3u0TamL9+EAd+/YzQvJjuHtSMayJzaFZVt3+XDq2g37apDdJmySR1e6da4dSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773751940; c=relaxed/simple;
-	bh=0o8DAz3moQYD2OztS53lorRlzT/sIee+DV3GbFCjw90=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZtQTLf+19q1zEQTuNo17aa9DiISRsSRlRR+Zjj9evUw6/zSVTIkgh1EHUZNl9/GzANLkFhtV+3EX4vHZmEogh4w42n+kTJuPXqw0ICmgJWmZJ0zyZjEwaUjBOfcDk3cf08B/1x0wnDgLdgTsduBjL5H1gzuCqqso1Z93Bexu4D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ2M2HTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AE7C2BCB0;
-	Tue, 17 Mar 2026 12:52:19 +0000 (UTC)
+	s=arc-20240116; t=1773751944; c=relaxed/simple;
+	bh=IAf6e7fHV3aHiMJOG36AMTsYuGePqd2PGguzI2J1Ry8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m/sToar1tiXvLs8wLpIQjbd1F0YRrvsVTHqX0x9GbkkTb6Oe4E/cSaq1PFTCbYgUw1Fpx3IaZVz3NwKp6CZpN3KUoXUjLII5nrSds6DPa3u3FFVD4vhKTOeeDyGgNp5yFCL718uj+gD36jZyaQMZmevtaK05bIt9mkPr7uHDinI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUUr4lKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8284AC4CEF7;
+	Tue, 17 Mar 2026 12:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773751939;
-	bh=0o8DAz3moQYD2OztS53lorRlzT/sIee+DV3GbFCjw90=;
+	s=korg; t=1773751943;
+	bh=IAf6e7fHV3aHiMJOG36AMTsYuGePqd2PGguzI2J1Ry8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lJ2M2HTFjR2+wR7JloINpXcDQ3GBzyJz5abM5W433iMDdwZJpsZwKUnBuPWn5pk90
-	 hqeK/9YuYvyppmTMGYuPoQ5EgZDIzfq/MGahP3tTllfkYC+46Dw5aZjXr4pW6qPMUJ
-	 ZfEYpjQjwmmTD8uZSga4G6P8ZDDKMT+eNUtDy5Qc=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/userq: refcount userqueues to avoid any race" failed to apply to 5.10-stable tree
-To: sunil.khatri@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com,stable@vger.kernel.org
+	b=wUUr4lKGQeb1f8a6+Wsk4aS1aflG5TVdOgXfsKO5fSLcU1Pola6tZDLwZ3I7+RYWQ
+	 HgAoGEAIUd3NuxIkKC2j0xEzQRSQATBrOMkvXKvrq1mnllVkdRHuvxeZwWRZ57XZ93
+	 8bG/WJ0icIzWsLWD4W4FKI6sGw3zvLy2e4u6Ft+s=
+Subject: FAILED: patch "[PATCH] cifs: open files should not hold ref on superblock" failed to apply to 6.19-stable tree
+To: sprasad@microsoft.com,stable@vger.kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Mar 2026 13:51:58 +0100
-Message-ID: <2026031758-vengeful-anyhow-a735@gregkh>
+Date: Tue, 17 Mar 2026 13:52:10 +0100
+Message-ID: <2026031710-cornball-droplet-caf0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-225924-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-225925-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.937];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8E13A2AA293
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: 57F842AA321
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 65b5c326ce4103620c977b8dcb1699bdac4da143
+git cherry-pick -x 340cea84f691c5206561bb2e0147158fe02070be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031758-vengeful-anyhow-a735@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026031710-cornball-droplet-caf0@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,375 +111,215 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 65b5c326ce4103620c977b8dcb1699bdac4da143 Mon Sep 17 00:00:00 2001
-From: Sunil Khatri <sunil.khatri@amd.com>
-Date: Mon, 2 Mar 2026 18:50:46 +0530
-Subject: [PATCH] drm/amdgpu/userq: refcount userqueues to avoid any race
- conditions
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 340cea84f691c5206561bb2e0147158fe02070be Mon Sep 17 00:00:00 2001
+From: Shyam Prasad N <sprasad@microsoft.com>
+Date: Wed, 4 Mar 2026 18:15:53 +0530
+Subject: [PATCH] cifs: open files should not hold ref on superblock
 
-To avoid race condition and avoid UAF cases, implement kref
-based queues and protect the below operations using xa lock
-a. Getting a queue from xarray
-b. Increment/Decrement it's refcount
+Today whenever we deal with a file, in addition to holding
+a reference on the dentry, we also get a reference on the
+superblock. This happens in two cases:
+1. when a new cinode is allocated
+2. when an oplock break is being processed
 
-Every time some one want to access a queue, always get via
-amdgpu_userq_get to make sure we have locks in place and get
-the object if active.
+The reasoning for holding the superblock ref was to make sure
+that when umount happens, if there are users of inodes and
+dentries, it does not try to clean them up and wait for the
+last ref to superblock to be dropped by last of such users.
 
-A userqueue is destroyed on the last refcount is dropped which
-typically would be via IOCTL or during fini.
+But the side effect of doing that is that umount silently drops
+a ref on the superblock and we could have deferred closes and
+lease breaks still holding these refs.
 
-v2: Add the missing drop in one the condition in the signal ioclt [Alex]
+Ideally, we should ensure that all of these users of inodes and
+dentries are cleaned up at the time of umount, which is what this
+code is doing.
 
-v3: remove the queue from the xarray first in the free queue ioctl path
-    [Christian]
+This code change allows these code paths to use a ref on the
+dentry (and hence the inode). That way, umount is
+ensured to clean up SMB client resources when it's the last
+ref on the superblock (For ex: when same objects are shared).
 
-- Pass queue to the amdgpu_userq_put directly.
-- make amdgpu_userq_put xa_lock free since we are doing put for each get
-  only and final put is done via destroy and we remove the queue from xa
-  with lock.
-- use userq_put in fini too so cleanup is done fully.
+The code change also moves the call to close all the files in
+deferred close list to the umount code path. It also waits for
+oplock_break workers to be flushed before calling
+kill_anon_super (which eventually frees up those objects).
 
-v4: Use xa_erase directly rather than doing load and erase in free
-    ioctl. Also remove some of the error logs which could be exploited
-    by the user to flood the logs [Christian]
-
-Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4952189b284d4d847f92636bb42dd747747129c0)
-Cc: <stable@vger.kernel.org> # 048c1c4e5171: drm/amdgpu/userq: Consolidate wait ioctl exit path
+Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-index 9d67b770bcc2..7c450350847d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -446,8 +446,7 @@ static int amdgpu_userq_wait_for_last_fence(struct amdgpu_usermode_queue *queue)
- 	return ret;
- }
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 427558404aa5..b6e3db993cc6 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -332,10 +332,14 @@ static void cifs_kill_sb(struct super_block *sb)
  
--static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue,
--				 int queue_id)
-+static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue)
- {
- 	struct amdgpu_userq_mgr *uq_mgr = queue->userq_mgr;
- 	struct amdgpu_device *adev = uq_mgr->adev;
-@@ -461,7 +460,6 @@ static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue,
- 	uq_funcs->mqd_destroy(queue);
- 	amdgpu_userq_fence_driver_free(queue);
- 	/* Use interrupt-safe locking since IRQ handlers may access these XArrays */
--	xa_erase_irq(&uq_mgr->userq_xa, (unsigned long)queue_id);
- 	xa_erase_irq(&adev->userq_doorbell_xa, queue->doorbell_index);
- 	queue->userq_mgr = NULL;
- 	list_del(&queue->userq_va_list);
-@@ -470,12 +468,6 @@ static void amdgpu_userq_cleanup(struct amdgpu_usermode_queue *queue,
- 	up_read(&adev->reset_domain->sem);
- }
+ 	/*
+ 	 * We need to release all dentries for the cached directories
+-	 * before we kill the sb.
++	 * and close all deferred file handles before we kill the sb.
+ 	 */
+ 	if (cifs_sb->root) {
+ 		close_all_cached_dirs(cifs_sb);
++		cifs_close_all_deferred_files_sb(cifs_sb);
++
++		/* Wait for all pending oplock breaks to complete */
++		flush_workqueue(cifsoplockd_wq);
  
--static struct amdgpu_usermode_queue *
--amdgpu_userq_find(struct amdgpu_userq_mgr *uq_mgr, int qid)
--{
--	return xa_load(&uq_mgr->userq_xa, qid);
--}
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
+@@ -868,7 +872,6 @@ static void cifs_umount_begin(struct super_block *sb)
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+-	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 96d6b5325aa3..800a7e418c32 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -261,6 +261,7 @@ void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
+ 
+ void cifs_close_all_deferred_files(struct cifs_tcon *tcon);
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry);
+ 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index f3ddcdf406c8..cffcf82c1b69 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -711,8 +711,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
+ 	mutex_init(&cfile->fh_mutex);
+ 	spin_lock_init(&cfile->file_info_lock);
+ 
+-	cifs_sb_active(inode->i_sb);
 -
- void
- amdgpu_userq_ensure_ev_fence(struct amdgpu_userq_mgr *uq_mgr,
- 			     struct amdgpu_eviction_fence_mgr *evf_mgr)
-@@ -625,22 +617,13 @@ amdgpu_userq_get_doorbell_index(struct amdgpu_userq_mgr *uq_mgr,
+ 	/*
+ 	 * If the server returned a read oplock and we have mandatory brlocks,
+ 	 * set oplock level to None.
+@@ -767,7 +765,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 	struct inode *inode = d_inode(cifs_file->dentry);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsLockInfo *li, *tmp;
+-	struct super_block *sb = inode->i_sb;
+ 
+ 	/*
+ 	 * Delete any outstanding lock records. We'll lose them when the file
+@@ -785,7 +782,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 
+ 	cifs_put_tlink(cifs_file->tlink);
+ 	dput(cifs_file->dentry);
+-	cifs_sb_deactive(sb);
+ 	kfree(cifs_file->symlink_target);
+ 	kfree(cifs_file);
+ }
+@@ -3163,12 +3159,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
+-	/*
+-	 * Hold a reference to the superblock to prevent it and its inodes from
+-	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
+-	 * may release the last reference to the sb and trigger inode eviction.
+-	 */
+-	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3253,7 +3243,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
+-	cifs_sb_deactive(sb);
  }
  
- static int
--amdgpu_userq_destroy(struct drm_file *filp, int queue_id)
-+amdgpu_userq_destroy(struct amdgpu_userq_mgr *uq_mgr, struct amdgpu_usermode_queue *queue)
- {
--	struct amdgpu_fpriv *fpriv = filp->driver_priv;
--	struct amdgpu_userq_mgr *uq_mgr = &fpriv->userq_mgr;
- 	struct amdgpu_device *adev = uq_mgr->adev;
--	struct amdgpu_usermode_queue *queue;
- 	int r = 0;
+ static int cifs_swap_activate(struct swap_info_struct *sis,
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index bc24c92b8b95..2aff1cab6c31 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -28,6 +28,11 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
  
- 	cancel_delayed_work_sync(&uq_mgr->resume_work);
- 	mutex_lock(&uq_mgr->userq_mutex);
--	queue = amdgpu_userq_find(uq_mgr, queue_id);
--	if (!queue) {
--		drm_dbg_driver(adev_to_drm(uq_mgr->adev), "Invalid queue id to destroy\n");
--		mutex_unlock(&uq_mgr->userq_mutex);
--		return -EINVAL;
--	}
- 	amdgpu_userq_wait_for_last_fence(queue);
- 	/* Cancel any pending hang detection work and cleanup */
- 	if (queue->hang_detect_fence) {
-@@ -672,7 +655,7 @@ amdgpu_userq_destroy(struct drm_file *filp, int queue_id)
- 		drm_warn(adev_to_drm(uq_mgr->adev), "trying to destroy a HW mapping userq\n");
- 		queue->state = AMDGPU_USERQ_STATE_HUNG;
++struct tcon_list {
++	struct list_head entry;
++	struct cifs_tcon *tcon;
++};
++
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+@@ -554,6 +559,43 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
  	}
--	amdgpu_userq_cleanup(queue, queue_id);
-+	amdgpu_userq_cleanup(queue);
- 	mutex_unlock(&uq_mgr->userq_mutex);
- 
- 	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
-@@ -680,6 +663,37 @@ amdgpu_userq_destroy(struct drm_file *filp, int queue_id)
- 	return r;
  }
  
-+static void amdgpu_userq_kref_destroy(struct kref *kref)
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
 +{
-+	int r;
-+	struct amdgpu_usermode_queue *queue =
-+		container_of(kref, struct amdgpu_usermode_queue, refcount);
-+	struct amdgpu_userq_mgr *uq_mgr = queue->userq_mgr;
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct rb_node *node;
++	struct cifs_tcon *tcon;
++	struct tcon_link *tlink;
++	struct tcon_list *tmp_list, *q;
++	LIST_HEAD(tcon_head);
 +
-+	r = amdgpu_userq_destroy(uq_mgr, queue);
-+	if (r)
-+		drm_file_err(uq_mgr->file, "Failed to destroy usermode queue %d\n", r);
-+}
-+
-+struct amdgpu_usermode_queue *amdgpu_userq_get(struct amdgpu_userq_mgr *uq_mgr, u32 qid)
-+{
-+	struct amdgpu_usermode_queue *queue;
-+
-+	xa_lock(&uq_mgr->userq_xa);
-+	queue = xa_load(&uq_mgr->userq_xa, qid);
-+	if (queue)
-+		kref_get(&queue->refcount);
-+	xa_unlock(&uq_mgr->userq_xa);
-+
-+	return queue;
-+}
-+
-+void amdgpu_userq_put(struct amdgpu_usermode_queue *queue)
-+{
-+	if (queue)
-+		kref_put(&queue->refcount, amdgpu_userq_kref_destroy);
-+}
-+
- static int amdgpu_userq_priority_permit(struct drm_file *filp,
- 					int priority)
- {
-@@ -834,6 +848,9 @@ amdgpu_userq_create(struct drm_file *filp, union drm_amdgpu_userq *args)
- 		goto unlock;
- 	}
- 
-+	/* drop this refcount during queue destroy */
-+	kref_init(&queue->refcount);
-+
- 	/* Wait for mode-1 reset to complete */
- 	down_read(&adev->reset_domain->sem);
- 	r = xa_err(xa_store_irq(&adev->userq_doorbell_xa, index, queue, GFP_KERNEL));
-@@ -985,7 +1002,9 @@ int amdgpu_userq_ioctl(struct drm_device *dev, void *data,
- 		       struct drm_file *filp)
- {
- 	union drm_amdgpu_userq *args = data;
--	int r;
-+	struct amdgpu_fpriv *fpriv = filp->driver_priv;
-+	struct amdgpu_usermode_queue *queue;
-+	int r = 0;
- 
- 	if (!amdgpu_userq_enabled(dev))
- 		return -ENOTSUPP;
-@@ -1000,11 +1019,16 @@ int amdgpu_userq_ioctl(struct drm_device *dev, void *data,
- 			drm_file_err(filp, "Failed to create usermode queue\n");
- 		break;
- 
--	case AMDGPU_USERQ_OP_FREE:
--		r = amdgpu_userq_destroy(filp, args->in.queue_id);
--		if (r)
--			drm_file_err(filp, "Failed to destroy usermode queue\n");
-+	case AMDGPU_USERQ_OP_FREE: {
-+		xa_lock(&fpriv->userq_mgr.userq_xa);
-+		queue = __xa_erase(&fpriv->userq_mgr.userq_xa, args->in.queue_id);
-+		xa_unlock(&fpriv->userq_mgr.userq_xa);
-+		if (!queue)
-+			return -ENOENT;
-+
-+		amdgpu_userq_put(queue);
- 		break;
-+	}
- 
- 	default:
- 		drm_dbg_driver(dev, "Invalid user queue op specified: %d\n", args->in.op);
-@@ -1023,16 +1047,23 @@ amdgpu_userq_restore_all(struct amdgpu_userq_mgr *uq_mgr)
- 
- 	/* Resume all the queues for this process */
- 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
-+		queue = amdgpu_userq_get(uq_mgr, queue_id);
-+		if (!queue)
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR(tcon))
 +			continue;
-+
- 		if (!amdgpu_userq_buffer_vas_mapped(queue)) {
- 			drm_file_err(uq_mgr->file,
- 				     "trying restore queue without va mapping\n");
- 			queue->state = AMDGPU_USERQ_STATE_INVALID_VA;
-+			amdgpu_userq_put(queue);
- 			continue;
- 		}
- 
- 		r = amdgpu_userq_restore_helper(queue);
- 		if (r)
- 			ret = r;
-+
-+		amdgpu_userq_put(queue);
- 	}
- 
- 	if (ret)
-@@ -1266,9 +1297,13 @@ amdgpu_userq_evict_all(struct amdgpu_userq_mgr *uq_mgr)
- 	amdgpu_userq_detect_and_reset_queues(uq_mgr);
- 	/* Try to unmap all the queues in this process ctx */
- 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
-+		queue = amdgpu_userq_get(uq_mgr, queue_id);
-+		if (!queue)
-+			continue;
- 		r = amdgpu_userq_preempt_helper(queue);
- 		if (r)
- 			ret = r;
-+		amdgpu_userq_put(queue);
- 	}
- 
- 	if (ret)
-@@ -1301,16 +1336,24 @@ amdgpu_userq_wait_for_signal(struct amdgpu_userq_mgr *uq_mgr)
- 	int ret;
- 
- 	xa_for_each(&uq_mgr->userq_xa, queue_id, queue) {
-+		queue = amdgpu_userq_get(uq_mgr, queue_id);
-+		if (!queue)
-+			continue;
-+
- 		struct dma_fence *f = queue->last_fence;
- 
--		if (!f || dma_fence_is_signaled(f))
-+		if (!f || dma_fence_is_signaled(f)) {
-+			amdgpu_userq_put(queue);
- 			continue;
-+		}
- 		ret = dma_fence_wait_timeout(f, true, msecs_to_jiffies(100));
- 		if (ret <= 0) {
- 			drm_file_err(uq_mgr->file, "Timed out waiting for fence=%llu:%llu\n",
- 				     f->context, f->seqno);
-+			amdgpu_userq_put(queue);
- 			return -ETIMEDOUT;
- 		}
-+		amdgpu_userq_put(queue);
- 	}
- 
- 	return 0;
-@@ -1361,20 +1404,23 @@ int amdgpu_userq_mgr_init(struct amdgpu_userq_mgr *userq_mgr, struct drm_file *f
- void amdgpu_userq_mgr_fini(struct amdgpu_userq_mgr *userq_mgr)
- {
- 	struct amdgpu_usermode_queue *queue;
--	unsigned long queue_id;
-+	unsigned long queue_id = 0;
- 
--	cancel_delayed_work_sync(&userq_mgr->resume_work);
-+	for (;;) {
-+		xa_lock(&userq_mgr->userq_xa);
-+		queue = xa_find(&userq_mgr->userq_xa, &queue_id, ULONG_MAX,
-+				XA_PRESENT);
-+		if (queue)
-+			__xa_erase(&userq_mgr->userq_xa, queue_id);
-+		xa_unlock(&userq_mgr->userq_xa);
- 
--	mutex_lock(&userq_mgr->userq_mutex);
--	amdgpu_userq_detect_and_reset_queues(userq_mgr);
--	xa_for_each(&userq_mgr->userq_xa, queue_id, queue) {
--		amdgpu_userq_wait_for_last_fence(queue);
--		amdgpu_userq_unmap_helper(queue);
--		amdgpu_userq_cleanup(queue, queue_id);
-+		if (!queue)
++		tmp_list = kmalloc_obj(struct tcon_list, GFP_ATOMIC);
++		if (tmp_list == NULL)
 +			break;
++		tmp_list->tcon = tcon;
++		/* Take a reference on tcon to prevent it from being freed */
++		spin_lock(&tcon->tc_lock);
++		++tcon->tc_count;
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_get_close_defer_files);
++		spin_unlock(&tcon->tc_lock);
++		list_add_tail(&tmp_list->entry, &tcon_head);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
 +
-+		amdgpu_userq_put(queue);
- 	}
- 
- 	xa_destroy(&userq_mgr->userq_xa);
--	mutex_unlock(&userq_mgr->userq_mutex);
- 	mutex_destroy(&userq_mgr->userq_mutex);
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-index 5845d8959034..736c1d38297c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.h
-@@ -74,6 +74,7 @@ struct amdgpu_usermode_queue {
- 	struct dentry		*debugfs_queue;
- 	struct delayed_work hang_detect_work;
- 	struct dma_fence *hang_detect_fence;
-+	struct kref		refcount;
- 
- 	struct list_head	userq_va_list;
- };
-@@ -112,6 +113,9 @@ struct amdgpu_db_info {
- 	struct amdgpu_userq_obj	*db_obj;
- };
- 
-+struct amdgpu_usermode_queue *amdgpu_userq_get(struct amdgpu_userq_mgr *uq_mgr, u32 qid);
-+void amdgpu_userq_put(struct amdgpu_usermode_queue *queue);
++	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
++		cifs_close_all_deferred_files(tmp_list->tcon);
++		list_del(&tmp_list->entry);
++		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
++		kfree(tmp_list);
++	}
++}
 +
- int amdgpu_userq_ioctl(struct drm_device *dev, void *data, struct drm_file *filp);
- 
- int amdgpu_userq_mgr_init(struct amdgpu_userq_mgr *userq_mgr, struct drm_file *file_priv,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-index 77969a6017a4..5239b06b9ab0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-@@ -466,7 +466,7 @@ int amdgpu_userq_signal_ioctl(struct drm_device *dev, void *data,
- 	struct drm_amdgpu_userq_signal *args = data;
- 	struct drm_gem_object **gobj_write = NULL;
- 	struct drm_gem_object **gobj_read = NULL;
--	struct amdgpu_usermode_queue *queue;
-+	struct amdgpu_usermode_queue *queue = NULL;
- 	struct amdgpu_userq_fence *userq_fence;
- 	struct drm_syncobj **syncobj = NULL;
- 	u32 *bo_handles_write, num_write_bo_handles;
-@@ -553,7 +553,7 @@ int amdgpu_userq_signal_ioctl(struct drm_device *dev, void *data,
- 	}
- 
- 	/* Retrieve the user queue */
--	queue = xa_load(&userq_mgr->userq_xa, args->queue_id);
-+	queue = amdgpu_userq_get(userq_mgr, args->queue_id);
- 	if (!queue) {
- 		r = -ENOENT;
- 		goto put_gobj_write;
-@@ -648,6 +648,9 @@ int amdgpu_userq_signal_ioctl(struct drm_device *dev, void *data,
- free_syncobj_handles:
- 	kfree(syncobj_handles);
- 
-+	if (queue)
-+		amdgpu_userq_put(queue);
-+
- 	return r;
- }
- 
-@@ -660,7 +663,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
- 	struct drm_amdgpu_userq_wait *wait_info = data;
- 	struct amdgpu_fpriv *fpriv = filp->driver_priv;
- 	struct amdgpu_userq_mgr *userq_mgr = &fpriv->userq_mgr;
--	struct amdgpu_usermode_queue *waitq;
-+	struct amdgpu_usermode_queue *waitq = NULL;
- 	struct drm_gem_object **gobj_write;
- 	struct drm_gem_object **gobj_read;
- 	struct dma_fence **fences = NULL;
-@@ -926,7 +929,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
- 		 */
- 		num_fences = dma_fence_dedup_array(fences, num_fences);
- 
--		waitq = xa_load(&userq_mgr->userq_xa, wait_info->waitq_id);
-+		waitq = amdgpu_userq_get(userq_mgr, wait_info->waitq_id);
- 		if (!waitq) {
- 			r = -EINVAL;
- 			goto free_fences;
-@@ -1014,5 +1017,8 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
- free_bo_handles_read:
- 	kfree(bo_handles_read);
- 
-+	if (waitq)
-+		amdgpu_userq_put(waitq);
-+
- 	return r;
- }
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry)
+ {
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index 9228f95cae2b..acfbb63086ea 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -176,6 +176,7 @@
+ 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
+ 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
+ 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
++	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
+ 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
+ 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
+@@ -187,6 +188,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
++	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
+ 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
 
 
