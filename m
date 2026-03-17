@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-226602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFHiADGRuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:49 +0100
+	id WLHVAnWHuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7498C2AFD9B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BF22AEA45
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:55:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09C9530DEEE0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:11:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B02A8304E339
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2C03F7861;
-	Tue, 17 Mar 2026 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8569E3F54A4;
+	Tue, 17 Mar 2026 16:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXgrdC5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjgaDRlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3F62116F6;
-	Tue, 17 Mar 2026 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F253F23AA;
+	Tue, 17 Mar 2026 16:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767424; cv=none; b=ruR+KPS7qjT+9bNkfFUyWZE6wOxEg789cNGFQQp9oxvSim34IAVwh/yLFlM4B1+uXhMi3VE7fXHvnFxLQaMTvGl3Xbze777m+IOf04DlJxVY4Bkh0jgq848NrvXp6gOkr+/rKvLnDmtI6IEfSDEfE9ESMp5yX5SD4nWWyv0kMJ8=
+	t=1773766041; cv=none; b=bWTUf7Ls8+ufP835m9+B8UcwJrrzhHIB7VSCByevH5VEW1EnOo/03jChBGbbabeeXVu4Cr5IaB/EgRM2btZ2qPfuF6l4io+NyOPEYYySx0+K46OvrNQ5qtcl/vs4PgJ+5QQTmILptuTgyuhm4dIbT4VbN5IDIsHRd0JK/dfvrUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767424; c=relaxed/simple;
-	bh=B4f6ITQAORtNHywRWWu1OFoAihvlnk0N/38o19975hE=;
+	s=arc-20240116; t=1773766041; c=relaxed/simple;
+	bh=Rnifv3Xi9B/vfNfslPHfaWvvqkJ5XMyCOuF+/w2WHWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0CXzO3py5ad/o98RLzgRsFRgj/fDpBSP7CkC444yZ6EQFb9bkuJts46+oXMVyshy0mhWwTgL+YTieM6c7eMnMKeGdiUEB69kyr8CP+f1zCCI4Jy72xdyIJxLrp3xXjzQzk4HFdZd0YoUeYBLdpNeXwv6u6TY7P7GNAL+i+ngQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXgrdC5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A46EC4CEF7;
-	Tue, 17 Mar 2026 17:10:23 +0000 (UTC)
+	 MIME-Version; b=JWC1lcuLcqaEXTerF+gj0v2mB0flNKuOnumDuRdNa0z8K48iamnJ/vR+Qs8GEXTrxVtMyOo0aKIl3U0SIZ/lHzVwrL/VeuaLC3KDvtWvEnlu+SsxonvU3E6VEE0uuFO65jGX71XWa8/KYfaGJIsKxH8/GgMKspms/IU/aVLxrC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjgaDRlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E4BC4CEF7;
+	Tue, 17 Mar 2026 16:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767424;
-	bh=B4f6ITQAORtNHywRWWu1OFoAihvlnk0N/38o19975hE=;
+	s=korg; t=1773766041;
+	bh=Rnifv3Xi9B/vfNfslPHfaWvvqkJ5XMyCOuF+/w2WHWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXgrdC5LGwegf93UWVD7IfcEOBSnUlog5Md9KdRpI26uHVaOEkvc8FFr6J2BOIy2Y
-	 cj1w0HOKy6JffiErQo9v0GFbWFjJhNEiNVqH/dE3zJMCfzBVgwzt4fgSyKZ1c9+X9L
-	 3z12HfcoKqxFXLsutsWBgVjvd7/VQuuiRBJi7/B4=
+	b=bjgaDRlwZUOGdi5cZA1Y0iE+1Snil5tGq6+quuNyibTfEdHthVBRy2vX1kLUkDnXj
+	 9Ba/IS2g/mY10Q7+lOIxM69IQomUJDqDO/9QMCL9ydtu6ni46aRygDhHE0NYqk74e/
+	 mWempb8stmVO0jbr/i7sJ7cDjYDDy84ecfnD4/bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 084/333] i40e: fix src IP mask checks and memcpy argument names in cloud filter
+	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.19 156/378] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
 Date: Tue, 17 Mar 2026 17:31:53 +0100
-Message-ID: <20260317163002.491164942@linuxfoundation.org>
+Message-ID: <20260317163012.752974695@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,121 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226288-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226602-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7498C2AFD9B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,harvard.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 58BF22AEA45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit e809085f492842ce7a519c9ef72d40f4bca89c13 ]
+commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
 
-Fix following issues in the IPv4 and IPv6 cloud filter handling logic in
-both the add and delete paths:
+The usbtmc driver accepts timeout values specified by the user in an
+ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
+Since the user can specify arbitrarily long timeouts and
+usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
+instead to avoid the possibility of the user hanging a kernel thread
+indefinitely.
 
-- The source-IP mask check incorrectly compares mask.src_ip[0] against
-  tcf.dst_ip[0]. Update it to compare against tcf.src_ip[0]. This likely
-  goes unnoticed because the check is in an "else if" path that only
-  executes when dst_ip is not set, most cloud filter use cases focus on
-  destination-IP matching, and the buggy condition can accidentally
-  evaluate true in some cases.
-
-- memcpy() for the IPv4 source address incorrectly uses
-  ARRAY_SIZE(tcf.dst_ip) instead of ARRAY_SIZE(tcf.src_ip), although
-  both arrays are the same size.
-
-- The IPv4 memcpy operations used ARRAY_SIZE(tcf.dst_ip) and ARRAY_SIZE
-  (tcf.src_ip), Update these to use sizeof(cfilter->ip.v4.dst_ip) and
-  sizeof(cfilter->ip.v4.src_ip) to ensure correct and explicit copy size.
-
-- In the IPv6 delete path, memcmp() uses sizeof(src_ip6) when comparing
-  dst_ip6 fields. Replace this with sizeof(dst_ip6) to make the intent
-  explicit, even though both fields are struct in6_addr.
-
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
+Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/class/usbtmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index cf831c649c9c5..8351330930429 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3818,10 +3818,10 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 		cfilter.n_proto = ETH_P_IP;
- 		if (mask.dst_ip[0] & tcf.dst_ip[0])
- 			memcpy(&cfilter.ip.v4.dst_ip, tcf.dst_ip,
--			       ARRAY_SIZE(tcf.dst_ip));
--		else if (mask.src_ip[0] & tcf.dst_ip[0])
-+			       sizeof(cfilter.ip.v4.dst_ip));
-+		else if (mask.src_ip[0] & tcf.src_ip[0])
- 			memcpy(&cfilter.ip.v4.src_ip, tcf.src_ip,
--			       ARRAY_SIZE(tcf.dst_ip));
-+			       sizeof(cfilter.ip.v4.src_ip));
- 		break;
- 	case VIRTCHNL_TCP_V6_FLOW:
- 		cfilter.n_proto = ETH_P_IPV6;
-@@ -3876,7 +3876,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 		/* for ipv6, mask is set for all sixteen bytes (4 words) */
- 		if (cfilter.n_proto == ETH_P_IPV6 && mask.dst_ip[3])
- 			if (memcmp(&cfilter.ip.v6.dst_ip6, &cf->ip.v6.dst_ip6,
--				   sizeof(cfilter.ip.v6.src_ip6)))
-+				   sizeof(cfilter.ip.v6.dst_ip6)))
- 				continue;
- 		if (mask.vlan_id)
- 			if (cfilter.vlan_id != cf->vlan_id)
-@@ -3964,10 +3964,10 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 		cfilter->n_proto = ETH_P_IP;
- 		if (mask.dst_ip[0] & tcf.dst_ip[0])
- 			memcpy(&cfilter->ip.v4.dst_ip, tcf.dst_ip,
--			       ARRAY_SIZE(tcf.dst_ip));
--		else if (mask.src_ip[0] & tcf.dst_ip[0])
-+			       sizeof(cfilter->ip.v4.dst_ip));
-+		else if (mask.src_ip[0] & tcf.src_ip[0])
- 			memcpy(&cfilter->ip.v4.src_ip, tcf.src_ip,
--			       ARRAY_SIZE(tcf.dst_ip));
-+			       sizeof(cfilter->ip.v4.src_ip));
- 		break;
- 	case VIRTCHNL_TCP_V6_FLOW:
- 		cfilter->n_proto = ETH_P_IPV6;
--- 
-2.51.0
-
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
+ 	buffer[1] = data->bTag;
+ 	buffer[2] = ~data->bTag;
+ 
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
+ 	buffer[11] = 0; /* Reserved */
+ 
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
+ 	actual = 0;
+ 
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_rcvbulkpipe(data->usb_dev,
+ 					      data->bulk_in),
+ 			      buffer, bufsize, &actual,
 
 
 
