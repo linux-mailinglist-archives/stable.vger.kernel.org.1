@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-226432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKYNIvCIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:36 +0100
+	id UEzVBs2UuWkJKwIAu9opvQ
+	(envelope-from <stable+bounces-226757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D9D2AECEF
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:01:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795FD2B044E
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 798AE3046214
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:59:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A9F03226539
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8433F54DC;
-	Tue, 17 Mar 2026 16:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077B73176FD;
+	Tue, 17 Mar 2026 17:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnvlri/k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTBs0ny3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D308D3F7AA2;
-	Tue, 17 Mar 2026 16:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA272DF132;
+	Tue, 17 Mar 2026 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766682; cv=none; b=T/KEIZkDv4ZWkzckipVl2Kne0ezDlB9iuBPgvXGmE9E3wZc4qdHVbF3dU4awrydFxZ1eGLl++XDoCcKNyQthX07eBUnqpHqiKNE5+Ysu+Txx0oIPkmHYQjkNYxnfQmJPkAHtnCEwND47V9F1AiYGadWLEcn6Q0CE9zuPobfH6pA=
+	t=1773768075; cv=none; b=CZyQaewbvRmxtBvJwLfDurb9DCZZdnU575oN0KzJs0xChCt6dNV2GEQ4ZTRdfTuU5NLKduIjjdfc2WJgP2+1KX42JOVVBNPs9LtNKMWmI0gdj7/Dy868KgKsnNl/vEGCdkIaCelM6Vg1urwsbpwdkhImnwTxQfyxAOHCxMcMqSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766682; c=relaxed/simple;
-	bh=o6t6Fk40jkW48wRNJWm2BpPK046rz6A2ch2f4z/x090=;
+	s=arc-20240116; t=1773768075; c=relaxed/simple;
+	bh=aylVh0kTZM8na+VERSW9EtDDhlAhrzoE7H0ZI57T7E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmJ9wftSyK/rBeCONIiQC7uEeP7Sv5feo3OLLSLi1phoFEjlSMoOVcv8N49XBOVa4+EJOYcOGtTuE3H826YrIG4eSv4NvIHmjD6WWp4km0igv6eDkSPPpk3IebyEVC3I/CGJoJUEE0a89juuXv06Aw8kqt/Zo5Z/JTQ1GMKyp8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnvlri/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11532C19424;
-	Tue, 17 Mar 2026 16:58:01 +0000 (UTC)
+	 MIME-Version; b=l0sFWuI6128g14JSSsCvLK6Oy0falQt/BNf1e+KAn2cUtB1D5jM0En4bpyW0tmQJOel7pdY3e4Fm+MJGhbIGjIEQRAs2wkmvjyEy6OJwMQAStAsBeOX8Ut55rKmENTbizCMT5vhg1PUvydWC32+xfWaMrecyqpbS+UaFl9gdKeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTBs0ny3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B30C4CEF7;
+	Tue, 17 Mar 2026 17:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766682;
-	bh=o6t6Fk40jkW48wRNJWm2BpPK046rz6A2ch2f4z/x090=;
+	s=korg; t=1773768075;
+	bh=aylVh0kTZM8na+VERSW9EtDDhlAhrzoE7H0ZI57T7E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnvlri/kg3QLOoisUn7xP+W5ebUYHwfAGOEqYzGRuNjBjGTh6zPvCmWzmdbIUe1cN
-	 cW2rwUM9xkJIxP/4n4oM3Ift6/0jV1HI9liEPu9le3r6X2hwCDVESd8tpkR7qLROvh
-	 JfAWQAArjJwoW2iSTKBB0Jf1TrO5wILf62p5xAwk=
+	b=RTBs0ny30ZXsO4MA8eBZ1vJV/SoqA3BEcuVk4lHkWmvfFHgbjeGUhVx10VqumIahq
+	 KIC+wlyuQgKoUaya2hwAD4yLc1wzn8KzXXXV248S6B4gwo6y0L4bCgQLZqf5gId5Tl
+	 IMKZkqzoW21af+/Vojqx2jKZKZ6WJPmH8YyIgRDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 298/378] net: dsa: microchip: Fix error path in PTP IRQ setup
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 226/333] hwmon: (pmbus/q54sj108a2) fix stack overflow in debugfs read
 Date: Tue, 17 Mar 2026 17:34:15 +0100
-Message-ID: <20260317163017.970568340@linuxfoundation.org>
+Message-ID: <20260317163007.746756635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +67,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bootlin.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-226432-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-226757-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 10D9D2AECEF
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 795FD2B044E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit 99c8c16a4aad0b37293cae213e15957c573cf79b upstream.
+commit 25dd70a03b1f5f3aa71e1a5091ecd9cd2a13ee43 upstream.
 
-If request_threaded_irq() fails during the PTP message IRQ setup, the
-newly created IRQ mapping is never disposed. Indeed, the
-ksz_ptp_irq_setup()'s error path only frees the mappings that were
-successfully set up.
+The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
+due to incorrect arguments passed to bin2hex(). The function currently
+passes 'data' as the destination and 'data_char' as the source.
 
-Dispose the newly created mapping if the associated
-request_threaded_irq() fails at setup.
+Because bin2hex() converts each input byte into two hex characters, a
+32-byte block read results in 64 bytes of output. Since 'data' is only
+34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
+of the buffer onto the stack.
 
+Additionally, the arguments were swapped: it was reading from the
+zero-initialized 'data_char' and writing to 'data', resulting in
+all-zero output regardless of the actual I2C read.
+
+Fix this by:
+1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
+2. Correcting the bin2hex() argument order and using the actual read count.
+3. Using a pointer to select the correct output buffer for the final
+   simple_read_from_buffer call.
+
+Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
 Cc: stable@vger.kernel.org
-Fixes: d0b8fec8ae505 ("net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()")
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20260309-ksz-ptp-irq-fix-v1-1-757b3b985955@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260304235116.1045-1-sanman.p211993@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/q54sj108a2.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -1095,6 +1095,7 @@ static int ksz_ptp_msg_irq_setup(struct
- 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
- 	struct ksz_irq *ptpirq = &port->ptpirq;
- 	struct ksz_ptp_irq *ptpmsg_irq;
-+	int ret;
+--- a/drivers/hwmon/pmbus/q54sj108a2.c
++++ b/drivers/hwmon/pmbus/q54sj108a2.c
+@@ -78,7 +78,8 @@ static ssize_t q54sj108a2_debugfs_read(s
+ 	int idx = *idxp;
+ 	struct q54sj108a2_data *psu = to_psu(idxp, idx);
+ 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
+-	char data_char[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
++	char data_char[I2C_SMBUS_BLOCK_MAX * 2 + 2] = { 0 };
++	char *out = data;
+ 	char *res;
  
- 	ptpmsg_irq = &port->ptpmsg_irq[n];
- 	ptpmsg_irq->num = irq_create_mapping(ptpirq->domain, n);
-@@ -1106,9 +1107,13 @@ static int ksz_ptp_msg_irq_setup(struct
+ 	switch (idx) {
+@@ -149,27 +150,27 @@ static ssize_t q54sj108a2_debugfs_read(s
+ 		if (rc < 0)
+ 			return rc;
  
- 	strscpy(ptpmsg_irq->name, name[n]);
+-		res = bin2hex(data, data_char, 32);
+-		rc = res - data;
+-
++		res = bin2hex(data_char, data, rc);
++		rc = res - data_char;
++		out = data_char;
+ 		break;
+ 	case Q54SJ108A2_DEBUGFS_FLASH_KEY:
+ 		rc = i2c_smbus_read_block_data(psu->client, PMBUS_FLASH_KEY_WRITE, data);
+ 		if (rc < 0)
+ 			return rc;
  
--	return request_threaded_irq(ptpmsg_irq->num, NULL,
--				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
--				    ptpmsg_irq->name, ptpmsg_irq);
-+	ret = request_threaded_irq(ptpmsg_irq->num, NULL,
-+				   ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
-+				   ptpmsg_irq->name, ptpmsg_irq);
-+	if (ret)
-+		irq_dispose_mapping(ptpmsg_irq->num);
-+
-+	return ret;
+-		res = bin2hex(data, data_char, 4);
+-		rc = res - data;
+-
++		res = bin2hex(data_char, data, rc);
++		rc = res - data_char;
++		out = data_char;
+ 		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+ 
+-	data[rc] = '\n';
++	out[rc] = '\n';
+ 	rc += 2;
+ 
+-	return simple_read_from_buffer(buf, count, ppos, data, rc);
++	return simple_read_from_buffer(buf, count, ppos, out, rc);
  }
  
- int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *buf,
 
 
 
