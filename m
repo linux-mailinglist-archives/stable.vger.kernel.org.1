@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNW3Ip+KuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:47 +0100
+	id 6H4FGwGHuWncJAIAu9opvQ
+	(envelope-from <stable+bounces-226250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221ED2AF07F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:08:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E390D2AE93F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76AE3304AAC0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:07:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFC6F31657CF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFCA3F65FB;
-	Tue, 17 Mar 2026 17:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD643EE1C1;
+	Tue, 17 Mar 2026 16:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOafZNVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrlDvyn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843273F54D1;
-	Tue, 17 Mar 2026 17:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D95C12B94;
+	Tue, 17 Mar 2026 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767248; cv=none; b=Jl2uKq/QNntqWtPDeX6i733CHyuf74nZPFfJjklkK3kzCJythXOuxjp477uSHO0EFT7wzPw8+RzRzKR8oM5mKmRz00aAByVO7dvt+ls16+py7idfzTBKVX4t+UvOHFW25rtb4K2Nzo5iRjwOJAzSt07feP3aHXL91RQm/msp1vQ=
+	t=1773765896; cv=none; b=u+KIq5ITzIlfkub9SPZNwHqZkng43nx+Abt3E6f2PMz164P/02ngblDa5J/jtYwUn4Rq/ezedpI8rm8idRaSieDubo2d4M8VjJzGVyfU8IwKWflknbZ4r9hfX3Rqb7jNh6Regox6I544ut93262uY5wCVLSVf1OMS0/dcFDTypI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767248; c=relaxed/simple;
-	bh=vnJQMFqME26BWeZ3i1cYiIixKTfpOqE4Mk0JJGouG2U=;
+	s=arc-20240116; t=1773765896; c=relaxed/simple;
+	bh=uORlzAev+/MMJtt84Bf3aA0n7Or4oCswgWdDZUksQys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3lHJL7qUR1HD3m+aVFyXoZbTV5sEpytk7v5m8oOjnmtTMCB4uCj3O/tj/UbnFkBeO+cUAmF8CF9DpGhy8bY2tHpSA6VCDHNtk4TNrxpiBJPHX3D0FlOadsOfyqCEDFZ5ZYLpacpPvK3Mir3uIn62JTZDDT02NWgorw/m5NImCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOafZNVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A15AC4CEF7;
-	Tue, 17 Mar 2026 17:07:27 +0000 (UTC)
+	 MIME-Version; b=WjtoAEVoO1yz/fOeA6airZC4PLNU2cF3aC+SXAVuCwoKlH/ZN0cQLQBWe+KDnOXVJ+r7ViTTAdUXmGpQt7YMyIua9+E6sCB4odDbHApLqLdntWIJoW07gKk1p/PfbTHb7/i+O5rdGzvuW7WKEUMs/yuYse2e/p5gyFjf0OEmpLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrlDvyn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DEEC4CEF7;
+	Tue, 17 Mar 2026 16:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767248;
-	bh=vnJQMFqME26BWeZ3i1cYiIixKTfpOqE4Mk0JJGouG2U=;
+	s=korg; t=1773765895;
+	bh=uORlzAev+/MMJtt84Bf3aA0n7Or4oCswgWdDZUksQys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOafZNVRrlrXW/yErfSxMa7SWIk3a2Fi6XcaWesBpKpXONT5W0VX9CbE7KcfFMK6Z
-	 Us+dQwvGmmzVPBpWXX8Y1aDmffUnIUVI7mHogCHXd5oF9eyKtKPkxyNw5crZlUR1/z
-	 gY5r3rQEhpwnoyYMhocL/cO1wgsqNe5Qfz1FGv4I=
+	b=LrlDvyn34pLrtbSqo/kze3BA5x8S9ZVTKcc28WCg8WQ3KgDH6N/FTJZtB8y3hlO5U
+	 RcW/xBOrq73RU0poX3zVA9gIYLSZNkMwSLWFucmWdUb58Da4QutDKoAskPTmhwPYD8
+	 Bi0NSVBfpjrwhLV//7Gz+PquB7bkc/dttLCNFaKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/333] net: spacemit: Fix error handling in emac_alloc_rx_desc_buffers()
+	syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com,
+	syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 119/378] ALSA: usb-audio: Check endpoint numbers at parsing Scarlett2 mixer interfaces
 Date: Tue, 17 Mar 2026 17:31:16 +0100
-Message-ID: <20260317163001.110962977@linuxfoundation.org>
+Message-ID: <20260317163011.397274581@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226250-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226564-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable,8f29539ef9a1c8334f42,ae893a8901067fde2741];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 221ED2AF07F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E390D2AE93F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivian Wang <wangruikang@iscas.ac.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3aa1417803c1833cbd5bacb7e6a6489a196f2519 ]
+commit df1d8abf36ca3681c21a6809eaa9a1e01ef897a6 upstream.
 
-Even if we get a dma_mapping_error() while mapping an RX buffer, we
-should still update rx_ring->head to ensure that the buffers we were
-able to allocate and map are used. Fix this by breaking out to the
-existing code after the loop, analogous to the existing handling for skb
-allocation failure.
+The Scarlett2 mixer quirk in USB-audio driver may hit a NULL
+dereference when a malformed USB descriptor is passed, since it
+assumes the presence of an endpoint in the parsed interface in
+scarlett2_find_fc_interface(), as reported by fuzzer.
 
-Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-Link: https://patch.msgid.link/20260305-k1-ethernet-more-fixes-v2-1-e4e434d65055@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For avoiding the NULL dereference, just add the sanity check of
+bNumEndpoints and skip the invalid interface.
+
+Reported-by: syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/69acbbe1.050a0220.310d8.0001.GAE@google.com
+Reported-by: syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/69acf72a.050a0220.310d8.0004.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260309104632.141895-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/spacemit/k1_emac.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ sound/usb/mixer_scarlett2.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index b49c4708bf9eb..5de69a105168a 100644
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -582,7 +582,9 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
- 						  DMA_FROM_DEVICE);
- 		if (dma_mapping_error(&priv->pdev->dev, rx_buf->dma_addr)) {
- 			dev_err_ratelimited(&ndev->dev, "Mapping skb failed\n");
--			goto err_free_skb;
-+			dev_kfree_skb_any(skb);
-+			rx_buf->skb = NULL;
-+			break;
- 		}
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -8251,6 +8251,8 @@ static int scarlett2_find_fc_interface(s
  
- 		rx_desc_addr = &((struct emac_desc *)rx_ring->desc_addr)[i];
-@@ -607,10 +609,6 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
+ 		if (desc->bInterfaceClass != 255)
+ 			continue;
++		if (desc->bNumEndpoints < 1)
++			continue;
  
- 	rx_ring->head = i;
- 	return;
--
--err_free_skb:
--	dev_kfree_skb_any(skb);
--	rx_buf->skb = NULL;
- }
- 
- /* Returns number of packets received */
--- 
-2.51.0
-
+ 		epd = get_endpoint(intf->altsetting, 0);
+ 		private->bInterfaceNumber = desc->bInterfaceNumber;
 
 
 
