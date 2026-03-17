@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-226372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOQPFQCKuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:08 +0100
+	id EKPAIkGQuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:32:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C184A2AEEF5
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:06:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B372AFC58
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59C393165210
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:53:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 146F8309A700
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E081B3F23DD;
-	Tue, 17 Mar 2026 16:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486DC3E122D;
+	Tue, 17 Mar 2026 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGmkPdQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJBy/erX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A454F3EDADB;
-	Tue, 17 Mar 2026 16:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC602116F6;
+	Tue, 17 Mar 2026 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766406; cv=none; b=aaiOmf/QypoLZWW1ulMdsyucbQPEA8ScUTERRpcmm78rK4u1FZqAElanRrz3fi0YuAEZ+bqn6rToyjhxHJpPrM3VKG+5dHULWo4QSlW949WRo+58+P9ESx/fvIXIr4uwLWFpamVijDPeQ0d+/59dmJ13tz3dbanWR0cPze+OyjY=
+	t=1773767624; cv=none; b=qtJRF7E85H7oHcCqgeZZ4Vc+uEWpI6Jb/fAm30yW8ocegnvXk2qEWobV8IGQKBLsqjTSuMHLSLwm23J+xv0XgdllqQvkQPnpn7SUTTKLKCAcYZaiJM9jTjajQ+QPz1MOqLHVGpYd5huIQDwvVmt9fHIeFK7aim5nrRjXMrBdVrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766406; c=relaxed/simple;
-	bh=tYikkOo/XuJk7S/7esOMMKqRDVLFJmyvIRHpOsCXl60=;
+	s=arc-20240116; t=1773767624; c=relaxed/simple;
+	bh=Zwf9Udfbq/vER4Ykuj8X1L92GeqbOfpUY2QTaL9vF/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyFcVrOhfX0MjW193ww35Bo3k/qn4mk8UfdqKdrFVlOWqOHsg2pexD2pKDXlbW1egPHYQ5a4GP9xfn4C6yI53f+YxIYk99tG7QDngzcsiBYrkDFQDhgDgE38JeVNp1pbz+KqyTY1g1yjzQewWNdflidfbSN/IWZs7/FKx3hGDkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGmkPdQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B8CC4CEF7;
-	Tue, 17 Mar 2026 16:53:25 +0000 (UTC)
+	 MIME-Version; b=sM/AOiyuV1svR5Gk7+xmE36wufzPOj/RPDVhylyaZCei0F5Myr+x9sLbK6wh3WIklYu1TVJ+DsHuxeIRL+69kdIx+oBPrjiW6pmg0EG7Z4oqPpwCuOwhiX6K6hHK1vrgBpLCc6eR1UaqpCQwN0t9EJHeIkanqrGpQlPvgV29kkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJBy/erX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBA0C4CEF7;
+	Tue, 17 Mar 2026 17:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766406;
-	bh=tYikkOo/XuJk7S/7esOMMKqRDVLFJmyvIRHpOsCXl60=;
+	s=korg; t=1773767623;
+	bh=Zwf9Udfbq/vER4Ykuj8X1L92GeqbOfpUY2QTaL9vF/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGmkPdQlK3ZCg2pZzJmttkuo2MHZchiXSUaQgZHFn88YkstUS7mTc6y2N/ro9gwj0
-	 alLnUX2YljEABrGygtyS5y9CnLes5YSQ3eZsH8CBV8nZiIoD+ibVSlzUoP0Uv2jKKN
-	 khL9xrJuqnY4mlP/xuIXyML09YIRgtVRQzXd33e4=
+	b=MJBy/erXnb/59Iz23Dx5LsW0YoDZtqiutVyIN+ZVnMh3aymax3c4H77KAb7QuOJ/M
+	 ziXOHeo2JN5Lf89BHxFszCJBm6cLyibhgfHSPFza7iJ7ehnK8H8OSAS2zrAAuyNKIx
+	 Af/cn1rHU7/4ZcqZjwiivna45UbMu6iN1WPZWCWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.19 197/378] mmc: sdhci-brcmstb: use correct register offset for V1 pin_sel restore
+	Quentin Perret <qperret@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 125/333] KVM: arm64: pkvm: Fallback to level-3 mapping on host stage-2 fault
 Date: Tue, 17 Mar 2026 17:32:34 +0100
-Message-ID: <20260317163014.251540604@linuxfoundation.org>
+Message-ID: <20260317163004.000685865@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226372-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226647-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,55 +86,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: C184A2AEEF5
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 83B372AFC58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 79ad471530e0baef0dce991816013df55e401d9c upstream.
+commit 8531d5a83d8eb8affb5c0249b466c28d94192603 upstream.
 
-The restore path for SDIO_CFG_CORE_V1 was incorrectly using
-SDIO_CFG_SD_PIN_SEL (offset 0x44) instead of SDIO_CFG_V1_SD_PIN_SEL
-(offset 0x54), causing the wrong register to be written on resume.
-The save path already uses the correct V1-specific offset. This
-affects BCM7445 and BCM72116 platforms which use the V1 config core.
+If, for any odd reason, we cannot converge to mapping size that is
+completely contained in a memblock region, we fail to install a S2
+mapping and go back to the faulting instruction. Rince, repeat.
 
-Fixes: b7e614802e3f ("mmc: sdhci-brcmstb: save and restore registers during PM")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+This happens when faulting in regions that are smaller than a page
+or that do not have PAGE_SIZE-aligned boundaries (as witnessed on
+an O6 board that refuses to boot in protected mode).
+
+In this situation, fallback to using a PAGE_SIZE mapping anyway --
+it isn't like we can go any lower.
+
+Fixes: e728e705802fe ("KVM: arm64: Adjust range correctly during host stage-2 faults")
+Link: https://lore.kernel.org/r/86wlzr77cn.wl-maz@kernel.org
 Cc: stable@vger.kernel.org
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Quentin Perret <qperret@google.com>
+Reviewed-by: Quentin Perret <qperret@google.com>
+Link: https://patch.msgid.link/20260305132751.2928138-1-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-brcmstb.c | 2 +-
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index c9442499876c..57e45951644e 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -116,7 +116,7 @@ static void sdhci_brcmstb_restore_regs(struct mmc_host *mmc, enum cfg_core_ver v
- 		writel(sr->boot_main_ctl, priv->boot_regs + SDIO_BOOT_MAIN_CTL);
- 
- 	if (ver == SDIO_CFG_CORE_V1) {
--		writel(sr->sd_pin_sel, cr + SDIO_CFG_SD_PIN_SEL);
-+		writel(sr->sd_pin_sel, cr + SDIO_CFG_V1_SD_PIN_SEL);
- 		return;
- 	}
- 
--- 
-2.53.0
-
+--- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
++++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+@@ -516,7 +516,7 @@ static int host_stage2_adjust_range(u64
+ 		granule = kvm_granule_size(level);
+ 		cur.start = ALIGN_DOWN(addr, granule);
+ 		cur.end = cur.start + granule;
+-		if (!range_included(&cur, range))
++		if (!range_included(&cur, range) && level < KVM_PGTABLE_LAST_LEVEL)
+ 			continue;
+ 		*range = cur;
+ 		return 0;
 
 
 
