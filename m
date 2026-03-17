@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-226446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GB6BLz2MuWnkJwIAu9opvQ
-	(envelope-from <stable+bounces-226446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:41 +0100
+	id WPBsMaGOuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D126E2AF33B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:15:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2EF2AF86C
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02AF730D22DE
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C62E307F0BE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626953F7888;
-	Tue, 17 Mar 2026 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0003C374E48;
+	Tue, 17 Mar 2026 17:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rI0Yddr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7/h5Pd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265063F23B3;
-	Tue, 17 Mar 2026 16:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BE63793CF;
+	Tue, 17 Mar 2026 17:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766753; cv=none; b=W406siqGNs4XCzrkT6Yg41yRdpPssyIXMKzC8+ONAmucWtNKLrcLo5T+WMLBFOxx3Fq8AEhviIUejtZHp9hBqFV/NMaevIqqsn/zw6q72FoL3jd7yTKd1rHrH198zkdj9WKqDMh1Dz0L9g5Vsmo/s6KvhkTJ1LETCE1wZFKhvEU=
+	t=1773768158; cv=none; b=pvVfopwqARxwZ97mKIrNMpU2wJD5hDhY2XbIad4XQ7xKTukB0VvAGM+ULRiJ0ran7PVRUMZ5zpHEVriyTTzydsCWi5cXXL0ZlYdQDk5rgFQmKKYsfOFCL+dI+b03JwpmnulFm35NfaJBZO5KT8TBWq6ZTY1yERBwCg/eo5FINtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766753; c=relaxed/simple;
-	bh=c41x508jCE1MbwTQljA9weX5Qq3kJGPZ7JaxT3GvbCc=;
+	s=arc-20240116; t=1773768158; c=relaxed/simple;
+	bh=H6gTunECsE3O+55Wyo7HdBeurFXymgBhAAS0qGlUz50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldU0I4ojOrTzbzYIZX+eaMWuBAROoB8ynXU4dzzXqImbSaTzvndYG2s8upI3uYCTYExxtQCEcKfWZ1M/16Kztz9hAeAl0rLRVYCPp7Mc5WzR5AkpZm7kwu/LIrH0Q4/rLnymKtjXUq4/bA9DB09PWdsR5Nsdtm/Mp3svQ5okum0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rI0Yddr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D64C4CEF7;
-	Tue, 17 Mar 2026 16:59:12 +0000 (UTC)
+	 MIME-Version; b=KlL8hisNN22llwfk7XNh5KroKbKH1w+7ZWAlVyiiOHa5ZLBJ/yEZaHTQGIoJ9pvhAmxuPS64QcU3qCXQJ4H7+J38LojpNJ7Dx2rqZLbqz3HdgITWxm5ETjYhZWhZ8rVmTryvqKKr0mnG9FXx4C1afoXMHLWsV3JUpcTFUhD1eXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7/h5Pd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF11C4CEF7;
+	Tue, 17 Mar 2026 17:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766752;
-	bh=c41x508jCE1MbwTQljA9weX5Qq3kJGPZ7JaxT3GvbCc=;
+	s=korg; t=1773768158;
+	bh=H6gTunECsE3O+55Wyo7HdBeurFXymgBhAAS0qGlUz50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rI0Yddr+UcelpBYe+ow6SHOLubi/sTCNWjYqMPWgHkR8WRYLltDYb40H8ZpMFsKDd
-	 AXSSkkoYNNfyCezXKygx1/yRcKYS0FvgsAOcX5FAACpvYgHNd6WCIdArtSR8tNZ16l
-	 1W6q8RRfgF+THb8MKFDUdGNkF/PkEbdgEe0Sx6YQ=
+	b=I7/h5Pd0xzF43mgFN7MLQb3hd4uD2J1UwG+d4Y2x0AXiuj53YDmcVvZyryM6GcCMb
+	 ln602o6WgCAddUunDCFUgx/I1W5c43XMpir9nH7Q4+FUjtNYB/l0ypt2bX+KleQD2D
+	 2dhIs42JVUdZPcqWFCCMP2bEx6X8B7BTF4pEatnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moses <p@1g4.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 314/378] net-shapers: dont free reply skb after genlmsg_reply()
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 242/333] ksmbd: fix use-after-free in smb_lazy_parent_lease_break_close()
 Date: Tue, 17 Mar 2026 17:34:31 +0100
-Message-ID: <20260317163018.546504247@linuxfoundation.org>
+Message-ID: <20260317163008.339146008@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226446-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226777-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,69 +88,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D126E2AF33B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7C2EF2AF86C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moses <p@1g4.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 57885276cc16a2e2b76282c808a4e84cbecb3aae upstream.
+commit eac3361e3d5dd8067b3258c69615888eb45e9f25 upstream.
 
-genlmsg_reply() hands the reply skb to netlink, and
-netlink_unicast() consumes it on all return paths, whether the
-skb is queued successfully or freed on an error path.
+opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is being
+accessed after rcu_read_unlock() has been called. This creates a
+race condition where the memory could be freed by a concurrent
+writer between the unlock and the subsequent pointer dereferences
+(opinfo->is_lease, etc.), leading to a use-after-free.
 
-net_shaper_nl_get_doit() and net_shaper_nl_cap_get_doit()
-currently jump to free_msg after genlmsg_reply() fails and call
-nlmsg_free(msg), which can hit the same skb twice.
-
-Return the genlmsg_reply() error directly and keep free_msg
-only for pre-reply failures.
-
-Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
-Fixes: 553ea9f1efd6 ("net: shaper: implement introspection support")
+Fixes: 5fb282ba4fef ("ksmbd: fix possible null-deref in smb_lazy_parent_lease_break_close")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
-Link: https://patch.msgid.link/20260309173450.538026-2-p@1g4.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/shaper/shaper.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ fs/smb/server/oplock.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -759,11 +759,7 @@ int net_shaper_nl_get_doit(struct sk_buf
- 	if (ret)
- 		goto free_msg;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1123,10 +1123,12 @@ void smb_lazy_parent_lease_break_close(s
  
--	ret = genlmsg_reply(msg, info);
--	if (ret)
--		goto free_msg;
--
--	return 0;
-+	return genlmsg_reply(msg, info);
+ 	rcu_read_lock();
+ 	opinfo = rcu_dereference(fp->f_opinfo);
+-	rcu_read_unlock();
  
- free_msg:
- 	nlmsg_free(msg);
-@@ -1314,10 +1310,7 @@ int net_shaper_nl_cap_get_doit(struct sk
- 	if (ret)
- 		goto free_msg;
+-	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2)
++	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2) {
++		rcu_read_unlock();
+ 		return;
++	}
++	rcu_read_unlock();
  
--	ret =  genlmsg_reply(msg, info);
--	if (ret)
--		goto free_msg;
--	return 0;
-+	return genlmsg_reply(msg, info);
- 
- free_msg:
- 	nlmsg_free(msg);
+ 	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
+ 	if (!p_ci)
 
 
 
