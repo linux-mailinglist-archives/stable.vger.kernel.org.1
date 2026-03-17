@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKhNDGqIuWmTJAIAu9opvQ
-	(envelope-from <stable+bounces-226307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:22 +0100
+	id iMytIE+QuWk5KQIAu9opvQ
+	(envelope-from <stable+bounces-226654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DE52AEBEC
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:59:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841912AFC84
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D92230FC93B
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:48:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F12C30DC9DE
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010E13F54BD;
-	Tue, 17 Mar 2026 16:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7553F54BD;
+	Tue, 17 Mar 2026 17:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AB1ffyW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZcXl8VP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CB73F54BE;
-	Tue, 17 Mar 2026 16:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419952116F6;
+	Tue, 17 Mar 2026 17:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773766128; cv=none; b=GT8aEj0ZaSTtPxILPwGdByLRHMKvIuZIxikOWu4e38TfUYOKpgQ4g/B1U86w7oobOBR4ciw+r9iq6Mb3yefa3Z+SlGfFMK2CI18BXpZfLmGW7Yum00Pdx8gAsXNAi+W9QSRiqbE9kl2A2Uj/lnvd5+5vI/p/GXL86q2tC42ONOM=
+	t=1773767658; cv=none; b=RqpWzhYTo4sW+mlWGUx8Lu1lVUeHkS4pFHreUuBbOSMiWdSDQZNRbMcaHA4rkaa9lxMSe0vN6+ZKm+GHhfN2wxcY2OhrJGb0dLzKToNTwbRHAN0Sm0rM828rk/GF1vO+58PrUFHvsLxElQWoeoM9TK6elXLmIzhR217jWGNeqmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773766128; c=relaxed/simple;
-	bh=/I6QdEywpKjpgqByAVhycdDGUbjRcLj1g6Ul/fXO88M=;
+	s=arc-20240116; t=1773767658; c=relaxed/simple;
+	bh=a1HCh8SWVtv3H0zIbHMXZ4muC1kJD79FWa3dJzqesso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgezDRq+4Y2uqdHFt8B2bCeDK/h9YJQQFOwhnWUKTGIxbo8rcaojQ1CEPd7/usqdf9SVUXgjdlQeQGPkOnPJxhwkXGsiDKPWEvhayAa0abGoWAjOG2onevzaebacXOSjiuhcSqQKNmd7xCefbSOflD6GKxqMZPnzu5KyAeIl9kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AB1ffyW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C6CC4CEF7;
-	Tue, 17 Mar 2026 16:48:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NjuwGWV5pDs0fYPH6GifYiZzZbeZpXDWsMMNlXHhUz7DAh0NXUrO5hAzgW/97/kivm7fL1NN9AMmKICeJ6MzyR/thtqW0VcjdB92J+XwHRRTf7jAlwZMTb1MW+6ivZV33XCIy0Y1CvQpi5dCpYt/zqs8koPjOTlv+by7401V0DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZcXl8VP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C82C4CEF7;
+	Tue, 17 Mar 2026 17:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773766128;
-	bh=/I6QdEywpKjpgqByAVhycdDGUbjRcLj1g6Ul/fXO88M=;
+	s=korg; t=1773767657;
+	bh=a1HCh8SWVtv3H0zIbHMXZ4muC1kJD79FWa3dJzqesso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AB1ffyW/F+6N1j0RZXhYyqabCh1op14EyITNMx/FpNet55OS7/MNwAfe5/TBPPekY
-	 OY9x1BX6lwcWaA0ywcKMB/7vXAHgd0NcX1TOA7ZsJ4sr8Op3N4wB7tBzLYoB2TqK45
-	 AQ97J//IE2mM/cZE8yfgV4YqeIhroJZARK7WhMpQ=
+	b=AZcXl8VPtRgMIzH5iKIHBzW3q+BruQHZQRz86Jy7fgeX2COPo0JWpanBPAAhC1aAi
+	 5fTOcjTKCH+kEVytfXkB+KDUpUR+8vLeRl/siIWjkmLKgkI3HdtzTm09zY7SLsvYQB
+	 6bScyVP6+q2cRBLmnsA6KekjmqqVBdE+PWw/m+X0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 177/378] ALSA: usb-audio: Improve Focusrite sample rate filtering
+	Qingye Zhao <zhaoqingye@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.18 105/333] cgroup: fix race between task migration and iteration
 Date: Tue, 17 Mar 2026 17:32:14 +0100
-Message-ID: <20260317163013.519448655@linuxfoundation.org>
+Message-ID: <20260317163003.262179000@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
-References: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,186 +63,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226307-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226654-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: 81DE52AEBEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,honor.com:email]
+X-Rspamd-Queue-Id: 841912AFC84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Qingye Zhao <zhaoqingye@honor.com>
 
-[ Upstream commit 24d2d3c5f94007a5a0554065ab7349bb69e28bcb ]
+commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
 
-Replace the bLength == 10 max_rate check in
-focusrite_valid_sample_rate() with filtering that also examines the
-bmControls VAL_ALT_SETTINGS bit.
+When a task is migrated out of a css_set, cgroup_migrate_add_task()
+first moves it from cset->tasks to cset->mg_tasks via:
 
-When VAL_ALT_SETTINGS is readable, the device uses strict
-per-altsetting rate filtering (only the highest rate pair for that
-altsetting is valid). When it is not readable, all rates up to
-max_rate are valid.
+    list_move_tail(&task->cg_list, &cset->mg_tasks);
 
-For devices without the bLength == 10 Format Type descriptor extension
-but with VAL_ALT_SETTINGS readable and multiple altsettings (only seen
-in Scarlett 18i8 3rd Gen playback), fall back to the Focusrite
-convention: alt 1 = 48kHz, alt 2 = 96kHz, alt 3 = 192kHz.
+If a css_task_iter currently has it->task_pos pointing to this task,
+css_set_move_task() calls css_task_iter_skip() to keep the iterator
+valid. However, since the task has already been moved to ->mg_tasks,
+the iterator is advanced relative to the mg_tasks list instead of the
+original tasks list. As a result, remaining tasks on cset->tasks, as
+well as tasks queued on cset->mg_tasks, can be skipped by iteration.
 
-This produces correct rate tables for all tested Focusrite devices
-(all Scarlett 2nd, 3rd, and 4th Gen, Clarett+, and Vocaster) using
-only USB descriptors, allowing QUIRK_FLAG_VALIDATE_RATES to be removed
-for Focusrite in the next commit.
+Fix this by calling css_set_skip_task_iters() before unlinking
+task->cg_list from cset->tasks. This advances all active iterators to
+the next task on cset->tasks, so iteration continues correctly even
+when a task is concurrently being migrated.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/7e18c1f393a6ecb6fc75dd867a2c4dbe135e3e22.1771594828.git.g@b4.vu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This race is hard to hit in practice without instrumentation, but it
+can be reproduced by artificially slowing down cgroup_procs_show().
+For example, on an Android device a temporary
+/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
+into cgroup_procs_show(), and then:
+
+  1) Spawn three long-running tasks (PIDs 101, 102, 103).
+  2) Create a test cgroup and move the tasks into it.
+  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
+  4) In one shell, read cgroup.procs from the test cgroup.
+  5) Within the delay window, in another shell migrate PID 102 by
+     writing it to a different cgroup.procs file.
+
+Under this setup, cgroup.procs can intermittently show only PID 101
+while skipping PID 103. Once the migration completes, reading the
+file again shows all tasks as expected.
+
+Note that this change does not allow removing the existing
+css_set_skip_task_iters() call in css_set_move_task(). The new call
+in cgroup_migrate_add_task() only handles iterators that are racing
+with migration while the task is still on cset->tasks. Iterators may
+also start after the task has been moved to cset->mg_tasks. If we
+dropped css_set_skip_task_iters() from css_set_move_task(), such
+iterators could keep task_pos pointing to a migrating task, causing
+css_task_iter_advance() to malfunction on the destination css_set,
+up to and including crashes or infinite loops.
+
+The race window between migration and iteration is very small, and
+css_task_iter is not on a hot path. In the worst case, when an
+iterator is positioned on the first thread of the migrating process,
+cgroup_migrate_add_task() may have to skip multiple tasks via
+css_set_skip_task_iters(). However, this only happens when migration
+and iteration actually race, so the performance impact is negligible
+compared to the correctness fix provided here.
+
+Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/format.c | 70 ++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 65 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index 64cfe4a9d8cdf..1207c507882ad 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -305,17 +305,48 @@ static bool s1810c_valid_sample_rate(struct audioformat *fp,
- }
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2611,6 +2611,7 @@ static void cgroup_migrate_add_task(stru
  
- /*
-- * Many Focusrite devices supports a limited set of sampling rates per
-- * altsetting. Maximum rate is exposed in the last 4 bytes of Format Type
-- * descriptor which has a non-standard bLength = 10.
-+ * Focusrite devices use rate pairs: 44100/48000, 88200/96000, and
-+ * 176400/192000. Return true if rate is in the pair for max_rate.
-+ */
-+static bool focusrite_rate_pair(unsigned int rate,
-+				unsigned int max_rate)
-+{
-+	switch (max_rate) {
-+	case 48000:  return rate == 44100 || rate == 48000;
-+	case 96000:  return rate == 88200 || rate == 96000;
-+	case 192000: return rate == 176400 || rate == 192000;
-+	default:     return true;
-+	}
-+}
-+
-+/*
-+ * Focusrite devices report all supported rates in a single clock
-+ * source but only a subset is valid per altsetting.
-+ *
-+ * Detection uses two descriptor features:
-+ *
-+ * 1. Format Type descriptor bLength == 10: non-standard extension
-+ *    with max sample rate in bytes 6..9.
-+ *
-+ * 2. bmControls VAL_ALT_SETTINGS readable bit: when set, the device
-+ *    only supports the highest rate pair for that altsetting, and when
-+ *    clear, all rates up to max_rate are valid.
-+ *
-+ * For devices without the bLength == 10 extension but with
-+ * VAL_ALT_SETTINGS readable and multiple altsettings (only seen in
-+ * Scarlett 18i8 3rd Gen playback), fall back to the Focusrite
-+ * convention: alt 1 = 48kHz, alt 2 = 96kHz, alt 3 = 192kHz.
-  */
- static bool focusrite_valid_sample_rate(struct snd_usb_audio *chip,
- 					struct audioformat *fp,
- 					unsigned int rate)
- {
-+	struct usb_interface *iface;
- 	struct usb_host_interface *alts;
-+	struct uac2_as_header_descriptor *as;
- 	unsigned char *fmt;
- 	unsigned int max_rate;
-+	bool val_alt;
+ 	mgctx->tset.nr_tasks++;
  
- 	alts = snd_usb_get_host_interface(chip, fp->iface, fp->altsetting);
- 	if (!alts)
-@@ -326,9 +357,21 @@ static bool focusrite_valid_sample_rate(struct snd_usb_audio *chip,
- 	if (!fmt)
- 		return true;
- 
-+	as = snd_usb_find_csint_desc(alts->extra, alts->extralen,
-+				     NULL, UAC_AS_GENERAL);
-+	if (!as)
-+		return true;
-+
-+	val_alt = uac_v2v3_control_is_readable(as->bmControls,
-+					       UAC2_AS_VAL_ALT_SETTINGS);
-+
- 	if (fmt[0] == 10) { /* bLength */
- 		max_rate = combine_quad(&fmt[6]);
- 
-+		if (val_alt)
-+			return focusrite_rate_pair(rate, max_rate);
-+
-+		/* No val_alt: rates fall through from higher */
- 		switch (max_rate) {
- 		case 192000:
- 			if (rate == 176400 || rate == 192000)
-@@ -344,12 +387,29 @@ static bool focusrite_valid_sample_rate(struct snd_usb_audio *chip,
- 			usb_audio_info(chip,
- 				"%u:%d : unexpected max rate: %u\n",
- 				fp->iface, fp->altsetting, max_rate);
--
- 			return true;
- 		}
- 	}
- 
--	return true;
-+	if (!val_alt)
-+		return true;
-+
-+	/* Multi-altsetting device with val_alt but no max_rate
-+	 * in the format descriptor. Use Focusrite convention:
-+	 * alt 1 = 48kHz, alt 2 = 96kHz, alt 3 = 192kHz.
-+	 */
-+	iface = usb_ifnum_to_if(chip->dev, fp->iface);
-+	if (!iface || iface->num_altsetting <= 2)
-+		return true;
-+
-+	switch (fp->altsetting) {
-+	case 1:		max_rate = 48000; break;
-+	case 2:		max_rate = 96000; break;
-+	case 3:		max_rate = 192000; break;
-+	default:	return true;
-+	}
-+
-+	return focusrite_rate_pair(rate, max_rate);
- }
- 
- /*
--- 
-2.51.0
-
++	css_set_skip_task_iters(cset, task);
+ 	list_move_tail(&task->cg_list, &cset->mg_tasks);
+ 	if (list_empty(&cset->mg_node))
+ 		list_add_tail(&cset->mg_node,
 
 
 
