@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-226718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SChKDqeNuWk5KQIAu9opvQ
-	(envelope-from <stable+bounces-226718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:43 +0100
+	id UI0mEI6JuWmTJAIAu9opvQ
+	(envelope-from <stable+bounces-226442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47182AF677
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:21:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3582AEDDF
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3D3F308A94F
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:19:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C2D630530DC
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB3D35A39C;
-	Tue, 17 Mar 2026 17:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9983F7884;
+	Tue, 17 Mar 2026 16:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTN0NHwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8LufIi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E89A2FD69D;
-	Tue, 17 Mar 2026 17:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E123F54CD;
+	Tue, 17 Mar 2026 16:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773767938; cv=none; b=Ej7kU/RT6kXrAnHiNwmSqytHlG68zFYrJoucOI1RkHqFUsoFpzUhScUKjXvOqlEVZAMhQXDQiywCntdaYpA2t02y9iex4EhWMDUawsLBsWm2wAIXvJciMB5+tb+WCeo3I+rSeJS+kIuwdd9/6tSGQLvrBElUADEYmx0p3nYUss0=
+	t=1773766732; cv=none; b=fEgppVWOBSVDwgVv57/cTPPgLAwCOU5a//h60vA2D2T4izRrbUuSIh10cfZOt3B4jga9Yn7Ihx9KGdG1caIjO5n7QkrJr/ZCxd3fLW0dstEKUdNQjl5pGQbW1N4gojHpKaxRv29Zn9+oIlMUjEn6oyLbFcSk5Qf8GFWqsqvXhwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773767938; c=relaxed/simple;
-	bh=dFg9RGgAvxYAsIDIZRuDnQvIy2wvf9MbYnEVUCh+gy0=;
+	s=arc-20240116; t=1773766732; c=relaxed/simple;
+	bh=XfZ3fMnrVD7lBj15HDfe+LmtlMX4RaN+fH19YW+Lxbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Omj67TszJufiiOWLE3rl5J4wJ0NpQt8MLwa0MfILJ5Qlbz3m8Q+nxmh/D/ecx9eUM12QhOgUdzhjKkskSClLsmO+eXGHmJct+bFGZwdHcqJ2zAaQRkXk3gOPSv7wciTSK2wSeayVlTwvMF60h6laFgSEUMeV//pv8+ZtIREqpoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTN0NHwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DB4C19424;
-	Tue, 17 Mar 2026 17:18:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P1+swz0uVb+uZQWCmoKBGZls+hTGvBp4pnmgTAhr0AlCp09kYDMBgPwh+YHdxus/G4Zye7M8kTWckC2TMz1Hq/7GXIZ66zH21FyvZLcuGVutUFdhYwZW9FXDIkgEIJDbnn8fxMRMX0C1BcpbbjZDc0xUo8SO2nQg0i0TnOWpOKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8LufIi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5BDC2BCAF;
+	Tue, 17 Mar 2026 16:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773767938;
-	bh=dFg9RGgAvxYAsIDIZRuDnQvIy2wvf9MbYnEVUCh+gy0=;
+	s=korg; t=1773766732;
+	bh=XfZ3fMnrVD7lBj15HDfe+LmtlMX4RaN+fH19YW+Lxbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTN0NHwILeMsm3LL1o4symTkxJ2ZMZgeSJbK4E9M8YkOrJ7rGX//Xrr+So4b3M+tB
-	 DL/lo8VAGoVpTkypLLgRv9ZFeyELfYgS9882oUt/QZE4M/181I+ney6CiFy64p7vng
-	 1ucn9TzkHrU1oDGKIRjWqIvd7dkjP3h3vBNsufUs=
+	b=h8LufIi20GxNdOo2xV5GCGp245viBrdbLVmR2h/VY8+KfHqCIBcdHv5jqGm3BxV8Y
+	 v8vgfYyuA2CsdWMZnj254AZi06q8I7ppuamK3L7HJ6ElDRUItZKSy3v/kzC0VUzaDJ
+	 kRjNa2+R71PmKvDR8KwcNqMSZNM+/rClgOvqSDOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.18 194/333] gpiolib: normalize the return value of gc->get() on behalf of buggy drivers
-Date: Tue, 17 Mar 2026 17:33:43 +0100
-Message-ID: <20260317163006.551785572@linuxfoundation.org>
+	Christian Schmidbauer <github@grische.xyz>,
+	Sven Eckelmann <sven@narfation.org>,
+	=?UTF-8?q?S=C3=B6ren=20Skaarup?= <freifunk_nordm4nn@gmx.de>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.19 267/378] batman-adv: Avoid double-rtnl_lock ELP metric worker
+Date: Tue, 17 Mar 2026 17:33:44 +0100
+Message-ID: <20260317163016.834299858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226718-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,grische.xyz,narfation.org,gmx.de,simonwunderlich.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-226442-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A47182AF677
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gmx.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,simonwunderlich.de:email,narfation.org:email,grische.xyz:email]
+X-Rspamd-Queue-Id: DE3582AEDDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit ec2cceadfae72304ca19650f9cac4b2a97b8a2fc upstream.
+commit cfc83a3c71517b59c1047db57da31e26a9dc2f33 upstream.
 
-Commit 86ef402d805d ("gpiolib: sanitize the return value of
-gpio_chip::get()") started checking the return value of the .get()
-callback in struct gpio_chip. Now - almost a year later - it turns out
-that there are quite a few drivers in tree that can break with this
-change. Partially revert it: normalize the return value in GPIO core but
-also emit a warning.
+batadv_v_elp_get_throughput() might be called when the RTNL lock is already
+held. This could be problematic when the work queue item is cancelled via
+cancel_delayed_work_sync() in batadv_v_elp_iface_disable(). In this case,
+an rtnl_lock() would cause a deadlock.
+
+To avoid this, rtnl_trylock() was used in this function to skip the
+retrieval of the ethtool information in case the RTNL lock was already
+held.
+
+But for cfg80211 interfaces, batadv_get_real_netdev() was called - which
+also uses rtnl_lock(). The approach for __ethtool_get_link_ksettings() must
+also be used instead and the lockless version __batadv_get_real_netdev()
+has to be called.
 
 Cc: stable@vger.kernel.org
-Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::get()")
-Reported-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Closes: https://lore.kernel.org/all/aZSkqGTqMp_57qC7@google.com/
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://patch.msgid.link/20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: 8c8ecc98f5c6 ("batman-adv: Drop unmanaged ELP metric worker")
+Reported-by: Christian Schmidbauer <github@grische.xyz>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Tested-by: Sören Skaarup <freifunk_nordm4nn@gmx.de>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/batman-adv/bat_v_elp.c      |   10 +++++++++-
+ net/batman-adv/hard-interface.c |    8 ++++----
+ net/batman-adv/hard-interface.h |    1 +
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -3249,8 +3249,12 @@ static int gpiochip_get(struct gpio_chip
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -111,7 +111,15 @@ static bool batadv_v_elp_get_throughput(
+ 			/* unsupported WiFi driver version */
+ 			goto default_throughput;
  
- 	/* Make sure this is called after checking for gc->get(). */
- 	ret = gc->get(gc, offset);
--	if (ret > 1)
--		ret = -EBADE;
-+	if (ret > 1) {
-+		gpiochip_warn(gc,
-+			"invalid return value from gc->get(): %d, consider fixing the driver\n",
-+			ret);
-+		ret = !!ret;
-+	}
+-		real_netdev = batadv_get_real_netdev(hard_iface->net_dev);
++		/* only use rtnl_trylock because the elp worker will be cancelled while
++		 * the rntl_lock is held. the cancel_delayed_work_sync() would otherwise
++		 * wait forever when the elp work_item was started and it is then also
++		 * trying to rtnl_lock
++		 */
++		if (!rtnl_trylock())
++			return false;
++		real_netdev = __batadv_get_real_netdev(hard_iface->net_dev);
++		rtnl_unlock();
+ 		if (!real_netdev)
+ 			goto default_throughput;
  
- 	return ret;
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -204,7 +204,7 @@ static bool batadv_is_valid_iface(const
  }
+ 
+ /**
+- * batadv_get_real_netdevice() - check if the given netdev struct is a virtual
++ * __batadv_get_real_netdev() - check if the given netdev struct is a virtual
+  *  interface on top of another 'real' interface
+  * @netdev: the device to check
+  *
+@@ -214,7 +214,7 @@ static bool batadv_is_valid_iface(const
+  * Return: the 'real' net device or the original net device and NULL in case
+  *  of an error.
+  */
+-static struct net_device *batadv_get_real_netdevice(struct net_device *netdev)
++struct net_device *__batadv_get_real_netdev(struct net_device *netdev)
+ {
+ 	struct batadv_hard_iface *hard_iface = NULL;
+ 	struct net_device *real_netdev = NULL;
+@@ -267,7 +267,7 @@ struct net_device *batadv_get_real_netde
+ 	struct net_device *real_netdev;
+ 
+ 	rtnl_lock();
+-	real_netdev = batadv_get_real_netdevice(net_device);
++	real_netdev = __batadv_get_real_netdev(net_device);
+ 	rtnl_unlock();
+ 
+ 	return real_netdev;
+@@ -336,7 +336,7 @@ static u32 batadv_wifi_flags_evaluate(st
+ 	if (batadv_is_cfg80211_netdev(net_device))
+ 		wifi_flags |= BATADV_HARDIF_WIFI_CFG80211_DIRECT;
+ 
+-	real_netdev = batadv_get_real_netdevice(net_device);
++	real_netdev = __batadv_get_real_netdev(net_device);
+ 	if (!real_netdev)
+ 		return wifi_flags;
+ 
+--- a/net/batman-adv/hard-interface.h
++++ b/net/batman-adv/hard-interface.h
+@@ -67,6 +67,7 @@ enum batadv_hard_if_bcast {
+ 
+ extern struct notifier_block batadv_hard_if_notifier;
+ 
++struct net_device *__batadv_get_real_netdev(struct net_device *net_device);
+ struct net_device *batadv_get_real_netdev(struct net_device *net_device);
+ bool batadv_is_cfg80211_hardif(struct batadv_hard_iface *hard_iface);
+ bool batadv_is_wifi_hardif(struct batadv_hard_iface *hard_iface);
 
 
 
