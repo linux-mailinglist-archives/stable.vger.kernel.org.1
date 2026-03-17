@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-226145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Hn2LmeEuWlyIgIAu9opvQ
-	(envelope-from <stable+bounces-226145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:42:15 +0100
+	id mKuiD1KEuWlyIgIAu9opvQ
+	(envelope-from <stable+bounces-226146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:41:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDBB2AE3D0
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:42:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37DB2AE385
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E1D2307BB77
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:38:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE9543009F85
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 16:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660053EB7F1;
-	Tue, 17 Mar 2026 16:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D21D2222AA;
+	Tue, 17 Mar 2026 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/BAaXX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AULqwQR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278CC3E3DAB;
-	Tue, 17 Mar 2026 16:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F98C375F99;
+	Tue, 17 Mar 2026 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773765494; cv=none; b=qx9uxM+M/xeYlHJ09EFL8rLnxNXAsx3A/XE0nori7wIabGhicmRAkcKy5X6o0/y3hnh1iTRXu6DRTV16Fm1I/jrsECA6T9Z/y6SvbNKqIGV8BKAY1/omm0els9CIyti5q5Pan5ElDLpq1NOkEHdRW9C7HTxfWF2xreAxNLqqnb0=
+	t=1773765499; cv=none; b=BQ34lWPs6BkLjKNoeBxjuBa3G2ocv/I/FKoH34sAV5Q9yiALA1yrqvpXVsGba/NcCc11UjCkiwRAP6ceNtno0MUPu1cHqPbuX9TMCc0KM1kGiwWJHNEAfVd2HnDyMyiIFFQgmcBAFtjUNkvOs3RT8NKC2xpNpjJYaFVCaB4aLTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773765494; c=relaxed/simple;
-	bh=7fu7hBT/mdncdmpY22SjA4q2Jp1i7NTJAwg6X4hv9sI=;
+	s=arc-20240116; t=1773765499; c=relaxed/simple;
+	bh=2ydWS2XYajKGGY4Q+Q0fmaEgU3DwFdaY8vozBWsP3r4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMkizWrQI54vgesUAPVVUWXf0a1eFGVKRzHGLzNQu/WoNeNG9FGVIvqI2czNxj8sAY6Awee6mD1YJZjIHWrhGojxqTeUS2X9LllLsp6Jvxo1/PqTu+q5I80BHEPdx9rWg4LGzPefyMPpSiIs6RGS9XMUvotw+3t7nsaXsC00+K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/BAaXX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B266C4CEF7;
-	Tue, 17 Mar 2026 16:38:13 +0000 (UTC)
+	 MIME-Version; b=kaLzMVy3XfL+VxHPhGshAgx3sYHMvzQli8R39voWeZSMNrPqQn0/rNOn2Y9bHQpvCyIVS4fdWT8/xAn10zAbdUK6WMh4i9bRYb1xyVU9DT86XPF6AxWwWBLou/3aDjsaLUXBxAi657gZInZJnIpu7DjPI22HUw0Wp31ynPZOXE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AULqwQR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1FAC4CEF7;
+	Tue, 17 Mar 2026 16:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773765493;
-	bh=7fu7hBT/mdncdmpY22SjA4q2Jp1i7NTJAwg6X4hv9sI=;
+	s=korg; t=1773765498;
+	bh=2ydWS2XYajKGGY4Q+Q0fmaEgU3DwFdaY8vozBWsP3r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/BAaXX11u3OGlAbwrMTAYNm7VmhA8b0AwCLXhh3iWikPZzrpkDqdGUvw/zzOnTFG
-	 ee1a9tqhFKNmJupryOHWZZh9/7VT2LMTPSLManrCLeC90Yzb3wslCfSYH2LLIjYfjU
-	 Gbh3xZ//Ck94Rt0Fq1CDZNzEYgXn+yVYYRbOb0sY=
+	b=AULqwQR1pw7/bI7dba3bcBXoK+RCH/d/Ow5v8bnDlak+9YAF87Y2EgQtTmnxTnqcg
+	 1GD/oQCo2vepBd0P5Z2MK0LOsTtdA5qk8dbjRrHUEkKF685OnlCKu4pqFQXjL/li5V
+	 3LyNSRA5J5bl/FERKhInH1qFwD6v6FEkc8NezAs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
 	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 003/378] powerpc/kexec/core: use big-endian types for crash variables
-Date: Tue, 17 Mar 2026 17:29:20 +0100
-Message-ID: <20260317163007.093416258@linuxfoundation.org>
+Subject: [PATCH 6.19 004/378] powerpc/crash: adjust the elfcorehdr size
+Date: Tue, 17 Mar 2026 17:29:21 +0100
+Message-ID: <20260317163007.130315221@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
 References: <20260317163006.959177102@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226145-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226146-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7CDBB2AE3D0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A37DB2AE385
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,100 +102,63 @@ X-Rspamd-Server: lfdr
 
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 20197b967a6a29dab81495f25a988515bda84cfe ]
+[ Upstream commit 04e707cb77c272cb0bb2e2e3c5c7f844d804a089 ]
 
-Use explicit word-sized big-endian types for kexec and crash related
-variables. This makes the endianness unambiguous and avoids type
-mismatches that trigger sparse warnings.
+With crash hotplug support enabled, additional memory is allocated to
+the elfcorehdr kexec segment to accommodate resources added during
+memory hotplug events. However, the kdump FDT is not updated with the
+same size, which can result in elfcorehdr corruption in the kdump
+kernel.
 
-The change addresses sparse warnings like below (seen on both 32-bit
-and 64-bit builds):
+Update elf_headers_sz (the kimage member representing the size of the
+elfcorehdr kexec segment) to reflect the total memory allocated for the
+elfcorehdr segment instead of the elfcorehdr buffer size at the time of
+kdump load. This allows of_kexec_alloc_and_setup_fdt() to reserve the
+full elfcorehdr memory in the kdump FDT and prevents elfcorehdr
+corruption.
 
-CHECK   ../arch/powerpc/kexec/core.c
-sparse:    expected unsigned int static [addressable] [toplevel] [usertype] crashk_base
-sparse:    got restricted __be32 [usertype]
-sparse: warning: incorrect type in assignment (different base types)
-sparse:    expected unsigned int static [addressable] [toplevel] [usertype] crashk_size
-sparse:    got restricted __be32 [usertype]
-sparse: warning: incorrect type in assignment (different base types)
-sparse:    expected unsigned long long static [addressable] [toplevel] mem_limit
-sparse:    got restricted __be32 [usertype]
-sparse: warning: incorrect type in assignment (different base types)
-sparse:    expected unsigned int static [addressable] [toplevel] [usertype] kernel_end
-sparse:    got restricted __be32 [usertype]
-
-No functional change intended.
-
-Fixes: ea961a828fe7 ("powerpc: Fix endian issues in kexec and crash dump code")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512221405.VHPKPjnp-lkp@intel.com/
+Fixes: 849599b702ef8 ("powerpc/crash: add crash memory hotplug support")
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251224151257.28672-1-sourabhjain@linux.ibm.com
+Link: https://patch.msgid.link/20260227171801.2238847-1-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/powerpc/kexec/file_load_64.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index 104c05520bf05..dc44f11be353e 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -23,6 +23,7 @@
- #include <asm/firmware.h>
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index e7ef8b2a25546..5f6d50e4c3d45 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -450,6 +450,11 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
+ 	kbuf->buffer = headers;
+ 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
+ 	kbuf->bufsz = headers_sz;
++
++	/*
++	 * Account for extra space required to accommodate additional memory
++	 * ranges in elfcorehdr due to memory hotplug events.
++	 */
+ 	kbuf->memsz = headers_sz + kdump_extra_elfcorehdr_size(cmem);
+ 	kbuf->top_down = false;
  
- #define cpu_to_be_ulong __PASTE(cpu_to_be, BITS_PER_LONG)
-+#define __be_word __PASTE(__be, BITS_PER_LONG)
+@@ -460,7 +465,14 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
+ 	}
  
- #ifdef CONFIG_CRASH_DUMP
- void machine_crash_shutdown(struct pt_regs *regs)
-@@ -146,25 +147,25 @@ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
- }
- 
- /* Values we need to export to the second kernel via the device tree. */
--static phys_addr_t crashk_base;
--static phys_addr_t crashk_size;
--static unsigned long long mem_limit;
-+static __be_word crashk_base;
-+static __be_word crashk_size;
-+static __be_word mem_limit;
- 
- static struct property crashk_base_prop = {
- 	.name = "linux,crashkernel-base",
--	.length = sizeof(phys_addr_t),
-+	.length = sizeof(__be_word),
- 	.value = &crashk_base
- };
- 
- static struct property crashk_size_prop = {
- 	.name = "linux,crashkernel-size",
--	.length = sizeof(phys_addr_t),
-+	.length = sizeof(__be_word),
- 	.value = &crashk_size,
- };
- 
- static struct property memory_limit_prop = {
- 	.name = "linux,memory-limit",
--	.length = sizeof(unsigned long long),
-+	.length = sizeof(__be_word),
- 	.value = &mem_limit,
- };
- 
-@@ -193,11 +194,11 @@ static void __init export_crashk_values(struct device_node *node)
- }
- #endif /* CONFIG_CRASH_RESERVE */
- 
--static phys_addr_t kernel_end;
-+static __be_word kernel_end;
- 
- static struct property kernel_end_prop = {
- 	.name = "linux,kernel-end",
--	.length = sizeof(phys_addr_t),
-+	.length = sizeof(__be_word),
- 	.value = &kernel_end,
- };
- 
+ 	image->elf_load_addr = kbuf->mem;
+-	image->elf_headers_sz = headers_sz;
++
++	/*
++	 * If CONFIG_CRASH_HOTPLUG is enabled, the elfcorehdr kexec segment
++	 * memsz can be larger than bufsz. Always initialize elf_headers_sz
++	 * with memsz. This ensures the correct size is reserved for elfcorehdr
++	 * memory in the FDT prepared for kdump.
++	 */
++	image->elf_headers_sz = kbuf->memsz;
+ 	image->elf_headers = headers;
+ out:
+ 	kfree(cmem);
 -- 
 2.51.0
 
