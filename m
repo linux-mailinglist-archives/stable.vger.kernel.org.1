@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-226830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDcNLu6VuWkJKwIAu9opvQ
-	(envelope-from <stable+bounces-226830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:57:02 +0100
+	id wKFMKbiMuWnkJwIAu9opvQ
+	(envelope-from <stable+bounces-226503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419742B063C
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:57:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6752AF43F
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 18:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 870823265D55
-	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:26:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A05BE302C6D0
+	for <lists+stable@lfdr.de>; Tue, 17 Mar 2026 17:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6542D73B8;
-	Tue, 17 Mar 2026 17:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B03377EDD;
+	Tue, 17 Mar 2026 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdHOJvep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiwEyI5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83E615E5BB;
-	Tue, 17 Mar 2026 17:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4656429D26C;
+	Tue, 17 Mar 2026 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768378; cv=none; b=EyKN/54x8UUBSKzgKIdnBQBFDuaYOFJSV9PL5o6IV5DMSjpL7xmCUjZpCfVY5vkEOEmOvfZCuy476yYhyGHJ5s6/ScElUAoZZgrO8PpTI7Fh3SExi4vhRj55pzqStP89kr73aRG3HL0fyM7ChWAdMPOMvwC/xuav2PjGOga3ToQ=
+	t=1773766991; cv=none; b=Rj1eMpAoEWluJzjJKtGSmNwpW04IDySgD73tLy3oFjk11M/8v6B3LduSChOR1ac0WXRS4eXzeE7OMBb0M+mgIfd73OO87KewuCyKj1VNYvMU2/PLjTQHNlPdoaKpETOYBRtLI1ED9ZnNmyH+0tYOmYzKjOtqI/6ciTrDVj5NxWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768378; c=relaxed/simple;
-	bh=an8CiVclzV/aYEITwIHtiRqn2yizFsmAfCcC8qkbFC4=;
+	s=arc-20240116; t=1773766991; c=relaxed/simple;
+	bh=qjmzHvTUT2y2ixFQFVJgdODVkPNTK+QdGt2f8XgNFnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQQ45Mc4b7xuNngEDpYqKvqns01ApPFpdvqkQVM9vbRddBSnkNa7hBge/OEAYrl/Duc0sJNN5xeLZAJzu4EmbWHH6flPwtATAVj8QoXalZxR+tBBunFmqoSfiJQkple8c8FiIjnX3hQBddDoaiaExmKlNiBsYKX2gvKmo2ey4Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdHOJvep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E17C4CEF7;
-	Tue, 17 Mar 2026 17:26:16 +0000 (UTC)
+	 MIME-Version; b=KisYFObLCaUHMK/bWbJ3wvDot4DreCFcEZuNj0Ly3FvTvKGPka2sOOXqbJv/tQV/pe9MBWCNZAytejG6zBMGwTt2OQyRZ8xgX9jPFvcIqM4YWqeaGmUo6UZqNNzw/8/WFAkCbQnKxA/eGSvzokrHWecCIX/+i3EL9rvKCpY+w80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiwEyI5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF95AC4CEF7;
+	Tue, 17 Mar 2026 17:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773768377;
-	bh=an8CiVclzV/aYEITwIHtiRqn2yizFsmAfCcC8qkbFC4=;
+	s=korg; t=1773766991;
+	bh=qjmzHvTUT2y2ixFQFVJgdODVkPNTK+QdGt2f8XgNFnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdHOJvep+LhHxsfnEott4DnwnTS4eS4HsHQa74mO+NwGph1pOryh2lPr2BtrWwNEg
-	 QTQneAtE8Qku70/ZbUz+H8U3bdZ41EltSFUq+ve+Hq1j7BizuQkAbGt05GJkQf2jUC
-	 EQ67tiLbjrOYHrUcD+uGB+yA/80vEVRks+oZibc0=
+	b=yiwEyI5FHwNTQkKp0hWXKkzCtqj/I0QKqHNc+w/RItDn38Sz6tntWI13BlVJbRkUt
+	 NmkyiVKHk8EIITag1dNaDbN7x7m+qaSx1DYk0pv1acsknkmjPFjWZrEKdtbELQVMl2
+	 9LSSuM4jXF2MV54KJLrq1tpH4YOefprQlsd7DUUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 296/333] iio: magnetometer: tlv493d: remove erroneous shift in X-axis data
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.19 368/378] i3c: mipi-i3c-hci: Add missing TID field to no-op command descriptor
 Date: Tue, 17 Mar 2026 17:35:25 +0100
-Message-ID: <20260317163010.369923909@linuxfoundation.org>
+Message-ID: <20260317163020.516909087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+References: <20260317163006.959177102@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-226830-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226503-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +89,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 419742B063C
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,bootlin.com:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9E6752AF43F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 82ee91d6b15f06b6094eea2c26afe0032fe8e177 upstream.
+commit ec3cfd835f7c4bbd23bc9ad909d2fdc772a578bb upstream.
 
-TLV493D_BX2_MAG_X_AXIS_LSB is defined as GENMASK(7, 4). FIELD_GET()
-already right-shifts bits [7:4] to [3:0], so the additional >> 4
-discards most of the X-axis low nibble. The Y and Z axes correctly
-omit this extra shift. Remove it.
+The internal control command descriptor used for no-op commands includes a
+Transaction ID (TID) field, but the no-op command constructed in
+hci_dma_dequeue_xfer() omitted it.  As a result, the hardware receives a
+no-op descriptor without the expected TID.
 
-Fixes: 106511d280c7 ("iio: magnetometer: add support for Infineon TLV493D 3D Magentic sensor")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This bug has gone unnoticed because the TID is currently not validated in
+the no-op completion path, but the descriptor format requires it to be
+present.
+
+Add the missing TID field when generating a no-op descriptor so that its
+layout matches the defined command structure.
+
+Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260306072451.11131-10-adrian.hunter@intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/tlv493d.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/cmd.h |    1 +
+ drivers/i3c/master/mipi-i3c-hci/dma.c |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
-index ec53fd40277b..e5e050af2b74 100644
---- a/drivers/iio/magnetometer/tlv493d.c
-+++ b/drivers/iio/magnetometer/tlv493d.c
-@@ -171,7 +171,7 @@ static s16 tlv493d_get_channel_data(u8 *b, enum tlv493d_channels ch)
- 	switch (ch) {
- 	case TLV493D_AXIS_X:
- 		val = FIELD_GET(TLV493D_BX_MAG_X_AXIS_MSB, b[TLV493D_RD_REG_BX]) << 4 |
--		      FIELD_GET(TLV493D_BX2_MAG_X_AXIS_LSB, b[TLV493D_RD_REG_BX2]) >> 4;
-+		      FIELD_GET(TLV493D_BX2_MAG_X_AXIS_LSB, b[TLV493D_RD_REG_BX2]);
- 		break;
- 	case TLV493D_AXIS_Y:
- 		val = FIELD_GET(TLV493D_BY_MAG_Y_AXIS_MSB, b[TLV493D_RD_REG_BY]) << 4 |
--- 
-2.53.0
-
+--- a/drivers/i3c/master/mipi-i3c-hci/cmd.h
++++ b/drivers/i3c/master/mipi-i3c-hci/cmd.h
+@@ -17,6 +17,7 @@
+ #define CMD_0_TOC			W0_BIT_(31)
+ #define CMD_0_ROC			W0_BIT_(30)
+ #define CMD_0_ATTR			W0_MASK(2, 0)
++#define CMD_0_TID			W0_MASK(6, 3)
+ 
+ /*
+  * Response Descriptor Structure
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -510,7 +510,7 @@ static bool hci_dma_dequeue_xfer(struct
+ 			u32 *ring_data = rh->xfer + rh->xfer_struct_sz * idx;
+ 
+ 			/* store no-op cmd descriptor */
+-			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7);
++			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7) | FIELD_PREP(CMD_0_TID, xfer->cmd_tid);
+ 			*ring_data++ = 0;
+ 			if (hci->cmd == &mipi_i3c_hci_cmd_v2) {
+ 				*ring_data++ = 0;
 
 
 
