@@ -1,232 +1,162 @@
-Return-Path: <stable+bounces-227135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOfWDpbvumkBdQIAu9opvQ
-	(envelope-from <stable+bounces-227135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:31:50 +0100
+	id wLBICmT2umlvdgIAu9opvQ
+	(envelope-from <stable+bounces-227136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:00:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8392C14DD
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:31:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EB72C1B99
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D037F30C78F9
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:19:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C052E30A0D14
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FF13CB2C9;
-	Wed, 18 Mar 2026 18:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30A3E3D9D;
+	Wed, 18 Mar 2026 18:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y96hdK+F"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="asainJvy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDBE265298
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 18:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773857987; cv=pass; b=KbNKmnSwsvWNjhUHiEFIZKZfR8wg53LgNTgwMPPOWVMHjiHg/FpD4KVmxLdggxYrQANv7bjAKZV9nHRSAxV3mhxRJSL0QjES6Hr9DuHa1w58oyVCwKqU+7oJDo/SzAV3pz11RANDU/2CDpCzYnLAZjCNvXrXGmeyUCqi5Mhf+2Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773857987; c=relaxed/simple;
-	bh=PoIXV/SEiAxyp3zTzsVrIIEiDO8ISD+QIm/nqSAV+Co=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kdx0r0mVGt7dTgJNPwb2X3zY4tgDTMZFKb2ShlfxBXfxpGzZW9RM9tQKxKTgjLnA+GodJhNmT+v20bDdPz1VFp4KOfeU/uT1PPT8M65wfpoPQrZ4aLkkpXUO0CiBsV6Jv5cQ56DV9dLinyff3lLyEN1ce8HNCuvYhfEICIau90E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y96hdK+F; arc=pass smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38be66a9fc0so1349891fa.1
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 11:19:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773857983; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eZ8+bGVKsSHvLTcMuJI0G2QUhSpSvqH97PBE6y+d/MgTud6ifCsSMI1dB6xhFfJZj9
-         ua7mMp8AjSk5IDqvTW+DDW0vCMzUYiMD048C/XNoKDYAtY6gCD0iaEipnfi0pEdokJaU
-         5Yg8iwaMURqTaCpOr4Wqp0JqzvQKxKzNDKXnrc9d25f4Iz7E5MLOuggsXZhUNQ2hz5eK
-         v+dy569p1MXpMITOf1VEcO+SJGJo6HfIGNhOuH4iVVxOWYOsyTZ5y7dTgvthXDquztTX
-         PnujcU3ArECgraOEI/YKQV6g/+/vVSXj/7Qcy+MbzwLDfV2Ocx/IadpHJpRqkOuhaNc7
-         n33Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Sh96NpHK/Gnjs5OHX/qQC171dH+qdnnnJqOoacHs10U=;
-        fh=/pQcJhsYd/r2qzbGG47Xdf6NM73Kdib+H16k/J2BBSM=;
-        b=Smf8e+LYmg1uDfwMjdoIixSByqKMgmed4AWgC3QuJpo0ED7gz5npI6Ry6W0wukNtzP
-         fmTGcP4Q/RKS+hPHove6Tyh9k/ONnk1IrI3V0uOw3tHu6cTiKZmPpTl1raxHU8Ny3siD
-         YJGcYhHFxcSP8NViKIs5eupDdTj0TziANhNtieX6o6y+6mBkYeskiXrxQbeNshA4d1Uu
-         fZIdjhnlf6fJVEbfDlAx36cktQ3pe30Xw1PNJKa8V3ycJUPi5UKvZoWp8pozZeIOPBkr
-         AN3yWNoP1pfSHIKOjHuwc0/Siur7Ss7AMRLm88Z25KtgcsdG8voTNM/dgFYg140mQaIF
-         UpHQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75778306486
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 18:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773859441; cv=none; b=L3ZCosUKdq0pSF79CRZcrRGG5Z/WjYwg8N5ILd5fGsIY9S5W7x/IZiGU8Dqt38pI5fYrb+YWJ8EQIfNIMVVy6f9nnTCvjUZhe5IPbhqXHS7+1zBy1ad762u55XXPRlkFocxfHMAjOHQlvvP8F1I9+Kzi1tZRT+W2Z9ftp5V5X7A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773859441; c=relaxed/simple;
+	bh=8Vcm/N9roL1EiGoUQJrKpZXwbsvsdhmITMoWN0rleZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QgP2eMm36ewsaAz96lylakTd4Um0S9JEqPVgGc3nnNt33KUzpIkGn06R+Z0R5rJacvA1Ra1wfb6XLUG3NBPEjUVrPrYYEe9xS8BnQbKBK2YcDC6uJ33sMamAZqu7U11V50ZrqZozRdNziwn9Cq4nq966PI/YqYjzDnYK2E8hmJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=asainJvy; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48539d21b76so1357995e9.1
+        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 11:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773857983; x=1774462783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sh96NpHK/Gnjs5OHX/qQC171dH+qdnnnJqOoacHs10U=;
-        b=Y96hdK+FmAMlEguDsq60cO/prB51d1xrWEArIEKHPkIV50nXwLtM8FbY8WihgQ0Nj7
-         xBP2uD6sHDL4C+6XSE+ES4opC2alwuORuSA5EOa1vLg2PrVgILFoUCAUzoizCueQsIGv
-         oSAQMHV3EJzTPVN8uHTQ7OWx5wzM+tjfHp0dI1TFTbx5aLa+cFaZKDLJsrhMxOKeVrsK
-         YU58d8qALA2cF5Hxs8cb7NnCAiPNgKvwA3mwu0ZsboAu9dC7jW0CBvXAH5b3v7nKmU5R
-         VTSoSTi0I5JUGXe/qKvruwBy2oViRPbCWmOotU9FzAccAgBlxb4JOHnPwQk2u+m7Rdx+
-         tWrQ==
+        d=googlemail.com; s=20230601; t=1773859439; x=1774464239; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q5gQcxECEznuueIY7HzNm9vgGiTnm3cM7BA/R5amhsw=;
+        b=asainJvyB9Sn/8KlHJuvRAhIcCAQc3v75gGOqz/UhcyBKR1QIumNghujYGfAtzQzLC
+         YaxfsqGtlosLgUackY1NuM3c/zwcl0p9jNlbRZEqNHgAGKgpBbdA47kPOKKSyyOZVteJ
+         VC2D1+GrCq0++sPTf3e5ZQwLrfRxp8fZrHLA952ktuOr4+wswniEnV6iHcx79BRxK1RT
+         DoVsGpoz1rKT6kSbWt9/EI5tZ/LK0erg+M8uS/q+FDLhi0CkvDQTi6kUHFRCllQzrqCb
+         d07UcsP3xP2pkn8Wix9j/km4p2SJwXE0OU9t9em/wtDoyWqIWb3n//iwqcXaB1XvATr8
+         bTnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773857983; x=1774462783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Sh96NpHK/Gnjs5OHX/qQC171dH+qdnnnJqOoacHs10U=;
-        b=RiHD2kn1hEYKdDfWOzl+hs1piW/MpEJXEbqXUN0TqSG9Syrc2kZcU2hUndZdCbL8Nh
-         kXDvF80WmsYdSWZXuTi2EHyOEkc9p2Am/Tsa7JGcdKCkidlvyFMB/m/8HEpMJNZzkzX1
-         wuO1z7WaCriFWweDiijZe5xI6b5d6JTUXeq8NejwnIlBBbpwjEgcipPpGO2L2T8thCWU
-         W5Cy9E23XJasjD5JwhGSKZDcSwJFoNHTplVqPmgS+oAtROPtlEDZ28lQMEraV8kPivCo
-         BLmQqCvKJQj80/y8w7GlBMtjF4ypLdzZvcBfaURdPSOtnHC5WJxAe08g2o8ArqkLPZwm
-         +a6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXW7kDh9unbLyTyUtgMX17JLK8LVuAXEGuxLQbYskCxnzsG7uJxlDHjTRQZ+jLaP/VZ29VoDGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuFypfMlLo3g7Rof1zLNjqpot1PhqUJBp9drP3F350dJZsLpGq
-	pEgJ4x9/BsdT/uS+RabiQqESDmiNegMi40gWIefc1yErdrJuN3zxiJfNigPsPOUWShyxQZbLXAa
-	BFOgpe9qNCB+ptBjjU4kwRiqO3x2Nfrz392GOFdnufw==
-X-Gm-Gg: ATEYQzw5a1JAI2cUwImnhmeZD6iDcNKntyoBERrZVH0IfImWqiVQvp8CgxrmlyTy3Oc
-	eL/pGd5/1xyCQZBVifGAnwb0kr029wdMcCgjSASQlUsQgqUoV6X+sBn70o/M8FKUiX0kOLuNxw1
-	lbn1WzHJR8aPT8MYCbktF0L8pz/g4IjOx61jJNKVjRWGVR/Poay/GbJouzQBa5OkxLidmTOxm9K
-	x7rROfKAjMt2+cnY4MjHKr7GhRJce+xWRqsJouvuDvPLpo2IWyW2PpcJGRWdwXsy2xbSEwjcrV0
-	VIMQU8dU
-X-Received: by 2002:a05:651c:b23:b0:383:31cb:e3ae with SMTP id
- 38308e7fff4ca-38bd57b7f5cmr17915201fa.9.1773857982777; Wed, 18 Mar 2026
- 11:19:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773859439; x=1774464239;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q5gQcxECEznuueIY7HzNm9vgGiTnm3cM7BA/R5amhsw=;
+        b=GtH73vkST77OOmjVlOI5Veopxe+OT81UVh0Njl4N3QlbSBTJS9xN/PmalXRtAZI1wR
+         jQaiS5X+rxXEzoUsx3Xv5sEdjfbCQ+WShP92UwGbyZ/+a/sIzdYHI2lRG0c1jhipXZVf
+         88RZkhRJFi80x1JhY0gKglkqG9jZ09AKyfFvuQxhLN0Nk9GiMWNoTm2eSB/DnnyGI8xw
+         OufDbPXMg4DWo5KJW2noq6ylflJBviy8F3iR1caRbXlwE9wEhaTSpYUlVWaPfjrp4oAr
+         0KdaYQUU6zdqOHOq7Oamqvd6Hy8fGg96KegJCcjsWPIyTxKu8knMa0fuOIo8fLC52z/p
+         LLDA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWp4EPeBAWRDJodRPpstvS5wzLp32D0KfalBov7iVdu3rx17+4cp3WTvYSU4OCzeZjINY3Fk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhhuoJsENqjsPaRl8Tt8E0HJzOxhmJIUzU673qZX78czECPCLU
+	Ikr1DLgePqrhtdlbaUpZKjNDuQabIOZQHRVJ69pDiCzY2g8KwDqhTmY=
+X-Gm-Gg: ATEYQzzdHghjNwkoVXuFsDoSkkjreNHmUGjsHNOJJZaXG8njChvSYKlHVXWHYD1+8YD
+	s+/SNhbYMow6GpdaSxD3sCpOH1EPxgFuLcz7masvJWLzaqpJ4x3hwrRF318Y3r045edyPIvxR8B
+	x7ppTr/hVy8F6s+0D73ZZYjOLZ/rrw+OUw4zWfFb1+OsNm30iG7X2lazmedyX+f/aFwVGwjB6ly
+	1btTa6dG8uB3dH7XkWgvTeCJfvdn7WjS/hFwhN8/dnRNRkjhDuKVGe57uwdxZJ2FbXEzMMZ1dIE
+	30I4gffvyiKQuMUadVncRXWYuaKSWwnvMBsgGgKLL3leeeVxKtJi1/DqX60UcCMH167g6pYoKem
+	kqcahiECrhRe90gXjjKE2Rwot/K43jWpO7JwOFLsp3EUvX8Rv16aJg/Axlz6cHaEP/FvuV2bsw4
+	TRlXiYcCVr/1mvAR6N05h4wDKpv4lWGd/CuFYiMBo9mcC8dxO19FbvqwCCP4IzsRNGDpPuXlmSB
+	9k=
+X-Received: by 2002:a05:600c:2d15:b0:485:5d25:81a9 with SMTP id 5b1f17b1804b1-486f4422231mr44915805e9.14.1773859438445;
+        Wed, 18 Mar 2026 11:43:58 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ace2a.dip0.t-ipconnect.de. [91.42.206.42])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8ba4baesm14540345e9.13.2026.03.18.11.43.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 11:43:58 -0700 (PDT)
+Message-ID: <3b36d8bb-2450-405d-a23d-9feb7a755dea@googlemail.com>
+Date: Wed, 18 Mar 2026 19:43:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317-bcm2835-power-timeout-v1-0-19db323c51f9@igalia.com> <20260317-bcm2835-power-timeout-v1-1-19db323c51f9@igalia.com>
-In-Reply-To: <20260317-bcm2835-power-timeout-v1-1-19db323c51f9@igalia.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 18 Mar 2026 19:19:06 +0100
-X-Gm-Features: AaiRm510MvoJuvyX_yjMZMwW_dgWQm9TQabqsR1tmMTEGls5Ev4rqc21mGQKDYQ
-Message-ID: <CAPDyKFrBazYFcWxMOrmMThuatqrAq0kFG8nnYi8xQ2OJg3LeXw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pmdomain: bcm: bcm2835-power: Increase ASB control timeout
-To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Stefan Wahren <wahrenst@gmx.net>, 
-	Rob Herring <robh@kernel.org>, kernel-dev@igalia.com, linux-pm@vger.kernel.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.19 000/379] 6.19.9-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260318122547.233850204@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260318122547.233850204@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227135-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[broadcom.com,gmx.net,kernel.org,igalia.com,vger.kernel.org,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-227136-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	NEURAL_SPAM(0.00)[0.481];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-0.976];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:dkim,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF8392C14DD
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 27EB72C1B99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 17 Mar 2026 at 23:42, Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
->
-> The bcm2835_asb_control() function uses a tight polling loop to wait
-> for the ASB bridge to acknowledge a request. During intensive workloads,
-> this handshake intermittently fails for V3D's master ASB on BCM2711,
-> resulting in "Failed to disable ASB master for v3d" errors during
-> runtime PM suspend. As a consequence, the failed power-off leaves V3D in
-> a broken state, leading to bus faults or system hangs on later accesses.
->
-> As the timeout is insufficient in some scenarios, increase the polling
-> timeout from 1us to 5us, which is still negligible in the context of a
-> power domain transition. Also, replace the open-coded ktime_get_ns()/
-> cpu_relax() polling loop with readl_poll_timeout_atomic().
->
-> Cc: stable@vger.kernel.org
-> Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains=
- under a new binding.")
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+Am 18.03.2026 um 13:28 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.19.9 release.
+> There are 379 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Applied for fixes and by re-adding Stefans's reviewed-by tag, thanks!
+RC2 now builds without error, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities 
+or regressions found.
 
-Kind regards
-Uffe
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-> ---
->  drivers/pmdomain/bcm/bcm2835-power.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/pmdomain/bcm/bcm2835-power.c b/drivers/pmdomain/bcm/=
-bcm2835-power.c
-> index 0450202bbee2513c9116a36abaa839b460550935..eee87a3005325848547ce1f5f=
-d729b168a641460 100644
-> --- a/drivers/pmdomain/bcm/bcm2835-power.c
-> +++ b/drivers/pmdomain/bcm/bcm2835-power.c
-> @@ -9,6 +9,7 @@
->  #include <linux/clk.h>
->  #include <linux/delay.h>
->  #include <linux/io.h>
-> +#include <linux/iopoll.h>
->  #include <linux/mfd/bcm2835-pm.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> @@ -153,7 +154,6 @@ struct bcm2835_power {
->  static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, boo=
-l enable)
->  {
->         void __iomem *base =3D power->asb;
-> -       u64 start;
->         u32 val;
->
->         switch (reg) {
-> @@ -166,8 +166,6 @@ static int bcm2835_asb_control(struct bcm2835_power *=
-power, u32 reg, bool enable
->                 break;
->         }
->
-> -       start =3D ktime_get_ns();
-> -
->         /* Enable the module's async AXI bridges. */
->         if (enable) {
->                 val =3D readl(base + reg) & ~ASB_REQ_STOP;
-> @@ -176,11 +174,9 @@ static int bcm2835_asb_control(struct bcm2835_power =
-*power, u32 reg, bool enable
->         }
->         writel(PM_PASSWORD | val, base + reg);
->
-> -       while (!!(readl(base + reg) & ASB_ACK) =3D=3D enable) {
-> -               cpu_relax();
-> -               if (ktime_get_ns() - start >=3D 1000)
-> -                       return -ETIMEDOUT;
-> -       }
-> +       if (readl_poll_timeout_atomic(base + reg, val,
-> +                                     !!(val & ASB_ACK) !=3D enable, 0, 5=
-))
-> +               return -ETIMEDOUT;
->
->         return 0;
->  }
->
-> --
-> 2.53.0
->
->
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
