@@ -1,79 +1,62 @@
-Return-Path: <stable+bounces-227033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH6hK/SRumnSXgIAu9opvQ
-	(envelope-from <stable+bounces-227033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:52:20 +0100
+	id kMg/EvmRumnSXgIAu9opvQ
+	(envelope-from <stable+bounces-227034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:52:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AD22BB1BF
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:52:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66962BB1C6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0EF4302E91A
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE98D303388C
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D16A35C182;
-	Wed, 18 Mar 2026 11:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520933CEB88;
+	Wed, 18 Mar 2026 11:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqm64erO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1293AFM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB99C3D3006
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 11:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1596E3A8744
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 11:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773834689; cv=none; b=pgjDYalG06pL4Rvsl0eMyBr9SGz/oA6TeC7CW7SPGSbnzIVtbiDAgesj/7GtA2iBspJEaPwvV8fyJJeI4besXB8tlYwb4k99gMz+jdovHJ8yKQv+7PFKFFtZzma8HxarXxOb4IhUQeBk/5//pfjbpXmF34m2zrsvm3H+lkf87hY=
+	t=1773834697; cv=none; b=pl+jdRSyyrGSapSXq5LZK9sHxQ3hZDRC1rQMWk2dCLk4bpvUQp9McdnmqnyF9RGY5OSELUmINTvrTcWsYNJM4gJyZYvl0Ld9AmzH1j8q0pcfEZmG/E2GeYTvxepBS2ucYB2qWkJK+ZHqoglfdWKsMP6ZoXLsFj552lo13hd95Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773834689; c=relaxed/simple;
-	bh=xVDaqdXaVwqd3Ly0lQR5ZrswxmHvL2CqE5jRBSWGVQg=;
+	s=arc-20240116; t=1773834697; c=relaxed/simple;
+	bh=i8Lg0F5Sff2OjmJ99ZYMxleYhhi3C92xSrIlLDkmBW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EJIDF4rwcSGVD0iDmXmoD3ho3lD09U6koGmzzGCUmYVzmvMbbhJvr4ppofE68LSS7chd63h1xsEeoViPYTKSsmOeHl2XlvlH3hiE6Y5fT4/yjG7kdPKCgvUbZl4p93i4ehGgi8GY+6UvOmhOyUd/9YSLTf0Y8nHopIm24tem6vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqm64erO; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773834687; x=1805370687;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xVDaqdXaVwqd3Ly0lQR5ZrswxmHvL2CqE5jRBSWGVQg=;
-  b=dqm64erO0lNcQCuQGrD0daI9QGJDsUNKoMdMbn11GUOlawYenDZ6qx52
-   z1T+d2CHdOJJquNddDdyXOojKds/LDrQ9vxUXJF7y6xzkbCwjQ4tCHuME
-   OGEDXg8ojZ1IAxNfIC+gLSb7KQ4c4sd7Qt0qYDcDptM9/Cta6kEj18dhI
-   Vkut6KTh5sosKagyEkhRfBRs5dLDmpxR3Dd85YRpDfv4zu1U8jmBjTNYB
-   qmASBub3HM7yzLT6GPNSNmZlUN2C66sSsr/rfy1jAM3XSDRRiKkb/bsmm
-   D78Yg7cDlgfOl9TS6zcJI8g25ZONF57OaAzKgBrOFkyP8MOiaC4jdR/cX
-   Q==;
-X-CSE-ConnectionGUID: j1rhdgTHQR+9zOifl9m+LQ==
-X-CSE-MsgGUID: TGLjPS0FQV6aAkgvRZYAeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74772055"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="74772055"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 04:51:27 -0700
-X-CSE-ConnectionGUID: g+CF7WEPQvGBaeioeGCeJQ==
-X-CSE-MsgGUID: 9DckWNZYQxePla4InVGM/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="227543977"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.245.220])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 04:51:25 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+	 MIME-Version:Content-Type; b=d87WdayzreWHlkrQ6ipUIr4gN6gAhwr+sM9mYaGO6QN0N4ntRbNJAA/7fcXrB4woiTr7ZahXXFsIYXe8nN7/y6c5ribcKzIcE+7vRS1Ca8DWSRqyQNtXgxkcMUBZ91tV23DGI53rCVKKetKiXitZWoDqG1EzZbIQ+o6fOSh6ots=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1293AFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1356DC19421;
+	Wed, 18 Mar 2026 11:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773834696;
+	bh=i8Lg0F5Sff2OjmJ99ZYMxleYhhi3C92xSrIlLDkmBW0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o1293AFMT0wWy4uR+N2ndfH2K0XjpZ0Zy4V7ZobeXBxIJOKtsp+8X/Wbs8l0Xdkbc
+	 EkClzoMMDIjmUdJNwtaYLvwVavonhBQwGXkbD096b+AsBfLaT74XxdK7g5WmwjcSH9
+	 aunu8eZbuHu5cCWpdsJm3g+WI6DCDUZu8VpThtRgUCKLnLKFG15EUA01OIV+ggJB2S
+	 BWnnn1ulDQ0AtxPyojsiwtibPznE10ccNXpOWnZwAXS+QN7/Q8JRuaqTSnYwtQza7+
+	 IktNFSgSQSf4ZEhhoEPkjR7F4UuxBT424l0eDECE8Wb+Sj2C/fvfRMvx7rB7BDW/Di
+	 mrTyGC2mCetIw==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.12.y] drm/i915/alpm: ALPM disable fixes
-Date: Wed, 18 Mar 2026 13:50:55 +0200
-Message-ID: <20260318115055.834362-1-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026031731-secret-rocket-af05@gregkh>
-References: <2026031731-secret-rocket-af05@gregkh>
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] pmdomain: bcm: bcm2835-power: Fix broken reset status read
+Date: Wed, 18 Mar 2026 07:51:33 -0400
+Message-ID: <20260318115133.637923-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031711-finalize-hatless-a7a3@gregkh>
+References: <2026031711-finalize-hatless-a7a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,80 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227033-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[igalia.com,broadcom.com,gmx.net,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-227034-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 14AD22BB1BF
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: B66962BB1C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit eb4a7139e97374f42b7242cc754e77f1623fbcd5 upstream
+From: Maíra Canal <mcanal@igalia.com>
 
-PORT_ALPM_CTL is supposed to be written only before link training. Remove
-writing it from ALPM disable.
+[ Upstream commit 550bae2c0931dbb664a61b08c21cf156f0a5362a ]
 
-Also clearing ALPM_CTL_ALPM_AUX_LESS_ENABLE and is not about disabling ALPM
-but switching to AUX-Wake ALPM. Stop touching this bit on ALPM disable.
+bcm2835_reset_status() has a misplaced parenthesis on every PM_READ()
+call. Since PM_READ(reg) expands to readl(power->base + (reg)), the
+expression:
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7153
-Fixes: 1ccbf135862b ("drm/i915/psr: Enable ALPM on source side for eDP Panel replay")
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-Link: https://patch.msgid.link/20260212062731.397801-1-jouni.hogander@intel.com
-(cherry picked from commit 008304c9ae75c772d3460040de56e12112cdf5e6)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit eb4a7139e97374f42b7242cc754e77f1623fbcd5)
+    PM_READ(PM_GRAFX & PM_V3DRSTN)
+
+computes the bitwise AND of the register offset PM_GRAFX with the
+bitmask PM_V3DRSTN before using the result as a register offset, reading
+from the wrong MMIO address instead of the intended PM_GRAFX register.
+The same issue affects the PM_IMAGE cases.
+
+Fix by moving the closing parenthesis so PM_READ() receives only the
+register offset, and the bitmask is applied to the value returned by
+the read.
+
+Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/soc/bcm/bcm2835-power.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 34d61e44c6bd..4d697b44078c 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -2114,12 +2114,7 @@ static void intel_psr_disable_locked(struct intel_dp *intel_dp)
- 	/* Panel Replay on eDP is always using ALPM aux less. */
- 	if (intel_dp->psr.panel_replay_enabled && intel_dp_is_edp(intel_dp)) {
- 		intel_de_rmw(display, ALPM_CTL(display, cpu_transcoder),
--			     ALPM_CTL_ALPM_ENABLE |
--			     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
--
--		intel_de_rmw(display,
--			     PORT_ALPM_CTL(display, cpu_transcoder),
--			     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
-+			     ALPM_CTL_ALPM_ENABLE, 0);
- 	}
+diff --git a/drivers/soc/bcm/bcm2835-power.c b/drivers/soc/bcm/bcm2835-power.c
+index cbcd1298ef5bd..95148c8313154 100644
+--- a/drivers/soc/bcm/bcm2835-power.c
++++ b/drivers/soc/bcm/bcm2835-power.c
+@@ -580,11 +580,11 @@ static int bcm2835_reset_status(struct reset_controller_dev *rcdev,
  
- 	/* Disable PSR on Sink */
+ 	switch (id) {
+ 	case BCM2835_RESET_V3D:
+-		return !PM_READ(PM_GRAFX & PM_V3DRSTN);
++		return !(PM_READ(PM_GRAFX) & PM_V3DRSTN);
+ 	case BCM2835_RESET_H264:
+-		return !PM_READ(PM_IMAGE & PM_H264RSTN);
++		return !(PM_READ(PM_IMAGE) & PM_H264RSTN);
+ 	case BCM2835_RESET_ISP:
+-		return !PM_READ(PM_IMAGE & PM_ISPRSTN);
++		return !(PM_READ(PM_IMAGE) & PM_ISPRSTN);
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
-2.43.0
+2.51.0
 
 
