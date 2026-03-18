@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-227076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WL5eEpCyumlmawIAu9opvQ
-	(envelope-from <stable+bounces-227076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:11:28 +0100
+	id 6ANpLZ62umlWawIAu9opvQ
+	(envelope-from <stable+bounces-227077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:28:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D762BCC3A
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:11:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6C52BD212
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B7AC7303ED8C
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:08:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7579130C4DAE
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ECB3DA5DE;
-	Wed, 18 Mar 2026 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DEA3DA5C0;
+	Wed, 18 Mar 2026 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cElEuW4+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElHBZ8Vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50D3CBE7B;
-	Wed, 18 Mar 2026 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591F73D47AF;
+	Wed, 18 Mar 2026 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773842849; cv=none; b=dLAXbYTXW6UxPGVt1ZsrwvdscG9WUX3D4KSgZ1BxDWCSyg6h+1O0eYo4M3Kclncd9FwSuquSjzDkwl50EDlC+pYk66cKdFFfnftJ6oMt2mDWpeBuNa9JRI28+PssSFs6caIiPfHsPS9IsFT7UZ/k6nJZuePJPBvdukNlPYoJaog=
+	t=1773843040; cv=none; b=ggWQCbcQN70sOV373dkzhHhIyvc4n6gmlwYibep8zYQVKTtGnlI6iwHbGoxmTX2hkWNaV+eoVZWw5qsEWlmbOkhzy1+cVuKK8LbFBOGfLfF5BAggddUB8uClSHHqOamkD5mhnW2A8lcAzWHcwC/MmjauTo40k7dxPtxsNFTMMDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773842849; c=relaxed/simple;
-	bh=xVHDZBr9hRtukhJKZKkZ5lH+CodUuhgR2zQoP0qbSqE=;
+	s=arc-20240116; t=1773843040; c=relaxed/simple;
+	bh=fezKM7Xvi051pm+0o/waft8Nh8Zbwa9FBAsqhL+7GOc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dUvvSR9PFuNBc74yxabjUPY/c/Z3orElNpYkUZvj9CnJuX4RqxuF8vDsHKFy2hTT/ZM2dtfdRyjqw7mBML7QZhhDay3JKkTGAMDZs6D/Yt/5iEN6xo//F1lyci1SyHt6AF5uOPUGWAeBqyTWpZgC7dwYmjMy8UlsnaxZhXaJqzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cElEuW4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F52BC19421;
-	Wed, 18 Mar 2026 14:07:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQzO7bfIJqOTAwu34SD9mUF2/WDHN+Ed6aT/gBj3pD9JqGZi1bIJEDWMkkYPA+8Tve+2iVI6VKFe1H0CUUYnx/cqADUVypFRcc4PejNUkFliJk/l0LDEnn5Kzo9IwFcNSRkh10YqODaDJG64Cy9udfm6llIpEFAvZbGfQFeOkLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElHBZ8Vv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CEEC19424;
+	Wed, 18 Mar 2026 14:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773842849;
-	bh=xVHDZBr9hRtukhJKZKkZ5lH+CodUuhgR2zQoP0qbSqE=;
+	s=k20201202; t=1773843040;
+	bh=fezKM7Xvi051pm+0o/waft8Nh8Zbwa9FBAsqhL+7GOc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cElEuW4+7dWuaxLa6Layls2/T9Q21hZCwYzYQ27lJ0YjRECmtbrVksBvHzDT43Gwd
-	 XbYervVZhjNtmK7Rsbry2j8LQSPx5iLc49eeyp4d23yXx8r9z5Yq5DmtNzkT9t8a6w
-	 ECOrnpuVYZW6faoUuypDUzdjZKo39P/xJV+Gf9RkbzpV8mDR0bG5EHKAIX6XJaSQ8d
-	 ZT/pQFIpNxODSEG8tbZWtzS7kCDG++N0AbvYGaiwkEyjH+1Xvsj54VFqu7jnlc6iH8
-	 MIL9NIP5ZunVNMLdR/LDwoI1j/epe3UUt5Tf8al7F7tvtnt6Opnxjj7tim7hvKfSj2
-	 Rx4roRERrJvdg==
-Date: Wed, 18 Mar 2026 14:07:23 +0000
+	b=ElHBZ8Vv9qBAlwoqfdktt9Gp8rntF/lBOYp1KQDNhJNqAco0f83PxFVuWmFsO+9kG
+	 89lQNxkt98JNPcTYwc/eSZ60nYNI2g0/HSpBW2zfqeltoEMowMwisdDF0TEADMyDDT
+	 k+T3UzgIt6sRxXhDq33smnFU/7Lg4yYgUg3S2cSRWwn40qa7DdFqOMwsV9Rzkn/yS5
+	 7InhP8mFagc3sNBV5ZgW9iMxXTFhQT0hXTxRNzeK2BQTsh0kRfhWX5Bo5E08ch/6ur
+	 ZuuyZoIEj2n9AyqWdtFhpYwBsp5W5TwmfaRfEK0Y1Rxy+FWZksdckAVqbr8dXHPDlD
+	 n8TOHGIO4dW5A==
+Date: Wed, 18 Mar 2026 14:10:29 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "Boone, Max" <mboone@akamai.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -55,11 +55,10 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
 Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
  refault
-Message-ID: <5765d71e-70e4-401a-9b6e-e20ec42b2de3@lucifer.local>
+Message-ID: <789b4585-7542-412a-b9ab-3f7de8d8dc89@lucifer.local>
 References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
  <7ded426a-0cb5-437b-9634-8d806b704db6@lucifer.local>
  <719CB417-F511-402A-91E3-8A696ABCE0D5@akamai.com>
- <E9058409-F4D6-4146-9366-17E87FAC9812@akamai.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,16 +68,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <E9058409-F4D6-4146-9366-17E87FAC9812@akamai.com>
+In-Reply-To: <719CB417-F511-402A-91E3-8A696ABCE0D5@akamai.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227076-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227077-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -86,45 +85,92 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,akamai.com:email]
-X-Rspamd-Queue-Id: E1D762BCC3A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,akamai.com:email,lucifer.local:mid]
+X-Rspamd-Queue-Id: CB6C52BD212
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 01:27:33PM +0000, Boone, Max wrote:
+On Wed, Mar 18, 2026 at 01:08:33PM +0000, Boone, Max wrote:
 >
+> > On Mar 18, 2026, at 1:55 PM, Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
+> >
+> >> […]
+> >
+> > So IOW, the PUD entry is split, then refaulted back to a PUD leaf entry
+> > again?
 >
-> > On Mar 18, 2026, at 2:08 PM, Max Boone <mboone@akamai.com> wrote:
+> As far as I understand indeed, although the usage and faulting of huge
+> pfnmaps does not feel intuitive to me yet. Empirically, yes, observing this
+> when follow_fault_pfn() in drivers/vfio/vfio_iommu_type1.c is running
+> concurrently with walk_pud_range(). I have another patch sent up to
+> that list because this fix causes follow_fault_pfn() to return -EINVAL [1].
+
+Ack
+
+>
+> >> […]
+> >
+> > I think it mirrors the retry logic in walk_pte_range() more closely right?
+> > Because there it's:
+> >
+> > if (!pte)
+> > walk->action = ACTION_AGAIN;
+> > return err;
+> >
+> > I.e. let the parent handle the PTE not being got by pte_offset_map_lock(),
+> > and you draw a comparison to this in the comment in walk_pmd_range().
+>
+> I’d personally say that the main logic introduced is walk_pud_range() retrying when
+> walk_pmd_range() fails. We’re also splitting the PUD in walk_pud_range() and
+> descending. But yeah, retry logic mirrors walk_pmd_range(), deciding that we need
+> to retry mirrors walk_pte_range().
+
+It's not a big deal we can leave that as is.
+
+>
+> >
 > >>
-> >> Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
-> >> this bug until now.
-> >>
-> >> Has something changed more recently that made it more likely to hit? Or is
-> >> it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
+> >> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
+> >
+> > Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
+> > this bug until now.
+> >
+> > Has something changed more recently that made it more likely to hit? Or is
+> > it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
 >
-> Forgot to mention, but yeah, we’re seeing this on Blackwell cards which have very
-> large BARs, so probably seeing it first because of that. But the window was already
-> pretty small, it’s not a very logical thing to poll numa_maps or smaps walks while the
-> firmware of a VM is remapping the BARs of a GPU. With regards to that specific case
-> there’s a proxmox thread and mail from the same person presumably [1, 2] that mentions
-> the same bug.
+> Yeah, frankly, this is the first patch where I could find the splitting being introduced. It might
+> be more correct to refer to the introduction of 1G huge_pfnmaps?
 
-No question we should take this fix, the page walk code is the right place to
-check for this as we are not safe assuming the PUD entry can't change.
+Yeah maybe that makes more sense? David - what do you think?
 
 >
-> [1] https://forum.proxmox.com/threads/walk_pgd_range-crash-pve9-1-on-6-18.179895/
-> [2] https://lore.kernel.org/all/5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org/
+> >
+> >> Cc: stable@vger.kernel.org
+> >> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> Signed-off-by: Max Boone <mboone@akamai.com>
+> >
+> > Only nits here, the logic LGTM, so:
+>
+> I’ll write up a PATCH v2 later today.
 
-Cheers, Lorenzo
+Cheers!
+
+>
+> >
+> > […]
+>
+>
+
+Thanks, Lorenzo
 
