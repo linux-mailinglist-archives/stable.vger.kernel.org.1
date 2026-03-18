@@ -1,180 +1,156 @@
-Return-Path: <stable+bounces-227171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OD0Az0au2k+fAIAu9opvQ
-	(envelope-from <stable+bounces-227171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:33:49 +0100
+	id 2AbnAn0au2k+fAIAu9opvQ
+	(envelope-from <stable+bounces-227172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:34:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C1C2C30B1
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A8D2C30E7
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34A8330E62E6
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:30:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCF21321D1BA
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4143806A2;
-	Wed, 18 Mar 2026 21:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D8E388E64;
+	Wed, 18 Mar 2026 21:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="crk+7n+U"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="S4Ik2h2/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB55D37FF52;
-	Wed, 18 Mar 2026 21:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA85238A73D;
+	Wed, 18 Mar 2026 21:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773869416; cv=none; b=ix1sjRsYj2njaF7eCU3EQjOD3RRtxD8z8FtW1Fld+IkT87SyO/gSqhEYb/e5anTye6VkiudgfPbHgQCVHOkrSEtPzW3jrqk6NAjQJxmo6Gc8pLOSNZiQgzGlsTY1l+YxV/rv/vIrkTlGSrUChii5Y3nTvgByKaGojpFp0dgmEHo=
+	t=1773869438; cv=none; b=E2PyORq77FMw6zHQY0kV1bH0qKjTZr4t9xjrl5TXof8p8QDNO7qUlSpRPXBJXz8GuyqOmNBgESpbgZ5VzWlTcQfCKB9uRFmcgYonubwzKUurQiFragZ4ejawh/bP/VvFX5GkBrT9ZgYCRXSxmq4QwemawYaUufOInAWcgku6ZZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773869416; c=relaxed/simple;
-	bh=+viHuAFczKqawE299hZA9mKwwXIc8NTYoDMow8jKUy4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kImlThPmSrPoSo9bwKEAi1J/5hs8M+19EN82Vao4GMxf1h/vSL+GhE3nUIVDDYov2n9N+TV1ypbVJ9aaiXLIraH2mpewgAopV/tzt3oFUPW7peUJATcL3qwbr3WD96sZ4TZVPWNyIfKNmULRdk0W+KS1gOsJHHSB7J5bbLZJs+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=crk+7n+U; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773869415; x=1805405415;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+viHuAFczKqawE299hZA9mKwwXIc8NTYoDMow8jKUy4=;
-  b=crk+7n+Uv5GS5HZWsD4byTP2O5UVE39U8qZodHyZmHZt5eCqRJhd3tkd
-   l4L3iZOp9v5hik6mdVFdTAoZhpT/ru3U4pbGOV9u3Lufm+z5GBIPU5dRW
-   QixZd/T0eGx/fFgWbg3xMo7TuiSzv4KLKQqME3n4T6BJT+TBJFccKtYDn
-   Koo8vH0rNNIBw1tapSyKuiPOhnQNZKFwzLzWYqaHVrR7sXygrw5zdEx16
-   W3qll7utMq7KV47DyuK1i3zDND+/aYGvvYCWM2pwA69uiOI4sF6gXVWqP
-   QCmUUYXUa1L8ENTn13pMN8BT+p+jmt7D/pMwaR5qu09WJi4W04zBd+egE
-   A==;
-X-CSE-ConnectionGUID: NZaumW1DTtqyN66obKJwbQ==
-X-CSE-MsgGUID: TEnVqzE2SLuPx25X0tsGMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="78796095"
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="78796095"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 14:30:14 -0700
-X-CSE-ConnectionGUID: TGssMGK5Qg2KbdCDX9PqUg==
-X-CSE-MsgGUID: PWtroBiSR+SC8uNhxkofMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="227712366"
-Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 14:30:13 -0700
-Message-ID: <ea53e6a9-4f8a-49a8-95ea-40d2f667dc7f@intel.com>
-Date: Wed, 18 Mar 2026 14:30:13 -0700
+	s=arc-20240116; t=1773869438; c=relaxed/simple;
+	bh=j8P6XA3phh4loiw/P2IzqXacEwrJcZ/OQXQmSsiMgFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QBQAG/nCk3Aqmt4JIw4wnSgyJICAJP8quGKbgoBzJVfakuLHVKRW29LSRsQFd0SyYldsW5EBIdH0wo3Fk/FkF79m+qmhtVn5ggnl3Gdm53ffHlEIzxthgWy2zZRse7NUlEJcEpGnVEhhhtlwOEQOV815eyGhY2snil2E/FzAncc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=S4Ik2h2/; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=x1352H4Ct4rnpL7fyNSvQ5yARD0zPDaJWM0fA3ySkQQ=; b=S4Ik2h2/vW7AKvVo0g0MY0vLBv
+	ql1hGB5xdUqgLHe046TGA3sAJhGPUkLS2WdbAPt0ovYsCy/vww399BrkSwi5bVnDe7i0BivicnJlj
+	3Uhsgy8KIAySGWK7T8ftM5mmzR9BIkOSJA9eV6Pbrx3l7oAAxFmptIWmvLl0Uip0UecgtPXSsR/3u
+	/uOprV7km0moNEt6XN8d5gOAy7DGKPfDXaRteecHD7AozP9tcm458DEmqKaVgtCPS8dotBQO6m35k
+	D5qqoWIm4LN8TH+fSbPHnmBlyZaM9db92ydGmrVQ+8lF899godTScFf2LlyekM7p9VNThciFpWb+E
+	eCWBjreg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2yTG-000000052eE-1rPl;
+	Wed, 18 Mar 2026 21:30:30 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id DEFC23004F8; Wed, 18 Mar 2026 22:30:29 +0100 (CET)
+Date: Wed, 18 Mar 2026 22:30:29 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
+	#@tip-bot2.tec.linutronix.de, 6.9+@tip-bot2.tec.linutronix.de,
+	x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/cpu: Disable CR pinning during CPU bringup
+Message-ID: <20260318213029.GP3738010@noisy.programming.kicks-ass.net>
+References: <20260318075654.1792916-3-nikunj@amd.com>
+ <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
+ <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
+ <20260318210813.GEabsUPblg3mkGxMqk@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: x86/urgent] x86/cpu: Disable CR pinning during CPU bringup
-To: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Nikunj A Dadhania <nikunj@amd.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Sohil Mehta <sohil.mehta@intel.com>,
- stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
- 6.9+@tip-bot2.tec.linutronix.de, x86@kernel.org
-References: <20260318075654.1792916-3-nikunj@amd.com>
- <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
- <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
- <20260318210950.GC3739106@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260318210950.GC3739106@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318210813.GEabsUPblg3mkGxMqk@fat_crate.local>
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227171-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227172-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.989];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.968];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 66C1C2C30B1
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:dkim]
+X-Rspamd-Queue-Id: A6A8D2C30E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/18/26 14:09, Peter Zijlstra wrote:
-> So currently we setup an IDT and everything, then setup the FRED MSRs,
-> flip CR4_FRED and call it a day. But we could just explicitly poison all
-> the IDT stuff to cause tripple faults.
+On Wed, Mar 18, 2026 at 10:08:13PM +0100, Borislav Petkov wrote:
+> On Wed, Mar 18, 2026 at 09:47:22PM +0100, Peter Zijlstra wrote:
+> > On Wed, Mar 18, 2026 at 06:51:10PM -0000, tip-bot2 for Dave Hansen wrote:
+> > > --- a/arch/x86/kernel/cpu/common.c
+> > > +++ b/arch/x86/kernel/cpu/common.c
+> > > @@ -437,6 +437,21 @@ static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_C
+> > >  static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
+> > >  static unsigned long cr4_pinned_bits __ro_after_init;
+> > >  
+> > > +static bool cr_pinning_enabled(void)
+> > > +{
+> > > +	if (!static_branch_likely(&cr_pinning))
+> > > +		return false;
+> > > +
+> > > +	/*
+> > > +	 * Do not enforce pinning during CPU bringup. It might
+> > > +	 * turn on features that are not set up yet, like FRED.
+> > > +	 */
+> > > +	if (!cpu_online(smp_processor_id()))
+> > > +		return false;
+> > > +
+> > > +	return true;
+> > > +}
+> > 
+> > Urgh, so this means all an attack needs to do is disable the online bit
+> > and it gets to poke CR4 bits.
+> > 
+> > This seems unfortunate.
+> > 
+> > And sure, randomly clearing the online bit will eventually cause havoc,
+> > but I suspect you still get plenty time until the system goes wobbly.
+> 
+> My idea was that this is only temporary and then, ontop, we'll do something
 
-We already have:
+This isn't temporary, this is marked for infinite backports :/ And it is
+really really bad.
 
-        /* Enable FRED */
-        cr4_set_bits(X86_CR4_FRED);
-        /* Any further IDT use is a bug */
-        idt_invalidate();
+> like this:
+> 
+> https://lore.kernel.org/r/cb492a37-3517-4738-b435-73311402e820@intel.com
 
-which I think means that if you clear X86_CR4_FRED, you triple-fault on
-the next reference to the IDT. That's a fate far worse than having the
-CR-pinning code silently fix up X86_CR4_FRED.
+I'm not understanding.
 
-It's arguable that having X86_CR4_FRED pinned in the first place makes
-things less secure if an attacker is thwacking CR4 bits.
+> I.e., you figure out all the CR4 pinned bits on the BSP *once*, cast them in
+> stone and then replicate them on the APs when they come up.
+
+That's what we do now. Its just that the AP bringup code doesn't seem
+capable of dealing with this.
 
