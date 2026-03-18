@@ -1,172 +1,151 @@
-Return-Path: <stable+bounces-227053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJK/CnacummHZgIAu9opvQ
-	(envelope-from <stable+bounces-227053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:37:10 +0100
+	id WCeSETOdummHZgIAu9opvQ
+	(envelope-from <stable+bounces-227054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:40:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E862BB912
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:37:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D117A2BBA04
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F4A330185E4
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:37:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 758343033BCA
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904453D6CAC;
-	Wed, 18 Mar 2026 12:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B923D6CAB;
+	Wed, 18 Mar 2026 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="q9kspBrT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdGFO9yp"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C553D6660;
-	Wed, 18 Mar 2026 12:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA343D6691
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 12:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773837410; cv=none; b=bndCmWLhVKL/KQy3s8pQ12o2L7OBtWASPzRY3UsOGqK19z9FTKMASBh62hW60mDENPbG751kb3ksl5x1WqLs7WsoeaZkuWLXRrxWX/h6o+NDSp4r6ypApCLmXD8kH/vrSlH8YmDXXkyHDZY+nJbZOJZFhqe2xrQ+92WvnqYNNGI=
+	t=1773837572; cv=none; b=Bl79PfOFCkZfH8FhRrJXYaPAs1YUQbswcLqM/xZwLkaQrgAIAlsATB+0i038fxlkn4u172FtX1mElt8ecFgCb03dclHEcFnof0O2UYu5oKjkDBg2CIzoOkQamEZN0VZy0d05kh4JfXgYsH3GlSEw4FGd3uuazw82xg9AE3/i028=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773837410; c=relaxed/simple;
-	bh=gJkOarkqeNqFiAqowEMJMqnQqZrj5iZoJNTJdDiOL4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pyDMMQ6Pzj9nvzR8LATAWcCunMYQ++cdiRaDLsyc5CmIZ5NT7Qq4wLPjFakitDxGRof/ED0Wdv+E2mTDQ3gC+SGgTm6HxjDmtyXhBPMSG3ULyfhAvwV6faCTBiw0Fda9hlY3WP+ErZDwOB3JxxOf8T6Ps+PveJyH5JF9PI0ni5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=q9kspBrT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 72950308;
-	Wed, 18 Mar 2026 13:35:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1773837333;
-	bh=gJkOarkqeNqFiAqowEMJMqnQqZrj5iZoJNTJdDiOL4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q9kspBrTMBUX3jZiKr4U6vvXHQJz3taLkvyeKuD0N0+qePPY5mqUuQ+9lcruXL4m+
-	 YYR5GvGa3S7My22X6fxaaTrAqdpAYNLl4BV+pVNQPnkVLdq9Xi4cfSVzotm20AzBJL
-	 3fvo+Ii/5Zvd7iHEzNm1x8I/M8gju231SQ+/Muvc=
-Date: Wed, 18 Mar 2026 14:36:44 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: Hans Verkuil <hverkuil@kernel.org>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Michael Tretter <michael.tretter@pengutronix.de>,
-	Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH v2 0/2] media: staging: imx: fix multiple video input
-Message-ID: <20260318123644.GH408929@killaraus.ideasonboard.com>
-References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
- <aUPEs4wUHgAyMrPX@pengutronix.de>
- <aXOo0cc07cRi7-rF@pengutronix.de>
- <aXPNRbXBt2PRdFe4@lizhi-Precision-Tower-5810>
- <abqUAKj83Xaz0RzM@pengutronix.de>
+	s=arc-20240116; t=1773837572; c=relaxed/simple;
+	bh=Hd3KjOute50UKVsHNlFYsH/xaKzPsQ7yQvhCqpRUvEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bBJleU8Zk13niwI3CPOOr4b6xGqO7hcrIIhi1mHVdTJz7P2qUcOGcVHLvgkaVzCmKrwa/fPots2yjiunClZxWj3UdPqNto+ZJ9jMVQF1YJ9skO//EH4Vq3cHirmse1Zgw7SsNJqmA5iIg2/VL3jh2BKppvax0fvqu/md2uLQ/4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdGFO9yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCECC19421;
+	Wed, 18 Mar 2026 12:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773837572;
+	bh=Hd3KjOute50UKVsHNlFYsH/xaKzPsQ7yQvhCqpRUvEQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OdGFO9ypkqFZ3T5Mcp9SRs6K+Gav34njam6lQA71axDPW9SDCDBNJd/rl2ddcnJMl
+	 EUQMUuZd8BuVYskPoxAXV8AEXL4ci6YA+V5gBazUcjqRirJWIT8QkD9ThPvinJeA0j
+	 kkuxv5xDVSPZJ9HD+KyS+FC+AP0OtMCZbCb3ZUd9i0D4t8fF9Fqvo3evN1yJv8LKyK
+	 CU9AeapD7NZsRt46W9Z/JIlVMD3agATzpg8gwbfsrLcqn0u+k6zu+EABTFsebKBHrN
+	 KMSR5MDGTOu/7fkPRSAcQBer20RHhv87hjP1P0vNAXc7091muVAwHdvSNRqUT+b1BL
+	 vXWJl3Dk0M/sA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] pmdomain: bcm: bcm2835-power: Fix broken reset status read
+Date: Wed, 18 Mar 2026 08:39:29 -0400
+Message-ID: <20260318123929.703978-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031712-system-washbasin-aaf4@gregkh>
+References: <2026031712-system-washbasin-aaf4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <abqUAKj83Xaz0RzM@pengutronix.de>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227053-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[igalia.com,broadcom.com,gmx.net,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-227054-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org,nxp.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0E862BB912
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,broadcom.com:email,igalia.com:email]
+X-Rspamd-Queue-Id: D117A2BBA04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 01:01:04PM +0100, Michael Tretter wrote:
-> On Fri, 23 Jan 2026 14:34:29 -0500, Frank Li wrote:
-> > On Fri, Jan 23, 2026 at 05:58:57PM +0100, Michael Tretter wrote:
-> > > On Thu, 18 Dec 2025 10:09:07 +0100, Michael Tretter wrote:
-> > > > On Fri, 07 Nov 2025 11:34:32 +0100, Michael Tretter wrote:
-> > > > > If the IMX media pipeline is configured to receive multiple video
-> > > > > inputs, the second input stream may be broken on start. This happens if
-> > > > > the IMX CSI hardware has to be reconfigured for the second stream, while
-> > > > > the first stream is already running.
-> > > > >
-> > > > > The IMX CSI driver configures the IMX CSI in the link_validate callback.
-> > > > > The media pipeline is only validated on the first start. Thus, any later
-> > > > > start of the media pipeline skips the validation and directly starts
-> > > > > streaming. This may leave the hardware in an inconsistent state compared
-> > > > > to the driver configuration. Moving the hardware configuration to the
-> > > > > stream start to make sure that the hardware is configured correctly.
-> > > > >
-> > > > > Patch 1 removes the caching of the upstream mbus_config in
-> > > > > csi_link_validate and explicitly request the mbus_config in csi_start,
-> > > > > to get rid of this implicit dependency.
-> > > > >
-> > > > > Patch 2 actually moves the hardware register setting from
-> > > > > csi_link_validate to csi_start to fix the skipped hardware
-> > > > > reconfiguration.
-> > > >
-> > > > Gentle ping.
-> > >
-> > > Is there anything still missing to get these patches applied?
-> 
-> I'm not entirely sure, who is responsible for applying patches for
-> media-imx. You handled the last few patches for this driver. Maybe you
-> could apply these patches, too?
-> 
-> I also sent another series [0] for media-imx. Can you handle this other
-> series, as well?
+From: Maíra Canal <mcanal@igalia.com>
 
-I don't have bandwidth to handle the i.MX6 camera code in staging, at
-least for the parts that are not on their way out of staging (I really
-want to help with imx6-mipi-csi2, but even there time is short). I'm
-fine if Hans handles this series.
+[ Upstream commit 550bae2c0931dbb664a61b08c21cf156f0a5362a ]
 
-> [0] https://lore.kernel.org/linux-media/20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de/
-> 
-> > > > >
-> > > > > Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
-> > > > > ---
-> > > > > Changes in v2:
-> > > > > - Document changed locking in commit message
-> > > > > - Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
-> > > > >
-> > > > > ---
-> > > > > Michael Tretter (2):
-> > > > >       media: staging: imx: request mbus_config in csi_start
-> > > > >       media: staging: imx: configure src_mux in csi_start
-> > > > >
-> > > > >  drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
-> > > > >  1 file changed, 48 insertions(+), 36 deletions(-)
-> > > > > ---
-> > > > > base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
-> > > > > change-id: 20251105-media-imx-fixes-acef77c7ba12
+bcm2835_reset_status() has a misplaced parenthesis on every PM_READ()
+call. Since PM_READ(reg) expands to readl(power->base + (reg)), the
+expression:
 
+    PM_READ(PM_GRAFX & PM_V3DRSTN)
+
+computes the bitwise AND of the register offset PM_GRAFX with the
+bitmask PM_V3DRSTN before using the result as a register offset, reading
+from the wrong MMIO address instead of the intended PM_GRAFX register.
+The same issue affects the PM_IMAGE cases.
+
+Fix by moving the closing parenthesis so PM_READ() receives only the
+register offset, and the bitmask is applied to the value returned by
+the read.
+
+Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/bcm/bcm2835-power.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/soc/bcm/bcm2835-power.c b/drivers/soc/bcm/bcm2835-power.c
+index 1e0041ec81323..050389869035a 100644
+--- a/drivers/soc/bcm/bcm2835-power.c
++++ b/drivers/soc/bcm/bcm2835-power.c
+@@ -566,11 +566,11 @@ static int bcm2835_reset_status(struct reset_controller_dev *rcdev,
+ 
+ 	switch (id) {
+ 	case BCM2835_RESET_V3D:
+-		return !PM_READ(PM_GRAFX & PM_V3DRSTN);
++		return !(PM_READ(PM_GRAFX) & PM_V3DRSTN);
+ 	case BCM2835_RESET_H264:
+-		return !PM_READ(PM_IMAGE & PM_H264RSTN);
++		return !(PM_READ(PM_IMAGE) & PM_H264RSTN);
+ 	case BCM2835_RESET_ISP:
+-		return !PM_READ(PM_IMAGE & PM_ISPRSTN);
++		return !(PM_READ(PM_IMAGE) & PM_ISPRSTN);
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
-Regards,
+2.51.0
 
-Laurent Pinchart
 
