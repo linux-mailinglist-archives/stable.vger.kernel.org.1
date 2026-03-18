@@ -1,170 +1,206 @@
-Return-Path: <stable+bounces-226996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANYEKnFeumnFUgIAu9opvQ
-	(envelope-from <stable+bounces-226996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:12:33 +0100
+	id WFXoMvhfumnFUgIAu9opvQ
+	(envelope-from <stable+bounces-226998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:19:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE7B2B79C1
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:12:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0AF2B7C2A
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9664C300A66D
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:12:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B05723038731
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690713783B9;
-	Wed, 18 Mar 2026 08:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35E6379ED7;
+	Wed, 18 Mar 2026 08:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="C1hAtPYT"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NHUy0bL3"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010041.outbound.protection.outlook.com [52.101.193.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A026376462;
-	Wed, 18 Mar 2026 08:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773821530; cv=none; b=GzOf5Z0oXH4RYnQFRu77580BrEWe9E31iU6xS3HbWHkfeh/UMkBB12RTHQ8Rxv0NVxDj++BUH74zKyO52qVJyFSTvGz35dd0xaZPspPxkYMSD6VTZSpgTrg98kYC89Tqvhvt0bwT11IrkvMptF85Z49+nQ4VLVZBjoboAiE+k28=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773821530; c=relaxed/simple;
-	bh=3XTTl3LEOOJSxh3bPyjhegVTZLN5AHADJeciGinB5gM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XMV8kgayVzdkTjcT2C0Qs2LdIg9ZDXO4JeYLcTyXpITrLTnSuKJdv+tE2p1gHaMRo+qPSw1HOfngcykGztrU8aSmDoIDnK8PtyByIYEH/grEqSeTYowFqqmRB3+j1pQU89p6Xap5ClgUqoy+yaIUDaVQPgjnl7wE6BeXMZ/2eXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=C1hAtPYT; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Tp
-	9i1hh0AXWBiYH65D0/JDIPSB18WNuvMfE8rai68LI=; b=C1hAtPYTqwIb0bgD1Y
-	kX9kPiIRJ+4wn6Ale6USUwVfub0Fh2v/KZnAFzCn2v9SDOTgao+w8N3XUcUjGW4N
-	UUDBR4lB6J9JsYLRHLD/k3mLYrDmCmZ0LOokWkF7YteO+bGuLunoSlHzoYkNYhc8
-	rYAVbqcvuXCY5yVEAZ6L8CuV8=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3NyETXrppDMWHBg--.41679S2;
-	Wed, 18 Mar 2026 16:11:00 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	NeilBrown <neilb@suse.de>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@netapp.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	"J . Bruce Fields" <bfields@fieldses.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Olga Kornievskaia <kolga@netapp.com>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] SUNRPC: lock against ->sock changing during sysfs read
-Date: Wed, 18 Mar 2026 16:10:59 +0800
-Message-Id: <20260318081059.1864218-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6BE378823;
+	Wed, 18 Mar 2026 08:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773821886; cv=fail; b=gNXw7pDF7UfzfggEfVfHKz7RybfA8FOHRpD0M6VMiTkkhZ1kskaRegMxoltmravgf0Vjhqzn7bkz4nHsip57KcTj+0uHY5UajhJaFA3Cyiy6fnBQfGwWl9Uj3jBTsnRduRw8GbEr1OprfbrDONZKG0KNtEjokDdciOq73rrJkf8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773821886; c=relaxed/simple;
+	bh=VMWD9vw0Emh2GkLSsHJqsi7N3mJ+giCCni2/u7LEd8s=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=BjiWfjqxPSkCJdWXcOUGF3hjcttzWBNUwf8iK6VWA3Jc7AkPxENVXUtfqiLtzUZURBd3UdYDziGf5ItJV9NW9VD7JROq2yvUywNwwFYc/d7gMMWLAMkyZiQyZuhAO34wZUqW/pRfdgiCIQ67ywiGdi6cWY3FhiOX6vvM4Uy9yKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NHUy0bL3; arc=fail smtp.client-ip=52.101.193.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yoKUTgsHC7g3P3HkQ/xWxFnezrlUzKtyzCezmnLOq7XBP+h5YqqZyY7FB+EvY+p5inRzrAtVvak96tL80047aWXiDhScpZJNSTftsozffAsLasBLzfe3pddMcDXMIkEN/ah8X6crZzXzgVCkQuGoU4CRiRrgyBGZP8YM4eZ+X39EOkpGszD4dsgV/+1OTCPFRMC8Leg2HyV/Su67TPkPr6spwNTG0ft5u1f2evVUHIRdWdzdTbVyqZak/veaO7fIqzdxNuGFNWpbtsnE4ibvgaceZqLOAJ+rJL1e254DSil0kY99jiH7ZWEx9X3OELcFYJcMg3oALo1snchODl35cA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YmGhADuHgYJ+ACxgs5kuTclCiVbnrw8uCqps73uIrTo=;
+ b=DXZXrOkryujkMYqnsd5Ct35ZUm7ZsKoFXdKOVmWsazw/cXFgzeQqPU0T03ocygcRSqRHrHXcORWxKczeFGcuo8ga8GxqgZ9G+Mx2GpAuOH8t0nwZ2KyfBFpiOncpKZvx+tBJaO8RRyi9sv/l3UmQSx5/OJc87CZDWVAdYFkzgUcd2ZPbmQQu/HUNcUPG+OWfQuf2ljDcoZO7uNrQuQGlx2BIzJlXqNV7WdlMPpyuorQcw7w67CU/gLFCmE+vroDvwx0AJVMhJxggZRkhyD4p6UWcRIg70viLSHwoTJqw+PogQzCleN9JvkBcXxmIEQis6YyQDPEZYEMmmvlBrOdt7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YmGhADuHgYJ+ACxgs5kuTclCiVbnrw8uCqps73uIrTo=;
+ b=NHUy0bL3QGab9iORDC0phtqrCv3AuMCpb4rADmKB9qPwQX4j30abF3VTDTCxkpAb3TyGALDu9Cs+tJ9cufRb28XJxG5NiawGrBuXTuDEHyyZlKRoaGGfHKz9jjPQ/kVakjwLAZh7yGGurDukAJpcefyTj246PRx8RtkIdLbbShAoluUBXEGDHpgN/nJAO6LwBrj9GeH5gpDRWV82zujyLnlFgPCP6KIblQWrRCs2WlH2aFLULir08OIZ/LRQxuRM4wT5yoiuJIS9R8jwEIkTufCFXUpEFTnwT1uJdGZJl7DYZN7amKKqhlwubQyR2BM4qDWjuhPGQB/VFJFu8Vj9uw==
+Received: from SJ0PR05CA0097.namprd05.prod.outlook.com (2603:10b6:a03:334::12)
+ by LV3PR12MB9118.namprd12.prod.outlook.com (2603:10b6:408:1a1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 08:17:57 +0000
+Received: from SJ1PEPF00002322.namprd03.prod.outlook.com
+ (2603:10b6:a03:334:cafe::f5) by SJ0PR05CA0097.outlook.office365.com
+ (2603:10b6:a03:334::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.19 via Frontend Transport; Wed,
+ 18 Mar 2026 08:17:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF00002322.mail.protection.outlook.com (10.167.242.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.17 via Frontend Transport; Wed, 18 Mar 2026 08:17:56 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 18 Mar
+ 2026 01:17:45 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 18 Mar
+ 2026 01:17:45 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 18 Mar 2026 01:17:45 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@nabladev.com>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.18 000/333] 6.18.19-rc1 review
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+References: <20260317162959.345812316@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3NyETXrppDMWHBg--.41679S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kry8tryxKFW5Zr4fZr1fZwb_yoW8uw4kpF
-	yak34fG3yDKrZ7urn5Ar4v9rZxu3WfGF4UGr48C3WFyrZrKF15Jryjkay3ur18urZ5uF43
-	tF4UWF45JF1DAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEoGQDUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARSlEWm6XhSDwgAA35
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+Message-ID: <66c55ce2-fcac-4c9f-8714-a881e8807336@rnnvmail203.nvidia.com>
+Date: Wed, 18 Mar 2026 01:17:45 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002322:EE_|LV3PR12MB9118:EE_
+X-MS-Office365-Filtering-Correlation-Id: c774ed8f-6c7e-4ca8-ca24-08de84c6dc6e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|13003099007|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	c8GNnxC1MjW4BQhnCv0tQ+IZrOGQkXEgi0XhYjlXbVmAwTbQ3bdEGZQ7PJTuPnta5Z1q4iHJPTLxBFayGejAOPaXtHasijQKY5PxiJ0uoEdOruARNUEq1gDXdK9B/dYFo/hUp1fsEeCnQ9KLsmjLDef+g6Zy72DCJyn1FicAmAIHNHgi6WqunETYxtMKESem5bZq7QZetf0q8Gt78//hrrylQPFTHENigs5Ir4sPu2772DG38lbus0Zqo7f2tCMjAtznp8i2ad2ALbbX9s8INjCekt8KBiNbldEA2jLfSraAfcMnsMCFaP0THm9CIvS42QkW5V3iMhiC4CRVxyywCGxE1Kw8dE8rPxXBmmPxlqcwkwhuEsOy6scGMDtMuo5OSiQItw6xUwy+oPzM2/l0y05PTiw1iy7m0ROSow6ODXE6Fce61HZedxBcGvVjKwO7NGGgAOtJLJLgOmT0ZL9Pe/83ITZxp465xaazJNex2EIhuHlU6fe2o/ZAY/Cwc/NMfnIrpRwFIhf37pexIUmYfBgzJ5PgQ9Z9b2QNYSv/EcJkNx2SAEPY7e8K5fwUPJwoatrqNvao9wzN004YZpBNOrSmIVkGvVAR2CZNDQoMA0mHHQgP4te14Ftuu5rark0OnabtusAP+WBJ2tSb722nd4S7JhHIJ1SiMPkHJplaRAg+aRCjzZ1KJ6WFe243SiilkaH5IjBaKK7++UFd9fR7jj0jfIZe9xh2iVbEiB/GbaiJMOcKnRRLKcvgD81gF/VUMqlcO6WHPRAxuvNgfGGgHw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	LtybTUIG9xxGH0373DKPU0tbNFUYrocA84hCjxy6MVr8YRub+Hc7nY1GIWsYbR5YZiz7L34fnYZoVtqRWM5zrtAlvmThLZ07iMeIQN+0FcOlbJKo3vHcFryoyWlDhxhAGWlzBATDqJzi1eIYh0zTbD299uW/aPAEm51e1QAcaeRuJptOIu0aHpsBXRVvq/Kq1RH0yQsW+eeoo+hiCQoPYvSO5HrLIkdaZBN+a1bO9ZD5FXbgkP6FvWmwTRcw0l3eh5+nMT7bi3Cws1cMVlxCPFfpjUTSxrzocGA2HiXZOj4IuXUu5GXy1cvn1yO5w/x7+d9nQKp7AE7lP1sAjbIyxdTz+/4+bmTRlLcj2mIqxAGa8ly4jvS/aR+Wdaol2QEuItuTlOhafuKA6juhEnQcjETsR57jZg9GUvokxPndu/r05nSq1SWxyMHi9B67u6j2
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 08:17:56.9470
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c774ed8f-6c7e-4ca8-ca24-08de84c6dc6e
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002322.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9118
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226996-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[hammerspace.com,netapp.com,163.com,fieldses.org,oracle.com,davemloft.net,kernel.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
+	TAGGED_FROM(0.00)[bounces-226998-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:email];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,netapp.com:email]
-X-Rspamd-Queue-Id: 9BE7B2B79C1
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 9F0AF2B7C2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: NeilBrown <neilb@suse.de>
+On Tue, 17 Mar 2026 17:30:29 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.19 release.
+> There are 333 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 19 Mar 2026 16:28:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.19-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit b49ea673e119f59c71645e2f65b3ccad857c90ee ]
+All tests passing for Tegra ...
 
-->sock can be set to NULL asynchronously unless ->recv_mutex is held.
-So it is important to hold that mutex.  Otherwise a sysfs read can
-trigger an oops.
-Commit 17f09d3f619a ("SUNRPC: Check if the xprt is connected before
-handling sysfs reads") appears to attempt to fix this problem, but it
-only narrows the race window.
+Test results for stable-v6.18:
+    11 builds:	11 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    133 tests:	133 pass, 0 fail
 
-Fixes: 17f09d3f619a ("SUNRPC: Check if the xprt is connected before handling sysfs reads")
-Fixes: a8482488a7d6 ("SUNRPC query transport's source port")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- net/sunrpc/sysfs.c    | 5 ++++-
- net/sunrpc/xprtsock.c | 7 ++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Linux version:	6.18.19-rc1-g1bd1cbd8a3ff
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra234-p3737-0000+p3701-0000,
+                tegra234-p3768-0000+p3767-0005, tegra30-cardhu-a04
 
-diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
-index 55da1b627a7d..83ba1f2adf62 100644
---- a/net/sunrpc/sysfs.c
-+++ b/net/sunrpc/sysfs.c
-@@ -113,11 +113,14 @@ static ssize_t rpc_sysfs_xprt_srcaddr_show(struct kobject *kobj,
- 		return 0;
- 
- 	sock = container_of(xprt, struct sock_xprt, xprt);
--	if (kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock == NULL ||
-+	    kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
- 		goto out;
- 
- 	ret = sprintf(buf, "%pISc\n", &saddr);
- out:
-+	mutex_unlock(&sock->recv_mutex);
- 	xprt_put(xprt);
- 	return ret + 1;
- }
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 9e122c20fcc6..07acc6845ce2 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1680,7 +1680,12 @@ static int xs_get_srcport(struct sock_xprt *transport)
- unsigned short get_srcport(struct rpc_xprt *xprt)
- {
- 	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
--	return xs_sock_getport(sock->sock);
-+	unsigned short ret = 0;
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock)
-+		ret = xs_sock_getport(sock->sock);
-+	mutex_unlock(&sock->recv_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL(get_srcport);
- 
--- 
-2.34.1
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
+Jon
 
