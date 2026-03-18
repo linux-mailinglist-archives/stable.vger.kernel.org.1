@@ -1,139 +1,151 @@
-Return-Path: <stable+bounces-226937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMxzOOD1uWnnPwIAu9opvQ
-	(envelope-from <stable+bounces-226937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 01:46:24 +0100
+	id mKYzM/P1uWnnPwIAu9opvQ
+	(envelope-from <stable+bounces-226938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 01:46:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A602B4AEC
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 01:46:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B419B2B4AF3
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 01:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5ACA30927C0
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 00:46:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 478353095337
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 00:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF61F19CC28;
-	Wed, 18 Mar 2026 00:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rb6rXJT9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD50288D2;
+	Wed, 18 Mar 2026 00:46:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ag.fintek.com.tw (mail.fintek.com.tw [59.120.186.242])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C7763CB
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 00:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA2BEED8
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 00:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.186.242
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773794777; cv=none; b=LRyL7Ob1LrdwwpriqXSdJlArORGPpJqDsNeXy+hJNtNDbahRZ63ckNEd3jACKM3T4uptkbAMizdwnFadSl85+j4HZPtun1gu+4uGIvYKkCNhuFhzOn6WPYdY871MfgXyVc73SUnku2LOu+RlQ25fquqtLjzcUmBnlF9RV9WbWVo=
+	t=1773794799; cv=none; b=L2BINw2TthikGRwAgf/eGPYf2QBptYXFOb5XZNepDI6uIEeOII4A4EKiUvw1DOdKCR275cScp7FHwuq9cBVVuDXxrjYFQKNPK0pV9+QZfxh2zjKkqEsBC1S6AFjggkCncOJclxi8wJ2wdMaLEF734Vs1n092Q0/lD9JXDUvTuj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773794777; c=relaxed/simple;
-	bh=q4RZwHYlh1AIIVgFs9YR/SooUq5UnLLRrujp94XtdPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AN/qxsWDI6B3iLSfrydjnxbxGTOIRDQ8Ys9zbbtFtIms6kwnDebnkbJiRE6I6s4MBGnfdt0V4GClDOJXAKyOPvKON5gSavPoWB3+tpHxTUoCanWB9OuuyVRA/9Lc5ILAuDKKwezBde6E1j3KgYnTTA7FzjXq44xhXG8SuIubV0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rb6rXJT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36E7C19425;
-	Wed, 18 Mar 2026 00:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773794777;
-	bh=q4RZwHYlh1AIIVgFs9YR/SooUq5UnLLRrujp94XtdPE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rb6rXJT9fFML3oox7V4GLy5zp83sCfuwvLt54kamA8ZAHQzNo5Ja7DAv+AamuGN5W
-	 6PjE7ShBBKEELbBu83bMdYe+i2z5Sr8TP5Yxc9MnSC1+c9J9DOws7Yw42hFL9IE++F
-	 Ume5SW02Zdk7InTQGSCcPmRl8Evp3MniLK3pcfUGh/Jlt0Y3lWsrvTzLIVcn4g24Wz
-	 uEtsI7u+EiKChsytaS+wTvZFrDZkr1gEvTwyeo8fgT+S+tn0ppeLkq9X3jF4xo+EYl
-	 LMvUyRoSdXmTaiW/ekhcv9U9dturVHGKynpU+EOKlR+QlbqeyvaTd3jy5BGrtKfyod
-	 ejedPqNPl1eDA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] drm/xe/sync: Fix user fence leak on alloc failure
-Date: Tue, 17 Mar 2026 20:46:14 -0400
-Message-ID: <20260318004614.407161-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260318004614.407161-1-sashal@kernel.org>
-References: <2026031722-spectrum-cocoa-0d75@gregkh>
- <20260318004614.407161-1-sashal@kernel.org>
+	s=arc-20240116; t=1773794799; c=relaxed/simple;
+	bh=EHXA0rEU3xtQrylKoMO60rbXr6bKCtzKdE+PLkuqPOY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DA9bhKOEyCZm2Tcs8MPHyM8Jv1PncGK5EZ5U8OuhxKka+/8MOusFMCz1FpfCeMadlQh+aCds+BdjHI9PU/D2i1n5VPET+QGJeVp8FLZozG/EnA1MNDitDl34WC+EjS64hPtAMw5F+gxFG1WNGK9Ylc0iPkKA9577Y0w+qLG+Y6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintek.com.tw; spf=pass smtp.mailfrom=fintek.com.tw; arc=none smtp.client-ip=59.120.186.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintek.com.tw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintek.com.tw
+Authenticated-By: peter_hong
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62I0kRDa93086104, This message is accepted by code: ctloc85258
+Received: from [192.168.1.132] ([192.168.1.132])
+	(authenticated bits=0)
+	by ag.fintek.com.tw (8.15.2/3.23/5.94) with ESMTPSA id 62I0kRDa93086104
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 18 Mar 2026 08:46:28 +0800
+Message-ID: <fa0765de-68cb-4bac-b7d7-e2b47946aac1@fintek.com.tw>
+Date: Wed, 18 Mar 2026 08:46:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Post-facto backport request: USB: serial: f81232: fix incomplete
+ serial port generation
+To: Johan Hovold <johan@kernel.org>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org
+References: <5bcf02b5-3fe5-466e-a1da-0e5a2e62fd5f@fintek.com.tw>
+ <abkBUCw0BTh4wfqs@hovoldconsulting.com>
+Content-Language: en-US
+From: "=?UTF-8?B?UFMxMCBQRVRFUiBIT05HIOa0que5vOa+pA==?="<peter_hong@fintek.com.tw>
+In-Reply-To: <abkBUCw0BTh4wfqs@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_NO_SPACE_IN_FROM(1.00)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226937-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226938-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[fintek.com.tw];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.868];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peter_hong@fintek.com.tw,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 65A602B4AEC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fintek.com.tw:email,fintek.com.tw:mid]
+X-Rspamd-Queue-Id: B419B2B4AF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+Hi Johan,
 
-[ Upstream commit 0879c3f04f67e2a1677c25dcc24669ce21eb6a6c ]
+Johan Hovold 於 2026/3/17 下午 03:22 寫道:
+> On Tue, Mar 17, 2026 at 10:21:17AM +0800, PS10 PETER HONG 洪繼澤 wrote:
+>> Hi Stable Team,
+>>
+>> I would like to request a backport for the following commit to the
+>> currently supported stable trees 6.1.y, 6.6.y, 6.12.y and 6.18.y
+>>
+>>     cd644b805da8 ("USB: serial: f81232: fix incomplete serial port
+>> generation")
+>>
+>> Reason:
+>>     This patch fixes a stability issue where Fintek F81532A/534A/535/536
+>>     devices fail to initialize all serial ports during fast load/unload
+>> cycles.
+>>     The fix involves a dummy read to clear the device's stale internal state.
+>>
+>> The patch should apply cleanly to most recent stable branches.
+> My understanding was that this was only something you'd hit if you
+> unload and reload the driver which isn't something a user would normally
+> do. That's why I didn't add a stable tag.
+>
+> The diff is a bit on the bigger side but it's all straight-forward
+> enough so I'm fine with backporting if you think it will be useful also
+> for older kernels.
 
-When dma_fence_chain_alloc() fails, properly release the user fence
-reference to prevent a memory leak.
+Apologies for the resend. My previous email wasn't set to plain-text mode.
 
-Fixes: 0995c2fc39b0 ("drm/xe: Enforce correct user fence signaling order using")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260219233516.2938172-6-shuicheng.lin@intel.com
-(cherry picked from commit a5d5634cde48a9fcd68c8504aa07f89f175074a0)
-Cc: stable@vger.kernel.org
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/xe/xe_sync.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Typical users are unlikely to encounter this, but one of our customers is
+currently facing the issue. They have requested that we submit this patch to
+the stable tree so they can utilize the mainstream driver without needing a
+separate vendor driver.
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index 04c2f44ce0147..90944218a5906 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -206,8 +206,10 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
- 			if (XE_IOCTL_DBG(xe, IS_ERR(sync->ufence)))
- 				return PTR_ERR(sync->ufence);
- 			sync->ufence_chain_fence = dma_fence_chain_alloc();
--			if (!sync->ufence_chain_fence)
--				return -ENOMEM;
-+			if (!sync->ufence_chain_fence) {
-+				err = -ENOMEM;
-+				goto free_sync;
-+			}
- 			sync->ufence_syncobj = ufence_syncobj;
- 		}
- 
+In theory, applying this patch will improve the product's overall stability.
+We would like to see this integrated into the mainstream kernel tree.
+
+Best regards,
+Peter
+
 -- 
-2.51.0
+
+*洪繼澤 **Peter Hong*
+
+精拓科技股份有限公司
+
+Feature Integration Technology
+
+Address: 302新竹縣竹北市台元二街10號7樓
+
+TEL: 03-5600168 #813
+
+FAX: 03-5600166
+
+E-Mail﹕peter_hong@fintek.com.tw
+
+
+
 
 
