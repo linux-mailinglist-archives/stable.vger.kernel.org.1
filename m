@@ -1,192 +1,284 @@
-Return-Path: <stable+bounces-227126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHTCGEfYumkycgIAu9opvQ
-	(envelope-from <stable+bounces-227126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:52:23 +0100
+	id oKJNOMbiumm7cwIAu9opvQ
+	(envelope-from <stable+bounces-227127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:37:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A95F2BFAA6
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:52:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4137C2C0681
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 020093016BB6
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7498A349800E
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4852DEA8C;
-	Wed, 18 Mar 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3780D3D5254;
+	Wed, 18 Mar 2026 16:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hc6OTsSu"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FFD2E8DFC;
-	Wed, 18 Mar 2026 16:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3B73D47AF
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773851995; cv=none; b=F5hJJo+rG9LpssagvjgxbiSzCdx1Rb1jGVq9fuChFS+qE7//sLQ//TZvlvSP4+6qhVeT1sS4AVrrOcCDNIkuLbNZJE/34y9AAYXZTUNy3sB361RWMSBb7VDlxb2o9rVQgw+eVjLR7+C5g3Fc83DClLD7dUuYAmgajq+QiuwHZLw=
+	t=1773852440; cv=none; b=KsHPFdk7OYcshjaPS2o2tIlyXvuw4M2vwhOLcpFyOqUc26WPDELunYvXTPSziKepaR8Rwtd1FpSgBqRnMWE1FgiJfmgPmUEV29wvI4HaU+wGOzzeK1wny7rZQGDt7HSf8BWLpgbRoS0RrCtilIkNLPjUL+okdvwOlSY5KGhHdyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773851995; c=relaxed/simple;
-	bh=RdV42oZ0AayoMXo41L0WZr3GLfG8ygEPlf5ODTypPpI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lRLRJAlk6oM0ZZWQKy4yXKggOw2YkX110O8nQopD1qQIzYcl1BxQGJp2yC5SI8mnM6Xyj8iysuesTk5jRyxOnBmx5+YQ4cWaVhfCnhqAskcm1YwoLJoE3zuhtWmRPNvf9fPhZMlCYjFaImhTTIcOA+DEtMF05wlGQS35nh2drNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5CA081BD0;
-	Wed, 18 Mar 2026 09:39:46 -0700 (PDT)
-Received: from [10.57.59.172] (unknown [10.57.59.172])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 95BB13F778;
-	Wed, 18 Mar 2026 09:39:49 -0700 (PDT)
-Message-ID: <c116c75e-4e85-4f57-abb7-ba80bbc8f863@arm.com>
-Date: Wed, 18 Mar 2026 16:39:47 +0000
+	s=arc-20240116; t=1773852440; c=relaxed/simple;
+	bh=oBwZY4a2G/Yeig3bVPBK0J/l6hJbOqO9843f0ckrj3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XIDD9OQqgL8KH7j6VemasR9risFSyExozzUrpCLQXa0EyhQCzL2LWFjuyA9jnVX9GKlLN4SyjL6FOEei3KvcM6o23RgZh2RWfsGIWP0BL8Bl1v0jhIhWZMw44EGByCQuFD7XgHihyxbbqfwsTkaq0P5aU/htnOJWcxXBvdGc2dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hc6OTsSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED263C2BC87;
+	Wed, 18 Mar 2026 16:47:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773852439;
+	bh=oBwZY4a2G/Yeig3bVPBK0J/l6hJbOqO9843f0ckrj3M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hc6OTsSuH7q8lOzDI3EYimlve55b/Xo3fNCrnAAzY9GhtwdM8usTyUxo2tp7kFN/Y
+	 74K1H2xiuKTZHWyw7BFEIKDP4bA0XpZ3Z6WrPaIjjvEbXoj7z2L0ci0lVSSdWUSSAq
+	 0YVZoyEIqYiKdP9TxVSalPpYqIIEYOjXmUhmLSVZcgvLFx/E17Q7zBjwvdcbXSefIz
+	 ZjPSYVMmZhRjiD2SdIYstU5h+xMeKHBYOwttsvymMauJJg7IxWjkZBAz/iTa3uX1ze
+	 XKe8dajtzh8W+k3Rdj8NvZ5nzJXQybtldbImfopw7hROgU5XGZI95zJDjW/osGjenE
+	 gnoAY8OmcqZ+w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kevin Hao <haokexin@gmail.com>,
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: macb: Shuffle the tx ring before enabling tx
+Date: Wed, 18 Mar 2026 12:47:17 -0400
+Message-ID: <20260318164717.1118974-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031734-fasting-frosted-346c@gregkh>
+References: <2026031734-fasting-frosted-346c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] scsi: sas: skip opt_sectors when DMA reports no real
- optimization hint
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: ahuang12@lenovo.com, axboe@kernel.dk, damien.lemoal@opensource.wdc.com,
- hch@lst.de, iommu@lists.linux.dev, ionut_n2001@yahoo.com,
- john.g.garry@oracle.com, kbusch@kernel.org, linux-kernel@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
- m.szyprowski@samsung.com, sagi@grimberg.me, stable@vger.kernel.org,
- sunlightlinux@gmail.com
-References: <20260318074314.17372-1-ionut.nechita@windriver.com>
- <20260318074314.17372-2-ionut.nechita@windriver.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260318074314.17372-2-ionut.nechita@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lenovo.com,kernel.dk,opensource.wdc.com,lst.de,lists.linux.dev,yahoo.com,oracle.com,kernel.org,vger.kernel.org,lists.infradead.org,samsung.com,grimberg.me,gmail.com];
-	TAGGED_FROM(0.00)[bounces-227126-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[gmail.com,windriver.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-227127-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.798];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,windriver.com:email]
-X-Rspamd-Queue-Id: 2A95F2BFAA6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:url,msgid.link:url,windriver.com:email]
+X-Rspamd-Queue-Id: 4137C2C0681
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-03-18 7:43 am, Ionut Nechita (Wind River) wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
-> 
-> sas_host_setup() unconditionally sets shost->opt_sectors from
-> dma_opt_mapping_size().  When the IOMMU is disabled or in passthrough
-> mode and no DMA ops provide an opt_mapping_size callback,
-> dma_opt_mapping_size() returns min(dma_max_mapping_size(), SIZE_MAX)
-> which equals dma_max_mapping_size() — a hard upper bound, not an
-> optimization hint.
-> 
-> On a Dell PowerEdge R750 with mpt3sas (Broadcom SAS3816, FW 33.15.00.00)
-> and intel_iommu=off the following values are observed:
-> 
->    dma_opt_mapping_size()  = dma_max_mapping_size() (no real hint)
->    shost->max_sectors      = 32767
->    opt_sectors             = min(32767, huge >> 9) = 32767
->    optimal_io_size         = 32767 << 9 = 16776704
->                            → round_down(16776704, 4096) = 16773120
-> 
-> The SAS disk (SAMSUNG MZILT800HBHQ0D3) do not report an
-> Optimal Transfer Length in VPD page B0,so sdkp->opt_xfer_blocks remains 0.
-> sd_revalidate_disk() then uses min_not_zero(0, opt_sectors) = opt_sectors,
-> propagating the bogus value into the block device's optimal_io_size
-> (visible as OPT-IO = 16773120 in lsblk --topology).
-> 
-> mkfs.xfs picks up optimal_io_size and minimum_io_size and computes:
-> 
->    swidth = 16773120 / 4096 = 4095
->    sunit  = 8192 / 4096     = 2
-> 
-> Since 4095 % 2 != 0, XFS rejects the geometry:
-> 
->    SB stripe unit sanity check failed
-> 
-> This makes it impossible to create XFS filesystems (e.g. for
-> /var/lib/docker) during system bootstrap.
-> 
-> Fix this by only setting opt_sectors when dma_opt_mapping_size() returns
-> a value strictly less than dma_max_mapping_size(), which indicates a
-> genuine DMA optimization constraint from an IOMMU or DMA ops backend.
-> When they are equal, no backend provided a real hint, so leave
-> opt_sectors at its default of 0 ("no preference").
-> 
-> Fixes: 4cbfca5f7750 ("scsi: scsi_transport_sas: cap shost opt_sectors according to DMA optimal limit")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
-> ---
->   drivers/scsi/scsi_transport_sas.c | 16 ++++++++++++++--
->   1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-> index 12124f9d5ccd..6b4de5116feb 100644
-> --- a/drivers/scsi/scsi_transport_sas.c
-> +++ b/drivers/scsi/scsi_transport_sas.c
-> @@ -240,8 +240,20 @@ static int sas_host_setup(struct transport_container *tc, struct device *dev,
->   			   shost->host_no);
->   
->   	if (dma_dev->dma_mask) {
-> -		shost->opt_sectors = min_t(unsigned int, shost->max_sectors,
-> -				dma_opt_mapping_size(dma_dev) >> SECTOR_SHIFT);
-> +		size_t opt = dma_opt_mapping_size(dma_dev);
-> +
-> +		/*
-> +		 * Only set opt_sectors when the DMA layer reports a
-> +		 * genuine optimization constraint.  When opt equals
-> +		 * dma_max_mapping_size() no backend provided a real
-> +		 * hint — the value is just the DMA maximum, which is
-> +		 * not useful as an optimal I/O size and can cause
-> +		 * mkfs.xfs to compute invalid stripe geometry.
-> +		 */
-> +		if (opt < dma_max_mapping_size(dma_dev))
+From: Kevin Hao <haokexin@gmail.com>
 
-The point is more that dma_opt_mapping_size() is *always* only ever a 
-constraint, never a target. This code should be coming up with its own 
-idea of whether max_sectors is large enough to be meaningless, and 
-picking an initial opt_sectors value based on that, and only *then* 
-potentially reducing that value further if the DMA API indicates it 
-would be more efficient to do so. Making this conditional makes little 
-sense even if it wasn't clearly still broken when dma_opt_mapping_size() 
-== (dma_max_mapping_size() - n) for most non-zero values of n.
+[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
 
-That said, the comment in sd_revalidate_disk() implies that opt_sectors 
-itself is also only intended as an upper limit rather than a specific 
-preference, so there wouldn't seem to be any harm in deriving a 
-suitably-aligned value from dma_max_mapping_size() either.
+Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
+the rootfs may take an extended time to recover after a suspend.
+Upon investigation, it was determined that the issue originates from a
+problem in the macb driver.
 
-Thanks,
-Robin.
+According to the Zynq UltraScale TRM [1], when transmit is disabled,
+the transmit buffer queue pointer resets to point to the address
+specified by the transmit buffer queue base address register.
 
-> +			shost->opt_sectors = min_t(unsigned int,
-> +					shost->max_sectors,
-> +					opt >> SECTOR_SHIFT);
->   	}
->   
->   	return 0;
+In the current implementation, the code merely resets `queue->tx_head`
+and `queue->tx_tail` to '0'. This approach presents several issues:
+
+- Packets already queued in the tx ring are silently lost,
+  leading to memory leaks since the associated skbs cannot be released.
+
+- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
+  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
+  are reset to '0'.
+
+- The transmission may become stuck on a packet that has already been sent
+  out, with its 'TX_USED' bit set, but has not yet been processed. However,
+  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
+  `macb_tx_poll()` incorrectly assumes there are no packets to handle
+  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
+  when a new packet is placed at this position. This is the root cause of
+  the prolonged recovery time observed for the NFS root filesystem.
+
+To resolve this issue, shuffle the tx ring and tx skb array so that
+the first unsent packet is positioned at the start of the tx ring.
+Additionally, ensure that updates to `queue->tx_head` and
+`queue->tx_tail` are properly protected with the appropriate lock.
+
+[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
+
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ #include context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 98 +++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index e1df1546a2d6e..e489bf739f58e 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -38,6 +38,7 @@
+ #include <linux/ptp_classify.h>
+ #include <linux/reset.h>
+ #include <linux/firmware/xlnx-zynqmp.h>
++#include <linux/gcd.h>
+ #include "macb.h"
+ 
+ /* This structure is only used for MACB on SiFive FU540 devices */
+@@ -719,6 +720,97 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
+ 	netif_tx_stop_all_queues(ndev);
+ }
+ 
++/* Use juggling algorithm to left rotate tx ring and tx skb array */
++static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
++{
++	unsigned int head, tail, count, ring_size, desc_size;
++	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
++	struct macb_dma_desc *desc_curr, *desc_next;
++	unsigned int i, cycles, shift, curr, next;
++	struct macb *bp = queue->bp;
++	unsigned char desc[24];
++	unsigned long flags;
++
++	desc_size = macb_dma_desc_get_size(bp);
++
++	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
++		return;
++
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++	head = queue->tx_head;
++	tail = queue->tx_tail;
++	ring_size = bp->tx_ring_size;
++	count = CIRC_CNT(head, tail, ring_size);
++
++	if (!(tail % ring_size))
++		goto unlock;
++
++	if (!count) {
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
++		goto unlock;
++	}
++
++	shift = tail % ring_size;
++	cycles = gcd(ring_size, shift);
++
++	for (i = 0; i < cycles; i++) {
++		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
++		memcpy(&tx_skb, macb_tx_skb(queue, i),
++		       sizeof(struct macb_tx_skb));
++
++		curr = i;
++		next = (curr + shift) % ring_size;
++
++		while (next != i) {
++			desc_curr = macb_tx_desc(queue, curr);
++			desc_next = macb_tx_desc(queue, next);
++
++			memcpy(desc_curr, desc_next, desc_size);
++
++			if (next == ring_size - 1)
++				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++			if (curr == ring_size - 1)
++				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++
++			skb_curr = macb_tx_skb(queue, curr);
++			skb_next = macb_tx_skb(queue, next);
++			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
++
++			curr = next;
++			next = (curr + shift) % ring_size;
++		}
++
++		desc_curr = macb_tx_desc(queue, curr);
++		memcpy(desc_curr, &desc, desc_size);
++		if (i == ring_size - 1)
++			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++		if (curr == ring_size - 1)
++			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++		memcpy(macb_tx_skb(queue, curr), &tx_skb,
++		       sizeof(struct macb_tx_skb));
++	}
++
++	queue->tx_head = count;
++	queue->tx_tail = 0;
++
++	/* Make descriptor updates visible to hardware */
++	wmb();
++
++unlock:
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
++}
++
++/* Rotate the queue so that the tail is at index 0 */
++static void gem_shuffle_tx_rings(struct macb *bp)
++{
++	struct macb_queue *queue;
++	int q;
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
++		gem_shuffle_tx_one_ring(queue);
++}
++
+ static void macb_mac_link_up(struct phylink_config *config,
+ 			     struct phy_device *phy,
+ 			     unsigned int mode, phy_interface_t interface,
+@@ -757,8 +849,6 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 			ctrl |= MACB_BIT(PAE);
+ 
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-			queue->tx_head = 0;
+-			queue->tx_tail = 0;
+ 			queue_writel(queue, IER,
+ 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
+ 		}
+@@ -772,8 +862,10 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+ 		macb_set_tx_clk(bp, speed);
++		gem_shuffle_tx_rings(bp);
++	}
+ 
+ 	/* Enable Rx and Tx; Enable PTP unicast */
+ 	ctrl = macb_readl(bp, NCR);
+-- 
+2.51.0
 
 
