@@ -1,236 +1,217 @@
-Return-Path: <stable+bounces-227023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJZnJl2LumnSXgIAu9opvQ
-	(envelope-from <stable+bounces-227023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:24:13 +0100
+	id QJA7NQSNumnSXgIAu9opvQ
+	(envelope-from <stable+bounces-227024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:31:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1602BABF4
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:24:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BBA2BAD25
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F4B9307EAC9
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:19:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8EF36300404C
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B1B3A6F16;
-	Wed, 18 Mar 2026 11:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719603BED1F;
+	Wed, 18 Mar 2026 11:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Rkw3UAFB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzKOItOJ"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010006.outbound.protection.outlook.com [52.101.69.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E533B52E0;
-	Wed, 18 Mar 2026 11:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773832745; cv=fail; b=Ny/pZ6D316YlpxRsZ6P8+Dk8CHsiC2MMjKJe57Fy5TMIHDNkrgNJGRJlB9GUCwlyp+1If5mI9MLP1813nFl0eYFjy14WM5O4HVHQKhEGPsMnxtGCZNfWxbCdb/rPros00DTRswsYP0z74/5L+isvMsrXx1ljRHb7VOjsTMssPI4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773832745; c=relaxed/simple;
-	bh=AOkUJXY2OfShzyfHl3Vj0CJcGhcsqEhlkKEA7SuKZHU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pnSHGG22faKv0/6eYEeN5rj0nv0IfK50t3lRK1qN28amoykwiA7gG+DkM5jOXUIQzZKi61TyiIVNAWVfd6T7H1DOI4vpr02zljOpSy2j94Lu3DW0xOJjjd7VzpPLer7j0CUFU7expn8Uldr2JzA+lVobBZhkYqEGXDaKPkALbHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Rkw3UAFB; arc=fail smtp.client-ip=52.101.69.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DraPwYG+/PiCw8XFlqa24zRL5ZS7JeIvpm/micmSCwXN0hRs3UE7YrfQgb/4mXjSNwoUIkloi2AfNJekjDHMxQZUSta267SOvWlMMqS28oooGCYmM7bqmuBPbu2N76/DisbsRGneSuw5479y+4D5XsvgV6CaqGi3qKu644yX9lgSLsu5uf8LFUder0moLMWpBTyBtrInzOeqUrGP9ijsTWgnuLzNvNqQg01iriuOlPtgKdo74DJhSPP4Vo3twU1UNatYO0kFcwIlEM0WplDVp9TWz9fpf9Oo5+CzRAnFRfsokTGgi4xXBYKxhe9Nt6B5YrUBtLb2RFTW7F7a1VSQRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ScJI/nVKpS4Kqj0+3r08hYtD1hVCY7mgynZxFHpCLLA=;
- b=RovqoX/gm3Z+e54F2U6j5POhxlRnKab7v5Q2iXcxpMrEwZswLHhWlbayr/rvuaWj0h/BU8NyMBhAcJk2l2QWeODBASFVlSM60C2YSGBlZ/DVHtHEoM0jFpo9pvLSdA3L+c5lGfJWNQYA4t2lP48LfX1zBs2pgIU5Bjwe1+nzmIpO5bqwZmONiTiIPpdKKpxQ/arUf3NbuxmLx7uNmNOwxII79nTofgRgGV2WzYpi24ZkLJgb44L/HQYN3s5ZqQqtMcc69XfLc7VRFDm5qXj5ut2oTlZ4A8Lj4RQSCEQbch7ndH4d5D9vBkPhWiv4Bs5VXpGxXVlqyetsUq//cgEb0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ScJI/nVKpS4Kqj0+3r08hYtD1hVCY7mgynZxFHpCLLA=;
- b=Rkw3UAFBpL3FYG1XR343KxQm+q5j93Ln0h8f6uW0SiX+rrFiDtL9V51PZyHbkA5Y3Nsq16mB2jkdwMEn+AbQgal/znJFbE8uEx6q727jPBZxpsdIzyG05N+qsuVIvzqrBsAYUpx6YYtM7jZkvU0BTTTRPcnZgyQNfXGgVMGbB4imCDQOF6AgaeYAeJE3UFp5/HeJEbaAs4WrLv3Fq0hpvbW5L442RO/0mQRoEEEB4rCSiqXvZFdT+fBRxzbTE/aAo8zo4p9G7+AZGJNl3CBjBakg0Xg6ep8z5y6/j78H+jXn8Bxj6tvPMyyeYz2ZdjhJV9SvHaLCW6cO7KSPzuq6Qg==
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by PAXPR04MB9253.eurprd04.prod.outlook.com (2603:10a6:102:2bd::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
- 2026 11:18:59 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::21f6:947a:1f40:18af]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::21f6:947a:1f40:18af%4]) with mapi id 15.20.9700.024; Wed, 18 Mar 2026
- 11:18:59 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <frank.li@nxp.com>, Sascha
- Hauer <s.hauer@pengutronix.de>
-CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Thread-Topic: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Edge
-Thread-Index: AQHctkd9VzQPaIhsCEuLLM3IVi/TvrW0IVqg
-Date: Wed, 18 Mar 2026 11:18:59 +0000
-Message-ID:
- <DB9PR04MB8461D0BE47F09CFF41492A60884EA@DB9PR04MB8461.eurprd04.prod.outlook.com>
-References: <20260317195116.2301985-1-shenwei.wang@nxp.com>
-In-Reply-To: <20260317195116.2301985-1-shenwei.wang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB8461:EE_|PAXPR04MB9253:EE_
-x-ms-office365-filtering-correlation-id: 7d7d898c-7749-4698-b985-08de84e026c4
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|38070700021|22082099003|56012099003|18002099003;
-x-microsoft-antispam-message-info:
- 1+Bfnj0nhv7WpEN/utoA6pJmOPLw54VC+AmBqFQS4Dr5rXQqNU1ud60J/LYHJaPamnAsYNaWp0JonHOFCYGJjsA69XAoADfh3tyoS08evrzxXU8I+yEzTN3hRZE5VM3TNZcTe2s7uLwngn6I+7nQth5w0mIZQeQePDvqAUlhnpcL5A7JFk8H4jDmsmH3TUuvfsIOggQEbwLMPTs4xhNzOp9L0yll4SE60uGXp1LovoOosANot484KfNmYf/JKwt+AK5vxpF5TaeuRFbEMM18eX2s4fr+MUGI8eI/RY1GY1lMb9PrFzGiTIxyDqfnzaJAi+OpngQb2Psy9rtWZuwLMkswbAVYTTNuqW3pZNZvKzROwzBAqaplcGzdtIPBN1Bj1e5Ra/GiX+460ghem5bIqfxxNC5OEhn4e+f+Nz6kGn612F2cVdYuA9GhUliJW9MB7detlRH1XNyNnKcJOISbJ28V4gbStUInhgI5gLkYAMYl4hOcy3GuV55c2MKDU0XWOIwhcsFWvWssoBsZ3XlIGIsQ+/maSe+sg/O5DyrL1skbhI1MKQmzduKog+zibCA4IKVN7e9wkiFy6D4vjUzhNEH1QOYF+qmOSouzhVsaiP5ZkyzuPR3I6eBPus4xaru4Fh/I6uz1V38Y9f9BYM8FP++vvvgUPa9qL0ROXPm9oUSFJHQdkCHKueM2P6Eof6caZF5KePkhHIHB881VNMvzPFmJSrD1sYYRFjEZgj4S3SE8FGe1bND+oN5WcjvDWdYAFXml/3loSVbUTFdoa7eHeCkS1TJiw1azJC/lKtL/C+w=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Qej1oawRXleZFQw1urcV+w24Z8pmlg2VAiVgU2+fzmcZ8ba8OJRudTIjJ+so?=
- =?us-ascii?Q?MhVuHA2mKRND9aos078Rj6JGNyzKLAYRbZ3dMSJH5VmT1GsFoF3u54VN5mzY?=
- =?us-ascii?Q?mCVjLtpocZO0Tk1hESqnYTSqeWZIqKEsDd9R76bV4JBtdZW+2rhol2dPAUcD?=
- =?us-ascii?Q?gJDGteD3zR+InmMPeCPO6qbahnqxuGTQM1HWvpjAyWUzZAU7gi5iKwvSgrKz?=
- =?us-ascii?Q?GSGdNkZjo6RLjlhyHRLmZT9lVrRw2jJ50Rxn3rpT2ra/BESJvsSgaiw6fMxY?=
- =?us-ascii?Q?CdlYjwaP1IeEqihQ5oQvZfiIxfrrqm2XJp52tF0b4LEhfZe+xdmGkJOXq7bQ?=
- =?us-ascii?Q?KyRhKxM0XcGhlHJ96b5QgElaOLyPqREFC6plUGpFjmbNOf8P6d6FYu9oibi9?=
- =?us-ascii?Q?P/lDeNMhms9aOvaPDs8C9MrWjSyFuEBSUSV/ZRF1ixI4cSBL7MT0HNaWQfIU?=
- =?us-ascii?Q?F4xDUqNEragnWAxDQRGH0HQrxF2rzGlnjXW/kLme9WxeYXRUNs5yIZOvLLT7?=
- =?us-ascii?Q?U1I5ilKDaLCeAobItDq8yeYcCBTx806nW2selK6SaWDGmOqEzpygZ7OPNw0x?=
- =?us-ascii?Q?PStEPhpCXflKmneJ8mZIigTWknN+gAoSXQ+uC3kJ0pkeqYSQnOqhjMN0oJv/?=
- =?us-ascii?Q?5dQ/R5WJLaY6ai60F2J7XGVyQqc5KAv1sIOmk/tubatuCrmyry1j5lNh5NMs?=
- =?us-ascii?Q?r5pT79oHDyORsw0uBVN7xcX/+aoum6gGqV5Gt9i1yDopJx8SKCN4PTbE4JzR?=
- =?us-ascii?Q?1OSmPYVc9A/CPo12fW3BKQJb4crGOaSiAJ5/JSl2fOMKLdrTKSvrIliy5xFo?=
- =?us-ascii?Q?hVQhbhrq1K4nd+qQOET28tJJPQTiKaFAFgeBIHxpQfqPwmeaTg09FjkVCMA2?=
- =?us-ascii?Q?1Fg5PcmXfvu4cTwH5BOXC/W4B7aUPv9Cpb3h40gFx6Iq5aw5v5McsWCBqS+U?=
- =?us-ascii?Q?FmhkKETFvZ7yi/7eF7SbaeNku1690jBCg0LG8UuBPiViguITZrV+TmrgakmR?=
- =?us-ascii?Q?zGvNxyMFY3E2vj0O8UM660ovtciflMputoL2MAOdZ2HEAUmMsKffhRmGI1u1?=
- =?us-ascii?Q?Q8Av6VAIMlgoqkW2sE4B6rtIOdoNSU9JNWB2ugMrApdckWeT0V4gLKyFRAmS?=
- =?us-ascii?Q?EkOHuyLQFTT7f0o1khyamlDengVsdiQodpEyobbruFi+6JH0+T9ufs7g7iWC?=
- =?us-ascii?Q?FWQdlDI2VE2Woakb4D+YfrATdngBigmDgHuKwcH7ZqPimwh7RVVyLUTFpVB4?=
- =?us-ascii?Q?IP1pXx+SDjaRHlSHfSj93+Eky5HDR1x9G8rAONKLollUMw4ojEB4wnvn8hAx?=
- =?us-ascii?Q?4tECpYFmt0kh82nv1+EvazyrT8FCL3e3IXNj8qzjMPgboDULQwVx6Qba/M09?=
- =?us-ascii?Q?pW4/ut+1G72gtRi9NykX2rz2idEQlGtq1AO/VUYMQIFpSH2V+U6RDR2OSVSr?=
- =?us-ascii?Q?cUhLriJkwt4g3Wl8e3wjaKT0do2t5FV4+Zkx5qsC8ynbJlD0fFUulRCIiGoj?=
- =?us-ascii?Q?zMzs28vdsP1iBKxTRJXCySIRuYX7NQx2ksSwXthBunwdMQ4rwukMK3kY0mH4?=
- =?us-ascii?Q?teRdDNpEugZprwulnEKFcO8AxE6td5OazYd+l5LGUBfNh/sA1iqqraU5bICL?=
- =?us-ascii?Q?ccLnl9xuBNG2Dbqkeheb9lHVLVAQxYaxqy0a8Y4fC1M8f2GnSJ/0THdjfb6C?=
- =?us-ascii?Q?Dv9r2VbekMbsgPiX8Vs6fbdbWuQfsn/9x8Mjl26a1gQbmuDR?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FFB3BED2D
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 11:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773833471; cv=none; b=XiIhZ7g70I1gfHbqgTwe1kbF0FOkX/ZU6Np8h0ei9yaKI3DFNIje3IESv3bPmq07Mp1QH6Kril+mDkBqui1FehKCxxyHP4qmBNWfdj7GNK5Q+f1sm0ddvUMkEQ8fFJlj2dcaSI1SI/dNfMlPZM3ex3ey3+l9Yz5K2cq4r4jHWw0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773833471; c=relaxed/simple;
+	bh=vfM3VJ96sjr18myvdq0vJEdZ614PBURDW+3TJJfvf4c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S2gD6TkB/1d7X8HpTHGWAh/YQjVIiKSW+x1R0CyG/FpsGCt6ab2r/AJh88wjPS06AgmrViw6Wlq1XJl8AqYBXrCswnWIKF9akE/Ga3i7YXaLayXWIwqG77tieZrkdiH65nIU5Yniltqetv75a6cp9oJXq9L4ip65aYFqFAxKIUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzKOItOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BFEC19421;
+	Wed, 18 Mar 2026 11:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773833470;
+	bh=vfM3VJ96sjr18myvdq0vJEdZ614PBURDW+3TJJfvf4c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AzKOItOJ54zrUe4PJSf8G+vhY+7TTDTm1CdgnxzdY/DXpS5MNOaC3hLS0xlc+o8hW
+	 GECFvXcaaBueqdKzAlv1GD+61SzwiRBul6Fn0/RGo4P1LHfZrJqiLj6W0FPa+fAWuS
+	 zE/HlA1Fu7ObfmO1csoNpgXiB51FVK6gCfK7FaSIApNazBf7lbErMleQCouDwX6R7A
+	 sOIVhPh4DG+vHgCRZiKQ0/w1zZKcqAZfTGUHhBa0JMQfnY6fyTr/O3svR9Ni2iLv+r
+	 y+VUXsIBbPdwdg5vkljvlOJHvp6cEUOTmfn1lRZAlybinp/QuR4tU8k4cBj45N3QN2
+	 bDZA8lh+qn00A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Huiwen He <hehuiwen@kylinos.cn>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] tracing: Fix syscall events activation by ensuring refcount hits zero
+Date: Wed, 18 Mar 2026 07:31:08 -0400
+Message-ID: <20260318113108.626781-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031719-flail-unleveled-35e4@gregkh>
+References: <2026031719-flail-unleveled-35e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d7d898c-7749-4698-b985-08de84e026c4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2026 11:18:59.1054
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oQT4HRuLRW46qxucZ02HafblsVHLtnDfceUCk7NeaP7xrtiCXM295bHcGwoJofn1qZcWAJL7mG4pL+5gXJx8SA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9253
-X-Spamd-Result: default: False [0.44 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227023-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,nxp.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-227024-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peng.fan@oss.nxp.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,NXP1.onmicrosoft.com:dkim,DB9PR04MB8461.eurprd04.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: EE1602BABF4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,efficios.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,goodmis.org:email]
+X-Rspamd-Queue-Id: C1BBA2BAD25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Shenwei,
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-> Subject: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising
-> Edge
->=20
-> Suspend may fail on i.MX8QM when Falling Edge is used as a pad
-> wakeup trigger due to a hardware bug in the detection logic.=20
+[ Upstream commit 0a663b764dbdf135a126284f454c9f01f95a87d4 ]
 
-This hardware bug exists on i.MX8QM/QXP/DXL, or just 8QM?
+When multiple syscall events are specified in the kernel command line
+(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
+they are often not captured after boot, even though they appear enabled
+in the tracing/set_event file.
 
-More information better to add why suspend may fail.
-Do you mean not able to resume back because of failing
-to detect falling edge?
+The issue stems from how syscall events are initialized. Syscall
+tracepoints require the global reference count (sys_tracepoint_refcount)
+to transition from 0 to 1 to trigger the registration of the syscall
+work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
 
-Since the
-> hardware does not support Both Edge wakeup, remap requests for
-> Both Edge to Rising Edge by default to avoid hitting this issue.
->=20
-> Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x
-> platforms")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  drivers/gpio/gpio-mxc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c index
-> d7666fe9dbf8..f8300690ac05 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -589,7 +589,7 @@ static bool mxc_gpio_set_pad_wakeup(struct
-> mxc_gpio_port *port, bool enable)
->  		IMX_SCU_WAKEUP_OFF,		/* 0 */
->  		IMX_SCU_WAKEUP_RISE_EDGE,	/*
-> IRQ_TYPE_EDGE_RISING */
->  		IMX_SCU_WAKEUP_FALL_EDGE,	/*
-> IRQ_TYPE_EDGE_FALLING */
-> -		IMX_SCU_WAKEUP_FALL_EDGE,	/*
-> IRQ_TYPE_EDGE_BOTH */
-> +		IMX_SCU_WAKEUP_RISE_EDGE,	/*
-> IRQ_TYPE_EDGE_BOTH */
+The current implementation of early_enable_events() with disable_first=true
+used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
+If multiple syscalls are enabled, the refcount never drops to zero,
+preventing the 0->1 transition that triggers actual registration.
 
-For IRQ_TYPE_EDGE_BOTH, use IMX_SCU_WAKEUP_RISE_EDGE.
-Do we need to also add a check for IRQ_TYPE_EDGE_FALLING?
-Saying not support IRQ_TYPE_EDGE_FALLING because of xxx.
+Fix this by splitting early_enable_events() into two distinct phases:
+1. Disable all events specified in the buffer.
+2. Enable all events specified in the buffer.
 
-Regards
-Peng.
+This ensures the refcount hits zero before re-enabling, allowing syscall
+events to be properly activated during early boot.
 
->  		IMX_SCU_WAKEUP_HIGH_LVL,	/*
-> IRQ_TYPE_LEVEL_HIGH */
->  		IMX_SCU_WAKEUP_OFF,		/* 5 */
->  		IMX_SCU_WAKEUP_OFF,		/* 6 */
-> --
-> 2.43.0
+The code is also refactored to use a helper function to avoid logic
+duplication between the disable and enable phases.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
+Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/trace/trace_events.c | 51 ++++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 15 deletions(-)
+
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 55623a9bb64ac..c4c900b69f061 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -3862,27 +3862,23 @@ static __init int event_trace_memsetup(void)
+ 	return 0;
+ }
+ 
+-static __init void
+-early_enable_events(struct trace_array *tr, bool disable_first)
++/*
++ * Helper function to enable or disable a comma-separated list of events
++ * from the bootup buffer.
++ */
++static __init void __early_set_events(struct trace_array *tr, bool enable)
+ {
+ 	char *buf = bootup_event_buf;
+ 	char *token;
+-	int ret;
+-
+-	while (true) {
+-		token = strsep(&buf, ",");
+-
+-		if (!token)
+-			break;
+ 
++	while ((token = strsep(&buf, ","))) {
+ 		if (*token) {
+-			/* Restarting syscalls requires that we stop them first */
+-			if (disable_first)
++			if (enable) {
++				if (ftrace_set_clr_event(tr, token, 1))
++					pr_warn("Failed to enable trace event: %s\n", token);
++			} else {
+ 				ftrace_set_clr_event(tr, token, 0);
+-
+-			ret = ftrace_set_clr_event(tr, token, 1);
+-			if (ret)
+-				pr_warn("Failed to enable trace event: %s\n", token);
++			}
+ 		}
+ 
+ 		/* Put back the comma to allow this to be called again */
+@@ -3891,6 +3887,31 @@ early_enable_events(struct trace_array *tr, bool disable_first)
+ 	}
+ }
+ 
++/**
++ * early_enable_events - enable events from the bootup buffer
++ * @tr: The trace array to enable the events in
++ * @disable_first: If true, disable all events before enabling them
++ *
++ * This function enables events from the bootup buffer. If @disable_first
++ * is true, it will first disable all events in the buffer before enabling
++ * them.
++ *
++ * For syscall events, which rely on a global refcount to register the
++ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
++ * ensure the refcount hits zero before re-enabling them. A simple
++ * "disable then enable" per-event is not enough if multiple syscalls are
++ * used, as the refcount will stay above zero. Thus, we need a two-phase
++ * approach: disable all, then enable all.
++ */
++static __init void
++early_enable_events(struct trace_array *tr, bool disable_first)
++{
++	if (disable_first)
++		__early_set_events(tr, false);
++
++	__early_set_events(tr, true);
++}
++
+ static __init int event_trace_enable(void)
+ {
+ 	struct trace_array *tr = top_trace_array();
+-- 
+2.51.0
 
 
