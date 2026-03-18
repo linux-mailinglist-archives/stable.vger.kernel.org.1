@@ -1,317 +1,212 @@
-Return-Path: <stable+bounces-227168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCimLRQWu2nYewIAu9opvQ
-	(envelope-from <stable+bounces-227168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:16:04 +0100
+	id GEcIB7sXu2k+fAIAu9opvQ
+	(envelope-from <stable+bounces-227169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:23:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF4A2C2E77
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 710762C2F14
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 054E4303FF27
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73BEB30FFF16
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7585D34D383;
-	Wed, 18 Mar 2026 21:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CEA376BDC;
+	Wed, 18 Mar 2026 21:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4+vedNx"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HYFu+fGk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DwHfwK0Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3795134CFD9
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 21:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C57C2D879E;
+	Wed, 18 Mar 2026 21:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773868561; cv=none; b=eKH0c69eYXf1supWoOtAOJHj4JTLNaNGzWLtO5Jpi7bUIe6mrOHxXEKqgTXk2R8VoKWRXupWXo10r4XtEzVK82HDqqEz7eGPr98sjBlw0+YKvO0UZt/0+i+Rws0wDXwEHddXqjSrfCtEhomDe7mdDFMTHUJgpXqdmyD4tSA8EuU=
+	t=1773868976; cv=none; b=c2GK/dyrRkud+ilaMtoKYvSmGh8S7BN20zzuLTDGjBEWdeYMep1vN36AEq9c6CYF8Mh86SzH0FJQAJAkgw+VtI6UWeLVaRU6AYOX5OMTcXfn/KIMs0XSWFKmbMF4HkiqjttX8JTpPLlGlaphBJ6So89M+TnJUBHVgkdzmcN5Ojo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773868561; c=relaxed/simple;
-	bh=LDKF25rJ7JhQVffXNtdd7hH0VJR0EYqs1VMLBiAY0+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=datbBQzfwTeOFPiefe9ZDlOPoK4AAkSPFtWsgv818PjOCrq/l3cC+Hle3sHUA66Vt2SKqT+h5i7dU5NUwDbwroG9UZ4TlIebbNoVto6899sasXQ8MlDxxvAsp+fkIyueGzMv6/aIhMQNUhiIHJPn3eWc2rsWdF92qXNd2DUUP4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4+vedNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E28C19421;
-	Wed, 18 Mar 2026 21:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773868560;
-	bh=LDKF25rJ7JhQVffXNtdd7hH0VJR0EYqs1VMLBiAY0+Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4+vedNxFeUM9Ads8Znrti8DnfMl6VIL7cPadt3c/fOLkqUqoxqNf7YfRZWG03hRH
-	 ngBSNfN1GRDVn8GAnVQRF+71yoigabqAA42tDJ+yT+KLvrNhw8Bun/ZM7y5Hh1cykd
-	 dZL28FbIQR12bD7cWEvE4DtnVEJTXO2wJvjS0FYmra5APCjT7/ty4jjxKqz1SDJ9co
-	 T8J+YCjVp92/qaxlX1g7xlkpeWXb2+OtkCnQPgIVc7s0jCsw2jmEv+d5pQSmyG3RXk
-	 7Nk0ZZvdOE0uaD/0NkYtd1cMmopjs9X1JJaTJlk8O/jXLHbazfhHAqTF6A5aYp+QLV
-	 vfk3+DZdgazTw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] cifs: open files should not hold ref on superblock
-Date: Wed, 18 Mar 2026 17:15:57 -0400
-Message-ID: <20260318211557.1344366-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031711-juror-diaper-819a@gregkh>
-References: <2026031711-juror-diaper-819a@gregkh>
+	s=arc-20240116; t=1773868976; c=relaxed/simple;
+	bh=Lr8WJ1pbf2MMvZ07npOpxTu5vDyPtHiDSzMNSJrmTg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JOpi/k8gVVlZH7/MR7rwlCysD2bq5m56htH66oPgFqQ3hiH3VXvHCJBtwGsOLhFq+gK9mbakm16x5OCWRqAZJVozRZdoXEHswg+AtJHC5omVxYJQW1/LDFG6FvYnfCgHQ4EOPG0mzLeaxPhqZgkjkhBg2Nf26X9px8fdI+KitE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HYFu+fGk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DwHfwK0Q; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id C8A5FEC01CE;
+	Wed, 18 Mar 2026 17:22:51 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 18 Mar 2026 17:22:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773868971;
+	 x=1773955371; bh=i3rzu56iHOdiPo0h0sV4fs0AbEWpwwHMYjaaBOspznI=; b=
+	HYFu+fGkclc5+ktjuFY4t8iUbi1ynQSICLqP63EBuw1wZycs3e1KDB1zvBclaEaF
+	cm6aJUe5QZcsXcl5a26zOKIzS9UY6hG/WV1WUHCaL5yzrdkk0G4mpBYnEbLchxXq
+	dyUH3Z7lR7+5s7bLaqzjPuc1ADQJkBQj702S5FMnWlIsrmjXdUECRPY67UjBYCvE
+	1UWH0yfdeVybuQdnOp5I+FvQamF1KMOCS0xumvxRy1ivVqUC6Or2fNXbL29QqGmN
+	k32QonyO1OZKLYbwSEg7eoCPrJvNv+UXgAWRw+czTloAdUuqn5MjaDzQ8PV9mffG
+	7CsJmViK8tfdsCSSDukN/g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773868971; x=
+	1773955371; bh=i3rzu56iHOdiPo0h0sV4fs0AbEWpwwHMYjaaBOspznI=; b=D
+	wHfwK0Q2b1ZbU+p7r5DalmHP/6dRh4TmlnAcW0Cgq6bwvuAI31Ef0Vm1zsXArNsn
+	xTijdL/MdouuNalhdA4J8IEnA0p0HfVqv1o3YaEV2+s1z7XYJgOqP9/1ckdpH4Cu
+	9tyd00Tyh7O5TzE1v2kAIv64pGO2HUKonEry5Hn4q0wRWDtpzll7h1J9yZN4r+LX
+	D7vNh5lvQOl0tJdADyXvb0QEM2sokxxlw60vgT2eY3YYNPjEwf1IBLxywM2tybwZ
+	HI8DmxmWq/SoCNEYYQWKpILgIZxbV6vcljo+ci2j2Cnts273ikQwA/uSZLfNxhUN
+	5LWqmmDqfsZZ7LsVtqeJg==
+X-ME-Sender: <xms:qxe7aVnkS09inuxw5F4KX0jhLvbT1cn7LVjk1_vq7ba-ZxqcRk6bhQ>
+    <xme:qxe7abxOtDHRNd4l2CL7RiIydUIX3WiH_ETAcuoWLFrSn6tj1xdYS302vObHbYl_m
+    zz2lITzZ7sSNfdpeBDZFIaSjMWfjv7tXAcam8JQKkcfr9R1Z13RWA>
+X-ME-Received: <xmr:qxe7aark2tPqGfU2UiYIhNkF8ChS5XdUd6p4rhO6eFO7j_dHDZsd-hLEFQQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdehvddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghvnhhu
+    lhhlodhmsghoohhnvgdrrghkrghmrghirdgtohhmsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehmsghoohhnvgesrghkrghmrghirdgtohhmpdhrtghpthhtohepkhhvmhesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
+X-ME-Proxy: <xmx:qxe7aa4cKhW8n6YPfr3U7bchl07lveBc-mhr9--iUhgJH2uoeWJW9w>
+    <xmx:qxe7aRdmXhivPcQnA-Qb7E2OPlqOnV45u9DYJhthUJVQpBFNsMl_ng>
+    <xmx:qxe7af6Pzc11m2bzvM0-0QL66WakQeb_EQyU0jpsnCYJvG58BX1o9Q>
+    <xmx:qxe7aYtXwZmL5rbsn-v2as4IIukpZ1F183hOBgl_JqKWQr45Z8pH3g>
+    <xmx:qxe7aUuXuJKEfo-JvCrX6F7EtmpPWXZzXit5rfuYHqw9YBLuJNnKBsRB>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Mar 2026 17:22:50 -0400 (EDT)
+Date: Wed, 18 Mar 2026 15:22:49 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>
+Cc: mboone@akamai.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
+ zapped
+Message-ID: <20260318152249.43eb81f6@shazbot.org>
+In-Reply-To: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+References: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227168-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1CF4A2C2E77
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227169-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable,mboone.akamai.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shazbot.org:dkim,shazbot.org:mid,akamai.com:email]
+X-Rspamd-Queue-Id: 710762C2F14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+On Tue, 17 Mar 2026 16:07:45 +0100
+Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org> wrote:
 
-[ Upstream commit 340cea84f691c5206561bb2e0147158fe02070be ]
+> From: Max Boone <mboone@akamai.com>
+> 
+> A race between page table walking (e.g. via procfs numa_maps) and VFIO DMA
+> pinning can lead to temporary failures in follow_pfnmap_start(). When a
+> PUD entry is split and concurrently refaulted, the PFNMAP mapping may be
+> temporarily zapped, causing follow_pfnmap_start() to return an error.
+> 
+> Although follow_pfnmap_start() returns an -EINVAL this is not due to
+> invalid parameters, but rather because of the pfnmap being non-present.
+> Treat it as such, and retry by returning -EAGAIN, similar to how GUP
+> handles such races.
+> 
+> This avoids propagating an unexpected -EINVAL to userspace, like follows:
+> [dma_map]
+> dma_map iova=0x000000000000 size=0x000004000000 vaddr=0x00007f7800000000
+> dma_map FAILED iova=0x020000000000: [Errno 22] Invalid argument
+> dma_map iova=0x040000000000 size=0x000002000000 vaddr=0x00007f5780000000
+> 
+> Which would've succeeded on a retry.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a77f9489f1d7 ("vfio: use the new follow_pfnmap API")
+> Signed-off-by: Max Boone <mboone@akamai.com>
+> ---
+>  drivers/vfio/vfio_iommu_type1.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index 5167bec14..3a0d0bbb9 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -559,9 +559,17 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
+>  		if (ret)
+>  			return ret;
+>  
+> +		/*
+> +		 * follow_pfnmap_start() returns -EINVAL for
+> +		 * invalid parameters and non-present entries.
+> +		 * If that happens here after a successful
+> +		 * fixup_user_fault(), it is likely that the
+> +		 * pfnmap has been zapped. Retry instead of
+> +		 * failing.
+> +		 */
 
-Today whenever we deal with a file, in addition to holding
-a reference on the dentry, we also get a reference on the
-superblock. This happens in two cases:
-1. when a new cinode is allocated
-2. when an oplock break is being processed
+It's a little stronger than that, right?  We're betting that the only
+remaining non-zero return is due to a race and we can introduce what
+appears to be potential for an infinite loop here because -EAGAIN will
+get kicked out to redo the vma_lookup() and fixup_user_fault() should
+return a genuine error if we're completely in the weeds.  Should we
+make this a little stronger and more specific?  Thanks,
 
-The reasoning for holding the superblock ref was to make sure
-that when umount happens, if there are users of inodes and
-dentries, it does not try to clean them up and wait for the
-last ref to superblock to be dropped by last of such users.
+Alex
 
-But the side effect of doing that is that umount silently drops
-a ref on the superblock and we could have deferred closes and
-lease breaks still holding these refs.
-
-Ideally, we should ensure that all of these users of inodes and
-dentries are cleaned up at the time of umount, which is what this
-code is doing.
-
-This code change allows these code paths to use a ref on the
-dentry (and hence the inode). That way, umount is
-ensured to clean up SMB client resources when it's the last
-ref on the superblock (For ex: when same objects are shared).
-
-The code change also moves the call to close all the files in
-deferred close list to the umount code path. It also waits for
-oplock_break workers to be flushed before calling
-kill_anon_super (which eventually frees up those objects).
-
-Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
-Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ replaced kmalloc_obj() with kmalloc(sizeof(...)) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/cifsfs.c    |  7 +++++--
- fs/smb/client/cifsproto.h |  1 +
- fs/smb/client/file.c      | 11 ----------
- fs/smb/client/misc.c      | 42 +++++++++++++++++++++++++++++++++++++++
- fs/smb/client/trace.h     |  2 ++
- 5 files changed, 50 insertions(+), 13 deletions(-)
-
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 185ac41bd7e93..4b34a4304edb7 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -330,10 +330,14 @@ static void cifs_kill_sb(struct super_block *sb)
- 
- 	/*
- 	 * We need to release all dentries for the cached directories
--	 * before we kill the sb.
-+	 * and close all deferred file handles before we kill the sb.
- 	 */
- 	if (cifs_sb->root) {
- 		close_all_cached_dirs(cifs_sb);
-+		cifs_close_all_deferred_files_sb(cifs_sb);
-+
-+		/* Wait for all pending oplock breaks to complete */
-+		flush_workqueue(cifsoplockd_wq);
- 
- 		/* finally release root dentry */
- 		dput(cifs_sb->root);
-@@ -864,7 +868,6 @@ static void cifs_umount_begin(struct super_block *sb)
- 	spin_unlock(&tcon->tc_lock);
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
--	cifs_close_all_deferred_files(tcon);
- 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
- 	/* cancel_notify_requests(tcon); */
- 	if (tcon->ses && tcon->ses->server) {
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 3528c365a4529..4be719c9fd520 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -313,6 +313,7 @@ extern void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
- 
- extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
- 
-+void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
- void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
- 					   struct dentry *dentry);
- 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 474dadeb15933..6983854d0b2e9 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -711,8 +711,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
- 	mutex_init(&cfile->fh_mutex);
- 	spin_lock_init(&cfile->file_info_lock);
- 
--	cifs_sb_active(inode->i_sb);
--
- 	/*
- 	 * If the server returned a read oplock and we have mandatory brlocks,
- 	 * set oplock level to None.
-@@ -767,7 +765,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
- 	struct inode *inode = d_inode(cifs_file->dentry);
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifsLockInfo *li, *tmp;
--	struct super_block *sb = inode->i_sb;
- 
- 	/*
- 	 * Delete any outstanding lock records. We'll lose them when the file
-@@ -785,7 +782,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
- 
- 	cifs_put_tlink(cifs_file->tlink);
- 	dput(cifs_file->dentry);
--	cifs_sb_deactive(sb);
- 	kfree(cifs_file->symlink_target);
- 	kfree(cifs_file);
- }
-@@ -3162,12 +3158,6 @@ void cifs_oplock_break(struct work_struct *work)
- 	__u64 persistent_fid, volatile_fid;
- 	__u16 net_fid;
- 
--	/*
--	 * Hold a reference to the superblock to prevent it and its inodes from
--	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
--	 * may release the last reference to the sb and trigger inode eviction.
--	 */
--	cifs_sb_active(sb);
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
- 
-@@ -3240,7 +3230,6 @@ void cifs_oplock_break(struct work_struct *work)
- 	cifs_put_tlink(tlink);
- out:
- 	cifs_done_oplock_break(cinode);
--	cifs_sb_deactive(sb);
- }
- 
- static int cifs_swap_activate(struct swap_info_struct *sis,
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index e10123d8cd7d9..3770f8348541d 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -27,6 +27,11 @@
- #include "fs_context.h"
- #include "cached_dir.h"
- 
-+struct tcon_list {
-+	struct list_head entry;
-+	struct cifs_tcon *tcon;
-+};
-+
- /* The xid serves as a useful identifier for each incoming vfs request,
-    in a similar way to the mid which is useful to track each sent smb,
-    and CurrentXid can also provide a running counter (although it
-@@ -833,6 +838,43 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
- 	}
- }
- 
-+void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
-+{
-+	struct rb_root *root = &cifs_sb->tlink_tree;
-+	struct rb_node *node;
-+	struct cifs_tcon *tcon;
-+	struct tcon_link *tlink;
-+	struct tcon_list *tmp_list, *q;
-+	LIST_HEAD(tcon_head);
-+
-+	spin_lock(&cifs_sb->tlink_tree_lock);
-+	for (node = rb_first(root); node; node = rb_next(node)) {
-+		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
-+		tcon = tlink_tcon(tlink);
-+		if (IS_ERR(tcon))
-+			continue;
-+		tmp_list = kmalloc(sizeof(struct tcon_list), GFP_ATOMIC);
-+		if (tmp_list == NULL)
-+			break;
-+		tmp_list->tcon = tcon;
-+		/* Take a reference on tcon to prevent it from being freed */
-+		spin_lock(&tcon->tc_lock);
-+		++tcon->tc_count;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_get_close_defer_files);
-+		spin_unlock(&tcon->tc_lock);
-+		list_add_tail(&tmp_list->entry, &tcon_head);
-+	}
-+	spin_unlock(&cifs_sb->tlink_tree_lock);
-+
-+	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
-+		cifs_close_all_deferred_files(tmp_list->tcon);
-+		list_del(&tmp_list->entry);
-+		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
-+		kfree(tmp_list);
-+	}
-+}
-+
- void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
- 					   struct dentry *dentry)
- {
-diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
-index e592b2627119f..79a246af664d2 100644
---- a/fs/smb/client/trace.h
-+++ b/fs/smb/client/trace.h
-@@ -47,6 +47,7 @@
- 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
- 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
- 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
-+	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
- 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
- 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
- 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
-@@ -58,6 +59,7 @@
- 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
- 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
- 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
-+	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
- 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
- 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
- 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
--- 
-2.51.0
+>  		ret = follow_pfnmap_start(&args);
+>  		if (ret)
+> -			return ret;
+> +			return -EAGAIN;
+>  	}
+>  
+>  	if (write_fault && !args.writable) {
+> 
+> ---
+> base-commit: 96ca4caf9066f5ebd35b561a521af588a8eb0215
+> change-id: 20260317-retry-pin-on-reclaimed-pud-dfb9e26eb8cf
+> 
+> Best regards,
 
 
