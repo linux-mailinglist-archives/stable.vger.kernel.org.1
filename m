@@ -1,49 +1,69 @@
-Return-Path: <stable+bounces-226953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDdeNbAfuml8RwIAu9opvQ
-	(envelope-from <stable+bounces-226953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 04:44:48 +0100
+	id oPEOKFokumk3SAIAu9opvQ
+	(envelope-from <stable+bounces-226954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 05:04:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5630E2B5909
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 04:44:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3212B5A37
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 05:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 31DC13059354
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:44:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E47B1304B8E6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 04:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B4D33A70E;
-	Wed, 18 Mar 2026 03:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5024E33A6F9;
+	Wed, 18 Mar 2026 04:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tgKSLKH3";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tgKSLKH3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF892E88AE
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 03:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE2D262FDC;
+	Wed, 18 Mar 2026 04:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773805479; cv=none; b=j0IswIVMLexTYhyOHWwMJkG7UDIkxvYfRBJT3bNPXHoXCGLyM27p2ve6Gky0ZmaETM2ZQ2yJO9xeKk246vcbTsM8g79OxJacdznMDHKCMKfwqb5CIsi/Q0Wes4fqSuORBbALOKGQyhYoq3dOQeBjNluudHEXBNvPXcT6R0fgcmU=
+	t=1773806665; cv=none; b=siEnGK+Ha+gD3mHAz5sOKl/zRNO806ojBW4JtkkaW9T1v89zWdy1UpbxPOVexCiNQByeloWlxdvanI9snrJWO1rMKrtV4M3orQ5Wq+4GsIAPw893B6AAd8PAeW9Z60P2wXjsHJSdq/e+Yp9b5HHd8O1IOzlisqxbmvNKUulAmXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773805479; c=relaxed/simple;
-	bh=ossGCI6TxrIvxOZAZ/5qBnZw5CrHH+ak7k9I2VPbEf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H171TVp69RXzbJpLU+2g4TkF8I4VCDjzBio5KbYt12md0YOMAm9PN44BD/fiZOYry0tPPVrBFCesZwIxfPy/bEHsCh80usm0CiSKBSYng9E3Fjk4GWbOlDAJFVx59HjXyRGVkdbEOTDLAavqquj2eCvxrJXMwWQkPHKYt2WOjvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1773805471-1eb14e06eb1bc20001-OJig3u
-Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id YHwQHDRin0e5h0T8; Wed, 18 Mar 2026 11:44:31 +0800 (CST)
-X-Barracuda-Envelope-From: tonywwang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
-Received: from [10.32.64.22] ([10.32.64.22] [10.32.64.22])
-	by zhaoxin.com (f222c4) with ESMTP64f85180a3ce4fc07f68f3664c575032
-	Wed, 18 Mar 2026 11:44:29 +0800
-X-Eyou-Smtpauth: tonywwangoc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.32.64.22
-X-Eyou-EnvelopeSender: tonywwang-oc@zhaoxin.com
-Message-ID: <c1788d73-783c-42c3-9033-77abb903a404@zhaoxin.com>
-Date: Wed, 18 Mar 2026 11:44:27 +0800
+	s=arc-20240116; t=1773806665; c=relaxed/simple;
+	bh=Dt5Oam7a8ddqq3BfktyQN9kIOpoRHtuXRpWswvc3GAs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=X2k0uAeGVyuUi0l1u69p2NJifwuEjybK8ALixmANy91hyaOW3q1lJVpXaKV+Z2WFP08f6dNwfwhhSiL/c7UNa7g9wm1j7KyWzUQXscYcrRBzkafktmg8Ehwd0wOlJR5oQpIKq+zQQdhUzvGQq05HN09slF9goks6XN5bV/JGHV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tgKSLKH3; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tgKSLKH3; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=XZKg5HSzqw961TE78Y1nHw4DDOpQ3KVITP3+xW3FZMU=;
+	b=tgKSLKH3FRXeuZflU+YmXS6o6Nivgvm0hUbiV+64ojQwdlRuj748sRRNImMTKVJ0zSqQ4mFD9
+	vyWfROqFApjH8PJl/yObRR3ZUwmsw9hG0AiTaunIlNM5kOdnbqS/nXO8pxQZ0gDOyc2ERqq/FSD
+	tUkS7f1ubwBj8AMZrIXLpUM=
+Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4fbFYS5SRyz1BFwf;
+	Wed, 18 Mar 2026 12:03:24 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=XZKg5HSzqw961TE78Y1nHw4DDOpQ3KVITP3+xW3FZMU=;
+	b=tgKSLKH3FRXeuZflU+YmXS6o6Nivgvm0hUbiV+64ojQwdlRuj748sRRNImMTKVJ0zSqQ4mFD9
+	vyWfROqFApjH8PJl/yObRR3ZUwmsw9hG0AiTaunIlNM5kOdnbqS/nXO8pxQZ0gDOyc2ERqq/FSD
+	tUkS7f1ubwBj8AMZrIXLpUM=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fbFSC5sDgzpTMG;
+	Wed, 18 Mar 2026 11:58:51 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 19BFD40569;
+	Wed, 18 Mar 2026 12:04:15 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 18 Mar 2026 12:04:14 +0800
+Message-ID: <0744ee77-78ee-4e3d-9f0d-e8fe44be1c28@huawei.com>
+Date: Wed, 18 Mar 2026 12:04:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,283 +71,208 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-To: Dave Hansen <dave.hansen@intel.com>, me@ziyao.cc
-X-ASG-Orig-Subj: Re: [PATCH] x86/cpu/centaur: Disable X86_FEATURE_FSGSBASE on Zhaoxin
- C4600
-Cc: andrew.cooper3@citrix.com, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, linux-kernel@vger.kernel.org, mingo@redhat.com,
- stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org, lukelin@viacpu.com,
- "TimGuo@zhaoxin.com" <TimGuo@zhaoxin.com>, cooperyan@zhaoxin.com,
- benjaminpan@viatech.com, QiyuanWang@zhaoxin.com, HerryYang@zhaoxin.com,
- "CobeChen@zhaoxin.com" <CobeChen@zhaoxin.com>
-References: <20260228173704.62460-1-me@ziyao.cc>
- <70139192-54e5-4a4b-bc96-1fe3ec4f7a0b@zhaoxin.com>
- <7d312ba6-58a0-48cb-92fa-d8094ddef21f@intel.com>
- <b16bda4b-c7cb-4e7f-ac71-57c0032c6633@zhaoxin.com>
- <03a03ec8-4309-42ac-a13d-2fcc8396d547@intel.com>
- <08c3f1d4-326b-4a04-968c-23dd8ed14d0f@zhaoxin.com>
- <c7498236-1e7c-4819-881f-42b9032778c7@intel.com>
+Subject: Re: [PATCH v7 1/3] ACPI: Refactor get_acpi_id_for_cpu() to
+ acpi_get_cpu_uid() on non-x86
+From: fengchengwen <fengchengwen@huawei.com>
+To: Jeremy Linton <jeremy.linton@arm.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+	<will@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>
+CC: <punit.agrawal@oss.qualcomm.com>, <guohanjun@huawei.com>,
+	<suzuki.poulose@arm.com>, <ryan.roberts@arm.com>, <chenl311@chinatelecom.cn>,
+	<masahiroy@kernel.org>, <wangyuquan1236@phytium.com.cn>,
+	<anshuman.khandual@arm.com>, <heinrich.schuchardt@canonical.com>,
+	<Eric.VanTassell@amd.com>, <jonathan.cameron@huawei.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <linux-pci@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linux-riscv@lists.infradead.org>, <xen-devel@lists.xenproject.org>,
+	<linux-acpi@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260313022144.40942-1-fengchengwen@huawei.com>
+ <20260313022144.40942-2-fengchengwen@huawei.com>
+ <e4b0aefa-7108-47b4-ad5d-d62d385b8f33@arm.com>
+ <c9eb7f53-db46-4229-b9ef-8faa1138aca7@huawei.com>
 Content-Language: en-US
-From: Tony W Wang-oc <tonywwang-oc@zhaoxin.com>
-In-Reply-To: <c7498236-1e7c-4819-881f-42b9032778c7@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <c9eb7f53-db46-4229-b9ef-8faa1138aca7@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <tonywwangoc@zhaoxin.com>
-X-Vid: 8a47b6998aa8f5a55f35a5eec2d2535200@zhaoxin.com
-X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
-X-Barracuda-Start-Time: 1773805471
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 6925
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.156008
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226953-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[zhaoxin.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tonywwang-oc@zhaoxin.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_FROM(0.00)[bounces-226954-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.948];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zhaoxin.com:email,zhaoxin.com:mid]
-X-Rspamd-Queue-Id: 5630E2B5909
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 0F3212B5A37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Sorry to self-reply
 
-On 2026/3/17 23:21, Dave Hansen wrote:
->> --- /dev/null
->> +++ b/arch/x86/include/asm/zhaoxin.h
->> @@ -0,0 +1,48 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef _ASM_X86_ZHAOXIN_H
->> +#define _ASM_X86_ZHAOXIN_H
->> +
->> +#include <asm/cpu_device_id.h>
->> +#include <asm/microcode.h>
->> +
->> +#define    ZHAOXIN_MODEL_ZXC    VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 25)
->> +#define    CENTAUR_MODEL_ZXC    VFM_MAKE(X86_VENDOR_CENTAUR, 6, 15)
->> +
->> +struct x86_cpu_id naughty_list[] = {
->> +    X86_MATCH_VFM_STEPS(ZHAOXIN_MODEL_ZXC, 0, 3, 0),
->> +    X86_MATCH_VFM_STEPS(CENTAUR_MODEL_ZXC, 14, 15, 0),
->> +    {}
->> +};
-> Hi Tony,
->
-> This is headed in the right direction, in a way.
->
-> However, I think you might have missed a few things. Did you notice that
-> this structure is in a .h file? We generally don't define data
-> structures and variables in header files. You might want to take a quick
-> look around the tree.
->
-> Then, go try and #include this header in two different places. See what
-> happens.
->
->> +void check_fsgsbase_bugs(void);
->> +
->> +void check_fsgsbase_bugs(void)
->> +{
-> Generally, compiler warnings are good things. They tell you that you've
-> done something wrong. Simply throwing code in to silence them isn't a
-> great practice.
->
-> Remember the compiler warning you got without the function declaration?
-> That was there to tell you that something is wrong. You placed
-> definitions in a header, not declarations.
->
-> But, adding a declaration before the definition made the compiler quiet.
->
->> +    u32 chip_pf, dummy, fixed_ucode;
-> This is whitespace damaged, btw.
->
-> I also prefer one variable per line
->
-> 	u32 fixed_ucode;
-> 	u32 chip_pf;
-> 	u32 dummy;
->
->> +    if (!cpu_feature_enabled(X86_FEATURE_FSGSBASE))
->> +        return;
->> +
->> +    if (!x86_match_cpu(naughty_list))
->> +        return;
-> Heh, also I was joking about 'naughty_list'. It would be best to give it
-> a good symbolic, meaningful name.
->
->> +    native_rdmsr(MSR_ZHAOXIN_MFGID, dummy, chip_pf);
-> This at least need commenting. What prevents this code from getting
-> called on other vendors' CPUs? What about models of Zhaoxin CPUs that
-> don't have this MSR?
->
->> +    /* chip_pf represents product version flag */
->> +    chip_pf = (chip_pf >> 15) & 0x7;
-> Please use the GENMASK macros here.
->
->> +    if (chip_pf == 0)
->> +        fixed_ucode = 0x20e;
->> +    if (chip_pf == 1)
->> +        fixed_ucode = 0x208;
->> +
->> +    if (intel_get_microcode_revision() >= fixed_ucode)
->> +        return;
-> It's probably worth commenting why this is calling an "intel"_ function.
->
->> +    pr_warn_once("Broken FSGSBASE support, clearing feature\n");
->> +    setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
->> +}
->> +
->> +#endif
->
-Sorry, The previous patch didn't consider the generality of the newly 
-added zhaoxin.h.  The intention was to minimize modifications to common.c.
+On 3/18/2026 10:02 AM, fengchengwen wrote:
+> Hi,
+> 
+> On 3/18/2026 5:38 AM, Jeremy Linton wrote:
+>> Hi,
+>>
+>> Lets try this again, since the last one looks like it got caught in the moderation system and wasn't quite right anyway.
+>>
+>> On 3/12/26 9:21 PM, Chengwen Feng wrote:
+>>> Unify CPU ACPI ID retrieval interface across architectures by
+>>> refactoring get_acpi_id_for_cpu() to acpi_get_cpu_uid() on
+>>> arm64/riscv/loongarch:
+>>> - Add input parameter validation
+>>> - Adjust interface to int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
+>>>    (old: u32 get_acpi_id_for_cpu(unsigned int cpu), no input check)
+>>>
+>>> This refactoring (not a pure rename) enhances interface robustness while
+>>> preparing for consistent ACPI Processor UID retrieval across all
+>>> ACPI-enabled platforms. Valid inputs retain original behavior.
+>>>
+>>> Note: Move the ARM64-specific get_cpu_for_acpi_id() implementation to
+>>>        arch/arm64/kernel/acpi_numa.c to fix compilation errors from
+>>>        circular header dependencies introduced by the rename.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>>> ---
+>>>   arch/arm64/include/asm/acpi.h      | 16 +---------
+>>>   arch/arm64/kernel/acpi.c           | 16 ++++++++++
+>>>   arch/arm64/kernel/acpi_numa.c      | 14 +++++++++
+>>>   arch/loongarch/include/asm/acpi.h  |  5 ---
+>>>   arch/loongarch/kernel/acpi.c       |  9 ++++++
+>>>   arch/riscv/include/asm/acpi.h      |  4 ---
+>>>   arch/riscv/kernel/acpi.c           | 16 ++++++++++
+>>>   arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+>>>   drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+>>>   drivers/acpi/riscv/rhct.c          |  7 ++++-
+>>>   drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+>>>   include/linux/acpi.h               | 13 ++++++++
+>>>   12 files changed, 122 insertions(+), 43 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+>>> index c07a58b96329..106a08556cbf 100644
+>>> --- a/arch/arm64/include/asm/acpi.h
+>>> +++ b/arch/arm64/include/asm/acpi.h
+>>> @@ -114,22 +114,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+>>>   }
+>>>     struct acpi_madt_generic_interrupt *acpi_cpu_get_madt_gicc(int cpu);
+>>> -static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+>>> -{
+>>> -    return    acpi_cpu_get_madt_gicc(cpu)->uid;
+>>> -}
+>>> -
+>>> -static inline int get_cpu_for_acpi_id(u32 uid)
+>>> -{
+>>> -    int cpu;
+>>> -
+>>> -    for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+>>> -        if (acpi_cpu_get_madt_gicc(cpu) &&
+>>> -            uid == get_acpi_id_for_cpu(cpu))
+>>> -            return cpu;
+>>>   -    return -EINVAL;
+>>> -}
+>>> +int get_cpu_for_acpi_id(u32 uid);
+>>>     static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+>>>   void __init acpi_init_cpus(void);
+>>> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+>>> index af90128cfed5..f3866606fc46 100644
+>>> --- a/arch/arm64/kernel/acpi.c
+>>> +++ b/arch/arm64/kernel/acpi.c
+>>> @@ -458,3 +458,19 @@ int acpi_unmap_cpu(int cpu)
+>>>   }
+>>>   EXPORT_SYMBOL(acpi_unmap_cpu);
+>>>   #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+>>> +
+>>> +int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
+>>> +{
+>>> +    struct acpi_madt_generic_interrupt *gicc;
+>>> +
+>>> +    if (cpu >= nr_cpu_ids)
+>>> +        return -EINVAL;
+>> If this actually happens, its probably useful to know it with a pr_warn/pr_warn_once.> +
+> 
+> The function maybe called from userspace which on later roadmap, so I prefer not add
+> warning or error here.
+> BTW: the function will return -EINVAL, so caller could know the case.
+> 
+>>> +    gicc = acpi_cpu_get_madt_gicc(cpu);
+>>> +    if (!gicc)
+>> I think this check is redundant because we can't have logical cpu's that aren't in the cpu_possible() list, which on arm64 doesn't AFAIK have holes. In the past this might have made sense if we weren't maintaining a copy of the gicc structure from the MADT for each core.> +        return -ENODEV;
+> 
+> This commit will backport to stable branch at least 6.6. So I think it's OK to keep it.
+> 
+>>> +
+>>> +    *uid = gicc->uid;
+>>> +    return 0;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(acpi_get_cpu_uid);
+>>> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
+>>> index 2465f291c7e1..41d1e46a4338 100644
+>>> --- a/arch/arm64/kernel/acpi_numa.c
+>>> +++ b/arch/arm64/kernel/acpi_numa.c
+>>> @@ -34,6 +34,20 @@ int __init acpi_numa_get_nid(unsigned int cpu)
+>>>       return acpi_early_node_map[cpu];
+>>>   }
+>>>   +int get_cpu_for_acpi_id(u32 uid)
+>>> +{
+>>> +    u32 cpu_uid;
+>>> +    int ret;
+>>> +
+>>> +    for (int cpu = 0; cpu < nr_cpu_ids; cpu++) {
+>>> +        ret = acpi_get_cpu_uid(cpu, &cpu_uid);
+>> This might have been a simplification, but since we are basically doing a for_each_possible_cpu(cpu) and every possible cpu will have a GICC entry before it becomes 'possible' there will be a UID, so all the error checking AFAIK, is impossible here.> +        if (ret == 0 && uid == cpu_uid)
+> 
+> I prefer to keep the current impl, as it may catch future error.
+> 
+>>> +            return cpu;
+>>> +    }
+>>> +
+>>> +    return -EINVAL;
+>>> +}
+>>> +
+>> I also moved this below acpi_get_cpu_uid() in acpi.c and I don't see the a forward error issue you mentioned. It seems to me that they should be kept close to each other since they are basically inverses of each other.
+> 
+> As long as you ensure that it is not placed in asm/acpi.h, that's fine.
+> So it's OK to move this function to acpi.c
+> 
+> But I just checked the callers of this function again and found that there are
+> all in acpi_numa.c, so I will now add the static keyword to this function and
+> make it an internal function.
 
-The revised patch is provided below, please review it again. Thank you.
+I just found drivers/irqchip/irq-gic-v3.c has a call for get_cpu_for_acpi_id,
+so We should not marking as static.
 
-iff --git a/MAINTAINERS b/MAINTAINERS
-index 364f0bec8748..42093a794056 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29168,6 +29168,7 @@ ZHAOXIN PROCESSOR SUPPORT
-  M:    Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-  L:    linux-kernel@vger.kernel.org
-  S:    Maintained
-+F:    arch/x86/include/asm/zhaoxin.h
-  F:    arch/x86/kernel/cpu/zhaoxin.c
+According to your advise, I moved it in acpi.c in v8.
 
-  ZONED BLOCK DEVICE (BLOCK LAYER)
-diff --git a/arch/x86/include/asm/msr-index.h 
-b/arch/x86/include/asm/msr-index.h
-index be3e3cc963b2..dc71a4adc776 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -1306,5 +1306,7 @@
-                          * disabling x2APIC will cause
-                          * a #GP
-                          */
-+/* ZHAOXIN defined MSRs*/
-+#define MSR_ZHAOXIN_MFGID        0x00001232
+Thanks
 
-  #endif /* _ASM_X86_MSR_INDEX_H */
-diff --git a/arch/x86/include/asm/zhaoxin.h b/arch/x86/include/asm/zhaoxin.h
-new file mode 100644
-index 000000000000..e7f380b678dc
---- /dev/null
-+++ b/arch/x86/include/asm/zhaoxin.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_ZHAOXIN_H
-+#define _ASM_X86_ZHAOXIN_H
-+
-+#include <asm/cpu_device_id.h>
-+#include <asm/microcode.h>
-+
-+#define    ZHAOXIN_MODEL_ZXC    VFM_MAKE(X86_VENDOR_ZHAOXIN, 6, 25)
-+#define    CENTAUR_MODEL_ZXC    VFM_MAKE(X86_VENDOR_CENTAUR, 6, 15)
-+
-+extern struct x86_cpu_id fsgsbase_bugs_list[];
-+extern void check_fsgsbase_bugs(void);
-+
-+#endif
-+
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 1c3261cae40c..49e58b55c414 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -73,6 +73,7 @@
-  #include <asm/tdx.h>
-  #include <asm/posted_intr.h>
-  #include <asm/runtime-const.h>
-+#include <asm/zhaoxin.h>
-
-  #include "cpu.h"
-
-@@ -1940,6 +1941,50 @@ void check_null_seg_clears_base(struct 
-cpuinfo_x86 *c)
-      set_cpu_bug(c, X86_BUG_NULL_SEG);
-  }
-
-+struct x86_cpu_id fsgsbase_bugs_list[] = {
-+    X86_MATCH_VFM_STEPS(ZHAOXIN_MODEL_ZXC, 0, 3, 0),
-+    X86_MATCH_VFM_STEPS(CENTAUR_MODEL_ZXC, 14, 15, 0),
-+    {}
-+};
-+
-+void check_fsgsbase_bugs(void)
-+{
-+    u32 chip_pf;
-+    u32 dummy;
-+    u32 fixed_ucode;
-+
-+    if (!cpu_feature_enabled(X86_FEATURE_FSGSBASE))
-+        return;
-+
-+    if (!x86_match_cpu(fsgsbase_bugs_list))
-+        return;
-+
-+    /*
-+     * All Zhaoxin CPUs use MSR_ZHAOXIN_MFGID to represent
-+     * manufacturing information. Please note that this MSR
-+     * may have different meanings in other vendors' CPUs.
-+     */
-+    native_rdmsr(MSR_ZHAOXIN_MFGID, dummy, chip_pf);
-+
-+    /* chip_pf represents product version flag */
-+    chip_pf = (chip_pf & GENMASK(17, 15)) >> 15;
-+
-+    if (chip_pf == 0)
-+        fixed_ucode = 0x20e;
-+    if (chip_pf == 1)
-+        fixed_ucode = 0x208;
-+
-+    /*
-+     * Zhaoxin ucode version retrieval method is compatible
-+     * with Intel.
-+     */
-+    if (intel_get_microcode_revision() >= fixed_ucode)
-+        return;
-+
-+    pr_warn_once("Broken FSGSBASE support, clearing feature\n");
-+    setup_clear_cpu_cap(X86_FEATURE_FSGSBASE);
-+}
-+
-  static void generic_identify(struct cpuinfo_x86 *c)
-  {
-      c->extended_cpuid_level = 0;
-@@ -2047,6 +2092,8 @@ static void identify_cpu(struct cpuinfo_x86 *c)
-      setup_umip(c);
-      setup_lass(c);
-
-+    check_fsgsbase_bugs();
-+
-      /* Enable FSGSBASE instructions if available. */
-      if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
-          cr4_set_bits(X86_CR4_FSGSBASE);
+> 
+> Thanks
+> 
+>>
+> 
 
 
