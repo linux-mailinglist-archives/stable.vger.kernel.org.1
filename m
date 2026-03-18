@@ -1,267 +1,262 @@
-Return-Path: <stable+bounces-227139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEEODTX1ummVdQIAu9opvQ
-	(envelope-from <stable+bounces-227139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:55:49 +0100
+	id GBoLJzP0ummHdQIAu9opvQ
+	(envelope-from <stable+bounces-227137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:51:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9CDB2C1AAD
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:55:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC4D2C19E0
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0CE26304C947
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:51:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01F1F301BED6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E6670830;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E593BFE26;
 	Wed, 18 Mar 2026 18:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ra4H/XW4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gTv5yeWb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fU8hgLOx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LWqH9T8f"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8212E03EA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D302330EF75;
 	Wed, 18 Mar 2026 18:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773859876; cv=none; b=OomUuuc4qMhziOT3uFFbx+ImbsMMdcWe+z+zPWxTVKToL8fNaNQ4XCtGftO3tgcoIgA83cKGEl6WKrZR9auclRRDCXkYAkOgFsJlrzx9/JYyx9sv1dfHnB/gfC1t3fdrxj/Hvuxb5+kTa57in5mNfTV7/Cv8yot9l/ppRQomB1M=
+	t=1773859876; cv=none; b=OgZKqhIOzwWGX1BjeXMKhJmSDSXdyKYsuOWmP+AfVoPUzWUZZ8ihEHleOIyvrJMgAboiiKZ13EQP/TItGPgL5p/5jpb6FEbPz5BUvS4xpx4Kcy/VkMWIcdpdj/Iwge+bZ/zgViM6e/XfmQsyFctuQgjBN6rhgHihY3GzStYsiy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773859876; c=relaxed/simple;
-	bh=j2ebi3UGBbz773wElReawGaSx37lFKvFPj2MYzzQfRY=;
+	bh=wITPIJ5Y3Kpo7vchVrYCGSj9K8Rrc8g3df24D1AYZFg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JTmWzPQD+c2YDIFdrf/kLqzvmkFBMqNx1ATS223eXnoh5y1NWOEccout4AARCH2mYUV6oaBU3NbtwxmP/bYTEp+hB0Q9DodCjoL2cx65Tea5a74wxenQ3zBkFuV03pyf6UloFFm7dn+MwXxNLB/KbouTJHHBAcWurs39z9bGSng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ra4H/XW4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gTv5yeWb; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=U+AbXxEaoaI31PhwKS8YfcGdmXWIgJsXhCph4bgtYWcMNl3ovJstCQj1qr451hnNTlx7z73ZUxo1anjnt6WUuhASHfo6ZuRhtYDoIZCfSq7kRelweWFvHfjifEZAqTXpvrmt8LDuu2l+Xju//g6h1DkvKg0IuMAa+OLw7X+itMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fU8hgLOx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LWqH9T8f; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 18 Mar 2026 18:51:10 -0000
+Date: Wed, 18 Mar 2026 18:51:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1773859872;
+	s=2020; t=1773859873;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cZzJvldoPN7rXoKePLq1/hZdEIUeq4H9TxGC0De+zoE=;
-	b=Ra4H/XW4Tb5C+BAaq1liD3XhA4nL00P7EDJxTsYyEnZSAXO5f4mDkL/z6wfAQjRJNA4aPp
-	jaDbkYBplmB/Wwv5eT53CAxLieV3u37LgMLMuoJC//JZvukEQfNDqJZb8UZBn9cN7mFH02
-	l3lpssW+A7ibg1JkFj30XwFx9bIn+URWY6/jXjpq7mMFbzlMCrE+ZSMMtehFNbSk/5JHT2
-	uREx4dGKxyMvu4LfDKl6e7uOJ/keKrZVSkHzirbJc5yhqyIZBgt8xnc5AUnD6YLGC8iROv
-	2L2HoKW+cL1o0yj41FR/g8l43/ronOUS8HupCX7DE4XO0NN8Hv6OajdvnJV8NQ==
+	bh=6Ysy/qTGxCklcRCEDUZ8GYNyVXDqLMcRJCEjCnWUFoE=;
+	b=fU8hgLOxNo6+IpICGD/pBfPOn7ZKQMEcafIIDLOfKzKDDqaT8qORDYu5cH0u5Qr0jXlQZO
+	M3Cg+iTbnGr1cYYVprQusdn/dnUdsQZx234zN89rCXBKNMVhjUiMQNQTQuCgGAf9qlKJUd
+	MbQua7VjTFCTM9Q8bnngEnK59Lk5hya6HRJX4PPazI0zo88iiFiL1l0D+tyIu5VYP/Qyk1
+	W8XNKyrNS+xG17gkzQ7qNItZ0cDHFsz6cllDlrd7WBjEka3wLvzFQ0woXKgbuCkeMHc449
+	Kt7RNxwu+O+E+6i+SDu6Ufhpi3sNtUVx4TmSc91HuwAMu5t941SRK5ex56pm9g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1773859872;
+	s=2020e; t=1773859873;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cZzJvldoPN7rXoKePLq1/hZdEIUeq4H9TxGC0De+zoE=;
-	b=gTv5yeWbK+qVrT1wYuaog9oKHd4rY26aXNCKpLT+Osc02AOOFndTFYIfCA0vkgTcOcGMRu
-	XmEfg85+s7v3SQDg==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+	bh=6Ysy/qTGxCklcRCEDUZ8GYNyVXDqLMcRJCEjCnWUFoE=;
+	b=LWqH9T8fTBM+1TZa1bcJyOwqldgZHLBHY6j1EELs88WBJTsUtlvU19qDNUb01Pn8kR44mf
+	oXxcBK+S0ZtWceCg==
+From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Disable CR pinning during CPU bringup
-Cc: Nikunj A Dadhania <nikunj@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.9+@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260318075654.1792916-3-nikunj@amd.com>
-References: <20260318075654.1792916-3-nikunj@amd.com>
+Subject: [tip: x86/urgent] x86/cpu: Enable FSGSBASE early in
+ cpu_init_exception_handling()
+Cc: Borislav Petkov <bp@alien8.de>, Sohil Mehta <sohil.mehta@intel.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260318075654.1792916-2-nikunj@amd.com>
+References: <20260318075654.1792916-2-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
+Message-ID: <177385987216.1647592.5365553015724397432.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227139-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227137-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.963];
+	NEURAL_HAM(-0.00)[-0.989];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:replyto,alien8.de:email,amd.com:email]
-X-Rspamd-Queue-Id: A9CDB2C1AAD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,vger.kernel.org:replyto,linutronix.de:dkim,alien8.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 3EC4D2C19E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     cccc0c8ff0a9849378dcbc1d2ee6ca8018740aab
-Gitweb:        https://git.kernel.org/tip/cccc0c8ff0a9849378dcbc1d2ee6ca80187=
-40aab
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Wed, 18 Mar 2026 07:56:53=20
+Commit-ID:     31e1e8c4eb7ff7fd8cb8a9d0b216c25d18ea37eb
+Gitweb:        https://git.kernel.org/tip/31e1e8c4eb7ff7fd8cb8a9d0b216c25d18e=
+a37eb
+Author:        Nikunj A Dadhania <nikunj@amd.com>
+AuthorDate:    Wed, 18 Mar 2026 07:56:52=20
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 18 Mar 2026 16:40:54 +01:00
+CommitterDate: Wed, 18 Mar 2026 16:40:42 +01:00
 
-x86/cpu: Disable CR pinning during CPU bringup
+x86/cpu: Enable FSGSBASE early in cpu_init_exception_handling()
 
-=3D=3D CR Pinning Background =3D=3D
+Move FSGSBASE enablement from identify_cpu() to cpu_init_exception_handling()
+to ensure it is enabled before any exceptions can occur on both boot and
+secondary CPUs.
 
-Modern CPU hardening features like SMAP/SMEP are enabled by flipping control
-register (CR) bits. Attackers find these features inconvenient and often try
-to disable them.
+=3D=3D Background =3D=3D
 
-CR-pinning is a kernel hardening feature that detects when security-sensitive
-control bits are flipped off, complains about it, then turns them back on. The
-CR-pinning checks are performed in the CR manipulation helpers.
+Exception entry code (paranoid_entry()) uses ALTERNATIVE patching based on
+X86_FEATURE_FSGSBASE to decide whether to use RDGSBASE/WRGSBASE instructions
+or the slower RDMSR/SWAPGS sequence for saving/restoring GSBASE.
 
-X86_CR4_FRED controls FRED enabling and is pinned. There is a single,
-system-wide static key that controls CR-pinning behavior. The static key is
-enabled by the boot CPU after it has established its CR configuration.
+On boot CPU, ALTERNATIVE patching happens after enabling FSGSBASE in CR4.
+When the feature is available, the code is permanently patched to use
+RDGSBASE/WRGSBASE, which require CR4.FSGSBASE=3D1 to execute without triggeri=
+ng
 
-The end result is that CR-pinning is not active while initializing the boot
-CPU but it is active while bringing up secondary CPUs.
+=3D=3D Boot Sequence =3D=3D
 
-=3D=3D FRED Background =3D=3D
+Boot CPU (with CR pinning enabled):
+  trap_init()
+    cpu_init()                   <- Uses unpatched code (RDMSR/SWAPGS)
+      x2apic_setup()
+  ...
+  arch_cpu_finalize_init()
+    identify_boot_cpu()
+      identify_cpu()
+        cr4_set_bits(X86_CR4_FSGSBASE)  # Enables the feature
+	# This becomes part of cr4_pinned_bits
+    ...
+    alternative_instructions()   <- Patches code to use RDGSBASE/WRGSBASE
 
-FRED is a new hardware entry/exit feature for the kernel. It is not on by
-default and started out as Intel-only. AMD is just adding support now.
+Secondary CPUs (with CR pinning enabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=3D1
+                                    set implicitly via cr4_pinned_bits
 
-FRED has MSRs for configuration and is enabled by the pinned X86_CR4_FRED
-bit. It should not be enabled until after MSRs are properly initialized.
+    cpu_init()                   <- exceptions work because FSGSBASE is
+                                    already enabled
 
-=3D=3D SEV Background =3D=3D
+Secondary CPU (with CR pinning disabled):
+  start_secondary()
+    cr4_init()                   <- Code already patched, CR4.FSGSBASE=3D0
+    cpu_init()
+      x2apic_setup()
+        rdmsrq(MSR_IA32_APICBASE)  <- Triggers #VC in SNP guests
+          exc_vmm_communication()
+            paranoid_entry()       <- Uses RDGSBASE with CR4.FSGSBASE=3D0
+                                      (patched code)
+    ...
+    ap_starting()
+      identify_secondary_cpu()
+        identify_cpu()
+	  cr4_set_bits(X86_CR4_FSGSBASE)  <- Enables the feature, which is
+                                             too late
 
-AMD SEV-ES and SEV-SNP use #VC (Virtualization Communication) exceptions to
-handle operations that require hypervisor assistance. These exceptions
-occur during various operations including MMIO access, CPUID instructions,
-and certain memory accesses.
+=3D=3D CR Pinning =3D=3D
 
-Writes to the console can generate #VC.
+Currently, for secondary CPUs, CR4.FSGSBASE is set implicitly through
+CR-pinning: the boot CPU sets it during identify_cpu(), it becomes part of
+cr4_pinned_bits, and cr4_init() applies those pinned bits to secondary CPUs.
+This works but creates an undocumented dependency between cr4_init() and the
+pinning mechanism.
 
 =3D=3D Problem =3D=3D
 
-CR-pinning implicitly enables FRED on secondary CPUs at a different point
-than the boot CPU. This point is *before* the CPU has done an explicit
-cr4_set_bits(X86_CR4_FRED) and before the MSRs are initialized. This means
-that there is a window where no exceptions can be handled.
+Secondary CPUs boot after alternatives have been applied globally. They
+execute already-patched paranoid_entry() code that uses RDGSBASE/WRGSBASE
+instructions, which require CR4.FSGSBASE=3D1. Upcoming changes to CR pinning
+behavior will break the implicit dependency, causing secondary CPUs to
+generate #UD.
 
-For SEV-ES/SNP and TDX guests, any console output during this window
-triggers #VC or #VE exceptions that result in triple faults because the
-exception handlers rely on FRED MSRs that aren't yet configured.
+This issue manifests itself on AMD SEV-SNP guests, where the rdmsrq() in
+x2apic_setup() triggers a #VC exception early during cpu_init(). The #VC
+handler (exc_vmm_communication()) executes the patched paranoid_entry() path.
+Without CR4.FSGSBASE enabled, RDGSBASE instructions trigger #UD.
 
 =3D=3D Fix =3D=3D
 
-Defer CR-pinning enforcement during secondary CPU bringup. This avoids any
-implicit CR changes during CPU bringup, ensuring that FRED is not enabled
-before it is configured and able to handle a #VC or #VE.
+Enable FSGSBASE explicitly in cpu_init_exception_handling() before loading
+exception handlers. This makes the dependency explicit and ensures both
+boot and secondary CPUs have FSGSBASE enabled before paranoid_entry()
+executes.
 
-Drop CR4 pinning logic from cr4_init() as it runs only during early
-secondary bring up while the CPU is still offline, so CR4 pinning is never
-in effect there. Remove the redundant pinned-mask application and add
-WARN_ON_ONCE() to detect any future changes that might violate this
-assumption.
-
-This also aligns boot and secondary CPU bringup.
-
-Note: FRED is not on by default anywhere so this is not likely to be
-causing many problems. The only reason this was noticed was that AMD
-started to enable FRED and was turning it on.
-
-  [ Nikunj: Updated SEV background section wording ]
-
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Reported-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Fixes: c82965f9e530 ("x86/entry/64: Handle FSGSBASE enabled paranoid entry/ex=
+it")
+Reported-by: Borislav Petkov <bp@alien8.de>
+Suggested-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: stable@vger.kernel.org # 6.9+
-Link: https://patch.msgid.link/20260318075654.1792916-3-nikunj@amd.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260318075654.1792916-2-nikunj@amd.com
 ---
- arch/x86/kernel/cpu/common.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/common.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 7840b22..dbd7bce 100644
+index a8ff437..7840b22 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -437,6 +437,21 @@ static const unsigned long cr4_pinned_mask =3D X86_CR4_S=
-MEP | X86_CR4_SMAP | X86_C
- static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
- static unsigned long cr4_pinned_bits __ro_after_init;
+@@ -2050,12 +2050,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	setup_umip(c);
+ 	setup_lass(c);
 =20
-+static bool cr_pinning_enabled(void)
-+{
-+	if (!static_branch_likely(&cr_pinning))
-+		return false;
-+
+-	/* Enable FSGSBASE instructions if available. */
+-	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+-		cr4_set_bits(X86_CR4_FSGSBASE);
+-		elf_hwcap2 |=3D HWCAP2_FSGSBASE;
+-	}
+-
+ 	/*
+ 	 * The vendor-specific functions might have changed features.
+ 	 * Now we do "generic changes."
+@@ -2416,6 +2410,18 @@ void cpu_init_exception_handling(bool boot_cpu)
+ 	/* GHCB needs to be setup to handle #VC. */
+ 	setup_ghcb();
+=20
 +	/*
-+	 * Do not enforce pinning during CPU bringup. It might
-+	 * turn on features that are not set up yet, like FRED.
++	 * On CPUs with FSGSBASE support, paranoid_entry() uses
++	 * ALTERNATIVE-patched RDGSBASE/WRGSBASE instructions. Secondary CPUs
++	 * boot after alternatives are patched globally, so early exceptions
++	 * execute patched code that depends on FSGSBASE. Enable the feature
++	 * before any exceptions occur.
 +	 */
-+	if (!cpu_online(smp_processor_id()))
-+		return false;
++	if (cpu_feature_enabled(X86_FEATURE_FSGSBASE)) {
++		cr4_set_bits(X86_CR4_FSGSBASE);
++		elf_hwcap2 |=3D HWCAP2_FSGSBASE;
++	}
 +
-+	return true;
-+}
-+
- void native_write_cr0(unsigned long val)
- {
- 	unsigned long bits_missing =3D 0;
-@@ -444,7 +459,7 @@ void native_write_cr0(unsigned long val)
- set_register:
- 	asm volatile("mov %0,%%cr0": "+r" (val) : : "memory");
-=20
--	if (static_branch_likely(&cr_pinning)) {
-+	if (cr_pinning_enabled()) {
- 		if (unlikely((val & X86_CR0_WP) !=3D X86_CR0_WP)) {
- 			bits_missing =3D X86_CR0_WP;
- 			val |=3D bits_missing;
-@@ -463,7 +478,7 @@ void __no_profile native_write_cr4(unsigned long val)
- set_register:
- 	asm volatile("mov %0,%%cr4": "+r" (val) : : "memory");
-=20
--	if (static_branch_likely(&cr_pinning)) {
-+	if (cr_pinning_enabled()) {
- 		if (unlikely((val & cr4_pinned_mask) !=3D cr4_pinned_bits)) {
- 			bits_changed =3D (val & cr4_pinned_mask) ^ cr4_pinned_bits;
- 			val =3D (val & ~cr4_pinned_mask) | cr4_pinned_bits;
-@@ -505,8 +520,8 @@ void cr4_init(void)
-=20
- 	if (boot_cpu_has(X86_FEATURE_PCID))
- 		cr4 |=3D X86_CR4_PCIDE;
--	if (static_branch_likely(&cr_pinning))
--		cr4 =3D (cr4 & ~cr4_pinned_mask) | cr4_pinned_bits;
-+
-+	WARN_ON_ONCE(cr_pinning_enabled());
-=20
- 	__write_cr4(cr4);
-=20
+ 	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
+ 		/* The boot CPU has enabled FRED during early boot */
+ 		if (!boot_cpu)
 
