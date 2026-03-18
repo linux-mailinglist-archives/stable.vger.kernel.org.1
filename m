@@ -1,181 +1,254 @@
-Return-Path: <stable+bounces-226948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gChcFGoBummXQQIAu9opvQ
-	(envelope-from <stable+bounces-226948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 02:35:38 +0100
+	id eLAeO+YHumnKQgIAu9opvQ
+	(envelope-from <stable+bounces-226949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:03:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C373C2B4FB8
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 02:35:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD572B51B2
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9CAEC3070FCF
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 01:35:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBA92305C6EB
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 02:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0621257E;
-	Wed, 18 Mar 2026 01:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659825B1D2;
+	Wed, 18 Mar 2026 02:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R2r5YQBR"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="aCEWYkJ5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F144619CC28
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 01:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8777219F135;
+	Wed, 18 Mar 2026 02:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773797736; cv=none; b=PK7CFHSrK6mB7edGZWB40ClEDM0CszWgfIkP7E4UWQrtiuazudQC8BGYk2cBxtjDdPy/wMxqo9kL8NtCaR9vZmdjF1hZQDaE/TNK/eXombueR4J/EdzxGZpo8LjIAm/XlBe5OId86L6Im0tNECteJomcs7RowP63BqapwnFdTXc=
+	t=1773799379; cv=none; b=I7bs/SHlEZuwDf+BbLawFoHI456ESqG9F4zFyWnBN/KQi5wnmjv1OR31yvpMwgYuq9NyEJVdSdwfJzEJZkTTYwFB1Tm7ESwgSrRymGyCvByICjm+Ej3ieMn+qrFTA61/uqPuCizwJhPq7B/kRE57+3+i0j7GqGJ4HY3GUy3jbkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773797736; c=relaxed/simple;
-	bh=2svO7ANRoavkXX03zVdJ6rQ13oBZ4sElxrn9G2qa3hY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S+1gt9bxgMXztvBMXHR3sFc6WsvmHp60uW+A4Ji0SH8X46v6c9/DZ7kfefq23JETQtJhgEuCXM8rOupOmU7HWMVTCMvTkPd0uk8LgTQvwCEiZvHdgpAEqwaBb0QU7nXVvmrkQsQm1AGqOqNuMbH/2HIpU9tiFodHe2ozofe/RYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R2r5YQBR; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773797733;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CqFzHcb2df96RmQfDBr72f2by0y/t+p/YTVOoCXpzdE=;
-	b=R2r5YQBR7MKscjnBIyyHIDkzMbk4TzjCnPIKXu5JnpzYyXf6g9bRspO4FZCoDol/5/W+z2
-	FqtyVQ9K7lOcCa1+AjCY1rUKlwVYtF0vxykrUK2Js5iyGkD4wBsJq6M7gkJpw9rR2aS0Nr
-	OrWiFxuVBac9irbMDxw+yMDok9DAmHQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-5D8pHsBeMcWUJOkStvAmWg-1; Tue,
- 17 Mar 2026 21:35:29 -0400
-X-MC-Unique: 5D8pHsBeMcWUJOkStvAmWg-1
-X-Mimecast-MFC-AGG-ID: 5D8pHsBeMcWUJOkStvAmWg_1773797728
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2156F180034E;
-	Wed, 18 Mar 2026 01:35:28 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.147])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B42E51800351;
-	Wed, 18 Mar 2026 01:35:26 +0000 (UTC)
-From: Ming Lei <ming.lei@redhat.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: linux-block@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	Mehul Rao <mehulrao@gmail.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18.y] ublk: fix NULL pointer dereference in ublk_ctrl_set_size()
-Date: Wed, 18 Mar 2026 09:35:17 +0800
-Message-ID: <20260318013517.3124637-1-ming.lei@redhat.com>
+	s=arc-20240116; t=1773799379; c=relaxed/simple;
+	bh=1aY8itGwueXfUym7kqMXhD3Bd0X8oZZRMQubLbTix9o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Rj8nxGNN5wW5KTu5N7ThvbEcqaecR6V4ttxkGYAjLlxgrvX7nyyQ0muH6L4tuLcFuoxszuN/K0qIVroyVmh2x79R86D3QG2NHuIyEWzq6luIj1WClniau/7ZeuTKbGKmZpReov6wjxoNlYvDxA0xtlVhTDzM706BYjixHXEczAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=aCEWYkJ5; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=tZ0YkW6QzHvviEShl9PgGlFvkR04UgvTgl/eoJfCubk=;
+	b=aCEWYkJ57RU+jYD6xeuAmQT6QWYhWukuC1lqL25B1ZrxDqI0Vs3NTfKvJ5AlwQLdM8pehEYQe
+	55n1qFUEZVHwC/PnTOrkKqsbc9EydqwCPUchnbkZH2IVuBilQdsFrdI/yQDCCC98dkWUvhAxjOH
+	sHTmJrb+EsIdeC3eKd+Ehz4=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fbBmC73pYz1T4Gh;
+	Wed, 18 Mar 2026 09:57:31 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id C20BD40538;
+	Wed, 18 Mar 2026 10:02:52 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 18 Mar 2026 10:02:51 +0800
+Message-ID: <c9eb7f53-db46-4229-b9ef-8faa1138aca7@huawei.com>
+Date: Wed, 18 Mar 2026 10:02:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] ACPI: Refactor get_acpi_id_for_cpu() to
+ acpi_get_cpu_uid() on non-x86
+To: Jeremy Linton <jeremy.linton@arm.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+	<will@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>
+CC: <punit.agrawal@oss.qualcomm.com>, <guohanjun@huawei.com>,
+	<suzuki.poulose@arm.com>, <ryan.roberts@arm.com>, <chenl311@chinatelecom.cn>,
+	<masahiroy@kernel.org>, <wangyuquan1236@phytium.com.cn>,
+	<anshuman.khandual@arm.com>, <heinrich.schuchardt@canonical.com>,
+	<Eric.VanTassell@amd.com>, <jonathan.cameron@huawei.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <linux-pci@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linux-riscv@lists.infradead.org>, <xen-devel@lists.xenproject.org>,
+	<linux-acpi@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260313022144.40942-1-fengchengwen@huawei.com>
+ <20260313022144.40942-2-fengchengwen@huawei.com>
+ <e4b0aefa-7108-47b4-ad5d-d62d385b8f33@arm.com>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <e4b0aefa-7108-47b4-ad5d-d62d385b8f33@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226948-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,redhat.com,kernel.dk];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_FROM(0.00)[bounces-226949-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C373C2B4FB8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8BD572B51B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Mehul Rao <mehulrao@gmail.com>
+Hi,
 
-commit 25966fc097691e5c925ad080f64a2f19c5fd940a upstream.
+On 3/18/2026 5:38 AM, Jeremy Linton wrote:
+> Hi,
+> 
+> Lets try this again, since the last one looks like it got caught in the moderation system and wasn't quite right anyway.
+> 
+> On 3/12/26 9:21 PM, Chengwen Feng wrote:
+>> Unify CPU ACPI ID retrieval interface across architectures by
+>> refactoring get_acpi_id_for_cpu() to acpi_get_cpu_uid() on
+>> arm64/riscv/loongarch:
+>> - Add input parameter validation
+>> - Adjust interface to int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
+>>    (old: u32 get_acpi_id_for_cpu(unsigned int cpu), no input check)
+>>
+>> This refactoring (not a pure rename) enhances interface robustness while
+>> preparing for consistent ACPI Processor UID retrieval across all
+>> ACPI-enabled platforms. Valid inputs retain original behavior.
+>>
+>> Note: Move the ARM64-specific get_cpu_for_acpi_id() implementation to
+>>        arch/arm64/kernel/acpi_numa.c to fix compilation errors from
+>>        circular header dependencies introduced by the rename.
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>> ---
+>>   arch/arm64/include/asm/acpi.h      | 16 +---------
+>>   arch/arm64/kernel/acpi.c           | 16 ++++++++++
+>>   arch/arm64/kernel/acpi_numa.c      | 14 +++++++++
+>>   arch/loongarch/include/asm/acpi.h  |  5 ---
+>>   arch/loongarch/kernel/acpi.c       |  9 ++++++
+>>   arch/riscv/include/asm/acpi.h      |  4 ---
+>>   arch/riscv/kernel/acpi.c           | 16 ++++++++++
+>>   arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+>>   drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+>>   drivers/acpi/riscv/rhct.c          |  7 ++++-
+>>   drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+>>   include/linux/acpi.h               | 13 ++++++++
+>>   12 files changed, 122 insertions(+), 43 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+>> index c07a58b96329..106a08556cbf 100644
+>> --- a/arch/arm64/include/asm/acpi.h
+>> +++ b/arch/arm64/include/asm/acpi.h
+>> @@ -114,22 +114,8 @@ static inline bool acpi_has_cpu_in_madt(void)
+>>   }
+>>     struct acpi_madt_generic_interrupt *acpi_cpu_get_madt_gicc(int cpu);
+>> -static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+>> -{
+>> -    return    acpi_cpu_get_madt_gicc(cpu)->uid;
+>> -}
+>> -
+>> -static inline int get_cpu_for_acpi_id(u32 uid)
+>> -{
+>> -    int cpu;
+>> -
+>> -    for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+>> -        if (acpi_cpu_get_madt_gicc(cpu) &&
+>> -            uid == get_acpi_id_for_cpu(cpu))
+>> -            return cpu;
+>>   -    return -EINVAL;
+>> -}
+>> +int get_cpu_for_acpi_id(u32 uid);
+>>     static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+>>   void __init acpi_init_cpus(void);
+>> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+>> index af90128cfed5..f3866606fc46 100644
+>> --- a/arch/arm64/kernel/acpi.c
+>> +++ b/arch/arm64/kernel/acpi.c
+>> @@ -458,3 +458,19 @@ int acpi_unmap_cpu(int cpu)
+>>   }
+>>   EXPORT_SYMBOL(acpi_unmap_cpu);
+>>   #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+>> +
+>> +int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
+>> +{
+>> +    struct acpi_madt_generic_interrupt *gicc;
+>> +
+>> +    if (cpu >= nr_cpu_ids)
+>> +        return -EINVAL;
+> If this actually happens, its probably useful to know it with a pr_warn/pr_warn_once.> +
 
-ublk_ctrl_set_size() unconditionally dereferences ub->ub_disk via
-set_capacity_and_notify() without checking if it is NULL.
+The function maybe called from userspace which on later roadmap, so I prefer not add
+warning or error here.
+BTW: the function will return -EINVAL, so caller could know the case.
 
-ub->ub_disk is NULL before UBLK_CMD_START_DEV completes (it is only
-assigned in ublk_ctrl_start_dev()) and after UBLK_CMD_STOP_DEV runs
-(ublk_detach_disk() sets it to NULL). Since the UBLK_CMD_UPDATE_SIZE
-handler performs no state validation, a user can trigger a NULL pointer
-dereference by sending UPDATE_SIZE to a device that has been added but
-not yet started, or one that has been stopped.
+>> +    gicc = acpi_cpu_get_madt_gicc(cpu);
+>> +    if (!gicc)
+> I think this check is redundant because we can't have logical cpu's that aren't in the cpu_possible() list, which on arm64 doesn't AFAIK have holes. In the past this might have made sense if we weren't maintaining a copy of the gicc structure from the MADT for each core.> +        return -ENODEV;
 
-Fix this by checking ub->ub_disk under ub->mutex before dereferencing
-it, and returning -ENODEV if the disk is not available.
+This commit will backport to stable branch at least 6.6. So I think it's OK to keep it.
 
-Fixes: 98b995660bff ("ublk: Add UBLK_U_CMD_UPDATE_SIZE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
----
- drivers/block/ublk_drv.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+>> +
+>> +    *uid = gicc->uid;
+>> +    return 0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(acpi_get_cpu_uid);
+>> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
+>> index 2465f291c7e1..41d1e46a4338 100644
+>> --- a/arch/arm64/kernel/acpi_numa.c
+>> +++ b/arch/arm64/kernel/acpi_numa.c
+>> @@ -34,6 +34,20 @@ int __init acpi_numa_get_nid(unsigned int cpu)
+>>       return acpi_early_node_map[cpu];
+>>   }
+>>   +int get_cpu_for_acpi_id(u32 uid)
+>> +{
+>> +    u32 cpu_uid;
+>> +    int ret;
+>> +
+>> +    for (int cpu = 0; cpu < nr_cpu_ids; cpu++) {
+>> +        ret = acpi_get_cpu_uid(cpu, &cpu_uid);
+> This might have been a simplification, but since we are basically doing a for_each_possible_cpu(cpu) and every possible cpu will have a GICC entry before it becomes 'possible' there will be a UID, so all the error checking AFAIK, is impossible here.> +        if (ret == 0 && uid == cpu_uid)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 965460d4fc76..2729b1556e81 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -3604,15 +3604,22 @@ static int ublk_ctrl_get_features(const struct ublksrv_ctrl_cmd *header)
- 	return 0;
- }
- 
--static void ublk_ctrl_set_size(struct ublk_device *ub, const struct ublksrv_ctrl_cmd *header)
-+static int ublk_ctrl_set_size(struct ublk_device *ub, const struct ublksrv_ctrl_cmd *header)
- {
- 	struct ublk_param_basic *p = &ub->params.basic;
- 	u64 new_size = header->data[0];
-+	int ret = 0;
- 
- 	mutex_lock(&ub->mutex);
-+	if (!ub->ub_disk) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
- 	p->dev_sectors = new_size;
- 	set_capacity_and_notify(ub->ub_disk, p->dev_sectors);
-+out:
- 	mutex_unlock(&ub->mutex);
-+	return ret;
- }
- 
- struct count_busy {
-@@ -3902,8 +3909,7 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
- 		ret = ublk_ctrl_end_recovery(ub, header);
- 		break;
- 	case UBLK_CMD_UPDATE_SIZE:
--		ublk_ctrl_set_size(ub, header);
--		ret = 0;
-+		ret = ublk_ctrl_set_size(ub, header);
- 		break;
- 	case UBLK_CMD_QUIESCE_DEV:
- 		ret = ublk_ctrl_quiesce_dev(ub, header);
--- 
-2.47.0
+I prefer to keep the current impl, as it may catch future error.
+
+>> +            return cpu;
+>> +    }
+>> +
+>> +    return -EINVAL;
+>> +}
+>> +
+> I also moved this below acpi_get_cpu_uid() in acpi.c and I don't see the a forward error issue you mentioned. It seems to me that they should be kept close to each other since they are basically inverses of each other.
+
+As long as you ensure that it is not placed in asm/acpi.h, that's fine.
+So it's OK to move this function to acpi.c
+
+But I just checked the callers of this function again and found that there are
+all in acpi_numa.c, so I will now add the static keyword to this function and
+make it an internal function.
+
+Thanks
+
+> 
 
 
