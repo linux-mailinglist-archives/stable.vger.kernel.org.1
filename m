@@ -1,149 +1,182 @@
-Return-Path: <stable+bounces-226973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK8wEJlSumkAUQIAu9opvQ
-	(envelope-from <stable+bounces-226973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:22:01 +0100
+	id SBhYGjtVumm8UQIAu9opvQ
+	(envelope-from <stable+bounces-226974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:33:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CAE2B6D7E
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:22:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED502B6F8D
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9470B3055839
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:16:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FB4730B2204
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7AF2253EB;
-	Wed, 18 Mar 2026 07:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D65363C59;
+	Wed, 18 Mar 2026 07:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ayUT9edK"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="m3tn93Ma"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617024503B
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12D3369984
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773818216; cv=none; b=GQYRnP/29wU1m8gQ4KCkQj5elmddADsYNmi8OP7R/W53rE9QHJcMsvhSloRXJqLbttETeYwAS+WAxHG5HCKSUlo4ii3L2rpWaWQmgwmODd/ayzcl+qsFquEcmtxoNxn/L0lCY7y7N1wkv9JR86ggwdMXNEgyN7qKhaJIpdJW6xI=
+	t=1773819093; cv=none; b=ltj0q6giw1YRcpfBnAhMY98vqSVlvWiuxvtCDD5NehkhQ25cGW4MgsKIy0pnM0s50F8eGVTzHcFV0SOm9MOAqYw8tKpcyZO+LwVUp5SVhC1W//E5V0x+coevXVLI61h6Bth6vmb9tpv0xlx6tahO2YdBi4hxTaZCRDcqc/yr7GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773818216; c=relaxed/simple;
-	bh=Nf80Au6wCKnLR47bZXhrqtqC3C1ce/Dk91infyE9yeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BkU4MKciZirB8FlTalP/bpB4ubilDeCdhC1YFs3qOplkMhLlJXoY1BxDuqTN2YnIc12az4QdGjdaYcdX4v+WlFYoid9C+TAmcvebihqfR/i2AANOx6Il6OuNziNC+aQeaG1namKZuEU2CYbCQY0dCN8mzolCvHdV5LH664E00TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ayUT9edK; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-486507134e4so17759435e9.0
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 00:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773818213; x=1774423013; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GsdordiQBG8KvI/TOVG/4SQIVN4E6bDexKX1lez9BHc=;
-        b=ayUT9edKqten/RsJneWJ7N1kcefrAb+tePXx53GKE1Ramy8KUIhDUKtd14aHlCucm/
-         bR9b43XmJZpXoddpASpGpVYd+EnsCKSTDLp8j4dkCHX9HCXidBCEfusvGTXtaE7Wyyy0
-         yqgQkNCeJYpw4BNydIcxtl8LIW/dkPWG2CIIEBxXkFd24WsqSz/OP3/0MQj3xNE7RPfo
-         8IB2tPVibmfV4K24d+c/lE5FFHmGHzlJYCukCIwLxRKPtVefj7nsQaTYMsljfRSCs+ZT
-         j3yQph6L9N0PVw4p/b2B2nVO51IgtIOC1sgKFwJEnQU7yL+fB1RXXKR/TN5r9oCV4M4C
-         ILbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773818213; x=1774423013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GsdordiQBG8KvI/TOVG/4SQIVN4E6bDexKX1lez9BHc=;
-        b=Tv5y8pB7zYGuqvdmLWFJJ0omTpsLJxefKxPNijLpNN7/cB13pff/GuK/LCmyudB/hV
-         Zp/9odnFLc0dEIIlIMYkGsJ+8BAuqKtp0KUxsW6MGezEcG0/iRn2eq7jRM36Sn/AAZcU
-         UGG+KIVx6mqyvPY5eanPIbYyG0kVsnDrdiaDLuS/szcLJAYDRv9J7J1vCEJufiS/Ye+p
-         tYoYxlv74kYQ/4sjldcjKK+OyeIw4EYnJJC4ZGQHUbte6NBWRKKadRejSxdJq4W0ajx/
-         JBl4dduD/k6ZfjWN/gm9FI3Jc7ny8y2B2C9qu2B80gYWAV0Ne4ev2MQDnCwJPBTQ1Kzf
-         SYWg==
-X-Gm-Message-State: AOJu0YznMqAqiu1dqYW4IO/7/RXREN3z7dxqjZlyFFm8CYlfel5xhv/8
-	7rqyzit5vR2dibnntvFDxMTqi1+ZvLCf22c4qKsKc7TMClCxaZuhKh0DE/zeTaYVduMw7M3CV0b
-	JZbbjQDo=
-X-Gm-Gg: ATEYQzyMcdVgbgSEf6IuOGJLVBCv/EHbHsx2GVRrR7UC70/lmzoU3N9nXGVqmRl9a7/
-	Vu4h0DV/Y+d0ZgYclQnQo3cTOyMwHbSrQ5b+PsuOPSiG7OfKbArRDNK+aA9baxjo5YvPzgWVrGt
-	Nj9clwDXVxQlAwqKMPng6c8k2XjMw+KI8daW9LRLc22CAsukRWr1hoqCaZC9LxrQKgSdXyPW7Ee
-	w03MgAxxgoQLAvR1FjZIL9XSA7BKrSEq1Ke64HiVvEqF2Ox/qZWZHVawzHETtSCkunVD/Gbxpqp
-	V3GmOn3gf/gCR62+Cm69N0EQJGQxbl8zd9OrYrJ3jZkvjE2mvnZQKZQYvpoVIHGr/2+0lV0CKi0
-	bCj2IiECtNn/pfdj59u0kSssszBRCmYZ39sRUavjCLjLn7JFjpDKhSpZBCSI0Gu0Grly8Ru5RX/
-	pPMkixI6txzqN6RR4Irrw=
-X-Received: by 2002:a05:600c:1d09:b0:485:4388:348b with SMTP id 5b1f17b1804b1-486f41fd356mr38112435e9.0.1773818213388;
-        Wed, 18 Mar 2026 00:16:53 -0700 (PDT)
-Received: from u94a ([2401:e180:8d6d:4286:a96b:a815:7332:44e7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6b541cdfsm1612786b3a.1.2026.03.18.00.16.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 00:16:52 -0700 (PDT)
-Date: Wed, 18 Mar 2026 15:16:44 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.18 000/333] 6.18.19-rc1 review
-Message-ID: <qh44yqp56wymolegs4gbwnbsyb7ogzwwboyrv2feqftdfbo6n7@63i74d5f45ah>
-References: <20260317162959.345812316@linuxfoundation.org>
+	s=arc-20240116; t=1773819093; c=relaxed/simple;
+	bh=UoUySImdnklvh4Ac0ZppSWUYm9LQJ2NbzQeUWvkGG0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=haUFmpgdBBnQ1kNgEZXYGzCDH5btDeVrt4quoLghRcoBUZ58ya5vZTsOU+6pCx3TOrGBlbHAwXvR9jIulvhvRRX9hIutNa7eyqurycc2WyuK9JiaZjvX1JQ5ZFga9yXv10ZE9JkXYi86cszFG5GdvXCQ/PyBzO6zGnmQKLqUMYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=m3tn93Ma; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62HJqWiK1484495
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:31:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=CsoZLbNyb8omY7Umc
+	pZDudMVJyvPKjjjZ1rYzSKcSpY=; b=m3tn93Ma3t05B+gDBy3+57hj3hwYOfb4i
+	HCss1nfn37Br1b55H5PH9wDmQTsSB0tAWw8cSZf+i2GNPWjhSTWS/gYNuKyVDiW0
+	qthxU/miTRqWfByFTuBaM3owWLpbKPWLOEaeaR/mqQIga/ZXAxEbEnWiUUNXMlGT
+	lgJlxANVMDvzD7bxzcz8U6UConv+CwGiP//L2pXfytZL7ZX+5WnOXZRCMz1grHNU
+	h3jCAk7Ygo+xDGYICkFjap0uB7chwc35P4dgdEFWOXbvV34PaIo6aVSWUve93X2N
+	uc4PIqqFG/E9awPM3JkhE6RLjrkSZRS6nkRmdJc5g5+e7qp3+Nv/A==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfk0d3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:31:31 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62I4cm74013997
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:31:30 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcy5017-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:31:30 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62I7VQcW29753660
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 07:31:26 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F6C02004D;
+	Wed, 18 Mar 2026 07:31:26 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAB5620043;
+	Wed, 18 Mar 2026 07:31:25 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Mar 2026 07:31:25 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: stable@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12.y] s390/stackleak: Fix __stackleak_poison() inline assembly constraint
+Date: Wed, 18 Mar 2026 08:31:17 +0100
+Message-ID: <20260318073118.3116589-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031738-blob-labored-5201@gregkh>
+References: <2026031738-blob-labored-5201@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: d543w2vgau35ow9a_257z3Mnm9v-OqMI
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69ba54d3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=dh6oAghXbX3gNeQxLKgA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA2MCBTYWx0ZWRfX173ZQwP6cyJX
+ biJqfZtr7lviG4Wu/22NJZid6gIZS1/2ZSjef5sdeoYZ+QbDzKvJablLScptjtFebI35iZp5Xkm
+ AwMGF4FyxCdiu74mFsanyoY8zhqvw6dkvG4MuX3tSNbQkgvy8205gwA2PlU39GushYtFSdo73Aj
+ amBdA/5r1a6iqrA/mbzqjLO9GO6nGHa7TcK4PkEyt6KyONgdM1jXlI/CeXG9s1gvmsxry/ggkvb
+ BVkvvuP809+S1bDhm3fp5/G4Od5xykfmArJHq7oIDBXAhg2FRojRJa2s8emyL14ooPLKcDAP8rV
+ hCj5TLxK//iKCemK/k2lzrfYUgQPEkZ3rBRu0rr3STWJSPcf8AOMQeM9b5YiuxHEnNPGTJq6iMk
+ 7ACSj/rf6FZxtEIG8+8ww94MENpT3Ngu+fRKiGMpLPsCk61txOwLeP4OGozM09WZBQ8Q3eCTzyx
+ ggiRZAPLyqLNrp4x1ww==
+X-Proofpoint-GUID: d543w2vgau35ow9a_257z3Mnm9v-OqMI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180060
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226973-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226974-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 95CAE2B6D7E
+	FROM_NEQ_ENVFROM(0.00)[hca@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: BED502B6F8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 05:30:29PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.19 release.
-> There are 333 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 19 Mar 2026 16:28:59 +0000.
-> Anything received after that time might be too late.
+The __stackleak_poison() inline assembly comes with a "count" operand where
+the "d" constraint is used. "count" is used with the exrl instruction and
+"d" means that the compiler may allocate any register from 0 to 15.
 
-test_progs, test_progs-no_alu32, test_progs-cpuv4, test_maps,
-test_verifier in BPF selftests all passes[1] on x86_64.
+If the compiler would allocate register 0 then the exrl instruction would
+not or the value of "count" into the executed instruction - resulting in a
+stackframe which is only partially poisoned.
 
-Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Use the correct "a" constraint, which excludes register 0 from register
+allocation.
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/23211625016/job/67531397844
+Fixes: 2a405f6bb3a5 ("s390/stackleak: provide fast __stackleak_poison() implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260302133500.1560531-4-hca@linux.ibm.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+(cherry picked from commit 674c5ff0f440a051ebf299d29a4c013133d81a65)
+---
+ arch/s390/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index 21ae93cbd8e4..ef622c3f88e5 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -168,7 +168,7 @@ static __always_inline void __stackleak_poison(unsigned long erase_low,
+ 		"	j	4f\n"
+ 		"3:	mvc	8(1,%[addr]),0(%[addr])\n"
+ 		"4:\n"
+-		: [addr] "+&a" (erase_low), [count] "+&d" (count), [tmp] "=&a" (tmp)
++		: [addr] "+&a" (erase_low), [count] "+&a" (count), [tmp] "=&a" (tmp)
+ 		: [poison] "d" (poison)
+ 		: "memory", "cc"
+ 		);
+-- 
+2.51.0
+
 
