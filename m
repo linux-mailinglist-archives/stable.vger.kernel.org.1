@@ -1,247 +1,273 @@
-Return-Path: <stable+bounces-226966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPUtE4dDumljTgIAu9opvQ
-	(envelope-from <stable+bounces-226966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:17:43 +0100
+	id WDE8JrhGumlTTgIAu9opvQ
+	(envelope-from <stable+bounces-226967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:31:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2682B6467
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:17:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D5D2B665F
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B51BA305093B
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:17:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50A653042D5C
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBFD36214D;
-	Wed, 18 Mar 2026 06:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6641B3644A2;
+	Wed, 18 Mar 2026 06:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MNhhNDAi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4X87I5d"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79FE243376
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 06:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF88F366DA6
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 06:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773814615; cv=none; b=gq0NByeo75m4U0P1tVxfLl+vLPxE8o25qMjE1nWniZgIK0tHX2t37s7Ul3PGfgtKS8M82dsOVRr2/Hh2biU/cWf1jz1JNIk6DwFgXYgnC8DFex2yTwipBMrpuMKGplAM2uD9X3V89ZmeLlimIpjGJ30PwFXfjRYWWlopG5mM4x0=
+	t=1773815473; cv=none; b=YlvL8iCEUH3klD0uHmWwzucOkV2gE9SHNLuMnC1v1uzsw9//kP2sWgxsudtbJsSRLF4CK8XKf7Uh6UmjQOBC6n0RIVy8B08D3/8nKzEjv6hpx7pqM9e79wqSTag8+WR5gmf/xe1SoVL4n+EP9RLak9GsKkbmc2kOCvzE82TTqC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773814615; c=relaxed/simple;
-	bh=0P/HhXaIZHVp9qjmL/0dO1b2rfXAZHkCTBXE0PKnwuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bjpCk1/q39LsDg3v5Lw8twdJyUimElinjZoL6ui0e4IgaE8+yfakZq0xJg2AYW7TLzN2dspy7v61kpBQVkyLj7BgzjQdqZuQBH/7SG/pqHKmO4AfcsytkqqgRxa/1nYjmfu+q79sLmPKcG5TvKM095IfUBNuWBRTjnh/GHUj5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MNhhNDAi; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <268abf39-9cd6-412e-b3ec-32fb8fea1684@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773814602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d0RHFhfIi8eQ/zhOmgjp0C3T+zZS/NNRXu1jd6CQgfE=;
-	b=MNhhNDAiders9o4vuBDcAzvePbJoit8K5gvmIIoWdlrp50PwJUf+0ccBSLX2+cpGB8NFP4
-	q1IE+M08MhKV/wICLwdON7tPKo7DOZuhgUdxjertAyMvibX1pkaVxZJD6ZB0/U/tNF1tC/
-	S6nRQOHgMwvohBfj+W6iF4mBoPPNYjg=
-Date: Wed, 18 Mar 2026 14:16:33 +0800
+	s=arc-20240116; t=1773815473; c=relaxed/simple;
+	bh=F9cHhWJXb3kHOhBeKBznjA0MZ+sKCxw3//7ZAbHZqyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q3rwev2Poj4HL+/Alxv3sDANeQiM4b3lkqcjUStRUYj4y2ih9D/xm+hW58c937uUqkBTKoFAMXTtwEUv3iNkhA7FH0+GGIQ0/Lc45krpTTBM1MDHI+7N8sk4ne5qb0VOWWGoj53tZHrbszdLogNk5gMMxrDo0lsyWWwGPQJPiw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4X87I5d; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-128d7db88b9so7960666c88.0
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 23:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773815471; x=1774420271; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7mjfeB+QehGWxy6pvDSqDvx3PHWjcskLwFx02+x66yE=;
+        b=d4X87I5d4oZX9BeGt42R5MOijiO2+O8lZMhZJAHzdg+hLb6CAPJLi+x5sSTclaV2rT
+         G6tUD/A+kE6oZyDorF6qWelFEdOzFF8/uODylTfharZBioAwalJ+s3GDe58rV6FtTQSC
+         edx1mQfuuNyh87f2XaPIK9OapXY0TPFAAW5M0+MKsmrsjKs07SrWiHGgRTx3qrE5qXim
+         gCErGPzHH+DGrmOQRZNfMK5wD7VmzFMPmlnyHNVt+tMiq0DLMw9H90W3w/T76uF8Y/pP
+         iP4qSSfxuNzMLtXGtH2HerhiMze2cQhS97s0Ax6mETV+Pe7SzZOlqwLEJCqaK+5Ob8jB
+         k5NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773815471; x=1774420271;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7mjfeB+QehGWxy6pvDSqDvx3PHWjcskLwFx02+x66yE=;
+        b=N0QLTDz62CyAv7oxB/KiuG3rJO41brhb8PuPVTj2YjUlRcJKZ59yw/x1/ROgCzcVfY
+         8NQSRDcoAiUa8N+K2xFGALP+6tSJbeFoaoQCLtdZRIsrJXKTFfwSUCs7od0HFmROWp4z
+         B7M40jVZKm8kLqgH29OoaNIJTnNi62aZFbkCBznkF0T0lzEK1aRiGVlvVwzCWbkBl+na
+         Ck/Y7UwCHBdHxnnqmgPjv3HIOfb4MS0B5xixmLumyJCwVR7ANRdEy2Fc/07/XadVKkrL
+         nR9HIV4gF8Td0wC4IcJv7vqVAyQIqTKPprf0s9XnJweeG/I/ZX4VQ+unAOj+OlTlvZfZ
+         BrDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhDXmn5QqhiC7AC+n8AMPG6nspejoVaqv3lFNkG5wvS8AW1NOx3YEJ3VdrbPdpb6mM0/JpWjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfu2RxOsW6izB3ULpbzFDqFHJLGsOGk5o33kgEpfUvkhOsK2tr
+	R4RVH89KxiV6pNmhlWzhaI6giCikmTnQ+7RzLCHrz/LzpqO06BD5VXk6
+X-Gm-Gg: ATEYQzz9WKZ4klrj6NAC0b6GoNsF1AET+FNqdP0kiePYSzGtpaS6TRa129PewGb/+nM
+	tgby8uTcE7rGKyy+yqvCfcQWpTgvmvlBQ0Eo1AXx7+FIcflkOvon4Oh6g6UJ+ZQqbsi+0BmShtM
+	Mlh7NzdfI+fPiyQ4IJ1ygoISz0uXTWdSA4KVN/KTiOpLQZ0nqlW2YFvzpZfukcEuzN6CK3rqM99
+	/nSWnVx+S2vulOgjt2eRk+RY/R2WucRis8cKcR7R4TVac7YTXo1epZn+AXuVpzkOjzaA+ClXTIH
+	rnq0P5Ze+hNSrjyw6VID2N4/hc4PDz2ABct/4smR1G514G23q63hprE3NpZt7+2EUQx3iAzkobr
+	gcBhCBZU1w4IJPA6D+6pzox4MSEuzKuctnoIQTy6Sh8gPXupB5ff23KE/po0KBSt4yY7lx49sGk
+	4BQAatHZKJ3Co2HlADVUY=
+X-Received: by 2002:a05:7022:51b:b0:128:d4be:7418 with SMTP id a92af1059eb24-129a714bc7bmr1050843c88.35.1773815470580;
+        Tue, 17 Mar 2026 23:31:10 -0700 (PDT)
+Received: from pek-khao-d3 ([128.224.246.2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-129a723f9d7sm2347316c88.2.2026.03.17.23.31.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 23:31:09 -0700 (PDT)
+Date: Wed, 18 Mar 2026 14:31:03 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Harini Katakam <harini.katakam@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net 2/2] net: macb: Protect access to net_device::in_ptr
+ with RCU lock
+Message-ID: <abpGpxaFECLpGMzz@pek-khao-d3>
+References: <20260315-macb-irq-v1-0-0154104cbf61@gmail.com>
+ <20260315-macb-irq-v1-2-0154104cbf61@gmail.com>
+ <DH4EHTJNY6GL.3EXTP61HNUNDD@bootlin.com>
+ <abit7VLwoy2ttEus@pek-khao-d3>
+ <DH56GCWA9O1K.1KYOVK5RL00JC@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-To: mboone@akamai.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EH2RervoWIbhLwfW"
+Content-Disposition: inline
+In-Reply-To: <DH56GCWA9O1K.1KYOVK5RL00JC@bootlin.com>
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226967-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226966-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
-X-Rspamd-Queue-Id: BA2682B6467
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 05D5D2B665F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Max,
 
-On 3/17/26 10:03 PM, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
-> 
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
-> 
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
-> 
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->     9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->   <TASK>
->   __walk_page_range+0x195/0x1b0
->   walk_page_vma+0x62/0xc0
->   show_numa_map+0x12b/0x3b0
->   seq_read_iter+0x297/0x440
->   seq_read+0x11d/0x140
->   vfs_read+0xc2/0x340
->   ksys_read+0x5f/0xe0
->   do_syscall_64+0x68/0x130
->   ? get_page_from_freelist+0x5c2/0x17e0
->   ? mas_store_prealloc+0x17e/0x360
->   ? vma_set_page_prot+0x4c/0xa0
->   ? __alloc_pages_noprof+0x14e/0x2d0
->   ? __mod_memcg_lruvec_state+0x8d/0x140
->   ? __lruvec_stat_mod_folio+0x76/0xb0
->   ? __folio_mod_stat+0x26/0x80
->   ? do_anonymous_page+0x705/0x900
->   ? __handle_mm_fault+0xa8d/0x1000
->   ? __count_memcg_events+0x53/0xf0
->   ? handle_mm_fault+0xa5/0x360
->   ? do_user_addr_fault+0x342/0x640
->   ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->   ? irqentry_exit_to_user_mode+0x24/0x100
->   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->     f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->   </TASK>
-> 
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pmd_range().
-> 
-> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
-> ---
->   mm/pagewalk.c | 20 +++++++++++++++++---
->   1 file changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab..c74b4d800 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->   static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   			  struct mm_walk *walk)
->   {
-> +	pud_t pudval = pudp_get(pud);
->   	pmd_t *pmd;
->   	unsigned long next;
->   	const struct mm_walk_ops *ops = walk->ops;
-> @@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->   	int err = 0;
->   	int depth = real_depth(3);
->   
-> +	/*
-> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
-> +	 * whether there actually is a page table. But it also has to be
-> +	 * very careful about concurrent page table reclaim. If we spot a PMD
-> +	 * table, it cannot go away, so we can just walk it. However, if we find
-> +	 * something else, we have to retry.
-> +	 */
-> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
-> +		walk->action = ACTION_AGAIN;
-> +		return 0;
-> +	}
-> +
->   	pmd = pmd_offset(pud, addr);
->   	do {
->   again:
-> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->   		else if (pud_leaf(*pud) || !pud_present(*pud))
->   			continue; /* Nothing to do. */
+--EH2RervoWIbhLwfW
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Why not check pudval directly here? Like the following:
+On Tue, Mar 17, 2026 at 04:54:11PM +0100, Th=E9o Lebrun wrote:
+> On Tue Mar 17, 2026 at 2:27 AM CET, Kevin Hao wrote:
+> > On Mon, Mar 16, 2026 at 06:59:35PM +0100, Th=E9o Lebrun wrote:
+> >> On Sun Mar 15, 2026 at 12:44 PM CET, Kevin Hao wrote:
+> >> > @@ -5915,13 +5915,16 @@ static int __maybe_unused macb_suspend(struc=
+t device *dev)
+> >> > =20
+> >> >  	if (bp->wol & MACB_WOL_ENABLED) {
+> >> >  		/* Check for IP address in WOL ARP mode */
+> >> > +		rcu_read_lock();
+> >> >  		idev =3D __in_dev_get_rcu(bp->dev);
+> >> >  		if (idev)
+> >> >  			ifa =3D rcu_dereference(idev->ifa_list);
+> >> >  		if ((bp->wolopts & WAKE_ARP) && !ifa) {
+> >> >  			netdev_err(netdev, "IP address not assigned as required by WoL w=
+alk ARP\n");
+> >> > +			rcu_read_unlock();
+> >> >  			return -EOPNOTSUPP;
+> >> >  		}
+> >> > +
+> >> >  		spin_lock_irqsave(&bp->lock, flags);
+> >> > =20
+> >> >  		/* Disable Tx and Rx engines before  disabling the queues,
+> >> > @@ -5963,6 +5966,7 @@ static int __maybe_unused macb_suspend(struct =
+device *dev)
+> >> >  			tmp |=3D MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
+> >> >  		}
+> >> >  		spin_unlock_irqrestore(&bp->lock, flags);
+> >> > +		rcu_read_unlock();
+> >> > =20
+> >> >  		/* Change interrupt handler and
+> >> >  		 * Enable WoL IRQ on queue 0
+> >>=20
+> >> Instead of making the RCU critical section extend so much, you could
+> >> dereference ifa->ifa_local into a stack variable. In particular, it
+> >> would avoid the RCU critical section covering a spinlock critical
+> >> section.
+> >
+> > I initially considered using a local variable before submitting this, a=
+s I also
+> > believe that `ifa->ifa_local` is unlikely to be modified or freed in th=
+is
+> > context. However, I ultimately decided to protect these sections with R=
+CU for
+> > the following reasons:
+> >
+> > - It is logically more consistent to protect access to `ifa->ifa_local`=
+ with
+> >   RCU locking.
+> >
+> > - For section already under spinlock protection, adding RCU locking int=
+roduces
+> >   negligible overhead, especially in a scenario like this.
+> >
+> > That said, I do not have a strong preference for either approach. If yo=
+u prefer
+> > using a local variable to keep the RCU region shorter, I can prepare a =
+v2 with
+> > that change.
+>=20
+> I was not questioning whether this region should be protected, but
+> rather how long you made the RCU critical section. The smaller the
+> better, especially if you can remove a spinlock from it.
+>=20
+> On PREEMPT_RT kernels it could even cause trouble because spinlocks
+> become sleep-able and that is not allowed inside RCU read-side critical
+> section.
 
-		if (pud_leaf(*pud) || !pud_present(*pud))
-			goto again;
+I'm a bit confused by this comment. As you know, the ndo_start_xmit() callb=
+ack
+is executed in a context where the RCU lock is acquired. Many network drive=
+rs
+use spinlocks in their ndo_start_xmit() callbacks. Am I missing something o=
+bvious?
 
->   
-> -		if (pud_none(*pud))
-> -			goto again;
-> -
->   		err = walk_pmd_range(pud, addr, next, walk);
->   		if (err)
->   			break;
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
-> +
->   	} while (pud++, addr = next, addr != end);
->   
->   	return err;
-> 
-> ---
-> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
-> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
-> 
-> Best regards,
+>=20
+> So yes, I do insist that a tiny RCU is better; something like:
+>=20
+> static int macb_suspend(struct device *dev)
+> {
+> 	u32 ifa_local;
+>=20
+> 	// ...
+>=20
+> 	if (bp->wol & MACB_WOL_ENABLED) {
+> 		/* Check for IP address in WOL ARP mode */
+> 		rcu_read_lock();
+> 		idev =3D __in_dev_get_rcu(bp->dev);
+> 		if (idev)
+> 			ifa =3D rcu_dereference(idev->ifa_list);
+> 		if (ifa)
+> 			ifa_local =3D be32_to_cpu(ifa->ifa_local);
+> 		rcu_read_unlock();
+>=20
+> 		if ((bp->wolopts & WAKE_ARP) && !ifa) {
+> 			netdev_err(netdev, "IP address not assigned as required by WoL walk AR=
+P\n");
+> 			return -EOPNOTSUPP;
+> 		}
+>=20
+> 		// ...
+> 	}
+>=20
+> 	// ...
+> }
 
+Will reduce the scope of RCU lock in v2. Thanks, Lebrun.
+
+Thanks,
+Kevin
+
+--EH2RervoWIbhLwfW
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmm6RqcACgkQk1jtMN6u
+sXHXvAgAlFNTSrFAIlrzgOF5y/xJOsfvyMqnJD9J8eE6UQNtUm8mkF3k0RD3HMW3
+DqUXlUnn2RYGZ7gYwG08mbHF25gc+YiBTCDeErkF2vYRpZv/P+2BqlXlhQX6afpy
+Qn9wjdPhhvb+ed4lIVd48AR/52Y4u1HwLpH1lxg903MoNRwoWSHFKfi5EMn+0J+W
+IdyYkhGCxcqaWZ1qrlpS1altwwvwS5882sOLGvW/zLk7yJLs82uznK181uxlopor
+54ijlCgQb75qvVpPojXFIxd60vELMA4MULL9vhOVhEnAlfaZPcWUTtZ+RzXuyrS2
+sGjBM6HQphSxTFUFpcjZw5dlrqJ12A==
+=AN7D
+-----END PGP SIGNATURE-----
+
+--EH2RervoWIbhLwfW--
 
